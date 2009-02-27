@@ -39,6 +39,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			// 
 			// myTreeControl
 			// 
+			this.myTreeControl.AllowDrop = true;
 			this.myTreeControl.Dock = DockStyle.Fill;
 			this.myTreeControl.Name = "myTreeControl";
 			this.myTreeControl.TabIndex = 0;

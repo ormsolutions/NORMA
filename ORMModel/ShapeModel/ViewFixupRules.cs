@@ -571,7 +571,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(identified))
 					{
-						ORMBaseShape updateShape = (ORMBaseShape)(pel as ObjectTypeShape) ?? pel as ObjectifiedFactTypeNameShape;
+						IInvalidateDisplay updateShape = pel as IInvalidateDisplay;
 						if (updateShape != null)
 						{
 							updateShape.InvalidateRequired(true);

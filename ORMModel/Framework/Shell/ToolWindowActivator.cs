@@ -314,6 +314,11 @@ namespace Neumont.Tools.Modeling.Shell
 			}
 			else
 			{
+				SelectionContainerType container = myCurrentSelectionContainer;
+				if (container != null)
+				{
+					container.SelectionChanged -= new EventHandler(IntraContainerSelectionChanged);
+				}
 				myCurrentSelectionContainer = null;
 				myCurrentDocumentView = null;
 				myNotifyCallback.ActivatorSelectionContainerChanged(this);
@@ -378,9 +383,28 @@ namespace Neumont.Tools.Modeling.Shell
 				{
 					if (!CurrentSelectionContainerChanging(value))
 					{
-						myCurrentSelectionContainer = value;
-						myNotifyCallback.ActivatorSelectionContainerChanged(this);
+						SelectionContainerType previousSelectionContainer = myCurrentSelectionContainer;
+						if (previousSelectionContainer != value)
+						{
+							if (previousSelectionContainer != null)
+							{
+								previousSelectionContainer.SelectionChanged -= IntraContainerSelectionChanged;
+							}
+							myCurrentSelectionContainer = value;
+							myNotifyCallback.ActivatorSelectionContainerChanged(this);
+							value.SelectionChanged += new EventHandler(IntraContainerSelectionChanged);
+						}
 					}
+				}
+			}
+		}
+		private void IntraContainerSelectionChanged(object sender, EventArgs e)
+		{
+			if (sender == myCurrentSelectionContainer)
+			{
+				if (!CurrentSelectionContainerChanging(myCurrentSelectionContainer))
+				{
+					myNotifyCallback.ActivatorSelectionContainerChanged(this);
 				}
 			}
 		}
@@ -393,7 +417,7 @@ namespace Neumont.Tools.Modeling.Shell
 		/// <returns><see langword="false"/> to continue with selection change, <see langword="true"/> to block.</returns>
 		protected virtual bool CurrentSelectionContainerChanging(SelectionContainerType newContainer)
 		{
-			if (CurrentFrameVisibility == FrameVisibility.Covered &&
+			if (CurrentFrameVisibility != FrameVisibility.Visible &&
 				0 != (CoveredFrameContentActions & CoveredFrameContentActions.ClearContentsOnSelectionChanged))
 			{
 				ClearContents();
@@ -439,7 +463,6 @@ namespace Neumont.Tools.Modeling.Shell
 					monitor.DocumentWindowChanged -= new EventHandler<MonitorSelectionEventArgs>(DocumentWindowChanged);
 					myFrameVisibility = FrameVisibilityFlags.Hidden | (flags & FrameVisibilityFlags.PersistentFlagsMask);
 					SetCurrentDocument(null, null);
-					CurrentSelectionContainer = null;
 					break;
 			}
 		}
@@ -509,7 +532,7 @@ namespace Neumont.Tools.Modeling.Shell
 			{
 				myLastFrameMode = frameMode;
 				FrameVisibilityFlags flags = myFrameVisibility;
-				if ((flags & FrameVisibilityFlags.FrameVisibilityMask) != FrameVisibilityFlags.Visible &&
+				if ((flags & FrameVisibilityFlags.FrameVisibilityMask) == FrameVisibilityFlags.Covered &&
 					0 != (flags & FrameVisibilityFlags.HasBeenVisible))
 				{
 					OnShow((int)__FRAMESHOW.FRAMESHOW_WinShown);
@@ -650,7 +673,7 @@ namespace Neumont.Tools.Modeling.Shell
 		/// <returns><see langword="false"/> to continue with selection change, <see langword="true"/> to block.</returns>
 		protected virtual bool CurrentDocumentChanging(DocDataType docData, DocViewType docView)
 		{
-			if (CurrentFrameVisibility == FrameVisibility.Covered &&
+			if (CurrentFrameVisibility != FrameVisibility.Visible &&
 				0 != (CoveredFrameContentActions & CoveredFrameContentActions.ClearContentsOnDocumentChanged))
 			{
 				ClearContents();

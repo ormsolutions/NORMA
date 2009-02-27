@@ -43,6 +43,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		ExternalConstraint,
 		/// <summary>
+		/// Grouping facility
+		/// </summary>
+		Grouping,
+		/// <summary>
 		/// Name generation settings
 		/// </summary>
 		NameGenerator,
@@ -320,9 +324,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		SecondarySubtypeRelationship,
 		/// <summary>
+		/// Grouping element
+		/// </summary>
+		Grouping,
+		/// <summary>
+		/// A note element
+		/// </summary>
+		Note,
+		/// <summary>
+		/// A role value constraint element
+		/// </summary>
+		RoleValueConstraint,
+		/// <summary>
+		/// A ValueType ValueConstraint element
+		/// </summary>
+		ValueTypeValueConstraint,
+		/// <summary>
 		/// The last glyph
 		/// </summary>
-		Last = SecondarySubtypeRelationship,
+		Last = ValueTypeValueConstraint,
 	}
 	#endregion // Survey Glyph questions
 	#region NameGeneratorRefinement Question
@@ -347,4 +367,48 @@ namespace Neumont.Tools.ORM.ObjectModel
 		TypeRefinement,
 	}
 	#endregion // NameGeneratorRefinement Question
+	#region SurveyGroupingChildType question
+	/// <summary>
+	/// The type of child elements for a survey grouping
+	/// </summary>
+	public enum SurveyGroupingChildType
+	{
+		/// <summary>
+		/// The node corresponds to a <see cref="GroupingType"/>
+		/// </summary>
+		GroupingType,
+		/// <summary>
+		/// The node corresponds to a nested group
+		/// </summary>
+		NestedGrouping,
+		/// <summary>
+		/// The node corresponds to an directly reference element in the group
+		/// </summary>
+		ReferencedElement,
+	}
+	#endregion // SurveyGroupingChildType question
+	#region SurveyGroupingReferenceType question
+	/// <summary>
+	/// Specify if a grouped element or nested group is included,
+	/// excluded, or in a contradictory state within the group.
+	/// </summary>
+	public enum SurveyGroupingReferenceType
+	{
+		/// <summary>
+		/// The element is included
+		/// </summary>
+		Inclusion,
+		/// <summary>
+		/// The element is excluded
+		/// </summary>
+		Exclusion,
+		/// <summary>
+		/// The element is in a contradictory state, meaning that
+		/// it is both automatically included and blocked by different
+		/// <see cref="ElementGroupingType"/> instances associated with
+		/// the containing <see cref="ElementGrouping"/>
+		/// </summary>
+		Contradiction,
+	}
+	#endregion // SurveyGroupingReferenceType question
 }

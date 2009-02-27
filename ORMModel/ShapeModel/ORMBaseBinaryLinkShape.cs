@@ -41,7 +41,7 @@ using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	public partial class ORMBaseBinaryLinkShape : IReconfigureableLink, IConfigureAsChildShape
+	public partial class ORMBaseBinaryLinkShape : IReconfigureableLink, IConfigureAsChildShape, IInvalidateDisplay
 #if LINKS_ALWAYS_CONNECT
 		, IBinaryLinkAnchor
 		#endif //LINKS_ALWAYS_CONNECT
@@ -136,27 +136,37 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 
 		#endregion Customize appearance
-		#region Auto-invalidate tracking
+		#region Auto-invalidate tracking, IInvalidateRequired implementation
 		/// <summary>
+		/// Implements <see cref="IInvalidateDisplay.InvalidateRequired()"/>
 		/// Call to automatically invalidate the shape during events.
 		/// Invalidates during the original event sequence as well as undo and redo.
 		/// </summary>
-		public void InvalidateRequired()
+		protected void InvalidateRequired()
 		{
 			InvalidateRequired(false);
 		}
+		void IInvalidateDisplay.InvalidateRequired()
+		{
+			InvalidateRequired();
+		}
 		/// <summary>
+		/// Implements <see cref="IInvalidateDisplay.InvalidateRequired(bool)"/>
 		/// Call to automatically invalidate the shape during events.
 		/// Invalidates during the original event sequence as well as undo and redo.
 		/// </summary>
 		/// <param name="refreshBitmap">Value to forward to the Invalidate method's refreshBitmap property during event playback</param>
-		public void InvalidateRequired(bool refreshBitmap)
+		protected void InvalidateRequired(bool refreshBitmap)
 		{
 			long? newValue = ORMShapeDomainModel.GetNewUpdateCounterValue(this, refreshBitmap);
 			if (newValue.HasValue)
 			{
 				UpdateCounter = newValue.Value;
 			}
+		}
+		void IInvalidateDisplay.InvalidateRequired(bool refreshBitmap)
+		{
+			InvalidateRequired(refreshBitmap);
 		}
 		/// <summary>
 		/// Called during event playback before an <see cref="ShapeElement.Invalidate()"/> call triggered
@@ -195,7 +205,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				shape.Invalidate(Math.Abs(unchecked((long)e.OldValue - (long)e.NewValue)) != 1L);
 			}
 		}
-		#endregion // Auto-invalidate tracking
+		#endregion // Auto-invalidate tracking, IInvalidateRequired implementation
 		#region DuplicateNameError Activation Helper
 		/// <summary>
 		/// Activate the Name property in the Properties Window

@@ -167,6 +167,14 @@
     <value xml:space="preserve">Delete Fact Type &amp;Shape</value>
     <comment xml:space="preserve">This text appears in the edit menu when fact types are selected in the diagram.</comment>
   </data>
+  <data name="Command.DeleteFromGroup.Text">
+    <value xml:space="preserve">&amp;Delete From Group</value>
+    <comment xml:space="preserve">This text appears in the edit menu when an element reference in a group is selected.</comment>
+  </data>
+  <data name="Command.DeleteGroup.Text">
+    <value xml:space="preserve">&amp;Delete Group</value>
+    <comment xml:space="preserve">This text appears in the edit menu when a group element is selected.</comment>
+  </data>
   <data name="Command.DeleteModelNote.Text">
     <value xml:space="preserve">&amp;Delete Note</value>
     <comment xml:space="preserve">This text appears in the edit menu when model notes are selected in the diagram.</comment>
@@ -684,11 +692,11 @@
     <comment xml:space="preserve">The display name for the data type property.</comment>
   </data>
   <data name="OptionsPage.Property.DisplayDefinitionTooltips.Description">
-    <value xml:space="preserve">Show the current Definition text in a tooltip for ObjectType and FactType shapes with a populated Definition field.</value>
+    <value xml:space="preserve">Show the current informal description text in a tooltip for ObjectType and FactType shapes with a populated InformalDescription property.</value>
     <comment xml:space="preserve">The display definition tooltips property description.</comment>
   </data>
   <data name="OptionsPage.Property.DisplayDefinitionTooltips.DisplayName">
-    <value xml:space="preserve">Show Definition Tooltips</value>
+    <value xml:space="preserve">Show Description Tooltips</value>
     <comment xml:space="preserve">The display name for the display definition tooltips property.</comment>
   </data>
   <data name="OptionsPage.Property.EntityRelationshipBinaryMultiplicityDisplay.Description">
@@ -700,7 +708,7 @@
     <comment xml:space="preserve">The display name for the entity relationship binary multiplicity display property</comment>
   </data>
   <data name="OptionsPage.Property.ExternalConstraintRoleBarDisplay.Description">
-    <value xml:space="preserve">The style used to draw external constraint role bars. Role bars appear at the end of lines attaching an external constraint to roles in a fact.</value>
+    <value xml:space="preserve">The style used to draw external constraint role bars. Role bars appear at the end of lines attaching an external constraints to roles in a fact type.</value>
     <comment xml:space="preserve">Description of the external constraint role bar display option.</comment>
   </data>
   <data name="OptionsPage.Property.ExternalConstraintRoleBarDisplay.DisplayName">
@@ -716,19 +724,19 @@
     <comment xml:space="preserve">The display name for the mandatory dot property.</comment>
   </data>
   <data name="OptionsPage.Property.ObjectifiedShape.Description">
-    <value xml:space="preserve">The shape for objectified fact types. This will be the default shape for objectified fact types when creating new ORM models.</value>
+    <value xml:space="preserve">Specify the outline shape for an objectified FactType.</value>
     <comment xml:space="preserve">The description for the objectified fact shape property</comment>
   </data>
   <data name="OptionsPage.Property.ObjectifiedShape.DisplayName">
-    <value xml:space="preserve">Objectified Fact Shape</value>
+    <value xml:space="preserve">Objectified FactType Outline</value>
     <comment xml:space="preserve">The display name for the objectified fact shape property</comment>
   </data>
   <data name="OptionsPage.Property.ObjectTypeShape.Description">
-    <value xml:space="preserve">The shape for object types. This will be the default shape when creating new ORM models.</value>
+    <value xml:space="preserve">Specify the outline shape for an ObjectType.</value>
     <comment xml:space="preserve">The object type shape description</comment>
   </data>
   <data name="OptionsPage.Property.ObjectTypeShape.DisplayName">
-    <value xml:space="preserve">Object Type Shape</value>
+    <value xml:space="preserve">ObjectType Outline</value>
     <comment xml:space="preserve">The human readable name for the object shape property</comment>
   </data>
   <data name="OptionsPage.Property.PreferredInternalUniquenessConstraintDisplay.Description">
@@ -748,7 +756,7 @@
     <comment xml:space="preserve">The display name for the Reading Direction Indicator Display option.</comment>
   </data>
   <data name="OptionsPage.Property.RoleNameDisplay.Description">
-    <value xml:space="preserve">Object Types can have Role Names associated with them. This option set the default value of the DisplayRoleNames property on a Fact to On or Off.</value>
+    <value xml:space="preserve">The default value of the DisplayRoleNames property on a FactType shape.</value>
     <comment xml:space="preserve">The description for the Display Role Names option.</comment>
   </data>
   <data name="OptionsPage.Property.RoleNameDisplay.DisplayName">
@@ -778,6 +786,58 @@
   <data name="ORMBaseBinaryLinkShape.Accessible.ValueFormat">
     <value xml:space="preserve">{{{0}, {1}}}</value>
     <comment xml:space="preserve">Return the default format string for any link shape. Replacement field {0} is the accessible name for the from object, field {1} is the accessible name for the to object.</comment>
+  </data>
+  <data name="ORMDiagramDynamicColor.Background">
+    <value xml:space="preserve">Background</value>
+    <comment xml:space="preserve">The display name for the dynamic background color.</comment>
+  </data>
+  <data name="ORMDiagramDynamicColor.Background.Description">
+    <value xml:space="preserve">The background shape color of all grouped elements.</value>
+    <comment xml:space="preserve">The description of the dynamic background color.</comment>
+  </data>
+  <data name="ORMDiagramDynamicColor.Category">
+    <value xml:space="preserve">Custom Colors</value>
+    <comment xml:space="preserve">The display name for the category used for display colors.</comment>
+  </data>
+  <data name="ORMDiagramDynamicColor.Constraint">
+    <value xml:space="preserve">Constraint</value>
+    <comment xml:space="preserve">The display name for the dynamic constraint color.</comment>
+  </data>
+  <data name="ORMDiagramDynamicColor.Constraint.Description">
+    <value xml:space="preserve">The constraint display color of all grouped constraints with default (alethic) modality.</value>
+    <comment xml:space="preserve">The description of the dynamic constraint color.</comment>
+  </data>
+  <data name="ORMDiagramDynamicColor.DeonticConstraint">
+    <value xml:space="preserve">DeonticConstraint</value>
+    <comment xml:space="preserve">The display name for the dynamic deontic constraint color.</comment>
+  </data>
+  <data name="ORMDiagramDynamicColor.DeonticConstraint.Description">
+    <value xml:space="preserve">The constraint display color of all grouped constraints with deontic modality</value>
+    <comment xml:space="preserve">The description of the dynamic deontic constraint color.</comment>
+  </data>
+  <data name="ORMDiagramDynamicColor.ForegroundGraphics">
+    <value xml:space="preserve">Foreground</value>
+    <comment xml:space="preserve">The display name for the dynamic foreground graphics color.</comment>
+  </data>
+  <data name="ORMDiagramDynamicColor.ForegroundGraphics.Description">
+    <value xml:space="preserve">The display color for foreground graphics of grouped elements.</value>
+    <comment xml:space="preserve">The description of the dynamic foreground graphics color.</comment>
+  </data>
+  <data name="ORMDiagramDynamicColor.ForegroundText">
+    <value xml:space="preserve">Text</value>
+    <comment xml:space="preserve">The display name for the dynamic foreground text color.</comment>
+  </data>
+  <data name="ORMDiagramDynamicColor.ForegroundText.Description">
+    <value xml:space="preserve">The display color for foreground text of grouped elements.</value>
+    <comment xml:space="preserve">The description of the dynamic foreground text color.</comment>
+  </data>
+  <data name="ORMDiagramDynamicColor.Outline">
+    <value xml:space="preserve">Outline</value>
+    <comment xml:space="preserve">The display name for the dynamic outline color.</comment>
+  </data>
+  <data name="ORMDiagramDynamicColor.Outline.Description">
+    <value xml:space="preserve">The display color for shape outlines of grouped elements.</value>
+    <comment xml:space="preserve">The description of the dynamic outline color.</comment>
   </data>
   <data name="ORMModelBrowser.WindowTitle">
     <value xml:space="preserve">ORM Model Browser</value>

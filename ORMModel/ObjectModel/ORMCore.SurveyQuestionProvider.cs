@@ -1,24 +1,36 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using Neumont.Tools.Modeling.Shell;
 using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 namespace Neumont.Tools.ORM.ObjectModel
 {
-	partial class ORMCoreDomainModel : ISurveyQuestionProvider
+	partial class ORMCoreDomainModel : ISurveyQuestionProvider<Microsoft.VisualStudio.Modeling.Store>
 	{
-		private static readonly ISurveyQuestionTypeInfo[] mySurveyQuestionTypeInfo1 = new ISurveyQuestionTypeInfo[]{
+		private ProvideSurveyQuestionForSurveyGroupingTypeGlyph myDynamicSurveyGroupingTypeGlyphQuestionInstance;
+		private static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[] mySurveyQuestionTypeInfo1 = new ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[]{
 			ProvideSurveyQuestionForSurveyElementType.Instance,
 			ProvideSurveyQuestionForSurveyErrorState.Instance,
 			ProvideSurveyQuestionForSurveyQuestionGlyph.Instance};
-		private static readonly ISurveyQuestionTypeInfo[] mySurveyQuestionTypeInfo2 = new ISurveyQuestionTypeInfo[]{
+		private static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[] mySurveyQuestionTypeInfo2 = new ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[]{
 			ProvideSurveyQuestionForSurveyFactTypeDetailType.Instance,
 			ProvideSurveyQuestionForSurveyErrorState.Instance,
 			ProvideSurveyQuestionForSurveyQuestionGlyph.Instance,
 			ProvideSurveyQuestionForSurveyRoleType.Instance};
-		private static readonly ISurveyQuestionTypeInfo[] mySurveyQuestionTypeInfo3 = new ISurveyQuestionTypeInfo[]{
+		private static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[] mySurveyQuestionTypeInfo3 = new ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[]{
 			ProvideSurveyQuestionForSurveyNameGeneratorRefinementType.Instance};
-		/// <summary>Implements <see cref="ISurveyQuestionProvider.GetSurveyQuestions"/></summary>
-		protected static IEnumerable<ISurveyQuestionTypeInfo> GetSurveyQuestions(object expansionKey)
+		private ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[] mySurveyQuestionTypeInfo4;
+		private ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[] EnsureSurveyQuestionTypeInfo4(Microsoft.VisualStudio.Modeling.Store surveyContext)
+		{
+			return this.mySurveyQuestionTypeInfo4 ?? (this.mySurveyQuestionTypeInfo4 = new ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[]{
+				ProvideSurveyQuestionForSurveyGroupingChildType.Instance,
+				this.myDynamicSurveyGroupingTypeGlyphQuestionInstance ?? (this.myDynamicSurveyGroupingTypeGlyphQuestionInstance = new ProvideSurveyQuestionForSurveyGroupingTypeGlyph(surveyContext)),
+				ProvideSurveyQuestionForSurveyGroupingReferenceType.Instance});
+		}
+		private static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[] mySurveyQuestionTypeInfo5 = new ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[]{
+			ProvideSurveyQuestionForSurveyQuestionGlyph.Instance};
+		/// <summary>Implements <see cref="ISurveyQuestionProvider{Object}.GetSurveyQuestions"/></summary>
+		protected IEnumerable<ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>> GetSurveyQuestions(Microsoft.VisualStudio.Modeling.Store surveyContext, object expansionKey)
 		{
 			if (expansionKey == null)
 			{
@@ -32,43 +44,49 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return mySurveyQuestionTypeInfo3;
 			}
+			else if (expansionKey == ElementGrouping.SurveyExpansionKey)
+			{
+				return this.EnsureSurveyQuestionTypeInfo4(surveyContext);
+			}
+			else if (expansionKey == ORMCoreDomainModel.SurveyFloatingExpansionKey)
+			{
+				return mySurveyQuestionTypeInfo5;
+			}
 			return null;
 		}
-		IEnumerable<ISurveyQuestionTypeInfo> ISurveyQuestionProvider.GetSurveyQuestions(object expansionKey)
+		IEnumerable<ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>> ISurveyQuestionProvider<Microsoft.VisualStudio.Modeling.Store>.GetSurveyQuestions(Microsoft.VisualStudio.Modeling.Store surveyContext, object expansionKey)
 		{
-			return GetSurveyQuestions(expansionKey);
+			return this.GetSurveyQuestions(surveyContext, expansionKey);
 		}
-		/// <summary>Implements <see cref="ISurveyQuestionProvider.SurveyQuestionImageList"/></summary>
-		protected ImageList SurveyQuestionImageList
+		/// <summary>Implements <see cref="ISurveyQuestionProvider{Object}.GetSurveyQuestionImageLists"/></summary>
+		protected ImageList[] GetSurveyQuestionImageLists(Microsoft.VisualStudio.Modeling.Store surveyContext)
 		{
-			get
-			{
-				return ResourceStrings.SurveyTreeImageList;
-			}
+			// Note that this relies heavily on the current structure of the generated code
+			this.EnsureSurveyQuestionTypeInfo4(surveyContext);
+			return new ImageList[]{
+				ResourceStrings.SurveyTreeImageList,
+				((SurveyGroupingTypeGlyph)this.myDynamicSurveyGroupingTypeGlyphQuestionInstance.DynamicQuestionValues).GroupingTypeImages};
 		}
-		ImageList ISurveyQuestionProvider.SurveyQuestionImageList
+		ImageList[] ISurveyQuestionProvider<Microsoft.VisualStudio.Modeling.Store>.GetSurveyQuestionImageLists(Microsoft.VisualStudio.Modeling.Store surveyContext)
 		{
-			get
-			{
-				return this.SurveyQuestionImageList;
-			}
+			return this.GetSurveyQuestionImageLists(surveyContext);
 		}
-		/// <summary>Implements <see cref="ISurveyQuestionProvider.GetErrorDisplayTypes"/></summary>
+		/// <summary>Implements <see cref="ISurveyQuestionProvider{Object}.GetErrorDisplayTypes"/></summary>
 		protected static IEnumerable<Type> GetErrorDisplayTypes()
 		{
 			return new Type[]{
 				typeof(SurveyErrorState)};
 		}
-		IEnumerable<Type> ISurveyQuestionProvider.GetErrorDisplayTypes()
+		IEnumerable<Type> ISurveyQuestionProvider<Microsoft.VisualStudio.Modeling.Store>.GetErrorDisplayTypes()
 		{
 			return GetErrorDisplayTypes();
 		}
-		private sealed class ProvideSurveyQuestionForSurveyElementType : ISurveyQuestionTypeInfo
+		private sealed class ProvideSurveyQuestionForSurveyElementType : ISurveyQuestionTypeInfo, ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>
 		{
 			private ProvideSurveyQuestionForSurveyElementType()
 			{
 			}
-			public static readonly ISurveyQuestionTypeInfo Instance = new ProvideSurveyQuestionForSurveyElementType();
+			public static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store> Instance = new ProvideSurveyQuestionForSurveyElementType();
 			public Type QuestionType
 			{
 				get
@@ -96,6 +114,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return -1;
 			}
+			public IFreeFormCommandProvider<Microsoft.VisualStudio.Modeling.Store> GetFreeFormCommands(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				switch ((SurveyElementType)answer)
+				{
+					case SurveyElementType.Grouping:
+						return FreeFormElementGroupingCommands;
+				}
+				return null;
+			}
+			public bool ShowEmptyGroup(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				switch ((SurveyElementType)answer)
+				{
+					case SurveyElementType.Grouping:
+						return true;
+					default:
+						return false;
+				}
+			}
 			public SurveyQuestionDisplayData GetDisplayData(int answer)
 			{
 				return SurveyQuestionDisplayData.Default;
@@ -104,7 +141,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				get
 				{
-					return SurveyQuestionUISupport.Grouping | SurveyQuestionUISupport.Sorting;
+					return SurveyQuestionUISupport.Grouping | SurveyQuestionUISupport.Sorting | SurveyQuestionUISupport.EmptyGroups;
 				}
 			}
 			public static int QuestionPriority
@@ -122,12 +159,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		private sealed class ProvideSurveyQuestionForSurveyErrorState : ISurveyQuestionTypeInfo
+		private sealed class ProvideSurveyQuestionForSurveyErrorState : ISurveyQuestionTypeInfo, ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>
 		{
 			private ProvideSurveyQuestionForSurveyErrorState()
 			{
 			}
-			public static readonly ISurveyQuestionTypeInfo Instance = new ProvideSurveyQuestionForSurveyErrorState();
+			public static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store> Instance = new ProvideSurveyQuestionForSurveyErrorState();
 			public Type QuestionType
 			{
 				get
@@ -165,6 +202,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				return retVal;
 			}
+			public IFreeFormCommandProvider<Microsoft.VisualStudio.Modeling.Store> GetFreeFormCommands(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return null;
+			}
+			public bool ShowEmptyGroup(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return false;
+			}
 			public SurveyQuestionDisplayData GetDisplayData(int answer)
 			{
 				return SurveyQuestionDisplayData.Default;
@@ -191,12 +236,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		private sealed class ProvideSurveyQuestionForSurveyQuestionGlyph : ISurveyQuestionTypeInfo
+		private sealed class ProvideSurveyQuestionForSurveyQuestionGlyph : ISurveyQuestionTypeInfo, ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>
 		{
 			private ProvideSurveyQuestionForSurveyQuestionGlyph()
 			{
 			}
-			public static readonly ISurveyQuestionTypeInfo Instance = new ProvideSurveyQuestionForSurveyQuestionGlyph();
+			public static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store> Instance = new ProvideSurveyQuestionForSurveyQuestionGlyph();
 			public Type QuestionType
 			{
 				get
@@ -224,6 +269,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return answer;
 			}
+			public IFreeFormCommandProvider<Microsoft.VisualStudio.Modeling.Store> GetFreeFormCommands(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return null;
+			}
+			public bool ShowEmptyGroup(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return false;
+			}
 			public SurveyQuestionDisplayData GetDisplayData(int answer)
 			{
 				return SurveyQuestionDisplayData.Default;
@@ -250,12 +303,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		private sealed class ProvideSurveyQuestionForSurveyFactTypeDetailType : ISurveyQuestionTypeInfo
+		private sealed class ProvideSurveyQuestionForSurveyFactTypeDetailType : ISurveyQuestionTypeInfo, ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>
 		{
 			private ProvideSurveyQuestionForSurveyFactTypeDetailType()
 			{
 			}
-			public static readonly ISurveyQuestionTypeInfo Instance = new ProvideSurveyQuestionForSurveyFactTypeDetailType();
+			public static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store> Instance = new ProvideSurveyQuestionForSurveyFactTypeDetailType();
 			public Type QuestionType
 			{
 				get
@@ -283,6 +336,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return -1;
 			}
+			public IFreeFormCommandProvider<Microsoft.VisualStudio.Modeling.Store> GetFreeFormCommands(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return null;
+			}
+			public bool ShowEmptyGroup(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return false;
+			}
 			public SurveyQuestionDisplayData GetDisplayData(int answer)
 			{
 				return SurveyQuestionDisplayData.Default;
@@ -309,12 +370,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		private sealed class ProvideSurveyQuestionForSurveyRoleType : ISurveyQuestionTypeInfo
+		private sealed class ProvideSurveyQuestionForSurveyRoleType : ISurveyQuestionTypeInfo, ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>
 		{
 			private ProvideSurveyQuestionForSurveyRoleType()
 			{
 			}
-			public static readonly ISurveyQuestionTypeInfo Instance = new ProvideSurveyQuestionForSurveyRoleType();
+			public static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store> Instance = new ProvideSurveyQuestionForSurveyRoleType();
 			public Type QuestionType
 			{
 				get
@@ -340,20 +401,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			public int MapAnswerToImageIndex(int answer)
 			{
-				int retVal;
-				switch ((SurveyRoleType)answer)
-				{
-					case SurveyRoleType.Subtype:
-						retVal = (int)SurveyQuestionGlyph.Last + 1 + 1;
-						break;
-					case SurveyRoleType.Supertype:
-						retVal = (int)SurveyQuestionGlyph.Last + 1 + 2;
-						break;
-					default:
-						retVal = -1;
-						break;
-				}
-				return retVal;
+				return (int)SurveyQuestionGlyph.Last + 1 + 1 + answer;
+			}
+			public IFreeFormCommandProvider<Microsoft.VisualStudio.Modeling.Store> GetFreeFormCommands(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return null;
+			}
+			public bool ShowEmptyGroup(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return false;
 			}
 			public SurveyQuestionDisplayData GetDisplayData(int answer)
 			{
@@ -381,12 +437,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		private sealed class ProvideSurveyQuestionForSurveyNameGeneratorRefinementType : ISurveyQuestionTypeInfo
+		private sealed class ProvideSurveyQuestionForSurveyNameGeneratorRefinementType : ISurveyQuestionTypeInfo, ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>
 		{
 			private ProvideSurveyQuestionForSurveyNameGeneratorRefinementType()
 			{
 			}
-			public static readonly ISurveyQuestionTypeInfo Instance = new ProvideSurveyQuestionForSurveyNameGeneratorRefinementType();
+			public static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store> Instance = new ProvideSurveyQuestionForSurveyNameGeneratorRefinementType();
 			public Type QuestionType
 			{
 				get
@@ -414,6 +470,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return -1;
 			}
+			public IFreeFormCommandProvider<Microsoft.VisualStudio.Modeling.Store> GetFreeFormCommands(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return null;
+			}
+			public bool ShowEmptyGroup(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return false;
+			}
 			public SurveyQuestionDisplayData GetDisplayData(int answer)
 			{
 				return SurveyQuestionDisplayData.Default;
@@ -423,6 +487,227 @@ namespace Neumont.Tools.ORM.ObjectModel
 				get
 				{
 					return SurveyQuestionUISupport.Sorting;
+				}
+			}
+			public static int QuestionPriority
+			{
+				get
+				{
+					return 0;
+				}
+			}
+			int ISurveyQuestionTypeInfo.QuestionPriority
+			{
+				get
+				{
+					return QuestionPriority;
+				}
+			}
+		}
+		private sealed class ProvideSurveyQuestionForSurveyGroupingChildType : ISurveyQuestionTypeInfo, ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>
+		{
+			private ProvideSurveyQuestionForSurveyGroupingChildType()
+			{
+			}
+			public static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store> Instance = new ProvideSurveyQuestionForSurveyGroupingChildType();
+			public Type QuestionType
+			{
+				get
+				{
+					return typeof(SurveyGroupingChildType);
+				}
+			}
+			public ISurveyDynamicValues DynamicQuestionValues
+			{
+				get
+				{
+					return null;
+				}
+			}
+			public int AskQuestion(object data, object contextElement)
+			{
+				IAnswerSurveyQuestion<SurveyGroupingChildType> typedData = data as IAnswerSurveyQuestion<SurveyGroupingChildType>;
+				if (typedData != null)
+				{
+					return typedData.AskQuestion(contextElement);
+				}
+				return -1;
+			}
+			public int MapAnswerToImageIndex(int answer)
+			{
+				return -1;
+			}
+			public IFreeFormCommandProvider<Microsoft.VisualStudio.Modeling.Store> GetFreeFormCommands(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return null;
+			}
+			public bool ShowEmptyGroup(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return false;
+			}
+			public SurveyQuestionDisplayData GetDisplayData(int answer)
+			{
+				return SurveyQuestionDisplayData.Default;
+			}
+			public SurveyQuestionUISupport UISupport
+			{
+				get
+				{
+					return SurveyQuestionUISupport.Sorting;
+				}
+			}
+			public static int QuestionPriority
+			{
+				get
+				{
+					return 0;
+				}
+			}
+			int ISurveyQuestionTypeInfo.QuestionPriority
+			{
+				get
+				{
+					return QuestionPriority;
+				}
+			}
+		}
+		private sealed class ProvideSurveyQuestionForSurveyGroupingTypeGlyph : ISurveyQuestionTypeInfo, ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>
+		{
+			private SurveyGroupingTypeGlyph myDynamicValues;
+			public ProvideSurveyQuestionForSurveyGroupingTypeGlyph(Microsoft.VisualStudio.Modeling.Store surveyContext)
+			{
+				this.myDynamicValues = new SurveyGroupingTypeGlyph(surveyContext);
+			}
+			public Type QuestionType
+			{
+				get
+				{
+					return typeof(SurveyGroupingTypeGlyph);
+				}
+			}
+			public ISurveyDynamicValues DynamicQuestionValues
+			{
+				get
+				{
+					return this.myDynamicValues;
+				}
+			}
+			public int AskQuestion(object data, object contextElement)
+			{
+				IAnswerSurveyDynamicQuestion<SurveyGroupingTypeGlyph> typedData = data as IAnswerSurveyDynamicQuestion<SurveyGroupingTypeGlyph>;
+				if (typedData != null)
+				{
+					return typedData.AskQuestion(this.myDynamicValues, contextElement);
+				}
+				return -1;
+			}
+			public int MapAnswerToImageIndex(int answer)
+			{
+				return (int)SurveyQuestionGlyph.Last + 1 + 1 + (int)SurveyRoleType.Supertype + 1 + 2 + answer;
+			}
+			public IFreeFormCommandProvider<Microsoft.VisualStudio.Modeling.Store> GetFreeFormCommands(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return null;
+			}
+			public bool ShowEmptyGroup(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return false;
+			}
+			public SurveyQuestionDisplayData GetDisplayData(int answer)
+			{
+				return SurveyQuestionDisplayData.Default;
+			}
+			public SurveyQuestionUISupport UISupport
+			{
+				get
+				{
+					return SurveyQuestionUISupport.Glyph;
+				}
+			}
+			public static int QuestionPriority
+			{
+				get
+				{
+					return 0;
+				}
+			}
+			int ISurveyQuestionTypeInfo.QuestionPriority
+			{
+				get
+				{
+					return QuestionPriority;
+				}
+			}
+		}
+		private sealed class ProvideSurveyQuestionForSurveyGroupingReferenceType : ISurveyQuestionTypeInfo, ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>
+		{
+			private ProvideSurveyQuestionForSurveyGroupingReferenceType()
+			{
+			}
+			public static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store> Instance = new ProvideSurveyQuestionForSurveyGroupingReferenceType();
+			public Type QuestionType
+			{
+				get
+				{
+					return typeof(SurveyGroupingReferenceType);
+				}
+			}
+			public ISurveyDynamicValues DynamicQuestionValues
+			{
+				get
+				{
+					return null;
+				}
+			}
+			public int AskQuestion(object data, object contextElement)
+			{
+				IAnswerSurveyQuestion<SurveyGroupingReferenceType> typedData = data as IAnswerSurveyQuestion<SurveyGroupingReferenceType>;
+				if (typedData != null)
+				{
+					return typedData.AskQuestion(contextElement);
+				}
+				return -1;
+			}
+			public int MapAnswerToImageIndex(int answer)
+			{
+				int retVal;
+				switch ((SurveyGroupingReferenceType)answer)
+				{
+					case SurveyGroupingReferenceType.Exclusion:
+						retVal = (int)SurveyQuestionGlyph.Last + 1 + 1 + (int)SurveyRoleType.Supertype + 1 + 0;
+						break;
+					case SurveyGroupingReferenceType.Contradiction:
+						retVal = (int)SurveyQuestionGlyph.Last + 1 + 1 + (int)SurveyRoleType.Supertype + 1 + 1;
+						break;
+					default:
+						retVal = -1;
+						break;
+				}
+				return retVal;
+			}
+			public IFreeFormCommandProvider<Microsoft.VisualStudio.Modeling.Store> GetFreeFormCommands(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return null;
+			}
+			public bool ShowEmptyGroup(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return false;
+			}
+			public SurveyQuestionDisplayData GetDisplayData(int answer)
+			{
+				switch ((SurveyGroupingReferenceType)answer)
+				{
+					case SurveyGroupingReferenceType.Exclusion:
+					case SurveyGroupingReferenceType.Contradiction:
+						return new SurveyQuestionDisplayData(false, true);
+				}
+				return SurveyQuestionDisplayData.Default;
+			}
+			public SurveyQuestionUISupport UISupport
+			{
+				get
+				{
+					return SurveyQuestionUISupport.Overlay | SurveyQuestionUISupport.DisplayData;
 				}
 			}
 			public static int QuestionPriority

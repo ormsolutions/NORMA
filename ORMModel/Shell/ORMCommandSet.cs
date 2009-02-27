@@ -82,8 +82,8 @@ namespace Neumont.Tools.ORM.Shell
 						ORMDesignerCommandIds.ViewReferenceModeEditor)
 						,new DynamicStatusMenuCommand(
 						new EventHandler(OnStatusStandardWindow),
-						new EventHandler(OnMenuInformalDefinitionWindow),
-						ORMDesignerCommandIds.ViewInformalDefinitionWindow)
+						new EventHandler(OnMenuInformalDescriptionWindow),
+						ORMDesignerCommandIds.ViewInformalDescriptionWindow)
 						,new DynamicStatusMenuCommand(
 						new EventHandler(OnStatusStandardWindow),
 						new EventHandler(OnMenuNotesWindow),
@@ -146,9 +146,9 @@ namespace Neumont.Tools.ORM.Shell
 						new EventHandler(OnMenuMoveRoleSequenceDown),
 						ORMDesignerCommandIds.ViewMoveRoleSequenceDown)
 						,new DynamicStatusMenuCommand(
-						new EventHandler(OnStatusEditExternalConstraint),
-						new EventHandler(OnMenuEditExternalConstraint),
-						ORMDesignerCommandIds.ViewEditExternalConstraint)
+						new EventHandler(OnStatusEditRoleSequenceConstraint),
+						new EventHandler(OnMenuEditRoleSequenceConstraint),
+						ORMDesignerCommandIds.ViewEditRoleSequenceConstraint)
 
 						// Verbalization Commands
 						,new DynamicStatusMenuCommand(
@@ -235,6 +235,10 @@ namespace Neumont.Tools.ORM.Shell
 						new EventHandler(OnStatusExclusiveOrDecoupler), 
 						new EventHandler(OnMenuExclusiveOrDecoupler),
 						ORMDesignerCommandIds.ExclusiveOrDecoupler)
+						,new DynamicFreeFormCommand(
+						new EventHandler(OnStatusFreeFormCommand),
+						new EventHandler(OnMenuFreeFormCommand),
+						ORMDesignerCommandIds.FreeFormCommandList)
 						,new DynamicReportGeneratorCommand(
 						new EventHandler(OnStatusReportGenerator),
 						new EventHandler(OnMenuReportGenerator),
@@ -284,6 +288,18 @@ namespace Neumont.Tools.ORM.Shell
 						new EventHandler(OnStatusSelectInDocumentWindow),
 						new EventHandler(OnMenuSelectInDocumentWindow),
 						ORMDesignerCommandIds.SelectInDocumentWindow)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusIncludeInNewGroup),
+						new EventHandler(OnMenuIncludeInNewGroup),
+						ORMDesignerCommandIds.IncludeInNewGroup)
+						,new DynamicIncludeInGroupCommand(
+						new EventHandler(OnStatusIncludeInGroupList),
+						new EventHandler(OnMenuIncludeInGroupList),
+						ORMDesignerCommandIds.IncludeInGroupList)
+						,new DynamicDeleteFromGroupCommand(
+						new EventHandler(OnStatusDeleteFromGroupList),
+						new EventHandler(OnMenuDeleteFromGroupList),
+						ORMDesignerCommandIds.DeleteFromGroupList)
 						,new MenuCommand(
 						new EventHandler(OnMenuNewWindow),
 						new CommandID(VSConstants.GUID_VSStandardCommandSet97, (int)VSConstants.VSStd97CmdID.NewWindow))
@@ -799,6 +815,43 @@ namespace Neumont.Tools.ORM.Shell
 					designerView.CommandManager.OnMenuExclusiveOrDecoupler();
 				}
 			}
+			private void OnStatusFreeFormCommand(object sender, EventArgs e)
+			{
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.FreeFormCommandList);
+				((OleMenuCommand)sender).MatchedCommandId = 0;
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			private void OnMenuFreeFormCommand(object sender, EventArgs e)
+			{
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
+				{
+					// Defer to the doc view
+					designerView.CommandManager.OnMenuFreeFormCommand(((OleMenuCommand)sender).MatchedCommandId);
+				}
+			}
+			private sealed class DynamicFreeFormCommand : DynamicStatusMenuCommand
+			{
+				public DynamicFreeFormCommand(EventHandler statusHandler, EventHandler invokeHandler, CommandID id)
+					: base(statusHandler, invokeHandler, id)
+				{
+				}
+				public sealed override bool DynamicItemMatch(int cmdId)
+				{
+					int baseCmdId = CommandID.ID;
+					int testId = cmdId - baseCmdId;
+
+
+					if (testId >= 0 && testId < ORMDesignerCommandIds.FreeFormCommandListLength)
+					{
+						MatchedCommandId = testId;
+						return true;
+					}
+					return false;
+				}
+			}
 			private void OnStatusReportGenerator(object sender, EventArgs e)
 			{
 				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.ReportGeneratorList);
@@ -1103,6 +1156,108 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 			#region External Constraint editing menu options
+			#region Grouping Commands
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			protected void OnStatusIncludeInNewGroup(object sender, EventArgs e)
+			{
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.IncludeInNewGroup);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuIncludeInNewGroup(object sender, EventArgs e)
+			{
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
+				{
+					designerView.CommandManager.OnMenuIncludeInNewGroup();
+				}
+			}
+			private sealed class DynamicIncludeInGroupCommand : DynamicStatusMenuCommand
+			{
+				public DynamicIncludeInGroupCommand(EventHandler statusHandler, EventHandler invokeHandler, CommandID id)
+					: base(statusHandler, invokeHandler, id)
+				{
+					//Declare class variable with object containing diagram list
+				}
+				public sealed override bool DynamicItemMatch(int cmdId)
+				{
+					int baseCmdId = CommandID.ID;
+					int testId = cmdId - baseCmdId;
+
+
+					if (testId >= 0 && testId < ORMDesignerCommandIds.IncludeInGroupListLength)
+					{
+						MatchedCommandId = testId;
+						return true;
+					}
+					return false;
+				}
+			}
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			protected void OnStatusIncludeInGroupList(object sender, EventArgs e)
+			{
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.IncludeInGroupList);
+				((OleMenuCommand)sender).MatchedCommandId = 0;
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuIncludeInGroupList(object sender, EventArgs e)
+			{
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
+				{
+					// Defer to the doc view
+					designerView.CommandManager.OnMenuIncludeInGroupList(((OleMenuCommand)sender).MatchedCommandId);
+				}
+			}
+			private sealed class DynamicDeleteFromGroupCommand : DynamicStatusMenuCommand
+			{
+				public DynamicDeleteFromGroupCommand(EventHandler statusHandler, EventHandler invokeHandler, CommandID id)
+					: base(statusHandler, invokeHandler, id)
+				{
+					//Declare class variable with object containing diagram list
+				}
+				public sealed override bool DynamicItemMatch(int cmdId)
+				{
+					int baseCmdId = CommandID.ID;
+					int testId = cmdId - baseCmdId;
+
+
+					if (testId >= 0 && testId < ORMDesignerCommandIds.DeleteFromGroupListLength)
+					{
+						MatchedCommandId = testId;
+						return true;
+					}
+					return false;
+				}
+			}
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			protected void OnStatusDeleteFromGroupList(object sender, EventArgs e)
+			{
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DeleteFromGroupList);
+				((OleMenuCommand)sender).MatchedCommandId = 0;
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuDeleteFromGroupList(object sender, EventArgs e)
+			{
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
+				{
+					// Defer to the doc view
+					designerView.CommandManager.OnMenuDeleteFromGroupList(((OleMenuCommand)sender).MatchedCommandId);
+				}
+			}
+			#endregion // Grouping Commands
 			#region Status queries
 			/// <summary>
 			/// Menu handler
@@ -1114,9 +1269,9 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Menu handler
 			/// </summary>
-			protected void OnMenuInformalDefinitionWindow(object sender, EventArgs e)
+			protected void OnMenuInformalDescriptionWindow(object sender, EventArgs e)
 			{
-				ORMDefinitionToolWindow definitionWindow = ORMDesignerPackage.InformalDefinitionWindow;
+				ORMDescriptionToolWindow definitionWindow = ORMDesignerPackage.InformalDescriptionWindow;
 				definitionWindow.Show();
 			}
 			/// <summary>
@@ -1233,9 +1388,9 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Status callback
 			/// </summary>
-			protected void OnStatusEditExternalConstraint(object sender, EventArgs e)
+			protected void OnStatusEditRoleSequenceConstraint(object sender, EventArgs e)
 			{
-				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.EditExternalConstraint);
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.EditRoleSequenceConstraint);
 			}
 			/// <summary>
 			/// Status callback
@@ -1270,12 +1425,12 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Menu handler
 			/// </summary>
-			protected void OnMenuEditExternalConstraint(object sender, EventArgs e)
+			protected void OnMenuEditRoleSequenceConstraint(object sender, EventArgs e)
 			{
 				IORMDesignerView designerView = CurrentORMView;
 				if (designerView != null)
 				{
-					designerView.CommandManager.OnMenuEditExternalConstraint();
+					designerView.CommandManager.OnMenuEditRoleSequenceConstraint();
 				}
 			}
 			/// <summary>
@@ -1396,9 +1551,9 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			public static readonly CommandID ViewSamplePopulationEditor = new CommandID(guidORMDesignerCommandSet, cmdIdViewSamplePopulationEditor);
 			/// <summary>
-			/// The ORM Definition Window item on the context menu
+			/// The ORM Informal Description Window item on the context menu
 			/// </summary>
-			public static readonly CommandID ViewInformalDefinitionWindow = new CommandID(guidORMDesignerCommandSet, cmdIdViewInformalDefinitionWindow);
+			public static readonly CommandID ViewInformalDescriptionWindow = new CommandID(guidORMDesignerCommandSet, cmdIdViewInformalDescriptionWindow);
 			/// <summary>
 			/// The ORM Note Window item on the context menu
 			/// </summary>
@@ -1568,9 +1723,9 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			public static readonly CommandID ViewDeleteRoleSequence = new CommandID(guidORMDesignerCommandSet, cmdIdDeleteRoleSequence);
 			/// <summary>
-			/// Available on any non-active external constraint.
+			/// Available on any non-active external constraint or an internal uniqueness constraint.
 			/// </summary>
-			public static readonly CommandID ViewEditExternalConstraint = new CommandID(guidORMDesignerCommandSet, cmdIdEditExternalConstraint);
+			public static readonly CommandID ViewEditRoleSequenceConstraint = new CommandID(guidORMDesignerCommandSet, cmdIdEditRoleSequenceConstraint);
 			/// <summary>
 			/// Available on any role belonging to any RoleSequence in the active MCEC.
 			/// </summary>
@@ -1615,6 +1770,39 @@ namespace Neumont.Tools.ORM.Shell
 			/// Activate the selected display element in the document window.
 			/// </summary>
 			public static readonly CommandID SelectInDocumentWindow = new CommandID(guidORMDesignerCommandSet, cmdIdSelectInDocumentWindow);
+			/// <summary>
+			/// Available if free form context commands are supported for the current selection
+			/// </summary>
+			public static readonly CommandID FreeFormCommandList = new CommandID(guidORMDesignerCommandSet, cmdIdFreeFormCommandList);
+			/// <summary>
+			/// Indicates the number of command ids reserved for free form context commands
+			/// </summary>
+			public const int FreeFormCommandListLength = cmdIdFreeFormCommandListEnd - cmdIdFreeFormCommandList + 1;
+			/// <summary>
+			/// Include an explicitly excluded element from a group. Explicit
+			/// exclusion occurs on a delete request of an automatic element.
+			/// </summary>
+			public static readonly CommandID IncludeInGroup = new CommandID(guidORMDesignerCommandSet, cmdIdIncludeInGroup);
+			/// <summary>
+			/// Add selected elements to a new group and select the group.
+			/// </summary>
+			public static readonly CommandID IncludeInNewGroup = new CommandID(guidORMDesignerCommandSet, cmdIdIncludeInNewGroup);
+			/// <summary>
+			/// The list of available groups to add to
+			/// </summary>
+			public static readonly CommandID IncludeInGroupList = new CommandID(guidORMDesignerCommandSet, cmdIdIncludeInGroupList);
+			/// <summary>
+			/// Indicates the number of command ids reserved for adding an element to a group
+			/// </summary>
+			public const int IncludeInGroupListLength = cmdIdIncludeInGroupListEnd - cmdIdIncludeInGroupList + 1;
+			/// <summary>
+			/// The list of available groups containing the selected elements
+			/// </summary>
+			public static readonly CommandID DeleteFromGroupList = new CommandID(guidORMDesignerCommandSet, cmdIdDeleteFromGroupList);
+			/// <summary>
+			/// Indicates the number of command ids reserved for removing an element from a group
+			/// </summary>
+			public const int DeleteFromGroupListLength = cmdIdDeleteFromGroupListEnd - cmdIdDeleteFromGroupList + 1;
 			#endregion //CommandID objects for menus
 			#region cmdIds
 			// IMPORTANT: keep these constants in sync with PkgCmd.vsct
@@ -1665,9 +1853,9 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			private const int cmdIdDeleteRoleSequence = 0x2907;
 			/// <summary>
-			/// Available on any non-active external constraint.
+			/// Available on any non-active external constraint or an internal uniqueness constraint.
 			/// </summary>
-			private const int cmdIdEditExternalConstraint = 0x2908;
+			private const int cmdIdEditRoleSequenceConstraint = 0x2908;
 			/// <summary>
 			/// Available on any role belonging to any RoleSequence in the active MCEC.
 			/// </summary>
@@ -1838,9 +2026,9 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			private const int cmdIdUnobjectifyFactType = 0x2929;
 			/// <summary>
-			/// The ORM Definition Window item on the context menu
+			/// The ORM Informal Description Window item on the context menu
 			/// </summary>
-			private const int cmdIdViewInformalDefinitionWindow = 0x292a;
+			private const int cmdIdViewInformalDescriptionWindow = 0x292a;
 			// Commit a line in the fact editor, not used by the designer
 			//private const int cmdIdFactEditorCommitLine = 0x292b;
 			/// <summary>
@@ -1861,9 +2049,42 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			private const int cmdIdSelectInDocumentWindow = 0x292f;
 			/// <summary>
+			/// Include an explicitly excluded element from a group. Explicit
+			/// exclusion occurs on a delete request of an automatic element.
+			/// </summary>
+			private const int cmdIdIncludeInGroup = 0x2930;
+			/// <summary>
+			/// Add selected elements to a new group and select the group.
+			/// </summary>
+			private const int cmdIdIncludeInNewGroup = 0x2931;
+			/// <summary>
 			/// The context menu item for related diagrams, targeted to the diagram spy
 			/// </summary>
 			private const int cmdIdDiagramSpyDiagramList = 0x2d00;
+			/// <summary>
+			/// The list of free form commands placed at the top of context menu
+			/// </summary>
+			private const int cmdIdFreeFormCommandList = 0x2e00;
+			/// <summary>
+			/// The last allowed id for a free form list
+			/// </summary>
+			private const int cmdIdFreeFormCommandListEnd = 0x2eff;
+			/// <summary>
+			/// The list of available groups to add to
+			/// </summary>
+			private const int cmdIdIncludeInGroupList = 0x2f00;
+			/// <summary>
+			/// The last allowed id for an add to group list
+			/// </summary>
+			private const int cmdIdIncludeInGroupListEnd = 0x2fff;
+			/// <summary>
+			/// The list of available groups to remove from
+			/// </summary>
+			private const int cmdIdDeleteFromGroupList = 0x3000;
+			/// <summary>
+			/// The last allowed id for a remove from group list
+			/// </summary>
+			private const int cmdIdDeleteFromGroupListEnd = 0x30ff;
 			#endregion
 		}
 	}

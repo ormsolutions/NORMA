@@ -27,7 +27,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// An extension of a TextField shape. The minimum size is recalculated
 	/// according to the current shape contents.
 	/// </summary>
-	public class AutoSizeTextField : TextField
+	public class AutoSizeTextField : DynamicColorTextField
 	{
 		/// <summary>
 		/// Constructor

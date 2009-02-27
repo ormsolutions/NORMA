@@ -716,7 +716,7 @@ namespace Neumont.Tools.ORM.Shell
 				ORMDesignerDocView.InvalidateAllDiagrams(toolServices.ServiceProvider, this);
 
 				//refresh task list and model browser
-				SurveyTree surveyTree = mySurveyTree;
+				SurveyTree<Store> surveyTree = mySurveyTree;
 				foreach (ORMModel model in this.Store.ElementDirectory.FindElements<ORMModel>(true))
 				{
 					ModelErrorDisplayFilter filter = model.ModelErrorDisplayFilter;

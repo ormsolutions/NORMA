@@ -148,6 +148,34 @@
 	<data name="DerivationStorageType.PartiallyDerived" xml:space="preserve">
 		<value>SemiDerived</value>
 	</data>
+	<data name="ElementGrouping.AddElement.TransactionName" xml:space="preserve">
+		<value>Add Element to Group</value>
+		<comment>The transaction name used when adding an element to a group.</comment>
+	</data>
+	<data name="ElementGrouping.AddGroup.TransactionName" xml:space="preserve">
+		<value>Add Group</value>
+		<comment>The transaction name used when adding a group.</comment>
+	</data>
+	<data name="ElementGrouping.DefaultNamePattern" xml:space="preserve">
+		<value>Group{0}</value>
+		<comment>The base name used to create a name for a new ElementGrouping. This is a format string with {0} being the placeholder for the number placement.</comment>
+	</data>
+	<data name="ElementGrouping.RemoveElementExclusion.TransactionName" xml:space="preserve">
+		<value>Remove Element Exclusion</value>
+		<comment>The transaction name used when removing an explicitly excluded element from a group.</comment>
+	</data>
+	<data name="ElementGroupingTypes.PropertyDescriptor.Description" xml:space="preserve">
+		<value>Select group types to control content and associate behavior with elements in this Group.</value>
+		<comment>Description shown in the properties window for the 'GroupTypes' property of an ElementGrouping.</comment>
+	</data>
+	<data name="ElementGroupingTypes.PropertyDescriptor.DisplayName" xml:space="preserve">
+		<value>GroupTypes</value>
+		<comment>Display name shown in the properties window for the 'GroupTypes' property of an ElementGrouping.</comment>
+	</data>
+	<data name="ElementGroupingTypes.PropertyDescriptor.TransactionName" xml:space="preserve">
+		<value>Select Group Types</value>
+		<comment>The transaction name used when modifying the set of types associated with a group</comment>
+	</data>
 	<data name="ExclusiveOrConstraint.ClassName" xml:space="preserve">
 		<value>ExclusiveOrConstraint</value>
 		<comment>Text used as the class name, displayed in the properties window.</comment>
@@ -171,6 +199,18 @@
 	<data name="FrequencyConstraint.UnboundedMaxValueText" xml:space="preserve">
 		<value>Unbounded</value>
 		<comment>Text used in the dropdown editor and type converter for the frequency constraint max value. Correspond to the 0 value in the object model.</comment>
+	</data>
+	<data name="GroupingMembershipTypeCompliance.NotExcluded" xml:space="preserve">
+		<value>Not Excluded</value>
+		<comment>Displayed enum value for group membership type compliance. Allow all elements that are not explicitly excluded by any GroupType.</comment>
+	</data>
+	<data name="GroupingMembershipTypeCompliance.PartiallyApproved" xml:space="preserve">
+		<value>Approved by Some Type</value>
+		<comment>Displayed enum value for group membership type compliance. Allow all elements that are approved by at least one associated type GroupType.</comment>
+	</data>
+	<data name="GroupingMembershipTypeCompliance.FullyApproved" xml:space="preserve">
+		<value>Approved by All Types</value>
+		<comment>Displayed enum value for group membership type compliance. Allow all elements that are approved by all associated GroupTypes.</comment>
 	</data>
 	<data name="ImplicitBooleanValueType.PropertyRestriction" xml:space="preserve">
 		<value>The modification of the IsImplicitBooleanValue property on a ValueType is not allowed.</value>
@@ -261,6 +301,14 @@
 	<data name="ModelError.Constraint.TooManyRoleSequences.Text" xml:space="preserve">
 		<value>Constraint '{0}' has too many role sequences.</value>
 		<comment>Model validation error text when too many role sequences are specified for a constraint. This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
+	</data>
+	<data name="ModelError.ElementGrouping.DuplicateNameError.Message" xml:space="preserve">
+		<value>Model '{0}' contains multiple groups named '{1}'. Group names must be unique in the model.</value>
+		<comment>Model validation error text used when multiple groups with the same name are loaded into a model. Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
+	</data>
+	<data name="ModelError.ElementGrouping.MembershipContradictionError.Message" xml:space="preserve">
+		<value>GroupTypes for Group '{0}' conflict on the group membership of '{1}'.</value>
+		<comment>Model validation error text used when an element is explicitly included by one grouptype and explicitly excluded by another. Field 0 is the group name, field 1 is the element name.</comment>
 	</data>
 	<data name="ModelError.EntityType.RequiresReferenceScheme.Message" xml:space="preserve">
 		<value>Entity type '{0}' in model '{1}' requires a local preferred reference scheme or supertype(s) that provide preferred identification.</value>
@@ -359,7 +407,7 @@
 		<comment>ValueRangeOverlapError text for a RoleValueConstraint. {0}=model {1}=facttype {2}=role number.</comment>
 	</data>
 	<data name="ModelError.RecognizedPhrase.DuplicateNameError.Message" xml:space="preserve">
-		<value>Model '{0}' contains multiple recognized phrases named '{1}'. Type names must be unique across all entity and value types in a model.</value>
+		<value>Model '{0}' contains multiple recognized phrases named '{1}'.</value>
 		<comment>Model validation error text used when multiple recognized phrases with the same name are loaded into a model.Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
 	</data>
 	<data name="ModelError.ValueConstraint.ValueRangeOverlapError.ValueType.Message" xml:space="preserve">
@@ -630,12 +678,12 @@
 		<value>{0}: {1}</value>
 		<comment>Text that separates a root type's name from notes if multiple notes are displayed in the ORM notes window. Replacement field 0 is the element name, 1 is the note text.</comment>
 	</data>
-	<data name="ModelDefinitionWindow.EmptyDisplayText" xml:space="preserve">
-		<value>An informal definition is not available for the current selection.</value>
+	<data name="ModelDescriptionWindow.EmptyDisplayText" xml:space="preserve">
+		<value>An informal description is not available for the current selection.</value>
 		<comment>Text to place in an empty description editor tool window.</comment>
 	</data>
-	<data name="ModelDefinitionWindow.WindowTitle" xml:space="preserve">
-		<value>ORM Informal Definition Editor</value>
+	<data name="ModelDescriptionWindow.WindowTitle" xml:space="preserve">
+		<value>ORM Informal Description Editor</value>
 		<comment>Text to place in the title bar of the description editor tool window.</comment>
 	</data>
 	<data name="ModelNotesWindow.EmptyDisplayText" xml:space="preserve">
@@ -1233,6 +1281,9 @@
 	</data>
 	<data name="SurveyElementType.NameGenerator" xml:space="preserve">
 		<value>Name Generation Settings</value>
+	</data>
+	<data name="SurveyElementType.Grouping" xml:space="preserve">
+		<value>Groups</value>
 	</data>
 	<data name="SurveyFactTypeDetailType.Role" xml:space="preserve">
 		<value>Roles</value>

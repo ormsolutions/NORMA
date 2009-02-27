@@ -17,17 +17,19 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Text;
-using Neumont.Tools.ORM.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
+using Neumont.Tools.Modeling;
 using Neumont.Tools.Modeling.Design;
-using Neumont.Tools.ORM.Shell;
 using Neumont.Tools.Modeling.Diagrams;
+using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.Shell;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	public partial class ValueConstraintShape : IModelErrorActivation, ISelectionContainerFilter
+	public partial class ValueConstraintShape : IModelErrorActivation, ISelectionContainerFilter, IDynamicColorGeometryHost, IDynamicColorAlsoUsedBy
 	{
 		private static AutoSizeTextField myTextShapeField;
 		private string myDisplayText;
@@ -51,6 +53,102 @@ namespace Neumont.Tools.ORM.ShapeModel
 			classStyleSet.AddBrush(ValueRangeTextBrush, DiagramBrushes.ShapeBackground, brushSettings);
 		}
 		#endregion // Customize appearance
+		#region IDynamicColorGeometryHost Implementation
+		/// <summary>
+		/// Implements <see cref="IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId,Pen)"/>
+		/// </summary>
+		protected static Color UpdateDynamicColor(StyleSetResourceId penId, Pen pen)
+		{
+#if FALSE
+			Color retVal = Color.Empty;
+			IDynamicShapeColorProvider<ORMDiagramDynamicColor, ValueConstraintShape, ValueConstraint>[] providers;
+			if (penId == DiagramPens.ShapeOutline &&
+				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintShape, IConstraint>>()))
+			{
+				ValueConstraint element = (ValueConstraint)ModelElement;
+				for (int i = 0; i < providers.Length; ++i)
+				{
+					Color alternateColor = providers[i].GetDynamicColor(ORMDiagramDynamicColor.Constraint, this, element);
+					if (alternateColor != Color.Empty)
+					{
+						retVal = pen.Color;
+						pen.Color = alternateColor;
+						break;
+					}
+				}
+			}
+			return retVal;
+#endif // FALSE
+			return Color.Empty;
+		}
+		Color IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId penId, Pen pen)
+		{
+			return UpdateDynamicColor(penId, pen);
+		}
+		/// <summary>
+		/// Implements <see cref="IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId,Brush)"/>
+		/// </summary>
+		protected Color UpdateDynamicColor(StyleSetResourceId brushId, Brush brush)
+		{
+			Color retVal = Color.Empty;
+			SolidBrush solidBrush;
+			IDynamicShapeColorProvider<ORMDiagramDynamicColor, ValueConstraintShape, ValueConstraint>[] providers;
+			// See notes in corresponding method on ExternalConstraintShape
+			// regarding not using the dynamic background color.
+			if (brushId == ValueRangeTextBrush &&
+				null != (solidBrush = brush as SolidBrush) &&
+				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ValueConstraintShape, ValueConstraint>>()))
+			{
+				ValueConstraint element = (ValueConstraint)ModelElement;
+				for (int i = 0; i < providers.Length; ++i)
+				{
+					Color alternateColor = providers[i].GetDynamicColor(ORMDiagramDynamicColor.Constraint, this, element);
+					if (alternateColor != Color.Empty)
+					{
+						retVal = solidBrush.Color;
+						solidBrush.Color = alternateColor;
+						break;
+					}
+				}
+			}
+			return retVal;
+		}
+		Color IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId brushId, Brush brush)
+		{
+			return UpdateDynamicColor(brushId, brush);
+		}
+		#endregion // IDynamicColorGeometryHost Implementation
+		#region IDynamicColorAlsoUsedBy Implementation
+		/// <summary>
+		/// Implements <see cref="IDynamicColorAlsoUsedBy.RelatedDynamicallyColoredShapes"/>
+		/// </summary>
+		protected IEnumerable<ShapeElement> RelatedDynamicallyColoredShapes
+		{
+			get
+			{
+				if (AssociatedValueConstraint is RoleValueConstraint)
+				{
+					foreach (LinkConnectsToNode link in LinkConnectsToNode.GetLinksToLink(this))
+					{
+						ValueRangeLink constraintLink = link.Link as ValueRangeLink;
+						if (constraintLink != null)
+						{
+							yield return constraintLink;
+							// UNDONE: FactTypeShape should support ExternalConstraintRoleBarDisplay.AnyRole
+							// for role value constraints. This needs to be updated when FactType
+						}
+					}
+				}
+			}
+		}
+		IEnumerable<ShapeElement> IDynamicColorAlsoUsedBy.RelatedDynamicallyColoredShapes
+		{
+			get
+			{
+				return RelatedDynamicallyColoredShapes;
+			}
+		}
+		#endregion // IDynamicColorAlsoUsedBy Implementation
 		#region overrides
 		/// <summary>
 		/// Associate to the value range's text property

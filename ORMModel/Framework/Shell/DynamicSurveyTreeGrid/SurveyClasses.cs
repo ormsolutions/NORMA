@@ -28,7 +28,8 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 	/// SurveyTree class. Used to create a tree that can be used with
 	/// a <see cref="SurveyTreeContainer"/>
 	/// </summary>
-	public partial class SurveyTree : INotifySurveyElementChanged
+	public partial class SurveyTree<SurveyContextType> : INotifySurveyElementChanged
+		where SurveyContextType : class
 	{
 		#region NodeLocation structure
 		/// <summary>
@@ -243,7 +244,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			{
 				get
 				{
-					return ((ISurveyNodeReference)myNode.Element).ReferencedSurveyNode;
+					return ((ISurveyNodeReference)myNode.Element).ReferencedElement;
 				}
 			}
 			/// <summary>
@@ -275,6 +276,10 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		/// </summary>
 		private static readonly object TopLevelExpansionKey = new object();
 		/// <summary>
+		/// The main context object for the survey tree
+		/// </summary>
+		private SurveyContextType mySurveyContext;
+		/// <summary>
 		/// The location of the standard link overlay image in the image list
 		/// </summary>
 		private const int LinkOverlayImageIndex = 0;
@@ -285,7 +290,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		/// <summary>
 		/// The question providers, used to determine which questions to ask and how they should be used
 		/// </summary>
-		private readonly ISurveyQuestionProvider[] myQuestionProviders;
+		private readonly ISurveyQuestionProvider<SurveyContextType>[] myQuestionProviders;
 		/// <summary>
 		/// Map primary elements to the expanded lists associated with those elements
 		/// </summary>
@@ -319,10 +324,11 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		/// <summary>
 		/// Public constructor
 		/// </summary>
-		public SurveyTree(ISurveyNodeProvider[] nodeProviders, ISurveyQuestionProvider[] questionProviders)
+		public SurveyTree(SurveyContextType surveyContext, ISurveyNodeProvider[] nodeProviders, ISurveyQuestionProvider<SurveyContextType>[] questionProviders)
 		{
+			mySurveyContext = surveyContext;
 			myNodeProviders = nodeProviders ?? new ISurveyNodeProvider[0];
-			myQuestionProviders = questionProviders ?? new ISurveyQuestionProvider[0];
+			myQuestionProviders = questionProviders ?? new ISurveyQuestionProvider<SurveyContextType>[0];
 			myMainListDictionary = new Dictionary<object, MainList>();
 			myNodeDictionary = new Dictionary<object, NodeLocation>();
 			mySurveyDictionary = new Dictionary<object, Survey>();
@@ -331,7 +337,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			ImageList compositeImageList = new ImageList();
 			compositeImageList.ColorDepth = ColorDepth.Depth32Bit;
 			ImageList.ImageCollection compositeImages = compositeImageList.Images;
-			Type resourceType = typeof(SurveyTree);
+			Type resourceType = typeof(SurveyTree<>);
 			Image overlayImage = Image.FromStream(resourceType.Assembly.GetManifestResourceStream(resourceType, "LinkOverlay.png"), true, true);
 			compositeImages.Add(overlayImage); // Note that the link overlay position corresponds to LinkOverlayImageIndex
 			if (questionProviders != null &&
@@ -341,22 +347,32 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				int[] providerImageOffsets = new int[questionProviderCount];
 				for (int i = 0; i < questionProviderCount; ++i)
 				{
-					ImageList currentImageList;
-					ImageList.ImageCollection currentImages;
-					int currentCount;
-					if (null != (currentImageList = questionProviders[i].SurveyQuestionImageList) &&
-						0 != (currentCount = (currentImages = currentImageList.Images).Count))
+					ImageList[] currentImageLists;
+					if (null != (currentImageLists = questionProviders[i].GetSurveyQuestionImageLists(surveyContext)))
 					{
-						for (int j = 0; j < currentCount; ++j)
+						bool haveProviderOffset = false;
+						foreach (ImageList currentImageList in currentImageLists)
 						{
-							compositeImages.Add(currentImages[j]);
+							ImageList.ImageCollection currentImages;
+							int currentCount;
+							if (0 != (currentCount = (currentImages = currentImageList.Images).Count))
+							{
+								for (int j = 0; j < currentCount; ++j)
+								{
+									compositeImages.Add(currentImages[j]);
+								}
+								if (!haveProviderOffset)
+								{
+									haveProviderOffset = true;
+									providerImageOffsets[i] = imageOffset;
+								}
+								imageOffset += currentCount;
+							}
 						}
-						providerImageOffsets[i] = imageOffset;
-						imageOffset += currentCount;
-					}
-					else
-					{
-						providerImageOffsets[i] = -1;
+						if (!haveProviderOffset)
+						{
+							providerImageOffsets[i] = -1;
+						}
 					}
 				}
 				myQuestionProviderImageOffsets = providerImageOffsets;
@@ -370,7 +386,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		#endregion // Constructor
 		#region Accessor Properties
 		/// <summary>
-		/// Provides the RootBranch for a <see cref="SurveyTree"/>
+		/// Provides the RootBranch for a <see cref="SurveyTree{SurveyContextType}"/>
 		/// </summary>
 		public IBranch CreateRootBranch()
 		{
@@ -396,7 +412,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				if (retVal == null)
 				{
 					List<Type> displayTypes = new List<Type>();
-					foreach (ISurveyQuestionProvider questionProvider in myQuestionProviders)
+					foreach (ISurveyQuestionProvider<SurveyContextType> questionProvider in myQuestionProviders)
 					{
 						IEnumerable<Type> providerDisplayTypes = questionProvider.GetErrorDisplayTypes();
 						if (providerDisplayTypes != null)
@@ -421,7 +437,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			object key = expansionKey ?? TopLevelExpansionKey;
 			if (!dictionary.TryGetValue(key, out retVal))
 			{
-				retVal = new Survey(myQuestionProviders, myQuestionProviderImageOffsets, expansionKey);
+				retVal = new Survey(mySurveyContext, myQuestionProviders, myQuestionProviderImageOffsets, expansionKey);
 				dictionary[key] = retVal;
 			}
 			return retVal;
@@ -455,6 +471,14 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				if (notifyList != null)
 				{
 					notifyList.NodeChanged(location.ElementNode, null, false, questionTypes);
+				}
+				else
+				{
+					SampleDataElementNode node = location.ElementNode;
+					Survey survey = location.Survey;
+					ISurveyNodeContext contextElement = element as ISurveyNodeContext;
+					node.Update(questionTypes, contextElement != null ? contextElement.SurveyNodeContext : null, survey);
+					myNodeDictionary[element] = new NodeLocation(survey, node);
 				}
 				LinkedNode<SurveyNodeReference> linkNode;
 				if (myReferenceDictionary.TryGetValue(element, out linkNode))
@@ -503,9 +527,9 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			ElementReferenceChanged(element, referenceReason, contextElement, questionTypes);
 		}
 		/// <summary>
-		/// Implements <see cref="INotifySurveyElementChanged.ElementDeleted"/>
+		/// Implements <see cref="INotifySurveyElementChanged.ElementDeleted(object, bool)"/>
 		/// </summary>
-		protected void ElementDeleted(object element)
+		protected void ElementDeleted(object element, bool preserveReferences)
 		{
 			NodeLocation value;
 			if (myNodeDictionary.TryGetValue(element, out value))
@@ -517,31 +541,51 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					notifyList.NodeDeleted(value.ElementNode);
 				}
 
-				// Remove items from all secondary display locations
-				LinkedNode<SurveyNodeReference> linkNode;
-				if (myReferenceDictionary.TryGetValue(element, out linkNode))
+				if (preserveReferences)
 				{
-					while (linkNode != null)
-					{
-						SurveyNodeReference link = linkNode.Value;
-						if (myMainListDictionary.TryGetValue(link.ContextElement ?? TopLevelExpansionKey, out notifyList))
-						{
-							notifyList.NodeDeleted(linkNode.Value.Node);
-						}
-						linkNode = linkNode.Next;
-					}
-					myReferenceDictionary.Remove(element);
+					// We have all of the information from inclusion of the element in
+					// a list, we just need a different node type.
+					myNodeDictionary[element] = new NodeLocation(value.Survey, value.ElementNode);
 				}
-
-				// Remove the tracking entry for this element
-				myNodeDictionary.Remove(element);
-
-				// Remove tracking for an expansion of this element
-				if (myMainListDictionary.ContainsKey(element))
+				else
 				{
-					myMainListDictionary.Remove(element);
+					// Remove items from all secondary display locations
+					LinkedNode<SurveyNodeReference> linkNode;
+					if (myReferenceDictionary.TryGetValue(element, out linkNode))
+					{
+						while (linkNode != null)
+						{
+							SurveyNodeReference link = linkNode.Value;
+							if (myMainListDictionary.TryGetValue(link.ContextElement ?? TopLevelExpansionKey, out notifyList))
+							{
+								notifyList.NodeDeleted(linkNode.Value.Node);
+							}
+							linkNode = linkNode.Next;
+						}
+						myReferenceDictionary.Remove(element);
+					}
+
+					// Remove the tracking entry for this element
+					myNodeDictionary.Remove(element);
+
+					// Remove tracking for an expansion of this element
+					if (myMainListDictionary.ContainsKey(element))
+					{
+						myMainListDictionary.Remove(element);
+					}
 				}
 			}
+		}
+		void INotifySurveyElementChanged.ElementDeleted(object element, bool preserveReferences)
+		{
+			ElementDeleted(element, preserveReferences);
+		}
+		/// <summary>
+		/// Implements <see cref="INotifySurveyElementChanged.ElementDeleted(object)"/>
+		/// </summary>
+		protected void ElementDeleted(object element)
+		{
+			ElementDeleted(element, false);
 		}
 		void INotifySurveyElementChanged.ElementDeleted(object element)
 		{
@@ -573,6 +617,16 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				if (headLinkNode == null)
 				{
 					myReferenceDictionary.Remove(element);
+					if (element is ISurveyFloatingNode)
+					{
+						// Verify that no one actually included this in a list, then remove it
+						NodeLocation location;
+						if (myNodeDictionary.TryGetValue(element, out location) &&
+							location.MainList == null)
+						{
+							myNodeDictionary.Remove(element);
+						}
+					}
 				}
 			}
 		}
@@ -700,22 +754,23 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			/// <summary>
 			/// public constructor
 			/// </summary>
-			/// <param name="questionProviders">Array of <see cref="ISurveyQuestionProvider"/> instances</param>
+			/// <param name="surveyContext">The <typeparamref name="SurveyNodeContext"/> thisis created in. This value is not store with the new Survey.</param>
+			/// <param name="questionProviders">Array of <see cref="ISurveyQuestionProvider{SurveyContextType}"/> instances</param>
 			/// <param name="providerImageOffsets">Array of offsets into the global image list with indices corresponding to each provider</param>
 			/// <param name="expansionKey">Key to identify the set of questions being retrieved from the <paramref name="questionProviderList"/></param>
-			public Survey(ISurveyQuestionProvider[] questionProviders, int[] providerImageOffsets, object expansionKey)
+			public Survey(SurveyContextType surveyContext, ISurveyQuestionProvider<SurveyContextType>[] questionProviders, int[] providerImageOffsets, object expansionKey)
 			{
 				int providerCount = questionProviders.Length;
 				List<SurveyQuestion> surveyQuestions = new List<SurveyQuestion>();
 				int totalShift = 0;
 				for (int i = 0; i < providerCount; ++i)
 				{
-					IEnumerable<ISurveyQuestionTypeInfo> questions = questionProviders[i].GetSurveyQuestions(expansionKey);
+					IEnumerable<ISurveyQuestionTypeInfo<SurveyContextType>> questions = questionProviders[i].GetSurveyQuestions(surveyContext, expansionKey);
 					if (questions == null)
 					{
 						continue;
 					}
-					foreach (ISurveyQuestionTypeInfo currentQuestionTypeInfo in questions)
+					foreach (ISurveyQuestionTypeInfo<SurveyContextType> currentQuestionTypeInfo in questions)
 					{
 						SurveyQuestion currentQuestion = new SurveyQuestion(currentQuestionTypeInfo, providerImageOffsets[i]);
 						currentQuestion.Shift = totalShift;
@@ -734,8 +789,8 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 						{
 							return 0;
 						}
-						ISurveyQuestionTypeInfo leftQuestionInfo = leftQuestion.Question;
-						ISurveyQuestionTypeInfo rightQuestionInfo = rightQuestion.Question;
+						ISurveyQuestionTypeInfo<SurveyContextType> leftQuestionInfo = leftQuestion.Question;
+						ISurveyQuestionTypeInfo<SurveyContextType> rightQuestionInfo = rightQuestion.Question;
 						if (0 != (leftQuestionInfo.UISupport & SurveyQuestionUISupport.Grouping))
 						{
 							if (0 == (rightQuestionInfo.UISupport & SurveyQuestionUISupport.Grouping))
@@ -836,13 +891,13 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		#endregion // Survey class
 		#region SurveyQuestion class
 		/// <summary>
-		/// Wrapper class for <see cref="ISurveyQuestionTypeInfo"/> that coordinates information
+		/// Wrapper class for <see cref="ISurveyQuestionTypeInfo{SurveyContextType}"/> that coordinates information
 		/// for storing answers to this questions with storage information for other questions in
 		/// a <see cref="Survey"/>
 		/// </summary>
 		private sealed class SurveyQuestion
 		{
-			private readonly ISurveyQuestionTypeInfo myQuestion;
+			private readonly ISurveyQuestionTypeInfo<SurveyContextType> myQuestion;
 			private readonly string[] myHeaders;
 			public const int NeutralAnswer = -1;
 			#region MetaData and local members
@@ -915,7 +970,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			/// <summary>
 			/// returns the wrapped ISurveyQuestionTypeInfo
 			/// </summary>
-			public ISurveyQuestionTypeInfo Question
+			public ISurveyQuestionTypeInfo<SurveyContextType> Question
 			{
 				get
 				{
@@ -988,7 +1043,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			/// </summary>
 			/// <param name="question">the qeustion to be wrapped by this class</param>
 			/// <param name="providerImageListOffset">ImageList offset for the provider</param>
-			public SurveyQuestion(ISurveyQuestionTypeInfo question, int providerImageListOffset)
+			public SurveyQuestion(ISurveyQuestionTypeInfo<SurveyContextType> question, int providerImageListOffset)
 			{
 				if (question == null)
 				{

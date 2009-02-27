@@ -7,6 +7,7 @@
 	attributeFormDefault="unqualified"
 	xmlns="http://schemas.neumont.edu/ORM/SDK/SurveyQuestionProvider"
 	xmlns:qp="http://schemas.neumont.edu/ORM/SDK/SurveyQuestionProvider"
+	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX" 
 	xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:annotation>
 		<xs:appinfo source="Common Public License Copyright Notice">
@@ -23,6 +24,7 @@
 			You must not remove this notice, or any other, from this software.
 		</xs:appinfo>
 	</xs:annotation>
+	<xs:import namespace="http://schemas.neumont.edu/CodeGeneration/PLiX"/>
 	<xs:element name="surveyQuestionProvider" type="surveyQuestionProviderType">
 		<xs:key name="uniqueQuestionType">
 			<xs:selector xpath="qp:surveyQuestions/qp:surveyQuestion"/>
@@ -39,6 +41,7 @@
 	</xs:element>
 	<xs:complexType name="surveyQuestionProviderType">
 		<xs:all>
+			<xs:element name="surveyContextType" type="plx:passTypeParamType"/>
 			<xs:element ref="surveyQuestions"/>
 			<xs:element ref="groupings" minOccurs="0"/>
 			<xs:element ref="imageInformation" minOccurs="0"/>
@@ -76,7 +79,7 @@
 		<xs:sequence minOccurs="0">
 			<xs:any namespace="http://schemas.neumont.edu/CodeGeneration/PLiX" maxOccurs="unbounded">
 				<xs:annotation>
-					<xs:documentation>One or more PLiX elements forming a code snippet to retrieve the ImageList from this class. The final statement should be a return. Used as the body of the SurveyQuestionImageList property getter.</xs:documentation>
+					<xs:documentation>One or more PLiX elements forming a code snippet to retrieve an array of ImageLists from this class. The final statement should be a return. Used as the body of the SurveyQuestionImageLists property getter.</xs:documentation>
 				</xs:annotation>
 			</xs:any>
 		</xs:sequence>
@@ -97,6 +100,8 @@
 			<xs:element ref="displaySupport" maxOccurs="unbounded"/>
 			<xs:element ref="imageMap" minOccurs="0"/>
 			<xs:element ref="displayDataMap" minOccurs="0"/>
+			<xs:element ref="commandProviderMap" minOccurs="0"/>
+			<xs:element ref="emptyHeaderMap" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="questionType" type="xs:string" use="required">
 			<xs:annotation>
@@ -194,7 +199,7 @@
 		</xs:sequence>
 		<xs:attribute name="lastAnswer" type="xs:token" use="optional">
 			<xs:annotation>
-				<xs:documentation>The name of the answer with the highest numeric value for this question. This value is used indirectly through the offset/@afterSurveyQuestion attribute of another imageMap.</xs:documentation>
+				<xs:documentation>The name of the answer with the highest numeric value for this question, or a zero-based number (generally one less than the count of total number of explicitly mapped answers) providing the same information. This value is used indirectly through the offset/@afterSurveyQuestion attribute of another imageMap.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>
@@ -281,6 +286,113 @@
 				</xs:choice>
 			</xs:extension>
 		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="emptyHeaderMap" type="emptyHeaderMapType">
+		<xs:unique name="EmptyHeaderUnique">
+			<xs:selector xpath="qp:map | qp:mapSameAs"/>
+			<xs:field xpath="@enumValue"/>
+		</xs:unique>
+		<xs:key name="EmptyHeaderMapKey">
+			<xs:selector xpath="qp:map"/>
+			<xs:field xpath="@enumValue"/>
+		</xs:key>
+		<xs:keyref name="EmptyHeaderMapSameAsKeyRef" refer="EmptyHeaderMapKey">
+			<xs:selector xpath="qp:mapSameAs"/>
+			<xs:field xpath="@targetEnumValue"/>
+		</xs:keyref>
+	</xs:element>
+	<xs:complexType name="emptyHeaderMapType">
+		<xs:sequence>
+			<xs:element name="map" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Specify elements to give a setting opposite to the default setting. The element contents can also be used to provide more sophisticated settings than true or false. However, the value returned must be consistent for the lifetime of the Store (until a reload).</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:any namespace="http://schemas.neumont.edu/CodeGeneration/PLiX" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>A plix expression forming a code snippet to retrieve the IFreeFormCommandProvider for this answer. The final statement should be a plx:return element.</xs:documentation>
+							</xs:annotation>
+						</xs:any>
+					</xs:sequence>
+					<xs:attribute name="enumValue" type="xs:token" use="required">
+						<xs:annotation>
+							<xs:documentation>The value from the questionType enum to adjust the default header visibility setting for.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="mapSameAs" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:attribute name="enumValue" type="xs:token" use="required">
+						<xs:annotation>
+							<xs:documentation>The value from the questionType enum to adjust the default header visibility setting for.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="targetEnumValue" type="xs:token" use="required">
+						<xs:annotation>
+							<xs:documentation>This value should have the same visibility setting as the targeted value.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="defaultVisible" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>Default to showing empty header nodes. Explicit map elements turn individual headers off instead of turning them on.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:element name="commandProviderMap" type="commandProviderMapType">
+		<xs:unique name="CommandProviderUnique">
+			<xs:selector xpath="qp:commandProvider | qp:commandProviderSameAs"/>
+			<xs:field xpath="@enumValue"/>
+		</xs:unique>
+		<xs:key name="CommandProviderKey">
+			<xs:selector xpath="qp:commandProvider"/>
+			<xs:field xpath="@enumValue"/>
+		</xs:key>
+		<xs:keyref name="CommandProviderKeySameAsKeyRef" refer="CommandProviderKey">
+			<xs:selector xpath="qp:commandProviderSameAs"/>
+			<xs:field xpath="@targetEnumValue"/>
+		</xs:keyref>
+	</xs:element>
+	<xs:complexType name="commandProviderMapType">
+		<xs:annotation>
+			<xs:documentation>Associate an answer with a command provider.</xs:documentation>
+		</xs:annotation>
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="commandProvider">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:any namespace="http://schemas.neumont.edu/CodeGeneration/PLiX" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>A plix expression forming a code snippet to retrieve the IFreeFormCommandProvider for this answer. The final statement should be a plx:return element.</xs:documentation>
+							</xs:annotation>
+						</xs:any>
+					</xs:sequence>
+					<xs:attribute name="enumValue" type="xs:token" use="required">
+						<xs:annotation>
+							<xs:documentation>The value from the questionType enum to associate with this command provider.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="commandProviderSameAs">
+				<xs:complexType>
+					<xs:attribute name="enumValue" type="xs:token" use="required">
+						<xs:annotation>
+							<xs:documentation>The value from the questionType enum to associate with this command provider.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="targetEnumValue" type="xs:token" use="required">
+						<xs:annotation>
+							<xs:documentation>This value should have the same command provider as the targeted value.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
 	</xs:complexType>
 	<xs:element name="displaySupport" type="displaySupportType"/>
 	<xs:complexType name="displaySupportType">

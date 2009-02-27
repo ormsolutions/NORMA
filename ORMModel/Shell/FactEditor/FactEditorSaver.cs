@@ -91,9 +91,9 @@ namespace Neumont.Tools.ORM.Shell
 				/// <summary>
 				/// <see cref="IORMToolServices.AutomatedElementFilter"/> callback
 				/// </summary>
-				public bool BlockElement(ModelElement element)
+				public AutomatedElementDirective BlockElement(ModelElement element)
 				{
-					return !myElements.ContainsKey(element);
+					return !myElements.ContainsKey(element) ? AutomatedElementDirective.Ignore : AutomatedElementDirective.None;
 				}
 				/// <summary>
 				/// Were any elements tracked?

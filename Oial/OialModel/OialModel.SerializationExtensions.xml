@@ -58,7 +58,7 @@
 	<!-- Concept Types -->
 	<se:Element Class="ConceptType" Name="conceptType" SortChildElements="true" Override="false" Sealed="true">
 		<se:Attribute Name="name" ID="Name" WriteStyle="Attribute"/>
-		<se:Container Name="children">
+		<se:Container Name="children" SortChildElements="true">
 			<se:Link RelationshipName="InformationType" RoleName="InformationTypeFormat"/>
 			<se:Link RelationshipName="ConceptTypeRelatesToConceptType" RoleName="RelatedConceptType"/>
 			<se:Link RelationshipName="ConceptTypeAssimilatesConceptType" RoleName="AssimilatedConceptType"/>

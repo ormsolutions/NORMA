@@ -39,7 +39,7 @@ using Neumont.Tools.Modeling.Diagrams;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	public partial class SubtypeLink : ORMBaseBinaryLinkShape, IModelErrorActivation, IProvideConnectorShape, IReconfigureableLink, IConfigureAsChildShape, IAutoCreatedSelectableShape
+	public partial class SubtypeLink : ORMBaseBinaryLinkShape, IModelErrorActivation, IProvideConnectorShape, IReconfigureableLink, IConfigureAsChildShape, IAutoCreatedSelectableShape, IDynamicColorGeometryHost
 	{
 		#region Customize appearance
 		//The Resource ID's for the given subtype drawing type.
@@ -235,7 +235,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						return ActiveFilledArrowDecorator.Decorator;
 					default:
 						Debug.Assert(style == DrawColorStyle.Normal);
-						return LinkDecorator.DecoratorFilledArrow;
+						return DynamicColorDecoratorFilledArrow.Decorator;
 				}
 			}
 			set
@@ -324,6 +324,68 @@ namespace Neumont.Tools.ORM.ShapeModel
 			base.OnDoubleClick(e);
 		}
 		#endregion // Mouse handling
+		#region IDynamicColorGeometryHost Implementation
+		/// <summary>
+		/// Implements <see cref="IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId,Pen)"/>
+		/// </summary>
+		protected Color UpdateDynamicColor(StyleSetResourceId penId, Pen pen)
+		{
+			Color retVal = Color.Empty;
+			IDynamicShapeColorProvider<ORMDiagramDynamicColor, SubtypeLink, SubtypeFact>[] providers;
+			if ((penId == DiagramPens.ConnectionLine ||
+				penId == NonPrimaryNormalResource ||
+				penId == DiagramPens.ConnectionLineDecorator) &&
+				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, SubtypeLink, SubtypeFact>>()))
+			{
+				SubtypeFact element = (SubtypeFact)ModelElement;
+				for (int i = 0; i < providers.Length; ++i)
+				{
+					Color alternateColor = providers[i].GetDynamicColor(ORMDiagramDynamicColor.Constraint, this, element);
+					if (alternateColor != Color.Empty)
+					{
+						retVal = pen.Color;
+						pen.Color = alternateColor;
+						break;
+					}
+				}
+			}
+			return retVal;
+		}
+		Color IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId penId, Pen pen)
+		{
+			return UpdateDynamicColor(penId, pen);
+		}
+		/// <summary>
+		/// Implements <see cref="IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId,Brush)"/>
+		/// </summary>
+		protected Color UpdateDynamicColor(StyleSetResourceId brushId, Brush brush)
+		{
+			Color retVal = Color.Empty;
+			SolidBrush solidBrush;
+			IDynamicShapeColorProvider<ORMDiagramDynamicColor, SubtypeLink, SubtypeFact>[] providers;
+			if (brushId == DiagramBrushes.ConnectionLineDecorator &&
+				null != (solidBrush = brush as SolidBrush) &&
+				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, SubtypeLink, SubtypeFact>>()))
+			{
+				SubtypeFact element = (SubtypeFact)ModelElement;
+				for (int i = 0; i < providers.Length; ++i)
+				{
+					Color alternateColor = providers[i].GetDynamicColor(ORMDiagramDynamicColor.Constraint, this, element);
+					if (alternateColor != Color.Empty)
+					{
+						retVal = solidBrush.Color;
+						solidBrush.Color = alternateColor;
+						break;
+					}
+				}
+			}
+			return retVal;
+		}
+		Color IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId brushId, Brush brush)
+		{
+			return UpdateDynamicColor(brushId, brush);
+		}
+		#endregion // IDynamicColorGeometryHost Implementation
 		#region IModelErrorActivation Implementation
 		/// <summary>
 		/// Implements IModelErrorActivation.ActivateModelError
@@ -346,7 +408,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // IModelErrorActivation Implementation
 		#region SubtypeLink specific
 		/// <summary>
-		/// Get the ObjectTypePlaysRole link associated with this link shape
+		/// Get the <see cref="SubtypeFact"/> associated with this shape
 		/// </summary>
 		public SubtypeFact AssociatedSubtypeFact
 		{

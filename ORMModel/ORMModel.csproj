@@ -381,6 +381,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>ResourceStringsGenerator.xml</DependentUpon>
     </Compile>
+    <Compile Include="Framework\Shell\ShellInterfaces.cs" />
     <Compile Include="Framework\Shell\DiagramDisplay.cs" />
     <Compile Include="Framework\Shell\DiagramDisplay.SerializationExtensions.cs">
       <AutoGen>True</AutoGen>
@@ -472,6 +473,8 @@
     <Compile Include="Framework\Shell\ToolWindowActivator.cs" />
     <Compile Include="ObjectModel\Design\BlockAutomatedElementsPropertyDescriptor.cs" />
     <Compile Include="ObjectModel\Design\ReferenceModeTypeDescriptor.cs" />
+    <Compile Include="ObjectModel\Design\ElementGroupingTypeDescriptor.cs" />
+    <Compile Include="ObjectModel\Grouping.cs" />
     <Compile Include="ObjectModel\Design\ORMModelTypeDescriptor.cs" />
     <Compile Include="ObjectModel\Design\ValueConstraintTypeDescriptor.cs" />
     <Compile Include="ObjectModel\Design\SetComparisonConstraintTypeDescriptor.cs" />
@@ -487,6 +490,9 @@
     <Compile Include="ObjectModel\Design\ExclusionConstraintTypeDescriptor.cs" />
     <Compile Include="ObjectModel\NameAlias.cs" />
     <Compile Include="ObjectModel\SurveyImplementations\ConstraintAnswers.cs" />
+    <Compile Include="ObjectModel\SurveyImplementations\ValueConstraintAnswers.cs" />
+    <Compile Include="ObjectModel\SurveyImplementations\NoteAnswers.cs" />
+    <Compile Include="ObjectModel\SurveyImplementations\GroupingAnswers.cs" />
     <Compile Include="ObjectModel\SurveyImplementations\NameGeneratorAnswers.cs" />
     <Compile Include="ObjectModel\SurveyImplementations\RoleAnswers.cs" />
     <Compile Include="ObjectModel\VerbalizationGenerator.cs">
@@ -499,6 +505,7 @@
     <Compile Include="ObjectModel\Design\Editors\AliasManagerForm.Designer.cs">
       <DependentUpon>AliasManagerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ShapeModel\DynamicColorTextField.cs" />
     <Compile Include="Shell\ORMDesignerCommandManager.cs" />
     <Compile Include="Shell\ORMDiagramSpy.cs">
     </Compile>

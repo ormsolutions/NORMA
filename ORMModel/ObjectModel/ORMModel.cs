@@ -1100,7 +1100,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				#endregion //TrackingList class
 				#region IDuplicateNameCollectionManager Implementation
-
 				public ICollection OnDuplicateElementAdded(ICollection elementCollection, ModelElement element, bool afterTransaction, INotifyElementAdded notifyAdded)
 				{
 					RecognizedPhrase recognizedPhrase = (RecognizedPhrase)element;
@@ -1180,7 +1179,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 						return elementCollection;
 					}
 				}
-
 				public ICollection OnDuplicateElementRemoved(ICollection elementCollection, ModelElement element, bool afterTransaction)
 				{
 					TrackingList trackingList = (TrackingList)elementCollection;
@@ -1193,9 +1191,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						recognizedPhrase.DuplicateNameError = null;
 					}
 					return elementCollection;
-
 				}
-
 				#endregion // IDuplicateNameCollectionManager Implementation
 			}
 			/// <summary>
@@ -1214,7 +1210,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// <param name="requestedName">The in-use requested name</param>
 			protected override void ThrowDuplicateNameException(ModelElement element, string requestedName)
 			{
-				throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorModelHasDuplicateRecognizedPhrases, ((RecognizedPhrase)element).Model.Name,  requestedName));
+				throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelExceptionNameAlreadyUsedByModel, requestedName));
 			}
 			#endregion // Base overrides
 			#region INamedElementDictionary Reimplementation

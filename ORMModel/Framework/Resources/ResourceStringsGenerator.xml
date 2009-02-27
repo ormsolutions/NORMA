@@ -31,7 +31,6 @@
 	<FileAssociations>
 		<FileAssociation model="Framework" resourceFile="..\FrameworkServices.resx" useFileComments="primary"/>
 	</FileAssociations>
-	<ResourceString name="DiagramDisplayReorderDiagramsTransactionName" resourceName="DiagramDisplay.ReorderDiagrams.TransactionName" model="Framework">
-		<comment>The transaction name for reordering diagrams</comment>
-	</ResourceString>
+	<ResourceString name="DiagramDisplayReorderDiagramsTransactionName" resourceName="DiagramDisplay.ReorderDiagrams.TransactionName" model="Framework"/>
+	<ResourceString name="DynamicSurveyHeaderClassName" resourceName="DynamicSurvey.HeaderClassName" model="Framework"/>
 </ResourceStrings>

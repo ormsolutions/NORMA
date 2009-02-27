@@ -957,7 +957,7 @@
 	</orm:NameGenerator>
 	<orm:GenerationState id="_74453D62-8935-4509-9F78-5F726BC6F95A">
 		<orm:GenerationSettings>
-			<ormtooial:AbstractionModelGenerationSetting id="_A43ACAC7-8E78-483E-98CF-C5C06C949D83" AlgorithmVersion="1.004">
+			<ormtooial:AbstractionModelGenerationSetting id="_A43ACAC7-8E78-483E-98CF-C5C06C949D83" AlgorithmVersion="1.005">
 				<ormtooial:AbstractionModel ref="_586DBDF6-B598-4BEF-85B7-1A71F9B563B5" />
 			</ormtooial:AbstractionModelGenerationSetting>
 			<oialtocdb:SchemaGenerationSetting id="_0D549D23-FB6C-4F0A-8BB9-1CB3A1A38D0E" CoreAlgorithmVersion="1.004" NameAlgorithmVersion="1.009">
@@ -1163,11 +1163,11 @@
 		<oial:conceptTypes>
 			<oial:conceptType id="_15179B4E-5806-4CCC-BEB2-C20AA8F0A149" name="BlogEntry">
 				<oial:children>
-					<oial:relatedConceptType id="_4489DA26-A237-45EF-9EEE-C871395C776E" ref="_72A6F18D-2EFD-4617-A3CE-E3FFFC79BED6" isMandatory="true" name="BlogEntry" oppositeName="userId" />
 					<oial:informationType id="_F59FAB53-576C-4B84-A4D8-905E32AA3F62" ref="_3BD17D8C-E376-46D8-954C-6FDD7AB056AF" isMandatory="true" name="BlogEntry_Id" />
 					<oial:informationType id="_4C3E6DC6-F703-4300-BD40-20978D7B05C5" ref="_F2F11DA3-B3B7-4B33-9A4B-8AE22CAB5909" isMandatory="true" name="entryTitle" />
 					<oial:informationType id="_7F803A20-BB8E-42C1-8C89-AAD9C55392B3" ref="_1B7B4683-A43C-4F58-A36B-067B182B8C42" isMandatory="true" name="entryBody" />
 					<oial:informationType id="_BFA2F957-FA55-489F-AE29-6D56BCA72306" ref="_3C89AFCC-7796-4FD3-A31C-165598D363C9" isMandatory="true" name="MDYValue" />
+					<oial:relatedConceptType id="_4489DA26-A237-45EF-9EEE-C871395C776E" ref="_72A6F18D-2EFD-4617-A3CE-E3FFFC79BED6" isMandatory="true" name="BlogEntry" oppositeName="userId" />
 					<oial:assimilatedConceptType id="_FC6BD73D-7FE6-45D3-9059-1D25C8626D94" ref="_28D5D63C-5D56-41C9-B507-D31BB8073A83" name="BlogEntry" oppositeName="BlogComment" refersToSubtype="true" isPreferredForTarget="true" />
 					<oial:assimilatedConceptType id="_B3DC4C45-8843-4476-9C7D-667F5B724B46" ref="_9C20FB91-E38F-44D1-99EB-CBA07C8D99DD" name="BlogEntry" oppositeName="NonCommentEntry" refersToSubtype="true" isPreferredForTarget="true" />
 				</oial:children>

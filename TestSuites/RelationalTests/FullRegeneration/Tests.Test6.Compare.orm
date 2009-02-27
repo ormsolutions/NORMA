@@ -389,12 +389,12 @@
 			</oial:conceptType>
 			<oial:conceptType id="_2AE3BFAF-B6D9-4D7F-8F2C-0D5AF3E5987F" name="Foo">
 				<oial:children>
-					<oial:relatedConceptType id="_2C943BC8-C235-452A-973C-6870B4C31EB3" ref="_5E1B1339-4724-4C6B-ADA7-137A17AEE238" isMandatory="true" name="Foo" oppositeName="B" />
-					<oial:informationType id="_412DAE8C-B0C8-4E26-810E-8EBA8180A2C5" ref="_061CB93D-8A8A-4B0B-8276-5ED6EB385596" isMandatory="true" name="Foo_id" />
+					<oial:informationType isMandatory="true" ref="_061CB93D-8A8A-4B0B-8276-5ED6EB385596" name="Foo_id" id="_99FAA313-043D-4187-B36E-7829247880FC" />
+					<oial:relatedConceptType isMandatory="true" ref="_5E1B1339-4724-4C6B-ADA7-137A17AEE238" oppositeName="B" name="Foo" id="_9D0C1C7F-9688-414E-B988-6B242ED04633" />
 				</oial:children>
 				<oial:uniquenessConstraints>
 					<oial:uniquenessConstraint id="_3BE871AA-6236-4B2B-B1E5-8359A5F17805" name="InternalUniquenessConstraint7" isPreferred="true">
-						<oial:uniquenessChild ref="_412DAE8C-B0C8-4E26-810E-8EBA8180A2C5" />
+						<oial:uniquenessChild ref="_99FAA313-043D-4187-B36E-7829247880FC" />
 					</oial:uniquenessConstraint>
 				</oial:uniquenessConstraints>
 			</oial:conceptType>
@@ -459,8 +459,8 @@
 		<ormtooial:ConceptTypeChildHasPathFactType id="_811FBDF5-8DCB-4A23-9826-4B56EED80017" ConceptTypeChild="_B939B531-2D63-4880-942F-F388F1D87000" PathFactType="_7923B111-35C8-4D92-8A97-FB2FAE59F170" />
 		<ormtooial:ConceptTypeChildHasPathFactType id="_080586A3-DDA0-4B81-8C2F-8C035A232883" ConceptTypeChild="_D70CA6FC-CEEC-4A95-98A3-33006DC515F8" PathFactType="_F9F152B9-EB6E-49C1-A9BC-3FC0F56DA156" />
 		<ormtooial:ConceptTypeChildHasPathFactType id="_A8734008-DA66-4D99-B08A-A5A3ACF482D9" ConceptTypeChild="_A3AAB91B-58B5-4B11-A649-CA6EDF498C7D" PathFactType="_53862A8D-CFFD-45D0-955B-20B05F916BAC" />
-		<ormtooial:ConceptTypeChildHasPathFactType id="_72D70CF8-22C9-4A29-A6D0-8906D7959EF4" ConceptTypeChild="_2C943BC8-C235-452A-973C-6870B4C31EB3" PathFactType="_2ED5FA0C-4516-4ACA-8EA1-159F40049F93" />
-		<ormtooial:ConceptTypeChildHasPathFactType id="_51FB3CC8-EDCE-4426-AA2E-0C5BD4F85E3A" ConceptTypeChild="_412DAE8C-B0C8-4E26-810E-8EBA8180A2C5" PathFactType="_32BEE27C-E887-4F7E-A147-1E8A9705EBBC" />
+		<ormtooial:ConceptTypeChildHasPathFactType id="_72D70CF8-22C9-4A29-A6D0-8906D7959EF4" PathFactType="_2ED5FA0C-4516-4ACA-8EA1-159F40049F93" ConceptTypeChild="_9D0C1C7F-9688-414E-B988-6B242ED04633" />
+		<ormtooial:ConceptTypeChildHasPathFactType id="_51FB3CC8-EDCE-4426-AA2E-0C5BD4F85E3A" PathFactType="_32BEE27C-E887-4F7E-A147-1E8A9705EBBC" ConceptTypeChild="_99FAA313-043D-4187-B36E-7829247880FC" />
 		<ormtooial:InformationTypeFormatIsForValueType id="_7F00B057-8413-4578-9E07-0C87D6490E5D" InformationTypeFormat="_AB67572B-E284-4988-9A2D-DE56B8DD9681" ValueType="_55B3710B-7591-4929-92EB-000C3EFEE377" />
 		<ormtooial:InformationTypeFormatIsForValueType id="_06B0B028-12F7-4374-9CB8-F395BAC4DD08" InformationTypeFormat="_43D57B5E-E1D2-43DD-A946-8B7BA2B25995" ValueType="_C1B6A4F6-1804-4BBB-AFA2-4DF5545ACB1A" />
 		<ormtooial:InformationTypeFormatIsForValueType id="_F159D943-EAF3-4AB0-A903-6CF433A5EE28" InformationTypeFormat="_061CB93D-8A8A-4B0B-8276-5ED6EB385596" ValueType="_356B03B8-95A3-406A-A514-9CD57D7E191E" />
@@ -473,9 +473,9 @@
 		<oialtocdb:ColumnHasConceptTypeChild id="_F738C204-5787-4C7D-A7B0-7537CA672897" Column="_C79D8DAA-3927-48E0-8766-8FC98C393A10" ConceptTypeChild="_D70CA6FC-CEEC-4A95-98A3-33006DC515F8" />
 		<oialtocdb:ColumnHasConceptTypeChild id="_84427606-4278-469D-93D9-6771205113B9" Column="_A8D24592-056D-4285-A3D4-C5E67D50B12B" ConceptTypeChild="_B939B531-2D63-4880-942F-F388F1D87000" />
 		<oialtocdb:ColumnHasConceptTypeChild id="_3CBFEB8C-ACA4-4DBE-A5E5-226C45686E13" Column="_A8D24592-056D-4285-A3D4-C5E67D50B12B" ConceptTypeChild="_A3AAB91B-58B5-4B11-A649-CA6EDF498C7D" />
-		<oialtocdb:ColumnHasConceptTypeChild id="_916482E8-60D0-48C9-93B6-37AF09D73367" Column="_77988424-AADF-4802-A759-D046F3718D33" ConceptTypeChild="_2C943BC8-C235-452A-973C-6870B4C31EB3" />
+		<oialtocdb:ColumnHasConceptTypeChild id="_916482E8-60D0-48C9-93B6-37AF09D73367" Column="_77988424-AADF-4802-A759-D046F3718D33" ConceptTypeChild="_9D0C1C7F-9688-414E-B988-6B242ED04633" />
 		<oialtocdb:ColumnHasConceptTypeChild id="_6E21A516-07A4-4DCC-8477-93BFE5DD2408" Column="_77988424-AADF-4802-A759-D046F3718D33" ConceptTypeChild="_A3AAB91B-58B5-4B11-A649-CA6EDF498C7D" />
-		<oialtocdb:ColumnHasConceptTypeChild id="_0CEFD82F-4FFD-4752-9081-6FD07ECD69BD" Column="_60707571-94FB-4704-BDB3-0E769EEAD11B" ConceptTypeChild="_412DAE8C-B0C8-4E26-810E-8EBA8180A2C5" />
+		<oialtocdb:ColumnHasConceptTypeChild id="_0CEFD82F-4FFD-4752-9081-6FD07ECD69BD" Column="_60707571-94FB-4704-BDB3-0E769EEAD11B" ConceptTypeChild="_99FAA313-043D-4187-B36E-7829247880FC" />
 		<oialtocdb:TableIsPrimarilyForConceptType id="_1FAEC4EC-748F-43FC-8838-223294ECAC89" Table="_C9D2F120-75D9-4A52-8323-0247A9B785F8" ConceptType="_3ACCD69C-6A1D-4702-AA4D-D13F95C11B2B" />
 		<oialtocdb:TableIsPrimarilyForConceptType id="_F434A091-0E3F-4AFA-A928-FF3C991558F7" Table="_EDC9C31B-6DA1-48DE-987C-EA8227AF5D14" ConceptType="_2AE3BFAF-B6D9-4D7F-8F2C-0D5AF3E5987F" />
 		<oialtocdb:TableIsAlsoForConceptType id="_3EA8AEEF-B6B3-4C5A-A971-5E8963576E59" Table="_C9D2F120-75D9-4A52-8323-0247A9B785F8" ConceptType="_5E1B1339-4724-4C6B-ADA7-137A17AEE238" />

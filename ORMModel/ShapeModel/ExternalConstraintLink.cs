@@ -34,19 +34,19 @@ using Neumont.Tools.Modeling.Diagrams;
 using Neumont.Tools.Modeling;
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	public partial class ExternalConstraintLink : IReconfigureableLink, IConfigureAsChildShape
+	public partial class ExternalConstraintLink : IReconfigureableLink, IConfigureAsChildShape, IDynamicColorGeometryHost
 	{
 		#region SubsetDecorator class
 		/// <summary>
 		/// The link decorator used to draw the mandatory
 		/// constraint dot on a link.
 		/// </summary>
-		protected class SubsetDecorator : DecoratorFilledArrow, ILinkDecoratorSettings
+		protected class SubsetDecorator : DynamicColorDecoratorFilledArrow, ILinkDecoratorSettings
 		{
 			/// <summary>
 			/// Singleton instance of this decorator
 			/// </summary>
-			public static readonly LinkDecorator Decorator = new SubsetDecorator();
+			public new static readonly LinkDecorator Decorator = new SubsetDecorator();
 			/// <summary>
 			/// Instantiates a new SubsetDecorator
 			/// </summary>
@@ -197,7 +197,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					constraint.Modality == ConstraintModality.Deontic)
 				{
 					// Note that we don't do anything with fonts with this style set, so the
-					// static one is sufficient. Instance style sets also go through a font initiation
+					// static one is sufficient. Instance style sets also go through a font initialization
 					// step inside the framework
 					return DeonticClassStyleSet;
 				}
@@ -292,6 +292,75 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // Customize appearance
+		#region IDynamicColorGeometryHost Implementation
+		/// <summary>
+		/// Implements <see cref="IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId,Pen)"/>
+		/// </summary>
+		protected Color UpdateDynamicColor(StyleSetResourceId penId, Pen pen)
+		{
+			Color retVal = Color.Empty;
+			IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintLink, IConstraint>[] providers;
+			IFactConstraint factConstraint;
+			IConstraint constraint;
+			if ((penId == DiagramPens.ConnectionLine ||
+				penId == DiagramPens.ConnectionLineDecorator) &&
+				null != (factConstraint = ModelElement as IFactConstraint) &&
+				null != (constraint = factConstraint.Constraint) &&
+				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintLink, IConstraint>>()))
+			{
+				ORMDiagramDynamicColor requestColor = constraint.Modality == ConstraintModality.Deontic ? ORMDiagramDynamicColor.DeonticConstraint : ORMDiagramDynamicColor.Constraint;
+				for (int i = 0; i < providers.Length; ++i)
+				{
+					Color alternateColor = providers[i].GetDynamicColor(requestColor, this, constraint);
+					if (alternateColor != Color.Empty)
+					{
+						retVal = pen.Color;
+						pen.Color = alternateColor;
+						break;
+					}
+				}
+			}
+			return retVal;
+		}
+		Color IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId penId, Pen pen)
+		{
+			return UpdateDynamicColor(penId, pen);
+		}
+		/// <summary>
+		/// Implements <see cref="IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId,Brush)"/>
+		/// </summary>
+		protected Color UpdateDynamicColor(StyleSetResourceId brushId, Brush brush)
+		{
+			Color retVal = Color.Empty;
+			SolidBrush solidBrush;
+			IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintLink, IConstraint>[] providers;
+			IFactConstraint factConstraint;
+			IConstraint constraint;
+			if (brushId == DiagramBrushes.ConnectionLineDecorator &&
+				null != (factConstraint = ModelElement as IFactConstraint) &&
+				null != (constraint = factConstraint.Constraint) &&
+				null != (solidBrush = brush as SolidBrush) &&
+				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintLink, IConstraint>>()))
+			{
+				ORMDiagramDynamicColor requestColor = constraint.Modality == ConstraintModality.Deontic ? ORMDiagramDynamicColor.DeonticConstraint : ORMDiagramDynamicColor.Constraint;
+				for (int i = 0; i < providers.Length; ++i)
+				{
+					Color alternateColor = providers[i].GetDynamicColor(requestColor, this, constraint);
+					if (alternateColor != Color.Empty)
+					{
+						retVal = solidBrush.Color;
+						solidBrush.Color = alternateColor;
+						break;
+					}
+				}
+			}
+			return retVal;
+		}
+		Color IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId brushId, Brush brush)
+		{
+			return UpdateDynamicColor(brushId, brush);
+		}
+		#endregion // IDynamicColorGeometryHost Implementation
 		#region ExternalConstraintLink specific
 		/// <summary>
 		/// Get the FactConstraint link associated with this link shape. The
@@ -414,7 +483,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							factTypeShape.AutoResize();
 							if (oldSize == factTypeShape.Size)
 							{
-								factTypeShape.InvalidateRequired(true);
+								((IInvalidateDisplay)factTypeShape).InvalidateRequired(true);
 							}
 						}
 					}
@@ -447,7 +516,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					factTypeShape.AutoResize();
 					if (oldSize == factTypeShape.Size)
 					{
-						factTypeShape.InvalidateRequired(true);
+						((IInvalidateDisplay)factTypeShape).InvalidateRequired(true);
 					}
 				}
 			}

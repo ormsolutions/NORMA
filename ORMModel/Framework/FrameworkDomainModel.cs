@@ -663,7 +663,17 @@ namespace Neumont.Tools.Modeling
 			else
 			{
 				contextDictionary[DelayedValidationContextKey] = dictionary = new Dictionary<ElementValidator, object>();
-				new DelayValidateSignal(element.Partition);
+				// Create the validation signals in an alternate partition. This
+				// enables elements in other alternate partitions to use delayed
+				// validation without marking the primary partition as dirty.
+				// The alternate partition will always be empty at the end of the transaction.
+				Partition partition = Partition.FindByAlternateId(store, typeof(DelayValidateSignal));
+				if (partition == null)
+				{
+					partition = new Partition(store);
+					partition.AlternateId = typeof(DelayValidateSignal);
+				}
+				new DelayValidateSignal(partition);
 			}
 			dictionary[key] = null;
 			return true;

@@ -30,7 +30,7 @@ using Neumont.Tools.Modeling;
 using Neumont.Tools.Modeling.Diagrams;
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	public partial class ExternalConstraintShape : IStickyObject, IModelErrorActivation
+	public partial class ExternalConstraintShape : IStickyObject, IModelErrorActivation, IDynamicColorGeometryHost, IDynamicColorAlsoUsedBy
 	{
 		#region Customize appearance
 		/// <summary>
@@ -118,7 +118,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		private Color myPaintPenStartColor;
 		private Color myPaintBrushStartColor;
 		private int myPaintRefCount;
-		private bool myPaintRestoreColor;
 		private Pen myPaintPen;
 		private Brush myPaintBrush;
 		/// <summary>
@@ -152,24 +151,35 @@ namespace Neumont.Tools.ORM.ShapeModel
 			if (this.myPaintRefCount++ == 0)
 			{
 				base.OnPaintShape(e);
-				StyleSet styles = this.StyleSet;
-				this.myPaintPen = styles.GetPen(OutlinePenId);
-				this.myPaintBrush = styles.GetBrush(ExternalConstraintBrush);
-				SolidBrush coloredBrush = this.myPaintBrush as SolidBrush;
+				StyleSet styleSet = this.StyleSet;
+				StyleSetResourceId penId = OutlinePenId;
+				Pen pen = styleSet.GetPen(penId);
+				Brush brush = styleSet.GetBrush(ExternalConstraintBrush);
+				SolidBrush coloredBrush = brush as SolidBrush;
 
 				// Keep the pen color in sync with the color being used for highlighting
-				this.myPaintPenStartColor = this.UpdateGeometryLuminosity(e.View, this.myPaintPen);
-				this.myPaintBrushStartColor = default(Color);
+				Color startColor = UpdateDynamicColor(OutlinePenId, pen);
+				if (startColor.IsEmpty)
+				{
+					startColor = UpdateGeometryLuminosity(e.View, pen);
+				}
+				else
+				{
+					UpdateGeometryLuminosity(e.View, pen);
+				}
+				myPaintPenStartColor = startColor;
+				Color newColor = pen.Color;
 				if (coloredBrush != null)
 				{
-					this.myPaintBrushStartColor = coloredBrush.Color;
-					coloredBrush.Color = this.myPaintPen.Color;
+					myPaintBrushStartColor = coloredBrush.Color;
+					coloredBrush.Color = newColor;
 				}
-				this.myPaintRestoreColor = this.myPaintPenStartColor != this.myPaintPen.Color;
-				if (!this.myPaintRestoreColor && coloredBrush != null)
+				else
 				{
-					this.myPaintRestoreColor = this.myPaintBrushStartColor != coloredBrush.Color;
+					myPaintBrushStartColor = Color.Empty;
 				}
+				myPaintBrush = brush;
+				myPaintPen = pen;
 			}
 		}
 		/// <summary>
@@ -181,21 +191,20 @@ namespace Neumont.Tools.ORM.ShapeModel
 			if (--this.myPaintRefCount == 0)
 			{
 				// Restore pen and/or brush color
-				if (this.myPaintRestoreColor)
+				Color startColor = myPaintPenStartColor;
+				if (!startColor.IsEmpty)
 				{
-					this.myPaintPen.Color = this.myPaintPenStartColor;
-					SolidBrush coloredBrush = this.myPaintBrush as SolidBrush;
-					if (coloredBrush != null)
-					{
-						coloredBrush.Color = this.myPaintBrushStartColor;
-					}
+					myPaintPen.Color = startColor;
 				}
-
+				startColor = myPaintBrushStartColor;
+				if (!startColor.IsEmpty)
+				{
+					((SolidBrush)myPaintBrush).Color = startColor;
+				}
 				this.myPaintBrush = null;
 				this.myPaintPen = null;
 				this.myPaintPenStartColor = default(Color);
 				this.myPaintBrushStartColor = default(Color);
-				this.myPaintRestoreColor = false;
 			}
 		}
 		#endregion
@@ -378,6 +387,111 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // Customize appearance
+		#region IDynamicColorGeometryHost Implementation
+		/// <summary>
+		/// Implements <see cref="IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId,Pen)"/>
+		/// </summary>
+		protected Color UpdateDynamicColor(StyleSetResourceId penId, Pen pen)
+		{
+			Color retVal = Color.Empty;
+			IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintShape, IConstraint>[] providers;
+			if (penId == DiagramPens.ShapeOutline &&
+				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintShape, IConstraint>>()))
+			{
+				IConstraint element = (IConstraint)ModelElement;
+				ORMDiagramDynamicColor requestColor = element.Modality == ConstraintModality.Deontic ? ORMDiagramDynamicColor.DeonticConstraint : ORMDiagramDynamicColor.Constraint;
+				for (int i = 0; i < providers.Length; ++i)
+				{
+					Color alternateColor = providers[i].GetDynamicColor(requestColor, this, element);
+					if (alternateColor != Color.Empty)
+					{
+						retVal = pen.Color;
+						pen.Color = alternateColor;
+						break;
+					}
+				}
+			}
+			return retVal;
+		}
+		Color IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId penId, Pen pen)
+		{
+			return UpdateDynamicColor(penId, pen);
+		}
+		/// <summary>
+		/// Implements <see cref="IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId,Brush)"/>
+		/// </summary>
+		protected Color UpdateDynamicColor(StyleSetResourceId brushId, Brush brush)
+		{
+			Color retVal = Color.Empty;
+			SolidBrush solidBrush;
+			IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintShape, IConstraint>[] providers;
+			// We could check for a background brush request here with
+			// DiagramBrushes.DiagramBackground. However, given the small
+			// amount of background showing in most constraints and the
+			// independent constraint color setting available, changing the
+			// constraint background makes it difficult to have constraints
+			// combined with FactTypes and ObjectTypes in the same dynamic
+			// color provider.
+			if ((brushId == ExternalConstraintBrush ||
+				brushId == DiagramBrushes.ShapeText) &&
+				null != (solidBrush = brush as SolidBrush) &&
+				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintShape, IConstraint>>()))
+			{
+				IConstraint element = (IConstraint)ModelElement;
+				ORMDiagramDynamicColor requestColor = element.Modality == ConstraintModality.Deontic ? ORMDiagramDynamicColor.DeonticConstraint : ORMDiagramDynamicColor.Constraint;
+				for (int i = 0; i < providers.Length; ++i)
+				{
+					Color alternateColor = providers[i].GetDynamicColor(requestColor, this, element);
+					if (alternateColor != Color.Empty)
+					{
+						retVal = solidBrush.Color;
+						solidBrush.Color = alternateColor;
+						break;
+					}
+				}
+			}
+			return retVal;
+		}
+		Color IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId brushId, Brush brush)
+		{
+			return UpdateDynamicColor(brushId, brush);
+		}
+		#endregion // IDynamicColorGeometryHost Implementation
+		#region IDynamicColorAlsoUsedBy Implementation
+		/// <summary>
+		/// Implements <see cref="IDynamicColorAlsoUsedBy.RelatedDynamicallyColoredShapes"/>
+		/// </summary>
+		protected IEnumerable<ShapeElement> RelatedDynamicallyColoredShapes
+		{
+			get
+			{
+				foreach (LinkConnectsToNode link in LinkConnectsToNode.GetLinksToLink(this))
+				{
+					ExternalConstraintLink constraintLink = link.Link as ExternalConstraintLink;
+					if (constraintLink != null)
+					{
+						yield return constraintLink;
+						NodeShape fromShape = constraintLink.FromShape;
+						FactTypeShape factTypeShape;
+						FactTypeLinkConnectorShape connectorShape;
+						if (null != (factTypeShape = fromShape as FactTypeShape) ||
+							(null != (connectorShape = fromShape as FactTypeLinkConnectorShape) &&
+							null != (factTypeShape = connectorShape.ParentShape as FactTypeShape)))
+						{
+							yield return factTypeShape;
+						}
+					}
+				}
+			}
+		}
+		IEnumerable<ShapeElement> IDynamicColorAlsoUsedBy.RelatedDynamicallyColoredShapes
+		{
+			get
+			{
+				return RelatedDynamicallyColoredShapes;
+			}
+		}
+		#endregion // IDynamicColorAlsoUsedBy Implementation
 		#region ExternalConstraintShape specific
 		/// <summary>
 		/// Get the typed model element associated with this shape
@@ -822,8 +936,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 				int pelCount = pels.Count;
 				for (int i = pelCount - 1; i >= 0; --i)
 				{
-					// ORMBaseShape handles ExternalConstraintShape and FactTypeShape
-					ORMBaseShape shape = pels[i] as ORMBaseShape;
+					// IInvalidateDisplay handles ExternalConstraintShape and FactTypeShape
+					IInvalidateDisplay shape = pels[i] as IInvalidateDisplay;
 					if (shape != null)
 					{
 						shape.InvalidateRequired(true);

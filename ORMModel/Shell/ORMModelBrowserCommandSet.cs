@@ -61,6 +61,10 @@ namespace Neumont.Tools.ORM.Shell
 					new EventHandler(OnStatusEditLabel),
 					new EventHandler(OnMenuEditLabel),
 					EditLabelCommandID)
+					,new DynamicStatusMenuCommand(
+					new EventHandler(OnStatusExclusiveOrDecoupler),
+					new EventHandler(OnMenuExclusiveOrDecoupler),
+					ORMDesignerDocView.ORMDesignerCommandIds.ExclusiveOrDecoupler)
 					,new DynamicDiagramCommand(
 					new EventHandler(OnStatusDiagramList),
 					new EventHandler(OnMenuDiagramList),
@@ -77,6 +81,26 @@ namespace Neumont.Tools.ORM.Shell
 					new EventHandler(OnStatusSelectShapeInDiagramSpy),
 					new EventHandler(OnMenuSelectShapeInDiagramSpy),
 					ORMDesignerDocView.ORMDesignerCommandIds.SelectInDiagramSpy)
+					,new DynamicFreeFormCommand(
+					new EventHandler(OnStatusFreeFormCommand),
+					new EventHandler(OnMenuFreeFormCommand),
+					ORMDesignerDocView.ORMDesignerCommandIds.FreeFormCommandList)
+					,new DynamicStatusMenuCommand(
+					new EventHandler(OnStatusIncludeInGroup),
+					new EventHandler(OnMenuIncludeInGroup),
+					ORMDesignerDocView.ORMDesignerCommandIds.IncludeInGroup)
+					,new DynamicStatusMenuCommand(
+					new EventHandler(OnStatusIncludeInNewGroup),
+					new EventHandler(OnMenuIncludeInNewGroup),
+					ORMDesignerDocView.ORMDesignerCommandIds.IncludeInNewGroup)
+					,new DynamicIncludeInGroupCommand(
+					new EventHandler(OnStatusIncludeInGroupList),
+					new EventHandler(OnMenuIncludeInGroupList),
+					ORMDesignerDocView.ORMDesignerCommandIds.IncludeInGroupList)
+					,new DynamicDeleteFromGroupCommand(
+					new EventHandler(OnStatusDeleteFromGroupList),
+					new EventHandler(OnMenuDeleteFromGroupList),
+					ORMDesignerDocView.ORMDesignerCommandIds.DeleteFromGroupList)
 				};
 				#endregion //command array
 				AddCommands(myCommands);
@@ -151,7 +175,6 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			#endregion // IDisposable Members
 			#region Command Handlers
-
 			public void OnStatusDelete(Object sender, EventArgs e)
 			{
 				ORMModelBrowserToolWindow.OnStatusCommand(sender, ORMDesignerCommands.Delete | ORMDesignerCommands.DeleteAny, CurrentToolWindow); 
@@ -162,6 +185,110 @@ namespace Neumont.Tools.ORM.Shell
 				if (currentWindow != null)
 				{
 					currentWindow.OnMenuDelete((sender as OleMenuCommand).Text);
+				}
+			}
+			public void OnStatusExclusiveOrDecoupler(object sender, EventArgs e)
+			{
+				ORMModelBrowserToolWindow.OnStatusCommand(sender, ORMDesignerCommands.ExclusiveOrDecoupler, CurrentToolWindow);
+			}
+			public void OnMenuExclusiveOrDecoupler(object sender, EventArgs e)
+			{
+				ORMModelBrowserToolWindow currentWindow = CurrentToolWindow;
+				if (currentWindow != null)
+				{
+					currentWindow.OnMenuExclusiveOrDecoupler();
+				}
+			}
+			public void OnStatusIncludeInGroup(object sender, EventArgs e)
+			{
+				ORMModelBrowserToolWindow.OnStatusCommand(sender, ORMDesignerCommands.IncludeInGroup, CurrentToolWindow);
+			}
+			public void OnMenuIncludeInGroup(object sender, EventArgs e)
+			{
+				ORMModelBrowserToolWindow currentWindow = CurrentToolWindow;
+				if (currentWindow != null)
+				{
+					currentWindow.OnMenuIncludeInGroup();
+				}
+			}
+			public void OnStatusIncludeInNewGroup(object sender, EventArgs e)
+			{
+				ORMModelBrowserToolWindow.OnStatusCommand(sender, ORMDesignerCommands.IncludeInNewGroup, CurrentToolWindow);
+			}
+			public void OnMenuIncludeInNewGroup(object sender, EventArgs e)
+			{
+				ORMModelBrowserToolWindow currentWindow = CurrentToolWindow;
+				if (currentWindow != null)
+				{
+					currentWindow.OnMenuIncludeInNewGroup();
+				}
+			}
+			private sealed class DynamicIncludeInGroupCommand : DynamicStatusMenuCommand
+			{
+				public DynamicIncludeInGroupCommand(EventHandler statusHandler, EventHandler invokeHandler, CommandID id)
+					: base(statusHandler, invokeHandler, id)
+				{
+					//Declare class variable with object containing diagram list
+				}
+				public sealed override bool DynamicItemMatch(int cmdId)
+				{
+					int baseCmdId = CommandID.ID;
+					int testId = cmdId - baseCmdId;
+
+
+					if (testId >= 0 && testId < ORMDesignerDocView.ORMDesignerCommandIds.IncludeInGroupListLength)
+					{
+						MatchedCommandId = testId;
+						return true;
+					}
+					return false;
+				}
+			}
+			public void OnStatusIncludeInGroupList(object sender, EventArgs e)
+			{
+				ORMModelBrowserToolWindow.OnStatusCommand(sender, ORMDesignerCommands.IncludeInGroupList, CurrentToolWindow);
+				((OleMenuCommand)sender).MatchedCommandId = 0;
+			}
+			public void OnMenuIncludeInGroupList(object sender, EventArgs e)
+			{
+				ORMModelBrowserToolWindow currentWindow = CurrentToolWindow;
+				if (currentWindow != null)
+				{
+					currentWindow.OnMenuIncludeInGroupList(((OleMenuCommand)sender).MatchedCommandId);
+				}
+			}
+			private sealed class DynamicDeleteFromGroupCommand : DynamicStatusMenuCommand
+			{
+				public DynamicDeleteFromGroupCommand(EventHandler statusHandler, EventHandler invokeHandler, CommandID id)
+					: base(statusHandler, invokeHandler, id)
+				{
+					//Declare class variable with object containing diagram list
+				}
+				public sealed override bool DynamicItemMatch(int cmdId)
+				{
+					int baseCmdId = CommandID.ID;
+					int testId = cmdId - baseCmdId;
+
+
+					if (testId >= 0 && testId < ORMDesignerDocView.ORMDesignerCommandIds.DeleteFromGroupListLength)
+					{
+						MatchedCommandId = testId;
+						return true;
+					}
+					return false;
+				}
+			}
+			public void OnStatusDeleteFromGroupList(object sender, EventArgs e)
+			{
+				ORMModelBrowserToolWindow.OnStatusCommand(sender, ORMDesignerCommands.DeleteFromGroupList, CurrentToolWindow);
+				((OleMenuCommand)sender).MatchedCommandId = 0;
+			}
+			public void OnMenuDeleteFromGroupList(object sender, EventArgs e)
+			{
+				ORMModelBrowserToolWindow currentWindow = CurrentToolWindow;
+				if (currentWindow != null)
+				{
+					currentWindow.OnMenuDeleteFromGroupList(((OleMenuCommand)sender).MatchedCommandId);
 				}
 			}
 			public void OnStatusEditLabel(Object sender, EventArgs e)
@@ -270,6 +397,43 @@ namespace Neumont.Tools.ORM.Shell
 				if (currentWindow != null)
 				{
 					currentWindow.OnMenuSelectShape(NavigateToWindow.DiagramSpy);
+				}
+			}
+			private void OnStatusFreeFormCommand(object sender, EventArgs e)
+			{
+				ORMModelBrowserToolWindow.OnStatusCommand(sender, ORMDesignerCommands.FreeFormCommandList, CurrentToolWindow);
+				((OleMenuCommand)sender).MatchedCommandId = 0;
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			private void OnMenuFreeFormCommand(object sender, EventArgs e)
+			{
+				ORMModelBrowserToolWindow currentWindow = CurrentToolWindow;
+				if (currentWindow != null)
+				{
+					// Defer to the doc view
+					currentWindow.OnMenuFreeFormCommand(((OleMenuCommand)sender).MatchedCommandId);
+				}
+			}
+			private sealed class DynamicFreeFormCommand : DynamicStatusMenuCommand
+			{
+				public DynamicFreeFormCommand(EventHandler statusHandler, EventHandler invokeHandler, CommandID id)
+					: base(statusHandler, invokeHandler, id)
+				{
+				}
+				public sealed override bool DynamicItemMatch(int cmdId)
+				{
+					int baseCmdId = CommandID.ID;
+					int testId = cmdId - baseCmdId;
+
+
+					if (testId >= 0 && testId < ORMDesignerDocView.ORMDesignerCommandIds.FreeFormCommandListLength)
+					{
+						MatchedCommandId = testId;
+						return true;
+					}
+					return false;
 				}
 			}
 			#endregion // Command Handlers

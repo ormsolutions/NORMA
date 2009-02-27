@@ -23,7 +23,7 @@ using Microsoft.VisualStudio.VirtualTreeGrid;
 
 namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 {
-	partial class SurveyTree
+	partial class SurveyTree<SurveyContextType>
 	{
 		partial class MainList
 		{
@@ -46,18 +46,16 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					/// <param name="count">Amount That You Want Displayed</param>
 					public SimpleListShifter(IBranch baseBranch, int firstItemIndex, int count)
 					{
-
-						Debug.Assert(baseBranch != null);
-						Debug.Assert(firstItemIndex >= 0);
-						Debug.Assert(firstItemIndex < baseBranch.VisibleItemCount);
+						int fullItemCount = baseBranch.VisibleItemCount;
+						Debug.Assert(baseBranch != null && (count == 0 || (firstItemIndex >= 0 && firstItemIndex < fullItemCount)));
+						if (firstItemIndex + count > fullItemCount)
+						{
+							// UNDONE: I'm not sure why this is here, so I'm not pullling it
+							count = fullItemCount - firstItemIndex;
+						}
 						myBaseBranch = baseBranch;
 						myFirstItem = firstItemIndex;
 						myCount = count;
-						if (myFirstItem + myCount > myBaseBranch.VisibleItemCount)
-						{
-							myCount = myBaseBranch.VisibleItemCount - myFirstItem;
-						}
-
 					}
 					#endregion // Fields and Constructor
 					#region Accessor properties

@@ -1,27 +1,28 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using Neumont.Tools.Modeling.Shell;
 using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 {
-	partial class ConceptualDatabaseDomainModel : ISurveyQuestionProvider
+	partial class ConceptualDatabaseDomainModel : ISurveyQuestionProvider<Microsoft.VisualStudio.Modeling.Store>
 	{
-		private static readonly ISurveyQuestionTypeInfo[] mySurveyQuestionTypeInfo1 = new ISurveyQuestionTypeInfo[]{
+		private static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[] mySurveyQuestionTypeInfo1 = new ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[]{
 			ProvideSurveyQuestionForSurveySchemaType.Instance};
-		private static readonly ISurveyQuestionTypeInfo[] mySurveyQuestionTypeInfo2 = new ISurveyQuestionTypeInfo[]{
+		private static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[] mySurveyQuestionTypeInfo2 = new ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[]{
 			ProvideSurveyQuestionForSurveySchemaChildType.Instance};
-		private static readonly ISurveyQuestionTypeInfo[] mySurveyQuestionTypeInfo3 = new ISurveyQuestionTypeInfo[]{
+		private static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[] mySurveyQuestionTypeInfo3 = new ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[]{
 			ProvideSurveyQuestionForSurveyTableChildType.Instance,
 			ProvideSurveyQuestionForSurveyTableChildGlyphType.Instance,
 			ProvideSurveyQuestionForSurveyColumnClassificationType.Instance};
-		private static readonly ISurveyQuestionTypeInfo[] mySurveyQuestionTypeInfo4 = new ISurveyQuestionTypeInfo[]{
+		private static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[] mySurveyQuestionTypeInfo4 = new ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[]{
 			ProvideSurveyQuestionForSurveyReferenceConstraintChildType.Instance};
-		private static readonly ISurveyQuestionTypeInfo[] mySurveyQuestionTypeInfo5 = new ISurveyQuestionTypeInfo[]{
+		private static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[] mySurveyQuestionTypeInfo5 = new ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[]{
 			ProvideSurveyQuestionForSurveyColumnReferenceChildType.Instance};
-		private static readonly ISurveyQuestionTypeInfo[] mySurveyQuestionTypeInfo6 = new ISurveyQuestionTypeInfo[]{
+		private static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[] mySurveyQuestionTypeInfo6 = new ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[]{
 			ProvideSurveyQuestionForSurveyUniquenessConstraintChildType.Instance};
-		/// <summary>Implements <see cref="ISurveyQuestionProvider.GetSurveyQuestions"/></summary>
-		protected static IEnumerable<ISurveyQuestionTypeInfo> GetSurveyQuestions(object expansionKey)
+		/// <summary>Implements <see cref="ISurveyQuestionProvider{Object}.GetSurveyQuestions"/></summary>
+		protected static IEnumerable<ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>> GetSurveyQuestions(Microsoft.VisualStudio.Modeling.Store surveyContext, object expansionKey)
 		{
 			if (expansionKey == null)
 			{
@@ -49,40 +50,35 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			}
 			return null;
 		}
-		IEnumerable<ISurveyQuestionTypeInfo> ISurveyQuestionProvider.GetSurveyQuestions(object expansionKey)
+		IEnumerable<ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>> ISurveyQuestionProvider<Microsoft.VisualStudio.Modeling.Store>.GetSurveyQuestions(Microsoft.VisualStudio.Modeling.Store surveyContext, object expansionKey)
 		{
-			return GetSurveyQuestions(expansionKey);
+			return GetSurveyQuestions(surveyContext, expansionKey);
 		}
-		/// <summary>Implements <see cref="ISurveyQuestionProvider.SurveyQuestionImageList"/></summary>
-		protected ImageList SurveyQuestionImageList
+		/// <summary>Implements <see cref="ISurveyQuestionProvider{Object}.GetSurveyQuestionImageLists"/></summary>
+		protected ImageList[] GetSurveyQuestionImageLists(Microsoft.VisualStudio.Modeling.Store surveyContext)
 		{
-			get
-			{
-				return Resources.SurveyTreeImageList;
-			}
+			return new ImageList[]{
+				Resources.SurveyTreeImageList};
 		}
-		ImageList ISurveyQuestionProvider.SurveyQuestionImageList
+		ImageList[] ISurveyQuestionProvider<Microsoft.VisualStudio.Modeling.Store>.GetSurveyQuestionImageLists(Microsoft.VisualStudio.Modeling.Store surveyContext)
 		{
-			get
-			{
-				return this.SurveyQuestionImageList;
-			}
+			return this.GetSurveyQuestionImageLists(surveyContext);
 		}
-		/// <summary>Implements <see cref="ISurveyQuestionProvider.GetErrorDisplayTypes"/></summary>
+		/// <summary>Implements <see cref="ISurveyQuestionProvider{Object}.GetErrorDisplayTypes"/></summary>
 		protected static IEnumerable<Type> GetErrorDisplayTypes()
 		{
 			return null;
 		}
-		IEnumerable<Type> ISurveyQuestionProvider.GetErrorDisplayTypes()
+		IEnumerable<Type> ISurveyQuestionProvider<Microsoft.VisualStudio.Modeling.Store>.GetErrorDisplayTypes()
 		{
 			return GetErrorDisplayTypes();
 		}
-		private sealed class ProvideSurveyQuestionForSurveySchemaType : ISurveyQuestionTypeInfo
+		private sealed class ProvideSurveyQuestionForSurveySchemaType : ISurveyQuestionTypeInfo, ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>
 		{
 			private ProvideSurveyQuestionForSurveySchemaType()
 			{
 			}
-			public static readonly ISurveyQuestionTypeInfo Instance = new ProvideSurveyQuestionForSurveySchemaType();
+			public static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store> Instance = new ProvideSurveyQuestionForSurveySchemaType();
 			public Type QuestionType
 			{
 				get
@@ -110,6 +106,14 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			{
 				return answer;
 			}
+			public IFreeFormCommandProvider<Microsoft.VisualStudio.Modeling.Store> GetFreeFormCommands(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return null;
+			}
+			public bool ShowEmptyGroup(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return false;
+			}
 			public SurveyQuestionDisplayData GetDisplayData(int answer)
 			{
 				return SurveyQuestionDisplayData.Default;
@@ -136,12 +140,12 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 				}
 			}
 		}
-		private sealed class ProvideSurveyQuestionForSurveySchemaChildType : ISurveyQuestionTypeInfo
+		private sealed class ProvideSurveyQuestionForSurveySchemaChildType : ISurveyQuestionTypeInfo, ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>
 		{
 			private ProvideSurveyQuestionForSurveySchemaChildType()
 			{
 			}
-			public static readonly ISurveyQuestionTypeInfo Instance = new ProvideSurveyQuestionForSurveySchemaChildType();
+			public static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store> Instance = new ProvideSurveyQuestionForSurveySchemaChildType();
 			public Type QuestionType
 			{
 				get
@@ -169,6 +173,14 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			{
 				return (int)SurveySchemaType.Last + 1 + answer;
 			}
+			public IFreeFormCommandProvider<Microsoft.VisualStudio.Modeling.Store> GetFreeFormCommands(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return null;
+			}
+			public bool ShowEmptyGroup(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return false;
+			}
 			public SurveyQuestionDisplayData GetDisplayData(int answer)
 			{
 				return SurveyQuestionDisplayData.Default;
@@ -195,12 +207,12 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 				}
 			}
 		}
-		private sealed class ProvideSurveyQuestionForSurveyTableChildType : ISurveyQuestionTypeInfo
+		private sealed class ProvideSurveyQuestionForSurveyTableChildType : ISurveyQuestionTypeInfo, ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>
 		{
 			private ProvideSurveyQuestionForSurveyTableChildType()
 			{
 			}
-			public static readonly ISurveyQuestionTypeInfo Instance = new ProvideSurveyQuestionForSurveyTableChildType();
+			public static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store> Instance = new ProvideSurveyQuestionForSurveyTableChildType();
 			public Type QuestionType
 			{
 				get
@@ -228,6 +240,14 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			{
 				return -1;
 			}
+			public IFreeFormCommandProvider<Microsoft.VisualStudio.Modeling.Store> GetFreeFormCommands(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return null;
+			}
+			public bool ShowEmptyGroup(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return false;
+			}
 			public SurveyQuestionDisplayData GetDisplayData(int answer)
 			{
 				return SurveyQuestionDisplayData.Default;
@@ -254,12 +274,12 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 				}
 			}
 		}
-		private sealed class ProvideSurveyQuestionForSurveyTableChildGlyphType : ISurveyQuestionTypeInfo
+		private sealed class ProvideSurveyQuestionForSurveyTableChildGlyphType : ISurveyQuestionTypeInfo, ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>
 		{
 			private ProvideSurveyQuestionForSurveyTableChildGlyphType()
 			{
 			}
-			public static readonly ISurveyQuestionTypeInfo Instance = new ProvideSurveyQuestionForSurveyTableChildGlyphType();
+			public static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store> Instance = new ProvideSurveyQuestionForSurveyTableChildGlyphType();
 			public Type QuestionType
 			{
 				get
@@ -287,6 +307,14 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			{
 				return (int)SurveySchemaType.Last + 1 + (int)SurveySchemaChildType.Last + 1 + answer;
 			}
+			public IFreeFormCommandProvider<Microsoft.VisualStudio.Modeling.Store> GetFreeFormCommands(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return null;
+			}
+			public bool ShowEmptyGroup(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return false;
+			}
 			public SurveyQuestionDisplayData GetDisplayData(int answer)
 			{
 				return SurveyQuestionDisplayData.Default;
@@ -313,12 +341,12 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 				}
 			}
 		}
-		private sealed class ProvideSurveyQuestionForSurveyColumnClassificationType : ISurveyQuestionTypeInfo
+		private sealed class ProvideSurveyQuestionForSurveyColumnClassificationType : ISurveyQuestionTypeInfo, ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>
 		{
 			private ProvideSurveyQuestionForSurveyColumnClassificationType()
 			{
 			}
-			public static readonly ISurveyQuestionTypeInfo Instance = new ProvideSurveyQuestionForSurveyColumnClassificationType();
+			public static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store> Instance = new ProvideSurveyQuestionForSurveyColumnClassificationType();
 			public Type QuestionType
 			{
 				get
@@ -357,6 +385,14 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 				}
 				return retVal;
 			}
+			public IFreeFormCommandProvider<Microsoft.VisualStudio.Modeling.Store> GetFreeFormCommands(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return null;
+			}
+			public bool ShowEmptyGroup(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return false;
+			}
 			public SurveyQuestionDisplayData GetDisplayData(int answer)
 			{
 				switch ((SurveyColumnClassificationType)answer)
@@ -389,12 +425,12 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 				}
 			}
 		}
-		private sealed class ProvideSurveyQuestionForSurveyReferenceConstraintChildType : ISurveyQuestionTypeInfo
+		private sealed class ProvideSurveyQuestionForSurveyReferenceConstraintChildType : ISurveyQuestionTypeInfo, ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>
 		{
 			private ProvideSurveyQuestionForSurveyReferenceConstraintChildType()
 			{
 			}
-			public static readonly ISurveyQuestionTypeInfo Instance = new ProvideSurveyQuestionForSurveyReferenceConstraintChildType();
+			public static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store> Instance = new ProvideSurveyQuestionForSurveyReferenceConstraintChildType();
 			public Type QuestionType
 			{
 				get
@@ -422,6 +458,14 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			{
 				return (int)SurveySchemaType.Last + 1 + (int)SurveySchemaChildType.Last + 1 + (int)SurveyTableChildGlyphType.Last + 1 + answer;
 			}
+			public IFreeFormCommandProvider<Microsoft.VisualStudio.Modeling.Store> GetFreeFormCommands(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return null;
+			}
+			public bool ShowEmptyGroup(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return false;
+			}
 			public SurveyQuestionDisplayData GetDisplayData(int answer)
 			{
 				return SurveyQuestionDisplayData.Default;
@@ -448,12 +492,12 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 				}
 			}
 		}
-		private sealed class ProvideSurveyQuestionForSurveyColumnReferenceChildType : ISurveyQuestionTypeInfo
+		private sealed class ProvideSurveyQuestionForSurveyColumnReferenceChildType : ISurveyQuestionTypeInfo, ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>
 		{
 			private ProvideSurveyQuestionForSurveyColumnReferenceChildType()
 			{
 			}
-			public static readonly ISurveyQuestionTypeInfo Instance = new ProvideSurveyQuestionForSurveyColumnReferenceChildType();
+			public static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store> Instance = new ProvideSurveyQuestionForSurveyColumnReferenceChildType();
 			public Type QuestionType
 			{
 				get
@@ -481,6 +525,14 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			{
 				return -1;
 			}
+			public IFreeFormCommandProvider<Microsoft.VisualStudio.Modeling.Store> GetFreeFormCommands(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return null;
+			}
+			public bool ShowEmptyGroup(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return false;
+			}
 			public SurveyQuestionDisplayData GetDisplayData(int answer)
 			{
 				return SurveyQuestionDisplayData.Default;
@@ -507,12 +559,12 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 				}
 			}
 		}
-		private sealed class ProvideSurveyQuestionForSurveyUniquenessConstraintChildType : ISurveyQuestionTypeInfo
+		private sealed class ProvideSurveyQuestionForSurveyUniquenessConstraintChildType : ISurveyQuestionTypeInfo, ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>
 		{
 			private ProvideSurveyQuestionForSurveyUniquenessConstraintChildType()
 			{
 			}
-			public static readonly ISurveyQuestionTypeInfo Instance = new ProvideSurveyQuestionForSurveyUniquenessConstraintChildType();
+			public static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store> Instance = new ProvideSurveyQuestionForSurveyUniquenessConstraintChildType();
 			public Type QuestionType
 			{
 				get
@@ -539,6 +591,14 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			public int MapAnswerToImageIndex(int answer)
 			{
 				return (int)SurveySchemaType.Last + 1 + (int)SurveySchemaChildType.Last + 1 + (int)SurveyTableChildGlyphType.Last + 1 + (int)SurveyReferenceConstraintChildType.Last + 1 + answer;
+			}
+			public IFreeFormCommandProvider<Microsoft.VisualStudio.Modeling.Store> GetFreeFormCommands(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return null;
+			}
+			public bool ShowEmptyGroup(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return false;
 			}
 			public SurveyQuestionDisplayData GetDisplayData(int answer)
 			{

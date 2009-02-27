@@ -33,7 +33,7 @@ using Neumont.Tools.Modeling.Diagrams;
 using Neumont.Tools.ORM.Shell;
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	public partial class ObjectTypeShape : IModelErrorActivation
+	public partial class ObjectTypeShape : IModelErrorActivation, IDynamicColorGeometryHost
 	{
 		#region Member Variables
 		private static AutoSizeTextField myTextShapeField;
@@ -76,6 +76,69 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return (associatedObjectType != null && associatedObjectType.IsValueType) ? DashedShapeOutlinePen : DiagramPens.ShapeOutline;
 			}
 		}
+		#region IDynamicColorGeometryHost Implementation
+		/// <summary>
+		/// Implements <see cref="IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId,Pen)"/>
+		/// </summary>
+		protected Color UpdateDynamicColor(StyleSetResourceId penId, Pen pen)
+		{
+			Color retVal = Color.Empty;
+			IDynamicShapeColorProvider<ORMDiagramDynamicColor, ObjectTypeShape, ObjectType>[] providers;
+			if ((penId == DashedShapeOutlinePen || penId == DiagramPens.ShapeOutline) &&
+				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ObjectTypeShape, ObjectType>>()))
+			{
+				ObjectType element = (ObjectType)ModelElement;
+				for (int i = 0; i < providers.Length; ++i)
+				{
+					Color alternateColor = providers[i].GetDynamicColor(ORMDiagramDynamicColor.Outline, this, element);
+					if (alternateColor != Color.Empty)
+					{
+						retVal = pen.Color;
+						pen.Color = alternateColor;
+						break;
+					}
+				}
+			}
+			return retVal;
+		}
+		Color IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId penId, Pen pen)
+		{
+			return UpdateDynamicColor(penId, pen);
+		}
+		/// <summary>
+		/// Implements <see cref="IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId,Brush)"/>
+		/// </summary>
+		protected Color UpdateDynamicColor(StyleSetResourceId brushId, Brush brush)
+		{
+			Color retVal = Color.Empty;
+			SolidBrush solidBrush;
+			IDynamicShapeColorProvider<ORMDiagramDynamicColor, ObjectTypeShape, ObjectType>[] providers;
+			bool isBackgroundBrush;
+			if (((isBackgroundBrush = brushId == DiagramBrushes.DiagramBackground) ||
+				brushId == DiagramBrushes.ShapeTitleText) &&
+				null != (solidBrush = brush as SolidBrush) &&
+				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ObjectTypeShape, ObjectType>>()))
+			{
+				ObjectType element = (ObjectType)ModelElement;
+				ORMDiagramDynamicColor requestColor = isBackgroundBrush ? ORMDiagramDynamicColor.Background : ORMDiagramDynamicColor.ForegroundText;
+				for (int i = 0; i < providers.Length; ++i)
+				{
+					Color alternateColor = providers[i].GetDynamicColor(requestColor, this, element);
+					if (alternateColor != Color.Empty)
+					{
+						retVal = solidBrush.Color;
+						solidBrush.Color = alternateColor;
+						break;
+					}
+				}
+			}
+			return retVal;
+		}
+		Color IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId brushId, Brush brush)
+		{
+			return UpdateDynamicColor(brushId, brush);
+		}
+		#endregion // IDynamicColorGeometryHost Implementation
 		/// <summary>
 		/// Add a dashed pen to the class resource set
 		/// </summary>
@@ -484,7 +547,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						objectShape.AutoResize();
 						if (oldSize == objectShape.Size)
 						{
-							objectShape.InvalidateRequired(true);
+							((IInvalidateDisplay)objectShape).InvalidateRequired(true);
 						}
 					}
 				}
@@ -540,7 +603,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						objectifiedShape.AutoResize();
 						if (oldSize == objectifiedShape.Size)
 						{
-							objectifiedShape.InvalidateRequired(true);
+							((IInvalidateDisplay)objectifiedShape).InvalidateRequired(true);
 						}
 					}
 				}

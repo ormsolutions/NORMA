@@ -22,6 +22,7 @@ using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
+using Neumont.Tools.Modeling.Diagrams;
 
 // This file consists of overrides and replacements for code in the
 // BinaryLinkShape and BinaryLinkShapeGeometry code provided by Microsoft.
@@ -195,13 +196,24 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			Graphics g = e.Graphics;
 			GraphicsPath path = this.GetPath(geometryHost);
-			Pen pen = geometryHost.GeometryStyleSet.GetPen(this.GetOutlinePenId(geometryHost));
+			StyleSetResourceId penId = GetOutlinePenId(geometryHost);
+			Pen pen = geometryHost.GeometryStyleSet.GetPen(penId);
 			if ((path != null) && (pen != null))
 			{
+				IDynamicColorGeometryHost dynamicColors = geometryHost as IDynamicColorGeometryHost;
 				if (this.HasOutline(geometryHost))
 				{
-					Color restoreColor = geometryHost.UpdateGeometryLuminosity(e.View, pen);
-					SafeDrawPath(g, pen, path);
+					Color restoreColor;
+					if (null == (dynamicColors = geometryHost as IDynamicColorGeometryHost) ||
+						(restoreColor = dynamicColors.UpdateDynamicColor(penId, pen)).IsEmpty)
+					{
+						restoreColor = geometryHost.UpdateGeometryLuminosity(e.View, pen);
+					}
+					else
+					{
+						geometryHost.UpdateGeometryLuminosity(e.View, pen);
+					}
+					GeometryUtility.SafeDrawPath(g, pen, path);
 					pen.Color = restoreColor;
 				}
 				IBinaryLinkGeometryData hostData;
@@ -289,31 +301,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // Reimplementations of BinaryLinkShapeGeometry functions
-		#region Helper functions (unmodified Reflector copies)
-		/// <summary>
-		/// Pulled directly from Reflector disassembly
-		/// </summary>
-		private static void SafeDrawPath(Graphics g, Pen pen, GraphicsPath path)
-		{
-			try
-			{
-				if ((g != null) && (pen != null))
-				{
-					g.DrawPath(pen, path);
-				}
-			}
-			catch (OutOfMemoryException)
-			{
-				if (pen.DashStyle == DashStyle.Solid)
-				{
-					throw;
-				}
-			}
-			catch (OverflowException)
-			{
-			}
-		}
-		#endregion // Helper functions (unmodified Reflector copies)
 	}
 	#endregion // ClickThroughObliqueBinaryLinkShapeGeometry class
 	#region ObliqueBinaryLinkShapeGeometry class

@@ -476,17 +476,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			while (reader.Read())
 			{
 				XmlNodeType nodeType = reader.NodeType;
-				if (nodeType == XmlNodeType.Element && reader.IsEmptyElement)
+				if (nodeType == XmlNodeType.Element)
 				{
 					if (namespaces == null)
 					{
+						namespaces = new Dictionary<string, string>();
 						//synchronize namespaces
 						foreach (ICustomSerializedDomainModel serializationInfo in Utility.EnumerateDomainModels<ICustomSerializedDomainModel>(Store.DomainModels))
 						{
-							if (namespaces == null)
-							{
-								namespaces = new Dictionary<string, string>();
-							}
 							string defaultPrefix = serializationInfo.DefaultElementPrefix;
 							string[,] namespaceInfo = serializationInfo.GetCustomElementNamespaces();
 							int infoCount = namespaceInfo.GetLength(0);
@@ -500,13 +497,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 						}
 					}
-					if (namespaces != null)
+					string readerNamespaceURI = reader.NamespaceURI;
+					if (namespaces.ContainsKey(readerNamespaceURI))
 					{
-						string readerNamespaceURI = reader.NamespaceURI;
-						if (namespaces.ContainsKey(readerNamespaceURI))
-						{
-							retVal += namespaces[readerNamespaceURI] + "." + reader.LocalName + ListDelimiter;
-						}
+						retVal += namespaces[readerNamespaceURI] + "." + reader.LocalName + ListDelimiter;
+					}
+					if (!reader.IsEmptyElement)
+					{
+						PassEndElement(reader);
 					}
 				}
 				else if (nodeType == XmlNodeType.EndElement)
@@ -517,10 +515,34 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 			return retVal;
 		}
+		/// <summary>
+		/// Move the reader to the node immediately after the end element corresponding to the current open element
+		/// </summary>
+		/// <param name="reader">The XmlReader to advance</param>
+		private static void PassEndElement(XmlReader reader)
+		{
+			if (!reader.IsEmptyElement)
+			{
+				bool finished = false;
+				while (!finished && reader.Read())
+				{
+					switch (reader.NodeType)
+					{
+						case XmlNodeType.Element:
+							PassEndElement(reader);
+							break;
+
+						case XmlNodeType.EndElement:
+							finished = true;
+							break;
+					}
+				}
+			}
+		}
 		void IXmlSerializable.WriteXml(XmlWriter writer)
 		{
 			writer.WriteStartElement(XMLPrefix, XMLElement, ORMCoreDomainModel.XmlNamespace);
-			writer.WriteAttributeString("id", "_" + this.Id);
+			writer.WriteAttributeString("id", '_' + XmlConvert.ToString(Id).ToUpperInvariant());
 			writer.WriteAttributeString(XMLModelReferenceAttribute, "_" + Model.Id.ToString("D"));
 
 			Dictionary<string, string[]> namespaceMap = null;

@@ -35,6 +35,97 @@ using System.ComponentModel.Design;
 namespace Neumont.Tools.Modeling.Design
 {
 	/// <summary>
+	/// Selected context instances are often represented by a wrapper
+	/// element representing a shape or an element reference. Use
+	/// the <see cref="ResolveContextInstance(object)"/> or <see cref="ResolveContextInstance(object,bool)"/>
+	/// methods to drilldown into an instance to separate the primary,
+	/// reference, and presentation parts.
+	/// </summary>
+	public struct ContextElementParts
+	{
+		private object myPrimaryElement;
+		private IElementReference myReferenceElement;
+		private PresentationElement myPresentationElement;
+		/// <summary>
+		/// Drilldown on instance parts for an element. Does not perform
+		/// any array handling.
+		/// </summary>
+		/// <param name="instance">The context instance. For an editor context, this
+		/// is the value returned by <see cref="ITypeDescriptorContext.Instance"/></param>
+		/// <returns>A populated <see cref="ContextElementParts"/> structure</returns>
+		public static ContextElementParts ResolveContextInstance(object instance)
+		{
+			return ResolveContextInstance(instance, false);
+		}
+		/// <summary>
+		/// Drilldown on instance parts for an element. Does not perform
+		/// any special array handling.
+		/// </summary>
+		/// <param name="instance">The context instance. For an editor context, this
+		/// is the value returned by <see cref="ITypeDescriptorContext.Instance"/></param>
+		/// <param name="pickAnyElement">If an array of elements is passed in, then use the first element as the context element.</param>
+		/// <returns>A populated <see cref="ContextElementParts"/> structure</returns>
+		public static ContextElementParts ResolveContextInstance(object instance, bool pickAnyElement)
+		{
+			// Note that this is duplicated in EditorUtility.ResolveContextInstance
+
+			ContextElementParts retVal = new ContextElementParts();
+			// Test early, prevent crashes if pickAnyElement is true
+			if (instance == null)
+			{
+				return retVal;
+			}
+			PresentationElement pel;
+			IElementReference reference;
+			if (pickAnyElement && instance.GetType().IsArray)
+			{
+				instance = (instance as object[])[0];
+			}
+			if (null != (reference = instance as IElementReference))
+			{
+				instance = reference.ReferencedElement;
+				retVal.myReferenceElement = reference;
+			}
+			if (null != (pel = instance as PresentationElement))
+			{
+				instance = pel.ModelElement;
+				retVal.myPresentationElement = pel;
+			}
+			retVal.myPrimaryElement = instance;
+			return retVal;
+		}
+		/// <summary>
+		/// The primary element extracted from a wrapper instance.
+		/// </summary>
+		public object PrimaryElement
+		{
+			get
+			{
+				return myPrimaryElement;
+			}
+		}
+		/// <summary>
+		/// The <see cref="IElementReference"/> resolved to get the <see cref="PrimaryElement"/>
+		/// </summary>
+		public IElementReference ReferenceElement
+		{
+			get
+			{
+				return myReferenceElement;
+			}
+		}
+		/// <summary>
+		/// The <see cref="PresentationElement"/> resolved to get the <see cref="PrimaryElement"/>
+		/// </summary>
+		public PresentationElement PresentationElement
+		{
+			get
+			{
+				return myPresentationElement;
+			}
+		}
+	}
+	/// <summary>
 	/// Static helper functions to use with <see cref="UITypeEditor"/>
 	/// implementations.
 	/// </summary>
@@ -46,20 +137,28 @@ namespace Neumont.Tools.Modeling.Design
 		/// helper function to resolve known element containers to get to the
 		/// backing element.
 		/// </summary>
-		/// <param name="instance">The selected object returned by ITypeDescriptorContext.Instance</param>
-		/// <param name="pickAnyElement">If an array of elements is passed in, then any element will work as the context element.</param>
+		/// <param name="instance">The context instance. For an editor context, this
+		/// is the value returned by <see cref="ITypeDescriptorContext.Instance"/></param>
+		/// <param name="pickAnyElement">If an array of elements is passed in, then use the first element as the context element.</param>
 		/// <returns>A resolved object, or the starting instance if the item is not wrapped.</returns>
 		public static object ResolveContextInstance(object instance, bool pickAnyElement)
 		{
+			// Note that this is duplicated in ContextEditorParts.ResolveContextInstance
+
 			// Test early, prevent crashes if pickAnyElement is true
 			if (instance == null)
 			{
 				return null;
 			}
 			PresentationElement pel;
+			IElementReference reference;
 			if (pickAnyElement && instance.GetType().IsArray)
 			{
 				instance = (instance as object[])[0];
+			}
+			if (null != (reference = instance as IElementReference))
+			{
+				instance = reference.ReferencedElement;
 			}
 			if (null != (pel = instance as PresentationElement))
 			{

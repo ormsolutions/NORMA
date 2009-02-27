@@ -379,7 +379,9 @@ namespace Neumont.Tools.Modeling.Design
 		/// <summary>See <see cref="EnumConverter.ConvertTo"/>.</summary>
 		public sealed override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
 		{
-			if (destinationType == typeof(string) && culture != null && !culture.Equals(CultureInfo.InvariantCulture) && value is TEnum)
+			if (destinationType == typeof(string) && culture != null && !culture.Equals(CultureInfo.InvariantCulture) &&
+				(value is TEnum ||
+				(value != null && value.GetType() == Enum.GetUnderlyingType(typeof(TEnum)) && null != Enum.GetName(typeof(TEnum), value))))
 			{
 				return GetLocalizedNameFromValue((TEnum)value, culture);
 			}

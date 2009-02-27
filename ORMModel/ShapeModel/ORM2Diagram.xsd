@@ -3,6 +3,7 @@
 	targetNamespace="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram"
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
+	xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" 
 	xmlns="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:annotation>
@@ -17,6 +18,7 @@
 		</xs:appinfo>
 	</xs:annotation>
 
+	<xs:import namespace="http://schemas.neumont.edu/ORM/2006-04/ORMCore"/>
 	<xs:element name="ORMDiagram" type="ORMDiagram"/>
 	<xs:complexType name="ORMDiagram">
 		<xs:sequence>
@@ -188,4 +190,5 @@
 	<xs:complexType name="SubjectRef">
 		<xs:attribute name="ref" type="xs:IDREF"/>
 	</xs:complexType>
+	<xs:element name="ORMDiagramDynamicColor" substitutionGroup="orm:DynamicColor"/>
 </xs:schema>

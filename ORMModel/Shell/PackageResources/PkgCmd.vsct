@@ -64,7 +64,7 @@
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdSelectCommands"/>
 				<Strings>
 					<ButtonText>ORM Diagram List</ButtonText>
-					<CommandName>Select on Dia&amp;gram</CommandName>
+					<CommandName>&amp;Select on Diagram</CommandName>
 				</Strings>
 			</Menu>
 			<Menu guid="guidORMDesignerCommandSet" id="menuIdDiagramSpyDiagramList" priority="0x0200" type="Context">
@@ -79,6 +79,27 @@
 				<Strings>
 					<ButtonText>Report Generator List</ButtonText>
 					<CommandName>Generate &amp;Report</CommandName>
+				</Strings>
+			</Menu>
+			<Menu guid="guidORMDesignerCommandSet" id="menuIdGroupCommands" priority="0x0100" type="Context">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdModelCommands"/>
+				<Strings>
+					<ButtonText>ORM Group Management</ButtonText>
+					<CommandName>&amp;Groups</CommandName>
+				</Strings>
+			</Menu>
+			<Menu guid="guidORMDesignerCommandSet" id="menuIdIncludeInGroup" priority="0x0100" type="Context">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdGroupCommands"/>
+				<Strings>
+					<ButtonText>Include Elements in a Group</ButtonText>
+					<CommandName>&amp;Include In</CommandName>
+				</Strings>
+			</Menu>
+			<Menu guid="guidORMDesignerCommandSet" id="menuIdDeleteFromGroup" priority="0x0200" type="Context">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdGroupCommands"/>
+				<Strings>
+					<ButtonText>Delete Elements From Group</ButtonText>
+					<CommandName>&amp;Delete From</CommandName>
 				</Strings>
 			</Menu>
 
@@ -101,6 +122,9 @@
 
 		<Groups>
 			<Group guid="guidORMDesignerCommandSet" id="groupIdDebugCommands" priority="0x1000">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdContextMenu"/>
+			</Group>
+			<Group guid="guidORMDesignerCommandSet" id="groupIdFreeFormCommands" priority="0x0008">
 				<Parent guid="guidORMDesignerCommandSet" id="menuIdContextMenu"/>
 			</Group>
 			<Group guid="guidORMDesignerCommandSet" id="groupIdErrorList" priority="0x0010">
@@ -159,6 +183,24 @@
 
 			<Group guid="guidORMDesignerCommandSet" id="groupIdDiagramSpyDiagramListTest" priority="0x0010">
 				<Parent guid="guidORMDesignerCommandSet" id="menuIdDiagramSpyDiagramList"/>
+			</Group>
+
+			<Group guid="guidORMDesignerCommandSet" id="groupIdGroupCommands" priority="0x0000">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdGroupCommands"/>
+			</Group>
+
+			<Group guid="guidORMDesignerCommandSet" id="groupIdIncludeInGroupListTest" priority="0x0200">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdIncludeInGroup"/>
+			</Group>
+
+			<Group guid="guidORMDesignerCommandSet" id="groupIdIncludeInNewGroup" priority="0x0100">
+				<!-- Add this with a higher priority that the group list means that visibility of menuIdGroupCommands can
+				be determined with querying the list contents for either the IncludeIn or DeleteFrom lists. -->
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdIncludeInGroup"/>
+			</Group>
+
+			<Group guid="guidORMDesignerCommandSet" id="groupIdDeleteFromGroupListTest" priority="0x0000">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdDeleteFromGroup"/>
 			</Group>
 
 			<Group guid="guidORMDesignerCommandSet" id="groupIdReportGeneratorListTest" priority="0x0010">
@@ -236,7 +278,7 @@
 					<ButtonText>&amp;Delete Role Sequence</ButtonText>
 				</Strings>
 			</Button>
-			<Button guid="guidORMDesignerCommandSet" id="cmdIdEditExternalConstraint" priority="0x0050" type="Button">
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdEditRoleSequenceConstraint" priority="0x0050" type="Button">
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdConstraintEditContext"/>
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<CommandFlag>DynamicVisibility</CommandFlag>
@@ -298,6 +340,17 @@
 				</Strings>
 			</Button>
 
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdFreeFormCommandList" priority="0x0010" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdFreeFormCommands"/>
+				<CommandFlag>DynamicItemStart</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>TextChanges</CommandFlag>
+				<Strings>
+					<ButtonText>No Commands</ButtonText>
+				</Strings>
+			</Button>
+
 			<Button guid="guidORMDesignerCommandSet" id="cmdIdErrorList" priority="0x0010" type="Button">
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdErrorListTest"/>
 				<CommandFlag>DynamicItemStart</CommandFlag>
@@ -328,6 +381,37 @@
 				<CommandFlag>TextChanges</CommandFlag>
 				<Strings>
 					<ButtonText>No Other &amp;Diagrams</ButtonText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdIncludeInNewGroup" priority="0x0000" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdIncludeInNewGroup"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>&amp;New Group</ButtonText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdIncludeInGroupList" priority="0x0000" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdIncludeInGroupListTest"/>
+				<CommandFlag>DynamicItemStart</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>TextChanges</CommandFlag>
+				<Strings>
+					<ButtonText>No &amp;Groups</ButtonText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdDeleteFromGroupList" priority="0x0100" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdDeleteFromGroupListTest"/>
+				<CommandFlag>DynamicItemStart</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>TextChanges</CommandFlag>
+				<Strings>
+					<ButtonText>No &amp;Groups</ButtonText>
 				</Strings>
 			</Button>
 
@@ -432,13 +516,13 @@
 					<ButtonText>ORM &amp;Fact Editor</ButtonText>
 				</Strings>
 			</Button>
-			<Button guid="guidORMDesignerCommandSet" id="cmdIdViewInformalDefinitionWindow" priority="0x0380" type="Button">
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdViewInformalDescriptionWindow" priority="0x0380" type="Button">
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdORMToolWindows"/>
-				<Icon guid="guidORMToolWindowIcons" id="bmpIdToolWindowDefinitionEditor"/>
+				<Icon guid="guidORMToolWindowIcons" id="bmpIdToolWindowDescriptionEditor"/>
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
-					<ButtonText>ORM &amp;Informal Definition Editor</ButtonText>
+					<ButtonText>ORM &amp;Informal Description Editor</ButtonText>
 				</Strings>
 			</Button>
 			<Button guid="guidORMDesignerCommandSet" id="cmdIdViewSamplePopulationEditor" priority="0x0400" type="Button">
@@ -616,6 +700,15 @@
 				</Strings>
 			</Button>
 
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdIncludeInGroup" priority="0x030" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdDeleteContext"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>In&amp;clude in Group</ButtonText>
+				</Strings>
+			</Button>
+
 			<Button guid="guidORMDesignerCommandSet" id="cmdIdDisplayOrientationRotatedLeft" priority="0x010" type="Button">
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdDisplayOrientation"/>
 				<CommandFlag>DefaultInvisible</CommandFlag>
@@ -679,7 +772,7 @@
 
 		<Bitmaps>
 			<Bitmap guid="guidORMVerbalizationToolbarImages" href="../../Resources/VerbalizationToolbarImages.png" usedList="bmpIdShowNegativeVerbalization, bmpIdShowPositiveVerbalization, bmpIdVerbalizationHyperlinkToDiagramSpy"/>
-			<Bitmap guid="guidORMToolWindowIcons" href="../../Resources/ToolWindowIcons.png" usedList="bmpIdToolWindowVerbalizationBrowser, bmpIdToolWindowReadingEditor, bmpIdToolWindowReferenceModeEditor, bmpIdToolWindowFactEditor, bmpIdToolWindowModelBrowser, bmpIdToolWindowNotesEditor, bmpIdToolWindowPopulationEditor, bmpIdToolWindowContextWindow, bmpIdToolWindowDefinitionEditor, bmpIdToolWindowDiagramSpy"/>
+			<Bitmap guid="guidORMToolWindowIcons" href="../../Resources/ToolWindowIcons.png" usedList="bmpIdToolWindowVerbalizationBrowser, bmpIdToolWindowReadingEditor, bmpIdToolWindowReferenceModeEditor, bmpIdToolWindowFactEditor, bmpIdToolWindowModelBrowser, bmpIdToolWindowNotesEditor, bmpIdToolWindowPopulationEditor, bmpIdToolWindowContextWindow, bmpIdToolWindowDescriptionEditor, bmpIdToolWindowDiagramSpy"/>
 		</Bitmaps>
 
 	</Commands>
@@ -702,7 +795,7 @@
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewFactEditor" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="F" mod2="Control"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewReadingEditor" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="R" mod2="Control"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewVerbalizationBrowser" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="V" mod2="Control"/>
-		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewInformalDefinitionWindow" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="I" mod2="Control"/>
+		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewInformalDescriptionWindow" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="I" mod2="Control"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewSamplePopulationEditor" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="S" mod2="Control"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewNotesWindow" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="N" mod2="Control"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewReferenceModeEditor" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="E" mod2="Control"/>
@@ -831,6 +924,9 @@
 			<IDSymbol value="0x0107" name="menuIdReportGeneratorList"/>
 			<IDSymbol value="0x0108" name="menuIdFactEditorContextMenu"/>
 			<IDSymbol value="0x0109" name="menuIdDiagramSpyDiagramList"/>
+			<IDSymbol value="0x010A" name="menuIdGroupCommands"/>
+			<IDSymbol value="0x010B" name="menuIdIncludeInGroup"/>
+			<IDSymbol value="0x010C" name="menuIdDeleteFromGroup"/>
 
 			<!-- Groups (0x10__) -->
 			<IDSymbol value="0x0FFF" name="groupIdDebugCommands"/>
@@ -858,6 +954,11 @@
 			<IDSymbol value="0x1015" name="groupIdVerbalizationOptions"/>
 			<IDSymbol value="0x1016" name="groupIdSelectCommands"/>
 			<IDSymbol value="0x1017" name="groupIdDiagramSpyDiagramListTest"/>
+			<IDSymbol value="0x1018" name="groupIdFreeFormCommands"/>
+			<IDSymbol value="0x1019" name="groupIdGroupCommands"/>
+			<IDSymbol value="0x101A" name="groupIdIncludeInGroupListTest"/>
+			<IDSymbol value="0x101B" name="groupIdIncludeInNewGroup"/>
+			<IDSymbol value="0x101C" name="groupIdDeleteFromGroupListTest"/>
 
 			<!-- Commands (0x2___) -->
 			<IDSymbol value="0x28FE" name="cmdIdDebugViewTransactionLogs"/>
@@ -870,7 +971,7 @@
 			<IDSymbol value="0x2905" name="cmdIdViewFactEditor"/>
 			<IDSymbol value="0x2906" name="cmdIdActivateRoleSequence"/>
 			<IDSymbol value="0x2907" name="cmdIdDeleteRoleSequence"/>
-			<IDSymbol value="0x2908" name="cmdIdEditExternalConstraint"/>
+			<IDSymbol value="0x2908" name="cmdIdEditRoleSequenceConstraint"/>
 			<IDSymbol value="0x2909" name="cmdIdMoveRoleSequenceUp"/>
 			<IDSymbol value="0x290A" name="cmdIdMoveRoleSequenceDown"/>
 			<IDSymbol value="0x290B" name="cmdIdCopyImage"/>
@@ -904,12 +1005,14 @@
 			<IDSymbol value="0x2927" name="cmdIdExclusiveOrCoupler"/>
 			<IDSymbol value="0x2928" name="cmdIdExclusiveOrDecoupler"/>
 			<IDSymbol value="0x2929" name="cmdIdUnobjectifyFactType"/>
-			<IDSymbol value="0x292A" name="cmdIdViewInformalDefinitionWindow"/>
+			<IDSymbol value="0x292A" name="cmdIdViewInformalDescriptionWindow"/>
 			<IDSymbol value="0x292B" name="cmdIdFactEditorCommitLine"/>
 			<IDSymbol value="0x292C" name="cmdIdViewDiagramSpyWindow"/>
 			<IDSymbol value="0x292D" name="cmdIdVerbalizationHyperlinkToDiagramSpy"/>
 			<IDSymbol value="0x292E" name="cmdIdSelectInDiagramSpy"/>
 			<IDSymbol value="0x292F" name="cmdIdSelectInDocumentWindow"/>
+			<IDSymbol value="0x2930" name="cmdIdIncludeInGroup"/>
+			<IDSymbol value="0x2931" name="cmdIdIncludeInNewGroup"/>
 
 			<!-- Large ranges for dynamic commands, keep single commands in the 0x29__ range -->
 			<IDSymbol value="0x2A00" name="cmdIdErrorList"/>
@@ -920,6 +1023,12 @@
 			<!-- Reserve 2C__ range for reports. -->
 			<IDSymbol value="0x2D00" name="cmdIdDiagramSpyDiagramList"/>
 			<!-- Reserve 2D__ range for diagram spy diagram lists. -->
+			<IDSymbol value="0x2E00" name="cmdIdFreeFormCommandList"/>
+			<!-- Reserve 2E__ range for diagram spy diagram lists. -->
+			<IDSymbol value="0x2F00" name="cmdIdIncludeInGroupList"/>
+			<!-- Reserve 2F__ range for include in group list. -->
+			<IDSymbol value="0x3000" name="cmdIdDeleteFromGroupList"/>
+			<!-- Reserve 30__ range for delete from group list. -->
 		</GuidSymbol>
 		<GuidSymbol name="guidFactEditorFactory" value="{EE99A954-82C4-4098-A2BD-5C75E3D138A7}"/>
 		<GuidSymbol name="guidORMVerbalizationToolbarImages" value="{5743D786-F88A-45F9-8117-F915CA6A9433}">
@@ -938,7 +1047,7 @@
 			<IDSymbol value="0x0006" name="bmpIdToolWindowNotesEditor"/>
 			<IDSymbol value="0x0007" name="bmpIdToolWindowPopulationEditor"/>
 			<IDSymbol value="0x0008" name="bmpIdToolWindowContextWindow"/>
-			<IDSymbol value="0x0009" name="bmpIdToolWindowDefinitionEditor"/>
+			<IDSymbol value="0x0009" name="bmpIdToolWindowDescriptionEditor"/>
 			<IDSymbol value="0x000A" name="bmpIdToolWindowDiagramSpy"/>
 		</GuidSymbol>
 		<GuidSymbol name="CMDSETID_StandardCommandSet97" value="Extern">

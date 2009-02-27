@@ -31,11 +31,12 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
+using Neumont.Tools.Modeling;
 using Neumont.Tools.Modeling.Diagrams;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	public partial class ValueRangeLink : IReconfigureableLink, IConfigureAsChildShape
+	public partial class ValueRangeLink : IReconfigureableLink, IConfigureAsChildShape, IDynamicColorGeometryHost
 	{
 		#region Customize appearance
 		/// <summary>
@@ -68,9 +69,53 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // Customize appearance
+		#region IDynamicColorGeometryHost Implementation
+		/// <summary>
+		/// Implements <see cref="IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId,Pen)"/>
+		/// </summary>
+		protected Color UpdateDynamicColor(StyleSetResourceId penId, Pen pen)
+		{
+			Color retVal = Color.Empty;
+			RoleHasValueConstraint link;
+			RoleValueConstraint constraint;
+			IDynamicShapeColorProvider<ORMDiagramDynamicColor, ValueRangeLink, RoleValueConstraint>[] providers;
+			if (penId == DiagramPens.ConnectionLine &&
+				null != (link = ModelElement as RoleHasValueConstraint) &&
+				null != (constraint = link.ValueConstraint) &&
+				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ValueRangeLink, RoleValueConstraint>>()))
+			{
+				for (int i = 0; i < providers.Length; ++i)
+				{
+					Color alternateColor = providers[i].GetDynamicColor(ORMDiagramDynamicColor.Constraint, this, constraint);
+					if (alternateColor != Color.Empty)
+					{
+						retVal = pen.Color;
+						pen.Color = alternateColor;
+						break;
+					}
+				}
+			}
+			return retVal;
+		}
+		Color IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId penId, Pen pen)
+		{
+			return UpdateDynamicColor(penId, pen);
+		}
+		/// <summary>
+		/// Implements <see cref="IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId,Brush)"/>
+		/// </summary>
+		protected static Color UpdateDynamicColor(StyleSetResourceId brushId, Brush brush)
+		{
+			return Color.Empty;
+		}
+		Color IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId brushId, Brush brush)
+		{
+			return UpdateDynamicColor(brushId, brush);
+		}
+		#endregion // IDynamicColorGeometryHost Implementation
 		#region ValueRangeLink specific
 		/// <summary>
-		/// Get the ObjectTypePlaysRole link associated with this link shape
+		/// Get the <see cref="RoleHasValueConstraint"/> link associated with this link shape
 		/// </summary>
 		public RoleHasValueConstraint AssociatedValueConstraintLink
 		{

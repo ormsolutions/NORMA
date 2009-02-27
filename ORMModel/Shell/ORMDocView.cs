@@ -63,9 +63,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// Display the readings toolwindow
 		/// </summary>
 		DisplayReadingsWindow = 1L << 3,
-
-		// IL << 4 is available
-
+		/// <summary>
+		/// Check the selected object for the <see cref="IFreeFormCommandProvider{Store}"/> interface
+		/// </summary>
+		FreeFormCommandList = 1L << 4,
 		/// <summary>
 		/// Insert a role before or after the current role
 		/// </summary>
@@ -94,9 +95,9 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		MoveRoleSequenceDown = 1L << 11,
 		/// <summary>
-		/// Activate editing for the ExternalConstraint
+		/// Activate editing for an external constraint or an internal uniqueness constraint
 		/// </summary>
-		EditExternalConstraint = 1L << 12,
+		EditRoleSequenceConstraint = 1L << 12,
 		/// <summary>
 		/// Display standard toolwindows that we never disable.
 		/// This currently maps to the Verbalization and Model Browser windows
@@ -240,9 +241,36 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		SelectInDocumentWindow = 1L << 46,
 		/// <summary>
+		/// Delete a group
+		/// </summary>
+		DeleteGroup = 1L << 47,
+		/// <summary>
+		/// Remove a referenced element from a group. This
+		/// may result in either deletion of exclusion, depending
+		/// on whether or not the element is explicitly included
+		/// by one or more associated group types.
+		/// </summary>
+		RemoveFromGroup = 1L << 48,
+		/// <summary>
+		/// Include an explicitly excluded element in a group.
+		/// </summary>
+		IncludeInGroup = 1L << 49,
+		/// <summary>
+		/// Include selected elements in a new group and select the group.
+		/// </summary>
+		IncludeInNewGroup = 1L << 50,
+		/// <summary>
+		/// Get a list of available groups to include selected elements in
+		/// </summary>
+		IncludeInGroupList = 1L << 51,
+		/// <summary>
+		/// Get a list of groups the element is directly included in
+		/// </summary>
+		DeleteFromGroupList = 1L << 52,
+		/// <summary>
 		/// Mask field representing individual delete commands
 		/// </summary>
-		Delete = DeleteObjectType | DeleteFactType | DeleteConstraint | DeleteRole | DeleteModelNote | DeleteModelNoteReference,
+		Delete = DeleteObjectType | DeleteFactType | DeleteConstraint | DeleteRole | DeleteModelNote | DeleteModelNoteReference | DeleteGroup | RemoveFromGroup,
 		/// <summary>
 		/// Mask field representing individual shape delete commands
 		/// </summary>
@@ -674,7 +702,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		private void OnElementEventsEnded(object sender, ElementEventsEndedEventArgs e)
 		{
-			CommandManager.UpdateCommandStatus();
+			if (((IORMToolServices)sender).ProcessingVisibleTransactionItemEvents)
+			{
+				CommandManager.UpdateCommandStatus();
+			}
 		}
 		#endregion // IModelingEventSubscriber Implementation
 		#region SelectionContainer filtering

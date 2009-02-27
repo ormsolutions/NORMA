@@ -22,7 +22,7 @@ using System.Diagnostics;
 
 namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 {
-	partial class SurveyTree
+	partial class SurveyTree<SurveyContextType>
 	{
 		/// <summary>
 		/// wrapper for objects to be displayed in the Survey Tree
@@ -40,33 +40,33 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			/// <summary>
 			/// Create a new <see cref="SampleDataElementNode"/>
 			/// </summary>
-			/// <param name="surveyTree">The owning <see cref="SurveyTree"/> container</param>
+			/// <param name="surveyTree">The owning <see cref="SurveyTree{SurveyContextType}"/> container</param>
 			/// <param name="survey">The <see cref="Survey"/> this node is associated with</param>
 			/// <param name="contextElement">The parent element, or null for a root expansion context</param>
 			/// <param name="element">The element to create a node for</param>
 			/// <returns>A fully initialized <see cref="SampleDataElementNode"/>.</returns>
-			public static SampleDataElementNode Create(SurveyTree surveyTree, Survey survey, object contextElement, object element)
+			public static SampleDataElementNode Create(SurveyTree<SurveyContextType> surveyTree, Survey survey, object contextElement, object element)
 			{
 				return new SampleDataElementNode(surveyTree, contextElement, element, InitializeNodeData(element, contextElement, survey), null, null, true);
 			}
 			/// <summary>
 			/// Refetch the current settings of the <see cref="SurveyName"/> property
 			/// </summary>
-			/// <param name="surveyTree">The owning <see cref="SurveyTree"/> container</param>
+			/// <param name="surveyTree">The owning <see cref="SurveyTree{SurveyContextType}"/> container</param>
 			/// <param name="contextElement">The parent element, or null for a root expansion context</param>
 			/// <returns>A new <see cref="SampleDataElementNode"/>. This node is not modified.</returns>
-			public SampleDataElementNode UpdateSurveyName(SurveyTree surveyTree, object contextElement)
+			public SampleDataElementNode UpdateSurveyName(SurveyTree<SurveyContextType> surveyTree, object contextElement)
 			{
 				return new SampleDataElementNode(surveyTree, contextElement, myElement, myNodeData, null, myCustomSortData, false);
 			}
 			/// <summary>
 			/// Refetch the current settings of the <see cref="SurveyName"/> property
 			/// </summary>
-			/// <param name="surveyTree">The owning <see cref="SurveyTree"/> container</param>
+			/// <param name="surveyTree">The owning <see cref="SurveyTree{SurveyContextType}"/> container</param>
 			/// <param name="contextElement">The parent element, or null for a root expansion context</param>
 			/// <param name="customSortData">Updated sort data</param>
 			/// <returns>A new <see cref="SampleDataElementNode"/>. This node is not modified.</returns>
-			public SampleDataElementNode UpdateCustomSortData(SurveyTree surveyTree, object contextElement, object customSortData)
+			public SampleDataElementNode UpdateCustomSortData(SurveyTree<SurveyContextType> surveyTree, object contextElement, object customSortData)
 			{
 				return new SampleDataElementNode(surveyTree, contextElement, myElement, myNodeData, myDisplayText, customSortData, false);
 			}
@@ -75,7 +75,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			/// <summary>
 			/// Private constructor
 			/// </summary>
-			private SampleDataElementNode(SurveyTree surveyTree, object contextElement, object element, int nodeData, string displayText, object customSortData, bool verifyReferences)
+			private SampleDataElementNode(SurveyTree<SurveyContextType> surveyTree, object contextElement, object element, int nodeData, string displayText, object customSortData, bool verifyReferences)
 			{
 				if (element == null)
 				{
@@ -84,7 +84,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				myElement = element;
 				myNodeData = nodeData;
 				ISurveyNodeReference reference = element as ISurveyNodeReference;
-				object referencedElement = (reference == null) ? null : reference.ReferencedSurveyNode;
+				object referencedElement = (reference == null) ? null : reference.ReferencedElement;
 				if (verifyReferences)
 				{
 					if (referencedElement != null)
@@ -98,10 +98,17 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 							object targetContextElement = null;
 							ISurveyNodeContext targetContext;
 							ISurveyNode targetOwner;
-							if (null != (targetContext = referencedElement as ISurveyNodeContext) &&
-								null != (targetOwner = (targetContextElement = targetContext.SurveyNodeContext) as ISurveyNode))
+							ISurveyFloatingNode floatingNode;
+							if (null != (targetContext = referencedElement as ISurveyNodeContext))
 							{
-								expansionKey = targetOwner.SurveyNodeExpansionKey;
+								if (null != (targetOwner = (targetContextElement = targetContext.SurveyNodeContext) as ISurveyNode))
+								{
+									expansionKey = targetOwner.SurveyNodeExpansionKey;
+								}
+							}
+							else if (null != (floatingNode = referencedElement as ISurveyFloatingNode))
+							{
+								expansionKey = floatingNode.FloatingSurveyNodeQuestionKey;
 							}
 							Survey targetSurvey = surveyTree.GetSurvey(expansionKey);
 							SampleDataElementNode targetNode = new SampleDataElementNode(surveyTree, targetContextElement, referencedElement, InitializeNodeData(referencedElement, targetContextElement, targetSurvey), null, null, false);
@@ -199,7 +206,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					if (null == (node = element as ISurveyNode) &&
 						null != (reference = element as ISurveyNodeReference))
 					{
-						node = reference.ReferencedSurveyNode as ISurveyNode;
+						node = reference.ReferencedElement as ISurveyNode;
 					}
 					return node;
 				}
@@ -288,7 +295,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					// For node references, we do not care about full equality of the
 					// instances, only about a match for the target, reason, and nodedata.
 					// Do not defer to the full GetHashCode method on reference elements.
-					return Utility.GetCombinedHashCode(reference.ReferencedSurveyNode.GetHashCode(), reference.SurveyNodeReferenceReason.GetHashCode(), myNodeData);
+					return Utility.GetCombinedHashCode(reference.ReferencedElement.GetHashCode(), reference.SurveyNodeReferenceReason.GetHashCode(), myNodeData);
 				}
 				return Utility.GetCombinedHashCode(element.GetHashCode(), myNodeData);
 			}
@@ -308,7 +315,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				{
 					if (null != (otherReference = otherElement as ISurveyNodeReference))
 					{
-						return reference.ReferencedSurveyNode == otherReference.ReferencedSurveyNode &&
+						return reference.ReferencedElement == otherReference.ReferencedElement &&
 							reference.SurveyNodeReferenceReason == otherReference.SurveyNodeReferenceReason &&
 							myNodeData == other.myNodeData &&
 							myDisplayText == other.myDisplayText &&

@@ -1,13 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <qp:surveyQuestionProvider xmlns:qp="http://schemas.neumont.edu/ORM/SDK/SurveyQuestionProvider" xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX" class="ORMCoreDomainModel">
+	<qp:surveyContextType dataTypeName="Store" dataTypeQualifier="Microsoft.VisualStudio.Modeling"/>
 	<qp:surveyQuestions>
 		<qp:surveyQuestion questionType="SurveyElementType" questionPriority="-500">
 			<qp:displaySupport displayCategory="Grouping"/>
 			<qp:displaySupport displayCategory="Sorting"/>
+			<qp:commandProviderMap>
+				<qp:commandProvider enumValue="Grouping">
+					<plx:return>
+						<plx:callThis name="FreeFormElementGroupingCommands" accessor="static" type="property"/>
+					</plx:return>
+				</qp:commandProvider>
+			</qp:commandProviderMap>
+			<qp:emptyHeaderMap>
+				<qp:map enumValue="Grouping"/>
+			</qp:emptyHeaderMap>
 		</qp:surveyQuestion>
 		<qp:surveyQuestion questionType="SurveyErrorState" isErrorDisplay="true">
 			<qp:displaySupport displayCategory="Overlay"/>
-			<qp:explicitImageMap>
+			<qp:explicitImageMap lastAnswer="0">
 				<qp:offset afterSurveyQuestion="SurveyQuestionGlyph"/>
 				<qp:map enumValue="HasError" imageIndex="0"/>
 			</qp:explicitImageMap>
@@ -22,14 +33,34 @@
 		</qp:surveyQuestion>
 		<qp:surveyQuestion questionType="SurveyRoleType">
 			<qp:displaySupport displayCategory="Overlay"/>
-			<qp:explicitImageMap>
-				<qp:offset afterSurveyQuestion="SurveyQuestionGlyph"/>
-				<qp:map enumValue="Subtype" imageIndex="1"/>
-				<qp:map enumValue="Supertype" imageIndex="2"/>
-			</qp:explicitImageMap>
+			<qp:sequentialImageMap lastAnswer="Supertype">
+				<qp:offset afterSurveyQuestion="SurveyErrorState"/>
+			</qp:sequentialImageMap>
 		</qp:surveyQuestion>
 		<qp:surveyQuestion questionType="SurveyNameGeneratorRefinementType">
 			<qp:displaySupport displayCategory="Sorting"/>
+		</qp:surveyQuestion>
+		<qp:surveyQuestion questionType="SurveyGroupingChildType">
+			<qp:displaySupport displayCategory="Sorting"/>
+		</qp:surveyQuestion>
+		<qp:surveyQuestion questionType="SurveyGroupingTypeGlyph" dynamicValues="true">
+			<qp:displaySupport displayCategory="Glyph"/>
+			<qp:sequentialImageMap>
+				<qp:offset afterSurveyQuestion="SurveyGroupingReferenceType"/>
+			</qp:sequentialImageMap>
+		</qp:surveyQuestion>
+		<qp:surveyQuestion questionType="SurveyGroupingReferenceType">
+			<qp:displaySupport displayCategory="Overlay"/>
+			<qp:displaySupport displayCategory="DisplayData"/>
+			<qp:explicitImageMap lastAnswer="1">
+				<qp:offset afterSurveyQuestion="SurveyRoleType"/>
+				<qp:map enumValue="Exclusion" imageIndex="0"/>
+				<qp:map enumValue="Contradiction" imageIndex="1"/>
+			</qp:explicitImageMap>
+			<qp:displayDataMap>
+				<qp:displayData enumValue="Exclusion" gray="true"/>
+				<qp:displayDataSameAs enumValue="Contradiction" targetEnumValue="Exclusion"/>
+			</qp:displayDataMap>
 		</qp:surveyQuestion>
 	</qp:surveyQuestions>
 	<qp:groupings>
@@ -40,7 +71,7 @@
 		</qp:grouping>
 		<qp:grouping>
 			<qp:expansionKey>
-				<plx:callStatic dataTypeName="FactType" name="SurveyExpansionKey" type="property"/>
+				<plx:callStatic dataTypeName="FactType" name="SurveyExpansionKey" type="field"/>
 			</qp:expansionKey>
 			<qp:surveyQuestion ref="SurveyFactTypeDetailType"/>
 			<qp:surveyQuestion ref="SurveyErrorState"/>
@@ -49,14 +80,49 @@
 		</qp:grouping>
 		<qp:grouping>
 			<qp:expansionKey>
-				<plx:callStatic dataTypeName="NameGenerator" name="SurveyExpansionKey" type="property"/>
+				<plx:callStatic dataTypeName="NameGenerator" name="SurveyExpansionKey" type="field"/>
 			</qp:expansionKey>
 			<qp:surveyQuestion ref="SurveyNameGeneratorRefinementType"/>
 		</qp:grouping>
+		<qp:grouping>
+			<qp:expansionKey>
+				<plx:callStatic dataTypeName="ElementGrouping" name="SurveyExpansionKey" type="field"/>
+			</qp:expansionKey>
+			<qp:surveyQuestion ref="SurveyGroupingChildType"/>
+			<qp:surveyQuestion ref="SurveyGroupingTypeGlyph"/>
+			<qp:surveyQuestion ref="SurveyGroupingReferenceType"/>
+		</qp:grouping>
+		<qp:grouping>
+			<qp:expansionKey>
+				<plx:callStatic dataTypeName="ORMCoreDomainModel" name="SurveyFloatingExpansionKey" type="field"/>
+			</qp:expansionKey>
+			<qp:surveyQuestion ref="SurveyQuestionGlyph"/>
+		</qp:grouping>
 	</qp:groupings>
 	<qp:imageInformation>
+		<plx:comment>Note that this relies heavily on the current structure of the generated code</plx:comment>
+		<plx:callThis name="EnsureSurveyQuestionTypeInfo4">
+			<plx:passParam>
+				<plx:nameRef name="surveyContext" type="parameter"/>
+			</plx:passParam>
+		</plx:callThis>
 		<plx:return>
-			<plx:callStatic dataTypeName="ResourceStrings" name="SurveyTreeImageList" type="property"/>
+			<plx:callNew dataTypeName="ImageList" dataTypeIsSimpleArray="true">
+				<plx:arrayInitializer>
+					<plx:callStatic dataTypeName="ResourceStrings" name="SurveyTreeImageList" type="property"/>
+					<plx:callInstance name="GroupingTypeImages" type="property">
+						<plx:callObject>
+							<plx:cast dataTypeName="SurveyGroupingTypeGlyph">
+								<plx:callInstance name="DynamicQuestionValues" type="property">
+									<plx:callObject>
+										<plx:callThis name="myDynamicSurveyGroupingTypeGlyphQuestionInstance" type="field"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:cast>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:arrayInitializer>
+			</plx:callNew>
 		</plx:return>
 	</qp:imageInformation>
 </qp:surveyQuestionProvider>

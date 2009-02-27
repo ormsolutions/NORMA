@@ -31,26 +31,12 @@ using Neumont.Tools.Modeling;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	#region ModelNoteShape class
-	public partial class ModelNoteShape : IConfigureAsChildShape
+	public partial class ModelNoteShape : IConfigureAsChildShape, IDynamicColorGeometryHost
 	{
 		private static AutoSizeTextField myTextField;
 		// Now combined in DSL InitialWidth and InitialHeight
 		private const double EdgeMargin = .012;
-		/// <summary>
-		/// Gets and sets the AutoSizeTextField shape for this object
-		/// </summary>
-		protected override AutoSizeTextField TextShapeField
-		{
-			get
-			{
-				return myTextField;
-			}
-			set
-			{
-				Debug.Assert(myTextField == null);
-				myTextField = value;
-			}
-		}
+		#region Customize Appearance
 		/// <summary>
 		/// Adjust the outline pen width
 		/// </summary>
@@ -151,6 +137,86 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return size;
 			}
 		}
+		#region IDynamicColorGeometryHost Implementation
+		/// <summary>
+		/// Implements <see cref="IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId,Pen)"/>
+		/// </summary>
+		protected Color UpdateDynamicColor(StyleSetResourceId penId, Pen pen)
+		{
+			Color retVal = Color.Empty;
+			IDynamicShapeColorProvider<ORMDiagramDynamicColor, ModelNoteShape, ModelNote>[] providers;
+			if (penId == DiagramPens.ShapeOutline &&
+				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ModelNoteShape, ModelNote>>()))
+			{
+				ModelNote element = (ModelNote)ModelElement;
+				for (int i = 0; i < providers.Length; ++i)
+				{
+					Color alternateColor = providers[i].GetDynamicColor(ORMDiagramDynamicColor.Outline, this, element);
+					if (alternateColor != Color.Empty)
+					{
+						retVal = pen.Color;
+						pen.Color = alternateColor;
+						break;
+					}
+				}
+			}
+			return retVal;
+		}
+		Color IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId penId, Pen pen)
+		{
+			return UpdateDynamicColor(penId, pen);
+		}
+		/// <summary>
+		/// Implements <see cref="IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId,Brush)"/>
+		/// </summary>
+		protected Color UpdateDynamicColor(StyleSetResourceId brushId, Brush brush)
+		{
+			Color retVal = Color.Empty;
+			SolidBrush solidBrush;
+			IDynamicShapeColorProvider<ORMDiagramDynamicColor, ModelNoteShape, ModelNote>[] providers;
+			bool isBackgroundBrush;
+			if (((isBackgroundBrush = brushId == DiagramBrushes.DiagramBackground) ||
+				brushId == DiagramBrushes.ShapeText) &&
+				null != (solidBrush = brush as SolidBrush) &&
+				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ModelNoteShape, ModelNote>>()))
+			{
+				ModelNote element = (ModelNote)ModelElement;
+				ORMDiagramDynamicColor requestColor = isBackgroundBrush ? ORMDiagramDynamicColor.Background : ORMDiagramDynamicColor.ForegroundText;
+				for (int i = 0; i < providers.Length; ++i)
+				{
+					Color alternateColor = providers[i].GetDynamicColor(requestColor, this, element);
+					if (alternateColor != Color.Empty)
+					{
+						retVal = solidBrush.Color;
+						solidBrush.Color = alternateColor;
+						break;
+					}
+				}
+			}
+			return retVal;
+		}
+		Color IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId brushId, Brush brush)
+		{
+			return UpdateDynamicColor(brushId, brush);
+		}
+		#endregion // IDynamicColorGeometryHost Implementation
+		#endregion // Customize Appearance
+		#region TextField Integration
+		/// <summary>
+		/// Gets and sets the AutoSizeTextField shape for this object
+		/// </summary>
+		protected override AutoSizeTextField TextShapeField
+		{
+			get
+			{
+				return myTextField;
+			}
+			set
+			{
+				Debug.Assert(myTextField == null);
+				myTextField = value;
+			}
+		}
 		/// <summary>
 		/// Create the text field
 		/// </summary>
@@ -178,6 +244,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				DefaultStringFormat = fieldFormat;
 			}
 		}
+		#endregion // TextField Integration
 		#region Shape display update rules
 		/// <summary>
 		/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.Note), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;

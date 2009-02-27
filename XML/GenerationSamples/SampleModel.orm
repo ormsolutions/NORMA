@@ -3547,7 +3547,7 @@
 	</orm:NameGenerator>
 	<orm:GenerationState id="_CD66285D-896B-4D04-9476-6AFCECD788A7">
 		<orm:GenerationSettings>
-			<ormtooial:AbstractionModelGenerationSetting id="_A64869C1-C2FB-4F77-94FA-48FE3452C95B" AlgorithmVersion="1.004">
+			<ormtooial:AbstractionModelGenerationSetting id="_A64869C1-C2FB-4F77-94FA-48FE3452C95B" AlgorithmVersion="1.005">
 				<ormtooial:AbstractionModel ref="_B0CDFA26-E80B-4496-9622-6642A1AE8B16" />
 			</ormtooial:AbstractionModelGenerationSetting>
 			<oialtocdb:SchemaGenerationSetting id="_DF8F9656-CAB0-4216-A238-6620C0E4B604" CoreAlgorithmVersion="1.004" NameAlgorithmVersion="1.009">
@@ -4130,8 +4130,6 @@
 		<oial:conceptTypes>
 			<oial:conceptType id="_E6089E63-B210-4CA5-BFBF-8F1F7F69EFEC" name="Person">
 				<oial:children>
-					<oial:relatedConceptType id="_3DB40BD7-D102-4A13-9390-9E06E905ABFC" ref="_E6089E63-B210-4CA5-BFBF-8F1F7F69EFEC" name="Husband" oppositeName="Wife" />
-					<oial:relatedConceptType id="_5136BCD3-CEEB-450E-88AD-836848B391F4" ref="_066B82A0-716F-4AD3-843F-3D373EFF2D18" name="DoesSomethingElseWithPerson" oppositeName="ValueType1DoesSomethingElseWith" />
 					<oial:informationType id="_F0F2B6EB-3CDD-418B-9C4D-0D940C359366" ref="_C8A47D30-D5FB-460A-8246-B70C1257A452" isMandatory="true" name="Person_id" />
 					<oial:informationType id="_46EC03BC-C291-41DF-B50B-EE24B31BA55E" ref="_08364564-E876-4A97-B169-F1ED52DC761E" isMandatory="true" name="FirstName" />
 					<oial:informationType id="_B77D315F-FB05-4C93-AB9E-33AF8ACAED2D" ref="_9336B7B6-F8C7-4A2D-B3A6-36DE43B05946" isMandatory="true" name="LastName" />
@@ -4152,6 +4150,8 @@
 					<oial:informationType id="_B2BEACD1-0F6D-4E91-98CD-346EC1C7128C" ref="_A49B398A-39F4-46CE-9D62-0E849AC52CAF" isMandatory="true" name="MandatoryNonUniqueTinyInt" />
 					<oial:informationType id="_BFB8E48C-F7DB-49D7-9DBC-54780AEA72A0" ref="_22577E3D-E269-41F2-9226-B26193200E83" isMandatory="true" name="MandatoryNonUniqueUnconstrainedDecimal" />
 					<oial:informationType id="_8DC3B87B-7544-4B00-AC9D-8718461064A5" ref="_6DC3E7CE-D811-4787-856B-A5DD49B8A3F4" isMandatory="true" name="MandatoryNonUniqueUnconstrainedFloat" />
+					<oial:relatedConceptType id="_3DB40BD7-D102-4A13-9390-9E06E905ABFC" ref="_E6089E63-B210-4CA5-BFBF-8F1F7F69EFEC" name="Husband" oppositeName="Wife" />
+					<oial:relatedConceptType id="_5136BCD3-CEEB-450E-88AD-836848B391F4" ref="_066B82A0-716F-4AD3-843F-3D373EFF2D18" name="DoesSomethingElseWithPerson" oppositeName="ValueType1DoesSomethingElseWith" />
 					<oial:assimilatedConceptType id="_E4B2950C-B29E-4178-B86A-4287FA803088" ref="_D9CFBDE7-7D48-4E70-8AE5-46C78D78B0F8" name="Person" oppositeName="MalePerson" refersToSubtype="true" isPreferredForTarget="true" />
 					<oial:assimilatedConceptType id="_B86DD183-3B30-4976-98BB-A9B78FF7B9C8" ref="_0C77AA44-00CA-49DA-9959-D7C9C0C31F23" name="Person" oppositeName="FemalePerson" refersToSubtype="true" isPreferredForTarget="true" />
 					<oial:assimilatedConceptType id="_6F95BB39-66ED-4A22-A2A1-45B6216C42CC" ref="_F423C2AC-6748-4FED-B8C9-478936F340A1" name="Person" oppositeName="ChildPerson" refersToSubtype="true" />
@@ -4197,8 +4197,8 @@
 			</oial:conceptType>
 			<oial:conceptType id="_CE52191F-C441-41F6-B3C5-75841614E61D" name="Task">
 				<oial:children>
-					<oial:relatedConceptType id="_FEE70F2A-B4B7-4095-AA95-5C45C5E99B06" ref="_E6089E63-B210-4CA5-BFBF-8F1F7F69EFEC" isMandatory="true" name="Task" oppositeName="Person" />
 					<oial:informationType id="_FE045479-88FC-4560-8FCE-9ECC19957783" ref="_BEB448D9-36ED-48D0-856A-7AACEFB74D2A" isMandatory="true" name="Task_id" />
+					<oial:relatedConceptType id="_FEE70F2A-B4B7-4095-AA95-5C45C5E99B06" ref="_E6089E63-B210-4CA5-BFBF-8F1F7F69EFEC" isMandatory="true" name="Task" oppositeName="Person" />
 				</oial:children>
 				<oial:uniquenessConstraints>
 					<oial:uniquenessConstraint id="_B1E30604-E622-40A7-B325-2B3B277CC46F" name="InternalUniquenessConstraint16" isPreferred="true">
@@ -4208,8 +4208,8 @@
 			</oial:conceptType>
 			<oial:conceptType id="_066B82A0-716F-4AD3-843F-3D373EFF2D18" name="ValueType1">
 				<oial:children>
-					<oial:relatedConceptType id="_81DE3A6D-D61C-46A4-BB33-314CD8ED36DF" ref="_E6089E63-B210-4CA5-BFBF-8F1F7F69EFEC" name="ValueType1DoesSomethingWith" oppositeName="DoesSomethingWithPerson" />
 					<oial:informationType id="_AEEFEBAE-9380-41E9-936D-7FB1D4519B58" ref="_BA1080A0-BA8B-42AE-A34D-93AC614BCAF6" isMandatory="true" name="ValueType1Value" />
+					<oial:relatedConceptType id="_81DE3A6D-D61C-46A4-BB33-314CD8ED36DF" ref="_E6089E63-B210-4CA5-BFBF-8F1F7F69EFEC" name="ValueType1DoesSomethingWith" oppositeName="DoesSomethingWithPerson" />
 				</oial:children>
 				<oial:uniquenessConstraints>
 					<oial:uniquenessConstraint id="_4065851E-FC18-4225-AE2F-52546634EBF8" name="ValueType1Uniqueness" isPreferred="true">
@@ -4243,9 +4243,9 @@
 			<oial:conceptType id="_0C77AA44-00CA-49DA-9959-D7C9C0C31F23" name="FemalePerson" />
 			<oial:conceptType id="_F423C2AC-6748-4FED-B8C9-478936F340A1" name="ChildPerson">
 				<oial:children>
+					<oial:informationType id="_3A46B157-DF28-4E83-9738-9223C214C37E" ref="_CB6FD182-2CC0-4603-8458-6199ED4C8874" isMandatory="true" name="BirthOrder_Nr" />
 					<oial:relatedConceptType id="_B7BE2420-C746-4C00-B2D5-44F3B422994A" ref="_D9CFBDE7-7D48-4E70-8AE5-46C78D78B0F8" isMandatory="true" name="ChildPerson" oppositeName="Father" />
 					<oial:relatedConceptType id="_AEFED53A-C8BF-4EF5-98FA-5EC0B69C81B5" ref="_0C77AA44-00CA-49DA-9959-D7C9C0C31F23" isMandatory="true" name="ChildPerson" oppositeName="Mother" />
-					<oial:informationType id="_3A46B157-DF28-4E83-9738-9223C214C37E" ref="_CB6FD182-2CC0-4603-8458-6199ED4C8874" isMandatory="true" name="BirthOrder_Nr" />
 				</oial:children>
 				<oial:uniquenessConstraints>
 					<oial:uniquenessConstraint id="_F09DA1FA-504D-460A-A13D-56CF4C414088" name="InternalUniquenessConstraint49" isPreferred="true">
@@ -4262,8 +4262,8 @@
 			</oial:conceptType>
 			<oial:conceptType id="_7B1E5299-D60A-4006-A20E-72A08DDD48EF" name="PersonDrivesCar">
 				<oial:children>
-					<oial:relatedConceptType id="_E92D2541-BE7F-46D1-A43B-F0E192DDEFA9" ref="_E6089E63-B210-4CA5-BFBF-8F1F7F69EFEC" isMandatory="true" name="PersonDrivesCar" oppositeName="DrivenByPerson" />
 					<oial:informationType id="_BB0E9F55-D00B-4E38-9601-549F501391AF" ref="_B137FF52-B4C7-4E0B-BB21-6136614C9729" isMandatory="true" name="vin" />
+					<oial:relatedConceptType id="_E92D2541-BE7F-46D1-A43B-F0E192DDEFA9" ref="_E6089E63-B210-4CA5-BFBF-8F1F7F69EFEC" isMandatory="true" name="PersonDrivesCar" oppositeName="DrivenByPerson" />
 				</oial:children>
 				<oial:uniquenessConstraints>
 					<oial:uniquenessConstraint id="_AA273835-2D1E-4525-81BB-FAD135F662DD" name="InternalUniquenessConstraint18" isPreferred="true">
@@ -4278,10 +4278,10 @@
 			</oial:conceptType>
 			<oial:conceptType id="_1D9E24CD-B38E-4F5F-9B06-D93D743E3E98" name="PersonBoughtCarFromPersonOnDate">
 				<oial:children>
-					<oial:relatedConceptType id="_81EB5B3D-D478-40EC-9C49-A3C9CF97A783" ref="_E6089E63-B210-4CA5-BFBF-8F1F7F69EFEC" isMandatory="true" name="PersonBoughtCarFromPersonOnDate" oppositeName="Buyer" />
-					<oial:relatedConceptType id="_E6FFF31A-29B3-459D-8A71-1080C0835698" ref="_E6089E63-B210-4CA5-BFBF-8F1F7F69EFEC" isMandatory="true" name="PersonBoughtCarFromPersonOnDate" oppositeName="Seller" />
 					<oial:informationType id="_18F4C722-CBDA-47E3-8E26-9D14853CBAB6" ref="_B137FF52-B4C7-4E0B-BB21-6136614C9729" isMandatory="true" name="vin" />
 					<oial:informationType id="_95956706-1C60-4D6A-AF89-E0F1950E1E02" ref="_4EEB17F7-9AD8-4C27-8545-975283241F8B" isMandatory="true" name="YMD" />
+					<oial:relatedConceptType id="_81EB5B3D-D478-40EC-9C49-A3C9CF97A783" ref="_E6089E63-B210-4CA5-BFBF-8F1F7F69EFEC" isMandatory="true" name="PersonBoughtCarFromPersonOnDate" oppositeName="Buyer" />
+					<oial:relatedConceptType id="_E6FFF31A-29B3-459D-8A71-1080C0835698" ref="_E6089E63-B210-4CA5-BFBF-8F1F7F69EFEC" isMandatory="true" name="PersonBoughtCarFromPersonOnDate" oppositeName="Seller" />
 				</oial:children>
 				<oial:uniquenessConstraints>
 					<oial:uniquenessConstraint id="_7BC41426-FA07-4227-9F2E-B7A70C71F0BC" name="InternalUniquenessConstraint23" isPreferred="true">
@@ -4327,8 +4327,8 @@
 			</oial:conceptType>
 			<oial:conceptType id="_565B22A5-CD16-43DE-8F8D-DE548A0B4942" name="PersonHasNickName">
 				<oial:children>
-					<oial:relatedConceptType id="_1E767771-BDBA-4A59-9646-C8B55A7B3166" ref="_E6089E63-B210-4CA5-BFBF-8F1F7F69EFEC" isMandatory="true" name="PersonHasNickName" oppositeName="Person" />
 					<oial:informationType id="_EBBB6EA1-4754-4574-96FB-51766D50B3A2" ref="_48860C5F-3693-412B-916A-C89B2D3CFA8A" isMandatory="true" name="NickName" />
+					<oial:relatedConceptType id="_1E767771-BDBA-4A59-9646-C8B55A7B3166" ref="_E6089E63-B210-4CA5-BFBF-8F1F7F69EFEC" isMandatory="true" name="PersonHasNickName" oppositeName="Person" />
 				</oial:children>
 				<oial:uniquenessConstraints>
 					<oial:uniquenessConstraint id="_F7E165F5-E357-4FC9-9E22-01EF8007E481" name="InternalUniquenessConstraint33" isPreferred="true">

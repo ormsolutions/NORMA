@@ -328,7 +328,7 @@ namespace Neumont.Tools.Modeling
 		#endregion // GetSupportingDomainModels method
 		#region GetLocalizedEnumName method
 		/// <summary>
-		/// Retrieve localized names for all values in an <paramref name="enumType"/>
+		/// Retrieve a localized name for a single value of type <typeparamref name="EnumType"/>
 		/// </summary>
 		/// <typeparam name="EnumType">The type of an <see cref="Enum"/></typeparam>
 		/// <param name="value">A value from the <typeparamref name="EnumType"/> enumeration.</param>
@@ -336,6 +336,16 @@ namespace Neumont.Tools.Modeling
 		public static string GetLocalizedEnumName<EnumType>(EnumType value) where EnumType : struct
 		{
 			return TypeDescriptor.GetConverter(typeof(EnumType)).ConvertToString(value);
+		}
+		/// <summary>
+		/// Retrieve a localized names for a single value of type <paramref name="enumType"/>
+		/// </summary>
+		/// <param name="enumType">The type of an <see cref="Enum"/></param>
+		/// <param name="value">A value from the <paramref name="enumType"/> enumeration.</param>
+		/// <returns>A <see cref="String"/> corresponding to the localized enum name</returns>
+		public static string GetLocalizedEnumName(Type enumType, object value)
+		{
+			return TypeDescriptor.GetConverter(enumType).ConvertToString(value);
 		}
 		#endregion // GetLocalizedEnumName method
 		#region GetLocalizedEnumNames method

@@ -68,9 +68,9 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		/// as an automated element.
 		/// The default implementation classifies all elements as automated.
 		/// </summary>
-		protected virtual bool FilterAutomatedElement(ModelElement element)
+		protected virtual AutomatedElementDirective FilterAutomatedElement(ModelElement element)
 		{
-			return true;
+			return AutomatedElementDirective.Ignore;
 		}
 	}
 }

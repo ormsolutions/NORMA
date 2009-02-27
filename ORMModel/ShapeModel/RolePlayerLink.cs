@@ -40,7 +40,7 @@ using Neumont.Tools.Modeling;
 using Neumont.Tools.Modeling.Diagrams;
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	public partial class RolePlayerLink : IReconfigureableLink, IConfigureAsChildShape
+	public partial class RolePlayerLink : IReconfigureableLink, IConfigureAsChildShape, IDynamicColorGeometryHost
 	{
 #if IMPLIEDJOINPATH
 		#region ImpliedFactJoinPathDecorator class
@@ -142,7 +142,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// The link decorator used to draw the mandatory
 		/// constraint dot on a link.
 		/// </summary>
-		protected class MandatoryDotDecorator : LinkDecorator, ILinkDecoratorSettings
+		protected class MandatoryDotDecorator : DynamicColorLinkDecorator, ILinkDecoratorSettings
 		{
 			/// <summary>
 			/// Singleton instance of this decorator
@@ -360,6 +360,78 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // Customize appearance
+		#region IDynamicColorGeometryHost Implementation
+		/// <summary>
+		/// Implements <see cref="IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId,Pen)"/>
+		/// </summary>
+		protected Color UpdateDynamicColor(StyleSetResourceId penId, Pen pen)
+		{
+			Color retVal = Color.Empty;
+			IDynamicShapeColorProvider<ORMDiagramDynamicColor, RolePlayerLink, MandatoryConstraint>[] providers;
+			ObjectTypePlaysRole link;
+			Role playedRole;
+			MandatoryConstraint mandatory;
+			if (penId == DiagramPens.ConnectionLineDecorator &&
+				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, RolePlayerLink, MandatoryConstraint>>()) &&
+				null != (link = ModelElement as ObjectTypePlaysRole) &&
+				null != (playedRole = link.PlayedRole) &&
+				null != (mandatory = playedRole.SimpleMandatoryConstraint))
+			{
+				ORMDiagramDynamicColor requestColor = mandatory.Modality == ConstraintModality.Deontic ? ORMDiagramDynamicColor.DeonticConstraint : ORMDiagramDynamicColor.Constraint;
+				for (int i = 0; i < providers.Length; ++i)
+				{
+					Color alternateColor = providers[i].GetDynamicColor(requestColor, this, mandatory);
+					if (alternateColor != Color.Empty)
+					{
+						retVal = pen.Color;
+						pen.Color = alternateColor;
+						break;
+					}
+				}
+			}
+			return retVal;
+		}
+		Color IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId penId, Pen pen)
+		{
+			return UpdateDynamicColor(penId, pen);
+		}
+		/// <summary>
+		/// Implements <see cref="IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId,Brush)"/>
+		/// </summary>
+		protected Color UpdateDynamicColor(StyleSetResourceId brushId, Brush brush)
+		{
+			Color retVal = Color.Empty;
+			SolidBrush solidBrush;
+			IDynamicShapeColorProvider<ORMDiagramDynamicColor, RolePlayerLink, MandatoryConstraint>[] providers;
+			ObjectTypePlaysRole link;
+			Role playedRole;
+			MandatoryConstraint mandatory;
+			if (brushId == DiagramBrushes.ConnectionLineDecorator &&
+				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, RolePlayerLink, MandatoryConstraint>>()) &&
+				null != (solidBrush = brush as SolidBrush) &&
+				null != (link = ModelElement as ObjectTypePlaysRole) &&
+				null != (playedRole = link.PlayedRole) &&
+				null != (mandatory = playedRole.SimpleMandatoryConstraint) &&
+				mandatory.Modality != ConstraintModality.Deontic) // The brush draws the middle, which we don't change
+			{
+				for (int i = 0; i < providers.Length; ++i)
+				{
+					Color alternateColor = providers[i].GetDynamicColor(ORMDiagramDynamicColor.Constraint, this, mandatory);
+					if (alternateColor != Color.Empty)
+					{
+						retVal = solidBrush.Color;
+						solidBrush.Color = alternateColor;
+						break;
+					}
+				}
+			}
+			return retVal;
+		}
+		Color IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId brushId, Brush brush)
+		{
+			return UpdateDynamicColor(brushId, brush);
+		}
+		#endregion // IDynamicColorGeometryHost Implementation
 		#region EntityRelationship learning mode support
 		private const double CrowsFootHeight = .12;
 		private const double CrowsFootHalfWidth = .05;

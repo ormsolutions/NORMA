@@ -28,6 +28,14 @@ namespace Neumont.Tools.Modeling
 				return FrameworkResourceStrings.GetString(ResourceManagers.Framework, "DiagramDisplay.ReorderDiagrams.TransactionName");
 			}
 		}
+		/// <summary>The text shown in the Properties Window for the class name of a selected header. The component name corresponds to the localized enum name shown in the tree.</summary>
+		public static string DynamicSurveyHeaderClassName
+		{
+			get
+			{
+				return FrameworkResourceStrings.GetString(ResourceManagers.Framework, "DynamicSurvey.HeaderClassName");
+			}
+		}
 	}
 	#endregion // FrameworkResourceStrings class
 }

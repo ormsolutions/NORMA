@@ -18,10 +18,26 @@
 	xmlns:qp="http://schemas.neumont.edu/ORM/SDK/SurveyQuestionProvider"
 	xmlns:exsl="http://exslt.org/common">
 	<!-- Indenting is useful for debugging the transform, but a waste of memory at generation time -->
-	<xsl:output method="xml" encoding="utf-8" indent="no"/>
+	<xsl:output method="xml" encoding="utf-8" indent="yes"/>
 
 	<!-- Pick up param value supplied automatically by plix loader -->
 	<xsl:param name="CustomToolNamespace" select="'TestNamespace'"/>
+	<xsl:variable name="contextType" select="*/qp:surveyContextType"/>
+	<xsl:variable name="contextTypeParam">
+		<plx:passTypeParam>
+			<xsl:copy-of select="$contextType/@* | $contextType/*"/>
+		</plx:passTypeParam>
+	</xsl:variable>
+	<xsl:variable name="contextParam">
+		<plx:param name="surveyContext">
+			<xsl:copy-of select="$contextType/@* | $contextType/*"/>
+		</plx:param>
+	</xsl:variable>
+	<xsl:variable name="contextPassParam">
+		<plx:passParam>
+			<plx:nameRef name="surveyContext" type="parameter"/>
+		</plx:passParam>
+	</xsl:variable>
 	<xsl:template match="qp:surveyQuestionProvider">
 		<xsl:variable name="questions" select="qp:surveyQuestions/qp:surveyQuestion"/>
 		<xsl:variable name="dynamicQuestions" select="$questions[@dynamicValues='true' or @dynamicValues='1']"/>
@@ -29,13 +45,13 @@
 			<plx:namespaceImport name="System"/>
 			<plx:namespaceImport name="System.Windows.Forms"/>
 			<plx:namespaceImport name="System.Collections.Generic"/>
-			<xsl:if test="$dynamicQuestions">
-				<plx:namespaceImport name="Microsoft.VisualStudio.Modeling"/>
-			</xsl:if>
+			<plx:namespaceImport name="Neumont.Tools.Modeling.Shell"/>
 			<plx:namespaceImport name="Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid"/>
 			<plx:namespace name="{$CustomToolNamespace}">
 				<plx:class name="{@class}" partial="true" visibility="deferToPartial">
-					<plx:implementsInterface dataTypeName="ISurveyQuestionProvider"/>
+					<plx:implementsInterface dataTypeName="ISurveyQuestionProvider">
+						<xsl:copy-of select="$contextTypeParam"/>
+					</plx:implementsInterface>
 					<xsl:variable name="groupings" select="qp:groupings/qp:grouping"/>
 					<xsl:for-each select="$dynamicQuestions">
 						<plx:field name="myDynamic{@questionType}QuestionInstance" dataTypeName="ProvideSurveyQuestionFor{@questionType}" visibility="private"/>
@@ -45,23 +61,31 @@
 							<xsl:for-each select="$groupings">
 								<xsl:choose>
 									<xsl:when test="qp:surveyQuestion/@ref=$dynamicQuestions/@questionType">
-										<plx:field name="mySurveyQuestionTypeInfo{position()}" visibility="private" dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true"/>
+										<plx:field name="mySurveyQuestionTypeInfo{position()}" visibility="private" dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
+											<xsl:copy-of select="$contextTypeParam"/>
+										</plx:field>
 										<plx:function name="EnsureSurveyQuestionTypeInfo{position()}" visibility="private">
-											<plx:returns dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true"/>
+											<xsl:copy-of select="$contextParam"/>
+											<plx:returns dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
+												<xsl:copy-of select="$contextTypeParam"/>
+											</plx:returns>
 											<plx:return>
 												<plx:inlineStatement dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
+													<xsl:copy-of select="$contextTypeParam"/>
 													<plx:nullFallbackOperator>
 														<plx:left>
 															<plx:callThis name="mySurveyQuestionTypeInfo{position()}" type="field"/>
 														</plx:left>
 														<plx:right>
 															<plx:inlineStatement dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
+																<xsl:copy-of select="$contextTypeParam"/>
 																<plx:assign>
 																	<plx:left>
 																		<plx:callThis name="mySurveyQuestionTypeInfo{position()}" type="field"/>
 																	</plx:left>
 																	<plx:right>
 																		<plx:callNew dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
+																			<xsl:copy-of select="$contextTypeParam"/>
 																			<plx:arrayInitializer>
 																				<xsl:for-each select="qp:surveyQuestion">
 																					<xsl:choose>
@@ -79,9 +103,7 @@
 																												</plx:left>
 																												<plx:right>
 																													<plx:callNew dataTypeName="ProvideSurveyQuestionFor{@ref}">
-																														<plx:passParam>
-																															<plx:callThis name="Store" type="property"/>
-																														</plx:passParam>
+																														<xsl:copy-of select="$contextPassParam"/>
 																													</plx:callNew>
 																												</plx:right>
 																											</plx:assign>
@@ -108,8 +130,10 @@
 									</xsl:when>
 									<xsl:otherwise>
 										<plx:field name="mySurveyQuestionTypeInfo{position()}" visibility="private" static="true" readOnly="true" dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
+											<xsl:copy-of select="$contextTypeParam"/>
 											<plx:initialize>
 												<plx:callNew dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
+													<xsl:copy-of select="$contextTypeParam"/>
 													<plx:arrayInitializer>
 														<xsl:for-each select="qp:surveyQuestion">
 															<plx:callStatic type="field" name="Instance" dataTypeName="ProvideSurveyQuestionFor{@ref}"/>
@@ -125,11 +149,17 @@
 						<xsl:otherwise>
 							<xsl:choose>
 								<xsl:when test="$dynamicQuestions">
-									<plx:field name="mySurveyQuestionTypeInfo" visibility="private" dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true"/>
+									<plx:field name="mySurveyQuestionTypeInfo" visibility="private" dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
+										<xsl:copy-of select="$contextTypeParam"/>
+									</plx:field>
 									<plx:function name="EnsureSurveyQuestionTypeInfo" visibility="private">
-										<plx:returns dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true"/>
+										<xsl:copy-of select="$contextParam"/>
+										<plx:returns dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
+											<xsl:copy-of select="$contextTypeParam"/>
+										</plx:returns>
 										<plx:return>
 											<plx:inlineStatement dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
+												<xsl:copy-of select="$contextTypeParam"/>
 												<plx:nullFallbackOperator>
 													<plx:left>
 														<plx:callThis name="mySurveyQuestionTypeInfo" type="field"/>
@@ -159,9 +189,7 @@
 																											</plx:left>
 																											<plx:right>
 																												<plx:callNew dataTypeName="ProvideSurveyQuestionFor{@questionType}">
-																													<plx:passParam>
-																														<plx:callThis name="Store" type="property"/>
-																													</plx:passParam>
+																													<xsl:copy-of select="$contextPassParam"/>
 																												</plx:callNew>
 																											</plx:right>
 																										</plx:assign>
@@ -188,8 +216,10 @@
 								</xsl:when>
 								<xsl:otherwise>
 									<plx:field name="mySurveyQuestionTypeInfo" visibility="private" static="true" readOnly="true" dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
+										<xsl:copy-of select="$contextTypeParam"/>
 										<plx:initialize>
 											<plx:callNew dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
+												<xsl:copy-of select="$contextTypeParam"/>
 												<plx:arrayInitializer>
 													<xsl:for-each select="$questions">
 														<plx:callStatic type="field" name="Instance" dataTypeName="ProvideSurveyQuestionFor{@questionType}"/>
@@ -210,14 +240,19 @@
 						</xsl:if>
 						<plx:leadingInfo>
 							<plx:docComment>
-								<summary>Implements <see cref="ISurveyQuestionProvider.GetSurveyQuestions"/>
+								<summary>Implements <see cref="ISurveyQuestionProvider{{Object}}.GetSurveyQuestions"/>
 								</summary>
 							</plx:docComment>
 						</plx:leadingInfo>
-						<plx:interfaceMember dataTypeName="ISurveyQuestionProvider" memberName="GetSurveyQuestions"/>
+						<plx:interfaceMember dataTypeName="ISurveyQuestionProvider" memberName="GetSurveyQuestions">
+							<xsl:copy-of select="$contextTypeParam"/>
+						</plx:interfaceMember>
+						<xsl:copy-of select="$contextParam"/>
 						<plx:param name="expansionKey" dataTypeName=".object"/>
 						<plx:returns dataTypeName="IEnumerable">
-							<plx:passTypeParam dataTypeName="ISurveyQuestionTypeInfo"/>
+							<plx:passTypeParam dataTypeName="ISurveyQuestionTypeInfo">
+								<xsl:copy-of select="$contextTypeParam"/>
+							</plx:passTypeParam>
 						</plx:returns>
 						<xsl:choose>
 							<xsl:when test="$groupings">
@@ -254,7 +289,9 @@
 										<plx:return>
 											<xsl:choose>
 												<xsl:when test="qp:surveyQuestion/@ref=$dynamicQuestions/@questionType">
-													<plx:callThis name="EnsureSurveyQuestionTypeInfo{position()}"/>
+													<plx:callThis name="EnsureSurveyQuestionTypeInfo{position()}">
+														<xsl:copy-of select="$contextPassParam"/>
+													</plx:callThis>
 												</xsl:when>
 												<xsl:otherwise>
 													<plx:callThis accessor="static" type="field" name="mySurveyQuestionTypeInfo{position()}"/>
@@ -271,7 +308,9 @@
 								<plx:return>
 									<xsl:choose>
 										<xsl:when test="$dynamicQuestions">
-											<plx:callThis name="EnsureSurveyQuestionTypeInfo"/>
+											<plx:callThis name="EnsureSurveyQuestionTypeInfo">
+												<xsl:copy-of select="$contextPassParam"/>
+											</plx:callThis>
 										</xsl:when>
 										<xsl:otherwise>
 											<plx:callThis accessor="static" type="field" name="mySurveyQuestionTypeInfo"/>
@@ -281,37 +320,40 @@
 							</xsl:otherwise>
 						</xsl:choose>
 					</plx:function>
-					<plx:property name="SurveyQuestionImageList" visibility="protected">
+					<plx:function name="GetSurveyQuestionImageLists" visibility="protected">
 						<plx:leadingInfo>
 							<plx:docComment>
-								<summary>Implements <see cref="ISurveyQuestionProvider.SurveyQuestionImageList"/>
+								<summary>Implements <see cref="ISurveyQuestionProvider{{Object}}.GetSurveyQuestionImageLists"/>
 								</summary>
 							</plx:docComment>
 						</plx:leadingInfo>
-						<plx:interfaceMember dataTypeName="ISurveyQuestionProvider" memberName="SurveyQuestionImageList"/>
-						<plx:returns dataTypeName="ImageList"/>
-						<plx:get>
-							<xsl:variable name="imageSnippet" select="qp:imageInformation/child::plx:*"/>
-							<xsl:choose>
-								<xsl:when test="$imageSnippet">
-									<xsl:copy-of select="$imageSnippet"/>
-								</xsl:when>
-								<xsl:otherwise>
-									<plx:return>
-										<plx:nullKeyword/>
-									</plx:return>
-								</xsl:otherwise>
-							</xsl:choose>
-						</plx:get>
-					</plx:property>
+						<plx:interfaceMember dataTypeName="ISurveyQuestionProvider" memberName="GetSurveyQuestionImageLists">
+							<xsl:copy-of select="$contextTypeParam"/>
+						</plx:interfaceMember>
+						<xsl:copy-of select="$contextParam"/>
+						<plx:returns dataTypeName="ImageList" dataTypeIsSimpleArray="true"/>
+						<xsl:variable name="imageSnippet" select="qp:imageInformation/child::plx:*"/>
+						<xsl:choose>
+							<xsl:when test="$imageSnippet">
+								<xsl:copy-of select="$imageSnippet"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<plx:return>
+									<plx:nullKeyword/>
+								</plx:return>
+							</xsl:otherwise>
+						</xsl:choose>
+					</plx:function>
 					<plx:function visibility="protected" name="GetErrorDisplayTypes" modifier="static">
 						<plx:leadingInfo>
 							<plx:docComment>
-								<summary>Implements <see cref="ISurveyQuestionProvider.GetErrorDisplayTypes"/>
+								<summary>Implements <see cref="ISurveyQuestionProvider{{Object}}.GetErrorDisplayTypes"/>
 								</summary>
 							</plx:docComment>
 						</plx:leadingInfo>
-						<plx:interfaceMember dataTypeName="ISurveyQuestionProvider" memberName="GetErrorDisplayTypes"/>
+						<plx:interfaceMember dataTypeName="ISurveyQuestionProvider" memberName="GetErrorDisplayTypes">
+							<xsl:copy-of select="$contextTypeParam"/>
+						</plx:interfaceMember>
 						<plx:returns dataTypeName="IEnumerable">
 							<plx:passTypeParam dataTypeName="Type"/>
 						</plx:returns>
@@ -345,20 +387,21 @@
 		<xsl:variable name="dynamic" select="@dynamicValues='true' or @dynamicValues='1'"/>
 		<plx:class name="ProvideSurveyQuestionFor{@questionType}" visibility="private" modifier="sealed">
 			<plx:implementsInterface dataTypeName="ISurveyQuestionTypeInfo"/>
+			<plx:implementsInterface dataTypeName="ISurveyQuestionTypeInfo">
+				<xsl:copy-of select="$contextTypeParam"/>
+			</plx:implementsInterface>
 			<xsl:choose>
 				<xsl:when test="$dynamic">
 					<plx:field name="myDynamicValues" dataTypeName="{@questionType}" visibility="private"/>
 					<plx:function name=".construct" visibility="public">
-						<plx:param name="store" dataTypeName="Store"/>
+						<xsl:copy-of select="$contextParam"/>
 						<plx:assign>
 							<plx:left>
 								<plx:callThis name="myDynamicValues" type="field"/>
 							</plx:left>
 							<plx:right>
 								<plx:callNew dataTypeName="{@questionType}">
-									<plx:passParam>
-										<plx:nameRef name="store" type="parameter"/>
-									</plx:passParam>
+									<xsl:copy-of select="$contextPassParam"/>
 								</plx:callNew>
 							</plx:right>
 						</plx:assign>
@@ -367,6 +410,7 @@
 				<xsl:otherwise>
 					<plx:function name=".construct" visibility="private"/>
 					<plx:field name="Instance" visibility="public" static="true" readOnly="true" dataTypeName="ISurveyQuestionTypeInfo">
+						<xsl:copy-of select="$contextTypeParam"/>
 						<plx:initialize>
 							<plx:callNew dataTypeName="ProvideSurveyQuestionFor{@questionType}"/>
 						</plx:initialize>
@@ -454,7 +498,7 @@
 					<plx:value type="i4" data="-1"/>
 				</plx:return>
 			</plx:function>
-			<plx:function name="MapAnswerToImageIndex" visibility="public" xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
+			<plx:function name="MapAnswerToImageIndex" visibility="public">
 				<plx:interfaceMember dataTypeName="ISurveyQuestionTypeInfo" memberName="MapAnswerToImageIndex"/>
 				<plx:param name="answer" dataTypeName=".i4"/>
 				<plx:returns dataTypeName=".i4"/>
@@ -605,6 +649,147 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</plx:function>
+			<plx:function name="GetFreeFormCommands" visibility="public">
+				<plx:interfaceMember dataTypeName="ISurveyQuestionTypeInfo" memberName="GetFreeFormCommands">
+					<xsl:copy-of select="$contextTypeParam"/>
+				</plx:interfaceMember>
+				<xsl:copy-of select="$contextParam"/>
+				<plx:param name="answer" dataTypeName=".i4"/>
+				<plx:returns dataTypeName="IFreeFormCommandProvider">
+					<xsl:copy-of select="$contextTypeParam"/>
+				</plx:returns>
+				<xsl:if test="qp:displaySupport[@displayCategory='Grouping']">
+					<xsl:variable name="commandMaps" select="qp:commandProviderMap/qp:commandProvider"/>
+					<xsl:if test="$commandMaps">
+						<xsl:variable name="questionType" select="string(@questionType)"/>
+						<plx:switch>
+							<plx:condition>
+								<plx:cast dataTypeName="{$questionType}">
+									<plx:nameRef name="answer" type="parameter"/>
+								</plx:cast>
+							</plx:condition>
+							<xsl:for-each select="$commandMaps">
+								<plx:case>
+									<plx:condition>
+										<plx:callStatic dataTypeName="{$questionType}" name="{@enumValue}" type="field"/>
+									</plx:condition>
+									<xsl:for-each select="../qp:commandProviderSameAs[@targetEnumValue=current()/@enumValue]">
+										<plx:condition>
+											<plx:callStatic dataTypeName="{$questionType}" name="{@enumValue}" type="field"/>
+										</plx:condition>
+									</xsl:for-each>
+									<xsl:copy-of select="child::plx:*"/>
+								</plx:case>
+							</xsl:for-each>
+						</plx:switch>
+					</xsl:if>
+				</xsl:if>
+				<plx:return>
+					<plx:nullKeyword/>
+				</plx:return>
+			</plx:function>
+			<plx:function name="ShowEmptyGroup" visibility="public">
+				<plx:interfaceMember dataTypeName="ISurveyQuestionTypeInfo" memberName="ShowEmptyGroup">
+					<xsl:copy-of select="$contextTypeParam"/>
+				</plx:interfaceMember>
+				<xsl:copy-of select="$contextParam"/>
+				<plx:param name="answer" dataTypeName=".i4"/>
+				<plx:returns dataTypeName=".boolean"/>
+				<xsl:choose>
+					<xsl:when test="qp:displaySupport[@displayCategory='Grouping']">
+						<xsl:variable name="emptyHeaderSupport" select="qp:emptyHeaderMap"/>
+						<xsl:choose>
+							<xsl:when test="$emptyHeaderSupport">
+								<xsl:variable name="defaultTrue" select="$emptyHeaderSupport/@defaultVisible='true' or $emptyHeaderSupport/@defaultVisible=1"/>
+								<xsl:variable name="customValues" select="$emptyHeaderSupport/qp:map"/>
+								<xsl:choose>
+									<xsl:when test="$customValues">
+										<xsl:variable name="questionType" select="string(@questionType)"/>
+										<xsl:variable name="mapSameAs" select="$emptyHeaderSupport/qp:mapSameAs"/>
+										<plx:switch>
+											<plx:condition>
+												<plx:cast dataTypeName="{$questionType}">
+													<plx:nameRef name="answer" type="parameter"/>
+												</plx:cast>
+											</plx:condition>
+											<xsl:variable name="reverseCustomValues" select="$customValues[not(child::plx:*)]"/>
+											<xsl:if test="$reverseCustomValues">
+												<plx:case>
+													<xsl:for-each select="$reverseCustomValues">
+														<plx:condition>
+															<plx:callStatic dataTypeName="{$questionType}" name="{@enumValue}" type="field"/>
+														</plx:condition>
+														<xsl:for-each select="$mapSameAs[@targetEnumValue=current()/@enumValue]">
+															<plx:condition>
+																<plx:callStatic dataTypeName="{$questionType}" name="{@enumValue}" type="field"/>
+															</plx:condition>
+														</xsl:for-each>
+													</xsl:for-each>
+													<plx:return>
+														<xsl:choose>
+															<xsl:when test="$defaultTrue">
+																<plx:falseKeyword/>
+															</xsl:when>
+															<xsl:otherwise>
+																<plx:trueKeyword/>
+															</xsl:otherwise>
+														</xsl:choose>
+													</plx:return>
+												</plx:case>
+											</xsl:if>
+											<xsl:for-each select="$customValues[child::plx:*]">
+												<plx:case>
+													<plx:condition>
+														<plx:callStatic dataTypeName="{$questionType}" name="{@enumValue}" type="field"/>
+													</plx:condition>
+													<xsl:for-each select="$mapSameAs[@targetEnumValue=current()/@enumValue]">
+														<plx:condition>
+															<plx:callStatic dataTypeName="{$questionType}" name="{@enumValue}" type="field"/>
+														</plx:condition>
+													</xsl:for-each>
+													<xsl:copy-of select="child::plx:*"/>
+												</plx:case>
+											</xsl:for-each>
+											<plx:fallbackCase>
+												<plx:return>
+													<xsl:choose>
+														<xsl:when test="$defaultTrue">
+															<plx:trueKeyword/>
+														</xsl:when>
+														<xsl:otherwise>
+															<plx:falseKeyword/>
+														</xsl:otherwise>
+													</xsl:choose>
+												</plx:return>
+											</plx:fallbackCase>
+										</plx:switch>
+									</xsl:when>
+									<xsl:when test="$defaultTrue">
+										<plx:return>
+											<plx:trueKeyword/>
+										</plx:return>
+									</xsl:when>
+									<xsl:otherwise>
+										<plx:return>
+											<plx:falseKeyword/>
+										</plx:return>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:when>
+							<xsl:otherwise>
+								<plx:return>
+									<plx:falseKeyword/>
+								</plx:return>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:when>
+					<xsl:otherwise>
+						<plx:return>
+							<plx:falseKeyword/>
+						</plx:return>
+					</xsl:otherwise>
+				</xsl:choose>
+			</plx:function>
 			<plx:function name="GetDisplayData" visibility="public">
 				<plx:interfaceMember dataTypeName="ISurveyQuestionTypeInfo" memberName="GetDisplayData"/>
 				<plx:param name="answer" dataTypeName=".i4"/>
@@ -669,21 +854,22 @@
 				<plx:returns dataTypeName="SurveyQuestionUISupport"/>
 				<plx:get>
 					<plx:return>
-						<xsl:choose>
-							<xsl:when test="count(qp:displaySupport) = 1">
-								<plx:callStatic dataTypeName="SurveyQuestionUISupport" name="{qp:displaySupport/@displayCategory}" type="field"/>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:for-each select="qp:displaySupport">
-									<xsl:if test="position()=1">
-										<xsl:call-template name="OrTogetherDisplaySupportElements">
-											<xsl:with-param name="EnumType" select="'SurveyQuestionUISupport'"/>
-											<xsl:with-param name="name" select="@displayCategory"/>
-										</xsl:call-template>
-									</xsl:if>
-								</xsl:for-each>
-							</xsl:otherwise>
-						</xsl:choose>
+						<xsl:variable name="supportedCategoriesFragment">
+							<xsl:for-each select="qp:displaySupport/@displayCategory">
+								<qp:dummy>
+									<xsl:value-of select="."/>
+								</qp:dummy>
+							</xsl:for-each>
+							<xsl:if test="qp:emptyHeaderMap[@defaultVisible='true' or @defaultVisible=1 or qp:map]">
+								<qp:dummy>
+									<xsl:text>EmptyGroups</xsl:text>
+								</qp:dummy>
+							</xsl:if>
+						</xsl:variable>
+						<xsl:call-template name="OrTogetherEnumItems">
+							<xsl:with-param name="EnumType" select="'SurveyQuestionUISupport'"/>
+							<xsl:with-param name="ItemNames" select="exsl:node-set($supportedCategoriesFragment)/child::*"/>
+						</xsl:call-template>
 					</plx:return>
 				</plx:get>
 			</plx:property>
@@ -728,16 +914,23 @@
 								<xsl:when test="$ApplyLastAnswer and $lastAnswer">
 									<xsl:variable name="customOffset" select="$offset/child::plx:*"/>
 									<xsl:variable name="lastAnswerOffsetFragment">
-										<plx:binaryOperator type="add">
-											<plx:left>
-												<plx:cast dataTypeName=".i4">
-													<plx:callStatic dataTypeName="{$ImageMap/../@questionType}" name="{$lastAnswer}" type="field"/>
-												</plx:cast>
-											</plx:left>
-											<plx:right>
-												<plx:value data="1" type="i4"/>
-											</plx:right>
-										</plx:binaryOperator>
+										<xsl:choose>
+											<xsl:when test="'NaN'=string(number($lastAnswer))">
+												<plx:binaryOperator type="add">
+													<plx:left>
+														<plx:cast dataTypeName=".i4">
+															<plx:callStatic dataTypeName="{$ImageMap/../@questionType}" name="{$lastAnswer}" type="field"/>
+														</plx:cast>
+													</plx:left>
+													<plx:right>
+														<plx:value data="1" type="i4"/>
+													</plx:right>
+												</plx:binaryOperator>
+											</xsl:when>
+											<xsl:otherwise>
+												<plx:value data="{floor(number($lastAnswer)) + 1}" type="i4"/>
+											</xsl:otherwise>
+										</xsl:choose>
 									</xsl:variable>
 									<xsl:choose>
 										<xsl:when test="$customOffset">
@@ -790,43 +983,49 @@
 				</xsl:choose>
 			</xsl:when>
 			<xsl:when test="$ApplyLastAnswer and $lastAnswer">
-				<plx:binaryOperator type="add">
-					<plx:left>
-						<plx:cast dataTypeName=".i4">
-							<plx:callStatic dataTypeName="{$ImageMap/../@questionType}" name="{$lastAnswer}" type="field"/>
-						</plx:cast>
-					</plx:left>
-					<plx:right>
-						<plx:value data="1" type="i4"/>
-					</plx:right>
-				</plx:binaryOperator>
+				<xsl:choose>
+					<xsl:when test="'NaN'=string(number($lastAnswer))">
+						<plx:binaryOperator type="add">
+							<plx:left>
+								<plx:cast dataTypeName=".i4">
+									<plx:callStatic dataTypeName="{$ImageMap/../@questionType}" name="{$lastAnswer}" type="field"/>
+								</plx:cast>
+							</plx:left>
+							<plx:right>
+								<plx:value data="1" type="i4"/>
+							</plx:right>
+						</plx:binaryOperator>
+					</xsl:when>
+					<xsl:otherwise>
+						<plx:value data="{floor(number($lastAnswer)) + 1}" type="i4"/>
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>
-	<!-- Or together enum values from the given type. The current state on the initial
-	     call should be the position()=1 element inside a for-each context where the elements
-		 contain the (unqualified) names of the enum values to or together -->
-	<xsl:template name="OrTogetherDisplaySupportElements">
+	<!-- Or together enum values from the given type. ItemNames is any node-set where
+	the text of each node is an enum item name.  -->
+	<xsl:template name="OrTogetherEnumItems">
 		<xsl:param name="EnumType"/>
-		<xsl:param name="name"/>
+		<xsl:param name="ItemNames"/>
+		<xsl:param name="CurrentIndex" select="1"/>
+		<xsl:param name="ItemCount"	select="count($ItemNames)"/>
 		<xsl:choose>
-			<xsl:when test="position()=last()">
-				<plx:callStatic dataTypeName="{$EnumType}" name="{$name}" type="field"/>
+			<xsl:when test="$CurrentIndex=$ItemCount">
+				<plx:callStatic dataTypeName="{$EnumType}" name="{$ItemNames[$CurrentIndex]}" type="field"/>
 			</xsl:when>
 			<xsl:otherwise>
 				<plx:binaryOperator type="bitwiseOr">
 					<plx:left>
-						<plx:callStatic dataTypeName="{$EnumType}" name="{$name}" type="field"/>
+						<plx:callStatic dataTypeName="{$EnumType}" name="{$ItemNames[$CurrentIndex]}" type="field"/>
 					</plx:left>
 					<plx:right>
-						<xsl:for-each select="following-sibling::qp:displaySupport">
-							<xsl:if test="position()=1">
-								<xsl:call-template name="OrTogetherDisplaySupportElements">
-									<xsl:with-param name="EnumType" select="$EnumType"/>
-									<xsl:with-param name="name" select="@displayCategory"/>
-								</xsl:call-template>
-							</xsl:if>
-						</xsl:for-each>
+						<xsl:call-template name="OrTogetherEnumItems">
+							<xsl:with-param name="EnumType" select="$EnumType"/>
+							<xsl:with-param name="ItemNames" select="$ItemNames"/>
+							<xsl:with-param name="CurrentIndex" select="$CurrentIndex+1"/>
+							<xsl:with-param name="ItemCount" select="$ItemCount"/>
+						</xsl:call-template>
 					</plx:right>
 				</plx:binaryOperator>
 			</xsl:otherwise>

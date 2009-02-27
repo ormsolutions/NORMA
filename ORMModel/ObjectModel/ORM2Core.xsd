@@ -41,6 +41,9 @@
 		<xs:attribute name="Name" type="xs:string"/>
 		<xs:attribute name="id" type="xs:ID"/>
 	</xs:complexType>
+	<xs:complexType name="ORMModelRef">
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+	</xs:complexType>
 	<!--End ORMModel-->
 	<xs:element name="ModelErrorDisplayFilter" type="ModelErrorDisplayFilterType"/>
 	<xs:complexType name="ModelErrorDisplayFilterType">
@@ -107,7 +110,7 @@
 	</xs:complexType>
 	<!--Objects and Object Types-->
 	<xs:complexType name="ObjectRef">
-		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="Objects">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -180,7 +183,7 @@
 	<!--End Objects and Object Types-->
 	<!--ObjectTypeInstances-->
 	<xs:complexType name="ObjectTypeInstanceRef">
-		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="EntityTypeInstances">
 		<xs:choice>
@@ -205,10 +208,10 @@
 		<xs:attribute name="id" type="xs:ID" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="EntityTypeInstanceRef">
-		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="EntityTypeSubtypeInstanceRef">
-		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="EntityTypeRoleInstances">
 		<xs:sequence>
@@ -216,7 +219,7 @@
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="ObjectTypeRoleInstanceRef">
-		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="ValueTypeInstances">
 		<xs:sequence>
@@ -231,7 +234,7 @@
 		<xs:attribute name="id" type="xs:ID" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="ValueTypeInstanceRef">
-		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="ObjectTypeRoleInstances">
 		<xs:sequence>
@@ -244,7 +247,7 @@
 		<xs:simpleContent>
 			<xs:extension base="xs:string">
 				<xs:attribute name="id" type="xs:ID" use="required"/>
-				<xs:attribute name="ref" type="xs:IDREF"/>
+				<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 			</xs:extension>
 		</xs:simpleContent>
 	</xs:complexType>
@@ -261,7 +264,7 @@
 		<xs:attribute name="id" type="xs:ID" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="FactTypeInstanceRef">
-		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="FactTypeRoleInstances">
 		<xs:sequence>
@@ -273,12 +276,12 @@
 	<!--DataTypeRef indicates a reference to a datatype -->
 	<xs:complexType name="DataTypeRef">
 		<xs:attribute name="id" type="xs:ID"/>
-		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 		<xs:attribute name="Scale" type="xs:int"/>
 		<xs:attribute name="Length" type="xs:int"/>
 	</xs:complexType>
 	<xs:complexType name="DataTypeRefRef">
-		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<!--end DataTypeRef-->
 	<xs:complexType name="DataTypes">
@@ -522,13 +525,13 @@
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="RoleRef">
-		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="SubtypeMetaRoleRef">
-		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="SupertypeMetaRoleRef">
-		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<!--end RoleRef, RoleSequence and  RoleSequences-->
 	<xs:complexType name="JoinPath">
@@ -551,7 +554,7 @@
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:complexType name="JoinRef">
-		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="Roles">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -636,17 +639,17 @@
 	<!-- Facts -->
 	<!--Fact Ref defines a reference to a fact-->
 	<xs:complexType name="FactRef">
-		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="ObjectifiedFactRef">
 		<!-- An id for this element so we can refer back to it -->
 		<xs:attribute name="id" type="xs:ID"/>
 		<!-- A reference to a fact type -->
-		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 		<xs:attribute name="IsImplied" type="xs:boolean" default="false"/>
 	</xs:complexType>
 	<xs:complexType name="ObjectificationRef">
-		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<!--end Fact Ref-->
 	<xs:complexType name="Facts">
@@ -748,22 +751,22 @@
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="ConstraintRef">
-		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="EqualityConstraintRef">
-		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="ExclusionConstraintRef">
-		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="MandatoryConstraintRef">
-		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="FrequencyConstraintRef">
-		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="RingConstraintRef">
-		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<!--end ConstraintRef and  ConstraintRefs-->
 	<xs:complexType name="Constraints">
@@ -820,24 +823,20 @@
 				<xs:sequence>
 					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 				</xs:sequence>
-				<xs:attribute name="FromRoleSequence" type="xs:IDREF"/>
-				<!-- use="required"/>  should be here-->
-				<xs:attribute name="ToRoleSequence" type="xs:IDREF"/>
-				<!-- use="required"/>  should be here-->
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="SetComparisonConstraintRef">
-		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="SetConstraintRef">
-		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="InternalConstraintRef">
-		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="ValueConstraintRef">
-		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<!-- end SetComparison constraints-->
 	<!--Set constraints-->
@@ -920,13 +919,13 @@
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="UniquenessConstraintRef">
-		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<!--End InternalConstraint-->
 	<!--End Constraints-->
 	<!--Fact Readings and reading Orders-->
 	<xs:complexType name="ReadingRef">
-		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="ReadingOrders">
 		<xs:sequence minOccurs="0" maxOccurs="unbounded">
@@ -961,6 +960,8 @@
 			<xs:element name="ConstraintDuplicateNameError" type="ConstraintDuplicateNameError"/>
 			<xs:element name="ObjectTypeDuplicateNameError" type="ObjectTypeDuplicateNameError"/>
 			<xs:element name="RecognizedPhraseDuplicateNameError" type="RecognizedPhraseDuplicateNameError"/>
+			<xs:element name="GroupDuplicateNameError" type="GroupDuplicateNameErrorType"/>
+			<xs:element name="GroupMembershipContradictionError" type="GroupMembershipContradictionErrorType"/>
 			<xs:element name="ExternalConstraintRoleSequenceArityMismatchError" type="ExternalConstraintRoleSequenceArityMismatchError"/>
 			<xs:element name="FactTypeRequiresInternalUniquenessConstraintError" type="FactTypeRequiresInternalUniquenessConstraintError"/>
 			<xs:element name="FactTypeRequiresReadingError" type="FactTypeRequiresReadingError"/>
@@ -1509,7 +1510,7 @@
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="ReferenceModeKindRef">
-		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="ReferenceModeKind">
 		<xs:attribute name="id" type="xs:ID" use="required"/>
@@ -1524,10 +1525,10 @@
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:complexType name="CustomReferenceModeRef">
-		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="ValueRangeRef">
-		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<!--Reference Mdoes and Kinds-->
 	<xs:complexType name="CustomReferenceModes">
@@ -1683,7 +1684,7 @@
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="RecognizedPhraseRef">
-		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<xs:element name="GenerationState">
 		<xs:complexType>
@@ -1702,5 +1703,115 @@
 	<xs:element name="GenerationSetting" type="GenerationSettingType" abstract="true"/>
 	<xs:complexType name="GenerationSettingType">
 		<xs:attribute name="id" type="xs:ID"/>
+	</xs:complexType>
+	<xs:element name="Grouping" type="GroupingType"/>
+	<xs:complexType name="GroupingType">
+		<xs:sequence>
+			<xs:element name="ORMModel" type="ORMModelRef"/>
+			<xs:element name="Groups" type="GroupsType" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:ID" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="GroupsType">
+		<xs:sequence>
+			<xs:element name="Group" type="GroupType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GroupRef">
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="GroupType">
+		<xs:all>
+			<xs:element name="GroupTypes" type="GroupTypesType" minOccurs="0"/>
+			<xs:element name="Elements" type="GroupElementsType" minOccurs="0"/>
+			<xs:element name="NestedGroups" type="NestedGroupsType" minOccurs="0"/>
+		</xs:all>
+		<xs:attribute name="id" type="xs:ID" use="required"/>
+		<xs:attribute name="Name" use="required" type="xs:string"/>
+		<xs:attribute name="Priority" default="0" type="xs:int"/>
+		<xs:attribute name="TypeCompliance" default="NotExcluded">
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="NotExcluded"/>
+					<xs:enumeration value="PartiallyApproved"/>
+					<xs:enumeration value="FullyApproved"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="GroupTypesType">
+		<xs:sequence>
+			<xs:element ref="GroupType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GroupTypeType">
+		<xs:attribute name="id" type="xs:ID" use="required"/>
+	</xs:complexType>
+	<xs:element name="GroupType" type="GroupTypeType" abstract="true"/>
+	<xs:complexType name="GroupElementsType">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="IncludedElement" type="ElementRef"/>
+			<xs:element name="ExcludedElement" type="ElementRef"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="ElementRef">
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="NestedGroupsType">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="IncludedGroup" type="GroupRef"/>
+			<xs:element name="ExcludedGroup" type="GroupRef"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="GroupDuplicateNameErrorType">
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="Groups">
+						<xs:complexType>
+							<xs:sequence minOccurs="2" maxOccurs="unbounded">
+								<xs:element name="Group" type="GroupRef"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="GroupMembershipContradictionErrorType">
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:all>
+					<xs:element name="Group">
+						<xs:complexType>
+							<xs:complexContent>
+								<xs:extension base="GroupRef">
+									<xs:sequence>
+										<xs:element name="Element" type="ElementRef"/>
+									</xs:sequence>
+									<xs:attribute name="id" type="xs:ID"/>
+								</xs:extension>
+							</xs:complexContent>
+						</xs:complexType>
+					</xs:element>
+				</xs:all>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="DynamicColor" type="DynamicColorType" abstract="true"/>
+	<xs:complexType name="DynamicColorType">
+		<xs:annotation>
+			<xs:documentation>Support the general notion of a dynamic color. This is not core ORM, but all other schemas reference this one, and the general notion is broader than any of the shape types.</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="ColorRole" type="xs:token">
+			<xs:annotation>
+				<xs:documentation>The name of a role indicating use of the color. Correspond to an item in a color set enum.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ColorValue" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>The name of the color played by this role</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 </xs:schema>

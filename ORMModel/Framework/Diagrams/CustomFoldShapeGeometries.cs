@@ -22,6 +22,8 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
 using Neumont.Tools.Modeling.Diagrams;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace Neumont.Tools.Modeling.Diagrams
 {
@@ -42,7 +44,7 @@ namespace Neumont.Tools.Modeling.Diagrams
 		PointD CalculateConnectionPoint(NodeShape oppositeShape);
 	}
 	#endregion // ICustomShapeFolding interface
-	#region IOffsetBorderPoint
+	#region IOffsetBorderPoint interface
 	/// <summary>
 	/// Interface implemented on a <see cref="ShapeGeometry"/> to support
 	/// calculating a secondary border point offset from a known border point.
@@ -67,7 +69,29 @@ namespace Neumont.Tools.Modeling.Diagrams
 		/// <returns>A <see cref="Nullable{PointD}"/> either on the border, or <see langword="null"/>.</returns>
 		PointD? OffsetBorderPoint(IGeometryHost geometryHost, PointD borderPoint, PointD outsidePoint, double offset, bool parallelVector);
 	}
-	#endregion // IOffsetBorderPoint
+	#endregion // IOffsetBorderPoint interface
+	#region IDynamicColorGeometryHost interface
+	/// <summary>
+	/// Interface to add custom color support to a shape
+	/// </summary>
+	public interface IDynamicColorGeometryHost
+	{
+		/// <summary>
+		/// Update the color of a <see cref="Pen"/>
+		/// </summary>
+		/// <param name="penId">The <see cref="StyleSetResourceId"/> of the <paramref name="pen"/></param>
+		/// <param name="pen">The <see cref="Pen"/></param>
+		/// <returns>The old pen <see cref="Color"/>, or <see cref="Color.Empty"/> if the color was not changed.</returns>
+		Color UpdateDynamicColor(StyleSetResourceId penId, Pen pen);
+		/// <summary>
+		/// Update the color of a <see cref="Brush"/>
+		/// </summary>
+		/// <param name="brushId">The <see cref="StyleSetResourceId"/> of the <paramref name="brush"/></param>
+		/// <param name="brush">The <see cref="Pen"/></param>
+		/// <returns>The old brush <see cref="Color"/>, or <see cref="Color.Empty"/> if the color was not changed.</returns>
+		Color UpdateDynamicColor(StyleSetResourceId brushId, Brush brush);
+	}
+	#endregion // IDynamicColorGeometryHost interface
 	#region GeometryUtility class
 	/// <summary>
 	/// Helper functions for custom shape folding
@@ -361,6 +385,154 @@ namespace Neumont.Tools.Modeling.Diagrams
 			System.Drawing.PointF rightPoint = new System.Drawing.PointF(centerX + bottomOffsetX, centerY + bottomOffsetY);
 			return new System.Drawing.PointF[] { topPoint, leftPoint, rightPoint, topPoint };
 		}
+		/// <summary>
+		/// Paint the background and outline of a <see cref="IGeometryHost"/> using
+		/// dynamic colors provided by the <see cref="IDynamicColorGeometryHost"/> interface.
+		/// This is a helper method designed to be called by an override of the <see cref="NodeShapeGeometry.DoPaintGeometry"/> method.
+		/// </summary>
+		/// <param name="e">The <see cref="DiagramPaintEventArgs"/> passed to DoPaintGeometry</param>
+		/// <param name="geometryHost">The <see cref="IGeometryHost"/> passed to DoPaintGeometry</param>
+		/// <param name="dynamicColors">The <see cref="IDynamicColorGeometryHost"/> retrieved from the <paramref name="geometryHost"/></param>
+		/// <param name="shapeGeometry">The <see cref="ShapeGeometry"/> this is a helper for.</param>
+		/// <param name="hasFilledBackground">The result of the <see cref="ShapeGeometry.HasFilledBackground"/> method</param>
+		/// <param name="hasOutline">The result of the <see cref="ShapeGeometry.HasOutline"/> method</param>
+		/// <remarks>
+		/// The DoPaintGeometry override should look similar to
+		/// <code>
+		/// protected override void DoPaintGeometry(DiagramPaintEventArgs e, IGeometryHost geometryHost)
+		/// {
+		///     IDynamicColorGeometryHost dynamicColors = geometryHost as IDynamicColorGeometryHost;
+		///     if (dynamicColors != null)
+		///     {
+		///         GeometryUtility.PaintDynamicColorGeometry(e, geometryHost, dynamicColors, this, this.HasFilledBackground(geometryHost), this.HasOutline(geometryHost));
+		///     }
+		///     else
+		///     {
+		///         base.DoPaintGeometry(e, geometryHost);
+		///     }
+		/// }
+		/// </code>
+		/// </remarks>
+		public static void PaintDynamicColorGeometry(DiagramPaintEventArgs e, IGeometryHost geometryHost, IDynamicColorGeometryHost dynamicColors, ShapeGeometry shapeGeometry, bool hasFilledBackground, bool hasOutline)
+		{
+			if (hasFilledBackground || hasOutline)
+			{
+				StyleSet geometryStyleSet = geometryHost.GeometryStyleSet;
+				GraphicsPath path;
+				StyleSetResourceId penId = null;
+				Pen pen = null;
+				StyleSetResourceId brushId = null;
+				Brush brush = null;
+				if (null != (path = shapeGeometry.GetPath(geometryHost)) &&
+					(!hasFilledBackground || null != (brush = geometryStyleSet.GetBrush(brushId = shapeGeometry.GetBackgroundBrushId(geometryHost)))) &&
+					(!hasOutline || null != (pen = geometryStyleSet.GetPen(penId = shapeGeometry.GetOutlinePenId(geometryHost)))))
+				{
+					Graphics g = e.Graphics;
+					DiagramClientView clientView = e.View;
+					Color restoreColor;
+					if (brush != null)
+					{
+						restoreColor = Color.Empty;
+						if (dynamicColors == null ||
+							(restoreColor = dynamicColors.UpdateDynamicColor(brushId, brush)).IsEmpty)
+						{
+							if (clientView != null)
+							{
+								restoreColor = geometryHost.UpdateGeometryLuminosity(clientView, brush);
+							}
+						}
+						else if (clientView != null)
+						{
+							geometryHost.UpdateGeometryLuminosity(clientView, brush);
+						}
+						g.FillPath(brush, path);
+						SolidBrush solidBrush = brush as SolidBrush;
+						if (!restoreColor.IsEmpty &&
+							null != (solidBrush = brush as SolidBrush))
+						{
+							solidBrush.Color = restoreColor;
+						}
+					}
+					if (pen != null)
+					{
+						restoreColor = Color.Empty;
+						if (dynamicColors == null ||
+							(restoreColor = dynamicColors.UpdateDynamicColor(penId, pen)).IsEmpty)
+						{
+							if (clientView != null)
+							{
+								restoreColor = geometryHost.UpdateGeometryLuminosity(clientView, pen);
+							}
+						}
+						else if (clientView != null)
+						{
+							geometryHost.UpdateGeometryLuminosity(clientView, pen);
+						}
+						SafeDrawPath(g, pen, path);
+						if (!restoreColor.IsEmpty)
+						{
+							pen.Color = restoreColor;
+						}
+					}
+				}
+			}
+		}
+		#region Helper functions (unmodified Reflector copies)
+		/// <summary>
+		/// Draw a safe path catching common exceptions
+		/// </summary>
+		/// <remarks>
+		/// This is a copy of Microsoft.VisualStudio.Modeling.Diagrams.DrawHelper.SafeDrawPath.
+		/// Without the source code, we don't know why this method exists, but when in Rome...
+		/// </remarks>
+		public static void SafeDrawPath(Graphics g, Pen pen, GraphicsPath path)
+		{
+			try
+			{
+				if ((g != null) && (pen != null))
+				{
+					g.DrawPath(pen, path);
+				}
+			}
+			catch (OutOfMemoryException)
+			{
+				if (pen.DashStyle == DashStyle.Solid)
+				{
+					throw;
+				}
+			}
+			catch (OverflowException)
+			{
+			}
+		}
+		/// <summary>
+		/// Draw a safe rectangle catching common exceptions
+		/// </summary>
+		/// <remarks>
+		/// This is a copy of Microsoft.VisualStudio.Modeling.Diagrams.DrawHelper.SafeDrawRectangle.
+		/// Without the source code, we don't know why this method exists, but when in Rome...
+		/// </remarks>
+		public static void SafeDrawRectangle(Graphics g, Pen pen, float x, float y, float width, float height)
+		{
+			try
+			{
+				if ((g != null) && (pen != null))
+				{
+					g.DrawRectangle(pen, x, y, width, height);
+				}
+			}
+			catch (OutOfMemoryException)
+			{
+				if (pen.DashStyle == DashStyle.Solid)
+				{
+					throw;
+				}
+			}
+			catch (OverflowException)
+			{
+			}
+		}
+		#endregion // Helper functions (unmodified Reflector copies)
 	}
 	#endregion // GeometryUtility class
 	#region CustomFoldEllipseShapeGeometry class
@@ -381,6 +553,7 @@ namespace Neumont.Tools.Modeling.Diagrams
 		protected CustomFoldEllipseShapeGeometry()
 		{
 		}
+		#region Shape Folding
 		/// <summary>
 		/// Implement shape folding on the ellipse boundary
 		/// </summary>
@@ -458,7 +631,7 @@ namespace Neumont.Tools.Modeling.Diagrams
 				return new PointD(x + xRadius, y + yRadius);
 			}
 		}
-
+		#endregion // Shape Folding
 		#region IOffsetBorderPoint Implementation
 		/// <summary>
 		/// Implements <see cref="IOffsetBorderPoint.OffsetBorderPoint"/>
@@ -598,6 +771,24 @@ namespace Neumont.Tools.Modeling.Diagrams
 			return OffsetBorderPoint(geometryHost, borderPoint, outsidePoint, offset, parallelVector);
 		}
 		#endregion // IOffsetBorderPoint Implementation
+		#region Dynamic Color Support
+		/// <summary>
+		/// Replacement for <see cref="NodeShapeGeometry.DoPaintGeometry"/> that supports
+		/// dynamic background and outline colors.
+		/// </summary>
+		protected override void DoPaintGeometry(DiagramPaintEventArgs e, IGeometryHost geometryHost)
+		{
+			IDynamicColorGeometryHost dynamicColors = geometryHost as IDynamicColorGeometryHost;
+			if (dynamicColors != null)
+			{
+				GeometryUtility.PaintDynamicColorGeometry(e, geometryHost, dynamicColors, this, this.HasFilledBackground(geometryHost), this.HasOutline(geometryHost));
+			}
+			else
+			{
+				base.DoPaintGeometry(e, geometryHost);
+			}
+		}
+		#endregion // Dynamic Color Support
 	}
 	#endregion // CustomFoldEllipseShapeGeometry class
 	#region CustomFoldCircleShapeGeometry class
@@ -618,6 +809,7 @@ namespace Neumont.Tools.Modeling.Diagrams
 		protected CustomFoldCircleShapeGeometry()
 		{
 		}
+		#region Shape Folding
 		/// <summary>
 		/// Implement shape folding on the ellipse boundary
 		/// </summary>
@@ -694,6 +886,25 @@ namespace Neumont.Tools.Modeling.Diagrams
 				return new PointD(x + radius, y + radius);
 			}
 		}
+		#endregion // Shape Folding
+		#region Dynamic Color Support
+		/// <summary>
+		/// Replacement for <see cref="NodeShapeGeometry.DoPaintGeometry"/> that supports
+		/// dynamic background and outline colors.
+		/// </summary>
+		protected override void DoPaintGeometry(DiagramPaintEventArgs e, IGeometryHost geometryHost)
+		{
+			IDynamicColorGeometryHost dynamicColors = geometryHost as IDynamicColorGeometryHost;
+			if (dynamicColors != null)
+			{
+				GeometryUtility.PaintDynamicColorGeometry(e, geometryHost, dynamicColors, this, this.HasFilledBackground(geometryHost), this.HasOutline(geometryHost));
+			}
+			else
+			{
+				base.DoPaintGeometry(e, geometryHost);
+			}
+		}
+		#endregion // Dynamic Color Support
 	}
 	#endregion // CustomFoldCircleShapeGeometry class
 	#region CustomFoldRectangleShapeGeometry class
@@ -714,6 +925,7 @@ namespace Neumont.Tools.Modeling.Diagrams
 		protected CustomFoldRectangleShapeGeometry()
 		{
 		}
+		#region Shape Folding
 		/// <summary>
 		/// Provide custom shape folding for rectangular fact types
 		/// </summary>
@@ -785,6 +997,7 @@ namespace Neumont.Tools.Modeling.Diagrams
 				return new PointD(x + bounds.Width / 2, y + bounds.Height / 2);
 			}
 		}
+		#endregion // Shape Folding
 		#region IOffsetBorderPoint Implementation
 		/// <summary>
 		/// Implements <see cref="IOffsetBorderPoint.OffsetBorderPoint"/>
@@ -945,6 +1158,24 @@ namespace Neumont.Tools.Modeling.Diagrams
 			return OffsetBorderPoint(geometryHost, borderPoint, outsidePoint, offset, parallelVector);
 		}
 		#endregion // IOffsetBorderPoint Implementation
+		#region Dynamic Color Support
+		/// <summary>
+		/// Replacement for <see cref="NodeShapeGeometry.DoPaintGeometry"/> that supports
+		/// dynamic background and outline colors.
+		/// </summary>
+		protected override void DoPaintGeometry(DiagramPaintEventArgs e, IGeometryHost geometryHost)
+		{
+			IDynamicColorGeometryHost dynamicColors = geometryHost as IDynamicColorGeometryHost;
+			if (dynamicColors != null)
+			{
+				GeometryUtility.PaintDynamicColorGeometry(e, geometryHost, dynamicColors, this, this.HasFilledBackground(geometryHost), this.HasOutline(geometryHost));
+			}
+			else
+			{
+				base.DoPaintGeometry(e, geometryHost);
+			}
+		}
+		#endregion // Dynamic Color Support
 	}
 	#endregion // CustomFoldRectangleShapeGeometry class
 	#region CustomFoldRoundedRectangleShapeGeometry class
@@ -984,6 +1215,7 @@ namespace Neumont.Tools.Modeling.Diagrams
 			: base(cornerRadius)
 		{
 		}
+		#region Shape Folding
 		/// <summary>
 		/// Provide custom shape folding for rectangular fact types
 		/// </summary>
@@ -1106,6 +1338,7 @@ namespace Neumont.Tools.Modeling.Diagrams
 				return new PointD(x + halfWidth, y + halfHeight);
 			}
 		}
+		#endregion // Shape Folding
 		#region IOffsetBorderPoint Implementation
 		/// <summary>
 		/// Implements <see cref="IOffsetBorderPoint.OffsetBorderPoint"/>
@@ -1458,6 +1691,24 @@ namespace Neumont.Tools.Modeling.Diagrams
 			return OffsetBorderPoint(geometryHost, borderPoint, outsidePoint, offset, parallelVector);
 		}
 		#endregion // IOffsetBorderPoint Implementation
+		#region Dynamic Color Support
+		/// <summary>
+		/// Replacement for <see cref="NodeShapeGeometry.DoPaintGeometry"/> that supports
+		/// dynamic background and outline colors.
+		/// </summary>
+		protected override void DoPaintGeometry(DiagramPaintEventArgs e, IGeometryHost geometryHost)
+		{
+			IDynamicColorGeometryHost dynamicColors = geometryHost as IDynamicColorGeometryHost;
+			if (dynamicColors != null)
+			{
+				GeometryUtility.PaintDynamicColorGeometry(e, geometryHost, dynamicColors, this, this.HasFilledBackground(geometryHost), this.HasOutline(geometryHost));
+			}
+			else
+			{
+				base.DoPaintGeometry(e, geometryHost);
+			}
+		}
+		#endregion // Dynamic Color Support
 	}
 	#endregion // CustomFoldRoundedRectangleShapeGeometry class
 	#region CustomFoldTriangleShapeGeometry class
@@ -1465,7 +1716,7 @@ namespace Neumont.Tools.Modeling.Diagrams
 	/// Attach connection lines correctly to triangular border. Designed
 	/// to work with CenterToCenter routing.
 	/// </summary>
-	public class CustomFoldTriangleShapeGeometry : NodeShapeGeometry
+	public class CustomFoldTriangleShapeGeometry : DynamicColorNodeShapeGeometry
 	{
 		/// <summary>
 		/// Singleton CustomFoldTriangleShapeGeometry instance
@@ -1504,4 +1755,144 @@ namespace Neumont.Tools.Modeling.Diagrams
 		}
 	}
 	#endregion // CustomFoldTriangleShapeGeometry class
+	#region DynamicColorNodeShapeGeometry class
+	/// <summary>
+	/// A version of <see cref="NodeShapeGeometry"/> that supports dynamic colors
+	/// specified by implementing the <see cref="IDynamicColorGeometryHost"/> interface
+	/// along with <see cref="IGeometryHost"/>
+	/// </summary>
+	public class DynamicColorNodeShapeGeometry : NodeShapeGeometry
+	{
+		/// <summary>
+		/// Protected default constructor. The class should be used
+		/// as a singleton instead of being publicly constructed.
+		/// </summary>
+		protected DynamicColorNodeShapeGeometry()
+		{
+		}
+		/// <summary>
+		/// Replacement for <see cref="NodeShapeGeometry.DoPaintGeometry"/> that supports
+		/// dynamic background and outline colors.
+		/// </summary>
+		protected override void DoPaintGeometry(DiagramPaintEventArgs e, IGeometryHost geometryHost)
+		{
+			IDynamicColorGeometryHost dynamicColors = geometryHost as IDynamicColorGeometryHost;
+			if (dynamicColors != null)
+			{
+				GeometryUtility.PaintDynamicColorGeometry(e, geometryHost, dynamicColors, this, this.HasFilledBackground(geometryHost), this.HasOutline(geometryHost));
+			}
+			else
+			{
+				base.DoPaintGeometry(e, geometryHost);
+			}
+		}
+	}
+	#endregion // DynamicColorNodeShapeGeometry class
+	#region DynamicColorLinkDecorator class
+	/// <summary>
+	/// Modify <see cref="LinkDecorator"/> to a <see cref="IGeometryHost"/>
+	/// that also implements the <see cref="IDynamicColorGeometryHost"/> interface
+	/// </summary>
+	[Serializable]
+	public abstract class DynamicColorLinkDecorator : LinkDecorator
+	{
+		/// <summary>
+		/// Reimplementation of <see cref="LinkDecorator.DoPaintShape"/> that
+		/// recognizes <see cref="IDynamicColorGeometryHost"/>
+		/// </summary>
+		public override void DoPaintShape(RectangleD bounds, IGeometryHost shape, DiagramPaintEventArgs e)
+		{
+			StyleSet styleSet = shape.GeometryStyleSet;
+			GraphicsPath decoratorPath = GetPath(bounds);
+			StyleSetResourceId penId = PenId;
+			Pen pen = styleSet.GetPen(penId);
+			StyleSetResourceId brushId = BrushId;
+			Brush brush = styleSet.GetBrush(brushId);
+			if (((decoratorPath != null) && (pen != null)) && (brush != null))
+			{
+				DiagramClientView clientView = e.View;
+				IDynamicColorGeometryHost dynamicColors = shape as IDynamicColorGeometryHost;
+				Graphics g = e.Graphics;
+				Color restoreColor;
+				if (FillDecorator)
+				{
+					restoreColor = Color.Empty;
+					if (dynamicColors == null ||
+						(restoreColor = dynamicColors.UpdateDynamicColor(brushId, brush)).IsEmpty)
+					{
+						if (clientView != null)
+						{
+							restoreColor = shape.UpdateGeometryLuminosity(clientView, brush);
+						}
+					}
+					else if (clientView != null)
+					{
+						shape.UpdateGeometryLuminosity(clientView, brush);
+					}
+					g.FillPath(brush, decoratorPath);
+					SolidBrush solidBrush;
+					if (!restoreColor.IsEmpty &&
+						null != (solidBrush = brush as SolidBrush))
+					{
+						solidBrush.Color = restoreColor;
+					}
+				}
+				restoreColor = Color.Empty;
+				if (dynamicColors == null ||
+					(restoreColor = dynamicColors.UpdateDynamicColor(penId, pen)).IsEmpty)
+				{
+					if (clientView != null)
+					{
+						restoreColor = shape.UpdateGeometryLuminosity(clientView, pen);
+					}
+				}
+				else if (clientView != null)
+				{
+					shape.UpdateGeometryLuminosity(clientView, pen);
+				}
+				GeometryUtility.SafeDrawPath(e.Graphics, pen, decoratorPath);
+				if (!restoreColor.IsEmpty)
+				{
+					pen.Color = restoreColor;
+				}
+			}
+		}
+	}
+	#endregion // DynamicColorLinkDecorator class
+	#region DynamicColorDecoratorFilledArrow class
+	/// <summary>
+	/// A replacement for <see cref="DecoratorFilledArrow"/> that
+	/// supports the <see cref="IDynamicColorGeometryHost"/> interface.
+	/// </summary>
+	[Serializable]
+	public class DynamicColorDecoratorFilledArrow : DynamicColorLinkDecorator
+	{
+		/// <summary>
+		/// Singleton instance of this decorator
+		/// </summary>
+		public static readonly LinkDecorator Decorator = new DynamicColorDecoratorFilledArrow();
+		/// <summary>
+		/// Create a new DynamicColorDecoratorFilledArrow
+		/// </summary>
+		protected DynamicColorDecoratorFilledArrow()
+		{
+			FillDecorator = true;
+		}
+		/// <summary>
+		/// Get the path for a filled arrow.
+		/// </summary>
+		protected override GraphicsPath GetPath(RectangleD bounds)
+		{
+			// Decorator paths are draw at 0 radians
+			GraphicsPath path = base.DecoratorPath;
+			PointF upperCorner = PointD.ToPointF(bounds.Location);
+			PointF arrowTip = new PointF((float) bounds.Right, (float) (bounds.Top + (bounds.Height / 2.0)));
+			PointF bottomCorner = new PointF((float) bounds.Left, (float) bounds.Bottom);
+			path.AddLine(upperCorner, arrowTip);
+			path.AddLine(arrowTip, bottomCorner);
+			path.AddLine(bottomCorner, upperCorner);
+			return path;
+		}
+	}
+	#endregion // DynamicColorDecoratorFilledArrow class
 }

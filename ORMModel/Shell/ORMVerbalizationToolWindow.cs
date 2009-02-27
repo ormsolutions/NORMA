@@ -166,7 +166,10 @@ namespace Neumont.Tools.ORM.Shell
 		#region Selection monitor event handlers and helpers
 		private void ModelStateChangedEvent(object sender, ElementEventsEndedEventArgs e)
 		{
-			UpdateVerbalization();
+			if (((IORMToolServices)sender).ProcessingVisibleTransactionItemEvents)
+			{
+				UpdateVerbalization();
+			}
 		}
 		/// <summary>
 		/// Called when the options dialog settings have changed

@@ -346,6 +346,11 @@
 				</plx:function>
 				<xsl:if test="$disabledRules or $enableDiagramRules">
 					<plx:function name="EnableRulesAfterDeserialization" visibility="protected">
+						<xsl:if test="@sealed='true' or @sealed=1">
+							<xsl:attribute name="visibility">
+								<xsl:text>privateInterfaceMember</xsl:text>
+							</xsl:attribute>
+						</xsl:if>
 						<plx:leadingInfo>
 							<plx:docComment>
 								<summary>Implements IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization</summary>

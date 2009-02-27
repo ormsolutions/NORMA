@@ -34,7 +34,7 @@ using Neumont.Tools.Modeling.Diagrams;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	[DebuggerDisplay("{System.String.Concat(ToString(), \": \",(ModelElement != null) ? ModelElement.ToString() : \"null\")}")]
-	public partial class ORMBaseShape
+	public partial class ORMBaseShape : IInvalidateDisplay
 	{
 		#region Public token values
 		/// <summary>
@@ -444,27 +444,37 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // Accessibility Properties
-		#region Auto-invalidate tracking
+		#region Auto-invalidate tracking, IInvalidateDisplay implementation
 		/// <summary>
+		/// Implements <see cref="IInvalidateDisplay.InvalidateRequired()"/>
 		/// Call to automatically invalidate the shape during events.
 		/// Invalidates during the original event sequence as well as undo and redo.
 		/// </summary>
-		public void InvalidateRequired()
+		protected void InvalidateRequired()
 		{
 			InvalidateRequired(false);
 		}
+		void IInvalidateDisplay.InvalidateRequired()
+		{
+			InvalidateRequired();
+		}
 		/// <summary>
+		/// Implements <see cref="IInvalidateDisplay.InvalidateRequired(bool)"/>
 		/// Call to automatically invalidate the shape during events.
 		/// Invalidates during the original event sequence as well as undo and redo.
 		/// </summary>
 		/// <param name="refreshBitmap">Value to forward to the Invalidate method's refreshBitmap property during event playback</param>
-		public void InvalidateRequired(bool refreshBitmap)
+		protected void InvalidateRequired(bool refreshBitmap)
 		{
 			long? newValue = ORMShapeDomainModel.GetNewUpdateCounterValue(this, refreshBitmap);
 			if (newValue.HasValue)
 			{
 				UpdateCounter = newValue.Value;
 			}
+		}
+		void IInvalidateDisplay.InvalidateRequired(bool refreshBitmap)
+		{
+			InvalidateRequired(refreshBitmap);
 		}
 		/// <summary>
 		/// Called during event playback before an <see cref="ShapeElement.Invalidate()"/> call triggered
@@ -547,7 +557,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		#endregion // Auto-invalidate tracking
+		#endregion // Auto-invalidate tracking, IInvalidateDisplay implementation
 		#region DuplicateNameError Activation Helper
 		/// <summary>
 		/// Activate the Name property in the Properties Window

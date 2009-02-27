@@ -40,7 +40,7 @@ namespace Neumont.Tools.Modeling
 		IPropertyProviderService PropertyProviderService { get;}
 		/// <summary>
 		/// Retrieve the <see cref="INotifySurveyElementChanged"/> interface for this store.
-		/// Can be implemented using an instance of the <see cref="SurveyTree"/> class which
+		/// Can be implemented using an instance of the <see cref="SurveyTree{Store}"/> class that
 		/// implements this interface.
 		/// </summary>
 		INotifySurveyElementChanged NotifySurveyElementChanged { get;}
@@ -66,6 +66,21 @@ namespace Neumont.Tools.Modeling
 		ModelElement[] GetRepresentedElements();
 	}
 	#endregion // IRepresentedModelElements interface
+	#region IElementReference interface
+	/// <summary>
+	/// This element represents a reference to another
+	/// element. Generally, most actions on the element
+	/// will also apply to the reference with the notable
+	/// exception of deletion.
+	/// </summary>
+	public interface IElementReference
+	{
+		/// <summary>
+		/// The referenced element
+		/// </summary>
+		object ReferencedElement { get;}
+	}
+	#endregion // IElementReference interface
 	#region DomainModelTypeProviderCache class
 	/// <summary>
 	/// Helper class to implement <see cref="M:IFrameworkServices.GetTypedDomainModelProviders"/>
@@ -166,7 +181,7 @@ namespace Neumont.Tools.Modeling
 		/// <returns><see langword="true"/> if the element is properly merged</returns>
 		bool MergeConfigureIndirect(T mergeContext, ElementGroup elementGroup);
 		/// <summary>
-		/// 
+		/// Indirectly disconnect an element from a parent context
 		/// </summary>
 		/// <param name="mergeContext">The context parent element</param>
 		/// <param name="sourceElement">The element to disconnect</param>

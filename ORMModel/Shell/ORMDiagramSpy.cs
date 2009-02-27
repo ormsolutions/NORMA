@@ -21,6 +21,7 @@ using System.ComponentModel.Design;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Design;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -31,9 +32,9 @@ using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Neumont.Tools.Modeling.Shell;
+using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.Modeling;
 using OLE = Microsoft.VisualStudio.OLE.Interop;
-using System.Drawing.Design;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -290,13 +291,16 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		private void ElementEventsEnded(object sender, ElementEventsEndedEventArgs e)
 		{
-			if (myDiagramView.Diagram == null)
+			if (((IORMToolServices)sender).ProcessingVisibleTransactionItemEvents)
 			{
-				RebuildWatermark();
-			}
-			else
-			{
-				CommandManager.UpdateCommandStatus();
+				if (myDiagramView.Diagram == null)
+				{
+					RebuildWatermark();
+				}
+				else
+				{
+					CommandManager.UpdateCommandStatus();
+				}
 			}
 		}
 		private void AdjustVisibility(bool diagramVisible, bool deferRebuildWatermark)
@@ -466,6 +470,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		protected override void OnSelectionChanged(EventArgs e)
 		{
+			base.OnSelectionChanged(e);
 			CommandManager.UpdateCommandStatus();
 			UpdateToolbox();
 		}

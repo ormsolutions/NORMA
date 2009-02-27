@@ -1104,20 +1104,20 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		#endregion // ISurveyNodeContext Implementation
 		#region ISurveyNodeReference Implementation
 		/// <summary>
-		/// Implements <see cref="ISurveyNodeReference.ReferencedSurveyNode"/>
+		/// Implements <see cref="IElementReference.ReferencedElement"/>
 		/// </summary>
-		protected object ReferencedSurveyNode
+		protected object ReferencedElement
 		{
 			get
 			{
 				return TargetTable;
 			}
 		}
-		object ISurveyNodeReference.ReferencedSurveyNode
+		object IElementReference.ReferencedElement
 		{
 			get
 			{
-				return ReferencedSurveyNode;
+				return ReferencedElement;
 			}
 		}
 		/// <summary>
@@ -1544,20 +1544,20 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		#endregion // ICustomComparableSurveyNode Implementation
 		#region ISurveyNodeReference Implementation
 		/// <summary>
-		/// Implements <see cref="ISurveyNodeReference.ReferencedSurveyNode"/>
+		/// Implements <see cref="IElementReference.ReferencedElement"/>
 		/// </summary>
-		protected object ReferencedSurveyNode
+		protected object ReferencedElement
 		{
 			get
 			{
 				return Column;
 			}
 		}
-		object ISurveyNodeReference.ReferencedSurveyNode
+		object IElementReference.ReferencedElement
 		{
 			get
 			{
-				return ReferencedSurveyNode;
+				return ReferencedElement;
 			}
 		}
 		/// <summary>
@@ -1713,7 +1713,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			}
 			#endregion // Member Variables and Constructor
 			#region ISurveyNodeReference Implementation
-			object ISurveyNodeReference.ReferencedSurveyNode
+			object IElementReference.ReferencedElement
 			{
 				get
 				{
@@ -1762,7 +1762,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 			}
 			#endregion // Member Variables and Constructor
 			#region ISurveyNodeReference Implementation
-			object ISurveyNodeReference.ReferencedSurveyNode
+			object IElementReference.ReferencedElement
 			{
 				get
 				{

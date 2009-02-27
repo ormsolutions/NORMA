@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <qp:surveyQuestionProvider xmlns:qp="http://schemas.neumont.edu/ORM/SDK/SurveyQuestionProvider" xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX" class="DiagramSurvey">
+	<qp:surveyContextType dataTypeName="Store" dataTypeQualifier="Microsoft.VisualStudio.Modeling"/>
 	<qp:surveyQuestions>
 		<qp:surveyQuestion questionType="DiagramSurveyType" questionPriority="-1000">
 			<qp:displaySupport displayCategory="Grouping"/>
@@ -18,19 +19,27 @@
 	</qp:groupings>
 	<qp:imageInformation>
 		<plx:comment>Note that this relies heavily on the current structure of the generated code</plx:comment>
-		<plx:callThis name="EnsureSurveyQuestionTypeInfo1"/>
+		<plx:callThis name="EnsureSurveyQuestionTypeInfo1">
+			<plx:passParam>
+				<plx:nameRef name="surveyContext" type="parameter"/>
+			</plx:passParam>
+		</plx:callThis>
 		<plx:return>
-			<plx:callInstance name="DiagramImages" type="property">
-				<plx:callObject>
-					<plx:cast dataTypeName="DiagramGlyphSurveyType" dataTypeQualifier="DiagramSurvey">
-						<plx:callInstance name="DynamicQuestionValues" type="property">
-							<plx:callObject>
-								<plx:callThis name="myDynamicDiagramGlyphSurveyTypeQuestionInstance" type="field"/>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:cast>
-				</plx:callObject>
-			</plx:callInstance>
+			<plx:callNew dataTypeName="ImageList" dataTypeIsSimpleArray="true">
+				<plx:arrayInitializer>
+					<plx:callInstance name="DiagramImages" type="property">
+						<plx:callObject>
+							<plx:cast dataTypeName="DiagramGlyphSurveyType" dataTypeQualifier="DiagramSurvey">
+								<plx:callInstance name="DynamicQuestionValues" type="property">
+									<plx:callObject>
+										<plx:callThis name="myDynamicDiagramGlyphSurveyTypeQuestionInstance" type="field"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:cast>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:arrayInitializer>
+			</plx:callNew>
 		</plx:return>
 	</qp:imageInformation>
 </qp:surveyQuestionProvider>

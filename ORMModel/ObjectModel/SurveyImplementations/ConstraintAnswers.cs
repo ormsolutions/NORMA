@@ -23,6 +23,7 @@ using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 using System.Windows.Forms;
 using System.Diagnostics;
+using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
@@ -435,6 +436,70 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 	}
+	public partial class MandatoryConstraint : ISurveyNode
+	{
+		#region ISurveyNode Implementation
+		// For an exclusive or constraint, we show the mandatory constraint but
+		// use the name for the exclusion constraint
+
+		/// <summary>
+		/// Implements <see cref="ISurveyNode.SurveyName"/>
+		/// Redirect ExclusiveOr constraint to use name of the exclusion constraint.
+		/// </summary>
+		protected new string SurveyName
+		{
+			get
+			{
+				ISurveyNode exclusionNode = ExclusiveOrExclusionConstraint;
+				return exclusionNode != null ? exclusionNode.SurveyName : base.Name;
+			}
+		}
+		string ISurveyNode.SurveyName
+		{
+			get
+			{
+				return SurveyName;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="ISurveyNode.EditableSurveyName"/>
+		/// Redirect ExclusiveOr constraint to use name of the exclusion constraint.
+		/// </summary>
+		protected new string EditableSurveyName
+		{
+			get
+			{
+				ISurveyNode exclusionNode = ExclusiveOrExclusionConstraint;
+				return exclusionNode != null ? exclusionNode.EditableSurveyName : base.EditableSurveyName;
+			}
+			set
+			{
+				ISurveyNode exclusionNode = ExclusiveOrExclusionConstraint;
+				if (exclusionNode != null)
+				{
+					exclusionNode.EditableSurveyName = value;
+
+
+				}
+				else
+				{
+					base.EditableSurveyName = value;
+				}
+			}
+		}
+		string ISurveyNode.EditableSurveyName
+		{
+			get
+			{
+				return EditableSurveyName;
+			}
+			set
+			{
+				EditableSurveyName = value;
+			}
+		}
+		#endregion // ISurveyNode Implementation
+	}
 	partial class FactConstraint : ISurveyNodeReference
 	{
 		/// <summary>
@@ -443,20 +508,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public static readonly object SurveyConstraintExpansionKey = new object();
 		#region ISurveyNodeReference Implementation
 		/// <summary>
-		/// Implements <see cref="ISurveyNodeReference.ReferencedSurveyNode"/>
+		/// Implements <see cref="IElementReference.ReferencedElement"/>
 		/// </summary>
-		protected object ReferencedSurveyNode
+		protected object ReferencedElement
 		{
 			get
 			{
 				return FactType;
 			}
 		}
-		object ISurveyNodeReference.ReferencedSurveyNode
+		object IElementReference.ReferencedElement
 		{
 			get
 			{
-				return ReferencedSurveyNode;
+				return ReferencedElement;
 			}
 		}
 		/// <summary>

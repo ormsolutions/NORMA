@@ -55,12 +55,34 @@ namespace Neumont.Tools.ORM.ObjectModel
 		ModelBrowser,
 	}
 	/// <summary>
+	/// Specify how an automatically added element should be
+	/// treated by a presentation layer.
+	/// </summary>
+	public enum AutomatedElementDirective
+	{
+		/// <summary>
+		/// No directive is specified for the element
+		/// </summary>
+		None,
+		/// <summary>
+		/// The element was added automatically and should always be ignored
+		/// by the presentation layer.
+		/// </summary>
+		Ignore,
+		/// <summary>
+		/// The element was added intentionally and should never be ignored
+		/// by the presentation layer. If multiple directives are provided,
+		/// this takes precedence over <see cref="Ignore"/>
+		/// </summary>
+		NeverIgnore,
+	}
+	/// <summary>
 	/// A callback used by <see cref="IORMToolServices.AutomatedElementFilter"/>
-	/// and <see cref="IORMToolServices.IsAutomatedElement"/>
+	/// and <see cref="IORMToolServices.GetAutomatedElementDirective"/>
 	/// </summary>
 	/// <param name="element">The element to test</param>
-	/// <returns>True if the element is automated</returns>
-	public delegate bool AutomatedElementFilterCallback(ModelElement element);
+	/// <returns><see cref="AutomatedElementDirective"/></returns>
+	public delegate AutomatedElementDirective AutomatedElementFilterCallback(ModelElement element);
 	/// <summary>
 	/// An interface that should be implemented by any
 	/// store that hosts ORM-derived object models. This
@@ -110,17 +132,31 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		bool CanAddTransaction { get; set;}
 		/// <summary>
-		/// Add callbacks to determine the result of <see cref="IsAutomatedElement"/>
+		/// Return true if events are being for a visible transaction item.
+		/// A <see cref="TransactionItem"/> is visible if it contains changes to the primary
+		/// document <see cref="Store"/>. Visible transaction items can be seen in
+		/// the Undo and Redo lists.
+		/// </summary>
+		/// <remarks>By default, the answer to this question is automatically calculated
+		/// based on the currently processing transaction. However, the answer to this
+		/// question can be accurately calculated based on context information if the
+		/// <see cref="Store"/> is not in an Undo or Redo state. To override the default
+		/// processing, an UndoUnit implementation must explicitly set the property twice.
+		/// The first call sets the expected return value; the second call must be the
+		/// opposite boolean value.</remarks>
+		bool ProcessingVisibleTransactionItemEvents { get; set;}
+		/// <summary>
+		/// Add callbacks to determine the result of <see cref="GetAutomatedElementDirective"/>
 		/// </summary>
 		event AutomatedElementFilterCallback AutomatedElementFilter;
 		/// <summary>
-		/// True if a rule is currently consider to be automatically added
-		/// based on listeners attached to <see cref="AutomatedElementFilter"/>.
+		/// Provided directives regarding automatically added elements based
+		/// on listeners attached to <see cref="AutomatedElementFilter"/>.
 		/// This allows rules and editors to easily notify presentation layers
 		/// to respond differently when new elements are being added in
 		/// an automated fashion.
 		/// </summary>
-		bool IsAutomatedElement(ModelElement element);
+		AutomatedElementDirective GetAutomatedElementDirective(ModelElement element);
 		/// <summary>
 		/// Activate the specified shape on the most appropriate view
 		/// </summary>

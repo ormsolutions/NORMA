@@ -67,6 +67,11 @@
 				<xs:documentation>(default: false) The DSLTools generators produce a static function called EnableDiagramRules. This function is called by the DSL-produced DocData, but only for the one model known to the DocData, and only if the DSL-generated package files are used. Set this property to true to call this function at the appropriate time.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute name="sealed" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>(default: false) Generate code for a sealed DomainModel-derived class.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:element name="ReflectedType" type="ReflectedTypeType"/>
 	<xs:element name="Rule" type="RuleType" substitutionGroup="ReflectedType"/>

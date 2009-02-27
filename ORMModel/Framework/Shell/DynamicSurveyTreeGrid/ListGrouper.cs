@@ -17,13 +17,61 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Text;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.VirtualTreeGrid;
 namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 {
-	partial class SurveyTree
+	/// <summary>
+	/// A <see cref="TypeDescriptionProvider"/> used by the internal grouping
+	/// mechanisms in the <see cref="SurveyTree{Object}"/> implementation. This
+	/// cannot be a nested type because it is used in an attribute.
+	/// </summary>
+	public sealed class SurveyGroupHeaderTypeDescriptionProvider : TypeDescriptionProvider
+	{
+		private class SurveyGroupHeaderTypeDescriptor : CustomTypeDescriptor
+		{
+			private string myComponentName;
+			public SurveyGroupHeaderTypeDescriptor(ISurveyGroupHeader groupHeader)
+			{
+				ISurveyQuestionTypeInfo question = groupHeader.QuestionTypeInfo;
+				ISurveyDynamicValues dynamicValues = question.DynamicQuestionValues;
+				if (dynamicValues != null)
+				{
+					myComponentName = dynamicValues.GetValueName(groupHeader.Answer);
+				}
+				else
+				{
+					myComponentName = Utility.GetLocalizedEnumName(question.QuestionType, groupHeader.Answer);
+				}
+			}
+			public override string GetClassName()
+			{
+				return FrameworkResourceStrings.DynamicSurveyHeaderClassName;
+			}
+			public override string GetComponentName()
+			{
+				return myComponentName;
+			}
+		}
+		/// <summary>
+		/// Standard override. Provides a custom descriptor for instances of the
+		/// <see cref="ISurveyGroupHeader"/> interface.
+		/// </summary>
+		public override ICustomTypeDescriptor GetTypeDescriptor(Type objectType, object instance)
+		{
+			ISurveyGroupHeader typedInstance = instance as ISurveyGroupHeader;
+			if (typedInstance != null)
+			{
+				return new SurveyGroupHeaderTypeDescriptor(typedInstance);
+			}
+			return base.GetTypeDescriptor(objectType, instance);
+		}
+	}
+	partial class SurveyTree<SurveyContextType>
 	{
 		partial class MainList
 		{
@@ -64,7 +112,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 								SurveyQuestion nextQuestion = questionList[questionIndex + 1];
 								if ((0 != (nextQuestion.UISupport & (SurveyQuestionUISupport.Grouping))))
 								{
-									branch = new ListGrouper(grouper.myBaseBranch, nextQuestion, Start, End, grouper.myNeutralOnTop);
+									branch = new ListGrouper(grouper.myBaseBranch, nextQuestion, Start, End, grouper.myNeutralOnTop, false);
 								}
 								else
 								{
@@ -92,10 +140,10 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					/// Adjusts the delete.
 					/// </summary>
 					/// <param name="index">The index.</param>
-					/// <param name="adjustIndex">Index of the adjust.</param>
+					/// <param name="headerAlwaysVisible">The header for sub branch is always visible</param>
 					/// <param name="modificationEvents">The modification events.</param>
-					/// <returns></returns>
-					public bool AdjustDelete(int index, int adjustIndex, BranchModificationEventHandler modificationEvents)
+					/// <returns><see langword="true"/> to fully remove the node</returns>
+					public bool AdjustDelete(int index, bool headerAlwaysVisible, BranchModificationEventHandler modificationEvents)
 					{
 						if (index <= End)
 						{
@@ -115,9 +163,8 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 								index -= Start;
 								if (index < Count)
 								{
-									End += adjustIndex;
-
-									if (End < Start)
+									--End;
+									if (End < Start && !headerAlwaysVisible)
 									{
 										myBranch = null;
 										return true;
@@ -126,10 +173,10 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 									{
 										if (notifyListShifter != null)
 										{
-											notifyListShifter.Count += adjustIndex;
+											notifyListShifter.Count -= 1;
 											if (modificationEvents != null)
 											{
-												HandleSubranch(index, adjustIndex, modificationEvents, notifyListShifter);
+												HandleSubranch(index, -1, modificationEvents, notifyListShifter);
 											}
 										}
 										else
@@ -140,12 +187,12 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 								}
 								else
 								{
-									Start += adjustIndex;
+									--Start;
 									if (branch != null)
 									{
 										if (notifyListShifter != null)
 										{
-											notifyListShifter.FirstItem += adjustIndex;
+											notifyListShifter.FirstItem -= 1;
 										}
 										else
 										{
@@ -156,13 +203,13 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 							}
 							else
 							{
-								Start += adjustIndex;
-								End += adjustIndex;
+								--Start;
+								--End;
 								if (branch != null)
 								{
 									if (notifyListShifter != null)
 									{
-										notifyListShifter.FirstItem += adjustIndex;
+										notifyListShifter.FirstItem -= 1;
 									}
 									else
 									{
@@ -180,9 +227,51 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					/// <summary>
 					/// Return true if the calling grouper should show a new header item
 					/// </summary>
-					public bool AdjustAdd(bool isChanged, bool afterChanged, int index, BranchModificationEventHandler modificationEvents)
+					public bool AdjustAdd(bool isChanged, bool afterChanged, bool headerAlwaysVisible, int index, BranchModificationEventHandler modificationEvents)
 					{
-						if (index <= End || (isChanged && (index == End + 1)))
+						if (End < Start)
+						{
+							if (isChanged)
+							{
+								// We're adding the first item to a branch. We know
+								// all of the values based on the provided index, so
+								// there is no reason to calculate current state based
+								// on the old data, which we also do not bother to synchronize
+								// for empty branches. If there is an existing branch, then
+								// it exists to show an empty header node only and
+								// index has no meaning except to signal there is no data.
+								// Make sure we update the base information before notifying
+								// because this branch is transitioning into coresponding to
+								// real data and needs to be correctly positioned.
+								IBranch branch = myBranch;
+								End = index;
+								Start = index;
+								if (branch != null)
+								{
+									SimpleListShifter notifyListShifter;
+									if (null != (notifyListShifter = branch as SimpleListShifter))
+									{
+										notifyListShifter.FirstItem = index;
+										notifyListShifter.Count += 1;
+										if (modificationEvents != null)
+										{
+											HandleSubranch(0, +1, modificationEvents, notifyListShifter);
+										}
+									}
+									else
+									{
+										ListGrouper notifyListGrouper = (ListGrouper)branch;
+										notifyListGrouper.RebaseHeaderOnlyBranch(index);
+										notifyListGrouper.ElementAddedAt(index, true, modificationEvents, null, 0);
+									}
+								}
+								else
+								{
+									return !headerAlwaysVisible;
+								}
+							}
+						}
+						else if (index <= End || (isChanged && (index == End + 1)))
 						{
 							IBranch branch = myBranch;
 							SimpleListShifter notifyListShifter = null;
@@ -201,7 +290,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 								End += 1;
 								if (Start == End)
 								{
-									Debug.Assert(branch == null, "You should not have a branch with no children, remove in AdjustDelete");
+									Debug.Assert(branch == null, "You should not have a branch with no children unless it is shown for empty headers, which should not hit this code path");
 									return true;
 								}
 								else if (branch != null)
@@ -236,11 +325,6 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 									}
 								}
 							}
-						}
-						else if (afterChanged && index == (End + 1) && End < Start)
-						{
-							++Start;
-							++End;
 						}
 						return false;
 					}
@@ -296,6 +380,32 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 
 						}
 					}
+					/// <summary>
+					/// Reset the base information for items and branches that correspond to
+					/// no node data. These may have visible branches that are shown for
+					/// empty headers, and the indices in these branches are not tracked beyond
+					/// the assertion that the end is less than the start.
+					/// </summary>
+					/// <param name="index">The location of the first piece of real data that is being added to this branch.</param>
+					public void Rebase(int index)
+					{
+						Debug.Assert(End < Start); // Should not be called otherwise, this happens before the notifications to add the first real element
+						Start = index;
+						End = index - 1;
+						IBranch branch = myBranch;
+						if (branch != null)
+						{
+							SimpleListShifter listShifter = branch as SimpleListShifter;
+							if (listShifter != null)
+							{
+								listShifter.FirstItem = index;
+							}
+							else
+							{
+								((ListGrouper)branch).RebaseHeaderOnlyBranch(index);
+							}
+						}
+					}
 					#endregion
 					#region AdjustChange
 					public void AdjustChange(int index, BranchModificationEventHandler modificationEvents)
@@ -323,22 +433,146 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					#endregion
 				}
 				#endregion //SubBranchMetaData struct
+				#region GroupHeaderTrackingObject class
+				[TypeDescriptionProvider(typeof(SurveyGroupHeaderTypeDescriptionProvider))]
+				private sealed class GroupHeaderTrackingObject : ISurveyGroupHeader, IFreeFormCommandProvider<SurveyContextType>
+				{
+					#region Member Variables
+					private ISurveyQuestionTypeInfo<SurveyContextType> myQuestionTypeInfo;
+					private int myAnswer;
+					private object myContextElement;
+					#endregion // Member Variables
+					#region Constructor
+					/// <summary>
+					/// Create a <see cref="GroupHeaderTrackingObject"/> for a header node.
+					/// </summary>
+					/// <param name="questionTypeInfo">The header's <see cref="ISurveyQuestionTypeInfo"/></param>
+					/// <param name="answer">The answer to the question, interpreted based on the provided <paramref name="questionTypeInfo"/></param>
+					/// <param name="contextElement">The context element</param>
+					public GroupHeaderTrackingObject(ISurveyQuestionTypeInfo<SurveyContextType> questionTypeInfo, int answer, object contextElement)
+					{
+						myQuestionTypeInfo = questionTypeInfo;
+						myAnswer = answer;
+						myContextElement = contextElement;
+					}
+					#endregion // Constructor
+					#region ISurveyGroupHeader Implementation
+					ISurveyQuestionTypeInfo ISurveyGroupHeader.QuestionTypeInfo
+					{
+						get
+						{
+							return myQuestionTypeInfo;
+						}
+					}
+					int ISurveyGroupHeader.Answer
+					{
+						get
+						{
+							return myAnswer;
+						}
+					}
+					object ISurveyGroupHeader.ContextElement
+					{
+						get
+						{
+							return myContextElement;
+						}
+					}
+					#endregion // ISurveyGroupHeader Implementation
+					#region Equals and GetHashCode
+					/// <summary>
+					/// Determine equality based on contents
+					/// </summary>
+					public override bool Equals(object obj)
+					{
+						ISurveyGroupHeader otherHeader = obj as ISurveyGroupHeader;
+						return (otherHeader != null) ? Equals(otherHeader) : false;
+					}
+					/// <summary>
+					/// Required override required with <see cref="Equals(object)"/>
+					/// </summary>
+					public override int GetHashCode()
+					{
+						object contextElement = myContextElement;
+						return (contextElement != null) ?
+							Utility.GetCombinedHashCode(myQuestionTypeInfo.GetHashCode(), myAnswer.GetHashCode(), contextElement.GetHashCode()) :
+							Utility.GetCombinedHashCode(myQuestionTypeInfo.GetHashCode(), myAnswer.GetHashCode());
+					}
+					/// <summary>
+					/// Implements <see cref="IEquatable{ISurveyGroupHeader}"/>
+					/// </summary>
+					public bool Equals(ISurveyGroupHeader other)
+					{
+						return myQuestionTypeInfo == other.QuestionTypeInfo &&
+							myAnswer == other.Answer &&
+							myContextElement == other.ContextElement;
+					}
+					/// <summary>
+					/// Corresponds to Equals implementation
+					/// </summary>
+					public static bool operator ==(GroupHeaderTrackingObject left, ISurveyGroupHeader right)
+					{
+						return left.Equals(right);
+					}
+					/// <summary>
+					/// Corresponds to Equals implementation
+					/// </summary>
+					public static bool operator !=(GroupHeaderTrackingObject left, ISurveyGroupHeader right)
+					{
+						return !left.Equals(right);
+					}
+					#endregion // Equals and GetHashCode
+					#region IFreeFormCommandProvider Implementation
+					int IFreeFormCommandProvider<SurveyContextType>.GetFreeFormCommandCount(SurveyContextType context, IFreeFormCommandProvider<SurveyContextType> targetProvider)
+					{
+						IFreeFormCommandProvider<SurveyContextType> passTo = myQuestionTypeInfo.GetFreeFormCommands(context, myAnswer);
+						if (passTo != null)
+						{
+							return passTo.GetFreeFormCommandCount(context, targetProvider);
+						}
+						return 0;
+					}
+					void IFreeFormCommandProvider<SurveyContextType>.OnFreeFormCommandStatus(SurveyContextType context, IFreeFormCommandProvider<SurveyContextType> targetProvider, MenuCommand command, int commandIndex)
+					{
+						IFreeFormCommandProvider<SurveyContextType> passTo = myQuestionTypeInfo.GetFreeFormCommands(context, myAnswer);
+						if (passTo != null)
+						{
+							passTo.OnFreeFormCommandStatus(context, targetProvider, command, commandIndex);
+						}
+					}
+					void IFreeFormCommandProvider<SurveyContextType>.OnFreeFormCommandExecute(SurveyContextType context, IFreeFormCommandProvider<SurveyContextType> targetProvider, int commandIndex)
+					{
+						IFreeFormCommandProvider<SurveyContextType> passTo = myQuestionTypeInfo.GetFreeFormCommands(context, myAnswer);
+						if (passTo != null)
+						{
+							passTo.OnFreeFormCommandExecute(context, targetProvider, commandIndex);
+						}
+					}
+					#endregion // IFreeFormCommandProvider Implementation
+				}
+				#endregion // GroupHeaderTrackingObject class
 				#region row helper struct, enum, and method
-				private enum RowType { Neutral, SubBranch }
+				private enum RowType { Neutral, SubBranch, Invalid }
 				private RowType TranslateRow(ref int row)
 				{
+					IBranch neutral = myNeutralBranch;
+					int neutralCount = (neutral != null) ? neutral.VisibleItemCount : 0;
+					int subBranchCount = myVisibleSubBranchCount;
+					if (row >= (neutralCount + subBranchCount) || row < 0)
+					{
+						// Occurs during delete notifications with multiple branches
+						// visible. See comments in MainList.OutOfRange.
+						return RowType.Invalid;
+					}
 					if (myNeutralOnTop)
 					{
-						IBranch neutral = myNeutralBranch;
-						int neutralCount = (neutral != null) ? neutral.VisibleItemCount : 0;
 						if (row < neutralCount)
 						{
 							return RowType.Neutral;
 						}
 						row -= neutralCount;
 					}
-					int subBranchCount;
-					if (row < (subBranchCount = myVisibleSubBranchCount))
+					if (row < subBranchCount)
 					{
 						row = mySubBranchOrder[row];
 						return RowType.SubBranch;
@@ -353,6 +587,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				private readonly SurveyQuestion myQuestion;
 				private readonly Survey mySurvey;
 				private readonly bool myNeutralOnTop;
+				private readonly bool myNeutralAncestry;
 				private readonly SubBranchMetaData[] mySubBranches;
 				private readonly int[] mySubBranchOrder;
 				private int myVisibleSubBranchCount;
@@ -361,12 +596,18 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				/// <summary>
 				/// constructor for list grouper, neither parameter can be null
 				/// </summary>
-				/// <param name="baseBranch">the IBranch this grouper is going to sit on top of</param>
-				/// <param name="question">question to be applied by this grouper</param>
-				/// <param name="startIndex"></param>
-				/// <param name="endIndex"></param>
-				/// <param name="neutralOnTop"></param>
-				public ListGrouper(IBranch baseBranch, SurveyQuestion question, int startIndex, int endIndex, bool neutralOnTop)
+				/// <param name="baseBranch">The <see cref="IBranch"/> this grouper built on.
+				/// This is always a <see cref="MainList"/>, but the interface is used more than the list.</param>
+				/// <param name="question"><see cref="SurveyQuestion"/> to be applied by this grouper</param>
+				/// <param name="startIndex">The starting index of the range of nodes in this branch
+				/// in the full set of nodes owned by th base branch.</param>
+				/// <param name="endIndex">The end index of the range of nodes in this branch
+				/// in the full set of nodes owned by th base branch. This may be less than the
+				/// startIndex if there are no nodes.</param>
+				/// <param name="neutralOnTop">Display neutral items before item headers</param>
+				/// <param name="neutralAncestry">All ancestors containing this branch are neutral.
+				/// Empty grouping nodes are shown only for branches with pure neutral ancestry.</param>
+				public ListGrouper(IBranch baseBranch, SurveyQuestion question, int startIndex, int endIndex, bool neutralOnTop, bool neutralAncestry)
 				{
 					Debug.Assert(baseBranch != null);
 					myBaseBranch = baseBranch;
@@ -375,6 +616,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					Debug.Assert(mySurvey != null); //questions should only be accessible through a survey in which case their question list must be set
 					myVisibleSubBranchCount = 0;
 					myNeutralOnTop = neutralOnTop;
+					myNeutralAncestry = neutralAncestry;
 					int categoryCount = question.CategoryCount;
 					mySubBranches = new SubBranchMetaData[categoryCount];
 					mySubBranchOrder = new int[categoryCount];
@@ -426,13 +668,46 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 						SurveyQuestion nextQuestion = NextGroupableQuestion;
 						myNeutralBranch = (nextQuestion != null) ?
 							//TODO: use neutralOnTop bool stored with question instead of passing one in
-							(IBranch)new ListGrouper(myBaseBranch, nextQuestion, startNeutralIndex, index, myNeutralOnTop) :
+							(IBranch)new ListGrouper(myBaseBranch, nextQuestion, startNeutralIndex, index, myNeutralOnTop, myNeutralAncestry) :
 							new SimpleListShifter(myBaseBranch, startNeutralIndex, index - startNeutralIndex + 1);
 						return ++index;
+					}
+					else if (HasTrailingEmptyHeaderGroups)
+					{
+						// No items, but we need the branch for the header
+						myNeutralBranch = new ListGrouper(myBaseBranch, NextGroupableQuestion, startNeutralIndex, index, myNeutralOnTop, myNeutralAncestry);
+						return startNeutralIndex;
 					}
 					else
 					{
 						return startNeutralIndex;
+					}
+				}
+				/// <summary>
+				/// A helper method to rebase the data in the branch. This is in place
+				/// so that we don't need to track indices in branches that correspond
+				/// to no data.
+				/// </summary>
+				/// <param name="index">The location of the new data</param>
+				private void RebaseHeaderOnlyBranch(int index)
+				{
+					SubBranchMetaData[] subBranches = mySubBranches;
+					for (int i = 0; i < subBranches.Length; ++i)
+					{
+						subBranches[i].Rebase(index);
+					}
+					IBranch neutral = myNeutralBranch;
+					if (neutral != null)
+					{
+						SimpleListShifter listShifter = neutral as SimpleListShifter;
+						if (listShifter != null)
+						{
+							listShifter.FirstItem = index;
+						}
+						else
+						{
+							((ListGrouper)neutral).RebaseHeaderOnlyBranch(index);
+						}
 					}
 				}
 				/// <summary>
@@ -459,6 +734,35 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					}
 				}
 				/// <summary>
+				/// Return true if any trailing grouping questions after the
+				/// current group support empty header nodes.
+				/// </summary>
+				private bool HasTrailingEmptyHeaderGroups
+				{
+					get
+					{
+						if (!myNeutralAncestry)
+						{
+							return false;
+						}
+						Survey survey = mySurvey;
+						int contextQuestionIndex = survey.GetIndex(myQuestion.Question.QuestionType);
+						int questionCount = survey.Count;
+						for (int i = contextQuestionIndex + 1; i < questionCount; ++i)
+						{
+							// UNDONE: This should come from the display information, not the question
+							// itself.
+							// Note that the generators only spit EmptyGroups if Grouping is set, but check
+							// both is equally efficient and more robust.
+							if ((SurveyQuestionUISupport.Grouping | SurveyQuestionUISupport.EmptyGroups) == (survey[i].UISupport & (SurveyQuestionUISupport.Grouping | SurveyQuestionUISupport.EmptyGroups)))
+							{
+								return true;
+							}
+						}
+						return false;
+					}
+				}
+				/// <summary>
 				/// build meta data for sub branches
 				/// </summary>
 				/// <param name="startIndex"></param>
@@ -468,15 +772,17 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				{
 					int index = startIndex;
 					SurveyQuestion question = myQuestion;
-					int questionCount = question.CategoryCount;
+					int answerCount = question.CategoryCount;
 					int lastAnswer;
 					int currentAnswer = lastAnswer = -2;
 					SubBranchMetaData[] subBranchData = mySubBranches;
 					SubBranchMetaData currentSubBranch = default(SubBranchMetaData);
-					int itemCount = endIndex + 1;
+					int indexBound = endIndex + 1;
 					int dataIndex;
-					List<SampleDataElementNode> nodes = ((MainList)myBaseBranch).myNodes;
-					for (; index < itemCount; ++index)
+					MainList mainList = (MainList)myBaseBranch;
+					List<SampleDataElementNode> nodes = mainList.myNodes;
+					SurveyContextType surveyContext = mainList.mySurveyTree.mySurveyContext;
+					for (; index < indexBound; ++index)
 					{
 						currentAnswer = question.ExtractAnswer(nodes[index].NodeData);
 						if (currentAnswer == SurveyQuestion.NeutralAnswer)
@@ -518,7 +824,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 						currentSubBranch.End = index - 1;
 						subBranchData[currentAnswer] = currentSubBranch;
 					}
-					for (dataIndex = currentAnswer + 1; dataIndex < questionCount; ++dataIndex)
+					for (dataIndex = currentAnswer + 1; dataIndex < answerCount; ++dataIndex)
 					{
 						currentSubBranch = subBranchData[dataIndex];
 						currentSubBranch.Start = index;
@@ -528,47 +834,54 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					}
 
 					int[] orderArray = mySubBranchOrder;
-					for (int i = 0; i < questionCount; ++i)
+					ISurveyQuestionTypeInfo<SurveyContextType> questionInfo = question.Question;
+					for (int i = 0; i < answerCount; ++i)
 					{
 						orderArray[i] = i;
 					}
-					Array.Sort<int>(
-						orderArray,
-						delegate(int left, int right)
-						{
-							if (left == right)
+					bool ignoreEmptyGroups = !myNeutralAncestry || 0 == (questionInfo.UISupport & SurveyQuestionUISupport.EmptyGroups);
+					if (answerCount > 1)
+					{
+						Array.Sort<int>(
+							orderArray,
+							delegate(int left, int right)
 							{
-								return 0;
-							}
-							int retVal = 0;
-							if (subBranchData[left].Count == 0)
-							{
-								if (subBranchData[right].Count != 0)
+								if (left == right)
 								{
-									retVal = 1;
+									return 0;
 								}
-							}
-							else if (subBranchData[right].Count == 0)
-							{
-								retVal = -1;
-							}
-							if (retVal == 0)
-							{
-								retVal = (left < right) ? -1 : 1;
-							}
-							return retVal;
-						});
+								int retVal = 0;
+								if (subBranchData[left].Count == 0 && (ignoreEmptyGroups || !questionInfo.ShowEmptyGroup(surveyContext, left)))
+								{
+									if (subBranchData[right].Count != 0 || (!ignoreEmptyGroups && questionInfo.ShowEmptyGroup(surveyContext, right)))
+									{
+										retVal = 1;
+									}
+								}
+								else if (subBranchData[right].Count == 0 && (ignoreEmptyGroups || !questionInfo.ShowEmptyGroup(surveyContext, right)))
+								{
+									retVal = -1;
+								}
+								if (retVal == 0)
+								{
+									retVal = (left < right) ? -1 : 1;
+								}
+								return retVal;
+							});
+					}
 
 					myVisibleSubBranchCount = 0;
-					for (int i = 0; i < questionCount; ++i)
+					for (int i = 0; i < answerCount; ++i)
 					{
-						if (subBranchData[i].Count != 0)
+						if (subBranchData[i].Count != 0 || (!ignoreEmptyGroups && questionInfo.ShowEmptyGroup(surveyContext, i)))
 						{
 							++myVisibleSubBranchCount;
 						}
 					}
 
-					return (index < endIndex || index == 0) ? index : endIndex;
+					return (endIndex < startIndex) ?
+						startIndex :
+						((index < endIndex || index == 0) ? index : endIndex);
 				}
 				#endregion //tree creation
 				#region IBranch Members
@@ -645,9 +958,12 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 						case RowType.Neutral:
 							return myNeutralBranch.GetObject(row, column, style, ref options);
 						case RowType.SubBranch:
-							if (style == ObjectStyle.ExpandedBranch)
+							switch (style)
 							{
-								return mySubBranches[row].EnsureBranch(this);
+								case ObjectStyle.ExpandedBranch:
+									return mySubBranches[row].EnsureBranch(this);
+								case ObjectStyle.TrackingObject:
+									return new GroupHeaderTrackingObject(myQuestion.Question, row, ((MainList)myBaseBranch).myContextElement);
 							}
 							break;
 					}
@@ -691,7 +1007,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 						case RowType.Neutral:
 							return myNeutralBranch.IsExpandable(row, column);
 						case RowType.SubBranch:
-							return mySubBranches[row].Count > 0;
+							return mySubBranches[row].Count > 0 || (myNeutralAncestry && myQuestion.Question.ShowEmptyGroup(((MainList)myBaseBranch).mySurveyTree.mySurveyContext, row));
 						default:
 							return false;
 					}
@@ -872,10 +1188,13 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				/// <param name="notifyThroughOffset">Used if notifyThrough is not null. The starting offset of this branch in the outer branch.</param>
 				private void ElementDeletedAt(int index, BranchModificationEventHandler modificationEvents, IBranch notifyThrough, int notifyThroughOffset)
 				{
-					MainList baseBranch = ((MainList)this.myBaseBranch);
-					for (int i = 0; i < this.mySubBranches.Length; i++)
+					SubBranchMetaData[] subBranches = mySubBranches;
+					ISurveyQuestionTypeInfo<SurveyContextType> questionInfo = myQuestion.Question;
+					bool checkForEmptyGroups = myNeutralAncestry && 0 != (questionInfo.UISupport & SurveyQuestionUISupport.EmptyGroups);
+					SurveyContextType surveyContext = ((MainList)myBaseBranch).mySurveyTree.mySurveyContext;
+					for (int i = 0; i < subBranches.Length; ++i)
 					{
-						if (mySubBranches[i].AdjustDelete(index, -1, modificationEvents))
+						if (subBranches[i].AdjustDelete(index, checkForEmptyGroups && questionInfo.ShowEmptyGroup(surveyContext, i), modificationEvents))
 						{
 							int currentHeaderCount = myVisibleSubBranchCount;
 							int[] orderArray = mySubBranchOrder;
@@ -962,10 +1281,15 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					int currentAnswer = myQuestion.ExtractAnswer(((MainList)myBaseBranch).myNodes[index].NodeData);
 					bool neutralOnTop = myNeutralOnTop;
 					int testCurrentAnswer = (currentAnswer == SurveyQuestion.NeutralAnswer && !neutralOnTop) ? int.MaxValue : currentAnswer;
+					// An element may have been added to a header that is visible only
+					// because it is always shown, not because it has visible children.
+					// These need to be specially accounted for so that the data can be
+					// fixed up without doing extra work to reshow the node.
+					int groupAlwaysShownFor = (currentAnswer != SurveyQuestion.NeutralAnswer && myNeutralAncestry && myQuestion.Question.ShowEmptyGroup(((MainList)myBaseBranch).mySurveyTree.mySurveyContext, currentAnswer)) ? currentAnswer : int.MaxValue;
 					SubBranchMetaData[] subBranches = mySubBranches;
-					for (int i = 0; i < subBranches.Length; i++)
+					for (int i = 0; i < subBranches.Length; ++i)
 					{
-						if (subBranches[i].AdjustAdd(i == testCurrentAnswer, i > testCurrentAnswer, index, modificationEvents))
+						if (subBranches[i].AdjustAdd(i == testCurrentAnswer, i > testCurrentAnswer, groupAlwaysShownFor == i, index, modificationEvents))
 						{
 							// We need to add the header row
 							int currentHeaderCount = myVisibleSubBranchCount;
@@ -1022,7 +1346,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 						// Simple shifter cases
 						else if (shifter.FirstItem > (index - (neutralChanged ? 0 : 1)))
 						{
-							shifter.FirstItem += 1;	
+							shifter.FirstItem += 1;
 						}
 						else if (shifter.LastItem >= index ||
 							(currentAnswer == SurveyQuestion.NeutralAnswer && index == (shifter.LastItem + 1)))
@@ -1034,20 +1358,65 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 							}
 						}
 					}
-					else if (currentAnswer == SurveyQuestion.NeutralAnswer &&
-						index == (neutralOnTop ? subBranches[0].Start - 1 : (subBranches[subBranches.Length - 1].End + 1)))
+					else if (currentAnswer == SurveyQuestion.NeutralAnswer)
 					{
-						// Dynamically create the neutral branch
-						SurveyQuestion nextQuestion = NextGroupableQuestion;
-						myNeutralBranch = neutralBranch = (nextQuestion != null) ?
-							//TODO: use neutralOnTop bool stored with question instead of passing one in
-							(IBranch)new ListGrouper(myBaseBranch, nextQuestion, index, index, myNeutralOnTop) :
-							new SimpleListShifter(myBaseBranch, index, 1);
-						if (modificationEvents != null)
+						// If all of the metadata Start/End information were kept in sync all the time, then
+						// we could check if we need a new neutral branch with the following code
+						// index == (neutralOnTop ? subBranches[0].Start - 1 : (subBranches[subBranches.Length - 1].End + 1))
+						// However, when empty groups are showing, these fields are updated only when data is
+						// actually displayed in that section of the branch. Therefore, we need to look closer
+						// at the data (besides the Start of the first and the End of the last) to get reliable
+						// information. Only trust branch information that has data in it.
+						bool addNeutral = false;
+						if (neutralOnTop)
 						{
-							Debug.Assert(notifyThroughOffset == 0 || notifyThrough != null);
-							IBranch notifyBranch = notifyThrough ?? this;
-							modificationEvents(notifyBranch, BranchModificationEventArgs.InsertItems(notifyBranch, notifyThroughOffset + (myNeutralOnTop ? 0 : myVisibleSubBranchCount) - 1, 1));
+							int i = 0;
+							for (; i < subBranches.Length; ++i)
+							{
+								if (subBranches[i].Count > 0)
+								{
+									addNeutral = index == (subBranches[i].Start - 1);
+									break;
+								}
+							}
+							if (i == subBranches.Length)
+							{
+								// We have an empty neutral branch and will only be here if we are properly
+								// rebased. All of the data is the same, test the first.
+								addNeutral = index == (subBranches[0]).Start - 1;
+							}
+						}
+						else
+						{
+							int i = subBranches.Length - 1;
+							for (; i >= 0; --i)
+							{
+								if (subBranches[i].Count > 0)
+								{
+									addNeutral = index == (subBranches[i].End + 1);
+									break;
+								}
+							}
+							if (i == -1)
+							{
+								// Same comments as above. This is a rebased branch with header nodes only.
+								addNeutral = index == (subBranches[0].End + 1);
+							}
+						}
+						if (addNeutral)
+						{
+							// Dynamically create the neutral branch
+							SurveyQuestion nextQuestion = NextGroupableQuestion;
+							myNeutralBranch = neutralBranch = (nextQuestion != null) ?
+								//TODO: use neutralOnTop bool stored with question instead of passing one in
+								(IBranch)new ListGrouper(myBaseBranch, nextQuestion, index, index, myNeutralOnTop, myNeutralAncestry) :
+								new SimpleListShifter(myBaseBranch, index, 1);
+							if (modificationEvents != null)
+							{
+								Debug.Assert(notifyThroughOffset == 0 || notifyThrough != null);
+								IBranch notifyBranch = notifyThrough ?? this;
+								modificationEvents(notifyBranch, BranchModificationEventArgs.InsertItems(notifyBranch, notifyThroughOffset + (myNeutralOnTop ? 0 : myVisibleSubBranchCount) - 1, 1));
+							}
 						}
 					}
 				}
@@ -1078,7 +1447,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					if (modificationEvents != null)
 					{
 						SubBranchMetaData[] subBranches = mySubBranches;
-						for (int i = 0; i < subBranches.Length; i++)
+						for (int i = 0; i < subBranches.Length; ++i)
 						{
 							subBranches[i].AdjustModified(fromIndex, toIndex, displayChanged, modificationEvents);
 						}
@@ -1132,7 +1501,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					{
 						// Handle the main branches
 						SubBranchMetaData[] subBranches = mySubBranches;
-						for (int i = 0; i < subBranches.Length; i++)
+						for (int i = 0; i < subBranches.Length; ++i)
 						{
 							subBranches[i].AdjustChange(index, modificationEvents);
 						}

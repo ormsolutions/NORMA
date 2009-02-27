@@ -258,20 +258,20 @@ namespace Neumont.Tools.ORM.Shell
 		#endregion // Base overrides
 	}
 	#endregion // ORMNotesToolWindow class
-	#region ORMDefinitionToolWindow class
+	#region ORMDescriptionToolWindow class
 	/// <summary>
 	/// The ToolWindow which is responsible for displaying and allowing
 	/// the update of definitions on elements implementing <see cref="INoteOwner{Definition}"/>.
 	/// </summary>
 	[Guid("FC6D8343-48D1-4294-915F-01B6350E0E12")]
 	[CLSCompliant(false)]
-	public class ORMDefinitionToolWindow : ORMBaseNoteToolWindow<Definition>
+	public class ORMDescriptionToolWindow : ORMBaseNoteToolWindow<Definition>
 	{
 		#region Constructor
 		/// <summary>
-		/// Returns a new <see cref="ORMDefinitionToolWindow"/>
+		/// Returns a new <see cref="ORMDescriptionToolWindow"/>
 		/// </summary>
-		public ORMDefinitionToolWindow(IServiceProvider serviceProvider)
+		public ORMDescriptionToolWindow(IServiceProvider serviceProvider)
 			: base(serviceProvider)
 		{
 		}
@@ -292,7 +292,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				return ResourceStrings.ModelDefinitionWindowTitle;
+				return ResourceStrings.ModelDescriptionWindowTitle;
 			}
 		}
 		/// <summary>
@@ -312,7 +312,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				return PackageResources.ToolWindowIconIndex.DefinitionEditor;
+				return PackageResources.ToolWindowIconIndex.DescriptionEditor;
 			}
 		}
 		/// <summary>
@@ -322,12 +322,12 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				return ResourceStrings.ModelDefinitionWindowEmptyDisplayText;
+				return ResourceStrings.ModelDescriptionWindowEmptyDisplayText;
 			}
 		}
 		#endregion // Base overrides
 	}
-	#endregion // ORMDefinitionToolWindow class
+	#endregion // ORMDescriptionToolWindow class
 	#region ORMBaseNoteToolWindow class
 	/// <summary>
 	/// A base class for any ToolWindow that is used to display a note type field. Notes

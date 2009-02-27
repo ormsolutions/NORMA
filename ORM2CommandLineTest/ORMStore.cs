@@ -159,9 +159,19 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 				{
 				}
 			}
-			bool IORMToolServices.IsAutomatedElement(ModelElement element)
+			bool IORMToolServices.ProcessingVisibleTransactionItemEvents
 			{
-				return myServices.IsAutomatedElement(element);
+				get
+				{
+					return true;
+				}
+				set
+				{
+				}
+			}
+			AutomatedElementDirective IORMToolServices.GetAutomatedElementDirective(ModelElement element)
+			{
+				return myServices.GetAutomatedElementDirective(element);
 			}
 			event AutomatedElementFilterCallback IORMToolServices.AutomatedElementFilter
 			{

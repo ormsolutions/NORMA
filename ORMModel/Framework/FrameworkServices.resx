@@ -134,9 +134,14 @@
 	</resheader>
 	<data name="DiagramDisplay.ReorderDiagrams.TransactionName" xml:space="preserve">
 		<value>Reorder Diagrams</value>
+		<comment>The transaction name for reordering diagrams</comment>
 	</data>
 	<data name="DiagramSurveyType.Diagram">
 		<value xml:space="preserve">Diagrams</value>
 		<comment xml:space="preserve">The text shown in the model browser as the header for the sorted diagram list</comment>
+	</data>
+	<data name="DynamicSurvey.HeaderClassName">
+		<value xml:space="preserve">Header</value>
+		<comment xml:space="preserve">The text shown in the Properties Window for the class name of a selected header. The component name corresponds to the localized enum name shown in the tree.</comment>
 	</data>
 </root>

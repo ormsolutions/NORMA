@@ -73,6 +73,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(ExclusiveOrConstraintCoupler).GetNestedType("RolePositionChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ExclusiveOrConstraintCoupler).GetNestedType("RoleSequenceAddRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ExclusiveOrConstraintCoupler).GetNestedType("RoleSequencePositionChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ElementGrouping).GetNestedType("GroupingChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ElementGrouping).GetNestedType("GroupingTypeAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ElementGrouping).GetNestedType("GroupingTypeDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ElementGrouping).GetNestedType("GroupingExclusionAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ElementGrouping).GetNestedType("GroupingExclusionDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ElementGrouping).GetNestedType("StandardNamedElementNameChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ElementGrouping).GetNestedType("FactTypeNameChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ElementGroupingSet).GetNestedType("DuplicateGroupingNameGroupingDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ElementGroupingSet).GetNestedType("GroupingDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ElementGroupingSet).GetNestedType("GroupingSetAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactType).GetNestedType("BlockRoleMigrationRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactType).GetNestedType("FactTypeAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactType).GetNestedType("FactTypeChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -329,7 +339,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMCoreDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 261; ++i)
+			for (int i = 0; i < 271; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -1367,6 +1377,276 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 	}
 	#endregion // Rule classes for ExclusiveOrConstraintCoupler
+	#region Rule classes for ElementGrouping
+	partial class ElementGrouping
+	{
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ElementGrouping), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class GroupingChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public GroupingChangedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ObjectModel.ElementGrouping
+			/// /// <summary>
+			/// /// ChangeRule: typeof(ElementGrouping)
+			/// /// </summary>
+			/// private static void GroupingChangedRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ElementGrouping.GroupingChangedRule");
+				ElementGrouping.GroupingChangedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ElementGrouping.GroupingChangedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ElementGroupingIsOfElementGroupingType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class GroupingTypeAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public GroupingTypeAddedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ObjectModel.ElementGrouping
+			/// /// <summary>
+			/// /// AddRule: typeof(ElementGroupingIsOfElementGroupingType)
+			/// /// </summary>
+			/// private static void GroupingTypeAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ElementGrouping.GroupingTypeAddedRule");
+				ElementGrouping.GroupingTypeAddedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ElementGrouping.GroupingTypeAddedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ElementGroupingIsOfElementGroupingType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class GroupingTypeDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public GroupingTypeDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ObjectModel.ElementGrouping
+			/// /// <summary>
+			/// /// DeleteRule: typeof(ElementGroupingIsOfElementGroupingType)
+			/// /// </summary>
+			/// private static void GroupingTypeDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ElementGrouping.GroupingTypeDeletedRule");
+				ElementGrouping.GroupingTypeDeletedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ElementGrouping.GroupingTypeDeletedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(GroupingElementExclusion), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class GroupingExclusionAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public GroupingExclusionAddedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ObjectModel.ElementGrouping
+			/// /// <summary>
+			/// /// AddRule: typeof(GroupingElementExclusion)
+			/// /// </summary>
+			/// private static void GroupingExclusionAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ElementGrouping.GroupingExclusionAddedRule");
+				ElementGrouping.GroupingExclusionAddedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ElementGrouping.GroupingExclusionAddedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(GroupingElementExclusion), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class GroupingExclusionDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public GroupingExclusionDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ObjectModel.ElementGrouping
+			/// /// <summary>
+			/// /// DeleteRule: typeof(GroupingElementExclusion)
+			/// /// </summary>
+			/// private static void GroupingExclusionDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ElementGrouping.GroupingExclusionDeletedRule");
+				ElementGrouping.GroupingExclusionDeletedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ElementGrouping.GroupingExclusionDeletedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMNamedElement), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class StandardNamedElementNameChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public StandardNamedElementNameChangedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ObjectModel.ElementGrouping
+			/// /// <summary>
+			/// /// ChangeRule: typeof(ORMNamedElement)
+			/// /// </summary>
+			/// private static void StandardNamedElementNameChangedRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ElementGrouping.StandardNamedElementNameChangedRule");
+				ElementGrouping.StandardNamedElementNameChangedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ElementGrouping.StandardNamedElementNameChangedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class FactTypeNameChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public FactTypeNameChangedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ObjectModel.ElementGrouping
+			/// /// <summary>
+			/// /// ChangeRule: typeof(FactType)
+			/// /// </summary>
+			/// private static void FactTypeNameChangedRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ElementGrouping.FactTypeNameChangedRule");
+				ElementGrouping.FactTypeNameChangedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ElementGrouping.FactTypeNameChangedRule");
+			}
+		}
+	}
+	#endregion // Rule classes for ElementGrouping
+	#region Rule classes for ElementGroupingSet
+	partial class ElementGroupingSet
+	{
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ElementGroupingHasDuplicateNameError), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class DuplicateGroupingNameGroupingDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public DuplicateGroupingNameGroupingDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ObjectModel.ElementGroupingSet
+			/// /// <summary>
+			/// /// DeleteRule: typeof(ElementGroupingHasDuplicateNameError)
+			/// /// </summary>
+			/// private static void DuplicateGroupingNameGroupingDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ElementGroupingSet.DuplicateGroupingNameGroupingDeletedRule");
+				ElementGroupingSet.DuplicateGroupingNameGroupingDeletedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ElementGroupingSet.DuplicateGroupingNameGroupingDeletedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ElementGroupingSetContainsElementGrouping), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.Modeling.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
+		private sealed class GroupingDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public GroupingDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ObjectModel.ElementGroupingSet
+			/// /// <summary>
+			/// /// DeleteRule: typeof(ElementGroupingSetContainsElementGrouping), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+			/// /// </summary>
+			/// private static void GroupingDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ElementGroupingSet.GroupingDeletedRule");
+				ElementGroupingSet.GroupingDeletedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ElementGroupingSet.GroupingDeletedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ElementGroupingSet), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class GroupingSetAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public GroupingSetAddedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// Neumont.Tools.ORM.ObjectModel.ElementGroupingSet
+			/// /// <summary>
+			/// /// AddRule: typeof(ElementGroupingSet)
+			/// /// </summary>
+			/// private static void GroupingSetAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ElementGroupingSet.GroupingSetAddedRule");
+				ElementGroupingSet.GroupingSetAddedRule(e);
+				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ObjectModel.ElementGroupingSet.GroupingSetAddedRule");
+			}
+		}
+	}
+	#endregion // Rule classes for ElementGroupingSet
 	#region Rule classes for FactType
 	partial class FactType
 	{

@@ -40,6 +40,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// The unique name the VerbalizationBrowser target. Used in the Xml files and in code to identify the core target provider.
 		/// </summary>
 		public const string VerbalizationTargetName = "VerbalizationBrowser";
+		/// <summary>
+		/// A survey expansion key used for floating elements (elements with no natural parent in the tree)
+		/// to provide a glyph answer.
+		/// </summary>
+		public static readonly object SurveyFloatingExpansionKey = new object();
 		#region IModelingEventSubscriber Implementation
 		/// <summary>
 		/// Implements <see cref="IModelingEventSubscriber.ManageModelingEventHandlers"/>.
@@ -105,6 +110,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				eventManager.AddOrRemoveHandler(propertyInfo, standardNameChangedHandler , action);
 				propertyInfo = directory.FindDomainProperty(FactType.NameChangedDomainPropertyId);
 				eventManager.AddOrRemoveHandler(propertyInfo, standardNameChangedHandler, action);
+				propertyInfo = directory.FindDomainProperty(ModelNote.TextDomainPropertyId);
+				eventManager.AddOrRemoveHandler(propertyInfo, standardNameChangedHandler, action);
 
 				//FactTypeHasRole
 				classInfo = directory.FindDomainClass(FactTypeHasRole.DomainClassId);
@@ -168,10 +175,32 @@ namespace Neumont.Tools.ORM.ObjectModel
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ExclusiveOrAddedEvent), action);
 				classInfo = directory.FindDomainClass(ExclusiveOrConstraintCoupler.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ExclusiveOrDeletedEvent), action);
+				propertyInfo = directory.FindDomainProperty(ExclusionConstraint.NameDomainPropertyId);
+				classInfo = directory.FindDomainClass(ExclusionConstraint.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ExclusiveOrNameChangedEvent), action);
 
 				//SubType
 				propertyInfo = directory.FindDomainProperty(SubtypeFact.ProvidesPreferredIdentifierDomainPropertyId);
 				eventManager.AddOrRemoveHandler(propertyInfo, standardGlyphChangeHandler, action);
+
+				//Grouping
+				classInfo = directory.FindDomainClass(ElementGrouping.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(GroupingAddedEvent), action);
+				eventManager.AddOrRemoveHandler(classInfo, standardDeleteHandler, action);
+				propertyInfo = directory.FindDomainProperty(ElementGrouping.NameDomainPropertyId);
+				eventManager.AddOrRemoveHandler(propertyInfo, standardNameChangedHandler, action);
+				classInfo = directory.FindDomainRelationship(GroupingElementRelationship.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(GroupingElementAddedEvent), action);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(GroupingElementDeletedEvent), action);
+				classInfo = directory.FindDomainRelationship(ElementGroupingContainsElementGrouping.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(NestedGroupingAddedEvent), action);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(NestedGroupingDeletedEvent), action);
+				classInfo = directory.FindDomainRelationship(ElementGroupingIsOfElementGroupingType.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(GroupingTypeAddedEvent), action);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(GroupingTypeDeletedEvent), action);
+				classInfo = directory.FindDomainRelationship(GroupingMembershipContradictionErrorIsForElement.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(GroupingContradictionErrorAddedEvent), action);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(GroupingContradictionErrorDeletedEvent), action);
 			}
 		}
 		void IModelingEventSubscriber.ManageModelingEventHandlers(ModelingEventManager eventManager, EventSubscriberReasons reasons, EventHandlerAction action)
@@ -262,7 +291,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 				foreach (SetComparisonConstraint element in elementDirectory.FindElements<SetComparisonConstraint>(true))
 				{
-					yield return element;
+					ExclusionConstraint exclusion;
+					if (null == (exclusion = element as ExclusionConstraint) ||
+						null == exclusion.ExclusiveOrMandatoryConstraint)
+					{
+						yield return element;
+					}
 				}
 
 				foreach (NameGenerator element in elementDirectory.FindElements<NameGenerator>(false))
@@ -271,6 +305,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						yield return element;
 					}
+				}
+
+				foreach (ElementGrouping group in elementDirectory.FindElements<ElementGrouping>(false))
+				{
+					yield return group;
 				}
 			}
 			else if (expansionKey == FactType.SurveyExpansionKey)
@@ -316,6 +355,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 				foreach (FactConstraint constraint in FactConstraint.GetLinksToFactTypeCollection((ORMNamedElement)context))
 				{
 					yield return constraint;
+				}
+			}
+			else if (expansionKey == ElementGrouping.SurveyExpansionKey)
+			{
+				ElementGrouping group = (ElementGrouping)context;
+				foreach (ElementGroupingType groupingType in group.GroupingTypeCollection)
+				{
+					yield return groupingType;
+				}
+				foreach (ElementGroupingContainsElementGrouping nestedGroupLink in ElementGroupingContainsElementGrouping.GetLinksToChildGroupingCollection(group))
+				{
+					yield return nestedGroupLink;
+				}
+				foreach (GroupingElementRelationship elementLink in GroupingElementRelationship.GetLinksToElementCollection(group))
+				{
+					yield return elementLink;
+				}
+				foreach (ElementGroupingHasMembershipContradictionError errorLink in ElementGroupingHasMembershipContradictionError.GetLinksToMembershipContradictionErrorCollection(group))
+				{
+					yield return GroupingMembershipContradictionErrorIsForElement.GetLinkToElement(errorLink);
 				}
 			}
 		}
@@ -857,9 +916,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
 			{
 				ExclusiveOrConstraintCoupler coupler = element as ExclusiveOrConstraintCoupler;
-				eventNotify.ElementAdded(coupler.ExclusionConstraint, null);
-				eventNotify.ElementDeleted(coupler.MandatoryConstraint);
-				eventNotify.ElementChanged(coupler.ExclusionConstraint, SurveyGlyphQuestionTypes);
+				ExclusionConstraint exclusion = coupler.ExclusionConstraint;
+				MandatoryConstraint mandatory = coupler.MandatoryConstraint;
+				eventNotify.ElementDeleted(exclusion, true);
+				eventNotify.ElementChanged(exclusion, SurveyGlyphQuestionTypes); // Modifies references to the hidden exclusion
+				eventNotify.ElementRenamed(mandatory);
+				eventNotify.ElementChanged(mandatory, SurveyGlyphQuestionTypes);
 			}
 		}
 		/// <summary>
@@ -872,11 +934,149 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
 			{
 				ExclusiveOrConstraintCoupler coupler = element as ExclusiveOrConstraintCoupler;
-				if (!coupler.ExclusionConstraint.IsDeleted)
+				ExclusionConstraint exclusion = coupler.ExclusionConstraint;
+				MandatoryConstraint mandatory = coupler.MandatoryConstraint;
+				if (!exclusion.IsDeleted)
 				{
-					eventNotify.ElementAdded(coupler.MandatoryConstraint, null);
-					eventNotify.ElementChanged(coupler.ExclusionConstraint, SurveyGlyphQuestionTypes);
+					eventNotify.ElementChanged(exclusion, SurveyGlyphQuestionTypes); // Modifies references to the hidden exclusion
+					eventNotify.ElementAdded(exclusion, null);
 				}
+				if (!mandatory.IsDeleted)
+				{
+					eventNotify.ElementChanged(mandatory, SurveyGlyphQuestionTypes);
+					eventNotify.ElementRenamed(mandatory);
+				}
+			}
+		}
+		/// <summary>
+		/// Special name handling for a exclusion constraint coupled with
+		/// a mandatory constraint. Name changes need to be displayed with
+		/// the mandatory constraint.
+		/// </summary>
+		private static void ExclusiveOrNameChangedEvent(object sender, ElementPropertyChangedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement;
+			if (!element.IsDeleted &&
+				null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				MandatoryConstraint coupledMandatory = ((ExclusionConstraint)element).ExclusiveOrMandatoryConstraint;
+				if (coupledMandatory != null)
+				{
+					eventNotify.ElementRenamed(coupledMandatory);
+				}
+			}
+		}
+		/// <summary>
+		/// Survey event handler for adding an <see cref="ElementGrouping"/>
+		/// </summary>
+		private static void GroupingAddedEvent(object sender, ElementAddedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement as ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				eventNotify.ElementAdded(element, null);
+			}
+		}
+		/// <summary>
+		/// Survey event handler for adding an <see cref="GroupingElementRelationship"/>
+		/// </summary>
+		private static void GroupingElementAddedEvent(object sender, ElementAddedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement as ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				eventNotify.ElementAdded(element, ((GroupingElementRelationship)element).Grouping);
+			}
+		}
+		/// <summary>
+		/// Survey event handler for deleting an <see cref="GroupingElementRelationship"/>
+		/// </summary>
+		private static void GroupingElementDeletedEvent(object sender, ElementDeletedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement as ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				GroupingElementRelationship link = (GroupingElementRelationship)element;
+				eventNotify.ElementReferenceDeleted(link.Element, link, link.Grouping);
+			}
+		}
+		/// <summary>
+		/// Survey event handler for adding an <see cref="ElementGroupingContainsElementGrouping"/>
+		/// </summary>
+		private static void NestedGroupingAddedEvent(object sender, ElementAddedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement as ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				eventNotify.ElementAdded(element, ((ElementGroupingContainsElementGrouping)element).ParentGrouping);
+			}
+		}
+		/// <summary>
+		/// Survey event handler for deleting an <see cref="ElementGroupingContainsElementGrouping"/>
+		/// </summary>
+		private static void NestedGroupingDeletedEvent(object sender, ElementDeletedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement as ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				ElementGroupingContainsElementGrouping link = (ElementGroupingContainsElementGrouping)element;
+				eventNotify.ElementReferenceDeleted(link.ChildGrouping, link, link.ParentGrouping);
+			}
+		}
+		/// <summary>
+		/// Survey event handler for adding an <see cref="ElementGroupingIsOfElementGroupingType"/>
+		/// </summary>
+		private static void GroupingTypeAddedEvent(object sender, ElementAddedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement as ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				ElementGroupingIsOfElementGroupingType link = (ElementGroupingIsOfElementGroupingType)element;
+				eventNotify.ElementAdded(link.GroupingType, link.Grouping);
+			}
+		}
+		/// <summary>
+		/// Survey event handler for deleting an <see cref="ElementGroupingIsOfElementGroupingType"/>
+		/// </summary>
+		private static void GroupingTypeDeletedEvent(object sender, ElementDeletedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement as ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				eventNotify.ElementDeleted(((ElementGroupingIsOfElementGroupingType)element).GroupingType);
+			}
+		}
+		/// <summary>
+		/// Survey event handler for adding an <see cref="GroupingMembershipContradictionErrorIsForElement"/>
+		/// </summary>
+		private static void GroupingContradictionErrorAddedEvent(object sender, ElementAddedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement as ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				eventNotify.ElementAdded(element, ((GroupingMembershipContradictionErrorIsForElement)element).GroupingMembershipContradictionErrorRelationship.Grouping);
+			}
+		}
+		/// <summary>
+		/// Survey event handler for deleting an <see cref="GroupingMembershipContradictionErrorIsForElement"/>
+		/// </summary>
+		private static void GroupingContradictionErrorDeletedEvent(object sender, ElementDeletedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement as ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				GroupingMembershipContradictionErrorIsForElement link = (GroupingMembershipContradictionErrorIsForElement)element;
+				eventNotify.ElementReferenceDeleted(link.Element, link, link.GroupingMembershipContradictionErrorRelationship.Grouping);
 			}
 		}
 		/// <summary>

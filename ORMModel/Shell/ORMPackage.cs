@@ -67,7 +67,7 @@ namespace Neumont.Tools.ORM.Shell
 	[ProvideToolWindow(typeof(ORMReadingEditorToolWindow), Style = VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
 	[ProvideToolWindow(typeof(ORMVerbalizationToolWindow), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
 	[ProvideToolWindow(typeof(ORMModelBrowserToolWindow), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.SolutionExplorer)]
-	[ProvideToolWindow(typeof(ORMDefinitionToolWindow), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
+	[ProvideToolWindow(typeof(ORMDescriptionToolWindow), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
 	[ProvideToolWindow(typeof(ORMNotesToolWindow), Style = VsDockStyle.Tabbed, Transient = true, Orientation = ToolWindowOrientation.Right, Window = ToolWindowGuids.Outputwindow)]
 	[ProvideToolWindow(typeof(ORMContextWindow), Style = VsDockStyle.Tabbed, Transient = true, Orientation = ToolWindowOrientation.Right, Window = ToolWindowGuids.Outputwindow)]
 	[ProvideToolWindow(typeof(ORMDiagramSpyWindow), Style = VsDockStyle.Tabbed, Transient = true, Orientation = ToolWindowOrientation.Right, Window = ToolWindowGuids.Outputwindow)]
@@ -77,7 +77,7 @@ namespace Neumont.Tools.ORM.Shell
 	[ProvideToolWindowVisibility(typeof(ORMReadingEditorToolWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolWindowVisibility(typeof(ORMVerbalizationToolWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolWindowVisibility(typeof(ORMModelBrowserToolWindow), ORMDesignerEditorFactory.GuidString)]
-	[ProvideToolWindowVisibility(typeof(ORMDefinitionToolWindow), ORMDesignerEditorFactory.GuidString)]
+	[ProvideToolWindowVisibility(typeof(ORMDescriptionToolWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolWindowVisibility(typeof(ORMNotesToolWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolWindowVisibility(typeof(ORMContextWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolWindowVisibility(typeof(ORMDiagramSpyWindow), ORMDesignerEditorFactory.GuidString)]
@@ -311,7 +311,7 @@ namespace Neumont.Tools.ORM.Shell
 				AddToolWindow(typeof(ORMReferenceModeEditorToolWindow));
 				AddToolWindow(typeof(ORMSamplePopulationToolWindow));
 				AddToolWindow(typeof(ORMVerbalizationToolWindow));
-				AddToolWindow(typeof(ORMDefinitionToolWindow));
+				AddToolWindow(typeof(ORMDescriptionToolWindow));
 				AddToolWindow(typeof(ORMNotesToolWindow));
 				AddToolWindow(typeof(ORMContextWindow));
 				AddToolWindow(typeof(ORMDiagramSpyWindow));
@@ -608,11 +608,11 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Description tool window.
 		/// </summary>
-		public static ORMDefinitionToolWindow InformalDefinitionWindow
+		public static ORMDescriptionToolWindow InformalDescriptionWindow
 		{
 			get
 			{
-				return (ORMDefinitionToolWindow)mySingleton.GetToolWindow(typeof(ORMDefinitionToolWindow), true);
+				return (ORMDescriptionToolWindow)mySingleton.GetToolWindow(typeof(ORMDescriptionToolWindow), true);
 			}
 		}
 

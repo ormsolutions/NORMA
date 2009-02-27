@@ -40,7 +40,7 @@ namespace Neumont.Tools.Modeling.Design
 	/// <summary>
 	/// A base class used to display a list of elements in a
 	/// VirtualTreeGrid control. Override the GetTree method to
-	/// populate the constrol, and alternately the LastControlSize property.
+	/// populate the control, and alternately the LastControlSize property.
 	/// </summary>
 	[PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
 	[PermissionSet(SecurityAction.InheritanceDemand, Name = "FullTrust")]
@@ -74,6 +74,17 @@ namespace Neumont.Tools.Modeling.Design
 			}
 			protected sealed override void OnDoubleClick(DoubleClickEventArgs e)
 			{
+				if (!e.Handled && e.Button == MouseButtons.Left)
+				{
+					VirtualTreeHitInfo hitInfo = e.HitInfo;
+					if (0 != (hitInfo.HitTarget & VirtualTreeHitTargets.OnItemStateIcon))
+					{
+						// Stop a double-click directly on a checkbox from toggling twice. This
+						// doesn't matter for an option style list, where one item is selected, but
+						// creates bizarre results for a true checkbox list.
+						e.Handled = true;
+					}
+				}
 				base.OnDoubleClick(e);
 				if (AfterDoubleClick != null)
 				{
@@ -173,6 +184,7 @@ namespace Neumont.Tools.Modeling.Design
 #endif
 							treeControl.Tree = tree;
 						}
+						SetTreeControlDisplayOptions(treeControl);
 
 						// Make sure keystrokes are forwarded while the modal dropdown is open
 						IVirtualTreeInPlaceControl virtualTreeInPlaceControl = editor as IVirtualTreeInPlaceControl;
@@ -256,7 +268,7 @@ namespace Neumont.Tools.Modeling.Design
 		/// on the currently selected item, or if 'no selected item'
 		/// has a semantic meaning, then return true from this property
 		/// to force TranslateToValue to be called for an empty
-		/// selection state. You can combine override this property
+		/// selection state. You can jointly override this property
 		/// and the <see cref="SelectInitialValue"/> method to
 		/// have no initial selection in the tree.
 		/// </summary>
@@ -295,6 +307,15 @@ namespace Neumont.Tools.Modeling.Design
 			{
 				return true;
 			}
+		}
+		/// <summary>
+		/// Set display options on the tree control. Changes should be limited to basic display settings
+		/// such as root line display.
+		/// </summary>
+		/// <param name="treeControl">A <see cref="VirtualTreeControl"/></param>
+		protected virtual void SetTreeControlDisplayOptions(VirtualTreeControl treeControl)
+		{
+			// Empty default implementation
 		}
 		#endregion // TreePicker Specifics
 	}

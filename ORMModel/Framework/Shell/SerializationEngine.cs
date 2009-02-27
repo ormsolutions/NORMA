@@ -2565,6 +2565,24 @@ namespace Neumont.Tools.Modeling.Shell
 			{
 				return true;
 			}
+
+			// Support fully customized write of element
+			IXmlSerializable fullyCustomElement = element as IXmlSerializable;
+			if (fullyCustomElement != null)
+			{
+				//write container begin element
+				if (containerName != null)
+				{
+					if (!WriteCustomizedStartElement(file, containerCustomInfo, null, containerPrefix, containerName))
+					{
+						return false;
+					}
+					containerName = null;
+				}
+				fullyCustomElement.WriteXml(file);
+				return true;
+			}
+
 			CustomSerializedElementSupportedOperations supportedOperations;
 			CustomSerializedContainerElementInfo[] childElementInfo = null;
 			DomainClassInfo classInfo = element.GetDomainClass();
@@ -2772,12 +2790,7 @@ namespace Neumont.Tools.Modeling.Shell
 							for (int j = 0; j < elementCount; ++j)
 							{
 								ModelElement element = elements[j];
-								IXmlSerializable serializableElement = element as IXmlSerializable;
-								if (serializableElement != null)
-								{
-									serializableElement.WriteXml(file);
-								}
-								else if (ns.ShouldSerializeRootElement(element))
+								if (ns.ShouldSerializeRootElement(element))
 								{
 									SerializeElement(file, element);
 								}
@@ -3513,19 +3526,7 @@ namespace Neumont.Tools.Modeling.Shell
 														if (!classGuid.Equals(Guid.Empty))
 														{
 															processedRootElement = true;
-															ModelElement rootElement = CreateElement(id, null, classGuid);
-															IXmlSerializable serializableRootElement = rootElement as IXmlSerializable;
-															if (serializableRootElement != null)
-															{
-																using (XmlReader subtreeReader = reader.ReadSubtree())
-																{
-																	serializableRootElement.ReadXml(subtreeReader);
-																}
-															}
-															else
-															{
-																ProcessClassElement(reader, metaModel, rootElement, null, null);
-															}
+															ProcessClassElement(reader, metaModel, CreateElement(id, null, classGuid), null, null);
 														}
 													}
 													else if (!reader.IsEmptyElement)
@@ -3708,6 +3709,17 @@ namespace Neumont.Tools.Modeling.Shell
 		/// <param name="shouldProcessAttributeCallback">A callback to determine which attribute values should be processed</param>
 		private void ProcessClassElement(XmlReader reader, ICustomSerializedDomainModel customModel, ModelElement element, CreateAggregatingLink createAggregatingLinkCallback, ShouldProcessAttribute shouldProcessAttributeCallback)
 		{
+			#region IXmlSerializable processing
+			IXmlSerializable fullyCustomElement = element as IXmlSerializable;
+			if (fullyCustomElement != null)
+			{
+				using (XmlReader subtreeReader = reader.ReadSubtree())
+				{
+					fullyCustomElement.ReadXml(subtreeReader);
+				}
+				return;
+			}
+			#endregion // IXmlSerializable processing
 			ICustomSerializedElement customElement = element as ICustomSerializedElement;
 			DomainDataDirectory dataDir = myStore.DomainDataDirectory;
 			#region Property processing

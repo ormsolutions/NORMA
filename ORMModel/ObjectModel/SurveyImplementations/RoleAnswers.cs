@@ -24,6 +24,7 @@ using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Globalization;
+using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
@@ -250,20 +251,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 	{
 		#region ISurveyNodeReference Implementation
 		/// <summary>
-		/// Implements <see cref="ISurveyNodeReference.ReferencedSurveyNode"/>
+		/// Implements <see cref="IElementReference.ReferencedElement"/>
 		/// </summary>
-		protected object ReferencedSurveyNode
+		protected object ReferencedElement
 		{
 			get
 			{
 				return Role;
 			}
 		}
-		object ISurveyNodeReference.ReferencedSurveyNode
+		object IElementReference.ReferencedElement
 		{
 			get
 			{
-				return ReferencedSurveyNode;
+				return ReferencedElement;
 			}
 		}
 		/// <summary>

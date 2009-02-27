@@ -56,6 +56,9 @@
 	<ResourceString name="ReadingType" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.Reading.DisplayName">
 		<comment>The display name used for a ReadingType</comment>
 	</ResourceString>
+	<ResourceString name="ElementGroupingTypeDisplayName" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ElementGroupingType.DisplayName">
+		<comment>The name displayed as the class name for all &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.ElementGroupingType&quot;/&gt; instances</comment>
+	</ResourceString>
 	<ResourceString name="ValueType" model="Model" resourceName="ObjectModel.ValueType"/>
 	<ResourceString name="EntityType" model="Model" resourceName="ObjectModel.EntityType"/>
 	<ResourceString name="ConstraintNameDescription" model="Model" resourceName="ObjectModel.Constraint.Name.Description"/>
@@ -119,6 +122,13 @@
 	<ResourceString name="ExclusiveOrCouplerTransactionName" model="Diagram" resourceName="ExclusiveOrCoupler.TransactionName"/>
 	<ResourceString name="ExclusiveOrDecouplerTransactionName" model="Diagram" resourceName="ExclusiveOrDecoupler.TransactionName"/>
 	<ResourceString name="DropShapeTransactionName" model="Diagram" resourceName="DropShape.TransactionName"/>
+	<ResourceString name="ElementGroupingDefaultNamePattern" model="Model" resourceName="ElementGrouping.DefaultNamePattern"/>
+	<ResourceString name="ElementGroupingAddElementTransactionName" model="Model" resourceName="ElementGrouping.AddElement.TransactionName"/>
+	<ResourceString name="ElementGroupingAddGroupTransactionName" model="Model" resourceName="ElementGrouping.AddGroup.TransactionName"/>
+	<ResourceString name="ElementGroupingRemoveElementExclusionTransactionName" model="Model" resourceName="ElementGrouping.RemoveElementExclusion.TransactionName"/>
+	<ResourceString name="ElementGroupingTypesPropertyDescriptorDescription" model="Model" resourceName="ElementGroupingTypes.PropertyDescriptor.Description"/>
+	<ResourceString name="ElementGroupingTypesPropertyDescriptorDisplayName" model="Model" resourceName="ElementGroupingTypes.PropertyDescriptor.DisplayName"/>
+	<ResourceString name="ElementGroupingTypesPropertyDescriptorTransactionName" model="Model" resourceName="ElementGroupingTypes.PropertyDescriptor.TransactionName"/>
 	<ResourceString name="ExternalConstraintConnectActionSetComparisonConstraintInstructions" model="Diagram" resourceName="ExternalConstraintConnectAction.SetComparisonConstraint.Instructions"/>
 	<ResourceString name="ExternalConstraintConnectActionSetConstraintInstructions" model="Diagram" resourceName="ExternalConstraintConnectAction.SetConstraint.Instructions"/>
 	<ResourceString name="ExternalConstraintConnectActionTransactionName" model="Diagram" resourceName="ExternalConstraintConnectAction.TransactionName"/>
@@ -214,6 +224,8 @@
 	<ResourceString name="CommandDeleteMultipleElementsText" model="Diagram" resourceName="Command.DeleteMultipleElements.Text"/>
 	<ResourceString name="CommandDeleteMultipleShapesText" model="Diagram" resourceName="Command.DeleteMultipleShapes.Text"/>
 	<ResourceString name="CommandDeleteFactTypeShapeText" model="Diagram" resourceName="Command.DeleteFactTypeShape.Text"/>
+	<ResourceString name="CommandDeleteFromGroupText" model="Diagram" resourceName="Command.DeleteFromGroup.Text"/>
+	<ResourceString name="CommandDeleteGroupText" model="Diagram" resourceName="Command.DeleteGroup.Text"/>
 	<ResourceString name="CommandDeleteObjectTypeShapeText" model="Diagram" resourceName="Command.DeleteObjectTypeShape.Text"/>
 	<ResourceString name="CommandDeleteConstraintShapeText" model="Diagram" resourceName="Command.DeleteConstraintShape.Text"/>
 	<ResourceString name="CommandDeleteModelNoteText" model="Diagram" resourceName="Command.DeleteModelNote.Text"/>
@@ -242,8 +254,8 @@
 	<ResourceString name="ModelReadingEditorWindowTitle" model="Model" resourceName="ModelReadingEditor.WindowTitle"/>
 	<ResourceString name="ModelReadingEditorImpliedFactTypeReadingsText" model="Model" resourceName="ModelReadingEditor.ImpliedFactTypeReadingsText"/>
 	<ResourceString name="ModelReadingEditorPrimaryFactTypeReadingsText" model="Model" resourceName="ModelReadingEditor.PrimaryFactTypeReadingsText"/>
-	<ResourceString name="ModelDefinitionWindowEmptyDisplayText" model="Model" resourceName="ModelDefinitionWindow.EmptyDisplayText"/>
-	<ResourceString name="ModelDefinitionWindowTitle" model="Model" resourceName="ModelDefinitionWindow.WindowTitle"/>
+	<ResourceString name="ModelDescriptionWindowEmptyDisplayText" model="Model" resourceName="ModelDescriptionWindow.EmptyDisplayText"/>
+	<ResourceString name="ModelDescriptionWindowTitle" model="Model" resourceName="ModelDescriptionWindow.WindowTitle"/>
 	<ResourceString name="ModelNotesWindowEmptyDisplayText" model="Model" resourceName="ModelNotesWindow.EmptyDisplayText"/>
 	<ResourceString name="ModelNotesWindowTitle" model="Model" resourceName="ModelNotesWindow.WindowTitle"/>
 	<ResourceString name="ModelContextWindowTitle" model="Model" resourceName="ModelContextWindow.WindowTitle"/>
@@ -320,6 +332,8 @@
 	<ResourceString name="ModelErrorReadingRequiresUserModificationMessage" model="Model" resourceName="ModelError.Reading.RequiresUserModification.Message"/>
 	<ResourceString name="ModelErrorReadingTooManyRolesMessage" model="Model" resourceName="ModelError.Reading.TooManyRoles.Message"/>
 	<ResourceString name="ModelReadingRoleDeletedRoleText" model="Model" resourceName="Model.Reading.RoleDeletedText"/>
+	<ResourceString name="ModelErrorElementGroupingDuplicateNameError" model="Model" resourceName="ModelError.ElementGrouping.DuplicateNameError.Message"/>
+	<ResourceString name="ModelErrorElementGroupingMembershipContradictionError" model="Model" resourceName="ModelError.ElementGrouping.MembershipContradictionError.Message"/>
 	<ResourceString name="ModelErrorFactTypeRequiresInternalUniquenessConstraintMessage" model="Model" resourceName="ModelError.FactType.RequiresInternalUniquenessConstraint.Message"/>
 	<ResourceString name="ModelErrorFactTypeRequiresReadingMessage" model="Model" resourceName="ModelError.FactType.RequiresReading.Message"/>
 	<ResourceString name="ModelErrorValueTypeDataTypeNotSpecifiedMessage" model="Model" resourceName="ModelError.ValueType.DataTypeNotSpecified.Message"/>

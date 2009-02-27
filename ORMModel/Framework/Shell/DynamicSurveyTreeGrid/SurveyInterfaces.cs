@@ -21,6 +21,7 @@ using System.Text;
 using Microsoft.VisualStudio.Modeling;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Microsoft.VisualStudio.VirtualTreeGrid;
 
 namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 {
@@ -28,7 +29,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 	/// <summary>
 	/// Survey question ui support. Indicates how answers to this
 	/// questions may be used when presenting elements that answer
-	/// the associated <see cref="ISurveyQuestionTypeInfo"/>
+	/// the associated <see cref="ISurveyQuestionTypeInfo{Object}"/>
 	/// </summary>
 	[Flags]
 	public enum SurveyQuestionUISupport
@@ -62,34 +63,43 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		/// <see cref="ISurveyQuestionTypeInfo.GetDisplayData"/> method.
 		/// </summary>
 		DisplayData = 0x10,
+		/// <summary>
+		/// The <see cref="ISurveyQuestionTypeInfo{Object}.ShowEmptyGroup"/> method
+		/// will return true for at least one value.
+		/// </summary>
+		EmptyGroups = 0x20,
 	}
 	#endregion // SurveyQuestionUISupport enum
 	#region ISurveyQuestionProvider interface
 	/// <summary>
-	/// An ISurveyQuestionProvider can return an array of ISurveyQuestionTypeInfo
+	/// An ISurveyQuestionProvider provides ISurveyQuestionTypeInfo instance for a survey
 	/// </summary>
-	public interface ISurveyQuestionProvider
+	public interface ISurveyQuestionProvider<SurveyContextType>
+		where SurveyContextType : class
 	{
 		/// <summary>
 		/// Retrieve the supported <see cref="ISurveyQuestionTypeInfo"/> instances
 		/// </summary>
+		/// <param name="surveyContext">The containing <typeparamref name="SurveyContextType"/></param>
 		/// <param name="expansionKey">The expansion key indicating the type of expansion
 		/// data to retrieve for the provided context. Expansion keys are also used by
 		/// <see cref="ISurveyNode.SurveyNodeExpansionKey"/> and <see cref="ISurveyNodeProvider.GetSurveyNodes"/></param>
 		/// <returns><see cref="IEnumerable{ISurveyQuestionTypeInfo}"/> representing questions supported by this provider</returns>
-		IEnumerable<ISurveyQuestionTypeInfo> GetSurveyQuestions(object expansionKey);
+		IEnumerable<ISurveyQuestionTypeInfo<SurveyContextType>> GetSurveyQuestions(SurveyContextType surveyContext, object expansionKey);
 		/// <summary>
-		/// The <see cref="ImageList"/> associated with answers to all supported questions
+		/// The <see cref="ImageList"/>s associated with answers to all supported questions. Multipe ImageList instances
+		/// are treated as a single list for indexing purposes.
 		/// </summary>
-		ImageList SurveyQuestionImageList { get;}
-        /// <summary>
-        /// Get the list of types for this survey provider that correspond to
-        /// error state display changes. Each returned type should correspond to one
-        /// of the <see cref="ISurveyQuestionTypeInfo.QuestionType"/> types returned
-        /// by the <see cref="GetSurveyQuestions"/>
-        /// </summary>
-        /// <returns><see cref="IEnumerable{Type}"/> or null</returns>
-        IEnumerable<Type> GetErrorDisplayTypes();
+		/// <param name="surveyContext">The containing <typeparamref name="SurveyContextType"/></param>
+		ImageList[] GetSurveyQuestionImageLists(SurveyContextType surveyContext);
+		/// <summary>
+		/// Get the list of types for this survey provider that correspond to
+		/// error state display changes. Each returned type should correspond to one
+		/// of the <see cref="ISurveyQuestionTypeInfo.QuestionType"/> types returned
+		/// by the <see cref="GetSurveyQuestions"/>
+		/// </summary>
+		/// <returns><see cref="IEnumerable{Type}"/> or null</returns>
+		IEnumerable<Type> GetErrorDisplayTypes();
 	}
 	#endregion // ISurveyQuestionProvider interface
 	#region SurveyQuestionDisplayData structure
@@ -176,8 +186,8 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		/// this implementation of <see cref="ISurveyQuestionTypeInfo"/></returns>
 		int AskQuestion(object data, object contextElement);
 		/// <summary>
-		/// Maps the index of the answer to an image in the <see cref="ImageList"/> provided
-		/// by the <see cref="ISurveyQuestionProvider.SurveyQuestionImageList"/> property.
+		/// Maps the index of the answer to an image in an <see cref="ImageList"/> provided
+		/// by the <see cref="ISurveyQuestionProvider{Object}.GetSurveyQuestionImageLists"/> property.
 		/// </summary>
 		/// <param name="answer">A value from the enum type returned by the <see cref="QuestionType"/> property.</param>
 		/// <returns>0-based index into the image list.</returns>
@@ -198,6 +208,31 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		/// to other questions. Lower priority sorts first in the list.
 		/// </summary>
 		int QuestionPriority { get;}
+	}
+	/// <summary>
+	/// A generic extension of the <see cref="ISurveyQuestionTypeInfo"/> interface.
+	/// Splitting the interface allows easy access to non-generic parts of the code.
+	/// </summary>
+	/// <typeparam name="SurveyContextType"></typeparam>
+	public interface ISurveyQuestionTypeInfo<SurveyContextType> : ISurveyQuestionTypeInfo
+		where SurveyContextType : class
+	{
+		/// <summary>
+		/// Map an answer to an <see cref="IFreeFormCommandProvider{SurveyContextType}"/> implementation.
+		/// Used to provide actions on the context menu for the currently selected header node.
+		/// </summary>
+		/// <param name="surveyContext">The context <typeparamref name="SurveyContextType"/> for this survey</param>
+		/// <param name="answer">A value from the enum type returned by the <see cref="ISurveyQuestionTypeInfo.QuestionType"/> property.</param>
+		/// <returns>A command provider, or <see langword="null"/></returns>
+		IFreeFormCommandProvider<SurveyContextType> GetFreeFormCommands(SurveyContextType surveyContext, int answer);
+		/// <summary>
+		/// Determine if a group header should be shown if there are no group elements.
+		/// Allowing empty nodes enables commands to be shown with the group.
+		/// </summary>
+		/// <param name="surveyContext">The context <typeparamref name="SurveyContextType"/> for this survey</param>
+		/// <param name="answer">A value from the enum type returned by the <see cref="ISurveyQuestionTypeInfo.QuestionType"/> property.</param>
+		/// <returns><see langword="true"/> to show an empty group</returns>
+		bool ShowEmptyGroup(SurveyContextType surveyContext, int answer);
 	}
 	#endregion // ISurveyQuestionTypeInfo interface
 	#region IAnswerSurveyQuestion<T> interface
@@ -290,7 +325,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		/// of this expansion should implement <see cref="ISurveyNodeContext"/>
 		/// to be able to find this element. If this element implements
 		/// <see cref="ISurveyNodeReference"/> and returns an expansion key, then
-		/// the combination of <see cref="P:ISurveyNodeReference.ReferencedSurveyNode"/> and
+		/// the combination of <see cref="P:IElementReference.ReferencedElement"/> and
 		/// <see cref="P:ISurveyNodeReference.SurveyNodeReferenceReason"/> must be unique
 		/// across all elements. Normally, this combination is only required to be unique within
 		/// a single context element.
@@ -342,19 +377,15 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 	/// by implementing the <see cref="IAnswerSurveyQuestion{T}"/>,
 	/// <see cref=" IAnswerSurveyDynamicQuestion{T}"/>, and <see cref="ICustomComparableSurveyNode"/>
 	/// interfaces. If this element does not independently implement <see cref="ISurveyNode"/>, then the
-	/// framework will automatically defer to the settings specified on the reference
+	/// framework will automatically defer to the settings specified on the referenced
 	/// element.
 	/// </summary>
-	public interface ISurveyNodeReference
+	public interface ISurveyNodeReference : IElementReference
 	{
-		/// <summary>
-		/// The primary node location referenced by this element
-		/// </summary>
-		object ReferencedSurveyNode { get;}
 		/// <summary>
 		/// The reason for referencing the primary element. This element
 		/// must be set, but it may return the same value for all instances
-		/// of an element that implements this interface. Only on SurveyNodeReference/SurveyNodeReferenceReason
+		/// of an element that implements this interface. Only one SurveyNodeReference/SurveyNodeReferenceReason
 		/// pairing is allowed per context element.
 		/// </summary>
 		object SurveyNodeReferenceReason { get;}
@@ -375,6 +406,41 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		bool UseSurveyNodeReferenceAnswer(Type questionType, ISurveyDynamicValues dynamicValues, int answer);
 	}
 	#endregion // ISurveyNodeReference interface
+	#region ISurveyFloatingNode interface
+	/// <summary>
+	/// Enable survey questions to be applied to an element that does
+	/// not have a primary location in the tree and does not implement
+	/// the <see cref="ISurveyNodeContext"/> interface. This should be
+	/// used only in the rare case that an element can be referenced
+	/// with the <see cref="ISurveyNodeReference"/> interface but does
+	/// not have a primary display. These elements are shown without
+	/// a link display and cannot be navigated to.
+	/// </summary>
+	public interface ISurveyFloatingNode
+	{
+		/// <summary>
+		/// Return the key used to retrieve the set of survey questions
+		/// used to display this element. Note that grouping and sorting
+		/// questions are not used to query this element.
+		/// </summary>
+		object FloatingSurveyNodeQuestionKey { get;}
+	}
+	#endregion // ISurveyFloatingNode interface
+	#region ISurveyNodeDropTarget interface
+	/// <summary>
+	/// Support dropping elements on a survey node
+	/// </summary>
+	public interface ISurveyNodeDropTarget
+	{
+		/// <summary>
+		/// Handle drag events over this node
+		/// </summary>
+		/// <param name="contextElement">The context element for this instance.</param>
+		/// <param name="eventType">The type of drag event that is occuring.</param>
+		/// <param name="args">The arguments for this event (null for a Leave event)</param>
+		void OnDragEvent(object contextElement, DragEventType eventType, DragEventArgs args);
+	}
+	#endregion // ISurveyNodeDropTarget interface
 	#region ISurveyNodeContext interface
 	/// <summary>
 	/// Implement on elements that are displayed as expansions in
@@ -391,6 +457,29 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		object SurveyNodeContext { get;}
 	}
 	#endregion // ISurveyNodeContext interface
+	#region ISurveyGroupHeader interface
+	/// <summary>
+	/// An interface representing a header node selection in the
+	/// survey tree. Allows selection tracking mechanisms to add
+	/// commands.
+	/// </summary>
+	public interface ISurveyGroupHeader : IEquatable<ISurveyGroupHeader>
+	{
+		/// <summary>
+		/// The <see cref="ISurveyQuestionTypeInfo{SurveyContextType}"/> for this header
+		/// </summary>
+		ISurveyQuestionTypeInfo QuestionTypeInfo { get;}
+		/// <summary>
+		/// The answer, corresponding to the <see cref="QuestionTypeInfo"/>,
+		/// for this header.
+		/// </summary>
+		int Answer { get;}
+		/// <summary>
+		/// The context element for this header
+		/// </summary>
+		object ContextElement { get;}
+	}
+	#endregion // ISurveyGroupHeader
 	#region ICustomComparableSurveyNode interface
 	/// <summary>
 	/// Provide a custom comparison to do before the sort falls back
@@ -450,7 +539,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		/// the nodes are being requested for the top-level list.</param>
 		/// <param name="expansionKey">The expansion key indicating the type of expansion
 		/// data to retrieve for the provided context. Expansion keys are also used by
-		/// <see cref="ISurveyNode.SurveyNodeExpansionKey"/> and <see cref="ISurveyQuestionProvider.GetSurveyQuestions"/></param>
+		/// <see cref="ISurveyNode.SurveyNodeExpansionKey"/> and <see cref="ISurveyQuestionProvider{Object}.GetSurveyQuestions"/></param>
 		/// <returns><see cref="IEnumerable{Object}"/> for all nodes returned by the provider</returns>
 		IEnumerable<object> GetSurveyNodes(object context, object expansionKey);
 	}
@@ -486,10 +575,19 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		/// <param name="questionTypes">The question types.</param>
 		void ElementReferenceChanged(object element, object referenceReason, object contextElement, params Type[] questionTypes);
 		/// <summary>
-		/// Called if element is removed from the container's node provider
+		/// Called when an element is removed from the container's node provider
 		/// </summary>
 		/// <param name="element">The object that was removed from the node provider</param>
 		void ElementDeleted(object element);
+		/// <summary>
+		/// Called when an element is removed from the container's node provider
+		/// </summary>
+		/// <param name="element">The object that was removed from the node provider</param>
+		/// <param name="preserveReferences">If true, then the element is deleted from its
+		/// primary location, but references to the element are preserved. This allows an
+		/// element to be effectively hidden from its primary display location but still
+		/// displayed in the alternate locations.</param>
+		void ElementDeleted(object element, bool preserveReferences);
 		/// <summary>
 		/// Called if element is removed from the container's node provider
 		/// </summary>

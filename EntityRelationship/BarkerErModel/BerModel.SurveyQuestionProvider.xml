@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <qp:surveyQuestionProvider xmlns:qp="http://schemas.neumont.edu/ORM/SDK/SurveyQuestionProvider" xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX" class="BarkerDomainModel">
+	<qp:surveyContextType dataTypeName="Store" dataTypeQualifier="Microsoft.VisualStudio.Modeling"/>
 	<qp:surveyQuestions>
 		<qp:surveyQuestion questionType="SurveyBarkerModelType" questionPriority="400">
 			<qp:displaySupport displayCategory="Grouping"/>
@@ -108,7 +109,11 @@
 	</qp:groupings>
 	<qp:imageInformation>
 		<plx:return>
-			<plx:callStatic dataTypeName="ResourceStrings" name="SurveyTreeImageList" type="property"/>
+			<plx:callNew dataTypeName="ImageList" dataTypeIsSimpleArray="true">
+				<plx:arrayInitializer>
+					<plx:callStatic dataTypeName="ResourceStrings" name="SurveyTreeImageList" type="property"/>
+				</plx:arrayInitializer>
+			</plx:callNew>
 		</plx:return>
 	</qp:imageInformation>
 </qp:surveyQuestionProvider>

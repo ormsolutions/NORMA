@@ -145,6 +145,40 @@
 				<arg:RuleOn targetType="SetComparisonConstraintHasRoleSequence"/>
 			</arg:RolePlayerPositionChangeRule>
 		</arg:RuleContainer>
+		<arg:RuleContainer class="ElementGrouping">
+			<arg:ChangeRule methodName="GroupingChangedRule">
+				<arg:RuleOn targetType="ElementGrouping"/>
+			</arg:ChangeRule>
+			<arg:AddRule methodName="GroupingTypeAddedRule">
+				<arg:RuleOn targetType="ElementGroupingIsOfElementGroupingType"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="GroupingTypeDeletedRule">
+				<arg:RuleOn targetType="ElementGroupingIsOfElementGroupingType"/>
+			</arg:DeleteRule>
+			<arg:AddRule methodName="GroupingExclusionAddedRule">
+				<arg:RuleOn targetType="GroupingElementExclusion"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="GroupingExclusionDeletedRule">
+				<arg:RuleOn targetType="GroupingElementExclusion"/>
+			</arg:DeleteRule>
+			<arg:ChangeRule methodName="StandardNamedElementNameChangedRule">
+				<arg:RuleOn targetType="ORMNamedElement"/>
+			</arg:ChangeRule>
+			<arg:ChangeRule methodName="FactTypeNameChangedRule">
+				<arg:RuleOn targetType="FactType"/>
+			</arg:ChangeRule>
+		</arg:RuleContainer>
+		<arg:RuleContainer class="ElementGroupingSet">
+			<arg:DeleteRule methodName="DuplicateGroupingNameGroupingDeletedRule">
+				<arg:RuleOn targetType="ElementGroupingHasDuplicateNameError"/>
+			</arg:DeleteRule>
+			<arg:DeleteRule methodName="GroupingDeletedRule">
+				<arg:RuleOn targetType="ElementGroupingSetContainsElementGrouping" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
+			</arg:DeleteRule>
+			<arg:AddRule methodName="GroupingSetAddedRule">
+				<arg:RuleOn targetType="ElementGroupingSet"/>
+			</arg:AddRule>
+		</arg:RuleContainer>
 		<arg:RuleContainer class="FactType">
 			<arg:RolePlayerChangeRule methodName="BlockRoleMigrationRule">
 				<arg:RuleOn targetType="FactTypeHasRole"/>

@@ -325,6 +325,73 @@
     <value>Naming Errors</value>
     <comment>DisplayName for DomainClass &apos;NameErrorCategory&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingSet.Description" xml:space="preserve">
+    <value>A Group owner, allows group containment, order, and naming enforcement.</value>
+    <comment>Description for DomainClass &apos;ElementGroupingSet&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingSet.DisplayName" xml:space="preserve">
+    <value>Groups</value>
+    <comment>DisplayName for DomainClass &apos;ElementGroupingSet&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGrouping.Description" xml:space="preserve">
+    <value>A group of elements. A GroupType is associated with the Group to control the group contents.</value>
+    <comment>Description for DomainClass &apos;ElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGrouping.DisplayName" xml:space="preserve">
+    <value>Group</value>
+    <comment>DisplayName for DomainClass &apos;ElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGrouping/TypeCompliance.Description" xml:space="preserve">
+    <value>Specify the level of GroupType compliance for elements in this group.
+    Not Excluded: Allow elements not explicitly excluded by a selected GroupType.
+    Approved by Some Type: Allow elements explicitly approved by at least one GroupType.
+    Approved by All Types: Allow elements explicitly approved by all selected GroupTypes.</value>
+    <comment>Description for DomainProperty &apos;TypeCompliance&apos; on DomainClass &apos;ElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGrouping/TypeCompliance.DisplayName" xml:space="preserve">
+    <value>GroupTypeCompliance</value>
+    <comment>DisplayName for DomainProperty &apos;TypeCompliance&apos; on DomainClass &apos;ElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGrouping/Priority.Description" xml:space="preserve">
+    <value>Specify a priority relative to other Groups. If an element is included in two groups of the same type, the settings for the Group with the highest GroupPriority are given precedence.</value>
+    <comment>Description for DomainProperty &apos;Priority&apos; on DomainClass &apos;ElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGrouping/Priority.DisplayName" xml:space="preserve">
+    <value>GroupPriority</value>
+    <comment>DisplayName for DomainProperty &apos;Priority&apos; on DomainClass &apos;ElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingType.Description" xml:space="preserve">
+    <value>A type for a group. Each Group is associated with a new instance of each of its GroupTypes, allowing individual settings per group.</value>
+    <comment>Description for DomainClass &apos;ElementGroupingType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingType.DisplayName" xml:space="preserve">
+    <value>GroupType</value>
+    <comment>DisplayName for DomainClass &apos;ElementGroupingType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingErrorCategory.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ElementGroupingErrorCategory&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingErrorCategory.DisplayName" xml:space="preserve">
+    <value>Grouping Errors</value>
+    <comment>DisplayName for DomainClass &apos;ElementGroupingErrorCategory&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingDuplicateNameError.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ElementGroupingDuplicateNameError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingDuplicateNameError.DisplayName" xml:space="preserve">
+    <value>Duplicate Group Names</value>
+    <comment>DisplayName for DomainClass &apos;ElementGroupingDuplicateNameError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingMembershipContradictionError.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ElementGroupingMembershipContradictionError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingMembershipContradictionError.DisplayName" xml:space="preserve">
+    <value>Element Required and Blocked in one Group</value>
+    <comment>DisplayName for DomainClass &apos;ElementGroupingMembershipContradictionError&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ORMModelElement.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;ORMModelElement&apos;</comment>
@@ -366,12 +433,12 @@
     <comment>DisplayName for DomainProperty &apos;ModelErrorDisplayFilterDisplay&apos; on DomainClass &apos;ORMModel&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ORMModel/DefinitionText.Description" xml:space="preserve">
-    <value>A definition of this Model.
-    To insert new lines, use Control-Enter in the dropdown editor, or open the &apos;ORM Informal Definition Editor&apos; tool window.</value>
+    <value>An informal description of this Model.
+    To insert new lines, use Control-Enter in the dropdown editor, or open the &apos;ORM Informal Description Editor&apos; tool window.</value>
     <comment>Description for DomainProperty &apos;DefinitionText&apos; on DomainClass &apos;ORMModel&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ORMModel/DefinitionText.DisplayName" xml:space="preserve">
-    <value>InformalDefinition</value>
+    <value>InformalDescription</value>
     <comment>DisplayName for DomainProperty &apos;DefinitionText&apos; on DomainClass &apos;ORMModel&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ORMModel/NoteText.Description" xml:space="preserve">
@@ -400,12 +467,12 @@
     <comment>DisplayName for DomainProperty &apos;IsExternal&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/DefinitionText.Description" xml:space="preserve">
-    <value>A definition of this ObjectType.
-    To insert new lines, use Control-Enter in the dropdown editor, or open the &apos;ORM Informal Definition Editor&apos; tool window.</value>
+    <value>An informal description of this ObjectType.
+    To insert new lines, use Control-Enter in the dropdown editor, or open the &apos;ORM Informal Description Editor&apos; tool window.</value>
     <comment>Description for DomainProperty &apos;DefinitionText&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/DefinitionText.DisplayName" xml:space="preserve">
-    <value>InformalDefinition</value>
+    <value>InformalDescription</value>
     <comment>DisplayName for DomainProperty &apos;DefinitionText&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/NoteText.Description" xml:space="preserve">
@@ -552,12 +619,12 @@
     <comment>DisplayName for DomainProperty &apos;IsExternal&apos; on DomainClass &apos;FactType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactType/DefinitionText.Description" xml:space="preserve">
-    <value>A definition of this FactType.
-    To insert new lines, use Control-Enter in the dropdown editor, or open the &apos;ORM Informal Definition Editor&apos; tool window.</value>
+    <value>An informal description of this FactType.
+    To insert new lines, use Control-Enter in the dropdown editor, or open the &apos;ORM Informal Description Editor&apos; tool window.</value>
     <comment>Description for DomainProperty &apos;DefinitionText&apos; on DomainClass &apos;FactType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactType/DefinitionText.DisplayName" xml:space="preserve">
-    <value>InformalDefinition</value>
+    <value>InformalDescription</value>
     <comment>DisplayName for DomainProperty &apos;DefinitionText&apos; on DomainClass &apos;FactType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactType/NoteText.Description" xml:space="preserve">
@@ -1788,11 +1855,11 @@
     <comment>Description for DomainClass &apos;Definition&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Definition.DisplayName" xml:space="preserve">
-    <value>InformalDefinition</value>
+    <value>InformalDescription</value>
     <comment>DisplayName for DomainClass &apos;Definition&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Definition/Text.Description" xml:space="preserve">
-    <value>The definition contents.
+    <value>The description contents.
     To insert new lines, use Control-Enter in the dropdown editor, or open the &apos;ORM Notes Editor&apos; tool window.</value>
     <comment>Description for DomainProperty &apos;Text&apos; on DomainClass &apos;Definition&apos;</comment>
   </data>
@@ -6065,6 +6132,390 @@
     <value>Model</value>
     <comment>PropertyDisplayName for DomainRole &apos;ModelErrorDisplayFilter&apos; on DomainRelationship &apos;ModelHasModelErrorDisplayFilter&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel</value>
+    <comment>Description for DomainClass &apos;ElementGroupingSetRelatesToORMModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel.DisplayName" xml:space="preserve">
+    <value>Element Grouping Set Relates To ORMModel</value>
+    <comment>DisplayName for DomainClass &apos;ElementGroupingSetRelatesToORMModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel/GroupingSet.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel.GroupingSet</value>
+    <comment>Description for DomainRole &apos;GroupingSet&apos; on DomainRelationship &apos;ElementGroupingSetRelatesToORMModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel/GroupingSet.DisplayName" xml:space="preserve">
+    <value>GroupingSet</value>
+    <comment>DisplayName for DomainRole &apos;GroupingSet&apos; on DomainRelationship &apos;ElementGroupingSetRelatesToORMModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel/GroupingSet.PropertyDisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>PropertyDisplayName for DomainRole &apos;GroupingSet&apos; on DomainRelationship &apos;ElementGroupingSetRelatesToORMModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel/Model.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel.Model</value>
+    <comment>Description for DomainRole &apos;Model&apos; on DomainRelationship &apos;ElementGroupingSetRelatesToORMModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel/Model.DisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>DisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;ElementGroupingSetRelatesToORMModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel/Model.PropertyDisplayName" xml:space="preserve">
+    <value>Grouping Set</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;ElementGroupingSetRelatesToORMModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping</value>
+    <comment>Description for DomainClass &apos;ElementGroupingSetContainsElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping.DisplayName" xml:space="preserve">
+    <value>Element Grouping Set Contains Element Grouping</value>
+    <comment>DisplayName for DomainClass &apos;ElementGroupingSetContainsElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping/GroupingSet.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping.GroupingSet</value>
+    <comment>Description for DomainRole &apos;GroupingSet&apos; on DomainRelationship &apos;ElementGroupingSetContainsElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping/GroupingSet.DisplayName" xml:space="preserve">
+    <value>GroupingSet</value>
+    <comment>DisplayName for DomainRole &apos;GroupingSet&apos; on DomainRelationship &apos;ElementGroupingSetContainsElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping/GroupingSet.PropertyDisplayName" xml:space="preserve">
+    <value>Grouping Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;GroupingSet&apos; on DomainRelationship &apos;ElementGroupingSetContainsElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping/Grouping.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping.Grouping</value>
+    <comment>Description for DomainRole &apos;Grouping&apos; on DomainRelationship &apos;ElementGroupingSetContainsElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping/Grouping.DisplayName" xml:space="preserve">
+    <value>Grouping</value>
+    <comment>DisplayName for DomainRole &apos;Grouping&apos; on DomainRelationship &apos;ElementGroupingSetContainsElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping/Grouping.PropertyDisplayName" xml:space="preserve">
+    <value>Grouping Set</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Grouping&apos; on DomainRelationship &apos;ElementGroupingSetContainsElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType</value>
+    <comment>Description for DomainClass &apos;ElementGroupingIsOfElementGroupingType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType.DisplayName" xml:space="preserve">
+    <value>Element Grouping Is Of Element Grouping Type</value>
+    <comment>DisplayName for DomainClass &apos;ElementGroupingIsOfElementGroupingType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType/Grouping.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType.Grouping</value>
+    <comment>Description for DomainRole &apos;Grouping&apos; on DomainRelationship &apos;ElementGroupingIsOfElementGroupingType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType/Grouping.DisplayName" xml:space="preserve">
+    <value>Grouping</value>
+    <comment>DisplayName for DomainRole &apos;Grouping&apos; on DomainRelationship &apos;ElementGroupingIsOfElementGroupingType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType/Grouping.PropertyDisplayName" xml:space="preserve">
+    <value>Grouping Type Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Grouping&apos; on DomainRelationship &apos;ElementGroupingIsOfElementGroupingType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType/GroupingType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType.GroupingType</value>
+    <comment>Description for DomainRole &apos;GroupingType&apos; on DomainRelationship &apos;ElementGroupingIsOfElementGroupingType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType/GroupingType.DisplayName" xml:space="preserve">
+    <value>GroupingType</value>
+    <comment>DisplayName for DomainRole &apos;GroupingType&apos; on DomainRelationship &apos;ElementGroupingIsOfElementGroupingType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType/GroupingType.PropertyDisplayName" xml:space="preserve">
+    <value>Grouping</value>
+    <comment>PropertyDisplayName for DomainRole &apos;GroupingType&apos; on DomainRelationship &apos;ElementGroupingIsOfElementGroupingType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship</value>
+    <comment>Description for DomainClass &apos;GroupingElementRelationship&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship.DisplayName" xml:space="preserve">
+    <value>Grouping Element Relationship</value>
+    <comment>DisplayName for DomainClass &apos;GroupingElementRelationship&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship/Grouping.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship.Grouping</value>
+    <comment>Description for DomainRole &apos;Grouping&apos; on DomainRelationship &apos;GroupingElementRelationship&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship/Grouping.DisplayName" xml:space="preserve">
+    <value>Grouping</value>
+    <comment>DisplayName for DomainRole &apos;Grouping&apos; on DomainRelationship &apos;GroupingElementRelationship&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship/Grouping.PropertyDisplayName" xml:space="preserve">
+    <value>Element Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Grouping&apos; on DomainRelationship &apos;GroupingElementRelationship&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship/Element.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship.Element</value>
+    <comment>Description for DomainRole &apos;Element&apos; on DomainRelationship &apos;GroupingElementRelationship&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship/Element.DisplayName" xml:space="preserve">
+    <value>Element</value>
+    <comment>DisplayName for DomainRole &apos;Element&apos; on DomainRelationship &apos;GroupingElementRelationship&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship/Element.PropertyDisplayName" xml:space="preserve">
+    <value>Grouping Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Element&apos; on DomainRelationship &apos;GroupingElementRelationship&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion</value>
+    <comment>Description for DomainClass &apos;GroupingElementInclusion&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion.DisplayName" xml:space="preserve">
+    <value>Grouping Element Inclusion</value>
+    <comment>DisplayName for DomainClass &apos;GroupingElementInclusion&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion/Grouping.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion.Grouping</value>
+    <comment>Description for DomainRole &apos;Grouping&apos; on DomainRelationship &apos;GroupingElementInclusion&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion/Grouping.DisplayName" xml:space="preserve">
+    <value>Grouping</value>
+    <comment>DisplayName for DomainRole &apos;Grouping&apos; on DomainRelationship &apos;GroupingElementInclusion&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion/Grouping.PropertyDisplayName" xml:space="preserve">
+    <value>Included Element Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Grouping&apos; on DomainRelationship &apos;GroupingElementInclusion&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion/IncludedElement.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion.IncludedElement</value>
+    <comment>Description for DomainRole &apos;IncludedElement&apos; on DomainRelationship &apos;GroupingElementInclusion&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion/IncludedElement.DisplayName" xml:space="preserve">
+    <value>IncludedElement</value>
+    <comment>DisplayName for DomainRole &apos;IncludedElement&apos; on DomainRelationship &apos;GroupingElementInclusion&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion/IncludedElement.PropertyDisplayName" xml:space="preserve">
+    <value>Grouping Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;IncludedElement&apos; on DomainRelationship &apos;GroupingElementInclusion&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion</value>
+    <comment>Description for DomainClass &apos;GroupingElementExclusion&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion.DisplayName" xml:space="preserve">
+    <value>Grouping Element Exclusion</value>
+    <comment>DisplayName for DomainClass &apos;GroupingElementExclusion&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion/Grouping.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion.Grouping</value>
+    <comment>Description for DomainRole &apos;Grouping&apos; on DomainRelationship &apos;GroupingElementExclusion&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion/Grouping.DisplayName" xml:space="preserve">
+    <value>Grouping</value>
+    <comment>DisplayName for DomainRole &apos;Grouping&apos; on DomainRelationship &apos;GroupingElementExclusion&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion/Grouping.PropertyDisplayName" xml:space="preserve">
+    <value>Excluded Element Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Grouping&apos; on DomainRelationship &apos;GroupingElementExclusion&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion/ExcludedElement.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion.ExcludedElement</value>
+    <comment>Description for DomainRole &apos;ExcludedElement&apos; on DomainRelationship &apos;GroupingElementExclusion&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion/ExcludedElement.DisplayName" xml:space="preserve">
+    <value>ExcludedElement</value>
+    <comment>DisplayName for DomainRole &apos;ExcludedElement&apos; on DomainRelationship &apos;GroupingElementExclusion&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion/ExcludedElement.PropertyDisplayName" xml:space="preserve">
+    <value>Grouping Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ExcludedElement&apos; on DomainRelationship &apos;GroupingElementExclusion&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping</value>
+    <comment>Description for DomainClass &apos;ElementGroupingContainsElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping.DisplayName" xml:space="preserve">
+    <value>Element Grouping Contains Element Grouping</value>
+    <comment>DisplayName for DomainClass &apos;ElementGroupingContainsElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping/ParentGrouping.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping.ParentGrouping</value>
+    <comment>Description for DomainRole &apos;ParentGrouping&apos; on DomainRelationship &apos;ElementGroupingContainsElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping/ParentGrouping.DisplayName" xml:space="preserve">
+    <value>ParentGrouping</value>
+    <comment>DisplayName for DomainRole &apos;ParentGrouping&apos; on DomainRelationship &apos;ElementGroupingContainsElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping/ParentGrouping.PropertyDisplayName" xml:space="preserve">
+    <value>Child Grouping Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ParentGrouping&apos; on DomainRelationship &apos;ElementGroupingContainsElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping/ChildGrouping.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping.ChildGrouping</value>
+    <comment>Description for DomainRole &apos;ChildGrouping&apos; on DomainRelationship &apos;ElementGroupingContainsElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping/ChildGrouping.DisplayName" xml:space="preserve">
+    <value>ChildGrouping</value>
+    <comment>DisplayName for DomainRole &apos;ChildGrouping&apos; on DomainRelationship &apos;ElementGroupingContainsElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping/ChildGrouping.PropertyDisplayName" xml:space="preserve">
+    <value>Parent Grouping Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ChildGrouping&apos; on DomainRelationship &apos;ElementGroupingContainsElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping</value>
+    <comment>Description for DomainClass &apos;ElementGroupingIncludesElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping.DisplayName" xml:space="preserve">
+    <value>Element Grouping Includes Element Grouping</value>
+    <comment>DisplayName for DomainClass &apos;ElementGroupingIncludesElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping/ParentGrouping.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping.ParentGrouping</value>
+    <comment>Description for DomainRole &apos;ParentGrouping&apos; on DomainRelationship &apos;ElementGroupingIncludesElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping/ParentGrouping.DisplayName" xml:space="preserve">
+    <value>ParentGrouping</value>
+    <comment>DisplayName for DomainRole &apos;ParentGrouping&apos; on DomainRelationship &apos;ElementGroupingIncludesElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping/ParentGrouping.PropertyDisplayName" xml:space="preserve">
+    <value>Included Child Grouping Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ParentGrouping&apos; on DomainRelationship &apos;ElementGroupingIncludesElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping/IncludedChildGrouping.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping.IncludedChildGrouping</value>
+    <comment>Description for DomainRole &apos;IncludedChildGrouping&apos; on DomainRelationship &apos;ElementGroupingIncludesElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping/IncludedChildGrouping.DisplayName" xml:space="preserve">
+    <value>ChildGrouping</value>
+    <comment>DisplayName for DomainRole &apos;IncludedChildGrouping&apos; on DomainRelationship &apos;ElementGroupingIncludesElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping/IncludedChildGrouping.PropertyDisplayName" xml:space="preserve">
+    <value>Included Parent Grouping Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;IncludedChildGrouping&apos; on DomainRelationship &apos;ElementGroupingIncludesElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping</value>
+    <comment>Description for DomainClass &apos;ElementGroupingExcludesElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping.DisplayName" xml:space="preserve">
+    <value>Element Grouping Excludes Element Grouping</value>
+    <comment>DisplayName for DomainClass &apos;ElementGroupingExcludesElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping/ParentGrouping.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping.ParentGrouping</value>
+    <comment>Description for DomainRole &apos;ParentGrouping&apos; on DomainRelationship &apos;ElementGroupingExcludesElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping/ParentGrouping.DisplayName" xml:space="preserve">
+    <value>ParentGrouping</value>
+    <comment>DisplayName for DomainRole &apos;ParentGrouping&apos; on DomainRelationship &apos;ElementGroupingExcludesElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping/ParentGrouping.PropertyDisplayName" xml:space="preserve">
+    <value>Excluded Child Grouping Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ParentGrouping&apos; on DomainRelationship &apos;ElementGroupingExcludesElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping/ExcludedChildGrouping.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping.ExcludedChildGrouping</value>
+    <comment>Description for DomainRole &apos;ExcludedChildGrouping&apos; on DomainRelationship &apos;ElementGroupingExcludesElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping/ExcludedChildGrouping.DisplayName" xml:space="preserve">
+    <value>ChildGrouping</value>
+    <comment>DisplayName for DomainRole &apos;ExcludedChildGrouping&apos; on DomainRelationship &apos;ElementGroupingExcludesElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping/ExcludedChildGrouping.PropertyDisplayName" xml:space="preserve">
+    <value>Excluded Parent Grouping Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ExcludedChildGrouping&apos; on DomainRelationship &apos;ElementGroupingExcludesElementGrouping&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError</value>
+    <comment>Description for DomainClass &apos;ElementGroupingHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError.DisplayName" xml:space="preserve">
+    <value>Element Grouping Has Duplicate Name Error</value>
+    <comment>DisplayName for DomainClass &apos;ElementGroupingHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError/Grouping.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError.Grouping</value>
+    <comment>Description for DomainRole &apos;Grouping&apos; on DomainRelationship &apos;ElementGroupingHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError/Grouping.DisplayName" xml:space="preserve">
+    <value>Grouping</value>
+    <comment>DisplayName for DomainRole &apos;Grouping&apos; on DomainRelationship &apos;ElementGroupingHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError/Grouping.PropertyDisplayName" xml:space="preserve">
+    <value>Duplicate Name Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Grouping&apos; on DomainRelationship &apos;ElementGroupingHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError/DuplicateNameError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError.DuplicateNameError</value>
+    <comment>Description for DomainRole &apos;DuplicateNameError&apos; on DomainRelationship &apos;ElementGroupingHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError/DuplicateNameError.DisplayName" xml:space="preserve">
+    <value>DuplicateNameError</value>
+    <comment>DisplayName for DomainRole &apos;DuplicateNameError&apos; on DomainRelationship &apos;ElementGroupingHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError/DuplicateNameError.PropertyDisplayName" xml:space="preserve">
+    <value>Grouping Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DuplicateNameError&apos; on DomainRelationship &apos;ElementGroupingHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError</value>
+    <comment>Description for DomainClass &apos;ElementGroupingHasMembershipContradictionError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError.DisplayName" xml:space="preserve">
+    <value>Element Grouping Has Membership Contradiction Error</value>
+    <comment>DisplayName for DomainClass &apos;ElementGroupingHasMembershipContradictionError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError/Grouping.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError.Grouping</value>
+    <comment>Description for DomainRole &apos;Grouping&apos; on DomainRelationship &apos;ElementGroupingHasMembershipContradictionError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError/Grouping.DisplayName" xml:space="preserve">
+    <value>Grouping</value>
+    <comment>DisplayName for DomainRole &apos;Grouping&apos; on DomainRelationship &apos;ElementGroupingHasMembershipContradictionError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError/Grouping.PropertyDisplayName" xml:space="preserve">
+    <value>Membership Contradiction Error Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Grouping&apos; on DomainRelationship &apos;ElementGroupingHasMembershipContradictionError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError/MembershipContradictionError.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError.MembershipContradictionError</value>
+    <comment>Description for DomainRole &apos;MembershipContradictionError&apos; on DomainRelationship &apos;ElementGroupingHasMembershipContradictionError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError/MembershipContradictionError.DisplayName" xml:space="preserve">
+    <value>MembershipContradictionError</value>
+    <comment>DisplayName for DomainRole &apos;MembershipContradictionError&apos; on DomainRelationship &apos;ElementGroupingHasMembershipContradictionError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError/MembershipContradictionError.PropertyDisplayName" xml:space="preserve">
+    <value>Grouping</value>
+    <comment>PropertyDisplayName for DomainRole &apos;MembershipContradictionError&apos; on DomainRelationship &apos;ElementGroupingHasMembershipContradictionError&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement</value>
+    <comment>Description for DomainClass &apos;GroupingMembershipContradictionErrorIsForElement&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement.DisplayName" xml:space="preserve">
+    <value>Grouping Membership Contradiction Error Is For Element</value>
+    <comment>DisplayName for DomainClass &apos;GroupingMembershipContradictionErrorIsForElement&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement/GroupingMembershipContradictionErrorRelationship.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement.GroupingMembershipContradictionErrorRelationship</value>
+    <comment>Description for DomainRole &apos;GroupingMembershipContradictionErrorRelationship&apos; on DomainRelationship &apos;GroupingMembershipContradictionErrorIsForElement&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement/GroupingMembershipContradictionErrorRelationship.DisplayName" xml:space="preserve">
+    <value>GroupingMembershipContradictionErrorRelationship</value>
+    <comment>DisplayName for DomainRole &apos;GroupingMembershipContradictionErrorRelationship&apos; on DomainRelationship &apos;GroupingMembershipContradictionErrorIsForElement&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement/GroupingMembershipContradictionErrorRelationship.PropertyDisplayName" xml:space="preserve">
+    <value>Element</value>
+    <comment>PropertyDisplayName for DomainRole &apos;GroupingMembershipContradictionErrorRelationship&apos; on DomainRelationship &apos;GroupingMembershipContradictionErrorIsForElement&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement/Element.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement.Element</value>
+    <comment>Description for DomainRole &apos;Element&apos; on DomainRelationship &apos;GroupingMembershipContradictionErrorIsForElement&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement/Element.DisplayName" xml:space="preserve">
+    <value>Element</value>
+    <comment>DisplayName for DomainRole &apos;Element&apos; on DomainRelationship &apos;GroupingMembershipContradictionErrorIsForElement&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement/Element.PropertyDisplayName" xml:space="preserve">
+    <value>Membership Contradiction Error Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Element&apos; on DomainRelationship &apos;GroupingMembershipContradictionErrorIsForElement&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.DerivationStorageType/Derived.DisplayName" xml:space="preserve">
     <value>Derived</value>
     <comment>Display name for EnumerationLiteral &apos;Derived&apos; on DomainEnumeration &apos;DerivationStorageType&apos;</comment>
@@ -6400,6 +6851,30 @@
   <data name="Neumont.Tools.ORM.ObjectModel.NameGeneratorSubjectArea/Suffix.Description" xml:space="preserve">
     <value>Indicates that the chosen subject will be appended to the generated name.</value>
     <comment>Description for EnumerationLiteral &apos;Suffix&apos; on DomainEnumeration &apos;NameGeneratorSubjectArea&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingMembershipTypeCompliance/NotExcluded.DisplayName" xml:space="preserve">
+    <value>NotExcluded</value>
+    <comment>Display name for EnumerationLiteral &apos;NotExcluded&apos; on DomainEnumeration &apos;GroupingMembershipTypeCompliance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingMembershipTypeCompliance/NotExcluded.Description" xml:space="preserve">
+    <value>Allow all elements that are not explicitly excluded by a GroupType.</value>
+    <comment>Description for EnumerationLiteral &apos;NotExcluded&apos; on DomainEnumeration &apos;GroupingMembershipTypeCompliance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingMembershipTypeCompliance/PartiallyApproved.DisplayName" xml:space="preserve">
+    <value>PartiallyApproved</value>
+    <comment>Display name for EnumerationLiteral &apos;PartiallyApproved&apos; on DomainEnumeration &apos;GroupingMembershipTypeCompliance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingMembershipTypeCompliance/PartiallyApproved.Description" xml:space="preserve">
+    <value>Allow all elements that are explicitly approved by at least one GroupType.</value>
+    <comment>Description for EnumerationLiteral &apos;PartiallyApproved&apos; on DomainEnumeration &apos;GroupingMembershipTypeCompliance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingMembershipTypeCompliance/FullyApproved.DisplayName" xml:space="preserve">
+    <value>FullyApproved</value>
+    <comment>Display name for EnumerationLiteral &apos;FullyApproved&apos; on DomainEnumeration &apos;GroupingMembershipTypeCompliance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.GroupingMembershipTypeCompliance/FullyApproved.Description" xml:space="preserve">
+    <value>Allow elements that are explicitly approved by all GroupTypes.</value>
+    <comment>Description for EnumerationLiteral &apos;FullyApproved&apos; on DomainEnumeration &apos;GroupingMembershipTypeCompliance&apos;</comment>
   </data>
   <data name="AmbiguousSchema" xml:space="preserve">
     <value>More than one schema found for target namespace &apos;{0}&apos;, use the first one at &apos;{1}&apos;.</value>

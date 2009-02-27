@@ -1569,6 +1569,715 @@ namespace Neumont.Tools.ORM.ObjectModel
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
+	/// DomainClass ElementGroupingSet
+	/// A Group owner, allows group containment, order, and naming enforcement.
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingSet.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingSet.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("c0436ce8-6957-4fb9-a526-d94dc2073c02")]
+	public sealed partial class ElementGroupingSet : DslModeling::ModelElement
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// ElementGroupingSet domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xc0436ce8, 0x6957, 0x4fb9, 0xa5, 0x26, 0xd9, 0x4d, 0xc2, 0x07, 0x3c, 0x02);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ElementGroupingSet(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ElementGroupingSet(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Model opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Model.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel.GroupingSet
+		/// </summary>
+		public ORMModel Model
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel.GroupingSetDomainRoleId) as ORMModel;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel.ModelDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel.ModelDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel.GroupingSetDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region GroupingCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of GroupingCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping.GroupingSet
+		/// </summary>
+		public DslModeling::LinkedElementCollection<ElementGrouping> GroupingCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<ElementGrouping>(this, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping.GroupingSetDomainRoleId);
+			}
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainClass ElementGrouping
+	/// A group of elements. A GroupType is associated with the Group to control the
+	/// group contents.
+	/// </summary>
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider<ElementGrouping, Design.ElementGroupingTypeDescriptor<ElementGrouping>>))]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementGrouping.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementGrouping.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("b3856187-efeb-4437-af4c-8df5504fb461")]
+	public partial class ElementGrouping : ORMNamedElement
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// ElementGrouping domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xb3856187, 0xefeb, 0x4437, 0xaf, 0x4c, 0x8d, 0xf5, 0x50, 0x4f, 0xb4, 0x61);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ElementGrouping(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ElementGrouping(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region TypeCompliance domain property code
+		
+		/// <summary>
+		/// TypeCompliance domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid TypeComplianceDomainPropertyId = new global::System.Guid(0x16e7b546, 0x46ce, 0x4a46, 0xae, 0xd5, 0x14, 0x37, 0xed, 0xb5, 0xfa, 0x6c);
+		
+		/// <summary>
+		/// Storage for TypeCompliance
+		/// </summary>
+		private GroupingMembershipTypeCompliance typeCompliancePropertyStorage = Neumont.Tools.ORM.ObjectModel.GroupingMembershipTypeCompliance.NotExcluded;
+		
+		/// <summary>
+		/// Gets or sets the value of TypeCompliance domain property.
+		/// Specify the level of GroupType compliance for elements in this group.
+		///     Not Excluded: Allow elements not explicitly excluded by a selected
+		/// GroupType.
+		///     Approved by Some Type: Allow elements explicitly approved by at least one
+		/// GroupType.
+		///     Approved by All Types: Allow elements explicitly approved by all selected
+		/// GroupTypes.
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementGrouping/TypeCompliance.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementGrouping/TypeCompliance.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(Neumont.Tools.ORM.ObjectModel.GroupingMembershipTypeCompliance.NotExcluded)]
+		[DslModeling::DomainObjectId("16e7b546-46ce-4a46-aed5-1437edb5fa6c")]
+		public GroupingMembershipTypeCompliance TypeCompliance
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return typeCompliancePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				TypeCompliancePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ElementGrouping.TypeCompliance domain property.
+		/// </summary>
+		internal sealed partial class TypeCompliancePropertyHandler : DslModeling::DomainPropertyValueHandler<ElementGrouping, GroupingMembershipTypeCompliance>
+		{
+			private TypeCompliancePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ElementGrouping.TypeCompliance domain property value handler.
+			/// </summary>
+			public static readonly TypeCompliancePropertyHandler Instance = new TypeCompliancePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ElementGrouping.TypeCompliance domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return TypeComplianceDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed GroupingMembershipTypeCompliance GetValue(ElementGrouping element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.typeCompliancePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ElementGrouping element, GroupingMembershipTypeCompliance newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				GroupingMembershipTypeCompliance oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.typeCompliancePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region Priority domain property code
+		
+		/// <summary>
+		/// Priority domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid PriorityDomainPropertyId = new global::System.Guid(0xc290cb24, 0x0f2c, 0x4e67, 0xa5, 0x61, 0xfc, 0xd2, 0x5d, 0xda, 0x53, 0xe8);
+		
+		/// <summary>
+		/// Storage for Priority
+		/// </summary>
+		private global::System.Int32 priorityPropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of Priority domain property.
+		/// Specify a priority relative to other Groups. If an element is included in two
+		/// groups of the same type, the settings for the Group with the highest
+		/// GroupPriority are given precedence.
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementGrouping/Priority.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementGrouping/Priority.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainObjectId("c290cb24-0f2c-4e67-a561-fcd25dda53e8")]
+		public global::System.Int32 Priority
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return priorityPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				PriorityPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ElementGrouping.Priority domain property.
+		/// </summary>
+		internal sealed partial class PriorityPropertyHandler : DslModeling::DomainPropertyValueHandler<ElementGrouping, global::System.Int32>
+		{
+			private PriorityPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ElementGrouping.Priority domain property value handler.
+			/// </summary>
+			public static readonly PriorityPropertyHandler Instance = new PriorityPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ElementGrouping.Priority domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return PriorityDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Int32 GetValue(ElementGrouping element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.priorityPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ElementGrouping element, global::System.Int32 newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Int32 oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.priorityPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region GroupingSet opposite domain role accessor
+		/// <summary>
+		/// Gets or sets GroupingSet.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping.Grouping
+		/// </summary>
+		public ElementGroupingSet GroupingSet
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping.GroupingDomainRoleId) as ElementGroupingSet;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping.GroupingDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region GroupingTypeCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of GroupingTypeCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType.Grouping
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<ElementGroupingType> GroupingTypeCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<ElementGroupingType>(this, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType.GroupingDomainRoleId);
+			}
+		}
+		#endregion
+		#region ElementCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of ElementCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship.Grouping
+		/// </summary>
+		public virtual DslModeling::ReadOnlyLinkedElementCollection<global::Microsoft.VisualStudio.Modeling.ModelElement> ElementCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::ReadOnlyLinkedElementCollection<global::Microsoft.VisualStudio.Modeling.ModelElement>(this, global::Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship.GroupingDomainRoleId);
+			}
+		}
+		#endregion
+		#region IncludedElementCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of IncludedElementCollection.
+		/// Description for Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion.Grouping
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<global::Microsoft.VisualStudio.Modeling.ModelElement> IncludedElementCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<global::Microsoft.VisualStudio.Modeling.ModelElement>(this, global::Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion.GroupingDomainRoleId);
+			}
+		}
+		#endregion
+		#region ExcludedElementCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of ExcludedElementCollection.
+		/// Description for Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion.Grouping
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<global::Microsoft.VisualStudio.Modeling.ModelElement> ExcludedElementCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<global::Microsoft.VisualStudio.Modeling.ModelElement>(this, global::Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion.GroupingDomainRoleId);
+			}
+		}
+		#endregion
+		#region ChildGroupingCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of ChildGroupingCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping.ParentGrouping
+		/// </summary>
+		public virtual DslModeling::ReadOnlyLinkedElementCollection<ElementGrouping> ChildGroupingCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::ReadOnlyLinkedElementCollection<ElementGrouping>(this, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping.ParentGroupingDomainRoleId);
+			}
+		}
+		#endregion
+		#region ParentGroupingCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of ParentGroupingCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping.ChildGrouping
+		/// </summary>
+		public virtual DslModeling::ReadOnlyLinkedElementCollection<ElementGrouping> ParentGroupingCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::ReadOnlyLinkedElementCollection<ElementGrouping>(this, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping.ChildGroupingDomainRoleId);
+			}
+		}
+		#endregion
+		#region IncludedChildGroupingCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of IncludedChildGroupingCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping.ParentGrouping
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<ElementGrouping> IncludedChildGroupingCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<ElementGrouping>(this, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping.ParentGroupingDomainRoleId);
+			}
+		}
+		#endregion
+		#region IncludedParentGroupingCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of IncludedParentGroupingCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping.IncludedChildGrouping
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<ElementGrouping> IncludedParentGroupingCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<ElementGrouping>(this, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping.IncludedChildGroupingDomainRoleId);
+			}
+		}
+		#endregion
+		#region ExcludedChildGroupingCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of ExcludedChildGroupingCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping.ParentGrouping
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<ElementGrouping> ExcludedChildGroupingCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<ElementGrouping>(this, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping.ParentGroupingDomainRoleId);
+			}
+		}
+		#endregion
+		#region ExcludedParentGroupingCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of ExcludedParentGroupingCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping.ExcludedChildGrouping
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<ElementGrouping> ExcludedParentGroupingCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<ElementGrouping>(this, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping.ExcludedChildGroupingDomainRoleId);
+			}
+		}
+		#endregion
+		#region DuplicateNameError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets DuplicateNameError.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError.Grouping
+		/// </summary>
+		public virtual ElementGroupingDuplicateNameError DuplicateNameError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError.GroupingDomainRoleId) as ElementGroupingDuplicateNameError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError.GroupingDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region MembershipContradictionErrorCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of MembershipContradictionErrorCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError.Grouping
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<ElementGroupingMembershipContradictionError> MembershipContradictionErrorCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<ElementGroupingMembershipContradictionError>(this, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError.GroupingDomainRoleId);
+			}
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainClass ElementGroupingType
+	/// A type for a group. Each Group is associated with a new instance of each of its
+	/// GroupTypes, allowing individual settings per group.
+	/// </summary>
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider<ElementGroupingType, Design.ElementGroupingTypeTypeDescriptor<ElementGroupingType>>))]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("0f0515df-287f-44a2-9ec1-74dbdba87146")]
+	public abstract partial class ElementGroupingType : DslModeling::ModelElement
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// ElementGroupingType domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x0f0515df, 0x287f, 0x44a2, 0x9e, 0xc1, 0x74, 0xdb, 0xdb, 0xa8, 0x71, 0x46);
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		protected ElementGroupingType(DslModeling::Partition partition, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Grouping opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Grouping.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType.GroupingType
+		/// </summary>
+		public virtual ElementGrouping Grouping
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType.GroupingTypeDomainRoleId) as ElementGrouping;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType.GroupingTypeDomainRoleId, value);
+			}
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainClass ElementGroupingErrorCategory
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingErrorCategory.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingErrorCategory.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("7da10a75-7d12-41d9-8d11-38675314c654")]
+	public abstract partial class ElementGroupingErrorCategory : ModelErrorCategory
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// ElementGroupingErrorCategory domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x7da10a75, 0x7d12, 0x41d9, 0x8d, 0x11, 0x38, 0x67, 0x53, 0x14, 0xc6, 0x54);
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		protected ElementGroupingErrorCategory(DslModeling::Partition partition, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainClass ElementGroupingDuplicateNameError
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingDuplicateNameError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingDuplicateNameError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("374625ca-858d-42b7-a9e4-1b33bae89eff")]
+	public partial class ElementGroupingDuplicateNameError : DuplicateNameError
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// ElementGroupingDuplicateNameError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x374625ca, 0x858d, 0x42b7, 0xa9, 0xe4, 0x1b, 0x33, 0xba, 0xe8, 0x9e, 0xff);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ElementGroupingDuplicateNameError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ElementGroupingDuplicateNameError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region GroupingCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of GroupingCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError.DuplicateNameError
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<ElementGrouping> GroupingCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<ElementGrouping>(this, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError.DuplicateNameErrorDomainRoleId);
+			}
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainClass ElementGroupingMembershipContradictionError
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingMembershipContradictionError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingMembershipContradictionError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("db58cea7-1371-4433-b455-2ac77dee27ad")]
+	public partial class ElementGroupingMembershipContradictionError : ModelError
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// ElementGroupingMembershipContradictionError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xdb58cea7, 0x1371, 0x4433, 0xb4, 0x55, 0x2a, 0xc7, 0x7d, 0xee, 0x27, 0xad);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ElementGroupingMembershipContradictionError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ElementGroupingMembershipContradictionError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Grouping opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Grouping.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError.MembershipContradictionError
+		/// </summary>
+		public virtual ElementGrouping Grouping
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError.MembershipContradictionErrorDomainRoleId) as ElementGrouping;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError.MembershipContradictionErrorDomainRoleId, value);
+			}
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
 	/// DomainClass ORMModelElement
 	/// </summary>
 	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider<ORMModelElement, Design.ORMModelElementTypeDescriptor<ORMModelElement>>))]
@@ -1874,9 +2583,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of DefinitionText domain property.
-		/// A definition of this Model.
+		/// An informal description of this Model.
 		///     To insert new lines, use Control-Enter in the dropdown editor, or open the
-		/// 'ORM Informal Definition Editor' tool window.
+		/// 'ORM Informal Description Editor' tool window.
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.Modeling.Design.MultilineTextEditor<global::Neumont.Tools.ORM.ObjectModel.Definition>), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[global::System.ComponentModel.MergableProperty(false)]
@@ -2636,9 +3345,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of DefinitionText domain property.
-		/// A definition of this ObjectType.
+		/// An informal description of this ObjectType.
 		///     To insert new lines, use Control-Enter in the dropdown editor, or open the
-		/// 'ORM Informal Definition Editor' tool window.
+		/// 'ORM Informal Description Editor' tool window.
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.Modeling.Design.MultilineTextEditor<global::Neumont.Tools.ORM.ObjectModel.Definition>), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[global::System.ComponentModel.MergableProperty(false)]
@@ -4716,9 +5425,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of DefinitionText domain property.
-		/// A definition of this FactType.
+		/// An informal description of this FactType.
 		///     To insert new lines, use Control-Enter in the dropdown editor, or open the
-		/// 'ORM Informal Definition Editor' tool window.
+		/// 'ORM Informal Description Editor' tool window.
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.Modeling.Design.MultilineTextEditor<global::Neumont.Tools.ORM.ObjectModel.Definition>), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[global::System.ComponentModel.MergableProperty(false)]
@@ -16342,7 +17051,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of Text domain property.
-		/// The definition contents.
+		/// The description contents.
 		///     To insert new lines, use Control-Enter in the dropdown editor, or open the
 		/// 'ORM Notes Editor' tool window.
 		/// </summary>

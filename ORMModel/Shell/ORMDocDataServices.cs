@@ -49,7 +49,7 @@ namespace Neumont.Tools.ORM.Shell
 	{
 		#region SurveyTreeSetup
 		private ITree myVirtualTree = null;
-		private SurveyTree mySurveyTree;
+		private SurveyTree<Store> mySurveyTree;
 		/// <summary>
 		/// property to return the survey tree associated with this DocData
 		/// </summary>
@@ -88,9 +88,10 @@ namespace Neumont.Tools.ORM.Shell
 				Store store = Store;
 				ModelingEventManager eventManager = ModelingEventManager.GetModelingEventManager(store);
 				IFrameworkServices frameworkServices = (IFrameworkServices)store;
-				SurveyTree rootBranch = new SurveyTree(
+				SurveyTree<Store> rootBranch = new SurveyTree<Store>(
+					store,
 					frameworkServices.GetTypedDomainModelProviders<ISurveyNodeProvider>(),
-					frameworkServices.GetTypedDomainModelProviders<ISurveyQuestionProvider>());
+					frameworkServices.GetTypedDomainModelProviders<ISurveyQuestionProvider<Store>>());
 				EventSubscriberReasons reasons = EventSubscriberReasons.SurveyQuestionEvents | EventSubscriberReasons.ModelStateEvents | EventSubscriberReasons.UserInterfaceEvents;
 				if (isReload)
 				{
@@ -325,16 +326,42 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 			/// <summary>
-			/// Defer to IsAutomatedElement on the document. Implements
-			/// <see cref="IORMToolServices.IsAutomatedElement"/>
+			/// Defer to ProcessingVisibleTransactionItemEvents on the document. Implements
+			/// <see cref="IORMToolServices.ProcessingVisibleTransactionItemEvents"/>
 			/// </summary>
-			protected bool IsAutomatedElement(ModelElement element)
+			protected bool ProcessingVisibleTransactionItemEvents
 			{
-				return myServices.IsAutomatedElement(element);
+				get
+				{
+					return myServices.ProcessingVisibleTransactionItemEvents;
+				}
+				set
+				{
+					myServices.ProcessingVisibleTransactionItemEvents = value;
+				}
 			}
-			bool IORMToolServices.IsAutomatedElement(ModelElement element)
+			bool IORMToolServices.ProcessingVisibleTransactionItemEvents
 			{
-				return IsAutomatedElement(element);
+				get
+				{
+					return ProcessingVisibleTransactionItemEvents;
+				}
+				set
+				{
+					ProcessingVisibleTransactionItemEvents = value;
+				}
+			}
+			/// <summary>
+			/// Defer to GetAutomatedElementDirective on the document. Implements
+			/// <see cref="IORMToolServices.GetAutomatedElementDirective"/>
+			/// </summary>
+			protected AutomatedElementDirective GetAutomatedElementDirective(ModelElement element)
+			{
+				return myServices.GetAutomatedElementDirective(element);
+			}
+			AutomatedElementDirective IORMToolServices.GetAutomatedElementDirective(ModelElement element)
+			{
+				return GetAutomatedElementDirective(element);
 			}
 			/// <summary>
 			/// Defer to AutomatedElementFilter on the document. Implements
@@ -583,6 +610,7 @@ namespace Neumont.Tools.ORM.Shell
 			#endregion // Dynamic Microsoft.VisualStudio.Modeling.TransactionItem.ChangesPartition implementation
 			private EventHandler<UndoItemEventArgs> myFilteredUndoItemAddedHandler;
 			private EventHandler<UndoItemEventArgs> myFilteredUndoItemDiscardedHandler;
+			private bool myLatestUndoItemChangesDefaultPartition;
 			/// <summary>
 			/// Create a new ORMModelingDocStore.
 			/// </summary>
@@ -666,6 +694,20 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				base.Dispose(true);
 			}
+			/// <summary>
+			/// Track whether the last added UndoItem changes
+			/// the default partition. Undo items are fired
+			/// before events are raised, so this property can
+			/// be used to determine if a newly completing transaction
+			/// modified the primary partition.
+			/// </summary>
+			public bool LatestUndoItemChangesDefaultPartition
+			{
+				get
+				{
+					return myLatestUndoItemChangesDefaultPartition;
+				}
+			}
 			private void UndoItemAddedFilter(object sender, UndoItemEventArgs e)
 			{
 				TransactionItem transactionItem = e.TransactionItem;
@@ -676,10 +718,12 @@ namespace Neumont.Tools.ORM.Shell
 				if (TransactionItemChangesPartition(transactionItem, transactionItem.Store.DefaultPartition))
 #endif
 				{
+					myLatestUndoItemChangesDefaultPartition = true;
 					myFilteredUndoItemAddedHandler(sender, e);
 				}
 				else
 				{
+					myLatestUndoItemChangesDefaultPartition = false;
 					// If we didn't add, then we need to explicitly clear the redo stack. This is
 					// normally a side effect of adding, but we're not adding.
 					ShellUndoManager shellUndoManager;
@@ -886,6 +930,8 @@ namespace Neumont.Tools.ORM.Shell
 						{
 							toolServices.CanAddTransaction = false;
 						}
+						bool inSecondaryCall = false;
+						bool inPrimaryCall = false;
 						try
 						{
 							//if (myWindow != null && ActiveModelingWindow != null)
@@ -901,31 +947,76 @@ namespace Neumont.Tools.ORM.Shell
 							bool undoState = myInUndoState;
 							Guid transactionItemId = transactionItem.Id;
 							int successfulChangeCount = 0;
+							bool firstSecondaryCall;
 
 							// The ORMModelingDocStore class does not create undo units for
 							// transactions with no changes in the default partition. This means
 							// that IOleUndoManager may have fewer undo items than the store
-							// has. The loops here catch the stores undo manager up to the current
-							// item in the store proceeed safely.
+							// has. The loops here catch the store's undo manager up to the current
+							// item in the visible undo manager to proceeed in an orderly fashion.
 							if (undoState)
 							{
+								firstSecondaryCall = toolServices != null;
 								while (modelingUndoManager.TopmostUndoableTransaction != transactionItemId)
 								{
+									if (firstSecondaryCall)
+									{
+										firstSecondaryCall = false;
+										toolServices.ProcessingVisibleTransactionItemEvents = false;
+										inSecondaryCall = true;
+									}
 									modelingUndoManager.Undo();
 									++successfulChangeCount;
 								}
+								if (inSecondaryCall)
+								{
+									inSecondaryCall = false;
+									toolServices.ProcessingVisibleTransactionItemEvents = true;
+								}
+								if (toolServices != null)
+								{
+									toolServices.ProcessingVisibleTransactionItemEvents = true;
+									inPrimaryCall = true;
+								}
 								modelingUndoManager.Undo(transactionItemId);
+								if (inPrimaryCall)
+								{
+									inPrimaryCall = false;
+									toolServices.ProcessingVisibleTransactionItemEvents = false;
+								}
 								++successfulChangeCount;
 							}
 							else
 							{
+								firstSecondaryCall = toolServices != null;
 								GetTopmostRedoableTransactionDelegate callGetTopmostRedoableTransaction = GetTopmostRedoableTransaction;
 								while (callGetTopmostRedoableTransaction(modelingUndoManager) != transactionItemId)
 								{
+									if (firstSecondaryCall)
+									{
+										firstSecondaryCall = false;
+										toolServices.ProcessingVisibleTransactionItemEvents = false;
+										inSecondaryCall = true;
+									}
 									modelingUndoManager.Redo();
 									++successfulChangeCount;
 								}
+								if (inSecondaryCall)
+								{
+									inSecondaryCall = false;
+									toolServices.ProcessingVisibleTransactionItemEvents = true;
+								}
+								if (toolServices != null)
+								{
+									toolServices.ProcessingVisibleTransactionItemEvents = true;
+									inPrimaryCall = true;
+								}
 								modelingUndoManager.Redo(transactionItemId);
+								if (inPrimaryCall)
+								{
+									inPrimaryCall = false;
+									toolServices.ProcessingVisibleTransactionItemEvents = false;
+								}
 								++successfulChangeCount;
 							}
 							store.PopContext();
@@ -940,10 +1031,28 @@ namespace Neumont.Tools.ORM.Shell
 							catch (COMException)
 							{
 								store.PushContext(context);
+								if (successfulChangeCount > 1 && toolServices != null)
+								{
+									// The only way to get this far is to successfully complete
+									// the requested transaction item, which means that the final
+									// change count will always be primary.
+									toolServices.ProcessingVisibleTransactionItemEvents = false;
+									inSecondaryCall = true;
+								}
 								if (undoState)
 								{
 									while (successfulChangeCount != 0)
 									{
+										if (successfulChangeCount == 1 && toolServices != null)
+										{
+											if (inSecondaryCall)
+											{
+												inSecondaryCall = false;
+												toolServices.ProcessingVisibleTransactionItemEvents = true;
+											}
+											toolServices.ProcessingVisibleTransactionItemEvents = true;
+											inPrimaryCall = true;
+										}
 										modelingUndoManager.Redo();
 										--successfulChangeCount;
 									}
@@ -952,6 +1061,16 @@ namespace Neumont.Tools.ORM.Shell
 								{
 									while (successfulChangeCount != 0)
 									{
+										if (successfulChangeCount == 1 && toolServices != null)
+										{
+											if (inSecondaryCall)
+											{
+												inSecondaryCall = false;
+												toolServices.ProcessingVisibleTransactionItemEvents = true;
+											}
+											toolServices.ProcessingVisibleTransactionItemEvents = true;
+											inPrimaryCall = true;
+										}
 										modelingUndoManager.Undo();
 										--successfulChangeCount;
 									}
@@ -964,6 +1083,14 @@ namespace Neumont.Tools.ORM.Shell
 							if (toolServices != null)
 							{
 								toolServices.CanAddTransaction = true;
+								if (inSecondaryCall)
+								{
+									toolServices.ProcessingVisibleTransactionItemEvents = true;
+								}
+								if (inPrimaryCall)
+								{
+									toolServices.ProcessingVisibleTransactionItemEvents = false;
+								}
 							}
 						}
 					}
@@ -1089,6 +1216,7 @@ namespace Neumont.Tools.ORM.Shell
 		private IDictionary<string, VerbalizationTargetData> myVerbalizationTargets;
 		private IDictionary<Type, LayoutEngineData> myLayoutEngines;
 		private int myCustomBlockCanAddTransactionCount;
+		private int myCustomProcessingVisibleTransactionItemEventsCount;
 		private IPropertyProviderService myPropertyProviderService;
 		private TypedDomainModelProviderCache myTypedDomainModelProviderCache;
 		private IORMModelErrorActivationService myModelErrorActivatorService;
@@ -1423,27 +1551,76 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		/// <summary>
-		/// Implements <see cref="IORMToolServices.IsAutomatedElement"/>
+		/// Implements <see cref="IORMToolServices.ProcessingVisibleTransactionItemEvents"/>
 		/// </summary>
-		protected bool IsAutomatedElement(ModelElement element)
+		protected bool ProcessingVisibleTransactionItemEvents
 		{
+			get
+			{
+				int customCount = myCustomProcessingVisibleTransactionItemEventsCount;
+				if (customCount == 0)
+				{
+					ORMModelingDocStore docStore = ModelingDocStore as ORMModelingDocStore;
+					return docStore != null ? docStore.LatestUndoItemChangesDefaultPartition : true;
+				}
+				else
+				{
+					return customCount > 0;
+				}
+			}
+			set
+			{
+				int refCount = myCustomProcessingVisibleTransactionItemEventsCount;
+				if (value)
+				{
+					++refCount;
+				}
+				else
+				{
+					--refCount;
+				}
+				myCustomProcessingVisibleTransactionItemEventsCount = refCount;
+			}
+		}
+		bool IORMToolServices.ProcessingVisibleTransactionItemEvents
+		{
+			get
+			{
+				return ProcessingVisibleTransactionItemEvents;
+			}
+			set
+			{
+				ProcessingVisibleTransactionItemEvents = value;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="IORMToolServices.GetAutomatedElementDirective"/>
+		/// </summary>
+		protected AutomatedElementDirective GetAutomatedElementDirective(ModelElement element)
+		{
+			AutomatedElementDirective retVal = AutomatedElementDirective.None;
 			Delegate filterList = myAutomedElementFilter;
 			if (filterList != null)
 			{
 				Delegate[] targets = filterList.GetInvocationList();
 				for (int i = 0; i < targets.Length; ++i)
 				{
-					if (((AutomatedElementFilterCallback)targets[i])(element))
+					switch (((AutomatedElementFilterCallback)targets[i])(element))
 					{
-						return true;
+						case AutomatedElementDirective.NeverIgnore:
+							// Strongest form, return immediately
+							return AutomatedElementDirective.NeverIgnore;
+						case AutomatedElementDirective.Ignore:
+							retVal = AutomatedElementDirective.Ignore;
+							break;
 					}
 				}
 			}
-			return false;
+			return retVal;
 		}
-		bool IORMToolServices.IsAutomatedElement(ModelElement element)
+		AutomatedElementDirective IORMToolServices.GetAutomatedElementDirective(ModelElement element)
 		{
-			return IsAutomatedElement(element);
+			return GetAutomatedElementDirective(element);
 		}
 		/// <summary>
 		/// Implements <see cref="IORMToolServices.AutomatedElementFilter"/>

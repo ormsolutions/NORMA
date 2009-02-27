@@ -24,8 +24,10 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
+using Neumont.Tools.Modeling.Diagrams;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
+
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	public partial class FrequencyConstraintShape : ExternalConstraintShape, IModelErrorActivation
@@ -185,7 +187,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							externalConstraintShape.AutoResize();
 							if (oldSize == externalConstraintShape.Size)
 							{
-								externalConstraintShape.InvalidateRequired(true);
+								((IInvalidateDisplay)externalConstraintShape).InvalidateRequired(true);
 							}
 						}
 					}

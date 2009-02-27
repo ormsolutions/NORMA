@@ -1,65 +1,60 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.Modeling;
+using Neumont.Tools.Modeling.Shell;
 using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 namespace Neumont.Tools.Modeling.Shell
 {
-	partial class DiagramSurvey : ISurveyQuestionProvider
+	partial class DiagramSurvey : ISurveyQuestionProvider<Microsoft.VisualStudio.Modeling.Store>
 	{
 		private ProvideSurveyQuestionForDiagramGlyphSurveyType myDynamicDiagramGlyphSurveyTypeQuestionInstance;
-		private ISurveyQuestionTypeInfo[] mySurveyQuestionTypeInfo1;
-		private ISurveyQuestionTypeInfo[] EnsureSurveyQuestionTypeInfo1()
+		private ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[] mySurveyQuestionTypeInfo1;
+		private ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[] EnsureSurveyQuestionTypeInfo1(Microsoft.VisualStudio.Modeling.Store surveyContext)
 		{
-			return this.mySurveyQuestionTypeInfo1 ?? (this.mySurveyQuestionTypeInfo1 = new ISurveyQuestionTypeInfo[]{
-				this.myDynamicDiagramGlyphSurveyTypeQuestionInstance ?? (this.myDynamicDiagramGlyphSurveyTypeQuestionInstance = new ProvideSurveyQuestionForDiagramGlyphSurveyType(this.Store)),
+			return this.mySurveyQuestionTypeInfo1 ?? (this.mySurveyQuestionTypeInfo1 = new ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[]{
+				this.myDynamicDiagramGlyphSurveyTypeQuestionInstance ?? (this.myDynamicDiagramGlyphSurveyTypeQuestionInstance = new ProvideSurveyQuestionForDiagramGlyphSurveyType(surveyContext)),
 				ProvideSurveyQuestionForDiagramSurveyType.Instance});
 		}
-		/// <summary>Implements <see cref="ISurveyQuestionProvider.GetSurveyQuestions"/></summary>
-		protected IEnumerable<ISurveyQuestionTypeInfo> GetSurveyQuestions(object expansionKey)
+		/// <summary>Implements <see cref="ISurveyQuestionProvider{Object}.GetSurveyQuestions"/></summary>
+		protected IEnumerable<ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>> GetSurveyQuestions(Microsoft.VisualStudio.Modeling.Store surveyContext, object expansionKey)
 		{
 			if (expansionKey == null)
 			{
-				return this.EnsureSurveyQuestionTypeInfo1();
+				return this.EnsureSurveyQuestionTypeInfo1(surveyContext);
 			}
 			return null;
 		}
-		IEnumerable<ISurveyQuestionTypeInfo> ISurveyQuestionProvider.GetSurveyQuestions(object expansionKey)
+		IEnumerable<ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>> ISurveyQuestionProvider<Microsoft.VisualStudio.Modeling.Store>.GetSurveyQuestions(Microsoft.VisualStudio.Modeling.Store surveyContext, object expansionKey)
 		{
-			return this.GetSurveyQuestions(expansionKey);
+			return this.GetSurveyQuestions(surveyContext, expansionKey);
 		}
-		/// <summary>Implements <see cref="ISurveyQuestionProvider.SurveyQuestionImageList"/></summary>
-		protected ImageList SurveyQuestionImageList
+		/// <summary>Implements <see cref="ISurveyQuestionProvider{Object}.GetSurveyQuestionImageLists"/></summary>
+		protected ImageList[] GetSurveyQuestionImageLists(Microsoft.VisualStudio.Modeling.Store surveyContext)
 		{
-			get
-			{
-				// Note that this relies heavily on the current structure of the generated code
-				this.EnsureSurveyQuestionTypeInfo1();
-				return ((DiagramSurvey.DiagramGlyphSurveyType)this.myDynamicDiagramGlyphSurveyTypeQuestionInstance.DynamicQuestionValues).DiagramImages;
-			}
+			// Note that this relies heavily on the current structure of the generated code
+			this.EnsureSurveyQuestionTypeInfo1(surveyContext);
+			return new ImageList[]{
+				((DiagramSurvey.DiagramGlyphSurveyType)this.myDynamicDiagramGlyphSurveyTypeQuestionInstance.DynamicQuestionValues).DiagramImages};
 		}
-		ImageList ISurveyQuestionProvider.SurveyQuestionImageList
+		ImageList[] ISurveyQuestionProvider<Microsoft.VisualStudio.Modeling.Store>.GetSurveyQuestionImageLists(Microsoft.VisualStudio.Modeling.Store surveyContext)
 		{
-			get
-			{
-				return this.SurveyQuestionImageList;
-			}
+			return this.GetSurveyQuestionImageLists(surveyContext);
 		}
-		/// <summary>Implements <see cref="ISurveyQuestionProvider.GetErrorDisplayTypes"/></summary>
+		/// <summary>Implements <see cref="ISurveyQuestionProvider{Object}.GetErrorDisplayTypes"/></summary>
 		protected static IEnumerable<Type> GetErrorDisplayTypes()
 		{
 			return null;
 		}
-		IEnumerable<Type> ISurveyQuestionProvider.GetErrorDisplayTypes()
+		IEnumerable<Type> ISurveyQuestionProvider<Microsoft.VisualStudio.Modeling.Store>.GetErrorDisplayTypes()
 		{
 			return GetErrorDisplayTypes();
 		}
-		private sealed class ProvideSurveyQuestionForDiagramSurveyType : ISurveyQuestionTypeInfo
+		private sealed class ProvideSurveyQuestionForDiagramSurveyType : ISurveyQuestionTypeInfo, ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>
 		{
 			private ProvideSurveyQuestionForDiagramSurveyType()
 			{
 			}
-			public static readonly ISurveyQuestionTypeInfo Instance = new ProvideSurveyQuestionForDiagramSurveyType();
+			public static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store> Instance = new ProvideSurveyQuestionForDiagramSurveyType();
 			public Type QuestionType
 			{
 				get
@@ -87,6 +82,14 @@ namespace Neumont.Tools.Modeling.Shell
 			{
 				return -1;
 			}
+			public IFreeFormCommandProvider<Microsoft.VisualStudio.Modeling.Store> GetFreeFormCommands(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return null;
+			}
+			public bool ShowEmptyGroup(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return false;
+			}
 			public SurveyQuestionDisplayData GetDisplayData(int answer)
 			{
 				return SurveyQuestionDisplayData.Default;
@@ -113,12 +116,12 @@ namespace Neumont.Tools.Modeling.Shell
 				}
 			}
 		}
-		private sealed class ProvideSurveyQuestionForDiagramGlyphSurveyType : ISurveyQuestionTypeInfo
+		private sealed class ProvideSurveyQuestionForDiagramGlyphSurveyType : ISurveyQuestionTypeInfo, ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>
 		{
 			private DiagramGlyphSurveyType myDynamicValues;
-			public ProvideSurveyQuestionForDiagramGlyphSurveyType(Store store)
+			public ProvideSurveyQuestionForDiagramGlyphSurveyType(Microsoft.VisualStudio.Modeling.Store surveyContext)
 			{
-				this.myDynamicValues = new DiagramGlyphSurveyType(store);
+				this.myDynamicValues = new DiagramGlyphSurveyType(surveyContext);
 			}
 			public Type QuestionType
 			{
@@ -146,6 +149,14 @@ namespace Neumont.Tools.Modeling.Shell
 			public int MapAnswerToImageIndex(int answer)
 			{
 				return answer;
+			}
+			public IFreeFormCommandProvider<Microsoft.VisualStudio.Modeling.Store> GetFreeFormCommands(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return null;
+			}
+			public bool ShowEmptyGroup(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return false;
 			}
 			public SurveyQuestionDisplayData GetDisplayData(int answer)
 			{

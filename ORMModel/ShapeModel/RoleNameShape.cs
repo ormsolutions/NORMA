@@ -17,18 +17,21 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Diagnostics;
-using Neumont.Tools.ORM.ObjectModel;
-using Microsoft.VisualStudio.Modeling.Diagrams;
-using Neumont.Tools.ORM.Shell;
-using Microsoft.VisualStudio.Modeling;
 using System.Collections;
+using System.Diagnostics;
+using System.Drawing;
 using System.Globalization;
+using System.Text;
+using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.Modeling.Diagrams;
+using Neumont.Tools.Modeling;
+using Neumont.Tools.Modeling.Diagrams;
+using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.Shell;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	public partial class RoleNameShape : ISelectionContainerFilter, IProxyDisplayProvider
+	public partial class RoleNameShape : ISelectionContainerFilter, IProxyDisplayProvider, IDynamicColorGeometryHost
 	{
 		#region Member Variables
 		private static AutoSizeTextField myTextField;
@@ -108,6 +111,49 @@ namespace Neumont.Tools.ORM.ShapeModel
 			Location = new PointD(x, y);
 		}
 		#endregion // Base overrides
+		#region IDynamicColorGeometryHost Implementation
+		/// <summary>
+		/// Implements <see cref="IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId,Pen)"/>
+		/// </summary>
+		protected static Color UpdateDynamicColor(StyleSetResourceId penId, Pen pen)
+		{
+			return Color.Empty;
+		}
+		Color IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId penId, Pen pen)
+		{
+			return UpdateDynamicColor(penId, pen);
+		}
+		/// <summary>
+		/// Implements <see cref="IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId,Brush)"/>
+		/// </summary>
+		protected Color UpdateDynamicColor(StyleSetResourceId brushId, Brush brush)
+		{
+			Color retVal = Color.Empty;
+			SolidBrush solidBrush;
+			IDynamicShapeColorProvider<ORMDiagramDynamicColor, RoleNameShape, RoleBase>[] providers;
+			if (brushId == RoleNameTextBrush &&
+				null != (solidBrush = brush as SolidBrush) &&
+				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, RoleNameShape, RoleBase>>()))
+			{
+				RoleBase element = (RoleBase)ModelElement;
+				for (int i = 0; i < providers.Length; ++i)
+				{
+					Color alternateColor = providers[i].GetDynamicColor(ORMDiagramDynamicColor.ForegroundText, this, element);
+					if (alternateColor != Color.Empty)
+					{
+						retVal = solidBrush.Color;
+						solidBrush.Color = alternateColor;
+						break;
+					}
+				}
+			}
+			return retVal;
+		}
+		Color IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId brushId, Brush brush)
+		{
+			return UpdateDynamicColor(brushId, brush);
+		}
+		#endregion // IDynamicColorGeometryHost Implementation
 		#region RoleNameShape specific
 		/// <summary>
 		/// Removes the RoleNameShape from the associated Role
@@ -239,7 +285,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // RoleNameAutoSizeTextField class
-
 		#region IProxyDisplayProvider Implementation
 		/// <summary>
 		/// Implements <see cref="IProxyDisplayProvider.ElementDisplayedAs"/>

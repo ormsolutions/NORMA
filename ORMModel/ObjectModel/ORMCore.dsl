@@ -176,6 +176,56 @@
 			</BaseClass>
 		</DomainClass>
 
+		<DomainClass Name="ElementGroupingSet" Namespace="Neumont.Tools.ORM.ObjectModel" Id="C0436CE8-6957-4FB9-A526-D94DC2073C02" DisplayName="Groups" InheritanceModifier="Sealed" Description="A Group owner, allows group containment, order, and naming enforcement."/>
+		<DomainClass Name="ElementGrouping" Namespace="Neumont.Tools.ORM.ObjectModel" Id="B3856187-EFEB-4437-AF4C-8DF5504FB461" DisplayName="Group" Description="A group of elements. A GroupType is associated with the Group to control the group contents.">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;ElementGrouping, Design.ElementGroupingTypeDescriptor&lt;ElementGrouping&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+			<BaseClass>
+				<DomainClassMoniker Name="ORMNamedElement"/>
+			</BaseClass>
+			<Properties>
+				<DomainProperty Name="TypeCompliance" DefaultValue="NotExcluded" DisplayName="GroupTypeCompliance" Id="16E7B546-46CE-4A46-AED5-1437EDB5FA6C" Description="Specify the level of GroupType compliance for elements in this group.&#xd;&#xa;    Not Excluded: Allow elements not explicitly excluded by a selected GroupType.&#xd;&#xa;    Approved by Some Type: Allow elements explicitly approved by at least one GroupType.&#xd;&#xa;    Approved by All Types: Allow elements explicitly approved by all selected GroupTypes.">
+					<Type>
+						<DomainEnumerationMoniker Name="GroupingMembershipTypeCompliance"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="Priority" DefaultValue="0" DisplayName="GroupPriority" Id="C290CB24-0F2C-4E67-A561-FCD25DDA53E8" Description="Specify a priority relative to other Groups. If an element is included in two groups of the same type, the settings for the Group with the highest GroupPriority are given precedence.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Int32"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
+		</DomainClass>
+		<DomainClass Name="ElementGroupingType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="0F0515DF-287F-44A2-9EC1-74DBDBA87146" DisplayName="GroupType" InheritanceModifier="Abstract" Description="A type for a group. Each Group is associated with a new instance of each of its GroupTypes, allowing individual settings per group.">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;ElementGroupingType, Design.ElementGroupingTypeTypeDescriptor&lt;ElementGroupingType&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+		</DomainClass>
+		<DomainClass Name="ElementGroupingErrorCategory" Namespace="Neumont.Tools.ORM.ObjectModel" Id="7DA10A75-7D12-41D9-8D11-38675314C654" DisplayName="Grouping Errors" InheritanceModifier="Abstract" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelErrorCategory"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="ElementGroupingDuplicateNameError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="374625CA-858D-42B7-A9E4-1B33BAE89EFF" DisplayName="Duplicate Group Names" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="DuplicateNameError"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="ElementGroupingMembershipContradictionError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="DB58CEA7-1371-4433-B455-2AC77DEE27AD" DisplayName="Element Required and Blocked in one Group" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+
 		<DomainClass Name="ORMModelElement" Namespace="Neumont.Tools.ORM.ObjectModel" Id="BFBBEE5E-C691-4299-B958-77AC1B701F28" DisplayName="ORMModelElement" InheritanceModifier="Abstract" Description="">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
@@ -231,7 +281,7 @@
 						<ExternalTypeMoniker Name="/Neumont.Tools.ORM.ObjectModel/ModelErrorDisplayFilter"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="DefinitionText" DefaultValue="" DisplayName="InformalDefinition" Description="A definition of this Model.&#xd;&#xa;    To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Informal Definition Editor' tool window." Id="E86A38C9-2F8E-4066-8114-384184C5E3C3" Kind="CustomStorage">
+				<DomainProperty Name="DefinitionText" DefaultValue="" DisplayName="InformalDescription" Description="An informal description of this Model.&#xd;&#xa;    To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Informal Description Editor' tool window." Id="E86A38C9-2F8E-4066-8114-384184C5E3C3" Kind="CustomStorage">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -330,7 +380,7 @@
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="DefinitionText" DefaultValue="" DisplayName="InformalDefinition" Description="A definition of this ObjectType.&#xd;&#xa;    To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Informal Definition Editor' tool window." Id="431A8A8F-E8EC-4014-B1A1-843E55751A55" Kind="CustomStorage">
+				<DomainProperty Name="DefinitionText" DefaultValue="" DisplayName="InformalDescription" Description="An informal description of this ObjectType.&#xd;&#xa;    To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Informal Description Editor' tool window." Id="431A8A8F-E8EC-4014-B1A1-843E55751A55" Kind="CustomStorage">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -497,7 +547,7 @@
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="DefinitionText" DefaultValue="" DisplayName="InformalDefinition" Description="A definition of this FactType.&#xd;&#xa;    To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Informal Definition Editor' tool window." Id="3F58E4D1-4562-478A-A3FE-08715E455CD8" Kind="CustomStorage">
+				<DomainProperty Name="DefinitionText" DefaultValue="" DisplayName="InformalDescription" Description="An informal description of this FactType.&#xd;&#xa;    To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Informal Description Editor' tool window." Id="3F58E4D1-4562-478A-A3FE-08715E455CD8" Kind="CustomStorage">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -1615,12 +1665,12 @@
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="Definition" Namespace="Neumont.Tools.ORM.ObjectModel" Id="25D3235C-76E2-4095-8EFD-847057937A00" DisplayName="InformalDefinition" Description="">
+		<DomainClass Name="Definition" Namespace="Neumont.Tools.ORM.ObjectModel" Id="25D3235C-76E2-4095-8EFD-847057937A00" DisplayName="InformalDescription" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="Text" DefaultValue="" Description="The definition contents.&#xd;&#xa;    To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Notes Editor' tool window." DisplayName="Text" Id="B68867A8-4B52-4DE1-8B39-7EEE5ECB60A4">
+				<DomainProperty Name="Text" DefaultValue="" Description="The description contents.&#xd;&#xa;    To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Notes Editor' tool window." DisplayName="Text" Id="B68867A8-4B52-4DE1-8B39-7EEE5ECB60A4">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -4419,6 +4469,224 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
+		<DomainRelationship Name="ElementGroupingSetRelatesToORMModel" Namespace="Neumont.Tools.ORM.ObjectModel" Id="ABDBCFC4-8861-4AE6-BCDC-5C5851713A74">
+			<Source>
+				<DomainRole Name="GroupingSet" PropertyName="Model" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="GroupingSet" Id="9E2BBC38-9220-424F-AAC6-B86D45D94599">
+					<RolePlayer>
+						<DomainClassMoniker Name="ElementGroupingSet"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Model" PropertyName="GroupingSet" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="Model" Id="A2D63832-F63B-4D4B-AFE8-1DBCC1CD897F">
+					<RolePlayer>
+						<DomainClassMoniker Name="ORMModel"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="ElementGroupingSetContainsElementGrouping" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" InheritanceModifier="Sealed" Id="A0B26EE8-E099-4E74-8EFF-5E7D2FA55B26">
+			<Source>
+				<DomainRole Name="GroupingSet" PropertyName="GroupingCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="GroupingSet" Id="02F5B2E6-9A76-43AC-B03D-9337461E0E90">
+					<RolePlayer>
+						<DomainClassMoniker Name="ElementGroupingSet"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Grouping" PropertyName="GroupingSet" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Grouping" Id="FE740A9A-EAC3-4A80-A52D-D4484003EC4A">
+					<RolePlayer>
+						<DomainClassMoniker Name="ElementGrouping"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="ElementGroupingIsOfElementGroupingType" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="575C1C61-23F5-4B19-AE80-114E380D7E2A">
+			<Source>
+				<DomainRole Name="Grouping" PropertyName="GroupingTypeCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Grouping" Id="6F1BF1FE-60D8-48C5-BBD2-DEE006B4A045">
+					<RolePlayer>
+						<DomainClassMoniker Name="ElementGrouping"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="GroupingType" PropertyName="Grouping" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="GroupingType" Id="0BAFFAA0-D7EE-4E6D-98CA-D9AEFEBD4F1C">
+					<RolePlayer>
+						<DomainClassMoniker Name="ElementGroupingType"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="GroupingElementRelationship" Namespace="Neumont.Tools.ORM.ObjectModel" InheritanceModifier="Abstract" Id="5B5119D5-BD6A-41E5-8D42-17F25B51655D">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ObjectModel.Design.GroupingElementRelationshipTypeDescriptionProvider)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+			<Source>
+				<DomainRole Name="Grouping" PropertyName="ElementCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Grouping" Id="DAA7FBC4-68DC-4C03-875D-49AD7C245041">
+					<RolePlayer>
+						<DomainClassMoniker Name="ElementGrouping"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Element" PropertyName="GroupingCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="Element" Id="AE038BB0-4CE5-49FB-A113-6DE0DA3DC766">
+					<RolePlayer>
+						<DomainClassMoniker Name="/Microsoft.VisualStudio.Modeling/ModelElement"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="GroupingElementInclusion" Namespace="Neumont.Tools.ORM.ObjectModel" Id="C66C692D-6AA6-4FB9-901A-7E6C205AA272">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="GroupingElementRelationship"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="Grouping" PropertyName="IncludedElementCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Grouping" Id="80689CAC-F3EE-45C0-BE1E-3CECD0259971">
+					<RolePlayer>
+						<DomainClassMoniker Name="ElementGrouping"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="IncludedElement" PropertyName="GroupingCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="IncludedElement" Id="B7973813-1ED1-4440-A52B-E081749863EB">
+					<RolePlayer>
+						<DomainClassMoniker Name="/Microsoft.VisualStudio.Modeling/ModelElement"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="GroupingElementExclusion" Namespace="Neumont.Tools.ORM.ObjectModel" Id="CD51E687-6D5B-4102-B08C-78E1DA44BA38">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="GroupingElementRelationship"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="Grouping" PropertyName="ExcludedElementCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Grouping" Id="3C61D89A-2944-418A-853C-DAD62B114299">
+					<RolePlayer>
+						<DomainClassMoniker Name="ElementGrouping"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="ExcludedElement" PropertyName="GroupingCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="ExcludedElement" Id="531798A4-D4BD-4E95-AE2B-8E97E65A0249">
+					<RolePlayer>
+						<DomainClassMoniker Name="/Microsoft.VisualStudio.Modeling/ModelElement"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="ElementGroupingContainsElementGrouping" Namespace="Neumont.Tools.ORM.ObjectModel" InheritanceModifier="Abstract" Id="7B1D7109-3AEA-406A-89E8-989DBB27A469">
+			<Source>
+				<DomainRole Name="ParentGrouping" PropertyName="ChildGroupingCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ParentGrouping" Id="73F0282C-73E5-4EED-BC79-9693A8215A8B">
+					<RolePlayer>
+						<DomainClassMoniker Name="ElementGrouping"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="ChildGrouping" PropertyName="ParentGroupingCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ChildGrouping" Id="88F5E59F-24A3-4433-8B4F-10CB85807597">
+					<RolePlayer>
+						<DomainClassMoniker Name="ElementGrouping"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="ElementGroupingIncludesElementGrouping" Namespace="Neumont.Tools.ORM.ObjectModel" Id="76F5EA7D-2565-44C7-BA47-EB86FAB2A189">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementGroupingContainsElementGrouping"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="ParentGrouping" PropertyName="IncludedChildGroupingCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ParentGrouping" Id="231DA867-2184-43A2-B9CA-E51AFBC60CDF">
+					<RolePlayer>
+						<DomainClassMoniker Name="ElementGrouping"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="IncludedChildGrouping" PropertyName="IncludedParentGroupingCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ChildGrouping" Id="07E28D3D-B4D3-40BE-9CAA-0AFA622E26C8">
+					<RolePlayer>
+						<DomainClassMoniker Name="ElementGrouping"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="ElementGroupingExcludesElementGrouping" Namespace="Neumont.Tools.ORM.ObjectModel" Id="C710924E-194B-45CF-AEC2-B1EC0B86990C">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementGroupingContainsElementGrouping"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="ParentGrouping" PropertyName="ExcludedChildGroupingCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ParentGrouping" Id="40C3B2A3-48A2-45E6-9354-550E606A8E83">
+					<RolePlayer>
+						<DomainClassMoniker Name="ElementGrouping"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="ExcludedChildGrouping" PropertyName="ExcludedParentGroupingCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ChildGrouping" Id="82E5050B-1847-4AD2-A26C-A95540D7C425">
+					<RolePlayer>
+						<DomainClassMoniker Name="ElementGrouping"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="ElementGroupingHasDuplicateNameError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="C87FAD64-4283-4710-86BA-2E1A11D9A551">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="Grouping" PropertyName="DuplicateNameError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Grouping" Id="B7A2FAB0-ADFF-4F1D-A813-42CBAD17C40D">
+					<RolePlayer>
+						<DomainClassMoniker Name="ElementGrouping"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="DuplicateNameError" PropertyName="GroupingCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="DuplicateNameError" Id="D4F63EA1-5D4C-4829-9632-2D7CE502A16F">
+					<RolePlayer>
+						<DomainClassMoniker Name="ElementGroupingDuplicateNameError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="ElementGroupingHasMembershipContradictionError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="FFA04DF2-2BCA-4290-8801-FA1947CCDBDA">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="Grouping" PropertyName="MembershipContradictionErrorCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Grouping" Id="CF43911D-1FF2-47AD-B451-4CB8F67B7805">
+					<RolePlayer>
+						<DomainClassMoniker Name="ElementGrouping"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="MembershipContradictionError" PropertyName="Grouping" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="MembershipContradictionError" Id="13DB78A4-0967-485F-B69F-5E3DB2875557">
+					<RolePlayer>
+						<DomainClassMoniker Name="ElementGroupingMembershipContradictionError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="GroupingMembershipContradictionErrorIsForElement" Namespace="Neumont.Tools.ORM.ObjectModel" Id="67A68DF7-1472-40B8-825A-1FC426A5E6C1">
+			<Source>
+				<!-- Node that this is modeled as a link-to-a-link so that we can get both the group and the element for a deleted error in an event situation -->
+				<DomainRole Name="GroupingMembershipContradictionErrorRelationship" PropertyName="Element" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="GroupingMembershipContradictionErrorRelationship" Id="A316CBB8-E335-4A11-937A-0B166628EE19">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="ElementGroupingHasMembershipContradictionError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Element" PropertyName="MembershipContradictionErrorCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="Element" Id="AE99D58E-9B14-4266-AFE0-8E7A94DBE3F8">
+					<RolePlayer>
+						<DomainClassMoniker Name="/Microsoft.VisualStudio.Modeling/ModelElement"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
 	</Relationships>
 
 	<Types>
@@ -4617,6 +4885,20 @@
 			</Attributes>
 		</DomainEnumeration>
 
+		<DomainEnumeration Namespace="Neumont.Tools.ORM.ObjectModel" Name="GroupingMembershipTypeCompliance">
+			<Literals>
+				<EnumerationLiteral Name="NotExcluded" Value="0" Description="Allow all elements that are not explicitly excluded by a GroupType."/>
+				<EnumerationLiteral Name="PartiallyApproved" Value="1" Description="Allow all elements that are explicitly approved by at least one GroupType."/>
+				<EnumerationLiteral Name="FullyApproved" Value="2" Description="Allow elements that are explicitly approved by all GroupTypes."/>
+			</Literals>
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;GroupingMembershipTypeCompliance, global::Neumont.Tools.ORM.ObjectModel.ORMModel&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+		</DomainEnumeration>
 	</Types>
 
 	<XmlSerializationBehavior Name="ORMCoreDomainModelSerializationBehavior" Namespace="Neumont.Tools.ORM.ObjectModel"/>

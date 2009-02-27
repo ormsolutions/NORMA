@@ -808,16 +808,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 					TransactionManager transactionManager = store.TransactionManager;
 					Guid diagramDropTargetId;
 					IORMToolServices toolServices;
+					AutomatedElementDirective directive;
 					if (transactionManager.InTransaction &&
-						((toolServices = (IORMToolServices)store).IsAutomatedElement(element) ||
-						(null == (serviceProvider = toolServices.ServiceProvider) ||
+						(AutomatedElementDirective.Ignore == (directive = (toolServices = (IORMToolServices)store).GetAutomatedElementDirective(element)) ||
+						(directive != AutomatedElementDirective.NeverIgnore &&
+						((null == (serviceProvider = toolServices.ServiceProvider) ||
 						null == (selectionService = (IMonitorSelectionService)serviceProvider.GetService(typeof(IMonitorSelectionService))) ||
 						(null == (currentView = (selectionContainer = selectionService.CurrentSelectionContainer) as IORMDesignerView) &&
 						null == (currentView = selectionService.CurrentDocumentView as IORMDesignerView)) ||
 						currentView.CurrentDesigner != activeDiagramView ||
 						(selectionContainer != currentView && selectionContainer is IORMSelectionContainer)) ||
 						((diagramDropTargetId = DropTargetContext.GetTargetDiagramId(transactionManager.CurrentTransaction.TopLevelTransaction)) != Guid.Empty &&
-						diagramDropTargetId != this.Id)))
+						diagramDropTargetId != this.Id)))))
 					{
 						return false;
 					}
@@ -1975,12 +1977,75 @@ namespace Neumont.Tools.ORM.ShapeModel
 			int factCount = verifyFactTypes.Count;
 			bool searchedPrototypes = elementGroupPrototype == null;
 			FactType[] verifyFactTypes_Editable = null;
+			IElementDirectory elementDirectory = null;
+			ReadOnlyCollection<ProtoElement> rootElements = null;
 			for (int i = 0; i < factCount; ++i)
 			{
 				FactType verifyFact = verifyFactTypes[i];
 				if (null != verifyFact &&
 					null == FindShapeForElement(verifyFact))
 				{
+					SubtypeFact subtypeFact = verifyFact as SubtypeFact;
+					if (subtypeFact != null)
+					{
+						// Subtypes links are not directly prototyped. If the shape does not yet it exist,
+						// then it will be created automatically if both the subtype and supertype already
+						// exist are or available in the prototypes.
+						ObjectType supertype = subtypeFact.Supertype;
+						ObjectType subtype = subtypeFact.Subtype;
+						bool haveSupertypeRepresentation = FindShapeForElement(supertype) != null;
+						bool haveSubtypeRepresentation = FindShapeForElement(subtype) != null;
+						if (!haveSupertypeRepresentation || !haveSubtypeRepresentation)
+						{
+							if (rootElements == null)
+							{
+								elementDirectory = Store.ElementDirectory;
+								rootElements = elementGroupPrototype.RootProtoElements;
+							}
+							foreach (ProtoElement protoElement in rootElements)
+							{
+								PresentationElement testPel;
+								FactType testFactType;
+								ObjectType testObjectType;
+								if (null != (testPel = elementDirectory.FindElement(protoElement.ElementId) as PresentationElement))
+								{
+									ModelElement testElement = testPel.ModelElement;
+									if (null != (testObjectType = testElement as ObjectType) ||
+										(null != (testFactType = testElement as FactType) &&
+										null != (testObjectType = testFactType.NestingType)))
+									{
+										if (!haveSupertypeRepresentation)
+										{
+											if (testObjectType == supertype)
+											{
+												haveSupertypeRepresentation = true;
+												if (haveSubtypeRepresentation)
+												{
+													break;
+												}
+											}
+										}
+										if (!haveSubtypeRepresentation)
+										{
+											if (testObjectType == subtype)
+											{
+												haveSubtypeRepresentation = true;
+												if (haveSupertypeRepresentation)
+												{
+													break;
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+						if (haveSupertypeRepresentation && haveSubtypeRepresentation)
+						{
+							continue;
+						}
+						return false;
+					}
 					if (searchedPrototypes)
 					{
 						return false;
@@ -1988,14 +2053,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 					searchedPrototypes = true;
 					// See which prototype facts are being added. Create an editable list so
 					// we can walk this once only.
-					IElementDirectory elementDirectory = Store.ElementDirectory;
-					ReadOnlyCollection<ProtoElement> rootElements = elementGroupPrototype.RootProtoElements;
-					int rootElementCount = rootElements.Count;
-					for (int j = 0; j < rootElementCount; ++j)
+					if (rootElements == null)
+					{
+						elementDirectory = Store.ElementDirectory;
+						rootElements = elementGroupPrototype.RootProtoElements;
+					}
+					foreach (ProtoElement protoElement in rootElements)
 					{
 						PresentationElement testPel;
 						FactType testFactType;
-						if (null != (testPel = elementDirectory.FindElement(rootElements[j].ElementId) as PresentationElement) &&
+						if (null != (testPel = elementDirectory.FindElement(protoElement.ElementId) as PresentationElement) &&
 							null != (testFactType = testPel.ModelElement as FactType))
 						{
 							int verifyIndex = verifyFactTypes.IndexOf(testFactType);
@@ -2411,6 +2478,70 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 	}
 	#endregion // ORMShapeDomainModel toolbox initialization
+	#region ORMDiagramDynamicColor enum
+	/// <summary>
+	/// Specify the color role for a dynamic shape color
+	/// </summary>
+	[TypeConverter(typeof(EnumConverter<ORMDiagramDynamicColor, ORMDiagram>))]
+	[ResourceAccessorCategory(typeof(ORMDiagram), "ORMDiagramDynamicColor.Category")]
+	public enum ORMDiagramDynamicColor
+	{
+		/// <summary>
+		/// Get the background color
+		/// </summary>
+		[ResourceAccessorDescription(typeof(ORMDiagram), "ORMDiagramDynamicColor.Background.Description")]
+		Background,
+		/// <summary>
+		/// Get the foreground color
+		/// </summary>
+		[ResourceAccessorDescription(typeof(ORMDiagram), "ORMDiagramDynamicColor.ForegroundGraphics.Description")]
+		ForegroundGraphics,
+		/// <summary>
+		/// Shape text color
+		/// </summary>
+		[ResourceAccessorDescription(typeof(ORMDiagram), "ORMDiagramDynamicColor.ForegroundText.Description")]
+		ForegroundText,
+		/// <summary>
+		/// The outline color for a shape
+		/// </summary>
+		[ResourceAccessorDescription(typeof(ORMDiagram), "ORMDiagramDynamicColor.Outline.Description")]
+		Outline,
+		/// <summary>
+		/// Constraint color (alethic modality)
+		/// </summary>
+		[ResourceAccessorDescription(typeof(ORMDiagram), "ORMDiagramDynamicColor.Constraint.Description")]
+		Constraint,
+		/// <summary>
+		/// Deontic constraint color
+		/// </summary>
+		[ResourceAccessorDescription(typeof(ORMDiagram), "ORMDiagramDynamicColor.DeonticConstraint.Description")]
+		DeonticConstraint,
+	}
+	#endregion // ORMDiagramDynamicColor enum
+	#region IDynamicColorSetConsumer implementation
+	partial class ORMShapeDomainModel : IDynamicColorSetConsumer<ORMDiagram>
+	{
+		#region IDynamicColorSetConsumer Implementation
+		/// <summary>
+		/// Implements <see cref="IDynamicColorSetConsumer{ORMDiagram}.DynamicColorSet"/>
+		/// </summary>
+		protected static Type DynamicColorSet
+		{
+			get
+			{
+				return typeof(ORMDiagramDynamicColor);
+			}
+		}
+		Type IDynamicColorSetConsumer<ORMDiagram>.DynamicColorSet
+		{
+			get
+			{
+				return DynamicColorSet;
+			}
+		}
+		#endregion // IDynamicColorSetConsumer Implementation
+	}
+	#endregion // IDynamicColorSetConsumer implementation
 	#region IStickyObject interface
 	/// <summary>
 	/// Interface for implementing "Sticky" selections.  Presentation elements that are sticky

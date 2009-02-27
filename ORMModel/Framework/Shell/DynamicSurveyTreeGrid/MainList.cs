@@ -25,7 +25,7 @@ using System.Collections;
 
 namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 {
-	partial class SurveyTree
+	partial class SurveyTree<SurveyContextType>
 	{
 		/// <summary>
 		/// main branch provider for a SurveyTree, implements IBranch, main branch can be retrieved from RootBranch
@@ -66,13 +66,13 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			private BranchModificationEventHandler myModificationEvents;
 			private int myAttachedEventCount;
 			private ListGrouper myRootGrouper;
-			private SurveyTree mySurveyTree;
+			private SurveyTree<SurveyContextType> mySurveyTree;
 			private object myContextElement;
 			private int[] myOverlayIndices;
 			/// <summary>
 			/// Public constructor
 			/// </summary>
-			public MainList(SurveyTree surveyTree, object contextElement, object expansionKey)
+			public MainList(SurveyTree<SurveyContextType> surveyTree, object contextElement, object expansionKey)
 			{
 				Debug.Assert(surveyTree != null, "SurveyTree required");
 				Survey survey = surveyTree.GetSurvey(expansionKey);
@@ -126,7 +126,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					ListGrouper grouper = myRootGrouper;
 					if (grouper == null || recreate)
 					{
-						myRootGrouper = grouper = new ListGrouper(this, mySurvey[0], 0, myNodes.Count - 1, myCurrentDisplays[0].NeutralOnTop);
+						myRootGrouper = grouper = new ListGrouper(this, mySurvey[0], 0, myNodes.Count - 1, myCurrentDisplays[0].NeutralOnTop, true);
 					}
 					return grouper;
 				}
@@ -235,10 +235,10 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 							// instead of the hash from the element itself. This allows the reference elements to be recreated as needed.
 							ISurveyNodeReference reference;
 							int hash1 = (null != (reference = element1 as ISurveyNodeReference)) ?
-								Utility.GetCombinedHashCode(reference.ReferencedSurveyNode.GetHashCode(), reference.SurveyNodeReferenceReason.GetHashCode()) :
+								Utility.GetCombinedHashCode(reference.ReferencedElement.GetHashCode(), reference.SurveyNodeReferenceReason.GetHashCode()) :
 								element1.GetHashCode();
 							int hash2 = (null != (reference = element2 as ISurveyNodeReference)) ?
-								Utility.GetCombinedHashCode(reference.ReferencedSurveyNode.GetHashCode(), reference.SurveyNodeReferenceReason.GetHashCode()) :
+								Utility.GetCombinedHashCode(reference.ReferencedElement.GetHashCode(), reference.SurveyNodeReferenceReason.GetHashCode()) :
 								element2.GetHashCode();
 							retVal = unchecked(hash1 - hash2);
 							if (retVal == 0)
@@ -266,6 +266,17 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			#endregion //end sort list methods
 
 			#region IBranch Members
+			/// <summary>
+			/// MSBUG: If a branch is displayed multiple times, then an
+			/// attempt may be made to redraw one of the branches with old
+			/// information during insert and delete notifications. This affects
+			/// GetText, GetDisplayData, and IsExpandable only. We either have
+			/// to catch the situation and return empty data, or block tree redraw.
+			/// </summary>
+			private bool OutOfRange(int row)
+			{
+				return row < 0 || row >= myNodes.Count;
+			}
 			/// <summary>
 			/// Implements <see cref="IBranch.BeginLabelEdit"/>
 			/// </summary>
@@ -330,10 +341,15 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			protected VirtualTreeDisplayData GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
 			{
 				VirtualTreeDisplayData retVal = VirtualTreeDisplayData.Empty;
+				if (OutOfRange(row))
+				{
+					return retVal;
+				}
 				SampleDataElementNode node = myNodes[row];
-				SurveyTree surveyTree = mySurveyTree;
+				SurveyTree<SurveyContextType> surveyTree = mySurveyTree;
 				int image = -1;
 				ISurveyNodeReference reference = node.Element as ISurveyNodeReference;
+				object referencedElement = null;
 				SampleDataElementNode referenceNode;
 				SurveyNodeReferenceOptions referenceOptions;
 				Survey referenceSurvey;
@@ -342,7 +358,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				{
 					referenceOptions = reference.SurveyNodeReferenceOptions;
 					filterTargetQuestions = 0 != (referenceOptions & SurveyNodeReferenceOptions.FilterReferencedAnswers);
-					NodeLocation targetLocation = surveyTree.myNodeDictionary[reference.ReferencedSurveyNode];
+					NodeLocation targetLocation = surveyTree.myNodeDictionary[referencedElement = reference.ReferencedElement];
 					referenceNode = targetLocation.ElementNode;
 					referenceSurvey = targetLocation.Survey;
 				}
@@ -354,7 +370,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					referenceSurvey = null;
 				}
 
-				int overlayImage = (reference != null && 0 == (referenceOptions & SurveyNodeReferenceOptions.BlockLinkDisplay)) ? LinkOverlayImageIndex : -1;
+				int overlayImage = (reference != null && 0 == (referenceOptions & SurveyNodeReferenceOptions.BlockLinkDisplay) && !(referencedElement is ISurveyFloatingNode)) ? LinkOverlayImageIndex : -1;
 				int overlayBitField = -1;
 				SurveyQuestionUISupport supportMask = SurveyQuestionUISupport.Glyph | SurveyQuestionUISupport.Overlay | SurveyQuestionUISupport.DisplayData;
 				Survey survey = mySurvey;
@@ -366,7 +382,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 					for (int i = 0; i < questionCount; i++)
 					{
 						SurveyQuestion question = survey[i];
-						ISurveyQuestionTypeInfo questionInfo = question.Question;
+						ISurveyQuestionTypeInfo<SurveyContextType> questionInfo = question.Question;
 						SurveyQuestionUISupport support = questionInfo.UISupport & supportMask;
 						if (0 != support)
 						{
@@ -491,14 +507,14 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 							}
 							else if (null != (reference = node.Element as ISurveyNodeReference) &&
 								0 != (reference.SurveyNodeReferenceOptions & SurveyNodeReferenceOptions.InlineExpansion) &&
-								null != (referencedNode = reference.ReferencedSurveyNode as ISurveyNode) &&
+								null != (referencedNode = reference.ReferencedElement as ISurveyNode) &&
 								null != (expansionKey = referencedNode.SurveyNodeExpansionKey))
 							{
 								expandElement = referencedNode;
 							}
 							if (expandElement != null)
 							{
-								SurveyTree parent = mySurveyTree;
+								SurveyTree<SurveyContextType> parent = mySurveyTree;
 								Dictionary<object, MainList> expansions = parent.myMainListDictionary;
 								MainList expansion;
 								if (!expansions.TryGetValue(expandElement, out expansion))
@@ -525,6 +541,10 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			/// <returns>The Display Name Of The Node</returns>
 			protected string GetText(int row, int column)
 			{
+				if (OutOfRange(row))
+				{
+					return null;
+				}
 				return myNodes[row].SurveyName;
 			}
 			string IBranch.GetText(int row, int column)
@@ -548,13 +568,17 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 			/// </summary>
 			protected bool IsExpandable(int row, int column)
 			{
+				if (OutOfRange(row))
+				{
+					return false;
+				}
 				SampleDataElementNode node = myNodes[row];
 				ISurveyNodeReference reference;
 				ISurveyNode referencedNode;
 				return null != node.SurveyNodeExpansionKey ||
 					(null != (reference = node.Element as ISurveyNodeReference) &&
 					0 != (reference.SurveyNodeReferenceOptions & SurveyNodeReferenceOptions.InlineExpansion) &&
-					null != (referencedNode = reference.ReferencedSurveyNode as ISurveyNode) &&
+					null != (referencedNode = reference.ReferencedElement as ISurveyNode) &&
 					null != referencedNode.SurveyNodeExpansionKey);
 			}
 			bool IBranch.IsExpandable(int row, int column)
@@ -649,10 +673,19 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				}
 			}
 			/// <summary>
-			/// Implements <see cref="IBranch.OnDragEvent"/>
+			/// Implements <see cref="IBranch.OnDragEvent"/>. Defers to <see cref="ISurveyNodeDropTarget"/>
 			/// </summary>
-			protected static void OnDragEvent(object sender, int row, int column, DragEventType eventType, DragEventArgs args)
+			protected void OnDragEvent(object sender, int row, int column, DragEventType eventType, DragEventArgs args)
 			{
+				object element = myNodes[row].Element;
+				ISurveyNodeDropTarget dropTarget;
+				ISurveyNodeReference reference;
+				if (null != (dropTarget = element as ISurveyNodeDropTarget) ||
+					(null != (reference = element as ISurveyNodeReference) &&
+					null != (dropTarget = reference.ReferencedElement as ISurveyNodeDropTarget)))
+				{
+					dropTarget.OnDragEvent(myContextElement, eventType, args);
+				}
 			}
 			void IBranch.OnDragEvent(object sender, int row, int column, DragEventType eventType, DragEventArgs args)
 			{
@@ -836,7 +869,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 
 			}
 			/// <summary>
-			/// Forwarded from <see cref="INotifySurveyElementChanged.ElementDeleted"/>
+			/// Forwarded from <see cref="INotifySurveyElementChanged.ElementDeleted(object,bool)"/>
 			/// </summary>
 			public void NodeDeleted(SampleDataElementNode node)
 			{

@@ -19,6 +19,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using System.ComponentModel;
@@ -101,4 +102,89 @@ namespace Neumont.Tools.Modeling.Diagrams
 		void ConfiguringAsChildOf(NodeShape parentShape, bool createdDuringViewFixup);
 	}
 	#endregion // IConfigureChildShape interface
+	#region IDynamicShapeColorProvider interface
+	/// <summary>
+	/// An extension interface to support specifying custom
+	/// colors for different shapes.
+	/// </summary>
+	/// <typeparam name="C">An <see cref="Enum"/> type specifying the supported
+	/// set of colors. This should be the same <see cref="IDynamicColorSetConsumer{Diagram}.DynamicColorSet"/>
+	/// proprerty used to match the colors.</typeparam>
+	/// <typeparam name="S">The type of shape element being drawn</typeparam>
+	/// <typeparam name="T">An element associated with the shape. This does
+	/// not have to be the subject of the shape itself, allowing this interface
+	/// to be used to draw items associated with <see cref="ShapeField"/> and
+	/// <see cref="ShapeSubField"/> elements.</typeparam>
+	public interface IDynamicShapeColorProvider<C, S, T>
+		where C : struct
+		where S : ShapeElement
+		where T : class
+	{
+		/// <summary>
+		/// Get the color for the specified <paramref name="colorRole"/>,
+		/// or return <see cref="F:Color.Empty"/> if no data is available.
+		/// </summary>
+		/// <param name="colorRole">The role of the color to retrieve.</param>
+		/// <param name="shapeElement">The <see cref="ShapeElement"/> to get an alternate color for.</param>
+		/// <param name="elementPart">Generally, this is the <see cref="ModelElement"/> that corresponds to the
+		/// <paramref name="shapeElement"/>, but the type is not restricted to ModelElement-derived instances.</param>
+		Color GetDynamicColor(C colorRole, S shapeElement, T elementPart);
+	}
+	#endregion // IDynamicShapeColorProvider interface
+	#region IDynamicColorSetConsumer interface
+	/// <summary>
+	/// Indicate that a <see cref="DomainModel"/> uses a
+	/// color set <see cref="Enum"/> for a specific DiagramType.
+	/// </summary>
+	/// <typeparam name="D">The type of <see cref="Diagram"/> the element will be
+	/// displayed on.</typeparam>
+	public interface IDynamicColorSetConsumer<D>
+		where D : Diagram
+	{
+		/// <summary>
+		/// An <see cref="Enum"/> type that provides a list roles for the supported colors.
+		/// </summary>
+		Type DynamicColorSet { get;}
+	}
+	#endregion // IDynamicColorSetConsumer interface
+	#region IDynamicColorAlsoUsedBy interface
+	/// <summary>
+	/// Support dynamic color updates on secondary shapes
+	/// </summary>
+	public interface IDynamicColorAlsoUsedBy
+	{
+		/// <summary>
+		/// Get the set of all shapes that use the dynamic
+		/// colors associated with the primary backing object
+		/// for this displayed element.
+		/// </summary>
+		IEnumerable<ShapeElement> RelatedDynamicallyColoredShapes { get;}
+	}
+	#endregion // IDynamicColorAlsoUsedBy interface
+	#region IInvalidateDisplay interface
+	/// <summary>
+	/// Implemented to support the general pattern of
+	/// invalidating a <see cref="ShapeElement"/> from
+	/// within a <see cref="Transaction"/> in such a way
+	/// that the display will be refreshed during Undo/Redo
+	/// cycles in addition to the original transaction.
+	/// </summary>
+	public interface IInvalidateDisplay
+	{
+		/// <summary>
+		/// Invalidate the element. This eventually
+		/// calls <see cref="ShapeElement.Invalidate(bool)"/> with
+		/// the refreshBitmap parameter set to <see langword="false"/>
+		/// </summary>
+		void InvalidateRequired();
+		/// <summary>
+		/// Invalidate the element. This eventually
+		/// calls <see cref="ShapeElement.Invalidate(bool)"/> method.
+		/// </summary>
+		/// <param name="refreshBitmap">Forwarded to the
+		/// corresponding parameter on <see cref="ShapeElement.Invalidate(bool)"/>.
+		/// Most uses pass <see langword="true"/> to this parameter.</param>
+		void InvalidateRequired(bool refreshBitmap);
+	}
+	#endregion // IInvalidateDisplay interface
 }

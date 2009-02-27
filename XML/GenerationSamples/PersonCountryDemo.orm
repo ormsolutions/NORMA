@@ -484,7 +484,7 @@
 	</orm:NameGenerator>
 	<orm:GenerationState id="_B128BC15-0481-4D10-BC23-25FBBA3D1A6F">
 		<orm:GenerationSettings>
-			<ormtooial:AbstractionModelGenerationSetting id="_B3BBEF69-F455-49EA-BACF-5063D0B0FD3A" AlgorithmVersion="1.004">
+			<ormtooial:AbstractionModelGenerationSetting id="_B3BBEF69-F455-49EA-BACF-5063D0B0FD3A" AlgorithmVersion="1.005">
 				<ormtooial:AbstractionModel ref="_3576AA3F-32A4-481D-AF87-AB05964FCF32" />
 			</ormtooial:AbstractionModelGenerationSetting>
 			<oialtocdb:SchemaGenerationSetting id="_9B3A9996-683F-4814-B1CE-B0019EF78FDD" CoreAlgorithmVersion="1.004" NameAlgorithmVersion="1.009">
@@ -594,11 +594,11 @@
 		<oial:conceptTypes>
 			<oial:conceptType id="_F76840F8-57C8-4957-A0F9-F319735342AA" name="Person">
 				<oial:children>
-					<oial:relatedConceptType id="_FA7D527F-8DA9-47BC-B27F-1BAC4677523D" ref="_FF7E4712-389F-4FC0-849D-3324095920F1" name="Person" oppositeName="Country" />
 					<oial:informationType id="_40701326-C0A0-4212-AADD-5B858CDBF61F" ref="_ABC89D7C-7AD6-471D-B66A-C5D4BB40F6BB" isMandatory="true" name="Person_id" />
 					<oial:informationType id="_CAAE5241-3C9A-48A3-834A-988FAC7BE837" ref="_8C912959-70E4-41B9-9456-63325AA9412F" isMandatory="true" name="LastName" />
 					<oial:informationType id="_18EFAF5C-3D9E-4021-AC7A-00F235F87719" ref="_111A9BD6-9AED-4353-A9FC-767F38D27C22" isMandatory="true" name="FirstName" />
 					<oial:informationType id="_8FAEF5DE-9653-4160-8EB3-042D12B70316" ref="_11C2C7B3-2FB4-444E-8341-F79837D9892E" name="Title" />
+					<oial:relatedConceptType id="_FA7D527F-8DA9-47BC-B27F-1BAC4677523D" ref="_FF7E4712-389F-4FC0-849D-3324095920F1" name="Person" oppositeName="Country" />
 				</oial:children>
 				<oial:uniquenessConstraints>
 					<oial:uniquenessConstraint id="_EAC9D6D1-121B-4BA6-B951-8CA214A5B7B5" name="InternalUniquenessConstraint1" isPreferred="true">

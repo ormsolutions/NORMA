@@ -33353,3 +33353,2876 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion
 	}
 }
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship ElementGroupingSetRelatesToORMModel
+	/// Description for
+	/// Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("abdbcfc4-8861-4ae6-bcdc-5c5851713a74")]
+	public partial class ElementGroupingSetRelatesToORMModel : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ElementGroupingSetRelatesToORMModel domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xabdbcfc4, 0x8861, 0x4ae6, 0xbc, 0xdc, 0x5c, 0x58, 0x51, 0x71, 0x3a, 0x74);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ElementGroupingSetRelatesToORMModel link in the same Partition as the given ElementGroupingSet
+		/// </summary>
+		/// <param name="source">ElementGroupingSet to use as the source of the relationship.</param>
+		/// <param name="target">ORMModel to use as the target of the relationship.</param>
+		public ElementGroupingSetRelatesToORMModel(ElementGroupingSet source, ORMModel target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ElementGroupingSetRelatesToORMModel.GroupingSetDomainRoleId, source), new DslModeling::RoleAssignment(ElementGroupingSetRelatesToORMModel.ModelDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ElementGroupingSetRelatesToORMModel(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ElementGroupingSetRelatesToORMModel(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ElementGroupingSetRelatesToORMModel(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ElementGroupingSetRelatesToORMModel(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region GroupingSet domain role code
+		
+		/// <summary>
+		/// GroupingSet domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid GroupingSetDomainRoleId = new global::System.Guid(0x9e2bbc38, 0x9220, 0x424f, 0xaa, 0xc6, 0xb8, 0x6d, 0x45, 0xd9, 0x45, 0x99);
+		
+		/// <summary>
+		/// DomainRole GroupingSet
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel.GroupingSet
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel/GroupingSet.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel/GroupingSet.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Model", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel/GroupingSet.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("9e2bbc38-9220-424f-aac6-b86d45d94599")]
+		public virtual ElementGroupingSet GroupingSet
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ElementGroupingSet)DslModeling::DomainRoleInfo.GetRolePlayer(this, GroupingSetDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, GroupingSetDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access GroupingSet of a ORMModel
+		/// <summary>
+		/// Gets GroupingSet.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ElementGroupingSet GetGroupingSet(ORMModel element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ModelDomainRoleId) as ElementGroupingSet;
+		}
+		
+		/// <summary>
+		/// Sets GroupingSet.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetGroupingSet(ORMModel element, ElementGroupingSet newGroupingSet)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ModelDomainRoleId, newGroupingSet);
+		}
+		#endregion
+		#region Model domain role code
+		
+		/// <summary>
+		/// Model domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ModelDomainRoleId = new global::System.Guid(0xa2d63832, 0xf63b, 0x4d4b, 0xaf, 0xe8, 0x1d, 0xbc, 0xc1, 0xcd, 0x89, 0x7f);
+		
+		/// <summary>
+		/// DomainRole Model
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel.Model
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel/Model.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel/Model.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "GroupingSet", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel/Model.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("a2d63832-f63b-4d4b-afe8-1dbcc1cd897f")]
+		public virtual ORMModel Model
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ORMModel)DslModeling::DomainRoleInfo.GetRolePlayer(this, ModelDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ModelDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Model of a ElementGroupingSet
+		/// <summary>
+		/// Gets Model.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ORMModel GetModel(ElementGroupingSet element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, GroupingSetDomainRoleId) as ORMModel;
+		}
+		
+		/// <summary>
+		/// Sets Model.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetModel(ElementGroupingSet element, ORMModel newModel)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, GroupingSetDomainRoleId, newModel);
+		}
+		#endregion
+		#region GroupingSet link accessor
+		/// <summary>
+		/// Get the ElementGroupingSetRelatesToORMModel link to a ElementGroupingSet.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel GetLinkToModel (global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSet groupingSetInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel>(groupingSetInstance, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel.GroupingSetDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of GroupingSet not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region Model link accessor
+		/// <summary>
+		/// Get the ElementGroupingSetRelatesToORMModel link to a ORMModel.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel GetLinkToGroupingSet (global::Neumont.Tools.ORM.ObjectModel.ORMModel modelInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel>(modelInstance, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel.ModelDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Model not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ElementGroupingSetRelatesToORMModel instance accessors
+		
+		/// <summary>
+		/// Get any ElementGroupingSetRelatesToORMModel links between a given ElementGroupingSet and a ORMModel.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSet source, global::Neumont.Tools.ORM.ObjectModel.ORMModel target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel>(source, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel.GroupingSetDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel link in links )
+			{
+				if ( target.Equals(link.Model) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ElementGroupingSetRelatesToORMModel link between a given ElementGroupingSetand a ORMModel.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel GetLink( global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSet source, global::Neumont.Tools.ORM.ObjectModel.ORMModel target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel>(source, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel.GroupingSetDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel link in links )
+			{
+				if ( target.Equals(link.Model) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship ElementGroupingSetContainsElementGrouping
+	/// Description for
+	/// Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("a0b26ee8-e099-4e74-8eff-5e7d2fa55b26")]
+	public sealed partial class ElementGroupingSetContainsElementGrouping : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ElementGroupingSetContainsElementGrouping domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xa0b26ee8, 0xe099, 0x4e74, 0x8e, 0xff, 0x5e, 0x7d, 0x2f, 0xa5, 0x5b, 0x26);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ElementGroupingSetContainsElementGrouping link in the same Partition as the given ElementGroupingSet
+		/// </summary>
+		/// <param name="source">ElementGroupingSet to use as the source of the relationship.</param>
+		/// <param name="target">ElementGrouping to use as the target of the relationship.</param>
+		public ElementGroupingSetContainsElementGrouping(ElementGroupingSet source, ElementGrouping target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ElementGroupingSetContainsElementGrouping.GroupingSetDomainRoleId, source), new DslModeling::RoleAssignment(ElementGroupingSetContainsElementGrouping.GroupingDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ElementGroupingSetContainsElementGrouping(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ElementGroupingSetContainsElementGrouping(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ElementGroupingSetContainsElementGrouping(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ElementGroupingSetContainsElementGrouping(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region GroupingSet domain role code
+		
+		/// <summary>
+		/// GroupingSet domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid GroupingSetDomainRoleId = new global::System.Guid(0x02f5b2e6, 0x9a76, 0x43ac, 0xb0, 0x3d, 0x93, 0x37, 0x46, 0x1e, 0x0e, 0x90);
+		
+		/// <summary>
+		/// DomainRole GroupingSet
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping.GroupingSet
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping/GroupingSet.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping/GroupingSet.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "GroupingCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping/GroupingSet.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainObjectId("02f5b2e6-9a76-43ac-b03d-9337461e0e90")]
+		public ElementGroupingSet GroupingSet
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ElementGroupingSet)DslModeling::DomainRoleInfo.GetRolePlayer(this, GroupingSetDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, GroupingSetDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access GroupingSet of a ElementGrouping
+		/// <summary>
+		/// Gets GroupingSet.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ElementGroupingSet GetGroupingSet(ElementGrouping element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, GroupingDomainRoleId) as ElementGroupingSet;
+		}
+		
+		/// <summary>
+		/// Sets GroupingSet.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetGroupingSet(ElementGrouping element, ElementGroupingSet newGroupingSet)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, GroupingDomainRoleId, newGroupingSet);
+		}
+		#endregion
+		#region Grouping domain role code
+		
+		/// <summary>
+		/// Grouping domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid GroupingDomainRoleId = new global::System.Guid(0xfe740a9a, 0xeac3, 0x4a80, 0xa5, 0x2d, 0xd4, 0x48, 0x40, 0x03, 0xec, 0x4a);
+		
+		/// <summary>
+		/// DomainRole Grouping
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping.Grouping
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping/Grouping.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping/Grouping.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "GroupingSet", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping/Grouping.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("fe740a9a-eac3-4a80-a52d-d4484003ec4a")]
+		public ElementGrouping Grouping
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ElementGrouping)DslModeling::DomainRoleInfo.GetRolePlayer(this, GroupingDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, GroupingDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access GroupingCollection of a ElementGroupingSet
+		/// <summary>
+		/// Gets a list of GroupingCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<ElementGrouping> GetGroupingCollection(ElementGroupingSet element)
+		{
+			return new DslModeling::LinkedElementCollection<ElementGrouping>(element, GroupingSetDomainRoleId);
+		}
+		#endregion
+		#region GroupingSet link accessor
+		/// <summary>
+		/// Get the list of ElementGroupingSetContainsElementGrouping links to a ElementGroupingSet.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping> GetLinksToGroupingCollection ( global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSet groupingSetInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping>(groupingSetInstance, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping.GroupingSetDomainRoleId);
+		}
+		#endregion
+		#region Grouping link accessor
+		/// <summary>
+		/// Get the ElementGroupingSetContainsElementGrouping link to a ElementGrouping.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping GetLinkToGroupingSet (global::Neumont.Tools.ORM.ObjectModel.ElementGrouping groupingInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping>(groupingInstance, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping.GroupingDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Grouping not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ElementGroupingSetContainsElementGrouping instance accessors
+		
+		/// <summary>
+		/// Get any ElementGroupingSetContainsElementGrouping links between a given ElementGroupingSet and a ElementGrouping.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSet source, global::Neumont.Tools.ORM.ObjectModel.ElementGrouping target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping>(source, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping.GroupingSetDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping link in links )
+			{
+				if ( target.Equals(link.Grouping) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ElementGroupingSetContainsElementGrouping link between a given ElementGroupingSetand a ElementGrouping.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping GetLink( global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSet source, global::Neumont.Tools.ORM.ObjectModel.ElementGrouping target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping>(source, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping.GroupingSetDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping link in links )
+			{
+				if ( target.Equals(link.Grouping) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship ElementGroupingIsOfElementGroupingType
+	/// Description for
+	/// Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("575c1c61-23f5-4b19-ae80-114e380d7e2a")]
+	public partial class ElementGroupingIsOfElementGroupingType : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ElementGroupingIsOfElementGroupingType domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x575c1c61, 0x23f5, 0x4b19, 0xae, 0x80, 0x11, 0x4e, 0x38, 0x0d, 0x7e, 0x2a);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ElementGroupingIsOfElementGroupingType link in the same Partition as the given ElementGrouping
+		/// </summary>
+		/// <param name="source">ElementGrouping to use as the source of the relationship.</param>
+		/// <param name="target">ElementGroupingType to use as the target of the relationship.</param>
+		public ElementGroupingIsOfElementGroupingType(ElementGrouping source, ElementGroupingType target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ElementGroupingIsOfElementGroupingType.GroupingDomainRoleId, source), new DslModeling::RoleAssignment(ElementGroupingIsOfElementGroupingType.GroupingTypeDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ElementGroupingIsOfElementGroupingType(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ElementGroupingIsOfElementGroupingType(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ElementGroupingIsOfElementGroupingType(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ElementGroupingIsOfElementGroupingType(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Grouping domain role code
+		
+		/// <summary>
+		/// Grouping domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid GroupingDomainRoleId = new global::System.Guid(0x6f1bf1fe, 0x60d8, 0x48c5, 0xbb, 0xd2, 0xde, 0xe0, 0x06, 0xb4, 0xa0, 0x45);
+		
+		/// <summary>
+		/// DomainRole Grouping
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType.Grouping
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType/Grouping.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType/Grouping.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "GroupingTypeCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType/Grouping.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("6f1bf1fe-60d8-48c5-bbd2-dee006b4a045")]
+		public virtual ElementGrouping Grouping
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ElementGrouping)DslModeling::DomainRoleInfo.GetRolePlayer(this, GroupingDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, GroupingDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Grouping of a ElementGroupingType
+		/// <summary>
+		/// Gets Grouping.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ElementGrouping GetGrouping(ElementGroupingType element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, GroupingTypeDomainRoleId) as ElementGrouping;
+		}
+		
+		/// <summary>
+		/// Sets Grouping.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetGrouping(ElementGroupingType element, ElementGrouping newGrouping)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, GroupingTypeDomainRoleId, newGrouping);
+		}
+		#endregion
+		#region GroupingType domain role code
+		
+		/// <summary>
+		/// GroupingType domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid GroupingTypeDomainRoleId = new global::System.Guid(0x0baffaa0, 0xd7ee, 0x4e6d, 0x98, 0xca, 0xd9, 0xae, 0xfe, 0xbd, 0x4f, 0x1c);
+		
+		/// <summary>
+		/// DomainRole GroupingType
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType.GroupingType
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType/GroupingType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType/GroupingType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Grouping", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType/GroupingType.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("0baffaa0-d7ee-4e6d-98ca-d9aefebd4f1c")]
+		public virtual ElementGroupingType GroupingType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ElementGroupingType)DslModeling::DomainRoleInfo.GetRolePlayer(this, GroupingTypeDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, GroupingTypeDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access GroupingTypeCollection of a ElementGrouping
+		/// <summary>
+		/// Gets a list of GroupingTypeCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<ElementGroupingType> GetGroupingTypeCollection(ElementGrouping element)
+		{
+			return new DslModeling::LinkedElementCollection<ElementGroupingType>(element, GroupingDomainRoleId);
+		}
+		#endregion
+		#region Grouping link accessor
+		/// <summary>
+		/// Get the list of ElementGroupingIsOfElementGroupingType links to a ElementGrouping.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType> GetLinksToGroupingTypeCollection ( global::Neumont.Tools.ORM.ObjectModel.ElementGrouping groupingInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType>(groupingInstance, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType.GroupingDomainRoleId);
+		}
+		#endregion
+		#region GroupingType link accessor
+		/// <summary>
+		/// Get the ElementGroupingIsOfElementGroupingType link to a ElementGroupingType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType GetLinkToGrouping (global::Neumont.Tools.ORM.ObjectModel.ElementGroupingType groupingTypeInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType>(groupingTypeInstance, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType.GroupingTypeDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of GroupingType not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ElementGroupingIsOfElementGroupingType instance accessors
+		
+		/// <summary>
+		/// Get any ElementGroupingIsOfElementGroupingType links between a given ElementGrouping and a ElementGroupingType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ElementGrouping source, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingType target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType>(source, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType.GroupingDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType link in links )
+			{
+				if ( target.Equals(link.GroupingType) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ElementGroupingIsOfElementGroupingType link between a given ElementGroupingand a ElementGroupingType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType GetLink( global::Neumont.Tools.ORM.ObjectModel.ElementGrouping source, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingType target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType>(source, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType.GroupingDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType link in links )
+			{
+				if ( target.Equals(link.GroupingType) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship GroupingElementRelationship
+	/// Description for Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship
+	/// </summary>
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::Neumont.Tools.ORM.ObjectModel.Design.GroupingElementRelationshipTypeDescriptionProvider))]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("5b5119d5-bd6a-41e5-8d42-17f25b51655d")]
+	public abstract partial class GroupingElementRelationship : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// GroupingElementRelationship domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x5b5119d5, 0xbd6a, 0x41e5, 0x8d, 0x42, 0x17, 0xf2, 0x5b, 0x51, 0x65, 0x5d);
+	
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="partition">The Partition instance containing this ElementLink</param>
+		/// <param name="roleAssignments">A set of role assignments for roleplayer initialization</param>
+		/// <param name="propertyAssignments">A set of attribute assignments for attribute initialization</param>
+		protected GroupingElementRelationship(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Grouping domain role code
+		
+		/// <summary>
+		/// Grouping domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid GroupingDomainRoleId = new global::System.Guid(0xdaa7fbc4, 0x68dc, 0x4c03, 0x87, 0x5d, 0x49, 0xad, 0x7c, 0x24, 0x50, 0x41);
+		
+		/// <summary>
+		/// DomainRole Grouping
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship.Grouping
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship/Grouping.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship/Grouping.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ElementCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship/Grouping.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("daa7fbc4-68dc-4c03-875d-49ad7c245041")]
+		public abstract ElementGrouping Grouping
+		{
+			get;
+			set;
+		}
+				
+		#endregion
+		#region Static methods to access GroupingCollection of a ModelElement
+		/// <summary>
+		/// Gets a list of GroupingCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::ReadOnlyLinkedElementCollection<ElementGrouping> GetGroupingCollection(global::Microsoft.VisualStudio.Modeling.ModelElement element)
+		{
+			return new DslModeling::ReadOnlyLinkedElementCollection<ElementGrouping>(element, ElementDomainRoleId);
+		}
+		#endregion
+		#region Element domain role code
+		
+		/// <summary>
+		/// Element domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ElementDomainRoleId = new global::System.Guid(0xae038bb0, 0x4ce5, 0x49fb, 0xa1, 0x13, 0x6d, 0xe0, 0xda, 0x3d, 0xc7, 0x66);
+		
+		/// <summary>
+		/// DomainRole Element
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship.Element
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship/Element.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship/Element.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "GroupingCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship/Element.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("ae038bb0-4ce5-49fb-a113-6de0da3dc766")]
+		public abstract global::Microsoft.VisualStudio.Modeling.ModelElement Element
+		{
+			get;
+			set;
+		}
+				
+		#endregion
+		#region Static methods to access ElementCollection of a ElementGrouping
+		/// <summary>
+		/// Gets a list of ElementCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::ReadOnlyLinkedElementCollection<global::Microsoft.VisualStudio.Modeling.ModelElement> GetElementCollection(ElementGrouping element)
+		{
+			return new DslModeling::ReadOnlyLinkedElementCollection<global::Microsoft.VisualStudio.Modeling.ModelElement>(element, GroupingDomainRoleId);
+		}
+		#endregion
+		#region Grouping link accessor
+		/// <summary>
+		/// Get the list of GroupingElementRelationship links to a ElementGrouping.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship> GetLinksToElementCollection ( global::Neumont.Tools.ORM.ObjectModel.ElementGrouping groupingInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship>(groupingInstance, global::Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship.GroupingDomainRoleId);
+		}
+		#endregion
+		#region Element link accessor
+		/// <summary>
+		/// Get the list of GroupingElementRelationship links to a ModelElement.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship> GetLinksToGroupingCollection ( global::Microsoft.VisualStudio.Modeling.ModelElement elementInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship>(elementInstance, global::Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship.ElementDomainRoleId);
+		}
+		#endregion
+		#region GroupingElementRelationship instance accessors
+		
+		/// <summary>
+		/// Get any GroupingElementRelationship links between a given ElementGrouping and a ModelElement.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ElementGrouping source, global::Microsoft.VisualStudio.Modeling.ModelElement target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship>(source, global::Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship.GroupingDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship link in links )
+			{
+				if ( target.Equals(link.Element) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one GroupingElementRelationship link between a given ElementGroupingand a ModelElement.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship GetLink( global::Neumont.Tools.ORM.ObjectModel.ElementGrouping source, global::Microsoft.VisualStudio.Modeling.ModelElement target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship>(source, global::Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship.GroupingDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship link in links )
+			{
+				if ( target.Equals(link.Element) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship GroupingElementInclusion
+	/// Description for Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("c66c692d-6aa6-4fb9-901a-7e6c205aa272")]
+	public partial class GroupingElementInclusion : GroupingElementRelationship
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// GroupingElementInclusion domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xc66c692d, 0x6aa6, 0x4fb9, 0x90, 0x1a, 0x7e, 0x6c, 0x20, 0x5a, 0xa2, 0x72);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a GroupingElementInclusion link in the same Partition as the given ElementGrouping
+		/// </summary>
+		/// <param name="source">ElementGrouping to use as the source of the relationship.</param>
+		/// <param name="target">ModelElement to use as the target of the relationship.</param>
+		public GroupingElementInclusion(ElementGrouping source, global::Microsoft.VisualStudio.Modeling.ModelElement target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(GroupingElementInclusion.GroupingDomainRoleId, source), new DslModeling::RoleAssignment(GroupingElementInclusion.IncludedElementDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public GroupingElementInclusion(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public GroupingElementInclusion(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public GroupingElementInclusion(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public GroupingElementInclusion(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Grouping domain role code
+		
+		/// <summary>
+		/// Grouping domain role Id.
+		/// </summary>
+		public static readonly new global::System.Guid GroupingDomainRoleId = new global::System.Guid(0x80689cac, 0xf3ee, 0x45c0, 0xbe, 0x1e, 0x3c, 0xec, 0xd0, 0x25, 0x99, 0x71);
+		
+		/// <summary>
+		/// DomainRole Grouping
+		/// Description for Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion.Grouping
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion/Grouping.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion/Grouping.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "IncludedElementCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion/Grouping.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("80689cac-f3ee-45c0-be1e-3cecd0259971")]
+		public override ElementGrouping Grouping
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ElementGrouping)DslModeling::DomainRoleInfo.GetRolePlayer(this, GroupingDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, GroupingDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access GroupingCollection of a ModelElement
+		/// <summary>
+		/// Gets a list of GroupingCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new DslModeling::LinkedElementCollection<ElementGrouping> GetGroupingCollection(global::Microsoft.VisualStudio.Modeling.ModelElement element)
+		{
+			return new DslModeling::LinkedElementCollection<ElementGrouping>(element, IncludedElementDomainRoleId);
+		}
+		#endregion
+		#region IncludedElement domain role code
+		
+		/// <summary>
+		/// IncludedElement domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid IncludedElementDomainRoleId = new global::System.Guid(0xb7973813, 0x1ed1, 0x4440, 0xa5, 0x2b, 0xe0, 0x81, 0x74, 0x98, 0x63, 0xeb);
+		
+		/// <summary>
+		/// DomainRole IncludedElement
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion.IncludedElement
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion/IncludedElement.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion/IncludedElement.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "GroupingCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion/IncludedElement.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("b7973813-1ed1-4440-a52b-e081749863eb")]
+		public virtual global::Microsoft.VisualStudio.Modeling.ModelElement IncludedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (global::Microsoft.VisualStudio.Modeling.ModelElement)DslModeling::DomainRoleInfo.GetRolePlayer(this, IncludedElementDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, IncludedElementDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access IncludedElementCollection of a ElementGrouping
+		/// <summary>
+		/// Gets a list of IncludedElementCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<global::Microsoft.VisualStudio.Modeling.ModelElement> GetIncludedElementCollection(ElementGrouping element)
+		{
+			return new DslModeling::LinkedElementCollection<global::Microsoft.VisualStudio.Modeling.ModelElement>(element, GroupingDomainRoleId);
+		}
+		#endregion
+		#region Element domain role override
+		
+		/// <summary>
+		/// Gets the element playing IncludedElement domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship.Element
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement Element
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.IncludedElement;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.IncludedElement = value;
+			}
+		}
+		
+		#endregion
+		#region Grouping link accessor
+		/// <summary>
+		/// Get the list of GroupingElementInclusion links to a ElementGrouping.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion> GetLinksToIncludedElementCollection ( global::Neumont.Tools.ORM.ObjectModel.ElementGrouping groupingInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion>(groupingInstance, global::Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion.GroupingDomainRoleId);
+		}
+		#endregion
+		#region IncludedElement link accessor
+		/// <summary>
+		/// Get the list of GroupingElementInclusion links to a ModelElement.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion> GetLinksToGroupingCollection ( global::Microsoft.VisualStudio.Modeling.ModelElement includedElementInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion>(includedElementInstance, global::Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion.IncludedElementDomainRoleId);
+		}
+		#endregion
+		#region GroupingElementInclusion instance accessors
+		
+		/// <summary>
+		/// Get any GroupingElementInclusion links between a given ElementGrouping and a ModelElement.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ElementGrouping source, global::Microsoft.VisualStudio.Modeling.ModelElement target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion>(source, global::Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion.GroupingDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion link in links )
+			{
+				if ( target.Equals(link.IncludedElement) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one GroupingElementInclusion link between a given ElementGroupingand a ModelElement.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new global::Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion GetLink( global::Neumont.Tools.ORM.ObjectModel.ElementGrouping source, global::Microsoft.VisualStudio.Modeling.ModelElement target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion>(source, global::Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion.GroupingDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.GroupingElementInclusion link in links )
+			{
+				if ( target.Equals(link.IncludedElement) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship GroupingElementExclusion
+	/// Description for Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("cd51e687-6d5b-4102-b08c-78e1da44ba38")]
+	public partial class GroupingElementExclusion : GroupingElementRelationship
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// GroupingElementExclusion domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xcd51e687, 0x6d5b, 0x4102, 0xb0, 0x8c, 0x78, 0xe1, 0xda, 0x44, 0xba, 0x38);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a GroupingElementExclusion link in the same Partition as the given ElementGrouping
+		/// </summary>
+		/// <param name="source">ElementGrouping to use as the source of the relationship.</param>
+		/// <param name="target">ModelElement to use as the target of the relationship.</param>
+		public GroupingElementExclusion(ElementGrouping source, global::Microsoft.VisualStudio.Modeling.ModelElement target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(GroupingElementExclusion.GroupingDomainRoleId, source), new DslModeling::RoleAssignment(GroupingElementExclusion.ExcludedElementDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public GroupingElementExclusion(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public GroupingElementExclusion(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public GroupingElementExclusion(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public GroupingElementExclusion(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Grouping domain role code
+		
+		/// <summary>
+		/// Grouping domain role Id.
+		/// </summary>
+		public static readonly new global::System.Guid GroupingDomainRoleId = new global::System.Guid(0x3c61d89a, 0x2944, 0x418a, 0x85, 0x3c, 0xda, 0xd6, 0x2b, 0x11, 0x42, 0x99);
+		
+		/// <summary>
+		/// DomainRole Grouping
+		/// Description for Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion.Grouping
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion/Grouping.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion/Grouping.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ExcludedElementCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion/Grouping.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("3c61d89a-2944-418a-853c-dad62b114299")]
+		public override ElementGrouping Grouping
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ElementGrouping)DslModeling::DomainRoleInfo.GetRolePlayer(this, GroupingDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, GroupingDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access GroupingCollection of a ModelElement
+		/// <summary>
+		/// Gets a list of GroupingCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new DslModeling::LinkedElementCollection<ElementGrouping> GetGroupingCollection(global::Microsoft.VisualStudio.Modeling.ModelElement element)
+		{
+			return new DslModeling::LinkedElementCollection<ElementGrouping>(element, ExcludedElementDomainRoleId);
+		}
+		#endregion
+		#region ExcludedElement domain role code
+		
+		/// <summary>
+		/// ExcludedElement domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ExcludedElementDomainRoleId = new global::System.Guid(0x531798a4, 0xd4bd, 0x4e95, 0xae, 0x2b, 0x8e, 0x97, 0xe6, 0x5a, 0x02, 0x49);
+		
+		/// <summary>
+		/// DomainRole ExcludedElement
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion.ExcludedElement
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion/ExcludedElement.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion/ExcludedElement.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "GroupingCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion/ExcludedElement.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("531798a4-d4bd-4e95-ae2b-8e97e65a0249")]
+		public virtual global::Microsoft.VisualStudio.Modeling.ModelElement ExcludedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (global::Microsoft.VisualStudio.Modeling.ModelElement)DslModeling::DomainRoleInfo.GetRolePlayer(this, ExcludedElementDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ExcludedElementDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ExcludedElementCollection of a ElementGrouping
+		/// <summary>
+		/// Gets a list of ExcludedElementCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<global::Microsoft.VisualStudio.Modeling.ModelElement> GetExcludedElementCollection(ElementGrouping element)
+		{
+			return new DslModeling::LinkedElementCollection<global::Microsoft.VisualStudio.Modeling.ModelElement>(element, GroupingDomainRoleId);
+		}
+		#endregion
+		#region Element domain role override
+		
+		/// <summary>
+		/// Gets the element playing ExcludedElement domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.GroupingElementRelationship.Element
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement Element
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ExcludedElement;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ExcludedElement = value;
+			}
+		}
+		
+		#endregion
+		#region Grouping link accessor
+		/// <summary>
+		/// Get the list of GroupingElementExclusion links to a ElementGrouping.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion> GetLinksToExcludedElementCollection ( global::Neumont.Tools.ORM.ObjectModel.ElementGrouping groupingInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion>(groupingInstance, global::Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion.GroupingDomainRoleId);
+		}
+		#endregion
+		#region ExcludedElement link accessor
+		/// <summary>
+		/// Get the list of GroupingElementExclusion links to a ModelElement.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion> GetLinksToGroupingCollection ( global::Microsoft.VisualStudio.Modeling.ModelElement excludedElementInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion>(excludedElementInstance, global::Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion.ExcludedElementDomainRoleId);
+		}
+		#endregion
+		#region GroupingElementExclusion instance accessors
+		
+		/// <summary>
+		/// Get any GroupingElementExclusion links between a given ElementGrouping and a ModelElement.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ElementGrouping source, global::Microsoft.VisualStudio.Modeling.ModelElement target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion>(source, global::Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion.GroupingDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion link in links )
+			{
+				if ( target.Equals(link.ExcludedElement) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one GroupingElementExclusion link between a given ElementGroupingand a ModelElement.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new global::Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion GetLink( global::Neumont.Tools.ORM.ObjectModel.ElementGrouping source, global::Microsoft.VisualStudio.Modeling.ModelElement target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion>(source, global::Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion.GroupingDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.GroupingElementExclusion link in links )
+			{
+				if ( target.Equals(link.ExcludedElement) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship ElementGroupingContainsElementGrouping
+	/// Description for
+	/// Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("7b1d7109-3aea-406a-89e8-989dbb27a469")]
+	public abstract partial class ElementGroupingContainsElementGrouping : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ElementGroupingContainsElementGrouping domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x7b1d7109, 0x3aea, 0x406a, 0x89, 0xe8, 0x98, 0x9d, 0xbb, 0x27, 0xa4, 0x69);
+	
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="partition">The Partition instance containing this ElementLink</param>
+		/// <param name="roleAssignments">A set of role assignments for roleplayer initialization</param>
+		/// <param name="propertyAssignments">A set of attribute assignments for attribute initialization</param>
+		protected ElementGroupingContainsElementGrouping(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ParentGrouping domain role code
+		
+		/// <summary>
+		/// ParentGrouping domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ParentGroupingDomainRoleId = new global::System.Guid(0x73f0282c, 0x73e5, 0x4eed, 0xbc, 0x79, 0x96, 0x93, 0xa8, 0x21, 0x5a, 0x8b);
+		
+		/// <summary>
+		/// DomainRole ParentGrouping
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping.ParentGrouping
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping/ParentGrouping.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping/ParentGrouping.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ChildGroupingCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping/ParentGrouping.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("73f0282c-73e5-4eed-bc79-9693a8215a8b")]
+		public abstract ElementGrouping ParentGrouping
+		{
+			get;
+			set;
+		}
+				
+		#endregion
+		#region Static methods to access ParentGroupingCollection of a ElementGrouping
+		/// <summary>
+		/// Gets a list of ParentGroupingCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::ReadOnlyLinkedElementCollection<ElementGrouping> GetParentGroupingCollection(ElementGrouping element)
+		{
+			return new DslModeling::ReadOnlyLinkedElementCollection<ElementGrouping>(element, ChildGroupingDomainRoleId);
+		}
+		#endregion
+		#region ChildGrouping domain role code
+		
+		/// <summary>
+		/// ChildGrouping domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ChildGroupingDomainRoleId = new global::System.Guid(0x88f5e59f, 0x24a3, 0x4433, 0x8b, 0x4f, 0x10, 0xcb, 0x85, 0x80, 0x75, 0x97);
+		
+		/// <summary>
+		/// DomainRole ChildGrouping
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping.ChildGrouping
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping/ChildGrouping.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping/ChildGrouping.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ParentGroupingCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping/ChildGrouping.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("88f5e59f-24a3-4433-8b4f-10cb85807597")]
+		public abstract ElementGrouping ChildGrouping
+		{
+			get;
+			set;
+		}
+				
+		#endregion
+		#region Static methods to access ChildGroupingCollection of a ElementGrouping
+		/// <summary>
+		/// Gets a list of ChildGroupingCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::ReadOnlyLinkedElementCollection<ElementGrouping> GetChildGroupingCollection(ElementGrouping element)
+		{
+			return new DslModeling::ReadOnlyLinkedElementCollection<ElementGrouping>(element, ParentGroupingDomainRoleId);
+		}
+		#endregion
+		#region ParentGrouping link accessor
+		/// <summary>
+		/// Get the list of ElementGroupingContainsElementGrouping links to a ElementGrouping.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping> GetLinksToChildGroupingCollection ( global::Neumont.Tools.ORM.ObjectModel.ElementGrouping parentGroupingInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping>(parentGroupingInstance, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping.ParentGroupingDomainRoleId);
+		}
+		#endregion
+		#region ChildGrouping link accessor
+		/// <summary>
+		/// Get the list of ElementGroupingContainsElementGrouping links to a ElementGrouping.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping> GetLinksToParentGroupingCollection ( global::Neumont.Tools.ORM.ObjectModel.ElementGrouping childGroupingInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping>(childGroupingInstance, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping.ChildGroupingDomainRoleId);
+		}
+		#endregion
+		#region ElementGroupingContainsElementGrouping instance accessors
+		
+		/// <summary>
+		/// Get any ElementGroupingContainsElementGrouping links between a given ElementGrouping and a ElementGrouping.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ElementGrouping source, global::Neumont.Tools.ORM.ObjectModel.ElementGrouping target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping>(source, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping.ParentGroupingDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping link in links )
+			{
+				if ( target.Equals(link.ChildGrouping) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ElementGroupingContainsElementGrouping link between a given ElementGroupingand a ElementGrouping.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping GetLink( global::Neumont.Tools.ORM.ObjectModel.ElementGrouping source, global::Neumont.Tools.ORM.ObjectModel.ElementGrouping target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping>(source, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping.ParentGroupingDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping link in links )
+			{
+				if ( target.Equals(link.ChildGrouping) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship ElementGroupingIncludesElementGrouping
+	/// Description for
+	/// Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("76f5ea7d-2565-44c7-ba47-eb86fab2a189")]
+	public partial class ElementGroupingIncludesElementGrouping : ElementGroupingContainsElementGrouping
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ElementGroupingIncludesElementGrouping domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x76f5ea7d, 0x2565, 0x44c7, 0xba, 0x47, 0xeb, 0x86, 0xfa, 0xb2, 0xa1, 0x89);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ElementGroupingIncludesElementGrouping link in the same Partition as the given ElementGrouping
+		/// </summary>
+		/// <param name="source">ElementGrouping to use as the source of the relationship.</param>
+		/// <param name="target">ElementGrouping to use as the target of the relationship.</param>
+		public ElementGroupingIncludesElementGrouping(ElementGrouping source, ElementGrouping target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ElementGroupingIncludesElementGrouping.ParentGroupingDomainRoleId, source), new DslModeling::RoleAssignment(ElementGroupingIncludesElementGrouping.IncludedChildGroupingDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ElementGroupingIncludesElementGrouping(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ElementGroupingIncludesElementGrouping(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ElementGroupingIncludesElementGrouping(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ElementGroupingIncludesElementGrouping(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ParentGrouping domain role code
+		
+		/// <summary>
+		/// ParentGrouping domain role Id.
+		/// </summary>
+		public static readonly new global::System.Guid ParentGroupingDomainRoleId = new global::System.Guid(0x231da867, 0x2184, 0x43a2, 0xb9, 0xca, 0xe5, 0x1a, 0xfb, 0xc6, 0x0c, 0xdf);
+		
+		/// <summary>
+		/// DomainRole ParentGrouping
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping.ParentGrouping
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping/ParentGrouping.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping/ParentGrouping.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "IncludedChildGroupingCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping/ParentGrouping.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("231da867-2184-43a2-b9ca-e51afbc60cdf")]
+		public override ElementGrouping ParentGrouping
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ElementGrouping)DslModeling::DomainRoleInfo.GetRolePlayer(this, ParentGroupingDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ParentGroupingDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access IncludedParentGroupingCollection of a ElementGrouping
+		/// <summary>
+		/// Gets a list of IncludedParentGroupingCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<ElementGrouping> GetIncludedParentGroupingCollection(ElementGrouping element)
+		{
+			return new DslModeling::LinkedElementCollection<ElementGrouping>(element, IncludedChildGroupingDomainRoleId);
+		}
+		#endregion
+		#region IncludedChildGrouping domain role code
+		
+		/// <summary>
+		/// IncludedChildGrouping domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid IncludedChildGroupingDomainRoleId = new global::System.Guid(0x07e28d3d, 0xb4d3, 0x40be, 0x9c, 0xaa, 0x0a, 0xfa, 0x62, 0x2e, 0x26, 0xc8);
+		
+		/// <summary>
+		/// DomainRole IncludedChildGrouping
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping.IncludedChildGrouping
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping/IncludedChildGrouping.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping/IncludedChildGrouping.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "IncludedParentGroupingCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping/IncludedChildGrouping.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("07e28d3d-b4d3-40be-9caa-0afa622e26c8")]
+		public virtual ElementGrouping IncludedChildGrouping
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ElementGrouping)DslModeling::DomainRoleInfo.GetRolePlayer(this, IncludedChildGroupingDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, IncludedChildGroupingDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access IncludedChildGroupingCollection of a ElementGrouping
+		/// <summary>
+		/// Gets a list of IncludedChildGroupingCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<ElementGrouping> GetIncludedChildGroupingCollection(ElementGrouping element)
+		{
+			return new DslModeling::LinkedElementCollection<ElementGrouping>(element, ParentGroupingDomainRoleId);
+		}
+		#endregion
+		#region ChildGrouping domain role override
+		
+		/// <summary>
+		/// Gets the element playing IncludedChildGrouping domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping.ChildGrouping
+		/// </summary>
+		public override ElementGrouping ChildGrouping
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.IncludedChildGrouping;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.IncludedChildGrouping = value;
+			}
+		}
+		
+		#endregion
+		#region ParentGrouping link accessor
+		/// <summary>
+		/// Get the list of ElementGroupingIncludesElementGrouping links to a ElementGrouping.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping> GetLinksToIncludedChildGroupingCollection ( global::Neumont.Tools.ORM.ObjectModel.ElementGrouping parentGroupingInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping>(parentGroupingInstance, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping.ParentGroupingDomainRoleId);
+		}
+		#endregion
+		#region IncludedChildGrouping link accessor
+		/// <summary>
+		/// Get the list of ElementGroupingIncludesElementGrouping links to a ElementGrouping.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping> GetLinksToIncludedParentGroupingCollection ( global::Neumont.Tools.ORM.ObjectModel.ElementGrouping includedChildGroupingInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping>(includedChildGroupingInstance, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping.IncludedChildGroupingDomainRoleId);
+		}
+		#endregion
+		#region ElementGroupingIncludesElementGrouping instance accessors
+		
+		/// <summary>
+		/// Get any ElementGroupingIncludesElementGrouping links between a given ElementGrouping and a ElementGrouping.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ElementGrouping source, global::Neumont.Tools.ORM.ObjectModel.ElementGrouping target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping>(source, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping.ParentGroupingDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping link in links )
+			{
+				if ( target.Equals(link.IncludedChildGrouping) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ElementGroupingIncludesElementGrouping link between a given ElementGroupingand a ElementGrouping.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping GetLink( global::Neumont.Tools.ORM.ObjectModel.ElementGrouping source, global::Neumont.Tools.ORM.ObjectModel.ElementGrouping target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping>(source, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping.ParentGroupingDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIncludesElementGrouping link in links )
+			{
+				if ( target.Equals(link.IncludedChildGrouping) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship ElementGroupingExcludesElementGrouping
+	/// Description for
+	/// Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("c710924e-194b-45cf-aec2-b1ec0b86990c")]
+	public partial class ElementGroupingExcludesElementGrouping : ElementGroupingContainsElementGrouping
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ElementGroupingExcludesElementGrouping domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xc710924e, 0x194b, 0x45cf, 0xae, 0xc2, 0xb1, 0xec, 0x0b, 0x86, 0x99, 0x0c);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ElementGroupingExcludesElementGrouping link in the same Partition as the given ElementGrouping
+		/// </summary>
+		/// <param name="source">ElementGrouping to use as the source of the relationship.</param>
+		/// <param name="target">ElementGrouping to use as the target of the relationship.</param>
+		public ElementGroupingExcludesElementGrouping(ElementGrouping source, ElementGrouping target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ElementGroupingExcludesElementGrouping.ParentGroupingDomainRoleId, source), new DslModeling::RoleAssignment(ElementGroupingExcludesElementGrouping.ExcludedChildGroupingDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ElementGroupingExcludesElementGrouping(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ElementGroupingExcludesElementGrouping(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ElementGroupingExcludesElementGrouping(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ElementGroupingExcludesElementGrouping(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ParentGrouping domain role code
+		
+		/// <summary>
+		/// ParentGrouping domain role Id.
+		/// </summary>
+		public static readonly new global::System.Guid ParentGroupingDomainRoleId = new global::System.Guid(0x40c3b2a3, 0x48a2, 0x45e6, 0x93, 0x54, 0x55, 0x0e, 0x60, 0x6a, 0x8e, 0x83);
+		
+		/// <summary>
+		/// DomainRole ParentGrouping
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping.ParentGrouping
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping/ParentGrouping.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping/ParentGrouping.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ExcludedChildGroupingCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping/ParentGrouping.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("40c3b2a3-48a2-45e6-9354-550e606a8e83")]
+		public override ElementGrouping ParentGrouping
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ElementGrouping)DslModeling::DomainRoleInfo.GetRolePlayer(this, ParentGroupingDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ParentGroupingDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ExcludedParentGroupingCollection of a ElementGrouping
+		/// <summary>
+		/// Gets a list of ExcludedParentGroupingCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<ElementGrouping> GetExcludedParentGroupingCollection(ElementGrouping element)
+		{
+			return new DslModeling::LinkedElementCollection<ElementGrouping>(element, ExcludedChildGroupingDomainRoleId);
+		}
+		#endregion
+		#region ExcludedChildGrouping domain role code
+		
+		/// <summary>
+		/// ExcludedChildGrouping domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ExcludedChildGroupingDomainRoleId = new global::System.Guid(0x82e5050b, 0x1847, 0x4ad2, 0xa2, 0x6c, 0xa9, 0x55, 0x40, 0xd7, 0xc4, 0x25);
+		
+		/// <summary>
+		/// DomainRole ExcludedChildGrouping
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping.ExcludedChildGrouping
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping/ExcludedChildGrouping.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping/ExcludedChildGrouping.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ExcludedParentGroupingCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping/ExcludedChildGrouping.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("82e5050b-1847-4ad2-a26c-a95540d7c425")]
+		public virtual ElementGrouping ExcludedChildGrouping
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ElementGrouping)DslModeling::DomainRoleInfo.GetRolePlayer(this, ExcludedChildGroupingDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ExcludedChildGroupingDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ExcludedChildGroupingCollection of a ElementGrouping
+		/// <summary>
+		/// Gets a list of ExcludedChildGroupingCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<ElementGrouping> GetExcludedChildGroupingCollection(ElementGrouping element)
+		{
+			return new DslModeling::LinkedElementCollection<ElementGrouping>(element, ParentGroupingDomainRoleId);
+		}
+		#endregion
+		#region ChildGrouping domain role override
+		
+		/// <summary>
+		/// Gets the element playing ExcludedChildGrouping domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementGroupingContainsElementGrouping.ChildGrouping
+		/// </summary>
+		public override ElementGrouping ChildGrouping
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ExcludedChildGrouping;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ExcludedChildGrouping = value;
+			}
+		}
+		
+		#endregion
+		#region ParentGrouping link accessor
+		/// <summary>
+		/// Get the list of ElementGroupingExcludesElementGrouping links to a ElementGrouping.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping> GetLinksToExcludedChildGroupingCollection ( global::Neumont.Tools.ORM.ObjectModel.ElementGrouping parentGroupingInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping>(parentGroupingInstance, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping.ParentGroupingDomainRoleId);
+		}
+		#endregion
+		#region ExcludedChildGrouping link accessor
+		/// <summary>
+		/// Get the list of ElementGroupingExcludesElementGrouping links to a ElementGrouping.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping> GetLinksToExcludedParentGroupingCollection ( global::Neumont.Tools.ORM.ObjectModel.ElementGrouping excludedChildGroupingInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping>(excludedChildGroupingInstance, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping.ExcludedChildGroupingDomainRoleId);
+		}
+		#endregion
+		#region ElementGroupingExcludesElementGrouping instance accessors
+		
+		/// <summary>
+		/// Get any ElementGroupingExcludesElementGrouping links between a given ElementGrouping and a ElementGrouping.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ElementGrouping source, global::Neumont.Tools.ORM.ObjectModel.ElementGrouping target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping>(source, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping.ParentGroupingDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping link in links )
+			{
+				if ( target.Equals(link.ExcludedChildGrouping) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ElementGroupingExcludesElementGrouping link between a given ElementGroupingand a ElementGrouping.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new global::Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping GetLink( global::Neumont.Tools.ORM.ObjectModel.ElementGrouping source, global::Neumont.Tools.ORM.ObjectModel.ElementGrouping target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping>(source, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping.ParentGroupingDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ElementGroupingExcludesElementGrouping link in links )
+			{
+				if ( target.Equals(link.ExcludedChildGrouping) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship ElementGroupingHasDuplicateNameError
+	/// Description for
+	/// Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("c87fad64-4283-4710-86ba-2e1a11d9a551")]
+	public partial class ElementGroupingHasDuplicateNameError : ElementAssociatedWithModelError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ElementGroupingHasDuplicateNameError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xc87fad64, 0x4283, 0x4710, 0x86, 0xba, 0x2e, 0x1a, 0x11, 0xd9, 0xa5, 0x51);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ElementGroupingHasDuplicateNameError link in the same Partition as the given ElementGrouping
+		/// </summary>
+		/// <param name="source">ElementGrouping to use as the source of the relationship.</param>
+		/// <param name="target">ElementGroupingDuplicateNameError to use as the target of the relationship.</param>
+		public ElementGroupingHasDuplicateNameError(ElementGrouping source, ElementGroupingDuplicateNameError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ElementGroupingHasDuplicateNameError.GroupingDomainRoleId, source), new DslModeling::RoleAssignment(ElementGroupingHasDuplicateNameError.DuplicateNameErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ElementGroupingHasDuplicateNameError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ElementGroupingHasDuplicateNameError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ElementGroupingHasDuplicateNameError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ElementGroupingHasDuplicateNameError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Grouping domain role code
+		
+		/// <summary>
+		/// Grouping domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid GroupingDomainRoleId = new global::System.Guid(0xb7a2fab0, 0xadff, 0x4f1d, 0xa8, 0x13, 0x42, 0xcb, 0xad, 0x17, 0xc4, 0x0d);
+		
+		/// <summary>
+		/// DomainRole Grouping
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError.Grouping
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError/Grouping.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError/Grouping.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DuplicateNameError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError/Grouping.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("b7a2fab0-adff-4f1d-a813-42cbad17c40d")]
+		public virtual ElementGrouping Grouping
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ElementGrouping)DslModeling::DomainRoleInfo.GetRolePlayer(this, GroupingDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, GroupingDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access GroupingCollection of a ElementGroupingDuplicateNameError
+		/// <summary>
+		/// Gets a list of GroupingCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<ElementGrouping> GetGroupingCollection(ElementGroupingDuplicateNameError element)
+		{
+			return new DslModeling::LinkedElementCollection<ElementGrouping>(element, DuplicateNameErrorDomainRoleId);
+		}
+		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing Grouping domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.Grouping;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.Grouping = (ElementGrouping)value;
+			}
+		}
+		
+		#endregion
+		#region DuplicateNameError domain role code
+		
+		/// <summary>
+		/// DuplicateNameError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DuplicateNameErrorDomainRoleId = new global::System.Guid(0xd4f63ea1, 0x5d4c, 0x4829, 0x96, 0x32, 0x2d, 0x7c, 0xe5, 0x02, 0xa1, 0x6f);
+		
+		/// <summary>
+		/// DomainRole DuplicateNameError
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError.DuplicateNameError
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError/DuplicateNameError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError/DuplicateNameError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "GroupingCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError/DuplicateNameError.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainObjectId("d4f63ea1-5d4c-4829-9632-2d7ce502a16f")]
+		public virtual ElementGroupingDuplicateNameError DuplicateNameError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ElementGroupingDuplicateNameError)DslModeling::DomainRoleInfo.GetRolePlayer(this, DuplicateNameErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DuplicateNameErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access DuplicateNameError of a ElementGrouping
+		/// <summary>
+		/// Gets DuplicateNameError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ElementGroupingDuplicateNameError GetDuplicateNameError(ElementGrouping element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, GroupingDomainRoleId) as ElementGroupingDuplicateNameError;
+		}
+		
+		/// <summary>
+		/// Sets DuplicateNameError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetDuplicateNameError(ElementGrouping element, ElementGroupingDuplicateNameError newDuplicateNameError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, GroupingDomainRoleId, newDuplicateNameError);
+		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing DuplicateNameError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.DuplicateNameError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.DuplicateNameError = (ElementGroupingDuplicateNameError)value;
+			}
+		}
+		
+		#endregion
+		#region Grouping link accessor
+		/// <summary>
+		/// Get the ElementGroupingHasDuplicateNameError link to a ElementGrouping.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError GetLinkToDuplicateNameError (global::Neumont.Tools.ORM.ObjectModel.ElementGrouping groupingInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError>(groupingInstance, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError.GroupingDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Grouping not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region DuplicateNameError link accessor
+		/// <summary>
+		/// Get the list of ElementGroupingHasDuplicateNameError links to a ElementGroupingDuplicateNameError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError> GetLinksToGroupingCollection ( global::Neumont.Tools.ORM.ObjectModel.ElementGroupingDuplicateNameError duplicateNameErrorInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError>(duplicateNameErrorInstance, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError.DuplicateNameErrorDomainRoleId);
+		}
+		#endregion
+		#region ElementGroupingHasDuplicateNameError instance accessors
+		
+		/// <summary>
+		/// Get any ElementGroupingHasDuplicateNameError links between a given ElementGrouping and a ElementGroupingDuplicateNameError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ElementGrouping source, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingDuplicateNameError target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError>(source, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError.GroupingDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError link in links )
+			{
+				if ( target.Equals(link.DuplicateNameError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ElementGroupingHasDuplicateNameError link between a given ElementGroupingand a ElementGroupingDuplicateNameError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError GetLink( global::Neumont.Tools.ORM.ObjectModel.ElementGrouping source, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingDuplicateNameError target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError>(source, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError.GroupingDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasDuplicateNameError link in links )
+			{
+				if ( target.Equals(link.DuplicateNameError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship ElementGroupingHasMembershipContradictionError
+	/// Description for
+	/// Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("ffa04df2-2bca-4290-8801-fa1947ccdbda")]
+	public partial class ElementGroupingHasMembershipContradictionError : ElementAssociatedWithModelError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ElementGroupingHasMembershipContradictionError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xffa04df2, 0x2bca, 0x4290, 0x88, 0x01, 0xfa, 0x19, 0x47, 0xcc, 0xdb, 0xda);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ElementGroupingHasMembershipContradictionError link in the same Partition as the given ElementGrouping
+		/// </summary>
+		/// <param name="source">ElementGrouping to use as the source of the relationship.</param>
+		/// <param name="target">ElementGroupingMembershipContradictionError to use as the target of the relationship.</param>
+		public ElementGroupingHasMembershipContradictionError(ElementGrouping source, ElementGroupingMembershipContradictionError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ElementGroupingHasMembershipContradictionError.GroupingDomainRoleId, source), new DslModeling::RoleAssignment(ElementGroupingHasMembershipContradictionError.MembershipContradictionErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ElementGroupingHasMembershipContradictionError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ElementGroupingHasMembershipContradictionError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ElementGroupingHasMembershipContradictionError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ElementGroupingHasMembershipContradictionError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Grouping domain role code
+		
+		/// <summary>
+		/// Grouping domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid GroupingDomainRoleId = new global::System.Guid(0xcf43911d, 0x1ff2, 0x47ad, 0xb4, 0x51, 0x4c, 0xb8, 0xf6, 0x7b, 0x78, 0x05);
+		
+		/// <summary>
+		/// DomainRole Grouping
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError.Grouping
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError/Grouping.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError/Grouping.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "MembershipContradictionErrorCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError/Grouping.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("cf43911d-1ff2-47ad-b451-4cb8f67b7805")]
+		public virtual ElementGrouping Grouping
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ElementGrouping)DslModeling::DomainRoleInfo.GetRolePlayer(this, GroupingDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, GroupingDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Grouping of a ElementGroupingMembershipContradictionError
+		/// <summary>
+		/// Gets Grouping.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ElementGrouping GetGrouping(ElementGroupingMembershipContradictionError element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, MembershipContradictionErrorDomainRoleId) as ElementGrouping;
+		}
+		
+		/// <summary>
+		/// Sets Grouping.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetGrouping(ElementGroupingMembershipContradictionError element, ElementGrouping newGrouping)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, MembershipContradictionErrorDomainRoleId, newGrouping);
+		}
+		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing Grouping domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.Grouping;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.Grouping = (ElementGrouping)value;
+			}
+		}
+		
+		#endregion
+		#region MembershipContradictionError domain role code
+		
+		/// <summary>
+		/// MembershipContradictionError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid MembershipContradictionErrorDomainRoleId = new global::System.Guid(0x13db78a4, 0x0967, 0x485f, 0xb6, 0x9f, 0x5e, 0x3d, 0xb2, 0x87, 0x55, 0x57);
+		
+		/// <summary>
+		/// DomainRole MembershipContradictionError
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError.MembershipContradictionError
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError/MembershipContradictionError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError/MembershipContradictionError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Grouping", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError/MembershipContradictionError.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("13db78a4-0967-485f-b69f-5e3db2875557")]
+		public virtual ElementGroupingMembershipContradictionError MembershipContradictionError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ElementGroupingMembershipContradictionError)DslModeling::DomainRoleInfo.GetRolePlayer(this, MembershipContradictionErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, MembershipContradictionErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access MembershipContradictionErrorCollection of a ElementGrouping
+		/// <summary>
+		/// Gets a list of MembershipContradictionErrorCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<ElementGroupingMembershipContradictionError> GetMembershipContradictionErrorCollection(ElementGrouping element)
+		{
+			return new DslModeling::LinkedElementCollection<ElementGroupingMembershipContradictionError>(element, GroupingDomainRoleId);
+		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing MembershipContradictionError domain role.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.MembershipContradictionError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.MembershipContradictionError = (ElementGroupingMembershipContradictionError)value;
+			}
+		}
+		
+		#endregion
+		#region Accessors for roles that this REL plays in other RELs
+		#region Element opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Element.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement.GroupingMembershipContradictionErrorRelationship
+		/// </summary>
+		public virtual global::Microsoft.VisualStudio.Modeling.ModelElement Element
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement.GroupingMembershipContradictionErrorRelationshipDomainRoleId) as global::Microsoft.VisualStudio.Modeling.ModelElement;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement.GroupingMembershipContradictionErrorRelationshipDomainRoleId, value);
+			}
+		}
+		#endregion
+		#endregion
+		#region Grouping link accessor
+		/// <summary>
+		/// Get the list of ElementGroupingHasMembershipContradictionError links to a ElementGrouping.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError> GetLinksToMembershipContradictionErrorCollection ( global::Neumont.Tools.ORM.ObjectModel.ElementGrouping groupingInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError>(groupingInstance, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError.GroupingDomainRoleId);
+		}
+		#endregion
+		#region MembershipContradictionError link accessor
+		/// <summary>
+		/// Get the ElementGroupingHasMembershipContradictionError link to a ElementGroupingMembershipContradictionError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError GetLinkToGrouping (global::Neumont.Tools.ORM.ObjectModel.ElementGroupingMembershipContradictionError membershipContradictionErrorInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError>(membershipContradictionErrorInstance, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError.MembershipContradictionErrorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of MembershipContradictionError not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ElementGroupingHasMembershipContradictionError instance accessors
+		
+		/// <summary>
+		/// Get any ElementGroupingHasMembershipContradictionError links between a given ElementGrouping and a ElementGroupingMembershipContradictionError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ElementGrouping source, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingMembershipContradictionError target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError>(source, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError.GroupingDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError link in links )
+			{
+				if ( target.Equals(link.MembershipContradictionError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ElementGroupingHasMembershipContradictionError link between a given ElementGroupingand a ElementGroupingMembershipContradictionError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError GetLink( global::Neumont.Tools.ORM.ObjectModel.ElementGrouping source, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingMembershipContradictionError target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError>(source, global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError.GroupingDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError link in links )
+			{
+				if ( target.Equals(link.MembershipContradictionError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship GroupingMembershipContradictionErrorIsForElement
+	/// Description for
+	/// Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("67a68df7-1472-40b8-825a-1fc426a5e6c1")]
+	public partial class GroupingMembershipContradictionErrorIsForElement : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// GroupingMembershipContradictionErrorIsForElement domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x67a68df7, 0x1472, 0x40b8, 0x82, 0x5a, 0x1f, 0xc4, 0x26, 0xa5, 0xe6, 0xc1);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a GroupingMembershipContradictionErrorIsForElement link in the same Partition as the given ElementGroupingHasMembershipContradictionError
+		/// </summary>
+		/// <param name="source">ElementGroupingHasMembershipContradictionError to use as the source of the relationship.</param>
+		/// <param name="target">ModelElement to use as the target of the relationship.</param>
+		public GroupingMembershipContradictionErrorIsForElement(ElementGroupingHasMembershipContradictionError source, global::Microsoft.VisualStudio.Modeling.ModelElement target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(GroupingMembershipContradictionErrorIsForElement.GroupingMembershipContradictionErrorRelationshipDomainRoleId, source), new DslModeling::RoleAssignment(GroupingMembershipContradictionErrorIsForElement.ElementDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public GroupingMembershipContradictionErrorIsForElement(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public GroupingMembershipContradictionErrorIsForElement(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public GroupingMembershipContradictionErrorIsForElement(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public GroupingMembershipContradictionErrorIsForElement(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region GroupingMembershipContradictionErrorRelationship domain role code
+		
+		/// <summary>
+		/// GroupingMembershipContradictionErrorRelationship domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid GroupingMembershipContradictionErrorRelationshipDomainRoleId = new global::System.Guid(0xa316cbb8, 0xe335, 0x4a11, 0x93, 0x7a, 0x0b, 0x16, 0x66, 0x28, 0xee, 0x19);
+		
+		/// <summary>
+		/// DomainRole GroupingMembershipContradictionErrorRelationship
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement.GroupingMembershipContradictionErrorRelationship
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement/GroupingMembershipContradictionErrorRelationship.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement/GroupingMembershipContradictionErrorRelationship.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Element", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement/GroupingMembershipContradictionErrorRelationship.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("a316cbb8-e335-4a11-937a-0b166628ee19")]
+		public virtual ElementGroupingHasMembershipContradictionError GroupingMembershipContradictionErrorRelationship
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ElementGroupingHasMembershipContradictionError)DslModeling::DomainRoleInfo.GetRolePlayer(this, GroupingMembershipContradictionErrorRelationshipDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, GroupingMembershipContradictionErrorRelationshipDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access MembershipContradictionErrorCollection of a ModelElement
+		/// <summary>
+		/// Gets a list of MembershipContradictionErrorCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<ElementGroupingHasMembershipContradictionError> GetMembershipContradictionErrorCollection(global::Microsoft.VisualStudio.Modeling.ModelElement element)
+		{
+			return new DslModeling::LinkedElementCollection<ElementGroupingHasMembershipContradictionError>(element, ElementDomainRoleId);
+		}
+		#endregion
+		#region Element domain role code
+		
+		/// <summary>
+		/// Element domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ElementDomainRoleId = new global::System.Guid(0xae99d58e, 0x9b14, 0x4266, 0xaf, 0xe0, 0x8e, 0x7a, 0x94, 0xdb, 0xe3, 0xf8);
+		
+		/// <summary>
+		/// DomainRole Element
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement.Element
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement/Element.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement/Element.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "MembershipContradictionErrorCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement/Element.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("ae99d58e-9b14-4266-afe0-8e7a94dbe3f8")]
+		public virtual global::Microsoft.VisualStudio.Modeling.ModelElement Element
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (global::Microsoft.VisualStudio.Modeling.ModelElement)DslModeling::DomainRoleInfo.GetRolePlayer(this, ElementDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ElementDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Element of a ElementGroupingHasMembershipContradictionError
+		/// <summary>
+		/// Gets Element.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Microsoft.VisualStudio.Modeling.ModelElement GetElement(ElementGroupingHasMembershipContradictionError element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, GroupingMembershipContradictionErrorRelationshipDomainRoleId) as global::Microsoft.VisualStudio.Modeling.ModelElement;
+		}
+		
+		/// <summary>
+		/// Sets Element.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetElement(ElementGroupingHasMembershipContradictionError element, global::Microsoft.VisualStudio.Modeling.ModelElement newElement)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, GroupingMembershipContradictionErrorRelationshipDomainRoleId, newElement);
+		}
+		#endregion
+		#region GroupingMembershipContradictionErrorRelationship link accessor
+		/// <summary>
+		/// Get the GroupingMembershipContradictionErrorIsForElement link to a ElementGroupingHasMembershipContradictionError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement GetLinkToElement (global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError groupingMembershipContradictionErrorRelationshipInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement>(groupingMembershipContradictionErrorRelationshipInstance, global::Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement.GroupingMembershipContradictionErrorRelationshipDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of GroupingMembershipContradictionErrorRelationship not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region Element link accessor
+		/// <summary>
+		/// Get the list of GroupingMembershipContradictionErrorIsForElement links to a ModelElement.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement> GetLinksToMembershipContradictionErrorCollection ( global::Microsoft.VisualStudio.Modeling.ModelElement elementInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement>(elementInstance, global::Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement.ElementDomainRoleId);
+		}
+		#endregion
+		#region GroupingMembershipContradictionErrorIsForElement instance accessors
+		
+		/// <summary>
+		/// Get any GroupingMembershipContradictionErrorIsForElement links between a given ElementGroupingHasMembershipContradictionError and a ModelElement.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError source, global::Microsoft.VisualStudio.Modeling.ModelElement target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement>(source, global::Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement.GroupingMembershipContradictionErrorRelationshipDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement link in links )
+			{
+				if ( target.Equals(link.Element) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one GroupingMembershipContradictionErrorIsForElement link between a given ElementGroupingHasMembershipContradictionErrorand a ModelElement.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement GetLink( global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError source, global::Microsoft.VisualStudio.Modeling.ModelElement target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement>(source, global::Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement.GroupingMembershipContradictionErrorRelationshipDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement link in links )
+			{
+				if ( target.Equals(link.Element) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}

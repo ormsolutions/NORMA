@@ -69,6 +69,14 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.Reading.DisplayName");
 			}
 		}
+		/// <summary>The name displayed as the class name for all <see cref="Neumont.Tools.ORM.ObjectModel.ElementGroupingType"/> instances</summary>
+		public static string ElementGroupingTypeDisplayName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ElementGroupingType.DisplayName");
+			}
+		}
 		/// <summary>The display name used for an ObjectType when IsValueType is true</summary>
 		public static string ValueType
 		{
@@ -571,6 +579,62 @@ namespace Neumont.Tools.ORM
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "DropShape.TransactionName");
+			}
+		}
+		/// <summary>The base name used to create a name for a new ElementGrouping. This is a format string with {0} being the placeholder for the number placement.</summary>
+		public static string ElementGroupingDefaultNamePattern
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ElementGrouping.DefaultNamePattern");
+			}
+		}
+		/// <summary>The transaction name used when adding an element to a group.</summary>
+		public static string ElementGroupingAddElementTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ElementGrouping.AddElement.TransactionName");
+			}
+		}
+		/// <summary>The transaction name used when adding a group.</summary>
+		public static string ElementGroupingAddGroupTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ElementGrouping.AddGroup.TransactionName");
+			}
+		}
+		/// <summary>The transaction name used when removing an explicitly excluded element from a group.</summary>
+		public static string ElementGroupingRemoveElementExclusionTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ElementGrouping.RemoveElementExclusion.TransactionName");
+			}
+		}
+		/// <summary>Description shown in the properties window for the 'GroupTypes' property of an ElementGrouping.</summary>
+		public static string ElementGroupingTypesPropertyDescriptorDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ElementGroupingTypes.PropertyDescriptor.Description");
+			}
+		}
+		/// <summary>Display name shown in the properties window for the 'GroupTypes' property of an ElementGrouping.</summary>
+		public static string ElementGroupingTypesPropertyDescriptorDisplayName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ElementGroupingTypes.PropertyDescriptor.DisplayName");
+			}
+		}
+		/// <summary>The transaction name used when modifying the set of types associated with a group</summary>
+		public static string ElementGroupingTypesPropertyDescriptorTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ElementGroupingTypes.PropertyDescriptor.TransactionName");
 			}
 		}
 		/// <summary>The text shown to explain how to hook up an external constraint to its associated roles.</summary>
@@ -1333,6 +1397,22 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.DeleteFactTypeShape.Text");
 			}
 		}
+		/// <summary>This text appears in the edit menu when an element reference in a group is selected.</summary>
+		public static string CommandDeleteFromGroupText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.DeleteFromGroup.Text");
+			}
+		}
+		/// <summary>This text appears in the edit menu when a group element is selected.</summary>
+		public static string CommandDeleteGroupText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.DeleteGroup.Text");
+			}
+		}
 		/// <summary>This text appears in the edit menu when object types are selected in the diagram.</summary>
 		public static string CommandDeleteObjectTypeShapeText
 		{
@@ -1558,19 +1638,19 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>Text to place in an empty description editor tool window.</summary>
-		public static string ModelDefinitionWindowEmptyDisplayText
+		public static string ModelDescriptionWindowEmptyDisplayText
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelDefinitionWindow.EmptyDisplayText");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelDescriptionWindow.EmptyDisplayText");
 			}
 		}
 		/// <summary>Text to place in the title bar of the description editor tool window.</summary>
-		public static string ModelDefinitionWindowTitle
+		public static string ModelDescriptionWindowTitle
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelDefinitionWindow.WindowTitle");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelDescriptionWindow.WindowTitle");
 			}
 		}
 		/// <summary>Text to place in an empty notes editor tool window.</summary>
@@ -2179,6 +2259,22 @@ namespace Neumont.Tools.ORM
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "Model.Reading.RoleDeletedText");
+			}
+		}
+		/// <summary>Model validation error text used when multiple groups with the same name are loaded into a model. Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</summary>
+		public static string ModelErrorElementGroupingDuplicateNameError
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ElementGrouping.DuplicateNameError.Message");
+			}
+		}
+		/// <summary>Model validation error text used when an element is explicitly included by one grouptype and explicitly excluded by another. Field 0 is the group name, field 1 is the element name.</summary>
+		public static string ModelErrorElementGroupingMembershipContradictionError
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ElementGrouping.MembershipContradictionError.Message");
 			}
 		}
 		/// <summary>Text displayed in the text of the FactTypeRequiresInternalUniquenessContraintError</summary>

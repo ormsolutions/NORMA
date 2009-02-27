@@ -71,6 +71,7 @@
 					</plx:return>
 				</se:ConditionalSerialization>
 			</se:RootElement>
+			<se:RootElement Class="ElementGroupingSet" Name="Grouping"/>
 		</se:RootElements>
 		<se:OmittedDomainElements>
 			<se:OmitRelationship Class="FactConstraint"/>
@@ -85,6 +86,8 @@
 			<se:OmitRelationship Class="ElementHasAlias"/>
 			<se:OmitRelationship Class="ObjectTypeHasObjectTypeInstance"/>
 			<se:OmitClass Class="IntrinsicReferenceMode"/>
+			<se:OmitRelationship Class="GroupingElementRelationship"/>
+			<se:OmitRelationship Class="ElementGroupingContainsElementGrouping"/>
 			<!-- Omitting links to the presentation layers is not strictly required because all
 				 links to external models do not serialize by default, but this one is very common,
 				 and including it here allows us to block it earlier in the serialization process. -->
@@ -96,6 +99,9 @@
 		<se:Container Name="Extensions" Prefix="orm">
 			<se:Embed RelationshipName="ORMModelElementHasExtensionElement" RoleName="Extension"/>
 		</se:Container>
+		<se:Link RelationshipName="GroupingMembershipContradictionErrorIsForElement" RoleName="GroupingMembershipContradictionErrorRelationship" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="GroupingElementInclusion" RoleName="Grouping" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="GroupingElementExclusion" RoleName="Grouping" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="ORMNamedElement" Override="true"/>
 	<se:Element Class="ModelError" Override="true">
@@ -136,6 +142,7 @@
 		<se:Container Name="RecognizedPhrases">
 			<se:Embed RelationshipName="ModelContainsRecognizedPhrase" RoleName="RecognizedPhrase"/>
 		</se:Container>
+		<se:Link RelationshipName="ElementGroupingSetRelatesToORMModel" RoleName="GroupingSet" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="Definition" Override="true">
 		<se:Attribute ID="Text" WriteStyle="Element"/>
@@ -1117,5 +1124,68 @@
 			</se:ConditionalName>
 		</se:Link>
 		<se:Link RelationshipName="SetComparisonConstraintHasImplicationError" RoleName="SetComparisonConstraint" WriteStyle="NotWritten"/>
+	</se:Element>
+	<se:Element Class="ElementGroupingSet" Name="Grouping" SortChildElements="true" Sealed="true">
+		<se:Link RelationshipName="ElementGroupingSetRelatesToORMModel" RoleName="Model" Name="ORMModel"/>
+		<se:Container Name="Groups">
+			<se:Embed RelationshipName="ElementGroupingSetContainsElementGrouping" RoleName="Grouping"/>
+		</se:Container>
+	</se:Element>
+	<se:Element Class="ElementGrouping" Override="true" Name="Group" SortChildElements="true">
+		<se:Attribute ID="TypeCompliance">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callThis name="TypeCompliance" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic dataTypeName="GroupingMembershipTypeCompliance" name="NotExcluded" type="field"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="Priority">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callThis name="Priority" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:value data="0" type="i4"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Container Name="GroupTypes">
+			<se:Embed RelationshipName="ElementGroupingIsOfElementGroupingType" RoleName="GroupingType"/>
+		</se:Container>
+		<se:Container Name="Elements" SortChildElements="true">
+			<se:Link RelationshipName="GroupingElementInclusion" RoleName="IncludedElement"/>
+			<se:Link RelationshipName="GroupingElementExclusion" RoleName="ExcludedElement"/>
+		</se:Container>
+		<se:Container Name="NestedGroups" SortChildElements="true">
+			<se:Link RelationshipName="ElementGroupingIncludesElementGrouping" RoleName="IncludedChildGrouping"/>
+			<se:Link RelationshipName="ElementGroupingExcludesElementGrouping" RoleName="ExcludedChildGrouping"/>
+		</se:Container>
+		<se:Link RelationshipName="GroupingElementInclusion" RoleName="IncludedElement" Name="IncludedElement"/>
+		<se:Link RelationshipName="GroupingElementExclusion" RoleName="ExcludedElement" Name="ExcludedElement"/>
+		<se:Link RelationshipName="ElementGroupingIncludesElementGrouping" RoleName="IncludedChildGrouping" Name="IncludedGroup"/>
+		<se:Link RelationshipName="ElementGroupingExcludesElementGrouping" RoleName="ExcludedChildGrouping" Name="ExcludedGroup"/>
+		<se:Link RelationshipName="ElementGroupingHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ElementGroupingHasMembershipContradictionError" RoleName="MembershipContradictionError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ElementGroupingIncludesElementGrouping" RoleName="ParentGrouping" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ElementGroupingExcludesElementGrouping" RoleName="ParentGrouping" WriteStyle="NotWritten"/>
+	</se:Element>
+	<se:Element Class="ElementGroupingDuplicateNameError" Override="true" Name="GroupDuplicateNameError">
+		<se:Container Name="Groups">
+			<se:Link RelationshipName="ElementGroupingHasDuplicateNameError" RoleName="Grouping"/>
+		</se:Container>
+		<se:Link RelationshipName="ElementGroupingHasDuplicateNameError" RoleName="Grouping" Name="Group"/>
+	</se:Element>
+	<se:Element Class="ElementGroupingMembershipContradictionError" Override="true" Name="GroupMembershipContradictionError" SortChildElements="true">
+		<se:Link RelationshipName="ElementGroupingHasMembershipContradictionError" RoleName="Grouping" Name="Group" WriteStyle="PrimaryLinkElement"/>
+	</se:Element>
+	<se:Element Class="ElementGroupingHasMembershipContradictionError" LinkOnly="true">
+		<se:Link RelationshipName="GroupingMembershipContradictionErrorIsForElement" RoleName="Element" Name="Element"/>
 	</se:Element>
 </se:CustomSerializedElements>

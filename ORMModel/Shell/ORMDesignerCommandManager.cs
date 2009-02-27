@@ -38,6 +38,8 @@ using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ObjectModel.Design;
 using Neumont.Tools.ORM.ShapeModel;
+using Neumont.Tools.Modeling.Shell;
+using System.Collections.ObjectModel;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -346,6 +348,10 @@ namespace Neumont.Tools.ORM.Shell
 		private ORMDesignerCommands myCheckedCommands;
 		private bool myStatusCacheValid;
 
+		// Dynamic command set caches
+		private ElementGrouping[] myIncludeInGroups;
+		private ElementGrouping[] myDeleteFromGroups;
+
 		/// <summary>
 		/// The filter for multi selection when the elements are all of the same type.`
 		/// </summary>
@@ -370,6 +376,9 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		private const ORMDesignerCommands EnabledComplexMultiSelectCommandFilter =
 			EnabledSimpleMultiSelectCommandFilter |
+			ORMDesignerCommands.IncludeInNewGroup |
+			ORMDesignerCommands.IncludeInGroupList |
+			ORMDesignerCommands.DeleteFromGroupList |
 			ORMDesignerCommands.ExclusiveOrCoupler;
 		/// <summary>
 		/// A filter to turn off commands for a single selection
@@ -419,6 +428,8 @@ namespace Neumont.Tools.ORM.Shell
 		public void UpdateCommandStatus()
 		{
 			myStatusCacheValid = false;
+			myIncludeInGroups = null;
+			myDeleteFromGroups = null;
 		}
 		private void EnsureCommandStatusCache()
 		{
@@ -464,17 +475,11 @@ namespace Neumont.Tools.ORM.Shell
 					NodeShape primaryShape = PrimarySelectedShape;
 					foreach (ModelElement melIter in view.SelectedElements)
 					{
-						bool isPrimarySelection = false;
-						ModelElement mel = melIter;
-						PresentationElement pel = mel as PresentationElement;
-						if (pel != null)
-						{
-							isPrimarySelection = primaryShape != null && primaryShape == pel;
-							mel = pel.ModelElement;
-						}
+						ContextElementParts elementParts = ContextElementParts.ResolveContextInstance(melIter);
+						ModelElement mel = elementParts.PrimaryElement as ModelElement;
 						if (mel != null)
 						{
-							SetCommandStatus(mel, pel, isPrimarySelection, out currentVisible, out currentEnabled, out currentCheckable, out currentChecked, out currentTolerated);
+							SetCommandStatus(elementParts, primaryShape != null && primaryShape == elementParts.PresentationElement, out currentVisible, out currentEnabled, out currentCheckable, out currentChecked, out currentTolerated);
 							Debug.Assert(0 == (currentEnabled & ~currentVisible)); // Everthing enabled should be visible
 							Debug.Assert(0 == (currentChecked & ~currentCheckable)); // Everything checked should be checkable
 
@@ -544,38 +549,32 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					foreach (ModelElement melIter in view.SelectedElements)
 					{
-						ModelElement mel = melIter;
-						PresentationElement pel = mel as PresentationElement;
+						ContextElementParts elementParts = ContextElementParts.ResolveContextInstance(melIter);
 
 						// Checking for StickyObjects.  This needs to be done out here because when a role box is selected
 						// the pel will be null.
 						ORMDiagram ormDiagram;
-						IStickyObject stickyObject;
-
 						// There is a sticky object on this diagram
 						if (null != (ormDiagram = view.CurrentDiagram as ORMDiagram))
 						{
-							if (null != (stickyObject = pel as IStickyObject))
+							IStickyObject stickyObject;
+							if (null != (stickyObject = elementParts.PresentationElement as IStickyObject))
 							{
 								ormDiagram.StickyObject = stickyObject;
 							}
 							// The currently selected item is not selection-compatible with the StickyObject.
 							else if (null != (stickyObject = ormDiagram.StickyObject)
-								&& !stickyObject.StickySelectable(mel))
+								&& !stickyObject.StickySelectable(melIter))
 							{
 								ormDiagram.StickyObject = null;
 							}
 						}
 
-						if (pel != null)
-						{
-							mel = pel.ModelElement;
-						}
-
+						ModelElement mel = elementParts.PrimaryElement as ModelElement;
 						if (mel != null)
 						{
 							ORMDesignerCommands toleratedCommandsDummy;
-							SetCommandStatus(mel, pel, true, out visibleCommands, out enabledCommands, out checkableCommands, out checkedCommands, out toleratedCommandsDummy);
+							SetCommandStatus(elementParts, true, out visibleCommands, out enabledCommands, out checkableCommands, out checkedCommands, out toleratedCommandsDummy);
 							Debug.Assert(0 == (enabledCommands & ~visibleCommands)); // Everthing enabled should be visible
 							Debug.Assert(0 == (checkedCommands & ~checkableCommands)); // Everything checked should be checkable
 							visibleCommands &= ~DisabledSingleSelectCommandFilter;
@@ -592,16 +591,18 @@ namespace Neumont.Tools.ORM.Shell
 		/// Determine which commands are visible and enabled for the
 		/// current state of an individual given element.
 		/// </summary>
-		/// <param name="element">A single model element. Should be a backing object, not a presentation element.</param>
-		/// <param name="presentationElement">The selected presentation element representing the element. Can be null.</param>
+		/// <param name="elementParts">An <see cref="ContextElementParts"/> structure representation the different element parts</param>
 		/// <param name="primarySelection">true if the presentation element is the primary selection</param>
 		/// <param name="visibleCommands">(output) The set of visible commands</param>
 		/// <param name="enabledCommands">(output) The set of enabled commands</param>
 		/// <param name="checkableCommands">(output) The set of commands that are checked in some circumstances</param>
 		/// <param name="checkedCommands">(output) The set of checked commands</param>
 		/// <param name="toleratedCommands">(output) The set of commands allowed on other multi-selected elements that should not be turned off because this is included in the selection.</param>
-		public virtual void SetCommandStatus(ModelElement element, PresentationElement presentationElement, bool primarySelection, out ORMDesignerCommands visibleCommands, out ORMDesignerCommands enabledCommands, out ORMDesignerCommands checkableCommands, out ORMDesignerCommands checkedCommands, out ORMDesignerCommands toleratedCommands)
+		public virtual void SetCommandStatus(ContextElementParts elementParts, bool primarySelection, out ORMDesignerCommands visibleCommands, out ORMDesignerCommands enabledCommands, out ORMDesignerCommands checkableCommands, out ORMDesignerCommands checkedCommands, out ORMDesignerCommands toleratedCommands)
 		{
+			ModelElement element = elementParts.PrimaryElement as ModelElement;
+			PresentationElement presentationElement = elementParts.PresentationElement;
+			IElementReference elementReference = elementParts.ReferenceElement;
 			enabledCommands = ORMDesignerCommands.None;
 			visibleCommands = ORMDesignerCommands.None;
 			checkableCommands = ORMDesignerCommands.None;
@@ -684,7 +685,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			else if (null != (setConstraint = element as SetConstraint) && setConstraint.Constraint.ConstraintIsInternal)
 			{
-				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteConstraint | ORMDesignerCommands.DeleteAny;
+				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteConstraint | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.EditRoleSequenceConstraint;
 				if (presentationElement != null)
 				{
 					toleratedCommands |= ORMDesignerCommands.DeleteShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AutoLayout;
@@ -692,7 +693,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			else if ((null != setConstraint) || (null != (setComparisonConstraint = element as SetComparisonConstraint)))
 			{
-				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteConstraint | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.EditExternalConstraint;
+				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteConstraint | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.EditRoleSequenceConstraint;
 				ExclusionConstraint exclusionConstraint;
 				if (setConstraint != null)
 				{
@@ -848,6 +849,10 @@ namespace Neumont.Tools.ORM.Shell
 					otherShape = true;
 				}
 			}
+			else if (element is ElementGrouping)
+			{
+				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteGroup | ORMDesignerCommands.DeleteAny;
+			}
 			else if (element is ModelNoteReferencesModelElement)
 			{
 				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteModelNoteReference | ORMDesignerCommands.DeleteAny;
@@ -915,6 +920,35 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				visibleCommands |= ORMDesignerCommands.SelectInDocumentWindow;
 				enabledCommands |= ORMDesignerCommands.SelectInDocumentWindow;
+			}
+			if (element is IFreeFormCommandProvider<Store>)
+			{
+				visibleCommands |= ORMDesignerCommands.FreeFormCommandList;
+				enabledCommands |= ORMDesignerCommands.FreeFormCommandList;
+			}
+			if (elementReference != null)
+			{
+				// Any element reference has essentially allows the same
+				// commands as the target, except that all deletion is redirected
+				// to the reference element, not the target.
+				visibleCommands &= ~(ORMDesignerCommands.Delete | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.DeleteShape | ORMDesignerCommands.DeleteAnyShape);
+				enabledCommands &= ~(ORMDesignerCommands.Delete | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.DeleteShape | ORMDesignerCommands.DeleteAnyShape);
+				if (elementReference is GroupingElementInclusion ||
+					elementReference is GroupingMembershipContradictionErrorIsForElement)
+				{
+					visibleCommands |= ORMDesignerCommands.RemoveFromGroup;
+					enabledCommands |= ORMDesignerCommands.RemoveFromGroup;
+				}
+				else if (elementReference is GroupingElementExclusion)
+				{
+					visibleCommands |= ORMDesignerCommands.IncludeInGroup;
+					enabledCommands |= ORMDesignerCommands.IncludeInGroup;
+				}
+			}
+			else if (!(presentationElement is Diagram))
+			{
+				visibleCommands |= ORMDesignerCommands.IncludeInNewGroup | ORMDesignerCommands.IncludeInGroupList | ORMDesignerCommands.DeleteFromGroupList;
+				enabledCommands |= ORMDesignerCommands.IncludeInNewGroup | ORMDesignerCommands.IncludeInGroupList | ORMDesignerCommands.DeleteFromGroupList;
 			}
 			// Turn on standard commands for all selections
 			visibleCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.CopyImage | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList | ORMDesignerCommands.ReportGeneratorList;
@@ -1261,7 +1295,210 @@ namespace Neumont.Tools.ORM.Shell
 						}
 					}
 				}
+				else if (commandFlag == ORMDesignerCommands.FreeFormCommandList)
+				{
+					if (isEnabled)
+					{
+						bool haveStatus = false;
+						foreach (object element in designerView.SelectedElements)
+						{
+							IFreeFormCommandProvider<Store> freeFormCommandProvider = element as IFreeFormCommandProvider<Store>;
+							if (freeFormCommandProvider != null)
+							{
+								int freeFormIndex = ((OleMenuCommand)command).MatchedCommandId;
+								Store store = designerView.Store;
+								if (freeFormIndex < freeFormCommandProvider.GetFreeFormCommandCount(store, freeFormCommandProvider))
+								{
+									freeFormCommandProvider.OnFreeFormCommandStatus(store, freeFormCommandProvider, command, freeFormIndex);
+									command.Supported = true; // Make sure this is turned on, or the dynamic menus do not work
+									haveStatus = true;
+								}
+							}
+							break;
+						}
+						if (!haveStatus)
+						{
+							command.Supported = false;
+						}
+					}
+				}
+				else if (commandFlag == ORMDesignerCommands.IncludeInGroupList)
+				{
+					// UNDONE: ModelBrowserMultiselect There is a single-select version of this in ORMModelBrowser.
+					// Share the implementations when the model browser is multiselect.
+					if (isEnabled)
+					{
+						ElementGrouping[] cachedGroupings = designerView.CommandManager.myIncludeInGroups;
+						if (cachedGroupings == null)
+						{
+							// Get the full set of groups, determine which ones support inclusion for
+							// all selected elements, and sort the results by group name.
+							ReadOnlyCollection<ElementGroupingSet> groupingSet = designerView.Store.ElementDirectory.FindElements<ElementGroupingSet>();
+							LinkedElementCollection<ElementGrouping> groupings = null;
+							int groupingCount = (groupingSet.Count == 0) ? 0 : (groupings = groupingSet[0].GroupingCollection).Count;
+							if (groupingCount == 0)
+							{
+								cachedGroupings = new ElementGrouping[0]; // Set this even for zero to indicate that we tried to get it
+							}
+							if (groupingCount != 0)
+							{
+								// Normalize the elements
+								IList selectedElementList = designerView.SelectedElements;
+								int selectedElementCount = selectedElementList.Count;
+								ModelElement[] normalizedElements = new ModelElement[selectedElementCount];
+								int normalizedIndex = 0;
+								for (int i = 0; i < selectedElementCount; ++i)
+								{
+									ModelElement normalizedElement = EditorUtility.ResolveContextInstance(selectedElementList[i], false) as ModelElement;
+									if (normalizedElement != null)
+									{
+										normalizedElements[normalizedIndex] = normalizedElement;
+										++normalizedIndex;
+									}
+								}
+								selectedElementCount -= selectedElementCount - normalizedIndex;
+								if (selectedElementCount == 0)
+								{
+									cachedGroupings = new ElementGrouping[0];
+								}
+								else
+								{
+									cachedGroupings = new ElementGrouping[groupingCount];
 
+									// Keep any group that can accept an add from at least one element
+									int allowedGroupingCount = 0;
+									for (int i = 0; i < groupingCount; ++i)
+									{
+										ElementGrouping grouping = groupings[i];
+										IList<ElementGroupingType> groupingTypes = grouping.GroupingTypeCollection;
+										for (int j = 0; j < selectedElementCount; ++j)
+										{
+											if (GroupingMembershipInclusion.AddAllowed == grouping.GetElementInclusion(normalizedElements[j], groupingTypes))
+											{
+												cachedGroupings[allowedGroupingCount] = grouping;
+												++allowedGroupingCount;
+												break;
+											}
+										}
+									}
+									if (allowedGroupingCount < groupingCount)
+									{
+										groupingCount = allowedGroupingCount;
+										Array.Resize<ElementGrouping>(ref cachedGroupings, groupingCount);
+									}
+									if (groupingCount > 1)
+									{
+										Array.Sort<ElementGrouping>(cachedGroupings, NamedElementComparer<ElementGrouping>.CurrentCulture);
+									}
+								}
+							}
+							designerView.CommandManager.myIncludeInGroups = cachedGroupings;
+						}
+
+						OleMenuCommand cmd = (OleMenuCommand)sender;
+						int groupIndex = cmd.MatchedCommandId;
+						if (groupIndex < cachedGroupings.Length)
+						{
+							cmd.Enabled = true;
+							cmd.Visible = true;
+							cmd.Supported = true;
+							cmd.Text = "&" + cachedGroupings[groupIndex].Name;
+						}
+						else
+						{
+							cmd.Supported = false;
+						}
+					}
+				}
+				else if (commandFlag == ORMDesignerCommands.DeleteFromGroupList)
+				{
+					// UNDONE: ModelBrowserMultiselect There is a single-select version of this in ORMModelBrowser.
+					// Share the implementations when the model browser is multiselect.
+					if (isEnabled)
+					{
+						ElementGrouping[] cachedGroupings = designerView.CommandManager.myDeleteFromGroups;
+						if (cachedGroupings == null)
+						{
+							// Get the full set of groups, determine which ones support removal for
+							// all selected elements, and sort the results by group name.
+							ReadOnlyCollection<ElementGroupingSet> groupingSet = designerView.Store.ElementDirectory.FindElements<ElementGroupingSet>();
+							LinkedElementCollection<ElementGrouping> groupings = null;
+							int groupingCount = (groupingSet.Count == 0) ? 0 : (groupings = groupingSet[0].GroupingCollection).Count;
+							if (groupingCount == 0)
+							{
+								cachedGroupings = new ElementGrouping[0]; // Set this even for zero to indicate that we tried to get it
+							}
+							if (groupingCount != 0)
+							{
+								// Normalize the elements
+								IList selectedElementList = designerView.SelectedElements;
+								int selectedElementCount = selectedElementList.Count;
+								ModelElement[] normalizedElements = new ModelElement[selectedElementCount];
+								int normalizedIndex = 0;
+								for (int i = 0; i < selectedElementCount; ++i)
+								{
+									ModelElement normalizedElement = EditorUtility.ResolveContextInstance(selectedElementList[i], false) as ModelElement;
+									if (normalizedElement != null)
+									{
+										normalizedElements[normalizedIndex] = normalizedElement;
+										++normalizedIndex;
+									}
+								}
+								selectedElementCount -= selectedElementCount - normalizedIndex;
+								if (selectedElementCount == 0)
+								{
+									cachedGroupings = new ElementGrouping[0];
+								}
+								else
+								{
+									cachedGroupings = new ElementGrouping[groupingCount];
+
+									// Keep any group that allows deletion for some element
+									int allowedGroupingCount = 0;
+									for (int i = 0; i < groupingCount; ++i)
+									{
+										ElementGrouping grouping = groupings[i];
+										for (int j = 0; j < selectedElementCount; ++j)
+										{
+											switch (grouping.GetMembershipType(normalizedElements[j]))
+											{
+												case GroupingMembershipType.Inclusion:
+												case GroupingMembershipType.Contradiction:
+													cachedGroupings[allowedGroupingCount] = grouping;
+													++allowedGroupingCount;
+													break;
+											}
+										}
+									}
+									if (allowedGroupingCount < groupingCount)
+									{
+										groupingCount = allowedGroupingCount;
+										Array.Resize<ElementGrouping>(ref cachedGroupings, groupingCount);
+									}
+									if (groupingCount > 1)
+									{
+										Array.Sort<ElementGrouping>(cachedGroupings, NamedElementComparer<ElementGrouping>.CurrentCulture);
+									}
+								}
+							}
+							designerView.CommandManager.myDeleteFromGroups = cachedGroupings;
+						}
+
+						OleMenuCommand cmd = (OleMenuCommand)sender;
+						int groupIndex = cmd.MatchedCommandId;
+						if (groupIndex < cachedGroupings.Length)
+						{
+							cmd.Enabled = true;
+							cmd.Visible = true;
+							cmd.Supported = true;
+							cmd.Text = "&" + cachedGroupings[groupIndex].Name;
+						}
+						else
+						{
+							cmd.Supported = false;
+						}
+					}
+				}
 				else if (commandFlag == ORMDesignerCommands.AddInternalUniqueness)
 				{
 					if (isEnabled)
@@ -1715,6 +1952,25 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		/// <summary>
+		/// Forward a free-form command to the currently selected element
+		/// </summary>
+		/// <param name="freeFormCommandIndex">The index of the freeform command</param>
+		public virtual void OnMenuFreeFormCommand(int freeFormCommandIndex)
+		{
+			IORMDesignerView view = myDesignerView;
+			Store store = view.Store;
+			foreach (object element in view.SelectedElements)
+			{
+				IFreeFormCommandProvider<Store> freeFormCommandProvider;
+				if (null != (freeFormCommandProvider = element as IFreeFormCommandProvider<Store>) &&
+					freeFormCommandIndex < freeFormCommandProvider.GetFreeFormCommandCount(store, freeFormCommandProvider))
+				{
+					freeFormCommandProvider.OnFreeFormCommandExecute(store, freeFormCommandProvider, freeFormCommandIndex);
+				}
+				break;
+			}
+		}
+		/// <summary>
 		/// Run the selected report generator
 		/// </summary>
 		public virtual void OnMenuGenerateReport(int reportGeneratorIndex)
@@ -2093,36 +2349,63 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Select the constraint as the ORDiagram's sticky object for editing.
 		/// </summary>
-		public virtual void OnMenuEditExternalConstraint()
+		public virtual void OnMenuEditRoleSequenceConstraint()
 		{
 			ORMDiagram ormDiagram;
-			ExternalConstraintShape ecs;
 			IORMDesignerView view = myDesignerView;
-			if (null != (ormDiagram = view.CurrentDiagram as ORMDiagram)
-				&& null != (ecs = view.SelectedElements[0] as ExternalConstraintShape))
+			object selectedElement;
+			if (null != (ormDiagram = view.CurrentDiagram as ORMDiagram))
 			{
-				IStickyObject sticky = ormDiagram.StickyObject;
-				if (sticky == null)
+				ExternalConstraintShape ecs;
+				DiagramView diagramView;
+				DiagramItem selectedDiagramItem;
+				FactTypeShape factTypeShape;
+				UniquenessConstraint iuc;
+				if (null != (ecs = (selectedElement = view.SelectedElements[0]) as ExternalConstraintShape))
 				{
-					ormDiagram.StickyObject = ecs;
+					IStickyObject sticky = ormDiagram.StickyObject;
+					if (sticky == null)
+					{
+						ormDiagram.StickyObject = ecs;
+					}
+					else
+					{
+						IConstraint constraint = ecs.AssociatedConstraint;
+						ExternalConstraintConnectAction connectAction = ormDiagram.ExternalConstraintConnectAction;
+						SetConstraint scec;
+						//SetComparisonConstraint mcec;
+						if (null != (scec = constraint as SetConstraint))
+						{
+							connectAction.ConstraintRoleSequenceToEdit = scec;
+						}
+						//else if (null != (mcec = constraint as SetComparisonConstraint))
+						//{
+						//}
+						if (!connectAction.IsActive)
+						{
+							connectAction.ChainMouseAction(ecs, (DiagramClientView)ormDiagram.ClientViews[0]);
+						}
+					}
 				}
-				else
+				else if (null != (iuc = selectedElement as UniquenessConstraint) &&
+					iuc.IsInternal &&
+					null != (diagramView = view.CurrentDesigner) &&
+					null != (selectedDiagramItem = diagramView.Selection.PrimaryItem) &&
+					null != (factTypeShape = selectedDiagramItem.Shape as FactTypeShape))
 				{
-					IConstraint constraint = ecs.AssociatedConstraint;
-					ExternalConstraintConnectAction connectAction = ormDiagram.ExternalConstraintConnectAction;
-					SetConstraint scec;
-					//SetComparisonConstraint mcec;
-					if (null != (scec = constraint as SetConstraint))
+					InternalUniquenessConstraintConnectAction iucca = ormDiagram.InternalUniquenessConstraintConnectAction;
+					FactTypeShape.ActiveInternalUniquenessConstraintConnectAction = iucca;
+					LinkedElementCollection<Role> constraintRoles = iuc.RoleCollection;
+					if (constraintRoles.Count != 0)
 					{
-						connectAction.ConstraintRoleSequenceToEdit = scec;
+						IList<Role> iuccaRoles = iucca.SelectedRoleCollection;
+						foreach (Role r in constraintRoles)
+						{
+							iuccaRoles.Add(r);
+						}
 					}
-					//else if (null != (mcec = constraint as SetComparisonConstraint))
-					//{
-					//}
-					if (!connectAction.IsActive)
-					{
-						connectAction.ChainMouseAction(ecs, (DiagramClientView)ormDiagram.ClientViews[0]);
-					}
+					factTypeShape.Invalidate(true);
+					iucca.ChainMouseAction(factTypeShape, iuc, view.CurrentDesigner.DiagramClientView);
 				}
 			}
 		}
@@ -3092,17 +3375,31 @@ namespace Neumont.Tools.ORM.Shell
 					MandatoryConstraint constraint = (pel != null) ? pel.Subject as MandatoryConstraint : mel as MandatoryConstraint;
 					if (constraint != null)
 					{
-						using (Transaction t = constraint.Store.TransactionManager.BeginTransaction(ResourceStrings.ExclusiveOrDecouplerTransactionName))
+						Store store = constraint.Store;
+						IORMToolServices toolServices = (IORMToolServices)store;
+						toolServices.AutomatedElementFilter += AutomatedExclusionConstraintFilter;
+						try
 						{
-							constraint.ExclusiveOrExclusionConstraint = null;
-							if (t.HasPendingChanges)
+							using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.ExclusiveOrDecouplerTransactionName))
 							{
-								t.Commit();
+								constraint.ExclusiveOrExclusionConstraint = null;
+								if (t.HasPendingChanges)
+								{
+									t.Commit();
+								}
 							}
+						}
+						finally
+						{
+							toolServices.AutomatedElementFilter -= AutomatedExclusionConstraintFilter;
 						}
 					}
 				}
 			}
+		}
+		private AutomatedElementDirective AutomatedExclusionConstraintFilter(ModelElement element)
+		{
+			return element is ExclusionConstraint ? AutomatedElementDirective.NeverIgnore : AutomatedElementDirective.None;
 		}
 		/// <summary>
 		/// Objectifies the selected fact type.
@@ -3258,6 +3555,112 @@ namespace Neumont.Tools.ORM.Shell
 					if (punkDocData != IntPtr.Zero)
 					{
 						Marshal.Release(punkDocData);
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Add selected items to a new group
+		/// </summary>
+		public virtual void OnMenuIncludeInNewGroup()
+		{
+			IORMDesignerView view;
+			Store store;
+			if (null != (view = myDesignerView) &&
+				null != (store = view.Store))
+			{
+				ElementGrouping grouping;
+				using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.ElementGroupingAddGroupTransactionName))
+				{
+					grouping = new ElementGrouping(store);
+					ReadOnlyCollection<ElementGroupingSet> groupingSets = store.ElementDirectory.FindElements<ElementGroupingSet>();
+					grouping.GroupingSet = (groupingSets.Count == 0) ? new ElementGroupingSet(store) : groupingSets[0];
+					foreach (object element in view.SelectedElements)
+					{
+						ModelElement normalizedElement = EditorUtility.ResolveContextInstance(element, false) as ModelElement;
+						if (null != normalizedElement)
+						{
+							new GroupingElementInclusion(grouping, normalizedElement);
+						}
+					}
+					t.Commit();
+				}
+				((IORMToolServices)store).NavigateTo(grouping, NavigateToWindow.ModelBrowser);
+			}
+		}
+		/// <summary>
+		/// Add selected items to the group at the specific index
+		/// </summary>
+		/// <param name="groupIndex">The offset of the group in the current set of available groups</param>
+		public virtual void OnMenuIncludeInGroupList(int groupIndex)
+		{
+			IORMDesignerView view;
+			Store store;
+			ElementGrouping[] eligibleGroups;
+			if (null != (eligibleGroups = myIncludeInGroups) &&
+				groupIndex < eligibleGroups.Length &&
+				null != (view = myDesignerView) &&
+				null != (store = view.Store))
+			{
+				ElementGrouping grouping = eligibleGroups[groupIndex];
+				IList<ElementGroupingType> groupingTypes = grouping.GroupingTypeCollection;
+				using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.ElementGroupingAddElementTransactionName))
+				{
+					foreach (object element in view.SelectedElements)
+					{
+						ModelElement normalizedElement = EditorUtility.ResolveContextInstance(element, false) as ModelElement;
+						if (normalizedElement != null &&
+							grouping.GetElementInclusion(normalizedElement, groupingTypes) == GroupingMembershipInclusion.AddAllowed)
+						{
+							GroupingElementExclusion exclusion = GroupingElementExclusion.GetLink(grouping, normalizedElement);
+							if (exclusion != null)
+							{
+								// Delete the exclusion. A rule will automatically determine
+								// if this turns into a new inclusion or a contradiction.
+								exclusion.Delete();
+							}
+							else
+							{
+								new GroupingElementInclusion(grouping, normalizedElement);
+							}
+						}
+					}
+					if (t.HasPendingChanges)
+					{
+						t.Commit();
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Remove selected items from the group at the specified index
+		/// </summary>
+		/// <param name="groupIndex">The offset of the group in the current set of current groups</param>
+		public virtual void OnMenuDeleteFromGroupList(int groupIndex)
+		{
+			IORMDesignerView view;
+			Store store;
+			ElementGrouping[] eligibleGroups;
+			if (null != (eligibleGroups = myDeleteFromGroups) &&
+				groupIndex < eligibleGroups.Length &&
+				null != (view = myDesignerView) &&
+				null != (store = view.Store))
+			{
+				ElementGrouping grouping = eligibleGroups[groupIndex];
+				using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.CommandDeleteFromGroupText.Replace("&", "")))
+				{
+					IList<ElementGroupingType> groupingTypes = grouping.GroupingTypeCollection;
+					foreach (object element in view.SelectedElements)
+					{
+						ModelElement normalizedElement = EditorUtility.ResolveContextInstance(element, false) as ModelElement;
+						if (normalizedElement != null)
+						{
+							grouping.RemoveGroupedElement(normalizedElement, groupingTypes);
+						}
+					}
+					if (t.HasPendingChanges)
+					{
+						t.Commit();
 					}
 				}
 			}

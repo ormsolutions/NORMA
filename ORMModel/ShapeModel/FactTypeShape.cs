@@ -42,7 +42,7 @@ using Neumont.Tools.Modeling.Diagrams;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	#region FactTypeShape class
-	public partial class FactTypeShape : ICustomShapeFolding, IModelErrorActivation, IProvideConnectorShape, IProxyDisplayProvider, IConfigureAsChildShape
+	public partial class FactTypeShape : ICustomShapeFolding, IModelErrorActivation, IProvideConnectorShape, IProxyDisplayProvider, IConfigureAsChildShape, IDynamicColorGeometryHost
 	{
 		#region ConstraintBoxRoleActivity enum
 		/// <summary>
@@ -1679,6 +1679,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				StyleSet styleSet = factShape.StyleSet;
 				Pen alethicConstraintPen = styleSet.GetPen(InternalFactConstraintPen);
 				Pen deonticConstraintPen = styleSet.GetPen(DeonticInternalFactConstraintPen);
+				IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, IConstraint>[] dynamicColorProviders = ((IFrameworkServices)parentShape.Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, IConstraint>>();
 				float gap = alethicConstraintPen.Width;
 				ConstraintAttachPosition attachPosition = AttachPosition;
 				ConstraintDisplayPosition position = factShape.DisplayPositionFromAttachPosition(attachPosition);
@@ -1705,7 +1706,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 						Color startColor = constraintPen.Color;
 						DashStyle startDashStyle = constraintPen.DashStyle;
 
-
 						if (isInternalConstraint)
 						{
 							//test if constraint is valid and apply appropriate pen
@@ -1722,6 +1722,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						// Draw active constraint highlight
 						bool isHighlighted = false;
 						bool isSticky = false;
+						bool checkDynamicColor = dynamicColorProviders != null;
 						if (isInternalConstraint)
 						{
 							InternalUniquenessConstraintConnectAction activeInternalAction = ActiveInternalUniquenessConstraintConnectAction;
@@ -1732,6 +1733,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 								if (activeInternalConstraint == targetConstraint)
 								{
 									isSticky = true;
+									checkDynamicColor = false;
 									constraintPen.Color = diagramStyleSet.GetPen(ORMDiagram.StickyForegroundResource).Color;
 								}
 							}
@@ -1742,7 +1744,22 @@ namespace Neumont.Tools.ORM.ShapeModel
 							if (externalConstraintShape != null &&
 								externalConstraintShape.AssociatedConstraint == currentConstraint)
 							{
+								checkDynamicColor = false;
 								constraintPen.Color = diagramStyleSet.GetPen(ORMDiagram.StickyBackgroundResource).Color;
+							}
+						}
+
+						if (checkDynamicColor)
+						{
+							ORMDiagramDynamicColor requestColor = isDeontic ? ORMDiagramDynamicColor.DeonticConstraint : ORMDiagramDynamicColor.Constraint;
+							for (int i = 0; i < dynamicColorProviders.Length; ++i)
+							{
+								Color alternateColor = dynamicColorProviders[i].GetDynamicColor(requestColor, factShape, currentConstraint);
+								if (alternateColor != Color.Empty)
+								{
+									constraintPen.Color = alternateColor;
+									break;
+								}
 							}
 						}
 
@@ -1782,7 +1799,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							FactType factType;
 							if (isHighlighted || isSticky || ModelError.HasErrors(factType = factShape.AssociatedFactType, ModelErrorUses.DisplayPrimary, factType.Model.ModelErrorDisplayFilter))
 							{
-								factShape.DrawHighlight(g, boundsF, isSticky, factShapeHighlighted || isHighlighted);
+								factShape.DrawHighlight(g, boundsF, isSticky ? null : factShape.BackgroundBrushId, null, isSticky, factShapeHighlighted || isHighlighted);
 							}
 						}
 
@@ -2396,7 +2413,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 					float verticalLineTop = top + (float)margin;
 					StyleSet styleSet = parentShape.StyleSet;
-					Pen pen = styleSet.GetPen(FactTypeShape.RoleBoxResource);
 					int activeRoleIndex;
 					ExternalConstraintConnectAction activeExternalAction = ActiveExternalConstraintConnectAction;
 					UniquenessConstraint activeInternalUniqueness = null;
@@ -2421,11 +2437,19 @@ namespace Neumont.Tools.ORM.ShapeModel
 					Brush constraintSequenceBrush = null;
 					bool highlightThisRole = false;
 					bool reverseRoleOrder = orientation == DisplayOrientation.VerticalRotatedLeft;
+					StyleSetResourceId roleBoxPenId = FactTypeShape.RoleBoxResource;
+					Pen roleBoxPen = styleSet.GetPen(roleBoxPenId);
+					Color restoreRoleBoxPenColor = Color.Empty;
 					try
 					{
+						restoreRoleBoxPenColor = parentFactShape.UpdateDynamicColor(roleBoxPenId, roleBoxPen);
 						Role impliedUnaryRole = (roleCount == 1) ? impliedUnaryRole = roles[0].OppositeRole.Role : null;
 						for (int i = 0; i < roleCount; ++i)
 						{
+							StyleSetResourceId backgroundFillResourceId = null;
+							bool fillBackground = true;
+							bool backgroundSticky = false;
+							bool backgroundHighlighted = false;
 							RectangleF roleBounds = drawHorizontal ?
 								new RectangleF((float)lastX, top, (float)offsetBy, height) :
 								new RectangleF(top, (float)lastX, height, (float)offsetBy);
@@ -2433,17 +2457,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 							RoleBase currentRoleBase = roles[iRole];
 							Role currentRole = currentRoleBase.Role;
 							highlightThisRole = factShapeHighlighted || iRole == highlightRoleBox;
-
-							Brush roleCenterBrush;
-							if (ModelError.HasErrors(currentRoleBase, ModelErrorUses.DisplayPrimary, factType.Model.ModelErrorDisplayFilter))
-							{
-								roleCenterBrush = styleSet.GetBrush(ORMDiagram.ErrorBackgroundResource);
-							}
-							else
-							{
-								roleCenterBrush = parentShape.ParentShape.StyleSet.GetBrush(DiagramBrushes.DiagramBackground);
-							}
-							g.FillRectangle(roleCenterBrush, roleBounds.Left, roleBounds.Top, roleBounds.Width, roleBounds.Height);
 
 							// There is an active ExternalConstraintConnectAction, and this role is currently in the action's role set.
 							if ((activeExternalAction != null &&
@@ -2453,6 +2466,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							{
 								// There is an active ExternalConstraintConnectAction, and this role is currently in the action's role set.
 								DrawHighlight(g, styleSet, roleBounds, highlightThisRole);
+								fillBackground = false;
 								if (stringFormat == null)
 								{
 									stringFormat = new StringFormat();
@@ -2492,19 +2506,20 @@ namespace Neumont.Tools.ORM.ShapeModel
 							else if (activeInternalUniqueness != null &&
 								(activeInternalUniquenessRoles ?? (activeInternalUniquenessRoles = activeInternalUniqueness.RoleCollection)).Contains(currentRole))
 							{
-								parentFactShape.DrawHighlight(g, roleBounds, true, highlightThisRole);
+								backgroundSticky = true;
+								backgroundHighlighted = highlightThisRole;
 							}
-							else if (null != currentDiagram)
+							else
 							{
-								// Current diagram is an ORMDiagram.
 								#region Handling StickyObject highlighting and selection
 								ExternalConstraintShape stickyConstraintShape;
 								IStickyObject stickyObject;
 								IConstraint stickyConstraint;
-								// The active StickyObject for the diagram is an ExternalConstraintShape
-								if (null != (stickyConstraintShape = (stickyObject = currentDiagram.StickyObject) as ExternalConstraintShape)
+								if (currentDiagram != null &&
+									null != (stickyConstraintShape = (stickyObject = currentDiagram.StickyObject) as ExternalConstraintShape)
 									&& null != (stickyConstraint = stickyConstraintShape.AssociatedConstraint))
 								{
+									// The active StickyObject for the diagram is an ExternalConstraintShape
 									// If the role is selectedable as part of the sticky object then it is part
 									// of the currently selected constraint.
 									if (stickyObject.StickySelectable(currentRole))
@@ -2513,13 +2528,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 											impliedUnaryRole :
 											currentRole;
 										// We need to find out if this role is in one of the role sequences being edited, or if it's just selected.
-										parentFactShape.DrawHighlight(g, roleBounds, true, highlightThisRole);
+										backgroundHighlighted = highlightThisRole;
 										SetComparisonConstraint mcec;
 										SetConstraint scec;
 										string indexString = null;
 
 										if (activeExternalAction == null || !activeExternalAction.InitialRoles.Contains(currentRole))
 										{
+											backgroundSticky = true;
 											if (null != (mcec = stickyConstraint as SetComparisonConstraint))
 											{
 												LinkedElementCollection<SetComparisonConstraintRoleSequence> sequenceCollection = mcec.RoleSequenceCollection;
@@ -2553,6 +2569,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 
 											if ((object)indexString != null)
 											{
+												parentFactShape.DrawHighlight(g, roleBounds, null, currentRole, true, highlightThisRole);
+												fillBackground = false;
 												if (stringFormat == null)
 												{
 													stringFormat = new StringFormat();
@@ -2590,23 +2608,30 @@ namespace Neumont.Tools.ORM.ShapeModel
 											}
 										}
 									}
-									else if (highlightThisRole)
-									{
-										parentFactShape.DrawHighlight(g, roleBounds, false, true);
-									}
 								}
 								#endregion // Handling StickyObject highlighting and selection
-								else if (highlightThisRole)
+								if (fillBackground)
 								{
-									if (ModelError.HasErrors(currentRoleBase, ModelErrorUses.DisplayPrimary, factType.Model.ModelErrorDisplayFilter))
+									if (highlightThisRole)
 									{
-										g.FillRectangle(styleSet.GetBrush(ORMDiagram.HighlightedErrorBackgroundResource), roleBounds);
+										if (ModelError.HasErrors(currentRoleBase, ModelErrorUses.DisplayPrimary, factType.Model.ModelErrorDisplayFilter))
+										{
+											backgroundFillResourceId = ORMDiagram.HighlightedErrorBackgroundResource;
+										}
+										else
+										{
+											backgroundHighlighted = true;
+										}
 									}
-									else
+									else if (ModelError.HasErrors(currentRoleBase, ModelErrorUses.DisplayPrimary, factType.Model.ModelErrorDisplayFilter))
 									{
-										parentFactShape.DrawHighlight(g, roleBounds, false, true);
+										backgroundFillResourceId = ORMDiagram.ErrorBackgroundResource;
 									}
 								}
+							}
+							if (fillBackground)
+							{
+								parentFactShape.DrawHighlight(g, roleBounds, backgroundFillResourceId, currentRole, backgroundSticky, backgroundHighlighted);
 							}
 
 							// Draw a selection rectangle if needed
@@ -2635,15 +2660,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 							{
 								if (drawHorizontal)
 								{
-									g.DrawLine(pen, (float)lastX, verticalLineTop, (float)lastX, verticalLineBottom);
+									g.DrawLine(roleBoxPen, (float)lastX, verticalLineTop, (float)lastX, verticalLineBottom);
 								}
 								else
 								{
-									g.DrawLine(pen, verticalLineTop, (float)lastX, verticalLineBottom, (float)lastX);
+									g.DrawLine(roleBoxPen, verticalLineTop, (float)lastX, verticalLineBottom, (float)lastX);
 								}
 							}
 							lastX += offsetBy;
 						}
+						// Draw the outside border of the role boxes
+						g.DrawRectangle(roleBoxPen, (float)bounds.Left, (float)bounds.Top, (float)bounds.Width, (float)bounds.Height);
 					}
 					finally
 					{
@@ -2659,9 +2686,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 						{
 							connectActionFont.Dispose();
 						}
+						if (!restoreRoleBoxPenColor.IsEmpty)
+						{
+							roleBoxPen.Color = restoreRoleBoxPenColor;
+						}
 					}
-					// Draw the outside border of the role boxes
-					g.DrawRectangle(pen, (float)bounds.Left, (float)bounds.Top, (float)bounds.Width, (float)bounds.Height);
 				}
 			}
 			/// <summary>
@@ -2947,35 +2976,71 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		/// <param name="g">The Graphics object to draw to.</param>
 		/// <param name="bounds">The bounds of the highlight to draw.</param>
+		/// <param name="brushResourceId">The <see cref="StyleSetResourceId"/> for the brush.
+		/// Defaults are used if this is null.</param>
+		/// <param name="drawingRole">The role being drawn. If this is set and dynamic colors are
+		/// available for the role, then the role dynamic colors are used instead of the shapes background
+		/// dynamic colors.</param>
 		/// <param name="isStuck">Bool indicating if the object to draw the highlight on
 		/// is currently the "sticky" object.</param>
 		/// <param name="isHighlighted">Bool indicating if object should be drawn highlighted.</param>
-		protected void DrawHighlight(Graphics g, RectangleF bounds, bool isStuck, bool isHighlighted)
+		protected void DrawHighlight(Graphics g, RectangleF bounds, StyleSetResourceId brushResourceId, RoleBase drawingRole, bool isStuck, bool isHighlighted)
 		{
-			Brush brush;
-			if (isStuck)
+			Brush brush = null;
+			bool testRoleDynamicColor = false;
+			if (brushResourceId == null && !isStuck)
 			{
-				brush = Diagram.StyleSet.GetBrush(ORMDiagram.StickyBackgroundResource);
+				testRoleDynamicColor = drawingRole != null;
+				brushResourceId = DiagramBrushes.ShapeBackground;
 			}
-			else
+			else if (isStuck)
 			{
-				brush = StyleSet.GetBrush(DiagramBrushes.ShapeBackground);
+				brush = Diagram.StyleSet.GetBrush(brushResourceId = ORMDiagram.StickyBackgroundResource);
 			}
-			Color startColor = default(Color);
-			SolidBrush coloredBrush = null;
-			if (!SystemInformation.HighContrast && isHighlighted)
+			if (brush == null)
 			{
-				coloredBrush = brush as SolidBrush;
+				brush = StyleSet.GetBrush(brushResourceId);
+			}
+			SolidBrush coloredBrush = brush as SolidBrush;
+			Color restoreColor = Color.Empty;
+			if (testRoleDynamicColor)
+			{
 				if (coloredBrush != null)
 				{
-					startColor = coloredBrush.Color;
-					coloredBrush.Color = ORMDiagram.ModifyLuminosity(coloredBrush.Color);
+					IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, RoleBase>[] roleDynamicColorProviders = ((IFrameworkServices)drawingRole.Store).GetTypedDomainModelProviders <IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, RoleBase>>();
+					if (roleDynamicColorProviders != null)
+					{
+						for (int i = 0; i < roleDynamicColorProviders.Length; ++i)
+						{
+							Color dynamicColor = roleDynamicColorProviders[i].GetDynamicColor(ORMDiagramDynamicColor.Background, this, drawingRole);
+							if (!dynamicColor.IsEmpty)
+							{
+								restoreColor = coloredBrush.Color;
+								coloredBrush.Color = dynamicColor;
+								break;
+							}
+						}
+					}
 				}
 			}
-			g.FillRectangle(brush, bounds);
-			if (coloredBrush != null)
+			if (restoreColor.IsEmpty)
 			{
-				coloredBrush.Color = startColor;
+				restoreColor = UpdateDynamicColor(brushResourceId, brush);
+			}
+			if (!SystemInformation.HighContrast &&
+				isHighlighted &&
+				coloredBrush != null)
+			{
+				if (restoreColor.IsEmpty)
+				{
+					restoreColor = coloredBrush.Color;
+				}
+				coloredBrush.Color = ORMDiagram.ModifyLuminosity(coloredBrush.Color);
+			}
+			g.FillRectangle(brush, bounds);
+			if (!restoreColor.IsEmpty && coloredBrush != null)
+			{
+				coloredBrush.Color = restoreColor;
 			}
 		}
 		/// <summary>
@@ -3330,7 +3395,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 									RolePlayerLink rolePlayerLink = connection.Link as RolePlayerLink;
 									if (rolePlayerLink != null)
 									{
-										rolePlayerLink.InvalidateRequired(true);
+										((IInvalidateDisplay)rolePlayerLink).InvalidateRequired(true);
 									}
 								}
 							}
@@ -4252,6 +4317,69 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return ElementDisplayedAs(element, forError);
 		}
 		#endregion // IProxyDisplayProvider Implementation
+		#region IDynamicColorGeometryHost Implementation
+		/// <summary>
+		/// Implements <see cref="IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId,Pen)"/>
+		/// </summary>
+		protected Color UpdateDynamicColor(StyleSetResourceId penId, Pen pen)
+		{
+			Color retVal = Color.Empty;
+			IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, FactType>[] providers;
+			bool isRoleBox;
+			if (((isRoleBox = penId == RoleBoxResource) ||
+				penId == DiagramPens.ShapeOutline) &&
+				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, FactType>>()))
+			{
+				FactType element = (FactType)ModelElement;
+				ORMDiagramDynamicColor requestColor = isRoleBox ? ORMDiagramDynamicColor.ForegroundGraphics : ORMDiagramDynamicColor.Outline;
+				for (int i = 0; i < providers.Length; ++i)
+				{
+					Color alternateColor = providers[i].GetDynamicColor(requestColor, this, element);
+					if (alternateColor != Color.Empty)
+					{
+						retVal = pen.Color;
+						pen.Color = alternateColor;
+						break;
+					}
+				}
+			}
+			return retVal;
+		}
+		Color IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId penId, Pen pen)
+		{
+			return UpdateDynamicColor(penId, pen);
+		}
+		/// <summary>
+		/// Implements <see cref="IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId,Brush)"/>
+		/// </summary>
+		protected Color UpdateDynamicColor(StyleSetResourceId brushId, Brush brush)
+		{
+			Color retVal = Color.Empty;
+			SolidBrush solidBrush;
+			IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, FactType>[] providers;
+			if ((brushId == DiagramBrushes.DiagramBackground || brushId == DiagramBrushes.ShapeBackground) &&
+				null != (solidBrush = brush as SolidBrush) &&
+				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, FactType>>()))
+			{
+				FactType element = (FactType)ModelElement;
+				for (int i = 0; i < providers.Length; ++i)
+				{
+					Color alternateColor = providers[i].GetDynamicColor(ORMDiagramDynamicColor.Background, this, element);
+					if (alternateColor != Color.Empty)
+					{
+						retVal = solidBrush.Color;
+						solidBrush.Color = alternateColor;
+						break;
+					}
+				}
+			}
+			return retVal;
+		}
+		Color IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId brushId, Brush brush)
+		{
+			return UpdateDynamicColor(brushId, brush);
+		}
+		#endregion // IDynamicColorGeometryHost Implementation
 		#region Mouse handling
 		/// <summary>
 		/// Attempt model error activation
