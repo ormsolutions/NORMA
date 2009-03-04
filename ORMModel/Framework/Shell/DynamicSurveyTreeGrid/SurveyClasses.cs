@@ -602,6 +602,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 				myReferenceDictionary.TryGetValue(element, out headLinkNode))
 			{
 				LinkedNode<SurveyNodeReference> linkNode = headLinkNode;
+				LinkedNode<SurveyNodeReference> startHeadLinkNode = headLinkNode;
 				while (linkNode != null)
 				{
 					SurveyNodeReference link = linkNode.Value;
@@ -627,6 +628,10 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 							myNodeDictionary.Remove(element);
 						}
 					}
+				}
+				else if (startHeadLinkNode != headLinkNode)
+				{
+					myReferenceDictionary[element] = headLinkNode;
 				}
 			}
 		}

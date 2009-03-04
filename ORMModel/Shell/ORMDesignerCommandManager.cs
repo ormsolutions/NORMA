@@ -1460,13 +1460,22 @@ namespace Neumont.Tools.ORM.Shell
 										ElementGrouping grouping = groupings[i];
 										for (int j = 0; j < selectedElementCount; ++j)
 										{
+											bool allowGroupDeletion;
 											switch (grouping.GetMembershipType(normalizedElements[j]))
 											{
 												case GroupingMembershipType.Inclusion:
 												case GroupingMembershipType.Contradiction:
-													cachedGroupings[allowedGroupingCount] = grouping;
-													++allowedGroupingCount;
+													allowGroupDeletion = true;
 													break;
+												default:
+													allowGroupDeletion = false;
+													break;
+											}
+											if (allowGroupDeletion)
+											{
+												cachedGroupings[allowedGroupingCount] = grouping;
+												++allowedGroupingCount;
+												break;
 											}
 										}
 									}
