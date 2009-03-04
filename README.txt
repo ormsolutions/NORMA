@@ -20,10 +20,10 @@ Microsoft Visual Studio SDK
 
 Additional components used by other portions of this software include:
 
-Windows Installer XML (WiX) toolset (v3.0 or later)
+Windows Installer XML (WiX) toolset (v3.0 or later, tested successfully through 4318, 4805 had issues with build property redefinitions)
 	Homepage: http://wix.sourceforge.net
 
-NUnit (v2.2.9 or later)
+NUnit (v2.4.7 or later)
 	Homepage: http://www.nunit.org
 	Download: http://www.nunit.org/index.php?p=download
 
@@ -52,5 +52,27 @@ Several build scripts are available for building common combinations of the NORM
 	BuildAll.bat - Main, Help, Setup, Tests
 	FirstTimeBuildAll.bat - DevTools, Main, Help, Setup, Tests
 
-To set the version of Visual Studio that NORMA is being built for, use the TargetVisualStudioVersion environment variable.
-See the comments in SetupEnvironment.bat for the options that are available.
+To set the version of Visual Studio that NORMA is being built for, use the TargetVisualStudioVersion environment variable. The two supported values are:
+SET TargetVisualStudioVersion=v8.0
+SET TargetVisualStudioVersion=v9.0
+
+See the comments in SetupEnvironment.bat for additional details on how the options are used.
+
+Notes on building and debugging with VS2008:
+The project files (.csproj, etc) are multitargeted to work correctly in either Visual Studio 2005 or 2008. However, the solution files (.sln) have slightly different formats in VS2005 and VS2008. If you open a VS2005 solution file in VS2008 then you will be prompted to upgrade. *.VS2008.sln files are provided as companions to all *.sln files for use in VS2008. However, the *.VS2008.sln files are not sufficient for successfully building in VS2008.
+
+You must set the TargetVisualStudioVersion to v9.0 to successfully target VS2008 from the VS2008 IDE. The easiest way to do this is to (after the initial batch files mentioned above have completed successfully) is with the following steps. You may want to put these steps into an easily accessible batch file.
+1) Open a Visual Studio 2008 Command Prompt
+2) SET TargetVisualStudioVersion=v9.0
+3) Navigate to your NORMA root code directory
+4) devenv ORMPackage.VS2008.sln
+
+To build from the command line for VS2008:
+1) Open a 'Visual Studio 2008 Command Prompt'
+2) Navigate to your NORMA root code directory
+3) Choose one of the batch files mentioned above, using the batch file ending in VS2008.bat (BuildVS2008.bat, etc)
+
+After getting a new drop, we recommend you use 'Build /t:Rebuild' (or BuildVS2008 /t:Rebuild) to update your files.
+
+You can build the VS2005 pieces using a VS2008 SDK installation (plus a handful of files) by defining the TargetVisualStudioVersion=v8.0 environment variable before running a *VS2008 batch file. The exact details of this approach are still being worked out, but you should only need to do this if you are building installation packages.
+

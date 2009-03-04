@@ -1,7 +1,12 @@
 @ECHO OFF
 SETLOCAL
 SET RootDir=%~dp0.
-SET TargetVisualStudioVersion=v9.0
+
+IF "%TargetVisualStudioVersion%"=="v8.0" (
+	SET DegradeToolsVersion=/toolsversion:2.0
+) ELSE (
+	SET TargetVisualStudioVersion=v9.0
+)
 
 REG QUERY "HKLM\Software\Microsoft\VisualStudio\9.0Exp" /v ApplicationID 1>NUL 2>&1
 IF ERRORLEVEL 1 (CALL:_SetupExpHive)
@@ -10,8 +15,8 @@ IF ERRORLEVEL 1 (ECHO Could not find experimental registry hive for Visual Studi
 
 CALL "%RootDir%\SetupEnvironment.bat" %*
 
-CALL "%RootDir%\BuildDevTools.bat" %* /consoleloggerparameters:DisableMPLogging /toolsversion:3.5
-CALL "%RootDir%\Build.bat" %* /consoleloggerparameters:DisableMPLogging /toolsversion:3.5
+CALL "%RootDir%\BuildDevTools.bat" %* /consoleloggerparameters:DisableMPLogging %DegradeToolsVersion%
+CALL "%RootDir%\Build.bat" %* /consoleloggerparameters:DisableMPLogging %DegradeToolsVersion%
 
 ECHO.
 ECHO Running 'devenv.exe /RootSuffix "%VSRegistryRootSuffix%" /Setup'... This may take a few minutes...

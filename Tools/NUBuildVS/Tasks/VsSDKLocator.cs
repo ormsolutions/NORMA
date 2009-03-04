@@ -74,6 +74,20 @@ namespace Neumont.Build.Tasks
 								installDir = requestedVersionRegistryKey.GetValue(VsSdkInstallDirRegistryValue, null) as string;
 								log.LogMessage(MessageImportance.Low, "Using Visual Studio SDK installation directory from registry for version \"{0}\": \"{1}\"", requestedVersionSubKeyName, installDir);
 							}
+							else if (requestedVersionSubKeyName == "8.0")
+							{
+								// Fallback on the 9.0 SDK, enabling a VS2005 build with a 2008SDK install
+								// and minimal additional files.
+								requestedVersionSubKeyName = "9.0";
+								using (RegistryKey requestedVersionRegistryKeyFallback = vsipRegistryKey.OpenSubKey(requestedVersionSubKeyName, RegistryKeyPermissionCheck.ReadSubTree))
+								{
+									if (requestedVersionRegistryKeyFallback != null)
+									{
+										installDir = requestedVersionRegistryKeyFallback.GetValue(VsSdkInstallDirRegistryValue, null) as string;
+										log.LogMessage(MessageImportance.Low, "Using Visual Studio SDK installation directory from registry for version \"{0}\": \"{1}\"", requestedVersionSubKeyName, installDir);
+									}
+								}
+							}
 						}
 					}
 				}

@@ -37,7 +37,11 @@ IF NOT DEFINED VSRegistryRoot (SET VSRegistryRoot=%VSRegistryRootBase%\%VSRegist
 CALL "%TrunkDir%\SetFromRegistry.bat" "VSEnvironmentPath" "HKLM\%VSRegistryRoot%\Setup\VS" "EnvironmentPath" "f"
 CALL "%TrunkDir%\SetFromRegistry.bat" "VSDir" "HKLM\%VSRegistryRoot%\Setup\VS" "ProductDir" "f"
 CALL "%TrunkDir%\SetFromRegistry.bat" "VSItemTemplatesDir" "HKLM\%VSRegistryRoot%\VSTemplate\Item" "UserFolder" "f"
+IF ERRORLEVEL 1 %COMSPEC% /c
+
 CALL "%TrunkDir%\SetFromRegistry.bat" "VSIPDir" "HKLM\%VSRegistryRootBase%\VSIP\%VSRegistryRootVersion%" "InstallDir" "f"
+:: Fallback, enable building 8.0 without an 8.0 installation
+CALL "%TrunkDir%\SetFromRegistry.bat" "VSIPDir" "HKLM\%VSRegistryRootBase%\VSIP\9.0" "InstallDir" "f"
 IF NOT DEFINED RegPkg (SET RegPkg="%VSIPDir%\VisualStudioIntegration\Tools\Bin\regpkg.exe" /root:"%VSRegistryRoot%")
 
 GOTO:EOF

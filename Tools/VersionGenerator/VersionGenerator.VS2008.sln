@@ -1,0 +1,17 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionGenerator", "VersionGenerator.csproj", "{08A86751-1C54-44E4-9402-E1A3AD1DF15B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		VersionGenerator|Any CPU = VersionGenerator|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{08A86751-1C54-44E4-9402-E1A3AD1DF15B}.VersionGenerator|Any CPU.ActiveCfg = VersionGenerator|Any CPU
+		{08A86751-1C54-44E4-9402-E1A3AD1DF15B}.VersionGenerator|Any CPU.Build.0 = VersionGenerator|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

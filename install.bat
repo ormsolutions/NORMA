@@ -10,9 +10,11 @@ CALL:_CleanupFile "%NORMADir%\bin\Neumont.Tools.ORM.pdb"
 CALL:_CleanupFile "%NORMADir%\bin\Neumont.Tools.ORM.xml"
 
 SET TargetBaseName=Neumont.Tools.ORM.%TargetVisualStudioShortProductName%
-IF EXIST "%NORMADir%\bin\%TargetBaseName%.dll" (%RegPkg% /unregister "%NORMADir%\bin\%TargetBaseName%.dll")
+if EXIST "%VSDir%" (
+	IF EXIST "%NORMADir%\bin\%TargetBaseName%.dll" (%RegPkg% /unregister "%NORMADir%\bin\%TargetBaseName%.dll")
 
-IF NOT EXIST "%NORMADir%" (SET RunDevEnvSetup=True)
+	IF NOT EXIST "%NORMADir%" (SET RunDevEnvSetup=True)
+)
 
 CALL:_MakeDir "%NORMADir%\bin"
 CALL:_RemoveDir "%NORMADir%\bin\1033"
@@ -35,9 +37,11 @@ XCOPY /Y /D /V /Q "%RootDir%\ORMModel\%BuildOutDir%\%TargetBaseName%.pdb" "%NORM
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\%BuildOutDir%\%TargetBaseName%.xml" "%NORMADir%\bin\"
 CALL:_CleanupFile "%NORMADir%\bin\1033\Neumont.Tools.ORMUI.dll"
 
-FOR %%A IN ("%RootDir%\ORMModel\Shell\ProjectItems\*.zip") DO ECHO F | XCOPY /Y /D /V /Q "%%~fA" "%VSItemTemplatesDir%\%%~nA\ORMModel.zip"
-FOR %%A IN ("%RootDir%\ORMModel\Shell\ProjectItems\Web\*.zip") DO ECHO F | XCOPY /Y /D /V /Q "%%~fA" "%VSItemTemplatesDir%\Web\%%~nA\ORMModel.zip"
-FOR %%A IN ("%RootDir%\ORMModel\Shell\ProjectItems\%TargetVisualStudioShortProductName%\*.zip") DO ECHO F | XCOPY /Y /D /V /Q "%%~fA" "%VSItemTemplatesDir%\%%~nA\ORMModel.zip"
+if EXIST "%VSItemTemplatesDir%" (
+	FOR %%A IN ("%RootDir%\ORMModel\Shell\ProjectItems\*.zip") DO ECHO F | XCOPY /Y /D /V /Q "%%~fA" "%VSItemTemplatesDir%\%%~nA\ORMModel.zip"
+	FOR %%A IN ("%RootDir%\ORMModel\Shell\ProjectItems\Web\*.zip") DO ECHO F | XCOPY /Y /D /V /Q "%%~fA" "%VSItemTemplatesDir%\Web\%%~nA\ORMModel.zip"
+	FOR %%A IN ("%RootDir%\ORMModel\Shell\ProjectItems\%TargetVisualStudioShortProductName%\*.zip") DO ECHO F | XCOPY /Y /D /V /Q "%%~fA" "%VSItemTemplatesDir%\%%~nA\ORMModel.zip"
+)
 
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\ObjectModel\ORM2Core.xsd" "%ORMDir%\Schemas\"
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\ShapeModel\ORM2Diagram.xsd" "%ORMDir%\Schemas\"
@@ -93,52 +97,53 @@ XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DCIL.xsd" "%DILDir%\Schemas\"
 XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DDIL.xsd" "%DILDir%\Schemas\"
 XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\catalog.xml" "%DILDir%\Schemas\"
 
-ECHO F | XCOPY /Y /D /V /Q "%RootDir%\Setup\NORMASchemaCatalog.%TargetVisualStudioShortProductName%.xml" "%VSDir%\Xml\Schemas\NORMASchemaCatalog.xml"
-XCOPY /Y /D /V /Q "%RootDir%\Setup\ORMSchemaCatalog.xml" "%VSDir%\Xml\Schemas\"
-XCOPY /Y /D /V /Q "%RootDir%\Setup\DILSchemaCatalog.xml" "%VSDir%\Xml\Schemas\"
+if EXIST "%VSDir%" (
+	ECHO F | XCOPY /Y /D /V /Q "%RootDir%\Setup\NORMASchemaCatalog.%TargetVisualStudioShortProductName%.xml" "%VSDir%\Xml\Schemas\NORMASchemaCatalog.xml"
+	XCOPY /Y /D /V /Q "%RootDir%\Setup\ORMSchemaCatalog.xml" "%VSDir%\Xml\Schemas\"
+	XCOPY /Y /D /V /Q "%RootDir%\Setup\DILSchemaCatalog.xml" "%VSDir%\Xml\Schemas\"
+	%RegPkg% "%NORMADir%\bin\%TargetBaseName%.dll"
 
-%RegPkg% "%NORMADir%\bin\%TargetBaseName%.dll"
+	REG DELETE "HKLM\%VSRegistryRoot%\InstalledProducts\Neumont ORM Architect" /v "UseRegNameAsSplashName" /f 1>NUL
 
-REG DELETE "HKLM\%VSRegistryRoot%\InstalledProducts\Neumont ORM Architect" /v "UseRegNameAsSplashName" /f 1>NUL
+	:: Get rid of our old project item registrations for the General, Misc, and Solution projects.
+	REG DELETE "HKLM\%VSRegistryRoot%\Projects\{2150E333-8FDC-42A3-9474-1A3956D46DE8}\AddItemTemplates\TemplateDirs\{EFDDC549-1646-4451-8A51-E5A5E94D647C}" /f 1>NUL 2>&1
+	REG DELETE "HKLM\%VSRegistryRoot%\Projects\{A2FE74E1-B743-11d0-AE1A-00A0C90FFFC3}\AddItemTemplates\TemplateDirs\{EFDDC549-1646-4451-8A51-E5A5E94D647C}" /f 1>NUL 2>&1
+	REG DELETE "HKLM\%VSRegistryRoot%\Projects\{D1DCDB85-C5E8-11d2-BFCA-00C04F990235}\AddItemTemplates\TemplateDirs\{EFDDC549-1646-4451-8A51-E5A5E94D647C}" /f 1>NUL 2>&1
 
-:: Get rid of our old project item registrations for the General, Misc, and Solution projects.
-REG DELETE "HKLM\%VSRegistryRoot%\Projects\{2150E333-8FDC-42A3-9474-1A3956D46DE8}\AddItemTemplates\TemplateDirs\{EFDDC549-1646-4451-8A51-E5A5E94D647C}" /f 1>NUL 2>&1
-REG DELETE "HKLM\%VSRegistryRoot%\Projects\{A2FE74E1-B743-11d0-AE1A-00A0C90FFFC3}\AddItemTemplates\TemplateDirs\{EFDDC549-1646-4451-8A51-E5A5E94D647C}" /f 1>NUL 2>&1
-REG DELETE "HKLM\%VSRegistryRoot%\Projects\{D1DCDB85-C5E8-11d2-BFCA-00C04F990235}\AddItemTemplates\TemplateDirs\{EFDDC549-1646-4451-8A51-E5A5E94D647C}" /f 1>NUL 2>&1
+	REG ADD "HKLM\%VSRegistryRoot%\Neumont\ORM Architect" /v "SettingsPath" /d "%NORMADir%\ORMDesignerSettings.xml" /f 1>NUL
+	REG ADD "HKLM\%VSRegistryRoot%\Neumont\ORM Architect" /v "ConvertersDir" /d "%NORMADir%\Xml\Transforms\Converters\\" /f 1>NUL
+	REG ADD "HKLM\%VSRegistryRoot%\Neumont\ORM Architect" /v "VerbalizationDir" /d "%NORMADir%\Xml\Verbalization\\" /f 1>NUL
+	REG ADD "HKLM\%VSRegistryRoot%\FontAndColors\Orm Designer" /v "Category" /d "{663DE24F-8E3A-4C0F-A307-53053ED6C59B}" /f 1>NUL
+	REG ADD "HKLM\%VSRegistryRoot%\FontAndColors\Orm Designer" /v "Package" /d "{C5AA80F8-F730-4809-AAB1-8D925E36F9F5}" /f 1>NUL
+	REG ADD "HKLM\%VSRegistryRoot%\FontAndColors\Orm Verbalizer" /v "Category" /d "{663DE24F-5A08-4490-80E7-EA332DFFE7F0}" /f 1>NUL
+	REG ADD "HKLM\%VSRegistryRoot%\FontAndColors\Orm Verbalizer" /v "Package" /d "{C5AA80F8-F730-4809-AAB1-8D925E36F9F5}" /f 1>NUL
+	REG ADD "HKLM\%VSRegistryRoot%\ShellFileAssociations\.orm" /ve /d "ormfile" /f 1>NUL
 
-REG ADD "HKLM\%VSRegistryRoot%\Neumont\ORM Architect" /v "SettingsPath" /d "%NORMADir%\ORMDesignerSettings.xml" /f 1>NUL
-REG ADD "HKLM\%VSRegistryRoot%\Neumont\ORM Architect" /v "ConvertersDir" /d "%NORMADir%\Xml\Transforms\Converters\\" /f 1>NUL
-REG ADD "HKLM\%VSRegistryRoot%\Neumont\ORM Architect" /v "VerbalizationDir" /d "%NORMADir%\Xml\Verbalization\\" /f 1>NUL
-REG ADD "HKLM\%VSRegistryRoot%\FontAndColors\Orm Designer" /v "Category" /d "{663DE24F-8E3A-4C0F-A307-53053ED6C59B}" /f 1>NUL
-REG ADD "HKLM\%VSRegistryRoot%\FontAndColors\Orm Designer" /v "Package" /d "{C5AA80F8-F730-4809-AAB1-8D925E36F9F5}" /f 1>NUL
-REG ADD "HKLM\%VSRegistryRoot%\FontAndColors\Orm Verbalizer" /v "Category" /d "{663DE24F-5A08-4490-80E7-EA332DFFE7F0}" /f 1>NUL
-REG ADD "HKLM\%VSRegistryRoot%\FontAndColors\Orm Verbalizer" /v "Package" /d "{C5AA80F8-F730-4809-AAB1-8D925E36F9F5}" /f 1>NUL
-REG ADD "HKLM\%VSRegistryRoot%\ShellFileAssociations\.orm" /ve /d "ormfile" /f 1>NUL
+	REG ADD "HKLM\%VSRegistryRoot%\XmlDesigners\{EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B}" /ve /d "ORM Designer" /f 1>NUL
+	REG ADD "HKLM\%VSRegistryRoot%\XmlDesigners\{EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B}" /v "Editor" /d "EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B" /f 1>NUL
+	REG ADD "HKLM\%VSRegistryRoot%\XmlDesigners\{EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B}" /v "Extension" /d "orm" /f 1>NUL
+	REG ADD "HKLM\%VSRegistryRoot%\XmlDesigners\{EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B}" /v "LogicalView" /d "7651A702-06E5-11D1-8EBD-00A0C90F26EA" /f 1>NUL
+	REG ADD "HKLM\%VSRegistryRoot%\XmlDesigners\{EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B}" /v "Namespace" /d "http://schemas.neumont.edu/ORM/2006-04/ORMRoot" /f 1>NUL
 
-REG ADD "HKLM\%VSRegistryRoot%\XmlDesigners\{EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B}" /ve /d "ORM Designer" /f 1>NUL
-REG ADD "HKLM\%VSRegistryRoot%\XmlDesigners\{EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B}" /v "Editor" /d "EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B" /f 1>NUL
-REG ADD "HKLM\%VSRegistryRoot%\XmlDesigners\{EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B}" /v "Extension" /d "orm" /f 1>NUL
-REG ADD "HKLM\%VSRegistryRoot%\XmlDesigners\{EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B}" /v "LogicalView" /d "7651A702-06E5-11D1-8EBD-00A0C90F26EA" /f 1>NUL
-REG ADD "HKLM\%VSRegistryRoot%\XmlDesigners\{EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B}" /v "Namespace" /d "http://schemas.neumont.edu/ORM/2006-04/ORMRoot" /f 1>NUL
+	REG ADD "HKLM\SOFTWARE\Microsoft\.NETFramework\v2.0.50727\AssemblyFoldersEx\NORMAVS" /ve /d "%NORMADir%\bin" /f 1>NUL
+	REG ADD "HKLM\SOFTWARE\Microsoft\.NETFramework\v2.0.50727\AssemblyFoldersEx\NORMAVSExtensions" /ve /d "%NORMADir%\bin\Extensions" /f 1>NUL
 
-REG ADD "HKLM\SOFTWARE\Microsoft\.NETFramework\v2.0.50727\AssemblyFoldersEx\NORMAVS" /ve /d "%NORMADir%\bin" /f 1>NUL
-REG ADD "HKLM\SOFTWARE\Microsoft\.NETFramework\v2.0.50727\AssemblyFoldersEx\NORMAVSExtensions" /ve /d "%NORMADir%\bin\Extensions" /f 1>NUL
+	REG ADD "HKLM\%VSRegistryRoot%\Neumont\ORM Architect\Extensions\http://schemas.neumont.edu/ORM/2008-11/DiagramDisplay" /v "Class" /d "Neumont.Tools.Modeling.Shell.DiagramDisplayDomainModel" /f 1>NUL
 
-REG ADD "HKLM\%VSRegistryRoot%\Neumont\ORM Architect\Extensions\http://schemas.neumont.edu/ORM/2008-11/DiagramDisplay" /v "Class" /d "Neumont.Tools.Modeling.Shell.DiagramDisplayDomainModel" /f 1>NUL
-
-REG ADD "HKCR\MIME\Database\Content Type\application/orm+xml" /v "Extension" /d ".orm" /f 1>NUL
-REG ADD "HKCR\.orm" /ve /d "ormfile" /f 1>NUL
-REG ADD "HKCR\.orm" /v "Content Type" /d "application/orm+xml" /f 1>NUL
-REG ADD "HKCR\ormfile" /ve /d "Object-Role Modeling File" /f 1>NUL
-REG ADD "HKCR\ormfile\DefaultIcon" /ve /d "%NORMADir%\bin\%TargetBaseName%.dll,0" /f 1>NUL
-REG ADD "HKCR\ormfile\shell\open" /ve /d "&Open" /f 1>NUL
-REG ADD "HKCR\ormfile\shell\open\command" /ve /d "\"%VSEnvironmentPath%\" /RootSuffix \"%VSRegistryRootSuffix%\" /dde" /f 1>NUL
-REG ADD "HKCR\ormfile\shell\open\ddeexec" /ve /d "Open(\"%%1\")" /f 1>NUL
-REG ADD "HKCR\ormfile\shell\open\ddeexec\application" /ve /d "VisualStudio.%TargetVisualStudioMajorMinorVersion%" /f 1>NUL
-REG ADD "HKCR\ormfile\shell\open\ddeexec\topic" /ve /d "system" /f 1>NUL
+	REG ADD "HKCR\MIME\Database\Content Type\application/orm+xml" /v "Extension" /d ".orm" /f 1>NUL
+	REG ADD "HKCR\.orm" /ve /d "ormfile" /f 1>NUL
+	REG ADD "HKCR\.orm" /v "Content Type" /d "application/orm+xml" /f 1>NUL
+	REG ADD "HKCR\ormfile" /ve /d "Object-Role Modeling File" /f 1>NUL
+	REG ADD "HKCR\ormfile\DefaultIcon" /ve /d "%NORMADir%\bin\%TargetBaseName%.dll,0" /f 1>NUL
+	REG ADD "HKCR\ormfile\shell\open" /ve /d "&Open" /f 1>NUL
+	REG ADD "HKCR\ormfile\shell\open\command" /ve /d "\"%VSEnvironmentPath%\" /RootSuffix \"%VSRegistryRootSuffix%\" /dde" /f 1>NUL
+	REG ADD "HKCR\ormfile\shell\open\ddeexec" /ve /d "Open(\"%%1\")" /f 1>NUL
+	REG ADD "HKCR\ormfile\shell\open\ddeexec\application" /ve /d "VisualStudio.%TargetVisualStudioMajorMinorVersion%" /f 1>NUL
+	REG ADD "HKCR\ormfile\shell\open\ddeexec\topic" /ve /d "system" /f 1>NUL
 
 
-IF /I "%RunDevEnvSetup%"=="True" (ECHO Running 'devenv.exe /RootSuffix "%VSRegistryRootSuffix%" /Setup'... This may take a few minutes... && "%VSEnvironmentPath%" /RootSuffix "%VSRegistryRootSuffix%" /Setup)
+	IF /I "%RunDevEnvSetup%"=="True" (ECHO Running 'devenv.exe /RootSuffix "%VSRegistryRootSuffix%" /Setup'... This may take a few minutes... && "%VSEnvironmentPath%" /RootSuffix "%VSRegistryRootSuffix%" /Setup)
+)
 
 GOTO:EOF
 
