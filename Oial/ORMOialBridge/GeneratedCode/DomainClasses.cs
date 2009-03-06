@@ -1,6 +1,6 @@
 ﻿#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -24,16 +24,16 @@
 
 using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
-namespace Neumont.Tools.ORMToORMAbstractionBridge
+namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 {
 	/// <summary>
 	/// DomainClass AbstractionModelGenerationSetting
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelGenerationSetting.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelGenerationSetting.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelGenerationSetting.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelGenerationSetting.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("c7e6b42c-c827-4b39-8fee-e3d52aa3d186")]
-	public partial class AbstractionModelGenerationSetting : global::Neumont.Tools.ORM.ObjectModel.GenerationSetting
+	public partial class AbstractionModelGenerationSetting : global::ORMSolutions.ORMArchitect.Core.ObjectModel.GenerationSetting
 	{
 		#region Constructors, domain class Id
 	
@@ -76,10 +76,10 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// <summary>
 		/// Gets or sets the value of AlgorithmVersion domain property.
 		/// Description for
-		/// Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelGenerationSetting.Depth
+		/// ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelGenerationSetting.Depth
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelGenerationSetting/AlgorithmVersion.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelGenerationSetting/AlgorithmVersion.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelGenerationSetting/AlgorithmVersion.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelGenerationSetting/AlgorithmVersion.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 		[DslModeling::DomainObjectId("64197312-6561-4e25-9dea-7ad9747d9132")]
 		public global::System.String AlgorithmVersion
 		{
@@ -153,30 +153,30 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// <summary>
 		/// Gets or sets GeneratedAbstractionModel.
 		/// Description for
-		/// Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.GenerationSetting
+		/// ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.GenerationSetting
 		/// </summary>
-		public virtual global::Neumont.Tools.ORMAbstraction.AbstractionModel GeneratedAbstractionModel
+		public virtual global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel GeneratedAbstractionModel
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.GenerationSettingDomainRoleId) as global::Neumont.Tools.ORMAbstraction.AbstractionModel;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.GenerationSettingDomainRoleId) as global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
 				DslModeling::ModelElement existingSource;
 				if (null != value &&
-					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.GeneratedAbstractionModelDomainRoleId)))
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.GeneratedAbstractionModelDomainRoleId)))
 				{
 					if (existingSource != value)
 					{
-						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.GeneratedAbstractionModelDomainRoleId, this);
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.GeneratedAbstractionModelDomainRoleId, this);
 					}
 				}
 				else
 				{
-					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.GenerationSettingDomainRoleId, value);
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.GenerationSettingDomainRoleId, value);
 				}
 			}
 		}

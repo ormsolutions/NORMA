@@ -1,27 +1,16 @@
-#region zlib/libpng Copyright Notice
+#region Common Public License Copyright Notice
 /**************************************************************************\
-* Database Intermediate Language                                           *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
-* This software is provided 'as-is', without any express or implied        *
-* warranty. In no event will the authors be held liable for any damages    *
-* arising from the use of this software.                                   *
+* The use and distribution terms for this software are covered by the      *
+* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
+* can be found in the file CPL.txt at the root of this distribution.       *
+* By using this software in any fashion, you are agreeing to be bound by   *
+* the terms of this license.                                               *
 *                                                                          *
-* Permission is granted to anyone to use this software for any purpose,    *
-* including commercial applications, and to alter it and redistribute it   *
-* freely, subject to the following restrictions:                           *
-*                                                                          *
-* 1. The origin of this software must not be misrepresented; you must not  *
-*    claim that you wrote the original software. If you use this software  *
-*    in a product, an acknowledgment in the product documentation would be *
-*    appreciated but is not required.                                      *
-*                                                                          *
-* 2. Altered source versions must be plainly marked as such, and must not  *
-*    be misrepresented as being the original software.                     *
-*                                                                          *
-* 3. This notice may not be removed or altered from any source             *
-*    distribution.                                                         *
+* You must not remove this notice, or any other, from this software.       *
 \**************************************************************************/
 #endregion
 
@@ -29,7 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Neumont.Tools.ORM.DatabaseImport
+namespace ORMSolutions.ORMArchitect.DatabaseImport
 {
     /// <summary>
     /// Represents required methods for DBMS adapters
@@ -42,43 +31,43 @@ namespace Neumont.Tools.ORM.DatabaseImport
         /// <returns>List of available schema names</returns>
         IList<string> GetAvailableSchemaNames();
         /// <summary>
-        /// When implemented in a child class, loads the specified Schema into a <see cref="Neumont.Tools.ORM.DatabaseImport.DcilSchema"/> object
+        /// When implemented in a child class, loads the specified Schema into a <see cref="ORMSolutions.ORMArchitect.DatabaseImport.DcilSchema"/> object
         /// </summary>
         /// <param name="schemaName">Name of the Schema to load</param>
-        /// <returns><see cref="Neumont.Tools.ORM.DatabaseImport.DcilSchema"/> object</returns>
+        /// <returns><see cref="ORMSolutions.ORMArchitect.DatabaseImport.DcilSchema"/> object</returns>
         DcilSchema LoadSchema(string schemaName);
         /// <summary>
-        /// When implemented in a child class, loads a generic list of <see cref="Neumont.Tools.ORM.DatabaseImport.DcilTable"/> objects for the specified Schema
+        /// When implemented in a child class, loads a generic list of <see cref="ORMSolutions.ORMArchitect.DatabaseImport.DcilTable"/> objects for the specified Schema
         /// </summary>
         /// <param name="schemaName">Name of the Schema from which to load the Tables</param>
-        /// <returns>Generic list of <see cref="Neumont.Tools.ORM.DatabaseImport.DcilTable"/> objects for the specified Schema</returns>
+        /// <returns>Generic list of <see cref="ORMSolutions.ORMArchitect.DatabaseImport.DcilTable"/> objects for the specified Schema</returns>
         IList<DcilTable> LoadTables(string schemaName);
         /// <summary>
-        /// When implemented in a child class, loads a generic list of <see cref="Neumont.Tools.ORM.DatabaseImport.DcilColumn"/> objects for the specified Schema and Table
+        /// When implemented in a child class, loads a generic list of <see cref="ORMSolutions.ORMArchitect.DatabaseImport.DcilColumn"/> objects for the specified Schema and Table
         /// </summary>
         /// <param name="schemaName">Name of the Schema for which the given Table resides in</param>
         /// <param name="tableName">Name of the Table from which to load the Columns</param>
-        /// <returns>Generic list of <see cref="Neumont.Tools.ORM.DatabaseImport.DcilColumn"/> objects for the specified Schema and Table</returns>
+        /// <returns>Generic list of <see cref="ORMSolutions.ORMArchitect.DatabaseImport.DcilColumn"/> objects for the specified Schema and Table</returns>
         IList<DcilColumn> LoadColumns(string schemaName, string tableName);
         /// <summary>
-        /// When implemented in a child class, loads a generic list of <see cref="Neumont.Tools.ORM.DatabaseImport.DcilUniquenessConstraint"/> objects (representing Uniqueness Constraints) for the specified Schema and Table
+        /// When implemented in a child class, loads a generic list of <see cref="ORMSolutions.ORMArchitect.DatabaseImport.DcilUniquenessConstraint"/> objects (representing Uniqueness Constraints) for the specified Schema and Table
         /// </summary>
         /// <param name="schemaName">Name of the Schema for which the given Table resides in</param>
         /// <param name="tableName">Name of the Table from which to load the Indexes</param>
-        /// <returns>Generic list of <see cref="Neumont.Tools.ORM.DatabaseImport.DcilUniquenessConstraint"/> objects (representing Uniqueness Constraints) for the specified Schema and Table</returns>
+        /// <returns>Generic list of <see cref="ORMSolutions.ORMArchitect.DatabaseImport.DcilUniquenessConstraint"/> objects (representing Uniqueness Constraints) for the specified Schema and Table</returns>
         IList<DcilUniquenessConstraint> LoadIndexes(string schemaName, string tableName);
         /// <summary>
-        /// When implemented in a child class, loads a generic list of <see cref="Neumont.Tools.ORM.DatabaseImport.DcilReferenceConstraint"/> objects (representing Foreign Keys) for the specified Schema and Table
+        /// When implemented in a child class, loads a generic list of <see cref="ORMSolutions.ORMArchitect.DatabaseImport.DcilReferenceConstraint"/> objects (representing Foreign Keys) for the specified Schema and Table
         /// </summary>
         /// <param name="schemaName">Name of the Schema for which the given Table resides in</param>
         /// <param name="tableName">Name of the Table from which to load the Indexes</param>
-        /// <returns>Generic list of <see cref="Neumont.Tools.ORM.DatabaseImport.DcilReferenceConstraint"/> objects (representing Foreign Keys) for the specified Schema and Table</returns>
+        /// <returns>Generic list of <see cref="ORMSolutions.ORMArchitect.DatabaseImport.DcilReferenceConstraint"/> objects (representing Foreign Keys) for the specified Schema and Table</returns>
         IList<DcilReferenceConstraint> LoadForeignKeys(string schemaName, string tableName);
         /// <summary>
-        /// When implemented in a child class, loads a generic list of <see cref="Neumont.Tools.ORM.DatabaseImport.DcilProcedure"/> objects for the specified Schema
+        /// When implemented in a child class, loads a generic list of <see cref="ORMSolutions.ORMArchitect.DatabaseImport.DcilProcedure"/> objects for the specified Schema
         /// </summary>
         /// <param name="schemaName">Name of the Schema from which to laod the Stored Procedures</param>
-        /// <returns>Generic list of <see cref="Neumont.Tools.ORM.DatabaseImport.DcilProcedure"/> objects for the specified Schema</returns>
+        /// <returns>Generic list of <see cref="ORMSolutions.ORMArchitect.DatabaseImport.DcilProcedure"/> objects for the specified Schema</returns>
         IList<DcilProcedure> LoadProcedures(string schemaName);
     }
 }

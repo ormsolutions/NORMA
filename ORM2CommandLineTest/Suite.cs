@@ -5,11 +5,11 @@ using System.Xml;
 using System.IO;
 using System.Text;
 using System.Diagnostics;
-using Neumont.Tools.ORM.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.XmlDiffPatch;
 
-namespace Neumont.Tools.ORM.SDK.TestEngine
+namespace ORMSolutions.ORMArchitectSDK.TestEngine
 {
 	#region SuiteCategory structure
 	/// <summary>

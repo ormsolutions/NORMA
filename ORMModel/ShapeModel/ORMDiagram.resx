@@ -2,10 +2,10 @@
 <root>
 	<metadata name="Common Public License Copyright Notice">
 		<value>
-			Neumont Object-Role Modeling Architect for Visual Studio
+			Natural Object-Role Modeling Architect for Visual Studio
 
 			Copyright © Neumont University. All rights reserved.
-			Copyright © Matthew Curland. All rights reserved.
+			Copyright © ORM Solutions, LLC. All rights reserved.
 
 			The use and distribution terms for this software are covered by the
 			Common Public License 1.0 (http://opensource.org/licenses/cpl) which
@@ -844,11 +844,11 @@
     <comment xml:space="preserve">The window title for the ORM model browser window</comment>
   </data>
   <data name="Package.OfficialName">
-    <value xml:space="preserve">Neumont ORM Architect</value>
+    <value xml:space="preserve">ORM Solutions Natural ORM Architect</value>
     <comment xml:space="preserve">The official name of the package used in the About dialog</comment>
   </data>
   <data name="Package.ProductDetails">
-    <value xml:space="preserve">NORMA - Neumont Object-Role Modeling Architect</value>
+    <value xml:space="preserve">Natural Object-Role Modeling Architect (NORMA)&#xd;&#xa;ORM Solutions, LLC&#xd;&#xa;Portions copyright Neumont University</value>
     <comment xml:space="preserve">The extra information that appears in the about box of Visual Studio</comment>
   </data>
   <data name="ReadingShape.AttachedRoleDisplay">

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
-	Neumont Object-Role Modeling Architect for Visual Studio
+	Natural Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
 
@@ -21,8 +21,8 @@
 	PackageNamespace=""
 	Name="SystemCore"
 	DisplayName="System Core Domain Model"
-	CompanyName="Neumont University"
-	ProductName="Neumont ORM Architect for Visual Studio"
+	CompanyName="ORM Solutions, LLC"
+	ProductName="Natural Object-Role Modeling Architect for Visual Studio"
 	MajorVersion="1" MinorVersion="0" Build="0" Revision="0">
 
 	<Types>

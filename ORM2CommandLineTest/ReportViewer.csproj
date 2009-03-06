@@ -8,9 +8,9 @@
     <ProjectGuid>{21C1FBF1-9D11-4134-BE8D-0BF718351522}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Neumont.Tools.ORM.SDK.TestReportViewer</RootNamespace>
+    <RootNamespace>ORMSolutions.ORMArchitectSDK.TestReportViewer</RootNamespace>
     <AssemblyName>ORMTestReportViewer.$(TargetVisualStudioShortProductName)</AssemblyName>
-    <StartupObject>Neumont.Tools.ORM.SDK.TestReportViewer.Program</StartupObject>
+    <StartupObject>ORMSolutions.ORMArchitectSDK.TestReportViewer.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,9 +44,9 @@
     <Reference Include="Microsoft.VisualStudio.TextManager.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="Neumont.Tools.ORM.$(TargetVisualStudioShortProductName), Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
+    <Reference Include="ORMSolutions.ORMArchitect.Core.$(TargetVisualStudioShortProductName), Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ProgramFiles)\Neumont\ORM Architect for $(TargetVisualStudioLongProductName)\bin\Neumont.Tools.ORM.$(TargetVisualStudioShortProductName).dll</HintPath>
+      <HintPath>$(ProgramFiles)\ORM Solutions\ORM Architect for $(TargetVisualStudioLongProductName)\bin\ORMSolutions.ORMArchitect.Core.$(TargetVisualStudioShortProductName).dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -75,6 +75,9 @@
       <DependentUpon>ResourceStrings.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\ReportViewerAssemblyInfo.cs" />
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Report.cs" />
     <Compile Include="ReportViewerProgram.cs" />
     <Compile Include="Settings.cs" />

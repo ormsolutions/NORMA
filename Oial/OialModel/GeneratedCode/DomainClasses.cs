@@ -1,6 +1,6 @@
 ﻿#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -24,13 +24,13 @@
 
 using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
-namespace Neumont.Tools.ORMAbstraction
+namespace ORMSolutions.ORMArchitect.ORMAbstraction
 {
 	/// <summary>
 	/// DomainClass AbstractionModel
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstraction.AbstractionModel.DisplayName", typeof(global::Neumont.Tools.ORMAbstraction.AbstractionDomainModel), "Neumont.Tools.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstraction.AbstractionModel.Description", typeof(global::Neumont.Tools.ORMAbstraction.AbstractionDomainModel), "Neumont.Tools.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[global::System.Diagnostics.DebuggerDisplay("{GetType().Name,nq} (Name = {namePropertyStorage})")]
 	[DslModeling::DomainObjectId("9ef66be3-c128-4642-9767-063244de2cef")]
@@ -76,10 +76,10 @@ namespace Neumont.Tools.ORMAbstraction
 		
 		/// <summary>
 		/// Gets or sets the value of Name domain property.
-		/// Description for Neumont.Tools.ORMAbstraction.AbstractionModel.Name
+		/// Description for ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel.Name
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstraction.AbstractionModel/Name.DisplayName", typeof(global::Neumont.Tools.ORMAbstraction.AbstractionDomainModel), "Neumont.Tools.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstraction.AbstractionModel/Name.Description", typeof(global::Neumont.Tools.ORMAbstraction.AbstractionDomainModel), "Neumont.Tools.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel/Name.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel/Name.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
 		[DslModeling::ElementName]
 		[DslModeling::DomainObjectId("49990808-b97e-4a72-8b26-8a8165cf4df5")]
 		public global::System.String Name
@@ -154,14 +154,14 @@ namespace Neumont.Tools.ORMAbstraction
 		/// <summary>
 		/// Gets a list of ConceptTypeCollection.
 		/// Description for
-		/// Neumont.Tools.ORMAbstraction.AbstractionModelHasConceptType.Model
+		/// ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.Model
 		/// </summary>
 		public DslModeling::LinkedElementCollection<ConceptType> ConceptTypeCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::LinkedElementCollection<ConceptType>(this, global::Neumont.Tools.ORMAbstraction.AbstractionModelHasConceptType.ModelDomainRoleId);
+				return new DslModeling::LinkedElementCollection<ConceptType>(this, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.ModelDomainRoleId);
 			}
 		}
 		#endregion
@@ -169,14 +169,14 @@ namespace Neumont.Tools.ORMAbstraction
 		/// <summary>
 		/// Gets a list of InformationTypeFormatCollection.
 		/// Description for
-		/// Neumont.Tools.ORMAbstraction.AbstractionModelHasInformationTypeFormat.Model
+		/// ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.Model
 		/// </summary>
 		public DslModeling::LinkedElementCollection<InformationTypeFormat> InformationTypeFormatCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::LinkedElementCollection<InformationTypeFormat>(this, global::Neumont.Tools.ORMAbstraction.AbstractionModelHasInformationTypeFormat.ModelDomainRoleId);
+				return new DslModeling::LinkedElementCollection<InformationTypeFormat>(this, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.ModelDomainRoleId);
 			}
 		}
 		#endregion
@@ -200,12 +200,12 @@ namespace Neumont.Tools.ORMAbstraction
 			{
 				DslModeling::DomainClassInfo rootElementDomainInfo = this.Partition.DomainDataDirectory.GetDomainClass(rootElement.DomainClassId);
 				
-				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORMAbstraction.InformationTypeFormat.DomainClassId)) 
+				if (rootElementDomainInfo.IsDerivedFrom(global::ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat.DomainClassId)) 
 				{
 					return true;
 				}
 				
-				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORMAbstraction.ConceptType.DomainClassId)) 
+				if (rootElementDomainInfo.IsDerivedFrom(global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType.DomainClassId)) 
 				{
 					return true;
 				}
@@ -234,7 +234,7 @@ namespace Neumont.Tools.ORMAbstraction
 			if ( sourceElement == null ) throw new global::System.ArgumentNullException("sourceElement");
 		
 				
-			global::Neumont.Tools.ORMAbstraction.InformationTypeFormat sourceInformationTypeFormat1 = sourceElement as global::Neumont.Tools.ORMAbstraction.InformationTypeFormat;
+			global::ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat sourceInformationTypeFormat1 = sourceElement as global::ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat;
 			if (sourceInformationTypeFormat1 != null)
 			{
 				// Create link for path AbstractionModelHasInformationTypeFormat.InformationTypeFormatCollection
@@ -243,7 +243,7 @@ namespace Neumont.Tools.ORMAbstraction
 				return;
 			}
 				
-			global::Neumont.Tools.ORMAbstraction.ConceptType sourceConceptType2 = sourceElement as global::Neumont.Tools.ORMAbstraction.ConceptType;
+			global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType sourceConceptType2 = sourceElement as global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType;
 			if (sourceConceptType2 != null)
 			{
 				// Create link for path AbstractionModelHasConceptType.ConceptTypeCollection
@@ -265,29 +265,29 @@ namespace Neumont.Tools.ORMAbstraction
 		{
 			if (sourceElement == null) throw new global::System.ArgumentNullException("sourceElement");
 				
-			global::Neumont.Tools.ORMAbstraction.InformationTypeFormat sourceInformationTypeFormat1 = sourceElement as global::Neumont.Tools.ORMAbstraction.InformationTypeFormat;
+			global::ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat sourceInformationTypeFormat1 = sourceElement as global::ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat;
 			if (sourceInformationTypeFormat1 != null)
 			{
 				// Delete link for path AbstractionModelHasInformationTypeFormat.InformationTypeFormatCollection
 				
-				foreach (DslModeling::ElementLink link in global::Neumont.Tools.ORMAbstraction.AbstractionModelHasInformationTypeFormat.GetLinks((global::Neumont.Tools.ORMAbstraction.AbstractionModel)this, sourceInformationTypeFormat1))
+				foreach (DslModeling::ElementLink link in global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.GetLinks((global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel)this, sourceInformationTypeFormat1))
 				{
 					// Delete the link, but without possible delete propagation to the element since it's moving to a new location.
-					link.Delete(global::Neumont.Tools.ORMAbstraction.AbstractionModelHasInformationTypeFormat.ModelDomainRoleId, global::Neumont.Tools.ORMAbstraction.AbstractionModelHasInformationTypeFormat.InformationTypeFormatDomainRoleId);
+					link.Delete(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.ModelDomainRoleId, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.InformationTypeFormatDomainRoleId);
 				}
 
 				return;
 			}
 				
-			global::Neumont.Tools.ORMAbstraction.ConceptType sourceConceptType2 = sourceElement as global::Neumont.Tools.ORMAbstraction.ConceptType;
+			global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType sourceConceptType2 = sourceElement as global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType;
 			if (sourceConceptType2 != null)
 			{
 				// Delete link for path AbstractionModelHasConceptType.ConceptTypeCollection
 				
-				foreach (DslModeling::ElementLink link in global::Neumont.Tools.ORMAbstraction.AbstractionModelHasConceptType.GetLinks((global::Neumont.Tools.ORMAbstraction.AbstractionModel)this, sourceConceptType2))
+				foreach (DslModeling::ElementLink link in global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.GetLinks((global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel)this, sourceConceptType2))
 				{
 					// Delete the link, but without possible delete propagation to the element since it's moving to a new location.
-					link.Delete(global::Neumont.Tools.ORMAbstraction.AbstractionModelHasConceptType.ModelDomainRoleId, global::Neumont.Tools.ORMAbstraction.AbstractionModelHasConceptType.ConceptTypeDomainRoleId);
+					link.Delete(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.ModelDomainRoleId, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.ConceptTypeDomainRoleId);
 				}
 
 				return;
@@ -298,13 +298,13 @@ namespace Neumont.Tools.ORMAbstraction
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORMAbstraction
+namespace ORMSolutions.ORMArchitect.ORMAbstraction
 {
 	/// <summary>
 	/// DomainClass ConceptType
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstraction.ConceptType.DisplayName", typeof(global::Neumont.Tools.ORMAbstraction.AbstractionDomainModel), "Neumont.Tools.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstraction.ConceptType.Description", typeof(global::Neumont.Tools.ORMAbstraction.AbstractionDomainModel), "Neumont.Tools.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[global::System.Diagnostics.DebuggerDisplay("{GetType().Name,nq} (Name = {namePropertyStorage})")]
 	[DslModeling::DomainObjectId("a75df497-8d38-4841-aae3-341fd4ed234b")]
@@ -350,10 +350,10 @@ namespace Neumont.Tools.ORMAbstraction
 		
 		/// <summary>
 		/// Gets or sets the value of Name domain property.
-		/// Description for Neumont.Tools.ORMAbstraction.ConceptType.Name
+		/// Description for ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType.Name
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstraction.ConceptType/Name.DisplayName", typeof(global::Neumont.Tools.ORMAbstraction.AbstractionDomainModel), "Neumont.Tools.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstraction.ConceptType/Name.Description", typeof(global::Neumont.Tools.ORMAbstraction.AbstractionDomainModel), "Neumont.Tools.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType/Name.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType/Name.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
 		[DslModeling::ElementName]
 		[DslModeling::DomainObjectId("1193b616-ac5a-4179-862f-88e9243310a4")]
 		public global::System.String Name
@@ -428,19 +428,19 @@ namespace Neumont.Tools.ORMAbstraction
 		/// <summary>
 		/// Gets or sets Model.
 		/// Description for
-		/// Neumont.Tools.ORMAbstraction.AbstractionModelHasConceptType.ConceptType
+		/// ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.ConceptType
 		/// </summary>
 		public AbstractionModel Model
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORMAbstraction.AbstractionModelHasConceptType.ConceptTypeDomainRoleId) as AbstractionModel;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.ConceptTypeDomainRoleId) as AbstractionModel;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORMAbstraction.AbstractionModelHasConceptType.ConceptTypeDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.ConceptTypeDomainRoleId, value);
 			}
 		}
 		#endregion
@@ -448,28 +448,29 @@ namespace Neumont.Tools.ORMAbstraction
 		/// <summary>
 		/// Gets a list of UniquenessCollection.
 		/// Description for
-		/// Neumont.Tools.ORMAbstraction.ConceptTypeHasUniqueness.ConceptType
+		/// ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasUniqueness.ConceptType
 		/// </summary>
 		public DslModeling::LinkedElementCollection<Uniqueness> UniquenessCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::LinkedElementCollection<Uniqueness>(this, global::Neumont.Tools.ORMAbstraction.ConceptTypeHasUniqueness.ConceptTypeDomainRoleId);
+				return new DslModeling::LinkedElementCollection<Uniqueness>(this, global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasUniqueness.ConceptTypeDomainRoleId);
 			}
 		}
 		#endregion
 		#region InformationTypeFormatCollection opposite domain role accessor
 		/// <summary>
 		/// Gets a list of InformationTypeFormatCollection.
-		/// Description for Neumont.Tools.ORMAbstraction.InformationType.ConceptType
+		/// Description for
+		/// ORMSolutions.ORMArchitect.ORMAbstraction.InformationType.ConceptType
 		/// </summary>
 		public DslModeling::LinkedElementCollection<InformationTypeFormat> InformationTypeFormatCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::LinkedElementCollection<InformationTypeFormat>(this, global::Neumont.Tools.ORMAbstraction.InformationType.ConceptTypeDomainRoleId);
+				return new DslModeling::LinkedElementCollection<InformationTypeFormat>(this, global::ORMSolutions.ORMArchitect.ORMAbstraction.InformationType.ConceptTypeDomainRoleId);
 			}
 		}
 		#endregion
@@ -477,14 +478,14 @@ namespace Neumont.Tools.ORMAbstraction
 		/// <summary>
 		/// Gets a list of ReferencedConceptTypeCollection.
 		/// Description for
-		/// Neumont.Tools.ORMAbstraction.ConceptTypeReferencesConceptType.ReferencingConceptType
+		/// ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType.ReferencingConceptType
 		/// </summary>
 		public DslModeling::ReadOnlyLinkedElementCollection<ConceptType> ReferencedConceptTypeCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::ReadOnlyLinkedElementCollection<ConceptType>(this, global::Neumont.Tools.ORMAbstraction.ConceptTypeReferencesConceptType.ReferencingConceptTypeDomainRoleId);
+				return new DslModeling::ReadOnlyLinkedElementCollection<ConceptType>(this, global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType.ReferencingConceptTypeDomainRoleId);
 			}
 		}
 		#endregion
@@ -492,14 +493,14 @@ namespace Neumont.Tools.ORMAbstraction
 		/// <summary>
 		/// Gets a list of RelatedConceptTypeCollection.
 		/// Description for
-		/// Neumont.Tools.ORMAbstraction.ConceptTypeRelatesToConceptType.RelatingConceptType
+		/// ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeRelatesToConceptType.RelatingConceptType
 		/// </summary>
 		public DslModeling::LinkedElementCollection<ConceptType> RelatedConceptTypeCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::LinkedElementCollection<ConceptType>(this, global::Neumont.Tools.ORMAbstraction.ConceptTypeRelatesToConceptType.RelatingConceptTypeDomainRoleId);
+				return new DslModeling::LinkedElementCollection<ConceptType>(this, global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeRelatesToConceptType.RelatingConceptTypeDomainRoleId);
 			}
 		}
 		#endregion
@@ -507,14 +508,14 @@ namespace Neumont.Tools.ORMAbstraction
 		/// <summary>
 		/// Gets a list of AssimilatedConceptTypeCollection.
 		/// Description for
-		/// Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType.AssimilatorConceptType
+		/// ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.AssimilatorConceptType
 		/// </summary>
 		public DslModeling::LinkedElementCollection<ConceptType> AssimilatedConceptTypeCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::LinkedElementCollection<ConceptType>(this, global::Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType.AssimilatorConceptTypeDomainRoleId);
+				return new DslModeling::LinkedElementCollection<ConceptType>(this, global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.AssimilatorConceptTypeDomainRoleId);
 			}
 		}
 		#endregion
@@ -522,26 +523,26 @@ namespace Neumont.Tools.ORMAbstraction
 		/// <summary>
 		/// Gets a list of AssimilatorConceptTypeCollection.
 		/// Description for
-		/// Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType.AssimilatedConceptType
+		/// ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.AssimilatedConceptType
 		/// </summary>
 		public DslModeling::LinkedElementCollection<ConceptType> AssimilatorConceptTypeCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::LinkedElementCollection<ConceptType>(this, global::Neumont.Tools.ORMAbstraction.ConceptTypeAssimilatesConceptType.AssimilatedConceptTypeDomainRoleId);
+				return new DslModeling::LinkedElementCollection<ConceptType>(this, global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.AssimilatedConceptTypeDomainRoleId);
 			}
 		}
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORMAbstraction
+namespace ORMSolutions.ORMArchitect.ORMAbstraction
 {
 	/// <summary>
 	/// DomainClass InformationTypeFormat
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstraction.InformationTypeFormat.DisplayName", typeof(global::Neumont.Tools.ORMAbstraction.AbstractionDomainModel), "Neumont.Tools.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstraction.InformationTypeFormat.Description", typeof(global::Neumont.Tools.ORMAbstraction.AbstractionDomainModel), "Neumont.Tools.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[global::System.Diagnostics.DebuggerDisplay("{GetType().Name,nq} (Name = {namePropertyStorage})")]
 	[DslModeling::DomainObjectId("7eb62327-99a6-4543-be0d-8d4ced8c4f0e")]
@@ -587,10 +588,11 @@ namespace Neumont.Tools.ORMAbstraction
 		
 		/// <summary>
 		/// Gets or sets the value of Name domain property.
-		/// Description for Neumont.Tools.ORMAbstraction.InformationTypeFormat.Name
+		/// Description for
+		/// ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat.Name
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstraction.InformationTypeFormat/Name.DisplayName", typeof(global::Neumont.Tools.ORMAbstraction.AbstractionDomainModel), "Neumont.Tools.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstraction.InformationTypeFormat/Name.Description", typeof(global::Neumont.Tools.ORMAbstraction.AbstractionDomainModel), "Neumont.Tools.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat/Name.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat/Name.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
 		[DslModeling::ElementName]
 		[DslModeling::DomainObjectId("e84be6bf-9799-4c58-b58b-88da7dc72fa0")]
 		public global::System.String Name
@@ -665,19 +667,19 @@ namespace Neumont.Tools.ORMAbstraction
 		/// <summary>
 		/// Gets or sets Model.
 		/// Description for
-		/// Neumont.Tools.ORMAbstraction.AbstractionModelHasInformationTypeFormat.InformationTypeFormat
+		/// ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.InformationTypeFormat
 		/// </summary>
 		public AbstractionModel Model
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORMAbstraction.AbstractionModelHasInformationTypeFormat.InformationTypeFormatDomainRoleId) as AbstractionModel;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.InformationTypeFormatDomainRoleId) as AbstractionModel;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORMAbstraction.AbstractionModelHasInformationTypeFormat.InformationTypeFormatDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.InformationTypeFormatDomainRoleId, value);
 			}
 		}
 		#endregion
@@ -685,26 +687,26 @@ namespace Neumont.Tools.ORMAbstraction
 		/// <summary>
 		/// Gets a list of ConceptTypeCollection.
 		/// Description for
-		/// Neumont.Tools.ORMAbstraction.InformationType.InformationTypeFormat
+		/// ORMSolutions.ORMArchitect.ORMAbstraction.InformationType.InformationTypeFormat
 		/// </summary>
 		public DslModeling::LinkedElementCollection<ConceptType> ConceptTypeCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::LinkedElementCollection<ConceptType>(this, global::Neumont.Tools.ORMAbstraction.InformationType.InformationTypeFormatDomainRoleId);
+				return new DslModeling::LinkedElementCollection<ConceptType>(this, global::ORMSolutions.ORMArchitect.ORMAbstraction.InformationType.InformationTypeFormatDomainRoleId);
 			}
 		}
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORMAbstraction
+namespace ORMSolutions.ORMArchitect.ORMAbstraction
 {
 	/// <summary>
 	/// DomainClass Uniqueness
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstraction.Uniqueness.DisplayName", typeof(global::Neumont.Tools.ORMAbstraction.AbstractionDomainModel), "Neumont.Tools.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstraction.Uniqueness.Description", typeof(global::Neumont.Tools.ORMAbstraction.AbstractionDomainModel), "Neumont.Tools.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[global::System.Diagnostics.DebuggerDisplay("{GetType().Name,nq} (Name = {namePropertyStorage})")]
 	[DslModeling::DomainObjectId("0af67f1f-66d6-4c2b-b85c-d556894ac300")]
@@ -750,10 +752,10 @@ namespace Neumont.Tools.ORMAbstraction
 		
 		/// <summary>
 		/// Gets or sets the value of Name domain property.
-		/// Description for Neumont.Tools.ORMAbstraction.Uniqueness.Name
+		/// Description for ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.Name
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstraction.Uniqueness/Name.DisplayName", typeof(global::Neumont.Tools.ORMAbstraction.AbstractionDomainModel), "Neumont.Tools.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstraction.Uniqueness/Name.Description", typeof(global::Neumont.Tools.ORMAbstraction.AbstractionDomainModel), "Neumont.Tools.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness/Name.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness/Name.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
 		[DslModeling::ElementName]
 		[DslModeling::DomainObjectId("82013a44-5bae-43af-8472-a53473adac7e")]
 		public global::System.String Name
@@ -838,10 +840,10 @@ namespace Neumont.Tools.ORMAbstraction
 		
 		/// <summary>
 		/// Gets or sets the value of IsPreferred domain property.
-		/// Description for Neumont.Tools.ORMAbstraction.Uniqueness.IsPreferred
+		/// Description for ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.IsPreferred
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstraction.Uniqueness/IsPreferred.DisplayName", typeof(global::Neumont.Tools.ORMAbstraction.AbstractionDomainModel), "Neumont.Tools.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstraction.Uniqueness/IsPreferred.Description", typeof(global::Neumont.Tools.ORMAbstraction.AbstractionDomainModel), "Neumont.Tools.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness/IsPreferred.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness/IsPreferred.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
 		[DslModeling::DomainObjectId("feef8b5e-13bc-4c0b-8bd4-fffc4a3764c0")]
 		public global::System.Boolean IsPreferred
 		{
@@ -914,19 +916,20 @@ namespace Neumont.Tools.ORMAbstraction
 		#region ConceptType opposite domain role accessor
 		/// <summary>
 		/// Gets or sets ConceptType.
-		/// Description for Neumont.Tools.ORMAbstraction.ConceptTypeHasUniqueness.Uniqueness
+		/// Description for
+		/// ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasUniqueness.Uniqueness
 		/// </summary>
 		public ConceptType ConceptType
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORMAbstraction.ConceptTypeHasUniqueness.UniquenessDomainRoleId) as ConceptType;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasUniqueness.UniquenessDomainRoleId) as ConceptType;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORMAbstraction.ConceptTypeHasUniqueness.UniquenessDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasUniqueness.UniquenessDomainRoleId, value);
 			}
 		}
 		#endregion
@@ -934,14 +937,14 @@ namespace Neumont.Tools.ORMAbstraction
 		/// <summary>
 		/// Gets a list of ConceptTypeChildCollection.
 		/// Description for
-		/// Neumont.Tools.ORMAbstraction.UniquenessIncludesConceptTypeChild.Uniqueness
+		/// ORMSolutions.ORMArchitect.ORMAbstraction.UniquenessIncludesConceptTypeChild.Uniqueness
 		/// </summary>
 		public DslModeling::LinkedElementCollection<ConceptTypeChild> ConceptTypeChildCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::LinkedElementCollection<ConceptTypeChild>(this, global::Neumont.Tools.ORMAbstraction.UniquenessIncludesConceptTypeChild.UniquenessDomainRoleId);
+				return new DslModeling::LinkedElementCollection<ConceptTypeChild>(this, global::ORMSolutions.ORMArchitect.ORMAbstraction.UniquenessIncludesConceptTypeChild.UniquenessDomainRoleId);
 			}
 		}
 		#endregion

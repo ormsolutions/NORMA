@@ -1,6 +1,6 @@
 ﻿#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -26,13 +26,13 @@ using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
 using DslDiagrams = global::Microsoft.VisualStudio.Modeling.Diagrams;
 
-namespace Neumont.Tools.ORM.Views.BarkerERView
+namespace ORMSolutions.ORMArchitect.Views.BarkerERView
 {
 	/// <summary>
 	/// Double-derived base class for DomainClass BarkerERDiagram
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.Views.BarkerERView.BarkerERDiagram.DisplayName", typeof(global::Neumont.Tools.ORM.Views.BarkerERView.BarkerERShapeDomainModel), "Neumont.Tools.ORM.Views.BarkerERView.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.Views.BarkerERView.BarkerERDiagram.Description", typeof(global::Neumont.Tools.ORM.Views.BarkerERView.BarkerERShapeDomainModel), "Neumont.Tools.ORM.Views.BarkerERView.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel), "ORMSolutions.ORMArchitect.Views.BarkerERView.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.Description", typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel), "ORMSolutions.ORMArchitect.Views.BarkerERView.GeneratedCode.DomainModelResx")]
 	[DslModeling::DomainObjectId("144546c5-db5e-4a4c-b1bc-4b7c6c0612f2")]
 	internal abstract partial class BarkerERDiagramBase : DslDiagrams::Diagram
 	{
@@ -71,7 +71,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 		#endregion
 		#region Toolbox filters
 		private static global::System.ComponentModel.ToolboxItemFilterAttribute[] toolboxFilters = new global::System.ComponentModel.ToolboxItemFilterAttribute[] {
-					new global::System.ComponentModel.ToolboxItemFilterAttribute(global::Neumont.Tools.ORM.Views.BarkerERView.BarkerERShapeToolboxHelperBase.ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) };
+					new global::System.ComponentModel.ToolboxItemFilterAttribute(global::ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeToolboxHelperBase.ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) };
 		
 		/// <summary>
 		/// Toolbox item filter attributes for this diagram.
@@ -196,7 +196,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 			if (connector == null)
 				throw new global::System.ArgumentNullException("connector");
 			#endregion
-			if (connector is global::Neumont.Tools.ORM.Views.BarkerERView.AssociationConnector)
+			if (connector is global::ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector)
 				return false;
 			return base.IsConnectorMappedToLink(connector);
 		}
@@ -207,9 +207,9 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily", Justification = "Generated code.")]
 		protected override DslDiagrams::ShapeElement CreateChildShape(DslModeling::ModelElement element)
 		{
-			if(element is global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType)
+			if(element is global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType)
 			{
-				global::Neumont.Tools.ORM.Views.BarkerERView.BarkerEntityShape newShape = new global::Neumont.Tools.ORM.Views.BarkerERView.BarkerEntityShape(this.Partition);
+				global::ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape newShape = new global::ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape(this.Partition);
 				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
 				return newShape;
 			}
@@ -224,7 +224,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 		protected override void InitializeShapeFields(global::System.Collections.Generic.IList<DslDiagrams::ShapeField> shapeFields)
 		{
 			base.InitializeShapeFields(shapeFields);
-			global::Neumont.Tools.ORM.Views.BarkerERView.BarkerEntityShape.DecoratorsInitialized += BarkerEntityShapeDecoratorMap.OnDecoratorsInitialized;
+			global::ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape.DecoratorsInitialized += BarkerEntityShapeDecoratorMap.OnDecoratorsInitialized;
 		}
 		
 		/// <summary>
@@ -240,7 +240,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 				DslDiagrams::ShapeElement shape = (DslDiagrams::ShapeElement)sender;
 				DslDiagrams::AssociatedPropertyInfo propertyInfo;
 				
-				propertyInfo = new DslDiagrams::AssociatedPropertyInfo(global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType.NameDomainPropertyId);
+				propertyInfo = new DslDiagrams::AssociatedPropertyInfo(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType.NameDomainPropertyId);
 				DslDiagrams::ShapeElement.FindDecorator(shape.Decorators, "BarkerEntityNameDecorator").AssociateValueWith(shape.Store, propertyInfo);
 			}
 		}
@@ -265,7 +265,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 	}
 	/// <summary>
 	/// DomainClass BarkerERDiagram
-	/// Description for Neumont.Tools.ORM.Views.BarkerERView.BarkerERDiagram
+	/// Description for ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram
 	/// </summary>
 			
 	internal partial class BarkerERDiagram : BarkerERDiagramBase
@@ -295,12 +295,12 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORM.Views.BarkerERView
+namespace ORMSolutions.ORMArchitect.Views.BarkerERView
 {
 		/// <summary>
 		/// Rule that initiates view fixup when an element that has an associated shape is added to the model. 
 		/// </summary>
-		[DslModeling::RuleOn(typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
 		internal sealed partial class FixUpDiagram : DslModeling::AddRule
 		{
 			[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
@@ -312,9 +312,9 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 				if (childElement.IsDeleted)
 					return;
 				DslModeling::ModelElement parentElement;
-				if(childElement is global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType)
+				if(childElement is global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType)
 				{
-					parentElement = GetParentForEntityType((global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType)childElement);
+					parentElement = GetParentForEntityType((global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType)childElement);
 				} else
 				{
 					parentElement = null;
@@ -325,10 +325,10 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 					DslDiagrams::Diagram.FixUpDiagram(parentElement, childElement);
 				}
 			}
-			public static global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel GetParentForEntityType( global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType root )
+			public static global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel GetParentForEntityType( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType root )
 			{
 				// Segments 0 and 1
-				global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel result = root.BarkerErModel;
+				global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel result = root.BarkerErModel;
 				if ( result == null ) return null;
 				return result;
 			}
@@ -337,7 +337,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 		/// <summary>
 		/// Rule to update compartments when an item is added to the list
 		/// </summary>
-		[DslModeling::RuleOn(typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
 		internal sealed class CompartmentItemAddRule : DslModeling::AddRule
 		{
 			/// <summary>
@@ -354,25 +354,25 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 				if(e==null) throw new global::System.ArgumentNullException("e");
 				if (e.ModelElement.IsDeleted)
 					return;
-				if(e.ModelElement is global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute)
+				if(e.ModelElement is global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute)
 				{
-					global::System.Collections.IEnumerable elements = GetEntityTypeForBarkerEntityShapeAttributesCompartmentFromLastLink((global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute)e.ModelElement);
-					UpdateCompartments(elements, typeof(global::Neumont.Tools.ORM.Views.BarkerERView.BarkerEntityShape), "AttributesCompartment", repaintOnly);
+					global::System.Collections.IEnumerable elements = GetEntityTypeForBarkerEntityShapeAttributesCompartmentFromLastLink((global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute)e.ModelElement);
+					UpdateCompartments(elements, typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape), "AttributesCompartment", repaintOnly);
 				}
 			}
 			
 			#region static DomainPath traversal methods to get the list of compartments to update
-			internal static global::System.Collections.ICollection GetEntityTypeForBarkerEntityShapeAttributesCompartmentFromLastLink(global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute root)
+			internal static global::System.Collections.ICollection GetEntityTypeForBarkerEntityShapeAttributesCompartmentFromLastLink(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute root)
 			{
 				// Segment 0
-				global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType result = root.EntityType;
+				global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType result = root.EntityType;
 				if ( result == null ) return new DslModeling::ModelElement[0];
 				return new DslModeling::ModelElement[] {result};
 			}
-			internal static global::System.Collections.ICollection GetEntityTypeForBarkerEntityShapeAttributesCompartment(global::Neumont.Tools.EntityRelationshipModels.Barker.Attribute root)
+			internal static global::System.Collections.ICollection GetEntityTypeForBarkerEntityShapeAttributesCompartment(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute root)
 			{
 				// Segments 1 and 0
-				global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType result = root.EntityType;
+				global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType result = root.EntityType;
 				if ( result == null ) return new DslModeling::ModelElement[0];
 				return new DslModeling::ModelElement[] {result};
 			}
@@ -421,7 +421,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 		/// <summary>
 		/// Rule to update compartments when an items is removed from the list
 		/// </summary>
-		[DslModeling::RuleOn(typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
 		internal sealed class CompartmentItemDeleteRule : DslModeling::DeleteRule
 		{
 			/// <summary>
@@ -436,10 +436,10 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 			internal static void ElementDeleted(DslModeling::ElementDeletedEventArgs e, bool repaintOnly)
 			{
 				if(e==null) throw new global::System.ArgumentNullException("e");
-				if(e.ModelElement is global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute)
+				if(e.ModelElement is global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute)
 				{
-					global::System.Collections.ICollection elements = CompartmentItemAddRule.GetEntityTypeForBarkerEntityShapeAttributesCompartmentFromLastLink((global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute)e.ModelElement);
-					CompartmentItemAddRule.UpdateCompartments(elements, typeof(global::Neumont.Tools.ORM.Views.BarkerERView.BarkerEntityShape), "AttributesCompartment", repaintOnly);
+					global::System.Collections.ICollection elements = CompartmentItemAddRule.GetEntityTypeForBarkerEntityShapeAttributesCompartmentFromLastLink((global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute)e.ModelElement);
+					CompartmentItemAddRule.UpdateCompartments(elements, typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape), "AttributesCompartment", repaintOnly);
 				}
 			}
 		}
@@ -447,7 +447,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 		/// <summary>
 		/// Rule to update compartments when the property on an item being displayed changes.
 		/// </summary>
-		[DslModeling::RuleOn(typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.Attribute), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
 		internal sealed class CompartmentItemChangeRule : DslModeling::ChangeRule 
 		{
 			/// <summary>
@@ -462,10 +462,10 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 			internal static void ElementPropertyChanged(DslModeling::ElementPropertyChangedEventArgs e, bool repaintOnly)
 			{
 				if(e==null) throw new global::System.ArgumentNullException("e");
-				if(e.ModelElement is global::Neumont.Tools.EntityRelationshipModels.Barker.Attribute && e.DomainProperty.Id == global::Neumont.Tools.EntityRelationshipModels.Barker.Attribute.NameDomainPropertyId)
+				if(e.ModelElement is global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute && e.DomainProperty.Id == global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute.NameDomainPropertyId)
 				{
-					global::System.Collections.IEnumerable elements = CompartmentItemAddRule.GetEntityTypeForBarkerEntityShapeAttributesCompartment((global::Neumont.Tools.EntityRelationshipModels.Barker.Attribute)e.ModelElement);
-					CompartmentItemAddRule.UpdateCompartments(elements, typeof(global::Neumont.Tools.ORM.Views.BarkerERView.BarkerEntityShape), "AttributesCompartment", repaintOnly);
+					global::System.Collections.IEnumerable elements = CompartmentItemAddRule.GetEntityTypeForBarkerEntityShapeAttributesCompartment((global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute)e.ModelElement);
+					CompartmentItemAddRule.UpdateCompartments(elements, typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape), "AttributesCompartment", repaintOnly);
 				}
 			}
 		}
@@ -473,7 +473,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 		/// <summary>
 		/// Rule to update compartments when a roleplayer change happens
 		/// </summary>
-		[DslModeling::RuleOn(typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
 		internal sealed class CompartmentItemRolePlayerChangeRule : DslModeling::RolePlayerChangeRule 
 		{
 			/// <summary>
@@ -488,17 +488,17 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 			internal static void RolePlayerChanged(DslModeling::RolePlayerChangedEventArgs e, bool repaintOnly)
 			{
 				if(e==null) throw new global::System.ArgumentNullException("e");
-				if(typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute).IsAssignableFrom(e.DomainRelationship.ImplementationClass))
+				if(typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute).IsAssignableFrom(e.DomainRelationship.ImplementationClass))
 				{
 					if(e.DomainRole.IsSource)
 					{
-						//global::System.Collections.IEnumerable oldElements = CompartmentItemAddRule.GetEntityTypeForBarkerEntityShapeAttributesCompartmentFromLastLink((global::Neumont.Tools.EntityRelationshipModels.Barker.Attribute)e.OldRolePlayer);
+						//global::System.Collections.IEnumerable oldElements = CompartmentItemAddRule.GetEntityTypeForBarkerEntityShapeAttributesCompartmentFromLastLink((global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute)e.OldRolePlayer);
 						//foreach(DslModeling::ModelElement element in oldElements)
 						//{
 						//	DslModeling::LinkedElementCollection<DslDiagrams::PresentationElement> pels = DslDiagrams::PresentationViewsSubject.GetPresentation(element);
 						//	foreach(DslDiagrams::PresentationElement pel in pels)
 						//	{
-						//		global::Neumont.Tools.ORM.Views.BarkerERView.BarkerEntityShape compartmentShape = pel as global::Neumont.Tools.ORM.Views.BarkerERView.BarkerEntityShape;
+						//		global::ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape compartmentShape = pel as global::ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape;
 						//		if(compartmentShape != null)
 						//		{
 						//			compartmentShape.GetCompartmentMappings()[0].InitializeCompartmentShape(compartmentShape);
@@ -506,13 +506,13 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 						//	}
 						//}
 						
-						global::System.Collections.IEnumerable elements = CompartmentItemAddRule.GetEntityTypeForBarkerEntityShapeAttributesCompartmentFromLastLink((global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute)e.ElementLink);
-						CompartmentItemAddRule.UpdateCompartments(elements, typeof(global::Neumont.Tools.ORM.Views.BarkerERView.BarkerEntityShape), "AttributesCompartment", repaintOnly);
+						global::System.Collections.IEnumerable elements = CompartmentItemAddRule.GetEntityTypeForBarkerEntityShapeAttributesCompartmentFromLastLink((global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute)e.ElementLink);
+						CompartmentItemAddRule.UpdateCompartments(elements, typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape), "AttributesCompartment", repaintOnly);
 					}
 					else 
 					{
-						global::System.Collections.IEnumerable elements = CompartmentItemAddRule.GetEntityTypeForBarkerEntityShapeAttributesCompartment((global::Neumont.Tools.EntityRelationshipModels.Barker.Attribute)e.NewRolePlayer);
-						CompartmentItemAddRule.UpdateCompartments(elements, typeof(global::Neumont.Tools.ORM.Views.BarkerERView.BarkerEntityShape), "AttributesCompartment", repaintOnly);
+						global::System.Collections.IEnumerable elements = CompartmentItemAddRule.GetEntityTypeForBarkerEntityShapeAttributesCompartment((global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute)e.NewRolePlayer);
+						CompartmentItemAddRule.UpdateCompartments(elements, typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape), "AttributesCompartment", repaintOnly);
 					}
 				}
 			}
@@ -521,7 +521,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 		/// <summary>
 		/// Rule to update compartments when the order of items in the list changes.
 		/// </summary>
-		[DslModeling::RuleOn(typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
 		internal sealed class CompartmentItemRolePlayerPositionChangeRule : DslModeling::RolePlayerPositionChangeRule 
 		{
 			/// <summary>
@@ -536,12 +536,12 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 			internal static void RolePlayerPositionChanged(DslModeling::RolePlayerOrderChangedEventArgs e, bool repaintOnly)
 			{
 				if(e==null) throw new global::System.ArgumentNullException("e");
-				if(typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute).IsAssignableFrom(e.DomainRelationship.ImplementationClass))
+				if(typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute).IsAssignableFrom(e.DomainRelationship.ImplementationClass))
 				{
 					if(!e.CounterpartDomainRole.IsSource)
 					{
-						global::System.Collections.IEnumerable elements = CompartmentItemAddRule.GetEntityTypeForBarkerEntityShapeAttributesCompartment((global::Neumont.Tools.EntityRelationshipModels.Barker.Attribute)e.CounterpartRolePlayer);
-						CompartmentItemAddRule.UpdateCompartments(elements, typeof(global::Neumont.Tools.ORM.Views.BarkerERView.BarkerEntityShape), "AttributesCompartment", repaintOnly);
+						global::System.Collections.IEnumerable elements = CompartmentItemAddRule.GetEntityTypeForBarkerEntityShapeAttributesCompartment((global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute)e.CounterpartRolePlayer);
+						CompartmentItemAddRule.UpdateCompartments(elements, typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape), "AttributesCompartment", repaintOnly);
 					}
 				}
 			}

@@ -4,11 +4,11 @@ using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Neumont.Tools.Modeling.Shell;
+using ORMSolutions.ORMArchitect.Framework.Shell;
 
 // Common Public License Copyright Notice
 // /**************************************************************************\
-// * Neumont Object-Role Modeling Architect for Visual Studio                 *
+// * Natural Object-Role Modeling Architect for Visual Studio                 *
 // *                                                                          *
 // * Copyright © Neumont University. All rights reserved.                     *
 // *                                                                          *
@@ -21,7 +21,7 @@ using Neumont.Tools.Modeling.Shell;
 // * You must not remove this notice, or any other, from this software.       *
 // \**************************************************************************/
 
-namespace Neumont.Tools.ORM.CustomProperties
+namespace ORMSolutions.ORMArchitect.CustomProperties
 {
 	#region CustomPropertiesDomainModel model serialization
 	[CustomSerializedXmlNamespaces("http://schemas.neumont.edu/ORM/2007-11/CustomProperties")]

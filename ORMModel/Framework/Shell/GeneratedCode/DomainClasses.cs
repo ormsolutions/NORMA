@@ -2,7 +2,7 @@
 /**************************************************************************\
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
-* Copyright © Matthew Curland. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -24,13 +24,13 @@
 
 using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
-namespace Neumont.Tools.Modeling.Shell
+namespace ORMSolutions.ORMArchitect.Framework.Shell
 {
 	/// <summary>
 	/// DomainClass DiagramDisplay
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.Modeling.Shell.DiagramDisplay.DisplayName", typeof(global::Neumont.Tools.Modeling.Shell.DiagramDisplayDomainModel), "Neumont.Tools.ORM.GeneratedCode.DiagramDisplayDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.Modeling.Shell.DiagramDisplay.Description", typeof(global::Neumont.Tools.Modeling.Shell.DiagramDisplayDomainModel), "Neumont.Tools.ORM.GeneratedCode.DiagramDisplayDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplay.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.DiagramDisplayDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplay.Description", typeof(global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.DiagramDisplayDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("14a6b724-7849-4d7d-a5c2-29910ffbb516")]
 	public sealed partial class DiagramDisplay : DslModeling::ModelElement
@@ -78,8 +78,8 @@ namespace Neumont.Tools.Modeling.Shell
 		/// Save the most recent position and zoom information for each diagram in addition
 		/// to diagram order.
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.Modeling.Shell.DiagramDisplay/SaveDiagramPosition.DisplayName", typeof(global::Neumont.Tools.Modeling.Shell.DiagramDisplayDomainModel), "Neumont.Tools.ORM.GeneratedCode.DiagramDisplayDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Modeling.Shell.DiagramDisplay/SaveDiagramPosition.Description", typeof(global::Neumont.Tools.Modeling.Shell.DiagramDisplayDomainModel), "Neumont.Tools.ORM.GeneratedCode.DiagramDisplayDomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplay/SaveDiagramPosition.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.DiagramDisplayDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplay/SaveDiagramPosition.Description", typeof(global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.DiagramDisplayDomainModelResx")]
 		[global::System.ComponentModel.DefaultValue(true)]
 		[DslModeling::DomainObjectId("17aa2b64-3328-4420-8c68-34157d10db77")]
 		public global::System.Boolean SaveDiagramPosition
@@ -154,20 +154,20 @@ namespace Neumont.Tools.Modeling.Shell
 		/// <summary>
 		/// Gets a list of OrderedDiagramCollection.
 		/// Description for
-		/// Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder.DiagramDisplay
+		/// ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder.DiagramDisplay
 		/// </summary>
 		public DslModeling::LinkedElementCollection<global::Microsoft.VisualStudio.Modeling.Diagrams.Diagram> OrderedDiagramCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::LinkedElementCollection<global::Microsoft.VisualStudio.Modeling.Diagrams.Diagram>(this, global::Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder.DiagramDisplayDomainRoleId);
+				return new DslModeling::LinkedElementCollection<global::Microsoft.VisualStudio.Modeling.Diagrams.Diagram>(this, global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder.DiagramDisplayDomainRoleId);
 			}
 		}
 		#endregion
 	}
 }
-namespace Neumont.Tools.Modeling.Shell
+namespace ORMSolutions.ORMArchitect.Framework.Shell
 {
 	/// <summary>
 	/// DomainClass DiagramPlaceHolder
@@ -176,8 +176,8 @@ namespace Neumont.Tools.Modeling.Shell
 	/// random types will cause the primary collection to be reordered, resulting in a
 	/// significant file change for a diagram reorder.
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.Modeling.Shell.DiagramPlaceHolder.DisplayName", typeof(global::Neumont.Tools.Modeling.Shell.DiagramDisplayDomainModel), "Neumont.Tools.ORM.GeneratedCode.DiagramDisplayDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.Modeling.Shell.DiagramPlaceHolder.Description", typeof(global::Neumont.Tools.Modeling.Shell.DiagramDisplayDomainModel), "Neumont.Tools.ORM.GeneratedCode.DiagramDisplayDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Framework.Shell.DiagramPlaceHolder.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.DiagramDisplayDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Framework.Shell.DiagramPlaceHolder.Description", typeof(global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.DiagramDisplayDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("8936a358-233b-4322-a20d-92f0d61f8378")]
 	public sealed partial class DiagramPlaceHolder : global::Microsoft.VisualStudio.Modeling.Diagrams.Diagram

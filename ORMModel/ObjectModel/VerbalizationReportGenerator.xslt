@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-	Neumont Object-Role Modeling Architect for Visual Studio
+	Natural Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
 
@@ -23,7 +23,7 @@
 	<!-- Indenting is useful for debugging the transform, but a waste of memory at generation time -->
 	<xsl:output method="xml" encoding="utf-8" indent="no"/>
 	<!-- Pick up param value supplied automatically by plix loader -->
-	<xsl:param name="CustomToolNamespace" select="'Neumont.Tools.ORM.ObjectModel'"/>
+	<xsl:param name="CustomToolNamespace" select="'ORMSolutions.ORMArchitect.Core.ObjectModel'"/>
 
 	<!-- Names of the different classes we generate -->
 	<xsl:param name="ReportVerbalizationSnippetType" select="'ReportVerbalizationSnippetType'"/>

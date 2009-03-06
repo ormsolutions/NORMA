@@ -15,8 +15,8 @@
 #endregion
 using System;
 using System.Collections.Generic;
-using Neumont.Tools.Modeling;
-using Neumont.Tools.ORM.ObjectModel;
+using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
 using System.Collections;
 

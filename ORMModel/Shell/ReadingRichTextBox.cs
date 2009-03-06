@@ -7,9 +7,9 @@ using System.Drawing;
 using System.Security.Permissions;
 using System.Runtime.InteropServices;
 using System.Globalization;
-using Neumont.Tools.ORM.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
 
-namespace Neumont.Tools.ORM.Shell
+namespace ORMSolutions.ORMArchitect.Core.Shell
 {
 	#region ReadingRichTextBox control
 	/// <summary>

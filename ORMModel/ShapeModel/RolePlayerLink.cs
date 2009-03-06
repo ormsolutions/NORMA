@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -34,11 +34,11 @@ using System.Drawing.Drawing2D;
 using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.Shell;
-using Neumont.Tools.Modeling;
-using Neumont.Tools.Modeling.Diagrams;
-namespace Neumont.Tools.ORM.ShapeModel
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.Shell;
+using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Framework.Diagrams;
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	public partial class RolePlayerLink : IReconfigureableLink, IConfigureAsChildShape, IDynamicColorGeometryHost
 	{
@@ -306,7 +306,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Pen to draw dotted line on optional ER roles
 		/// </summary>
-		private static readonly StyleSetResourceId BarkerEROptionalPen = new StyleSetResourceId("Neumont", "BarkerEROptionalPen");
+		private static readonly StyleSetResourceId BarkerEROptionalPen = new StyleSetResourceId("ORMArchitect", "BarkerEROptionalPen");
 		/// <summary>
 		/// Change the outline pen to a thin black line for all instances
 		/// of this shape.

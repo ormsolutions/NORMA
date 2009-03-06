@@ -1,6 +1,6 @@
 ﻿#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -24,13 +24,13 @@
 
 using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
-namespace Neumont.Tools.Modeling
+namespace ORMSolutions.ORMArchitect.Framework
 {
 	/// <summary>
 	/// DomainClass DelayValidateSignal
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.Modeling.DelayValidateSignal.DisplayName", typeof(global::Neumont.Tools.Modeling.FrameworkDomainModel), "Neumont.Tools.Modeling.GeneratedCode.FrameworkDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.Modeling.DelayValidateSignal.Description", typeof(global::Neumont.Tools.Modeling.FrameworkDomainModel), "Neumont.Tools.Modeling.GeneratedCode.FrameworkDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Framework.DelayValidateSignal.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel), "ORMSolutions.ORMArchitect.Framework.GeneratedCode.FrameworkDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Framework.DelayValidateSignal.Description", typeof(global::ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel), "ORMSolutions.ORMArchitect.Framework.GeneratedCode.FrameworkDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("c6d39cf7-e8aa-4be7-aa79-7659fbd32e54")]
 	public sealed partial class DelayValidateSignal : DslModeling::ModelElement

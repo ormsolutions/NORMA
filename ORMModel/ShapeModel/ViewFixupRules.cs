@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -22,12 +22,12 @@ using System.Diagnostics;
 using System.Reflection;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.Modeling;
-using Neumont.Tools.ORM.Shell;
-using Neumont.Tools.Modeling.Diagrams;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Core.Shell;
+using ORMSolutions.ORMArchitect.Framework.Diagrams;
 using System.Reflection.Emit;
-namespace Neumont.Tools.ORM.ShapeModel
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	public partial class ORMShapeDomainModel
 	{
@@ -35,7 +35,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region ModelHasObjectType fixup
 		#region ObjectTypedAddedRule
 		/// <summary>
-		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasObjectType), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasObjectType), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
 		/// </summary>
 		private static void ObjectTypedAddedRule(ElementAddedEventArgs e)
 		{
@@ -238,7 +238,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // ObjectTypeShapeChangeRule
 		#region FactTypeAddedRule
 		/// <summary>
-		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasFactType), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasFactType), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
 		/// </summary>
 		private static void FactTypedAddedRule(ElementAddedEventArgs e)
 		{
@@ -273,7 +273,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region ModelHasConstraint fixup
 		#region SetComparisonConstraintAddedRule
 		/// <summary>
-		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasSetComparisonConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasSetComparisonConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
 		/// </summary>
 		private static void SetComparisonConstraintAddedRule(ElementAddedEventArgs e)
 		{
@@ -286,7 +286,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // SetComparisonConstraintAddedRule
 		#region SetConstraintAddedRule
 		/// <summary>
-		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasSetConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasSetConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
 		/// </summary>
 		private static void SetConstraintAddedRule(ElementAddedEventArgs e)
 		{
@@ -300,7 +300,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region ConstraintSetChanged fixup
 		#region ConstraintRoleSequenceRoleAddedRule
 		/// <summary>
-		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
 		/// Update the fact type when constraint roles are removed
 		/// </summary>
 		private static void ConstraintRoleSequenceRoleAddedRule(ElementAddedEventArgs e)
@@ -325,7 +325,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // ConstraintRoleSequenceRoleAddedRule
 		#region ConstraintRoleSequenceRoleDeletedRule
 		/// <summary>
-		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
 		/// Update the fact type when constraint roles are removed
 		/// </summary>
 		private static void ConstraintRoleSequenceRoleDeletedRule(ElementDeletedEventArgs e)
@@ -354,7 +354,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // ConstraintRoleSequenceRoleDeletedRule
 		#region ConstraintRoleSequencePositionChangedRule
 		/// <summary>
-		/// RolePlayerPositionChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// RolePlayerPositionChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
 		/// Update the redraw for the selected for cases when the constraint is active
 		/// </summary>
 		private static void ConstraintRoleSequencePositionChangedRule(RolePlayerOrderChangedEventArgs e)
@@ -375,7 +375,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // ConstraintRoleSequencePositionChangedRule
 		#region ExternalRoleConstraintDeletedRule
 		/// <summary>
-		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ExternalRoleConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ExternalRoleConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
 		/// Update the fact type when constraint roles are removed. Used when
 		/// an entire role sequence is deleted from a multi-column external fact constraint
 		/// that does not also delete the fact constraint.
@@ -399,7 +399,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region FactTypeHasRole fixup
 		#region RoleAddedRule
 		/// <summary>
-		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
 		/// </summary>
 		private static void RoleAddedRule(ElementAddedEventArgs e)
 		{
@@ -416,7 +416,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasRole), Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasRole), Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
 		/// Complementary rule to <see cref="RoleAddedRule"/>. Modifies RoleDisplayOrder early
 		/// in the rule sequence so that any other rules that resize or redraw a FactTypeShape
 		/// will not crash due to an arity mismatch in the sequence
@@ -481,7 +481,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // RoleAddedRule
 		#region RoleDeletedRule
 		/// <summary>
-		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
 		/// </summary>
 		private static void RoleDeletedRule(ElementDeletedEventArgs e)
 		{
@@ -513,7 +513,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region ObjectTypePlaysRole fixup
 		#region ObjectTypePlaysRoleAddedRule
 		/// <summary>
-		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
 		/// </summary>
 		private static void ObjectTypePlaysRoleAddedRule(ElementAddedEventArgs e)
 		{
@@ -547,7 +547,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // DisplayRolePlayersFixupListener class
 		#region ObjectTypePlaysRoleRolePlayerChangeRule
 		/// <summary>
-		/// RolePlayerChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+		/// RolePlayerChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
 		/// Add and remove links when a role player changes
 		/// </summary>
 		private static void ObjectTypePlaysRoleRolePlayerChangeRule(RolePlayerChangedEventArgs e)
@@ -639,7 +639,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region RoleHasValueConstraint fixup
 		#region RoleValueConstraintAddedRule
 		/// <summary>
-		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasValueConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
 		/// </summary>
 		private static void RoleValueConstraintAddedRule(ElementAddedEventArgs e)
 		{
@@ -739,7 +739,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region ValueTypeHasValueConstraint fixup
 		#region ValueConstraintAdded class
 		/// <summary>
-		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
 		/// </summary>
 		private static void ValueTypeValueConstraintAddedRule(ElementAddedEventArgs e)
 		{
@@ -849,7 +849,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region FactConstraint fixup
 		#region FactConstraintAddedRule
 		/// <summary>
-		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.FactConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
 		/// </summary>
 		private static void FactConstraintAddedRule(ElementAddedEventArgs e)
 		{
@@ -862,7 +862,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // FactConstraintAddedRule
 		#region FactConstraintDeletedRule
 		/// <summary>
-		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.FactConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
 		/// </summary>
 		private static void FactConstraintDeletedRule(ElementDeletedEventArgs e)
 		{
@@ -1001,7 +1001,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasReadingOrder), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasReadingOrder), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
 		/// </summary>
 		private static void ReadingOrderAddedRule(ElementAddedEventArgs e)
 		{
@@ -1064,7 +1064,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region ModelNote fixup
 		#region ModelNoteAddedRule
 		/// <summary>
-		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasModelNote), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasModelNote), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
 		/// </summary>
 		private static void ModelNoteAddedRule(ElementAddedEventArgs e)
 		{
@@ -1077,7 +1077,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // ModelNoteAddedRule
 		#region ModelNoteReferencedAddedRule
 		/// <summary>
-		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesModelElement), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNoteReferencesModelElement), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
 		/// </summary>
 		private static void ModelNoteReferenceAddedRule(ElementAddedEventArgs e)
 		{

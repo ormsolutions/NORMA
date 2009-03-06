@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -30,7 +30,7 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 
-namespace Neumont.Tools.Modeling.Diagrams
+namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 {
 	/// <summary>
 	/// Provides methods to support multiple <see cref="ShapeElement"/>s for the same <see cref="ModelElement"/>

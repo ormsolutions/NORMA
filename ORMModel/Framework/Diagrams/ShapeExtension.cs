@@ -2,7 +2,7 @@
 /**************************************************************************\
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
-* Copyright © Matthew Curland. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -25,7 +25,7 @@ using Microsoft.VisualStudio.Modeling.Diagrams;
 using System.ComponentModel;
 using Microsoft.VisualStudio.OLE.Interop;
 
-namespace Neumont.Tools.Modeling.Diagrams
+namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 {
 	#region IShapeExtender interface
 	/// <summary>

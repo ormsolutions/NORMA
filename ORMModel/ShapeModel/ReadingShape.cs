@@ -1,6 +1,6 @@
 ﻿#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -22,18 +22,18 @@ using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Globalization;
-using Neumont.Tools.ORM.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using System.Drawing;
 using Microsoft.VisualStudio.Modeling.Shell;
-using Neumont.Tools.Modeling;
-using Neumont.Tools.ORM.Shell;
+using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Core.Shell;
 using System.Drawing.Drawing2D;
 
 #endregion
 
-namespace Neumont.Tools.ORM.ShapeModel
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	public partial class ReadingShape : IModelErrorActivation, ISelectionContainerFilter
 	{
@@ -634,7 +634,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		// Note that the corresponding add rule for [RuleOn(typeof(FactTypeHasReadingOrderRuleClass))] is in ORMShapeDomainModel
 		// for easy sharing with the deserialization fixup process
 		/// <summary>
-		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasReadingOrder), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasReadingOrder), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
 		/// </summary>
 		private static void ReadingOrderDeletedRule(ElementDeletedEventArgs e)
 		{
@@ -659,7 +659,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // Reading text display update rules
 		#region Derivation Rules
 		/// <summary>
-		/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
+		/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
 		/// </summary>
 		private static void DerivationChangedRule(ElementPropertyChangedEventArgs e)
 		{
@@ -669,14 +669,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
 		/// </summary>
 		private static void DerivationAddedRule(ElementAddedEventArgs e)
 		{
 			InvalidateReadingShape(((FactTypeHasDerivationExpression)e.ModelElement).FactType);
 		}
 		/// <summary>
-		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
+		/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
 		/// </summary>
 		private static void DerivationDeletedRule(ElementDeletedEventArgs e)
 		{
@@ -734,7 +734,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// </summary>
 			public override void EditValue(ShapeElement parentShape, DiagramClientView view)
 			{
-				Neumont.Tools.ORM.Shell.ORMDesignerPackage.ReadingEditorWindow.Show();
+				ORMSolutions.ORMArchitect.Core.Shell.ORMDesignerPackage.ReadingEditorWindow.Show();
 			}
 			/// <summary>
 			/// Redirect all editing to the reading editor until we get the inplace editing with locked
@@ -742,7 +742,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// </summary>
 			public override void EditValue(ShapeElement parentShape, DiagramClientView view, PointD mousePosition)
 			{
-				Neumont.Tools.ORM.Shell.ORMDesignerPackage.ReadingEditorWindow.Show();
+				ORMSolutions.ORMArchitect.Core.Shell.ORMDesignerPackage.ReadingEditorWindow.Show();
 			}
 			/// <summary>
 			/// Redirect all editing to the reading editor until we get the inplace editing with locked
@@ -938,7 +938,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // DirectionIndicatorField class
 		#region change rules
 		/// <summary>
-		/// RolePlayerPositionChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ReadingOrderHasReading), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// RolePlayerPositionChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrderHasReading), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
 		/// Changing the position of a Reading in a ReadingOrder changes the
 		/// primary reading for that order, requiring a redraw
 		/// </summary>
@@ -966,7 +966,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ReadingOrderHasReading), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrderHasReading), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
 		/// Adding a reading at the 0 position of the ReadingOrder
 		/// changes the primary reading for that order
 		/// </summary>
@@ -1047,7 +1047,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
 		/// Update readings when the set of role player names is modified
 		/// </summary>
 		private static void RolePlayerAddedRule(ElementAddedEventArgs e)
@@ -1059,7 +1059,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
 		/// Update readings when the set of role player names is modified
 		/// </summary>
 		private static void RolePlayerDeletedRule(ElementDeletedEventArgs e)
@@ -1072,7 +1072,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// RolePlayerChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// RolePlayerChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
 		/// Update readings when the set of role player names is modified
 		/// </summary>
 		private static void RolePlayerRolePlayerChangedRule(RolePlayerChangedEventArgs e)
@@ -1092,7 +1092,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectType), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
 		/// Update readings when the set of role player names is modified
 		/// </summary>
 		private static void RolePlayerChangedRule(ElementPropertyChangedEventArgs e)
@@ -1110,7 +1110,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.Reading), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.Reading), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
 		/// Rule to notice changes to Reading.Text properties so that the
 		/// reading shapes can have their display text invalidated.
 		/// </summary>

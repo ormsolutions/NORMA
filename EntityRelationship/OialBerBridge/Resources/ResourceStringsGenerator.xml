@@ -2,7 +2,7 @@
 <ResourceStrings xmlns="http://schemas.neumont.edu/ORM/SDK/ResourceStringsGenerator">
 	<Copyright name="Common Public License Copyright Notice">
 		<CopyrightLine>/**************************************************************************\</CopyrightLine>
-		<CopyrightLine>* Neumont Object-Role Modeling Architect for Visual Studio                 *</CopyrightLine>
+		<CopyrightLine>* Natural Object-Role Modeling Architect for Visual Studio                 *</CopyrightLine>
 		<CopyrightLine>*                                                                          *</CopyrightLine>
 		<CopyrightLine>* Copyright © Neumont University. All rights reserved.                     *</CopyrightLine>
 		<CopyrightLine>*                                                                          *</CopyrightLine>
@@ -23,13 +23,14 @@
 		<xs:redefine schemaLocation="../../../ORMModel/Transforms/ResourceStringsGenerator.xsd">
 			<xs:simpleType name="modelType">
 				<xs:restriction base="modelType">
-					<xs:enumeration value="CustomizationModel"/>
+					<xs:enumeration value="ObjectModel"/>
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:redefine>
 	</xs:schema>
 	<FileAssociations>
-		<FileAssociation model="CustomizationModel" resourceFile="..\MappingCustomizationModel.resx" useFileComments="primary"/>
+		<FileAssociation model="ObjectModel" resourceFile="..\GeneratedCode\DomainModelResx.resx" useFileComments="secondary"/>
 	</FileAssociations>
-	<ResourceString name="ReferenceModeNamingDefaultCustomFormatInvalidDefaultCustomFormatException" model="CustomizationModel" resourceName="ReferenceModeNaming.DefaultCustomFormat.InvalidDefaultCustomFormatException"/>
+	<!-- UNDONE: Add real strings or delete the ResourceStrings files -->
+	<ResourceString name="Placeholder" model="ObjectModel" resourceName="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.DisplayName"/>
 </ResourceStrings>

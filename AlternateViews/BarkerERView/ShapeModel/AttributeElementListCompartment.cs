@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -23,12 +23,12 @@ using System.Text;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using System.Collections.ObjectModel;
-using Neumont.Tools.ORM.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using System.Windows.Forms;
-using b = Neumont.Tools.EntityRelationshipModels.Barker;
-using Neumont.Tools.EntityRelationshipModels.Barker;
+using Barker = ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker;
+using ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker;
 
-namespace Neumont.Tools.ORM.Views.BarkerERView
+namespace ORMSolutions.ORMArchitect.Views.BarkerERView
 {
 	/// <summary>
 	/// A custom compartment element used to customize how individual compartment items are drawn.
@@ -63,17 +63,17 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 		private const string ColonString = " : ";
 		/// <summary>
 		/// Specifies the offset used for measuring a string in updating the size of this
-		/// <see cref="T:Neumont.Tools.ORM.Views.RelationalView.AttributeElementListCompartment"/> based on the entity name.
+		/// <see cref="AttributeElementListCompartment"/> based on the entity name.
 		/// </summary>	
 		private const double BarkerEntityExtraWidth = .14d;
 		/// <summary>
 		/// Specifies the offset used for measuring a string in updating the size of this
-		/// <see cref="T:Neumont.Tools.ORM.Views.RelationalView.AttributeElementListCompartment"/> based on the attribute names.
+		/// <see cref="AttributeElementListCompartment"/> based on the attribute names.
 		/// </summary>	
 		private const double AttributeExtraWidth = .33d;
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="T:Neumont.Tools.ORM.RelationalView.AttributeElementListCompartment" /> class.	
+		/// Initializes a new instance of the <see cref="AttributeElementListCompartment" /> class.	
 		/// </summary>
 		/// <param name="partition"></param>
 		/// <param name="propertyAssignments"></param>
@@ -82,10 +82,10 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 		{
 		}
 		/// <summary>
-		/// Initializes a new instance of the <see cref="T:Neumont.Tools.ORM.RelationalView.AttributeElementListCompartment" /> class.
+		/// Initializes a new instance of the <see cref="AttributeElementListCompartment" /> class.
 		/// </summary>
 		/// <param name="store">The <see cref="T:Microsoft.VisualStudio.Modeling.Store"/> which will contain this
-		/// <see cref="T:Neumont.Tools.ORM.RelationalView.AttributeElementListCompartment" />.</param>
+		/// <see cref="AttributeElementListCompartment" />.</param>
 		/// <param name="propertyAssignments">An array of <see cref="T:Microsoft.VisualStudio.Modeling.PropertyAssignment"/> that
 		/// works with </param>
 		public AttributeElementListCompartment(Store store, params PropertyAssignment[] propertyAssignments)
@@ -111,7 +111,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 		public override void GetItemDrawInfo(ListField listField, int row, ItemDrawInfo itemDrawInfo)
 		{
 			base.GetItemDrawInfo(listField, row, itemDrawInfo);
-			b.Attribute currentAttribute = this.Items[row] as b.Attribute;
+			Barker.Attribute currentAttribute = this.Items[row] as Barker.Attribute;
 			Debug.Assert(currentAttribute != null, "An item in the AttributeElementListCompartment is not an attribute.");
 
 			if (currentAttribute.IsMandatory)
@@ -164,7 +164,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 
 		/// <summary>
 		/// Initializes the default <see cref="T:System.Drawing.StringFormat"/> associated with this 
-		/// <see cref="T:Neumont.Tools.ORM.Views.RelationalView.AttributeElementListCompartment"/>.
+		/// <see cref="AttributeElementListCompartment"/>.
 		/// </summary>
 		static AttributeElementListCompartment()
 		{
@@ -173,8 +173,8 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 			DefaultStringFormat.Trimming = StringTrimming.EllipsisCharacter;
 		}
 		/// <summary>
-		/// Updates the size of this <see cref="T:Neumont.Tools.ORM.Views.RelationalView.AttributeElementListCompartment"/> and
-		/// its associated <see cref="T:Neumont.Tools.ORM.Views.RelationalView.TableShape"/> to size according to the widest column or
+		/// Updates the size of this <see cref="AttributeElementListCompartment"/> and
+		/// its associated <see cref="BarkerEntityShape"/> to size according to the widest column or
 		/// table name.
 		/// </summary>
 		public override void UpdateSize()
@@ -234,7 +234,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 				{
 					ItemDrawInfo itemDrawInfo = new ItemDrawInfo();
 					GetItemDrawInfo(listField, i, itemDrawInfo);
-					bool isMandatory = (this.Items[i] as b.Attribute).IsMandatory;
+					bool isMandatory = (this.Items[i] as Barker.Attribute).IsMandatory;
 					string text = itemDrawInfo.Text;
 
 					// Gets the size of the column name in the context of the compartment
@@ -295,7 +295,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 	partial class AttributeElementListCompartmentDescription : ElementListCompartmentDescription
 	{
 		/// <summary>
-		/// Initializes a new instance of the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.AttributeElementListCompartmentDescription" /> class.
+		/// Initializes a new instance of the <see cref="AttributeElementListCompartmentDescription" /> class.
 		/// </summary>
 		/// <param name="name">The name of the element.</param>
 		/// <param name="title">The title of the element.</param>

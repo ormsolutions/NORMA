@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -21,10 +21,10 @@ using System.Globalization;
 using System.Security.Permissions;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Design;
-using Neumont.Tools.Modeling.Design;
-using Neumont.Tools.RelationalModels.ConceptualDatabase;
+using ORMSolutions.ORMArchitect.Framework.Design;
+using ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase;
 
-namespace Neumont.Tools.RelationalModels.ConceptualDatabase.Design
+namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Design
 {
 	/// <summary>
 	/// <see cref="ElementTypeDescriptor"/> for <see cref="ModelElement"/>s of type <typeparamref name="TModelElement"/>.

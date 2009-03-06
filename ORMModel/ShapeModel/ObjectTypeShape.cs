@@ -1,9 +1,9 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © Matthew Curland. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -25,13 +25,13 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
-using Neumont.Tools.Modeling.Design;
-using Neumont.Tools.ORM;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.Modeling;
-using Neumont.Tools.Modeling.Diagrams;
-using Neumont.Tools.ORM.Shell;
-namespace Neumont.Tools.ORM.ShapeModel
+using ORMSolutions.ORMArchitect.Framework.Design;
+using ORMSolutions.ORMArchitect.Core;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Framework.Diagrams;
+using ORMSolutions.ORMArchitect.Core.Shell;
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	public partial class ObjectTypeShape : IModelErrorActivation, IDynamicColorGeometryHost
 	{
@@ -40,7 +40,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		private static AutoSizeTextField myReferenceModeShapeField;
 		private const double HorizontalMargin = 0.060;
 		private const double VerticalMargin = 0.050;
-		private static readonly StyleSetResourceId DashedShapeOutlinePen = new StyleSetResourceId("Neumont", "DashedShapeOutlinePen");
+		private static readonly StyleSetResourceId DashedShapeOutlinePen = new StyleSetResourceId("ORMArchitect", "DashedShapeOutlinePen");
 		#endregion // Member Variables
 		#region Customize appearance
 		/// <summary>
@@ -438,7 +438,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // IModelErrorActivation Implementation
 		#region Shape display update rules
 		/// <summary>
-		/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectType), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
 		/// Iif primaryidentifier for a Entity type is 
 		/// removed and ref mode is not expanded, then resize the entity type
 		/// </summary>
@@ -495,7 +495,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // ObjectTypeShapeChangeRule
 		/// <summary>
-		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
 		/// </summary>
 		private static void PreferredIdentifierDeleteRule(ElementDeletedEventArgs e)
 		{
@@ -516,7 +516,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// RolePlayerChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// RolePlayerChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
 		/// </summary>
 		private static void PreferredIdentifierRolePlayerChangeRuleForResizeRule(RolePlayerChangedEventArgs e)
 		{
@@ -610,7 +610,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier)
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier)
 		/// </summary>
 		private static void PreferredIdentifierAddedRule(ElementAddedEventArgs e)
 		{
@@ -633,7 +633,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// RolePlayerChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier)
+		/// RolePlayerChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier)
 		/// Verify that all preconditions hold for adding a primary
 		/// identifier and extend modifiable conditions as needed.
 		/// Defers to <see cref="ProcessPreferredIdentifierAdded"/>.
@@ -643,7 +643,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			ProcessPreferredIdentifierAdded(e.ElementLink as EntityTypeHasPreferredIdentifier);
 		}
 		/// <summary>
-		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
 		/// </summary>
 		private static void PreferredIdentifierLengthenedRule(ElementAddedEventArgs e)
 		{
@@ -661,7 +661,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
 		/// </summary>
 		private static void PreferredIdentifierShortenedRule(ElementDeletedEventArgs e)
 		{
@@ -683,7 +683,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		// this will not change whether a given type is used as a refmode or not
 
 		/// <summary>
-		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType)
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDataType)
 		/// An object type can be a preferred identifier. Changing it to a value
 		/// type makes it a refmode. Make sure that the ExpandRefMode property is in sync.
 		/// </summary>
@@ -711,7 +711,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDataType), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
 		/// An object type can be the role player for a single-role preferred identifier. Changing it to a value
 		/// type makes it a refmode. Make sure that the ExpandRefMode property is in sync.
 		/// </summary>
@@ -743,7 +743,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole)
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole)
 		/// A preferred identifier internal uniqueness constraint can be attached to a role with no
 		/// role player. Attaching a role player will match the reference mode pattern, which then needs
 		/// to ensure that the ExpandRefMode property is correct. Also, resize shapes if the first subtype role
@@ -788,7 +788,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
 		/// Deleting a value type that participates in a refmode pattern does not remove the
 		/// preferred identifier, so there is no notification to the shape that the refmode is gone.
 		/// This forces the opposite ObjectTypeShape to resize in case it lost its refmode.
@@ -819,7 +819,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// RolePlayerChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole)
+		/// RolePlayerChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole)
 		/// Changing the identifying role player of a FactType that participates in the refmode
 		/// pattern needs to appropriately update the ExpandRefMode property and to resize
 		/// shapes for the identified object types.
@@ -889,7 +889,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
 		/// Resize associated shapes when a derivation rule is added
 		/// </summary>
 		private static void SubtypeDerivationAddedRule(ElementAddedEventArgs e)
@@ -897,7 +897,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			ResizeAssociatedShapes(((SubtypeHasDerivationExpression)e.ModelElement).Subtype);
 		}
 		/// <summary>
-		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
+		/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
 		/// </summary>
 		private static void SubtypeDerivationDeletedRule(ElementDeletedEventArgs e)
 		{

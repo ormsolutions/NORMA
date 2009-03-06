@@ -3,7 +3,7 @@
 // /**************************************************************************\
 // * Natural Object-Role Modeling Architect for Visual Studio                 *
 // *                                                                          *
-// * Copyright © Matthew Curland. All rights reserved.                        *
+// * Copyright © ORM Solutions, LLC. All rights reserved.                        *
 // *                                                                          *
 // * The use and distribution terms for this software are covered by the      *
 // * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -14,7 +14,7 @@
 // * You must not remove this notice, or any other, from this software.       *
 // \**************************************************************************/
 
-namespace Neumont.Tools.Modeling
+namespace ORMSolutions.ORMArchitect.Framework
 {
 	#region FrameworkResourceStrings class
 	/// <summary>A helper class to insulate the rest of the code from direct resource manipulation.</summary>

@@ -1,6 +1,6 @@
 ﻿#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -24,13 +24,13 @@
 
 using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
-namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
+namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 {
 	/// <summary>
 	/// DomainClass MappingCustomizationModel
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("d027cce5-b22a-44c0-a580-630658605da5")]
 	public partial class MappingCustomizationModel : DslModeling::ModelElement
@@ -70,7 +70,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::LinkedElementCollection<AssimilationMapping>(this, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasAssimilationMapping.ModelDomainRoleId);
+				return new DslModeling::LinkedElementCollection<AssimilationMapping>(this, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasAssimilationMapping.ModelDomainRoleId);
 			}
 		}
 		#endregion
@@ -83,7 +83,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::LinkedElementCollection<ReferenceModeNaming>(this, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming.ModelDomainRoleId);
+				return new DslModeling::LinkedElementCollection<ReferenceModeNaming>(this, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming.ModelDomainRoleId);
 			}
 		}
 		#endregion
@@ -96,19 +96,19 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::LinkedElementCollection<DefaultReferenceModeNaming>(this, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming.ModelDomainRoleId);
+				return new DslModeling::LinkedElementCollection<DefaultReferenceModeNaming>(this, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming.ModelDomainRoleId);
 			}
 		}
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
+namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 {
 	/// <summary>
 	/// DomainClass AssimilationMapping
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("2f631fd8-6b87-42e6-961f-750a566fb7c1")]
 	public partial class AssimilationMapping : DslModeling::ModelElement
@@ -149,16 +149,16 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// Storage for AbsorptionChoice
 		/// </summary>
-		private AssimilationAbsorptionChoice absorptionChoicePropertyStorage = Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationAbsorptionChoice.Absorb;
+		private AssimilationAbsorptionChoice absorptionChoicePropertyStorage = ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.AssimilationAbsorptionChoice.Absorb;
 		
 		/// <summary>
 		/// Gets or sets the value of AbsorptionChoice domain property.
 		/// Description for
-		/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping.AbsorptionChoice
+		/// ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping.AbsorptionChoice
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping/AbsorptionChoice.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping/AbsorptionChoice.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[global::System.ComponentModel.DefaultValue(Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationAbsorptionChoice.Absorb)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping/AbsorptionChoice.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping/AbsorptionChoice.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.AssimilationAbsorptionChoice.Absorb)]
 		[DslModeling::DomainObjectId("62b69840-b95f-467b-8fff-670552139e1d")]
 		public AssimilationAbsorptionChoice AbsorptionChoice
 		{
@@ -232,28 +232,28 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// Gets or sets FactType.
 		/// </summary>
-		public virtual global::Neumont.Tools.ORM.ObjectModel.FactType FactType
+		public virtual global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType FactType
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType.AssimilationMappingDomainRoleId) as global::Neumont.Tools.ORM.ObjectModel.FactType;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType.AssimilationMappingDomainRoleId) as global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
 				DslModeling::ModelElement existingSource;
 				if (null != value &&
-					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType.FactTypeDomainRoleId)))
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType.FactTypeDomainRoleId)))
 				{
 					if (existingSource != value)
 					{
-						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType.FactTypeDomainRoleId, this);
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType.FactTypeDomainRoleId, this);
 					}
 				}
 				else
 				{
-					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType.AssimilationMappingDomainRoleId, value);
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType.AssimilationMappingDomainRoleId, value);
 				}
 			}
 		}
@@ -267,24 +267,24 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasAssimilationMapping.AssimilationMappingDomainRoleId) as MappingCustomizationModel;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasAssimilationMapping.AssimilationMappingDomainRoleId) as MappingCustomizationModel;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasAssimilationMapping.AssimilationMappingDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasAssimilationMapping.AssimilationMappingDomainRoleId, value);
 			}
 		}
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
+namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 {
 	/// <summary>
 	/// DomainClass ReferenceModeNaming
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("b49ae46d-1551-4477-a2eb-c56415059912")]
 	public partial class ReferenceModeNaming : DslModeling::ModelElement
@@ -325,15 +325,15 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// Storage for NamingChoice
 		/// </summary>
-		private ReferenceModeNamingChoice namingChoicePropertyStorage = Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice.ModelDefault;
+		private ReferenceModeNamingChoice namingChoicePropertyStorage = ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice.ModelDefault;
 		
 		/// <summary>
 		/// Gets or sets the value of NamingChoice domain property.
 		/// The naming pattern used for references to this EntityType.
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/NamingChoice.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/NamingChoice.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[global::System.ComponentModel.DefaultValue(Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice.ModelDefault)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/NamingChoice.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/NamingChoice.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice.ModelDefault)]
 		[DslModeling::DomainObjectId("3e60bebc-05e3-4d6e-8662-66c04ff27b8f")]
 		public ReferenceModeNamingChoice NamingChoice
 		{
@@ -419,8 +419,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// Gets or sets the value of CustomFormat domain property.
 		/// The custom naming format used for references to this EntityType.
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/CustomFormat.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/CustomFormat.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/CustomFormat.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/CustomFormat.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainObjectId("24265c6b-8058-43ae-91a3-d04968ca7c32")]
 		public global::System.String CustomFormat
 		{
@@ -500,15 +500,15 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// Storage for PrimaryIdentifierNamingChoice
 		/// </summary>
-		private ReferenceModeNamingChoice primaryIdentifierNamingChoicePropertyStorage = Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice.ModelDefault;
+		private ReferenceModeNamingChoice primaryIdentifierNamingChoicePropertyStorage = ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice.ModelDefault;
 		
 		/// <summary>
 		/// Gets or sets the value of PrimaryIdentifierNamingChoice domain property.
 		/// The naming pattern used for simple primary identification of this EntityType.
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/PrimaryIdentifierNamingChoice.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/PrimaryIdentifierNamingChoice.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[global::System.ComponentModel.DefaultValue(Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice.ModelDefault)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/PrimaryIdentifierNamingChoice.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/PrimaryIdentifierNamingChoice.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice.ModelDefault)]
 		[DslModeling::DomainObjectId("bad8149a-db92-4c8e-b646-4d6d7bdbc3bc")]
 		public ReferenceModeNamingChoice PrimaryIdentifierNamingChoice
 		{
@@ -595,8 +595,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// The custom naming format used for simple primary identification of this
 		/// EntityType.
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/PrimaryIdentifierCustomFormat.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/PrimaryIdentifierCustomFormat.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/PrimaryIdentifierCustomFormat.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/PrimaryIdentifierCustomFormat.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainObjectId("e7c711bd-9687-4fc8-96c9-fe314c47099d")]
 		public global::System.String PrimaryIdentifierCustomFormat
 		{
@@ -670,28 +670,28 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// Gets or sets ObjectType.
 		/// </summary>
-		public virtual global::Neumont.Tools.ORM.ObjectModel.ObjectType ObjectType
+		public virtual global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType ObjectType
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType.ReferenceModeNamingDomainRoleId) as global::Neumont.Tools.ORM.ObjectModel.ObjectType;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType.ReferenceModeNamingDomainRoleId) as global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
 				DslModeling::ModelElement existingSource;
 				if (null != value &&
-					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType.ObjectTypeDomainRoleId)))
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType.ObjectTypeDomainRoleId)))
 				{
 					if (existingSource != value)
 					{
-						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType.ObjectTypeDomainRoleId, this);
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType.ObjectTypeDomainRoleId, this);
 					}
 				}
 				else
 				{
-					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType.ReferenceModeNamingDomainRoleId, value);
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType.ReferenceModeNamingDomainRoleId, value);
 				}
 			}
 		}
@@ -705,24 +705,24 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming.ReferenceModeNamingDomainRoleId) as MappingCustomizationModel;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming.ReferenceModeNamingDomainRoleId) as MappingCustomizationModel;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming.ReferenceModeNamingDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming.ReferenceModeNamingDomainRoleId, value);
 			}
 		}
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
+namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 {
 	/// <summary>
 	/// DomainClass DefaultReferenceModeNaming
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("443f27d8-44d6-4d4d-a918-2b9e7f613157")]
 	public partial class DefaultReferenceModeNaming : DslModeling::ModelElement
@@ -763,16 +763,16 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// Storage for NamingChoice
 		/// </summary>
-		private EffectiveReferenceModeNamingChoice namingChoicePropertyStorage = Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice.ValueTypeName;
+		private EffectiveReferenceModeNamingChoice namingChoicePropertyStorage = ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice.ValueTypeName;
 		
 		/// <summary>
 		/// Gets or sets the value of NamingChoice domain property.
 		/// The default naming pattern used for references to EntityTypes with this kind of
 		/// reference mode.
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/NamingChoice.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/NamingChoice.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[global::System.ComponentModel.DefaultValue(Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice.ValueTypeName)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/NamingChoice.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/NamingChoice.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice.ValueTypeName)]
 		[DslModeling::DomainObjectId("178450ce-a301-4022-9ca7-adc28f59d7c9")]
 		public EffectiveReferenceModeNamingChoice NamingChoice
 		{
@@ -859,8 +859,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// The default custom naming format used for references to EntityTypes with custom
 		/// naming formats.
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/CustomFormat.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/CustomFormat.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/CustomFormat.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/CustomFormat.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainObjectId("d0266c9e-c95e-43a6-a874-a0ebe08f5e28")]
 		public global::System.String CustomFormat
 		{
@@ -940,16 +940,16 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// Storage for PrimaryIdentifierNamingChoice
 		/// </summary>
-		private EffectiveReferenceModeNamingChoice primaryIdentifierNamingChoicePropertyStorage = Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice.ValueTypeName;
+		private EffectiveReferenceModeNamingChoice primaryIdentifierNamingChoicePropertyStorage = ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice.ValueTypeName;
 		
 		/// <summary>
 		/// Gets or sets the value of PrimaryIdentifierNamingChoice domain property.
 		/// The default naming pattern used for simple primary identification of EntityTypes
 		/// with this kind of reference mode.
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/PrimaryIdentifierNamingChoice.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/PrimaryIdentifierNamingChoice.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[global::System.ComponentModel.DefaultValue(Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice.ValueTypeName)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/PrimaryIdentifierNamingChoice.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/PrimaryIdentifierNamingChoice.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice.ValueTypeName)]
 		[DslModeling::DomainObjectId("63ddcaa0-330f-4bb6-8fca-8273fa3aaae4")]
 		public EffectiveReferenceModeNamingChoice PrimaryIdentifierNamingChoice
 		{
@@ -1036,8 +1036,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// The default custom naming format used for simple primary identification of
 		/// EntityTypes with custom naming formats.
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/PrimaryIdentifierCustomFormat.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/PrimaryIdentifierCustomFormat.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/PrimaryIdentifierCustomFormat.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/PrimaryIdentifierCustomFormat.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainObjectId("b393f62e-e784-488c-bd72-3a4c69a7fe97")]
 		public global::System.String PrimaryIdentifierCustomFormat
 		{
@@ -1117,18 +1117,18 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// Storage for ReferenceModeTargetKind
 		/// </summary>
-		private global::Neumont.Tools.ORM.ObjectModel.ReferenceModeType referenceModeTargetKindPropertyStorage = Neumont.Tools.ORM.ObjectModel.ReferenceModeType.Popular;
+		private global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeType referenceModeTargetKindPropertyStorage = ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeType.Popular;
 		
 		/// <summary>
 		/// Gets or sets the value of ReferenceModeTargetKind domain property.
 		/// Description for
-		/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming.ReferenceModeTargetKind
+		/// ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming.ReferenceModeTargetKind
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/ReferenceModeTargetKind.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/ReferenceModeTargetKind.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[global::System.ComponentModel.DefaultValue(Neumont.Tools.ORM.ObjectModel.ReferenceModeType.Popular)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/ReferenceModeTargetKind.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/ReferenceModeTargetKind.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeType.Popular)]
 		[DslModeling::DomainObjectId("1699fa2a-d247-4d5b-9b4c-7e147b2459af")]
-		public global::Neumont.Tools.ORM.ObjectModel.ReferenceModeType ReferenceModeTargetKind
+		public global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeType ReferenceModeTargetKind
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
@@ -1144,7 +1144,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// Value handler for the DefaultReferenceModeNaming.ReferenceModeTargetKind domain property.
 		/// </summary>
-		internal sealed partial class ReferenceModeTargetKindPropertyHandler : DslModeling::DomainPropertyValueHandler<DefaultReferenceModeNaming, global::Neumont.Tools.ORM.ObjectModel.ReferenceModeType>
+		internal sealed partial class ReferenceModeTargetKindPropertyHandler : DslModeling::DomainPropertyValueHandler<DefaultReferenceModeNaming, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeType>
 		{
 			private ReferenceModeTargetKindPropertyHandler() { }
 		
@@ -1170,7 +1170,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			/// </summary>
 			/// <param name="element">Element which owns the property.</param>
 			/// <returns>Property value.</returns>
-			public override sealed global::Neumont.Tools.ORM.ObjectModel.ReferenceModeType GetValue(DefaultReferenceModeNaming element)
+			public override sealed global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeType GetValue(DefaultReferenceModeNaming element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.referenceModeTargetKindPropertyStorage;
@@ -1181,11 +1181,11 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			/// </summary>
 			/// <param name="element">Element which owns the property.</param>
 			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(DefaultReferenceModeNaming element, global::Neumont.Tools.ORM.ObjectModel.ReferenceModeType newValue)
+			public override sealed void SetValue(DefaultReferenceModeNaming element, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeType newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
 		
-				global::Neumont.Tools.ORM.ObjectModel.ReferenceModeType oldValue = GetValue(element);
+				global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeType oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
 					ValueChanging(element, oldValue, newValue);
@@ -1200,17 +1200,17 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// Gets or sets ORMModel.
 		/// </summary>
-		public virtual global::Neumont.Tools.ORM.ObjectModel.ORMModel ORMModel
+		public virtual global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel ORMModel
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel.DefaultReferenceModeNamingDomainRoleId) as global::Neumont.Tools.ORM.ObjectModel.ORMModel;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel.DefaultReferenceModeNamingDomainRoleId) as global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel.DefaultReferenceModeNamingDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel.DefaultReferenceModeNamingDomainRoleId, value);
 			}
 		}
 		#endregion
@@ -1223,30 +1223,30 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming.DefaultReferenceModeNamingDomainRoleId) as MappingCustomizationModel;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming.DefaultReferenceModeNamingDomainRoleId) as MappingCustomizationModel;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming.DefaultReferenceModeNamingDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming.DefaultReferenceModeNamingDomainRoleId, value);
 			}
 		}
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
+namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 {
 	/// <summary>
 	/// DomainClass RelationalNameGenerator
 	/// </summary>
-	[Neumont.Tools.ORM.ObjectModel.NameConsumerIdentifier("Relational")]
-	[Neumont.Tools.ORM.ObjectModel.NameUsage(typeof(ColumnNameUsage))]
-	[Neumont.Tools.ORM.ObjectModel.NameUsage(typeof(TableNameUsage))]
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.RelationalNameGenerator.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.RelationalNameGenerator.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[ORMSolutions.ORMArchitect.Core.ObjectModel.NameConsumerIdentifier("Relational")]
+	[ORMSolutions.ORMArchitect.Core.ObjectModel.NameUsage(typeof(ColumnNameUsage))]
+	[ORMSolutions.ORMArchitect.Core.ObjectModel.NameUsage(typeof(TableNameUsage))]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.RelationalNameGenerator.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.RelationalNameGenerator.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("a2d24e49-1b2f-42c0-b1ce-1f7f3b193e26")]
-	public partial class RelationalNameGenerator : global::Neumont.Tools.ORM.ObjectModel.NameGenerator
+	public partial class RelationalNameGenerator : global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameGenerator
 	{
 		#region Constructors, domain class Id
 	
@@ -1278,17 +1278,17 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
+namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 {
 	/// <summary>
 	/// DomainClass ColumnNameUsage
 	/// </summary>
-	[Neumont.Tools.ORM.ObjectModel.NameUsageIdentifier("RelationalColumn")]
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnNameUsage.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ColumnNameUsage.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[ORMSolutions.ORMArchitect.Core.ObjectModel.NameUsageIdentifier("RelationalColumn")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnNameUsage.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnNameUsage.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("61362e35-e677-4a3e-b5cc-a05b7c6ea6e9")]
-	public abstract partial class ColumnNameUsage : global::Neumont.Tools.ORM.ObjectModel.NameUsage
+	public abstract partial class ColumnNameUsage : global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameUsage
 	{
 		#region Constructors, domain class Id
 	
@@ -1308,17 +1308,17 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
+namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 {
 	/// <summary>
 	/// DomainClass TableNameUsage
 	/// </summary>
-	[Neumont.Tools.ORM.ObjectModel.NameUsageIdentifier("RelationalTable")]
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableNameUsage.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableNameUsage.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[ORMSolutions.ORMArchitect.Core.ObjectModel.NameUsageIdentifier("RelationalTable")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableNameUsage.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableNameUsage.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("e8ce0734-1fb3-4d0b-9da0-56fddc502ac0")]
-	public abstract partial class TableNameUsage : global::Neumont.Tools.ORM.ObjectModel.NameUsage
+	public abstract partial class TableNameUsage : global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameUsage
 	{
 		#region Constructors, domain class Id
 	
@@ -1338,16 +1338,16 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
+namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 {
 	/// <summary>
 	/// DomainClass SchemaGenerationSetting
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("94918d9c-0935-4b98-86f2-ff8c98861e0d")]
-	public partial class SchemaGenerationSetting : global::Neumont.Tools.ORM.ObjectModel.GenerationSetting
+	public partial class SchemaGenerationSetting : global::ORMSolutions.ORMArchitect.Core.ObjectModel.GenerationSetting
 	{
 		#region Constructors, domain class Id
 	
@@ -1390,10 +1390,10 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// Gets or sets the value of CoreAlgorithmVersion domain property.
 		/// Description for
-		/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting.Depth
+		/// ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting.Depth
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting/CoreAlgorithmVersion.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting/CoreAlgorithmVersion.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting/CoreAlgorithmVersion.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting/CoreAlgorithmVersion.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainObjectId("5570f2c2-0f9e-43a7-8a2e-afc3dfb3f7a3")]
 		public global::System.String CoreAlgorithmVersion
 		{
@@ -1478,10 +1478,10 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// Gets or sets the value of NameAlgorithmVersion domain property.
 		/// Description for
-		/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting.Depth
+		/// ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting.Depth
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting/NameAlgorithmVersion.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting/NameAlgorithmVersion.Description", typeof(global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting/NameAlgorithmVersion.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting/NameAlgorithmVersion.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainObjectId("01203af6-93d5-4555-9bd1-545cf5907022")]
 		public global::System.String NameAlgorithmVersion
 		{
@@ -1555,30 +1555,30 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// Gets or sets GeneratedSchema.
 		/// Description for
-		/// Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema.GenerationSetting
+		/// ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema.GenerationSetting
 		/// </summary>
-		public virtual global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema GeneratedSchema
+		public virtual global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema GeneratedSchema
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema.GenerationSettingDomainRoleId) as global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema.GenerationSettingDomainRoleId) as global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
 				DslModeling::ModelElement existingSource;
 				if (null != value &&
-					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema.GeneratedSchemaDomainRoleId)))
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema.GeneratedSchemaDomainRoleId)))
 				{
 					if (existingSource != value)
 					{
-						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema.GeneratedSchemaDomainRoleId, this);
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema.GeneratedSchemaDomainRoleId, this);
 					}
 				}
 				else
 				{
-					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema.GenerationSettingDomainRoleId, value);
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema.GenerationSettingDomainRoleId, value);
 				}
 			}
 		}

@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -14,7 +14,7 @@
 \**************************************************************************/
 #endregion
 
-namespace Neumont.Tools.RelationalModels.ConceptualDatabase
+namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 {
 	// Placeholder file to associated resources with the root catalog class.
 	// The resources with the domain model are generated, so we need a different

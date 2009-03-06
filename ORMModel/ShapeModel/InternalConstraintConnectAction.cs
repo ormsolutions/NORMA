@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -24,10 +24,10 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.Modeling;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Framework;
 
-namespace Neumont.Tools.ORM.ShapeModel
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	/// <summary>
 	/// A ConnectAction to add role sequences to an Internal constraint

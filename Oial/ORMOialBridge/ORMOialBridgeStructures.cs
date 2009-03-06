@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -19,11 +19,11 @@ using System.Diagnostics;
 using System.Runtime.Serialization;
 using System.Text;
 using Microsoft.VisualStudio.Modeling;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.Modeling;
-using Neumont.Tools.ORMAbstraction;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.ORMAbstraction;
 
-namespace Neumont.Tools.ORMToORMAbstractionBridge
+namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 {
 	partial class AbstractionModelIsForORMModel
 	{

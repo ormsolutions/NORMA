@@ -1,6 +1,6 @@
 ﻿#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -25,17 +25,17 @@
 using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
 using DslDiagrams = global::Microsoft.VisualStudio.Modeling.Diagrams;
-namespace Neumont.Tools.ORM.ShapeModel
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	/// <summary>
 	/// DomainModel ORMShapeDomainModel
-	/// Description for Neumont.Tools.ORM.ShapeModel.ORMShape
+	/// Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShape
 	/// </summary>
-	[DslModeling::ExtendsDomainModel("F60BC3F1-C38E-4C7D-9EE5-9211DB26CB45"/*Neumont.Tools.Modeling.FrameworkDomainModel*/)]
-	[DslModeling::ExtendsDomainModel("3EAE649F-E654-4D04-8289-C25D2C0322D8"/*Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel*/)]
+	[DslModeling::ExtendsDomainModel("F60BC3F1-C38E-4C7D-9EE5-9211DB26CB45"/*ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel*/)]
+	[DslModeling::ExtendsDomainModel("3EAE649F-E654-4D04-8289-C25D2C0322D8"/*ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel*/)]
 	[DslModeling::ExtendsDomainModel("91D59B16-E488-4A28-8D51-59273AD5BF2E"/*Microsoft.VisualStudio.Modeling.Diagrams.CoreDesignSurfaceDomainModel*/)]
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]
 	public partial class ORMShapeDomainModel : DslModeling::DomainModel
@@ -89,8 +89,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 				typeof(ModelNoteShape),
 				typeof(LinkConnectorShape),
 				typeof(FactTypeLinkConnectorShape),
-				typeof(global::Neumont.Tools.ORM.ShapeModel.FixUpDiagram),
-				typeof(global::Neumont.Tools.ORM.ShapeModel.ConnectorRolePlayerChanged),
+				typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.FixUpDiagram),
+				typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ConnectorRolePlayerChanged),
 			};
 		}
 		/// <summary>
@@ -233,7 +233,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// The base name of this model's resources.
 		/// </summary>
-		public const string ResourceBaseName = "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx";
+		public const string ResourceBaseName = "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx";
 		
 		/// <summary>
 		/// Gets the DomainModel's ResourceManager. If the ResourceManager does not already exist, then it is created.
@@ -339,8 +339,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 			if(store == null) throw new global::System.ArgumentNullException("store");
 			
 			DslModeling::RuleManager ruleManager = store.RuleManager;
-			ruleManager.EnableRule(typeof(global::Neumont.Tools.ORM.ShapeModel.FixUpDiagram));
-			ruleManager.EnableRule(typeof(global::Neumont.Tools.ORM.ShapeModel.ConnectorRolePlayerChanged));
+			ruleManager.EnableRule(typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.FixUpDiagram));
+			ruleManager.EnableRule(typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ConnectorRolePlayerChanged));
 		}
 		
 		/// <summary>
@@ -351,8 +351,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 			if(store == null) throw new global::System.ArgumentNullException("store");
 			
 			DslModeling::RuleManager ruleManager = store.RuleManager;
-			ruleManager.DisableRule(typeof(global::Neumont.Tools.ORM.ShapeModel.FixUpDiagram));
-			ruleManager.DisableRule(typeof(global::Neumont.Tools.ORM.ShapeModel.ConnectorRolePlayerChanged));
+			ruleManager.DisableRule(typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.FixUpDiagram));
+			ruleManager.DisableRule(typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ConnectorRolePlayerChanged));
 		}
 		#endregion
 	}
@@ -506,13 +506,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 	#endregion
 		
 }
-namespace Neumont.Tools.ORM.ShapeModel
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	/// <summary>
 	/// DomainEnumeration: ConstraintDisplayPosition
 	/// Determines where internal constraints are drawn on FactTypeShapes.
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<ConstraintDisplayPosition, global::Neumont.Tools.ORM.ShapeModel.ORMDiagram>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<ConstraintDisplayPosition, global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram>))]
 	[global::System.CLSCompliant(true)]
 	public enum ConstraintDisplayPosition
 	{
@@ -520,17 +520,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Top
 		/// Draw the constraints above the top of the role boxes.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ConstraintDisplayPosition/Top.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ConstraintDisplayPosition/Top.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 		Top = 0,
 		/// <summary>
 		/// Bottom
 		/// Draw the constraints below the bottom of the role boxes.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ConstraintDisplayPosition/Bottom.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ConstraintDisplayPosition/Bottom.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 		Bottom = 1,
 	}
 }
-namespace Neumont.Tools.ORM.ShapeModel
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	/// <summary>
 	/// DomainEnumeration: DisplayRoleNames
@@ -538,7 +538,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// represented by the FactTypeShape using this enumeration, overriding the global
 	/// setting.
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<DisplayRoleNames, global::Neumont.Tools.ORM.ShapeModel.ORMDiagram>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<DisplayRoleNames, global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram>))]
 	[global::System.CLSCompliant(true)]
 	public enum DisplayRoleNames
 	{
@@ -546,29 +546,29 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// UserDefault
 		/// Use the global setting.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.DisplayRoleNames/UserDefault.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayRoleNames/UserDefault.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 		UserDefault = 0,
 		/// <summary>
 		/// On
 		/// Always draw the RoleNameShapes.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.DisplayRoleNames/On.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayRoleNames/On.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 		On = 1,
 		/// <summary>
 		/// Off
 		/// Never draw the RoleNameShapes.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.DisplayRoleNames/Off.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayRoleNames/Off.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 		Off = 2,
 	}
 }
-namespace Neumont.Tools.ORM.ShapeModel
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	/// <summary>
 	/// DomainEnumeration: DisplayOrientation
 	/// Determines whether a FactTypeShape is drawn horizontally or vertically.
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<DisplayOrientation, global::Neumont.Tools.ORM.ShapeModel.ORMDiagram>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<DisplayOrientation, global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram>))]
 	[global::System.CLSCompliant(true)]
 	public enum DisplayOrientation
 	{
@@ -576,19 +576,19 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Horizontal
 		/// The fact type is drawn with a horizontal orientation.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.DisplayOrientation/Horizontal.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayOrientation/Horizontal.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 		Horizontal = 0,
 		/// <summary>
 		/// VerticalRotatedRight
 		/// The fact type is drawn with a vertical orientation rotated to the right.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.DisplayOrientation/VerticalRotatedRight.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayOrientation/VerticalRotatedRight.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 		VerticalRotatedRight = 1,
 		/// <summary>
 		/// VerticalRotatedLeft
 		/// The fact type is drawn with a vertical orientation rotated to the left.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.DisplayOrientation/VerticalRotatedLeft.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayOrientation/VerticalRotatedLeft.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 		VerticalRotatedLeft = 2,
 	}
 }

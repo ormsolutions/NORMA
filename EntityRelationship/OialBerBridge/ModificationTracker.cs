@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -17,16 +17,16 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.Modeling;
-using Neumont.Tools.Modeling;
+using ORMSolutions.ORMArchitect.Framework;
 using System.Diagnostics;
 using System.Collections;
-using Neumont.Tools.ORMToORMAbstractionBridge;
-using Neumont.Tools.ORMAbstraction;
+using ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge;
+using ORMSolutions.ORMArchitect.ORMAbstraction;
 using System.Collections.ObjectModel;
-using ORMCore = Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.EntityRelationshipModels.Barker;
+using ORMCore = ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker;
 
-namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
+namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 {
 	partial class ORMAbstractionToBarkerERBridgeDomainModel
 	{
@@ -42,7 +42,7 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 			// for cases where we start from an empty ORM model
 
 			/// <summary>
-			/// ChangeRule: typeof(Neumont.Tools.ORMAbstraction.ConceptTypeChild)
+			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild)
 			/// </summary>
 			private static void ConceptTypeChildChangedRule(ElementPropertyChangedEventArgs e)
 			{
@@ -52,14 +52,14 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 				//}
 			}
 			/// <summary>
-			/// AddRule: typeof(Neumont.Tools.ORMAbstraction.AbstractionModelHasConceptType)
+			/// AddRule: typeof(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType)
 			/// </summary>
 			private static void ConceptTypeAddedRule(ElementAddedEventArgs e)
 			{
 				RebuildAbstractionModel(((AbstractionModelHasConceptType)e.ModelElement).Model);
 			}
 			/// <summary>
-			/// DeleteRule: typeof(Neumont.Tools.ORMAbstraction.AbstractionModelHasConceptType)
+			/// DeleteRule: typeof(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType)
 			/// </summary>
 			private static void ConceptTypeDeletedRule(ElementDeletedEventArgs e)
 			{
@@ -94,7 +94,7 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 			#endregion // Abstraction model modification rules
 			#region Bridge element modification rules
 			/// <summary>
-			/// ChangeRule: typeof(Neumont.Tools.ORMAbstraction.AbstractionModel)
+			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel)
 			/// Update the schema name when the abstraction model name changes
 			/// </summary>
 			private static void AbstractionModelChangedRule(ElementPropertyChangedEventArgs e)

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 using System.Collections.ObjectModel;
-using Neumont.Tools.ORM.Shell;
+using ORMSolutions.ORMArchitect.Core.Shell;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling;
 
-namespace Neumont.Tools.Modeling.Diagrams
+namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 {
 	#region Plugin code
 	/// <summary>

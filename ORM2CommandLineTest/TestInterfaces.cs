@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Reflection;
 using Microsoft.VisualStudio.Modeling;
-namespace Neumont.Tools.ORM.SDK.TestEngine
+namespace ORMSolutions.ORMArchitectSDK.TestEngine
 {
 	#region IORMToolTestServices Interface
 	/// <summary>

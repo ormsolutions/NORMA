@@ -1,4 +1,4 @@
-namespace Neumont.Tools.ORM.Shell
+namespace ORMSolutions.ORMArchitect.Core.Shell
 {
 	/// <summary>
 	/// Filters which model errors are displayed for an ORM Model.
@@ -34,7 +34,7 @@ namespace Neumont.Tools.ORM.Shell
 			this.components = new System.ComponentModel.Container();
 			System.Windows.Forms.ImageList imageList;
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ModelErrorDisplayFilterForm));
-			this.virtualTreeControl = new Neumont.Tools.Modeling.Shell.StandardVirtualTreeControl();
+			this.virtualTreeControl = new ORMSolutions.ORMArchitect.Framework.Shell.StandardVirtualTreeControl();
 			this.btnOK = new System.Windows.Forms.Button();
 			this.btnCancel = new System.Windows.Forms.Button();
 			imageList = new System.Windows.Forms.ImageList(this.components);
@@ -87,7 +87,7 @@ namespace Neumont.Tools.ORM.Shell
 
 		#endregion
 
-		private Neumont.Tools.Modeling.Shell.StandardVirtualTreeControl virtualTreeControl;
+		private ORMSolutions.ORMArchitect.Framework.Shell.StandardVirtualTreeControl virtualTreeControl;
 		private System.Windows.Forms.Button btnOK;
 		private System.Windows.Forms.Button btnCancel;
 	}

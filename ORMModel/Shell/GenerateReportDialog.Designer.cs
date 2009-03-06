@@ -1,4 +1,4 @@
-namespace Neumont.Tools.ORM.Shell
+namespace ORMSolutions.ORMArchitect.Core.Shell
 {
     partial class GenerateReportDialog
     {
@@ -35,7 +35,7 @@ namespace Neumont.Tools.ORM.Shell
 			this.btnGenerate = new System.Windows.Forms.Button();
 			this.txtOutputDirectory = new System.Windows.Forms.TextBox();
 			this.gbOptions = new System.Windows.Forms.GroupBox();
-			this.chkLbOptions = new Neumont.Tools.Modeling.Design.FlagsEnumListBox();
+			this.chkLbOptions = new ORMSolutions.ORMArchitect.Framework.Design.FlagsEnumListBox();
 			this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
 			this.gbOptions.SuspendLayout();
 			this.SuspendLayout();
@@ -122,7 +122,7 @@ namespace Neumont.Tools.ORM.Shell
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.Label lblOutput;
         private System.Windows.Forms.GroupBox gbOptions;
-        private Neumont.Tools.Modeling.Design.FlagsEnumListBox chkLbOptions;
+        private ORMSolutions.ORMArchitect.Framework.Design.FlagsEnumListBox chkLbOptions;
         private System.Windows.Forms.Button btnCancel;
     }
 }

@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{469D6D17-F8DA-48A4-8F76-671A4B8031A5}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Neumont.Tools.ORM.SDK.TestDriver</RootNamespace>
+    <RootNamespace>ORMSolutions.ORMArchitectSDK.TestDriver</RootNamespace>
     <AssemblyName>ORMTestDriver.$(TargetVisualStudioShortProductName)</AssemblyName>
     <WarningLevel>4</WarningLevel>
     <IsWebBootstrapper>true</IsWebBootstrapper>
@@ -26,7 +26,7 @@
     <ApplicationRevision>0</ApplicationRevision>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <SignAssembly>true</SignAssembly>
-    <StartupObject>Neumont.Tools.ORM.SDK.TestDriver.Program</StartupObject>
+    <StartupObject>ORMSolutions.ORMArchitectSDK.TestDriver.Program</StartupObject>
     <AssemblyOriginatorKeyFile>..\ORMPackage.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -51,8 +51,8 @@
     <Reference Include="Microsoft.VisualStudio.TextManager.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="Neumont.Tools.ORM.$(TargetVisualStudioShortProductName), Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
-      <HintPath>$(ProgramFiles)\Neumont\ORM Architect for $(TargetVisualStudioLongProductName)\bin\Neumont.Tools.ORM.$(TargetVisualStudioShortProductName).dll</HintPath>
+    <Reference Include="ORMSolutions.ORMArchitect.Core.$(TargetVisualStudioShortProductName), Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
+      <HintPath>$(ProgramFiles)\ORM Solutions\ORM Architect for $(TargetVisualStudioLongProductName)\bin\ORMSolutions.ORMArchitect.Core.$(TargetVisualStudioShortProductName).dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
@@ -71,6 +71,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AppAssemblyInfo.cs" />
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <None Include="..\ORMPackage.snk">
       <Link>ORMPackage.snk</Link>
     </None>

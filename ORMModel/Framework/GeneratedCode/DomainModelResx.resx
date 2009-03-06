@@ -117,19 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Neumont.Tools.Modeling.FrameworkDomainModel.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Modeling.Framework</value>
+  <data name="ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Framework.Framework</value>
     <comment>Description for DslLibrary &apos;Framework&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Modeling.FrameworkDomainModel.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.DisplayName" xml:space="preserve">
     <value>Framework Domain Model</value>
     <comment>DisplayName for DslLibrary &apos;Framework&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Modeling.DelayValidateSignal.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Framework.DelayValidateSignal.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;DelayValidateSignal&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Modeling.DelayValidateSignal.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Framework.DelayValidateSignal.DisplayName" xml:space="preserve">
     <value>DelayValidateSignal</value>
     <comment>DisplayName for DomainClass &apos;DelayValidateSignal&apos;</comment>
   </data>
@@ -229,7 +229,7 @@ A DomainClass can be serialized as a moniker only if
 
 <!-- Common Public License Copyright Notice -->
 <!--
-	Neumont Object-Role Modeling Architect for Visual Studio
+	Natural Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
 

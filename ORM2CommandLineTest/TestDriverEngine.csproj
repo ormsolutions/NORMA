@@ -7,8 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{5DB17441-D264-4B37-88D5-98C3B1CF7D71}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Neumont.Tools.ORM.SDK.TestEngine</RootNamespace>
-    <AssemblyName>Neumont.Tools.ORM.SDK.TestEngine.$(TargetVisualStudioShortProductName)</AssemblyName>
+    <RootNamespace>ORMSolutions.ORMArchitectSDK.TestEngine</RootNamespace>
+    <AssemblyName>ORMSolutions.ORMArchitectSDK.TestEngine.$(TargetVisualStudioShortProductName)</AssemblyName>
     <WarningLevel>4</WarningLevel>
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <PublishUrl>http://localhost/ORM2CommandLineTest</PublishUrl>
@@ -36,7 +36,7 @@
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\TestEngine\</OutputPath>
     <DefineConstants>$(DefineConstants);DEBUG;TRACE</DefineConstants>
-    <DocumentationFile>bin\Debug\TestEngine\Neumont.Tools.ORM.SDK.TestEngine.$(TargetVisualStudioShortProductName).XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\TestEngine\ORMSolutions.ORMArchitectSDK.TestEngine.$(TargetVisualStudioShortProductName).XML</DocumentationFile>
     <UseVSHostingProcess>true</UseVSHostingProcess>
     <NoWarn>1607</NoWarn>
   </PropertyGroup>
@@ -45,7 +45,7 @@
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\TestEngine\</OutputPath>
     <DefineConstants>$(DefineConstants);TRACE</DefineConstants>
-    <DocumentationFile>bin\Release\TestEngine\Neumont.Tools.ORM.SDK.TestEngine.$(TargetVisualStudioShortProductName).XML</DocumentationFile>
+    <DocumentationFile>bin\Release\TestEngine\ORMSolutions.ORMArchitectSDK.TestEngine.$(TargetVisualStudioShortProductName).XML</DocumentationFile>
     <NoWarn>1607</NoWarn>
   </PropertyGroup>
   <ItemGroup>
@@ -55,8 +55,8 @@
     <Reference Include="Microsoft.VisualStudio.TextManager.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="Neumont.Tools.ORM.$(TargetVisualStudioShortProductName), Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
-      <HintPath>$(ProgramFiles)\Neumont\ORM Architect for $(TargetVisualStudioLongProductName)\bin\Neumont.Tools.ORM.$(TargetVisualStudioShortProductName).dll</HintPath>
+    <Reference Include="ORMSolutions.ORMArchitect.Core.$(TargetVisualStudioShortProductName), Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
+      <HintPath>$(ProgramFiles)\ORM Solutions\ORM Architect for $(TargetVisualStudioLongProductName)\bin\OMSolutions.ORMArchitect.Core.$(TargetVisualStudioShortProductName).dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
@@ -80,6 +80,9 @@
     <Compile Include="ORMTaskItem.cs" />
     <Compile Include="ORMTaskProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="ORMStore.cs" />
     <Compile Include="Suite.cs" />
     <Compile Include="TestAttribute.cs">

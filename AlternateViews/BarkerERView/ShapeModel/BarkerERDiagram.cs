@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -21,16 +21,16 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.Modeling;
-using Neumont.Tools.Modeling.Shell;
-using Neumont.Tools.ORMAbstraction;
-using Neumont.Tools.ORMToORMAbstractionBridge;
-using Neumont.Tools.EntityRelationshipModels.Barker;
-using Neumont.Tools.ORMAbstractionToBarkerERBridge;
-using b = Neumont.Tools.EntityRelationshipModels.Barker;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Framework.Shell;
+using ORMSolutions.ORMArchitect.ORMAbstraction;
+using ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge;
+using ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker;
+using ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge;
+using Barker = ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker;
 
-namespace Neumont.Tools.ORM.Views.BarkerERView
+namespace ORMSolutions.ORMArchitect.Views.BarkerERView
 {
 	[DiagramMenuDisplay(DiagramMenuDisplayOptions.BlockRename | DiagramMenuDisplayOptions.Required, typeof(BarkerERDiagram), BarkerERDiagram.NameResourceName, "Diagram.TabImage", "Diagram.BrowserImage")]
 	partial class BarkerERDiagram
@@ -55,7 +55,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 		public BarkerERDiagram(Partition partition, params PropertyAssignment[] propertyAssignments)
 			: base(partition, propertyAssignments)
 		{
-			this.Name = Neumont.Tools.Modeling.Design.ResourceAccessor<BarkerERDiagram>.ResourceManager.GetString(NameResourceName);
+			this.Name = ORMSolutions.ORMArchitect.Framework.Design.ResourceAccessor<BarkerERDiagram>.ResourceManager.GetString(NameResourceName);
 			NodeToNodeClearance = new SizeD(1.75, 1.75);
 		}
 		public override void OnInitialize()
@@ -114,9 +114,9 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 			return null;
 		}
 		/// <summary>
-		/// ChangeRule: typeof(RelationalDiagram)
-		/// Disallows changing the name of the Relational Diagram
-		/// Changes the name of the <see cref="T:Neumont.Tools.ORM.Views.RelationalDiagram"/> to
+		/// ChangeRule: typeof(BarkerERDiagram)
+		/// Disallows changing the name of the Barker ER Diagram
+		/// Changes the name of the <see cref="BarkerERDiagram"/> to
 		/// its default name if changed by a user.
 		/// </summary>
 		private static void NameChangedRule(ElementPropertyChangedEventArgs e)
@@ -125,7 +125,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 			if (attributeId == Diagram.NameDomainPropertyId)
 			{
 				BarkerERDiagram diagram = e.ModelElement as BarkerERDiagram;
-				string name = Neumont.Tools.Modeling.Design.ResourceAccessor<BarkerERDiagram>.ResourceManager.GetString(NameResourceName);
+				string name = ORMSolutions.ORMArchitect.Framework.Design.ResourceAccessor<BarkerERDiagram>.ResourceManager.GetString(NameResourceName);
 				if (diagram != null && diagram.Name != name)
 				{
 					diagram.Name = name;
@@ -133,20 +133,20 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 			}
 		}
 		/// <summary>
-		/// ChangeRule: typeof(Neumont.Tools.EntityRelationshipModels.Barker.Attribute)
-		/// Update Barker entity size when <see cref="b.Attribute.IsMandatory"/> or <see cref="b.Attribute.Name"/> changes.
+		/// ChangeRule: typeof(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute)
+		/// Update Barker entity size when <see cref="Barker.Attribute.IsMandatory"/> or <see cref="Barker.Attribute.Name"/> changes.
 		/// </summary>
 		private static void DisplayAttributePropertyChangedRule(ElementPropertyChangedEventArgs e)
 		{
 			Guid attributeId = e.DomainProperty.Id;
-			if (attributeId == b.Attribute.IsMandatoryDomainPropertyId ||
-				attributeId == b.Attribute.NameDomainPropertyId)
+			if (attributeId == Barker.Attribute.IsMandatoryDomainPropertyId ||
+				attributeId == Barker.Attribute.NameDomainPropertyId)
 			{
-				UpdateEntityPresentationSize(((b.Attribute)e.ModelElement).EntityType);
+				UpdateEntityPresentationSize(((Barker.Attribute)e.ModelElement).EntityType);
 			}
 		}
 		/// <summary>
-		/// ChangeRule: typeof(Neumont.Tools.EntityRelationshipModels.Barker.EntityType)
+		/// ChangeRule: typeof(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType)
 		/// Update table size when <see cref="EntityType.Name"/> changes.
 		/// </summary>
 		private static void DisplayEntityTypePropertyChangedRule(ElementPropertyChangedEventArgs e)
@@ -215,7 +215,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 			}
 		}
 		/// <summary>
-		/// AddRule: typeof(Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
 		/// Add a <see cref="AssociationConnector"/> to the diagram
 		/// </summary>
 		private static void BinaryAssociationAddedRule(ElementAddedEventArgs e)

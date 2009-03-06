@@ -1,6 +1,6 @@
 ﻿#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -24,14 +24,14 @@
 
 using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
-namespace Neumont.Tools.ORM.CustomProperties
+namespace ORMSolutions.ORMArchitect.CustomProperties
 {
 	/// <summary>
 	/// DomainClass CustomPropertyGroup
-	/// Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup
+	/// Description for ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroup
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup.DisplayName", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroup.DisplayName", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroup.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 	[DslModeling::DomainObjectId("d0938429-dba7-42f1-829a-090fc2c75ad3")]
 	internal sealed partial class CustomPropertyGroup : DslModeling::ModelElement
 	{
@@ -75,10 +75,11 @@ namespace Neumont.Tools.ORM.CustomProperties
 		
 		/// <summary>
 		/// Gets or sets the value of Name domain property.
-		/// Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup.Name
+		/// Description for
+		/// ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroup.Name
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup/Name.DisplayName", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup/Name.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroup/Name.DisplayName", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroup/Name.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainObjectId("35b17292-2ddc-4089-bd0f-f127a01d23c7")]
 		public global::System.String Name
 		{
@@ -162,10 +163,11 @@ namespace Neumont.Tools.ORM.CustomProperties
 		
 		/// <summary>
 		/// Gets or sets the value of IsDefault domain property.
-		/// Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup.IsDefault
+		/// Description for
+		/// ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroup.IsDefault
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup/IsDefault.DisplayName", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup/IsDefault.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroup/IsDefault.DisplayName", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroup/IsDefault.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainObjectId("69f71d2c-1668-4818-89db-01e616a215a8")]
 		public global::System.Boolean IsDefault
 		{
@@ -250,10 +252,10 @@ namespace Neumont.Tools.ORM.CustomProperties
 		/// <summary>
 		/// Gets or sets the value of Description domain property.
 		/// Description for
-		/// Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup.Description
+		/// ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroup.Description
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup/Description.DisplayName", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup/Description.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroup/Description.DisplayName", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroup/Description.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainObjectId("7e619d46-d1d2-4b40-8a8d-7fa878cf4626")]
 		public global::System.String Description
 		{
@@ -327,27 +329,28 @@ namespace Neumont.Tools.ORM.CustomProperties
 		/// <summary>
 		/// Gets a list of CustomPropertyDefinitionCollection.
 		/// Description for
-		/// Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.CustomPropertyGroup
+		/// ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.CustomPropertyGroup
 		/// </summary>
 		public DslModeling::LinkedElementCollection<CustomPropertyDefinition> CustomPropertyDefinitionCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::LinkedElementCollection<CustomPropertyDefinition>(this, global::Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.CustomPropertyGroupDomainRoleId);
+				return new DslModeling::LinkedElementCollection<CustomPropertyDefinition>(this, global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.CustomPropertyGroupDomainRoleId);
 			}
 		}
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORM.CustomProperties
+namespace ORMSolutions.ORMArchitect.CustomProperties
 {
 	/// <summary>
 	/// DomainClass CustomPropertyDefinition
-	/// Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition
+	/// Description for
+	/// ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition.DisplayName", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition.DisplayName", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 	[DslModeling::DomainObjectId("169ea615-15f2-47ff-baa4-6d8cd1d5de4a")]
 	internal sealed partial class CustomPropertyDefinition : DslModeling::ModelElement
 	{
@@ -391,10 +394,11 @@ namespace Neumont.Tools.ORM.CustomProperties
 		
 		/// <summary>
 		/// Gets or sets the value of Name domain property.
-		/// Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition.Name
+		/// Description for
+		/// ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition.Name
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/Name.DisplayName", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/Name.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/Name.DisplayName", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/Name.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainObjectId("e5b9518b-b741-4002-a6a0-4e11d6d461df")]
 		public global::System.String Name
 		{
@@ -479,10 +483,10 @@ namespace Neumont.Tools.ORM.CustomProperties
 		/// <summary>
 		/// Gets or sets the value of Description domain property.
 		/// Description for
-		/// Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition.Description
+		/// ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition.Description
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/Description.DisplayName", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/Description.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/Description.DisplayName", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/Description.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainObjectId("090f63da-24d4-4d28-b703-d868616134c4")]
 		public global::System.String Description
 		{
@@ -567,10 +571,10 @@ namespace Neumont.Tools.ORM.CustomProperties
 		/// <summary>
 		/// Gets or sets the value of Category domain property.
 		/// Description for
-		/// Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition.Category
+		/// ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition.Category
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/Category.DisplayName", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/Category.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/Category.DisplayName", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/Category.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 		[global::System.ComponentModel.DefaultValue("Default")]
 		[DslModeling::DomainObjectId("a600653c-13cf-4dd1-b849-eb61b44fb785")]
 		public global::System.String Category
@@ -656,10 +660,10 @@ namespace Neumont.Tools.ORM.CustomProperties
 		/// <summary>
 		/// Gets or sets the value of DataType domain property.
 		/// Description for
-		/// Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition.DataType
+		/// ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition.DataType
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/DataType.DisplayName", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/DataType.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/DataType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/DataType.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainObjectId("b032d072-b353-4e14-8b47-db41108f0dda")]
 		public CustomPropertyDataType DataType
 		{
@@ -744,10 +748,10 @@ namespace Neumont.Tools.ORM.CustomProperties
 		/// <summary>
 		/// Gets or sets the value of DefaultValue domain property.
 		/// Description for
-		/// Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition.Default
+		/// ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition.Default
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/DefaultValue.DisplayName", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/DefaultValue.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/DefaultValue.DisplayName", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/DefaultValue.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainObjectId("a3023163-70d8-4e90-aca9-315cfddc7f44")]
 		public global::System.Object DefaultValue
 		{
@@ -833,10 +837,10 @@ namespace Neumont.Tools.ORM.CustomProperties
 		/// <summary>
 		/// Gets or sets the value of ORMTypes domain property.
 		/// Description for
-		/// Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition.ORMTypes
+		/// ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition.ORMTypes
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/ORMTypes.DisplayName", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/ORMTypes.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/ORMTypes.DisplayName", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/ORMTypes.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainObjectId("c1d2d7a1-787c-4bf8-9ea3-3c0ffa6e39b0")]
 		public ORMTypes ORMTypes
 		{
@@ -921,10 +925,10 @@ namespace Neumont.Tools.ORM.CustomProperties
 		/// <summary>
 		/// Gets or sets the value of CustomEnumValue domain property.
 		/// Description for
-		/// Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition.CustomEnumValue
+		/// ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition.CustomEnumValue
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/CustomEnumValue.DisplayName", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/CustomEnumValue.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/CustomEnumValue.DisplayName", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/CustomEnumValue.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainObjectId("86a3a085-ca1d-4757-9db7-6a633771f79b")]
 		public global::System.String CustomEnumValue
 		{
@@ -998,14 +1002,14 @@ namespace Neumont.Tools.ORM.CustomProperties
 		/// <summary>
 		/// Gets a list of CustomPropertyCollection.
 		/// Description for
-		/// Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition.CustomPropertyDefinition
+		/// ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition.CustomPropertyDefinition
 		/// </summary>
 		public DslModeling::LinkedElementCollection<CustomProperty> CustomPropertyCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::LinkedElementCollection<CustomProperty>(this, global::Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition.CustomPropertyDefinitionDomainRoleId);
+				return new DslModeling::LinkedElementCollection<CustomProperty>(this, global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition.CustomPropertyDefinitionDomainRoleId);
 			}
 		}
 		#endregion
@@ -1013,33 +1017,33 @@ namespace Neumont.Tools.ORM.CustomProperties
 		/// <summary>
 		/// Gets or sets CustomPropertyGroup.
 		/// Description for
-		/// Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.CustomPropertyDefinition
+		/// ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.CustomPropertyDefinition
 		/// </summary>
 		public CustomPropertyGroup CustomPropertyGroup
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.CustomPropertyDefinitionDomainRoleId) as CustomPropertyGroup;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.CustomPropertyDefinitionDomainRoleId) as CustomPropertyGroup;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.CustomPropertyDefinitionDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.CustomPropertyDefinitionDomainRoleId, value);
 			}
 		}
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORM.CustomProperties
+namespace ORMSolutions.ORMArchitect.CustomProperties
 {
 	/// <summary>
 	/// DomainClass CustomProperty
-	/// Description for Neumont.Tools.ORM.CustomProperties.CustomProperty
+	/// Description for ORMSolutions.ORMArchitect.CustomProperties.CustomProperty
 	/// </summary>
-	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider<CustomProperty, CustomPropertyTypeDescriptor>))]
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.CustomProperties.CustomProperty.DisplayName", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.CustomProperty.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider<CustomProperty, CustomPropertyTypeDescriptor>))]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.CustomProperties.CustomProperty.DisplayName", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.CustomProperty.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 	[DslModeling::DomainObjectId("d9bd32b6-73cc-49f9-bd71-f39e738320ba")]
 	internal sealed partial class CustomProperty : DslModeling::ModelElement
 	{
@@ -1083,10 +1087,10 @@ namespace Neumont.Tools.ORM.CustomProperties
 		
 		/// <summary>
 		/// Gets or sets the value of Value domain property.
-		/// Description for Neumont.Tools.ORM.CustomProperties.CustomProperty.Value
+		/// Description for ORMSolutions.ORMArchitect.CustomProperties.CustomProperty.Value
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.CustomProperties.CustomProperty/Value.DisplayName", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.CustomProperty/Value.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.CustomProperties.CustomProperty/Value.DisplayName", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.CustomProperty/Value.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainObjectId("5b638692-c232-44b4-a168-24ea2c899ed2")]
 		public global::System.Object Value
 		{
@@ -1161,19 +1165,19 @@ namespace Neumont.Tools.ORM.CustomProperties
 		/// <summary>
 		/// Gets or sets CustomPropertyDefinition.
 		/// Description for
-		/// Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition.CustomProperty
+		/// ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition.CustomProperty
 		/// </summary>
 		public CustomPropertyDefinition CustomPropertyDefinition
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition.CustomPropertyDomainRoleId) as CustomPropertyDefinition;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition.CustomPropertyDomainRoleId) as CustomPropertyDefinition;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition.CustomPropertyDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition.CustomPropertyDomainRoleId, value);
 			}
 		}
 		#endregion

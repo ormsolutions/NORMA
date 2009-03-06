@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -21,15 +21,15 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.Modeling;
-using Neumont.Tools.Modeling.Shell;
-using Neumont.Tools.RelationalModels.ConceptualDatabase;
-using Neumont.Tools.ORMAbstraction;
-using Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge;
-using Neumont.Tools.ORMToORMAbstractionBridge;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Framework.Shell;
+using ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase;
+using ORMSolutions.ORMArchitect.ORMAbstraction;
+using ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge;
+using ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge;
 
-namespace Neumont.Tools.ORM.Views.RelationalView
+namespace ORMSolutions.ORMArchitect.Views.RelationalView
 {
 	[DiagramMenuDisplay(DiagramMenuDisplayOptions.BlockRename | DiagramMenuDisplayOptions.Required, typeof(RelationalDiagram), RelationalDiagram.NameResourceName, "Diagram.TabImage", "Diagram.BrowserImage")]
 	partial class RelationalDiagram
@@ -54,7 +54,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		public RelationalDiagram(Partition partition, params PropertyAssignment[] propertyAssignments)
 			: base(partition, propertyAssignments)
 		{
-			this.Name = Neumont.Tools.Modeling.Design.ResourceAccessor<RelationalDiagram>.ResourceManager.GetString(NameResourceName);
+			this.Name = ORMSolutions.ORMArchitect.Framework.Design.ResourceAccessor<RelationalDiagram>.ResourceManager.GetString(NameResourceName);
 		}
 		public override void OnInitialize()
 		{
@@ -114,7 +114,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// <summary>
 		/// ChangeRule: typeof(RelationalDiagram)
 		/// Disallows changing the name of the Relational Diagram
-		/// Changes the name of the <see cref="T:Neumont.Tools.ORM.Views.RelationalDiagram"/> to
+		/// Changes the name of the <see cref="T:RelationalDiagram"/> to
 		/// its default name if changed by a user.
 		/// </summary>
 		private static void NameChangedRule(ElementPropertyChangedEventArgs e)
@@ -123,7 +123,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			if (attributeId == Diagram.NameDomainPropertyId)
 			{
 				RelationalDiagram diagram = e.ModelElement as RelationalDiagram;
-				string name = Neumont.Tools.Modeling.Design.ResourceAccessor<RelationalDiagram>.ResourceManager.GetString(NameResourceName);
+				string name = ORMSolutions.ORMArchitect.Framework.Design.ResourceAccessor<RelationalDiagram>.ResourceManager.GetString(NameResourceName);
 				if (diagram != null && diagram.Name != name)
 				{
 					diagram.Name = name;
@@ -144,7 +144,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			}
 		}
 		/// <summary>
-		/// ChangeRule: typeof(Neumont.Tools.RelationalModels.ConceptualDatabase.Column)
+		/// ChangeRule: typeof(ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column)
 		/// Update table size when <see cref="Column.IsNullable"/> or <see cref="Column.Name"/> changes.
 		/// </summary>
 		private static void DisplayColumnPropertyChangedRule(ElementPropertyChangedEventArgs e)
@@ -157,7 +157,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			}
 		}
 		/// <summary>
-		/// ChangeRule: typeof(Neumont.Tools.RelationalModels.ConceptualDatabase.Table)
+		/// ChangeRule: typeof(ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table)
 		/// Update table size when <see cref="Table.Name"/> changes.
 		/// </summary>
 		private static void DisplayTablePropertyChangedRule(ElementPropertyChangedEventArgs e)
@@ -185,7 +185,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			}
 		}
 		/// <summary>
-		/// RolePlayerChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType)
+		/// RolePlayerChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDataType)
 		/// Update table size when a column datatype is changed.
 		/// </summary>
 		private static void DataTypeChangedRule(RolePlayerChangedEventArgs e)
@@ -258,7 +258,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			}
 		}
 		/// <summary>
-		/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType)
+		/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDataType)
 		/// Update table size when a column datatype facet is changed
 		/// </summary>
 		private static void DataTypeFacetChangedRule(ElementPropertyChangedEventArgs e)
@@ -271,7 +271,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			}
 		}
 		/// <summary>
-		/// AddRule: typeof(Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
 		/// Add a <see cref="ForeignKeyConnector"/> to the diagram
 		/// </summary>
 		private static void ReferenceConstraintAddedRule(ElementAddedEventArgs e)

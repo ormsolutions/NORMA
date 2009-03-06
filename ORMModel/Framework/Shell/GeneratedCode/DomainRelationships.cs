@@ -2,7 +2,7 @@
 /**************************************************************************\
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
-* Copyright © Matthew Curland. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -24,14 +24,15 @@
 
 using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
-namespace Neumont.Tools.Modeling.Shell
+namespace ORMSolutions.ORMArchitect.Framework.Shell
 {
 	/// <summary>
 	/// DomainRelationship DiagramDisplayHasDiagramOrder
-	/// Description for Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder.DisplayName", typeof(global::Neumont.Tools.Modeling.Shell.DiagramDisplayDomainModel), "Neumont.Tools.ORM.GeneratedCode.DiagramDisplayDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder.Description", typeof(global::Neumont.Tools.Modeling.Shell.DiagramDisplayDomainModel), "Neumont.Tools.ORM.GeneratedCode.DiagramDisplayDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.DiagramDisplayDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder.Description", typeof(global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.DiagramDisplayDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("6ccd00ce-62d2-420d-805f-791019a2c127")]
@@ -108,11 +109,11 @@ namespace Neumont.Tools.Modeling.Shell
 		/// <summary>
 		/// DomainRole DiagramDisplay
 		/// Description for
-		/// Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder.DiagramDisplay
+		/// ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder.DiagramDisplay
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder/DiagramDisplay.DisplayName", typeof(global::Neumont.Tools.Modeling.Shell.DiagramDisplayDomainModel), "Neumont.Tools.ORM.GeneratedCode.DiagramDisplayDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder/DiagramDisplay.Description", typeof(global::Neumont.Tools.Modeling.Shell.DiagramDisplayDomainModel), "Neumont.Tools.ORM.GeneratedCode.DiagramDisplayDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "OrderedDiagramCollection", PropertyDisplayNameKey="Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder/DiagramDisplay.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder/DiagramDisplay.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.DiagramDisplayDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder/DiagramDisplay.Description", typeof(global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.DiagramDisplayDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "OrderedDiagramCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder/DiagramDisplay.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("8b27865a-f62a-4583-998e-94259315b5be")]
 		public virtual DiagramDisplay DiagramDisplay
 		{
@@ -160,11 +161,11 @@ namespace Neumont.Tools.Modeling.Shell
 		/// <summary>
 		/// DomainRole Diagram
 		/// Description for
-		/// Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder.Diagram
+		/// ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder.Diagram
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder/Diagram.DisplayName", typeof(global::Neumont.Tools.Modeling.Shell.DiagramDisplayDomainModel), "Neumont.Tools.ORM.GeneratedCode.DiagramDisplayDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder/Diagram.Description", typeof(global::Neumont.Tools.Modeling.Shell.DiagramDisplayDomainModel), "Neumont.Tools.ORM.GeneratedCode.DiagramDisplayDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "DiagramDisplay", PropertyDisplayNameKey="Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder/Diagram.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder/Diagram.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.DiagramDisplayDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder/Diagram.Description", typeof(global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.DiagramDisplayDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "DiagramDisplay", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder/Diagram.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("a22a0cfa-632c-4aaa-8a88-e813dae7cbb2")]
 		public virtual global::Microsoft.VisualStudio.Modeling.Diagrams.Diagram Diagram
 		{
@@ -202,8 +203,8 @@ namespace Neumont.Tools.Modeling.Shell
 		/// <summary>
 		/// Gets or sets the value of CenterPoint domain property.
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder/CenterPoint.DisplayName", typeof(global::Neumont.Tools.Modeling.Shell.DiagramDisplayDomainModel), "Neumont.Tools.ORM.GeneratedCode.DiagramDisplayDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder/CenterPoint.Description", typeof(global::Neumont.Tools.Modeling.Shell.DiagramDisplayDomainModel), "Neumont.Tools.ORM.GeneratedCode.DiagramDisplayDomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder/CenterPoint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.DiagramDisplayDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder/CenterPoint.Description", typeof(global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.DiagramDisplayDomainModelResx")]
 		[global::System.ComponentModel.Browsable(false)]
 		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("df1ffee4-ac41-4210-9a9a-5b4708b725b6")]
@@ -292,8 +293,8 @@ namespace Neumont.Tools.Modeling.Shell
 		/// <summary>
 		/// Gets or sets the value of ZoomFactor domain property.
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder/ZoomFactor.DisplayName", typeof(global::Neumont.Tools.Modeling.Shell.DiagramDisplayDomainModel), "Neumont.Tools.ORM.GeneratedCode.DiagramDisplayDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder/ZoomFactor.Description", typeof(global::Neumont.Tools.Modeling.Shell.DiagramDisplayDomainModel), "Neumont.Tools.ORM.GeneratedCode.DiagramDisplayDomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder/ZoomFactor.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.DiagramDisplayDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder/ZoomFactor.Description", typeof(global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.DiagramDisplayDomainModelResx")]
 		[global::System.ComponentModel.Browsable(false)]
 		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("9182eb46-20f6-4445-8fda-7052bae54f45")]
@@ -383,8 +384,8 @@ namespace Neumont.Tools.Modeling.Shell
 		/// <summary>
 		/// Gets or sets the value of IsActiveDiagram domain property.
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder/IsActiveDiagram.DisplayName", typeof(global::Neumont.Tools.Modeling.Shell.DiagramDisplayDomainModel), "Neumont.Tools.ORM.GeneratedCode.DiagramDisplayDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder/IsActiveDiagram.Description", typeof(global::Neumont.Tools.Modeling.Shell.DiagramDisplayDomainModel), "Neumont.Tools.ORM.GeneratedCode.DiagramDisplayDomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder/IsActiveDiagram.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.DiagramDisplayDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder/IsActiveDiagram.Description", typeof(global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.DiagramDisplayDomainModelResx")]
 		[global::System.ComponentModel.Browsable(false)]
 		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("0327999b-60e2-4119-8fac-a34708851d0a")]
@@ -469,9 +470,9 @@ namespace Neumont.Tools.Modeling.Shell
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder> GetLinksToOrderedDiagramCollection ( global::Neumont.Tools.Modeling.Shell.DiagramDisplay diagramDisplayInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder> GetLinksToOrderedDiagramCollection ( global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplay diagramDisplayInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder>(diagramDisplayInstance, global::Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder.DiagramDisplayDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder>(diagramDisplayInstance, global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder.DiagramDisplayDomainRoleId);
 		}
 		#endregion
 		#region Diagram link accessor
@@ -480,9 +481,9 @@ namespace Neumont.Tools.Modeling.Shell
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder GetLinkToDiagramDisplay (global::Microsoft.VisualStudio.Modeling.Diagrams.Diagram diagramInstance)
+		public static global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder GetLinkToDiagramDisplay (global::Microsoft.VisualStudio.Modeling.Diagrams.Diagram diagramInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder>(diagramInstance, global::Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder.DiagramDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder>(diagramInstance, global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder.DiagramDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Diagram not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -501,11 +502,11 @@ namespace Neumont.Tools.Modeling.Shell
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder> GetLinks( global::Neumont.Tools.Modeling.Shell.DiagramDisplay source, global::Microsoft.VisualStudio.Modeling.Diagrams.Diagram target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder> GetLinks( global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplay source, global::Microsoft.VisualStudio.Modeling.Diagrams.Diagram target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder>(source, global::Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder.DiagramDisplayDomainRoleId);
-			foreach ( global::Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder>(source, global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder.DiagramDisplayDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder link in links )
 			{
 				if ( target.Equals(link.Diagram) )
 				{
@@ -519,10 +520,10 @@ namespace Neumont.Tools.Modeling.Shell
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder GetLink( global::Neumont.Tools.Modeling.Shell.DiagramDisplay source, global::Microsoft.VisualStudio.Modeling.Diagrams.Diagram target )
+		public static global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder GetLink( global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplay source, global::Microsoft.VisualStudio.Modeling.Diagrams.Diagram target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder>(source, global::Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder.DiagramDisplayDomainRoleId);
-			foreach ( global::Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder>(source, global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder.DiagramDisplayDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder link in links )
 			{
 				if ( target.Equals(link.Diagram) )
 				{

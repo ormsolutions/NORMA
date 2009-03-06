@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -20,7 +20,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Neumont.Tools.Modeling.Design
+namespace ORMSolutions.ORMArchitect.Framework.Design
 {
 	/// <summary>
 	/// A <see cref="Control"/> for editing <see cref="Enum"/> values that have the <see cref="FlagsAttribute"/>

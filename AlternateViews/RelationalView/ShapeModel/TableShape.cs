@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -18,19 +18,19 @@ using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Neumont.Tools.RelationalModels.ConceptualDatabase;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.Modeling;
+using ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Framework;
 using System.Collections;
 using System.Diagnostics;
 
-namespace Neumont.Tools.ORM.Views.RelationalView
+namespace ORMSolutions.ORMArchitect.Views.RelationalView
 {
 	partial class TableShape
 	{
 		#region Customize Appearance
 		/// <summary>
-		/// Gets whether the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.TableShape"/> can be expanded or collapsed.
+		/// Gets whether the <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.TableShape"/> can be expanded or collapsed.
 		/// </summary>
 		public override bool CanExpandAndCollapse
 		{
@@ -40,7 +40,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			}
 		}
 		/// <summary>
-		/// Gets whether the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.TableShape"/> has a shadow.
+		/// Gets whether the <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.TableShape"/> has a shadow.
 		/// </summary>
 		public override bool HasShadow
 		{
@@ -72,7 +72,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		}
 
 		/// <summary>
-		/// Gets the resizable sides on this <see cref="T:Neumont.Tools.ORM.Views.RelationalView.TableShape"/>.
+		/// Gets the resizable sides on this <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.TableShape"/>.
 		/// </summary>
 		public override NodeSides ResizableSides
 		{
@@ -423,7 +423,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		private sealed class TableTextField : TextField
 		{
 			/// <summary>
-			/// Gets whether the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.TableTextField" /> is selectable.
+			/// Gets whether the <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.TableTextField" /> is selectable.
 			/// </summary>
 			/// <param name="parentShape">parentShape</param>
 			/// <returns><see langword="false" />.</returns>
@@ -432,7 +432,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				return false;
 			}
 			/// <summary>
-			/// Gets whether the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.TableTextField" /> is focusable.
+			/// Gets whether the <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.TableTextField" /> is focusable.
 			/// </summary>
 			/// <param name="parentShape">parentShape</param>
 			/// <returns><see langword="false" />.</returns>
@@ -441,7 +441,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				return false;
 			}
 			/// <summary>
-			/// Initializes a new instance of the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.TableTextField" /> class.	
+			/// Initializes a new instance of the <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.TableTextField" /> class.	
 			/// </summary>
 			/// <param name="fieldName">The name of the field.</param>
 			public TableTextField(string fieldName)

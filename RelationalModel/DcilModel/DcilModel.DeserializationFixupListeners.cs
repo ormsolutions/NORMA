@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -16,12 +16,12 @@
 
 using System;
 using System.Collections.Generic;
-using Neumont.Tools.Modeling;
+using ORMSolutions.ORMArchitect.Framework;
 using Microsoft.VisualStudio.Modeling;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
-namespace Neumont.Tools.RelationalModels.ConceptualDatabase
+namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 {
 	/// <summary>
 	/// The public fixup phase for the ORM abstraction bridge model
@@ -32,7 +32,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// Validate Constraints
 		/// </summary>
-		ValidateConstraints = (int)Neumont.Tools.ORM.ObjectModel.ORMDeserializationFixupPhase.ValidateErrors + 30,
+		ValidateConstraints = (int)ORMSolutions.ORMArchitect.Core.ObjectModel.ORMDeserializationFixupPhase.ValidateErrors + 30,
 	}
 	public partial class ConceptualDatabaseDomainModel : IDeserializationFixupListenerProvider
 	{

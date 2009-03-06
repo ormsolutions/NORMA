@@ -2,7 +2,7 @@
 <arg:Rules xmlns:arg="http://schemas.neumont.edu/ORM/SDK/AttachRulesGenerator">
 	<arg:Copyright name="Common Public License Copyright Notice">
 		<arg:CopyrightLine>/**************************************************************************\</arg:CopyrightLine>
-		<arg:CopyrightLine>* Neumont Object-Role Modeling Architect for Visual Studio                 *</arg:CopyrightLine>
+		<arg:CopyrightLine>* Natural Object-Role Modeling Architect for Visual Studio                 *</arg:CopyrightLine>
 		<arg:CopyrightLine>*                                                                          *</arg:CopyrightLine>
 		<arg:CopyrightLine>* Copyright © Neumont University. All rights reserved.                     *</arg:CopyrightLine>
 		<arg:CopyrightLine>*                                                                          *</arg:CopyrightLine>
@@ -18,25 +18,25 @@
 	<arg:Model class="ORMAbstractionToConceptualDatabaseBridgeDomainModel">
 		<arg:RuleContainer class="ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker">
 			<arg:AddRule methodName="AbbreviationAddedRule">
-				<arg:RuleOn targetType="ObjectTypeHasAbbreviation" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+				<arg:RuleOn targetType="ObjectTypeHasAbbreviation" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:AddRule>
 			<arg:AddRule methodName="AbbreviationAddedRule" className="AbbreviationAddedRuleClass2">
 				<!-- UNDONE: Adding the second RuleOn to the previous AddRule changes the DomainModel load order
 				and breaks the unit tests (rcd:Catalog moves after ormtooial:Bridge in the XML). Find out why this has an effect
 				and find a workaround to stabilize the load order. The same behavior is seen with AbbreviationDeletedRule. -->
-				<arg:RuleOn targetType="RecognizedPhraseHasAbbreviation" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+				<arg:RuleOn targetType="RecognizedPhraseHasAbbreviation" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:AddRule>
 			<arg:ChangeRule methodName="AbbreviationChangedRule">
-				<arg:RuleOn targetType="NameAlias" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+				<arg:RuleOn targetType="NameAlias" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:ChangeRule>
 			<arg:DeleteRule methodName="AbbreviationDeletedRule">
-				<arg:RuleOn targetType="ObjectTypeHasAbbreviation" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+				<arg:RuleOn targetType="ObjectTypeHasAbbreviation" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:DeleteRule>
 			<arg:DeleteRule methodName="AbbreviationDeletedRule" className="AbbreviationDeletedRuleClass2">
-				<arg:RuleOn targetType="RecognizedPhraseHasAbbreviation" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+				<arg:RuleOn targetType="RecognizedPhraseHasAbbreviation" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:DeleteRule>
 			<arg:ChangeRule methodName="AbstractionModelChangedRule">
-				<arg:RuleOn targetType="AbstractionModel" targetTypeQualifier="Neumont.Tools.ORMAbstraction"/>
+				<arg:RuleOn targetType="AbstractionModel" targetTypeQualifier="ORMSolutions.ORMArchitect.ORMAbstraction"/>
 			</arg:ChangeRule>
 			<arg:AddRule methodName="AssimilationMappingAddedRule">
 				<arg:RuleOn targetType="AssimilationMappingCustomizesFactType"/>
@@ -45,16 +45,16 @@
 				<arg:RuleOn targetType="AssimilationMapping"/>
 			</arg:ChangeRule>
 			<arg:AddRule methodName="ConceptTypeAddedRule">
-				<arg:RuleOn targetType="AbstractionModelHasConceptType" targetTypeQualifier="Neumont.Tools.ORMAbstraction"/>
+				<arg:RuleOn targetType="AbstractionModelHasConceptType" targetTypeQualifier="ORMSolutions.ORMArchitect.ORMAbstraction"/>
 			</arg:AddRule>
 			<arg:ChangeRule methodName="ConceptTypeChangedRule">
-				<arg:RuleOn targetType="ConceptType" targetTypeQualifier="Neumont.Tools.ORMAbstraction"/>
+				<arg:RuleOn targetType="ConceptType" targetTypeQualifier="ORMSolutions.ORMArchitect.ORMAbstraction"/>
 			</arg:ChangeRule>
 			<arg:ChangeRule methodName="ConceptTypeChildChangedRule">
-				<arg:RuleOn targetType="ConceptTypeChild" targetTypeQualifier="Neumont.Tools.ORMAbstraction"/>
+				<arg:RuleOn targetType="ConceptTypeChild" targetTypeQualifier="ORMSolutions.ORMArchitect.ORMAbstraction"/>
 			</arg:ChangeRule>
 			<arg:DeleteRule methodName="ConceptTypeDeletedRule">
-				<arg:RuleOn targetType="AbstractionModelHasConceptType" targetTypeQualifier="Neumont.Tools.ORMAbstraction"/>
+				<arg:RuleOn targetType="AbstractionModelHasConceptType" targetTypeQualifier="ORMSolutions.ORMArchitect.ORMAbstraction"/>
 			</arg:DeleteRule>
 			<arg:AddRule methodName="DefaultReferenceModeNamingCustomizesORMModelAddedRule">
 				<arg:RuleOn targetType="DefaultReferenceModeNamingCustomizesORMModel"/>
@@ -63,19 +63,19 @@
 				<arg:RuleOn targetType="DefaultReferenceModeNaming"/>
 			</arg:ChangeRule>
 			<arg:ChangeRule methodName="FactTypeNameChangedRule">
-				<arg:RuleOn targetType="FactType" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+				<arg:RuleOn targetType="FactType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:ChangeRule>
 			<arg:AddRule methodName="InformationTypeFormatAddedRule">
-				<arg:RuleOn targetType="AbstractionModelHasInformationTypeFormat" targetTypeQualifier="Neumont.Tools.ORMAbstraction"/>
+				<arg:RuleOn targetType="AbstractionModelHasInformationTypeFormat" targetTypeQualifier="ORMSolutions.ORMArchitect.ORMAbstraction"/>
 			</arg:AddRule>
 			<arg:DeleteRule methodName="InformationTypeFormatDeletedRule">
-				<arg:RuleOn targetType="AbstractionModelHasInformationTypeFormat" targetTypeQualifier="Neumont.Tools.ORMAbstraction"/>
+				<arg:RuleOn targetType="AbstractionModelHasInformationTypeFormat" targetTypeQualifier="ORMSolutions.ORMArchitect.ORMAbstraction"/>
 			</arg:DeleteRule>
 			<arg:ChangeRule methodName="NameGeneratorSettingsChangedRule">
-				<arg:RuleOn targetType="NameGenerator" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+				<arg:RuleOn targetType="NameGenerator" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:ChangeRule>
 			<arg:DeletingRule methodName="RecognizedPhraseDeletingRule">
-				<arg:RuleOn targetType="ModelContainsRecognizedPhrase" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+				<arg:RuleOn targetType="ModelContainsRecognizedPhrase" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:DeletingRule>
 			<arg:AddRule methodName="ReferenceModeNamingCustomizesObjectTypeAddedRule">
 				<arg:RuleOn targetType="ReferenceModeNamingCustomizesObjectType"/>
@@ -84,16 +84,16 @@
 				<arg:RuleOn targetType="ReferenceModeNaming"/>
 			</arg:ChangeRule>
 			<arg:ChangeRule methodName="RoleNameChangedRule">
-				<arg:RuleOn targetType="Role" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+				<arg:RuleOn targetType="Role" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:ChangeRule>
 			<arg:DeleteRule methodName="UniquenessDeletedRule">
 				<arg:RuleOn targetType="UniquenessConstraintIsForUniqueness"/>
 			</arg:DeleteRule>
 			<arg:DeletingRule methodName="UniquenessConstraintRoleDeleting">
-				<arg:RuleOn targetType="UniquenessIncludesConceptTypeChild" targetTypeQualifier="Neumont.Tools.ORMAbstraction"/>
+				<arg:RuleOn targetType="UniquenessIncludesConceptTypeChild" targetTypeQualifier="ORMSolutions.ORMArchitect.ORMAbstraction"/>
 			</arg:DeletingRule>
 			<arg:RolePlayerPositionChangeRule methodName="UniquenessConstraintRoleOrderChanged">
-				<arg:RuleOn targetType="UniquenessIncludesConceptTypeChild" targetTypeQualifier="Neumont.Tools.ORMAbstraction"/>
+				<arg:RuleOn targetType="UniquenessIncludesConceptTypeChild" targetTypeQualifier="ORMSolutions.ORMArchitect.ORMAbstraction"/>
 			</arg:RolePlayerPositionChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="AssimilationMapping">
@@ -104,16 +104,16 @@
 				<arg:RuleOn targetType="AssimilationMapping"/>
 			</arg:ChangeRule>
 			<arg:DeletingRule methodName="DisjunctiveMandatoryCouplerDeletingRule">
-				<arg:RuleOn targetType="ExclusiveOrConstraintCoupler" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+				<arg:RuleOn targetType="ExclusiveOrConstraintCoupler" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:DeletingRule>
 			<arg:DeleteRule methodName="DisjunctiveMandatoryRoleDeletedRule">
-				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:DeleteRule>
 			<arg:DeletingRule methodName="FactTypeDeletingRule">
-				<arg:RuleOn targetType="FactType" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+				<arg:RuleOn targetType="FactType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:DeletingRule>
 			<arg:AddRule methodName="PathFactTypeAddedRule">
-				<arg:RuleOn targetType="ConceptTypeChildHasPathFactType" targetTypeQualifier="Neumont.Tools.ORMToORMAbstractionBridge"/>
+				<arg:RuleOn targetType="ConceptTypeChildHasPathFactType" targetTypeQualifier="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge"/>
 			</arg:AddRule>
 		</arg:RuleContainer>
 	</arg:Model>

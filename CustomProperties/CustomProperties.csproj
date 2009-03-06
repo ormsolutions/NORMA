@@ -8,8 +8,8 @@
     <ProjectGuid>{E0B295E0-BFD5-4138-9043-74776948AD13}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Neumont.Tools.ORM.CustomProperties</RootNamespace>
-    <AssemblyName>Neumont.Tools.ORM.CustomProperties.$(TargetVisualStudioShortProductName)</AssemblyName>
+    <RootNamespace>ORMSolutions.ORMArchitect.CustomProperties</RootNamespace>
+    <AssemblyName>ORMSolutions.ORMArchitect.CustomProperties.$(TargetVisualStudioShortProductName)</AssemblyName>
     <WarningLevel>4</WarningLevel>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\ORMPackage.snk</AssemblyOriginatorKeyFile>
@@ -37,9 +37,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.Modeling.Sdk, Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Neumont.Tools.ORM.$(TargetVisualStudioShortProductName), Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
+    <Reference Include="ORMSolutions.ORMArchitect.Core.$(TargetVisualStudioShortProductName), Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ProgramFiles)\Neumont\ORM Architect for $(TargetVisualStudioLongProductName)\bin\Neumont.Tools.ORM.$(TargetVisualStudioShortProductName).dll</HintPath>
+      <HintPath>$(ProgramFiles)\ORM Solutions\ORM Architect for $(TargetVisualStudioLongProductName)\bin\ORMSolutions.ORMArchitect.Core.$(TargetVisualStudioShortProductName).dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -188,7 +188,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="CustomPropertyProvidersResources.resx">
-      <LogicalName>Neumont.Tools.ORM.CustomProperties.CustomProperty.resources</LogicalName>
+      <LogicalName>ORMSolutions.ORMArchitect.CustomProperties.CustomProperty.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>

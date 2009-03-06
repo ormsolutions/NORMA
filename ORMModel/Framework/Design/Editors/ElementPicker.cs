@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -29,13 +29,13 @@ using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.VirtualTreeGrid;
 using System.Reflection;
-using Neumont.Tools.Modeling.Shell;
+using ORMSolutions.ORMArchitect.Framework.Shell;
 
 #if VISUALSTUDIO_9_0
 using VirtualTreeInPlaceControlFlags = Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeInPlaceControls;
 #endif //VISUALSTUDIO_9_0
 
-namespace Neumont.Tools.Modeling.Design
+namespace ORMSolutions.ORMArchitect.Framework.Design
 {
 	/// <summary>
 	/// A base class used to display a simple list of elements

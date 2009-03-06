@@ -2,7 +2,7 @@
 <root>
 	<metadata name="Common Public License Copyright Notice">
 		<value>
-			Neumont Object-Role Modeling Architect for Visual Studio
+			Natural Object-Role Modeling Architect for Visual Studio
 
 			Copyright © Neumont University. All rights reserved.
 
@@ -79,7 +79,7 @@
 		<comment>PackageResources.Id.ORMFileDisplayName</comment>
   </data>
 	<data name="103">
-		<value>Object-Role Modeling File for Neumont ORM Architect</value>
+		<value>Object-Role Modeling File for Natural ORM Architect</value>
 		<comment>PackageResources.Id.ORMFileDescription</comment>
 	</data>
 	<data name="105">
@@ -111,7 +111,7 @@
 		<comment>PackageResources.Id.ORMFileDBImportDisplayName</comment>
 	</data>
 	<data name="113">
-		<value>Object-Role Modeling File for Neumont ORM Architect (Reverse Engineer from Database)</value>
+		<value>Object-Role Modeling File for Natural ORM Architect (Reverse Engineer from Database)</value>
 		<comment>PackageResources.Id.ORMFileDBImportDescription</comment>
 	</data>
 	<data name="125" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -119,7 +119,7 @@
 		<comment>PackageResources.Id.ToolWindowIcons and IDB_TOOLWINDOWICONS</comment>
 	</data>
 	<data name="150">
-		<value>ETDZA3QMCCACH1EJAZZRDACMQQDZP1R0EHC9HJCQPZA0D3DZKTMCIEZIH3PJIKEPEJJ3A9K1PJP1MRR8J9IHC1HCM3RADIK9QMKCM8AEAHE8DMMCQ0AZITHAHQPMMZRT</value>
+		<value>JHIAZIPDPCK8D2E9M0IDH8ZQPAREDQR1HAHEADJ0J2R9MPRPJEE8A8JACHH1C2CPDQIMDPR0C8MPPHAKC2REQ0I8EKC9CRZ9PPI3KTHPI2JKCQM8H1I9H3PRJHD3DRJP</value>
 		<comment>PackageResources.Id.PackageLoadKey</comment>
 	</data>
 </root>

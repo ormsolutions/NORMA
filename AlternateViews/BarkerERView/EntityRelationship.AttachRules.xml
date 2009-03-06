@@ -2,7 +2,7 @@
 <arg:Rules xmlns:arg="http://schemas.neumont.edu/ORM/SDK/AttachRulesGenerator">
 	<arg:Copyright name="Common Public License Copyright Notice">
 		<arg:CopyrightLine>/**************************************************************************\</arg:CopyrightLine>
-		<arg:CopyrightLine>* Neumont Object-Role Modeling Architect for Visual Studio                 *</arg:CopyrightLine>
+		<arg:CopyrightLine>* Natural Object-Role Modeling Architect for Visual Studio                 *</arg:CopyrightLine>
 		<arg:CopyrightLine>*                                                                          *</arg:CopyrightLine>
 		<arg:CopyrightLine>* Copyright © Neumont University. All rights reserved.                     *</arg:CopyrightLine>
 		<arg:CopyrightLine>*                                                                          *</arg:CopyrightLine>
@@ -18,22 +18,22 @@
 	<arg:Model class="BarkerERShapeDomainModel" enableDiagramRules="true">
 		<arg:RuleContainer class="BarkerERDiagram">
 			<arg:DeletingRule methodName="ConceptTypeDetachingFromEntityTypeRule">
-				<arg:RuleOn targetType="EntityTypeIsPrimarilyForConceptType" targetTypeQualifier="Neumont.Tools.ORMAbstractionToBarkerERBridge"/>
+				<arg:RuleOn targetType="EntityTypeIsPrimarilyForConceptType" targetTypeQualifier="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge"/>
 			</arg:DeletingRule>
 			<arg:DeletingRule methodName="ConceptTypeDetachingFromObjectTypeRule">
-				<arg:RuleOn targetType="ConceptTypeIsForObjectType" targetTypeQualifier="Neumont.Tools.ORMToORMAbstractionBridge"/>
+				<arg:RuleOn targetType="ConceptTypeIsForObjectType" targetTypeQualifier="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge"/>
 			</arg:DeletingRule>
 			<arg:ChangeRule methodName="DisplayAttributePropertyChangedRule">
-				<arg:RuleOn targetType="Attribute" targetTypeQualifier="Neumont.Tools.EntityRelationshipModels.Barker"/>
+				<arg:RuleOn targetType="Attribute" targetTypeQualifier="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker"/>
 			</arg:ChangeRule>
 			<arg:ChangeRule methodName="DisplayEntityTypePropertyChangedRule">
-				<arg:RuleOn targetType="EntityType" targetTypeQualifier="Neumont.Tools.EntityRelationshipModels.Barker"/>
+				<arg:RuleOn targetType="EntityType" targetTypeQualifier="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker"/>
 			</arg:ChangeRule>
 			<arg:ChangeRule methodName="NameChangedRule">
 				<arg:RuleOn targetType="BarkerERDiagram"/>
 			</arg:ChangeRule>
 			<arg:AddRule methodName="BinaryAssociationAddedRule" alwaysOn="true">
-				<arg:RuleOn targetType="BarkerErModelContainsBinaryAssociation" targetTypeQualifier="Neumont.Tools.EntityRelationshipModels.Barker" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>
+				<arg:RuleOn targetType="BarkerErModelContainsBinaryAssociation" targetTypeQualifier="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>
 			</arg:AddRule>
 		</arg:RuleContainer>
 		<!-- This is not really a rule, but an element that we want to add to the directory. -->

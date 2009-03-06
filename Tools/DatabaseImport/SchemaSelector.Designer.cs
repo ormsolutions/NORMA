@@ -1,4 +1,4 @@
-namespace Neumont.Tools.ORM.DatabaseImport
+namespace ORMSolutions.ORMArchitect.DatabaseImport
 {
 	partial class SchemaSelector
 	{

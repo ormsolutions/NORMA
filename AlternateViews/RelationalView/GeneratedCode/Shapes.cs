@@ -1,6 +1,6 @@
 ﻿#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -26,13 +26,13 @@ using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
 using DslDiagrams = global::Microsoft.VisualStudio.Modeling.Diagrams;
 
-namespace Neumont.Tools.ORM.Views.RelationalView
+namespace ORMSolutions.ORMArchitect.Views.RelationalView
 {
 	/// <summary>
 	/// Double-derived base class for DomainClass TableShape
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.Views.RelationalView.TableShape.DisplayName", typeof(global::Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel), "Neumont.Tools.ORM.Views.RelationalView.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.Views.RelationalView.TableShape.Description", typeof(global::Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel), "Neumont.Tools.ORM.Views.RelationalView.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Views.RelationalView.TableShape.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel), "ORMSolutions.ORMArchitect.Views.RelationalView.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Views.RelationalView.TableShape.Description", typeof(global::ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel), "ORMSolutions.ORMArchitect.Views.RelationalView.GeneratedCode.DomainModelResx")]
 	[DslModeling::DomainObjectId("50dabfcd-909c-418a-8895-172aadaad4fb")]
 	internal abstract partial class TableShapeBase : DslDiagrams::CompartmentShape
 	{
@@ -190,7 +190,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		{
 			base.InitializeShapeFields(shapeFields);
 			DslDiagrams::TextField field1 = new DslDiagrams::TextField("TableNameDecorator");
-			field1.DefaultText = global::Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel.SingletonResourceManager.GetString("TableShapeTableNameDecoratorDefaultText");
+			field1.DefaultText = global::ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.SingletonResourceManager.GetString("TableShapeTableNameDecoratorDefaultText");
 			field1.DefaultFocusable = true;
 			field1.DefaultAutoSize = true;
 			field1.AnchoringBehavior.MinimumHeightInLines = 1;
@@ -273,7 +273,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 					baseCompartmentDescriptions.CopyTo(compartmentDescriptions, 0);	
 				}
 				{
-					string title = global::Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel.SingletonResourceManager.GetString("TableShapeColumnsCompartmentTitle");
+					string title = global::ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.SingletonResourceManager.GetString("TableShapeColumnsCompartmentTitle");
 					compartmentDescriptions[localCompartmentsOffset+0] = new DslDiagrams::ElementListCompartmentDescription("ColumnsCompartment", title, 
 						global::System.Drawing.Color.FromKnownColor(global::System.Drawing.KnownColor.LightGray), false, 
 						global::System.Drawing.Color.FromKnownColor(global::System.Drawing.KnownColor.White), false,
@@ -306,7 +306,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				{
 					// First we get the mappings defined for the base shape, and add on any mappings defined for this
 					// shape. 
-					DslDiagrams::CompartmentMapping[] baseMappings = base.GetCompartmentMappings(typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table));
+					DslDiagrams::CompartmentMapping[] baseMappings = base.GetCompartmentMappings(typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table));
 					int localCompartmentMappingsOffset = 0;
 					if(baseMappings!=null)
 					{
@@ -320,13 +320,13 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 					}
 					mappings[localCompartmentMappingsOffset+0] = new DslDiagrams::ElementListCompartmentMapping(
 																				"ColumnsCompartment", 
-																				global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column.NameDomainPropertyId, 
-																				global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column.DomainClassId, 
+																				global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column.NameDomainPropertyId, 
+																				global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column.DomainClassId, 
 																				GetElementsFromTableForColumnsCompartment,
 																				null,
 																				null,
 																				null);
-					compartmentMappings.Add(typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table), mappings);
+					compartmentMappings.Add(typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table), mappings);
 				}
 			}
 			
@@ -357,9 +357,9 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			#region DomainPath traversal methods to get the list of elements to display in a compartment.
 			internal static global::System.Collections.IList GetElementsFromTableForColumnsCompartment(DslModeling::ModelElement element)
 			{
-				global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table root = (global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table)element;
+				global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table root = (global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table)element;
 					// Segments 0 and 1
-					DslModeling::LinkedElementCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column> result = root.ColumnCollection;
+					DslModeling::LinkedElementCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column> result = root.ColumnCollection;
 				return result;
 			}
 			#endregion
@@ -390,10 +390,11 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		
 		/// <summary>
 		/// Gets or sets the value of UpdateCounter domain property.
-		/// Description for Neumont.Tools.ORM.Views.RelationalView.TableShape.Update Counter
+		/// Description for ORMSolutions.ORMArchitect.Views.RelationalView.TableShape.Update
+		/// Counter
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.Views.RelationalView.TableShape/UpdateCounter.DisplayName", typeof(global::Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel), "Neumont.Tools.ORM.Views.RelationalView.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.Views.RelationalView.TableShape/UpdateCounter.Description", typeof(global::Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel), "Neumont.Tools.ORM.Views.RelationalView.GeneratedCode.DomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Views.RelationalView.TableShape/UpdateCounter.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel), "ORMSolutions.ORMArchitect.Views.RelationalView.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Views.RelationalView.TableShape/UpdateCounter.Description", typeof(global::ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel), "ORMSolutions.ORMArchitect.Views.RelationalView.GeneratedCode.DomainModelResx")]
 		[global::System.ComponentModel.Browsable(false)]
 		[global::System.ComponentModel.ReadOnly(true)]
 		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
@@ -476,7 +477,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 	}
 	/// <summary>
 	/// DomainClass TableShape
-	/// Description for Neumont.Tools.ORM.Views.RelationalView.TableShape
+	/// Description for ORMSolutions.ORMArchitect.Views.RelationalView.TableShape
 	/// </summary>
 			
 	internal partial class TableShape : TableShapeBase

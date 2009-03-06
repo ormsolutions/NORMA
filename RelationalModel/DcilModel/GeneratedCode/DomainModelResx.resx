@@ -117,1086 +117,1086 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel.Description" xml:space="preserve">
     <value>Relational Database View of ORM Model</value>
     <comment>Description for DslLibrary &apos;ConceptualDatabase&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel.DisplayName" xml:space="preserve">
     <value>Relational Model</value>
     <comment>DisplayName for DslLibrary &apos;ConceptualDatabase&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseModelElement.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseModelElement.Description" xml:space="preserve">
     <value>Base class for ConceptualData &lt;see cref=&apos;DslModeling::ModelElement&apos;/&gt;s.</value>
     <comment>Description for DomainClass &apos;ConceptualDatabaseModelElement&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseModelElement.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseModelElement.DisplayName" xml:space="preserve">
     <value>Conceptual Database Model Element</value>
     <comment>DisplayName for DomainClass &apos;ConceptualDatabaseModelElement&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Catalog.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Catalog.Description" xml:space="preserve">
     <value>A named collection of schemas (commonly referred to as a database). Equivalent to a &apos;CATALOG&apos; in the SQL Standard.</value>
     <comment>Description for DomainClass &apos;Catalog&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Catalog.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Catalog.DisplayName" xml:space="preserve">
     <value>Catalog</value>
     <comment>DisplayName for DomainClass &apos;Catalog&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Catalog/Name.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Catalog/Name.Description" xml:space="preserve">
     <value>The name of the catalog.</value>
     <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;Catalog&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Catalog/Name.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Catalog/Name.DisplayName" xml:space="preserve">
     <value>Name</value>
     <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;Catalog&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Schema.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema.Description" xml:space="preserve">
     <value>Equivalent to a &apos;SCHEMA&apos; in the SQL Standard.</value>
     <comment>Description for DomainClass &apos;Schema&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Schema.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema.DisplayName" xml:space="preserve">
     <value>Schema</value>
     <comment>DisplayName for DomainClass &apos;Schema&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Schema/Name.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema/Name.Description" xml:space="preserve">
     <value>The name of the schema.</value>
     <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;Schema&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Schema/Name.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema/Name.DisplayName" xml:space="preserve">
     <value>Name</value>
     <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;Schema&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Table.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table.Description" xml:space="preserve">
     <value>Equivalent to a &apos;TABLE&apos; in the SQL Standard.</value>
     <comment>Description for DomainClass &apos;Table&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Table.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table.DisplayName" xml:space="preserve">
     <value>Table</value>
     <comment>DisplayName for DomainClass &apos;Table&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Table/Name.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table/Name.Description" xml:space="preserve">
     <value>The name of the table.</value>
     <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;Table&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Table/Name.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table/Name.DisplayName" xml:space="preserve">
     <value>Name</value>
     <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;Table&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Column.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column.Description" xml:space="preserve">
     <value>Equivalent to a &apos;COLUMN&apos; in the SQL Standard.</value>
     <comment>Description for DomainClass &apos;Column&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Column.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column.DisplayName" xml:space="preserve">
     <value>Column</value>
     <comment>DisplayName for DomainClass &apos;Column&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Column/Name.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column/Name.Description" xml:space="preserve">
     <value>The name of the column.</value>
     <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;Column&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Column/Name.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column/Name.DisplayName" xml:space="preserve">
     <value>Name</value>
     <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;Column&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Column/IsNullable.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column/IsNullable.Description" xml:space="preserve">
     <value>Is NULL a valid value for this column?</value>
     <comment>Description for DomainProperty &apos;IsNullable&apos; on DomainClass &apos;Column&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Column/IsNullable.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column/IsNullable.DisplayName" xml:space="preserve">
     <value>IsNullable</value>
     <comment>DisplayName for DomainProperty &apos;IsNullable&apos; on DomainClass &apos;Column&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Column/IsIdentity.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column/IsIdentity.Description" xml:space="preserve">
     <value>Is this an IDENTITY column?</value>
     <comment>Description for DomainProperty &apos;IsIdentity&apos; on DomainClass &apos;Column&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Column/IsIdentity.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column/IsIdentity.DisplayName" xml:space="preserve">
     <value>IsIdentity</value>
     <comment>DisplayName for DomainProperty &apos;IsIdentity&apos; on DomainClass &apos;Column&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Column/DataType.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column/DataType.Description" xml:space="preserve">
     <value>The DataType for this Column. Corresponds to the DataType of the terminal ValueType in the FactType path for this Column.
     Changing this DataType changes the DataType for all columns that terminate at the same ValueType.
     This is a portable DataType. The final physical DataType is dependent on the generation target.</value>
     <comment>Description for DomainProperty &apos;DataType&apos; on DomainClass &apos;Column&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Column/DataType.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column/DataType.DisplayName" xml:space="preserve">
     <value>DataType</value>
     <comment>DisplayName for DomainProperty &apos;DataType&apos; on DomainClass &apos;Column&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Column/DataTypeScale.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.Column.DataTypeScale</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column/DataTypeScale.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column.DataTypeScale</value>
     <comment>Description for DomainProperty &apos;DataTypeScale&apos; on DomainClass &apos;Column&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Column/DataTypeScale.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column/DataTypeScale.DisplayName" xml:space="preserve">
     <value>DataTypeScale</value>
     <comment>DisplayName for DomainProperty &apos;DataTypeScale&apos; on DomainClass &apos;Column&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Column/DataTypeLength.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.Column.DataTypeLength</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column/DataTypeLength.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column.DataTypeLength</value>
     <comment>Description for DomainProperty &apos;DataTypeLength&apos; on DomainClass &apos;Column&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Column/DataTypeLength.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column/DataTypeLength.DisplayName" xml:space="preserve">
     <value>DataTypeLength</value>
     <comment>DisplayName for DomainProperty &apos;DataTypeLength&apos; on DomainClass &apos;Column&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Constraint.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Constraint.Description" xml:space="preserve">
     <value>Base class for ConceptualData constraints.</value>
     <comment>Description for DomainClass &apos;Constraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Constraint.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Constraint.DisplayName" xml:space="preserve">
     <value>Constraint</value>
     <comment>DisplayName for DomainClass &apos;Constraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Constraint/Name.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Constraint/Name.Description" xml:space="preserve">
     <value>The name of the constraint.</value>
     <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;Constraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Constraint/Name.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Constraint/Name.DisplayName" xml:space="preserve">
     <value>Name</value>
     <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;Constraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraint.Description" xml:space="preserve">
     <value>A constraint on the uniqueness of a set of columns. Equivalent to a &apos;UNIQUE&apos; or &apos;PRIMARY KEY&apos; in the SQL Standard.</value>
     <comment>Description for DomainClass &apos;UniquenessConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraint.DisplayName" xml:space="preserve">
     <value>Uniqueness Constraint</value>
     <comment>DisplayName for DomainClass &apos;UniquenessConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint/IsPrimary.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraint/IsPrimary.Description" xml:space="preserve">
     <value>Is this uniqueness constraint a PRIMARY KEY?</value>
     <comment>Description for DomainProperty &apos;IsPrimary&apos; on DomainClass &apos;UniquenessConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint/IsPrimary.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraint/IsPrimary.DisplayName" xml:space="preserve">
     <value>IsPrimary</value>
     <comment>DisplayName for DomainProperty &apos;IsPrimary&apos; on DomainClass &apos;UniquenessConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraint.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraint.Description" xml:space="preserve">
     <value>A reference to a &lt;see cref=&apos;UniquenessConstraint&apos;/&gt; in another table. Equivalent to a &apos;FOREIGN KEY&apos; in the SQL Standard.</value>
     <comment>Description for DomainClass &apos;ReferenceConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraint.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraint.DisplayName" xml:space="preserve">
     <value>Reference Constraint</value>
     <comment>DisplayName for DomainClass &apos;ReferenceConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.CheckConstraint.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CheckConstraint.Description" xml:space="preserve">
     <value>Equivalent to a table-level or domain &apos;CHECK&apos; clause in the SQL Standard.</value>
     <comment>Description for DomainClass &apos;CheckConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.CheckConstraint.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CheckConstraint.DisplayName" xml:space="preserve">
     <value>Check Constraint</value>
     <comment>DisplayName for DomainClass &apos;CheckConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Domain.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Domain.Description" xml:space="preserve">
     <value>A user-defined data domain, which can have custom restrictions on it.</value>
     <comment>Description for DomainClass &apos;Domain&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Domain.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Domain.DisplayName" xml:space="preserve">
     <value>Domain</value>
     <comment>DisplayName for DomainClass &apos;Domain&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Domain/Name.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Domain/Name.Description" xml:space="preserve">
     <value>The name of the data domain.</value>
     <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;Domain&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.Domain/Name.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Domain/Name.DisplayName" xml:space="preserve">
     <value>Name</value>
     <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;Domain&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.PredefinedDataType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.PredefinedDataType</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.PredefinedDataType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.PredefinedDataType</value>
     <comment>Description for DomainClass &apos;PredefinedDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.PredefinedDataType.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.PredefinedDataType.DisplayName" xml:space="preserve">
     <value>Predefined Data Type</value>
     <comment>DisplayName for DomainClass &apos;PredefinedDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.PredefinedDataType/Name.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.PredefinedDataType/Name.Description" xml:space="preserve">
     <value>The name of the predefined type.</value>
     <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;PredefinedDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.PredefinedDataType/Name.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.PredefinedDataType/Name.DisplayName" xml:space="preserve">
     <value>Name</value>
     <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;PredefinedDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.PredefinedDataType/Length.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.PredefinedDataType/Length.Description" xml:space="preserve">
     <value>The number of characters in a CHARACTER, CHARACTER VARYING, or CHARACTER LARGE OBJECT, or the number of bytes in a BINARY LARGE OBJECT.</value>
     <comment>Description for DomainProperty &apos;Length&apos; on DomainClass &apos;PredefinedDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.PredefinedDataType/Length.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.PredefinedDataType/Length.DisplayName" xml:space="preserve">
     <value>Length</value>
     <comment>DisplayName for DomainProperty &apos;Length&apos; on DomainClass &apos;PredefinedDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.PredefinedDataType/Precision.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.PredefinedDataType/Precision.Description" xml:space="preserve">
     <value>The maximum number of decimal digits in a NUMERIC or DECIMAL, or the maximum number of binary digits in the significand (mantissa) of a FLOAT.</value>
     <comment>Description for DomainProperty &apos;Precision&apos; on DomainClass &apos;PredefinedDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.PredefinedDataType/Precision.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.PredefinedDataType/Precision.DisplayName" xml:space="preserve">
     <value>Precision</value>
     <comment>DisplayName for DomainProperty &apos;Precision&apos; on DomainClass &apos;PredefinedDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.PredefinedDataType/Scale.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.PredefinedDataType/Scale.Description" xml:space="preserve">
     <value>The maximum number of decimal digits after the decimal point in a NUMERIC or DECIMAL.</value>
     <comment>Description for DomainProperty &apos;Scale&apos; on DomainClass &apos;PredefinedDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.PredefinedDataType/Scale.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.PredefinedDataType/Scale.DisplayName" xml:space="preserve">
     <value>Scale</value>
     <comment>DisplayName for DomainProperty &apos;Scale&apos; on DomainClass &apos;PredefinedDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema</value>
     <comment>Description for DomainClass &apos;CatalogContainsSchema&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema.DisplayName" xml:space="preserve">
     <value>Catalog Contains Schema</value>
     <comment>DisplayName for DomainClass &apos;CatalogContainsSchema&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema/Catalog.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema.Catalog</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema/Catalog.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema.Catalog</value>
     <comment>Description for DomainRole &apos;Catalog&apos; on DomainRelationship &apos;CatalogContainsSchema&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema/Catalog.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema/Catalog.DisplayName" xml:space="preserve">
     <value>Catalog</value>
     <comment>DisplayName for DomainRole &apos;Catalog&apos; on DomainRelationship &apos;CatalogContainsSchema&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema/Catalog.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema/Catalog.PropertyDisplayName" xml:space="preserve">
     <value>Schema Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;Catalog&apos; on DomainRelationship &apos;CatalogContainsSchema&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema/Schema.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema.Schema</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema/Schema.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema.Schema</value>
     <comment>Description for DomainRole &apos;Schema&apos; on DomainRelationship &apos;CatalogContainsSchema&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema/Schema.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema/Schema.DisplayName" xml:space="preserve">
     <value>Schema</value>
     <comment>DisplayName for DomainRole &apos;Schema&apos; on DomainRelationship &apos;CatalogContainsSchema&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema/Schema.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema/Schema.PropertyDisplayName" xml:space="preserve">
     <value>Catalog</value>
     <comment>PropertyDisplayName for DomainRole &apos;Schema&apos; on DomainRelationship &apos;CatalogContainsSchema&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent</value>
     <comment>Description for DomainClass &apos;SchemaContainsContent&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent.DisplayName" xml:space="preserve">
     <value>Schema Contains Content</value>
     <comment>DisplayName for DomainClass &apos;SchemaContainsContent&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent/Schema.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent.Schema</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent/Schema.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent.Schema</value>
     <comment>Description for DomainRole &apos;Schema&apos; on DomainRelationship &apos;SchemaContainsContent&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent/Schema.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent/Schema.DisplayName" xml:space="preserve">
     <value>Schema</value>
     <comment>DisplayName for DomainRole &apos;Schema&apos; on DomainRelationship &apos;SchemaContainsContent&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent/Schema.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent/Schema.PropertyDisplayName" xml:space="preserve">
     <value>Schema Content</value>
     <comment>PropertyDisplayName for DomainRole &apos;Schema&apos; on DomainRelationship &apos;SchemaContainsContent&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent/SchemaContent.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent.SchemaContent</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent/SchemaContent.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent.SchemaContent</value>
     <comment>Description for DomainRole &apos;SchemaContent&apos; on DomainRelationship &apos;SchemaContainsContent&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent/SchemaContent.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent/SchemaContent.DisplayName" xml:space="preserve">
     <value>Schema Content</value>
     <comment>DisplayName for DomainRole &apos;SchemaContent&apos; on DomainRelationship &apos;SchemaContainsContent&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent/SchemaContent.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent/SchemaContent.PropertyDisplayName" xml:space="preserve">
     <value>Schema</value>
     <comment>PropertyDisplayName for DomainRole &apos;SchemaContent&apos; on DomainRelationship &apos;SchemaContainsContent&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable</value>
     <comment>Description for DomainClass &apos;SchemaContainsTable&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable.DisplayName" xml:space="preserve">
     <value>Schema Contains Table</value>
     <comment>DisplayName for DomainClass &apos;SchemaContainsTable&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable/Schema.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable.Schema</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable/Schema.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable.Schema</value>
     <comment>Description for DomainRole &apos;Schema&apos; on DomainRelationship &apos;SchemaContainsTable&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable/Schema.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable/Schema.DisplayName" xml:space="preserve">
     <value>Schema</value>
     <comment>DisplayName for DomainRole &apos;Schema&apos; on DomainRelationship &apos;SchemaContainsTable&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable/Schema.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable/Schema.PropertyDisplayName" xml:space="preserve">
     <value>Table Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;Schema&apos; on DomainRelationship &apos;SchemaContainsTable&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable/Table.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable.Table</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable/Table.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable.Table</value>
     <comment>Description for DomainRole &apos;Table&apos; on DomainRelationship &apos;SchemaContainsTable&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable/Table.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable/Table.DisplayName" xml:space="preserve">
     <value>Table</value>
     <comment>DisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;SchemaContainsTable&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable/Table.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable/Table.PropertyDisplayName" xml:space="preserve">
     <value>Schema</value>
     <comment>PropertyDisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;SchemaContainsTable&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain</value>
     <comment>Description for DomainClass &apos;SchemaContainsDomain&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain.DisplayName" xml:space="preserve">
     <value>Schema Contains Domain</value>
     <comment>DisplayName for DomainClass &apos;SchemaContainsDomain&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain/Schema.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain.Schema</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain/Schema.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain.Schema</value>
     <comment>Description for DomainRole &apos;Schema&apos; on DomainRelationship &apos;SchemaContainsDomain&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain/Schema.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain/Schema.DisplayName" xml:space="preserve">
     <value>Schema</value>
     <comment>DisplayName for DomainRole &apos;Schema&apos; on DomainRelationship &apos;SchemaContainsDomain&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain/Schema.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain/Schema.PropertyDisplayName" xml:space="preserve">
     <value>Domain Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;Schema&apos; on DomainRelationship &apos;SchemaContainsDomain&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain/Domain.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain.Domain</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain/Domain.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain.Domain</value>
     <comment>Description for DomainRole &apos;Domain&apos; on DomainRelationship &apos;SchemaContainsDomain&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain/Domain.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain/Domain.DisplayName" xml:space="preserve">
     <value>Domain</value>
     <comment>DisplayName for DomainRole &apos;Domain&apos; on DomainRelationship &apos;SchemaContainsDomain&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain/Domain.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain/Domain.PropertyDisplayName" xml:space="preserve">
     <value>Schema</value>
     <comment>PropertyDisplayName for DomainRole &apos;Domain&apos; on DomainRelationship &apos;SchemaContainsDomain&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn</value>
     <comment>Description for DomainClass &apos;TableContainsColumn&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn.DisplayName" xml:space="preserve">
     <value>Table Contains Column</value>
     <comment>DisplayName for DomainClass &apos;TableContainsColumn&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn/Table.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn.Table</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn/Table.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn.Table</value>
     <comment>Description for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsColumn&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn/Table.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn/Table.DisplayName" xml:space="preserve">
     <value>Table</value>
     <comment>DisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsColumn&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn/Table.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn/Table.PropertyDisplayName" xml:space="preserve">
     <value>Column Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsColumn&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn/Column.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn.Column</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn/Column.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn.Column</value>
     <comment>Description for DomainRole &apos;Column&apos; on DomainRelationship &apos;TableContainsColumn&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn/Column.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn/Column.DisplayName" xml:space="preserve">
     <value>Column</value>
     <comment>DisplayName for DomainRole &apos;Column&apos; on DomainRelationship &apos;TableContainsColumn&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn/Column.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn/Column.PropertyDisplayName" xml:space="preserve">
     <value>Table</value>
     <comment>PropertyDisplayName for DomainRole &apos;Column&apos; on DomainRelationship &apos;TableContainsColumn&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint</value>
     <comment>Description for DomainClass &apos;TableContainsConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint.DisplayName" xml:space="preserve">
     <value>Table Contains Constraint</value>
     <comment>DisplayName for DomainClass &apos;TableContainsConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint/Table.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint.Table</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint/Table.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint.Table</value>
     <comment>Description for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint/Table.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint/Table.DisplayName" xml:space="preserve">
     <value>Table</value>
     <comment>DisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint/Table.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint/Table.PropertyDisplayName" xml:space="preserve">
     <value>Constraint Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint/Constraint.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint.Constraint</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint/Constraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint.Constraint</value>
     <comment>Description for DomainRole &apos;Constraint&apos; on DomainRelationship &apos;TableContainsConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint/Constraint.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint/Constraint.DisplayName" xml:space="preserve">
     <value>Constraint</value>
     <comment>DisplayName for DomainRole &apos;Constraint&apos; on DomainRelationship &apos;TableContainsConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint/Constraint.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint/Constraint.PropertyDisplayName" xml:space="preserve">
     <value>Table</value>
     <comment>PropertyDisplayName for DomainRole &apos;Constraint&apos; on DomainRelationship &apos;TableContainsConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint</value>
     <comment>Description for DomainClass &apos;TableContainsUniquenessConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint.DisplayName" xml:space="preserve">
     <value>Table Contains Uniqueness Constraint</value>
     <comment>DisplayName for DomainClass &apos;TableContainsUniquenessConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint/Table.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint.Table</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint/Table.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint.Table</value>
     <comment>Description for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsUniquenessConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint/Table.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint/Table.DisplayName" xml:space="preserve">
     <value>Table</value>
     <comment>DisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsUniquenessConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint/Table.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint/Table.PropertyDisplayName" xml:space="preserve">
     <value>Uniqueness Constraint Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsUniquenessConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint/UniquenessConstraint.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint.UniquenessConstraint</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint/UniquenessConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint.UniquenessConstraint</value>
     <comment>Description for DomainRole &apos;UniquenessConstraint&apos; on DomainRelationship &apos;TableContainsUniquenessConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint/UniquenessConstraint.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint/UniquenessConstraint.DisplayName" xml:space="preserve">
     <value>Uniqueness Constraint</value>
     <comment>DisplayName for DomainRole &apos;UniquenessConstraint&apos; on DomainRelationship &apos;TableContainsUniquenessConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint/UniquenessConstraint.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint/UniquenessConstraint.PropertyDisplayName" xml:space="preserve">
     <value>Table</value>
     <comment>PropertyDisplayName for DomainRole &apos;UniquenessConstraint&apos; on DomainRelationship &apos;TableContainsUniquenessConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint</value>
     <comment>Description for DomainClass &apos;TableContainsReferenceConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint.DisplayName" xml:space="preserve">
     <value>Table Contains Reference Constraint</value>
     <comment>DisplayName for DomainClass &apos;TableContainsReferenceConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint/Table.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint.Table</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint/Table.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint.Table</value>
     <comment>Description for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsReferenceConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint/Table.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint/Table.DisplayName" xml:space="preserve">
     <value>Table</value>
     <comment>DisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsReferenceConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint/Table.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint/Table.PropertyDisplayName" xml:space="preserve">
     <value>Reference Constraint Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsReferenceConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint/ReferenceConstraint.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint.ReferenceConstraint</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint/ReferenceConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint.ReferenceConstraint</value>
     <comment>Description for DomainRole &apos;ReferenceConstraint&apos; on DomainRelationship &apos;TableContainsReferenceConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint/ReferenceConstraint.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint/ReferenceConstraint.DisplayName" xml:space="preserve">
     <value>Reference Constraint</value>
     <comment>DisplayName for DomainRole &apos;ReferenceConstraint&apos; on DomainRelationship &apos;TableContainsReferenceConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint/ReferenceConstraint.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint/ReferenceConstraint.PropertyDisplayName" xml:space="preserve">
     <value>Source Table</value>
     <comment>PropertyDisplayName for DomainRole &apos;ReferenceConstraint&apos; on DomainRelationship &apos;TableContainsReferenceConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint</value>
     <comment>Description for DomainClass &apos;TableContainsCheckConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint.DisplayName" xml:space="preserve">
     <value>Table Contains Check Constraint</value>
     <comment>DisplayName for DomainClass &apos;TableContainsCheckConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint/Table.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint.Table</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint/Table.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint.Table</value>
     <comment>Description for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsCheckConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint/Table.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint/Table.DisplayName" xml:space="preserve">
     <value>Table</value>
     <comment>DisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsCheckConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint/Table.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint/Table.PropertyDisplayName" xml:space="preserve">
     <value>Check Constraint Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableContainsCheckConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint/CheckConstraint.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint.CheckConstraint</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint/CheckConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint.CheckConstraint</value>
     <comment>Description for DomainRole &apos;CheckConstraint&apos; on DomainRelationship &apos;TableContainsCheckConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint/CheckConstraint.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint/CheckConstraint.DisplayName" xml:space="preserve">
     <value>Check Constraint</value>
     <comment>DisplayName for DomainRole &apos;CheckConstraint&apos; on DomainRelationship &apos;TableContainsCheckConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint/CheckConstraint.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint/CheckConstraint.PropertyDisplayName" xml:space="preserve">
     <value>Table</value>
     <comment>PropertyDisplayName for DomainRole &apos;CheckConstraint&apos; on DomainRelationship &apos;TableContainsCheckConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint</value>
     <comment>Description for DomainClass &apos;DomainContainsCheckConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint.DisplayName" xml:space="preserve">
     <value>Domain Contains Check Constraint</value>
     <comment>DisplayName for DomainClass &apos;DomainContainsCheckConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint/Domain.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint.Domain</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint/Domain.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint.Domain</value>
     <comment>Description for DomainRole &apos;Domain&apos; on DomainRelationship &apos;DomainContainsCheckConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint/Domain.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint/Domain.DisplayName" xml:space="preserve">
     <value>Domain</value>
     <comment>DisplayName for DomainRole &apos;Domain&apos; on DomainRelationship &apos;DomainContainsCheckConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint/Domain.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint/Domain.PropertyDisplayName" xml:space="preserve">
     <value>Check Constraint</value>
     <comment>PropertyDisplayName for DomainRole &apos;Domain&apos; on DomainRelationship &apos;DomainContainsCheckConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint/CheckConstraint.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint.CheckConstraint</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint/CheckConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint.CheckConstraint</value>
     <comment>Description for DomainRole &apos;CheckConstraint&apos; on DomainRelationship &apos;DomainContainsCheckConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint/CheckConstraint.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint/CheckConstraint.DisplayName" xml:space="preserve">
     <value>Check Constraint</value>
     <comment>DisplayName for DomainRole &apos;CheckConstraint&apos; on DomainRelationship &apos;DomainContainsCheckConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint/CheckConstraint.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint/CheckConstraint.PropertyDisplayName" xml:space="preserve">
     <value>Domain</value>
     <comment>PropertyDisplayName for DomainRole &apos;CheckConstraint&apos; on DomainRelationship &apos;DomainContainsCheckConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain</value>
     <comment>Description for DomainClass &apos;ColumnHasDomain&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain.DisplayName" xml:space="preserve">
     <value>Column Has Domain</value>
     <comment>DisplayName for DomainClass &apos;ColumnHasDomain&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain/Column.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain.Column</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain/Column.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain.Column</value>
     <comment>Description for DomainRole &apos;Column&apos; on DomainRelationship &apos;ColumnHasDomain&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain/Column.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain/Column.DisplayName" xml:space="preserve">
     <value>Column</value>
     <comment>DisplayName for DomainRole &apos;Column&apos; on DomainRelationship &apos;ColumnHasDomain&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain/Column.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain/Column.PropertyDisplayName" xml:space="preserve">
     <value>Domain</value>
     <comment>PropertyDisplayName for DomainRole &apos;Column&apos; on DomainRelationship &apos;ColumnHasDomain&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain/Domain.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain.Domain</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain/Domain.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain.Domain</value>
     <comment>Description for DomainRole &apos;Domain&apos; on DomainRelationship &apos;ColumnHasDomain&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain/Domain.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain/Domain.DisplayName" xml:space="preserve">
     <value>Domain</value>
     <comment>DisplayName for DomainRole &apos;Domain&apos; on DomainRelationship &apos;ColumnHasDomain&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain/Domain.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain/Domain.PropertyDisplayName" xml:space="preserve">
     <value>Columns</value>
     <comment>PropertyDisplayName for DomainRole &apos;Domain&apos; on DomainRelationship &apos;ColumnHasDomain&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType</value>
     <comment>Description for DomainClass &apos;ColumnHasPredefinedDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType.DisplayName" xml:space="preserve">
     <value>Column Has Predefined Data Type</value>
     <comment>DisplayName for DomainClass &apos;ColumnHasPredefinedDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType/Column.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType.Column</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType/Column.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType.Column</value>
     <comment>Description for DomainRole &apos;Column&apos; on DomainRelationship &apos;ColumnHasPredefinedDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType/Column.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType/Column.DisplayName" xml:space="preserve">
     <value>Column</value>
     <comment>DisplayName for DomainRole &apos;Column&apos; on DomainRelationship &apos;ColumnHasPredefinedDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType/Column.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType/Column.PropertyDisplayName" xml:space="preserve">
     <value>Predefined Data Type</value>
     <comment>PropertyDisplayName for DomainRole &apos;Column&apos; on DomainRelationship &apos;ColumnHasPredefinedDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType/PredefinedDataType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType.PredefinedDataType</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType/PredefinedDataType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType.PredefinedDataType</value>
     <comment>Description for DomainRole &apos;PredefinedDataType&apos; on DomainRelationship &apos;ColumnHasPredefinedDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType/PredefinedDataType.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType/PredefinedDataType.DisplayName" xml:space="preserve">
     <value>Predefined Data Type</value>
     <comment>DisplayName for DomainRole &apos;PredefinedDataType&apos; on DomainRelationship &apos;ColumnHasPredefinedDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType/PredefinedDataType.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType/PredefinedDataType.PropertyDisplayName" xml:space="preserve">
     <value>Column</value>
     <comment>PropertyDisplayName for DomainRole &apos;PredefinedDataType&apos; on DomainRelationship &apos;ColumnHasPredefinedDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType</value>
     <comment>Description for DomainClass &apos;DomainHasPredefinedDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType.DisplayName" xml:space="preserve">
     <value>Domain Has Predefined Data Type</value>
     <comment>DisplayName for DomainClass &apos;DomainHasPredefinedDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType/Domain.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType.Domain</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType/Domain.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType.Domain</value>
     <comment>Description for DomainRole &apos;Domain&apos; on DomainRelationship &apos;DomainHasPredefinedDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType/Domain.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType/Domain.DisplayName" xml:space="preserve">
     <value>Domain</value>
     <comment>DisplayName for DomainRole &apos;Domain&apos; on DomainRelationship &apos;DomainHasPredefinedDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType/Domain.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType/Domain.PropertyDisplayName" xml:space="preserve">
     <value>Predefined Data Type</value>
     <comment>PropertyDisplayName for DomainRole &apos;Domain&apos; on DomainRelationship &apos;DomainHasPredefinedDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType/PredefinedDataType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType.PredefinedDataType</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType/PredefinedDataType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType.PredefinedDataType</value>
     <comment>Description for DomainRole &apos;PredefinedDataType&apos; on DomainRelationship &apos;DomainHasPredefinedDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType/PredefinedDataType.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType/PredefinedDataType.DisplayName" xml:space="preserve">
     <value>Predefined Data Type</value>
     <comment>DisplayName for DomainRole &apos;PredefinedDataType&apos; on DomainRelationship &apos;DomainHasPredefinedDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType/PredefinedDataType.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType/PredefinedDataType.PropertyDisplayName" xml:space="preserve">
     <value>Domain</value>
     <comment>PropertyDisplayName for DomainRole &apos;PredefinedDataType&apos; on DomainRelationship &apos;DomainHasPredefinedDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn</value>
     <comment>Description for DomainClass &apos;UniquenessConstraintIncludesColumn&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn.DisplayName" xml:space="preserve">
     <value>Uniqueness Constraint Includes Column</value>
     <comment>DisplayName for DomainClass &apos;UniquenessConstraintIncludesColumn&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn/UniquenessConstraint.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn.UniquenessConstraint</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn/UniquenessConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn.UniquenessConstraint</value>
     <comment>Description for DomainRole &apos;UniquenessConstraint&apos; on DomainRelationship &apos;UniquenessConstraintIncludesColumn&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn/UniquenessConstraint.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn/UniquenessConstraint.DisplayName" xml:space="preserve">
     <value>Uniqueness Constraint</value>
     <comment>DisplayName for DomainRole &apos;UniquenessConstraint&apos; on DomainRelationship &apos;UniquenessConstraintIncludesColumn&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn/UniquenessConstraint.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn/UniquenessConstraint.PropertyDisplayName" xml:space="preserve">
     <value>Column Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;UniquenessConstraint&apos; on DomainRelationship &apos;UniquenessConstraintIncludesColumn&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn/Column.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn.Column</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn/Column.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn.Column</value>
     <comment>Description for DomainRole &apos;Column&apos; on DomainRelationship &apos;UniquenessConstraintIncludesColumn&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn/Column.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn/Column.DisplayName" xml:space="preserve">
     <value>Column</value>
     <comment>DisplayName for DomainRole &apos;Column&apos; on DomainRelationship &apos;UniquenessConstraintIncludesColumn&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn/Column.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn/Column.PropertyDisplayName" xml:space="preserve">
     <value>Uniqueness Constraints</value>
     <comment>PropertyDisplayName for DomainRole &apos;Column&apos; on DomainRelationship &apos;UniquenessConstraintIncludesColumn&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable</value>
     <comment>Description for DomainClass &apos;ReferenceConstraintTargetsTable&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable.DisplayName" xml:space="preserve">
     <value>Reference Constraint Targets Table</value>
     <comment>DisplayName for DomainClass &apos;ReferenceConstraintTargetsTable&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable/ReferenceConstraint.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable.ReferenceConstraint</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable/ReferenceConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable.ReferenceConstraint</value>
     <comment>Description for DomainRole &apos;ReferenceConstraint&apos; on DomainRelationship &apos;ReferenceConstraintTargetsTable&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable/ReferenceConstraint.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable/ReferenceConstraint.DisplayName" xml:space="preserve">
     <value>Reference Constraint</value>
     <comment>DisplayName for DomainRole &apos;ReferenceConstraint&apos; on DomainRelationship &apos;ReferenceConstraintTargetsTable&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable/ReferenceConstraint.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable/ReferenceConstraint.PropertyDisplayName" xml:space="preserve">
     <value>Target Table</value>
     <comment>PropertyDisplayName for DomainRole &apos;ReferenceConstraint&apos; on DomainRelationship &apos;ReferenceConstraintTargetsTable&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable/TargetTable.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable.TargetTable</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable/TargetTable.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable.TargetTable</value>
     <comment>Description for DomainRole &apos;TargetTable&apos; on DomainRelationship &apos;ReferenceConstraintTargetsTable&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable/TargetTable.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable/TargetTable.DisplayName" xml:space="preserve">
     <value>Target Table</value>
     <comment>DisplayName for DomainRole &apos;TargetTable&apos; on DomainRelationship &apos;ReferenceConstraintTargetsTable&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable/TargetTable.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable/TargetTable.PropertyDisplayName" xml:space="preserve">
     <value>Reference Constraints</value>
     <comment>PropertyDisplayName for DomainRole &apos;TargetTable&apos; on DomainRelationship &apos;ReferenceConstraintTargetsTable&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint</value>
     <comment>Description for DomainClass &apos;ReferenceConstraintTargetsUniquenessConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.DisplayName" xml:space="preserve">
     <value>Reference Constraint Targets Uniqueness Constraint</value>
     <comment>DisplayName for DomainClass &apos;ReferenceConstraintTargetsUniquenessConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/ReferenceConstraint.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.ReferenceConstraint</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/ReferenceConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.ReferenceConstraint</value>
     <comment>Description for DomainRole &apos;ReferenceConstraint&apos; on DomainRelationship &apos;ReferenceConstraintTargetsUniquenessConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/ReferenceConstraint.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/ReferenceConstraint.DisplayName" xml:space="preserve">
     <value>Reference Constraint</value>
     <comment>DisplayName for DomainRole &apos;ReferenceConstraint&apos; on DomainRelationship &apos;ReferenceConstraintTargetsUniquenessConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/ReferenceConstraint.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/ReferenceConstraint.PropertyDisplayName" xml:space="preserve">
     <value>Target Uniqueness Constraint</value>
     <comment>PropertyDisplayName for DomainRole &apos;ReferenceConstraint&apos; on DomainRelationship &apos;ReferenceConstraintTargetsUniquenessConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/TargetUniquenessConstraint.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.TargetUniquenessConstraint</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/TargetUniquenessConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.TargetUniquenessConstraint</value>
     <comment>Description for DomainRole &apos;TargetUniquenessConstraint&apos; on DomainRelationship &apos;ReferenceConstraintTargetsUniquenessConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/TargetUniquenessConstraint.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/TargetUniquenessConstraint.DisplayName" xml:space="preserve">
     <value>Target Uniqueness Constraint</value>
     <comment>DisplayName for DomainRole &apos;TargetUniquenessConstraint&apos; on DomainRelationship &apos;ReferenceConstraintTargetsUniquenessConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/TargetUniquenessConstraint.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/TargetUniquenessConstraint.PropertyDisplayName" xml:space="preserve">
     <value>Reference Constraint Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;TargetUniquenessConstraint&apos; on DomainRelationship &apos;ReferenceConstraintTargetsUniquenessConstraint&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference</value>
     <comment>Description for DomainClass &apos;ColumnReference&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference.DisplayName" xml:space="preserve">
     <value>Column Reference</value>
     <comment>DisplayName for DomainClass &apos;ColumnReference&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference/SourceColumn.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference.SourceColumn</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference/SourceColumn.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference.SourceColumn</value>
     <comment>Description for DomainRole &apos;SourceColumn&apos; on DomainRelationship &apos;ColumnReference&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference/SourceColumn.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference/SourceColumn.DisplayName" xml:space="preserve">
     <value>Source Column</value>
     <comment>DisplayName for DomainRole &apos;SourceColumn&apos; on DomainRelationship &apos;ColumnReference&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference/SourceColumn.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference/SourceColumn.PropertyDisplayName" xml:space="preserve">
     <value>Target Column Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;SourceColumn&apos; on DomainRelationship &apos;ColumnReference&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference/TargetColumn.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference.TargetColumn</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference/TargetColumn.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference.TargetColumn</value>
     <comment>Description for DomainRole &apos;TargetColumn&apos; on DomainRelationship &apos;ColumnReference&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference/TargetColumn.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference/TargetColumn.DisplayName" xml:space="preserve">
     <value>Target Column</value>
     <comment>DisplayName for DomainRole &apos;TargetColumn&apos; on DomainRelationship &apos;ColumnReference&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference/TargetColumn.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference/TargetColumn.PropertyDisplayName" xml:space="preserve">
     <value>Source Column Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;TargetColumn&apos; on DomainRelationship &apos;ColumnReference&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference</value>
     <comment>Description for DomainClass &apos;ReferenceConstraintContainsColumnReference&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference.DisplayName" xml:space="preserve">
     <value>Reference Constraint Contains Column Reference</value>
     <comment>DisplayName for DomainClass &apos;ReferenceConstraintContainsColumnReference&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference/ReferenceConstraint.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference.ReferenceConstraint</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference/ReferenceConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference.ReferenceConstraint</value>
     <comment>Description for DomainRole &apos;ReferenceConstraint&apos; on DomainRelationship &apos;ReferenceConstraintContainsColumnReference&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference/ReferenceConstraint.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference/ReferenceConstraint.DisplayName" xml:space="preserve">
     <value>Reference Constraint</value>
     <comment>DisplayName for DomainRole &apos;ReferenceConstraint&apos; on DomainRelationship &apos;ReferenceConstraintContainsColumnReference&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference/ReferenceConstraint.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference/ReferenceConstraint.PropertyDisplayName" xml:space="preserve">
     <value>Column Reference Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;ReferenceConstraint&apos; on DomainRelationship &apos;ReferenceConstraintContainsColumnReference&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference/ColumnReference.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference.ColumnReference</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference/ColumnReference.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference.ColumnReference</value>
     <comment>Description for DomainRole &apos;ColumnReference&apos; on DomainRelationship &apos;ReferenceConstraintContainsColumnReference&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference/ColumnReference.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference/ColumnReference.DisplayName" xml:space="preserve">
     <value>Column Reference</value>
     <comment>DisplayName for DomainRole &apos;ColumnReference&apos; on DomainRelationship &apos;ReferenceConstraintContainsColumnReference&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference/ColumnReference.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference/ColumnReference.PropertyDisplayName" xml:space="preserve">
     <value>Reference Constraint</value>
     <comment>PropertyDisplayName for DomainRole &apos;ColumnReference&apos; on DomainRelationship &apos;ReferenceConstraintContainsColumnReference&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerTarget/OldRow.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerTarget/OldRow.DisplayName" xml:space="preserve">
     <value>OldRow</value>
     <comment>Display name for EnumerationLiteral &apos;OldRow&apos; on DomainEnumeration &apos;TriggerTarget&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerTarget/OldRow.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerTarget.OldRow</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerTarget/OldRow.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerTarget.OldRow</value>
     <comment>Description for EnumerationLiteral &apos;OldRow&apos; on DomainEnumeration &apos;TriggerTarget&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerTarget/NewRow.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerTarget/NewRow.DisplayName" xml:space="preserve">
     <value>NewRow</value>
     <comment>Display name for EnumerationLiteral &apos;NewRow&apos; on DomainEnumeration &apos;TriggerTarget&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerTarget/NewRow.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerTarget.NewRow</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerTarget/NewRow.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerTarget.NewRow</value>
     <comment>Description for EnumerationLiteral &apos;NewRow&apos; on DomainEnumeration &apos;TriggerTarget&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerTarget/OldTable.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerTarget/OldTable.DisplayName" xml:space="preserve">
     <value>OldTable</value>
     <comment>Display name for EnumerationLiteral &apos;OldTable&apos; on DomainEnumeration &apos;TriggerTarget&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerTarget/OldTable.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerTarget.OldTable</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerTarget/OldTable.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerTarget.OldTable</value>
     <comment>Description for EnumerationLiteral &apos;OldTable&apos; on DomainEnumeration &apos;TriggerTarget&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerTarget/NewTable.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerTarget/NewTable.DisplayName" xml:space="preserve">
     <value>NewTable</value>
     <comment>Display name for EnumerationLiteral &apos;NewTable&apos; on DomainEnumeration &apos;TriggerTarget&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerTarget/NewTable.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerTarget.NewTable</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerTarget/NewTable.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerTarget.NewTable</value>
     <comment>Description for EnumerationLiteral &apos;NewTable&apos; on DomainEnumeration &apos;TriggerTarget&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerActionTime/Before.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerActionTime/Before.DisplayName" xml:space="preserve">
     <value>Before</value>
     <comment>Display name for EnumerationLiteral &apos;Before&apos; on DomainEnumeration &apos;TriggerActionTime&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerActionTime/Before.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerActionTime.Before</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerActionTime/Before.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerActionTime.Before</value>
     <comment>Description for EnumerationLiteral &apos;Before&apos; on DomainEnumeration &apos;TriggerActionTime&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerActionTime/After.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerActionTime/After.DisplayName" xml:space="preserve">
     <value>After</value>
     <comment>Display name for EnumerationLiteral &apos;After&apos; on DomainEnumeration &apos;TriggerActionTime&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerActionTime/After.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerActionTime.After</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerActionTime/After.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerActionTime.After</value>
     <comment>Description for EnumerationLiteral &apos;After&apos; on DomainEnumeration &apos;TriggerActionTime&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerEvent/Insert.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerEvent/Insert.DisplayName" xml:space="preserve">
     <value>Insert</value>
     <comment>Display name for EnumerationLiteral &apos;Insert&apos; on DomainEnumeration &apos;TriggerEvent&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerEvent/Insert.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerEvent.Insert</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerEvent/Insert.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerEvent.Insert</value>
     <comment>Description for EnumerationLiteral &apos;Insert&apos; on DomainEnumeration &apos;TriggerEvent&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerEvent/Delete.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerEvent/Delete.DisplayName" xml:space="preserve">
     <value>Delete</value>
     <comment>Display name for EnumerationLiteral &apos;Delete&apos; on DomainEnumeration &apos;TriggerEvent&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerEvent/Delete.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerEvent.Delete</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerEvent/Delete.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerEvent.Delete</value>
     <comment>Description for EnumerationLiteral &apos;Delete&apos; on DomainEnumeration &apos;TriggerEvent&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerEvent/Update.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerEvent/Update.DisplayName" xml:space="preserve">
     <value>Update</value>
     <comment>Display name for EnumerationLiteral &apos;Update&apos; on DomainEnumeration &apos;TriggerEvent&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerEvent/Update.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerEvent.Update</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerEvent/Update.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerEvent.Update</value>
     <comment>Description for EnumerationLiteral &apos;Update&apos; on DomainEnumeration &apos;TriggerEvent&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerForEach/Statement.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerForEach/Statement.DisplayName" xml:space="preserve">
     <value>Statement</value>
     <comment>Display name for EnumerationLiteral &apos;Statement&apos; on DomainEnumeration &apos;TriggerForEach&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerForEach/Statement.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerForEach.Statement</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerForEach/Statement.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerForEach.Statement</value>
     <comment>Description for EnumerationLiteral &apos;Statement&apos; on DomainEnumeration &apos;TriggerForEach&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerForEach/Row.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerForEach/Row.DisplayName" xml:space="preserve">
     <value>Row</value>
     <comment>Display name for EnumerationLiteral &apos;Row&apos; on DomainEnumeration &apos;TriggerForEach&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerForEach/Row.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.ConceptualDatabase.TriggerForEach.Row</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerForEach/Row.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerForEach.Row</value>
     <comment>Description for EnumerationLiteral &apos;Row&apos; on DomainEnumeration &apos;TriggerForEach&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.SqlDataAccessIndication/NoSql.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.SqlDataAccessIndication/NoSql.DisplayName" xml:space="preserve">
     <value>NoSql</value>
     <comment>Display name for EnumerationLiteral &apos;NoSql&apos; on DomainEnumeration &apos;SqlDataAccessIndication&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.SqlDataAccessIndication/NoSql.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.SqlDataAccessIndication/NoSql.Description" xml:space="preserve">
     <value>Indicates that the SQL-invoked routine does not possibly contain SQL.</value>
     <comment>Description for EnumerationLiteral &apos;NoSql&apos; on DomainEnumeration &apos;SqlDataAccessIndication&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.SqlDataAccessIndication/ContainsSql.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.SqlDataAccessIndication/ContainsSql.DisplayName" xml:space="preserve">
     <value>ContainsSql</value>
     <comment>Display name for EnumerationLiteral &apos;ContainsSql&apos; on DomainEnumeration &apos;SqlDataAccessIndication&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.SqlDataAccessIndication/ContainsSql.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.SqlDataAccessIndication/ContainsSql.Description" xml:space="preserve">
     <value>Indicates that the SQL-invoked routine possibly contains SQL.</value>
     <comment>Description for EnumerationLiteral &apos;ContainsSql&apos; on DomainEnumeration &apos;SqlDataAccessIndication&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.SqlDataAccessIndication/ReadsSqlData.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.SqlDataAccessIndication/ReadsSqlData.DisplayName" xml:space="preserve">
     <value>ReadsSqlData</value>
     <comment>Display name for EnumerationLiteral &apos;ReadsSqlData&apos; on DomainEnumeration &apos;SqlDataAccessIndication&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.SqlDataAccessIndication/ReadsSqlData.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.SqlDataAccessIndication/ReadsSqlData.Description" xml:space="preserve">
     <value>Indicates that the SQL-invoked routine possibly reads SQL-data.</value>
     <comment>Description for EnumerationLiteral &apos;ReadsSqlData&apos; on DomainEnumeration &apos;SqlDataAccessIndication&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.SqlDataAccessIndication/ModifiesSqlData.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.SqlDataAccessIndication/ModifiesSqlData.DisplayName" xml:space="preserve">
     <value>ModifiesSqlData</value>
     <comment>Display name for EnumerationLiteral &apos;ModifiesSqlData&apos; on DomainEnumeration &apos;SqlDataAccessIndication&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.SqlDataAccessIndication/ModifiesSqlData.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.SqlDataAccessIndication/ModifiesSqlData.Description" xml:space="preserve">
     <value>Indicates that the SQL-invoked routine possibly modified SQL-data.</value>
     <comment>Description for EnumerationLiteral &apos;ModifiesSqlData&apos; on DomainEnumeration &apos;SqlDataAccessIndication&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/StringMask.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/StringMask.DisplayName" xml:space="preserve">
     <value>StringMask</value>
     <comment>Display name for EnumerationLiteral &apos;StringMask&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/StringMask.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.StringMask</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/StringMask.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType.StringMask</value>
     <comment>Description for EnumerationLiteral &apos;StringMask&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/CharacterStringMask.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/CharacterStringMask.DisplayName" xml:space="preserve">
     <value>CharacterStringMask</value>
     <comment>Display name for EnumerationLiteral &apos;CharacterStringMask&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/CharacterStringMask.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.CharacterStringMask</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/CharacterStringMask.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType.CharacterStringMask</value>
     <comment>Description for EnumerationLiteral &apos;CharacterStringMask&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/BinaryStringMask.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/BinaryStringMask.DisplayName" xml:space="preserve">
     <value>BinaryStringMask</value>
     <comment>Display name for EnumerationLiteral &apos;BinaryStringMask&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/BinaryStringMask.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.BinaryStringMask</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/BinaryStringMask.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType.BinaryStringMask</value>
     <comment>Description for EnumerationLiteral &apos;BinaryStringMask&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/LargeObjectStringMask.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/LargeObjectStringMask.DisplayName" xml:space="preserve">
     <value>LargeObjectStringMask</value>
     <comment>Display name for EnumerationLiteral &apos;LargeObjectStringMask&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/LargeObjectStringMask.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.LargeObjectStringMask</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/LargeObjectStringMask.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType.LargeObjectStringMask</value>
     <comment>Description for EnumerationLiteral &apos;LargeObjectStringMask&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/NumericMask.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/NumericMask.DisplayName" xml:space="preserve">
     <value>NumericMask</value>
     <comment>Display name for EnumerationLiteral &apos;NumericMask&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/NumericMask.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.NumericMask</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/NumericMask.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType.NumericMask</value>
     <comment>Description for EnumerationLiteral &apos;NumericMask&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/ExactNumericMask.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/ExactNumericMask.DisplayName" xml:space="preserve">
     <value>ExactNumericMask</value>
     <comment>Display name for EnumerationLiteral &apos;ExactNumericMask&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/ExactNumericMask.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.ExactNumericMask</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/ExactNumericMask.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType.ExactNumericMask</value>
     <comment>Description for EnumerationLiteral &apos;ExactNumericMask&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/ApproximateNumericMask.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/ApproximateNumericMask.DisplayName" xml:space="preserve">
     <value>ApproximateNumericMask</value>
     <comment>Display name for EnumerationLiteral &apos;ApproximateNumericMask&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/ApproximateNumericMask.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.ApproximateNumericMask</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/ApproximateNumericMask.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType.ApproximateNumericMask</value>
     <comment>Description for EnumerationLiteral &apos;ApproximateNumericMask&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/Character.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/Character.DisplayName" xml:space="preserve">
     <value>Character</value>
     <comment>Display name for EnumerationLiteral &apos;Character&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/Character.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.Character</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/Character.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType.Character</value>
     <comment>Description for EnumerationLiteral &apos;Character&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/CharacterVarying.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/CharacterVarying.DisplayName" xml:space="preserve">
     <value>CharacterVarying</value>
     <comment>Display name for EnumerationLiteral &apos;CharacterVarying&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/CharacterVarying.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.CharacterVarying</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/CharacterVarying.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType.CharacterVarying</value>
     <comment>Description for EnumerationLiteral &apos;CharacterVarying&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/CharacterLargeObject.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/CharacterLargeObject.DisplayName" xml:space="preserve">
     <value>CharacterLargeObject</value>
     <comment>Display name for EnumerationLiteral &apos;CharacterLargeObject&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/CharacterLargeObject.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.CharacterLargeObject</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/CharacterLargeObject.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType.CharacterLargeObject</value>
     <comment>Description for EnumerationLiteral &apos;CharacterLargeObject&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/BinaryLargeObject.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/BinaryLargeObject.DisplayName" xml:space="preserve">
     <value>BinaryLargeObject</value>
     <comment>Display name for EnumerationLiteral &apos;BinaryLargeObject&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/BinaryLargeObject.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.BinaryLargeObject</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/BinaryLargeObject.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType.BinaryLargeObject</value>
     <comment>Description for EnumerationLiteral &apos;BinaryLargeObject&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/Numeric.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/Numeric.DisplayName" xml:space="preserve">
     <value>Numeric</value>
     <comment>Display name for EnumerationLiteral &apos;Numeric&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/Numeric.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.Numeric</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/Numeric.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType.Numeric</value>
     <comment>Description for EnumerationLiteral &apos;Numeric&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/Decimal.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/Decimal.DisplayName" xml:space="preserve">
     <value>Decimal</value>
     <comment>Display name for EnumerationLiteral &apos;Decimal&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/Decimal.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.Decimal</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/Decimal.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType.Decimal</value>
     <comment>Description for EnumerationLiteral &apos;Decimal&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/SmallInt.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/SmallInt.DisplayName" xml:space="preserve">
     <value>SmallInt</value>
     <comment>Display name for EnumerationLiteral &apos;SmallInt&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/SmallInt.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.SmallInt</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/SmallInt.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType.SmallInt</value>
     <comment>Description for EnumerationLiteral &apos;SmallInt&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/Integer.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/Integer.DisplayName" xml:space="preserve">
     <value>Integer</value>
     <comment>Display name for EnumerationLiteral &apos;Integer&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/Integer.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.Integer</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/Integer.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType.Integer</value>
     <comment>Description for EnumerationLiteral &apos;Integer&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/BigInt.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/BigInt.DisplayName" xml:space="preserve">
     <value>BigInt</value>
     <comment>Display name for EnumerationLiteral &apos;BigInt&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/BigInt.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.BigInt</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/BigInt.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType.BigInt</value>
     <comment>Description for EnumerationLiteral &apos;BigInt&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/Float.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/Float.DisplayName" xml:space="preserve">
     <value>Float</value>
     <comment>Display name for EnumerationLiteral &apos;Float&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/Float.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.Float</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/Float.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType.Float</value>
     <comment>Description for EnumerationLiteral &apos;Float&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/Real.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/Real.DisplayName" xml:space="preserve">
     <value>Real</value>
     <comment>Display name for EnumerationLiteral &apos;Real&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/Real.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.Real</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/Real.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType.Real</value>
     <comment>Description for EnumerationLiteral &apos;Real&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/DoublePrecision.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/DoublePrecision.DisplayName" xml:space="preserve">
     <value>DoublePrecision</value>
     <comment>Display name for EnumerationLiteral &apos;DoublePrecision&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/DoublePrecision.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.DoublePrecision</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/DoublePrecision.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType.DoublePrecision</value>
     <comment>Description for EnumerationLiteral &apos;DoublePrecision&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/Boolean.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/Boolean.DisplayName" xml:space="preserve">
     <value>Boolean</value>
     <comment>Display name for EnumerationLiteral &apos;Boolean&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType/Boolean.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.RelationalModels.DatabaseDefinition.PredefinedType.Boolean</value>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType/Boolean.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.PredefinedType.Boolean</value>
     <comment>Description for EnumerationLiteral &apos;Boolean&apos; on DomainEnumeration &apos;PredefinedType&apos;</comment>
   </data>
   <data name="AmbiguousSchema" xml:space="preserve">
@@ -1295,10 +1295,10 @@ A DomainClass can be serialized as a moniker only if
 
 <!-- Common Public License Copyright Notice -->
 <!--
-	Neumont Object-Role Modeling Architect for Visual Studio
+	Natural Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
-	Copyright © Matthew Curland. All rights reserved.
+	Copyright © ORM Solutions, LLC. All rights reserved.
 
 	The use and distribution terms for this software are covered by the
 	Common Public License 1.0 (http://opensource.org/licenses/cpl) which

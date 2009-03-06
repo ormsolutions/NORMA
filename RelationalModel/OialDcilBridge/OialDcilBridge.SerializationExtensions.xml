@@ -4,7 +4,7 @@
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
 	<se:Copyright name="Common Public License Copyright Notice">
 		<se:CopyrightLine>/**************************************************************************\</se:CopyrightLine>
-		<se:CopyrightLine>* Neumont Object-Role Modeling Architect for Visual Studio                 *</se:CopyrightLine>
+		<se:CopyrightLine>* Natural Object-Role Modeling Architect for Visual Studio                 *</se:CopyrightLine>
 		<se:CopyrightLine>*                                                                          *</se:CopyrightLine>
 		<se:CopyrightLine>* Copyright © Neumont University. All rights reserved.                     *</se:CopyrightLine>
 		<se:CopyrightLine>*                                                                          *</se:CopyrightLine>
@@ -130,7 +130,7 @@
 	</se:Element>
 	<se:Element Class="AssimilationMapping">
 		<se:ConditionalSerialization>
-			<plx:local name="factType" dataTypeName="FactType" dataTypeQualifier="Neumont.Tools.ORM.ObjectModel">
+			<plx:local name="factType" dataTypeName="FactType" dataTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel">
 				<plx:initialize>
 					<plx:callThis name="FactType" type="property"/>
 				</plx:initialize>
@@ -166,7 +166,7 @@
 	</se:Element>
 	<se:Element Class="ReferenceModeNaming">
 		<se:ConditionalSerialization>
-			<plx:local name="objectType" dataTypeName="ObjectType" dataTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+			<plx:local name="objectType" dataTypeName="ObjectType" dataTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			<plx:return>
 				<plx:binaryOperator type="booleanOr">
 					<plx:left>
@@ -224,7 +224,7 @@
 									<plx:left>
 										<plx:binaryOperator type="identityInequality">
 											<plx:left>
-												<plx:inlineStatement dataTypeName="ObjectType" dataTypeQualifier="Neumont.Tools.ORM.ObjectModel">
+												<plx:inlineStatement dataTypeName="ObjectType" dataTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel">
 													<plx:assign>
 														<plx:left>
 															<plx:nameRef name="objectType"/>

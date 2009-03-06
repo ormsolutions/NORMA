@@ -1,10 +1,10 @@
 ﻿
 // Common Public License Copyright Notice
 // /**************************************************************************\
-// * Neumont Object-Role Modeling Architect for Visual Studio                 *
+// * Natural Object-Role Modeling Architect for Visual Studio                 *
 // *                                                                          *
 // * Copyright © Neumont University. All rights reserved.                     *
-// * Copyright © Matthew Curland. All rights reserved.                        *
+// * Copyright © ORM Solutions, LLC. All rights reserved.                        *
 // *                                                                          *
 // * The use and distribution terms for this software are covered by the      *
 // * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -15,7 +15,7 @@
 // * You must not remove this notice, or any other, from this software.       *
 // \**************************************************************************/
 
-namespace Neumont.Tools.ORM
+namespace ORMSolutions.ORMArchitect.Core
 {
 	#region ResourceStrings class
 	/// <summary>A helper class to insulate the rest of the code from direct resource manipulation.</summary>
@@ -34,7 +34,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ShapeModel, "Neumont.Tools.ORM.ShapeModel.ORMDiagram.DisplayName");
+				return ResourceStrings.GetString(ResourceManagers.ShapeModel, "ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram.DisplayName");
 			}
 		}
 		/// <summary>The display name used for a simple FactType</summary>
@@ -42,7 +42,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.FactType.DisplayName");
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.DisplayName");
 			}
 		}
 		/// <summary>The display name used for a SubtypeFact</summary>
@@ -50,7 +50,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.SubtypeFact.DisplayName");
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.DisplayName");
 			}
 		}
 		/// <summary>The display name used for a disjunctive mandatory constraint</summary>
@@ -58,7 +58,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.MandatoryConstraint.DisplayName");
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraint.DisplayName");
 			}
 		}
 		/// <summary>The display name used for a ReadingType</summary>
@@ -66,15 +66,15 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.Reading.DisplayName");
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "ORMSolutions.ORMArchitect.Core.ObjectModel.Reading.DisplayName");
 			}
 		}
-		/// <summary>The name displayed as the class name for all <see cref="Neumont.Tools.ORM.ObjectModel.ElementGroupingType"/> instances</summary>
+		/// <summary>The name displayed as the class name for all <see cref="ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingType"/> instances</summary>
 		public static string ElementGroupingTypeDisplayName
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ElementGroupingType.DisplayName");
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingType.DisplayName");
 			}
 		}
 		/// <summary>The display name used for an ObjectType when IsValueType is true</summary>

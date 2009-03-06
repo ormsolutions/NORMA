@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -23,10 +23,10 @@ using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using System.Security.Permissions;
 using Microsoft.VisualStudio.Modeling;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.Shell;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.Shell;
 
-namespace Neumont.Tools.ORM.ObjectModel.Design
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 {
 	/// <summary>
 	/// Type editor for use on ReadingText properties in the property grid.

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
-	Neumont Object-Role Modeling Architect for Visual Studio
+	Natural Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
 
@@ -98,7 +98,7 @@
 					<plx:pragma type="closeRegion" data="Attach rules to {@class} model"/>
 				</plx:trailingInfo>
 				<xsl:if test="$disabledRules or $enableDiagramRules">
-					<plx:implementsInterface dataTypeName="IDomainModelEnablesRulesAfterDeserialization" dataTypeQualifier="Neumont.Tools.Modeling.Shell"/>
+					<plx:implementsInterface dataTypeName="IDomainModelEnablesRulesAfterDeserialization" dataTypeQualifier="ORMSolutions.ORMArchitect.Framework.Shell"/>
 				</xsl:if>
 				<plx:field visibility="private" static="true" name="myCustomDomainModelTypes" dataTypeName="Type" dataTypeIsSimpleArray="true"/>
 				<plx:property visibility="private" modifier="static" name="CustomDomainModelTypes">
@@ -267,7 +267,7 @@
 					<plx:returns dataTypeName="Type" dataTypeIsSimpleArray="true"/>
 					<plx:branch>
 						<plx:condition>
-							<plx:callStatic dataTypeName="FrameworkDomainModel" dataTypeQualifier="Neumont.Tools.Modeling" name="InitializingToolboxItems" type="property"/>
+							<plx:callStatic dataTypeName="FrameworkDomainModel" dataTypeQualifier="ORMSolutions.ORMArchitect.Framework" name="InitializingToolboxItems" type="property"/>
 						</plx:condition>
 						<plx:return>
 							<plx:callStatic dataTypeName="Type" name="EmptyTypes" type="property"/>
@@ -356,7 +356,7 @@
 								<summary>Implements IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization</summary>
 							</plx:docComment>
 						</plx:leadingInfo>
-						<plx:interfaceMember dataTypeName="IDomainModelEnablesRulesAfterDeserialization" dataTypeQualifier="Neumont.Tools.Modeling.Shell" memberName="EnableRulesAfterDeserialization"/>
+						<plx:interfaceMember dataTypeName="IDomainModelEnablesRulesAfterDeserialization" dataTypeQualifier="ORMSolutions.ORMArchitect.Framework.Shell" memberName="EnableRulesAfterDeserialization"/>
 						<plx:param name="store" dataTypeName="Store" dataTypeQualifier="Microsoft.VisualStudio.Modeling"/>
 						<xsl:if test="$enableDiagramRules">
 							<plx:callStatic name="EnableDiagramRules" dataTypeName="{@class}">
@@ -725,7 +725,7 @@
 												<plx:right>
 													<xsl:variable name="fireInlineAdjustment">
 														<xsl:if test="$fireInline">
-															<plx:callStatic name="InlineRulePriority" dataTypeName="FrameworkDomainModel" dataTypeQualifier="Neumont.Tools.Modeling" type="field"/>
+															<plx:callStatic name="InlineRulePriority" dataTypeName="FrameworkDomainModel" dataTypeQualifier="ORMSolutions.ORMArchitect.Framework" type="field"/>
 														</xsl:if>
 													</xsl:variable>
 													<xsl:choose>
@@ -735,10 +735,10 @@
 																	<xsl:variable name="standardPriorityFragment">
 																		<xsl:choose>
 																			<xsl:when test="$standardPriority='BeforeDelayValidateRulePriority'">
-																				<plx:callStatic name="BeforeDelayValidateRulePriority" dataTypeName="FrameworkDomainModel" dataTypeQualifier="Neumont.Tools.Modeling" type="field"/>
+																				<plx:callStatic name="BeforeDelayValidateRulePriority" dataTypeName="FrameworkDomainModel" dataTypeQualifier="ORMSolutions.ORMArchitect.Framework" type="field"/>
 																			</xsl:when>
 																			<xsl:when test="$standardPriority='DelayValidateRulePriority'">
-																				<plx:callStatic name="DelayValidateRulePriority" dataTypeName="FrameworkDomainModel" dataTypeQualifier="Neumont.Tools.Modeling" type="field"/>
+																				<plx:callStatic name="DelayValidateRulePriority" dataTypeName="FrameworkDomainModel" dataTypeQualifier="ORMSolutions.ORMArchitect.Framework" type="field"/>
 																			</xsl:when>
 																			<xsl:when test="starts-with($standardPriority,'D')">
 																				<plx:callStatic name="{substring-after($standardPriority,'.')}" dataTypeName="DiagramFixupConstants" dataTypeQualifier="Microsoft.VisualStudio.Modeling.Diagrams" type="field"/>
@@ -993,7 +993,7 @@
 										</xsl:attribute>
 									</plx:string>
 								</xsl:variable>
-								<plx:callStatic name="TraceRuleStart" dataTypeName="TraceUtility" dataTypeQualifier="Neumont.Tools.Modeling.Diagnostics">
+								<plx:callStatic name="TraceRuleStart" dataTypeName="TraceUtility" dataTypeQualifier="ORMSolutions.ORMArchitect.Framework.Diagnostics">
 									<plx:passParam>
 										<xsl:copy-of select="$methodInfo/child::*"/>
 									</plx:passParam>
@@ -1017,7 +1017,7 @@
 										</plx:callStatic>
 									</xsl:otherwise>
 								</xsl:choose>
-								<plx:callStatic name="TraceRuleEnd" dataTypeName="TraceUtility" dataTypeQualifier="Neumont.Tools.Modeling.Diagnostics">
+								<plx:callStatic name="TraceRuleEnd" dataTypeName="TraceUtility" dataTypeQualifier="ORMSolutions.ORMArchitect.Framework.Diagnostics">
 									<plx:passParam>
 										<xsl:copy-of select="$methodInfo/child::*"/>
 									</plx:passParam>

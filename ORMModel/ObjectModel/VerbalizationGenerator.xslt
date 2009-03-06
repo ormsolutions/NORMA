@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
-	Neumont Object-Role Modeling Architect for Visual Studio
+	Natural Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
-	Copyright © Matthew Curland. All rights reserved.
+	Copyright © ORM Solutions, LLC. All rights reserved.
 
 	The use and distribution terms for this software are covered by the
 	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
@@ -25,7 +25,7 @@
 	<xsl:output method="xml" encoding="utf-8" indent="no"/>
 	<xsl:preserve-space elements="cvg:Snippet"/>
 	<!-- Pick up param value supplied automatically by plix loader -->
-	<xsl:param name="CustomToolNamespace" select="'Neumont.Tools.ORM.ObjectModel'"/>
+	<xsl:param name="CustomToolNamespace" select="'ORMSolutions.ORMArchitect.Core.ObjectModel'"/>
 
 	<!-- Names of the different classes we generate -->
 	<xsl:param name="VerbalizationTextSnippetType" select="'CoreVerbalizationSnippetType'"/>
@@ -6070,7 +6070,7 @@
 				<xsl:when test="$ConditionalMatch='VerbalizeFactTypesWithBrowserObjectType'">
 					<plx:binaryOperator type="booleanAnd">
 						<plx:left>
-							<plx:callStatic name="CurrentVerbalizeFactTypesWithObjectType" dataTypeName="OptionsPage" dataTypeQualifier="Neumont.Tools.ORM.Shell" type="property"/>
+							<plx:callStatic name="CurrentVerbalizeFactTypesWithObjectType" dataTypeName="OptionsPage" dataTypeQualifier="ORMSolutions.ORMArchitect.Core.Shell" type="property"/>
 						</plx:left>
 						<plx:right>
 							<plx:binaryOperator type="equality">

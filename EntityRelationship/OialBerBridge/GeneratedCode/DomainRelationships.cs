@@ -1,6 +1,6 @@
 ﻿#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -24,15 +24,15 @@
 
 using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
-namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
+namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 {
 	/// <summary>
 	/// DomainRelationship BarkerErModelIsForAbstractionModel
 	/// Description for
-	/// Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel
+	/// ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel.Description", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("42c5224a-ea1f-4c06-9516-d44b4fdbc30d")]
@@ -52,7 +52,7 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		/// <param name="source">BarkerErModel to use as the source of the relationship.</param>
 		/// <param name="target">AbstractionModel to use as the target of the relationship.</param>
-		public BarkerErModelIsForAbstractionModel(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel source, global::Neumont.Tools.ORMAbstraction.AbstractionModel target)
+		public BarkerErModelIsForAbstractionModel(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel source, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel target)
 			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(BarkerErModelIsForAbstractionModel.BarkerErModelDomainRoleId, source), new DslModeling::RoleAssignment(BarkerErModelIsForAbstractionModel.AbstractionModelDomainRoleId, target)}, null)
 		{
 		}
@@ -109,16 +109,16 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// <summary>
 		/// DomainRole BarkerErModel
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel/BarkerErModel.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel/BarkerErModel.Description", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "AbstractionModel", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel/BarkerErModel.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel/BarkerErModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel/BarkerErModel.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "AbstractionModel", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel/BarkerErModel.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("d2d2c257-dc11-4eb2-86a9-a1cc31cd551d")]
-		public virtual global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel BarkerErModel
+		public virtual global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel BarkerErModel
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel)DslModeling::DomainRoleInfo.GetRolePlayer(this, BarkerErModelDomainRoleId);
+				return (global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel)DslModeling::DomainRoleInfo.GetRolePlayer(this, BarkerErModelDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -134,9 +134,9 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel GetBarkerErModel(global::Neumont.Tools.ORMAbstraction.AbstractionModel element)
+		public static global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel GetBarkerErModel(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, AbstractionModelDomainRoleId) as global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, AbstractionModelDomainRoleId) as global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel;
 		}
 		
 		/// <summary>
@@ -144,7 +144,7 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetBarkerErModel(global::Neumont.Tools.ORMAbstraction.AbstractionModel element, global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel newBarkerErModel)
+		public static void SetBarkerErModel(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel element, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel newBarkerErModel)
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, AbstractionModelDomainRoleId, newBarkerErModel);
 		}
@@ -159,16 +159,16 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// <summary>
 		/// DomainRole AbstractionModel
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel/AbstractionModel.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel/AbstractionModel.Description", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "BarkerErModel", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel/AbstractionModel.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel/AbstractionModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel/AbstractionModel.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "BarkerErModel", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel/AbstractionModel.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("f861386b-1881-4ac7-9988-f5f5efc27721")]
-		public virtual global::Neumont.Tools.ORMAbstraction.AbstractionModel AbstractionModel
+		public virtual global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel AbstractionModel
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (global::Neumont.Tools.ORMAbstraction.AbstractionModel)DslModeling::DomainRoleInfo.GetRolePlayer(this, AbstractionModelDomainRoleId);
+				return (global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel)DslModeling::DomainRoleInfo.GetRolePlayer(this, AbstractionModelDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -184,9 +184,9 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMAbstraction.AbstractionModel GetAbstractionModel(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel element)
+		public static global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel GetAbstractionModel(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, BarkerErModelDomainRoleId) as global::Neumont.Tools.ORMAbstraction.AbstractionModel;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, BarkerErModelDomainRoleId) as global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel;
 		}
 		
 		/// <summary>
@@ -194,7 +194,7 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetAbstractionModel(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel element, global::Neumont.Tools.ORMAbstraction.AbstractionModel newAbstractionModel)
+		public static void SetAbstractionModel(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel element, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel newAbstractionModel)
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, BarkerErModelDomainRoleId, newAbstractionModel);
 		}
@@ -205,9 +205,9 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel GetLinkToAbstractionModel (global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel barkerErModelInstance)
+		public static global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel GetLinkToAbstractionModel (global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel barkerErModelInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel>(barkerErModelInstance, global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel.BarkerErModelDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel>(barkerErModelInstance, global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel.BarkerErModelDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of BarkerErModel not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -225,9 +225,9 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel GetLinkToBarkerErModel (global::Neumont.Tools.ORMAbstraction.AbstractionModel abstractionModelInstance)
+		public static global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel GetLinkToBarkerErModel (global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel abstractionModelInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel>(abstractionModelInstance, global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel.AbstractionModelDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel>(abstractionModelInstance, global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel.AbstractionModelDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of AbstractionModel not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -246,11 +246,11 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel> GetLinks( global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel source, global::Neumont.Tools.ORMAbstraction.AbstractionModel target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel> GetLinks( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel source, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel>(source, global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel.BarkerErModelDomainRoleId);
-			foreach ( global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel>(source, global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel.BarkerErModelDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel link in links )
 			{
 				if ( target.Equals(link.AbstractionModel) )
 				{
@@ -264,10 +264,10 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel GetLink( global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel source, global::Neumont.Tools.ORMAbstraction.AbstractionModel target )
+		public static global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel GetLink( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel source, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel>(source, global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel.BarkerErModelDomainRoleId);
-			foreach ( global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel>(source, global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel.BarkerErModelDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel link in links )
 			{
 				if ( target.Equals(link.AbstractionModel) )
 				{
@@ -280,15 +280,15 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
+namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 {
 	/// <summary>
 	/// DomainRelationship EntityTypeIsPrimarilyForConceptType
 	/// Description for
-	/// Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType
+	/// ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType.Description", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("281345a7-81ea-4bf8-a3c6-77607c83ea9b")]
@@ -308,7 +308,7 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		/// <param name="source">EntityType to use as the source of the relationship.</param>
 		/// <param name="target">ConceptType to use as the target of the relationship.</param>
-		public EntityTypeIsPrimarilyForConceptType(global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType source, global::Neumont.Tools.ORMAbstraction.ConceptType target)
+		public EntityTypeIsPrimarilyForConceptType(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType source, global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType target)
 			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(EntityTypeIsPrimarilyForConceptType.EntityTypeDomainRoleId, source), new DslModeling::RoleAssignment(EntityTypeIsPrimarilyForConceptType.ConceptTypeDomainRoleId, target)}, null)
 		{
 		}
@@ -365,16 +365,16 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// <summary>
 		/// DomainRole EntityType
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType/EntityType.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType/EntityType.Description", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ConceptType", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType/EntityType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType/EntityType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType/EntityType.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ConceptType", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType/EntityType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("a848a9db-04de-4607-9205-35c2b8a4ac4e")]
-		public virtual global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType EntityType
+		public virtual global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType EntityType
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType)DslModeling::DomainRoleInfo.GetRolePlayer(this, EntityTypeDomainRoleId);
+				return (global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType)DslModeling::DomainRoleInfo.GetRolePlayer(this, EntityTypeDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -390,9 +390,9 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType GetEntityType(global::Neumont.Tools.ORMAbstraction.ConceptType element)
+		public static global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType GetEntityType(global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ConceptTypeDomainRoleId) as global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ConceptTypeDomainRoleId) as global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType;
 		}
 		
 		/// <summary>
@@ -400,7 +400,7 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetEntityType(global::Neumont.Tools.ORMAbstraction.ConceptType element, global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType newEntityType)
+		public static void SetEntityType(global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType element, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType newEntityType)
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ConceptTypeDomainRoleId, newEntityType);
 		}
@@ -415,16 +415,16 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// <summary>
 		/// DomainRole ConceptType
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType/ConceptType.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType/ConceptType.Description", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "EntityType", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType/ConceptType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType/ConceptType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType/ConceptType.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "EntityType", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType/ConceptType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("79fe9518-573b-4d6e-b87d-e829076a0d96")]
-		public virtual global::Neumont.Tools.ORMAbstraction.ConceptType ConceptType
+		public virtual global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType ConceptType
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (global::Neumont.Tools.ORMAbstraction.ConceptType)DslModeling::DomainRoleInfo.GetRolePlayer(this, ConceptTypeDomainRoleId);
+				return (global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)DslModeling::DomainRoleInfo.GetRolePlayer(this, ConceptTypeDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -440,9 +440,9 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMAbstraction.ConceptType GetConceptType(global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType element)
+		public static global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType GetConceptType(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, EntityTypeDomainRoleId) as global::Neumont.Tools.ORMAbstraction.ConceptType;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, EntityTypeDomainRoleId) as global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType;
 		}
 		
 		/// <summary>
@@ -450,7 +450,7 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetConceptType(global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType element, global::Neumont.Tools.ORMAbstraction.ConceptType newConceptType)
+		public static void SetConceptType(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType element, global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType newConceptType)
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, EntityTypeDomainRoleId, newConceptType);
 		}
@@ -461,9 +461,9 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType GetLinkToConceptType (global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType entityTypeInstance)
+		public static global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType GetLinkToConceptType (global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType entityTypeInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType>(entityTypeInstance, global::Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType.EntityTypeDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType>(entityTypeInstance, global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType.EntityTypeDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of EntityType not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -481,9 +481,9 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType GetLinkToEntityType (global::Neumont.Tools.ORMAbstraction.ConceptType conceptTypeInstance)
+		public static global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType GetLinkToEntityType (global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType conceptTypeInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType>(conceptTypeInstance, global::Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType.ConceptTypeDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType>(conceptTypeInstance, global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType.ConceptTypeDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ConceptType not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -502,11 +502,11 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType> GetLinks( global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType source, global::Neumont.Tools.ORMAbstraction.ConceptType target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType> GetLinks( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType source, global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType>(source, global::Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType.EntityTypeDomainRoleId);
-			foreach ( global::Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType>(source, global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType.EntityTypeDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType link in links )
 			{
 				if ( target.Equals(link.ConceptType) )
 				{
@@ -520,10 +520,10 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType GetLink( global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType source, global::Neumont.Tools.ORMAbstraction.ConceptType target )
+		public static global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType GetLink( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType source, global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType>(source, global::Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType.EntityTypeDomainRoleId);
-			foreach ( global::Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType>(source, global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType.EntityTypeDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType link in links )
 			{
 				if ( target.Equals(link.ConceptType) )
 				{
@@ -536,15 +536,15 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
+namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 {
 	/// <summary>
 	/// DomainRelationship GenerationSettingTargetsBarkerERModel
 	/// Description for
-	/// Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel
+	/// ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.Description", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("e44e5810-1166-4bb9-a6ab-4d8176dd3d46")]
@@ -564,7 +564,7 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		/// <param name="source">BarkerERModelGenerationSetting to use as the source of the relationship.</param>
 		/// <param name="target">BarkerErModel to use as the target of the relationship.</param>
-		public GenerationSettingTargetsBarkerERModel(BarkerERModelGenerationSetting source, global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel target)
+		public GenerationSettingTargetsBarkerERModel(BarkerERModelGenerationSetting source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel target)
 			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(GenerationSettingTargetsBarkerERModel.GenerationSettingDomainRoleId, source), new DslModeling::RoleAssignment(GenerationSettingTargetsBarkerERModel.GeneratedBarkerERModelDomainRoleId, target)}, null)
 		{
 		}
@@ -621,11 +621,11 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// <summary>
 		/// DomainRole GenerationSetting
 		/// Description for
-		/// Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GenerationSetting
+		/// ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GenerationSetting
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel/GenerationSetting.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel/GenerationSetting.Description", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "GeneratedBarkerERModel", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel/GenerationSetting.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel/GenerationSetting.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel/GenerationSetting.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "GeneratedBarkerERModel", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel/GenerationSetting.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("0a1deae3-de66-4d36-9597-c9b095e8a5c4")]
 		public virtual BarkerERModelGenerationSetting GenerationSetting
 		{
@@ -648,7 +648,7 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static BarkerERModelGenerationSetting GetGenerationSetting(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel element)
+		public static BarkerERModelGenerationSetting GetGenerationSetting(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel element)
 		{
 			return DslModeling::DomainRoleInfo.GetLinkedElement(element, GeneratedBarkerERModelDomainRoleId) as BarkerERModelGenerationSetting;
 		}
@@ -658,7 +658,7 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetGenerationSetting(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel element, BarkerERModelGenerationSetting newGenerationSetting)
+		public static void SetGenerationSetting(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel element, BarkerERModelGenerationSetting newGenerationSetting)
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, GeneratedBarkerERModelDomainRoleId, newGenerationSetting);
 		}
@@ -673,18 +673,18 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// <summary>
 		/// DomainRole GeneratedBarkerERModel
 		/// Description for
-		/// Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GeneratedBarkerERModel
+		/// ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GeneratedBarkerERModel
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel/GeneratedBarkerERModel.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel/GeneratedBarkerERModel.Description", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "GenerationSetting", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel/GeneratedBarkerERModel.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel/GeneratedBarkerERModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel/GeneratedBarkerERModel.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "GenerationSetting", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel/GeneratedBarkerERModel.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("b993b0d6-d3ae-4a31-9094-a8696a2297ec")]
-		public virtual global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel GeneratedBarkerERModel
+		public virtual global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel GeneratedBarkerERModel
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel)DslModeling::DomainRoleInfo.GetRolePlayer(this, GeneratedBarkerERModelDomainRoleId);
+				return (global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel)DslModeling::DomainRoleInfo.GetRolePlayer(this, GeneratedBarkerERModelDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -700,9 +700,9 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel GetGeneratedBarkerERModel(BarkerERModelGenerationSetting element)
+		public static global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel GetGeneratedBarkerERModel(BarkerERModelGenerationSetting element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, GenerationSettingDomainRoleId) as global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, GenerationSettingDomainRoleId) as global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel;
 		}
 		
 		/// <summary>
@@ -710,7 +710,7 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetGeneratedBarkerERModel(BarkerERModelGenerationSetting element, global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel newGeneratedBarkerERModel)
+		public static void SetGeneratedBarkerERModel(BarkerERModelGenerationSetting element, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel newGeneratedBarkerERModel)
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, GenerationSettingDomainRoleId, newGeneratedBarkerERModel);
 		}
@@ -721,9 +721,9 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel GetLinkToGeneratedBarkerERModel (global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting generationSettingInstance)
+		public static global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel GetLinkToGeneratedBarkerERModel (global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting generationSettingInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel>(generationSettingInstance, global::Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GenerationSettingDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel>(generationSettingInstance, global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GenerationSettingDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of GenerationSetting not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -741,9 +741,9 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel GetLinkToGenerationSetting (global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel generatedBarkerERModelInstance)
+		public static global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel GetLinkToGenerationSetting (global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel generatedBarkerERModelInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel>(generatedBarkerERModelInstance, global::Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GeneratedBarkerERModelDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel>(generatedBarkerERModelInstance, global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GeneratedBarkerERModelDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of GeneratedBarkerERModel not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -762,11 +762,11 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel> GetLinks( global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting source, global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel> GetLinks( global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel>(source, global::Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GenerationSettingDomainRoleId);
-			foreach ( global::Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel>(source, global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GenerationSettingDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel link in links )
 			{
 				if ( target.Equals(link.GeneratedBarkerERModel) )
 				{
@@ -780,10 +780,10 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel GetLink( global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting source, global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel target )
+		public static global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel GetLink( global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel>(source, global::Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GenerationSettingDomainRoleId);
-			foreach ( global::Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel>(source, global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GenerationSettingDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel link in links )
 			{
 				if ( target.Equals(link.GeneratedBarkerERModel) )
 				{
@@ -796,15 +796,15 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
+namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 {
 	/// <summary>
 	/// DomainRelationship AttributeHasConceptTypeChild
 	/// Description for
-	/// Neumont.Tools.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild
+	/// ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild.Description", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship(AllowsDuplicates = true)]
 	[DslModeling::DomainObjectId("e068b80f-d598-4c4c-a6e9-729602a6c564")]
@@ -824,7 +824,7 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		/// <param name="source">Attribute to use as the source of the relationship.</param>
 		/// <param name="target">ConceptTypeChild to use as the target of the relationship.</param>
-		public AttributeHasConceptTypeChild(global::Neumont.Tools.EntityRelationshipModels.Barker.Attribute source, global::Neumont.Tools.ORMAbstraction.ConceptTypeChild target)
+		public AttributeHasConceptTypeChild(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute source, global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild target)
 			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(AttributeHasConceptTypeChild.AttributeDomainRoleId, source), new DslModeling::RoleAssignment(AttributeHasConceptTypeChild.ConceptTypeChildDomainRoleId, target)}, null)
 		{
 		}
@@ -881,16 +881,16 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// <summary>
 		/// DomainRole Attribute
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild/Attribute.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild/Attribute.Description", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ConceptTypeChildPath", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild/Attribute.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild/Attribute.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild/Attribute.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ConceptTypeChildPath", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild/Attribute.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
 		[DslModeling::DomainObjectId("c18d335d-5b83-4b06-bd07-fd04f941fa57")]
-		public virtual global::Neumont.Tools.EntityRelationshipModels.Barker.Attribute Attribute
+		public virtual global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute Attribute
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (global::Neumont.Tools.EntityRelationshipModels.Barker.Attribute)DslModeling::DomainRoleInfo.GetRolePlayer(this, AttributeDomainRoleId);
+				return (global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute)DslModeling::DomainRoleInfo.GetRolePlayer(this, AttributeDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -906,9 +906,9 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<global::Neumont.Tools.EntityRelationshipModels.Barker.Attribute> GetAttribute(global::Neumont.Tools.ORMAbstraction.ConceptTypeChild element)
+		public static DslModeling::LinkedElementCollection<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute> GetAttribute(global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild element)
 		{
-			return new DslModeling::LinkedElementCollection<global::Neumont.Tools.EntityRelationshipModels.Barker.Attribute>(element, ConceptTypeChildDomainRoleId);
+			return new DslModeling::LinkedElementCollection<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute>(element, ConceptTypeChildDomainRoleId);
 		}
 		#endregion
 		#region ConceptTypeChild domain role code
@@ -921,16 +921,16 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// <summary>
 		/// DomainRole ConceptTypeChild
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild/ConceptTypeChild.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild/ConceptTypeChild.Description", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Attribute", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild/ConceptTypeChild.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild/ConceptTypeChild.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild/ConceptTypeChild.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Attribute", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild/ConceptTypeChild.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
 		[DslModeling::DomainObjectId("31a83bc9-8635-49cf-945f-21e01e54b228")]
-		public virtual global::Neumont.Tools.ORMAbstraction.ConceptTypeChild ConceptTypeChild
+		public virtual global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild ConceptTypeChild
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (global::Neumont.Tools.ORMAbstraction.ConceptTypeChild)DslModeling::DomainRoleInfo.GetRolePlayer(this, ConceptTypeChildDomainRoleId);
+				return (global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild)DslModeling::DomainRoleInfo.GetRolePlayer(this, ConceptTypeChildDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -946,9 +946,9 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<global::Neumont.Tools.ORMAbstraction.ConceptTypeChild> GetConceptTypeChildPath(global::Neumont.Tools.EntityRelationshipModels.Barker.Attribute element)
+		public static DslModeling::LinkedElementCollection<global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild> GetConceptTypeChildPath(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute element)
 		{
-			return new DslModeling::LinkedElementCollection<global::Neumont.Tools.ORMAbstraction.ConceptTypeChild>(element, AttributeDomainRoleId);
+			return new DslModeling::LinkedElementCollection<global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild>(element, AttributeDomainRoleId);
 		}
 		#endregion
 		#region Attribute link accessor
@@ -957,9 +957,9 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild> GetLinksToConceptTypeChildPath ( global::Neumont.Tools.EntityRelationshipModels.Barker.Attribute attributeInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild> GetLinksToConceptTypeChildPath ( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute attributeInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild>(attributeInstance, global::Neumont.Tools.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild.AttributeDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild>(attributeInstance, global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild.AttributeDomainRoleId);
 		}
 		#endregion
 		#region ConceptTypeChild link accessor
@@ -968,9 +968,9 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild> GetLinksToAttribute ( global::Neumont.Tools.ORMAbstraction.ConceptTypeChild conceptTypeChildInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild> GetLinksToAttribute ( global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild conceptTypeChildInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild>(conceptTypeChildInstance, global::Neumont.Tools.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild.ConceptTypeChildDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild>(conceptTypeChildInstance, global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild.ConceptTypeChildDomainRoleId);
 		}
 		#endregion
 		#region AttributeHasConceptTypeChild instance accessors
@@ -980,11 +980,11 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild> GetLinks( global::Neumont.Tools.EntityRelationshipModels.Barker.Attribute source, global::Neumont.Tools.ORMAbstraction.ConceptTypeChild target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild> GetLinks( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute source, global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild>(source, global::Neumont.Tools.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild.AttributeDomainRoleId);
-			foreach ( global::Neumont.Tools.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild>(source, global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild.AttributeDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild link in links )
 			{
 				if ( target.Equals(link.ConceptTypeChild) )
 				{
@@ -996,15 +996,15 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
+namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 {
 	/// <summary>
 	/// DomainRelationship BinaryAssociationHasConceptTypeChild
 	/// Description for
-	/// Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild
+	/// ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild.Description", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship(AllowsDuplicates = true)]
 	[DslModeling::DomainObjectId("011e06f6-6b28-4212-b57d-9c97403bce0b")]
@@ -1024,7 +1024,7 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		/// <param name="source">BinaryAssociation to use as the source of the relationship.</param>
 		/// <param name="target">ConceptTypeChild to use as the target of the relationship.</param>
-		public BinaryAssociationHasConceptTypeChild(global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation source, global::Neumont.Tools.ORMAbstraction.ConceptTypeChild target)
+		public BinaryAssociationHasConceptTypeChild(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation source, global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild target)
 			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(BinaryAssociationHasConceptTypeChild.BinaryAssociationDomainRoleId, source), new DslModeling::RoleAssignment(BinaryAssociationHasConceptTypeChild.ConceptTypeChildDomainRoleId, target)}, null)
 		{
 		}
@@ -1081,16 +1081,16 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// <summary>
 		/// DomainRole BinaryAssociation
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild/BinaryAssociation.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild/BinaryAssociation.Description", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ConceptTypeChildPath", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild/BinaryAssociation.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild/BinaryAssociation.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild/BinaryAssociation.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ConceptTypeChildPath", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild/BinaryAssociation.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
 		[DslModeling::DomainObjectId("ec36d9a6-531c-4f56-8679-97bd23077f84")]
-		public virtual global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation BinaryAssociation
+		public virtual global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation BinaryAssociation
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation)DslModeling::DomainRoleInfo.GetRolePlayer(this, BinaryAssociationDomainRoleId);
+				return (global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation)DslModeling::DomainRoleInfo.GetRolePlayer(this, BinaryAssociationDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -1106,9 +1106,9 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation> GetBinaryAssociation(global::Neumont.Tools.ORMAbstraction.ConceptTypeChild element)
+		public static DslModeling::LinkedElementCollection<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation> GetBinaryAssociation(global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild element)
 		{
-			return new DslModeling::LinkedElementCollection<global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation>(element, ConceptTypeChildDomainRoleId);
+			return new DslModeling::LinkedElementCollection<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation>(element, ConceptTypeChildDomainRoleId);
 		}
 		#endregion
 		#region ConceptTypeChild domain role code
@@ -1121,16 +1121,16 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// <summary>
 		/// DomainRole ConceptTypeChild
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild/ConceptTypeChild.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild/ConceptTypeChild.Description", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "BinaryAssociation", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild/ConceptTypeChild.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild/ConceptTypeChild.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild/ConceptTypeChild.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "BinaryAssociation", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild/ConceptTypeChild.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
 		[DslModeling::DomainObjectId("3bfd33ce-bd21-4773-863e-4c3bd82279c4")]
-		public virtual global::Neumont.Tools.ORMAbstraction.ConceptTypeChild ConceptTypeChild
+		public virtual global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild ConceptTypeChild
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (global::Neumont.Tools.ORMAbstraction.ConceptTypeChild)DslModeling::DomainRoleInfo.GetRolePlayer(this, ConceptTypeChildDomainRoleId);
+				return (global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild)DslModeling::DomainRoleInfo.GetRolePlayer(this, ConceptTypeChildDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -1146,9 +1146,9 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<global::Neumont.Tools.ORMAbstraction.ConceptTypeChild> GetConceptTypeChildPath(global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation element)
+		public static DslModeling::LinkedElementCollection<global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild> GetConceptTypeChildPath(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation element)
 		{
-			return new DslModeling::LinkedElementCollection<global::Neumont.Tools.ORMAbstraction.ConceptTypeChild>(element, BinaryAssociationDomainRoleId);
+			return new DslModeling::LinkedElementCollection<global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild>(element, BinaryAssociationDomainRoleId);
 		}
 		#endregion
 		#region BinaryAssociation link accessor
@@ -1157,9 +1157,9 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild> GetLinksToConceptTypeChildPath ( global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation binaryAssociationInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild> GetLinksToConceptTypeChildPath ( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation binaryAssociationInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild>(binaryAssociationInstance, global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild.BinaryAssociationDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild>(binaryAssociationInstance, global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild.BinaryAssociationDomainRoleId);
 		}
 		#endregion
 		#region ConceptTypeChild link accessor
@@ -1168,9 +1168,9 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild> GetLinksToBinaryAssociation ( global::Neumont.Tools.ORMAbstraction.ConceptTypeChild conceptTypeChildInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild> GetLinksToBinaryAssociation ( global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild conceptTypeChildInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild>(conceptTypeChildInstance, global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild.ConceptTypeChildDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild>(conceptTypeChildInstance, global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild.ConceptTypeChildDomainRoleId);
 		}
 		#endregion
 		#region BinaryAssociationHasConceptTypeChild instance accessors
@@ -1180,11 +1180,11 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild> GetLinks( global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation source, global::Neumont.Tools.ORMAbstraction.ConceptTypeChild target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild> GetLinks( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation source, global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild>(source, global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild.BinaryAssociationDomainRoleId);
-			foreach ( global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild>(source, global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild.BinaryAssociationDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild link in links )
 			{
 				if ( target.Equals(link.ConceptTypeChild) )
 				{
@@ -1196,15 +1196,15 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
+namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 {
 	/// <summary>
 	/// DomainRelationship BinaryAssociationHasConceptType
 	/// Description for
-	/// Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType
+	/// ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType.Description", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship(AllowsDuplicates = true)]
 	[DslModeling::DomainObjectId("e9923cb9-22ef-4866-9e54-3799c8311dae")]
@@ -1224,7 +1224,7 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		/// <param name="source">BinaryAssociation to use as the source of the relationship.</param>
 		/// <param name="target">ConceptType to use as the target of the relationship.</param>
-		public BinaryAssociationHasConceptType(global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation source, global::Neumont.Tools.ORMAbstraction.ConceptType target)
+		public BinaryAssociationHasConceptType(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation source, global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType target)
 			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(BinaryAssociationHasConceptType.BinaryAssociationDomainRoleId, source), new DslModeling::RoleAssignment(BinaryAssociationHasConceptType.ConceptTypeDomainRoleId, target)}, null)
 		{
 		}
@@ -1281,16 +1281,16 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// <summary>
 		/// DomainRole BinaryAssociation
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType/BinaryAssociation.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType/BinaryAssociation.Description", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ConceptType", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType/BinaryAssociation.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType/BinaryAssociation.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType/BinaryAssociation.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ConceptType", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType/BinaryAssociation.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
 		[DslModeling::DomainObjectId("b56f9740-e940-4021-81d6-3d49f6ea911b")]
-		public virtual global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation BinaryAssociation
+		public virtual global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation BinaryAssociation
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation)DslModeling::DomainRoleInfo.GetRolePlayer(this, BinaryAssociationDomainRoleId);
+				return (global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation)DslModeling::DomainRoleInfo.GetRolePlayer(this, BinaryAssociationDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -1306,9 +1306,9 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation> GetBinaryAssociation(global::Neumont.Tools.ORMAbstraction.ConceptType element)
+		public static DslModeling::LinkedElementCollection<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation> GetBinaryAssociation(global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType element)
 		{
-			return new DslModeling::LinkedElementCollection<global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation>(element, ConceptTypeDomainRoleId);
+			return new DslModeling::LinkedElementCollection<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation>(element, ConceptTypeDomainRoleId);
 		}
 		#endregion
 		#region ConceptType domain role code
@@ -1321,16 +1321,16 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// <summary>
 		/// DomainRole ConceptType
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType/ConceptType.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType/ConceptType.Description", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "BinaryAssociation", PropertyDisplayNameKey="Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType/ConceptType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType/ConceptType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType/ConceptType.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "BinaryAssociation", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType/ConceptType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
 		[DslModeling::DomainObjectId("453529f7-8950-48fd-bc2a-dc56d8a32672")]
-		public virtual global::Neumont.Tools.ORMAbstraction.ConceptType ConceptType
+		public virtual global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType ConceptType
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (global::Neumont.Tools.ORMAbstraction.ConceptType)DslModeling::DomainRoleInfo.GetRolePlayer(this, ConceptTypeDomainRoleId);
+				return (global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)DslModeling::DomainRoleInfo.GetRolePlayer(this, ConceptTypeDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -1346,9 +1346,9 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<global::Neumont.Tools.ORMAbstraction.ConceptType> GetConceptType(global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation element)
+		public static DslModeling::LinkedElementCollection<global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType> GetConceptType(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation element)
 		{
-			return new DslModeling::LinkedElementCollection<global::Neumont.Tools.ORMAbstraction.ConceptType>(element, BinaryAssociationDomainRoleId);
+			return new DslModeling::LinkedElementCollection<global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType>(element, BinaryAssociationDomainRoleId);
 		}
 		#endregion
 		#region BinaryAssociation link accessor
@@ -1357,9 +1357,9 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType> GetLinksToConceptType ( global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation binaryAssociationInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType> GetLinksToConceptType ( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation binaryAssociationInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType>(binaryAssociationInstance, global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType.BinaryAssociationDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType>(binaryAssociationInstance, global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType.BinaryAssociationDomainRoleId);
 		}
 		#endregion
 		#region ConceptType link accessor
@@ -1368,9 +1368,9 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType> GetLinksToBinaryAssociation ( global::Neumont.Tools.ORMAbstraction.ConceptType conceptTypeInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType> GetLinksToBinaryAssociation ( global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType conceptTypeInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType>(conceptTypeInstance, global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType.ConceptTypeDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType>(conceptTypeInstance, global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType.ConceptTypeDomainRoleId);
 		}
 		#endregion
 		#region BinaryAssociationHasConceptType instance accessors
@@ -1380,11 +1380,11 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType> GetLinks( global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation source, global::Neumont.Tools.ORMAbstraction.ConceptType target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType> GetLinks( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation source, global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType>(source, global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType.BinaryAssociationDomainRoleId);
-			foreach ( global::Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType>(source, global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType.BinaryAssociationDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType link in links )
 			{
 				if ( target.Equals(link.ConceptType) )
 				{

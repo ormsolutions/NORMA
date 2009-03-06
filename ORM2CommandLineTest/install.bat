@@ -26,24 +26,16 @@ set VSLongProduct=Visual Studio 2005
 set VSLongProduct=%~5
 )
 
-SET NORMADir=%ProgramFiles%\Neumont\ORM Architect for %VSLongProduct%
+SET NORMADir=%ProgramFiles%\ORM Solutions\ORM Architect for %VSLongProduct%
 
-CALL:_CleanupFile "%NORMADir%\bin\Neumont.Tools.ORM.SDK.TestEngine.dll"
-CALL:_CleanupFile "%NORMADir%\bin\Neumont.Tools.ORM.SDK.TestEngine.pdb"
-CALL:_CleanupFile "%NORMADir%\bin\Neumont.Tools.ORM.SDK.TestEngine.xml"
-CALL:_CleanupFile "%NORMADir%\bin\ORMTestDriver.exe"
-CALL:_CleanupFile "%NORMADir%\bin\ORMTestDriver.pdb"
-CALL:_CleanupFile "%NORMADir%\bin\ORMTestReportViewer.exe"
-CALL:_CleanupFile "%NORMADir%\bin\ORMTestReportViewer.pdb"
-
-xcopy /Y /D /Q "%rootPath%%outDir%TestEngine\Neumont.Tools.ORM.SDK.TestEngine.%VSProduct%.dll" "%NORMADir%\bin\"
-xcopy /Y /D /Q "%rootPath%%outDir%TestEngine\Neumont.Tools.ORM.SDK.TestEngine.%VSProduct%.XML" "%NORMADir%\bin\"
+xcopy /Y /D /Q "%rootPath%%outDir%TestEngine\ORMSolutions.ORMArchitectSDK.TestEngine.%VSProduct%.dll" "%NORMADir%\bin\"
+xcopy /Y /D /Q "%rootPath%%outDir%TestEngine\ORMSolutions.ORMArchitectSDK.TestEngine.%VSProduct%.XML" "%NORMADir%\bin\"
 xcopy /Y /D /Q "%rootPath%%outDir%TestEngine\nunit.framework.dll" "%NORMADir%\bin\"
-if exist "%rootPath%%outDir%TestEngine\Neumont.Tools.ORM.SDK.TestEngine.%VSProduct%.pdb" (
-xcopy /Y /D /Q "%rootPath%%outDir%TestEngine\Neumont.Tools.ORM.SDK.TestEngine.%VSProduct%.pdb" "%NORMADir%\bin\"
+if exist "%rootPath%%outDir%TestEngine\ORMSolutions.ORMArchitectSDK.TestEngine.%VSProduct%.pdb" (
+xcopy /Y /D /Q "%rootPath%%outDir%TestEngine\ORMSolutions.ORMArchitectSDK.TestEngine.%VSProduct%.pdb" "%NORMADir%\bin\"
 ) else (
-if exist "%NORMADir%\bin\Neumont.Tools.ORM.SDK.TestEngine.%VSProduct%.pdb" (
-del "%NORMADir%\bin\Neumont.Tools.ORM.SDK.TestEngine.%VSProduct%.pdb"
+if exist "%NORMADir%\bin\ORMSolutions.ORMArchitectSDK.TestEngine.%VSProduct%.pdb" (
+del "%NORMADir%\bin\ORMSolutions.ORMArchitectSDK.TestEngine.%VSProduct%.pdb"
 )
 )
 

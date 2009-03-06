@@ -100,6 +100,7 @@ namespace ORMRegressionTestAddin
 	/// <summary>
 	/// A library of common testing functionality
 	/// </summary>
+	[CLSCompliant(false)]
 	public static class CommonTestHooks
 	{
 		/// <summary>

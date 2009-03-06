@@ -1,6 +1,6 @@
 ﻿#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -24,15 +24,15 @@
 
 using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
-namespace Neumont.Tools.RelationalModels.ConceptualDatabase
+namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 {
 	/// <summary>
 	/// DomainRelationship CatalogContainsSchema
 	/// Description for
-	/// Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema
+	/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship(IsEmbedding=true)]
 	[DslModeling::DomainObjectId("7cbdb2cd-2e18-4f16-bae8-c81d0f72f90d")]
@@ -109,11 +109,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole Catalog
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema.Catalog
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema.Catalog
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema/Catalog.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema/Catalog.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "SchemaCollection", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema/Catalog.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema/Catalog.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema/Catalog.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "SchemaCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema/Catalog.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("f7b037d9-d101-463a-8bde-62eebd5430f3")]
 		public virtual Catalog Catalog
 		{
@@ -161,11 +161,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole Schema
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema.Schema
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema.Schema
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema/Schema.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema/Schema.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Catalog", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema/Schema.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema/Schema.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema/Schema.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Catalog", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema/Schema.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("0c3b8302-b281-4dc4-b5b7-d57f7e025e01")]
 		public virtual Schema Schema
 		{
@@ -199,9 +199,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema> GetLinksToSchemaCollection ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Catalog catalogInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema> GetLinksToSchemaCollection ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Catalog catalogInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema>(catalogInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema.CatalogDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema>(catalogInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema.CatalogDomainRoleId);
 		}
 		#endregion
 		#region Schema link accessor
@@ -210,9 +210,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema GetLinkToCatalog (global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema schemaInstance)
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema GetLinkToCatalog (global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema schemaInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema>(schemaInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema.SchemaDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema>(schemaInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema.SchemaDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Schema not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -231,11 +231,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema> GetLinks( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Catalog source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema> GetLinks( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Catalog source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema.CatalogDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema.CatalogDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema link in links )
 			{
 				if ( target.Equals(link.Schema) )
 				{
@@ -249,10 +249,10 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema GetLink( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Catalog source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema target )
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema GetLink( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Catalog source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema.CatalogDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema.CatalogDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema link in links )
 			{
 				if ( target.Equals(link.Schema) )
 				{
@@ -265,15 +265,15 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		#endregion
 	}
 }
-namespace Neumont.Tools.RelationalModels.ConceptualDatabase
+namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 {
 	/// <summary>
 	/// DomainRelationship SchemaContainsContent
 	/// Description for
-	/// Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent
+	/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship(IsEmbedding=true)]
 	[DslModeling::DomainObjectId("ce3dcf73-da08-4116-a95a-bd9bc2a9d418")]
@@ -307,11 +307,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole Schema
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent.Schema
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent.Schema
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent/Schema.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent/Schema.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "SchemaContent", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent/Schema.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent/Schema.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent/Schema.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "SchemaContent", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent/Schema.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("6d64020b-cf32-4ac6-a74b-59e2f6421b65")]
 		public abstract Schema Schema
 		{
@@ -351,11 +351,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole SchemaContent
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent.SchemaContent
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent.SchemaContent
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent/SchemaContent.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent/SchemaContent.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Schema", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent/SchemaContent.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent/SchemaContent.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent/SchemaContent.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Schema", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent/SchemaContent.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("6a22b218-d701-47d9-8529-c1cfa7826d30")]
 		public abstract ConceptualDatabaseModelElement SchemaContent
 		{
@@ -381,9 +381,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent> GetLinksToSchemaContent ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema schemaInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent> GetLinksToSchemaContent ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema schemaInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent>(schemaInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent.SchemaDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent>(schemaInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent.SchemaDomainRoleId);
 		}
 		#endregion
 		#region SchemaContent link accessor
@@ -392,9 +392,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent GetLinkToSchema (global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseModelElement schemaContentInstance)
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent GetLinkToSchema (global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseModelElement schemaContentInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent>(schemaContentInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent.SchemaContentDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent>(schemaContentInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent.SchemaContentDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of SchemaContent not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -413,11 +413,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent> GetLinks( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseModelElement target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent> GetLinks( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseModelElement target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent.SchemaDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent.SchemaDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent link in links )
 			{
 				if ( target.Equals(link.SchemaContent) )
 				{
@@ -431,10 +431,10 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent GetLink( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseModelElement target )
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent GetLink( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseModelElement target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent.SchemaDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent.SchemaDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent link in links )
 			{
 				if ( target.Equals(link.SchemaContent) )
 				{
@@ -447,15 +447,15 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		#endregion
 	}
 }
-namespace Neumont.Tools.RelationalModels.ConceptualDatabase
+namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 {
 	/// <summary>
 	/// DomainRelationship SchemaContainsTable
 	/// Description for
-	/// Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable
+	/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship(IsEmbedding=true)]
 	[DslModeling::DomainObjectId("3ac7cbd0-a619-4f31-8c8c-f0aa586d2c69")]
@@ -532,11 +532,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole Schema
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable.Schema
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable.Schema
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable/Schema.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable/Schema.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TableCollection", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable/Schema.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable/Schema.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable/Schema.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TableCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable/Schema.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("cc145e8c-ebc7-4bbf-9e70-24f76c4b69a9")]
 		public override Schema Schema
 		{
@@ -584,11 +584,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole Table
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable.Table
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable.Table
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable/Table.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable/Table.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Schema", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable/Table.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable/Table.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable/Table.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Schema", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable/Table.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("df1f7f50-b459-4e7b-8958-baa88e685268")]
 		public virtual Table Table
 		{
@@ -621,7 +621,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// Gets the element playing Table domain role.
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent.SchemaContent
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent.SchemaContent
 		/// </summary>
 		public override ConceptualDatabaseModelElement SchemaContent
 		{
@@ -644,9 +644,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable> GetLinksToTableCollection ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema schemaInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable> GetLinksToTableCollection ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema schemaInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable>(schemaInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable.SchemaDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable>(schemaInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable.SchemaDomainRoleId);
 		}
 		#endregion
 		#region Table link accessor
@@ -655,9 +655,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable GetLinkToSchema (global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table tableInstance)
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable GetLinkToSchema (global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table tableInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable>(tableInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable.TableDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable>(tableInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable.TableDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Table not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -676,11 +676,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable> GetLinks( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable> GetLinks( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable.SchemaDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable.SchemaDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable link in links )
 			{
 				if ( target.Equals(link.Table) )
 				{
@@ -694,10 +694,10 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable GetLink( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table target )
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable GetLink( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable.SchemaDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable.SchemaDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable link in links )
 			{
 				if ( target.Equals(link.Table) )
 				{
@@ -710,15 +710,15 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		#endregion
 	}
 }
-namespace Neumont.Tools.RelationalModels.ConceptualDatabase
+namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 {
 	/// <summary>
 	/// DomainRelationship SchemaContainsDomain
 	/// Description for
-	/// Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain
+	/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship(IsEmbedding=true)]
 	[DslModeling::DomainObjectId("4e787a64-2a01-4af0-a28b-35052693b1ab")]
@@ -795,11 +795,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole Schema
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain.Schema
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain.Schema
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain/Schema.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain/Schema.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DomainCollection", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain/Schema.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain/Schema.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain/Schema.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DomainCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain/Schema.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("bf0668b8-0cb5-49d0-a1b7-4637a16e2625")]
 		public override Schema Schema
 		{
@@ -847,11 +847,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole Domain
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain.Domain
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain.Domain
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain/Domain.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain/Domain.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Schema", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain/Domain.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain/Domain.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain/Domain.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Schema", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain/Domain.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("591b91cc-8e0b-498d-a1de-c2ca8440ebee")]
 		public virtual Domain Domain
 		{
@@ -884,7 +884,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// Gets the element playing Domain domain role.
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsContent.SchemaContent
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsContent.SchemaContent
 		/// </summary>
 		public override ConceptualDatabaseModelElement SchemaContent
 		{
@@ -907,9 +907,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain> GetLinksToDomainCollection ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema schemaInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain> GetLinksToDomainCollection ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema schemaInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain>(schemaInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain.SchemaDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain>(schemaInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain.SchemaDomainRoleId);
 		}
 		#endregion
 		#region Domain link accessor
@@ -918,9 +918,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain GetLinkToSchema (global::Neumont.Tools.RelationalModels.ConceptualDatabase.Domain domainInstance)
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain GetLinkToSchema (global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Domain domainInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain>(domainInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain.DomainDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain>(domainInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain.DomainDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Domain not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -939,11 +939,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain> GetLinks( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.Domain target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain> GetLinks( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Domain target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain.SchemaDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain.SchemaDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain link in links )
 			{
 				if ( target.Equals(link.Domain) )
 				{
@@ -957,10 +957,10 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain GetLink( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Schema source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.Domain target )
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain GetLink( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Domain target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain.SchemaDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsDomain link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain.SchemaDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsDomain link in links )
 			{
 				if ( target.Equals(link.Domain) )
 				{
@@ -973,15 +973,15 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		#endregion
 	}
 }
-namespace Neumont.Tools.RelationalModels.ConceptualDatabase
+namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 {
 	/// <summary>
 	/// DomainRelationship TableContainsColumn
 	/// Description for
-	/// Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn
+	/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship(IsEmbedding=true)]
 	[DslModeling::DomainObjectId("fb5b6b20-8a4e-4ba3-bc8b-fbeaadbf9c33")]
@@ -1058,11 +1058,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole Table
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn.Table
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn.Table
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn/Table.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn/Table.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ColumnCollection", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn/Table.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn/Table.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn/Table.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ColumnCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn/Table.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
 		[DslModeling::DomainObjectId("c3a52815-e9b9-4757-9985-717e54f884ed")]
 		public virtual Table Table
 		{
@@ -1110,11 +1110,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole Column
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn.Column
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn.Column
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn/Column.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn/Column.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Table", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn/Column.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn/Column.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn/Column.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Table", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn/Column.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("ea68512e-c944-44bc-9f54-d58c347dcdd7")]
 		public virtual Column Column
 		{
@@ -1148,9 +1148,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn> GetLinksToColumnCollection ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table tableInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn> GetLinksToColumnCollection ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table tableInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn>(tableInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn.TableDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn>(tableInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn.TableDomainRoleId);
 		}
 		#endregion
 		#region Column link accessor
@@ -1159,9 +1159,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn GetLinkToTable (global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column columnInstance)
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn GetLinkToTable (global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column columnInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn>(columnInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn.ColumnDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn>(columnInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn.ColumnDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Column not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -1180,11 +1180,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn> GetLinks( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn> GetLinks( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn.TableDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn.TableDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn link in links )
 			{
 				if ( target.Equals(link.Column) )
 				{
@@ -1198,10 +1198,10 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn GetLink( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column target )
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn GetLink( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn.TableDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn.TableDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn link in links )
 			{
 				if ( target.Equals(link.Column) )
 				{
@@ -1214,15 +1214,15 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		#endregion
 	}
 }
-namespace Neumont.Tools.RelationalModels.ConceptualDatabase
+namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 {
 	/// <summary>
 	/// DomainRelationship TableContainsConstraint
 	/// Description for
-	/// Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint
+	/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship(IsEmbedding=true)]
 	[DslModeling::DomainObjectId("dad57818-93b6-4584-a94e-71d31e4f959c")]
@@ -1256,11 +1256,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole Table
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint.Table
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint.Table
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint/Table.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint/Table.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ConstraintCollection", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint/Table.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint/Table.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint/Table.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ConstraintCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint/Table.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
 		[DslModeling::DomainObjectId("e64c339f-8ac5-494d-a913-d22d5034e961")]
 		public abstract Table Table
 		{
@@ -1300,11 +1300,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole Constraint
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint.Constraint
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint.Constraint
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint/Constraint.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint/Constraint.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Table", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint/Constraint.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint/Constraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint/Constraint.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Table", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint/Constraint.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("66919910-6aca-4a0d-bcfd-25791a641a16")]
 		public abstract Constraint Constraint
 		{
@@ -1330,9 +1330,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint> GetLinksToConstraintCollection ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table tableInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint> GetLinksToConstraintCollection ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table tableInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint>(tableInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint.TableDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint>(tableInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint.TableDomainRoleId);
 		}
 		#endregion
 		#region Constraint link accessor
@@ -1341,9 +1341,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint GetLinkToTable (global::Neumont.Tools.RelationalModels.ConceptualDatabase.Constraint constraintInstance)
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint GetLinkToTable (global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Constraint constraintInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint>(constraintInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint.ConstraintDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint>(constraintInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint.ConstraintDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Constraint not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -1362,11 +1362,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint> GetLinks( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.Constraint target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint> GetLinks( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Constraint target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint.TableDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint.TableDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint link in links )
 			{
 				if ( target.Equals(link.Constraint) )
 				{
@@ -1380,10 +1380,10 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint GetLink( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.Constraint target )
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint GetLink( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Constraint target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint.TableDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint.TableDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint link in links )
 			{
 				if ( target.Equals(link.Constraint) )
 				{
@@ -1396,15 +1396,15 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		#endregion
 	}
 }
-namespace Neumont.Tools.RelationalModels.ConceptualDatabase
+namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 {
 	/// <summary>
 	/// DomainRelationship TableContainsUniquenessConstraint
 	/// Description for
-	/// Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint
+	/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship(IsEmbedding=true)]
 	[DslModeling::DomainObjectId("8f420258-5c3d-4383-a657-13c0085500c5")]
@@ -1481,11 +1481,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole Table
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint.Table
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint.Table
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint/Table.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint/Table.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "UniquenessConstraintCollection", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint/Table.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint/Table.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint/Table.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "UniquenessConstraintCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint/Table.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
 		[DslModeling::DomainObjectId("b9790914-e889-4f00-a456-ed1d1817c23b")]
 		public override Table Table
 		{
@@ -1533,11 +1533,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole UniquenessConstraint
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint.UniquenessConstraint
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint.UniquenessConstraint
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint/UniquenessConstraint.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint/UniquenessConstraint.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Table", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint/UniquenessConstraint.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint/UniquenessConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint/UniquenessConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Table", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint/UniquenessConstraint.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("132009f4-76ff-46fb-ac95-a2419575d20c")]
 		public virtual UniquenessConstraint UniquenessConstraint
 		{
@@ -1570,7 +1570,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// Gets the element playing UniquenessConstraint domain role.
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint.Constraint
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint.Constraint
 		/// </summary>
 		public override Constraint Constraint
 		{
@@ -1593,9 +1593,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint> GetLinksToUniquenessConstraintCollection ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table tableInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint> GetLinksToUniquenessConstraintCollection ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table tableInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint>(tableInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint.TableDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint>(tableInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint.TableDomainRoleId);
 		}
 		#endregion
 		#region UniquenessConstraint link accessor
@@ -1604,9 +1604,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint GetLinkToTable (global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint uniquenessConstraintInstance)
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint GetLinkToTable (global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraint uniquenessConstraintInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint>(uniquenessConstraintInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint.UniquenessConstraintDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint>(uniquenessConstraintInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint.UniquenessConstraintDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of UniquenessConstraint not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -1625,11 +1625,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint> GetLinks( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint> GetLinks( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraint target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint.TableDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint.TableDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint link in links )
 			{
 				if ( target.Equals(link.UniquenessConstraint) )
 				{
@@ -1643,10 +1643,10 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint GetLink( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint target )
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint GetLink( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraint target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint.TableDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint.TableDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsUniquenessConstraint link in links )
 			{
 				if ( target.Equals(link.UniquenessConstraint) )
 				{
@@ -1659,15 +1659,15 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		#endregion
 	}
 }
-namespace Neumont.Tools.RelationalModels.ConceptualDatabase
+namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 {
 	/// <summary>
 	/// DomainRelationship TableContainsReferenceConstraint
 	/// Description for
-	/// Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint
+	/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship(IsEmbedding=true)]
 	[DslModeling::DomainObjectId("8e95a446-7557-4e60-b011-79f28f2f0773")]
@@ -1744,11 +1744,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole Table
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint.Table
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint.Table
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint/Table.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint/Table.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ReferenceConstraintCollection", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint/Table.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint/Table.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint/Table.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ReferenceConstraintCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint/Table.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("8d0549b5-9a2f-4fd2-a733-bcc779a89baf")]
 		public override Table Table
 		{
@@ -1796,11 +1796,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole ReferenceConstraint
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint.ReferenceConstraint
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint.ReferenceConstraint
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint/ReferenceConstraint.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint/ReferenceConstraint.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "SourceTable", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint/ReferenceConstraint.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint/ReferenceConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint/ReferenceConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "SourceTable", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint/ReferenceConstraint.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("6daa73b4-e37e-4be1-bb3c-dafbcfd51343")]
 		public virtual ReferenceConstraint ReferenceConstraint
 		{
@@ -1833,7 +1833,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// Gets the element playing ReferenceConstraint domain role.
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint.Constraint
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint.Constraint
 		/// </summary>
 		public override Constraint Constraint
 		{
@@ -1856,9 +1856,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint> GetLinksToReferenceConstraintCollection ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table tableInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint> GetLinksToReferenceConstraintCollection ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table tableInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint>(tableInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint.TableDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint>(tableInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint.TableDomainRoleId);
 		}
 		#endregion
 		#region ReferenceConstraint link accessor
@@ -1867,9 +1867,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint GetLinkToSourceTable (global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraint referenceConstraintInstance)
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint GetLinkToSourceTable (global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraint referenceConstraintInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint>(referenceConstraintInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint.ReferenceConstraintDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint>(referenceConstraintInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint.ReferenceConstraintDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ReferenceConstraint not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -1888,11 +1888,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint> GetLinks( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraint target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint> GetLinks( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraint target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint.TableDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint.TableDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint link in links )
 			{
 				if ( target.Equals(link.ReferenceConstraint) )
 				{
@@ -1906,10 +1906,10 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint GetLink( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraint target )
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint GetLink( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraint target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint.TableDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint.TableDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsReferenceConstraint link in links )
 			{
 				if ( target.Equals(link.ReferenceConstraint) )
 				{
@@ -1922,15 +1922,15 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		#endregion
 	}
 }
-namespace Neumont.Tools.RelationalModels.ConceptualDatabase
+namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 {
 	/// <summary>
 	/// DomainRelationship TableContainsCheckConstraint
 	/// Description for
-	/// Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint
+	/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship(IsEmbedding=true)]
 	[DslModeling::DomainObjectId("c129490d-491c-426f-b04b-7c11d461f608")]
@@ -2007,11 +2007,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole Table
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint.Table
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint.Table
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint/Table.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint/Table.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "CheckConstraintCollection", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint/Table.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint/Table.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint/Table.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "CheckConstraintCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint/Table.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("3370d577-580d-4153-a03b-429ace90c798")]
 		public override Table Table
 		{
@@ -2059,11 +2059,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole CheckConstraint
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint.CheckConstraint
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint.CheckConstraint
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint/CheckConstraint.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint/CheckConstraint.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Table", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint/CheckConstraint.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint/CheckConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint/CheckConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Table", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint/CheckConstraint.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("c6559e00-462f-4d95-a8ba-c5d18a25601a")]
 		public virtual CheckConstraint CheckConstraint
 		{
@@ -2096,7 +2096,7 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// Gets the element playing CheckConstraint domain role.
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsConstraint.Constraint
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsConstraint.Constraint
 		/// </summary>
 		public override Constraint Constraint
 		{
@@ -2119,9 +2119,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint> GetLinksToCheckConstraintCollection ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table tableInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint> GetLinksToCheckConstraintCollection ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table tableInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint>(tableInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint.TableDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint>(tableInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint.TableDomainRoleId);
 		}
 		#endregion
 		#region CheckConstraint link accessor
@@ -2130,9 +2130,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint GetLinkToTable (global::Neumont.Tools.RelationalModels.ConceptualDatabase.CheckConstraint checkConstraintInstance)
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint GetLinkToTable (global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CheckConstraint checkConstraintInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint>(checkConstraintInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint.CheckConstraintDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint>(checkConstraintInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint.CheckConstraintDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of CheckConstraint not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -2151,11 +2151,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint> GetLinks( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.CheckConstraint target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint> GetLinks( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CheckConstraint target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint.TableDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint.TableDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint link in links )
 			{
 				if ( target.Equals(link.CheckConstraint) )
 				{
@@ -2169,10 +2169,10 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint GetLink( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.CheckConstraint target )
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint GetLink( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CheckConstraint target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint.TableDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint.TableDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsCheckConstraint link in links )
 			{
 				if ( target.Equals(link.CheckConstraint) )
 				{
@@ -2185,15 +2185,15 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		#endregion
 	}
 }
-namespace Neumont.Tools.RelationalModels.ConceptualDatabase
+namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 {
 	/// <summary>
 	/// DomainRelationship DomainContainsCheckConstraint
 	/// Description for
-	/// Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint
+	/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship(IsEmbedding=true)]
 	[DslModeling::DomainObjectId("25d67b3b-a209-480a-b708-684f1a4b887c")]
@@ -2270,11 +2270,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole Domain
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint.Domain
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint.Domain
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint/Domain.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint/Domain.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "CheckConstraint", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint/Domain.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint/Domain.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint/Domain.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "CheckConstraint", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint/Domain.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("4b1bc8fc-29ca-4004-9395-2ae5bf2015a1")]
 		public virtual Domain Domain
 		{
@@ -2322,11 +2322,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole CheckConstraint
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint.CheckConstraint
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint.CheckConstraint
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint/CheckConstraint.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint/CheckConstraint.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Domain", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint/CheckConstraint.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint/CheckConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint/CheckConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Domain", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint/CheckConstraint.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("7194e4e3-b028-40f7-b99e-175bcae13b50")]
 		public virtual CheckConstraint CheckConstraint
 		{
@@ -2370,9 +2370,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint GetLinkToCheckConstraint (global::Neumont.Tools.RelationalModels.ConceptualDatabase.Domain domainInstance)
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint GetLinkToCheckConstraint (global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Domain domainInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint>(domainInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint.DomainDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint>(domainInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint.DomainDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Domain not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -2390,9 +2390,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint GetLinkToDomain (global::Neumont.Tools.RelationalModels.ConceptualDatabase.CheckConstraint checkConstraintInstance)
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint GetLinkToDomain (global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CheckConstraint checkConstraintInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint>(checkConstraintInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint.CheckConstraintDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint>(checkConstraintInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint.CheckConstraintDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of CheckConstraint not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -2411,11 +2411,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint> GetLinks( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Domain source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.CheckConstraint target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint> GetLinks( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Domain source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CheckConstraint target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint.DomainDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint.DomainDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint link in links )
 			{
 				if ( target.Equals(link.CheckConstraint) )
 				{
@@ -2429,10 +2429,10 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint GetLink( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Domain source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.CheckConstraint target )
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint GetLink( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Domain source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CheckConstraint target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint.DomainDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint.DomainDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainContainsCheckConstraint link in links )
 			{
 				if ( target.Equals(link.CheckConstraint) )
 				{
@@ -2445,15 +2445,15 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		#endregion
 	}
 }
-namespace Neumont.Tools.RelationalModels.ConceptualDatabase
+namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 {
 	/// <summary>
 	/// DomainRelationship ColumnHasDomain
 	/// Description for
-	/// Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain
+	/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("ab00e63e-3f80-443f-a2c1-df38b3b3cc4f")]
@@ -2530,11 +2530,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole Column
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain.Column
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain.Column
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain/Column.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain/Column.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Domain", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain/Column.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain/Column.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain/Column.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Domain", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain/Column.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("db3a68af-c144-41a1-89cc-5410aa813d4f")]
 		public virtual Column Column
 		{
@@ -2572,11 +2572,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole Domain
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain.Domain
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain.Domain
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain/Domain.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain/Domain.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Columns", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain/Domain.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain/Domain.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain/Domain.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Columns", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain/Domain.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("8049efc1-7e4f-4965-82e7-d0b376424c57")]
 		public virtual Domain Domain
 		{
@@ -2620,9 +2620,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain GetLinkToDomain (global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column columnInstance)
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain GetLinkToDomain (global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column columnInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain>(columnInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain.ColumnDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain>(columnInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain.ColumnDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Column not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -2640,9 +2640,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain> GetLinksToColumns ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Domain domainInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain> GetLinksToColumns ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Domain domainInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain>(domainInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain.DomainDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain>(domainInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain.DomainDomainRoleId);
 		}
 		#endregion
 		#region ColumnHasDomain instance accessors
@@ -2652,11 +2652,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain> GetLinks( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.Domain target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain> GetLinks( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Domain target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain.ColumnDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain.ColumnDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain link in links )
 			{
 				if ( target.Equals(link.Domain) )
 				{
@@ -2670,10 +2670,10 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain GetLink( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.Domain target )
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain GetLink( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Domain target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain.ColumnDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasDomain link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain.ColumnDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain link in links )
 			{
 				if ( target.Equals(link.Domain) )
 				{
@@ -2686,15 +2686,15 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		#endregion
 	}
 }
-namespace Neumont.Tools.RelationalModels.ConceptualDatabase
+namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 {
 	/// <summary>
 	/// DomainRelationship ColumnHasPredefinedDataType
 	/// Description for
-	/// Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType
+	/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship(IsEmbedding=true)]
 	[DslModeling::DomainObjectId("7df7c60c-bb01-4d69-a884-11b62eb0df4c")]
@@ -2771,11 +2771,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole Column
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType.Column
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType.Column
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType/Column.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType/Column.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "PredefinedDataType", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType/Column.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType/Column.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType/Column.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "PredefinedDataType", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType/Column.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("213fd4bf-dd0c-4281-88b3-b19ff0f930c0")]
 		public virtual Column Column
 		{
@@ -2823,11 +2823,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole PredefinedDataType
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType.PredefinedDataType
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType.PredefinedDataType
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType/PredefinedDataType.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType/PredefinedDataType.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Column", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType/PredefinedDataType.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType/PredefinedDataType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType/PredefinedDataType.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Column", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType/PredefinedDataType.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("e72d55d8-eb10-4eeb-b40e-fccf3b111bdc")]
 		public virtual PredefinedDataType PredefinedDataType
 		{
@@ -2871,9 +2871,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType GetLinkToPredefinedDataType (global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column columnInstance)
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType GetLinkToPredefinedDataType (global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column columnInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType>(columnInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType.ColumnDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType>(columnInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType.ColumnDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Column not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -2891,9 +2891,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType GetLinkToColumn (global::Neumont.Tools.RelationalModels.ConceptualDatabase.PredefinedDataType predefinedDataTypeInstance)
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType GetLinkToColumn (global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.PredefinedDataType predefinedDataTypeInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType>(predefinedDataTypeInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType.PredefinedDataTypeDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType>(predefinedDataTypeInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType.PredefinedDataTypeDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of PredefinedDataType not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -2912,11 +2912,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType> GetLinks( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.PredefinedDataType target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType> GetLinks( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.PredefinedDataType target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType.ColumnDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType.ColumnDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType link in links )
 			{
 				if ( target.Equals(link.PredefinedDataType) )
 				{
@@ -2930,10 +2930,10 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType GetLink( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.PredefinedDataType target )
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType GetLink( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.PredefinedDataType target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType.ColumnDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType.ColumnDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasPredefinedDataType link in links )
 			{
 				if ( target.Equals(link.PredefinedDataType) )
 				{
@@ -2946,15 +2946,15 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		#endregion
 	}
 }
-namespace Neumont.Tools.RelationalModels.ConceptualDatabase
+namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 {
 	/// <summary>
 	/// DomainRelationship DomainHasPredefinedDataType
 	/// Description for
-	/// Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType
+	/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship(IsEmbedding=true)]
 	[DslModeling::DomainObjectId("d889dccc-682c-4588-abd7-ea0f89f16ec3")]
@@ -3031,11 +3031,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole Domain
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType.Domain
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType.Domain
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType/Domain.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType/Domain.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "PredefinedDataType", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType/Domain.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType/Domain.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType/Domain.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "PredefinedDataType", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType/Domain.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("90609e27-b82a-4b38-9cd9-a1852e4ae8bc")]
 		public virtual Domain Domain
 		{
@@ -3083,11 +3083,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole PredefinedDataType
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType.PredefinedDataType
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType.PredefinedDataType
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType/PredefinedDataType.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType/PredefinedDataType.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Domain", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType/PredefinedDataType.PropertyDisplayName", PropagatesCopy = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType/PredefinedDataType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType/PredefinedDataType.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Domain", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType/PredefinedDataType.PropertyDisplayName", PropagatesCopy = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("a8838633-1b28-4538-9b43-11556d0dd343")]
 		public virtual PredefinedDataType PredefinedDataType
 		{
@@ -3131,9 +3131,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType GetLinkToPredefinedDataType (global::Neumont.Tools.RelationalModels.ConceptualDatabase.Domain domainInstance)
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType GetLinkToPredefinedDataType (global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Domain domainInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType>(domainInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType.DomainDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType>(domainInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType.DomainDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Domain not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -3151,9 +3151,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType GetLinkToDomain (global::Neumont.Tools.RelationalModels.ConceptualDatabase.PredefinedDataType predefinedDataTypeInstance)
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType GetLinkToDomain (global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.PredefinedDataType predefinedDataTypeInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType>(predefinedDataTypeInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType.PredefinedDataTypeDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType>(predefinedDataTypeInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType.PredefinedDataTypeDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of PredefinedDataType not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -3172,11 +3172,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType> GetLinks( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Domain source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.PredefinedDataType target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType> GetLinks( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Domain source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.PredefinedDataType target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType.DomainDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType.DomainDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType link in links )
 			{
 				if ( target.Equals(link.PredefinedDataType) )
 				{
@@ -3190,10 +3190,10 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType GetLink( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Domain source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.PredefinedDataType target )
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType GetLink( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Domain source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.PredefinedDataType target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType.DomainDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType.DomainDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.DomainHasPredefinedDataType link in links )
 			{
 				if ( target.Equals(link.PredefinedDataType) )
 				{
@@ -3206,16 +3206,16 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		#endregion
 	}
 }
-namespace Neumont.Tools.RelationalModels.ConceptualDatabase
+namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 {
 	/// <summary>
 	/// DomainRelationship UniquenessConstraintIncludesColumn
 	/// Description for
-	/// Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn
+	/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn
 	/// </summary>
-	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider<UniquenessConstraintIncludesColumn, Design.ConceptualDatabaseElementTypeDescriptor<UniquenessConstraintIncludesColumn>>))]
-	[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider<UniquenessConstraintIncludesColumn, Design.ConceptualDatabaseElementTypeDescriptor<UniquenessConstraintIncludesColumn>>))]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("0a87b269-0d2c-4d7d-80a7-6dc1b5e0c5f6")]
@@ -3292,11 +3292,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole UniquenessConstraint
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn.UniquenessConstraint
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn.UniquenessConstraint
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn/UniquenessConstraint.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn/UniquenessConstraint.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ColumnCollection", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn/UniquenessConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn/UniquenessConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn/UniquenessConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ColumnCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn/UniquenessConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
 		[DslModeling::DomainObjectId("2ac76280-67ca-4583-a203-c0eda2d15fe4")]
 		public virtual UniquenessConstraint UniquenessConstraint
 		{
@@ -3334,11 +3334,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole Column
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn.Column
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn.Column
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn/Column.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn/Column.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "UniquenessConstraints", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn/Column.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn/Column.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn/Column.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "UniquenessConstraints", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn/Column.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("32200848-28e3-4d35-9a61-f592903b52bf")]
 		public virtual Column Column
 		{
@@ -3372,9 +3372,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn> GetLinksToColumnCollection ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint uniquenessConstraintInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn> GetLinksToColumnCollection ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraint uniquenessConstraintInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn>(uniquenessConstraintInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn.UniquenessConstraintDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn>(uniquenessConstraintInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn.UniquenessConstraintDomainRoleId);
 		}
 		#endregion
 		#region Column link accessor
@@ -3383,9 +3383,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn> GetLinksToUniquenessConstraints ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column columnInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn> GetLinksToUniquenessConstraints ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column columnInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn>(columnInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn.ColumnDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn>(columnInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn.ColumnDomainRoleId);
 		}
 		#endregion
 		#region UniquenessConstraintIncludesColumn instance accessors
@@ -3395,11 +3395,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn> GetLinks( global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn> GetLinks( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraint source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn.UniquenessConstraintDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn.UniquenessConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn link in links )
 			{
 				if ( target.Equals(link.Column) )
 				{
@@ -3413,10 +3413,10 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn GetLink( global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column target )
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn GetLink( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraint source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn.UniquenessConstraintDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn.UniquenessConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraintIncludesColumn link in links )
 			{
 				if ( target.Equals(link.Column) )
 				{
@@ -3429,16 +3429,16 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		#endregion
 	}
 }
-namespace Neumont.Tools.RelationalModels.ConceptualDatabase
+namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 {
 	/// <summary>
 	/// DomainRelationship ReferenceConstraintTargetsTable
 	/// Description for
-	/// Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable
+	/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable
 	/// </summary>
-	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider<ReferenceConstraintTargetsTable, Design.ConceptualDatabaseElementTypeDescriptor<ReferenceConstraintTargetsTable>>))]
-	[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider<ReferenceConstraintTargetsTable, Design.ConceptualDatabaseElementTypeDescriptor<ReferenceConstraintTargetsTable>>))]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("27a4368b-c175-4f67-803f-ad902b5e7753")]
@@ -3515,11 +3515,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole ReferenceConstraint
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable.ReferenceConstraint
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable.ReferenceConstraint
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable/ReferenceConstraint.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable/ReferenceConstraint.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TargetTable", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable/ReferenceConstraint.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable/ReferenceConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable/ReferenceConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TargetTable", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable/ReferenceConstraint.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("22f748a4-8086-46c4-a323-e93574438d16")]
 		public virtual ReferenceConstraint ReferenceConstraint
 		{
@@ -3557,11 +3557,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole TargetTable
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable.TargetTable
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable.TargetTable
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable/TargetTable.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable/TargetTable.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ReferenceConstraints", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable/TargetTable.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable/TargetTable.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable/TargetTable.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ReferenceConstraints", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable/TargetTable.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("3effddb4-4b20-4eb4-8a79-271240574413")]
 		public virtual Table TargetTable
 		{
@@ -3605,9 +3605,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable GetLinkToTargetTable (global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraint referenceConstraintInstance)
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable GetLinkToTargetTable (global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraint referenceConstraintInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable>(referenceConstraintInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable.ReferenceConstraintDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable>(referenceConstraintInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable.ReferenceConstraintDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ReferenceConstraint not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -3625,9 +3625,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable> GetLinksToReferenceConstraints ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table targetTableInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable> GetLinksToReferenceConstraints ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table targetTableInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable>(targetTableInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable.TargetTableDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable>(targetTableInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable.TargetTableDomainRoleId);
 		}
 		#endregion
 		#region ReferenceConstraintTargetsTable instance accessors
@@ -3637,11 +3637,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable> GetLinks( global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraint source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable> GetLinks( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraint source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable.ReferenceConstraintDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable.ReferenceConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable link in links )
 			{
 				if ( target.Equals(link.TargetTable) )
 				{
@@ -3655,10 +3655,10 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable GetLink( global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraint source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.Table target )
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable GetLink( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraint source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable.ReferenceConstraintDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable.ReferenceConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable link in links )
 			{
 				if ( target.Equals(link.TargetTable) )
 				{
@@ -3671,15 +3671,15 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		#endregion
 	}
 }
-namespace Neumont.Tools.RelationalModels.ConceptualDatabase
+namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 {
 	/// <summary>
 	/// DomainRelationship ReferenceConstraintTargetsUniquenessConstraint
 	/// Description for
-	/// Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint
+	/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("44c97277-d3ad-4b88-8360-8b5fa1c1eff2")]
@@ -3756,11 +3756,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole ReferenceConstraint
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.ReferenceConstraint
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.ReferenceConstraint
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/ReferenceConstraint.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/ReferenceConstraint.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TargetUniquenessConstraint", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/ReferenceConstraint.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/ReferenceConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/ReferenceConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TargetUniquenessConstraint", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/ReferenceConstraint.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("ad67d427-5d9a-4195-a702-0f994b715e9f")]
 		public virtual ReferenceConstraint ReferenceConstraint
 		{
@@ -3798,11 +3798,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole TargetUniquenessConstraint
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.TargetUniquenessConstraint
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.TargetUniquenessConstraint
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/TargetUniquenessConstraint.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/TargetUniquenessConstraint.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ReferenceConstraintCollection", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/TargetUniquenessConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/TargetUniquenessConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/TargetUniquenessConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ReferenceConstraintCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint/TargetUniquenessConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("3da1be1b-ec9e-4b12-bc28-742543bebdbe")]
 		public virtual UniquenessConstraint TargetUniquenessConstraint
 		{
@@ -3846,9 +3846,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint GetLinkToTargetUniquenessConstraint (global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraint referenceConstraintInstance)
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint GetLinkToTargetUniquenessConstraint (global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraint referenceConstraintInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint>(referenceConstraintInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.ReferenceConstraintDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint>(referenceConstraintInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.ReferenceConstraintDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ReferenceConstraint not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -3866,9 +3866,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint> GetLinksToReferenceConstraintCollection ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint targetUniquenessConstraintInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint> GetLinksToReferenceConstraintCollection ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraint targetUniquenessConstraintInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint>(targetUniquenessConstraintInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.TargetUniquenessConstraintDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint>(targetUniquenessConstraintInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.TargetUniquenessConstraintDomainRoleId);
 		}
 		#endregion
 		#region ReferenceConstraintTargetsUniquenessConstraint instance accessors
@@ -3878,11 +3878,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint> GetLinks( global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraint source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint> GetLinks( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraint source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraint target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.ReferenceConstraintDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.ReferenceConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint link in links )
 			{
 				if ( target.Equals(link.TargetUniquenessConstraint) )
 				{
@@ -3896,10 +3896,10 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint GetLink( global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraint source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint target )
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint GetLink( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraint source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraint target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.ReferenceConstraintDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint.ReferenceConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsUniquenessConstraint link in links )
 			{
 				if ( target.Equals(link.TargetUniquenessConstraint) )
 				{
@@ -3912,16 +3912,16 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		#endregion
 	}
 }
-namespace Neumont.Tools.RelationalModels.ConceptualDatabase
+namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 {
 	/// <summary>
 	/// DomainRelationship ColumnReference
 	/// Description for
-	/// Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference
+	/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference
 	/// </summary>
-	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider<ColumnReference, Design.ConceptualDatabaseElementTypeDescriptor<ColumnReference>>))]
-	[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider<ColumnReference, Design.ConceptualDatabaseElementTypeDescriptor<ColumnReference>>))]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship(AllowsDuplicates = true)]
 	[DslModeling::DomainObjectId("2ca33a35-0fd3-4b68-9222-f2851a909c2f")]
@@ -3998,11 +3998,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole SourceColumn
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference.SourceColumn
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference.SourceColumn
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference/SourceColumn.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference/SourceColumn.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TargetColumnCollection", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference/SourceColumn.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference/SourceColumn.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference/SourceColumn.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TargetColumnCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference/SourceColumn.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("7be6b7cc-ee99-4667-b096-79e2b4403561")]
 		public virtual Column SourceColumn
 		{
@@ -4040,11 +4040,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole TargetColumn
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference.TargetColumn
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference.TargetColumn
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference/TargetColumn.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference/TargetColumn.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "SourceColumnCollection", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference/TargetColumn.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference/TargetColumn.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference/TargetColumn.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "SourceColumnCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference/TargetColumn.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("d7569b79-22db-4423-9b31-ad8c5fa96ac2")]
 		public virtual Column TargetColumn
 		{
@@ -4077,19 +4077,19 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// Gets or sets ReferenceConstraint.
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference.ColumnReference
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference.ColumnReference
 		/// </summary>
 		public virtual ReferenceConstraint ReferenceConstraint
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference.ColumnReferenceDomainRoleId) as ReferenceConstraint;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference.ColumnReferenceDomainRoleId) as ReferenceConstraint;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference.ColumnReferenceDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference.ColumnReferenceDomainRoleId, value);
 			}
 		}
 		#endregion
@@ -4100,9 +4100,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference> GetLinksToTargetColumnCollection ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column sourceColumnInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference> GetLinksToTargetColumnCollection ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column sourceColumnInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference>(sourceColumnInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference.SourceColumnDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference>(sourceColumnInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference.SourceColumnDomainRoleId);
 		}
 		#endregion
 		#region TargetColumn link accessor
@@ -4111,9 +4111,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference> GetLinksToSourceColumnCollection ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column targetColumnInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference> GetLinksToSourceColumnCollection ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column targetColumnInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference>(targetColumnInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference.TargetColumnDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference>(targetColumnInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference.TargetColumnDomainRoleId);
 		}
 		#endregion
 		#region ColumnReference instance accessors
@@ -4123,11 +4123,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference> GetLinks( global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.Column target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference> GetLinks( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference.SourceColumnDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference.SourceColumnDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference link in links )
 			{
 				if ( target.Equals(link.TargetColumn) )
 				{
@@ -4139,15 +4139,15 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		#endregion
 	}
 }
-namespace Neumont.Tools.RelationalModels.ConceptualDatabase
+namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 {
 	/// <summary>
 	/// DomainRelationship ReferenceConstraintContainsColumnReference
 	/// Description for
-	/// Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference
+	/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("59f535bc-8daf-43a0-8cfc-519086a5a9de")]
@@ -4224,11 +4224,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole ReferenceConstraint
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference.ReferenceConstraint
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference.ReferenceConstraint
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference/ReferenceConstraint.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference/ReferenceConstraint.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ColumnReferenceCollection", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference/ReferenceConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference/ReferenceConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference/ReferenceConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ColumnReferenceCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference/ReferenceConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
 		[DslModeling::DomainObjectId("fa2dff9b-4e4b-4bde-bddd-090d6b6a6893")]
 		public virtual ReferenceConstraint ReferenceConstraint
 		{
@@ -4276,11 +4276,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// DomainRole ColumnReference
 		/// Description for
-		/// Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference.ColumnReference
+		/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference.ColumnReference
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference/ColumnReference.DisplayName", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference/ColumnReference.Description", typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "Neumont.Tools.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ReferenceConstraint", PropertyDisplayNameKey="Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference/ColumnReference.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference/ColumnReference.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference/ColumnReference.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ReferenceConstraint", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference/ColumnReference.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("4febd832-ae5d-446a-a2ce-3f425e0e659e")]
 		public virtual ColumnReference ColumnReference
 		{
@@ -4314,9 +4314,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference> GetLinksToColumnReferenceCollection ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraint referenceConstraintInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference> GetLinksToColumnReferenceCollection ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraint referenceConstraintInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference>(referenceConstraintInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference.ReferenceConstraintDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference>(referenceConstraintInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference.ReferenceConstraintDomainRoleId);
 		}
 		#endregion
 		#region ColumnReference link accessor
@@ -4325,9 +4325,9 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference GetLinkToReferenceConstraint (global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference columnReferenceInstance)
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference GetLinkToReferenceConstraint (global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference columnReferenceInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference>(columnReferenceInstance, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference.ColumnReferenceDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference>(columnReferenceInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference.ColumnReferenceDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ColumnReference not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -4346,11 +4346,11 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference> GetLinks( global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraint source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference> GetLinks( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraint source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference.ReferenceConstraintDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference.ReferenceConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference link in links )
 			{
 				if ( target.Equals(link.ColumnReference) )
 				{
@@ -4364,10 +4364,10 @@ namespace Neumont.Tools.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference GetLink( global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraint source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ColumnReference target )
+		public static global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference GetLink( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraint source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnReference target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference>(source, global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference.ReferenceConstraintDomainRoleId);
-			foreach ( global::Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference>(source, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference.ReferenceConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintContainsColumnReference link in links )
 			{
 				if ( target.Equals(link.ColumnReference) )
 				{

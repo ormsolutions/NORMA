@@ -8,8 +8,8 @@
     <ProjectGuid>{A9BE54D9-16AE-49F0-BF00-279F200633A4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Neumont.Tools.ORMToORMAbstractionBridge</RootNamespace>
-    <AssemblyName>Neumont.Tools.ORMToORMAbstractionBridge.$(TargetVisualStudioShortProductName)</AssemblyName>
+    <RootNamespace>ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge</RootNamespace>
+    <AssemblyName>ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.$(TargetVisualStudioShortProductName)</AssemblyName>
     <WarningLevel>4</WarningLevel>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\ORMPackage.snk</AssemblyOriginatorKeyFile>
@@ -23,7 +23,7 @@
     <Optimize>true</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>$(DefineConstants);TRACE;DEBUG</DefineConstants>
-    <DocumentationFile>bin\Debug\Neumont.Tools.ORMToORMAbstractionBridge.$(TargetVisualStudioShortProductName).xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.$(TargetVisualStudioShortProductName).xml</DocumentationFile>
     <ErrorReport>prompt</ErrorReport>
     <NoWarn>1607</NoWarn>
     <UseVSHostingProcess>false</UseVSHostingProcess>
@@ -33,7 +33,7 @@
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>$(DefineConstants);TRACE</DefineConstants>
-    <DocumentationFile>bin\Release\Neumont.Tools.ORMToORMAbstractionBridge.$(TargetVisualStudioShortProductName).xml</DocumentationFile>
+    <DocumentationFile>bin\Release\ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.$(TargetVisualStudioShortProductName).xml</DocumentationFile>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>1607</NoWarn>
@@ -47,7 +47,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Neumont.Tools.ORM.$(TargetVisualStudioShortProductName), Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
+    <Reference Include="ORMSolutions.ORMArchitect.Core.$(TargetVisualStudioShortProductName), Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Modeling.Sdk, Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -137,7 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="GeneratedCode\DomainModelResx.resx">
-      <LogicalName>Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx.resources</LogicalName>
+      <LogicalName>ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx.resources</LogicalName>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DomainModelResx.tt</DependentUpon>

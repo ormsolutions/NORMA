@@ -6,7 +6,7 @@
     <ProductVersion>3.0</ProductVersion>
     <ProjectGuid>{efddc549-1646-4451-8aff-ffffffffffff}</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>Neumont ORM Architect for $(TargetVisualStudioLongProductName)</OutputName>
+    <OutputName>Natural ORM Architect for $(TargetVisualStudioLongProductName)</OutputName>
     <OutputType>Package</OutputType>
     <NoLogo>true</NoLogo>
     <VerboseOutput>true</VerboseOutput>
@@ -77,7 +77,7 @@
     <CompileAndLinkDependsOn>LocateVisualStudioSDKRedistributablesDir;$(CompileAndLinkDependsOn)</CompileAndLinkDependsOn>
   </PropertyGroup>
   <Target Name="LocateVisualStudioSDKRedistributablesDir" DependsOnTargets="LocateVisualStudioSDK">
-    <CreateProperty Value="$(DefineConstants);VsSDKRedistributablesDir=$(VsSDKRedistributablesDir);VSExt=.$(TargetVisualStudioShortProductName);VSShortName=$(TargetVisualStudioShortProductName);VSLongName=$(TargetVisualStudioLongProductName);VSVer=$(TargetVisualStudioVersion)">
+    <CreateProperty Value="$(DefineConstants);VsSDKRedistributablesDir=$(VsSDKRedistributablesDir);VSExt=.$(TargetVisualStudioShortProductName);VSShortName=$(TargetVisualStudioShortProductName);VSLongName=$(TargetVisualStudioLongProductName);VSShortProductYear=$(TargetVisualStudioShortProductYear);VSVer=$(TargetVisualStudioVersion)">
       <Output TaskParameter="Value" PropertyName="DefineConstants" />
     </CreateProperty>
   </Target>

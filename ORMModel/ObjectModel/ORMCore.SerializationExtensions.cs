@@ -4,14 +4,14 @@ using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Neumont.Tools.Modeling.Shell;
+using ORMSolutions.ORMArchitect.Framework.Shell;
 
 // Common Public License Copyright Notice
 // /**************************************************************************\
-// * Neumont Object-Role Modeling Architect for Visual Studio                 *
+// * Natural Object-Role Modeling Architect for Visual Studio                 *
 // *                                                                          *
 // * Copyright © Neumont University. All rights reserved.                     *
-// * Copyright © Matthew Curland. All rights reserved.                        *
+// * Copyright © ORM Solutions, LLC. All rights reserved.                        *
 // *                                                                          *
 // * The use and distribution terms for this software are covered by the      *
 // * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -22,7 +22,7 @@ using Neumont.Tools.Modeling.Shell;
 // * You must not remove this notice, or any other, from this software.       *
 // \**************************************************************************/
 
-namespace Neumont.Tools.ORM.ObjectModel
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	#region ORMCoreDomainModel model serialization
 	[CustomSerializedXmlNamespaces("http://schemas.neumont.edu/ORM/2006-04/ORMCore")]

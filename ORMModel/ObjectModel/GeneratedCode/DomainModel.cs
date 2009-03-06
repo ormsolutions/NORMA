@@ -1,9 +1,9 @@
 ﻿#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © Matthew Curland. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -25,15 +25,15 @@
 
 using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
-namespace Neumont.Tools.ORM.ObjectModel
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
 	/// DomainModel ORMCoreDomainModel
-	/// Description for Neumont.Tools.ORM.ObjectModel.ORMCore
+	/// Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCore
 	/// </summary>
-	[DslModeling::ExtendsDomainModel("F60BC3F1-C38E-4C7D-9EE5-9211DB26CB45"/*Neumont.Tools.Modeling.FrameworkDomainModel*/)]
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::ExtendsDomainModel("F60BC3F1-C38E-4C7D-9EE5-9211DB26CB45"/*ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel*/)]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("3eae649f-e654-4d04-8289-c25d2c0322d8")]
 	public partial class ORMCoreDomainModel : DslModeling::DomainModel
@@ -1299,7 +1299,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// The base name of this model's resources.
 		/// </summary>
-		public const string ResourceBaseName = "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx";
+		public const string ResourceBaseName = "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx";
 		
 		/// <summary>
 		/// Gets the DomainModel's ResourceManager. If the ResourceManager does not already exist, then it is created.
@@ -1424,97 +1424,97 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public ORMCoreDeleteClosureBase()
 		{
 			#region Initialize DomainData Table
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionElement.ExtensionDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionModelError.ExtensionModelErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ModelHasObjectType.ObjectTypeDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ModelHasFactType.FactTypeDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ModelHasError.ErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ModelHasReferenceModeKind.ReferenceModeKindDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ModelHasReferenceMode.ReferenceModeDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ModelHasSetConstraint.SetConstraintDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ObjectTypeImpliesMandatoryConstraint.MandatoryConstraintDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ModelHasSetComparisonConstraint.SetComparisonConstraintDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ModelHasDataType.DataTypeDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.NameGeneratorRefinesNameGenerator.RefinementDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ElementHasAlias.AliasDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation.AbbreviationDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation.AbbreviationDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase.RecognizedPhraseDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasRoleSequence.RoleSequenceDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError.PopulationMandatoryErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError.PopulationMandatoryErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.ReadingOrderDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.ReferenceModeDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.TooManyRolesErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.TooFewRolesErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ReadingHasReadingRequiresUserModificationError.RequiresUserModificationErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError.ArityMismatchErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError.ReadingRequiredErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.InternalUniquenessConstraintRequiredErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint.ValueConstraintDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint.ValueConstraintDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRange.ValueRangeDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError.DataTypeNotSpecifiedErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.SetConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasNMinusOneError.NMinusOneErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.RoleHasRolePlayerRequiredError.RolePlayerRequiredErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ReferenceSchemeErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMinMaxErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError.FrequencyConstraintExactlyOneErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesFactType.ImpliedFactTypeDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError.MaxValueMismatchErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.MinValueMismatchErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.FactTypeHasImpliedInternalUniquenessConstraintError.ImpliedInternalUniquenessConstraintErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.SetConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.SetConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintTypeNotSpecifiedErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ModelHasDefinition.DefinitionDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDefinition.DefinitionDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.FactTypeHasDefinition.DefinitionDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.FactTypeHasNote.NoteDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasNote.NoteDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ModelHasPrimaryNote.NoteDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ModelHasModelNote.NoteDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasCompatibleSupertypesError.CompatibleSupertypesErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.SetConstraintHasImplicationError.ImplicationErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasImplicationError.ImplicationErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError.EqualityOrSubsetImpliedByMandatoryErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasPreferredIdentifierRequiresMandatoryError.PreferredIdentifierRequiresMandatoryErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError.ValueRangeOverlapErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueTypeDetachedError.ValueTypeDetachedErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.FactTypeHasRole.RoleDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression.DerivationRuleDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.SubtypeHasDerivationExpression.DerivationRuleDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeInstance.ObjectTypeInstanceDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.EntityTypeHasEntityTypeInstance.EntityTypeInstanceDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtypeInstanceDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueTypeInstance.ValueTypeInstanceDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.EntityTypeInstanceHasRoleInstance.RoleInstanceDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance.EntityTypeSubtypeInstanceDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeInstance.FactTypeInstanceDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.FactTypeInstanceHasRoleInstance.RoleInstanceDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.ObjectifyingInstanceRequiredErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectifiedInstanceRequiredErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError.TooFewEntityTypeRoleInstancesErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError.TooFewFactTypeRoleInstancesErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError.CompatibleValueTypeInstanceValueErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.JoinHasRole.JoinDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.JoinHasInputRole.JoinDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.JoinHasOutputRole.JoinDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ORMModelElementHasJoinPath.JoinDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasJoinPath.JoinDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ModelHasModelErrorDisplayFilter.ModelErrorDisplayFilterDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetRelatesToORMModel.GroupingSetDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ElementGroupingSetContainsElementGrouping.GroupingDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ElementGroupingIsOfElementGroupingType.GroupingTypeDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ElementGroupingHasMembershipContradictionError.MembershipContradictionErrorDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.GroupingMembershipContradictionErrorIsForElement.GroupingMembershipContradictionErrorRelationshipDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModelElementHasExtensionElement.ExtensionDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModelElementHasExtensionModelError.ExtensionModelErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasObjectType.ObjectTypeDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasFactType.FactTypeDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasError.ErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasReferenceModeKind.ReferenceModeKindDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasReferenceMode.ReferenceModeDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasSetConstraint.SetConstraintDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeImpliesMandatoryConstraint.MandatoryConstraintDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasSetComparisonConstraint.SetComparisonConstraintDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasDataType.DataTypeDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesNameGenerator.RefinementDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementHasAlias.AliasDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.RecognizedPhraseHasAbbreviation.AbbreviationDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasAbbreviation.AbbreviationDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelContainsRecognizedPhrase.RecognizedPhraseDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasRoleSequence.RoleSequenceDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintHasPopulationMandatoryError.PopulationMandatoryErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError.PopulationMandatoryErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrderHasReading.ReadingDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasReadingOrder.ReadingOrderDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeHasReferenceModeKind.ReferenceModeDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasTooManyRolesError.TooManyRolesErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasTooFewRolesError.TooFewRolesErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasReadingRequiresUserModificationError.RequiresUserModificationErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError.ArityMismatchErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeRequiresReadingError.ReadingRequiredErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.InternalUniquenessConstraintRequiredErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueConstraint.ValueConstraintDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasValueConstraint.ValueConstraintDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasValueRange.ValueRangeDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasUnspecifiedDataTypeError.DataTypeNotSpecifiedErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraintHasNMinusOneError.NMinusOneErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasRolePlayerRequiredError.RolePlayerRequiredErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ReferenceSchemeErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMinMaxErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError.FrequencyConstraintExactlyOneErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationImpliesFactType.ImpliedFactTypeDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRangeHasMaxValueMismatchError.MaxValueMismatchErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRangeHasMinValueMismatchError.MinValueMismatchErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasImpliedInternalUniquenessConstraintError.ImpliedInternalUniquenessConstraintErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintTypeNotSpecifiedErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasDefinition.DefinitionDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasDefinition.DefinitionDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDefinition.DefinitionDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasNote.NoteDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasNote.NoteDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasPrimaryNote.NoteDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasModelNote.NoteDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCompatibleSupertypesError.CompatibleSupertypesErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasImplicationError.ImplicationErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasImplicationError.ImplicationErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError.EqualityOrSubsetImpliedByMandatoryErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasPreferredIdentifierRequiresMandatoryError.PreferredIdentifierRequiresMandatoryErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasValueRangeOverlapError.ValueRangeOverlapErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasValueTypeDetachedError.ValueTypeDetachedErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasRole.RoleDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationExpression.DerivationRuleDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationExpression.DerivationRuleDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance.ObjectTypeInstanceDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance.EntityTypeInstanceDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtypeInstanceDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance.ValueTypeInstanceDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance.RoleInstanceDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance.EntityTypeSubtypeInstanceDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance.FactTypeInstanceDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance.RoleInstanceDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.ObjectifyingInstanceRequiredErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectifiedInstanceRequiredErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError.TooFewEntityTypeRoleInstancesErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError.TooFewFactTypeRoleInstancesErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError.CompatibleValueTypeInstanceValueErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.JoinHasRole.JoinDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.JoinHasInputRole.JoinDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.JoinHasOutputRole.JoinDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModelElementHasJoinPath.JoinDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasJoinPath.JoinDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasModelErrorDisplayFilter.ModelErrorDisplayFilterDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingSetRelatesToORMModel.GroupingSetDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingSetContainsElementGrouping.GroupingDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingIsOfElementGroupingType.GroupingTypeDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasMembershipContradictionError.MembershipContradictionErrorDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.GroupingMembershipContradictionErrorIsForElement.GroupingMembershipContradictionErrorRelationshipDomainRoleId, true);
 			#endregion
 		}
 		/// <summary>
@@ -1634,14 +1634,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#endregion
 		
 }
-namespace Neumont.Tools.ORM.ObjectModel
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
 	/// DomainEnumeration: DerivationStorageType
 	/// Used to specify how/whether the contents of the fact should be stored by
 	/// generated systems.
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<DerivationStorageType, global::Neumont.Tools.ORM.ObjectModel.ORMModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<DerivationStorageType, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel>))]
 	[global::System.CLSCompliant(true)]
 	public enum DerivationStorageType
 	{
@@ -1649,29 +1649,29 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Derived
 		/// Fact is derived but should not be stored.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.DerivationStorageType/Derived.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationStorageType/Derived.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		Derived = 0,
 		/// <summary>
 		/// DerivedAndStored
 		/// Fact is derived and should be stored.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.DerivationStorageType/DerivedAndStored.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationStorageType/DerivedAndStored.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		DerivedAndStored = 1,
 		/// <summary>
 		/// PartiallyDerived
 		/// Fact is partially derived and should be stored.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.DerivationStorageType/PartiallyDerived.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationStorageType/PartiallyDerived.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		PartiallyDerived = 2,
 	}
 }
-namespace Neumont.Tools.ORM.ObjectModel
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
 	/// DomainEnumeration: ConstraintModality
-	/// Description for Neumont.Tools.ORM.ObjectModel.ConstraintModality
+	/// Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintModality
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<ConstraintModality, global::Neumont.Tools.ORM.ObjectModel.ORMModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<ConstraintModality, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel>))]
 	[global::System.CLSCompliant(true)]
 	public enum ConstraintModality
 	{
@@ -1679,17 +1679,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Alethic
 		/// The constraint must hold.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ConstraintModality/Alethic.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintModality/Alethic.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		Alethic = 0,
 		/// <summary>
 		/// Deontic
 		/// The constraint should hold.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ConstraintModality/Deontic.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintModality/Deontic.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		Deontic = 1,
 	}
 }
-namespace Neumont.Tools.ORM.ObjectModel
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
 	/// DomainEnumeration: RoleMultiplicity
@@ -1698,7 +1698,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// based on the existing mandatory and internal uniqueness constraints associated
 	/// with the fact.
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<RoleMultiplicity, global::Neumont.Tools.ORM.ObjectModel.ORMModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<RoleMultiplicity, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel>))]
 	[global::System.CLSCompliant(true)]
 	public enum RoleMultiplicity
 	{
@@ -1707,48 +1707,48 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Insufficient constraints are present to determine the user intention.
 		/// </summary>
 		[global::System.ComponentModel.Browsable(false)]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RoleMultiplicity/Unspecified.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RoleMultiplicity/Unspecified.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		Unspecified = 0,
 		/// <summary>
 		/// Indeterminate
 		/// Too many constraints are present to determine the user intention.
 		/// </summary>
 		[global::System.ComponentModel.Browsable(false)]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RoleMultiplicity/Indeterminate.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RoleMultiplicity/Indeterminate.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		Indeterminate = 1,
 		/// <summary>
 		/// ZeroToOne
 		/// 0..1
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RoleMultiplicity/ZeroToOne.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RoleMultiplicity/ZeroToOne.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		ZeroToOne = 2,
 		/// <summary>
 		/// ZeroToMany
 		/// 0..*
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RoleMultiplicity/ZeroToMany.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RoleMultiplicity/ZeroToMany.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		ZeroToMany = 3,
 		/// <summary>
 		/// ExactlyOne
 		/// 1
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RoleMultiplicity/ExactlyOne.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RoleMultiplicity/ExactlyOne.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		ExactlyOne = 4,
 		/// <summary>
 		/// OneToMany
 		/// 1..*
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RoleMultiplicity/OneToMany.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RoleMultiplicity/OneToMany.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		OneToMany = 5,
 	}
 }
-namespace Neumont.Tools.ORM.ObjectModel
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
 	/// DomainEnumeration: RingConstraintType
-	/// Description for Neumont.Tools.ORM.ObjectModel.RingConstraintType
+	/// Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<RingConstraintType, global::Neumont.Tools.ORM.ObjectModel.ORMModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<RingConstraintType, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel>))]
 	[global::System.CLSCompliant(true)]
 	public enum RingConstraintType
 	{
@@ -1756,72 +1756,72 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Undefined
 		/// </summary>
 		[global::System.ComponentModel.Browsable(false)]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/Undefined.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/Undefined.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		Undefined = 0,
 		/// <summary>
 		/// PurelyReflexive
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/PurelyReflexive.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/PurelyReflexive.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		PurelyReflexive = 1,
 		/// <summary>
 		/// Irreflexive
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/Irreflexive.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/Irreflexive.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		Irreflexive = 2,
 		/// <summary>
 		/// Symmetric
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/Symmetric.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/Symmetric.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		Symmetric = 3,
 		/// <summary>
 		/// Asymmetric
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/Asymmetric.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/Asymmetric.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		Asymmetric = 4,
 		/// <summary>
 		/// Antisymmetric
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/Antisymmetric.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/Antisymmetric.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		Antisymmetric = 5,
 		/// <summary>
 		/// Intransitive
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/Intransitive.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/Intransitive.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		Intransitive = 6,
 		/// <summary>
 		/// Acyclic
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/Acyclic.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/Acyclic.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		Acyclic = 7,
 		/// <summary>
 		/// AcyclicIntransitive
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/AcyclicIntransitive.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/AcyclicIntransitive.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		AcyclicIntransitive = 8,
 		/// <summary>
 		/// AsymmetricIntransitive
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/AsymmetricIntransitive.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/AsymmetricIntransitive.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		AsymmetricIntransitive = 9,
 		/// <summary>
 		/// SymmetricIntransitive
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/SymmetricIntransitive.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/SymmetricIntransitive.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		SymmetricIntransitive = 10,
 		/// <summary>
 		/// SymmetricIrreflexive
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/SymmetricIrreflexive.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/SymmetricIrreflexive.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		SymmetricIrreflexive = 11,
 	}
 }
-namespace Neumont.Tools.ORM.ObjectModel
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
 	/// DomainEnumeration: ReferenceModeType
-	/// Description for Neumont.Tools.ORM.ObjectModel.ReferenceModeType
+	/// Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeType
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<ReferenceModeType, global::Neumont.Tools.ORM.ObjectModel.ORMModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<ReferenceModeType, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel>))]
 	[global::System.CLSCompliant(true)]
 	public enum ReferenceModeType
 	{
@@ -1829,60 +1829,60 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// General
 		/// That other reference mode type.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ReferenceModeType/General.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeType/General.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		General = 0,
 		/// <summary>
 		/// Popular
 		/// The 'in' and 'fashionable' reference mode type.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ReferenceModeType/Popular.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeType/Popular.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		Popular = 1,
 		/// <summary>
 		/// UnitBased
 		/// The reference mode type based on units.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ReferenceModeType/UnitBased.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeType/UnitBased.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		UnitBased = 2,
 	}
 }
-namespace Neumont.Tools.ORM.ObjectModel
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
 	/// DomainEnumeration: RangeInclusion
-	/// Description for Neumont.Tools.ORM.ObjectModel.RangeInclusion
+	/// Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RangeInclusion
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<RangeInclusion, global::Neumont.Tools.ORM.ObjectModel.ORMModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<RangeInclusion, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel>))]
 	[global::System.CLSCompliant(true)]
 	public enum RangeInclusion
 	{
 		/// <summary>
 		/// NotSet
-		/// Description for Neumont.Tools.ORM.ObjectModel.RangeInclusion.NotSet
+		/// Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RangeInclusion.NotSet
 		/// </summary>
 		[global::System.ComponentModel.Browsable(false)]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RangeInclusion/NotSet.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RangeInclusion/NotSet.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		NotSet = 0,
 		/// <summary>
 		/// Open
 		/// Indicates the specific value is not included in the range.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RangeInclusion/Open.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RangeInclusion/Open.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		Open = 1,
 		/// <summary>
 		/// Closed
 		/// Indicates the specific value is included in the range.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RangeInclusion/Closed.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RangeInclusion/Closed.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		Closed = 2,
 	}
 }
-namespace Neumont.Tools.ORM.ObjectModel
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
 	/// DomainEnumeration: JoinType
-	/// Description for Neumont.Tools.ORM.ObjectModel.JoinType
+	/// Description for ORMSolutions.ORMArchitect.Core.ObjectModel.JoinType
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<JoinType, global::Neumont.Tools.ORM.ObjectModel.ORMModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<JoinType, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel>))]
 	[global::System.CLSCompliant(true)]
 	public enum JoinType
 	{
@@ -1890,125 +1890,132 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Inner
 		/// Inner join.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.JoinType/Inner.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.JoinType/Inner.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		Inner = 0,
 		/// <summary>
 		/// Outer
 		/// Outer join.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.JoinType/Outer.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.JoinType/Outer.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		Outer = 1,
 	}
 }
-namespace Neumont.Tools.ORM.ObjectModel
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
 	/// DomainEnumeration: NameGeneratorCasingOption
-	/// Description for Neumont.Tools.ORM.ObjectModel.NameGeneratorCasingOption
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorCasingOption
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<NameGeneratorCasingOption, global::Neumont.Tools.ORM.ObjectModel.ORMModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<NameGeneratorCasingOption, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel>))]
 	[global::System.CLSCompliant(true)]
 	public enum NameGeneratorCasingOption
 	{
 		/// <summary>
 		/// None
-		/// Description for Neumont.Tools.ORM.ObjectModel.NameGeneratorCasingOption.None
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorCasingOption.None
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameGeneratorCasingOption/None.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorCasingOption/None.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		None = 0,
 		/// <summary>
 		/// Camel
 		/// Indicates the casing of the string is Camel
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameGeneratorCasingOption/Camel.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorCasingOption/Camel.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		Camel = 1,
 		/// <summary>
 		/// Pascal
 		/// Indicates the casing of the string is Pascal.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameGeneratorCasingOption/Pascal.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorCasingOption/Pascal.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		Pascal = 2,
 		/// <summary>
 		/// Upper
 		/// Indicates the casing of the string is Upper.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameGeneratorCasingOption/Upper.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorCasingOption/Upper.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		Upper = 3,
 		/// <summary>
 		/// Lower
 		/// Indicates the casing of the string is Lower.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameGeneratorCasingOption/Lower.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorCasingOption/Lower.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		Lower = 4,
 	}
 }
-namespace Neumont.Tools.ORM.ObjectModel
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
 	/// DomainEnumeration: NameGeneratorSpacingFormat
-	/// Description for Neumont.Tools.ORM.ObjectModel.NameGeneratorSpacingFormat
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorSpacingFormat
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<NameGeneratorSpacingFormat, global::Neumont.Tools.ORM.ObjectModel.ORMModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<NameGeneratorSpacingFormat, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel>))]
 	[global::System.CLSCompliant(true)]
 	public enum NameGeneratorSpacingFormat
 	{
 		/// <summary>
 		/// Retain
-		/// Description for Neumont.Tools.ORM.ObjectModel.NameGeneratorSpacingFormat.Retain
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorSpacingFormat.Retain
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameGeneratorSpacingFormat/Retain.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorSpacingFormat/Retain.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		Retain = 0,
 		/// <summary>
 		/// Remove
 		/// Indicates that spaces are Removed
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameGeneratorSpacingFormat/Remove.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorSpacingFormat/Remove.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		Remove = 1,
 		/// <summary>
 		/// ReplaceWith
 		/// Indicates that spaces are ReplacedWith a different string.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameGeneratorSpacingFormat/ReplaceWith.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorSpacingFormat/ReplaceWith.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		ReplaceWith = 2,
 	}
 }
-namespace Neumont.Tools.ORM.ObjectModel
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
 	/// DomainEnumeration: NameGeneratorSubjectArea
-	/// Description for Neumont.Tools.ORM.ObjectModel.NameGeneratorSubjectArea
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorSubjectArea
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<NameGeneratorSubjectArea, global::Neumont.Tools.ORM.ObjectModel.ORMModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<NameGeneratorSubjectArea, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel>))]
 	[global::System.CLSCompliant(true)]
 	public enum NameGeneratorSubjectArea
 	{
 		/// <summary>
 		/// None
-		/// Description for Neumont.Tools.ORM.ObjectModel.NameGeneratorSubjectArea.None
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorSubjectArea.None
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameGeneratorSubjectArea/None.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorSubjectArea/None.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		None = 0,
 		/// <summary>
 		/// Prefix
 		/// Indicates that the chosen subject will be prepended to the generated name.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameGeneratorSubjectArea/Prefix.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorSubjectArea/Prefix.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		Prefix = 1,
 		/// <summary>
 		/// Suffix
 		/// Indicates that the chosen subject will be appended to the generated name.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.NameGeneratorSubjectArea/Suffix.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorSubjectArea/Suffix.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		Suffix = 2,
 	}
 }
-namespace Neumont.Tools.ORM.ObjectModel
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
 	/// DomainEnumeration: GroupingMembershipTypeCompliance
-	/// Description for Neumont.Tools.ORM.ObjectModel.GroupingMembershipTypeCompliance
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.GroupingMembershipTypeCompliance
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<GroupingMembershipTypeCompliance, global::Neumont.Tools.ORM.ObjectModel.ORMModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<GroupingMembershipTypeCompliance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel>))]
 	[global::System.CLSCompliant(true)]
 	public enum GroupingMembershipTypeCompliance
 	{
@@ -2016,19 +2023,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// NotExcluded
 		/// Allow all elements that are not explicitly excluded by a GroupType.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.GroupingMembershipTypeCompliance/NotExcluded.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.GroupingMembershipTypeCompliance/NotExcluded.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		NotExcluded = 0,
 		/// <summary>
 		/// PartiallyApproved
 		/// Allow all elements that are explicitly approved by at least one GroupType.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.GroupingMembershipTypeCompliance/PartiallyApproved.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.GroupingMembershipTypeCompliance/PartiallyApproved.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		PartiallyApproved = 1,
 		/// <summary>
 		/// FullyApproved
 		/// Allow elements that are explicitly approved by all GroupTypes.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.GroupingMembershipTypeCompliance/FullyApproved.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.GroupingMembershipTypeCompliance/FullyApproved.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		FullyApproved = 2,
 	}
 }

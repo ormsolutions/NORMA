@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
-	Neumont Object-Role Modeling Architect for Visual Studio
+	Natural Object-Role Modeling Architect for Visual Studio
 
-	Copyright Â© Neumont University. All rights reserved.
+	Copyright © Neumont University. All rights reserved.
 
 	The use and distribution terms for this software are covered by the
 	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
@@ -17,16 +17,16 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	PackageGuid="EFDDC549-1646-4451-8A51-E5A5E94D647C"
 	Id="F7BC82F4-83D1-408C-BA42-607E90B23BEA"
-	Namespace="Neumont.Tools.ORMAbstraction"
+	Namespace="ORMSolutions.ORMArchitect.ORMAbstraction"
 	Name="Abstraction"
 	DisplayName="ORM Abstraction Model"
 	Description="Intermediate Attribute-centric View of ORM Model"
-	CompanyName="Neumont University"
-	ProductName="Neumont ORM Architect for Visual Studio"
+	CompanyName="ORM Solutions, LLC"
+	ProductName="Natural Object-Role Modeling Architect for Visual Studio"
 	MajorVersion="1" MinorVersion="0" Build="0" Revision="0">
 
 	<Classes>
-		<DomainClass Name="AbstractionModel" InheritanceModifier="Sealed" Namespace="Neumont.Tools.ORMAbstraction" Id="9EF66BE3-C128-4642-9767-063244DE2CEF" DisplayName="AbstractionModel" Description="">
+		<DomainClass Name="AbstractionModel" InheritanceModifier="Sealed" Namespace="ORMSolutions.ORMArchitect.ORMAbstraction" Id="9EF66BE3-C128-4642-9767-063244DE2CEF" DisplayName="AbstractionModel" Description="">
 			<Properties>
 				<DomainProperty Name="Name" DisplayName="Name" IsElementName="true" Id="49990808-B97E-4A72-8B26-8A8165CF4DF5">
 					<Type>
@@ -54,7 +54,7 @@
 			</ElementMergeDirectives>
 		</DomainClass>
 
-		<DomainClass Name="ConceptType" InheritanceModifier="Sealed" Namespace="Neumont.Tools.ORMAbstraction" Id="A75DF497-8D38-4841-AAE3-341FD4ED234B" DisplayName="ConceptType" Description="">
+		<DomainClass Name="ConceptType" InheritanceModifier="Sealed" Namespace="ORMSolutions.ORMArchitect.ORMAbstraction" Id="A75DF497-8D38-4841-AAE3-341FD4ED234B" DisplayName="ConceptType" Description="">
 			<Properties>
 				<DomainProperty Name="Name" DisplayName="Name" IsElementName="true" Id="1193B616-AC5A-4179-862F-88E9243310A4">
 					<Type>
@@ -65,7 +65,7 @@
 		</DomainClass>
 
 		<!-- TODO: This is going to need an odt:dataType property. -->
-		<DomainClass Name="InformationTypeFormat" Namespace="Neumont.Tools.ORMAbstraction" Id="7EB62327-99A6-4543-BE0D-8D4CED8C4F0E" DisplayName="InformationTypeFormat" Description="">
+		<DomainClass Name="InformationTypeFormat" Namespace="ORMSolutions.ORMArchitect.ORMAbstraction" Id="7EB62327-99A6-4543-BE0D-8D4CED8C4F0E" DisplayName="InformationTypeFormat" Description="">
 			<Properties>
 				<DomainProperty Name="Name" DisplayName="Name" IsElementName="true" Id="E84BE6BF-9799-4C58-B58B-88DA7DC72FA0">
 					<Type>
@@ -75,7 +75,7 @@
 			</Properties>
 		</DomainClass>
 
-		<DomainClass Name="Uniqueness" InheritanceModifier="Sealed" Namespace="Neumont.Tools.ORMAbstraction" Id="0AF67F1F-66D6-4C2B-B85C-D556894AC300" DisplayName="Uniqueness" Description="">
+		<DomainClass Name="Uniqueness" InheritanceModifier="Sealed" Namespace="ORMSolutions.ORMArchitect.ORMAbstraction" Id="0AF67F1F-66D6-4C2B-B85C-D556894AC300" DisplayName="Uniqueness" Description="">
 			<Properties>
 				<DomainProperty Name="Name" DisplayName="Name" IsElementName="true" Id="82013A44-5BAE-43AF-8472-A53473ADAC7E">
 					<Type>
@@ -92,7 +92,7 @@
 	</Classes>
 
 	<Relationships>
-		<DomainRelationship Name="AbstractionModelHasConceptType" InheritanceModifier="Sealed" Namespace="Neumont.Tools.ORMAbstraction" IsEmbedding="true" Id="35E02E9E-24DB-4DEf-B1CC-C8051F0E44A7">
+		<DomainRelationship Name="AbstractionModelHasConceptType" InheritanceModifier="Sealed" Namespace="ORMSolutions.ORMArchitect.ORMAbstraction" IsEmbedding="true" Id="35E02E9E-24DB-4DEf-B1CC-C8051F0E44A7">
 			<Source>
 				<DomainRole Name="Model" PropertyName="ConceptTypeCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Model" Id="1BC6D220-DDDD-4C8F-BFBD-944A84AF311F">
 					<RolePlayer>
@@ -109,7 +109,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="AbstractionModelHasInformationTypeFormat" InheritanceModifier="Sealed" Namespace="Neumont.Tools.ORMAbstraction" IsEmbedding="true" Id="2CDBA90A-2059-48A7-B272-21CEE9119C55">
+		<DomainRelationship Name="AbstractionModelHasInformationTypeFormat" InheritanceModifier="Sealed" Namespace="ORMSolutions.ORMArchitect.ORMAbstraction" IsEmbedding="true" Id="2CDBA90A-2059-48A7-B272-21CEE9119C55">
 			<Source>
 				<DomainRole Name="Model" PropertyName="InformationTypeFormatCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Model" Id="0E93BB32-8DDE-4AC6-A17A-259F42260FED">
 					<RolePlayer>
@@ -126,7 +126,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ConceptTypeHasUniqueness" InheritanceModifier="Sealed" Namespace="Neumont.Tools.ORMAbstraction" IsEmbedding="true" Id="356BCEA9-13E0-406D-BC0C-404909856A8F">
+		<DomainRelationship Name="ConceptTypeHasUniqueness" InheritanceModifier="Sealed" Namespace="ORMSolutions.ORMArchitect.ORMAbstraction" IsEmbedding="true" Id="356BCEA9-13E0-406D-BC0C-404909856A8F">
 			<Source>
 				<DomainRole Name="ConceptType" PropertyName="UniquenessCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ConceptType" Id="B425BC77-4990-40F6-8C6F-B670B134AD88">
 					<RolePlayer>
@@ -143,7 +143,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ConceptTypeChild" AllowsDuplicates="true" Namespace="Neumont.Tools.ORMAbstraction" InheritanceModifier="Abstract" Id="96AFB439-E314-4D49-9011-18362F78D724">
+		<DomainRelationship Name="ConceptTypeChild" AllowsDuplicates="true" Namespace="ORMSolutions.ORMArchitect.ORMAbstraction" InheritanceModifier="Abstract" Id="96AFB439-E314-4D49-9011-18362F78D724">
 			<Properties>
 				<DomainProperty Name="IsMandatory" DefaultValue="false" DisplayName="IsMandatory" Id="72DE4B58-8890-4D57-A5A1-FBEE314A011F">
 					<Type>
@@ -172,7 +172,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ConceptTypeHasChildAsPartOfAssociation" InheritanceModifier="Sealed" Namespace="Neumont.Tools.ORMAbstraction" Id="0B5B8D09-E72B-484C-9A57-D4068FED9D65">
+		<DomainRelationship Name="ConceptTypeHasChildAsPartOfAssociation" InheritanceModifier="Sealed" Namespace="ORMSolutions.ORMArchitect.ORMAbstraction" Id="0B5B8D09-E72B-484C-9A57-D4068FED9D65">
 			<Source>
 				<DomainRole Name="Parent" PropertyName="TargetCollection" Multiplicity="ZeroMany" PropagatesDelete="true" IsPropertyGenerator="false" DisplayName="Parent" Id="B6F725E8-2FE3-43B4-AA79-C88B1CE0B571">
 					<RolePlayer>
@@ -189,7 +189,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="InformationType" InheritanceModifier="Sealed" AllowsDuplicates="true" Namespace="Neumont.Tools.ORMAbstraction" Id="10DBC480-9DD5-47FB-8533-982C27985EE5">
+		<DomainRelationship Name="InformationType" InheritanceModifier="Sealed" AllowsDuplicates="true" Namespace="ORMSolutions.ORMArchitect.ORMAbstraction" Id="10DBC480-9DD5-47FB-8533-982C27985EE5">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ConceptTypeChild" />
 			</BaseRelationship>
@@ -209,7 +209,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ConceptTypeReferencesConceptType" AllowsDuplicates="true" InheritanceModifier="Abstract" Namespace="Neumont.Tools.ORMAbstraction" Id="F003A8DA-4CD5-4208-B3D3-A51E98C5B962">
+		<DomainRelationship Name="ConceptTypeReferencesConceptType" AllowsDuplicates="true" InheritanceModifier="Abstract" Namespace="ORMSolutions.ORMArchitect.ORMAbstraction" Id="F003A8DA-4CD5-4208-B3D3-A51E98C5B962">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ConceptTypeChild" />
 			</BaseRelationship>
@@ -236,7 +236,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ConceptTypeRelatesToConceptType" InheritanceModifier="Sealed" AllowsDuplicates="true" Namespace="Neumont.Tools.ORMAbstraction" Id="D8F2CBCD-1EB4-420A-9D18-5759D46B8AF3">
+		<DomainRelationship Name="ConceptTypeRelatesToConceptType" InheritanceModifier="Sealed" AllowsDuplicates="true" Namespace="ORMSolutions.ORMArchitect.ORMAbstraction" Id="D8F2CBCD-1EB4-420A-9D18-5759D46B8AF3">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ConceptTypeReferencesConceptType"/>
 			</BaseRelationship>
@@ -256,7 +256,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ConceptTypeAssimilatesConceptType" InheritanceModifier="Sealed" AllowsDuplicates="false" Namespace="Neumont.Tools.ORMAbstraction" Id="A342DF5A-7426-4A9C-8263-3E24CBA2CF60">
+		<DomainRelationship Name="ConceptTypeAssimilatesConceptType" InheritanceModifier="Sealed" AllowsDuplicates="false" Namespace="ORMSolutions.ORMArchitect.ORMAbstraction" Id="A342DF5A-7426-4A9C-8263-3E24CBA2CF60">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ConceptTypeReferencesConceptType" />
 			</BaseRelationship>
@@ -294,7 +294,7 @@
 		</DomainRelationship>
 
 		<!-- TODO: Target should be restricted to ConceptTypeRelatesToConceptType and InformationType. -->
-		<DomainRelationship Name="UniquenessIncludesConceptTypeChild" InheritanceModifier="Sealed" Namespace="Neumont.Tools.ORMAbstraction" Id="C06E9C7D-89D3-433F-8B8A-FC80E3878DD5">
+		<DomainRelationship Name="UniquenessIncludesConceptTypeChild" InheritanceModifier="Sealed" Namespace="ORMSolutions.ORMArchitect.ORMAbstraction" Id="C06E9C7D-89D3-433F-8B8A-FC80E3878DD5">
 			<Source>
 				<DomainRole Name="Uniqueness" PropertyName="ConceptTypeChildCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Uniqueness" Id="8596E430-AAFB-47CF-9AA2-FE6ABE50468D">
 					<RolePlayer>
@@ -312,6 +312,6 @@
 		</DomainRelationship>
 	</Relationships>
 
-	<XmlSerializationBehavior Name="AbstractionDomainModelSerializationBehavior" Namespace="Neumont.Tools.ORMAbstraction"/>
+	<XmlSerializationBehavior Name="AbstractionDomainModelSerializationBehavior" Namespace="ORMSolutions.ORMArchitect.ORMAbstraction"/>
 
 </Dsl>

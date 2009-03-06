@@ -1,6 +1,6 @@
 ﻿#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -26,7 +26,7 @@ using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
 using DslDiagrams = global::Microsoft.VisualStudio.Modeling.Diagrams;
 
-namespace Neumont.Tools.ORM.ShapeModel
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	/// <summary>
 	/// Helper class used to create and initialize toolbox items for this DSL.
@@ -103,7 +103,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				return global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.SingletonResourceManager.GetString("ORM DesignerToolboxTab", global::System.Globalization.CultureInfo.CurrentUICulture);
+				return global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel.SingletonResourceManager.GetString("ORM DesignerToolboxTab", global::System.Globalization.CultureInfo.CurrentUICulture);
 			}
 		}
 		
@@ -131,11 +131,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 			using(DslModeling::Store store = new DslModeling::Store(this.ServiceProvider))
 			{
 				store.LoadDomainModels(typeof(DslDiagrams::CoreDesignSurfaceDomainModel),
-					typeof(global::Neumont.Tools.Modeling.FrameworkDomainModel),
-					typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel),
+					typeof(global::ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel),
+					typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel),
 					typeof(global::Microsoft.VisualStudio.Modeling.Diagrams.CoreDesignSurfaceDomainModel),
-					typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel));
-				global::System.Resources.ResourceManager resourceManager = global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.SingletonResourceManager;
+					typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel));
+				global::System.Resources.ResourceManager resourceManager = global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel.SingletonResourceManager;
 				global::System.Globalization.CultureInfo resourceCulture = global::System.Globalization.CultureInfo.CurrentUICulture;
 			
 				// Open transaction so we can create model elements corresponding to toolbox items.
@@ -152,7 +152,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("ORM DesignerToolboxTab", resourceCulture), // Localized display name for the toolbox tab.
 						"EntityType", // F1 help keyword for the toolbox item.
 						resourceManager.GetString("EntityTypeToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
-						CreateElementToolPrototype(store, global::Neumont.Tools.ORM.ObjectModel.ObjectType.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
+						CreateElementToolPrototype(store, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
 							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) 
 						}));
@@ -167,7 +167,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("ORM DesignerToolboxTab", resourceCulture), // Localized display name for the toolbox tab.
 						"ValueType", // F1 help keyword for the toolbox item.
 						resourceManager.GetString("ValueTypeToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
-						CreateElementToolPrototype(store, global::Neumont.Tools.ORM.ObjectModel.ObjectType.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
+						CreateElementToolPrototype(store, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
 							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) 
 						}));
@@ -182,7 +182,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("ORM DesignerToolboxTab", resourceCulture), // Localized display name for the toolbox tab.
 						"ObjectifiedFactType", // F1 help keyword for the toolbox item.
 						resourceManager.GetString("ObjectifiedFactTypeToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
-						CreateElementToolPrototype(store, global::Neumont.Tools.ORM.ObjectModel.ObjectType.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
+						CreateElementToolPrototype(store, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
 							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) 
 						}));
@@ -197,7 +197,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("ORM DesignerToolboxTab", resourceCulture), // Localized display name for the toolbox tab.
 						"UnaryFactType", // F1 help keyword for the toolbox item.
 						resourceManager.GetString("UnaryFactTypeToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
-						CreateElementToolPrototype(store, global::Neumont.Tools.ORM.ObjectModel.FactType.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
+						CreateElementToolPrototype(store, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
 							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) 
 						}));
@@ -212,7 +212,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("ORM DesignerToolboxTab", resourceCulture), // Localized display name for the toolbox tab.
 						"BinaryFactType", // F1 help keyword for the toolbox item.
 						resourceManager.GetString("BinaryFactTypeToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
-						CreateElementToolPrototype(store, global::Neumont.Tools.ORM.ObjectModel.FactType.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
+						CreateElementToolPrototype(store, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
 							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) 
 						}));
@@ -227,7 +227,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("ORM DesignerToolboxTab", resourceCulture), // Localized display name for the toolbox tab.
 						"TernaryFactType", // F1 help keyword for the toolbox item.
 						resourceManager.GetString("TernaryFactTypeToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
-						CreateElementToolPrototype(store, global::Neumont.Tools.ORM.ObjectModel.FactType.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
+						CreateElementToolPrototype(store, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
 							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) 
 						}));
@@ -274,7 +274,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("ORM DesignerToolboxTab", resourceCulture), // Localized display name for the toolbox tab.
 						"InternalUniquenessConstraint", // F1 help keyword for the toolbox item.
 						resourceManager.GetString("InternalUniquenessConstraintToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
-						CreateElementToolPrototype(store, global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraint.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
+						CreateElementToolPrototype(store, global::ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
 							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) 
 						}));
@@ -289,7 +289,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("ORM DesignerToolboxTab", resourceCulture), // Localized display name for the toolbox tab.
 						"ExternalUniquenessConstraint", // F1 help keyword for the toolbox item.
 						resourceManager.GetString("ExternalUniquenessConstraintToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
-						CreateElementToolPrototype(store, global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraint.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
+						CreateElementToolPrototype(store, global::ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
 							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) 
 						}));
@@ -304,7 +304,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("ORM DesignerToolboxTab", resourceCulture), // Localized display name for the toolbox tab.
 						"EqualityConstraint", // F1 help keyword for the toolbox item.
 						resourceManager.GetString("EqualityConstraintToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
-						CreateElementToolPrototype(store, global::Neumont.Tools.ORM.ObjectModel.EqualityConstraint.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
+						CreateElementToolPrototype(store, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EqualityConstraint.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
 							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) 
 						}));
@@ -319,7 +319,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("ORM DesignerToolboxTab", resourceCulture), // Localized display name for the toolbox tab.
 						"ExclusionConstraint", // F1 help keyword for the toolbox item.
 						resourceManager.GetString("ExclusionConstraintToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
-						CreateElementToolPrototype(store, global::Neumont.Tools.ORM.ObjectModel.ExclusionConstraint.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
+						CreateElementToolPrototype(store, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusionConstraint.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
 							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) 
 						}));
@@ -334,7 +334,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("ORM DesignerToolboxTab", resourceCulture), // Localized display name for the toolbox tab.
 						"InclusiveOrConstraint", // F1 help keyword for the toolbox item.
 						resourceManager.GetString("InclusiveOrConstraintToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
-						CreateElementToolPrototype(store, global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraint.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
+						CreateElementToolPrototype(store, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraint.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
 							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) 
 						}));
@@ -349,7 +349,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("ORM DesignerToolboxTab", resourceCulture), // Localized display name for the toolbox tab.
 						"ExclusiveOrConstraint", // F1 help keyword for the toolbox item.
 						resourceManager.GetString("ExclusiveOrConstraintToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
-						CreateElementToolPrototype(store, global::Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
+						CreateElementToolPrototype(store, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusiveOrConstraintCoupler.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
 							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) 
 						}));
@@ -364,7 +364,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("ORM DesignerToolboxTab", resourceCulture), // Localized display name for the toolbox tab.
 						"SubsetConstraint", // F1 help keyword for the toolbox item.
 						resourceManager.GetString("SubsetConstraintToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
-						CreateElementToolPrototype(store, global::Neumont.Tools.ORM.ObjectModel.SubsetConstraint.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
+						CreateElementToolPrototype(store, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraint.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
 							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) 
 						}));
@@ -379,7 +379,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("ORM DesignerToolboxTab", resourceCulture), // Localized display name for the toolbox tab.
 						"FrequencyConstraint", // F1 help keyword for the toolbox item.
 						resourceManager.GetString("FrequencyConstraintToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
-						CreateElementToolPrototype(store, global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraint.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
+						CreateElementToolPrototype(store, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraint.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
 							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) 
 						}));
@@ -394,7 +394,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("ORM DesignerToolboxTab", resourceCulture), // Localized display name for the toolbox tab.
 						"RingConstraint", // F1 help keyword for the toolbox item.
 						resourceManager.GetString("RingConstraintToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
-						CreateElementToolPrototype(store, global::Neumont.Tools.ORM.ObjectModel.RingConstraint.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
+						CreateElementToolPrototype(store, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraint.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
 							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) 
 						}));
@@ -425,7 +425,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("ORM DesignerToolboxTab", resourceCulture), // Localized display name for the toolbox tab.
 						"ModelNote", // F1 help keyword for the toolbox item.
 						resourceManager.GetString("ModelNoteToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
-						CreateElementToolPrototype(store, global::Neumont.Tools.ORM.ObjectModel.ModelNote.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
+						CreateElementToolPrototype(store, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNote.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
 							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) 
 						}));

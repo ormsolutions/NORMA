@@ -117,235 +117,235 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.Description" xml:space="preserve">
     <value>(Preliminary) Bridge ORM Abstraction Model and Barker ER Model</value>
     <comment>Description for DslLibrary &apos;ORMAbstractionToBarkerERBridge&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.DisplayName" xml:space="preserve">
     <value>Map to Barker ER Model</value>
     <comment>DisplayName for DslLibrary &apos;ORMAbstractionToBarkerERBridge&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.MappingBarkerModel.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.MappingBarkerModel.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;MappingBarkerModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.MappingBarkerModel.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.MappingBarkerModel.DisplayName" xml:space="preserve">
     <value>MappingBarkerModel</value>
     <comment>DisplayName for DomainClass &apos;MappingBarkerModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;BarkerERModelGenerationSetting&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.DisplayName" xml:space="preserve">
     <value>BarkerERModelGenerationSetting</value>
     <comment>DisplayName for DomainClass &apos;BarkerERModelGenerationSetting&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting/CoreAlgorithmVersion.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.Depth</value>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting/CoreAlgorithmVersion.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.Depth</value>
     <comment>Description for DomainProperty &apos;CoreAlgorithmVersion&apos; on DomainClass &apos;BarkerERModelGenerationSetting&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting/CoreAlgorithmVersion.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting/CoreAlgorithmVersion.DisplayName" xml:space="preserve">
     <value>Depth</value>
     <comment>DisplayName for DomainProperty &apos;CoreAlgorithmVersion&apos; on DomainClass &apos;BarkerERModelGenerationSetting&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting/NameAlgorithmVersion.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.Depth</value>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting/NameAlgorithmVersion.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.Depth</value>
     <comment>Description for DomainProperty &apos;NameAlgorithmVersion&apos; on DomainClass &apos;BarkerERModelGenerationSetting&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting/NameAlgorithmVersion.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting/NameAlgorithmVersion.DisplayName" xml:space="preserve">
     <value>Depth</value>
     <comment>DisplayName for DomainProperty &apos;NameAlgorithmVersion&apos; on DomainClass &apos;BarkerERModelGenerationSetting&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel</value>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel</value>
     <comment>Description for DomainClass &apos;BarkerErModelIsForAbstractionModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel.DisplayName" xml:space="preserve">
     <value>Barker Er Model Is For Abstraction Model</value>
     <comment>DisplayName for DomainClass &apos;BarkerErModelIsForAbstractionModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel/BarkerErModel.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel/BarkerErModel.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainRole &apos;BarkerErModel&apos; on DomainRelationship &apos;BarkerErModelIsForAbstractionModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel/BarkerErModel.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel/BarkerErModel.DisplayName" xml:space="preserve">
     <value>Barker Er Model</value>
     <comment>DisplayName for DomainRole &apos;BarkerErModel&apos; on DomainRelationship &apos;BarkerErModelIsForAbstractionModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel/BarkerErModel.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel/BarkerErModel.PropertyDisplayName" xml:space="preserve">
     <value>Abstraction Model</value>
     <comment>PropertyDisplayName for DomainRole &apos;BarkerErModel&apos; on DomainRelationship &apos;BarkerErModelIsForAbstractionModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel/AbstractionModel.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel/AbstractionModel.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainRole &apos;AbstractionModel&apos; on DomainRelationship &apos;BarkerErModelIsForAbstractionModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel/AbstractionModel.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel/AbstractionModel.DisplayName" xml:space="preserve">
     <value>Abstraction Model</value>
     <comment>DisplayName for DomainRole &apos;AbstractionModel&apos; on DomainRelationship &apos;BarkerErModelIsForAbstractionModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel/AbstractionModel.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel/AbstractionModel.PropertyDisplayName" xml:space="preserve">
     <value>Barker Er Model</value>
     <comment>PropertyDisplayName for DomainRole &apos;AbstractionModel&apos; on DomainRelationship &apos;BarkerErModelIsForAbstractionModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType</value>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType</value>
     <comment>Description for DomainClass &apos;EntityTypeIsPrimarilyForConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType.DisplayName" xml:space="preserve">
     <value>Entity Type Is Primarily For Concept Type</value>
     <comment>DisplayName for DomainClass &apos;EntityTypeIsPrimarilyForConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType/EntityType.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType/EntityType.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainRole &apos;EntityType&apos; on DomainRelationship &apos;EntityTypeIsPrimarilyForConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType/EntityType.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType/EntityType.DisplayName" xml:space="preserve">
     <value>Entity Type</value>
     <comment>DisplayName for DomainRole &apos;EntityType&apos; on DomainRelationship &apos;EntityTypeIsPrimarilyForConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType/EntityType.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType/EntityType.PropertyDisplayName" xml:space="preserve">
     <value>Concept Type</value>
     <comment>PropertyDisplayName for DomainRole &apos;EntityType&apos; on DomainRelationship &apos;EntityTypeIsPrimarilyForConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType/ConceptType.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType/ConceptType.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;EntityTypeIsPrimarilyForConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType/ConceptType.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType/ConceptType.DisplayName" xml:space="preserve">
     <value>Concept Type</value>
     <comment>DisplayName for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;EntityTypeIsPrimarilyForConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType/ConceptType.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType/ConceptType.PropertyDisplayName" xml:space="preserve">
     <value>Entity Type</value>
     <comment>PropertyDisplayName for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;EntityTypeIsPrimarilyForConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel</value>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel</value>
     <comment>Description for DomainClass &apos;GenerationSettingTargetsBarkerERModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.DisplayName" xml:space="preserve">
     <value>Generation Setting Targets Barker ERModel</value>
     <comment>DisplayName for DomainClass &apos;GenerationSettingTargetsBarkerERModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel/GenerationSetting.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GenerationSetting</value>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel/GenerationSetting.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GenerationSetting</value>
     <comment>Description for DomainRole &apos;GenerationSetting&apos; on DomainRelationship &apos;GenerationSettingTargetsBarkerERModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel/GenerationSetting.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel/GenerationSetting.DisplayName" xml:space="preserve">
     <value>GenerationSetting</value>
     <comment>DisplayName for DomainRole &apos;GenerationSetting&apos; on DomainRelationship &apos;GenerationSettingTargetsBarkerERModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel/GenerationSetting.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel/GenerationSetting.PropertyDisplayName" xml:space="preserve">
     <value>Generated Barker ERModel</value>
     <comment>PropertyDisplayName for DomainRole &apos;GenerationSetting&apos; on DomainRelationship &apos;GenerationSettingTargetsBarkerERModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel/GeneratedBarkerERModel.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GeneratedBarkerERModel</value>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel/GeneratedBarkerERModel.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GeneratedBarkerERModel</value>
     <comment>Description for DomainRole &apos;GeneratedBarkerERModel&apos; on DomainRelationship &apos;GenerationSettingTargetsBarkerERModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel/GeneratedBarkerERModel.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel/GeneratedBarkerERModel.DisplayName" xml:space="preserve">
     <value>GeneratedBarkerERModel</value>
     <comment>DisplayName for DomainRole &apos;GeneratedBarkerERModel&apos; on DomainRelationship &apos;GenerationSettingTargetsBarkerERModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel/GeneratedBarkerERModel.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel/GeneratedBarkerERModel.PropertyDisplayName" xml:space="preserve">
     <value>Generation Setting</value>
     <comment>PropertyDisplayName for DomainRole &apos;GeneratedBarkerERModel&apos; on DomainRelationship &apos;GenerationSettingTargetsBarkerERModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild</value>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild</value>
     <comment>Description for DomainClass &apos;AttributeHasConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild.DisplayName" xml:space="preserve">
     <value>Attribute Has Concept Type Child</value>
     <comment>DisplayName for DomainClass &apos;AttributeHasConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild/Attribute.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild/Attribute.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainRole &apos;Attribute&apos; on DomainRelationship &apos;AttributeHasConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild/Attribute.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild/Attribute.DisplayName" xml:space="preserve">
     <value>Attribute</value>
     <comment>DisplayName for DomainRole &apos;Attribute&apos; on DomainRelationship &apos;AttributeHasConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild/Attribute.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild/Attribute.PropertyDisplayName" xml:space="preserve">
     <value>Concept Type Child Path</value>
     <comment>PropertyDisplayName for DomainRole &apos;Attribute&apos; on DomainRelationship &apos;AttributeHasConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild/ConceptTypeChild.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild/ConceptTypeChild.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainRole &apos;ConceptTypeChild&apos; on DomainRelationship &apos;AttributeHasConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild/ConceptTypeChild.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild/ConceptTypeChild.DisplayName" xml:space="preserve">
     <value>Concept Type Child</value>
     <comment>DisplayName for DomainRole &apos;ConceptTypeChild&apos; on DomainRelationship &apos;AttributeHasConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild/ConceptTypeChild.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild/ConceptTypeChild.PropertyDisplayName" xml:space="preserve">
     <value>Attribute</value>
     <comment>PropertyDisplayName for DomainRole &apos;ConceptTypeChild&apos; on DomainRelationship &apos;AttributeHasConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild</value>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild</value>
     <comment>Description for DomainClass &apos;BinaryAssociationHasConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild.DisplayName" xml:space="preserve">
     <value>Binary Association Has Concept Type Child</value>
     <comment>DisplayName for DomainClass &apos;BinaryAssociationHasConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild/BinaryAssociation.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild/BinaryAssociation.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainRole &apos;BinaryAssociation&apos; on DomainRelationship &apos;BinaryAssociationHasConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild/BinaryAssociation.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild/BinaryAssociation.DisplayName" xml:space="preserve">
     <value>Binary Association</value>
     <comment>DisplayName for DomainRole &apos;BinaryAssociation&apos; on DomainRelationship &apos;BinaryAssociationHasConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild/BinaryAssociation.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild/BinaryAssociation.PropertyDisplayName" xml:space="preserve">
     <value>Concept Type Child Path</value>
     <comment>PropertyDisplayName for DomainRole &apos;BinaryAssociation&apos; on DomainRelationship &apos;BinaryAssociationHasConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild/ConceptTypeChild.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild/ConceptTypeChild.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainRole &apos;ConceptTypeChild&apos; on DomainRelationship &apos;BinaryAssociationHasConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild/ConceptTypeChild.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild/ConceptTypeChild.DisplayName" xml:space="preserve">
     <value>Concept Type Child</value>
     <comment>DisplayName for DomainRole &apos;ConceptTypeChild&apos; on DomainRelationship &apos;BinaryAssociationHasConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild/ConceptTypeChild.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild/ConceptTypeChild.PropertyDisplayName" xml:space="preserve">
     <value>Binary Association</value>
     <comment>PropertyDisplayName for DomainRole &apos;ConceptTypeChild&apos; on DomainRelationship &apos;BinaryAssociationHasConceptTypeChild&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType</value>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType</value>
     <comment>Description for DomainClass &apos;BinaryAssociationHasConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType.DisplayName" xml:space="preserve">
     <value>Binary Association Has Concept Type</value>
     <comment>DisplayName for DomainClass &apos;BinaryAssociationHasConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType/BinaryAssociation.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType/BinaryAssociation.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainRole &apos;BinaryAssociation&apos; on DomainRelationship &apos;BinaryAssociationHasConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType/BinaryAssociation.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType/BinaryAssociation.DisplayName" xml:space="preserve">
     <value>Binary Association</value>
     <comment>DisplayName for DomainRole &apos;BinaryAssociation&apos; on DomainRelationship &apos;BinaryAssociationHasConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType/BinaryAssociation.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType/BinaryAssociation.PropertyDisplayName" xml:space="preserve">
     <value>Concept Type</value>
     <comment>PropertyDisplayName for DomainRole &apos;BinaryAssociation&apos; on DomainRelationship &apos;BinaryAssociationHasConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType/ConceptType.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType/ConceptType.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;BinaryAssociationHasConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType/ConceptType.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType/ConceptType.DisplayName" xml:space="preserve">
     <value>Concept Type</value>
     <comment>DisplayName for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;BinaryAssociationHasConceptType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType/ConceptType.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType/ConceptType.PropertyDisplayName" xml:space="preserve">
     <value>Binary Association</value>
     <comment>PropertyDisplayName for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;BinaryAssociationHasConceptType&apos;</comment>
   </data>
@@ -445,7 +445,7 @@ A DomainClass can be serialized as a moniker only if
 
 <!-- Common Public License Copyright Notice -->
 <!--
-	Neumont Object-Role Modeling Architect for Visual Studio
+	Natural Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
 

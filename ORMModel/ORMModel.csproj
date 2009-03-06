@@ -8,8 +8,8 @@
     <ProjectGuid>{888816BF-5497-49F9-8353-C8EF30CB9226}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Neumont.Tools.ORM</RootNamespace>
-    <AssemblyName>Neumont.Tools.ORM.$(TargetVisualStudioShortProductName)</AssemblyName>
+    <RootNamespace>ORMSolutions.ORMArchitect.Core</RootNamespace>
+    <AssemblyName>ORMSolutions.ORMArchitect.Core.$(TargetVisualStudioShortProductName)</AssemblyName>
     <WarningLevel>4</WarningLevel>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\ORMPackage.snk</AssemblyOriginatorKeyFile>
@@ -24,7 +24,7 @@
     <Optimize>true</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>$(DefineConstants);TRACE;DEBUG</DefineConstants>
-    <DocumentationFile>bin\Debug\Neumont.Tools.ORM.$(TargetVisualStudioShortProductName).xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\ORMSolutions.ORMArchitect.Core.$(TargetVisualStudioShortProductName).xml</DocumentationFile>
     <ErrorReport>prompt</ErrorReport>
     <NoWarn>1607</NoWarn>
     <UseVSHostingProcess>false</UseVSHostingProcess>
@@ -34,7 +34,7 @@
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>$(DefineConstants);TRACE</DefineConstants>
-    <DocumentationFile>bin\Release\Neumont.Tools.ORM.$(TargetVisualStudioShortProductName).xml</DocumentationFile>
+    <DocumentationFile>bin\Release\ORMSolutions.ORMArchitect.Core.$(TargetVisualStudioShortProductName).xml</DocumentationFile>
     <ErrorReport>prompt</ErrorReport>
     <NoWarn>1607</NoWarn>
     <UseVSHostingProcess>false</UseVSHostingProcess>
@@ -362,12 +362,12 @@
       <DependentUpon>ReadingEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ObjectModel\ORMModel.resx">
-      <LogicalName>Neumont.tools.ORM.ObjectModel.ORMModel.resources</LogicalName>
+      <LogicalName>ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel.resources</LogicalName>
       <DependentUpon>ORMModel.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ShapeModel\ORMDiagram.resx">
-      <LogicalName>Neumont.Tools.ORM.ShapeModel.ORMDiagram.resources</LogicalName>
+      <LogicalName>ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram.resources</LogicalName>
       <DependentUpon>ORMDiagram.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -393,7 +393,7 @@
     </Compile>
     <Compile Include="Framework\Shell\DiagramOrderDialog.cs">
       <SubType>Form</SubType>
-      <CustomToolNamespace>Neumont.Tools.Modeling.Shell</CustomToolNamespace>
+      <CustomToolNamespace>ORMSolutions.ORMArchitect.Framework.Shell</CustomToolNamespace>
     </Compile>
     <Compile Include="Framework\Shell\DiagramOrderDialog.Designer.cs">
       <DependentUpon>DiagramOrderDialog.cs</DependentUpon>
@@ -401,7 +401,7 @@
     <Compile Include="Framework\Shell\DiagramSurvey.cs" />
     <Compile Include="Framework\Shell\DiagramSurvey.SurveyQuestionProvider.cs">
       <SubType>Code</SubType>
-      <CustomToolNamespace>Neumont.Tools.Modeling.Shell</CustomToolNamespace>
+      <CustomToolNamespace>ORMSolutions.ORMArchitect.Framework.Shell</CustomToolNamespace>
       <AutoGen>True</AutoGen>
       <DependentUpon>DiagramSurvey.SurveyQuestionProvider.xml</DependentUpon>
     </Compile>
@@ -545,32 +545,32 @@
     </Compile>
     <None Include="Resources\DiagramBrowserImage.png" />
     <Content Include="Framework\Resources\ResourceStringsGenerator.xml">
-      <CustomToolNamespace>Neumont.Tools.Modeling</CustomToolNamespace>
+      <CustomToolNamespace>ORMSolutions.ORMArchitect.Framework</CustomToolNamespace>
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ResourceStringsGenerator.cs</LastGenOutput>
     </Content>
     <Content Include="Framework\Shell\DiagramDisplay.SerializationExtensions.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>DiagramDisplay.SerializationExtensions.cs</LastGenOutput>
-      <CustomToolNamespace>Neumont.Tools.Modeling.Shell</CustomToolNamespace>
+      <CustomToolNamespace>ORMSolutions.ORMArchitect.Framework.Shell</CustomToolNamespace>
     </Content>
     <Content Include="Framework\Shell\DiagramDisplay.AttachRules.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>DiagramDisplay.AttachRules.cs</LastGenOutput>
-      <CustomToolNamespace>Neumont.Tools.Modeling.Shell</CustomToolNamespace>
+      <CustomToolNamespace>ORMSolutions.ORMArchitect.Framework.Shell</CustomToolNamespace>
     </Content>
     <Content Include="Framework\Framework.AttachRules.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>Framework.AttachRules.cs</LastGenOutput>
-      <CustomToolNamespace>Neumont.Tools.Modeling</CustomToolNamespace>
+      <CustomToolNamespace>ORMSolutions.ORMArchitect.Framework</CustomToolNamespace>
     </Content>
     <Content Include="Framework\Shell\DiagramSurvey.SurveyQuestionProvider.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>DiagramSurvey.SurveyQuestionProvider.cs</LastGenOutput>
-      <CustomToolNamespace>Neumont.Tools.Modeling.Shell</CustomToolNamespace>
+      <CustomToolNamespace>ORMSolutions.ORMArchitect.Framework.Shell</CustomToolNamespace>
     </Content>
     <EmbeddedResource Include="Framework\Shell\DynamicSurveyTreeGrid\LinkOverlay.png">
-      <LogicalName>Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid.LinkOverlay.png</LogicalName>
+      <LogicalName>ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid.LinkOverlay.png</LogicalName>
     </EmbeddedResource>
     <Content Include="ObjectModel\ORMCore.SurveyQuestionProvider.xml">
       <Generator>NUPlixLoader</Generator>
@@ -674,14 +674,14 @@
       <DependentUpon>TransactionLogViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ShapeModel\GeneratedCode\DomainModelResx.resx">
-      <LogicalName>Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx.resources</LogicalName>
+      <LogicalName>ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx.resources</LogicalName>
       <DependentUpon>DomainModelResx.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <SubType>Designer</SubType>
       <DesignTime>True</DesignTime>
     </EmbeddedResource>
     <EmbeddedResource Include="ObjectModel\GeneratedCode\DomainModelResx.resx">
-      <LogicalName>Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx.resources</LogicalName>
+      <LogicalName>ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx.resources</LogicalName>
       <DependentUpon>DomainModelResx.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -732,25 +732,25 @@
     <None Include="Framework\Shell\GeneratedCode\DomainClasses.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DomainClasses.cs</LastGenOutput>
-      <CustomToolNamespace>Neumont.Tools.Modeling.Shell</CustomToolNamespace>
+      <CustomToolNamespace>ORMSolutions.ORMArchitect.Framework.Shell</CustomToolNamespace>
     </None>
     <None Include="Framework\Shell\GeneratedCode\DomainModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DomainModel.cs</LastGenOutput>
-      <CustomToolNamespace>Neumont.Tools.Modeling.Shell</CustomToolNamespace>
+      <CustomToolNamespace>ORMSolutions.ORMArchitect.Framework.Shell</CustomToolNamespace>
     </None>
     <None Include="Framework\Shell\GeneratedCode\DomainModelResx.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DomainModelResx.resx</LastGenOutput>
-      <CustomToolNamespace>Neumont.Tools.Modeling.Shell</CustomToolNamespace>
+      <CustomToolNamespace>ORMSolutions.ORMArchitect.Framework.Shell</CustomToolNamespace>
     </None>
     <None Include="Framework\Shell\GeneratedCode\DomainRelationships.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DomainRelationships.cs</LastGenOutput>
-      <CustomToolNamespace>Neumont.Tools.Modeling.Shell</CustomToolNamespace>
+      <CustomToolNamespace>ORMSolutions.ORMArchitect.Framework.Shell</CustomToolNamespace>
     </None>
     <EmbeddedResource Include="Framework\Shell\DiagramDisplay.xsd">
-      <LogicalName>Neumont.Tools.Modeling.Shell.DiagramDisplay.xsd</LogicalName>
+      <LogicalName>ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplay.xsd</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Framework\SystemCore.dsl" />
@@ -848,12 +848,12 @@
       <MergeTarget>Shell\PackageResources\VSPackage.resx</MergeTarget>
     </CompileVsct>
     <EmbeddedResource Include="Framework\FrameworkServices.resx">
-      <LogicalName>Neumont.Tools.Modeling.IFrameworkServices.resources</LogicalName>
+      <LogicalName>ORMSolutions.ORMArchitect.Framework.IFrameworkServices.resources</LogicalName>
       <DependentUpon>FrameworkServices.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Framework\GeneratedCode\DomainModelResx.resx">
-      <LogicalName>Neumont.Tools.Modeling.GeneratedCode.FrameworkDomainModelResx.resources</LogicalName>
+      <LogicalName>ORMSolutions.ORMArchitect.Framework.GeneratedCode.FrameworkDomainModelResx.resources</LogicalName>
       <DependentUpon>DomainModelResx.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <SubType>Designer</SubType>
@@ -864,7 +864,7 @@
       <DependentUpon>DiagramOrderDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Framework\Shell\GeneratedCode\DomainModelResx.resx">
-      <LogicalName>Neumont.Tools.ORM.GeneratedCode.DiagramDisplayDomainModelResx.resources</LogicalName>
+      <LogicalName>ORMSolutions.ORMArchitect.Core.GeneratedCode.DiagramDisplayDomainModelResx.resources</LogicalName>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DomainModelResx.tt</DependentUpon>

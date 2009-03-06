@@ -1,6 +1,6 @@
 ﻿#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -24,14 +24,15 @@
 
 using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
-namespace Neumont.Tools.ORM.ExtensionExample
+namespace ORMSolutions.ORMArchitect.ExtensionExample
 {
 	/// <summary>
 	/// DomainClass MyCustomExtensionElement
-	/// Description for Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement
+	/// Description for
+	/// ORMSolutions.ORMArchitect.ExtensionExample.MyCustomExtensionElement
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement.DisplayName", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement.Description", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ExtensionExample.MyCustomExtensionElement.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ExtensionExample.ExtensionDomainModel), "ORMSolutions.ORMArchitect.ExtensionExample.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ExtensionExample.MyCustomExtensionElement.Description", typeof(global::ORMSolutions.ORMArchitect.ExtensionExample.ExtensionDomainModel), "ORMSolutions.ORMArchitect.ExtensionExample.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("14db7e59-72e3-441f-9993-88fb3e3c01b3")]
 	public partial class MyCustomExtensionElement : DslModeling::ModelElement
@@ -79,11 +80,11 @@ namespace Neumont.Tools.ORM.ExtensionExample
 		/// <summary>
 		/// Gets or sets the value of TestProperty domain property.
 		/// Description for
-		/// Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement.TestProperty
+		/// ORMSolutions.ORMArchitect.ExtensionExample.MyCustomExtensionElement.TestProperty
 		/// </summary>
-		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.ORM.ExtensionExample.Design.TestElementPicker), typeof(global::System.Drawing.Design.UITypeEditor))]
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement/TestProperty.DisplayName", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement/TestProperty.Description", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.Editor(typeof(global::ORMSolutions.ORMArchitect.ExtensionExample.Design.TestElementPicker), typeof(global::System.Drawing.Design.UITypeEditor))]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ExtensionExample.MyCustomExtensionElement/TestProperty.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ExtensionExample.ExtensionDomainModel), "ORMSolutions.ORMArchitect.ExtensionExample.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ExtensionExample.MyCustomExtensionElement/TestProperty.Description", typeof(global::ORMSolutions.ORMArchitect.ExtensionExample.ExtensionDomainModel), "ORMSolutions.ORMArchitect.ExtensionExample.GeneratedCode.DomainModelResx")]
 		[global::System.ComponentModel.DefaultValue("Default value")]
 		[DslModeling::DomainObjectId("6825c613-7e2a-4d14-8277-0db3b86b1210")]
 		public global::System.String TestProperty
@@ -164,16 +165,16 @@ namespace Neumont.Tools.ORM.ExtensionExample
 		/// <summary>
 		/// Storage for CustomEnum
 		/// </summary>
-		private TestEnumeration customEnumPropertyStorage = Neumont.Tools.ORM.ExtensionExample.TestEnumeration.Zero;
+		private TestEnumeration customEnumPropertyStorage = ORMSolutions.ORMArchitect.ExtensionExample.TestEnumeration.Zero;
 		
 		/// <summary>
 		/// Gets or sets the value of CustomEnum domain property.
 		/// Description for
-		/// Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement.CustomEnum
+		/// ORMSolutions.ORMArchitect.ExtensionExample.MyCustomExtensionElement.CustomEnum
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement/CustomEnum.DisplayName", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement/CustomEnum.Description", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
-		[global::System.ComponentModel.DefaultValue(Neumont.Tools.ORM.ExtensionExample.TestEnumeration.Zero)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ExtensionExample.MyCustomExtensionElement/CustomEnum.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ExtensionExample.ExtensionDomainModel), "ORMSolutions.ORMArchitect.ExtensionExample.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ExtensionExample.MyCustomExtensionElement/CustomEnum.Description", typeof(global::ORMSolutions.ORMArchitect.ExtensionExample.ExtensionDomainModel), "ORMSolutions.ORMArchitect.ExtensionExample.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.ExtensionExample.TestEnumeration.Zero)]
 		[DslModeling::DomainObjectId("26aaf88d-2051-4d87-b863-bf330d7123bb")]
 		public TestEnumeration CustomEnum
 		{
@@ -245,18 +246,18 @@ namespace Neumont.Tools.ORM.ExtensionExample
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORM.ExtensionExample
+namespace ORMSolutions.ORMArchitect.ExtensionExample
 {
 	/// <summary>
 	/// DomainClass ObjectTypeRequiresMeaningfulNameError
 	/// Description for
-	/// Neumont.Tools.ORM.ExtensionExample.ObjectTypeRequiresMeaningfulNameError
+	/// ORMSolutions.ORMArchitect.ExtensionExample.ObjectTypeRequiresMeaningfulNameError
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ExtensionExample.ObjectTypeRequiresMeaningfulNameError.DisplayName", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ExtensionExample.ObjectTypeRequiresMeaningfulNameError.Description", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ExtensionExample.ObjectTypeRequiresMeaningfulNameError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ExtensionExample.ExtensionDomainModel), "ORMSolutions.ORMArchitect.ExtensionExample.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ExtensionExample.ObjectTypeRequiresMeaningfulNameError.Description", typeof(global::ORMSolutions.ORMArchitect.ExtensionExample.ExtensionDomainModel), "ORMSolutions.ORMArchitect.ExtensionExample.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("b9448302-beb4-451e-bfd8-cb824201784c")]
-	public partial class ObjectTypeRequiresMeaningfulNameError : global::Neumont.Tools.ORM.ObjectModel.ModelError
+	public partial class ObjectTypeRequiresMeaningfulNameError : global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelError
 	{
 		#region Constructors, domain class Id
 	

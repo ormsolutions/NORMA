@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -17,11 +17,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
-using Neumont.Tools.ORM.ObjectModel;
+using ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using System.Windows.Forms;
 
-namespace Neumont.Tools.ORM.ObjectModel
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	public partial class ObjectType : IAnswerSurveyQuestion<SurveyErrorState>, IAnswerSurveyQuestion<SurveyElementType>, IAnswerSurveyQuestion<SurveyQuestionGlyph>, ISurveyNode
 	{

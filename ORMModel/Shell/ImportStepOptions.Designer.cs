@@ -1,4 +1,4 @@
-namespace Neumont.Tools.ORM.Shell
+namespace ORMSolutions.ORMArchitect.Core.Shell
 {
 	partial class ImportStepOptionsBase
 	{

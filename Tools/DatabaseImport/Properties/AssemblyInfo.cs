@@ -2,6 +2,6 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 
 [assembly: ComVisible(false)]
-[assembly: AssemblyTitle("Neumont.Tools.ORM.DatabaseImport.dll")]
-[assembly: AssemblyProduct("Neumont ORM Architect for Visual Studio")]
-[assembly: AssemblyDescription("Neumont ORM Architect for Visual Studio - Database Import DLL")]
+[assembly: AssemblyTitle("ORMSolutions.ORMArchitect.DatabaseImport.dll")]
+[assembly: AssemblyProduct("Natural Object-Role Modeling Architect for Visual Studio")]
+[assembly: AssemblyDescription("Natural Object-Role Modeling Architect for Visual Studio - Database Import DLL")]

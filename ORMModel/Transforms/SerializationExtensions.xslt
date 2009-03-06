@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
-	Neumont Object-Role Modeling Architect for Visual Studio
+	Natural Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
-	Copyright © Matthew Curland. All rights reserved.
+	Copyright © ORM Solutions, LLC. All rights reserved.
 
 	The use and distribution terms for this software are covered by the
 	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
@@ -31,7 +31,7 @@
 			<plx:namespaceImport name="System.Collections.Generic"/>
 			<plx:namespaceImport name="Microsoft.VisualStudio.Modeling"/>
 			<plx:namespaceImport name="Microsoft.VisualStudio.Modeling.Diagrams"/>
-			<plx:namespaceImport name="Neumont.Tools.Modeling.Shell"/>
+			<plx:namespaceImport name="ORMSolutions.ORMArchitect.Framework.Shell"/>
 			<plx:namespace name="{$CustomToolNamespace}">
 				<xsl:if test="se:Copyright">
 					<plx:leadingInfo>

@@ -3,7 +3,7 @@ using System.Reflection;
 
 // Common Public License Copyright Notice
 // /**************************************************************************\
-// * Neumont Object-Role Modeling Architect for Visual Studio                 *
+// * Natural Object-Role Modeling Architect for Visual Studio                 *
 // *                                                                          *
 // * Copyright © Neumont University. All rights reserved.                     *
 // *                                                                          *
@@ -16,10 +16,10 @@ using System.Reflection;
 // * You must not remove this notice, or any other, from this software.       *
 // \**************************************************************************/
 
-namespace Neumont.Tools.ORM.Views.BarkerERView
+namespace ORMSolutions.ORMArchitect.Views.BarkerERView
 {
 	#region Attach rules to BarkerERShapeDomainModel model
-	partial class BarkerERShapeDomainModel : Neumont.Tools.Modeling.Shell.IDomainModelEnablesRulesAfterDeserialization
+	partial class BarkerERShapeDomainModel : ORMSolutions.ORMArchitect.Framework.Shell.IDomainModelEnablesRulesAfterDeserialization
 	{
 		private static Type[] myCustomDomainModelTypes;
 		private static Type[] CustomDomainModelTypes
@@ -71,7 +71,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 		/// <seealso cref="Microsoft.VisualStudio.Modeling.DomainModel.GetCustomDomainModelTypes"/>
 		protected override Type[] GetCustomDomainModelTypes()
 		{
-			if (Neumont.Tools.Modeling.FrameworkDomainModel.InitializingToolboxItems)
+			if (ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InitializingToolboxItems)
 			{
 				return Type.EmptyTypes;
 			}
@@ -100,7 +100,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
 		}
-		void Neumont.Tools.Modeling.Shell.IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.Store store)
+		void ORMSolutions.ORMArchitect.Framework.Shell.IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.Store store)
 		{
 			this.EnableRulesAfterDeserialization(store);
 		}
@@ -110,7 +110,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 	#region Rule classes for BarkerERDiagram
 	partial class BarkerERDiagram
 	{
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class ConceptTypeDetachingFromEntityTypeRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -120,9 +120,9 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 			}
 			/// <summary>
 			/// Provide the following method in class: 
-			/// Neumont.Tools.ORM.Views.BarkerERView.BarkerERDiagram
+			/// ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram
 			/// /// <summary>
-			/// /// DeletingRule: typeof(Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType)
+			/// /// DeletingRule: typeof(ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType)
 			/// /// </summary>
 			/// private static void ConceptTypeDetachingFromEntityTypeRule(ElementDeletingEventArgs e)
 			/// {
@@ -131,12 +131,12 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.Views.BarkerERView.BarkerERDiagram.ConceptTypeDetachingFromEntityTypeRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.ConceptTypeDetachingFromEntityTypeRule");
 				BarkerERDiagram.ConceptTypeDetachingFromEntityTypeRule(e);
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.Views.BarkerERView.BarkerERDiagram.ConceptTypeDetachingFromEntityTypeRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.ConceptTypeDetachingFromEntityTypeRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class ConceptTypeDetachingFromObjectTypeRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -146,9 +146,9 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 			}
 			/// <summary>
 			/// Provide the following method in class: 
-			/// Neumont.Tools.ORM.Views.BarkerERView.BarkerERDiagram
+			/// ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram
 			/// /// <summary>
-			/// /// DeletingRule: typeof(Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType)
+			/// /// DeletingRule: typeof(ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType)
 			/// /// </summary>
 			/// private static void ConceptTypeDetachingFromObjectTypeRule(ElementDeletingEventArgs e)
 			/// {
@@ -157,12 +157,12 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.Views.BarkerERView.BarkerERDiagram.ConceptTypeDetachingFromObjectTypeRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.ConceptTypeDetachingFromObjectTypeRule");
 				BarkerERDiagram.ConceptTypeDetachingFromObjectTypeRule(e);
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.Views.BarkerERView.BarkerERDiagram.ConceptTypeDetachingFromObjectTypeRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.ConceptTypeDetachingFromObjectTypeRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.EntityRelationshipModels.Barker.Attribute), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class DisplayAttributePropertyChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -172,9 +172,9 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 			}
 			/// <summary>
 			/// Provide the following method in class: 
-			/// Neumont.Tools.ORM.Views.BarkerERView.BarkerERDiagram
+			/// ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram
 			/// /// <summary>
-			/// /// ChangeRule: typeof(Neumont.Tools.EntityRelationshipModels.Barker.Attribute)
+			/// /// ChangeRule: typeof(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute)
 			/// /// </summary>
 			/// private static void DisplayAttributePropertyChangedRule(ElementPropertyChangedEventArgs e)
 			/// {
@@ -183,12 +183,12 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.Views.BarkerERView.BarkerERDiagram.DisplayAttributePropertyChangedRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.DisplayAttributePropertyChangedRule");
 				BarkerERDiagram.DisplayAttributePropertyChangedRule(e);
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.Views.BarkerERView.BarkerERDiagram.DisplayAttributePropertyChangedRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.DisplayAttributePropertyChangedRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.EntityRelationshipModels.Barker.EntityType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class DisplayEntityTypePropertyChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -198,9 +198,9 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 			}
 			/// <summary>
 			/// Provide the following method in class: 
-			/// Neumont.Tools.ORM.Views.BarkerERView.BarkerERDiagram
+			/// ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram
 			/// /// <summary>
-			/// /// ChangeRule: typeof(Neumont.Tools.EntityRelationshipModels.Barker.EntityType)
+			/// /// ChangeRule: typeof(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType)
 			/// /// </summary>
 			/// private static void DisplayEntityTypePropertyChangedRule(ElementPropertyChangedEventArgs e)
 			/// {
@@ -209,12 +209,12 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.Views.BarkerERView.BarkerERDiagram.DisplayEntityTypePropertyChangedRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.DisplayEntityTypePropertyChangedRule");
 				BarkerERDiagram.DisplayEntityTypePropertyChangedRule(e);
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.Views.BarkerERView.BarkerERDiagram.DisplayEntityTypePropertyChangedRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.DisplayEntityTypePropertyChangedRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(BarkerERDiagram), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(BarkerERDiagram), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class NameChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -224,7 +224,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 			}
 			/// <summary>
 			/// Provide the following method in class: 
-			/// Neumont.Tools.ORM.Views.BarkerERView.BarkerERDiagram
+			/// ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram
 			/// /// <summary>
 			/// /// ChangeRule: typeof(BarkerERDiagram)
 			/// /// </summary>
@@ -235,19 +235,19 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.Views.BarkerERView.BarkerERDiagram.NameChangedRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.NameChangedRule");
 				BarkerERDiagram.NameChangedRule(e);
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.Views.BarkerERView.BarkerERDiagram.NameChangedRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.NameChangedRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddConnectionRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddConnectionRulePriority)]
 		private sealed class BinaryAssociationAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
 			/// <summary>
 			/// Provide the following method in class: 
-			/// Neumont.Tools.ORM.Views.BarkerERView.BarkerERDiagram
+			/// ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram
 			/// /// <summary>
-			/// /// AddRule: typeof(Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+			/// /// AddRule: typeof(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
 			/// /// </summary>
 			/// private static void BinaryAssociationAddedRule(ElementAddedEventArgs e)
 			/// {
@@ -256,9 +256,9 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.Views.BarkerERView.BarkerERDiagram.BinaryAssociationAddedRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.BinaryAssociationAddedRule");
 				BarkerERDiagram.BinaryAssociationAddedRule(e);
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.Views.BarkerERView.BarkerERDiagram.BinaryAssociationAddedRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.BinaryAssociationAddedRule");
 			}
 		}
 	}

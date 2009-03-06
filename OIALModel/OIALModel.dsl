@@ -28,7 +28,7 @@
 	<Attributes>
 		<ClrAttribute Name="DslModeling::ExtendsDomainModel">
 			<Parameters>
-				<AttributeParameter Value="&quot;3EAE649F-E654-4D04-8289-C25D2C0322D8&quot;/*Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel*/"/>
+				<AttributeParameter Value="&quot;3EAE649F-E654-4D04-8289-C25D2C0322D8&quot;/*ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel*/"/>
 			</Parameters>
 		</ClrAttribute>
 	</Attributes>
@@ -109,7 +109,7 @@
 			<Properties>
 				<DomainProperty Name="Modality" DefaultValue="" DisplayName="Modality" Id="5CCE8E32-9FB1-487F-9249-357584F06F7C">
 					<Type>
-						<DomainEnumerationMoniker Name="/Neumont.Tools.ORM.ObjectModel/ConstraintModality"/>
+						<DomainEnumerationMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/ConstraintModality"/>
 					</Type>
 				</DomainProperty>
 			</Properties>
@@ -248,7 +248,7 @@
 			<Target>
 				<DomainRole Name="ORMModel" PropertyName="OIALModel" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="ORMModel" Id="CE948D50-A437-4172-B16C-74EB8E59E9B5">
 					<RolePlayer>
-						<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/ORMModel"/>
+						<DomainClassMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/ORMModel"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -396,7 +396,7 @@
 			<Target>
 				<DomainRole Name="ValueType" PropertyName="InformationTypeFormat" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="ValueType" Id="4C90D645-49CA-40B7-971E-BB17E2CF79A1">
 					<RolePlayer>
-						<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/ObjectType"/>
+						<DomainClassMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/ObjectType"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -413,7 +413,7 @@
 			<Target>
 				<DomainRole Name="ObjectType" PropertyName="ConceptType" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="ObjectType" Id="A2EE78AA-C18A-417F-BB1D-335C9DF8DD0C">
 					<RolePlayer>
-						<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/ObjectType"/>
+						<DomainClassMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/ObjectType"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -561,7 +561,7 @@
 			<Target>
 				<DomainRole Name="PathRole" PropertyName="ConceptTypeChild" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="PathRole" Id="8E2CFDB8-F6D4-44E2-AE9C-BB72E5052809">
 					<RolePlayer>
-						<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/RoleBase"/>
+						<DomainClassMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/RoleBase"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -590,13 +590,13 @@
 		<DomainEnumeration Namespace="Neumont.Tools.ORM.OIALModel" Name="MandatoryConstraintModality" Description="A list of constraint modalities for simple mandatory role constraints used in &lt;see cref=&quot;ConceptTypeChild&quot;/&gt; relationships.">
 			<Literals>
 				<EnumerationLiteral Name ="NotMandatory" Value="0" Description="See &lt;see langword=&quot;null&quot;/&gt;."/>
-				<EnumerationLiteral Name ="Alethic" Value="1" Description="See &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.ConstraintModality.Alethic&quot;/&gt;."/>
-				<EnumerationLiteral Name ="Deontic" Value="2" Description="See &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.ConstraintModality.Deontic&quot;/&gt;."/>
+				<EnumerationLiteral Name ="Alethic" Value="1" Description="See &lt;see cref=&quot;ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintModality.Alethic&quot;/&gt;."/>
+				<EnumerationLiteral Name ="Deontic" Value="2" Description="See &lt;see cref=&quot;ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintModality.Deontic&quot;/&gt;."/>
 			</Literals>
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;MandatoryConstraintModality, global::Neumont.Tools.ORM.OIALModel.OIALDomainModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;MandatoryConstraintModality, global::Neumont.Tools.ORM.OIALModel.OIALDomainModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>

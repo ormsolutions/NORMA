@@ -3,7 +3,7 @@ using System.Reflection;
 
 // Common Public License Copyright Notice
 // /**************************************************************************\
-// * Neumont Object-Role Modeling Architect for Visual Studio                 *
+// * Natural Object-Role Modeling Architect for Visual Studio                 *
 // *                                                                          *
 // * Copyright © Neumont University. All rights reserved.                     *
 // *                                                                          *
@@ -16,7 +16,7 @@ using System.Reflection;
 // * You must not remove this notice, or any other, from this software.       *
 // \**************************************************************************/
 
-namespace Neumont.Tools.EntityRelationshipModels.Barker
+namespace ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker
 {
 	#region Attach rules to BarkerDomainModel model
 	partial class BarkerDomainModel
@@ -44,7 +44,7 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// <seealso cref="Microsoft.VisualStudio.Modeling.DomainModel.GetCustomDomainModelTypes"/>
 		protected override Type[] GetCustomDomainModelTypes()
 		{
-			if (Neumont.Tools.Modeling.FrameworkDomainModel.InitializingToolboxItems)
+			if (ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InitializingToolboxItems)
 			{
 				return Type.EmptyTypes;
 			}

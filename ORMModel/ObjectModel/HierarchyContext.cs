@@ -1,7 +1,7 @@
 using Microsoft.VisualStudio.Modeling;
 using System;
 using System.Collections.Generic;
-namespace Neumont.Tools.ORM.ObjectModel
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
 	/// Specifies the order that <see cref="IHierarchyContextEnabled"/> elements should

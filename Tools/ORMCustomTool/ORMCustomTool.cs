@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -40,7 +40,7 @@ using IOleServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 using IVsTextLines = Microsoft.VisualStudio.TextManager.Interop.IVsTextLines;
 using IVsTextView = Microsoft.VisualStudio.TextManager.Interop.IVsTextView;
 
-namespace Neumont.Tools.ORM.ORMCustomTool
+namespace ORMSolutions.ORMArchitect.ORMCustomTool
 {
 	/// <summary>
 	/// <see cref="ORMCustomTool"/> coordinates generation activities between various <see cref="IORMGenerator"/>s, and
@@ -54,9 +54,9 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 		private const string EXTENSION_ORM = ".orm";
 		private const string EXTENSION_XML = ".xml";
 #if VISUALSTUDIO_9_0
-		private const string GENERATORS_REGISTRYROOT = @"Software\Neumont\ORM Architect for Visual Studio 2008\Generators";
+		private const string GENERATORS_REGISTRYROOT = @"Software\ORM Solutions\Natural ORM Architect for Visual Studio 2008\Generators";
 #else //!VISUALSTUDIO_9_0
-		private const string GENERATORS_REGISTRYROOT = @"Software\Neumont\ORM Architect for Visual Studio 2005\Generators";
+		private const string GENERATORS_REGISTRYROOT = @"Software\ORM Solutions\Natural ORM Architect for Visual Studio 2005\Generators";
 #endif //!VISUALSTUDIO_9_0
 		private const string ITEMMETADATA_DEPENDENTUPON = "DependentUpon";
 		private const string ITEMMETADATA_GENERATOR = "Generator";

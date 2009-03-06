@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -24,7 +24,7 @@ using System.Reflection;
 using System.Xml;
 using System.Windows.Forms;
 
-namespace Neumont.Tools.ORM.ORMCustomTool
+namespace ORMSolutions.ORMArchitect.ORMCustomTool
 {
 	/// <summary>
 	/// Extensions are additional named requirements for a given document format.

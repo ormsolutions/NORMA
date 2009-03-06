@@ -4,17 +4,17 @@ using System.Text;
 using System.Xml.Serialization;
 using System.Xml;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Neumont.Tools.Modeling.Design;
+using ORMSolutions.ORMArchitect.Framework.Design;
 using System.ComponentModel;
-using Neumont.Tools.ORM.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
-using Neumont.Tools.RelationalModels.ConceptualDatabase;
-using Neumont.Tools.ORMAbstraction;
-using Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge;
-using Neumont.Tools.ORMToORMAbstractionBridge;
-using Neumont.Tools.Modeling.Shell;
+using ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase;
+using ORMSolutions.ORMArchitect.ORMAbstraction;
+using ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge;
+using ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge;
+using ORMSolutions.ORMArchitect.Framework.Shell;
 
-namespace Neumont.Tools.ORM.Views.RelationalView
+namespace ORMSolutions.ORMArchitect.Views.RelationalView
 {
 	partial class RelationalDiagram : IXmlSerializable
 	{
@@ -55,7 +55,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			return null;
 		}
 		/// <summary>
-		/// Processes the XML that this <see cref="T:Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram"/> has
+		/// Processes the XML that this <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram"/> has
 		/// written.
 		/// </summary>
 		/// <param name="reader">A <see cref="T:System.Xml.XmlReader"/> that will read the XML associated with the
@@ -115,7 +115,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			}
 		}
 		/// <summary>
-		/// Serializes this <see cref="T:Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram"/>.
+		/// Serializes this <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram"/>.
 		/// </summary>
 		/// <param name="writer">A <see cref="T:System.Xml.XmlWriter"/> that will write the custom serialization contents.</param>
 		void IXmlSerializable.WriteXml(XmlWriter writer)

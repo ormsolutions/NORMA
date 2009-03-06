@@ -256,7 +256,7 @@
     <value>chkLbOptions</value>
   </data>
   <data name="&gt;&gt;chkLbOptions.Type" xml:space="preserve">
-    <value>Neumont.Tools.Modeling.Design.FlagsEnumListBox, Neumont.Tools.ORM, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f</value>
+    <value>ORMSolutions.ORMArchitect.Framework.Design.FlagsEnumListBox, ORMSolutions.ORMArchitect.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f</value>
   </data>
   <data name="&gt;&gt;chkLbOptions.Parent" xml:space="preserve">
     <value>gbOptions</value>
@@ -304,7 +304,7 @@
     <value>chkLbOptions</value>
   </data>
   <data name="&gt;&gt;chkLbOptions.Type" xml:space="preserve">
-    <value>Neumont.Tools.Modeling.Design.FlagsEnumListBox, Neumont.Tools.ORM, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f</value>
+    <value>ORMSolutions.ORMArchitect.Framework.Design.FlagsEnumListBox, ORMSolutions.ORMArchitect.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f</value>
   </data>
   <data name="&gt;&gt;chkLbOptions.Parent" xml:space="preserve">
     <value>gbOptions</value>

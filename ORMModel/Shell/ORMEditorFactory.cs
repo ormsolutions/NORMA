@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -20,7 +20,7 @@ using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Modeling.Shell;
 using VsShell = Microsoft.VisualStudio.Shell.Interop;
 
-namespace Neumont.Tools.ORM.Shell
+namespace ORMSolutions.ORMArchitect.Core.Shell
 {
 	/// <summary>
 	/// <see cref="ModelingEditorFactory"/> for the ORM Designer.

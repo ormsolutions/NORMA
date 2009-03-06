@@ -2,7 +2,7 @@
 /**************************************************************************\
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
-* Copyright © Matthew Curland. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -20,7 +20,7 @@ using Microsoft.VisualStudio.VirtualTreeGrid;
 using System.Reflection;
 using System.Reflection.Emit;
 
-namespace Neumont.Tools.Modeling.Shell
+namespace ORMSolutions.ORMArchitect.Framework.Shell
 {
 	/// <summary>
 	/// A version of <see cref="MultiColumnTree"/> with overrides

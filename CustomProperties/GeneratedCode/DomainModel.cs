@@ -1,6 +1,6 @@
 ﻿#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -24,15 +24,15 @@
 
 using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
-namespace Neumont.Tools.ORM.CustomProperties
+namespace ORMSolutions.ORMArchitect.CustomProperties
 {
 	/// <summary>
 	/// DomainModel CustomPropertiesDomainModel
 	/// Add custom properties to ORM model elements
 	/// </summary>
-	[DslModeling::ExtendsDomainModel("3EAE649F-E654-4D04-8289-C25D2C0322D8"/*Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel*/)]
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel.DisplayName", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+	[DslModeling::ExtendsDomainModel("3EAE649F-E654-4D04-8289-C25D2C0322D8"/*ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel*/)]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 	[DslModeling::DomainObjectId("b1430d25-af34-47e3-bfff-561deef0a2b1")]
 	internal partial class CustomPropertiesDomainModel : DslModeling::DomainModel
 	{
@@ -184,7 +184,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 		/// <summary>
 		/// The base name of this model's resources.
 		/// </summary>
-		public const string ResourceBaseName = "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx";
+		public const string ResourceBaseName = "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx";
 		
 		/// <summary>
 		/// Gets the DomainModel's ResourceManager. If the ResourceManager does not already exist, then it is created.
@@ -308,8 +308,8 @@ namespace Neumont.Tools.ORM.CustomProperties
 		public CustomPropertiesDeleteClosureBase()
 		{
 			#region Initialize DomainData Table
-			DomainRoles.Add(global::Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition.CustomPropertyDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.CustomPropertyDefinitionDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition.CustomPropertyDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.CustomPropertyDefinitionDomainRoleId, true);
 			#endregion
 		}
 		/// <summary>
@@ -428,150 +428,161 @@ namespace Neumont.Tools.ORM.CustomProperties
 	#endregion
 		
 }
-namespace Neumont.Tools.ORM.CustomProperties
+namespace ORMSolutions.ORMArchitect.CustomProperties
 {
 	/// <summary>
 	/// DomainEnumeration: ORMTypes
-	/// Description for Neumont.Tools.ORM.CustomProperties.ORMTypes
+	/// Description for ORMSolutions.ORMArchitect.CustomProperties.ORMTypes
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<ORMTypes, global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<ORMTypes, global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel>))]
 	[global::System.Flags]
 	internal enum ORMTypes
 	{
 		/// <summary>
 		/// None
-		/// Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.None
+		/// Description for ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.None
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.ORMTypes/None.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/None.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 		None = 0,
 		/// <summary>
 		/// EntityType
-		/// Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.EntityType
+		/// Description for ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.EntityType
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.ORMTypes/EntityType.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/EntityType.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 		EntityType = 1,
 		/// <summary>
 		/// ValueType
-		/// Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.ValueType
+		/// Description for ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.ValueType
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.ORMTypes/ValueType.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/ValueType.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 		ValueType = 2,
 		/// <summary>
 		/// FactType
-		/// Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.FactType
+		/// Description for ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.FactType
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.ORMTypes/FactType.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/FactType.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 		FactType = 4,
 		/// <summary>
 		/// SubtypeFact
-		/// Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.SubtypeFact
+		/// Description for ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.SubtypeFact
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.ORMTypes/SubtypeFact.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/SubtypeFact.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 		SubtypeFact = 8,
 		/// <summary>
 		/// Role
-		/// Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.Role
+		/// Description for ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.Role
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.ORMTypes/Role.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/Role.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 		Role = 16,
 		/// <summary>
 		/// FrequencyConstraint
-		/// Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.FrequencyConstraint
+		/// Description for
+		/// ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.FrequencyConstraint
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.ORMTypes/FrequencyConstraint.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/FrequencyConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 		FrequencyConstraint = 32,
 		/// <summary>
 		/// MandatoryConstraint
-		/// Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.MandatoryConstraint
+		/// Description for
+		/// ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.MandatoryConstraint
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.ORMTypes/MandatoryConstraint.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/MandatoryConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 		MandatoryConstraint = 64,
 		/// <summary>
 		/// RingConstraint
-		/// Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.RingConstraint
+		/// Description for
+		/// ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.RingConstraint
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.ORMTypes/RingConstraint.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/RingConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 		RingConstraint = 128,
 		/// <summary>
 		/// UniquenessConstraint
-		/// Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.UniquenessConstraint
+		/// Description for
+		/// ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.UniquenessConstraint
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.ORMTypes/UniquenessConstraint.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/UniquenessConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 		UniquenessConstraint = 256,
 		/// <summary>
 		/// EqualityConstraint
-		/// Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.EqualityConstraint
+		/// Description for
+		/// ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.EqualityConstraint
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.ORMTypes/EqualityConstraint.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/EqualityConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 		EqualityConstraint = 512,
 		/// <summary>
 		/// ExclusionConstraint
-		/// Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.ExclusionConstraint
+		/// Description for
+		/// ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.ExclusionConstraint
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.ORMTypes/ExclusionConstraint.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/ExclusionConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 		ExclusionConstraint = 1024,
 		/// <summary>
 		/// SubsetConstraint
-		/// Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.SubsetConstraint
+		/// Description for
+		/// ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.SubsetConstraint
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.ORMTypes/SubsetConstraint.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/SubsetConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 		SubsetConstraint = 2048,
 		/// <summary>
 		/// ValueConstraint
-		/// Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.ValueConstraint
+		/// Description for
+		/// ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.ValueConstraint
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.ORMTypes/ValueConstraint.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/ValueConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 		ValueConstraint = 4096,
 		/// <summary>
 		/// AllConstraints
-		/// Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.AllConstraints
+		/// Description for
+		/// ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.AllConstraints
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.ORMTypes/AllConstraints.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/AllConstraints.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 		AllConstraints = 7904,
 	}
 }
-namespace Neumont.Tools.ORM.CustomProperties
+namespace ORMSolutions.ORMArchitect.CustomProperties
 {
 	/// <summary>
 	/// DomainEnumeration: CustomPropertyDataType
-	/// Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType
+	/// Description for
+	/// ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDataType
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<CustomPropertyDataType, global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<CustomPropertyDataType, global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel>))]
 	internal enum CustomPropertyDataType
 	{
 		/// <summary>
 		/// String
-		/// Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType.String
+		/// Description for
+		/// ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDataType.String
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType/String.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDataType/String.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 		String = 0,
 		/// <summary>
 		/// Integer
 		/// Description for
-		/// Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType.Integer
+		/// ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDataType.Integer
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType/Integer.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDataType/Integer.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 		Integer = 1,
 		/// <summary>
 		/// Decimal
 		/// Description for
-		/// Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType.Decimal
+		/// ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDataType.Decimal
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType/Decimal.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDataType/Decimal.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 		Decimal = 2,
 		/// <summary>
 		/// DateTime
 		/// Description for
-		/// Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType.DateTime
+		/// ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDataType.DateTime
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType/DateTime.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDataType/DateTime.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 		DateTime = 3,
 		/// <summary>
 		/// CustomEnumeration
 		/// Description for
-		/// Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType.CustomEnumeration
+		/// ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDataType.CustomEnumeration
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType/CustomEnumeration.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDataType/CustomEnumeration.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 		CustomEnumeration = 4,
 	}
 }

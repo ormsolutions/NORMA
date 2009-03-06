@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -20,7 +20,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.VirtualTreeGrid;
 
-namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
+namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 {
 	/// <summary>
 	/// Container for <see cref="VirtualTreeControl"/>.

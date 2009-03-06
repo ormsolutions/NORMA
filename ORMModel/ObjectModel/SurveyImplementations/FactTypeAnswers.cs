@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -19,12 +19,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 using Microsoft.VisualStudio.Modeling;
-using Neumont.Tools.Modeling.Design;
-using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
+using ORMSolutions.ORMArchitect.Framework.Design;
+using ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid;
 using System.Windows.Forms;
 using System.Diagnostics;
 
-namespace Neumont.Tools.ORM.ObjectModel
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	public partial class FactType : IAnswerSurveyQuestion<SurveyElementType>, IAnswerSurveyQuestion<SurveyErrorState>, IAnswerSurveyQuestion<SurveyQuestionGlyph>, IAnswerSurveyQuestion<SurveyFactTypeDetailType>, ISurveyNode, ISurveyNodeContext
 	{
@@ -102,7 +102,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// UNDONE: MattCurland: We're getting this during redo scenarios on objectified facts.
 						// This is a bug in the Name propery implementation, which should handle
 						// this transparently. The sequencing here is very tricky because it involves
-						// synchronizing the FactType and ObjectType namds. I don't want to destabilize
+						// synchronizing the FactType and ObjectType names. I don't want to destabilize
 						// that scenario for this case, so I'm just regenerating the name.
 						retVal = GenerateName();
 					}

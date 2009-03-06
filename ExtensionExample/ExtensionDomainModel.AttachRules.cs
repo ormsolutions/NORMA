@@ -3,7 +3,7 @@ using System.Reflection;
 
 // Common Public License Copyright Notice
 // /**************************************************************************\
-// * Neumont Object-Role Modeling Architect for Visual Studio                 *
+// * Natural Object-Role Modeling Architect for Visual Studio                 *
 // *                                                                          *
 // * Copyright © Neumont University. All rights reserved.                     *
 // *                                                                          *
@@ -16,10 +16,10 @@ using System.Reflection;
 // * You must not remove this notice, or any other, from this software.       *
 // \**************************************************************************/
 
-namespace Neumont.Tools.ORM.ExtensionExample
+namespace ORMSolutions.ORMArchitect.ExtensionExample
 {
 	#region Attach rules to ExtensionDomainModel model
-	partial class ExtensionDomainModel : Neumont.Tools.Modeling.Shell.IDomainModelEnablesRulesAfterDeserialization
+	partial class ExtensionDomainModel : ORMSolutions.ORMArchitect.Framework.Shell.IDomainModelEnablesRulesAfterDeserialization
 	{
 		private static Type[] myCustomDomainModelTypes;
 		private static Type[] CustomDomainModelTypes
@@ -47,7 +47,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 		/// <seealso cref="Microsoft.VisualStudio.Modeling.DomainModel.GetCustomDomainModelTypes"/>
 		protected override Type[] GetCustomDomainModelTypes()
 		{
-			if (Neumont.Tools.Modeling.FrameworkDomainModel.InitializingToolboxItems)
+			if (ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InitializingToolboxItems)
 			{
 				return Type.EmptyTypes;
 			}
@@ -75,7 +75,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
 		}
-		void Neumont.Tools.Modeling.Shell.IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.Store store)
+		void ORMSolutions.ORMArchitect.Framework.Shell.IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.Store store)
 		{
 			this.EnableRulesAfterDeserialization(store);
 		}
@@ -85,7 +85,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 	#region Rule classes for MyCustomExtensionElement
 	partial class MyCustomExtensionElement
 	{
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasRole), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasRole), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class RoleAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -95,9 +95,9 @@ namespace Neumont.Tools.ORM.ExtensionExample
 			}
 			/// <summary>
 			/// Provide the following method in class: 
-			/// Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement
+			/// ORMSolutions.ORMArchitect.ExtensionExample.MyCustomExtensionElement
 			/// /// <summary>
-			/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasRole)
+			/// /// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasRole)
 			/// /// </summary>
 			/// private static void RoleAddRule(ElementAddedEventArgs e)
 			/// {
@@ -106,9 +106,9 @@ namespace Neumont.Tools.ORM.ExtensionExample
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement.RoleAddRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ExtensionExample.MyCustomExtensionElement.RoleAddRule");
 				MyCustomExtensionElement.RoleAddRule(e);
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement.RoleAddRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ExtensionExample.MyCustomExtensionElement.RoleAddRule");
 			}
 		}
 	}
@@ -116,7 +116,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 	#region Rule classes for ObjectTypeRequiresMeaningfulNameError
 	partial class ObjectTypeRequiresMeaningfulNameError
 	{
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ModelHasObjectType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasObjectType), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class ExtensionObjectTypeAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -126,9 +126,9 @@ namespace Neumont.Tools.ORM.ExtensionExample
 			}
 			/// <summary>
 			/// Provide the following method in class: 
-			/// Neumont.Tools.ORM.ExtensionExample.ObjectTypeRequiresMeaningfulNameError
+			/// ORMSolutions.ORMArchitect.ExtensionExample.ObjectTypeRequiresMeaningfulNameError
 			/// /// <summary>
-			/// /// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasObjectType)
+			/// /// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasObjectType)
 			/// /// </summary>
 			/// private static void ExtensionObjectTypeAddRule(ElementAddedEventArgs e)
 			/// {
@@ -137,12 +137,12 @@ namespace Neumont.Tools.ORM.ExtensionExample
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ExtensionExample.ObjectTypeRequiresMeaningfulNameError.ExtensionObjectTypeAddRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ExtensionExample.ObjectTypeRequiresMeaningfulNameError.ExtensionObjectTypeAddRule");
 				ObjectTypeRequiresMeaningfulNameError.ExtensionObjectTypeAddRule(e);
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ExtensionExample.ObjectTypeRequiresMeaningfulNameError.ExtensionObjectTypeAddRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ExtensionExample.ObjectTypeRequiresMeaningfulNameError.ExtensionObjectTypeAddRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ObjectType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class ExtensionObjectTypeChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -152,9 +152,9 @@ namespace Neumont.Tools.ORM.ExtensionExample
 			}
 			/// <summary>
 			/// Provide the following method in class: 
-			/// Neumont.Tools.ORM.ExtensionExample.ObjectTypeRequiresMeaningfulNameError
+			/// ORMSolutions.ORMArchitect.ExtensionExample.ObjectTypeRequiresMeaningfulNameError
 			/// /// <summary>
-			/// /// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectType)
+			/// /// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType)
 			/// /// </summary>
 			/// private static void ExtensionObjectTypeChangeRule(ElementPropertyChangedEventArgs e)
 			/// {
@@ -163,9 +163,9 @@ namespace Neumont.Tools.ORM.ExtensionExample
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.ExtensionExample.ObjectTypeRequiresMeaningfulNameError.ExtensionObjectTypeChangeRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ExtensionExample.ObjectTypeRequiresMeaningfulNameError.ExtensionObjectTypeChangeRule");
 				ObjectTypeRequiresMeaningfulNameError.ExtensionObjectTypeChangeRule(e);
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.ExtensionExample.ObjectTypeRequiresMeaningfulNameError.ExtensionObjectTypeChangeRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ExtensionExample.ObjectTypeRequiresMeaningfulNameError.ExtensionObjectTypeChangeRule");
 			}
 		}
 	}

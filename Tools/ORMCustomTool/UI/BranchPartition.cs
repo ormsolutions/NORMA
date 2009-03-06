@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.Drawing;
 
-namespace Neumont.Tools.ORM.ORMCustomTool
+namespace ORMSolutions.ORMArchitect.ORMCustomTool
 {
 	partial class ORMGeneratorSelectionControl
 	{

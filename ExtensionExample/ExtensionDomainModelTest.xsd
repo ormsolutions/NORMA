@@ -10,7 +10,7 @@
 	<xs:import namespace="http://schemas.neumont.edu/ORM/2006-04/ORMCore"/>
 	<xs:annotation>
 		<xs:appinfo source="Common Public License Copyright Notice">
-			Neumont Object-Role Modeling Architect for Visual Studio
+			Natural Object-Role Modeling Architect for Visual Studio
 
 			Copyright © Neumont University. All rights reserved.
 

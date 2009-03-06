@@ -5,14 +5,14 @@ using EnvDTE;
 using EnvDTE80;
 using Microsoft.VisualStudio.Modeling;
 using System.ComponentModel;
-using Neumont.Tools.ORM.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using System.Windows.Forms;
 using System.IO;
-using Neumont.Tools.ORM.SDK.TestEngine;
+using ORMSolutions.ORMArchitectSDK.TestEngine;
 using NUnitCategory = NUnit.Framework.CategoryAttribute;
 using NUnit.Framework;
-using Neumont.Tools.Modeling.Design;
-using TestEngine = Neumont.Tools.ORM.SDK.TestEngine;
+using ORMSolutions.ORMArchitect.Framework.Design;
+using TestEngine = ORMSolutions.ORMArchitectSDK.TestEngine;
 using System.Diagnostics;
 using ORMRegressionTestAddin;
 
@@ -25,6 +25,7 @@ namespace AutomationTestSample
 	/// associated with an ObjectType.
 	/// </remarks>
 	/// </summary>
+	[CLSCompliant(false)]
 	public class RolePlayerRequiredErrorTests
 	{
 		public static void Test1a(DTE2 DTE)

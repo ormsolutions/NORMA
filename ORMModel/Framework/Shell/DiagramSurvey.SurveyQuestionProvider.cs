@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Collections.Generic;
-using Neumont.Tools.Modeling.Shell;
-using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
-namespace Neumont.Tools.Modeling.Shell
+using ORMSolutions.ORMArchitect.Framework.Shell;
+using ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid;
+namespace ORMSolutions.ORMArchitect.Framework.Shell
 {
 	partial class DiagramSurvey : ISurveyQuestionProvider<Microsoft.VisualStudio.Modeling.Store>
 	{

@@ -1,27 +1,16 @@
-#region zlib/libpng Copyright Notice
+#region Common Public License Copyright Notice
 /**************************************************************************\
-* Database Intermediate Language                                           *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
-* This software is provided 'as-is', without any express or implied        *
-* warranty. In no event will the authors be held liable for any damages    *
-* arising from the use of this software.                                   *
+* The use and distribution terms for this software are covered by the      *
+* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
+* can be found in the file CPL.txt at the root of this distribution.       *
+* By using this software in any fashion, you are agreeing to be bound by   *
+* the terms of this license.                                               *
 *                                                                          *
-* Permission is granted to anyone to use this software for any purpose,    *
-* including commercial applications, and to alter it and redistribute it   *
-* freely, subject to the following restrictions:                           *
-*                                                                          *
-* 1. The origin of this software must not be misrepresented; you must not  *
-*    claim that you wrote the original software. If you use this software  *
-*    in a product, an acknowledgment in the product documentation would be *
-*    appreciated but is not required.                                      *
-*                                                                          *
-* 2. Altered source versions must be plainly marked as such, and must not  *
-*    be misrepresented as being the original software.                     *
-*                                                                          *
-* 3. This notice may not be removed or altered from any source             *
-*    distribution.                                                         *
+* You must not remove this notice, or any other, from this software.       *
 \**************************************************************************/
 #endregion
 
@@ -34,7 +23,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Neumont.Tools.ORM.DatabaseImport
+namespace ORMSolutions.ORMArchitect.DatabaseImport
 {
 	/// <summary>
 	/// Provides an implementation of IDcilSchemaProvider for Microsoft SQL Server 2005
@@ -43,7 +32,7 @@ namespace Neumont.Tools.ORM.DatabaseImport
 	{
 		private IDbConnection _conn;
         /// <summary>
-        /// Instantiates a new instance of Neumont.Tools.ORM.DatabaseImport.SqlServer2005DcilSchemaProvider
+        /// Instantiates a new instance of ORMSolutions.ORMArchitect.DatabaseImport.SqlServer2005DcilSchemaProvider
         /// </summary>
         /// <param name="conn">The <see cref="System.Data.IDbConnection"/> object for the target Database</param>
         public SqlServer2005DcilSchemaProvider(IDbConnection conn)
@@ -88,7 +77,7 @@ namespace Neumont.Tools.ORM.DatabaseImport
             return schemaNames;
         }
         /// <summary>
-        /// Loads the specified Microsoft SQL Server 2005 Schema into a <see cref="Neumont.Tools.ORM.DatabaseImport.DcilSchema"/> object
+        /// Loads the specified Microsoft SQL Server 2005 Schema into a <see cref="ORMSolutions.ORMArchitect.DatabaseImport.DcilSchema"/> object
         /// </summary>
         /// <param name="schemaName">Name of the Schema to load</param>
 		public DcilSchema LoadSchema(string schemaName)
@@ -96,10 +85,10 @@ namespace Neumont.Tools.ORM.DatabaseImport
 			return new DcilSchema(this, schemaName);
 		}
         /// <summary>
-        /// Loads a generic list of <see cref="Neumont.Tools.ORM.DatabaseImport.DcilTable"/> objects for the specified Microsoft SQL Server 2005 Schema
+        /// Loads a generic list of <see cref="ORMSolutions.ORMArchitect.DatabaseImport.DcilTable"/> objects for the specified Microsoft SQL Server 2005 Schema
         /// </summary>
         /// <param name="schemaName">Name of the Schema from which to load the Tables</param>
-        /// <returns>Generic list of <see cref="Neumont.Tools.ORM.DatabaseImport.DcilTable"/> objects for the specified Microsoft SQL Server 2005 Schema</returns>
+        /// <returns>Generic list of <see cref="ORMSolutions.ORMArchitect.DatabaseImport.DcilTable"/> objects for the specified Microsoft SQL Server 2005 Schema</returns>
 		public IList<DcilTable> LoadTables(string schemaName)
 		{
 			IList<DcilTable> tables = new List<DcilTable>();
@@ -140,11 +129,11 @@ namespace Neumont.Tools.ORM.DatabaseImport
 			}
 		}
         /// <summary>
-        /// Loads a generic list of <see cref="Neumont.Tools.ORM.DatabaseImport.DcilColumn"/> objects for the specified Microsoft SQL Server 2005 Schema and Table
+        /// Loads a generic list of <see cref="ORMSolutions.ORMArchitect.DatabaseImport.DcilColumn"/> objects for the specified Microsoft SQL Server 2005 Schema and Table
         /// </summary>
         /// <param name="schemaName">Name of the Microsoft SQL Server 2005 Schema for which the given Table resides in</param>
         /// <param name="tableName">Name of the Table from which to load the Columns</param>
-        /// <returns>Generic list of <see cref="Neumont.Tools.ORM.DatabaseImport.DcilColumn"/> objects for the specified Microsoft SQL Server 2005 Schema and Table</returns>
+        /// <returns>Generic list of <see cref="ORMSolutions.ORMArchitect.DatabaseImport.DcilColumn"/> objects for the specified Microsoft SQL Server 2005 Schema and Table</returns>
 		public IList<DcilColumn> LoadColumns(string schemaName, string tableName)
 		{
 			IList<DcilColumn> columns = new List<DcilColumn>();
@@ -190,7 +179,7 @@ namespace Neumont.Tools.ORM.DatabaseImport
 			}
 		}
         /// <summary>
-        /// Converts the given string representation of a SQL Data Type to its equilavent <see cref="Neumont.Tools.ORM.DatabaseImport.DcilDataType.DCILType"/>
+        /// Converts the given string representation of a SQL Data Type to its equilavent <see cref="ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.DCILType"/>
         /// </summary>
         private DcilDataType.DCILType ConvertSQLServerDataType(string dataType)
         {
@@ -240,11 +229,11 @@ namespace Neumont.Tools.ORM.DatabaseImport
             }
         }
         /// <summary>
-        /// Loads a generic list of <see cref="Neumont.Tools.ORM.DatabaseImport.DcilUniquenessConstraint"/> objects (representing Uniqueness Constraints) for the specified Microsoft SQL Server 2005 Schema and Table
+        /// Loads a generic list of <see cref="ORMSolutions.ORMArchitect.DatabaseImport.DcilUniquenessConstraint"/> objects (representing Uniqueness Constraints) for the specified Microsoft SQL Server 2005 Schema and Table
         /// </summary>
         /// <param name="schemaName">Name of the Microsoft SQL Server 2005 Schema for which the given Table resides in</param>
         /// <param name="tableName">Name of the Table from which to load the Indexes</param>
-        /// <returns>Generic list of <see cref="Neumont.Tools.ORM.DatabaseImport.DcilUniquenessConstraint"/> objects (representing Uniqueness Constraints) for the specified Microsoft SQL Server 2005 Schema and Table</returns>
+        /// <returns>Generic list of <see cref="ORMSolutions.ORMArchitect.DatabaseImport.DcilUniquenessConstraint"/> objects (representing Uniqueness Constraints) for the specified Microsoft SQL Server 2005 Schema and Table</returns>
 		public IList<DcilUniquenessConstraint> LoadIndexes(string schemaName, string tableName)
 		{
 			IList<DcilUniquenessConstraint> constraints = new List<DcilUniquenessConstraint>();
@@ -308,11 +297,11 @@ namespace Neumont.Tools.ORM.DatabaseImport
 			}
 		}
         /// <summary>
-        /// When implemented in a child class, loads a generic list of <see cref="Neumont.Tools.ORM.DatabaseImport.DcilReferenceConstraint"/> objects (representing Foreign Keys) for the specified Microsoft SQL Server 2005 Schema and Table
+        /// When implemented in a child class, loads a generic list of <see cref="ORMSolutions.ORMArchitect.DatabaseImport.DcilReferenceConstraint"/> objects (representing Foreign Keys) for the specified Microsoft SQL Server 2005 Schema and Table
         /// </summary>
         /// <param name="schemaName">Name of the Microsoft SQL Server 2005 Schema for which the given Table resides in</param>
         /// <param name="tableName">Name of the Table from which to load the Indexes</param>
-        /// <returns>Generic list of <see cref="Neumont.Tools.ORM.DatabaseImport.DcilReferenceConstraint"/> objects (representing Foreign Keys) for the specified Microsoft SQL Server 2005 Schema and Table</returns>
+        /// <returns>Generic list of <see cref="ORMSolutions.ORMArchitect.DatabaseImport.DcilReferenceConstraint"/> objects (representing Foreign Keys) for the specified Microsoft SQL Server 2005 Schema and Table</returns>
 		public IList<DcilReferenceConstraint> LoadForeignKeys(string schemaName, string tableName)
 		{
 			IList<DcilReferenceConstraint> constraints = new List<DcilReferenceConstraint>();
@@ -389,10 +378,10 @@ namespace Neumont.Tools.ORM.DatabaseImport
 			}
 		}
         /// <summary>
-        /// Loads a generic list of <see cref="Neumont.Tools.ORM.DatabaseImport.DcilProcedure"/> objects for the specified Microsoft SQL Server 2005 Schema
+        /// Loads a generic list of <see cref="ORMSolutions.ORMArchitect.DatabaseImport.DcilProcedure"/> objects for the specified Microsoft SQL Server 2005 Schema
         /// </summary>
         /// <param name="schemaName">Name of the Microsoft SQL Server 2005 Schema from which to laod the Stored Procedures</param>
-        /// <returns>Generic list of <see cref="Neumont.Tools.ORM.DatabaseImport.DcilProcedure"/> objects for the specified Microsoft SQL Server 2005 Schema</returns>
+        /// <returns>Generic list of <see cref="ORMSolutions.ORMArchitect.DatabaseImport.DcilProcedure"/> objects for the specified Microsoft SQL Server 2005 Schema</returns>
 		public IList<DcilProcedure> LoadProcedures(string schemaName)
 		{
 			return new List<DcilProcedure>().AsReadOnly();

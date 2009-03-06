@@ -1,6 +1,6 @@
 ﻿#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -24,14 +24,14 @@
 
 using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
-namespace Neumont.Tools.ORMAbstraction
+namespace ORMSolutions.ORMArchitect.ORMAbstraction
 {
 	/// <summary>
 	/// DomainModel AbstractionDomainModel
 	/// Intermediate Attribute-centric View of ORM Model
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstraction.AbstractionDomainModel.DisplayName", typeof(global::Neumont.Tools.ORMAbstraction.AbstractionDomainModel), "Neumont.Tools.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstraction.AbstractionDomainModel.Description", typeof(global::Neumont.Tools.ORMAbstraction.AbstractionDomainModel), "Neumont.Tools.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("f7bc82f4-83d1-408c-ba42-607e90b23bea")]
 	public partial class AbstractionDomainModel : DslModeling::DomainModel
@@ -223,7 +223,7 @@ namespace Neumont.Tools.ORMAbstraction
 		/// <summary>
 		/// The base name of this model's resources.
 		/// </summary>
-		public const string ResourceBaseName = "Neumont.Tools.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx";
+		public const string ResourceBaseName = "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx";
 		
 		/// <summary>
 		/// Gets the DomainModel's ResourceManager. If the ResourceManager does not already exist, then it is created.
@@ -348,11 +348,11 @@ namespace Neumont.Tools.ORMAbstraction
 		public AbstractionDeleteClosureBase()
 		{
 			#region Initialize DomainData Table
-			DomainRoles.Add(global::Neumont.Tools.ORMAbstraction.AbstractionModelHasConceptType.ConceptTypeDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORMAbstraction.AbstractionModelHasInformationTypeFormat.InformationTypeFormatDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORMAbstraction.ConceptTypeHasUniqueness.UniquenessDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation.ParentDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORMAbstraction.InformationType.InformationTypeFormatDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.ConceptTypeDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.InformationTypeFormatDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasUniqueness.UniquenessDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation.ParentDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.ORMAbstraction.InformationType.InformationTypeFormatDomainRoleId, true);
 			#endregion
 		}
 		/// <summary>

@@ -1,6 +1,6 @@
 ﻿#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -26,14 +26,15 @@ using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
 using DslDiagrams = global::Microsoft.VisualStudio.Modeling.Diagrams;
 
-namespace Neumont.Tools.ORM.Views.RelationalView
+namespace ORMSolutions.ORMArchitect.Views.RelationalView
 {
 	/// <summary>
 	/// DomainClass ForeignKeyConnector
-	/// Description for Neumont.Tools.ORM.Views.RelationalView.ForeignKeyConnector
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Views.RelationalView.ForeignKeyConnector
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.Views.RelationalView.ForeignKeyConnector.DisplayName", typeof(global::Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel), "Neumont.Tools.ORM.Views.RelationalView.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.Views.RelationalView.ForeignKeyConnector.Description", typeof(global::Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel), "Neumont.Tools.ORM.Views.RelationalView.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Views.RelationalView.ForeignKeyConnector.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel), "ORMSolutions.ORMArchitect.Views.RelationalView.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Views.RelationalView.ForeignKeyConnector.Description", typeof(global::ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel), "ORMSolutions.ORMArchitect.Views.RelationalView.GeneratedCode.DomainModelResx")]
 	[DslModeling::DomainObjectId("42f16d0d-8d7d-4452-8146-6a543f683c11")]
 	internal partial class ForeignKeyConnector : DslDiagrams::BinaryLinkShape
 	{

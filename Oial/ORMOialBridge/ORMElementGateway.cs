@@ -1,8 +1,9 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -17,14 +18,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.Modeling;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.Modeling;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Framework;
 using System.Diagnostics;
 using System.Collections;
-using Neumont.Tools.ORMAbstraction;
+using ORMSolutions.ORMArchitect.ORMAbstraction;
 using System.Collections.ObjectModel;
 
-namespace Neumont.Tools.ORMToORMAbstractionBridge
+namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 {
 	public partial class AbstractionModelIsForORMModel
 	{
@@ -572,7 +573,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			#region Rules to defer specific changes to general filter methods
 			#region Add rules
 			/// <summary>
-			/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasFactType)
+			/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasFactType)
 			/// Automatically exclude any newly added <see cref="FactType"/>s from consideration
 			/// in the abstraction model.
 			/// </summary>
@@ -581,7 +582,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				FrameworkDomainModel.DelayValidateElement(e.ModelElement, FilterNewFactType);
 			}
 			/// <summary>
-			/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasObjectType)
+			/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasObjectType)
 			/// Automatically exclude any newly added <see cref="FactType"/>s from consideration
 			/// in the abstraction model.
 			/// </summary>
@@ -622,11 +623,11 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				}
 			}
 			/// <summary>
-			/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError)
-			/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError)
-			/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasPreferredIdentifierRequiresMandatoryError)
-			/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasCompatibleSupertypesError)
-			/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError)
+			/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError)
+			/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError)
+			/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasPreferredIdentifierRequiresMandatoryError)
+			/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCompatibleSupertypesError)
+			/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasUnspecifiedDataTypeError)
 			/// An error that precludes absorption has been introduced on an <see cref="ObjectType"/>
 			/// </summary>
 			private static void ObjectTypeErrorAddedRule(ElementAddedEventArgs e)
@@ -647,11 +648,11 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				}
 			}
 			/// <summary>
-			/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError)
-			/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError)
-			/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasPreferredIdentifierRequiresMandatoryError)
-			/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasCompatibleSupertypesError)
-			/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError)
+			/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError)
+			/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError)
+			/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasPreferredIdentifierRequiresMandatoryError)
+			/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCompatibleSupertypesError)
+			/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasUnspecifiedDataTypeError)
 			/// An error that precludes absorption has been removed from an <see cref="ObjectType"/>
 			/// </summary>
 			private static void ObjectTypeErrorDeletedRule(ElementDeletedEventArgs e)
@@ -673,7 +674,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			#endregion // Model error tracking rules
 			#region Preferred Identifier Tracking Rules
 			/// <summary>
-			/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier)
+			/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier)
 			/// Handle cases where subtypes have no preferred identifier. Note that this
 			/// is not necessarily an error condition in the core model, so we will not always
 			/// an error deleting notification on this object type, but this condition blocks
@@ -694,7 +695,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			#endregion // Preferred Identifier Tracking Rules
 			#region Objectification Tracking Rules
 			/// <summary>
-			/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.Objectification)
+			/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification)
 			/// Objectification FactTypes are automatically excluded, so changing
 			/// the objectification state is the same as adding/removing a blocking
 			/// error.
@@ -729,14 +730,14 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				}
 			}
 			/// <summary>
-			/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.Objectification)
+			/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification)
 			/// </summary>
 			private static void ObjectificationDeletedRule(ElementDeletedEventArgs e)
 			{
 				ProcessFactTypeForObjectificationDeleted(((Objectification)e.ModelElement).NestedFactType);
 			}
 			/// <summary>
-			/// RolePlayerChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.Objectification)
+			/// RolePlayerChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification)
 			/// </summary>
 			private static void ObjectificationRolePlayerChangedRule(RolePlayerChangedEventArgs e)
 			{
@@ -750,7 +751,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			#endregion // Objectification Tracking Rules
 			#region RolePlayer tracking rules
 			/// <summary>
-			/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole)
+			/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole)
 			/// </summary>
 			private static void RolePlayerAddedRule(ElementAddedEventArgs e)
 			{
@@ -768,7 +769,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				FilterModifiedObjectType(link.RolePlayer);
 			}
 			/// <summary>
-			/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole)
+			/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole)
 			/// </summary>
 			private static void RolePlayerDeletedRule(ElementDeletedEventArgs e)
 			{
@@ -793,7 +794,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				FilterModifiedObjectType(rolePlayer);
 			}
 			/// <summary>
-			/// RolePlayerChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole)
+			/// RolePlayerChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole)
 			/// </summary>
 			private static void RolePlayerRolePlayerChangedRule(RolePlayerChangedEventArgs e)
 			{
@@ -813,7 +814,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 			#endregion // RolePlayer tracking rules
 			#region FactType derivation tracking rules
 			/// <summary>
-			/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression)
+			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationExpression)
 			/// Derived FactTypes should not be absorbed
 			/// </summary>
 			private static void FactTypeDerivationChangedRule(ElementPropertyChangedEventArgs e)
@@ -840,7 +841,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				}
 			}
 			/// <summary>
-			/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression)
+			/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationExpression)
 			/// Derived FactTypes should not be absorbed
 			/// </summary>
 			private static void FactTypeDerivationAddedRule(ElementAddedEventArgs e)
@@ -852,7 +853,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				}
 			}
 			/// <summary>
-			/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression)
+			/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationExpression)
 			/// Derived FactTypes should not be absorbed
 			/// </summary>
 			private static void FactTypeDerivationDeletedRule(ElementDeletedEventArgs e)

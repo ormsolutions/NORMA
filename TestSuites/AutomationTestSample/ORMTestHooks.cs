@@ -8,13 +8,13 @@ using System.Text;
 using EnvDTE;
 using EnvDTE80;
 using Microsoft.VisualStudio.Shell;
-using Neumont.Tools.ORM.Shell;
+using ORMSolutions.ORMArchitect.Core.Shell;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using System.Runtime.InteropServices;
-using Neumont.Tools.Modeling.Design;
+using ORMSolutions.ORMArchitect.Framework.Design;
 
 namespace ORMRegressionTestAddin
 {
@@ -38,6 +38,7 @@ namespace ORMRegressionTestAddin
 	/// <summary>
 	/// A structure representing an ORM window
 	/// </summary>
+	[CLSCompliant(false)]
 	public struct ORMTestWindow
 	{
 		private DiagramClientView myClientView;
@@ -466,6 +467,7 @@ namespace ORMRegressionTestAddin
 	/// <summary>
 	/// Class specific to testing ORM
 	/// </summary>
+	[CLSCompliant(false)]
 	public class ORMTestHooks
 	{
 		private IServiceProvider myServiceProvider;

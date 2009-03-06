@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -17,8 +17,8 @@
 using System;
 using Microsoft.VisualStudio.Modeling;
 using System.Collections.ObjectModel;
-using Neumont.Tools.Modeling;
-namespace Neumont.Tools.RelationalModels.ConceptualDatabase
+using ORMSolutions.ORMArchitect.Framework;
+namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 {
 	partial class ReferenceConstraint
 	{

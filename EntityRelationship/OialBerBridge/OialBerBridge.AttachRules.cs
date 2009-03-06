@@ -3,7 +3,7 @@ using System.Reflection;
 
 // Common Public License Copyright Notice
 // /**************************************************************************\
-// * Neumont Object-Role Modeling Architect for Visual Studio                 *
+// * Natural Object-Role Modeling Architect for Visual Studio                 *
 // *                                                                          *
 // * Copyright © Neumont University. All rights reserved.                     *
 // *                                                                          *
@@ -16,10 +16,10 @@ using System.Reflection;
 // * You must not remove this notice, or any other, from this software.       *
 // \**************************************************************************/
 
-namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
+namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 {
 	#region Attach rules to ORMAbstractionToBarkerERBridgeDomainModel model
-	partial class ORMAbstractionToBarkerERBridgeDomainModel : Neumont.Tools.Modeling.Shell.IDomainModelEnablesRulesAfterDeserialization
+	partial class ORMAbstractionToBarkerERBridgeDomainModel : ORMSolutions.ORMArchitect.Framework.Shell.IDomainModelEnablesRulesAfterDeserialization
 	{
 		private static Type[] myCustomDomainModelTypes;
 		private static Type[] CustomDomainModelTypes
@@ -48,7 +48,7 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// <seealso cref="Microsoft.VisualStudio.Modeling.DomainModel.GetCustomDomainModelTypes"/>
 		protected override Type[] GetCustomDomainModelTypes()
 		{
-			if (Neumont.Tools.Modeling.FrameworkDomainModel.InitializingToolboxItems)
+			if (ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InitializingToolboxItems)
 			{
 				return Type.EmptyTypes;
 			}
@@ -76,7 +76,7 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
 		}
-		void Neumont.Tools.Modeling.Shell.IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.Store store)
+		void ORMSolutions.ORMArchitect.Framework.Shell.IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.Store store)
 		{
 			this.EnableRulesAfterDeserialization(store);
 		}
@@ -88,7 +88,7 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 	{
 		partial class ModificationTracker
 		{
-			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORMAbstraction.AbstractionModel), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
 			private sealed class AbstractionModelChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 			{
 				[System.Diagnostics.DebuggerStepThrough()]
@@ -98,9 +98,9 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 				}
 				/// <summary>
 				/// Provide the following method in class: 
-				/// Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker
+				/// ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker
 				/// /// <summary>
-				/// /// ChangeRule: typeof(Neumont.Tools.ORMAbstraction.AbstractionModel)
+				/// /// ChangeRule: typeof(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel)
 				/// /// </summary>
 				/// private static void AbstractionModelChangedRule(ElementPropertyChangedEventArgs e)
 				/// {
@@ -109,12 +109,12 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 				{
-					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker.AbstractionModelChangedRule");
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker.AbstractionModelChangedRule");
 					ModificationTracker.AbstractionModelChangedRule(e);
-					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker.AbstractionModelChangedRule");
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker.AbstractionModelChangedRule");
 				}
 			}
-			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORMAbstraction.AbstractionModelHasConceptType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
 			private sealed class ConceptTypeAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 			{
 				[System.Diagnostics.DebuggerStepThrough()]
@@ -124,9 +124,9 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 				}
 				/// <summary>
 				/// Provide the following method in class: 
-				/// Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker
+				/// ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker
 				/// /// <summary>
-				/// /// AddRule: typeof(Neumont.Tools.ORMAbstraction.AbstractionModelHasConceptType)
+				/// /// AddRule: typeof(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType)
 				/// /// </summary>
 				/// private static void ConceptTypeAddedRule(ElementAddedEventArgs e)
 				/// {
@@ -135,12 +135,12 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 				{
-					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker.ConceptTypeAddedRule");
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker.ConceptTypeAddedRule");
 					ModificationTracker.ConceptTypeAddedRule(e);
-					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker.ConceptTypeAddedRule");
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker.ConceptTypeAddedRule");
 				}
 			}
-			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORMAbstraction.ConceptTypeChild), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
 			private sealed class ConceptTypeChildChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 			{
 				[System.Diagnostics.DebuggerStepThrough()]
@@ -150,9 +150,9 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 				}
 				/// <summary>
 				/// Provide the following method in class: 
-				/// Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker
+				/// ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker
 				/// /// <summary>
-				/// /// ChangeRule: typeof(Neumont.Tools.ORMAbstraction.ConceptTypeChild)
+				/// /// ChangeRule: typeof(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild)
 				/// /// </summary>
 				/// private static void ConceptTypeChildChangedRule(ElementPropertyChangedEventArgs e)
 				/// {
@@ -161,12 +161,12 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 				{
-					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker.ConceptTypeChildChangedRule");
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker.ConceptTypeChildChangedRule");
 					ModificationTracker.ConceptTypeChildChangedRule(e);
-					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker.ConceptTypeChildChangedRule");
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker.ConceptTypeChildChangedRule");
 				}
 			}
-			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORMAbstraction.AbstractionModelHasConceptType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
 			private sealed class ConceptTypeDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 			{
 				[System.Diagnostics.DebuggerStepThrough()]
@@ -176,9 +176,9 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 				}
 				/// <summary>
 				/// Provide the following method in class: 
-				/// Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker
+				/// ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker
 				/// /// <summary>
-				/// /// DeleteRule: typeof(Neumont.Tools.ORMAbstraction.AbstractionModelHasConceptType)
+				/// /// DeleteRule: typeof(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType)
 				/// /// </summary>
 				/// private static void ConceptTypeDeletedRule(ElementDeletedEventArgs e)
 				/// {
@@ -187,9 +187,9 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 				{
-					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker.ConceptTypeDeletedRule");
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker.ConceptTypeDeletedRule");
 					ModificationTracker.ConceptTypeDeletedRule(e);
-					Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker.ConceptTypeDeletedRule");
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker.ConceptTypeDeletedRule");
 				}
 			}
 		}

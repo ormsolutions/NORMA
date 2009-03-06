@@ -2,7 +2,7 @@
 /**************************************************************************\
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
-* Copyright © Matthew Curland. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -17,9 +17,9 @@
 using System;
 using System.Diagnostics;
 using System.Windows.Forms;
-using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
+using ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid;
 
-namespace Neumont.Tools.ORM.ObjectModel
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	#region RoleValueConstraint class
 	partial class RoleValueConstraint : IAnswerSurveyQuestion<SurveyQuestionGlyph>, ISurveyNode, ISurveyFloatingNode

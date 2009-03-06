@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -18,9 +18,9 @@ using System;
 using System.Diagnostics;
 using System.Resources;
 using System.Windows.Forms;
-using Neumont.Tools.Modeling.Design;
+using ORMSolutions.ORMArchitect.Framework.Design;
 
-namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
+namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 {
 	internal partial class ResourceStrings
 	{
@@ -30,16 +30,16 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		public enum ResourceManagers
 		{
 			/// <summary>
-			/// Standalone resource file for the MappingBarkerModel
+			/// Generated resource file for the Barker ER model
 			/// </summary>
-			CustomizationModel,
+			ObjectModel,
 		}
 		private static ResourceManager GetResourceManager(ResourceManagers manager)
 		{
 			switch (manager)
 			{
-				case ResourceManagers.CustomizationModel:
-					return ResourceAccessor<MappingBarkerModel>.ResourceManager;
+				case ResourceManagers.ObjectModel:
+					return ORMAbstractionToBarkerERBridgeDomainModel.SingletonResourceManager;
 			}
 			return null;
 		}

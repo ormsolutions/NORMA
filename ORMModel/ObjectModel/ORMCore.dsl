@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
-	Neumont Object-Role Modeling Architect for Visual Studio
+	Natural Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
-	Copyright © Matthew Curland. All rights reserved.
+	Copyright © ORM Solutions, LLC. All rights reserved.
 
 	The use and distribution terms for this software are covered by the
 	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
@@ -18,40 +18,40 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	PackageGuid="EFDDC549-1646-4451-8A51-E5A5E94D647C"
 	Id="3EAE649F-E654-4D04-8289-C25D2C0322D8"
-	Namespace="Neumont.Tools.ORM.ObjectModel"
-	PackageNamespace="Neumont.Tools.ORM.Shell"
+	Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel"
+	PackageNamespace="ORMSolutions.ORMArchitect.Core.Shell"
 	Name="ORMCore"
 	DisplayName="ORM Core Domain Model"
-	CompanyName="Neumont University"
-	ProductName="Neumont ORM Architect for Visual Studio"
+	CompanyName="ORM Solutions, LLC"
+	ProductName="Natural Object-Role Modeling Architect for Visual Studio"
 	MajorVersion="1" MinorVersion="0" Build="0" Revision="0">
 
 	<Attributes>
 		<ClrAttribute Name="DslModeling::ExtendsDomainModel">
 			<Parameters>
-				<AttributeParameter Value="&quot;F60BC3F1-C38E-4C7D-9EE5-9211DB26CB45&quot;/*Neumont.Tools.Modeling.FrameworkDomainModel*/"/>
+				<AttributeParameter Value="&quot;F60BC3F1-C38E-4C7D-9EE5-9211DB26CB45&quot;/*ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel*/"/>
 			</Parameters>
 		</ClrAttribute>
 	</Attributes>
 
 	<Classes>
-		<DomainClass Name="NameConsumer" Namespace="Neumont.Tools.ORM.ObjectModel" Id="491389AA-B7DB-4461-B3CE-8064F8DE4072" DisplayName="NameConsumer" Description="">
+		<DomainClass Name="NameConsumer" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="491389AA-B7DB-4461-B3CE-8064F8DE4072" DisplayName="NameConsumer" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="RecognizedPhrase" Namespace="Neumont.Tools.ORM.ObjectModel" Id="DF462D31-C2E4-47A5-AF48-7FFC55DE4B2A" DisplayName="RecognizedPhrase" Description="">
+		<DomainClass Name="RecognizedPhrase" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="DF462D31-C2E4-47A5-AF48-7FFC55DE4B2A" DisplayName="RecognizedPhrase" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ORMNamedElement"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="NameGenerator" Namespace="Neumont.Tools.ORM.ObjectModel" Id="E032727F-440A-431A-82E7-2454BE939C82" DisplayName="Name Generation Defaults" Description="">
+		<DomainClass Name="NameGenerator" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="E032727F-440A-431A-82E7-2454BE939C82" DisplayName="Name Generation Defaults" Description="">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;NameGenerator, Design.NameGeneratorTypeDescriptor&lt;NameGenerator&gt;&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;NameGenerator, Design.NameGeneratorTypeDescriptor&lt;NameGenerator&gt;&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -107,9 +107,9 @@
 			</Properties>
 		</DomainClass>
 
-		<DomainClass Name="NameUsage" Namespace="Neumont.Tools.ORM.ObjectModel" Id="5B10B7DC-2018-41D9-AEF6-E12104614CA0" DisplayName="NameUsage" InheritanceModifier="Abstract" Description="">
+		<DomainClass Name="NameUsage" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="5B10B7DC-2018-41D9-AEF6-E12104614CA0" DisplayName="NameUsage" InheritanceModifier="Abstract" Description="">
 			<Attributes>
-				<ClrAttribute Name="Neumont.Tools.ORM.ObjectModel.NameUsageIdentifier">
+				<ClrAttribute Name="ORMSolutions.ORMArchitect.Core.ObjectModel.NameUsageIdentifier">
 					<Parameters>
 						<AttributeParameter Value="&quot;NameUsage&quot;"/>
 					</Parameters>
@@ -117,11 +117,11 @@
 			</Attributes>
 		</DomainClass>
 
-		<DomainClass Name="GenerationState" Namespace="Neumont.Tools.ORM.ObjectModel" Id="CD0749E6-DDB0-4890-A559-EB70D3F698E0" DisplayName="GenerationState" Description=""/>
-		<DomainClass Name="GenerationSetting" Namespace="Neumont.Tools.ORM.ObjectModel" Id="B707A1D2-87D1-43EA-93B0-92ED9308A0A5" InheritanceModifier="Abstract" DisplayName="GenerationSetting" Description=""/>
+		<DomainClass Name="GenerationState" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="CD0749E6-DDB0-4890-A559-EB70D3F698E0" DisplayName="GenerationState" Description=""/>
+		<DomainClass Name="GenerationSetting" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="B707A1D2-87D1-43EA-93B0-92ED9308A0A5" InheritanceModifier="Abstract" DisplayName="GenerationSetting" Description=""/>
 
-		<DomainClass Name="ModelErrorCategory" Namespace="Neumont.Tools.ORM.ObjectModel" Id="C9730E21-67A1-47E1-A065-B08C2B3815CE" DisplayName="ModelErrorCategory" InheritanceModifier="Abstract" Description=""/>
-		<DomainClass Name="ModelErrorDisplayFilter" Namespace="Neumont.Tools.ORM.ObjectModel" Id="67CDCE7B-3D28-4A92-B9EB-00418152A13F" DisplayName="ModelErrorDisplayFilter" InheritanceModifier="Sealed" Description="">
+		<DomainClass Name="ModelErrorCategory" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="C9730E21-67A1-47E1-A065-B08C2B3815CE" DisplayName="ModelErrorCategory" InheritanceModifier="Abstract" Description=""/>
+		<DomainClass Name="ModelErrorDisplayFilter" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="67CDCE7B-3D28-4A92-B9EB-00418152A13F" DisplayName="ModelErrorDisplayFilter" InheritanceModifier="Sealed" Description="">
 			<Properties>
 				<DomainProperty Name="ExcludedCategories" DefaultValue="" DisplayName="ExcludedCategories" IsBrowsable="false" Id="46F355F4-001C-4A3F-8A0F-56BEC4EACDEB" Kind="CustomStorage">
 					<Type>
@@ -140,48 +140,48 @@
 				</DomainProperty>
 			</Properties>
 		</DomainClass>
-		<DomainClass Name="PopulationErrorCategory" Namespace="Neumont.Tools.ORM.ObjectModel" Id="18C1AE31-7241-453E-9DCB-9409ACA41896" DisplayName="Sample Population Errors" InheritanceModifier="Abstract" Description="">
+		<DomainClass Name="PopulationErrorCategory" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="18C1AE31-7241-453E-9DCB-9409ACA41896" DisplayName="Sample Population Errors" InheritanceModifier="Abstract" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelErrorCategory"/>
 			</BaseClass>
 		</DomainClass>
-		<DomainClass Name="DataTypeAndValueErrorCategory" Namespace="Neumont.Tools.ORM.ObjectModel" Id="D98CE8A4-2CB0-423E-80AC-4E4E7A963EC3" DisplayName="DataType and Value Errors" InheritanceModifier="Abstract" Description="">
+		<DomainClass Name="DataTypeAndValueErrorCategory" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="D98CE8A4-2CB0-423E-80AC-4E4E7A963EC3" DisplayName="DataType and Value Errors" InheritanceModifier="Abstract" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelErrorCategory"/>
 			</BaseClass>
 		</DomainClass>
-		<DomainClass Name="ConstraintImplicationAndContradictionErrorCategory" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A8846FAF-A765-4E39-A876-CFA09A1FFB3A" DisplayName="Constraint Implication and Contradiction Errors" InheritanceModifier="Abstract" Description="">
+		<DomainClass Name="ConstraintImplicationAndContradictionErrorCategory" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="A8846FAF-A765-4E39-A876-CFA09A1FFB3A" DisplayName="Constraint Implication and Contradiction Errors" InheritanceModifier="Abstract" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelErrorCategory"/>
 			</BaseClass>
 		</DomainClass>
-		<DomainClass Name="ConstraintStructureErrorCategory" Namespace="Neumont.Tools.ORM.ObjectModel" Id="FEABDE83-E7B0-44C1-B6C8-3F0EF3E09589" DisplayName="Constraint Structure Errors" InheritanceModifier="Abstract" Description="">
+		<DomainClass Name="ConstraintStructureErrorCategory" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="FEABDE83-E7B0-44C1-B6C8-3F0EF3E09589" DisplayName="Constraint Structure Errors" InheritanceModifier="Abstract" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelErrorCategory"/>
 			</BaseClass>
 		</DomainClass>
-		<DomainClass Name="FactTypeDefinitionErrorCategory" Namespace="Neumont.Tools.ORM.ObjectModel" Id="1360B437-C64F-4A30-956B-47D4F1C7E85B" DisplayName="Fact Type Definition Errors" InheritanceModifier="Abstract" Description="">
+		<DomainClass Name="FactTypeDefinitionErrorCategory" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="1360B437-C64F-4A30-956B-47D4F1C7E85B" DisplayName="Fact Type Definition Errors" InheritanceModifier="Abstract" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelErrorCategory"/>
 			</BaseClass>
 		</DomainClass>
-		<DomainClass Name="ReferenceSchemeErrorCategory" Namespace="Neumont.Tools.ORM.ObjectModel" Id="2F515685-36D3-4631-A6C4-572BD9644FD7" DisplayName="Reference Scheme Errors" InheritanceModifier="Abstract" Description="">
+		<DomainClass Name="ReferenceSchemeErrorCategory" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="2F515685-36D3-4631-A6C4-572BD9644FD7" DisplayName="Reference Scheme Errors" InheritanceModifier="Abstract" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelErrorCategory"/>
 			</BaseClass>
 		</DomainClass>
-		<DomainClass Name="NameErrorCategory" Namespace="Neumont.Tools.ORM.ObjectModel" Id="57AE5888-89E0-4449-B0C8-80802DEB014C" DisplayName="Naming Errors" InheritanceModifier="Abstract" Description="">
+		<DomainClass Name="NameErrorCategory" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="57AE5888-89E0-4449-B0C8-80802DEB014C" DisplayName="Naming Errors" InheritanceModifier="Abstract" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelErrorCategory"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ElementGroupingSet" Namespace="Neumont.Tools.ORM.ObjectModel" Id="C0436CE8-6957-4FB9-A526-D94DC2073C02" DisplayName="Groups" InheritanceModifier="Sealed" Description="A Group owner, allows group containment, order, and naming enforcement."/>
-		<DomainClass Name="ElementGrouping" Namespace="Neumont.Tools.ORM.ObjectModel" Id="B3856187-EFEB-4437-AF4C-8DF5504FB461" DisplayName="Group" Description="A group of elements. A GroupType is associated with the Group to control the group contents.">
+		<DomainClass Name="ElementGroupingSet" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="C0436CE8-6957-4FB9-A526-D94DC2073C02" DisplayName="Groups" InheritanceModifier="Sealed" Description="A Group owner, allows group containment, order, and naming enforcement."/>
+		<DomainClass Name="ElementGrouping" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="B3856187-EFEB-4437-AF4C-8DF5504FB461" DisplayName="Group" Description="A group of elements. A GroupType is associated with the Group to control the group contents.">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;ElementGrouping, Design.ElementGroupingTypeDescriptor&lt;ElementGrouping&gt;&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;ElementGrouping, Design.ElementGroupingTypeDescriptor&lt;ElementGrouping&gt;&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -201,42 +201,42 @@
 				</DomainProperty>
 			</Properties>
 		</DomainClass>
-		<DomainClass Name="ElementGroupingType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="0F0515DF-287F-44A2-9EC1-74DBDBA87146" DisplayName="GroupType" InheritanceModifier="Abstract" Description="A type for a group. Each Group is associated with a new instance of each of its GroupTypes, allowing individual settings per group.">
+		<DomainClass Name="ElementGroupingType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="0F0515DF-287F-44A2-9EC1-74DBDBA87146" DisplayName="GroupType" InheritanceModifier="Abstract" Description="A type for a group. Each Group is associated with a new instance of each of its GroupTypes, allowing individual settings per group.">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;ElementGroupingType, Design.ElementGroupingTypeTypeDescriptor&lt;ElementGroupingType&gt;&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;ElementGroupingType, Design.ElementGroupingTypeTypeDescriptor&lt;ElementGroupingType&gt;&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
 		</DomainClass>
-		<DomainClass Name="ElementGroupingErrorCategory" Namespace="Neumont.Tools.ORM.ObjectModel" Id="7DA10A75-7D12-41D9-8D11-38675314C654" DisplayName="Grouping Errors" InheritanceModifier="Abstract" Description="">
+		<DomainClass Name="ElementGroupingErrorCategory" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="7DA10A75-7D12-41D9-8D11-38675314C654" DisplayName="Grouping Errors" InheritanceModifier="Abstract" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelErrorCategory"/>
 			</BaseClass>
 		</DomainClass>
-		<DomainClass Name="ElementGroupingDuplicateNameError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="374625CA-858D-42B7-A9E4-1B33BAE89EFF" DisplayName="Duplicate Group Names" Description="">
+		<DomainClass Name="ElementGroupingDuplicateNameError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="374625CA-858D-42B7-A9E4-1B33BAE89EFF" DisplayName="Duplicate Group Names" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="DuplicateNameError"/>
 			</BaseClass>
 		</DomainClass>
-		<DomainClass Name="ElementGroupingMembershipContradictionError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="DB58CEA7-1371-4433-B455-2AC77DEE27AD" DisplayName="Element Required and Blocked in one Group" Description="">
+		<DomainClass Name="ElementGroupingMembershipContradictionError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="DB58CEA7-1371-4433-B455-2AC77DEE27AD" DisplayName="Element Required and Blocked in one Group" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ORMModelElement" Namespace="Neumont.Tools.ORM.ObjectModel" Id="BFBBEE5E-C691-4299-B958-77AC1B701F28" DisplayName="ORMModelElement" InheritanceModifier="Abstract" Description="">
+		<DomainClass Name="ORMModelElement" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="BFBBEE5E-C691-4299-B958-77AC1B701F28" DisplayName="ORMModelElement" InheritanceModifier="Abstract" Description="">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;ORMModelElement, Design.ORMModelElementTypeDescriptor&lt;ORMModelElement&gt;&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;ORMModelElement, Design.ORMModelElementTypeDescriptor&lt;ORMModelElement&gt;&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
 		</DomainClass>
 
-		<DomainClass Name="ORMNamedElement" Namespace="Neumont.Tools.ORM.ObjectModel" Id="C2BE18BA-BC16-4764-BAA1-18E721435BCE" DisplayName="ORMNamedElement" InheritanceModifier="Abstract" Description="">
+		<DomainClass Name="ORMNamedElement" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="C2BE18BA-BC16-4764-BAA1-18E721435BCE" DisplayName="ORMNamedElement" InheritanceModifier="Abstract" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
@@ -256,11 +256,11 @@
 			</Properties>
 		</DomainClass>
 
-		<DomainClass Name="ORMModel" Namespace="Neumont.Tools.ORM.ObjectModel" Id="73E1F528-9E60-4198-AAC2-F8D6CCF62EB3" DisplayName="ORMModel" Description="" GeneratesDoubleDerived="true">
+		<DomainClass Name="ORMModel" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="73E1F528-9E60-4198-AAC2-F8D6CCF62EB3" DisplayName="ORMModel" Description="" GeneratesDoubleDerived="true">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;ORMModel, Design.ORMModelTypeDescriptor&lt;ORMModel&gt;&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;ORMModel, Design.ORMModelTypeDescriptor&lt;ORMModel&gt;&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -272,20 +272,20 @@
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ObjectModel.Design.ModelErrorDisplayFilterEditor)"/>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.ModelErrorDisplayFilterEditor)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 							</Parameters>
 						</ClrAttribute>
 					</Attributes>
 					<Type>
-						<ExternalTypeMoniker Name="/Neumont.Tools.ORM.ObjectModel/ModelErrorDisplayFilter"/>
+						<ExternalTypeMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/ModelErrorDisplayFilter"/>
 					</Type>
 				</DomainProperty>
 				<DomainProperty Name="DefinitionText" DefaultValue="" DisplayName="InformalDescription" Description="An informal description of this Model.&#xd;&#xa;    To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Informal Description Editor' tool window." Id="E86A38C9-2F8E-4066-8114-384184C5E3C3" Kind="CustomStorage">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.MultilineTextEditor&lt;global::Neumont.Tools.ORM.ObjectModel.Definition&gt;)"/>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.MultilineTextEditor&lt;global::ORMSolutions.ORMArchitect.Core.ObjectModel.Definition&gt;)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 							</Parameters>
 						</ClrAttribute>
@@ -303,7 +303,7 @@
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.MultilineTextEditor&lt;global::Neumont.Tools.ORM.ObjectModel.Note&gt;)"/>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.MultilineTextEditor&lt;global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note&gt;)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 							</Parameters>
 						</ClrAttribute>
@@ -363,11 +363,11 @@
 		</DomainClass>
 
 
-		<DomainClass Name="ObjectType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="2FED415E-1786-4FBF-8556-A507F2F765FD" DisplayName="ObjectType" Description="">
+		<DomainClass Name="ObjectType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="2FED415E-1786-4FBF-8556-A507F2F765FD" DisplayName="ObjectType" Description="">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;ObjectType, Design.ObjectTypeTypeDescriptor&lt;ObjectType&gt;&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;ObjectType, Design.ObjectTypeTypeDescriptor&lt;ObjectType&gt;&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -384,7 +384,7 @@
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.MultilineTextEditor&lt;global::Neumont.Tools.ORM.ObjectModel.Definition&gt;)"/>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.MultilineTextEditor&lt;global::ORMSolutions.ORMArchitect.Core.ObjectModel.Definition&gt;)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 							</Parameters>
 						</ClrAttribute>
@@ -402,7 +402,7 @@
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.MultilineTextEditor&lt;global::Neumont.Tools.ORM.ObjectModel.Note&gt;)"/>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.MultilineTextEditor&lt;global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note&gt;)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 							</Parameters>
 						</ClrAttribute>
@@ -447,13 +447,13 @@
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ObjectModel.Design.ReferenceModePicker)"/>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.ReferenceModePicker)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 							</Parameters>
 						</ClrAttribute>
 						<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ObjectModel.Design.ReferenceModeConverter)"/>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.ReferenceModeConverter)"/>
 							</Parameters>
 						</ClrAttribute>
 					</Attributes>
@@ -473,20 +473,20 @@
 				</DomainProperty>
 				<DomainProperty Name="ReferenceMode" DefaultValue="" DisplayName="ReferenceMode" Id="E2049BA3-F50D-4E1C-9ABD-8A7EBECFEDF5" IsBrowsable="false" Kind="CustomStorage">
 					<Type>
-						<ExternalTypeMoniker Name="/Neumont.Tools.ORM.ObjectModel/ReferenceMode"/>
+						<ExternalTypeMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/ReferenceMode"/>
 					</Type>
 				</DomainProperty>
 				<DomainProperty Name="DataTypeDisplay" DefaultValue="" DisplayName="DataType" Id="3E8893A7-5985-4200-A595-CB1E9EC9ADA7" Kind="CustomStorage" Description="The DataType for this ValueType, or the DataType for the identifying ValueType if this is an EntityType.&#xd;&#xa;    This is a portable DataType. The final physical DataType is dependent on the generation target.">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ObjectModel.Design.DataTypePicker)"/>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.DataTypePicker)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 							</Parameters>
 						</ClrAttribute>
 					</Attributes>
 					<Type>
-						<ExternalTypeMoniker Name="/Neumont.Tools.ORM.ObjectModel/DataType"/>
+						<ExternalTypeMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/DataType"/>
 					</Type>
 				</DomainProperty>
 				<DomainProperty Name="ValueRangeText" DefaultValue="" DisplayName="ValueRange" Id="F0662C59-700B-435C-B57B-93E5FD84B71F" Kind="CustomStorage" Description="Restrict the range of possible values for instances of this ObjectType.&#xd;&#xa;    To specify a range, use '..' between the range endpoints, square brackets to specify a closed endpoint, and parentheses to specify an open endpoint. Commas are used to entered multiple ranges or discrete values.&#xd;&#xa;    Example: {[10..20), 30} specifies all values between 10 and 20 (but not including 20) and the value 30.">
@@ -513,7 +513,7 @@
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ObjectModel.Design.DerivationRuleEditor)"/>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.DerivationRuleEditor)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 							</Parameters>
 						</ClrAttribute>
@@ -530,11 +530,11 @@
 			</Properties>
 		</DomainClass>
 
-		<DomainClass Name="FactType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="723A2B28-6CDA-4185-B597-87866E257265" DisplayName="FactType" Description="">
+		<DomainClass Name="FactType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="723A2B28-6CDA-4185-B597-87866E257265" DisplayName="FactType" Description="">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;FactType, Design.FactTypeTypeDescriptor&lt;FactType&gt;&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;FactType, Design.FactTypeTypeDescriptor&lt;FactType&gt;&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -551,7 +551,7 @@
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.MultilineTextEditor&lt;global::Neumont.Tools.ORM.ObjectModel.Definition&gt;)"/>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.MultilineTextEditor&lt;global::ORMSolutions.ORMArchitect.Core.ObjectModel.Definition&gt;)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 							</Parameters>
 						</ClrAttribute>
@@ -569,7 +569,7 @@
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.MultilineTextEditor&lt;global::Neumont.Tools.ORM.ObjectModel.Note&gt;)"/>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.MultilineTextEditor&lt;global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note&gt;)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 							</Parameters>
 						</ClrAttribute>
@@ -609,7 +609,7 @@
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ObjectModel.Design.DerivationRuleEditor)"/>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.DerivationRuleEditor)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 							</Parameters>
 						</ClrAttribute>
@@ -631,11 +631,11 @@
 			</Properties>
 		</DomainClass>
 
-		<DomainClass Name="SubtypeFact" Namespace="Neumont.Tools.ORM.ObjectModel" Id="7A957450-AD7E-4C29-AF59-A10F8C8052CC" DisplayName="SubtypeRelationship">
+		<DomainClass Name="SubtypeFact" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="7A957450-AD7E-4C29-AF59-A10F8C8052CC" DisplayName="SubtypeRelationship">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;SubtypeFact, Design.SubtypeFactTypeDescriptor&lt;SubtypeFact&gt;&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;SubtypeFact, Design.SubtypeFactTypeDescriptor&lt;SubtypeFact&gt;&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -663,23 +663,23 @@
 			</Properties>
 		</DomainClass>
 
-		<DomainClass Name="RoleBase" Namespace="Neumont.Tools.ORM.ObjectModel" Id="62293718-2F14-4A4C-88EB-0BA3AA6B7B91" DisplayName="RoleBase" InheritanceModifier="Abstract" Description="">
+		<DomainClass Name="RoleBase" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="62293718-2F14-4A4C-88EB-0BA3AA6B7B91" DisplayName="RoleBase" InheritanceModifier="Abstract" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="RoleProxy" Namespace="Neumont.Tools.ORM.ObjectModel" Id="FF552152-BD43-4731-8EDA-675E68D6C5DB" DisplayName="RoleProxy" Description="">
+		<DomainClass Name="RoleProxy" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="FF552152-BD43-4731-8EDA-675E68D6C5DB" DisplayName="RoleProxy" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="RoleBase"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="Role" Namespace="Neumont.Tools.ORM.ObjectModel" Id="291FEB71-371A-4B23-9DDC-61154A10A3D7" DisplayName="Role" Description="">
+		<DomainClass Name="Role" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="291FEB71-371A-4B23-9DDC-61154A10A3D7" DisplayName="Role" Description="">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;Role, Design.RoleTypeDescriptor&lt;Role&gt;&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;Role, Design.RoleTypeDescriptor&lt;Role&gt;&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -691,13 +691,13 @@
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ObjectModel.Design.RolePlayerPicker)"/>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.RolePlayerPicker)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 							</Parameters>
 						</ClrAttribute>
 					</Attributes>
 					<Type>
-						<ExternalTypeMoniker Name="/Neumont.Tools.ORM.ObjectModel/ObjectType"/>
+						<ExternalTypeMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/ObjectType"/>
 					</Type>
 				</DomainProperty>
 				<DomainProperty Name="IsMandatory" DefaultValue="false" DisplayName="IsMandatory" Id="0F5EED7E-7584-413A-9250-BD4624DC164E" Kind="CustomStorage" Description="Does this Role have a simple mandatory constraint?">
@@ -759,13 +759,13 @@
 			</Properties>
 		</DomainClass>
 
-		<DomainClass Name="ObjectifiedUnaryRole" Namespace="Neumont.Tools.ORM.ObjectModel" Id="EE1EFD02-7AD8-42FA-9062-1F499941617F" DisplayName="Role" Description="">
+		<DomainClass Name="ObjectifiedUnaryRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="EE1EFD02-7AD8-42FA-9062-1F499941617F" DisplayName="Role" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="Role"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="NameAlias" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A0AD1270-E3D1-4851-A5AB-D87E5942F9AE" DisplayName="NameAlias" Description="">
+		<DomainClass Name="NameAlias" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="A0AD1270-E3D1-4851-A5AB-D87E5942F9AE" DisplayName="NameAlias" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ORMNamedElement"/>
 			</BaseClass>
@@ -783,17 +783,17 @@
 			</Properties>
 		</DomainClass>
 
-		<DomainClass Name="EqualityConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" Id="E4F8E935-C07C-4269-81E3-978110F6DC68" DisplayName="EqualityConstraint" Description="">
+		<DomainClass Name="EqualityConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="E4F8E935-C07C-4269-81E3-978110F6DC68" DisplayName="EqualityConstraint" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="SetComparisonConstraint"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ExclusionConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" Id="7766C350-ADFC-464C-B200-E4473F551E03" DisplayName="ExclusionConstraint" Description="">
+		<DomainClass Name="ExclusionConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="7766C350-ADFC-464C-B200-E4473F551E03" DisplayName="ExclusionConstraint" Description="">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;ExclusionConstraint, Design.ExclusionConstraintTypeDescriptor&lt;ExclusionConstraint&gt;&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;ExclusionConstraint, Design.ExclusionConstraintTypeDescriptor&lt;ExclusionConstraint&gt;&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -802,17 +802,17 @@
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="SubsetConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" Id="9B5982E3-A852-4071-A973-9719F87546F0" DisplayName="SubsetConstraint" Description="">
+		<DomainClass Name="SubsetConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="9B5982E3-A852-4071-A973-9719F87546F0" DisplayName="SubsetConstraint" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="SetComparisonConstraint"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="SetComparisonConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" Id="85074B82-ED14-4D70-B95C-0B29F2D64210" DisplayName="SetComparisonConstraint" InheritanceModifier="Abstract" Description="">
+		<DomainClass Name="SetComparisonConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="85074B82-ED14-4D70-B95C-0B29F2D64210" DisplayName="SetComparisonConstraint" InheritanceModifier="Abstract" Description="">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;SetComparisonConstraint, Design.SetComparisonConstraintTypeDescriptor&lt;SetComparisonConstraint&gt;&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;SetComparisonConstraint, Design.SetComparisonConstraintTypeDescriptor&lt;SetComparisonConstraint&gt;&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -828,7 +828,7 @@
 			</Properties>
 		</DomainClass>
 
-		<DomainClass Name="Expression" Namespace="Neumont.Tools.ORM.ObjectModel" Id="1B62AF68-86A9-4A14-8B32-8988041BBCCF" DisplayName="Expression" InheritanceModifier="Abstract" Description="">
+		<DomainClass Name="Expression" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="1B62AF68-86A9-4A14-8B32-8988041BBCCF" DisplayName="Expression" InheritanceModifier="Abstract" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
@@ -846,13 +846,13 @@
 			</Properties>
 		</DomainClass>
 
-		<DomainClass Name="SetComparisonConstraintRoleSequence" Namespace="Neumont.Tools.ORM.ObjectModel" Id="9E59F946-8745-4936-A4AA-74552664790E" DisplayName="SetComparisonConstraintRoleSequence" Description="">
+		<DomainClass Name="SetComparisonConstraintRoleSequence" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="9E59F946-8745-4936-A4AA-74552664790E" DisplayName="SetComparisonConstraintRoleSequence" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ConstraintRoleSequence"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="RingConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" Id="31792DBE-49EB-4544-9FB4-3A692AAC39C9" DisplayName="RingConstraint" Description="">
+		<DomainClass Name="RingConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="31792DBE-49EB-4544-9FB4-3A692AAC39C9" DisplayName="RingConstraint" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="SetConstraint"/>
 			</BaseClass>
@@ -865,7 +865,7 @@
 			</Properties>
 		</DomainClass>
 
-		<DomainClass Name="FrequencyConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A6D76D01-FDC3-43A2-8AAF-56C2E0BD0465" DisplayName="FrequencyConstraint" Description="">
+		<DomainClass Name="FrequencyConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="A6D76D01-FDC3-43A2-8AAF-56C2E0BD0465" DisplayName="FrequencyConstraint" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="SetConstraint"/>
 			</BaseClass>
@@ -874,7 +874,7 @@
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ObjectModel.Design.FrequencyConstraintMinConverter)"/>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.FrequencyConstraintMinConverter)"/>
 							</Parameters>
 						</ClrAttribute>
 					</Attributes>
@@ -886,13 +886,13 @@
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ObjectModel.Design.FrequencyConstraintMaxPicker)"/>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.FrequencyConstraintMaxPicker)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 							</Parameters>
 						</ClrAttribute>
 						<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ObjectModel.Design.FrequencyConstraintMaxConverter)"/>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.FrequencyConstraintMaxConverter)"/>
 							</Parameters>
 						</ClrAttribute>
 					</Attributes>
@@ -903,11 +903,11 @@
 			</Properties>
 		</DomainClass>
 
-		<DomainClass Name="UniquenessConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" Id="49C7E3CE-C4F9-417D-B49C-27EA4016371E" DisplayName="UniquenessConstraint" Description="">
+		<DomainClass Name="UniquenessConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="49C7E3CE-C4F9-417D-B49C-27EA4016371E" DisplayName="UniquenessConstraint" Description="">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;UniquenessConstraint, Design.UniquenessConstraintTypeDescriptor&lt;UniquenessConstraint&gt;&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;UniquenessConstraint, Design.UniquenessConstraintTypeDescriptor&lt;UniquenessConstraint&gt;&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -928,11 +928,11 @@
 			</Properties>
 		</DomainClass>
 
-		<DomainClass Name="MandatoryConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" Id="F054BE4D-BFCA-4CD3-A0D8-97F61C165753" DisplayName="InclusiveOrConstraint" Description="">
+		<DomainClass Name="MandatoryConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="F054BE4D-BFCA-4CD3-A0D8-97F61C165753" DisplayName="InclusiveOrConstraint" Description="">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;MandatoryConstraint, Design.MandatoryConstraintTypeDescriptor&lt;MandatoryConstraint&gt;&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;MandatoryConstraint, Design.MandatoryConstraintTypeDescriptor&lt;MandatoryConstraint&gt;&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -953,11 +953,11 @@
 			</Properties>
 		</DomainClass>
 
-		<DomainClass Name="SetConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" Id="1B85E4BE-0C95-45BD-A76F-2087456F891B" DisplayName="SetConstraint" InheritanceModifier="Abstract" Description="">
+		<DomainClass Name="SetConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="1B85E4BE-0C95-45BD-A76F-2087456F891B" DisplayName="SetConstraint" InheritanceModifier="Abstract" Description="">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;SetConstraint, Design.SetConstraintTypeDescriptor&lt;SetConstraint&gt;&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;SetConstraint, Design.SetConstraintTypeDescriptor&lt;SetConstraint&gt;&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -973,17 +973,17 @@
 			</Properties>
 		</DomainClass>
 
-		<DomainClass Name="ConstraintRoleSequence" Namespace="Neumont.Tools.ORM.ObjectModel" Id="E279C66B-E89C-4E02-9DE2-64791C8A4511" DisplayName="ConstraintRoleSequence" InheritanceModifier="Abstract" Description="">
+		<DomainClass Name="ConstraintRoleSequence" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="E279C66B-E89C-4E02-9DE2-64791C8A4511" DisplayName="ConstraintRoleSequence" InheritanceModifier="Abstract" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ORMNamedElement"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="Join" Namespace="Neumont.Tools.ORM.ObjectModel" Id="EFDE476D-C440-4524-97DA-42697FA92CE9" DisplayName="Join" Description="">
+		<DomainClass Name="Join" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="EFDE476D-C440-4524-97DA-42697FA92CE9" DisplayName="Join" Description="">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;Join, Design.JoinTypeDescriptor&lt;Join&gt;&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;Join, Design.JoinTypeDescriptor&lt;Join&gt;&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -999,139 +999,139 @@
 			</Properties>
 		</DomainClass>
 
-		<DomainClass Name="TooFewRoleSequencesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="686A4B07-0ED9-4143-8225-5524C4D6C001" DisplayName="Too Few Role Sequences" Description="">
+		<DomainClass Name="TooFewRoleSequencesError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="686A4B07-0ED9-4143-8225-5524C4D6C001" DisplayName="Too Few Role Sequences" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="TooManyRoleSequencesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="1ADACF12-94F5-430D-9E14-6A3B0334139E" DisplayName="Too Many Role Sequences" Description="">
+		<DomainClass Name="TooManyRoleSequencesError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="1ADACF12-94F5-430D-9E14-6A3B0334139E" DisplayName="Too Many Role Sequences" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ObjectTypeDuplicateNameError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="798D4CC7-1AD8-4A83-AFD5-5730AC342DC2" DisplayName="Duplicate ObjectType Names" Description="">
+		<DomainClass Name="ObjectTypeDuplicateNameError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="798D4CC7-1AD8-4A83-AFD5-5730AC342DC2" DisplayName="Duplicate ObjectType Names" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="DuplicateNameError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="RecognizedPhraseDuplicateNameError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="E4F41332-9A69-4CE8-871C-3507326D7CDB" DisplayName="Duplicate Recognized Words" Description="">
+		<DomainClass Name="RecognizedPhraseDuplicateNameError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="E4F41332-9A69-4CE8-871C-3507326D7CDB" DisplayName="Duplicate Recognized Words" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="DuplicateNameError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="PopulationUniquenessError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="BA0A8F9E-91E1-4D56-8A44-9F49432C63C5" DisplayName="Population Violates Uniqueness Constraint" Description="">
+		<DomainClass Name="PopulationUniquenessError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="BA0A8F9E-91E1-4D56-8A44-9F49432C63C5" DisplayName="Population Violates Uniqueness Constraint" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ContradictionError" InheritanceModifier="Abstract" Namespace="Neumont.Tools.ORM.ObjectModel" Id="B42B88E4-CA87-4DFA-90BE-00606E4BE23B" DisplayName="ContradictionError" Description="">
+		<DomainClass Name="ContradictionError" InheritanceModifier="Abstract" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="B42B88E4-CA87-4DFA-90BE-00606E4BE23B" DisplayName="ContradictionError" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ExclusionContradictsMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="5A57EA68-918D-4AE3-AF7F-D9F7CDB5AB34" DisplayName="Contradicting Exclusion and Mandatory Constraints" Description="">
+		<DomainClass Name="ExclusionContradictsMandatoryError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="5A57EA68-918D-4AE3-AF7F-D9F7CDB5AB34" DisplayName="Contradicting Exclusion and Mandatory Constraints" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ContradictionError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ExclusionContradictsEqualityError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="D8714F74-60B7-48F5-BF7D-88D8736CB22A" DisplayName="Contradicting Exclusion and Equality Constraints" Description="">
+		<DomainClass Name="ExclusionContradictsEqualityError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="D8714F74-60B7-48F5-BF7D-88D8736CB22A" DisplayName="Contradicting Exclusion and Equality Constraints" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ContradictionError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ExclusionContradictsSubsetError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="F671FE6D-BA8A-4BF2-AFB6-BE5827996C50" DisplayName="Contradicting Exclusion and Subset Constraints" Description="">
+		<DomainClass Name="ExclusionContradictsSubsetError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="F671FE6D-BA8A-4BF2-AFB6-BE5827996C50" DisplayName="Contradicting Exclusion and Subset Constraints" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ContradictionError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="NotWellModeledSubsetAndMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="2DECDC39-E109-4D59-8BF3-046E2CD8584C" DisplayName="Contradicting Subset and Mandatory Constraints" Description="">
+		<DomainClass Name="NotWellModeledSubsetAndMandatoryError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="2DECDC39-E109-4D59-8BF3-046E2CD8584C" DisplayName="Contradicting Subset and Mandatory Constraints" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="PopulationMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="5B76CB18-90B2-4656-BB0D-0788460FDB70" DisplayName="Missing Mandatory Sample Population" Description="">
+		<DomainClass Name="PopulationMandatoryError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="5B76CB18-90B2-4656-BB0D-0788460FDB70" DisplayName="Missing Mandatory Sample Population" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ObjectifiedInstanceRequiredError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="0B96D8AA-7EB3-4B6E-B45E-F94E8C63064A" DisplayName="Missing Objectified FactType Instance" Description="">
+		<DomainClass Name="ObjectifiedInstanceRequiredError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="0B96D8AA-7EB3-4B6E-B45E-F94E8C63064A" DisplayName="Missing Objectified FactType Instance" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ObjectifyingInstanceRequiredError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="23808265-C2BE-4E03-B555-A4DB84CF053C" DisplayName="Missing Objectifying EntityType Instance" Description="">
+		<DomainClass Name="ObjectifyingInstanceRequiredError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="23808265-C2BE-4E03-B555-A4DB84CF053C" DisplayName="Missing Objectifying EntityType Instance" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ConstraintDuplicateNameError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="AA63E81B-6978-49A2-A4AC-86022A172EDD" DisplayName="Duplicate Constraint Names" Description="">
+		<DomainClass Name="ConstraintDuplicateNameError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="AA63E81B-6978-49A2-A4AC-86022A172EDD" DisplayName="Duplicate Constraint Names" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="DuplicateNameError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="DuplicateNameError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="9E29C624-4559-4020-9163-7B5846C94C0C" DisplayName="DuplicateNameError" InheritanceModifier="Abstract" Description="">
+		<DomainClass Name="DuplicateNameError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="9E29C624-4559-4020-9163-7B5846C94C0C" DisplayName="DuplicateNameError" InheritanceModifier="Abstract" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="TooFewReadingRolesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="1D2B23EF-456E-4E80-91D8-FB384F779A54" DisplayName="FactType has Fewer Roles than Reading Text" Description="">
+		<DomainClass Name="TooFewReadingRolesError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="1D2B23EF-456E-4E80-91D8-FB384F779A54" DisplayName="FactType has Fewer Roles than Reading Text" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="TooManyReadingRolesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="50C98172-412C-40C0-ADD3-82809C3D82F7" DisplayName="FactType has More Roles than Reading Text" Description="">
+		<DomainClass Name="TooManyReadingRolesError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="50C98172-412C-40C0-ADD3-82809C3D82F7" DisplayName="FactType has More Roles than Reading Text" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ExternalConstraintRoleSequenceArityMismatchError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="3DA5385A-D9DE-4F3D-9D2E-CA79F10AB542" DisplayName="Constraint Role Sequences with Different Numbers of Roles" Description="">
+		<DomainClass Name="ExternalConstraintRoleSequenceArityMismatchError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="3DA5385A-D9DE-4F3D-9D2E-CA79F10AB542" DisplayName="Constraint Role Sequences with Different Numbers of Roles" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="FactTypeRequiresReadingError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="3ECA7E92-45B2-45BD-BAD3-6AF0C4B40E70" DisplayName="FactType Requires Reading" Description="">
+		<DomainClass Name="FactTypeRequiresReadingError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="3ECA7E92-45B2-45BD-BAD3-6AF0C4B40E70" DisplayName="FactType Requires Reading" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="FactTypeRequiresInternalUniquenessConstraintError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="295D4B3D-1351-431D-B72F-28661D744B58" DisplayName="FactType Requires Internal Uniqueness Constraint" Description="">
+		<DomainClass Name="FactTypeRequiresInternalUniquenessConstraintError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="295D4B3D-1351-431D-B72F-28661D744B58" DisplayName="FactType Requires Internal Uniqueness Constraint" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="DataTypeNotSpecifiedError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="8AFA102F-529C-4896-AEB3-9D714E28FC61" DisplayName="DataType not Specified for ValueType" Description="">
+		<DomainClass Name="DataTypeNotSpecifiedError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="8AFA102F-529C-4896-AEB3-9D714E28FC61" DisplayName="DataType not Specified for ValueType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="NMinusOneError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="497754B3-5176-4712-BC46-2E4377354C8B" DisplayName="Insufficient Roles for Internal Uniqueness Constraint" Description="">
+		<DomainClass Name="NMinusOneError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="497754B3-5176-4712-BC46-2E4377354C8B" DisplayName="Insufficient Roles for Internal Uniqueness Constraint" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="CompatibleRolePlayerTypeError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="5C8D3150-2604-44FC-A468-B678F9B4206E" DisplayName="Incompatible Constrained Role Players" Description="">
+		<DomainClass Name="CompatibleRolePlayerTypeError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="5C8D3150-2604-44FC-A468-B678F9B4206E" DisplayName="Incompatible Constrained Role Players" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
@@ -1145,37 +1145,37 @@
 
 		</DomainClass>
 
-		<DomainClass Name="RolePlayerRequiredError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="59A21FDE-D979-4B18-9088-707B79FCE19E" DisplayName="Role Player Required" Description="">
+		<DomainClass Name="RolePlayerRequiredError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="59A21FDE-D979-4B18-9088-707B79FCE19E" DisplayName="Role Player Required" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="EntityTypeRequiresReferenceSchemeError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A9177733-169B-418A-A843-3E3777DC9982" DisplayName="EntityType Requires Reference Scheme" Description="">
+		<DomainClass Name="EntityTypeRequiresReferenceSchemeError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="A9177733-169B-418A-A843-3E3777DC9982" DisplayName="EntityType Requires Reference Scheme" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="FrequencyConstraintMinMaxError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="5586C408-1A46-4CA7-8B0D-0462CD904009" DisplayName="Inconsistent Frequency Constraint Minimum and Maximum Values" Description="">
+		<DomainClass Name="FrequencyConstraintMinMaxError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="5586C408-1A46-4CA7-8B0D-0462CD904009" DisplayName="Inconsistent Frequency Constraint Minimum and Maximum Values" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="FrequencyConstraintExactlyOneError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="9BBFF3C2-329B-4956-8FFA-1C6F305CF601" DisplayName="Represent Frequency Constraint of Exactly One as Uniqueneness" Description="">
+		<DomainClass Name="FrequencyConstraintExactlyOneError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="9BBFF3C2-329B-4956-8FFA-1C6F305CF601" DisplayName="Represent Frequency Constraint of Exactly One as Uniqueneness" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ReadingRequiresUserModificationError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="56D0B016-EAF3-4E4F-B17A-7F7987EBC0CB" DisplayName="Reading Text Automatically Modified" Description="">
+		<DomainClass Name="ReadingRequiresUserModificationError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="56D0B016-EAF3-4E4F-B17A-7F7987EBC0CB" DisplayName="Reading Text Automatically Modified" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ModelError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="16DF5C5E-83EF-4EDC-B54A-56D58D62D982" DisplayName="ModelError" InheritanceModifier="Abstract" Description="">
+		<DomainClass Name="ModelError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="16DF5C5E-83EF-4EDC-B54A-56D58D62D982" DisplayName="ModelError" InheritanceModifier="Abstract" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
@@ -1195,7 +1195,7 @@
 			</Properties>
 		</DomainClass>
 
-		<DomainClass Name="ReferenceModeKind" Namespace="Neumont.Tools.ORM.ObjectModel" Id="7EC5E835-5EEB-4FB1-AA09-9BD6ABA531E1" DisplayName="ReferenceModeKind" Description="">
+		<DomainClass Name="ReferenceModeKind" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="7EC5E835-5EEB-4FB1-AA09-9BD6ABA531E1" DisplayName="ReferenceModeKind" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
@@ -1214,13 +1214,13 @@
 
 		</DomainClass>
 
-		<DomainClass Name="IntrinsicReferenceMode" Namespace="Neumont.Tools.ORM.ObjectModel" Id="F34A46FD-D7EA-4423-B40F-90A6662CADB9" DisplayName="IntrinsicReferenceMode" Description="">
+		<DomainClass Name="IntrinsicReferenceMode" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="F34A46FD-D7EA-4423-B40F-90A6662CADB9" DisplayName="IntrinsicReferenceMode" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ReferenceMode"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="CustomReferenceMode" Namespace="Neumont.Tools.ORM.ObjectModel" Id="BB33470D-3C98-4B2E-9134-9347C8008861" DisplayName="CustomReferenceMode" Description="">
+		<DomainClass Name="CustomReferenceMode" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="BB33470D-3C98-4B2E-9134-9347C8008861" DisplayName="CustomReferenceMode" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ReferenceMode"/>
 			</BaseClass>
@@ -1234,11 +1234,11 @@
 
 		</DomainClass>
 
-		<DomainClass Name="ReferenceMode" Namespace="Neumont.Tools.ORM.ObjectModel" Id="5123D945-262C-42B7-838D-1B7F4E5A911C" DisplayName="ReferenceMode" InheritanceModifier="Abstract" Description="">
+		<DomainClass Name="ReferenceMode" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="5123D945-262C-42B7-838D-1B7F4E5A911C" DisplayName="ReferenceMode" InheritanceModifier="Abstract" Description="">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;ReferenceMode, Design.ReferenceModeTypeDescriptor&lt;ReferenceMode&gt;&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;ReferenceMode, Design.ReferenceModeTypeDescriptor&lt;ReferenceMode&gt;&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -1250,239 +1250,239 @@
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ObjectModel.Design.ReferenceModeKindPicker)"/>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.ReferenceModeKindPicker)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 							</Parameters>
 						</ClrAttribute>
 					</Attributes>
 					<Type>
-						<ExternalTypeMoniker Name="/Neumont.Tools.ORM.ObjectModel/ReferenceModeKind"/>
+						<ExternalTypeMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/ReferenceModeKind"/>
 					</Type>
 				</DomainProperty>
 			</Properties>
 		</DomainClass>
 
-		<DomainClass Name="UnspecifiedDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="B7DDA0A4-C18A-4E85-8259-F529FC45F72E" DisplayName="UnspecifiedDataType" Description="">
+		<DomainClass Name="UnspecifiedDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="B7DDA0A4-C18A-4E85-8259-F529FC45F72E" DisplayName="UnspecifiedDataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="DataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="FixedLengthTextDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="2B525C4C-9B55-4C8D-98BB-63739E9D7C3D" DisplayName="FixedLengthTextDataType" Description="">
+		<DomainClass Name="FixedLengthTextDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="2B525C4C-9B55-4C8D-98BB-63739E9D7C3D" DisplayName="FixedLengthTextDataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="TextDataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="VariableLengthTextDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="6F30DE79-85BE-4194-B362-A39023A0E200" DisplayName="VariableLengthTextDataType" Description="">
+		<DomainClass Name="VariableLengthTextDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="6F30DE79-85BE-4194-B362-A39023A0E200" DisplayName="VariableLengthTextDataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="TextDataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="LargeLengthTextDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="27CBCB76-FAC5-436A-950A-CC428FEC9EED" DisplayName="LargeLengthTextDataType" Description="">
+		<DomainClass Name="LargeLengthTextDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="27CBCB76-FAC5-436A-950A-CC428FEC9EED" DisplayName="LargeLengthTextDataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="TextDataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="TextDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="E1BE56BD-6663-4F5C-AF6A-39E03DFB2BFA" DisplayName="TextDataType" InheritanceModifier="Abstract" Description="">
+		<DomainClass Name="TextDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="E1BE56BD-6663-4F5C-AF6A-39E03DFB2BFA" DisplayName="TextDataType" InheritanceModifier="Abstract" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="DataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="SignedIntegerNumericDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="F4962B12-8C72-4FEF-9C24-D23A5872A403" DisplayName="SignedIntegerNumericDataType" Description="">
+		<DomainClass Name="SignedIntegerNumericDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="F4962B12-8C72-4FEF-9C24-D23A5872A403" DisplayName="SignedIntegerNumericDataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="NumericDataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="SignedSmallIntegerNumericDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="67825482-E490-4A16-B47D-53E72F4EBEE3" DisplayName="SignedSmallIntegerNumericDataType" Description="">
+		<DomainClass Name="SignedSmallIntegerNumericDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="67825482-E490-4A16-B47D-53E72F4EBEE3" DisplayName="SignedSmallIntegerNumericDataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="NumericDataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="SignedLargeIntegerNumericDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="AF56003A-52F1-4C02-B203-EF15B4CB2AE1" DisplayName="SignedLargeIntegerNumericDataType" Description="">
+		<DomainClass Name="SignedLargeIntegerNumericDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="AF56003A-52F1-4C02-B203-EF15B4CB2AE1" DisplayName="SignedLargeIntegerNumericDataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="NumericDataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="UnsignedIntegerNumericDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="9D76D09D-10F6-4DB0-8890-1077A95FB364" DisplayName="UnsignedIntegerNumericDataType" Description="">
+		<DomainClass Name="UnsignedIntegerNumericDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="9D76D09D-10F6-4DB0-8890-1077A95FB364" DisplayName="UnsignedIntegerNumericDataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="NumericDataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="UnsignedTinyIntegerNumericDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A14599A2-2B27-4E76-894F-A1814723EFE9" DisplayName="UnsignedTinyIntegerNumericDataType" Description="">
+		<DomainClass Name="UnsignedTinyIntegerNumericDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="A14599A2-2B27-4E76-894F-A1814723EFE9" DisplayName="UnsignedTinyIntegerNumericDataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="NumericDataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="UnsignedSmallIntegerNumericDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="0EDC60E7-0548-48C3-BC6B-219AF6E50A31" DisplayName="UnsignedSmallIntegerNumericDataType" Description="">
+		<DomainClass Name="UnsignedSmallIntegerNumericDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="0EDC60E7-0548-48C3-BC6B-219AF6E50A31" DisplayName="UnsignedSmallIntegerNumericDataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="NumericDataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="UnsignedLargeIntegerNumericDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="0ED930F6-73C7-4E04-8898-E5F30EF3A641" DisplayName="UnsignedLargeIntegerNumericDataType" Description="">
+		<DomainClass Name="UnsignedLargeIntegerNumericDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="0ED930F6-73C7-4E04-8898-E5F30EF3A641" DisplayName="UnsignedLargeIntegerNumericDataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="NumericDataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="AutoCounterNumericDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="E2F2CD9B-5C9D-439D-AEAC-A2F093ED04FE" DisplayName="AutoCounterNumericDataType" Description="">
+		<DomainClass Name="AutoCounterNumericDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="E2F2CD9B-5C9D-439D-AEAC-A2F093ED04FE" DisplayName="AutoCounterNumericDataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="NumericDataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="FloatingPointNumericDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="C82CD420-BB13-4F63-9EA7-850512E5B7DD" DisplayName="FloatingPointNumericDataType" Description="">
+		<DomainClass Name="FloatingPointNumericDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="C82CD420-BB13-4F63-9EA7-850512E5B7DD" DisplayName="FloatingPointNumericDataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="NumericDataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="SinglePrecisionFloatingPointNumericDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="53399895-20E9-49E0-BC73-E00461387680" DisplayName="SinglePrecisionFloatingPointNumericDataType" Description="">
+		<DomainClass Name="SinglePrecisionFloatingPointNumericDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="53399895-20E9-49E0-BC73-E00461387680" DisplayName="SinglePrecisionFloatingPointNumericDataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="NumericDataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="DoublePrecisionFloatingPointNumericDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="F5A7B8A3-2EF5-4143-BDEE-1AA762CB6E02" DisplayName="DoublePrecisionFloatingPointNumericDataType" Description="">
+		<DomainClass Name="DoublePrecisionFloatingPointNumericDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="F5A7B8A3-2EF5-4143-BDEE-1AA762CB6E02" DisplayName="DoublePrecisionFloatingPointNumericDataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="NumericDataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="DecimalNumericDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="B86FAADD-E5CF-4745-A796-FABD0310A4A8" DisplayName="DecimalNumericDataType" Description="">
+		<DomainClass Name="DecimalNumericDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="B86FAADD-E5CF-4745-A796-FABD0310A4A8" DisplayName="DecimalNumericDataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="NumericDataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="MoneyNumericDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="520A70DA-ACC3-47B2-B8EF-00AF2FF6D170" DisplayName="MoneyNumericDataType" Description="">
+		<DomainClass Name="MoneyNumericDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="520A70DA-ACC3-47B2-B8EF-00AF2FF6D170" DisplayName="MoneyNumericDataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="NumericDataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="NumericDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="CCCFB38B-956F-4E71-8CDC-7A9CD7D6052C" DisplayName="NumericDataType" InheritanceModifier="Abstract" Description="">
+		<DomainClass Name="NumericDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="CCCFB38B-956F-4E71-8CDC-7A9CD7D6052C" DisplayName="NumericDataType" InheritanceModifier="Abstract" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="DataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="FixedLengthRawDataDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="1AA62E47-0EB5-45B7-B1FA-AC17EF24E009" DisplayName="FixedLengthRawDataDataType" Description="">
+		<DomainClass Name="FixedLengthRawDataDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="1AA62E47-0EB5-45B7-B1FA-AC17EF24E009" DisplayName="FixedLengthRawDataDataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="RawDataDataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="VariableLengthRawDataDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="01A2EA3B-BC60-4E62-8819-26E81B8D871F" DisplayName="VariableLengthRawDataDataType" Description="">
+		<DomainClass Name="VariableLengthRawDataDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="01A2EA3B-BC60-4E62-8819-26E81B8D871F" DisplayName="VariableLengthRawDataDataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="RawDataDataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="LargeLengthRawDataDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="FF35CE6D-2BB6-4DF4-A98C-D303A5698AD2" DisplayName="LargeLengthRawDataDataType" Description="">
+		<DomainClass Name="LargeLengthRawDataDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="FF35CE6D-2BB6-4DF4-A98C-D303A5698AD2" DisplayName="LargeLengthRawDataDataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="RawDataDataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="PictureRawDataDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="D33DACE5-3D70-4678-9325-058C1CCFD81F" DisplayName="PictureRawDataDataType" Description="">
+		<DomainClass Name="PictureRawDataDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="D33DACE5-3D70-4678-9325-058C1CCFD81F" DisplayName="PictureRawDataDataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="RawDataDataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="OleObjectRawDataDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="0B79F4F9-09B6-408A-88A2-F8B1051C2B05" DisplayName="OleObjectRawDataDataType" Description="">
+		<DomainClass Name="OleObjectRawDataDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="0B79F4F9-09B6-408A-88A2-F8B1051C2B05" DisplayName="OleObjectRawDataDataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="RawDataDataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="RawDataDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="C5683946-DF1B-42AF-947A-006DD6875CCF" DisplayName="RawDataDataType" InheritanceModifier="Abstract" Description="">
+		<DomainClass Name="RawDataDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="C5683946-DF1B-42AF-947A-006DD6875CCF" DisplayName="RawDataDataType" InheritanceModifier="Abstract" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="DataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="AutoTimestampTemporalDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="5553662C-93B7-4C7B-8723-FF56963AE644" DisplayName="AutoTimestampTemporalDataType" Description="">
+		<DomainClass Name="AutoTimestampTemporalDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="5553662C-93B7-4C7B-8723-FF56963AE644" DisplayName="AutoTimestampTemporalDataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="TemporalDataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="TimeTemporalDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="13138B79-3CB9-479E-AC5B-569A755085C4" DisplayName="TimeTemporalDataType" Description="">
+		<DomainClass Name="TimeTemporalDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="13138B79-3CB9-479E-AC5B-569A755085C4" DisplayName="TimeTemporalDataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="TemporalDataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="DateTemporalDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="ABC122E6-894B-446E-8CD4-EAD7D61FCC46" DisplayName="DateTemporalDataType" Description="">
+		<DomainClass Name="DateTemporalDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="ABC122E6-894B-446E-8CD4-EAD7D61FCC46" DisplayName="DateTemporalDataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="TemporalDataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="DateAndTimeTemporalDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A5B3A699-DFB5-4522-B024-F55BDE90AC6A" DisplayName="DateAndTimeTemporalDataType" Description="">
+		<DomainClass Name="DateAndTimeTemporalDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="A5B3A699-DFB5-4522-B024-F55BDE90AC6A" DisplayName="DateAndTimeTemporalDataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="TemporalDataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="TemporalDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="BFBEF833-DD04-4DB3-A167-D1314273B2C6" DisplayName="TemporalDataType" InheritanceModifier="Abstract" Description="">
+		<DomainClass Name="TemporalDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="BFBEF833-DD04-4DB3-A167-D1314273B2C6" DisplayName="TemporalDataType" InheritanceModifier="Abstract" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="DataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="TrueOrFalseLogicalDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="689EA7B7-31A8-4800-A98E-99CCD21E112C" DisplayName="TrueOrFalseLogicalDataType" Description="">
+		<DomainClass Name="TrueOrFalseLogicalDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="689EA7B7-31A8-4800-A98E-99CCD21E112C" DisplayName="TrueOrFalseLogicalDataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="LogicalDataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="YesOrNoLogicalDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="7E694D96-8444-4007-BFEB-C1B0BD3F96DE" DisplayName="YesOrNoLogicalDataType" Description="">
+		<DomainClass Name="YesOrNoLogicalDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="7E694D96-8444-4007-BFEB-C1B0BD3F96DE" DisplayName="YesOrNoLogicalDataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="LogicalDataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="LogicalDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A7D4D492-2702-4B87-BD9E-0D7D7D85943A" DisplayName="LogicalDataType" InheritanceModifier="Abstract" Description="">
+		<DomainClass Name="LogicalDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="A7D4D492-2702-4B87-BD9E-0D7D7D85943A" DisplayName="LogicalDataType" InheritanceModifier="Abstract" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="DataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="RowIdOtherDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="42A558F7-1A61-49A6-A207-A706FAF94DD8" DisplayName="RowIdOtherDataType" Description="">
+		<DomainClass Name="RowIdOtherDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="42A558F7-1A61-49A6-A207-A706FAF94DD8" DisplayName="RowIdOtherDataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="OtherDataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ObjectIdOtherDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="48B82DAB-A7E2-4DAB-8D53-9840CF7A15DD" DisplayName="ObjectIdOtherDataType" Description="">
+		<DomainClass Name="ObjectIdOtherDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="48B82DAB-A7E2-4DAB-8D53-9840CF7A15DD" DisplayName="ObjectIdOtherDataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="OtherDataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="OtherDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="0B801E67-9D48-49F7-AA13-9C7BD8153624" DisplayName="OtherDataType" InheritanceModifier="Abstract" Description="">
+		<DomainClass Name="OtherDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="0B801E67-9D48-49F7-AA13-9C7BD8153624" DisplayName="OtherDataType" InheritanceModifier="Abstract" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="DataType"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="DataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="9D0C6367-617F-4A8C-A0E5-5DA23828ED61" DisplayName="DataType" InheritanceModifier="Abstract" Description="">
+		<DomainClass Name="DataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="9D0C6367-617F-4A8C-A0E5-5DA23828ED61" DisplayName="DataType" InheritanceModifier="Abstract" Description="">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;DataType, Design.DataTypeTypeDescriptor&lt;DataType&gt;&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;DataType, Design.DataTypeTypeDescriptor&lt;DataType&gt;&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -1491,11 +1491,11 @@
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="Reading" Namespace="Neumont.Tools.ORM.ObjectModel" Id="7544854F-A4A7-4429-8859-F1D3B0E52B03" DisplayName="Reading" Description="">
+		<DomainClass Name="Reading" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="7544854F-A4A7-4429-8859-F1D3B0E52B03" DisplayName="Reading" Description="">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;Reading, Design.ReadingTypeDescriptor&lt;Reading&gt;&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;Reading, Design.ReadingTypeDescriptor&lt;Reading&gt;&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -1526,7 +1526,7 @@
 			</Properties>
 		</DomainClass>
 
-		<DomainClass Name="ReadingOrder" Namespace="Neumont.Tools.ORM.ObjectModel" Id="7CB4A39B-D11F-48FC-BFED-B80F5D3FC54E" DisplayName="ReadingOrder" Description="">
+		<DomainClass Name="ReadingOrder" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="7CB4A39B-D11F-48FC-BFED-B80F5D3FC54E" DisplayName="ReadingOrder" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
@@ -1535,7 +1535,7 @@
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ObjectModel.Design.ReadingTextEditor)"/>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.ReadingTextEditor)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 							</Parameters>
 						</ClrAttribute>
@@ -1547,7 +1547,7 @@
 			</Properties>
 		</DomainClass>
 
-		<DomainClass Name="ValueRange" Namespace="Neumont.Tools.ORM.ObjectModel" Id="8987ECEA-6C2A-4825-8C9F-465005272CE8" DisplayName="ValueRange" Description="">
+		<DomainClass Name="ValueRange" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="8987ECEA-6C2A-4825-8C9F-465005272CE8" DisplayName="ValueRange" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
@@ -1580,23 +1580,23 @@
 			</Properties>
 		</DomainClass>
 
-		<DomainClass Name="ValueTypeValueConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" Id="E46B0A2E-460E-4FF7-B447-C9C09597B500" DisplayName="ValueTypeValueConstraint" Description="">
+		<DomainClass Name="ValueTypeValueConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="E46B0A2E-460E-4FF7-B447-C9C09597B500" DisplayName="ValueTypeValueConstraint" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ValueConstraint"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="RoleValueConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" Id="6C223B62-6239-4514-81C5-AAD6A10D3A2D" DisplayName="RoleValueConstraint" Description="">
+		<DomainClass Name="RoleValueConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="6C223B62-6239-4514-81C5-AAD6A10D3A2D" DisplayName="RoleValueConstraint" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ValueConstraint"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ValueConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" Id="EF2EFEAD-A124-413C-8F86-C95E2B47160C" DisplayName="ValueConstraint" InheritanceModifier="Abstract" Description="">
+		<DomainClass Name="ValueConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="EF2EFEAD-A124-413C-8F86-C95E2B47160C" DisplayName="ValueConstraint" InheritanceModifier="Abstract" Description="">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;ValueConstraint, Design.ValueConstraintTypeDescriptor&lt;ValueConstraint&gt;&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;ValueConstraint, Design.ValueConstraintTypeDescriptor&lt;ValueConstraint&gt;&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -1617,55 +1617,55 @@
 			</Properties>
 		</DomainClass>
 
-		<DomainClass Name="ValueMismatchError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A18FA855-E7CA-4716-8E8D-1606C09B090A" DisplayName="Value Constraint Value Invalid for DataType" InheritanceModifier="Abstract" Description="">
+		<DomainClass Name="ValueMismatchError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="A18FA855-E7CA-4716-8E8D-1606C09B090A" DisplayName="Value Constraint Value Invalid for DataType" InheritanceModifier="Abstract" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="MinValueMismatchError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="7E0D53CF-D374-4EDA-B6A6-04D381AA0DC5" DisplayName="Minimum Bound of Value Range Invalid for DataType" Description="">
+		<DomainClass Name="MinValueMismatchError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="7E0D53CF-D374-4EDA-B6A6-04D381AA0DC5" DisplayName="Minimum Bound of Value Range Invalid for DataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ValueMismatchError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="MaxValueMismatchError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="CCE42465-23A0-4726-8881-3ADB48E2CC67" DisplayName="Maximum Bound of Value Range Invalid for DataType" Description="">
+		<DomainClass Name="MaxValueMismatchError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="CCE42465-23A0-4726-8881-3ADB48E2CC67" DisplayName="Maximum Bound of Value Range Invalid for DataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ValueMismatchError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ImpliedInternalUniquenessConstraintError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="B7381F8B-C95E-408D-9747-4B6BB35C1171" DisplayName="FactType has Implied Internal Uniqueness Constraint(s)" Description="">
+		<DomainClass Name="ImpliedInternalUniquenessConstraintError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="B7381F8B-C95E-408D-9747-4B6BB35C1171" DisplayName="FactType has Implied Internal Uniqueness Constraint(s)" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="FrequencyConstraintContradictsInternalUniquenessConstraintError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A080C2B2-F666-4689-A63E-BD97CB0491E2" DisplayName="Contradicting Frequency and Internal Uniqueness Constraints" Description="">
+		<DomainClass Name="FrequencyConstraintContradictsInternalUniquenessConstraintError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="A080C2B2-F666-4689-A63E-BD97CB0491E2" DisplayName="Contradicting Frequency and Internal Uniqueness Constraints" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="RingConstraintTypeNotSpecifiedError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="15026270-DFD6-470D-A997-233173E644DC" DisplayName="Ring Constraint Type Not Specified" Description="">
+		<DomainClass Name="RingConstraintTypeNotSpecifiedError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="15026270-DFD6-470D-A997-233173E644DC" DisplayName="Ring Constraint Type Not Specified" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="SubtypeMetaRole" Namespace="Neumont.Tools.ORM.ObjectModel" Id="4AD109E1-3AB4-4F8A-A862-1694AEE06289" DisplayName="SubtypeMetaRole" Description="">
+		<DomainClass Name="SubtypeMetaRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="4AD109E1-3AB4-4F8A-A862-1694AEE06289" DisplayName="SubtypeMetaRole" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="Role"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="SupertypeMetaRole" Namespace="Neumont.Tools.ORM.ObjectModel" Id="E559A725-BBA4-4068-B247-DC8C4B1628D7" DisplayName="SupertypeMetaRole" Description="">
+		<DomainClass Name="SupertypeMetaRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="E559A725-BBA4-4068-B247-DC8C4B1628D7" DisplayName="SupertypeMetaRole" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="Role"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="Definition" Namespace="Neumont.Tools.ORM.ObjectModel" Id="25D3235C-76E2-4095-8EFD-847057937A00" DisplayName="InformalDescription" Description="">
+		<DomainClass Name="Definition" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="25D3235C-76E2-4095-8EFD-847057937A00" DisplayName="InformalDescription" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
@@ -1674,7 +1674,7 @@
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.MultilineTextEditor&lt;global::Neumont.Tools.ORM.ObjectModel.Definition&gt;)"/>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.MultilineTextEditor&lt;global::ORMSolutions.ORMArchitect.Core.ObjectModel.Definition&gt;)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 							</Parameters>
 						</ClrAttribute>
@@ -1691,7 +1691,7 @@
 			</Properties>
 		</DomainClass>
 
-		<DomainClass Name="Note" Namespace="Neumont.Tools.ORM.ObjectModel" Id="C3DE6C8C-2215-49B0-BD70-70D2C3630C33" DisplayName="Note" Description="">
+		<DomainClass Name="Note" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="C3DE6C8C-2215-49B0-BD70-70D2C3630C33" DisplayName="Note" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
@@ -1700,7 +1700,7 @@
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.MultilineTextEditor&lt;global::Neumont.Tools.ORM.ObjectModel.Note&gt;)"/>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.MultilineTextEditor&lt;global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note&gt;)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 							</Parameters>
 						</ClrAttribute>
@@ -1717,49 +1717,49 @@
 			</Properties>
 		</DomainClass>
 
-		<DomainClass Name="ModelNote" Namespace="Neumont.Tools.ORM.ObjectModel" Id="41D610C9-BACC-473D-BFE6-7034E6FF0B11" DisplayName="ModelNote" Description="">
+		<DomainClass Name="ModelNote" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="41D610C9-BACC-473D-BFE6-7034E6FF0B11" DisplayName="ModelNote" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="Note"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="CompatibleSupertypesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="70A9ED25-7A0E-4DEC-B39D-83BB1A6294B8" DisplayName="Incompatible or Transitive Supertypes" Description="">
+		<DomainClass Name="CompatibleSupertypesError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="70A9ED25-7A0E-4DEC-B39D-83BB1A6294B8" DisplayName="Incompatible or Transitive Supertypes" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ImplicationError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="78026AEA-19EB-497A-A596-25C929F67AA8" DisplayName="Constraint Implied by Intersecting Constraints" Description="">
+		<DomainClass Name="ImplicationError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="78026AEA-19EB-497A-A596-25C929F67AA8" DisplayName="Constraint Implied by Intersecting Constraints" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="EqualityOrSubsetImpliedByMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="80B1F784-858E-483B-91A5-E55CFEBA44B9" DisplayName="Mandatory Constraint Implies Equality or Subset Constraint" Description="">
+		<DomainClass Name="EqualityOrSubsetImpliedByMandatoryError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="80B1F784-858E-483B-91A5-E55CFEBA44B9" DisplayName="Mandatory Constraint Implies Equality or Subset Constraint" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ImplicationError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="PreferredIdentifierRequiresMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="129CCE68-7CE9-4A97-BAD3-C36B4D372A77" DisplayName="EntityType with Compound Preferred Identifier Requires Mandatory Constraint" Description="">
+		<DomainClass Name="PreferredIdentifierRequiresMandatoryError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="129CCE68-7CE9-4A97-BAD3-C36B4D372A77" DisplayName="EntityType with Compound Preferred Identifier Requires Mandatory Constraint" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ValueRangeOverlapError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="2CF1EE1A-1737-4868-9B5C-95B2C0F9488B" DisplayName="Value Ranges Overlap" Description="">
+		<DomainClass Name="ValueRangeOverlapError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="2CF1EE1A-1737-4868-9B5C-95B2C0F9488B" DisplayName="Value Ranges Overlap" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ValueConstraintValueTypeDetachedError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="92C7060E-A912-4986-984E-E9915B1321AD" DisplayName="Path to Identifying ValueType Detached" Description="">
+		<DomainClass Name="ValueConstraintValueTypeDetachedError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="92C7060E-A912-4986-984E-E9915B1321AD" DisplayName="Path to Identifying ValueType Detached" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="FactTypeDerivationExpression" Namespace="Neumont.Tools.ORM.ObjectModel" Id="2A29F892-B69B-4EEB-BF50-A0E59B6E64C2" DisplayName="FactTypeDerivationExpression" Description="">
+		<DomainClass Name="FactTypeDerivationExpression" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="2A29F892-B69B-4EEB-BF50-A0E59B6E64C2" DisplayName="FactTypeDerivationExpression" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="Expression"/>
 			</BaseClass>
@@ -1772,13 +1772,13 @@
 			</Properties>
 		</DomainClass>
 
-		<DomainClass Name="SubtypeDerivationExpression" Namespace="Neumont.Tools.ORM.ObjectModel" Id="CCE39440-4C8D-45E2-ACFE-1642989D1107" DisplayName="SubtypeDerivationExpression" Description="">
+		<DomainClass Name="SubtypeDerivationExpression" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="CCE39440-4C8D-45E2-ACFE-1642989D1107" DisplayName="SubtypeDerivationExpression" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="Expression"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ObjectTypeInstance" Namespace="Neumont.Tools.ORM.ObjectModel" Id="870F5EE8-0859-4710-A526-66635F4EFD14" DisplayName="ObjectTypeInstance" InheritanceModifier="Abstract" Description="">
+		<DomainClass Name="ObjectTypeInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="870F5EE8-0859-4710-A526-66635F4EFD14" DisplayName="ObjectTypeInstance" InheritanceModifier="Abstract" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
@@ -1815,19 +1815,19 @@
 			</Properties>
 		</DomainClass>
 
-		<DomainClass Name="EntityTypeInstance" Namespace="Neumont.Tools.ORM.ObjectModel" Id="5F8B6A1C-3020-41C9-97B4-E54A3E98B368" DisplayName="EntityTypeInstance" Description="">
+		<DomainClass Name="EntityTypeInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="5F8B6A1C-3020-41C9-97B4-E54A3E98B368" DisplayName="EntityTypeInstance" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ObjectTypeInstance"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="EntityTypeSubtypeInstance" Namespace="Neumont.Tools.ORM.ObjectModel" Id="19F9A457-D2C6-4D0A-B767-542DF80FEFF3" DisplayName="EntityTypeSubtypeInstance" Description="An instance of an EntityType Subtype that uses the preferred identification scheme of a parent.">
+		<DomainClass Name="EntityTypeSubtypeInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="19F9A457-D2C6-4D0A-B767-542DF80FEFF3" DisplayName="EntityTypeSubtypeInstance" Description="An instance of an EntityType Subtype that uses the preferred identification scheme of a parent.">
 			<BaseClass>
 				<DomainClassMoniker Name="ObjectTypeInstance"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ValueTypeInstance" Namespace="Neumont.Tools.ORM.ObjectModel" Id="BCC1483D-CBB8-4E4F-903B-16224768F6F5" DisplayName="ValueTypeInstance" Description="">
+		<DomainClass Name="ValueTypeInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="BCC1483D-CBB8-4E4F-903B-16224768F6F5" DisplayName="ValueTypeInstance" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ObjectTypeInstance"/>
 			</BaseClass>
@@ -1841,7 +1841,7 @@
 
 		</DomainClass>
 
-		<DomainClass Name="FactTypeInstance" Namespace="Neumont.Tools.ORM.ObjectModel" Id="78458A27-FDB1-4B6E-9D0A-D42DD8D5AEAD" DisplayName="FactTypeInstance" Description="">
+		<DomainClass Name="FactTypeInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="78458A27-FDB1-4B6E-9D0A-D42DD8D5AEAD" DisplayName="FactTypeInstance" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
@@ -1866,19 +1866,19 @@
 			</Properties>
 		</DomainClass>
 
-		<DomainClass Name="TooFewEntityTypeRoleInstancesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="39F447EA-8EA4-483D-B791-848AD27544E2" DisplayName="Incomplete Sample Population to Identify EntityType" Description="">
+		<DomainClass Name="TooFewEntityTypeRoleInstancesError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="39F447EA-8EA4-483D-B791-848AD27544E2" DisplayName="Incomplete Sample Population to Identify EntityType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="TooFewFactTypeRoleInstancesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="BE44DD74-2569-421E-8E1B-ABCDC7810C92" DisplayName="Incomplete FactType Sample Population" Description="">
+		<DomainClass Name="TooFewFactTypeRoleInstancesError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="BE44DD74-2569-421E-8E1B-ABCDC7810C92" DisplayName="Incomplete FactType Sample Population" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="CompatibleValueTypeInstanceValueError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="D5B21137-31E8-444D-BCD2-58BBF442B4C0" DisplayName="Sample Population Value Invalid for DataType" Description="">
+		<DomainClass Name="CompatibleValueTypeInstanceValueError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="D5B21137-31E8-444D-BCD2-58BBF442B4C0" DisplayName="Sample Population Value Invalid for DataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
@@ -1887,7 +1887,7 @@
 	</Classes>
 
 	<Relationships>
-		<!--<DomainRelationship Name="ORMElementLink" Namespace="Neumont.Tools.ORM.ObjectModel" AllowsDuplicates="false" InheritanceModifier="Abstract" Id="D6DC3311-4298-4EE5-9DA2-B1378AB09BF1">
+		<!--<DomainRelationship Name="ORMElementLink" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" AllowsDuplicates="false" InheritanceModifier="Abstract" Id="D6DC3311-4298-4EE5-9DA2-B1378AB09BF1">
 			<Source>
 				<DomainRole Name="SourceRole" PropertyName="TargetRoleCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="SourceRole" Id="97F9C6E3-18C8-49F8-89C2-50563AAC4ECE">
 					<RolePlayer>
@@ -1904,7 +1904,7 @@
 			</Target>
 		</DomainRelationship>-->
 
-		<DomainRelationship Name="FactConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" AllowsDuplicates="false" InheritanceModifier="Abstract" Id="BCF635F2-F2C6-4690-956D-2A44C48A9DA9">
+		<DomainRelationship Name="FactConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" AllowsDuplicates="false" InheritanceModifier="Abstract" Id="BCF635F2-F2C6-4690-956D-2A44C48A9DA9">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -1924,7 +1924,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="FactSetComparisonConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" AllowsDuplicates="false" Id="FF8F65AD-248A-4EF8-9172-515204C9A44C">
+		<DomainRelationship Name="FactSetComparisonConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" AllowsDuplicates="false" Id="FF8F65AD-248A-4EF8-9172-515204C9A44C">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="FactConstraint"/>
 			</BaseRelationship>
@@ -1944,7 +1944,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="FactSetConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" AllowsDuplicates="false" Id="771EC962-8086-4B21-BFB2-830F30E52861">
+		<DomainRelationship Name="FactSetConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" AllowsDuplicates="false" Id="771EC962-8086-4B21-BFB2-830F30E52861">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="FactConstraint"/>
 			</BaseRelationship>
@@ -1964,7 +1964,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ORMModelElementHasExtensionElement" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="FF867109-FE3A-42C4-9770-2D735555016A">
+		<DomainRelationship Name="ORMModelElementHasExtensionElement" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="FF867109-FE3A-42C4-9770-2D735555016A">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -1984,7 +1984,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ORMModelElementHasExtensionModelError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="7A4D2B10-43F3-475F-AA0A-8F880B9A1E4B">
+		<DomainRelationship Name="ORMModelElementHasExtensionModelError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="7A4D2B10-43F3-475F-AA0A-8F880B9A1E4B">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -2004,7 +2004,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ValueTypeHasDataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="E4BBC988-E920-4ACB-8071-552AEEBA7FA9">
+		<DomainRelationship Name="ValueTypeHasDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="E4BBC988-E920-4ACB-8071-552AEEBA7FA9">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2036,7 +2036,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="Objectification" Namespace="Neumont.Tools.ORM.ObjectModel" Id="935DC968-DDD1-4C57-9D43-9F367BE78C6D">
+		<DomainRelationship Name="Objectification" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="935DC968-DDD1-4C57-9D43-9F367BE78C6D">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2052,7 +2052,7 @@
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ObjectModel.Design.NestedFactTypePicker)"/>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.NestedFactTypePicker)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 							</Parameters>
 						</ClrAttribute>
@@ -2073,7 +2073,7 @@
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ObjectModel.Design.NestingTypePicker)"/>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.NestingTypePicker)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 							</Parameters>
 						</ClrAttribute>
@@ -2091,7 +2091,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ObjectTypePlaysRole" Namespace="Neumont.Tools.ORM.ObjectModel" Id="0AB8D25E-45D4-4696-B6EE-6F108FEE97A7">
+		<DomainRelationship Name="ObjectTypePlaysRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="0AB8D25E-45D4-4696-B6EE-6F108FEE97A7">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2111,7 +2111,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ModelHasObjectType" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="F060C714-EF07-481F-AB4B-BA02B9908025">
+		<DomainRelationship Name="ModelHasObjectType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="F060C714-EF07-481F-AB4B-BA02B9908025">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2131,7 +2131,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ModelHasFactType" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="DF97B102-8500-4EA1-9059-356BC49E7066">
+		<DomainRelationship Name="ModelHasFactType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="DF97B102-8500-4EA1-9059-356BC49E7066">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2151,7 +2151,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ModelHasError" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="20CFE989-A6AF-4D97-A552-AE5DD7684971">
+		<DomainRelationship Name="ModelHasError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="20CFE989-A6AF-4D97-A552-AE5DD7684971">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2171,7 +2171,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ModelHasReferenceModeKind" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="1B280979-E9F5-4774-847F-3A1078DB1943">
+		<DomainRelationship Name="ModelHasReferenceModeKind" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="1B280979-E9F5-4774-847F-3A1078DB1943">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2191,7 +2191,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ModelHasReferenceMode" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="F6647D65-926B-4E66-81BC-F6293A44093E">
+		<DomainRelationship Name="ModelHasReferenceMode" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="F6647D65-926B-4E66-81BC-F6293A44093E">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2211,7 +2211,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ModelHasSetConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="C0104439-3B39-41E7-9B68-61F31F17A066">
+		<DomainRelationship Name="ModelHasSetConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="C0104439-3B39-41E7-9B68-61F31F17A066">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2231,7 +2231,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ObjectTypeImpliesMandatoryConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" Id="9A43A30E-6F18-46FF-9B8D-5313F6E93807">
+		<DomainRelationship Name="ObjectTypeImpliesMandatoryConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="9A43A30E-6F18-46FF-9B8D-5313F6E93807">
 			<Source>
 				<DomainRole Name="ObjectType" PropertyName="ImpliedMandatoryConstraint" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ImpliedByObjectType" Id="929DFC02-4C1E-4D43-90D7-1112C3CF757B">
 					<RolePlayer>
@@ -2248,7 +2248,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ModelHasSetComparisonConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="37FBE5B6-4E18-43E2-B34B-DAB0EF69DDE4">
+		<DomainRelationship Name="ModelHasSetComparisonConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="37FBE5B6-4E18-43E2-B34B-DAB0EF69DDE4">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2268,7 +2268,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ModelHasDataType" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="33611A97-9270-469E-AB75-B53A24699A2D">
+		<DomainRelationship Name="ModelHasDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="33611A97-9270-469E-AB75-B53A24699A2D">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2288,7 +2288,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="GenerationStateHasGenerationSetting" IsEmbedding="true"  Namespace="Neumont.Tools.ORM.ObjectModel" Id="475FF8F0-0E0D-4CF1-8110-C132F815E2E6">
+		<DomainRelationship Name="GenerationStateHasGenerationSetting" IsEmbedding="true"  Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="475FF8F0-0E0D-4CF1-8110-C132F815E2E6">
 			<Source>
 				<DomainRole Name="GenerationState" PropertyName="GenerationSettingCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="GenerationState" Id="F9949793-300A-4CE6-B969-CFBE5A2A1982">
 					<RolePlayer>
@@ -2305,7 +2305,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="NameGeneratorRefinesNameGenerator" IsEmbedding="true" Namespace="Neumont.Tools.ORM.ObjectModel" Id="6224BA97-F59F-4360-A159-7CD5DDB6493F">
+		<DomainRelationship Name="NameGeneratorRefinesNameGenerator" IsEmbedding="true" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="6224BA97-F59F-4360-A159-7CD5DDB6493F">
 			<Source>
 				<DomainRole Name="Parent" PropertyName="RefinedByGeneratorCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="RefinedByGeneratorCollection" Id="A6585A27-D26A-49B0-BBED-CA133CC1E261">
 					<RolePlayer>
@@ -2322,7 +2322,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ElementHasAlias" InheritanceModifier="Abstract" Namespace="Neumont.Tools.ORM.ObjectModel" Id="94F76133-EACC-40D1-B61E-1EBD32C0F81F">
+		<DomainRelationship Name="ElementHasAlias" InheritanceModifier="Abstract" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="94F76133-EACC-40D1-B61E-1EBD32C0F81F">
 			<Source>
 				<DomainRole Name="Element" PropertyName="AliasCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="Element" Id="4CCF4DEB-AB2F-402B-AAF5-55D51AC0F6DB">
 					<RolePlayer>
@@ -2339,9 +2339,9 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="RecognizedPhraseHasAbbreviation" Namespace="Neumont.Tools.ORM.ObjectModel" DisplayName="Other Phrase Replacements and Omissions" IsEmbedding="true" Id="83D9D4FB-5F40-42F2-A014-8A5E5052C24F">
+		<DomainRelationship Name="RecognizedPhraseHasAbbreviation" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" DisplayName="Other Phrase Replacements and Omissions" IsEmbedding="true" Id="83D9D4FB-5F40-42F2-A014-8A5E5052C24F">
 			<Attributes>
-				<ClrAttribute Name="Neumont.Tools.ORM.ObjectModel.NameAliasOwnerCreationInfoAttribute">
+				<ClrAttribute Name="ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasOwnerCreationInfoAttribute">
 					<Parameters>
 						<AttributeParameter Value="true"/>
 						<AttributeParameter Value='"6D4F2B86-2C27-4F82-84CE-8AA23DCC0EF8"'/>
@@ -2368,7 +2368,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ObjectTypeHasAbbreviation" Namespace="Neumont.Tools.ORM.ObjectModel" DisplayName="ObjectType Abbreviations" IsEmbedding="true" Id="6A85513C-747F-4A8C-B45A-B5CFF88314E5">
+		<DomainRelationship Name="ObjectTypeHasAbbreviation" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" DisplayName="ObjectType Abbreviations" IsEmbedding="true" Id="6A85513C-747F-4A8C-B45A-B5CFF88314E5">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementHasAlias"/>
 			</BaseRelationship>
@@ -2388,7 +2388,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ModelContainsRecognizedPhrase" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="27AC76D9-EEDA-4836-8A93-59A7197122D9">
+		<DomainRelationship Name="ModelContainsRecognizedPhrase" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="27AC76D9-EEDA-4836-8A93-59A7197122D9">
 			<Source>
 				<DomainRole Name="Model" PropertyName="RecognizedPhraseCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="NameGenerator" Id="965FF527-A2D6-4468-94DE-464489E332E2">
 					<RolePlayer>
@@ -2407,7 +2407,7 @@
 
 
 
-		<DomainRelationship Name="RecognizedPhraseHasDuplicateNameError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="6D1ABE6F-A38B-4981-8124-4DFB48F1AA5A">
+		<DomainRelationship Name="RecognizedPhraseHasDuplicateNameError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="6D1ABE6F-A38B-4981-8124-4DFB48F1AA5A">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -2427,7 +2427,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ExternalRoleConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" AllowsDuplicates="false" Id="9692D61F-13AE-4FEE-9F76-8E0D9A5FF976">
+		<DomainRelationship Name="ExternalRoleConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" AllowsDuplicates="false" Id="9692D61F-13AE-4FEE-9F76-8E0D9A5FF976">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2447,7 +2447,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ExclusiveOrConstraintCoupler" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="false" Id="F2244A4C-BBE0-463B-9E8B-6A768C5C1469">
+		<DomainRelationship Name="ExclusiveOrConstraintCoupler" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="false" Id="F2244A4C-BBE0-463B-9E8B-6A768C5C1469">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2467,7 +2467,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="SetComparisonConstraintHasRoleSequence" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="84B13BEA-FC8C-446C-B643-9688B99AF1B6">
+		<DomainRelationship Name="SetComparisonConstraintHasRoleSequence" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="84B13BEA-FC8C-446C-B643-9688B99AF1B6">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2487,7 +2487,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ConstraintRoleSequenceHasRole" Namespace="Neumont.Tools.ORM.ObjectModel" AllowsDuplicates="false" Id="BD1A0274-1152-4A54-B4A5-58BD023CE710">
+		<DomainRelationship Name="ConstraintRoleSequenceHasRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" AllowsDuplicates="false" Id="BD1A0274-1152-4A54-B4A5-58BD023CE710">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2507,7 +2507,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="SetComparisonConstraintHasTooFewRoleSequencesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="3167F5D3-C234-46E3-AAC2-4CEB791DFB9C">
+		<DomainRelationship Name="SetComparisonConstraintHasTooFewRoleSequencesError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="3167F5D3-C234-46E3-AAC2-4CEB791DFB9C">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -2527,7 +2527,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="SetComparisonConstraintHasTooManyRoleSequencesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="E7C33130-2D1F-4F95-B988-BD7608CF2D1C">
+		<DomainRelationship Name="SetComparisonConstraintHasTooManyRoleSequencesError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="E7C33130-2D1F-4F95-B988-BD7608CF2D1C">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -2547,7 +2547,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ObjectTypeHasDuplicateNameError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="BC1031EB-8590-4A14-ABBD-F12A18622855">
+		<DomainRelationship Name="ObjectTypeHasDuplicateNameError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="BC1031EB-8590-4A14-ABBD-F12A18622855">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -2567,7 +2567,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="RoleInstanceHasPopulationUniquenessError" InheritanceModifier="Abstract" Namespace="Neumont.Tools.ORM.ObjectModel" Id="5DBE50CD-A939-484D-9B96-700CB6CC7813">
+		<DomainRelationship Name="RoleInstanceHasPopulationUniquenessError" InheritanceModifier="Abstract" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="5DBE50CD-A939-484D-9B96-700CB6CC7813">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -2587,7 +2587,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="EntityTypeRoleInstanceHasPopulationUniquenessError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="04312BEF-EA3E-4525-9A1A-903497EFDAF7">
+		<DomainRelationship Name="EntityTypeRoleInstanceHasPopulationUniquenessError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="04312BEF-EA3E-4525-9A1A-903497EFDAF7">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="RoleInstanceHasPopulationUniquenessError"/>
 			</BaseRelationship>
@@ -2607,7 +2607,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="FactTypeRoleInstanceHasPopulationUniquenessError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A483FDFE-53EF-4352-8D97-986BF2C0E8E7">
+		<DomainRelationship Name="FactTypeRoleInstanceHasPopulationUniquenessError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="A483FDFE-53EF-4352-8D97-986BF2C0E8E7">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="RoleInstanceHasPopulationUniquenessError"/>
 			</BaseRelationship>
@@ -2627,7 +2627,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="SetComparisonConstraintHasContradictionError" InheritanceModifier="Abstract" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A1D4A389-9D19-4921-BD0D-D965B53897E3">
+		<DomainRelationship Name="SetComparisonConstraintHasContradictionError" InheritanceModifier="Abstract" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="A1D4A389-9D19-4921-BD0D-D965B53897E3">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -2647,7 +2647,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="SetComparisonConstraintHasExclusionContradictsEqualityError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="E7E85549-6312-4E65-AD48-4DDF51E8139C">
+		<DomainRelationship Name="SetComparisonConstraintHasExclusionContradictsEqualityError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="E7E85549-6312-4E65-AD48-4DDF51E8139C">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="SetComparisonConstraintHasContradictionError"/>
 			</BaseRelationship>
@@ -2667,7 +2667,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="SetComparisonConstraintHasExclusionContradictsSubsetError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="B4BBA5AF-05AC-4FEC-8288-8D80DC0AF16E">
+		<DomainRelationship Name="SetComparisonConstraintHasExclusionContradictsSubsetError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="B4BBA5AF-05AC-4FEC-8288-8D80DC0AF16E">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="SetComparisonConstraintHasContradictionError"/>
 			</BaseRelationship>
@@ -2687,7 +2687,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ExclusionConstraintHasExclusionContradictsMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="E638E328-24A9-42C0-BBB1-F1EBC4B6E218">
+		<DomainRelationship Name="ExclusionConstraintHasExclusionContradictsMandatoryError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="E638E328-24A9-42C0-BBB1-F1EBC4B6E218">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -2707,7 +2707,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="MandatoryConstraintHasExclusionContradictsMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="6CDDA5A5-C6FE-4E9B-9248-17512F9C891A">
+		<DomainRelationship Name="MandatoryConstraintHasExclusionContradictsMandatoryError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="6CDDA5A5-C6FE-4E9B-9248-17512F9C891A">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -2727,7 +2727,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="SubsetConstraintHasNotWellModeledSubsetAndMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="4BA72B40-A736-49D4-9FDE-8B07EE4A61A6">
+		<DomainRelationship Name="SubsetConstraintHasNotWellModeledSubsetAndMandatoryError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="4BA72B40-A736-49D4-9FDE-8B07EE4A61A6">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -2747,7 +2747,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="475557A9-6E11-4D1C-A5A0-9D06DAED3EE5">
+		<DomainRelationship Name="MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="475557A9-6E11-4D1C-A5A0-9D06DAED3EE5">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -2767,7 +2767,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="MandatoryConstraintHasPopulationMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="9A93DD53-8683-47F4-9EE7-4F1F244A218E">
+		<DomainRelationship Name="MandatoryConstraintHasPopulationMandatoryError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="9A93DD53-8683-47F4-9EE7-4F1F244A218E">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -2787,7 +2787,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ObjectTypeInstanceHasPopulationMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="E0F0750E-47CB-44C6-B348-A9A1101475A7">
+		<DomainRelationship Name="ObjectTypeInstanceHasPopulationMandatoryError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="E0F0750E-47CB-44C6-B348-A9A1101475A7">
 			<Source>
 				<DomainRole Name="ObjectTypeInstance" PropertyName="PopulationMandatoryErrorCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectTypeInstance" Id="4A0B3B52-B579-4E07-972C-59F4F98BEAC3">
 					<RolePlayer>
@@ -2804,7 +2804,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ReadingOrderHasReading" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="F945750F-2F77-43F4-8314-E5B351913902">
+		<DomainRelationship Name="ReadingOrderHasReading" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="F945750F-2F77-43F4-8314-E5B351913902">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2824,7 +2824,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="FactTypeHasReadingOrder" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="14C7D6CB-0C30-4326-A877-D3AEE7A9FADF">
+		<DomainRelationship Name="FactTypeHasReadingOrder" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="14C7D6CB-0C30-4326-A877-D3AEE7A9FADF">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2844,7 +2844,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ReferenceModeHasReferenceModeKind" Namespace="Neumont.Tools.ORM.ObjectModel" Id="8B022051-E094-435E-B985-688FFC89DC6D">
+		<DomainRelationship Name="ReferenceModeHasReferenceModeKind" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="8B022051-E094-435E-B985-688FFC89DC6D">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2864,7 +2864,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="SetConstraintHasDuplicateNameError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="CB5DF90F-3917-4BD1-9807-A24F6D7C52F9">
+		<DomainRelationship Name="SetConstraintHasDuplicateNameError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="CB5DF90F-3917-4BD1-9807-A24F6D7C52F9">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -2884,7 +2884,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="SetComparisonConstraintHasDuplicateNameError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="CF7AF531-F3D3-42E4-A9F7-D44536DA9E53">
+		<DomainRelationship Name="SetComparisonConstraintHasDuplicateNameError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="CF7AF531-F3D3-42E4-A9F7-D44536DA9E53">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -2904,7 +2904,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="EntityTypeHasPreferredIdentifier" Namespace="Neumont.Tools.ORM.ObjectModel" Id="8FF87866-8213-4A03-85A8-B0275A265793">
+		<DomainRelationship Name="EntityTypeHasPreferredIdentifier" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="8FF87866-8213-4A03-85A8-B0275A265793">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2924,7 +2924,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ReadingHasTooManyRolesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="D2116BC7-25A8-455E-9347-414BD03B7546">
+		<DomainRelationship Name="ReadingHasTooManyRolesError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="D2116BC7-25A8-455E-9347-414BD03B7546">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -2944,7 +2944,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ReadingHasTooFewRolesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="FC3E0A3C-40CE-4DED-8A6B-241C7B51C099">
+		<DomainRelationship Name="ReadingHasTooFewRolesError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="FC3E0A3C-40CE-4DED-8A6B-241C7B51C099">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -2964,7 +2964,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ReadingHasReadingRequiresUserModificationError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="3B7E4BBF-06B6-489E-BDF5-72EDEE5B87F4">
+		<DomainRelationship Name="ReadingHasReadingRequiresUserModificationError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="3B7E4BBF-06B6-489E-BDF5-72EDEE5B87F4">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -2984,7 +2984,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="C5A25732-F5A7-409E-B56A-6419A951FB13">
+		<DomainRelationship Name="SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="C5A25732-F5A7-409E-B56A-6419A951FB13">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -3004,7 +3004,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ElementAssociatedWithModelError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="5E4032B3-EF22-447B-9732-F25CACA1E613">
+		<DomainRelationship Name="ElementAssociatedWithModelError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="5E4032B3-EF22-447B-9732-F25CACA1E613">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -3024,7 +3024,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="FactTypeHasFactTypeRequiresReadingError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="EEC8EB82-5B15-4B61-8737-DA1A54199A13">
+		<DomainRelationship Name="FactTypeHasFactTypeRequiresReadingError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="EEC8EB82-5B15-4B61-8737-DA1A54199A13">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -3044,7 +3044,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="FactTypeHasFactTypeRequiresInternalUniquenessConstraintError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="DD5FF7F8-7169-489B-9B8A-EDE3772F52BE">
+		<DomainRelationship Name="FactTypeHasFactTypeRequiresInternalUniquenessConstraintError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="DD5FF7F8-7169-489B-9B8A-EDE3772F52BE">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -3064,7 +3064,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ValueTypeHasValueConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="3DD5CC0F-891E-4A88-A8B2-AEB28A4795E3">
+		<DomainRelationship Name="ValueTypeHasValueConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="3DD5CC0F-891E-4A88-A8B2-AEB28A4795E3">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -3084,7 +3084,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="RoleHasValueConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="BFB9DA2A-0EA6-46AB-B608-41440BDD0D84">
+		<DomainRelationship Name="RoleHasValueConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="BFB9DA2A-0EA6-46AB-B608-41440BDD0D84">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -3104,7 +3104,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ValueConstraintHasValueRange" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="53B596BA-0506-4533-80B0-391891C61C9A">
+		<DomainRelationship Name="ValueConstraintHasValueRange" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="53B596BA-0506-4533-80B0-391891C61C9A">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -3124,7 +3124,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ValueTypeHasUnspecifiedDataTypeError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="F2A79E36-A317-4C36-81DA-D562D2AFBF09">
+		<DomainRelationship Name="ValueTypeHasUnspecifiedDataTypeError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="F2A79E36-A317-4C36-81DA-D562D2AFBF09">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -3144,7 +3144,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="SetComparisonConstraintHasCompatibleRolePlayerTypeError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="13410C4F-FFED-4B0F-AD0B-BD48D09B4310">
+		<DomainRelationship Name="SetComparisonConstraintHasCompatibleRolePlayerTypeError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="13410C4F-FFED-4B0F-AD0B-BD48D09B4310">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -3164,7 +3164,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="SetConstraintHasCompatibleRolePlayerTypeError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="91CDE095-28D9-4852-B171-430FE5A29429">
+		<DomainRelationship Name="SetConstraintHasCompatibleRolePlayerTypeError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="91CDE095-28D9-4852-B171-430FE5A29429">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -3184,7 +3184,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="UniquenessConstraintHasNMinusOneError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="429F7144-1227-4D0E-B4F8-59AD6FFC7EB3">
+		<DomainRelationship Name="UniquenessConstraintHasNMinusOneError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="429F7144-1227-4D0E-B4F8-59AD6FFC7EB3">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -3204,7 +3204,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="RoleHasRolePlayerRequiredError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="09E6AC31-2CA1-4126-8C95-BFC571088B2D">
+		<DomainRelationship Name="RoleHasRolePlayerRequiredError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="09E6AC31-2CA1-4126-8C95-BFC571088B2D">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -3224,7 +3224,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ObjectTypeHasEntityTypeRequiresReferenceSchemeError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="1B6CBB8C-D1A6-4949-AC4D-596DC1CE147F">
+		<DomainRelationship Name="ObjectTypeHasEntityTypeRequiresReferenceSchemeError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="1B6CBB8C-D1A6-4949-AC4D-596DC1CE147F">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -3244,7 +3244,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="FrequencyConstraintHasFrequencyConstraintMinMaxError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="2E851B91-FCB9-4B3C-9276-2C2E3A1972C9">
+		<DomainRelationship Name="FrequencyConstraintHasFrequencyConstraintMinMaxError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="2E851B91-FCB9-4B3C-9276-2C2E3A1972C9">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -3264,7 +3264,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="FrequencyConstraintHasFrequencyConstraintExactlyOneError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="5A820704-A594-48C8-9C56-AF2567C92D91">
+		<DomainRelationship Name="FrequencyConstraintHasFrequencyConstraintExactlyOneError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="5A820704-A594-48C8-9C56-AF2567C92D91">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -3284,7 +3284,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ObjectificationImpliesFactType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="D2706F81-78CC-493E-90C9-D54A10D33FA0">
+		<DomainRelationship Name="ObjectificationImpliesFactType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="D2706F81-78CC-493E-90C9-D54A10D33FA0">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -3304,7 +3304,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ValueRangeHasMaxValueMismatchError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="1D2620BE-40AC-4F10-B420-5CD52687DD49">
+		<DomainRelationship Name="ValueRangeHasMaxValueMismatchError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="1D2620BE-40AC-4F10-B420-5CD52687DD49">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -3324,7 +3324,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ValueRangeHasMinValueMismatchError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="0E8BE672-BCBE-412B-9589-76BFA88FDE38">
+		<DomainRelationship Name="ValueRangeHasMinValueMismatchError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="0E8BE672-BCBE-412B-9589-76BFA88FDE38">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -3344,7 +3344,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="FactTypeHasImpliedInternalUniquenessConstraintError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="32D5A7E1-5A80-44AB-BC2E-96A15A4D92CB">
+		<DomainRelationship Name="FactTypeHasImpliedInternalUniquenessConstraintError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="32D5A7E1-5A80-44AB-BC2E-96A15A4D92CB">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -3364,7 +3364,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="SetConstraintHasTooFewRoleSequencesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="6409DBE5-5C44-42AF-B0C6-FB1EE7E3AF2A">
+		<DomainRelationship Name="SetConstraintHasTooFewRoleSequencesError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="6409DBE5-5C44-42AF-B0C6-FB1EE7E3AF2A">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -3384,7 +3384,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="SetConstraintHasTooManyRoleSequencesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="D54EB064-7FC6-4BCD-AF30-C73E2D586FC4">
+		<DomainRelationship Name="SetConstraintHasTooManyRoleSequencesError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="D54EB064-7FC6-4BCD-AF30-C73E2D586FC4">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -3404,7 +3404,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="78716CE5-DB71-4367-A912-9B622A3C480B">
+		<DomainRelationship Name="FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="78716CE5-DB71-4367-A912-9B622A3C480B">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -3424,7 +3424,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="57656C65-6812-4E80-AB3C-199DEB82B3EF">
+		<DomainRelationship Name="FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="57656C65-6812-4E80-AB3C-199DEB82B3EF">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -3444,7 +3444,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="RingConstraintHasRingConstraintTypeNotSpecifiedError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="62E65E16-EFA7-43D0-9759-8715D0C8B914">
+		<DomainRelationship Name="RingConstraintHasRingConstraintTypeNotSpecifiedError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="62E65E16-EFA7-43D0-9759-8715D0C8B914">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -3464,7 +3464,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ValueConstraintHasDuplicateNameError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="3D69F8DE-6075-432B-8843-E8BABC677457">
+		<DomainRelationship Name="ValueConstraintHasDuplicateNameError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="3D69F8DE-6075-432B-8843-E8BABC677457">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -3484,7 +3484,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ModelHasDefinition" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="BC513C18-D426-4E5E-907C-1CD0C87732F1">
+		<DomainRelationship Name="ModelHasDefinition" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="BC513C18-D426-4E5E-907C-1CD0C87732F1">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -3504,7 +3504,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ObjectTypeHasDefinition" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="CC5801E2-DC99-4927-8924-F3E451F61E60">
+		<DomainRelationship Name="ObjectTypeHasDefinition" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="CC5801E2-DC99-4927-8924-F3E451F61E60">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -3524,7 +3524,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="FactTypeHasDefinition" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="A2B92B06-BA59-4659-905E-D1A68B5F7865">
+		<DomainRelationship Name="FactTypeHasDefinition" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="A2B92B06-BA59-4659-905E-D1A68B5F7865">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -3544,7 +3544,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="FactTypeHasNote" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="B41C4D61-2A9F-4C91-B948-52E53A8E525F">
+		<DomainRelationship Name="FactTypeHasNote" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="B41C4D61-2A9F-4C91-B948-52E53A8E525F">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -3564,7 +3564,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ObjectTypeHasNote" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="8357F61D-E61E-40F5-B98A-782B02A85B1A">
+		<DomainRelationship Name="ObjectTypeHasNote" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="8357F61D-E61E-40F5-B98A-782B02A85B1A">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -3584,7 +3584,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ModelHasPrimaryNote" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="BEA348B0-FC00-4B2F-8285-882693FE408F">
+		<DomainRelationship Name="ModelHasPrimaryNote" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="BEA348B0-FC00-4B2F-8285-882693FE408F">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -3604,7 +3604,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ModelHasModelNote" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="783EA177-E965-4C01-9D4A-A89C016203B6">
+		<DomainRelationship Name="ModelHasModelNote" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="783EA177-E965-4C01-9D4A-A89C016203B6">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -3624,11 +3624,11 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ModelNoteReferencesModelElement" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="false" Id="57A1D17B-DB15-418A-8D82-3D44B3D1169F" AllowsDuplicates="false" InheritanceModifier="Abstract">
+		<DomainRelationship Name="ModelNoteReferencesModelElement" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="false" Id="57A1D17B-DB15-418A-8D82-3D44B3D1169F" AllowsDuplicates="false" InheritanceModifier="Abstract">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;ModelNoteReferencesModelElement, global::Neumont.Tools.Modeling.Design.ElementTypeDescriptor&lt;ModelNoteReferencesModelElement&gt;&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;ModelNoteReferencesModelElement, global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptor&lt;ModelNoteReferencesModelElement&gt;&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -3651,7 +3651,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ModelNoteReferencesFactType" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="false" Id="A6F1EB10-F929-4389-B584-38DFE11A85C2" DisplayName="ModelNoteOnFactType">
+		<DomainRelationship Name="ModelNoteReferencesFactType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="false" Id="A6F1EB10-F929-4389-B584-38DFE11A85C2" DisplayName="ModelNoteOnFactType">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ModelNoteReferencesModelElement"/>
 			</BaseRelationship>
@@ -3671,7 +3671,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ModelNoteReferencesObjectType" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="false" Id="CB83FD24-7819-4C34-AF59-B4E14AE3BE8F" DisplayName="ModelNoteOnObjectType">
+		<DomainRelationship Name="ModelNoteReferencesObjectType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="false" Id="CB83FD24-7819-4C34-AF59-B4E14AE3BE8F" DisplayName="ModelNoteOnObjectType">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ModelNoteReferencesModelElement"/>
 			</BaseRelationship>
@@ -3691,7 +3691,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ModelNoteReferencesSetConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="false" Id="F5582A97-F2AE-45FA-A3B8-A00D62020519" DisplayName="ModelNoteOnConstraint">
+		<DomainRelationship Name="ModelNoteReferencesSetConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="false" Id="F5582A97-F2AE-45FA-A3B8-A00D62020519" DisplayName="ModelNoteOnConstraint">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ModelNoteReferencesModelElement"/>
 			</BaseRelationship>
@@ -3711,7 +3711,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ModelNoteReferencesSetComparisonConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="false" Id="57A31B5C-E265-4C91-8C6C-151101258E28" DisplayName="ModelNoteOnConstraint">
+		<DomainRelationship Name="ModelNoteReferencesSetComparisonConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="false" Id="57A31B5C-E265-4C91-8C6C-151101258E28" DisplayName="ModelNoteOnConstraint">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ModelNoteReferencesModelElement"/>
 			</BaseRelationship>
@@ -3731,7 +3731,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ObjectTypeHasCompatibleSupertypesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="4A739F80-00FA-4F02-BD81-ED60C79DEFC3">
+		<DomainRelationship Name="ObjectTypeHasCompatibleSupertypesError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="4A739F80-00FA-4F02-BD81-ED60C79DEFC3">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -3751,7 +3751,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="SetConstraintHasImplicationError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="7DEA2631-58EF-46A6-B9E1-A8EDA2948AE3">
+		<DomainRelationship Name="SetConstraintHasImplicationError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="7DEA2631-58EF-46A6-B9E1-A8EDA2948AE3">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -3771,7 +3771,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="SetComparisonConstraintHasImplicationError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="6F9E9E77-3DA6-4B01-B3AB-F46FB4C43CA8">
+		<DomainRelationship Name="SetComparisonConstraintHasImplicationError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="6F9E9E77-3DA6-4B01-B3AB-F46FB4C43CA8">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -3791,7 +3791,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A7CA6438-CACE-4FCC-B96C-03E1DDCD3152">
+		<DomainRelationship Name="SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="A7CA6438-CACE-4FCC-B96C-03E1DDCD3152">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -3811,7 +3811,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ObjectTypeHasPreferredIdentifierRequiresMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="31A1BFF6-47DC-4F00-955B-1935082A3F25">
+		<DomainRelationship Name="ObjectTypeHasPreferredIdentifierRequiresMandatoryError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="31A1BFF6-47DC-4F00-955B-1935082A3F25">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -3831,7 +3831,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ValueConstraintHasValueRangeOverlapError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="9044BE08-D88B-4BCA-B261-0841E1C73B5D">
+		<DomainRelationship Name="ValueConstraintHasValueRangeOverlapError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="9044BE08-D88B-4BCA-B261-0841E1C73B5D">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -3851,7 +3851,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ValueConstraintHasValueTypeDetachedError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="706B0A12-F0E1-4048-8CEB-EEB5D7BC5CB3">
+		<DomainRelationship Name="ValueConstraintHasValueTypeDetachedError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="706B0A12-F0E1-4048-8CEB-EEB5D7BC5CB3">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -3871,7 +3871,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="FactTypeHasRole" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="40F02204-F32A-4424-9FD5-5B6B943C603A">
+		<DomainRelationship Name="FactTypeHasRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="40F02204-F32A-4424-9FD5-5B6B943C603A">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -3891,7 +3891,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ReadingOrderHasRole" Namespace="Neumont.Tools.ORM.ObjectModel" AllowsDuplicates="false" Id="F4D3824F-5764-434B-9ABD-FD847D4B7570">
+		<DomainRelationship Name="ReadingOrderHasRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" AllowsDuplicates="false" Id="F4D3824F-5764-434B-9ABD-FD847D4B7570">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -3911,7 +3911,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="RoleProxyHasRole" Namespace="Neumont.Tools.ORM.ObjectModel" Id="5A3809EF-42F1-4965-8490-52FEA5DA30A2">
+		<DomainRelationship Name="RoleProxyHasRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="5A3809EF-42F1-4965-8490-52FEA5DA30A2">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -3931,7 +3931,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ObjectifiedUnaryRoleHasRole" Namespace="Neumont.Tools.ORM.ObjectModel" Id="8455A054-C4BF-4E35-99B0-5054602675F1" Description="Links a unary role with the objectified unary role in the implied FactType. Implies a single-column equality constraint between the two roles.">
+		<DomainRelationship Name="ObjectifiedUnaryRoleHasRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="8455A054-C4BF-4E35-99B0-5054602675F1" Description="Links a unary role with the objectified unary role in the implied FactType. Implies a single-column equality constraint between the two roles.">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -3951,7 +3951,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="FactTypeHasDerivationExpression" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="27127A53-8E17-420F-9E87-9812F7C76CD8">
+		<DomainRelationship Name="FactTypeHasDerivationExpression" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="27127A53-8E17-420F-9E87-9812F7C76CD8">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -3971,7 +3971,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="SubtypeHasDerivationExpression" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="EFC3B143-5649-4D72-87B1-3FBBC58D9764">
+		<DomainRelationship Name="SubtypeHasDerivationExpression" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="EFC3B143-5649-4D72-87B1-3FBBC58D9764">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -3991,7 +3991,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ObjectTypeHasObjectTypeInstance" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="F4343CDE-A3C7-402C-AF81-CBDC8F092C9E">
+		<DomainRelationship Name="ObjectTypeHasObjectTypeInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="F4343CDE-A3C7-402C-AF81-CBDC8F092C9E">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -4011,7 +4011,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="EntityTypeHasEntityTypeInstance" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="0F9CDA9D-88CE-47DD-B202-93B1455E08C3">
+		<DomainRelationship Name="EntityTypeHasEntityTypeInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="0F9CDA9D-88CE-47DD-B202-93B1455E08C3">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ObjectTypeHasObjectTypeInstance"/>
 			</BaseRelationship>
@@ -4031,7 +4031,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="EntityTypeSubtypeHasEntityTypeSubtypeInstance" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="7E059BD5-D4A9-48A1-88FA-6459B77D7E23">
+		<DomainRelationship Name="EntityTypeSubtypeHasEntityTypeSubtypeInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="7E059BD5-D4A9-48A1-88FA-6459B77D7E23">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ObjectTypeHasObjectTypeInstance"/>
 			</BaseRelationship>
@@ -4051,7 +4051,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ValueTypeHasValueTypeInstance" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="E01B8EC6-F3BF-4963-92DB-7E352501C04D">
+		<DomainRelationship Name="ValueTypeHasValueTypeInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="E01B8EC6-F3BF-4963-92DB-7E352501C04D">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ObjectTypeHasObjectTypeInstance"/>
 			</BaseRelationship>
@@ -4071,7 +4071,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="RoleInstance" Namespace="Neumont.Tools.ORM.ObjectModel" AllowsDuplicates="true" InheritanceModifier="Abstract" Id="D3162C67-DE52-4B0D-802F-824E6ED5B74B">
+		<DomainRelationship Name="RoleInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" AllowsDuplicates="true" InheritanceModifier="Abstract" Id="D3162C67-DE52-4B0D-802F-824E6ED5B74B">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -4091,7 +4091,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="EntityTypeRoleInstance" Namespace="Neumont.Tools.ORM.ObjectModel" AllowsDuplicates="true" Id="5DB3A2C1-C5DE-4C4A-97C2-E09CE11537D3">
+		<DomainRelationship Name="EntityTypeRoleInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" AllowsDuplicates="true" Id="5DB3A2C1-C5DE-4C4A-97C2-E09CE11537D3">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="RoleInstance"/>
 			</BaseRelationship>
@@ -4115,7 +4115,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="FactTypeRoleInstance" Namespace="Neumont.Tools.ORM.ObjectModel" AllowsDuplicates="true" Id="FC7C9715-6886-46C2-A7A0-3BFD95CD0766">
+		<DomainRelationship Name="FactTypeRoleInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" AllowsDuplicates="true" Id="FC7C9715-6886-46C2-A7A0-3BFD95CD0766">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="RoleInstance"/>
 			</BaseRelationship>
@@ -4139,7 +4139,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="EntityTypeInstanceHasRoleInstance" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="false" Id="05C64570-96FE-42C4-B9A6-F88D3BDC7C1F">
+		<DomainRelationship Name="EntityTypeInstanceHasRoleInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="false" Id="05C64570-96FE-42C4-B9A6-F88D3BDC7C1F">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -4159,7 +4159,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="EntityTypeSubtypeInstanceHasSupertypeInstance" Namespace="Neumont.Tools.ORM.ObjectModel" Id="F11D087F-8B5B-4AC9-9B67-F967D5A5013E">
+		<DomainRelationship Name="EntityTypeSubtypeInstanceHasSupertypeInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="F11D087F-8B5B-4AC9-9B67-F967D5A5013E">
 			<Source>
 				<DomainRole Name="EntityTypeSubtypeInstance" PropertyName="SupertypeInstance" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="EntityTypeSubtypeInstance" Id="23F6CEC5-E016-40AD-A4D2-B684A9CA0231">
 					<RolePlayer>
@@ -4176,7 +4176,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="FactTypeHasFactTypeInstance" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="5283F53B-0DA8-4E4C-8A31-BDE51057E7EF">
+		<DomainRelationship Name="FactTypeHasFactTypeInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="5283F53B-0DA8-4E4C-8A31-BDE51057E7EF">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -4196,7 +4196,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="FactTypeInstanceHasRoleInstance" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="false" Id="F92B6EC1-8055-4502-BD5D-763D1F5B6849">
+		<DomainRelationship Name="FactTypeInstanceHasRoleInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="false" Id="F92B6EC1-8055-4502-BD5D-763D1F5B6849">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -4216,7 +4216,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ObjectificationInstance" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="false" Id="943F2CFD-0179-48D8-81D9-3B8277A8D449">
+		<DomainRelationship Name="ObjectificationInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="false" Id="943F2CFD-0179-48D8-81D9-3B8277A8D449">
 			<Source>
 				<DomainRole Name="ObjectifiedInstance" PropertyName="ObjectifyingInstance" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectifiedInstance" Id="819A1D2B-125B-4193-A336-25BE03EA91C3">
 					<RolePlayer>
@@ -4233,7 +4233,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ObjectifiedInstanceHasObjectifyingInstanceRequiredError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="4C26F55B-D01B-4871-96C7-659FFB8448E9">
+		<DomainRelationship Name="ObjectifiedInstanceHasObjectifyingInstanceRequiredError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="4C26F55B-D01B-4871-96C7-659FFB8448E9">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -4253,7 +4253,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ObjectifyingInstanceHasObjectifiedInstanceRequiredError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A66FF864-B788-4287-B774-09BABE9E62B9">
+		<DomainRelationship Name="ObjectifyingInstanceHasObjectifiedInstanceRequiredError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="A66FF864-B788-4287-B774-09BABE9E62B9">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -4273,7 +4273,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="922E0A74-9384-4D25-9C38-E0AB709FEE8F">
+		<DomainRelationship Name="EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="922E0A74-9384-4D25-9C38-E0AB709FEE8F">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -4293,7 +4293,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="FactTypeInstanceHasTooFewFactTypeRoleInstancesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="6AC86DD8-1766-472E-B70F-B788C04ED688">
+		<DomainRelationship Name="FactTypeInstanceHasTooFewFactTypeRoleInstancesError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="6AC86DD8-1766-472E-B70F-B788C04ED688">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -4313,7 +4313,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ValueTypeInstanceHasCompatibleValueTypeInstanceValueError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A8AF2A8F-CDD0-41CB-B8CD-60CF28277288">
+		<DomainRelationship Name="ValueTypeInstanceHasCompatibleValueTypeInstanceValueError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="A8AF2A8F-CDD0-41CB-B8CD-60CF28277288">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -4333,7 +4333,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="JoinHasRole" Namespace="Neumont.Tools.ORM.ObjectModel" InheritanceModifier="Abstract" Id="100DCE21-D23A-4ED5-8919-A6FA9DAA4F8B">
+		<DomainRelationship Name="JoinHasRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" InheritanceModifier="Abstract" Id="100DCE21-D23A-4ED5-8919-A6FA9DAA4F8B">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -4353,7 +4353,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="JoinHasInputRole" Namespace="Neumont.Tools.ORM.ObjectModel" Id="7F393586-4D6C-43F6-97D0-53E23B0A569C">
+		<DomainRelationship Name="JoinHasInputRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="7F393586-4D6C-43F6-97D0-53E23B0A569C">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="JoinHasRole"/>
 			</BaseRelationship>
@@ -4373,7 +4373,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="JoinHasOutputRole" Namespace="Neumont.Tools.ORM.ObjectModel" Id="78519CFE-11F8-45B2-89A0-7B1DCD4ABA30">
+		<DomainRelationship Name="JoinHasOutputRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="78519CFE-11F8-45B2-89A0-7B1DCD4ABA30">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="JoinHasRole"/>
 			</BaseRelationship>
@@ -4393,7 +4393,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ORMModelElementHasJoinPath" Namespace="Neumont.Tools.ORM.ObjectModel" InheritanceModifier="Abstract" IsEmbedding="true" Id="744C121F-CB6C-4B1F-9AC0-867EBC2F3AD7">
+		<DomainRelationship Name="ORMModelElementHasJoinPath" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" InheritanceModifier="Abstract" IsEmbedding="true" Id="744C121F-CB6C-4B1F-9AC0-867EBC2F3AD7">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -4413,7 +4413,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ConstraintRoleSequenceHasJoinPath" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="62FC7AC1-EB51-4887-81D4-15007D5FACBD">
+		<DomainRelationship Name="ConstraintRoleSequenceHasJoinPath" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="62FC7AC1-EB51-4887-81D4-15007D5FACBD">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMModelElementHasJoinPath"/>
 			</BaseRelationship>
@@ -4433,7 +4433,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ConstraintRoleSequenceHasRoleHasProjectionJoin" Namespace="Neumont.Tools.ORM.ObjectModel" Id="314434D1-1E15-4E2F-A2A7-2D1D72343B06">
+		<DomainRelationship Name="ConstraintRoleSequenceHasRoleHasProjectionJoin" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="314434D1-1E15-4E2F-A2A7-2D1D72343B06">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -4453,7 +4453,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ModelHasModelErrorDisplayFilter" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="A8E175FA-A727-4909-8944-423EF0748E3D">
+		<DomainRelationship Name="ModelHasModelErrorDisplayFilter" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="A8E175FA-A727-4909-8944-423EF0748E3D">
 			<Source>
 				<DomainRole Name="Model" PropertyName="ModelErrorDisplayFilter" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ModelErrorDisplayFilter" Id="69E39A5B-B394-4270-9C43-894E4516B177">
 					<RolePlayer>
@@ -4469,7 +4469,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="ElementGroupingSetRelatesToORMModel" Namespace="Neumont.Tools.ORM.ObjectModel" Id="ABDBCFC4-8861-4AE6-BCDC-5C5851713A74">
+		<DomainRelationship Name="ElementGroupingSetRelatesToORMModel" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="ABDBCFC4-8861-4AE6-BCDC-5C5851713A74">
 			<Source>
 				<DomainRole Name="GroupingSet" PropertyName="Model" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="GroupingSet" Id="9E2BBC38-9220-424F-AAC6-B86D45D94599">
 					<RolePlayer>
@@ -4485,7 +4485,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="ElementGroupingSetContainsElementGrouping" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" InheritanceModifier="Sealed" Id="A0B26EE8-E099-4E74-8EFF-5E7D2FA55B26">
+		<DomainRelationship Name="ElementGroupingSetContainsElementGrouping" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" InheritanceModifier="Sealed" Id="A0B26EE8-E099-4E74-8EFF-5E7D2FA55B26">
 			<Source>
 				<DomainRole Name="GroupingSet" PropertyName="GroupingCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="GroupingSet" Id="02F5B2E6-9A76-43AC-B03D-9337461E0E90">
 					<RolePlayer>
@@ -4501,7 +4501,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="ElementGroupingIsOfElementGroupingType" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="575C1C61-23F5-4B19-AE80-114E380D7E2A">
+		<DomainRelationship Name="ElementGroupingIsOfElementGroupingType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="575C1C61-23F5-4B19-AE80-114E380D7E2A">
 			<Source>
 				<DomainRole Name="Grouping" PropertyName="GroupingTypeCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Grouping" Id="6F1BF1FE-60D8-48C5-BBD2-DEE006B4A045">
 					<RolePlayer>
@@ -4517,11 +4517,11 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="GroupingElementRelationship" Namespace="Neumont.Tools.ORM.ObjectModel" InheritanceModifier="Abstract" Id="5B5119D5-BD6A-41E5-8D42-17F25B51655D">
+		<DomainRelationship Name="GroupingElementRelationship" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" InheritanceModifier="Abstract" Id="5B5119D5-BD6A-41E5-8D42-17F25B51655D">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ObjectModel.Design.GroupingElementRelationshipTypeDescriptionProvider)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.GroupingElementRelationshipTypeDescriptionProvider)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -4540,7 +4540,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="GroupingElementInclusion" Namespace="Neumont.Tools.ORM.ObjectModel" Id="C66C692D-6AA6-4FB9-901A-7E6C205AA272">
+		<DomainRelationship Name="GroupingElementInclusion" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="C66C692D-6AA6-4FB9-901A-7E6C205AA272">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="GroupingElementRelationship"/>
 			</BaseRelationship>
@@ -4559,7 +4559,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="GroupingElementExclusion" Namespace="Neumont.Tools.ORM.ObjectModel" Id="CD51E687-6D5B-4102-B08C-78E1DA44BA38">
+		<DomainRelationship Name="GroupingElementExclusion" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="CD51E687-6D5B-4102-B08C-78E1DA44BA38">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="GroupingElementRelationship"/>
 			</BaseRelationship>
@@ -4578,7 +4578,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="ElementGroupingContainsElementGrouping" Namespace="Neumont.Tools.ORM.ObjectModel" InheritanceModifier="Abstract" Id="7B1D7109-3AEA-406A-89E8-989DBB27A469">
+		<DomainRelationship Name="ElementGroupingContainsElementGrouping" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" InheritanceModifier="Abstract" Id="7B1D7109-3AEA-406A-89E8-989DBB27A469">
 			<Source>
 				<DomainRole Name="ParentGrouping" PropertyName="ChildGroupingCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ParentGrouping" Id="73F0282C-73E5-4EED-BC79-9693A8215A8B">
 					<RolePlayer>
@@ -4594,7 +4594,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="ElementGroupingIncludesElementGrouping" Namespace="Neumont.Tools.ORM.ObjectModel" Id="76F5EA7D-2565-44C7-BA47-EB86FAB2A189">
+		<DomainRelationship Name="ElementGroupingIncludesElementGrouping" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="76F5EA7D-2565-44C7-BA47-EB86FAB2A189">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementGroupingContainsElementGrouping"/>
 			</BaseRelationship>
@@ -4613,7 +4613,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="ElementGroupingExcludesElementGrouping" Namespace="Neumont.Tools.ORM.ObjectModel" Id="C710924E-194B-45CF-AEC2-B1EC0B86990C">
+		<DomainRelationship Name="ElementGroupingExcludesElementGrouping" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="C710924E-194B-45CF-AEC2-B1EC0B86990C">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementGroupingContainsElementGrouping"/>
 			</BaseRelationship>
@@ -4632,7 +4632,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="ElementGroupingHasDuplicateNameError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="C87FAD64-4283-4710-86BA-2E1A11D9A551">
+		<DomainRelationship Name="ElementGroupingHasDuplicateNameError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="C87FAD64-4283-4710-86BA-2E1A11D9A551">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -4651,7 +4651,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="ElementGroupingHasMembershipContradictionError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="FFA04DF2-2BCA-4290-8801-FA1947CCDBDA">
+		<DomainRelationship Name="ElementGroupingHasMembershipContradictionError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="FFA04DF2-2BCA-4290-8801-FA1947CCDBDA">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -4670,7 +4670,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="GroupingMembershipContradictionErrorIsForElement" Namespace="Neumont.Tools.ORM.ObjectModel" Id="67A68DF7-1472-40B8-825A-1FC426A5E6C1">
+		<DomainRelationship Name="GroupingMembershipContradictionErrorIsForElement" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="67A68DF7-1472-40B8-825A-1FC426A5E6C1">
 			<Source>
 				<!-- Node that this is modeled as a link-to-a-link so that we can get both the group and the element for a deleted error in an event situation -->
 				<DomainRole Name="GroupingMembershipContradictionErrorRelationship" PropertyName="Element" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="GroupingMembershipContradictionErrorRelationship" Id="A316CBB8-E335-4A11-937A-0B166628EE19">
@@ -4690,13 +4690,13 @@
 	</Relationships>
 
 	<Types>
-		<ExternalType Namespace="Neumont.Tools.ORM.ObjectModel" Name="FactType"/>
-		<ExternalType Namespace="Neumont.Tools.ORM.ObjectModel" Name="ReferenceMode"/>
-		<ExternalType Namespace="Neumont.Tools.ORM.ObjectModel" Name="DataType"/>
-		<ExternalType Namespace="Neumont.Tools.ORM.ObjectModel" Name="ModelErrorDisplayFilter"/>
-		<ExternalType Namespace="Neumont.Tools.ORM.ObjectModel" Name="ObjectType"/>
-		<ExternalType Namespace="Neumont.Tools.ORM.ObjectModel" Name="ReferenceModeKind"/>
-		<DomainEnumeration Namespace="Neumont.Tools.ORM.ObjectModel" Name="DerivationStorageType" Description="Used to specify how/whether the contents of the fact should be stored by generated systems.">
+		<ExternalType Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="FactType"/>
+		<ExternalType Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="ReferenceMode"/>
+		<ExternalType Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="DataType"/>
+		<ExternalType Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="ModelErrorDisplayFilter"/>
+		<ExternalType Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="ObjectType"/>
+		<ExternalType Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="ReferenceModeKind"/>
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="DerivationStorageType" Description="Used to specify how/whether the contents of the fact should be stored by generated systems.">
 			<Literals>
 				<EnumerationLiteral Name="Derived" Value="0" Description="Fact is derived but should not be stored."/>
 				<EnumerationLiteral Name="DerivedAndStored" Value="1" Description="Fact is derived and should be stored."/>
@@ -4705,12 +4705,12 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;DerivationStorageType, global::Neumont.Tools.ORM.ObjectModel.ORMModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;DerivationStorageType, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
 		</DomainEnumeration>
-		<DomainEnumeration Namespace="Neumont.Tools.ORM.ObjectModel" Name="ConstraintModality">
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="ConstraintModality">
 			<Literals>
 				<EnumerationLiteral Name="Alethic" Value="0" Description="The constraint must hold."/>
 				<EnumerationLiteral Name="Deontic" Value="1" Description="The constraint should hold."/>
@@ -4718,12 +4718,12 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;ConstraintModality, global::Neumont.Tools.ORM.ObjectModel.ORMModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;ConstraintModality, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
 		</DomainEnumeration>
-		<DomainEnumeration Namespace="Neumont.Tools.ORM.ObjectModel" Name="RoleMultiplicity" Description="Defines the multiplicity for the roles. The role multiplicity is currently displayed only on roles associated with binary fact types and is calculated based on the existing mandatory and internal uniqueness constraints associated with the fact.">
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="RoleMultiplicity" Description="Defines the multiplicity for the roles. The role multiplicity is currently displayed only on roles associated with binary fact types and is calculated based on the existing mandatory and internal uniqueness constraints associated with the fact.">
 			<Literals>
 				<EnumerationLiteral Name="Unspecified" Value="0" Description="Insufficient constraints are present to determine the user intention.">
 					<Attributes>
@@ -4751,12 +4751,12 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;RoleMultiplicity, global::Neumont.Tools.ORM.ObjectModel.ORMModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;RoleMultiplicity, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
 		</DomainEnumeration>
-		<DomainEnumeration Namespace="Neumont.Tools.ORM.ObjectModel" Name="RingConstraintType">
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="RingConstraintType">
 			<Literals>
 				<EnumerationLiteral Name="Undefined" Value="0" Description="">
 					<Attributes>
@@ -4782,12 +4782,12 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;RingConstraintType, global::Neumont.Tools.ORM.ObjectModel.ORMModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;RingConstraintType, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
 		</DomainEnumeration>
-		<DomainEnumeration Namespace="Neumont.Tools.ORM.ObjectModel" Name="ReferenceModeType">
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="ReferenceModeType">
 			<Literals>
 				<EnumerationLiteral Name="General" Value="0" Description="That other reference mode type."/>
 				<EnumerationLiteral Name="Popular" Value="1" Description="The 'in' and 'fashionable' reference mode type."/>
@@ -4796,12 +4796,12 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;ReferenceModeType, global::Neumont.Tools.ORM.ObjectModel.ORMModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;ReferenceModeType, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
 		</DomainEnumeration>
-		<DomainEnumeration Namespace="Neumont.Tools.ORM.ObjectModel" Name="RangeInclusion">
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="RangeInclusion">
 			<Literals>
 				<EnumerationLiteral Name="NotSet" Value="0">
 					<Attributes>
@@ -4818,12 +4818,12 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;RangeInclusion, global::Neumont.Tools.ORM.ObjectModel.ORMModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;RangeInclusion, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
 		</DomainEnumeration>
-		<DomainEnumeration Namespace="Neumont.Tools.ORM.ObjectModel" Name="JoinType">
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="JoinType">
 			<Literals>
 				<EnumerationLiteral Name="Inner" Value="0" Description="Inner join."/>
 				<EnumerationLiteral Name="Outer" Value="1" Description="Outer join."/>
@@ -4831,14 +4831,14 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;JoinType, global::Neumont.Tools.ORM.ObjectModel.ORMModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;JoinType, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
 		</DomainEnumeration>
 
 
-		<DomainEnumeration Namespace="Neumont.Tools.ORM.ObjectModel" Name="NameGeneratorCasingOption">
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="NameGeneratorCasingOption">
 			<Literals>
 				<EnumerationLiteral Name="None" Value="0"/>
 				<EnumerationLiteral Name="Camel" Value="1" Description="Indicates the casing of the string is Camel"/>
@@ -4849,13 +4849,13 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;NameGeneratorCasingOption, global::Neumont.Tools.ORM.ObjectModel.ORMModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;NameGeneratorCasingOption, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
 		</DomainEnumeration>
 
-		<DomainEnumeration Namespace="Neumont.Tools.ORM.ObjectModel" Name="NameGeneratorSpacingFormat">
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="NameGeneratorSpacingFormat">
 			<Literals>
 				<EnumerationLiteral Name="Retain" Value="0"/>
 				<EnumerationLiteral Name="Remove" Value="1" Description="Indicates that spaces are Removed"/>
@@ -4864,13 +4864,13 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;NameGeneratorSpacingFormat, global::Neumont.Tools.ORM.ObjectModel.ORMModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;NameGeneratorSpacingFormat, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
 		</DomainEnumeration>
 
-		<DomainEnumeration Namespace="Neumont.Tools.ORM.ObjectModel" Name="NameGeneratorSubjectArea">
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="NameGeneratorSubjectArea">
 			<Literals>
 				<EnumerationLiteral Name="None" Value="0"/>
 				<EnumerationLiteral Name="Prefix" Value="1" Description="Indicates that the chosen subject will be prepended to the generated name."/>
@@ -4879,13 +4879,13 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;NameGeneratorSubjectArea, global::Neumont.Tools.ORM.ObjectModel.ORMModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;NameGeneratorSubjectArea, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
 		</DomainEnumeration>
 
-		<DomainEnumeration Namespace="Neumont.Tools.ORM.ObjectModel" Name="GroupingMembershipTypeCompliance">
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="GroupingMembershipTypeCompliance">
 			<Literals>
 				<EnumerationLiteral Name="NotExcluded" Value="0" Description="Allow all elements that are not explicitly excluded by a GroupType."/>
 				<EnumerationLiteral Name="PartiallyApproved" Value="1" Description="Allow all elements that are explicitly approved by at least one GroupType."/>
@@ -4894,13 +4894,13 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;GroupingMembershipTypeCompliance, global::Neumont.Tools.ORM.ObjectModel.ORMModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;GroupingMembershipTypeCompliance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
 		</DomainEnumeration>
 	</Types>
 
-	<XmlSerializationBehavior Name="ORMCoreDomainModelSerializationBehavior" Namespace="Neumont.Tools.ORM.ObjectModel"/>
+	<XmlSerializationBehavior Name="ORMCoreDomainModelSerializationBehavior" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 
 </Dsl>

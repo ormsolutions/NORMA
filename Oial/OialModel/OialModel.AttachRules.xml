@@ -2,7 +2,7 @@
 <arg:Rules xmlns:arg="http://schemas.neumont.edu/ORM/SDK/AttachRulesGenerator">
 	<arg:Copyright name="Common Public License Copyright Notice">
 		<arg:CopyrightLine>/**************************************************************************\</arg:CopyrightLine>
-		<arg:CopyrightLine>* Neumont Object-Role Modeling Architect for Visual Studio                 *</arg:CopyrightLine>
+		<arg:CopyrightLine>* Natural Object-Role Modeling Architect for Visual Studio                 *</arg:CopyrightLine>
 		<arg:CopyrightLine>*                                                                          *</arg:CopyrightLine>
 		<arg:CopyrightLine>* Copyright © Neumont University. All rights reserved.                     *</arg:CopyrightLine>
 		<arg:CopyrightLine>*                                                                          *</arg:CopyrightLine>

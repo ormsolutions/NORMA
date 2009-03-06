@@ -1,4 +1,4 @@
-namespace Neumont.Tools.ORM.ObjectModel.Design
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 {
 	partial class AliasManagerForm
 	{
@@ -29,7 +29,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		private void InitializeComponent()
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AliasManagerForm));
-			this.virtualTreeControl = new Neumont.Tools.Modeling.Shell.StandardVirtualTreeControl();
+			this.virtualTreeControl = new ORMSolutions.ORMArchitect.Framework.Shell.StandardVirtualTreeControl();
 			this.btnCancel = new System.Windows.Forms.Button();
 			this.btnOK = new System.Windows.Forms.Button();
 			this.SuspendLayout();
@@ -81,7 +81,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 
 		#endregion
 
-		private Neumont.Tools.Modeling.Shell.StandardVirtualTreeControl virtualTreeControl;
+		private ORMSolutions.ORMArchitect.Framework.Shell.StandardVirtualTreeControl virtualTreeControl;
 		private System.Windows.Forms.Button btnCancel;
 		private System.Windows.Forms.Button btnOK;
 	}

@@ -117,348 +117,348 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel.Description" xml:space="preserve">
     <value>Add custom properties to ORM model elements</value>
     <comment>Description for DslLibrary &apos;CustomProperties&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel.DisplayName" xml:space="preserve">
     <value>Custom Properties</value>
     <comment>DisplayName for DslLibrary &apos;CustomProperties&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroup.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroup</value>
     <comment>Description for DomainClass &apos;CustomPropertyGroup&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroup.DisplayName" xml:space="preserve">
     <value>CustomPropertyGroup</value>
     <comment>DisplayName for DomainClass &apos;CustomPropertyGroup&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup/Name.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup.Name</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroup/Name.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroup.Name</value>
     <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;CustomPropertyGroup&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup/Name.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroup/Name.DisplayName" xml:space="preserve">
     <value>Name</value>
     <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;CustomPropertyGroup&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup/IsDefault.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup.IsDefault</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroup/IsDefault.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroup.IsDefault</value>
     <comment>Description for DomainProperty &apos;IsDefault&apos; on DomainClass &apos;CustomPropertyGroup&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup/IsDefault.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroup/IsDefault.DisplayName" xml:space="preserve">
     <value>IsDefault</value>
     <comment>DisplayName for DomainProperty &apos;IsDefault&apos; on DomainClass &apos;CustomPropertyGroup&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup/Description.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup.Description</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroup/Description.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroup.Description</value>
     <comment>Description for DomainProperty &apos;Description&apos; on DomainClass &apos;CustomPropertyGroup&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup/Description.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroup/Description.DisplayName" xml:space="preserve">
     <value>Description</value>
     <comment>DisplayName for DomainProperty &apos;Description&apos; on DomainClass &apos;CustomPropertyGroup&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition</value>
     <comment>Description for DomainClass &apos;CustomPropertyDefinition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition.DisplayName" xml:space="preserve">
     <value>CustomPropertyDefinition</value>
     <comment>DisplayName for DomainClass &apos;CustomPropertyDefinition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/Name.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition.Name</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/Name.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition.Name</value>
     <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;CustomPropertyDefinition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/Name.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/Name.DisplayName" xml:space="preserve">
     <value>Name</value>
     <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;CustomPropertyDefinition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/Description.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition.Description</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/Description.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition.Description</value>
     <comment>Description for DomainProperty &apos;Description&apos; on DomainClass &apos;CustomPropertyDefinition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/Description.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/Description.DisplayName" xml:space="preserve">
     <value>Description</value>
     <comment>DisplayName for DomainProperty &apos;Description&apos; on DomainClass &apos;CustomPropertyDefinition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/Category.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition.Category</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/Category.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition.Category</value>
     <comment>Description for DomainProperty &apos;Category&apos; on DomainClass &apos;CustomPropertyDefinition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/Category.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/Category.DisplayName" xml:space="preserve">
     <value>Category</value>
     <comment>DisplayName for DomainProperty &apos;Category&apos; on DomainClass &apos;CustomPropertyDefinition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/DataType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition.DataType</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/DataType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition.DataType</value>
     <comment>Description for DomainProperty &apos;DataType&apos; on DomainClass &apos;CustomPropertyDefinition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/DataType.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/DataType.DisplayName" xml:space="preserve">
     <value>DataType</value>
     <comment>DisplayName for DomainProperty &apos;DataType&apos; on DomainClass &apos;CustomPropertyDefinition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/DefaultValue.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition.Default</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/DefaultValue.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition.Default</value>
     <comment>Description for DomainProperty &apos;DefaultValue&apos; on DomainClass &apos;CustomPropertyDefinition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/DefaultValue.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/DefaultValue.DisplayName" xml:space="preserve">
     <value>Default</value>
     <comment>DisplayName for DomainProperty &apos;DefaultValue&apos; on DomainClass &apos;CustomPropertyDefinition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/ORMTypes.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition.ORMTypes</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/ORMTypes.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition.ORMTypes</value>
     <comment>Description for DomainProperty &apos;ORMTypes&apos; on DomainClass &apos;CustomPropertyDefinition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/ORMTypes.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/ORMTypes.DisplayName" xml:space="preserve">
     <value>ORMTypes</value>
     <comment>DisplayName for DomainProperty &apos;ORMTypes&apos; on DomainClass &apos;CustomPropertyDefinition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/CustomEnumValue.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition.CustomEnumValue</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/CustomEnumValue.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition.CustomEnumValue</value>
     <comment>Description for DomainProperty &apos;CustomEnumValue&apos; on DomainClass &apos;CustomPropertyDefinition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition/CustomEnumValue.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/CustomEnumValue.DisplayName" xml:space="preserve">
     <value>CustomEnumValue</value>
     <comment>DisplayName for DomainProperty &apos;CustomEnumValue&apos; on DomainClass &apos;CustomPropertyDefinition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomProperty.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomProperty</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomProperty.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.CustomProperty</value>
     <comment>Description for DomainClass &apos;CustomProperty&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomProperty.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomProperty.DisplayName" xml:space="preserve">
     <value>CustomProperty</value>
     <comment>DisplayName for DomainClass &apos;CustomProperty&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomProperty/Value.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomProperty.Value</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomProperty/Value.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.CustomProperty.Value</value>
     <comment>Description for DomainProperty &apos;Value&apos; on DomainClass &apos;CustomProperty&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomProperty/Value.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomProperty/Value.DisplayName" xml:space="preserve">
     <value>Value</value>
     <comment>DisplayName for DomainProperty &apos;Value&apos; on DomainClass &apos;CustomProperty&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition</value>
     <comment>Description for DomainClass &apos;CustomPropertyHasCustomPropertyDefinition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition.DisplayName" xml:space="preserve">
     <value>Custom Property Has Custom Property Definition</value>
     <comment>DisplayName for DomainClass &apos;CustomPropertyHasCustomPropertyDefinition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition/CustomProperty.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition.CustomProperty</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition/CustomProperty.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition.CustomProperty</value>
     <comment>Description for DomainRole &apos;CustomProperty&apos; on DomainRelationship &apos;CustomPropertyHasCustomPropertyDefinition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition/CustomProperty.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition/CustomProperty.DisplayName" xml:space="preserve">
     <value>CustomProperty</value>
     <comment>DisplayName for DomainRole &apos;CustomProperty&apos; on DomainRelationship &apos;CustomPropertyHasCustomPropertyDefinition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition/CustomProperty.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition/CustomProperty.PropertyDisplayName" xml:space="preserve">
     <value>Custom Property Definition</value>
     <comment>PropertyDisplayName for DomainRole &apos;CustomProperty&apos; on DomainRelationship &apos;CustomPropertyHasCustomPropertyDefinition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition/CustomPropertyDefinition.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition.CustomPropertyDefinition</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition/CustomPropertyDefinition.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition.CustomPropertyDefinition</value>
     <comment>Description for DomainRole &apos;CustomPropertyDefinition&apos; on DomainRelationship &apos;CustomPropertyHasCustomPropertyDefinition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition/CustomPropertyDefinition.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition/CustomPropertyDefinition.DisplayName" xml:space="preserve">
     <value>CustomPropertyDefinition</value>
     <comment>DisplayName for DomainRole &apos;CustomPropertyDefinition&apos; on DomainRelationship &apos;CustomPropertyHasCustomPropertyDefinition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition/CustomPropertyDefinition.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition/CustomPropertyDefinition.PropertyDisplayName" xml:space="preserve">
     <value>Custom Property Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;CustomPropertyDefinition&apos; on DomainRelationship &apos;CustomPropertyHasCustomPropertyDefinition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition</value>
     <comment>Description for DomainClass &apos;CustomPropertyGroupContainsCustomPropertyDefinition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.DisplayName" xml:space="preserve">
     <value>Custom Property Group Contains Custom Property Definition</value>
     <comment>DisplayName for DomainClass &apos;CustomPropertyGroupContainsCustomPropertyDefinition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition/CustomPropertyGroup.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.CustomPropertyGroup</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition/CustomPropertyGroup.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.CustomPropertyGroup</value>
     <comment>Description for DomainRole &apos;CustomPropertyGroup&apos; on DomainRelationship &apos;CustomPropertyGroupContainsCustomPropertyDefinition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition/CustomPropertyGroup.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition/CustomPropertyGroup.DisplayName" xml:space="preserve">
     <value>CustomPropertyGroup</value>
     <comment>DisplayName for DomainRole &apos;CustomPropertyGroup&apos; on DomainRelationship &apos;CustomPropertyGroupContainsCustomPropertyDefinition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition/CustomPropertyGroup.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition/CustomPropertyGroup.PropertyDisplayName" xml:space="preserve">
     <value>Custom Property Definition Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;CustomPropertyGroup&apos; on DomainRelationship &apos;CustomPropertyGroupContainsCustomPropertyDefinition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition/CustomPropertyDefinition.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.CustomPropertyDefinition</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition/CustomPropertyDefinition.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.CustomPropertyDefinition</value>
     <comment>Description for DomainRole &apos;CustomPropertyDefinition&apos; on DomainRelationship &apos;CustomPropertyGroupContainsCustomPropertyDefinition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition/CustomPropertyDefinition.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition/CustomPropertyDefinition.DisplayName" xml:space="preserve">
     <value>CustomPropertyDefinition</value>
     <comment>DisplayName for DomainRole &apos;CustomPropertyDefinition&apos; on DomainRelationship &apos;CustomPropertyGroupContainsCustomPropertyDefinition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition/CustomPropertyDefinition.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition/CustomPropertyDefinition.PropertyDisplayName" xml:space="preserve">
     <value>Custom Property Group</value>
     <comment>PropertyDisplayName for DomainRole &apos;CustomPropertyDefinition&apos; on DomainRelationship &apos;CustomPropertyGroupContainsCustomPropertyDefinition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/None.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/None.DisplayName" xml:space="preserve">
     <value>None</value>
     <comment>Display name for EnumerationLiteral &apos;None&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/None.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.None</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/None.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.None</value>
     <comment>Description for EnumerationLiteral &apos;None&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/EntityType.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/EntityType.DisplayName" xml:space="preserve">
     <value>EntityType</value>
     <comment>Display name for EnumerationLiteral &apos;EntityType&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/EntityType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.EntityType</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/EntityType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.EntityType</value>
     <comment>Description for EnumerationLiteral &apos;EntityType&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/ValueType.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/ValueType.DisplayName" xml:space="preserve">
     <value>ValueType</value>
     <comment>Display name for EnumerationLiteral &apos;ValueType&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/ValueType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.ValueType</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/ValueType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.ValueType</value>
     <comment>Description for EnumerationLiteral &apos;ValueType&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/FactType.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/FactType.DisplayName" xml:space="preserve">
     <value>FactType</value>
     <comment>Display name for EnumerationLiteral &apos;FactType&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/FactType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.FactType</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/FactType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.FactType</value>
     <comment>Description for EnumerationLiteral &apos;FactType&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/SubtypeFact.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/SubtypeFact.DisplayName" xml:space="preserve">
     <value>SubtypeFact</value>
     <comment>Display name for EnumerationLiteral &apos;SubtypeFact&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/SubtypeFact.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.SubtypeFact</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/SubtypeFact.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.SubtypeFact</value>
     <comment>Description for EnumerationLiteral &apos;SubtypeFact&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/Role.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/Role.DisplayName" xml:space="preserve">
     <value>Role</value>
     <comment>Display name for EnumerationLiteral &apos;Role&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/Role.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.Role</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/Role.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.Role</value>
     <comment>Description for EnumerationLiteral &apos;Role&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/FrequencyConstraint.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/FrequencyConstraint.DisplayName" xml:space="preserve">
     <value>FrequencyConstraint</value>
     <comment>Display name for EnumerationLiteral &apos;FrequencyConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/FrequencyConstraint.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.FrequencyConstraint</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/FrequencyConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.FrequencyConstraint</value>
     <comment>Description for EnumerationLiteral &apos;FrequencyConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/MandatoryConstraint.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/MandatoryConstraint.DisplayName" xml:space="preserve">
     <value>MandatoryConstraint</value>
     <comment>Display name for EnumerationLiteral &apos;MandatoryConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/MandatoryConstraint.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.MandatoryConstraint</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/MandatoryConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.MandatoryConstraint</value>
     <comment>Description for EnumerationLiteral &apos;MandatoryConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/RingConstraint.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/RingConstraint.DisplayName" xml:space="preserve">
     <value>RingConstraint</value>
     <comment>Display name for EnumerationLiteral &apos;RingConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/RingConstraint.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.RingConstraint</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/RingConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.RingConstraint</value>
     <comment>Description for EnumerationLiteral &apos;RingConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/UniquenessConstraint.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/UniquenessConstraint.DisplayName" xml:space="preserve">
     <value>UniquenessConstraint</value>
     <comment>Display name for EnumerationLiteral &apos;UniquenessConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/UniquenessConstraint.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.UniquenessConstraint</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/UniquenessConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.UniquenessConstraint</value>
     <comment>Description for EnumerationLiteral &apos;UniquenessConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/EqualityConstraint.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/EqualityConstraint.DisplayName" xml:space="preserve">
     <value>EqualityConstraint</value>
     <comment>Display name for EnumerationLiteral &apos;EqualityConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/EqualityConstraint.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.EqualityConstraint</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/EqualityConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.EqualityConstraint</value>
     <comment>Description for EnumerationLiteral &apos;EqualityConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/ExclusionConstraint.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/ExclusionConstraint.DisplayName" xml:space="preserve">
     <value>ExclusionConstraint</value>
     <comment>Display name for EnumerationLiteral &apos;ExclusionConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/ExclusionConstraint.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.ExclusionConstraint</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/ExclusionConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.ExclusionConstraint</value>
     <comment>Description for EnumerationLiteral &apos;ExclusionConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/SubsetConstraint.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/SubsetConstraint.DisplayName" xml:space="preserve">
     <value>SubsetConstraint</value>
     <comment>Display name for EnumerationLiteral &apos;SubsetConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/SubsetConstraint.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.SubsetConstraint</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/SubsetConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.SubsetConstraint</value>
     <comment>Description for EnumerationLiteral &apos;SubsetConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/ValueConstraint.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/ValueConstraint.DisplayName" xml:space="preserve">
     <value>ValueConstraint</value>
     <comment>Display name for EnumerationLiteral &apos;ValueConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/ValueConstraint.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.ValueConstraint</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/ValueConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.ValueConstraint</value>
     <comment>Description for EnumerationLiteral &apos;ValueConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/AllConstraints.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/AllConstraints.DisplayName" xml:space="preserve">
     <value>AllConstraints</value>
     <comment>Display name for EnumerationLiteral &apos;AllConstraints&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.ORMTypes/AllConstraints.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.ORMTypes.AllConstraints</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/AllConstraints.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.AllConstraints</value>
     <comment>Description for EnumerationLiteral &apos;AllConstraints&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType/String.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDataType/String.DisplayName" xml:space="preserve">
     <value>String</value>
     <comment>Display name for EnumerationLiteral &apos;String&apos; on DomainEnumeration &apos;CustomPropertyDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType/String.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType.String</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDataType/String.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDataType.String</value>
     <comment>Description for EnumerationLiteral &apos;String&apos; on DomainEnumeration &apos;CustomPropertyDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType/Integer.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDataType/Integer.DisplayName" xml:space="preserve">
     <value>Integer</value>
     <comment>Display name for EnumerationLiteral &apos;Integer&apos; on DomainEnumeration &apos;CustomPropertyDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType/Integer.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType.Integer</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDataType/Integer.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDataType.Integer</value>
     <comment>Description for EnumerationLiteral &apos;Integer&apos; on DomainEnumeration &apos;CustomPropertyDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType/Decimal.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDataType/Decimal.DisplayName" xml:space="preserve">
     <value>Decimal</value>
     <comment>Display name for EnumerationLiteral &apos;Decimal&apos; on DomainEnumeration &apos;CustomPropertyDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType/Decimal.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType.Decimal</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDataType/Decimal.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDataType.Decimal</value>
     <comment>Description for EnumerationLiteral &apos;Decimal&apos; on DomainEnumeration &apos;CustomPropertyDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType/DateTime.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDataType/DateTime.DisplayName" xml:space="preserve">
     <value>DateTime</value>
     <comment>Display name for EnumerationLiteral &apos;DateTime&apos; on DomainEnumeration &apos;CustomPropertyDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType/DateTime.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType.DateTime</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDataType/DateTime.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDataType.DateTime</value>
     <comment>Description for EnumerationLiteral &apos;DateTime&apos; on DomainEnumeration &apos;CustomPropertyDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType/CustomEnumeration.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDataType/CustomEnumeration.DisplayName" xml:space="preserve">
     <value>CustomEnumeration</value>
     <comment>Display name for EnumerationLiteral &apos;CustomEnumeration&apos; on DomainEnumeration &apos;CustomPropertyDataType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType/CustomEnumeration.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.CustomProperties.CustomPropertyDataType.CustomEnumeration</value>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDataType/CustomEnumeration.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDataType.CustomEnumeration</value>
     <comment>Description for EnumerationLiteral &apos;CustomEnumeration&apos; on DomainEnumeration &apos;CustomPropertyDataType&apos;</comment>
   </data>
   <data name="AmbiguousSchema" xml:space="preserve">
@@ -557,7 +557,7 @@ A DomainClass can be serialized as a moniker only if
 
 <!-- Common Public License Copyright Notice -->
 <!--
-	Neumont Object-Role Modeling Architect for Visual Studio
+	Natural Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
 

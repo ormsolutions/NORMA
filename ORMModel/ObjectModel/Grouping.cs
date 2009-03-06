@@ -2,7 +2,7 @@
 /**************************************************************************\
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
-* Copyright © Matthew Curland. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -19,15 +19,15 @@ using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.Modeling;
-using Neumont.Tools.Modeling;
+using ORMSolutions.ORMArchitect.Framework;
 using System.Globalization;
 using System.Resources;
 using System.Drawing;
-using Neumont.Tools.Modeling.Design;
+using ORMSolutions.ORMArchitect.Framework.Design;
 using System.Reflection;
 using System.Collections.ObjectModel;
 
-namespace Neumont.Tools.ORM.ObjectModel
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	#region GroupingTypeElementSupportLevel enum
 	/// <summary>

@@ -1,9 +1,9 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © Matthew Curland. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -33,13 +33,13 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
 using Microsoft.VisualStudio.Shell.Interop;
-using Neumont.Tools.Modeling.Design;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.Shell;
-using Neumont.Tools.Modeling;
-using Neumont.Tools.Modeling.Diagrams;
+using ORMSolutions.ORMArchitect.Framework.Design;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.Shell;
+using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Framework.Diagrams;
 
-namespace Neumont.Tools.ORM.ShapeModel
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	#region FactTypeShape class
 	public partial class FactTypeShape : ICustomShapeFolding, IModelErrorActivation, IProvideConnectorShape, IProxyDisplayProvider, IConfigureAsChildShape, IDynamicColorGeometryHost
@@ -2880,19 +2880,19 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Pen to draw a role box outline
 		/// </summary>
-		protected static readonly StyleSetResourceId RoleBoxResource = new StyleSetResourceId("Neumont", "RoleBoxResource");
+		protected static readonly StyleSetResourceId RoleBoxResource = new StyleSetResourceId("ORMArchitect", "RoleBoxResource");
 		/// <summary>
 		/// Brush to draw the foreground text for a role picker  
 		/// </summary>
-		protected static readonly StyleSetResourceId RolePickerForeground = new StyleSetResourceId("Neumont", "RolePickerForeground");
+		protected static readonly StyleSetResourceId RolePickerForeground = new StyleSetResourceId("ORMArchitect", "RolePickerForeground");
 		/// <summary>
 		/// Pen to draw the active part of an internal uniqueness constraint.
 		/// </summary>
-		protected static readonly StyleSetResourceId InternalFactConstraintPen = new StyleSetResourceId("Neumont", "InternalFactConstraintPen");
+		protected static readonly StyleSetResourceId InternalFactConstraintPen = new StyleSetResourceId("ORMArchitect", "InternalFactConstraintPen");
 		/// <summary>
 		/// Pen to draw the active part of a deontic internal uniqueness constraint.
 		/// </summary>
-		protected static readonly StyleSetResourceId DeonticInternalFactConstraintPen = new StyleSetResourceId("Neumont", "DeonticInternalFactConstraintPen");
+		protected static readonly StyleSetResourceId DeonticInternalFactConstraintPen = new StyleSetResourceId("ORMArchitect", "DeonticInternalFactConstraintPen");
 		private static ExternalConstraintConnectAction myActiveExternalConstraintConnectAction;
 		private static InternalUniquenessConstraintConnectAction myActiveInternalUniquenessConstraintConnectAction;
 		#endregion // Member Variables
@@ -4786,7 +4786,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // FactTypeShape specific
 		#region Shape display update rules
 		/// <summary>
-		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.Objectification), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
 		/// </summary>
 		private static void SwitchToNestedFactTypeRule(ElementAddedEventArgs e)
 		{
@@ -4938,7 +4938,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.Objectification), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
 		/// </summary>
 		private static void SwitchFromNestedFactTypeRule(ElementDeletedEventArgs e)
 		{
@@ -5127,7 +5127,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.Objectification), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
 		/// </summary>
 		private static void ObjectificationIsImpliedChangeRule(ElementPropertyChangedEventArgs e)
 		{
@@ -5154,7 +5154,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// RolePlayerChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.Objectification), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// RolePlayerChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
 		/// </summary>
 		private static void ObjectificationRolePlayerChangeRule(RolePlayerChangedEventArgs e)
 		{
@@ -5360,7 +5360,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // FactTypeShapeChangeRule
 		#region RoleName fixup
 		/// <summary>
-		/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.Role), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.Role), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
 		/// Add shape elements for role names. Used during deserialization fixup
 		/// and rules.
 		/// </summary>
@@ -5401,7 +5401,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // RoleName fixup
 		#region ImplicitBooleanValueTypeDeletedRule
 		/// <summary>
-		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
 		/// Deletion of an implicit boolean value type means that the FactType is no longer unary.
 		/// </summary>
 		private static void ImplicitBooleanValueTypeDeletedRule(ElementDeletedEventArgs e)

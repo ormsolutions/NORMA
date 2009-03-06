@@ -15,8 +15,8 @@ using System.Xml;
 using System.Xml.Xsl;
 using System.Xml.XPath;
 using System.IO;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.SDK.TestEngine;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitectSDK.TestEngine;
 
 
 using EnvDTE;
@@ -25,7 +25,7 @@ using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 
-namespace Neumont.Tools.ORM.SDK.TestReportViewer
+namespace ORMSolutions.ORMArchitectSDK.TestReportViewer
 {
 
 	public partial class ReportViewer : Form

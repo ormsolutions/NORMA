@@ -31,7 +31,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	/// Extension rules and elements used to perform dynamic object absorption. Used by
 	/// more compact views on the ORM model.
 	/// </summary>
-	[DslModeling::ExtendsDomainModel("3EAE649F-E654-4D04-8289-C25D2C0322D8"/*Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel*/)]
+	[DslModeling::ExtendsDomainModel("3EAE649F-E654-4D04-8289-C25D2C0322D8"/*ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel*/)]
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.OIALDomainModel.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.OIALDomainModel.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
@@ -565,7 +565,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	/// A list of constraint modalities for simple mandatory role constraints used in
 	/// <see cref="ConceptTypeChild"/> relationships.
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<MandatoryConstraintModality, global::Neumont.Tools.ORM.OIALModel.OIALDomainModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<MandatoryConstraintModality, global::Neumont.Tools.ORM.OIALModel.OIALDomainModel>))]
 	[global::System.CLSCompliant(true)]
 	public enum MandatoryConstraintModality
 	{
@@ -577,13 +577,15 @@ namespace Neumont.Tools.ORM.OIALModel
 		NotMandatory = 0,
 		/// <summary>
 		/// Alethic
-		/// See <see cref="Neumont.Tools.ORM.ObjectModel.ConstraintModality.Alethic"/>.
+		/// See <see
+		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintModality.Alethic"/>.
 		/// </summary>
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.MandatoryConstraintModality/Alethic.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 		Alethic = 1,
 		/// <summary>
 		/// Deontic
-		/// See <see cref="Neumont.Tools.ORM.ObjectModel.ConstraintModality.Deontic"/>.
+		/// See <see
+		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintModality.Deontic"/>.
 		/// </summary>
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.MandatoryConstraintModality/Deontic.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 		Deontic = 2,

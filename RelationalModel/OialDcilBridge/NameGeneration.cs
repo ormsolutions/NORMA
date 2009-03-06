@@ -8,15 +8,15 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.Modeling;
-using Neumont.Tools.Modeling;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORMAbstraction;
-using Neumont.Tools.ORMToORMAbstractionBridge;
-using Neumont.Tools.RelationalModels.ConceptualDatabase;
-using UniquenessConstraint = Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint;
-using ORMUniquenessConstraint = Neumont.Tools.ORM.ObjectModel.UniquenessConstraint;
+using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.ORMAbstraction;
+using ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge;
+using ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase;
+using UniquenessConstraint = ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraint;
+using ORMUniquenessConstraint = ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint;
 
-namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
+namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 {
 	#region IDatabaseNameGenerator interface
 	/// <summary>

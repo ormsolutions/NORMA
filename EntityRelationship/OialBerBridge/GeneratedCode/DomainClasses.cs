@@ -1,6 +1,6 @@
 ﻿#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -24,13 +24,13 @@
 
 using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
-namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
+namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 {
 	/// <summary>
 	/// DomainClass MappingBarkerModel
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.MappingBarkerModel.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.MappingBarkerModel.Description", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.MappingBarkerModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.MappingBarkerModel.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("1eaa1877-f749-465c-ab97-9c64f9582bf8")]
 	public partial class MappingBarkerModel : DslModeling::ModelElement
@@ -63,16 +63,16 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
+namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 {
 	/// <summary>
 	/// DomainClass BarkerERModelGenerationSetting
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.Description", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("77b26a43-49cf-47ce-bdcc-44fd78f9096f")]
-	public partial class BarkerERModelGenerationSetting : global::Neumont.Tools.ORM.ObjectModel.GenerationSetting
+	public partial class BarkerERModelGenerationSetting : global::ORMSolutions.ORMArchitect.Core.ObjectModel.GenerationSetting
 	{
 		#region Constructors, domain class Id
 	
@@ -115,10 +115,10 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// <summary>
 		/// Gets or sets the value of CoreAlgorithmVersion domain property.
 		/// Description for
-		/// Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.Depth
+		/// ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.Depth
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting/CoreAlgorithmVersion.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting/CoreAlgorithmVersion.Description", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting/CoreAlgorithmVersion.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting/CoreAlgorithmVersion.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainObjectId("de3d9138-4e38-427b-ba66-df7b3ccdc4fa")]
 		public global::System.String CoreAlgorithmVersion
 		{
@@ -203,10 +203,10 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// <summary>
 		/// Gets or sets the value of NameAlgorithmVersion domain property.
 		/// Description for
-		/// Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.Depth
+		/// ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.Depth
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting/NameAlgorithmVersion.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting/NameAlgorithmVersion.Description", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting/NameAlgorithmVersion.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting/NameAlgorithmVersion.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainObjectId("803570cd-a276-4f30-9bc6-70aa923b7f97")]
 		public global::System.String NameAlgorithmVersion
 		{
@@ -280,30 +280,30 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// <summary>
 		/// Gets or sets GeneratedBarkerERModel.
 		/// Description for
-		/// Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GenerationSetting
+		/// ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GenerationSetting
 		/// </summary>
-		public virtual global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel GeneratedBarkerERModel
+		public virtual global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel GeneratedBarkerERModel
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GenerationSettingDomainRoleId) as global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GenerationSettingDomainRoleId) as global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
 				DslModeling::ModelElement existingSource;
 				if (null != value &&
-					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GeneratedBarkerERModelDomainRoleId)))
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GeneratedBarkerERModelDomainRoleId)))
 				{
 					if (existingSource != value)
 					{
-						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GeneratedBarkerERModelDomainRoleId, this);
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GeneratedBarkerERModelDomainRoleId, this);
 					}
 				}
 				else
 				{
-					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GenerationSettingDomainRoleId, value);
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GenerationSettingDomainRoleId, value);
 				}
 			}
 		}

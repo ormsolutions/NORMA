@@ -1,9 +1,9 @@
 using System;
 using Microsoft.VisualStudio.Modeling;
 using System.Collections.Generic;
-using Neumont.Tools.Modeling.Shell;
+using ORMSolutions.ORMArchitect.Framework.Shell;
 
-namespace Neumont.Tools.ORM.Shell
+namespace ORMSolutions.ORMArchitect.Core.Shell
 {
 	/// <summary>
 	/// Contains information about an ORM extension.

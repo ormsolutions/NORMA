@@ -4,11 +4,11 @@ using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Neumont.Tools.Modeling.Shell;
+using ORMSolutions.ORMArchitect.Framework.Shell;
 
 // Common Public License Copyright Notice
 // /**************************************************************************\
-// * Neumont Object-Role Modeling Architect for Visual Studio                 *
+// * Natural Object-Role Modeling Architect for Visual Studio                 *
 // *                                                                          *
 // * Copyright © Neumont University. All rights reserved.                     *
 // *                                                                          *
@@ -21,7 +21,7 @@ using Neumont.Tools.Modeling.Shell;
 // * You must not remove this notice, or any other, from this software.       *
 // \**************************************************************************/
 
-namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
+namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 {
 	#region ORMAbstractionToConceptualDatabaseBridgeDomainModel model serialization
 	[CustomSerializedXmlNamespaces("http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase")]
@@ -478,7 +478,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
 		protected bool ShouldSerialize()
 		{
-			Neumont.Tools.ORM.ObjectModel.FactType factType = this.FactType;
+			ORMSolutions.ORMArchitect.Core.ObjectModel.FactType factType = this.FactType;
 			return this.AbsorptionChoice != GetDefaultAbsorptionChoice(factType) && IsFactTypeAssociatedWithDeepAssimilationsOnly(factType);
 		}
 		bool ICustomSerializedElement.ShouldSerialize()
@@ -650,7 +650,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
 		protected bool ShouldSerialize()
 		{
-			Neumont.Tools.ORM.ObjectModel.ObjectType objectType;
+			ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType objectType;
 			return this.UsesCustomFormat(ReferenceModeNamingUse.ReferenceToEntityType, true) || this.UsesCustomFormat(ReferenceModeNamingUse.PrimaryIdentifier, true) || (this.NamingChoice != ReferenceModeNamingChoice.ModelDefault || this.PrimaryIdentifierNamingChoice != ReferenceModeNamingChoice.ModelDefault) && (objectType = this.ObjectType) != null && objectType.ReferenceModePattern != null;
 		}
 		bool ICustomSerializedElement.ShouldSerialize()

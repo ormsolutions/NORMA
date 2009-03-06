@@ -1,4 +1,4 @@
-namespace Neumont.Tools.ORM.Shell
+namespace ORMSolutions.ORMArchitect.Core.Shell
 {
 	partial class SamplePopulationEditor
 	{
@@ -30,7 +30,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SamplePopulationEditor));
-			this.vtrSamplePopulation = new Neumont.Tools.Modeling.Shell.StandardVirtualTreeControl();
+			this.vtrSamplePopulation = new ORMSolutions.ORMArchitect.Framework.Shell.StandardVirtualTreeControl();
 			this.myImageList = new System.Windows.Forms.ImageList(this.components);
 			this.lblNoSelection = new System.Windows.Forms.Label();
 			this.SuspendLayout();
@@ -84,7 +84,7 @@ namespace Neumont.Tools.ORM.Shell
 
 		#endregion
 
-		private Neumont.Tools.Modeling.Shell.StandardVirtualTreeControl vtrSamplePopulation;
+		private ORMSolutions.ORMArchitect.Framework.Shell.StandardVirtualTreeControl vtrSamplePopulation;
 		private System.Windows.Forms.Label lblNoSelection;
 		private System.Windows.Forms.ImageList myImageList;
 

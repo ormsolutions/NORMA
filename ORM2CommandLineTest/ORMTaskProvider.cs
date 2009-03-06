@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
-using Neumont.Tools.ORM.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
 
-namespace Neumont.Tools.ORM.SDK.TestEngine
+namespace ORMSolutions.ORMArchitectSDK.TestEngine
 {
 	public partial struct Suite
 	{

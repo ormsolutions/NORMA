@@ -9,7 +9,7 @@
 <#@ Dsl processor="DslDirectiveProcessor" requires="fileName='../../../ORMModel/ObjectModel/ORMCore.dsl';validation=''" provides="dslLibrary='ORMCoreDslLibrary'" #>
 <!-- Common Public License Copyright Notice -->
 <!--
-	Neumont Object-Role Modeling Architect for Visual Studio
+	Natural Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
 

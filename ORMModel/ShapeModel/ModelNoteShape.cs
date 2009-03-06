@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -24,11 +24,11 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.Shell;
-using Neumont.Tools.Modeling.Diagrams;
-using Neumont.Tools.Modeling;
-namespace Neumont.Tools.ORM.ShapeModel
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.Shell;
+using ORMSolutions.ORMArchitect.Framework.Diagrams;
+using ORMSolutions.ORMArchitect.Framework;
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	#region ModelNoteShape class
 	public partial class ModelNoteShape : IConfigureAsChildShape, IDynamicColorGeometryHost
@@ -247,7 +247,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // TextField Integration
 		#region Shape display update rules
 		/// <summary>
-		/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.Note), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.Note), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
 		/// </summary>
 		private static void NoteChangeRule(ElementPropertyChangedEventArgs e)
 		{

@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -22,9 +22,9 @@ using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
 using System.Text.RegularExpressions;
 using System.Text;
-using Neumont.Tools.Modeling;
+using ORMSolutions.ORMArchitect.Framework;
 
-namespace Neumont.Tools.ORM.ObjectModel
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	public partial class ValueRange : IModelErrorOwner, IHasIndirectModelErrorOwner
 	{

@@ -84,7 +84,7 @@
 	</xs:complexType>
 	<xs:complexType name="ExtensionType">
 		<xs:annotation>
-			<xs:documentation>A single Neumont ORM extension. Corresponds to the Extension element in a SuiteReport.</xs:documentation>
+			<xs:documentation>A single NORMA extension. Corresponds to the Extension element in a SuiteReport.</xs:documentation>
 		</xs:annotation>
 		<xs:attribute name="location" type="xs:string" use="required">
 			<xs:annotation>

@@ -1,4 +1,4 @@
-namespace Neumont.Tools.ORM.CustomProperties
+namespace ORMSolutions.ORMArchitect.CustomProperties
 {
 	partial class CustomPropertiesManager
 	{
@@ -44,8 +44,8 @@ namespace Neumont.Tools.ORM.CustomProperties
 			this.tsbAddGroupToModel = new System.Windows.Forms.ToolStripButton();
 			this.btnSave = new System.Windows.Forms.Button();
 			this.btnCancel = new System.Windows.Forms.Button();
-			this.definitionEditor1 = new Neumont.Tools.ORM.CustomProperties.DefinitionEditor();
-			this.groupEditor1 = new Neumont.Tools.ORM.CustomProperties.GroupEditor();
+			this.definitionEditor1 = new ORMSolutions.ORMArchitect.CustomProperties.DefinitionEditor();
+			this.groupEditor1 = new ORMSolutions.ORMArchitect.CustomProperties.GroupEditor();
 			this.groupBox1.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
 			this.SuspendLayout();
@@ -197,7 +197,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 			this.definitionEditor1.Size = new System.Drawing.Size(268, 300);
 			this.definitionEditor1.TabIndex = 1;
 			this.definitionEditor1.Visible = false;
-			this.definitionEditor1.NameChanged += new Neumont.Tools.ORM.CustomProperties.NameChangedHandler(this.editor_NameChanged);
+			this.definitionEditor1.NameChanged += new ORMSolutions.ORMArchitect.CustomProperties.NameChangedHandler(this.editor_NameChanged);
 			// 
 			// groupEditor1
 			// 
@@ -207,7 +207,7 @@ namespace Neumont.Tools.ORM.CustomProperties
 			this.groupEditor1.Size = new System.Drawing.Size(268, 300);
 			this.groupEditor1.TabIndex = 2;
 			this.groupEditor1.Visible = false;
-			this.groupEditor1.NameChanged += new Neumont.Tools.ORM.CustomProperties.NameChangedHandler(this.editor_NameChanged);
+			this.groupEditor1.NameChanged += new ORMSolutions.ORMArchitect.CustomProperties.NameChangedHandler(this.editor_NameChanged);
 			// 
 			// CustomPropertiesManager
 			// 

@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -19,17 +19,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Microsoft.VisualStudio.Modeling;
-using Neumont.Tools.RelationalModels.ConceptualDatabase;
-using Neumont.Tools.Modeling;
-using Neumont.Tools.ORMToORMAbstractionBridge;
-using Neumont.Tools.ORMAbstraction;
-using Neumont.Tools.ORM.ObjectModel;
+using ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase;
+using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge;
+using ORMSolutions.ORMArchitect.ORMAbstraction;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using System.Diagnostics;
 using System.Security.Permissions;
-using Neumont.Tools.Modeling.Design;
+using ORMSolutions.ORMArchitect.Framework.Design;
 using System.Collections.ObjectModel;
 
-namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
+namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 {
 	#region ObjectTypeAbsorptionChoice enum
 	/// <summary>
@@ -277,7 +277,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 			private static FactType GetFactTypeFromComponent(object component)
 			{
-				return Neumont.Tools.ORM.ObjectModel.Design.ORMEditorUtility.ResolveContextFactType(component);
+				return ORMSolutions.ORMArchitect.Core.ObjectModel.Design.ORMEditorUtility.ResolveContextFactType(component);
 			}
 			public override AttributeCollection Attributes
 			{
@@ -1641,7 +1641,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 		#endregion // Deserialization Fixup
 		#region ORM/ORMAbstraction Bridge modification tracker
 		/// <summary>
-		/// AddRule: typeof(Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType)
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType)
 		/// Validation absorption choices when a fact type is added to a path
 		/// </summary>
 		private static void PathFactTypeAddedRule(ElementAddedEventArgs e)
@@ -1667,7 +1667,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 		}
 		/// <summary>
-		/// DeletingRule: typeof(Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler)
+		/// DeletingRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusiveOrConstraintCoupler)
 		/// Validate partition patterns when a disjunctive mandatory constraint is decoupled or
 		/// being deleted
 		/// </summary>
@@ -1695,7 +1695,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 		}
 		/// <summary>
-		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole)
+		/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole)
 		/// Validate partition patterns when a role is removed from a disjunctive mandatory constraint
 		/// </summary>
 		private static void DisjunctiveMandatoryRoleDeletedRule(ElementDeletedEventArgs e)
@@ -1724,7 +1724,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			}
 		}
 		/// <summary>
-		/// DeletingRule: typeof(Neumont.Tools.ORM.ObjectModel.FactType)
+		/// DeletingRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactType)
 		/// UNDONE: Very expensive rule that needs to be revisited when
 		/// incremental ORMAbstraction is in place. This takes any assimilated
 		/// <see cref="FactType"/> that is being deleted and separates it.

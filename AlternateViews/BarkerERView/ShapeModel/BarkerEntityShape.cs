@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -18,20 +18,20 @@ using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.Modeling;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Framework;
 using System.Collections;
 using System.Diagnostics;
-using Neumont.Tools.EntityRelationshipModels.Barker;
-using b = Neumont.Tools.EntityRelationshipModels.Barker;
+using ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker;
+using Barker = ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker;
 
-namespace Neumont.Tools.ORM.Views.BarkerERView
+namespace ORMSolutions.ORMArchitect.Views.BarkerERView
 {
 	partial class BarkerEntityShape
 	{
 		#region Customize Appearance
 		/// <summary>
-		/// Gets whether the <see cref="T:Neumont.Tools.ORM.Views.BarkerERView.BarkerEntityShape"/> can be expanded or collapsed.
+		/// Gets whether the <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape"/> can be expanded or collapsed.
 		/// </summary>
 		public override bool CanExpandAndCollapse
 		{
@@ -41,7 +41,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 			}
 		}
 		/// <summary>
-		/// Gets whether the <see cref="T:Neumont.Tools.ORM.Views.BarkerERView.BarkerEntityShape"/> has a shadow.
+		/// Gets whether the <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape"/> has a shadow.
 		/// </summary>
 		public override bool HasShadow
 		{
@@ -73,7 +73,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 		}
 
 		/// <summary>
-		/// Gets the resizable sides on this <see cref="T:Neumont.Tools.ORM.Views.RelationalView.TableShape"/>.
+		/// Gets the resizable sides on this <see cref="BarkerEntityShape"/>.
 		/// </summary>
 		public override NodeSides ResizableSides
 		{
@@ -86,7 +86,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 		{
 			get
 			{
-				return Neumont.Tools.Modeling.Diagrams.CustomFoldRoundedRectangleShapeGeometry.ShapeGeometry;
+				return ORMSolutions.ORMArchitect.Framework.Diagrams.CustomFoldRoundedRectangleShapeGeometry.ShapeGeometry;
 
 			}
 		}
@@ -303,12 +303,12 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 		protected override CompartmentMapping[] GetCompartmentMappings(Type melType)
 		{
 			CompartmentMapping[] retVal = base.GetCompartmentMappings(melType);
-			if (melType == typeof(EntityType) && !OrderedElementList<b.Attribute, AttributeElementListCompartment>.IsInitialized)
+			if (melType == typeof(EntityType) && !OrderedElementList<Barker.Attribute, AttributeElementListCompartment>.IsInitialized)
 			{
 				ElementListCompartmentMapping mapping = (ElementListCompartmentMapping)retVal[0];
-				OrderedElementList<b.Attribute, AttributeElementListCompartment>.Initialize(
+				OrderedElementList<Barker.Attribute, AttributeElementListCompartment>.Initialize(
 					mapping.ElementListGetter,
-					delegate(b.Attribute x, b.Attribute y)
+					delegate(Barker.Attribute x, Barker.Attribute y)
 					{
 						if (x == y)
 						{
@@ -323,7 +323,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 
 						return x.Name.CompareTo(y.Name);
 					});
-				mapping.ElementListGetter = OrderedElementList<b.Attribute, AttributeElementListCompartment>.ElementListGetter;
+				mapping.ElementListGetter = OrderedElementList<Barker.Attribute, AttributeElementListCompartment>.ElementListGetter;
 			}
 			return retVal;
 		}
@@ -348,7 +348,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 				// on, then the ColumnRenamedEvent does not work for the initial transaction.
 				store.RuleManager.DisableRule(typeof(CompartmentItemChangeRule));
 			}
-			propertyInfo = dataDirectory.FindDomainProperty(b.Attribute.NameDomainPropertyId);
+			propertyInfo = dataDirectory.FindDomainProperty(Barker.Attribute.NameDomainPropertyId);
 			eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(AttributeRenamedEvent), action);
 		}
 		/// <summary>
@@ -356,7 +356,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 		/// </summary>
 		private static void AttributeRenamedEvent(object sender, ElementPropertyChangedEventArgs e)
 		{
-			b.Attribute attribute = (b.Attribute)e.ModelElement;
+			Barker.Attribute attribute = (Barker.Attribute)e.ModelElement;
 			EntityType barkerEntity;
 			if (!attribute.IsDeleted &&
 				null != (barkerEntity = attribute.EntityType))
@@ -369,11 +369,11 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 						foreach (ShapeElement childShape in shape.NestedChildShapes)
 						{
 							AttributeElementListCompartment compartment;
-							OrderedElementList<b.Attribute, AttributeElementListCompartment> attributeList;
+							OrderedElementList<Barker.Attribute, AttributeElementListCompartment> attributeList;
 							int oldIndex;
 							int newIndex;
 							if (null != (compartment = childShape as AttributeElementListCompartment) &&
-								null != (attributeList = compartment.Items as OrderedElementList<b.Attribute, AttributeElementListCompartment>))
+								null != (attributeList = compartment.Items as OrderedElementList<Barker.Attribute, AttributeElementListCompartment>))
 								
 							{
 								if (attributeList.OnElementReorder(attribute, out oldIndex, out newIndex))
@@ -432,7 +432,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 		private sealed class BarkerEntityTextField : TextField
 		{
 			/// <summary>
-			/// Gets whether the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.TableTextField" /> is selectable.
+			/// Gets whether the <see cref="BarkerEntityTextField" /> is selectable.
 			/// </summary>
 			/// <param name="parentShape">parentShape</param>
 			/// <returns><see langword="false" />.</returns>
@@ -441,7 +441,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 				return false;
 			}
 			/// <summary>
-			/// Gets whether the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.TableTextField" /> is focusable.
+			/// Gets whether the <see cref="BarkerEntityTextField" /> is focusable.
 			/// </summary>
 			/// <param name="parentShape">parentShape</param>
 			/// <returns><see langword="false" />.</returns>
@@ -450,7 +450,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 				return false;
 			}
 			/// <summary>
-			/// Initializes a new instance of the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.TableTextField" /> class.	
+			/// Initializes a new instance of the <see cref="BarkerEntityTextField" /> class.	
 			/// </summary>
 			/// <param name="fieldName">The name of the field.</param>
 			public BarkerEntityTextField(string fieldName)

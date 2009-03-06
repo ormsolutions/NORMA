@@ -2,7 +2,7 @@
 <arg:Rules xmlns:arg="http://schemas.neumont.edu/ORM/SDK/AttachRulesGenerator">
 	<arg:Copyright name="Common Public License Copyright Notice">
 		<arg:CopyrightLine>/**************************************************************************\</arg:CopyrightLine>
-		<arg:CopyrightLine>* Neumont Object-Role Modeling Architect for Visual Studio                 *</arg:CopyrightLine>
+		<arg:CopyrightLine>* Natural Object-Role Modeling Architect for Visual Studio                 *</arg:CopyrightLine>
 		<arg:CopyrightLine>*                                                                          *</arg:CopyrightLine>
 		<arg:CopyrightLine>* Copyright © Neumont University. All rights reserved.                     *</arg:CopyrightLine>
 		<arg:CopyrightLine>*                                                                          *</arg:CopyrightLine>
@@ -18,15 +18,15 @@
 	<arg:Model class="ExtensionDomainModel">
 		<arg:RuleContainer class="MyCustomExtensionElement">
 			<arg:AddRule methodName="RoleAddRule">
-				<arg:RuleOn targetType="FactTypeHasRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+				<arg:RuleOn targetType="FactTypeHasRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:AddRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="ObjectTypeRequiresMeaningfulNameError">
 			<arg:AddRule methodName="ExtensionObjectTypeAddRule">
-				<arg:RuleOn targetType="ModelHasObjectType" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+				<arg:RuleOn targetType="ModelHasObjectType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:AddRule>
 			<arg:ChangeRule methodName="ExtensionObjectTypeChangeRule">
-				<arg:RuleOn targetType="ObjectType" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+				<arg:RuleOn targetType="ObjectType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:ChangeRule>
 		</arg:RuleContainer>
 		<!--<arg:Rule class="ExtensionAddRule"/>-->

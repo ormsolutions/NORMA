@@ -1,4 +1,4 @@
-namespace Neumont.Tools.Modeling.Shell
+namespace ORMSolutions.ORMArchitect.Framework.Shell
 {
 	partial class DiagramOrderDialog
 	{
@@ -36,7 +36,7 @@ namespace Neumont.Tools.Modeling.Shell
 			this.UpButton = new System.Windows.Forms.Button();
 			this.DownButton = new System.Windows.Forms.Button();
 			this.ToolTip = new System.Windows.Forms.ToolTip(this.components);
-			this.DiagramsList = new Neumont.Tools.Modeling.Shell.StandardVirtualTreeControl();
+			this.DiagramsList = new ORMSolutions.ORMArchitect.Framework.Shell.StandardVirtualTreeControl();
 			this.SuspendLayout();
 			// 
 			// btnOK

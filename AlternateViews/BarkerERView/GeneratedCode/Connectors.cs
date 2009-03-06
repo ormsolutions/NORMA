@@ -1,6 +1,6 @@
 ﻿#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -26,17 +26,18 @@ using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
 using DslDiagrams = global::Microsoft.VisualStudio.Modeling.Diagrams;
 
-namespace Neumont.Tools.ORM.Views.BarkerERView
+namespace ORMSolutions.ORMArchitect.Views.BarkerERView
 {
 	/// <summary>
 	/// DomainClass AssociationConnector
-	/// Description for Neumont.Tools.ORM.Views.BarkerERView.AssociationConnector
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.Views.BarkerERView.AssociationConnector.DisplayName", typeof(global::Neumont.Tools.ORM.Views.BarkerERView.BarkerERShapeDomainModel), "Neumont.Tools.ORM.Views.BarkerERView.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.Views.BarkerERView.AssociationConnector.Description", typeof(global::Neumont.Tools.ORM.Views.BarkerERView.BarkerERShapeDomainModel), "Neumont.Tools.ORM.Views.BarkerERView.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel), "ORMSolutions.ORMArchitect.Views.BarkerERView.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector.Description", typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel), "ORMSolutions.ORMArchitect.Views.BarkerERView.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("03fe4da6-29dc-4dfc-9450-07e7d2b5ec48")]
-	public partial class AssociationConnector : global::Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape
+	public partial class AssociationConnector : global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseBinaryLinkShape
 	{
 		#region DiagramElement boilerplate
 		private static DslDiagrams::StyleSet classStyleSet;

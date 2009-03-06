@@ -1,9 +1,9 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © Matthew Curland. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -24,16 +24,16 @@ using System.Text;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.VirtualTreeGrid;
 using System.Diagnostics;
-using Neumont.Tools.ORM.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using System.Windows.Forms.Design;
 using Microsoft.VisualStudio.Modeling;
 using System.Collections.ObjectModel;
-using Neumont.Tools.Modeling.Design;
+using ORMSolutions.ORMArchitect.Framework.Design;
 using System.Collections;
 using System.Drawing.Design;
 using System.Globalization;
-using Neumont.Tools.Modeling.Shell;
-using Neumont.Tools.Modeling;
+using ORMSolutions.ORMArchitect.Framework.Shell;
+using ORMSolutions.ORMArchitect.Framework;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -41,7 +41,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using VirtualTreeInPlaceControlFlags = Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeInPlaceControls;
 #endif //VISUALSTUDIO_9_0
 
-namespace Neumont.Tools.ORM.ObjectModel.Design
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 {
 	/// <summary>
 	/// Form for displaying alias elements in a <see cref="NameGenerator"/> context

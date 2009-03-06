@@ -3,11 +3,11 @@ using System.IO;
 using System.Text;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.Modeling;
-using Neumont.Tools.ORM.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
 
 // Common Public License Copyright Notice
 // /**************************************************************************\
-// * Neumont Object-Role Modeling Architect for Visual Studio                 *
+// * Natural Object-Role Modeling Architect for Visual Studio                 *
 // *                                                                          *
 // * Copyright © Neumont University. All rights reserved.                     *
 // *                                                                          *
@@ -20,7 +20,7 @@ using Neumont.Tools.ORM.ObjectModel;
 // * You must not remove this notice, or any other, from this software.       *
 // \**************************************************************************/
 
-namespace Neumont.Tools.ORM.CustomProperties
+namespace ORMSolutions.ORMArchitect.CustomProperties
 {
 	#region CustomPropertyVerbalizationSnippetType enum
 	/// <summary>An enum with one value for each recognized snippet</summary>

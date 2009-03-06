@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -16,24 +16,24 @@
 
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using System.Text;
-using Neumont.Tools.ORM.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
-using Neumont.Tools.Modeling;
-using Neumont.Tools.EntityRelationshipModels.Barker;
-using b = Neumont.Tools.EntityRelationshipModels.Barker;
+using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker;
+using Barker = ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker;
 using System.Drawing;
-using Neumont.Tools.Modeling.Diagrams;
-using Neumont.Tools.ORM.ShapeModel;
+using ORMSolutions.ORMArchitect.Framework.Diagrams;
+using ORMSolutions.ORMArchitect.Core.ShapeModel;
 using System.Drawing.Drawing2D;
 using System;
 using System.Collections.Generic;
-namespace Neumont.Tools.ORM.Views.BarkerERView
+namespace ORMSolutions.ORMArchitect.Views.BarkerERView
 {
 	partial class AssociationConnector : IReconfigureableLink, IConfigureAsChildShape
 	{
 		#region Customize appearance
 		/// <summary>
-		/// Overridden to disallow selection of this <see cref="T:Neumont.Tools.ORM.Views.BarkerERView.AssociationConnector"/>.
+		/// Overridden to disallow selection of this <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector"/>.
 		/// </summary>
 		public override bool CanSelect
 		{
@@ -44,10 +44,10 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 		}
 		
 		/// <summary>
-		/// Overridden to disallow manual routing of this <see cref="T:Neumont.Tools.ORM.Views.BarkerERView.AssociationConnector"/>.
+		/// Overridden to disallow manual routing of this <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector"/>.
 		/// </summary>
 		/// <remarks>
-		/// If this returns <see langword="true"/> while the <see cref="P:Neumont.Tools.ORM.Views.BarkerERView.AssociationConnector.CanSelect"/>
+		/// If this returns <see langword="true"/> while the <see cref="P:ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector.CanSelect"/>
 		/// property returns <see langword="false"/>, the application will crash while trying to manually route the connector.
 		/// </remarks>
 		public override bool CanManuallyRoute
@@ -159,7 +159,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 				EdgePointCollection edgePoints;
 				int edgePointCount;
 				BinaryAssociation association;
-				LinkedElementCollection<b.Role> roles;
+				LinkedElementCollection<Barker.Role> roles;
 				if (null != (edgePoints = connector.EdgePoints) &&
 					1 < (edgePointCount = edgePoints.Count) &&
 					null != (association = link.BinaryAssociation) &&
@@ -172,7 +172,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 					#region find correct roles
 					EntityType fromEntity = connector.FromShape.ModelElement as EntityType;
 					EntityType toEntity = connector.ToShape.ModelElement as EntityType;
-					b.Role fromRole = null, toRole = null;
+					Barker.Role fromRole = null, toRole = null;
 					if (fromEntity == roles[0].EntityType)
 					{
 						fromRole = roles[0];

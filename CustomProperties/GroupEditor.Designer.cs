@@ -1,4 +1,4 @@
-namespace Neumont.Tools.ORM.CustomProperties
+namespace ORMSolutions.ORMArchitect.CustomProperties
 {
 	partial class GroupEditor
 	{

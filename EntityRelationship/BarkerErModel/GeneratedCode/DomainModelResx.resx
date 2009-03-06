@@ -117,596 +117,596 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel.Description" xml:space="preserve">
     <value>Barker Entity Relationship View of ORM Model</value>
     <comment>Description for DslLibrary &apos;Barker&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel.DisplayName" xml:space="preserve">
     <value>Barker ER</value>
     <comment>DisplayName for DslLibrary &apos;Barker&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BarkerModelElement.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerModelElement.Description" xml:space="preserve">
     <value>Base class for ConceptualData &lt;see cref=&apos;DslModeling::ModelElement&apos;/&gt;s.</value>
     <comment>Description for DomainClass &apos;BarkerModelElement&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BarkerModelElement.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerModelElement.DisplayName" xml:space="preserve">
     <value>Barker Model Element</value>
     <comment>DisplayName for DomainClass &apos;BarkerModelElement&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.EntityType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.EntityType</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType</value>
     <comment>Description for DomainClass &apos;EntityType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.EntityType.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType.DisplayName" xml:space="preserve">
     <value>Entity Type</value>
     <comment>DisplayName for DomainClass &apos;EntityType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.EntityType/Name.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType/Name.Description" xml:space="preserve">
     <value>The name of the entity type.</value>
     <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;EntityType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.EntityType/Name.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType/Name.DisplayName" xml:space="preserve">
     <value>Name</value>
     <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;EntityType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.Attribute.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.Attribute</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute</value>
     <comment>Description for DomainClass &apos;Attribute&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.Attribute.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute.DisplayName" xml:space="preserve">
     <value>Attribute</value>
     <comment>DisplayName for DomainClass &apos;Attribute&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.Attribute/Name.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute/Name.Description" xml:space="preserve">
     <value>The name of the attribute.</value>
     <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;Attribute&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.Attribute/Name.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute/Name.DisplayName" xml:space="preserve">
     <value>Name</value>
     <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;Attribute&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.Attribute/IsMandatory.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute/IsMandatory.Description" xml:space="preserve">
     <value>Is this attribute required for its entity type?</value>
     <comment>Description for DomainProperty &apos;IsMandatory&apos; on DomainClass &apos;Attribute&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.Attribute/IsMandatory.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute/IsMandatory.DisplayName" xml:space="preserve">
     <value>IsMandatory</value>
     <comment>DisplayName for DomainProperty &apos;IsMandatory&apos; on DomainClass &apos;Attribute&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.Attribute/IsPrimaryIdComponent.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute/IsPrimaryIdComponent.Description" xml:space="preserve">
     <value>Is this attribute part of primary identifier for its entity type?</value>
     <comment>Description for DomainProperty &apos;IsPrimaryIdComponent&apos; on DomainClass &apos;Attribute&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.Attribute/IsPrimaryIdComponent.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute/IsPrimaryIdComponent.DisplayName" xml:space="preserve">
     <value>IsPrimaryIdComponent</value>
     <comment>DisplayName for DomainProperty &apos;IsPrimaryIdComponent&apos; on DomainClass &apos;Attribute&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.Value.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.Value</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Value.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Value</value>
     <comment>Description for DomainClass &apos;Value&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.Value.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Value.DisplayName" xml:space="preserve">
     <value>Value</value>
     <comment>DisplayName for DomainClass &apos;Value&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.Value/Val.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Value/Val.Description" xml:space="preserve">
     <value>represents the actual value.</value>
     <comment>Description for DomainProperty &apos;Val&apos; on DomainClass &apos;Value&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.Value/Val.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Value/Val.DisplayName" xml:space="preserve">
     <value>Val</value>
     <comment>DisplayName for DomainProperty &apos;Val&apos; on DomainClass &apos;Value&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.Role.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.Role</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Role.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Role</value>
     <comment>Description for DomainClass &apos;Role&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.Role.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Role.DisplayName" xml:space="preserve">
     <value>Role</value>
     <comment>DisplayName for DomainClass &apos;Role&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.Role/Number.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Role/Number.Description" xml:space="preserve">
     <value>The number of the role.</value>
     <comment>Description for DomainProperty &apos;Number&apos; on DomainClass &apos;Role&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.Role/Number.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Role/Number.DisplayName" xml:space="preserve">
     <value>Number</value>
     <comment>DisplayName for DomainProperty &apos;Number&apos; on DomainClass &apos;Role&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.Role/PredicateText.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Role/PredicateText.Description" xml:space="preserve">
     <value>The predicate text of the role.</value>
     <comment>Description for DomainProperty &apos;PredicateText&apos; on DomainClass &apos;Role&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.Role/PredicateText.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Role/PredicateText.DisplayName" xml:space="preserve">
     <value>Predicate Text</value>
     <comment>DisplayName for DomainProperty &apos;PredicateText&apos; on DomainClass &apos;Role&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.Role/IsNonTransferable.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Role/IsNonTransferable.Description" xml:space="preserve">
     <value>Is this role non-transferable?</value>
     <comment>Description for DomainProperty &apos;IsNonTransferable&apos; on DomainClass &apos;Role&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.Role/IsNonTransferable.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Role/IsNonTransferable.DisplayName" xml:space="preserve">
     <value>IsNonTransferable</value>
     <comment>DisplayName for DomainProperty &apos;IsNonTransferable&apos; on DomainClass &apos;Role&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.Role/IsMandatory.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Role/IsMandatory.Description" xml:space="preserve">
     <value>Is this a required role?</value>
     <comment>Description for DomainProperty &apos;IsMandatory&apos; on DomainClass &apos;Role&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.Role/IsMandatory.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Role/IsMandatory.DisplayName" xml:space="preserve">
     <value>IsMandatory</value>
     <comment>DisplayName for DomainProperty &apos;IsMandatory&apos; on DomainClass &apos;Role&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.Role/IsPrimaryIdComponent.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Role/IsPrimaryIdComponent.Description" xml:space="preserve">
     <value>Is this role a part of primary identifier for an entity type?</value>
     <comment>Description for DomainProperty &apos;IsPrimaryIdComponent&apos; on DomainClass &apos;Role&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.Role/IsPrimaryIdComponent.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Role/IsPrimaryIdComponent.DisplayName" xml:space="preserve">
     <value>IsPrimaryIdComponent</value>
     <comment>DisplayName for DomainProperty &apos;IsPrimaryIdComponent&apos; on DomainClass &apos;Role&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.Role/IsMultiValued.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Role/IsMultiValued.Description" xml:space="preserve">
     <value>Does this role have cardinality specified?</value>
     <comment>Description for DomainProperty &apos;IsMultiValued&apos; on DomainClass &apos;Role&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.Role/IsMultiValued.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Role/IsMultiValued.DisplayName" xml:space="preserve">
     <value>IsMultiValued</value>
     <comment>DisplayName for DomainProperty &apos;IsMultiValued&apos; on DomainClass &apos;Role&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.CardinalityQualifier.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.CardinalityQualifier</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.CardinalityQualifier.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.CardinalityQualifier</value>
     <comment>Description for DomainClass &apos;CardinalityQualifier&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.CardinalityQualifier.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.CardinalityQualifier.DisplayName" xml:space="preserve">
     <value>Cardinality Qualifier</value>
     <comment>DisplayName for DomainClass &apos;CardinalityQualifier&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.CardinalityQualifier/Number.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.CardinalityQualifier/Number.Description" xml:space="preserve">
     <value>The number of times something can occur.</value>
     <comment>Description for DomainProperty &apos;Number&apos; on DomainClass &apos;CardinalityQualifier&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.CardinalityQualifier/Number.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.CardinalityQualifier/Number.DisplayName" xml:space="preserve">
     <value>Number</value>
     <comment>DisplayName for DomainProperty &apos;Number&apos; on DomainClass &apos;CardinalityQualifier&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.CardinalityQualifier/Operator.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.CardinalityQualifier/Operator.Description" xml:space="preserve">
     <value>The comparison operator that goes with the cardinality number.</value>
     <comment>Description for DomainProperty &apos;Operator&apos; on DomainClass &apos;CardinalityQualifier&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.CardinalityQualifier/Operator.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.CardinalityQualifier/Operator.DisplayName" xml:space="preserve">
     <value>Operator</value>
     <comment>DisplayName for DomainProperty &apos;Operator&apos; on DomainClass &apos;CardinalityQualifier&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.OptionalRole.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.OptionalRole</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.OptionalRole.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.OptionalRole</value>
     <comment>Description for DomainClass &apos;OptionalRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.OptionalRole.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.OptionalRole.DisplayName" xml:space="preserve">
     <value>Optional Role</value>
     <comment>DisplayName for DomainClass &apos;OptionalRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArc.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArc</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArc.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArc</value>
     <comment>Description for DomainClass &apos;ExclusiveArc&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArc.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArc.DisplayName" xml:space="preserve">
     <value>Exclusive Arc</value>
     <comment>DisplayName for DomainClass &apos;ExclusiveArc&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArc/Number.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArc/Number.Description" xml:space="preserve">
     <value>The number of the exclusive arc.</value>
     <comment>Description for DomainProperty &apos;Number&apos; on DomainClass &apos;ExclusiveArc&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArc/Number.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArc/Number.DisplayName" xml:space="preserve">
     <value>Number</value>
     <comment>DisplayName for DomainProperty &apos;Number&apos; on DomainClass &apos;ExclusiveArc&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArc/IsMandatory.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArc/IsMandatory.Description" xml:space="preserve">
     <value>Is one of the roles under exclusive arc required?</value>
     <comment>Description for DomainProperty &apos;IsMandatory&apos; on DomainClass &apos;ExclusiveArc&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArc/IsMandatory.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArc/IsMandatory.DisplayName" xml:space="preserve">
     <value>IsMandatory</value>
     <comment>DisplayName for DomainProperty &apos;IsMandatory&apos; on DomainClass &apos;ExclusiveArc&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArc/IsPrimaryIdComponent.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArc/IsPrimaryIdComponent.Description" xml:space="preserve">
     <value>Is one of the roles under exclusive arc a part of primary identifier for an entity type?</value>
     <comment>Description for DomainProperty &apos;IsPrimaryIdComponent&apos; on DomainClass &apos;ExclusiveArc&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArc/IsPrimaryIdComponent.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArc/IsPrimaryIdComponent.DisplayName" xml:space="preserve">
     <value>IsPrimaryIdComponent</value>
     <comment>DisplayName for DomainProperty &apos;IsPrimaryIdComponent&apos; on DomainClass &apos;ExclusiveArc&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation</value>
     <comment>Description for DomainClass &apos;BinaryAssociation&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation.DisplayName" xml:space="preserve">
     <value>Binary Association</value>
     <comment>DisplayName for DomainClass &apos;BinaryAssociation&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation/Number.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation/Number.Description" xml:space="preserve">
     <value>The number of the binary association.</value>
     <comment>Description for DomainProperty &apos;Number&apos; on DomainClass &apos;BinaryAssociation&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation/Number.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation/Number.DisplayName" xml:space="preserve">
     <value>Number</value>
     <comment>DisplayName for DomainProperty &apos;Number&apos; on DomainClass &apos;BinaryAssociation&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel</value>
     <comment>Description for DomainClass &apos;BarkerErModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel.DisplayName" xml:space="preserve">
     <value>Barker Er Model</value>
     <comment>DisplayName for DomainClass &apos;BarkerErModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel/Name.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel/Name.Description" xml:space="preserve">
     <value>The name of the model.</value>
     <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;BarkerErModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel/Name.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel/Name.DisplayName" xml:space="preserve">
     <value>Name</value>
     <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;BarkerErModel&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute</value>
     <comment>Description for DomainClass &apos;EntityTypeHasAttribute&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute.DisplayName" xml:space="preserve">
     <value>Entity Type Has Attribute</value>
     <comment>DisplayName for DomainClass &apos;EntityTypeHasAttribute&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute/EntityType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute.EntityType</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute/EntityType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute.EntityType</value>
     <comment>Description for DomainRole &apos;EntityType&apos; on DomainRelationship &apos;EntityTypeHasAttribute&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute/EntityType.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute/EntityType.DisplayName" xml:space="preserve">
     <value>Entity Type</value>
     <comment>DisplayName for DomainRole &apos;EntityType&apos; on DomainRelationship &apos;EntityTypeHasAttribute&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute/EntityType.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute/EntityType.PropertyDisplayName" xml:space="preserve">
     <value>Attribute Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;EntityType&apos; on DomainRelationship &apos;EntityTypeHasAttribute&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute/Attribute.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute.Attribute</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute/Attribute.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute.Attribute</value>
     <comment>Description for DomainRole &apos;Attribute&apos; on DomainRelationship &apos;EntityTypeHasAttribute&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute/Attribute.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute/Attribute.DisplayName" xml:space="preserve">
     <value>Attribute</value>
     <comment>DisplayName for DomainRole &apos;Attribute&apos; on DomainRelationship &apos;EntityTypeHasAttribute&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute/Attribute.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute/Attribute.PropertyDisplayName" xml:space="preserve">
     <value>Entity Type</value>
     <comment>PropertyDisplayName for DomainRole &apos;Attribute&apos; on DomainRelationship &apos;EntityTypeHasAttribute&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue</value>
     <comment>Description for DomainClass &apos;AttributeHasPossibleValue&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue.DisplayName" xml:space="preserve">
     <value>Attribute Has Possible Value</value>
     <comment>DisplayName for DomainClass &apos;AttributeHasPossibleValue&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue/Attribute.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue.Attribute</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue/Attribute.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue.Attribute</value>
     <comment>Description for DomainRole &apos;Attribute&apos; on DomainRelationship &apos;AttributeHasPossibleValue&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue/Attribute.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue/Attribute.DisplayName" xml:space="preserve">
     <value>Attribute</value>
     <comment>DisplayName for DomainRole &apos;Attribute&apos; on DomainRelationship &apos;AttributeHasPossibleValue&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue/Attribute.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue/Attribute.PropertyDisplayName" xml:space="preserve">
     <value>Possible Values Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;Attribute&apos; on DomainRelationship &apos;AttributeHasPossibleValue&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue/Value.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue.Value</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue/Value.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue.Value</value>
     <comment>Description for DomainRole &apos;Value&apos; on DomainRelationship &apos;AttributeHasPossibleValue&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue/Value.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue/Value.DisplayName" xml:space="preserve">
     <value>Value</value>
     <comment>DisplayName for DomainRole &apos;Value&apos; on DomainRelationship &apos;AttributeHasPossibleValue&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue/Value.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue/Value.PropertyDisplayName" xml:space="preserve">
     <value>Attribute</value>
     <comment>PropertyDisplayName for DomainRole &apos;Value&apos; on DomainRelationship &apos;AttributeHasPossibleValue&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType</value>
     <comment>Description for DomainClass &apos;EntityTypeIsSubtypeOfEntityType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType.DisplayName" xml:space="preserve">
     <value>Entity Type Is Subtype Of Entity Type</value>
     <comment>DisplayName for DomainClass &apos;EntityTypeIsSubtypeOfEntityType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType/Subtype.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType.Subtype</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType/Subtype.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType.Subtype</value>
     <comment>Description for DomainRole &apos;Subtype&apos; on DomainRelationship &apos;EntityTypeIsSubtypeOfEntityType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType/Subtype.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType/Subtype.DisplayName" xml:space="preserve">
     <value>Subtype</value>
     <comment>DisplayName for DomainRole &apos;Subtype&apos; on DomainRelationship &apos;EntityTypeIsSubtypeOfEntityType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType/Subtype.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType/Subtype.PropertyDisplayName" xml:space="preserve">
     <value>Supertype</value>
     <comment>PropertyDisplayName for DomainRole &apos;Subtype&apos; on DomainRelationship &apos;EntityTypeIsSubtypeOfEntityType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType/Supertype.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType.Supertype</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType/Supertype.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType.Supertype</value>
     <comment>Description for DomainRole &apos;Supertype&apos; on DomainRelationship &apos;EntityTypeIsSubtypeOfEntityType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType/Supertype.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType/Supertype.DisplayName" xml:space="preserve">
     <value>Supertype</value>
     <comment>DisplayName for DomainRole &apos;Supertype&apos; on DomainRelationship &apos;EntityTypeIsSubtypeOfEntityType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType/Supertype.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType/Supertype.PropertyDisplayName" xml:space="preserve">
     <value>Subtypes Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;Supertype&apos; on DomainRelationship &apos;EntityTypeIsSubtypeOfEntityType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole</value>
     <comment>Description for DomainClass &apos;EntityTypePlaysRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole.DisplayName" xml:space="preserve">
     <value>Entity Type Plays Role</value>
     <comment>DisplayName for DomainClass &apos;EntityTypePlaysRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole/EntityType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole.EntityType</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole/EntityType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole.EntityType</value>
     <comment>Description for DomainRole &apos;EntityType&apos; on DomainRelationship &apos;EntityTypePlaysRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole/EntityType.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole/EntityType.DisplayName" xml:space="preserve">
     <value>Entity Type</value>
     <comment>DisplayName for DomainRole &apos;EntityType&apos; on DomainRelationship &apos;EntityTypePlaysRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole/EntityType.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole/EntityType.PropertyDisplayName" xml:space="preserve">
     <value>Role Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;EntityType&apos; on DomainRelationship &apos;EntityTypePlaysRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole/Role.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole.Role</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole/Role.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole.Role</value>
     <comment>Description for DomainRole &apos;Role&apos; on DomainRelationship &apos;EntityTypePlaysRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole/Role.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole/Role.DisplayName" xml:space="preserve">
     <value>Role</value>
     <comment>DisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;EntityTypePlaysRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole/Role.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole/Role.PropertyDisplayName" xml:space="preserve">
     <value>Entity Type</value>
     <comment>PropertyDisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;EntityTypePlaysRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier</value>
     <comment>Description for DomainClass &apos;RoleHasCardinalityQualifier&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier.DisplayName" xml:space="preserve">
     <value>Role Has Cardinality Qualifier</value>
     <comment>DisplayName for DomainClass &apos;RoleHasCardinalityQualifier&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier/Role.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier.Role</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier/Role.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier.Role</value>
     <comment>Description for DomainRole &apos;Role&apos; on DomainRelationship &apos;RoleHasCardinalityQualifier&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier/Role.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier/Role.DisplayName" xml:space="preserve">
     <value>Role</value>
     <comment>DisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;RoleHasCardinalityQualifier&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier/Role.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier/Role.PropertyDisplayName" xml:space="preserve">
     <value>Cardinality Qualifier</value>
     <comment>PropertyDisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;RoleHasCardinalityQualifier&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier/CardinalityQualifier.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier.CardinalityQualifier</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier/CardinalityQualifier.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier.CardinalityQualifier</value>
     <comment>Description for DomainRole &apos;CardinalityQualifier&apos; on DomainRelationship &apos;RoleHasCardinalityQualifier&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier/CardinalityQualifier.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier/CardinalityQualifier.DisplayName" xml:space="preserve">
     <value>Cardinality Qualifier</value>
     <comment>DisplayName for DomainRole &apos;CardinalityQualifier&apos; on DomainRelationship &apos;RoleHasCardinalityQualifier&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier/CardinalityQualifier.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier/CardinalityQualifier.PropertyDisplayName" xml:space="preserve">
     <value>Role</value>
     <comment>PropertyDisplayName for DomainRole &apos;CardinalityQualifier&apos; on DomainRelationship &apos;RoleHasCardinalityQualifier&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole</value>
     <comment>Description for DomainClass &apos;ExclusiveArcSpansOptionalRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole.DisplayName" xml:space="preserve">
     <value>Exclusive Arc Spans Optional Role</value>
     <comment>DisplayName for DomainClass &apos;ExclusiveArcSpansOptionalRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole/ExclusiveArc.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole.ExclusiveArc</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole/ExclusiveArc.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole.ExclusiveArc</value>
     <comment>Description for DomainRole &apos;ExclusiveArc&apos; on DomainRelationship &apos;ExclusiveArcSpansOptionalRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole/ExclusiveArc.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole/ExclusiveArc.DisplayName" xml:space="preserve">
     <value>Exclusive Arc</value>
     <comment>DisplayName for DomainRole &apos;ExclusiveArc&apos; on DomainRelationship &apos;ExclusiveArcSpansOptionalRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole/ExclusiveArc.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole/ExclusiveArc.PropertyDisplayName" xml:space="preserve">
     <value>Role Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;ExclusiveArc&apos; on DomainRelationship &apos;ExclusiveArcSpansOptionalRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole/ConstrainedRole.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole.ConstrainedRole</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole/ConstrainedRole.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole.ConstrainedRole</value>
     <comment>Description for DomainRole &apos;ConstrainedRole&apos; on DomainRelationship &apos;ExclusiveArcSpansOptionalRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole/ConstrainedRole.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole/ConstrainedRole.DisplayName" xml:space="preserve">
     <value>Constrained Role</value>
     <comment>DisplayName for DomainRole &apos;ConstrainedRole&apos; on DomainRelationship &apos;ExclusiveArcSpansOptionalRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole/ConstrainedRole.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole/ConstrainedRole.PropertyDisplayName" xml:space="preserve">
     <value>Exclusive Arc</value>
     <comment>PropertyDisplayName for DomainRole &apos;ConstrainedRole&apos; on DomainRelationship &apos;ExclusiveArcSpansOptionalRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole</value>
     <comment>Description for DomainClass &apos;BinaryAssociationContainsRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole.DisplayName" xml:space="preserve">
     <value>Binary Association Contains Role</value>
     <comment>DisplayName for DomainClass &apos;BinaryAssociationContainsRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole/BinaryAssociation.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole.BinaryAssociation</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole/BinaryAssociation.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole.BinaryAssociation</value>
     <comment>Description for DomainRole &apos;BinaryAssociation&apos; on DomainRelationship &apos;BinaryAssociationContainsRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole/BinaryAssociation.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole/BinaryAssociation.DisplayName" xml:space="preserve">
     <value>Binary Association</value>
     <comment>DisplayName for DomainRole &apos;BinaryAssociation&apos; on DomainRelationship &apos;BinaryAssociationContainsRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole/BinaryAssociation.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole/BinaryAssociation.PropertyDisplayName" xml:space="preserve">
     <value>Role Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;BinaryAssociation&apos; on DomainRelationship &apos;BinaryAssociationContainsRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole/Role.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole.Role</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole/Role.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole.Role</value>
     <comment>Description for DomainRole &apos;Role&apos; on DomainRelationship &apos;BinaryAssociationContainsRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole/Role.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole/Role.DisplayName" xml:space="preserve">
     <value>Role</value>
     <comment>DisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;BinaryAssociationContainsRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole/Role.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole/Role.PropertyDisplayName" xml:space="preserve">
     <value>Binary Association</value>
     <comment>PropertyDisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;BinaryAssociationContainsRole&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType</value>
     <comment>Description for DomainClass &apos;BarkerErModelContainsEntityType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType.DisplayName" xml:space="preserve">
     <value>Barker Er Model Contains Entity Type</value>
     <comment>DisplayName for DomainClass &apos;BarkerErModelContainsEntityType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType/BarkerErModel.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType.BarkerErModel</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType/BarkerErModel.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType.BarkerErModel</value>
     <comment>Description for DomainRole &apos;BarkerErModel&apos; on DomainRelationship &apos;BarkerErModelContainsEntityType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType/BarkerErModel.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType/BarkerErModel.DisplayName" xml:space="preserve">
     <value>Barker Er Model</value>
     <comment>DisplayName for DomainRole &apos;BarkerErModel&apos; on DomainRelationship &apos;BarkerErModelContainsEntityType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType/BarkerErModel.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType/BarkerErModel.PropertyDisplayName" xml:space="preserve">
     <value>Entity Type Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;BarkerErModel&apos; on DomainRelationship &apos;BarkerErModelContainsEntityType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType/EntityType.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType.EntityType</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType/EntityType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType.EntityType</value>
     <comment>Description for DomainRole &apos;EntityType&apos; on DomainRelationship &apos;BarkerErModelContainsEntityType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType/EntityType.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType/EntityType.DisplayName" xml:space="preserve">
     <value>Entity Type</value>
     <comment>DisplayName for DomainRole &apos;EntityType&apos; on DomainRelationship &apos;BarkerErModelContainsEntityType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType/EntityType.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType/EntityType.PropertyDisplayName" xml:space="preserve">
     <value>Barker Er Model</value>
     <comment>PropertyDisplayName for DomainRole &apos;EntityType&apos; on DomainRelationship &apos;BarkerErModelContainsEntityType&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation</value>
     <comment>Description for DomainClass &apos;BarkerErModelContainsBinaryAssociation&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation.DisplayName" xml:space="preserve">
     <value>Barker Er Model Contains Binary Association</value>
     <comment>DisplayName for DomainClass &apos;BarkerErModelContainsBinaryAssociation&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation/BarkerErModel.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation.BarkerErModel</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation/BarkerErModel.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation.BarkerErModel</value>
     <comment>Description for DomainRole &apos;BarkerErModel&apos; on DomainRelationship &apos;BarkerErModelContainsBinaryAssociation&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation/BarkerErModel.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation/BarkerErModel.DisplayName" xml:space="preserve">
     <value>Barker Er Model</value>
     <comment>DisplayName for DomainRole &apos;BarkerErModel&apos; on DomainRelationship &apos;BarkerErModelContainsBinaryAssociation&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation/BarkerErModel.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation/BarkerErModel.PropertyDisplayName" xml:space="preserve">
     <value>Binary Association Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;BarkerErModel&apos; on DomainRelationship &apos;BarkerErModelContainsBinaryAssociation&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation/BinaryAssociation.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation.BinaryAssociation</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation/BinaryAssociation.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation.BinaryAssociation</value>
     <comment>Description for DomainRole &apos;BinaryAssociation&apos; on DomainRelationship &apos;BarkerErModelContainsBinaryAssociation&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation/BinaryAssociation.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation/BinaryAssociation.DisplayName" xml:space="preserve">
     <value>Binary Association</value>
     <comment>DisplayName for DomainRole &apos;BinaryAssociation&apos; on DomainRelationship &apos;BarkerErModelContainsBinaryAssociation&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation/BinaryAssociation.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation/BinaryAssociation.PropertyDisplayName" xml:space="preserve">
     <value>Barker Er Model</value>
     <comment>PropertyDisplayName for DomainRole &apos;BinaryAssociation&apos; on DomainRelationship &apos;BarkerErModelContainsBinaryAssociation&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc</value>
     <comment>Description for DomainClass &apos;BarkerErModelContainsExclusiveArc&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc.DisplayName" xml:space="preserve">
     <value>Barker Er Model Contains Exclusive Arc</value>
     <comment>DisplayName for DomainClass &apos;BarkerErModelContainsExclusiveArc&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc/BarkerErModel.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc.BarkerErModel</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc/BarkerErModel.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc.BarkerErModel</value>
     <comment>Description for DomainRole &apos;BarkerErModel&apos; on DomainRelationship &apos;BarkerErModelContainsExclusiveArc&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc/BarkerErModel.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc/BarkerErModel.DisplayName" xml:space="preserve">
     <value>Barker Er Model</value>
     <comment>DisplayName for DomainRole &apos;BarkerErModel&apos; on DomainRelationship &apos;BarkerErModelContainsExclusiveArc&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc/BarkerErModel.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc/BarkerErModel.PropertyDisplayName" xml:space="preserve">
     <value>Exclusive Arc Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;BarkerErModel&apos; on DomainRelationship &apos;BarkerErModelContainsExclusiveArc&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc/ExclusiveArc.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc.ExclusiveArc</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc/ExclusiveArc.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc.ExclusiveArc</value>
     <comment>Description for DomainRole &apos;ExclusiveArc&apos; on DomainRelationship &apos;BarkerErModelContainsExclusiveArc&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc/ExclusiveArc.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc/ExclusiveArc.DisplayName" xml:space="preserve">
     <value>Exclusive Arc</value>
     <comment>DisplayName for DomainRole &apos;ExclusiveArc&apos; on DomainRelationship &apos;BarkerErModelContainsExclusiveArc&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc/ExclusiveArc.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc/ExclusiveArc.PropertyDisplayName" xml:space="preserve">
     <value>Barker Er Model</value>
     <comment>PropertyDisplayName for DomainRole &apos;ExclusiveArc&apos; on DomainRelationship &apos;BarkerErModelContainsExclusiveArc&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.OperatorSymbol/Equal.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.OperatorSymbol/Equal.DisplayName" xml:space="preserve">
     <value>Equal</value>
     <comment>Display name for EnumerationLiteral &apos;Equal&apos; on DomainEnumeration &apos;OperatorSymbol&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.OperatorSymbol/Equal.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.OperatorSymbol.Equal</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.OperatorSymbol/Equal.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.OperatorSymbol.Equal</value>
     <comment>Description for EnumerationLiteral &apos;Equal&apos; on DomainEnumeration &apos;OperatorSymbol&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.OperatorSymbol/LessThan.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.OperatorSymbol/LessThan.DisplayName" xml:space="preserve">
     <value>LessThan</value>
     <comment>Display name for EnumerationLiteral &apos;LessThan&apos; on DomainEnumeration &apos;OperatorSymbol&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.OperatorSymbol/LessThan.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.OperatorSymbol.LessThan</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.OperatorSymbol/LessThan.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.OperatorSymbol.LessThan</value>
     <comment>Description for EnumerationLiteral &apos;LessThan&apos; on DomainEnumeration &apos;OperatorSymbol&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.OperatorSymbol/GreaterThan.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.OperatorSymbol/GreaterThan.DisplayName" xml:space="preserve">
     <value>GreaterThan</value>
     <comment>Display name for EnumerationLiteral &apos;GreaterThan&apos; on DomainEnumeration &apos;OperatorSymbol&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.OperatorSymbol/GreaterThan.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.OperatorSymbol.GreaterThan</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.OperatorSymbol/GreaterThan.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.OperatorSymbol.GreaterThan</value>
     <comment>Description for EnumerationLiteral &apos;GreaterThan&apos; on DomainEnumeration &apos;OperatorSymbol&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.OperatorSymbol/LessThanOrEqualTo.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.OperatorSymbol/LessThanOrEqualTo.DisplayName" xml:space="preserve">
     <value>LessThanOrEqualTo</value>
     <comment>Display name for EnumerationLiteral &apos;LessThanOrEqualTo&apos; on DomainEnumeration &apos;OperatorSymbol&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.OperatorSymbol/LessThanOrEqualTo.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.OperatorSymbol.LessThanOrEqualTo</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.OperatorSymbol/LessThanOrEqualTo.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.OperatorSymbol.LessThanOrEqualTo</value>
     <comment>Description for EnumerationLiteral &apos;LessThanOrEqualTo&apos; on DomainEnumeration &apos;OperatorSymbol&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.OperatorSymbol/GreaterThanOrEqualTo.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.OperatorSymbol/GreaterThanOrEqualTo.DisplayName" xml:space="preserve">
     <value>GreaterThanOrEqualTo</value>
     <comment>Display name for EnumerationLiteral &apos;GreaterThanOrEqualTo&apos; on DomainEnumeration &apos;OperatorSymbol&apos;</comment>
   </data>
-  <data name="Neumont.Tools.EntityRelationshipModels.Barker.OperatorSymbol/GreaterThanOrEqualTo.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.EntityRelationshipModels.Barker.OperatorSymbol.GreaterThanOrEqualTo</value>
+  <data name="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.OperatorSymbol/GreaterThanOrEqualTo.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.OperatorSymbol.GreaterThanOrEqualTo</value>
     <comment>Description for EnumerationLiteral &apos;GreaterThanOrEqualTo&apos; on DomainEnumeration &apos;OperatorSymbol&apos;</comment>
   </data>
   <data name="AmbiguousSchema" xml:space="preserve">
@@ -805,7 +805,7 @@ A DomainClass can be serialized as a moniker only if
 
 <!-- Common Public License Copyright Notice -->
 <!--
-	Neumont Object-Role Modeling Architect for Visual Studio
+	Natural Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
 

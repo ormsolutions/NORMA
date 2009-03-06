@@ -3,10 +3,10 @@ using System.Diagnostics;
 
 // Common Public License Copyright Notice
 // /**************************************************************************\
-// * Neumont Object-Role Modeling Architect for Visual Studio                 *
+// * Natural Object-Role Modeling Architect for Visual Studio                 *
 // *                                                                          *
 // * Copyright © Neumont University. All rights reserved.                     *
-// * Copyright © Matthew Curland. All rights reserved.                        *
+// * Copyright © ORM Solutions, LLC. All rights reserved.                        *
 // *                                                                          *
 // * The use and distribution terms for this software are covered by the      *
 // * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -17,7 +17,7 @@ using System.Diagnostics;
 // * You must not remove this notice, or any other, from this software.       *
 // \**************************************************************************/
 
-namespace Neumont.Tools.ORM.ObjectModel
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	#region PortableDataType Enum
 	/// <summary>A list of predefined data types. One DataType-derived class is defined for each value.</summary>
@@ -128,7 +128,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#endregion // Load-time fixup listeners
 }
 #region Bind data types to enums and localized names
-namespace Neumont.Tools.ORM.ObjectModel
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>A default type indicating 'no type set'</summary>
 	public partial class UnspecifiedDataType

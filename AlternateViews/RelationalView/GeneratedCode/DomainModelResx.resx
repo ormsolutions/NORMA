@@ -117,27 +117,27 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.Description" xml:space="preserve">
     <value>Graphical View of Relational Model (slow and temporary)</value>
     <comment>Description for DslLibrary &apos;RelationalShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.DisplayName" xml:space="preserve">
     <value>Relational View</value>
     <comment>DisplayName for DslLibrary &apos;RelationalShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.Views.RelationalView.TableShape.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.Views.RelationalView.TableShape</value>
+  <data name="ORMSolutions.ORMArchitect.Views.RelationalView.TableShape.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Views.RelationalView.TableShape</value>
     <comment>Description for DomainClass &apos;TableShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.Views.RelationalView.TableShape.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Views.RelationalView.TableShape.DisplayName" xml:space="preserve">
     <value>Table Shape</value>
     <comment>DisplayName for DomainClass &apos;TableShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.Views.RelationalView.TableShape/UpdateCounter.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.Views.RelationalView.TableShape.Update Counter</value>
+  <data name="ORMSolutions.ORMArchitect.Views.RelationalView.TableShape/UpdateCounter.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Views.RelationalView.TableShape.Update Counter</value>
     <comment>Description for DomainProperty &apos;UpdateCounter&apos; on DomainClass &apos;TableShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.Views.RelationalView.TableShape/UpdateCounter.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Views.RelationalView.TableShape/UpdateCounter.DisplayName" xml:space="preserve">
     <value>Update Counter</value>
     <comment>DisplayName for DomainProperty &apos;UpdateCounter&apos; on DomainClass &apos;TableShape&apos;</comment>
   </data>
@@ -149,11 +149,11 @@
     <value>TableNameDecorator</value>
     <comment>Text decorator default text</comment>
   </data>
-  <data name="Neumont.Tools.ORM.Views.RelationalView.ForeignKeyConnector.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.Views.RelationalView.ForeignKeyConnector</value>
+  <data name="ORMSolutions.ORMArchitect.Views.RelationalView.ForeignKeyConnector.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Views.RelationalView.ForeignKeyConnector</value>
     <comment>Description for DomainClass &apos;ForeignKeyConnector&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.Views.RelationalView.ForeignKeyConnector.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Views.RelationalView.ForeignKeyConnector.DisplayName" xml:space="preserve">
     <value>ForeignKeyConnector</value>
     <comment>DisplayName for DomainClass &apos;ForeignKeyConnector&apos;</comment>
   </data>
@@ -161,19 +161,19 @@
     <value>Relational View Explorer</value>
     <comment>Model Explorer Toolwindow title</comment>
   </data>
-  <data name="Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram</value>
+  <data name="ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram</value>
     <comment>Description for DomainClass &apos;RelationalDiagram&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.DisplayName" xml:space="preserve">
     <value>Relational Diagram</value>
     <comment>DisplayName for DomainClass &apos;RelationalDiagram&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram/DisplayDataTypes.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram/DisplayDataTypes.Description" xml:space="preserve">
     <value>Specifies whether data types should be shown or not.</value>
     <comment>Description for DomainProperty &apos;DisplayDataTypes&apos; on DomainClass &apos;RelationalDiagram&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram/DisplayDataTypes.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram/DisplayDataTypes.DisplayName" xml:space="preserve">
     <value>DisplayDataTypes</value>
     <comment>DisplayName for DomainProperty &apos;DisplayDataTypes&apos; on DomainClass &apos;RelationalDiagram&apos;</comment>
   </data>
@@ -273,7 +273,7 @@ A DomainClass can be serialized as a moniker only if
 
 <!-- Common Public License Copyright Notice -->
 <!--
-	Neumont Object-Role Modeling Architect for Visual Studio
+	Natural Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
 

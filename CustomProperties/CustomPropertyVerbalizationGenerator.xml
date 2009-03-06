@@ -2,7 +2,7 @@
 <ReportVerbalization snippetsLocation="VerbalizationSnippets/CustomPropertyVerbalizationSnippets.xml" xmlns="http://schemas.neumont.edu/ORM/SDK/CustomPropertyVerbalizationGenerator">
 	<Copyright name="Common Public License Copyright Notice">
 		<CopyrightLine>/**************************************************************************\</CopyrightLine>
-		<CopyrightLine>* Neumont Object-Role Modeling Architect for Visual Studio                 *</CopyrightLine>
+		<CopyrightLine>* Natural Object-Role Modeling Architect for Visual Studio                 *</CopyrightLine>
 		<CopyrightLine>*                                                                          *</CopyrightLine>
 		<CopyrightLine>* Copyright © Neumont University. All rights reserved.                     *</CopyrightLine>
 		<CopyrightLine>*                                                                          *</CopyrightLine>

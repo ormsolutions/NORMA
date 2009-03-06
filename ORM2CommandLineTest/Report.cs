@@ -5,13 +5,13 @@ using System.Xml;
 using System.IO;
 using System.Text;
 using System.Diagnostics;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.SDK.TestEngine;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitectSDK.TestEngine;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.XmlDiffPatch;
 
 
-namespace Neumont.Tools.ORM.SDK.TestReportViewer
+namespace ORMSolutions.ORMArchitectSDK.TestReportViewer
 {
 
 	#region ReportAssembly structure

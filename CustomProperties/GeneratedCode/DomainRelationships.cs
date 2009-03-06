@@ -1,6 +1,6 @@
 ﻿#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -24,15 +24,15 @@
 
 using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
-namespace Neumont.Tools.ORM.CustomProperties
+namespace ORMSolutions.ORMArchitect.CustomProperties
 {
 	/// <summary>
 	/// DomainRelationship CustomPropertyHasCustomPropertyDefinition
 	/// Description for
-	/// Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition
+	/// ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition.DisplayName", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition.DisplayName", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("1a95e98a-4185-48f4-8fd0-e5af676d26e7")]
 	internal sealed partial class CustomPropertyHasCustomPropertyDefinition : DslModeling::ElementLink
@@ -108,11 +108,11 @@ namespace Neumont.Tools.ORM.CustomProperties
 		/// <summary>
 		/// DomainRole CustomProperty
 		/// Description for
-		/// Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition.CustomProperty
+		/// ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition.CustomProperty
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition/CustomProperty.DisplayName", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition/CustomProperty.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "CustomPropertyDefinition", PropertyDisplayNameKey="Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition/CustomProperty.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition/CustomProperty.DisplayName", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition/CustomProperty.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "CustomPropertyDefinition", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition/CustomProperty.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("b8bf7986-4312-42e2-b5c0-a460bb381666")]
 		public CustomProperty CustomProperty
 		{
@@ -150,11 +150,11 @@ namespace Neumont.Tools.ORM.CustomProperties
 		/// <summary>
 		/// DomainRole CustomPropertyDefinition
 		/// Description for
-		/// Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition.CustomPropertyDefinition
+		/// ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition.CustomPropertyDefinition
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition/CustomPropertyDefinition.DisplayName", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition/CustomPropertyDefinition.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "CustomPropertyCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition/CustomPropertyDefinition.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition/CustomPropertyDefinition.DisplayName", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition/CustomPropertyDefinition.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "CustomPropertyCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition/CustomPropertyDefinition.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("af59cd4c-9cb9-4fda-a5f2-8362cec9a94e")]
 		public CustomPropertyDefinition CustomPropertyDefinition
 		{
@@ -198,9 +198,9 @@ namespace Neumont.Tools.ORM.CustomProperties
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition GetLinkToCustomPropertyDefinition (global::Neumont.Tools.ORM.CustomProperties.CustomProperty customPropertyInstance)
+		public static global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition GetLinkToCustomPropertyDefinition (global::ORMSolutions.ORMArchitect.CustomProperties.CustomProperty customPropertyInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition>(customPropertyInstance, global::Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition.CustomPropertyDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition>(customPropertyInstance, global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition.CustomPropertyDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of CustomProperty not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -218,9 +218,9 @@ namespace Neumont.Tools.ORM.CustomProperties
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition> GetLinksToCustomPropertyCollection ( global::Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition customPropertyDefinitionInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition> GetLinksToCustomPropertyCollection ( global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition customPropertyDefinitionInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition>(customPropertyDefinitionInstance, global::Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition.CustomPropertyDefinitionDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition>(customPropertyDefinitionInstance, global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition.CustomPropertyDefinitionDomainRoleId);
 		}
 		#endregion
 		#region CustomPropertyHasCustomPropertyDefinition instance accessors
@@ -230,11 +230,11 @@ namespace Neumont.Tools.ORM.CustomProperties
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition> GetLinks( global::Neumont.Tools.ORM.CustomProperties.CustomProperty source, global::Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition> GetLinks( global::ORMSolutions.ORMArchitect.CustomProperties.CustomProperty source, global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition>(source, global::Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition.CustomPropertyDomainRoleId);
-			foreach ( global::Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition>(source, global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition.CustomPropertyDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition link in links )
 			{
 				if ( target.Equals(link.CustomPropertyDefinition) )
 				{
@@ -248,10 +248,10 @@ namespace Neumont.Tools.ORM.CustomProperties
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition GetLink( global::Neumont.Tools.ORM.CustomProperties.CustomProperty source, global::Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition target )
+		public static global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition GetLink( global::ORMSolutions.ORMArchitect.CustomProperties.CustomProperty source, global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition>(source, global::Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition.CustomPropertyDomainRoleId);
-			foreach ( global::Neumont.Tools.ORM.CustomProperties.CustomPropertyHasCustomPropertyDefinition link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition>(source, global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition.CustomPropertyDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyHasCustomPropertyDefinition link in links )
 			{
 				if ( target.Equals(link.CustomPropertyDefinition) )
 				{
@@ -264,15 +264,15 @@ namespace Neumont.Tools.ORM.CustomProperties
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORM.CustomProperties
+namespace ORMSolutions.ORMArchitect.CustomProperties
 {
 	/// <summary>
 	/// DomainRelationship CustomPropertyGroupContainsCustomPropertyDefinition
 	/// Description for
-	/// Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition
+	/// ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.DisplayName", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.DisplayName", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 	[DslModeling::DomainRelationship(IsEmbedding=true)]
 	[DslModeling::DomainObjectId("157c325f-561f-430d-95bb-1ae421fc3eda")]
 	internal sealed partial class CustomPropertyGroupContainsCustomPropertyDefinition : DslModeling::ElementLink
@@ -348,11 +348,11 @@ namespace Neumont.Tools.ORM.CustomProperties
 		/// <summary>
 		/// DomainRole CustomPropertyGroup
 		/// Description for
-		/// Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.CustomPropertyGroup
+		/// ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.CustomPropertyGroup
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition/CustomPropertyGroup.DisplayName", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition/CustomPropertyGroup.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "CustomPropertyDefinitionCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition/CustomPropertyGroup.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition/CustomPropertyGroup.DisplayName", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition/CustomPropertyGroup.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "CustomPropertyDefinitionCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition/CustomPropertyGroup.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("cc4a4e71-9945-4b47-a010-33e2f78646fa")]
 		public CustomPropertyGroup CustomPropertyGroup
 		{
@@ -400,11 +400,11 @@ namespace Neumont.Tools.ORM.CustomProperties
 		/// <summary>
 		/// DomainRole CustomPropertyDefinition
 		/// Description for
-		/// Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.CustomPropertyDefinition
+		/// ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.CustomPropertyDefinition
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition/CustomPropertyDefinition.DisplayName", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition/CustomPropertyDefinition.Description", typeof(global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel), "Neumont.Tools.ORM.CustomProperties.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "CustomPropertyGroup", PropertyDisplayNameKey="Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition/CustomPropertyDefinition.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition/CustomPropertyDefinition.DisplayName", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition/CustomPropertyDefinition.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "CustomPropertyGroup", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition/CustomPropertyDefinition.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("6b330d54-4307-4117-83e2-6c91242675f1")]
 		public CustomPropertyDefinition CustomPropertyDefinition
 		{
@@ -438,9 +438,9 @@ namespace Neumont.Tools.ORM.CustomProperties
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition> GetLinksToCustomPropertyDefinitionCollection ( global::Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup customPropertyGroupInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition> GetLinksToCustomPropertyDefinitionCollection ( global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroup customPropertyGroupInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition>(customPropertyGroupInstance, global::Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.CustomPropertyGroupDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition>(customPropertyGroupInstance, global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.CustomPropertyGroupDomainRoleId);
 		}
 		#endregion
 		#region CustomPropertyDefinition link accessor
@@ -449,9 +449,9 @@ namespace Neumont.Tools.ORM.CustomProperties
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition GetLinkToCustomPropertyGroup (global::Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition customPropertyDefinitionInstance)
+		public static global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition GetLinkToCustomPropertyGroup (global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition customPropertyDefinitionInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition>(customPropertyDefinitionInstance, global::Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.CustomPropertyDefinitionDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition>(customPropertyDefinitionInstance, global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.CustomPropertyDefinitionDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of CustomPropertyDefinition not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -470,11 +470,11 @@ namespace Neumont.Tools.ORM.CustomProperties
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition> GetLinks( global::Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup source, global::Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition> GetLinks( global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroup source, global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition>(source, global::Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.CustomPropertyGroupDomainRoleId);
-			foreach ( global::Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition>(source, global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.CustomPropertyGroupDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition link in links )
 			{
 				if ( target.Equals(link.CustomPropertyDefinition) )
 				{
@@ -488,10 +488,10 @@ namespace Neumont.Tools.ORM.CustomProperties
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition GetLink( global::Neumont.Tools.ORM.CustomProperties.CustomPropertyGroup source, global::Neumont.Tools.ORM.CustomProperties.CustomPropertyDefinition target )
+		public static global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition GetLink( global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroup source, global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition>(source, global::Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.CustomPropertyGroupDomainRoleId);
-			foreach ( global::Neumont.Tools.ORM.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition>(source, global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition.CustomPropertyGroupDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyGroupContainsCustomPropertyDefinition link in links )
 			{
 				if ( target.Equals(link.CustomPropertyDefinition) )
 				{

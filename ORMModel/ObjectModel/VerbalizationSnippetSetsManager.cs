@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -29,7 +29,7 @@ using System.Xml;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.VirtualTreeGrid;
 
-namespace Neumont.Tools.ORM.ObjectModel
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	#region GenerateVerbalizationReport delegate
 	/// <summary>
@@ -472,7 +472,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			// Note that myDescription is intentionally ignored
 			return (myEnumType == null) ? 0 :
-				Neumont.Tools.Modeling.Utility.GetCombinedHashCode(
+				ORMSolutions.ORMArchitect.Framework.Utility.GetCombinedHashCode(
 					myEnumType.GetHashCode(),
 					myDefaultVerbalizationSets.GetHashCode(),
 					myAlternateSnippetsDirectory.GetHashCode(),
@@ -918,7 +918,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			// Note that myDescription is intentionally ignored
 			return (myEnumTypeName == null) ? 0 :
-				Neumont.Tools.Modeling.Utility.GetCombinedHashCode(myEnumTypeName.GetHashCode(), myLangId.GetHashCode(), myId.GetHashCode());
+				ORMSolutions.ORMArchitect.Framework.Utility.GetCombinedHashCode(myEnumTypeName.GetHashCode(), myLangId.GetHashCode(), myId.GetHashCode());
 		}
 		#endregion // Equality overrides
 	}

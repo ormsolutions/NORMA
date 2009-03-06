@@ -36,6 +36,8 @@
 				<TargetVisualStudioAssemblySuffix Condition=" '$(TargetVisualStudioAssemblySuffix)' == '' "></TargetVisualStudioAssemblySuffix>
 				<TargetVisualStudioFrameworkAssemblyVersion Condition=" '$(TargetVisualStudioFrameworkAssemblyVersion)' == '' ">2.0.0.0</TargetVisualStudioFrameworkAssemblyVersion>
 				<TargetVisualStudioFrameworkAssemblySuffix Condition=" '$(TargetVisualStudioFrameworkAssemblySuffix)' == '' "></TargetVisualStudioFrameworkAssemblySuffix>
+				<TargetVisualStudioLongProductYear Condition=" '$(TargetVisualStudioLongProductYear)' == '' ">2005</TargetVisualStudioLongProductYear>
+				<TargetVisualStudioShortProductYear Condition=" '$(TargetVisualStudioShortProductYear)' == '' ">05</TargetVisualStudioShortProductYear>
 				<TargetVisualStudioLongProductName Condition=" '$(TargetVisualStudioLongProductName)' == '' ">Visual Studio 2005</TargetVisualStudioLongProductName>
 				<TargetVisualStudioShortProductName Condition=" '$(TargetVisualStudioShortProductName)' == '' ">VS2005</TargetVisualStudioShortProductName>
 				<TargetDslToolsAssemblyVersion Condition=" '$(TargetDslToolsAssemblyVersion)' == '' ">8.2.0.0</TargetDslToolsAssemblyVersion>
@@ -48,6 +50,8 @@
 				<TargetVisualStudioAssemblySuffix Condition=" '$(TargetVisualStudioAssemblySuffix)' == '' ">.9.0</TargetVisualStudioAssemblySuffix>
 				<TargetVisualStudioFrameworkAssemblyVersion Condition=" '$(TargetVisualStudioFrameworkAssemblyVersion)' == '' ">3.5.0.0</TargetVisualStudioFrameworkAssemblyVersion>
 				<TargetVisualStudioFrameworkAssemblySuffix Condition=" '$(TargetVisualStudioFrameworkAssemblySuffix)' == '' ">.9.0</TargetVisualStudioFrameworkAssemblySuffix>
+				<TargetVisualStudioLongProductYear Condition=" '$(TargetVisualStudioLongProductYear)' == '' ">2008</TargetVisualStudioLongProductYear>
+				<TargetVisualStudioShortProductYear Condition=" '$(TargetVisualStudioShortProductYear)' == '' ">08</TargetVisualStudioShortProductYear>
 				<TargetVisualStudioLongProductName Condition=" '$(TargetVisualStudioLongProductName)' == '' ">Visual Studio 2008</TargetVisualStudioLongProductName>
 				<TargetVisualStudioShortProductName Condition=" '$(TargetVisualStudioShortProductName)' == '' ">VS2008</TargetVisualStudioShortProductName>
 				<TargetDslToolsAssemblyVersion Condition=" '$(TargetDslToolsAssemblyVersion)' == '' ">9.0.0.0</TargetDslToolsAssemblyVersion>

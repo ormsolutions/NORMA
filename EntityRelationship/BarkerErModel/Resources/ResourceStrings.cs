@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -18,11 +18,11 @@ using System;
 using System.Diagnostics;
 using System.Resources;
 using System.Windows.Forms;
-using Neumont.Tools.Modeling.Design;
-using Neumont.Tools.ORM.ObjectModel;
+using ORMSolutions.ORMArchitect.Framework.Design;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using System.Drawing;
 
-namespace Neumont.Tools.EntityRelationshipModels.Barker
+namespace ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker
 {
 	internal partial class ResourceStrings
 	{

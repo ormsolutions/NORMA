@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -30,7 +30,7 @@ using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.VirtualTreeGrid;
 
-namespace Neumont.Tools.Modeling.Design
+namespace ORMSolutions.ORMArchitect.Framework.Design
 {
 	// UNDONE: We should take a look at the built-in MultilineStringEditor to see if it does what we need.
 	/// <summary>

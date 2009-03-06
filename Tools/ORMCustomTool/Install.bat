@@ -5,7 +5,7 @@ IF NOT "%~2"=="" (SET TargetVisualStudioVersion=%~2)
 CALL "%RootDir%\..\..\SetupEnvironment.bat" %*
 SET XMLDir=%TrunkDir%\XML
 SET NetTiersDir=%TrunkDir%\CodeSmith\NetTiersPort
-SET NORMAGenerators=HKLM\SOFTWARE\Neumont\ORM Architect for %TargetVisualStudioLongProductName%\Generators
+SET NORMAGenerators=HKLM\SOFTWARE\ORM Solutions\Natural ORM Architect for %TargetVisualStudioLongProductName%\Generators
 
 :: Generate a native image for System.Data.SqlXml.dll if one does not already exist (this greatly improves the XSLT compilation speed).
 :: Note that this method of determining whether a native image already exists is an undocumented hack that is subject to change. It should not be used for anything where reliability matters.
@@ -13,14 +13,14 @@ REG QUERY "HKLM\SOFTWARE\Microsoft\.NETFramework\%FrameworkVersion%\NGENService\
 IF ERRORLEVEL 1 (ngen.exe install "System.Data.SqlXml, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" /nologo /verbose)
 
 :: Delete old dlls
-DEL /F /Q "%NORMADir%\bin\Neumont.Tools.ORM.ORMCustomTool.dll.delete.*" 1>NUL 2>&1
-CALL:_CleanupFile "%NORMADir%\bin\Neumont.Tools.ORM.ORMCustomTool.dll"
-CALL:_CleanupFile "%NORMADir%\bin\Neumont.Tools.ORM.ORMCustomTool.pdb"
-CALL:_CleanupFile "%NORMADir%\bin\Neumont.Tools.ORM.ORMCustomTool.xml"
-IF EXIST "%NORMADir%\bin\Neumont.Tools.ORM.ORMCustomTool.dll" (REN "%NORMADir%\bin\Neumont.Tools.ORM.ORMCustomTool.dll" "Neumont.Tools.ORM.ORMCustomTool.dll.delete.%RANDOM%")
+DEL /F /Q "%NORMADir%\bin\ORMSolutions.ORMArchitect.ORMCustomTool.dll.delete.*" 1>NUL 2>&1
+CALL:_CleanupFile "%NORMADir%\bin\ORMSolutions.ORMArchitect.ORMCustomTool.dll"
+CALL:_CleanupFile "%NORMADir%\bin\ORMSolutions.ORMArchitect.ORMCustomTool.pdb"
+CALL:_CleanupFile "%NORMADir%\bin\ORMSolutions.ORMArchitect.ORMCustomTool.xml"
+IF EXIST "%NORMADir%\bin\ORMSolutions.ORMArchitect.ORMCustomTool.dll" (REN "%NORMADir%\bin\ORMSolutions.ORMArchitect.ORMCustomTool.dll" "ORMSolutions.ORMArchitect.ORMCustomTool.dll.delete.%RANDOM%")
 
 :: Install Custom Tool DLL
-SET TargetBaseName=Neumont.Tools.ORM.ORMCustomTool.%TargetVisualStudioShortProductName%
+SET TargetBaseName=ORMSolutions.ORMArchitect.ORMCustomTool.%TargetVisualStudioShortProductName%
 DEL /F /Q "%NORMADir%\bin\%TargetBaseName%.dll.delete.*" 1>NUL 2>&1
 IF EXIST "%NORMADir%\bin\%TargetBaseName%.dll" (REN "%NORMADir%\bin\%TargetBaseName%.dll" "%TargetBaseName%.dll.delete.%RANDOM%")
 XCOPY /Y /D /V /Q "%RootDir%\%BuildOutDir%\%TargetBaseName%.dll" "%NORMADir%\bin\"
@@ -34,6 +34,7 @@ IF NOT "%VSRegistryRootSuffix%"=="" (CALL:_InstallExtenderReg "%VSRegistryRootVe
 
 :: Get rid of old transform registrations
 REG DELETE "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio" /f 1>NUL 2>&1
+REG DELETE "HKLM\SOFTWARE\Neumont\ORM Architect for %TargetVisualStudioLongProductName%" /f 1>NUL 2>&1
 REG DELETE "%NORMAGenerators%" /f 1>NUL 2>&1
 
 :: Install and register ORM Transforms
@@ -159,22 +160,22 @@ CALL:_AddRegExtender "%~1" "{E6FDF869-F3D1-11D4-8576-0002A516ECE8}"
 GOTO:EOF
 
 :_AddCustomToolReg
-REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}" /f /ve /d "Neumont.Tools.ORM.ORMCustomTool.ORMCustomTool" 1>NUL 2>&1
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}" /f /ve /d "ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool" 1>NUL 2>&1
 REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32" /f /ve /d "%SystemRoot%\System32\mscoree.dll" 1>NUL 2>&1
 REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32" /f /v "ThreadingModel" /d "Both" 1>NUL 2>&1
-REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32" /f /v "Class" /d "Neumont.Tools.ORM.ORMCustomTool.ORMCustomTool" 1>NUL 2>&1
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32" /f /v "Class" /d "ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool" 1>NUL 2>&1
 REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32" /f /v "CodeBase" /d "%NORMADir%\bin\%TargetBaseName%.dll" 1>NUL 2>&1
 REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32" /f /v "Assembly" /d "%TargetBaseName%, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f" 1>NUL 2>&1
 GOTO:EOF
 
 :_AddExtenderReg
-REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}" /f /ve /d "Neumont.Tools.ORM.ORMCustomTool.ExtenderProvider" 1>NUL 2>&1
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}" /f /ve /d "ORMSolutions.ORMArchitect.ORMCustomTool.ExtenderProvider" 1>NUL 2>&1
 REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32" /f /ve /d "%SystemRoot%\System32\mscoree.dll" 1>NUL 2>&1
 REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32" /f /v "ThreadingModel" /d "Both" 1>NUL 2>&1
-REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32" /f /v "Class" /d "Neumont.Tools.ORM.ORMCustomTool.ExtenderProvider" 1>NUL 2>&1
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32" /f /v "Class" /d "ORMSolutions.ORMArchitect.ORMCustomTool.ExtenderProvider" 1>NUL 2>&1
 REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32" /f /v "CodeBase" /d "%NORMADir%\bin\%TargetBaseName%.dll" 1>NUL 2>&1
 REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32" /f /v "Assembly" /d "%TargetBaseName%, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f" 1>NUL 2>&1
-REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32\1.0.0.0" /f /v "Class" /d "Neumont.Tools.ORM.ORMCustomTool.ExtenderProvider" 1>NUL 2>&1
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32\1.0.0.0" /f /v "Class" /d "ORMSolutions.ORMArchitect.ORMCustomTool.ExtenderProvider" 1>NUL 2>&1
 REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32\1.0.0.0" /f /v "CodeBase" /d "%TargetBaseName%.dll" 1>NUL 2>&1
 REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32\1.0.0.0" /f /v "Assembly" /d "%TargetBaseName%, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f" 1>NUL 2>&1
 GOTO:EOF

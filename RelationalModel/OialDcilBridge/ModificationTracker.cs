@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -17,16 +17,16 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.Modeling;
-using Neumont.Tools.Modeling;
+using ORMSolutions.ORMArchitect.Framework;
 using System.Diagnostics;
 using System.Collections;
-using Neumont.Tools.ORMToORMAbstractionBridge;
-using Neumont.Tools.ORMAbstraction;
-using Neumont.Tools.RelationalModels.ConceptualDatabase;
+using ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge;
+using ORMSolutions.ORMArchitect.ORMAbstraction;
+using ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase;
 using System.Collections.ObjectModel;
-using ORMCore = Neumont.Tools.ORM.ObjectModel;
+using ORMCore = ORMSolutions.ORMArchitect.Core.ObjectModel;
 
-namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
+namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 {
 	partial class ORMAbstractionToConceptualDatabaseBridgeDomainModel
 	{
@@ -42,7 +42,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			// for cases where we start from an empty ORM model
 
 			/// <summary>
-			/// ChangeRule: typeof(Neumont.Tools.ORMAbstraction.ConceptTypeChild)
+			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild)
 			/// </summary>
 			private static void ConceptTypeChildChangedRule(ElementPropertyChangedEventArgs e)
 			{
@@ -52,28 +52,28 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				}
 			}
 			/// <summary>
-			/// AddRule: typeof(Neumont.Tools.ORMAbstraction.AbstractionModelHasConceptType)
+			/// AddRule: typeof(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType)
 			/// </summary>
 			private static void ConceptTypeAddedRule(ElementAddedEventArgs e)
 			{
 				RebuildAbstractionModel(((AbstractionModelHasConceptType)e.ModelElement).Model);
 			}
 			/// <summary>
-			/// DeleteRule: typeof(Neumont.Tools.ORMAbstraction.AbstractionModelHasConceptType)
+			/// DeleteRule: typeof(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType)
 			/// </summary>
 			private static void ConceptTypeDeletedRule(ElementDeletedEventArgs e)
 			{
 				RebuildAbstractionModel(((AbstractionModelHasConceptType)e.ModelElement).Model);
 			}
 			/// <summary>
-			/// AddRule: typeof(Neumont.Tools.ORMAbstraction.AbstractionModelHasInformationTypeFormat)
+			/// AddRule: typeof(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat)
 			/// </summary>
 			private static void InformationTypeFormatAddedRule(ElementAddedEventArgs e)
 			{
 				RebuildAbstractionModel(((AbstractionModelHasInformationTypeFormat)e.ModelElement).Model);
 			}
 			/// <summary>
-			/// DeleteRule: typeof(Neumont.Tools.ORMAbstraction.AbstractionModelHasInformationTypeFormat)
+			/// DeleteRule: typeof(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat)
 			/// </summary>
 			private static void InformationTypeFormatDeletedRule(ElementDeletedEventArgs e)
 			{
@@ -127,7 +127,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				}
 			}
 			/// <summary>
-			/// RolePlayerPositionChangeRule: typeof(Neumont.Tools.ORMAbstraction.UniquenessIncludesConceptTypeChild)
+			/// RolePlayerPositionChangeRule: typeof(ORMSolutions.ORMArchitect.ORMAbstraction.UniquenessIncludesConceptTypeChild)
 			/// Reorder the columns in a uniqueness constraint when the order changes
 			/// </summary>
 			private static void UniquenessConstraintRoleOrderChanged(RolePlayerOrderChangedEventArgs e)
@@ -164,7 +164,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				}
 			}
 			/// <summary>
-			/// DeletingRule: typeof(Neumont.Tools.ORMAbstraction.UniquenessIncludesConceptTypeChild)
+			/// DeletingRule: typeof(ORMSolutions.ORMArchitect.ORMAbstraction.UniquenessIncludesConceptTypeChild)
 			/// Remove a column in a uniqueness constraint when a concept type child is removed from the
 			/// corresponding abstraction construct
 			/// </summary>
@@ -220,7 +220,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			#endregion // Abstraction model modification rules
 			#region Bridge element modification rules
 			/// <summary>
-			/// ChangeRule: typeof(Neumont.Tools.ORMAbstraction.AbstractionModel)
+			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel)
 			/// Update the schema name when the abstraction model name changes
 			/// </summary>
 			private static void AbstractionModelChangedRule(ElementPropertyChangedEventArgs e)
@@ -238,7 +238,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 			#endregion // Bridge element modification rules
 			#region Name modification rules
 			/// <summary>
-			/// ChangeRule: typeof(Neumont.Tools.ORMAbstraction.ConceptType)
+			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)
 			/// </summary>
 			private static void ConceptTypeChangedRule(ElementPropertyChangedEventArgs e)
 			{
@@ -248,7 +248,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				}
 			}
 			/// <summary>
-			/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.FactType)
+			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactType)
 			/// </summary>
 			private static void FactTypeNameChangedRule(ElementPropertyChangedEventArgs e)
 			{
@@ -350,7 +350,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				}
 			}
 			/// <summary>
-			/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.NameGenerator)
+			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.NameGenerator)
 			/// Regenerate names when settings change
 			/// </summary>
 			private static void NameGeneratorSettingsChangedRule(ElementPropertyChangedEventArgs e)
@@ -366,8 +366,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				}
 			}
 			/// <summary>
-			/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation)
-			/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation)
+			/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasAbbreviation)
+			/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.RecognizedPhraseHasAbbreviation)
 			/// Regenerate names when an abbreviation is added
 			/// </summary>
 			private static void AbbreviationAddedRule(ElementAddedEventArgs e)
@@ -383,8 +383,8 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				}
 			}
 			/// <summary>
-			/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasAbbreviation)
-			/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.RecognizedPhraseHasAbbreviation)
+			/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasAbbreviation)
+			/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.RecognizedPhraseHasAbbreviation)
 			/// Regenerate names when an abbreviation is deleted
 			/// </summary>
 			private static void AbbreviationDeletedRule(ElementDeletedEventArgs e)
@@ -403,7 +403,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				}
 			}
 			/// <summary>
-			/// DeletingRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelContainsRecognizedPhrase)
+			/// DeletingRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ModelContainsRecognizedPhrase)
 			/// Regenerate names when a recognized phrase with relational-targeted aliases is deleting
 			/// </summary>
 			private static void RecognizedPhraseDeletingRule(ElementDeletingEventArgs e)
@@ -424,7 +424,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				}
 			}
 			/// <summary>
-			/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.NameAlias)
+			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.NameAlias)
 			/// Regenerate names when an abbreviation is changed
 			/// </summary>
 			private static void AbbreviationChangedRule(ElementPropertyChangedEventArgs e)
@@ -443,7 +443,7 @@ namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
 				}
 			}
 			/// <summary>
-			/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.Role)
+			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.Role)
 			/// </summary>
 			private static void RoleNameChangedRule(ElementPropertyChangedEventArgs e)
 			{

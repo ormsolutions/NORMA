@@ -1,4 +1,4 @@
-namespace Neumont.Tools.ORM.SDK.TestReportViewer {
+namespace ORMSolutions.ORMArchitectSDK.TestReportViewer {
     
     
     // This class allows you to handle specific events on the settings class:

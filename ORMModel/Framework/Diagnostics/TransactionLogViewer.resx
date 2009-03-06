@@ -376,7 +376,7 @@ Press the Escape key to clear a current filter.</value>
     <value>TreeControl</value>
   </data>
   <data name="&gt;&gt;TreeControl.Type" xml:space="preserve">
-    <value>Neumont.Tools.Modeling.Shell.StandardVirtualTreeControl, Neumont.Tools.ORM.VS2005, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f</value>
+    <value>ORMSolutions.ORMArchitect.Framework.Shell.StandardVirtualTreeControl, ORMSolutions.ORMArchitect.Core.VS2005, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f</value>
   </data>
   <data name="&gt;&gt;TreeControl.Parent" xml:space="preserve">
     <value>$this</value>

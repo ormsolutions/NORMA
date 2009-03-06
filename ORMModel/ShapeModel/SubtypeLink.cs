@@ -1,9 +1,9 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © Matthew Curland. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -32,12 +32,12 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.Shell;
-using Neumont.Tools.Modeling;
-using Neumont.Tools.Modeling.Diagrams;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.Shell;
+using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Framework.Diagrams;
 
-namespace Neumont.Tools.ORM.ShapeModel
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	public partial class SubtypeLink : ORMBaseBinaryLinkShape, IModelErrorActivation, IProvideConnectorShape, IReconfigureableLink, IConfigureAsChildShape, IAutoCreatedSelectableShape, IDynamicColorGeometryHost
 	{
@@ -46,15 +46,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// resource id for pen to draw non primary subtype facts that are using the normal pen
 		/// </summary>
-		protected static readonly StyleSetResourceId NonPrimaryNormalResource = new StyleSetResourceId("Neumont", "NonPrimarySupertypeLinkNormalResource");
+		protected static readonly StyleSetResourceId NonPrimaryNormalResource = new StyleSetResourceId("ORMArchitect", "NonPrimarySupertypeLinkNormalResource");
 		/// <summary>
 		/// resource id for pen to draw non primary subtype facts that are using the sticky pen
 		/// </summary>
-		protected static readonly StyleSetResourceId NonPrimaryStickyResource = new StyleSetResourceId("Neumont", "NonPrimarySupertypeLinkStickyResource");
+		protected static readonly StyleSetResourceId NonPrimaryStickyResource = new StyleSetResourceId("ORMArchitect", "NonPrimarySupertypeLinkStickyResource");
 		/// <summary>
 		/// resource id for pen to draw non primary subtype facts that are using the active pen
 		/// </summary>
-		protected static readonly StyleSetResourceId NonPrimaryActiveResource = new StyleSetResourceId("Neumont", "NonPrimarySupertypeLinkActiveResource");
+		protected static readonly StyleSetResourceId NonPrimaryActiveResource = new StyleSetResourceId("ORMArchitect", "NonPrimarySupertypeLinkActiveResource");
 		/// <summary>
 		/// Change the outline pen to a thin black line for all instances
 		/// of this shape.

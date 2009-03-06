@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
-	Neumont Object-Role Modeling Architect for Visual Studio
+	Natural Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
 	Copyright © Matthew Curland. All rights reserved.
@@ -17,10 +17,10 @@
 	<RegistryKey Root="HKLM" Key="$(var.VSRegRoot)">
 		
 		<RegistryKey Action="createAndRemoveOnUninstall" Key="Packages\{$(var.NORMAVSPackageGuid)}">
-			<RegistryValue Value="Neumont.Tools.ORM.Shell.ORMDesignerPackage, $(var.NORMAVSPackageAssemblyName)" Type="string"/>
+			<RegistryValue Value="ORMSolutions.ORMArchitect.Core.Shell.ORMDesignerPackage, $(var.NORMAVSPackageAssemblyName)" Type="string"/>
 			<RegistryValue Name="InprocServer32" Value="[$(var.SystemFolder)]mscoree.dll" Type="string"/>
 			<RegistryValue Name="Assembly" Value="$(var.NORMAVSPackageAssemblyName)" Type="string"/>
-			<RegistryValue Name="Class" Value="Neumont.Tools.ORM.Shell.ORMDesignerPackage" Type="string"/>
+			<RegistryValue Name="Class" Value="ORMSolutions.ORMArchitect.Core.Shell.ORMDesignerPackage" Type="string"/>
 			<RegistryValue Name="ID" Value="$(var.PLKResourceID)" Type="integer"/>
 			<RegistryValue Name="MinEdition" Value="$(var.PLKMinEdition)" Type="string"/>
 			<RegistryValue Name="ProductVersion" Value="$(var.PLKProductVersion)" Type="string"/>
@@ -33,7 +33,7 @@
 			</RegistryKey>
 		</RegistryKey>
 
-		<RegistryKey Action="createAndRemoveOnUninstall" Key="InstalledProducts\Neumont ORM Architect">
+		<RegistryKey Action="createAndRemoveOnUninstall" Key="InstalledProducts\ORM Solutions Natural Object-Role Modeling Architect">
 			<RegistryValue Name="Package" Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
 			<RegistryValue Name="UseInterface" Value="1" Type="integer"/>
 			<RegistryValue Name="DefaultProductAttribute" Value="ORM" Type="string"/>
@@ -90,7 +90,7 @@
 		<RegistryKey Key="ToolWindows">
 			<RegistryKey Action="createAndRemoveOnUninstall" Key="{63B6F84D-DF09-4E65-86EA-6BC1B856837B}">
 				<RegistryValue Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
-				<RegistryValue Name="Name" Value="Neumont.Tools.ORM.Shell.FactEditorToolWindow" Type="string"/>
+				<RegistryValue Name="Name" Value="ORMSolutions.ORMArchitect.Core.Shell.FactEditorToolWindow" Type="string"/>
 				<RegistryValue Name="Style" Value="Tabbed" Type="string"/>
 				<RegistryValue Name="Orientation" Value="Right" Type="string"/>
 				<RegistryValue Name="Window" Value="{$(var.VSOutputWindowGuid)}" Type="string"/>
@@ -99,7 +99,7 @@
 			</RegistryKey>
 			<RegistryKey Action="createAndRemoveOnUninstall" Key="{C2415D9F-DBA8-49BC-8BF2-008F24F10559}">
 				<RegistryValue Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
-				<RegistryValue Name="Name" Value="Neumont.Tools.ORM.Shell.ORMReferenceModeEditorToolWindow" Type="string"/>
+				<RegistryValue Name="Name" Value="ORMSolutions.ORMArchitect.Core.Shell.ORMReferenceModeEditorToolWindow" Type="string"/>
 				<RegistryValue Name="Style" Value="Tabbed" Type="string"/>
 				<RegistryValue Name="Orientation" Value="Right" Type="string"/>
 				<RegistryValue Name="Window" Value="{$(var.VSOutputWindowGuid)}" Type="string"/>
@@ -108,7 +108,7 @@
 			</RegistryKey>
 			<RegistryKey Action="createAndRemoveOnUninstall" Key="{1E45D5B8-890A-4ED5-AE1A-80BE221398D2}">
 				<RegistryValue Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
-				<RegistryValue Name="Name" Value="Neumont.Tools.ORM.Shell.ORMReadingEditorToolWindow" Type="string"/>
+				<RegistryValue Name="Name" Value="ORMSolutions.ORMArchitect.Core.Shell.ORMReadingEditorToolWindow" Type="string"/>
 				<RegistryValue Name="Style" Value="Tabbed" Type="string"/>
 				<RegistryValue Name="Orientation" Value="Right" Type="string"/>
 				<RegistryValue Name="Window" Value="{$(var.VSOutputWindowGuid)}" Type="string"/>
@@ -117,7 +117,7 @@
 			</RegistryKey>
 			<RegistryKey Action="createAndRemoveOnUninstall" Key="{051209C1-250B-45A7-B7B1-8AFB50BEC9B7}">
 				<RegistryValue Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
-				<RegistryValue Name="Name" Value="Neumont.Tools.ORM.Shell.ORMSamplePopulationToolWindow" Type="string"/>
+				<RegistryValue Name="Name" Value="ORMSolutions.ORMArchitect.Core.Shell.ORMSamplePopulationToolWindow" Type="string"/>
 				<RegistryValue Name="Style" Value="Tabbed" Type="string"/>
 				<RegistryValue Name="Orientation" Value="Right" Type="string"/>
 				<RegistryValue Name="Window" Value="{$(var.VSOutputWindowGuid)}" Type="string"/>
@@ -126,7 +126,7 @@
 			</RegistryKey>
 			<RegistryKey Action="createAndRemoveOnUninstall" Key="{C9AA5E71-9193-46C9-971A-CB6365ACA338}">
 				<RegistryValue Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
-				<RegistryValue Name="Name" Value="Neumont.Tools.ORM.Shell.ORMVerbalizationToolWindow" Type="string"/>
+				<RegistryValue Name="Name" Value="ORMSolutions.ORMArchitect.Core.Shell.ORMVerbalizationToolWindow" Type="string"/>
 				<RegistryValue Name="Style" Value="Tabbed" Type="string"/>
 				<RegistryValue Name="Orientation" Value="Right" Type="string"/>
 				<RegistryValue Name="Window" Value="{$(var.VSOutputWindowGuid)}" Type="string"/>
@@ -135,7 +135,7 @@
 			</RegistryKey>
 			<RegistryKey Action="createAndRemoveOnUninstall" Key="{DD2334C3-AFDB-4FC5-9E8A-17D19A8CC97A}">
 				<RegistryValue Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
-				<RegistryValue Name="Name" Value="Neumont.Tools.ORM.Shell.ORMModelBrowserToolWindow" Type="string"/>
+				<RegistryValue Name="Name" Value="ORMSolutions.ORMArchitect.Core.Shell.ORMModelBrowserToolWindow" Type="string"/>
 				<RegistryValue Name="Style" Value="Tabbed" Type="string"/>
 				<RegistryValue Name="Orientation" Value="Right" Type="string"/>
 				<RegistryValue Name="Window" Value="{$(var.VSSolutionExplorerWindowGuid)}" Type="string"/>
@@ -144,7 +144,7 @@
 			</RegistryKey>
 			<RegistryKey Action="createAndRemoveOnUninstall" Key="{FC6D8343-48D1-4294-915F-01B6350E0E12}">
 				<RegistryValue Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
-				<RegistryValue Name="Name" Value="Neumont.Tools.ORM.Shell.ORMDefinitionToolWindow" Type="string"/>
+				<RegistryValue Name="Name" Value="ORMSolutions.ORMArchitect.Core.Shell.ORMDefinitionToolWindow" Type="string"/>
 				<RegistryValue Name="Style" Value="Tabbed" Type="string"/>
 				<RegistryValue Name="Orientation" Value="Right" Type="string"/>
 				<RegistryValue Name="Window" Value="{$(var.VSOutputWindowGuid)}" Type="string"/>
@@ -153,7 +153,7 @@
 			</RegistryKey>
 			<RegistryKey Action="createAndRemoveOnUninstall" Key="{A7C9E14E-9EEE-4D79-A7F4-9E9D1A567498}">
 				<RegistryValue Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
-				<RegistryValue Name="Name" Value="Neumont.Tools.ORM.Shell.ORMNotesToolWindow" Type="string"/>
+				<RegistryValue Name="Name" Value="ORMSolutions.ORMArchitect.Core.Shell.ORMNotesToolWindow" Type="string"/>
 				<RegistryValue Name="Style" Value="Tabbed" Type="string"/>
 				<RegistryValue Name="Orientation" Value="Right" Type="string"/>
 				<RegistryValue Name="Window" Value="{$(var.VSOutputWindowGuid)}" Type="string"/>
@@ -162,7 +162,7 @@
 			</RegistryKey>
 			<RegistryKey Action="createAndRemoveOnUninstall" Key="{2B93A7CC-1F28-4347-8A22-644FB7B92090}">
 				<RegistryValue Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
-				<RegistryValue Name="Name" Value="Neumont.Tools.ORM.Shell.ORMContextWindow" Type="string"/>
+				<RegistryValue Name="Name" Value="ORMSolutions.ORMArchitect.Core.Shell.ORMContextWindow" Type="string"/>
 				<RegistryValue Name="Style" Value="Tabbed" Type="string"/>
 				<RegistryValue Name="Orientation" Value="Right" Type="string"/>
 				<RegistryValue Name="Window" Value="{$(var.VSOutputWindowGuid)}" Type="string"/>
@@ -171,7 +171,7 @@
 			</RegistryKey>
 			<RegistryKey Action="createAndRemoveOnUninstall" Key="{19A5C15D-14D4-4A88-9891-A3294077BE56}">
 				<RegistryValue Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
-				<RegistryValue Name="Name" Value="Neumont.Tools.ORM.Shell.ORMDiagramSpyWindow" Type="string"/>
+				<RegistryValue Name="Name" Value="ORMSolutions.ORMArchitect.Core.Shell.ORMDiagramSpyWindow" Type="string"/>
 				<RegistryValue Name="Style" Value="Tabbed" Type="string"/>
 				<RegistryValue Name="Orientation" Value="Right" Type="string"/>
 				<RegistryValue Name="Window" Value="{$(var.VSOutputWindowGuid)}" Type="string"/>

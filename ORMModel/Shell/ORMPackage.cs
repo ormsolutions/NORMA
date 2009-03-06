@@ -1,9 +1,9 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © Matthew Curland. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -36,12 +36,12 @@ using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.Win32;
-using Neumont.Tools.Modeling;
-using Neumont.Tools.Modeling.Diagrams.Design;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.ShapeModel;
+using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Framework.Diagrams.Design;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.ShapeModel;
 
-namespace Neumont.Tools.ORM.Shell
+namespace ORMSolutions.ORMArchitect.Core.Shell
 {
 	#region Attributes
 	/// <summary>
@@ -102,13 +102,13 @@ namespace Neumont.Tools.ORM.Shell
 	[ProvideToolboxItems(1, true)]
 	[ProvideToolboxFormat("Microsoft.VisualStudio.Modeling.ElementGroupPrototype")]
 	[PackageRegistration(UseManagedResourcesOnly=true, RegisterUsing=RegistrationMethod.Assembly)]
-	[InstalledProductRegistration(true, null, null, null, LanguageIndependentName="Neumont ORM Architect")]
-	[ProvideLoadKey("Standard", "1.0", "Neumont ORM Architect for Visual Studio", "Neumont University", PackageResources.Id.PackageLoadKey)]
+	[InstalledProductRegistration(true, null, null, null, LanguageIndependentName="Natural ORM Architect")]
+	[ProvideLoadKey("Standard", "1.0", "Natural Object-Role Modeling Architect for Visual Studio", "ORM Solutions, LLC", PackageResources.Id.PackageLoadKey)]
 	#endregion // Attributes
 	public sealed class ORMDesignerPackage : ModelingPackage, IVsInstalledProduct, IVsToolWindowFactory
 	{
 		#region Constants
-		private const string REGISTRYROOT_PACKAGE = @"Neumont\ORM Architect";
+		private const string REGISTRYROOT_PACKAGE = @"ORM Solutions\Natural ORM Architect";
 		private const string REGISTRYROOT_EXTENSIONS = REGISTRYROOT_PACKAGE + @"\Extensions\";
 		private const string REGISTRYVALUE_SETTINGSPATH = "SettingsPath";
 		private const string REGISTRYVALUE_CONVERTERSDIR = "ConvertersDir";
@@ -1060,7 +1060,7 @@ namespace Neumont.Tools.ORM.Shell
 					retVal.Add(ORMShapeDomainModel.DomainModelId, typeof(ORMShapeDomainModel));
 					// UNDONE: Temporary until the report validation is moved into a separate dll. See https://projects.neumont.edu/orm2/ticket/315
 					retVal.Add(ObjectModel.Verbalization.HtmlReport.DomainModelId, typeof(ObjectModel.Verbalization.HtmlReport));
-					retVal.Add(Neumont.Tools.Modeling.Shell.DiagramSurvey.DomainModelId, typeof(Neumont.Tools.Modeling.Shell.DiagramSurvey));
+					retVal.Add(ORMSolutions.ORMArchitect.Framework.Shell.DiagramSurvey.DomainModelId, typeof(ORMSolutions.ORMArchitect.Framework.Shell.DiagramSurvey));
 					package.myStandardDomainModelsMap = retVal;
 				}
 			}

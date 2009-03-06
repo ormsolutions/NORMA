@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -14,17 +14,17 @@
 \**************************************************************************/
 #endregion
 using Microsoft.VisualStudio.Modeling;
-using Neumont.Tools.ORM.ObjectModel;
-using ORMCore = Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORMAbstraction;
-using Neumont.Tools.ORMToORMAbstractionBridge;
-using Neumont.Tools.RelationalModels.ConceptualDatabase;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMCore = ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.ORMAbstraction;
+using ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge;
+using ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 
-namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
+namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 {
 	partial class TableIsPrimarilyForConceptType : IVerbalize
 	{

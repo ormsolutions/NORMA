@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -22,7 +22,7 @@ using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
-using Neumont.Tools.Modeling.Diagrams;
+using ORMSolutions.ORMArchitect.Framework.Diagrams;
 
 // This file consists of overrides and replacements for code in the
 // BinaryLinkShape and BinaryLinkShapeGeometry code provided by Microsoft.
@@ -33,7 +33,7 @@ using Neumont.Tools.Modeling.Diagrams;
 // 2) Decorators can only have N/S/E/W rotation angles
 // 3) Decorators are always rotated
 // 4) The attach point for the decorator cannot be moved along the connection line
-namespace Neumont.Tools.ORM.ShapeModel
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	#region ILinkDecoratorSettings interface
 	/// <summary>

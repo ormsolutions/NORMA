@@ -273,12 +273,12 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// Gets or sets ORMModel.
 		/// Description for Neumont.Tools.ORM.OIALModel.OIALModelHasORMModel.OIALModel
 		/// </summary>
-		public virtual global::Neumont.Tools.ORM.ObjectModel.ORMModel ORMModel
+		public virtual global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel ORMModel
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.OIALModelHasORMModel.OIALModelDomainRoleId) as global::Neumont.Tools.ORM.ObjectModel.ORMModel;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.OIALModelHasORMModel.OIALModelDomainRoleId) as global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -367,12 +367,12 @@ namespace Neumont.Tools.ORM.OIALModel
 					return true;
 				}
 				
-				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat.DomainClassId)) 
+				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.OIALModel.ConceptType.DomainClassId)) 
 				{
 					return true;
 				}
 				
-				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.OIALModel.ConceptType.DomainClassId)) 
+				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat.DomainClassId)) 
 				{
 					return true;
 				}
@@ -410,20 +410,20 @@ namespace Neumont.Tools.ORM.OIALModel
 				return;
 			}
 				
-			global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat sourceInformationTypeFormat2 = sourceElement as global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat;
-			if (sourceInformationTypeFormat2 != null)
+			global::Neumont.Tools.ORM.OIALModel.ConceptType sourceConceptType2 = sourceElement as global::Neumont.Tools.ORM.OIALModel.ConceptType;
+			if (sourceConceptType2 != null)
 			{
-				// Create link for path OIALHasInformationTypeFormat.InformationTypeFormatCollection
-				this.InformationTypeFormatCollection.Add(sourceInformationTypeFormat2);
+				// Create link for path OIALModelHasConceptType.ConceptTypeCollection
+				this.ConceptTypeCollection.Add(sourceConceptType2);
 
 				return;
 			}
 				
-			global::Neumont.Tools.ORM.OIALModel.ConceptType sourceConceptType3 = sourceElement as global::Neumont.Tools.ORM.OIALModel.ConceptType;
-			if (sourceConceptType3 != null)
+			global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat sourceInformationTypeFormat3 = sourceElement as global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat;
+			if (sourceInformationTypeFormat3 != null)
 			{
-				// Create link for path OIALModelHasConceptType.ConceptTypeCollection
-				this.ConceptTypeCollection.Add(sourceConceptType3);
+				// Create link for path OIALHasInformationTypeFormat.InformationTypeFormatCollection
+				this.InformationTypeFormatCollection.Add(sourceInformationTypeFormat3);
 
 				return;
 			}
@@ -455,29 +455,29 @@ namespace Neumont.Tools.ORM.OIALModel
 				return;
 			}
 				
-			global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat sourceInformationTypeFormat2 = sourceElement as global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat;
-			if (sourceInformationTypeFormat2 != null)
+			global::Neumont.Tools.ORM.OIALModel.ConceptType sourceConceptType2 = sourceElement as global::Neumont.Tools.ORM.OIALModel.ConceptType;
+			if (sourceConceptType2 != null)
 			{
-				// Delete link for path OIALHasInformationTypeFormat.InformationTypeFormatCollection
+				// Delete link for path OIALModelHasConceptType.ConceptTypeCollection
 				
-				foreach (DslModeling::ElementLink link in global::Neumont.Tools.ORM.OIALModel.OIALHasInformationTypeFormat.GetLinks((global::Neumont.Tools.ORM.OIALModel.OIALModel)this, sourceInformationTypeFormat2))
+				foreach (DslModeling::ElementLink link in global::Neumont.Tools.ORM.OIALModel.OIALModelHasConceptType.GetLinks((global::Neumont.Tools.ORM.OIALModel.OIALModel)this, sourceConceptType2))
 				{
 					// Delete the link, but without possible delete propagation to the element since it's moving to a new location.
-					link.Delete(global::Neumont.Tools.ORM.OIALModel.OIALHasInformationTypeFormat.ModelDomainRoleId, global::Neumont.Tools.ORM.OIALModel.OIALHasInformationTypeFormat.InformationTypeFormatDomainRoleId);
+					link.Delete(global::Neumont.Tools.ORM.OIALModel.OIALModelHasConceptType.ModelDomainRoleId, global::Neumont.Tools.ORM.OIALModel.OIALModelHasConceptType.ConceptTypeDomainRoleId);
 				}
 
 				return;
 			}
 				
-			global::Neumont.Tools.ORM.OIALModel.ConceptType sourceConceptType3 = sourceElement as global::Neumont.Tools.ORM.OIALModel.ConceptType;
-			if (sourceConceptType3 != null)
+			global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat sourceInformationTypeFormat3 = sourceElement as global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat;
+			if (sourceInformationTypeFormat3 != null)
 			{
-				// Delete link for path OIALModelHasConceptType.ConceptTypeCollection
+				// Delete link for path OIALHasInformationTypeFormat.InformationTypeFormatCollection
 				
-				foreach (DslModeling::ElementLink link in global::Neumont.Tools.ORM.OIALModel.OIALModelHasConceptType.GetLinks((global::Neumont.Tools.ORM.OIALModel.OIALModel)this, sourceConceptType3))
+				foreach (DslModeling::ElementLink link in global::Neumont.Tools.ORM.OIALModel.OIALHasInformationTypeFormat.GetLinks((global::Neumont.Tools.ORM.OIALModel.OIALModel)this, sourceInformationTypeFormat3))
 				{
 					// Delete the link, but without possible delete propagation to the element since it's moving to a new location.
-					link.Delete(global::Neumont.Tools.ORM.OIALModel.OIALModelHasConceptType.ModelDomainRoleId, global::Neumont.Tools.ORM.OIALModel.OIALModelHasConceptType.ConceptTypeDomainRoleId);
+					link.Delete(global::Neumont.Tools.ORM.OIALModel.OIALHasInformationTypeFormat.ModelDomainRoleId, global::Neumont.Tools.ORM.OIALModel.OIALHasInformationTypeFormat.InformationTypeFormatDomainRoleId);
 				}
 
 				return;
@@ -613,12 +613,12 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// Gets or sets ObjectType.
 		/// Description for Neumont.Tools.ORM.OIALModel.ConceptTypeHasObjectType.ConceptType
 		/// </summary>
-		public virtual global::Neumont.Tools.ORM.ObjectModel.ObjectType ObjectType
+		public virtual global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType ObjectType
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasObjectType.ConceptTypeDomainRoleId) as global::Neumont.Tools.ORM.ObjectModel.ObjectType;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasObjectType.ConceptTypeDomainRoleId) as global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -719,12 +719,12 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// Description for
 		/// Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType.InformationTypeFormat
 		/// </summary>
-		public virtual global::Neumont.Tools.ORM.ObjectModel.ObjectType ValueType
+		public virtual global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType ValueType
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType.InformationTypeFormatDomainRoleId) as global::Neumont.Tools.ORM.ObjectModel.ObjectType;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType.InformationTypeFormatDomainRoleId) as global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -838,7 +838,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <summary>
 		/// Storage for Modality
 		/// </summary>
-		private global::Neumont.Tools.ORM.ObjectModel.ConstraintModality modalityPropertyStorage;
+		private global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintModality modalityPropertyStorage;
 		
 		/// <summary>
 		/// Gets or sets the value of Modality domain property.
@@ -847,7 +847,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.Constraint/Modality.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.Constraint/Modality.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainObjectId("5cce8e32-9fb1-487f-9249-357584f06f7c")]
-		public global::Neumont.Tools.ORM.ObjectModel.ConstraintModality Modality
+		public global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintModality Modality
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
@@ -863,7 +863,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <summary>
 		/// Value handler for the Constraint.Modality domain property.
 		/// </summary>
-		internal sealed partial class ModalityPropertyHandler : DslModeling::DomainPropertyValueHandler<Constraint, global::Neumont.Tools.ORM.ObjectModel.ConstraintModality>
+		internal sealed partial class ModalityPropertyHandler : DslModeling::DomainPropertyValueHandler<Constraint, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintModality>
 		{
 			private ModalityPropertyHandler() { }
 		
@@ -889,7 +889,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// </summary>
 			/// <param name="element">Element which owns the property.</param>
 			/// <returns>Property value.</returns>
-			public override sealed global::Neumont.Tools.ORM.ObjectModel.ConstraintModality GetValue(Constraint element)
+			public override sealed global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintModality GetValue(Constraint element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.modalityPropertyStorage;
@@ -900,11 +900,11 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// </summary>
 			/// <param name="element">Element which owns the property.</param>
 			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(Constraint element, global::Neumont.Tools.ORM.ObjectModel.ConstraintModality newValue)
+			public override sealed void SetValue(Constraint element, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintModality newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
 		
-				global::Neumont.Tools.ORM.ObjectModel.ConstraintModality oldValue = GetValue(element);
+				global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintModality oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
 					ValueChanging(element, oldValue, newValue);

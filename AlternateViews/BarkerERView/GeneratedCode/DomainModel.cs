@@ -1,6 +1,6 @@
 ﻿#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -25,16 +25,16 @@
 using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
 using DslDiagrams = global::Microsoft.VisualStudio.Modeling.Diagrams;
-namespace Neumont.Tools.ORM.Views.BarkerERView
+namespace ORMSolutions.ORMArchitect.Views.BarkerERView
 {
 	/// <summary>
 	/// DomainModel BarkerERShapeDomainModel
 	/// (Preliminary) Graphical View of Barker ER Model
 	/// </summary>
-	[DslModeling::ExtendsDomainModel("77C1024F-D688-4AEE-AF16-29C2E791A9E7"/*Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel*/)]
-	[DslModeling::ExtendsDomainModel("C52FB9A5-6BF4-4267-8716-71D74C7AA89C"/*Neumont.Tools.ORM.ShapeModel*/)]
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.Views.BarkerERView.BarkerERShapeDomainModel.DisplayName", typeof(global::Neumont.Tools.ORM.Views.BarkerERView.BarkerERShapeDomainModel), "Neumont.Tools.ORM.Views.BarkerERView.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.Views.BarkerERView.BarkerERShapeDomainModel.Description", typeof(global::Neumont.Tools.ORM.Views.BarkerERView.BarkerERShapeDomainModel), "Neumont.Tools.ORM.Views.BarkerERView.GeneratedCode.DomainModelResx")]
+	[DslModeling::ExtendsDomainModel("77C1024F-D688-4AEE-AF16-29C2E791A9E7"/*ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel*/)]
+	[DslModeling::ExtendsDomainModel("C52FB9A5-6BF4-4267-8716-71D74C7AA89C"/*ORMSolutions.ORMArchitect.Core.ShapeModel*/)]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel), "ORMSolutions.ORMArchitect.Views.BarkerERView.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.Description", typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel), "ORMSolutions.ORMArchitect.Views.BarkerERView.GeneratedCode.DomainModelResx")]
 	[DslModeling::DomainObjectId("2e6c7361-69ae-411a-bb82-09f844e6ba95")]
 	internal partial class BarkerERShapeDomainModel : DslModeling::DomainModel
 	{
@@ -68,12 +68,12 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 				typeof(BarkerERDiagram),
 				typeof(AssociationConnector),
 				typeof(BarkerEntityShape),
-				typeof(global::Neumont.Tools.ORM.Views.BarkerERView.FixUpDiagram),
-				typeof(global::Neumont.Tools.ORM.Views.BarkerERView.CompartmentItemAddRule),
-				typeof(global::Neumont.Tools.ORM.Views.BarkerERView.CompartmentItemDeleteRule),
-				typeof(global::Neumont.Tools.ORM.Views.BarkerERView.CompartmentItemRolePlayerChangeRule),
-				typeof(global::Neumont.Tools.ORM.Views.BarkerERView.CompartmentItemRolePlayerPositionChangeRule),
-				typeof(global::Neumont.Tools.ORM.Views.BarkerERView.CompartmentItemChangeRule),
+				typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.FixUpDiagram),
+				typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.CompartmentItemAddRule),
+				typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.CompartmentItemDeleteRule),
+				typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.CompartmentItemRolePlayerChangeRule),
+				typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.CompartmentItemRolePlayerPositionChangeRule),
+				typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.CompartmentItemChangeRule),
 			};
 		}
 		/// <summary>
@@ -164,7 +164,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 		/// <summary>
 		/// The base name of this model's resources.
 		/// </summary>
-		public const string ResourceBaseName = "Neumont.Tools.ORM.Views.BarkerERView.GeneratedCode.DomainModelResx";
+		public const string ResourceBaseName = "ORMSolutions.ORMArchitect.Views.BarkerERView.GeneratedCode.DomainModelResx";
 		
 		/// <summary>
 		/// Gets the DomainModel's ResourceManager. If the ResourceManager does not already exist, then it is created.
@@ -270,12 +270,12 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 			if(store == null) throw new global::System.ArgumentNullException("store");
 			
 			DslModeling::RuleManager ruleManager = store.RuleManager;
-			ruleManager.EnableRule(typeof(global::Neumont.Tools.ORM.Views.BarkerERView.FixUpDiagram));
-			ruleManager.EnableRule(typeof(global::Neumont.Tools.ORM.Views.BarkerERView.CompartmentItemAddRule));
-			ruleManager.EnableRule(typeof(global::Neumont.Tools.ORM.Views.BarkerERView.CompartmentItemDeleteRule));
-			ruleManager.EnableRule(typeof(global::Neumont.Tools.ORM.Views.BarkerERView.CompartmentItemRolePlayerChangeRule));
-			ruleManager.EnableRule(typeof(global::Neumont.Tools.ORM.Views.BarkerERView.CompartmentItemRolePlayerPositionChangeRule));
-			ruleManager.EnableRule(typeof(global::Neumont.Tools.ORM.Views.BarkerERView.CompartmentItemChangeRule));
+			ruleManager.EnableRule(typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.FixUpDiagram));
+			ruleManager.EnableRule(typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.CompartmentItemAddRule));
+			ruleManager.EnableRule(typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.CompartmentItemDeleteRule));
+			ruleManager.EnableRule(typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.CompartmentItemRolePlayerChangeRule));
+			ruleManager.EnableRule(typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.CompartmentItemRolePlayerPositionChangeRule));
+			ruleManager.EnableRule(typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.CompartmentItemChangeRule));
 		}
 		
 		/// <summary>
@@ -286,12 +286,12 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 			if(store == null) throw new global::System.ArgumentNullException("store");
 			
 			DslModeling::RuleManager ruleManager = store.RuleManager;
-			ruleManager.DisableRule(typeof(global::Neumont.Tools.ORM.Views.BarkerERView.FixUpDiagram));
-			ruleManager.DisableRule(typeof(global::Neumont.Tools.ORM.Views.BarkerERView.CompartmentItemAddRule));
-			ruleManager.DisableRule(typeof(global::Neumont.Tools.ORM.Views.BarkerERView.CompartmentItemDeleteRule));
-			ruleManager.DisableRule(typeof(global::Neumont.Tools.ORM.Views.BarkerERView.CompartmentItemRolePlayerChangeRule));
-			ruleManager.DisableRule(typeof(global::Neumont.Tools.ORM.Views.BarkerERView.CompartmentItemRolePlayerPositionChangeRule));
-			ruleManager.DisableRule(typeof(global::Neumont.Tools.ORM.Views.BarkerERView.CompartmentItemChangeRule));
+			ruleManager.DisableRule(typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.FixUpDiagram));
+			ruleManager.DisableRule(typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.CompartmentItemAddRule));
+			ruleManager.DisableRule(typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.CompartmentItemDeleteRule));
+			ruleManager.DisableRule(typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.CompartmentItemRolePlayerChangeRule));
+			ruleManager.DisableRule(typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.CompartmentItemRolePlayerPositionChangeRule));
+			ruleManager.DisableRule(typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.CompartmentItemChangeRule));
 		}
 		#endregion
 	}

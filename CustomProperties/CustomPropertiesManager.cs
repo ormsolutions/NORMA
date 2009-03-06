@@ -11,10 +11,10 @@ using System.Xml;
 using Microsoft.VisualStudio.Modeling;
 using System.IO;
 using System.Xml.Xsl;
-using Neumont.Tools.Modeling;
-using Neumont.Tools.ORM.ObjectModel;
+using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
 
-namespace Neumont.Tools.ORM.CustomProperties
+namespace ORMSolutions.ORMArchitect.CustomProperties
 {
 	public delegate void NameChangedHandler(object sender, NameChangedEventArgs e);
 	public partial class CustomPropertiesManager : Form
@@ -22,7 +22,8 @@ namespace Neumont.Tools.ORM.CustomProperties
 		#region Fields
 		private static XslCompiledTransform _upgradeMachineFileTransform;
 		private static readonly object LockObject = new object();
-		private static string _filePath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + @"\Neumont\ORM\GroupsAndDefinitions.xml";
+		private static string _deprecatedFilePath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + @"\Neumont\ORM\GroupsAndDefinitions.xml";
+		private static string _filePath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + @"\ORM Solutions\Natural ORM Architect\GroupsAndDefinitions.xml";
 		private static XmlNamespaceManager _namespaceManager;
 		private static XmlDocument _loadedDoc;
 		private Store _store;
@@ -79,7 +80,18 @@ namespace Neumont.Tools.ORM.CustomProperties
 					{
 						XmlDocument newDoc = null;
 						XmlNamespaceManager newNamespaceManager;
-						if (File.Exists(_filePath))
+						bool haveFile = File.Exists(_filePath);
+						if (!haveFile && File.Exists(_deprecatedFilePath))
+						{
+							string directoryName = Path.GetDirectoryName(_filePath);
+							if (!File.Exists(directoryName))
+							{
+								Directory.CreateDirectory(directoryName);
+							}
+							File.Copy(_deprecatedFilePath, _filePath, false);
+							haveFile = File.Exists(_filePath); // Should always be true, just being safe
+						}
+						if (haveFile)
 						{
 							using (FileStream stream = new FileStream(_filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
 							{
@@ -225,9 +237,10 @@ namespace Neumont.Tools.ORM.CustomProperties
 				return;
 			}
 
-			if (!File.Exists(Path.GetDirectoryName(_filePath)))
+			string directoryName = Path.GetDirectoryName(_filePath);
+			if (!File.Exists(directoryName))
 			{
-				Directory.CreateDirectory(Path.GetDirectoryName(_filePath));
+				Directory.CreateDirectory(directoryName);
 			}
 
 			_loadedDoc.Save(_filePath);

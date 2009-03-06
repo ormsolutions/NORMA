@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Neumont.Tools.ORM.SDK.TestReportViewer" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ORMSolutions.ORMArchitectSDK.TestReportViewer" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="DiffProgram" Type="System.String" Scope="User">

@@ -4,12 +4,12 @@ using System.Text;
 using EnvDTE;
 using EnvDTE80;
 using System.ComponentModel;
-using Neumont.Tools.ORM.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using Accessibility;
 using System.IO;
 using NUnitCategory = NUnit.Framework.CategoryAttribute;
 using NUnit.Framework;
-using Neumont.Tools.Modeling.Design;
+using ORMSolutions.ORMArchitect.Framework.Design;
 
 namespace ORMRegressionTestAddin
 {

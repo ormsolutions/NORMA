@@ -117,91 +117,91 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Neumont.Tools.Modeling.Shell.DiagramDisplayDomainModel.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayDomainModel.Description" xml:space="preserve">
     <value>Reorder diagrams and cache diagram positions</value>
     <comment>Description for DslLibrary &apos;DiagramDisplay&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Modeling.Shell.DiagramDisplayDomainModel.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayDomainModel.DisplayName" xml:space="preserve">
     <value>Diagram Management</value>
     <comment>DisplayName for DslLibrary &apos;DiagramDisplay&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Modeling.Shell.DiagramDisplay.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplay.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;DiagramDisplay&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Modeling.Shell.DiagramDisplay.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplay.DisplayName" xml:space="preserve">
     <value>DiagramDisplay</value>
     <comment>DisplayName for DomainClass &apos;DiagramDisplay&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Modeling.Shell.DiagramDisplay/SaveDiagramPosition.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplay/SaveDiagramPosition.Description" xml:space="preserve">
     <value>Save the most recent position and zoom information for each diagram in addition to diagram order.</value>
     <comment>Description for DomainProperty &apos;SaveDiagramPosition&apos; on DomainClass &apos;DiagramDisplay&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Modeling.Shell.DiagramDisplay/SaveDiagramPosition.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplay/SaveDiagramPosition.DisplayName" xml:space="preserve">
     <value>SaveDiagramPositions</value>
     <comment>DisplayName for DomainProperty &apos;SaveDiagramPosition&apos; on DomainClass &apos;DiagramDisplay&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Modeling.Shell.DiagramPlaceHolder.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Framework.Shell.DiagramPlaceHolder.Description" xml:space="preserve">
     <value>Diagram placeholder type used during deserialization to load forward references to diagrams without creating a diagram instance of a random type. Creating random types will cause the primary collection to be reordered, resulting in a significant file change for a diagram reorder.</value>
     <comment>Description for DomainClass &apos;DiagramPlaceHolder&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Modeling.Shell.DiagramPlaceHolder.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Framework.Shell.DiagramPlaceHolder.DisplayName" xml:space="preserve">
     <value>DiagramPlaceHolder</value>
     <comment>DisplayName for DomainClass &apos;DiagramPlaceHolder&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder</value>
+  <data name="ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder</value>
     <comment>Description for DomainClass &apos;DiagramDisplayHasDiagramOrder&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder.DisplayName" xml:space="preserve">
     <value>Diagram Display Has Diagram Order</value>
     <comment>DisplayName for DomainClass &apos;DiagramDisplayHasDiagramOrder&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder/CenterPoint.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder/CenterPoint.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainProperty &apos;CenterPoint&apos; on DomainClass &apos;DiagramDisplayHasDiagramOrder&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder/CenterPoint.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder/CenterPoint.DisplayName" xml:space="preserve">
     <value>CenterPoint</value>
     <comment>DisplayName for DomainProperty &apos;CenterPoint&apos; on DomainClass &apos;DiagramDisplayHasDiagramOrder&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder/ZoomFactor.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder/ZoomFactor.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainProperty &apos;ZoomFactor&apos; on DomainClass &apos;DiagramDisplayHasDiagramOrder&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder/ZoomFactor.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder/ZoomFactor.DisplayName" xml:space="preserve">
     <value>ZoomFactor</value>
     <comment>DisplayName for DomainProperty &apos;ZoomFactor&apos; on DomainClass &apos;DiagramDisplayHasDiagramOrder&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder/IsActiveDiagram.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder/IsActiveDiagram.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainProperty &apos;IsActiveDiagram&apos; on DomainClass &apos;DiagramDisplayHasDiagramOrder&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder/IsActiveDiagram.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder/IsActiveDiagram.DisplayName" xml:space="preserve">
     <value>IsActive</value>
     <comment>DisplayName for DomainProperty &apos;IsActiveDiagram&apos; on DomainClass &apos;DiagramDisplayHasDiagramOrder&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder/DiagramDisplay.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder.DiagramDisplay</value>
+  <data name="ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder/DiagramDisplay.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder.DiagramDisplay</value>
     <comment>Description for DomainRole &apos;DiagramDisplay&apos; on DomainRelationship &apos;DiagramDisplayHasDiagramOrder&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder/DiagramDisplay.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder/DiagramDisplay.DisplayName" xml:space="preserve">
     <value>DiagramDisplay</value>
     <comment>DisplayName for DomainRole &apos;DiagramDisplay&apos; on DomainRelationship &apos;DiagramDisplayHasDiagramOrder&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder/DiagramDisplay.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder/DiagramDisplay.PropertyDisplayName" xml:space="preserve">
     <value>Ordered Diagram Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;DiagramDisplay&apos; on DomainRelationship &apos;DiagramDisplayHasDiagramOrder&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder/Diagram.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder.Diagram</value>
+  <data name="ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder/Diagram.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder.Diagram</value>
     <comment>Description for DomainRole &apos;Diagram&apos; on DomainRelationship &apos;DiagramDisplayHasDiagramOrder&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder/Diagram.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder/Diagram.DisplayName" xml:space="preserve">
     <value>Diagram</value>
     <comment>DisplayName for DomainRole &apos;Diagram&apos; on DomainRelationship &apos;DiagramDisplayHasDiagramOrder&apos;</comment>
   </data>
-  <data name="Neumont.Tools.Modeling.Shell.DiagramDisplayHasDiagramOrder/Diagram.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayHasDiagramOrder/Diagram.PropertyDisplayName" xml:space="preserve">
     <value>Diagram Display</value>
     <comment>PropertyDisplayName for DomainRole &apos;Diagram&apos; on DomainRelationship &apos;DiagramDisplayHasDiagramOrder&apos;</comment>
   </data>
@@ -303,7 +303,7 @@ A DomainClass can be serialized as a moniker only if
 <!--
 	Natural Object-Role Modeling Architect for Visual Studio
 
-	Copyright © Matthew Curland. All rights reserved.
+	Copyright © ORM Solutions, LLC. All rights reserved.
 
 	The use and distribution terms for this software are covered by the
 	Common Public License 1.0 (http://opensource.org/licenses/cpl) which

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
-	Neumont Object-Role Modeling Architect for Visual Studio
+	Natural Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
 
@@ -17,25 +17,25 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	PackageGuid="EFDDC549-1646-4451-8A51-E5A5E94D647C"
 	Id="B1430D25-AF34-47e3-BFFF-561DEEF0A2B1"
-	Namespace="Neumont.Tools.ORM.CustomProperties"
+	Namespace="ORMSolutions.ORMArchitect.CustomProperties"
 	Name="CustomProperties"
 	AccessModifier="Assembly"
 	DisplayName="Custom Properties"
 	Description="Add custom properties to ORM model elements"
-	CompanyName="Neumont University"
-	ProductName="Neumont ORM Architect for Visual Studio"
+	CompanyName="ORM Solutions, LLC	"
+	ProductName="Natural Object-Role Modeling Architect for Visual Studio"
 	MajorVersion="1" MinorVersion="0" Build="0" Revision="0">
 
 	<Attributes>
 		<ClrAttribute Name="DslModeling::ExtendsDomainModel">
 			<Parameters>
-				<AttributeParameter Value="&quot;3EAE649F-E654-4D04-8289-C25D2C0322D8&quot;/*Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel*/"/>
+				<AttributeParameter Value="&quot;3EAE649F-E654-4D04-8289-C25D2C0322D8&quot;/*ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel*/"/>
 			</Parameters>
 		</ClrAttribute>
 	</Attributes>
 	
 	<Classes>
-		<DomainClass Name="CustomPropertyGroup" Namespace="Neumont.Tools.ORM.CustomProperties" Id="D0938429-DBA7-42f1-829A-090FC2C75AD3" DisplayName="CustomPropertyGroup" AccessModifier="Assembly" InheritanceModifier="Sealed">
+		<DomainClass Name="CustomPropertyGroup" Namespace="ORMSolutions.ORMArchitect.CustomProperties" Id="D0938429-DBA7-42f1-829A-090FC2C75AD3" DisplayName="CustomPropertyGroup" AccessModifier="Assembly" InheritanceModifier="Sealed">
 			<Properties>
 				<DomainProperty Name="Name" DisplayName="Name" Id="35B17292-2DDC-4089-BD0F-F127A01D23C7">
 					<Type>
@@ -64,7 +64,7 @@
 				</DomainProperty>
 			</Properties>
 		</DomainClass>
-		<DomainClass Name="CustomPropertyDefinition" Namespace="Neumont.Tools.ORM.CustomProperties" Id="169EA615-15F2-47FF-BAA4-6D8CD1D5DE4A" DisplayName="CustomPropertyDefinition" AccessModifier="Assembly" InheritanceModifier="Sealed">
+		<DomainClass Name="CustomPropertyDefinition" Namespace="ORMSolutions.ORMArchitect.CustomProperties" Id="169EA615-15F2-47FF-BAA4-6D8CD1D5DE4A" DisplayName="CustomPropertyDefinition" AccessModifier="Assembly" InheritanceModifier="Sealed">
 			<Properties>
 				<DomainProperty Name="Name" DisplayName="Name" Id="E5B9518B-B741-4002-A6A0-4E11D6D461DF">
 					<Type>
@@ -103,11 +103,11 @@
 				</DomainProperty>
 			</Properties>
 		</DomainClass>
-		<DomainClass Name="CustomProperty" Namespace="Neumont.Tools.ORM.CustomProperties" Id="D9BD32B6-73CC-49f9-BD71-F39E738320BA" DisplayName="CustomProperty" AccessModifier="Assembly" InheritanceModifier="Sealed">
+		<DomainClass Name="CustomProperty" Namespace="ORMSolutions.ORMArchitect.CustomProperties" Id="D9BD32B6-73CC-49f9-BD71-F39E738320BA" DisplayName="CustomProperty" AccessModifier="Assembly" InheritanceModifier="Sealed">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;CustomProperty, CustomPropertyTypeDescriptor&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;CustomProperty, CustomPropertyTypeDescriptor&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -122,7 +122,7 @@
 	</Classes>
 
 	<Relationships>
-		<DomainRelationship Name="CustomPropertyHasCustomPropertyDefinition" Namespace="Neumont.Tools.ORM.CustomProperties" Id="1A95E98A-4185-48F4-8FD0-E5AF676D26E7" AccessModifier="Assembly" InheritanceModifier="Sealed">
+		<DomainRelationship Name="CustomPropertyHasCustomPropertyDefinition" Namespace="ORMSolutions.ORMArchitect.CustomProperties" Id="1A95E98A-4185-48F4-8FD0-E5AF676D26E7" AccessModifier="Assembly" InheritanceModifier="Sealed">
 			<Source>
 				<DomainRole Name="CustomProperty" Multiplicity="One" Id="B8BF7986-4312-42E2-B5C0-A460BB381666" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="CustomProperty" PropertyName="CustomPropertyDefinition">
 					<RolePlayer>
@@ -139,8 +139,8 @@
 			</Target>
 		</DomainRelationship>
 		<!--CustomPropertyGroupContainsCustomPropertyDefinition-->
-		<!--<DomainRelationship Name="CustomProperties" Namespace="Neumont.Tools.ORM.CustomProperties" Id="157C325F-561F-430D-95BB-1AE421FC3EDA" IsEmbedding="true" AccessModifier="Assembly">-->
-		<DomainRelationship Name="CustomPropertyGroupContainsCustomPropertyDefinition" Namespace="Neumont.Tools.ORM.CustomProperties" Id="157C325F-561F-430D-95BB-1AE421FC3EDA" IsEmbedding="true" AccessModifier="Assembly" InheritanceModifier="Sealed">
+		<!--<DomainRelationship Name="CustomProperties" Namespace="ORMSolutions.ORMArchitect.CustomProperties" Id="157C325F-561F-430D-95BB-1AE421FC3EDA" IsEmbedding="true" AccessModifier="Assembly">-->
+		<DomainRelationship Name="CustomPropertyGroupContainsCustomPropertyDefinition" Namespace="ORMSolutions.ORMArchitect.CustomProperties" Id="157C325F-561F-430D-95BB-1AE421FC3EDA" IsEmbedding="true" AccessModifier="Assembly" InheritanceModifier="Sealed">
 			<Source>
 				<DomainRole Name="CustomPropertyGroup" Multiplicity="ZeroMany" Id="CC4A4E71-9945-4B47-A010-33E2F78646FA" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="CustomPropertyGroup" PropertyName="CustomPropertyDefinitionCollection">
 					<RolePlayer>
@@ -159,7 +159,7 @@
 	</Relationships>
 
 	<Types>
-		<DomainEnumeration Name="ORMTypes" Namespace="Neumont.Tools.ORM.CustomProperties" IsFlags="true" AccessModifier="Assembly">
+		<DomainEnumeration Name="ORMTypes" Namespace="ORMSolutions.ORMArchitect.CustomProperties" IsFlags="true" AccessModifier="Assembly">
 			<Literals>
 				<EnumerationLiteral Name="None" Value="0"/>
 				
@@ -182,12 +182,12 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;ORMTypes, global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;ORMTypes, global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
 		</DomainEnumeration>
-		<DomainEnumeration Name="CustomPropertyDataType" Namespace="Neumont.Tools.ORM.CustomProperties" AccessModifier="Assembly">
+		<DomainEnumeration Name="CustomPropertyDataType" Namespace="ORMSolutions.ORMArchitect.CustomProperties" AccessModifier="Assembly">
 			<Literals>
 				<EnumerationLiteral Name="String" Value="0"/>
 				<EnumerationLiteral Name="Integer" Value="1"/>
@@ -198,13 +198,13 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;CustomPropertyDataType, global::Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;CustomPropertyDataType, global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
 		</DomainEnumeration>
 	</Types>
 
-	<XmlSerializationBehavior Name="CustomPropertyDomainModelSerializationBehavior" Namespace="Neumont.Tools.ORM.CustomProperties"/>
+	<XmlSerializationBehavior Name="CustomPropertyDomainModelSerializationBehavior" Namespace="ORMSolutions.ORMArchitect.CustomProperties"/>
 
 </Dsl>

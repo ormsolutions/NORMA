@@ -1,7 +1,7 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
-* Copyright © Matthew Curland. All rights reserved.                        *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
+* Copyright © ORM Solutions, LLC. All rights reserved.                        *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -23,13 +23,13 @@ using System.Text;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.VirtualTreeGrid;
-using Neumont.Tools.ORM.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using Microsoft.VisualStudio.Shell;
 using System.Globalization;
 using Microsoft.VisualStudio.Shell.Interop;
-using Neumont.Tools.Modeling.Shell;
+using ORMSolutions.ORMArchitect.Framework.Shell;
 
-namespace Neumont.Tools.ORM.Shell
+namespace ORMSolutions.ORMArchitect.Core.Shell
 {
 	partial class ORMReferenceModeEditorToolWindow
 	{

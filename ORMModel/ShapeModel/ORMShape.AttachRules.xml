@@ -2,7 +2,7 @@
 <arg:Rules xmlns:arg="http://schemas.neumont.edu/ORM/SDK/AttachRulesGenerator" xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
 	<arg:Copyright name="Common Public License Copyright Notice">
 		<arg:CopyrightLine>/**************************************************************************\</arg:CopyrightLine>
-		<arg:CopyrightLine>* Neumont Object-Role Modeling Architect for Visual Studio                 *</arg:CopyrightLine>
+		<arg:CopyrightLine>* Natural Object-Role Modeling Architect for Visual Studio                 *</arg:CopyrightLine>
 		<arg:CopyrightLine>*                                                                          *</arg:CopyrightLine>
 		<arg:CopyrightLine>* Copyright © Neumont University. All rights reserved.                     *</arg:CopyrightLine>
 		<arg:CopyrightLine>*                                                                          *</arg:CopyrightLine>
@@ -33,19 +33,19 @@
 		</arg:RuleContainer>
 		<arg:RuleContainer class="ExternalConstraintShape">
 			<arg:AddRule methodName="ExclusiveOrCouplerAddedRule">
-				<arg:RuleOn targetType="ExclusiveOrConstraintCoupler" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
+				<arg:RuleOn targetType="ExclusiveOrConstraintCoupler" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:AddRule>
 			<arg:DeleteRule methodName="ExclusiveOrCouplerDeletedRule">
-				<arg:RuleOn targetType="ExclusiveOrConstraintCoupler" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
+				<arg:RuleOn targetType="ExclusiveOrConstraintCoupler" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:DeleteRule>
 			<arg:AddRule methodName="PreferredIdentifierAddRule">
-				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
+				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:AddRule>
 			<arg:DeleteRule methodName="PreferredIdentifierDeleteRule">
-				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
+				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:DeleteRule>
 			<arg:RolePlayerChangeRule methodName="PreferredIdentifierRolePlayerChangeRule">
-				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
+				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:RolePlayerChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="FactTypeShape">
@@ -59,30 +59,30 @@
 				<arg:RuleOn targetType="FactTypeShape" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:ChangeRule>
 			<arg:DeleteRule methodName="ImplicitBooleanValueTypeDeletedRule">
-				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
+				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:DeleteRule>
 			<arg:ChangeRule methodName="ObjectificationIsImpliedChangeRule">
-				<arg:RuleOn targetType="Objectification" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
+				<arg:RuleOn targetType="Objectification" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:ChangeRule>
 			<arg:RolePlayerChangeRule methodName="ObjectificationRolePlayerChangeRule">
-				<arg:RuleOn targetType="Objectification" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
+				<arg:RuleOn targetType="Objectification" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:RolePlayerChangeRule>
 			<arg:ChangeRule methodName="RoleChangedRule">
-				<arg:RuleOn targetType="Role" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
+				<arg:RuleOn targetType="Role" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:ChangeRule>
 			<arg:RolePlayerPositionChangeRule methodName="RoleDisplayOrderChangedRule">
 				<arg:RuleOn targetType="FactTypeShapeHasRoleDisplayOrder" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:RolePlayerPositionChangeRule>
 			<arg:DeleteRule methodName="SwitchFromNestedFactTypeRule">
-				<arg:RuleOn targetType="Objectification" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
+				<arg:RuleOn targetType="Objectification" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:DeleteRule>
 			<arg:AddRule methodName="SwitchToNestedFactTypeRule">
-				<arg:RuleOn targetType="Objectification" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
+				<arg:RuleOn targetType="Objectification" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:AddRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="FrequencyConstraintShape">
 			<arg:ChangeRule methodName="FrequencyConstraintPropertyChangeRule">
-				<arg:RuleOn targetType="FrequencyConstraint" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
+				<arg:RuleOn targetType="FrequencyConstraint" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:ChangeRule>
 			<arg:DeletingRule methodName="FrequencyConstraintConversionDeletingRule">
 				<arg:RuleOn targetType="FrequencyConstraintShape"/>
@@ -90,54 +90,54 @@
 		</arg:RuleContainer>
 		<arg:RuleContainer class="ModelNoteShape">
 			<arg:ChangeRule methodName="NoteChangeRule">
-				<arg:RuleOn targetType="Note" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
+				<arg:RuleOn targetType="Note" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:ChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="ObjectTypeShape">
 			<arg:AddRule methodName="DataTypeAddedRule">
-				<arg:RuleOn targetType="ValueTypeHasDataType" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+				<arg:RuleOn targetType="ValueTypeHasDataType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:AddRule>
 			<arg:DeleteRule methodName="DataTypeDeleteRule">
-				<arg:RuleOn targetType="ValueTypeHasDataType" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
+				<arg:RuleOn targetType="ValueTypeHasDataType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:DeleteRule>
 			<arg:ChangeRule methodName="ObjectTypeChangeRule">
-				<arg:RuleOn targetType="ObjectType" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
+				<arg:RuleOn targetType="ObjectType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:ChangeRule>
 			<arg:ChangeRule methodName="ObjectTypeShapeChangeRule">
 				<arg:RuleOn targetType="ObjectTypeShape" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:ChangeRule>
 			<arg:AddRule methodName="PreferredIdentifierAddedRule">
-				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:AddRule>
 			<arg:DeleteRule methodName="PreferredIdentifierDeleteRule">
-				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
+				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:DeleteRule>
 			<arg:AddRule methodName="PreferredIdentifierLengthenedRule">
-				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
+				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:AddRule>
 			<arg:RolePlayerChangeRule methodName="PreferredIdentifierRolePlayerChangeRule">
-				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:RolePlayerChangeRule>
 			<arg:RolePlayerChangeRule methodName="PreferredIdentifierRolePlayerChangeRuleForResizeRule">
-				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
+				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:RolePlayerChangeRule>
 			<arg:DeleteRule methodName="PreferredIdentifierShortenedRule">
-				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
+				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:DeleteRule>
 			<arg:AddRule methodName="RolePlayerAddedRule">
-				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:AddRule>
 			<arg:DeleteRule methodName="RolePlayerDeleteRule">
-				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
+				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:DeleteRule>
 			<arg:RolePlayerChangeRule methodName="RolePlayerRolePlayerChangedRule">
-				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:RolePlayerChangeRule>
 			<arg:AddRule methodName="SubtypeDerivationAddedRule">
-				<arg:RuleOn targetType="SubtypeHasDerivationExpression" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AutoLayoutShapesRulePriority"/>
+				<arg:RuleOn targetType="SubtypeHasDerivationExpression" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AutoLayoutShapesRulePriority"/>
 			</arg:AddRule>
 			<arg:DeleteRule methodName="SubtypeDerivationDeletedRule">
-				<arg:RuleOn targetType="SubtypeHasDerivationExpression" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AutoLayoutShapesRulePriority"/>
+				<arg:RuleOn targetType="SubtypeHasDerivationExpression" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AutoLayoutShapesRulePriority"/>
 			</arg:DeleteRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="ORMBaseBinaryLinkShape">
@@ -150,10 +150,10 @@
 				<arg:RuleOn targetType="NodeShape" targetTypeQualifier="Microsoft.VisualStudio.Modeling.Diagrams" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>
 			</arg:ChangeRule>
 			<arg:AddRule methodName="ModelErrorAddedRule">
-				<arg:RuleOn targetType="ModelHasError" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+				<arg:RuleOn targetType="ModelHasError" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:AddRule>
 			<arg:DeletingRule methodName="ModelErrorDeletingRule">
-				<arg:RuleOn targetType="ModelHasError" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel"/>
+				<arg:RuleOn targetType="ModelHasError" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:DeletingRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="ORMShapeDomainModel">
@@ -161,25 +161,25 @@
 				<arg:RuleOn targetType="ORMShapeDomainModel"/>
 			</arg:TransactionCommittingRule>
 			<arg:AddRule methodName="ConstraintRoleSequenceRoleAddedRule">
-				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
+				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:AddRule>
 			<arg:DeleteRule methodName="ConstraintRoleSequenceRoleDeletedRule">
-				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
+				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:DeleteRule>
 			<arg:RolePlayerPositionChangeRule methodName="ConstraintRoleSequencePositionChangedRule">
-				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
+				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:RolePlayerPositionChangeRule>
 			<arg:AddRule methodName="FactConstraintAddedRule">
-				<arg:RuleOn targetType="FactConstraint" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>
+				<arg:RuleOn targetType="FactConstraint" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>
 			</arg:AddRule>
 			<arg:DeleteRule methodName="FactConstraintDeletedRule">
-				<arg:RuleOn targetType="FactConstraint" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
+				<arg:RuleOn targetType="FactConstraint" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:DeleteRule>
 			<arg:DeleteRule methodName="ExternalRoleConstraintDeletedRule">
-				<arg:RuleOn targetType="ExternalRoleConstraint" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
+				<arg:RuleOn targetType="ExternalRoleConstraint" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:DeleteRule>
 			<arg:AddRule methodName="FactTypedAddedRule">
-				<arg:RuleOn targetType="ModelHasFactType" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
+				<arg:RuleOn targetType="ModelHasFactType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:AddRule>
 			<arg:ChangeRule methodName="FactTypeShapeChangedRule">
 				<arg:RuleOn targetType="FactTypeShape" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
@@ -192,73 +192,73 @@
 				</arg:RuleOn>
 			</arg:ChangeRule>
 			<arg:AddRule methodName="ModelNoteAddedRule">
-				<arg:RuleOn targetType="ModelHasModelNote" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
+				<arg:RuleOn targetType="ModelHasModelNote" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:AddRule>
 			<arg:AddRule methodName="ModelNoteReferenceAddedRule">
-				<arg:RuleOn targetType="ModelNoteReferencesModelElement" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>
+				<arg:RuleOn targetType="ModelNoteReferencesModelElement" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>
 			</arg:AddRule>
 			<arg:AddRule methodName="ObjectTypedAddedRule">
-				<arg:RuleOn targetType="ModelHasObjectType" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
+				<arg:RuleOn targetType="ModelHasObjectType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:AddRule>
 			<arg:AddRule methodName="ObjectTypePlaysRoleAddedRule">
-				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>
+				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>
 			</arg:AddRule>
 			<arg:RolePlayerChangeRule methodName="ObjectTypePlaysRoleRolePlayerChangeRule">
-				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>
+				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>
 			</arg:RolePlayerChangeRule>
 			<arg:ChangeRule methodName="ObjectTypeShapeChangeRule">
 				<arg:RuleOn targetType="ObjectTypeShape" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 				<arg:RuleOn targetType="ObjectifiedFactTypeNameShape" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:ChangeRule>
 			<arg:AddRule methodName="ReadingOrderAddedRule">
-				<arg:RuleOn targetType="FactTypeHasReadingOrder" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
+				<arg:RuleOn targetType="FactTypeHasReadingOrder" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:AddRule>
 			<arg:AddRule methodName="RoleAddedRule">
-				<arg:RuleOn targetType="FactTypeHasRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
+				<arg:RuleOn targetType="FactTypeHasRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:AddRule>
 			<arg:AddRule methodName="RoleAddedRuleInline">
-				<arg:RuleOn targetType="FactTypeHasRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" priority="BeforeDelayValidateRulePriority"/>
+				<arg:RuleOn targetType="FactTypeHasRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" priority="BeforeDelayValidateRulePriority"/>
 			</arg:AddRule>
 			<arg:DeleteRule methodName="RoleDeletedRule">
-				<arg:RuleOn targetType="FactTypeHasRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
+				<arg:RuleOn targetType="FactTypeHasRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:DeleteRule>
 			<arg:AddRule methodName="RoleValueConstraintAddedRule">
-				<arg:RuleOn targetType="RoleHasValueConstraint" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>
+				<arg:RuleOn targetType="RoleHasValueConstraint" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>
 			</arg:AddRule>
 			<arg:AddRule methodName="SetComparisonConstraintAddedRule">
-				<arg:RuleOn targetType="ModelHasSetComparisonConstraint" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
+				<arg:RuleOn targetType="ModelHasSetComparisonConstraint" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:AddRule>
 			<arg:AddRule methodName="SetConstraintAddedRule">
-				<arg:RuleOn targetType="ModelHasSetConstraint" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
+				<arg:RuleOn targetType="ModelHasSetConstraint" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:AddRule>
 			<arg:AddRule methodName="ValueTypeValueConstraintAddedRule">
-				<arg:RuleOn targetType="ValueTypeHasValueConstraint" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>
+				<arg:RuleOn targetType="ValueTypeHasValueConstraint" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>
 			</arg:AddRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="ReadingShape">
 			<arg:AddRule methodName="DerivationAddedRule">
-				<arg:RuleOn targetType="FactTypeHasDerivationExpression" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AutoLayoutShapesRulePriority"/>
+				<arg:RuleOn targetType="FactTypeHasDerivationExpression" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AutoLayoutShapesRulePriority"/>
 			</arg:AddRule>
 			<arg:ChangeRule methodName="DerivationChangedRule">
-				<arg:RuleOn targetType="FactTypeDerivationExpression" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AutoLayoutShapesRulePriority"/>
+				<arg:RuleOn targetType="FactTypeDerivationExpression" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AutoLayoutShapesRulePriority"/>
 			</arg:ChangeRule>
 			<arg:DeleteRule methodName="DerivationDeletedRule">
-				<arg:RuleOn targetType="FactTypeHasDerivationExpression" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AutoLayoutShapesRulePriority"/>
+				<arg:RuleOn targetType="FactTypeHasDerivationExpression" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AutoLayoutShapesRulePriority"/>
 			</arg:DeleteRule>
 			<arg:ChangeRule methodName="DisplayOrientationChangedRule">
 				<arg:RuleOn targetType="FactTypeShape" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:ChangeRule>
 			<arg:AddRule methodName="ReadingAddedRule">
-				<arg:RuleOn targetType="ReadingOrderHasReading" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
+				<arg:RuleOn targetType="ReadingOrderHasReading" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:AddRule>
 			<arg:DeleteRule methodName="ReadingOrderDeletedRule">
-				<arg:RuleOn targetType="FactTypeHasReadingOrder" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
+				<arg:RuleOn targetType="FactTypeHasReadingOrder" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:DeleteRule>
 			<arg:RolePlayerPositionChangeRule methodName="ReadingPositionChangedRule">
-				<arg:RuleOn targetType="ReadingOrderHasReading" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
+				<arg:RuleOn targetType="ReadingOrderHasReading" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:RolePlayerPositionChangeRule>
 			<arg:ChangeRule methodName="ReadingTextChangedRule">
-				<arg:RuleOn targetType="Reading" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
+				<arg:RuleOn targetType="Reading" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:ChangeRule>
 			<arg:AddRule methodName="RoleDisplayOrderAddedRule">
 				<arg:RuleOn targetType="FactTypeShapeHasRoleDisplayOrder" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
@@ -267,26 +267,26 @@
 				<arg:RuleOn targetType="FactTypeShapeHasRoleDisplayOrder" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:RolePlayerPositionChangeRule>
 			<arg:AddRule methodName="RolePlayerAddedRule">
-				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
+				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:AddRule>
 			<arg:ChangeRule methodName="RolePlayerChangedRule">
-				<arg:RuleOn targetType="ObjectType" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
+				<arg:RuleOn targetType="ObjectType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:ChangeRule>
 			<arg:DeleteRule methodName="RolePlayerDeletedRule">
-				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
+				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:DeleteRule>
 			<arg:RolePlayerChangeRule methodName="RolePlayerRolePlayerChangedRule">
-				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
+				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:RolePlayerChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="RingConstraintShape">
 			<arg:ChangeRule methodName="RingConstraintPropertyChangeRule">
-				<arg:RuleOn targetType="RingConstraint" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>
+				<arg:RuleOn targetType="RingConstraint" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>
 			</arg:ChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="ValueConstraintShape">
 			<arg:ChangeRule methodName="ValueConstraintTextChangedRule">
-				<arg:RuleOn targetType="ValueConstraint" targetTypeQualifier="Neumont.Tools.ORM.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
+				<arg:RuleOn targetType="ValueConstraint" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:ChangeRule>
 		</arg:RuleContainer>
 	</arg:Model>

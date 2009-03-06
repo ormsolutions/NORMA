@@ -8,8 +8,8 @@
     <ProjectGuid>{DF2A6EC8-DCF6-4375-B8EB-A6FEE78AB238}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Neumont.Tools.ORM.DatabaseImport</RootNamespace>
-    <AssemblyName>Neumont.Tools.ORM.DatabaseImport.$(TargetVisualStudioShortProductName)</AssemblyName>
+    <RootNamespace>ORMSolutions.ORMArchitect.DatabaseImport</RootNamespace>
+    <AssemblyName>ORMSolutions.ORMArchitect.DatabaseImport.$(TargetVisualStudioShortProductName)</AssemblyName>
     <WarningLevel>4</WarningLevel>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\ORMPackage.snk</AssemblyOriginatorKeyFile>
@@ -23,7 +23,7 @@
     <Optimize>true</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>$(DefineConstants);TRACE;DEBUG</DefineConstants>
-    <DocumentationFile>bin\Debug\Neumont.Tools.ORM.DatabaseImport.$(TargetVisualStudioShortProductName).xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\ORMSolutions.ORMArchitect.DatabaseImport.$(TargetVisualStudioShortProductName).xml</DocumentationFile>
     <ErrorReport>prompt</ErrorReport>
     <NoWarn>1607</NoWarn>
     <UseVSHostingProcess>false</UseVSHostingProcess>
@@ -33,7 +33,7 @@
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>$(DefineConstants);TRACE</DefineConstants>
-    <DocumentationFile>bin\Release\Neumont.Tools.ORM.DatabaseImport.$(TargetVisualStudioShortProductName).xml</DocumentationFile>
+    <DocumentationFile>bin\Release\ORMSolutions.ORMArchitect.DatabaseImport.$(TargetVisualStudioShortProductName).xml</DocumentationFile>
     <ErrorReport>prompt</ErrorReport>
     <NoWarn>1607</NoWarn>
     <UseVSHostingProcess>false</UseVSHostingProcess>

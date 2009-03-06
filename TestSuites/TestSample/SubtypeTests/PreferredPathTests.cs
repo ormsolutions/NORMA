@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Neumont.Tools.ORM.SDK.TestEngine;
-using Neumont.Tools.ORM.ObjectModel;
+using ORMSolutions.ORMArchitectSDK.TestEngine;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
 using NUnit.Framework;
 using NUnitCategory = NUnit.Framework.CategoryAttribute;
-using Neumont.Tools.Modeling.Design;
+using ORMSolutions.ORMArchitect.Framework.Design;
 
 namespace TestSample.SubtypeTests
 {

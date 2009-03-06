@@ -1,6 +1,6 @@
 ﻿#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -24,15 +24,15 @@
 
 using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
-namespace Neumont.Tools.EntityRelationshipModels.Barker
+namespace ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker
 {
 	/// <summary>
 	/// DomainModel BarkerDomainModel
 	/// Barker Entity Relationship View of ORM Model
 	/// </summary>
-	[DslModeling::ExtendsDomainModel("1F394F03-8A41-48BC-BDED-2268E131B4A3"/*Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel*/)]
-	[DslDesign::DisplayNameResource("Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel.DisplayName", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+	[DslModeling::ExtendsDomainModel("1F394F03-8A41-48BC-BDED-2268E131B4A3"/*ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel*/)]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("b2caed8e-4155-4317-9405-55006fde280e")]
 	public partial class BarkerDomainModel : DslModeling::DomainModel
@@ -251,7 +251,7 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// <summary>
 		/// The base name of this model's resources.
 		/// </summary>
-		public const string ResourceBaseName = "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx";
+		public const string ResourceBaseName = "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx";
 		
 		/// <summary>
 		/// Gets the DomainModel's ResourceManager. If the ResourceManager does not already exist, then it is created.
@@ -376,11 +376,11 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		public BarkerDeleteClosureBase()
 		{
 			#region Initialize DomainData Table
-			DomainRoles.Add(global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute.AttributeDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole.RoleDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType.EntityTypeDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation.BinaryAssociationDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc.ExclusiveArcDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute.AttributeDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole.RoleDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType.EntityTypeDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation.BinaryAssociationDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc.ExclusiveArcDomainRoleId, true);
 			#endregion
 		}
 		/// <summary>
@@ -500,56 +500,56 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 	#endregion
 		
 }
-namespace Neumont.Tools.EntityRelationshipModels.Barker
+namespace ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker
 {
 	/// <summary>
 	/// DomainEnumeration: OperatorSymbol
 	/// Valid values for comparison operators.
 	/// </summary>
 	[global::System.Serializable()]
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<OperatorSymbol, global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<OperatorSymbol, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel>))]
 	[global::System.CLSCompliant(true)]
 	public enum OperatorSymbol
 	{
 		/// <summary>
 		/// Equal
 		/// Description for
-		/// Neumont.Tools.EntityRelationshipModels.Barker.OperatorSymbol.Equal
+		/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.OperatorSymbol.Equal
 		/// </summary>
 		[global::System.Xml.Serialization.XmlEnum("EQUAL")]
-		[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.OperatorSymbol/Equal.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.OperatorSymbol/Equal.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
 		Equal = 0,
 		/// <summary>
 		/// LessThan
 		/// Description for
-		/// Neumont.Tools.EntityRelationshipModels.Barker.OperatorSymbol.LessThan
+		/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.OperatorSymbol.LessThan
 		/// </summary>
 		[global::System.Xml.Serialization.XmlEnum("LESS_THAN")]
-		[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.OperatorSymbol/LessThan.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.OperatorSymbol/LessThan.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
 		LessThan = 1,
 		/// <summary>
 		/// GreaterThan
 		/// Description for
-		/// Neumont.Tools.EntityRelationshipModels.Barker.OperatorSymbol.GreaterThan
+		/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.OperatorSymbol.GreaterThan
 		/// </summary>
 		[global::System.Xml.Serialization.XmlEnum("GREATER_THAN")]
-		[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.OperatorSymbol/GreaterThan.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.OperatorSymbol/GreaterThan.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
 		GreaterThan = 2,
 		/// <summary>
 		/// LessThanOrEqualTo
 		/// Description for
-		/// Neumont.Tools.EntityRelationshipModels.Barker.OperatorSymbol.LessThanOrEqualTo
+		/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.OperatorSymbol.LessThanOrEqualTo
 		/// </summary>
 		[global::System.Xml.Serialization.XmlEnum("LESS_THAN_OR_EQUAL_TO")]
-		[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.OperatorSymbol/LessThanOrEqualTo.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.OperatorSymbol/LessThanOrEqualTo.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
 		LessThanOrEqualTo = 3,
 		/// <summary>
 		/// GreaterThanOrEqualTo
 		/// Description for
-		/// Neumont.Tools.EntityRelationshipModels.Barker.OperatorSymbol.GreaterThanOrEqualTo
+		/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.OperatorSymbol.GreaterThanOrEqualTo
 		/// </summary>
 		[global::System.Xml.Serialization.XmlEnum("GREATER_THAN_OR_EQUAL_TO")]
-		[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.OperatorSymbol/GreaterThanOrEqualTo.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.OperatorSymbol/GreaterThanOrEqualTo.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
 		GreaterThanOrEqualTo = 4,
 	}
 }

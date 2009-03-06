@@ -8,8 +8,8 @@
     <ProjectGuid>{1A3F7938-A79C-40D2-BA43-1778118C73C6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Neumont.Tools.RelationalModels.ConceptualDatabase</RootNamespace>
-    <AssemblyName>Neumont.Tools.RelationalModels.$(TargetVisualStudioShortProductName)</AssemblyName>
+    <RootNamespace>ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase</RootNamespace>
+    <AssemblyName>ORMSolutions.ORMArchitect.RelationalModels.$(TargetVisualStudioShortProductName)</AssemblyName>
     <WarningLevel>4</WarningLevel>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\ORMPackage.snk</AssemblyOriginatorKeyFile>
@@ -23,7 +23,7 @@
     <Optimize>true</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>$(DefineConstants);TRACE;DEBUG</DefineConstants>
-    <DocumentationFile>bin\Debug\Neumont.Tools.RelationalModels.$(TargetVisualStudioShortProductName).xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\ORMSolutions.ORMArchitect.RelationalModels.$(TargetVisualStudioShortProductName).xml</DocumentationFile>
     <ErrorReport>prompt</ErrorReport>
     <NoWarn>1607</NoWarn>
     <UseVSHostingProcess>false</UseVSHostingProcess>
@@ -33,13 +33,13 @@
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>$(DefineConstants);TRACE</DefineConstants>
-    <DocumentationFile>bin\Release\Neumont.Tools.RelationalModels.$(TargetVisualStudioShortProductName).xml</DocumentationFile>
+    <DocumentationFile>bin\Release\ORMSolutions.ORMArchitect.RelationalModels.$(TargetVisualStudioShortProductName).xml</DocumentationFile>
     <ErrorReport>prompt</ErrorReport>
     <NoWarn>1607</NoWarn>
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Neumont.Tools.ORM.$(TargetVisualStudioShortProductName), Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
+    <Reference Include="ORMSolutions.ORMArchitect.Core.$(TargetVisualStudioShortProductName), Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Modeling.Sdk, Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />

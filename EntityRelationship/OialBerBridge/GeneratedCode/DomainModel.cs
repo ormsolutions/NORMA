@@ -1,6 +1,6 @@
 ﻿#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -24,19 +24,19 @@
 
 using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
-namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
+namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 {
 	/// <summary>
 	/// DomainModel ORMAbstractionToBarkerERBridgeDomainModel
 	/// (Preliminary) Bridge ORM Abstraction Model and Barker ER Model
 	/// </summary>
-	[DslModeling::ExtendsDomainModel("F60BC3F1-C38E-4C7D-9EE5-9211DB26CB45"/*Neumont.Tools.Modeling.FrameworkDomainModel*/)]
-	[DslModeling::ExtendsDomainModel("3EAE649F-E654-4D04-8289-C25D2C0322D8"/*Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel*/)]
-	[DslModeling::ExtendsDomainModel("F7BC82F4-83D1-408C-BA42-607E90B23BEA"/*Neumont.Tools.ORMAbstraction.AbstractionDomainModel*/)]
-	[DslModeling::ExtendsDomainModel("B2CAED8E-4155-4317-9405-55006FDE280E"/*Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel*/)]
-	[DslModeling::ExtendsDomainModel("1F394F03-8A41-48BC-BDED-2268E131B4A3"/*Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel*/)]
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.DisplayName", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.Description", typeof(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+	[DslModeling::ExtendsDomainModel("F60BC3F1-C38E-4C7D-9EE5-9211DB26CB45"/*ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel*/)]
+	[DslModeling::ExtendsDomainModel("3EAE649F-E654-4D04-8289-C25D2C0322D8"/*ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel*/)]
+	[DslModeling::ExtendsDomainModel("F7BC82F4-83D1-408C-BA42-607E90B23BEA"/*ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel*/)]
+	[DslModeling::ExtendsDomainModel("B2CAED8E-4155-4317-9405-55006FDE280E"/*ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel*/)]
+	[DslModeling::ExtendsDomainModel("1F394F03-8A41-48BC-BDED-2268E131B4A3"/*ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel*/)]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("77c1024f-d688-4aee-af16-29c2e791a9e7")]
 	public partial class ORMAbstractionToBarkerERBridgeDomainModel : DslModeling::DomainModel
@@ -197,7 +197,7 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		/// <summary>
 		/// The base name of this model's resources.
 		/// </summary>
-		public const string ResourceBaseName = "Neumont.Tools.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx";
+		public const string ResourceBaseName = "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx";
 		
 		/// <summary>
 		/// Gets the DomainModel's ResourceManager. If the ResourceManager does not already exist, then it is created.
@@ -322,7 +322,7 @@ namespace Neumont.Tools.ORMAbstractionToBarkerERBridge
 		public ORMAbstractionToBarkerERBridgeDeleteClosureBase()
 		{
 			#region Initialize DomainData Table
-			DomainRoles.Add(global::Neumont.Tools.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GenerationSettingDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GenerationSettingDomainRoleId, true);
 			#endregion
 		}
 		/// <summary>

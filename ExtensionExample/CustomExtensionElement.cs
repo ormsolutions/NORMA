@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -18,9 +18,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.Modeling;
-using Neumont.Tools.ORM.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
 
-namespace Neumont.Tools.ORM.ExtensionExample
+namespace ORMSolutions.ORMArchitect.ExtensionExample
 {
 	#region TestElementPicker Class
 	namespace Design
@@ -32,7 +32,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 		/// The user is allowed to specify a value that is not in the drop down list by typing it in.
 		/// If the current value is not in the list of predefined values, it is added to the drop down list.
 		/// </remarks>
-		public sealed class TestElementPicker : Neumont.Tools.Modeling.Design.ElementPicker<TestElementPicker>
+		public sealed class TestElementPicker : ORMSolutions.ORMArchitect.Framework.Design.ElementPicker<TestElementPicker>
 		{
 			private static readonly string[] predefinedValues =
 				new string[] { "Default value", "Not the default value", "Another value" };
@@ -163,7 +163,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 		}
 		#region RoleAddRule rule
 		/// <summary>
-		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasRole)
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasRole)
 		/// Rules are defined to respond to changes in the object
 		/// model that occur during user editing. In this case, we're adding
 		/// our custom extension element to a Role object when it is added to

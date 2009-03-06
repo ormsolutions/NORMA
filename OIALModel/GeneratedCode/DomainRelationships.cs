@@ -51,7 +51,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		/// <param name="source">OIALModel to use as the source of the relationship.</param>
 		/// <param name="target">ORMModel to use as the target of the relationship.</param>
-		public OIALModelHasORMModel(OIALModel source, global::Neumont.Tools.ORM.ObjectModel.ORMModel target)
+		public OIALModelHasORMModel(OIALModel source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel target)
 			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(OIALModelHasORMModel.OIALModelDomainRoleId, source), new DslModeling::RoleAssignment(OIALModelHasORMModel.ORMModelDomainRoleId, target)}, null)
 		{
 		}
@@ -134,7 +134,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static OIALModel GetOIALModel(global::Neumont.Tools.ORM.ObjectModel.ORMModel element)
+		public static OIALModel GetOIALModel(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel element)
 		{
 			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ORMModelDomainRoleId) as OIALModel;
 		}
@@ -144,7 +144,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetOIALModel(global::Neumont.Tools.ORM.ObjectModel.ORMModel element, OIALModel newOIALModel)
+		public static void SetOIALModel(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel element, OIALModel newOIALModel)
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ORMModelDomainRoleId, newOIALModel);
 		}
@@ -164,12 +164,12 @@ namespace Neumont.Tools.ORM.OIALModel
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.OIALModelHasORMModel/ORMModel.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "OIALModel", PropertyDisplayNameKey="Neumont.Tools.ORM.OIALModel.OIALModelHasORMModel/ORMModel.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("ce948d50-a437-4172-b16c-74eb8e59e9b5")]
-		public virtual global::Neumont.Tools.ORM.ObjectModel.ORMModel ORMModel
+		public virtual global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel ORMModel
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (global::Neumont.Tools.ORM.ObjectModel.ORMModel)DslModeling::DomainRoleInfo.GetRolePlayer(this, ORMModelDomainRoleId);
+				return (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel)DslModeling::DomainRoleInfo.GetRolePlayer(this, ORMModelDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -185,9 +185,9 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.ObjectModel.ORMModel GetORMModel(OIALModel element)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel GetORMModel(OIALModel element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, OIALModelDomainRoleId) as global::Neumont.Tools.ORM.ObjectModel.ORMModel;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, OIALModelDomainRoleId) as global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel;
 		}
 		
 		/// <summary>
@@ -195,7 +195,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetORMModel(OIALModel element, global::Neumont.Tools.ORM.ObjectModel.ORMModel newORMModel)
+		public static void SetORMModel(OIALModel element, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel newORMModel)
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, OIALModelDomainRoleId, newORMModel);
 		}
@@ -226,7 +226,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.OIALModel.OIALModelHasORMModel GetLinkToOIALModel (global::Neumont.Tools.ORM.ObjectModel.ORMModel oRMModelInstance)
+		public static global::Neumont.Tools.ORM.OIALModel.OIALModelHasORMModel GetLinkToOIALModel (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel oRMModelInstance)
 		{
 			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.OIALModelHasORMModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.OIALModelHasORMModel>(oRMModelInstance, global::Neumont.Tools.ORM.OIALModel.OIALModelHasORMModel.ORMModelDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ORMModel not obeyed.");
@@ -247,7 +247,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.OIALModelHasORMModel> GetLinks( global::Neumont.Tools.ORM.OIALModel.OIALModel source, global::Neumont.Tools.ORM.ObjectModel.ORMModel target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.OIALModelHasORMModel> GetLinks( global::Neumont.Tools.ORM.OIALModel.OIALModel source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel target )
 		{
 			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.OIALModel.OIALModelHasORMModel> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.OIALModel.OIALModelHasORMModel>();
 			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.OIALModelHasORMModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.OIALModelHasORMModel>(source, global::Neumont.Tools.ORM.OIALModel.OIALModelHasORMModel.OIALModelDomainRoleId);
@@ -265,7 +265,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.OIALModel.OIALModelHasORMModel GetLink( global::Neumont.Tools.ORM.OIALModel.OIALModel source, global::Neumont.Tools.ORM.ObjectModel.ORMModel target )
+		public static global::Neumont.Tools.ORM.OIALModel.OIALModelHasORMModel GetLink( global::Neumont.Tools.ORM.OIALModel.OIALModel source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel target )
 		{
 			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.OIALModelHasORMModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.OIALModelHasORMModel>(source, global::Neumont.Tools.ORM.OIALModel.OIALModelHasORMModel.OIALModelDomainRoleId);
 			foreach ( global::Neumont.Tools.ORM.OIALModel.OIALModelHasORMModel link in links )
@@ -815,12 +815,12 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// Description for
 		/// Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole.ConceptTypeChild
 		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<global::Neumont.Tools.ORM.ObjectModel.RoleBase> PathRoleCollection
+		public virtual DslModeling::LinkedElementCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleBase> PathRoleCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::LinkedElementCollection<global::Neumont.Tools.ORM.ObjectModel.RoleBase>(this, global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole.ConceptTypeChildDomainRoleId);
+				return new DslModeling::LinkedElementCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleBase>(this, global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole.ConceptTypeChildDomainRoleId);
 			}
 		}
 		#endregion
@@ -1993,7 +1993,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		/// <param name="source">InformationTypeFormat to use as the source of the relationship.</param>
 		/// <param name="target">ObjectType to use as the target of the relationship.</param>
-		public InformationTypeFormatHasObjectType(InformationTypeFormat source, global::Neumont.Tools.ORM.ObjectModel.ObjectType target)
+		public InformationTypeFormatHasObjectType(InformationTypeFormat source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType target)
 			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(InformationTypeFormatHasObjectType.InformationTypeFormatDomainRoleId, source), new DslModeling::RoleAssignment(InformationTypeFormatHasObjectType.ValueTypeDomainRoleId, target)}, null)
 		{
 		}
@@ -2077,7 +2077,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static InformationTypeFormat GetInformationTypeFormat(global::Neumont.Tools.ORM.ObjectModel.ObjectType element)
+		public static InformationTypeFormat GetInformationTypeFormat(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType element)
 		{
 			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ValueTypeDomainRoleId) as InformationTypeFormat;
 		}
@@ -2087,7 +2087,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetInformationTypeFormat(global::Neumont.Tools.ORM.ObjectModel.ObjectType element, InformationTypeFormat newInformationTypeFormat)
+		public static void SetInformationTypeFormat(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType element, InformationTypeFormat newInformationTypeFormat)
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ValueTypeDomainRoleId, newInformationTypeFormat);
 		}
@@ -2108,12 +2108,12 @@ namespace Neumont.Tools.ORM.OIALModel
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType/ValueType.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "InformationTypeFormat", PropertyDisplayNameKey="Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType/ValueType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("4c90d645-49ca-40b7-971e-bb17e2cf79a1")]
-		public virtual global::Neumont.Tools.ORM.ObjectModel.ObjectType ValueType
+		public virtual global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType ValueType
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (global::Neumont.Tools.ORM.ObjectModel.ObjectType)DslModeling::DomainRoleInfo.GetRolePlayer(this, ValueTypeDomainRoleId);
+				return (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType)DslModeling::DomainRoleInfo.GetRolePlayer(this, ValueTypeDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -2129,9 +2129,9 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.ObjectModel.ObjectType GetValueType(InformationTypeFormat element)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType GetValueType(InformationTypeFormat element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, InformationTypeFormatDomainRoleId) as global::Neumont.Tools.ORM.ObjectModel.ObjectType;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, InformationTypeFormatDomainRoleId) as global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType;
 		}
 		
 		/// <summary>
@@ -2139,7 +2139,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetValueType(InformationTypeFormat element, global::Neumont.Tools.ORM.ObjectModel.ObjectType newValueType)
+		public static void SetValueType(InformationTypeFormat element, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType newValueType)
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, InformationTypeFormatDomainRoleId, newValueType);
 		}
@@ -2170,7 +2170,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType GetLinkToInformationTypeFormat (global::Neumont.Tools.ORM.ObjectModel.ObjectType valueTypeInstance)
+		public static global::Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType GetLinkToInformationTypeFormat (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType valueTypeInstance)
 		{
 			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType>(valueTypeInstance, global::Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType.ValueTypeDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ValueType not obeyed.");
@@ -2191,7 +2191,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType> GetLinks( global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat source, global::Neumont.Tools.ORM.ObjectModel.ObjectType target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType> GetLinks( global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType target )
 		{
 			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType>();
 			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType>(source, global::Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType.InformationTypeFormatDomainRoleId);
@@ -2209,7 +2209,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType GetLink( global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat source, global::Neumont.Tools.ORM.ObjectModel.ObjectType target )
+		public static global::Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType GetLink( global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType target )
 		{
 			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType>(source, global::Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType.InformationTypeFormatDomainRoleId);
 			foreach ( global::Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType link in links )
@@ -2252,7 +2252,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		/// <param name="source">ConceptType to use as the source of the relationship.</param>
 		/// <param name="target">ObjectType to use as the target of the relationship.</param>
-		public ConceptTypeHasObjectType(ConceptType source, global::Neumont.Tools.ORM.ObjectModel.ObjectType target)
+		public ConceptTypeHasObjectType(ConceptType source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType target)
 			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ConceptTypeHasObjectType.ConceptTypeDomainRoleId, source), new DslModeling::RoleAssignment(ConceptTypeHasObjectType.ObjectTypeDomainRoleId, target)}, null)
 		{
 		}
@@ -2335,7 +2335,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static ConceptType GetConceptType(global::Neumont.Tools.ORM.ObjectModel.ObjectType element)
+		public static ConceptType GetConceptType(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType element)
 		{
 			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectTypeDomainRoleId) as ConceptType;
 		}
@@ -2345,7 +2345,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetConceptType(global::Neumont.Tools.ORM.ObjectModel.ObjectType element, ConceptType newConceptType)
+		public static void SetConceptType(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType element, ConceptType newConceptType)
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectTypeDomainRoleId, newConceptType);
 		}
@@ -2365,12 +2365,12 @@ namespace Neumont.Tools.ORM.OIALModel
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ConceptTypeHasObjectType/ObjectType.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ConceptType", PropertyDisplayNameKey="Neumont.Tools.ORM.OIALModel.ConceptTypeHasObjectType/ObjectType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("a2ee78aa-c18a-417f-bb1d-335c9df8dd0c")]
-		public virtual global::Neumont.Tools.ORM.ObjectModel.ObjectType ObjectType
+		public virtual global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType ObjectType
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (global::Neumont.Tools.ORM.ObjectModel.ObjectType)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectTypeDomainRoleId);
+				return (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectTypeDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -2386,9 +2386,9 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.ObjectModel.ObjectType GetObjectType(ConceptType element)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType GetObjectType(ConceptType element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ConceptTypeDomainRoleId) as global::Neumont.Tools.ORM.ObjectModel.ObjectType;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ConceptTypeDomainRoleId) as global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType;
 		}
 		
 		/// <summary>
@@ -2396,7 +2396,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetObjectType(ConceptType element, global::Neumont.Tools.ORM.ObjectModel.ObjectType newObjectType)
+		public static void SetObjectType(ConceptType element, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType newObjectType)
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ConceptTypeDomainRoleId, newObjectType);
 		}
@@ -2427,7 +2427,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasObjectType GetLinkToConceptType (global::Neumont.Tools.ORM.ObjectModel.ObjectType objectTypeInstance)
+		public static global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasObjectType GetLinkToConceptType (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType objectTypeInstance)
 		{
 			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasObjectType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasObjectType>(objectTypeInstance, global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasObjectType.ObjectTypeDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ObjectType not obeyed.");
@@ -2448,7 +2448,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasObjectType> GetLinks( global::Neumont.Tools.ORM.OIALModel.ConceptType source, global::Neumont.Tools.ORM.ObjectModel.ObjectType target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasObjectType> GetLinks( global::Neumont.Tools.ORM.OIALModel.ConceptType source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType target )
 		{
 			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasObjectType> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasObjectType>();
 			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasObjectType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasObjectType>(source, global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasObjectType.ConceptTypeDomainRoleId);
@@ -2466,7 +2466,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasObjectType GetLink( global::Neumont.Tools.ORM.OIALModel.ConceptType source, global::Neumont.Tools.ORM.ObjectModel.ObjectType target )
+		public static global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasObjectType GetLink( global::Neumont.Tools.ORM.OIALModel.ConceptType source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType target )
 		{
 			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasObjectType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasObjectType>(source, global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasObjectType.ConceptTypeDomainRoleId);
 			foreach ( global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasObjectType link in links )
@@ -4323,7 +4323,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		/// <param name="source">ConceptTypeChild to use as the source of the relationship.</param>
 		/// <param name="target">RoleBase to use as the target of the relationship.</param>
-		public ConceptTypeChildHasPathRole(ConceptTypeChild source, global::Neumont.Tools.ORM.ObjectModel.RoleBase target)
+		public ConceptTypeChildHasPathRole(ConceptTypeChild source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleBase target)
 			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ConceptTypeChildHasPathRole.ConceptTypeChildDomainRoleId, source), new DslModeling::RoleAssignment(ConceptTypeChildHasPathRole.PathRoleDomainRoleId, target)}, null)
 		{
 		}
@@ -4407,7 +4407,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<ConceptTypeChild> GetConceptTypeChild(global::Neumont.Tools.ORM.ObjectModel.RoleBase element)
+		public static DslModeling::LinkedElementCollection<ConceptTypeChild> GetConceptTypeChild(global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleBase element)
 		{
 			return new DslModeling::LinkedElementCollection<ConceptTypeChild>(element, PathRoleDomainRoleId);
 		}
@@ -4427,12 +4427,12 @@ namespace Neumont.Tools.ORM.OIALModel
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole/PathRole.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ConceptTypeChild", PropertyDisplayNameKey="Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole/PathRole.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("8e2cfdb8-f6d4-44e2-ae9c-bb72e5052809")]
-		public virtual global::Neumont.Tools.ORM.ObjectModel.RoleBase PathRole
+		public virtual global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleBase PathRole
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (global::Neumont.Tools.ORM.ObjectModel.RoleBase)DslModeling::DomainRoleInfo.GetRolePlayer(this, PathRoleDomainRoleId);
+				return (global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleBase)DslModeling::DomainRoleInfo.GetRolePlayer(this, PathRoleDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -4448,9 +4448,9 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<global::Neumont.Tools.ORM.ObjectModel.RoleBase> GetPathRoleCollection(ConceptTypeChild element)
+		public static DslModeling::LinkedElementCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleBase> GetPathRoleCollection(ConceptTypeChild element)
 		{
-			return new DslModeling::LinkedElementCollection<global::Neumont.Tools.ORM.ObjectModel.RoleBase>(element, ConceptTypeChildDomainRoleId);
+			return new DslModeling::LinkedElementCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleBase>(element, ConceptTypeChildDomainRoleId);
 		}
 		#endregion
 		#region ConceptTypeChild link accessor
@@ -4470,7 +4470,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole> GetLinksToConceptTypeChild ( global::Neumont.Tools.ORM.ObjectModel.RoleBase pathRoleInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole> GetLinksToConceptTypeChild ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleBase pathRoleInstance )
 		{
 			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole>(pathRoleInstance, global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole.PathRoleDomainRoleId);
 		}
@@ -4482,7 +4482,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole> GetLinks( global::Neumont.Tools.ORM.OIALModel.ConceptTypeChild source, global::Neumont.Tools.ORM.ObjectModel.RoleBase target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole> GetLinks( global::Neumont.Tools.ORM.OIALModel.ConceptTypeChild source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleBase target )
 		{
 			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole>();
 			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole>(source, global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole.ConceptTypeChildDomainRoleId);
@@ -4500,7 +4500,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole GetLink( global::Neumont.Tools.ORM.OIALModel.ConceptTypeChild source, global::Neumont.Tools.ORM.ObjectModel.RoleBase target )
+		public static global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole GetLink( global::Neumont.Tools.ORM.OIALModel.ConceptTypeChild source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleBase target )
 		{
 			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole>(source, global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole.ConceptTypeChildDomainRoleId);
 			foreach ( global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole link in links )

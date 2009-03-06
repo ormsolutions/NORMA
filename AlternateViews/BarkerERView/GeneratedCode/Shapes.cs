@@ -1,6 +1,6 @@
 ﻿#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -26,13 +26,13 @@ using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
 using DslDiagrams = global::Microsoft.VisualStudio.Modeling.Diagrams;
 
-namespace Neumont.Tools.ORM.Views.BarkerERView
+namespace ORMSolutions.ORMArchitect.Views.BarkerERView
 {
 	/// <summary>
 	/// Double-derived base class for DomainClass BarkerEntityShape
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.Views.BarkerERView.BarkerEntityShape.DisplayName", typeof(global::Neumont.Tools.ORM.Views.BarkerERView.BarkerERShapeDomainModel), "Neumont.Tools.ORM.Views.BarkerERView.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.Views.BarkerERView.BarkerEntityShape.Description", typeof(global::Neumont.Tools.ORM.Views.BarkerERView.BarkerERShapeDomainModel), "Neumont.Tools.ORM.Views.BarkerERView.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel), "ORMSolutions.ORMArchitect.Views.BarkerERView.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape.Description", typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel), "ORMSolutions.ORMArchitect.Views.BarkerERView.GeneratedCode.DomainModelResx")]
 	[DslModeling::DomainObjectId("3ad5bd5c-f5a1-46c1-9f82-2110dbfc69eb")]
 	internal abstract partial class BarkerEntityShapeBase : DslDiagrams::CompartmentShape
 	{
@@ -200,11 +200,12 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 		{
 			base.InitializeShapeFields(shapeFields);
 			DslDiagrams::TextField field1 = new DslDiagrams::TextField("BarkerEntityNameDecorator");
-			field1.DefaultText = global::Neumont.Tools.ORM.Views.BarkerERView.BarkerERShapeDomainModel.SingletonResourceManager.GetString("BarkerEntityShapeBarkerEntityNameDecoratorDefaultText");
+			field1.DefaultText = global::ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.SingletonResourceManager.GetString("BarkerEntityShapeBarkerEntityNameDecoratorDefaultText");
 			field1.DefaultFocusable = true;
 			field1.DefaultAutoSize = true;
 			field1.AnchoringBehavior.MinimumHeightInLines = 1;
 			field1.AnchoringBehavior.MinimumWidthInCharacters = 1;
+			field1.DefaultAccessibleState = System.Windows.Forms.AccessibleStates.Invisible;
 			field1.DefaultFontId = new DslDiagrams::StyleSetResourceId(string.Empty, "ShapeTextBold10");			
 			shapeFields.Add(field1);
 			
@@ -275,7 +276,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 					baseCompartmentDescriptions.CopyTo(compartmentDescriptions, 0);	
 				}
 				{
-					string title = global::Neumont.Tools.ORM.Views.BarkerERView.BarkerERShapeDomainModel.SingletonResourceManager.GetString("BarkerEntityShapeAttributesCompartmentTitle");
+					string title = global::ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.SingletonResourceManager.GetString("BarkerEntityShapeAttributesCompartmentTitle");
 					compartmentDescriptions[localCompartmentsOffset+0] = new DslDiagrams::ElementListCompartmentDescription("AttributesCompartment", title, 
 						global::System.Drawing.Color.FromKnownColor(global::System.Drawing.KnownColor.LightGray), false, 
 						global::System.Drawing.Color.FromKnownColor(global::System.Drawing.KnownColor.White), false,
@@ -308,7 +309,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 				{
 					// First we get the mappings defined for the base shape, and add on any mappings defined for this
 					// shape. 
-					DslDiagrams::CompartmentMapping[] baseMappings = base.GetCompartmentMappings(typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType));
+					DslDiagrams::CompartmentMapping[] baseMappings = base.GetCompartmentMappings(typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType));
 					int localCompartmentMappingsOffset = 0;
 					if(baseMappings!=null)
 					{
@@ -322,13 +323,13 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 					}
 					mappings[localCompartmentMappingsOffset+0] = new DslDiagrams::ElementListCompartmentMapping(
 																				"AttributesCompartment", 
-																				global::Neumont.Tools.EntityRelationshipModels.Barker.Attribute.NameDomainPropertyId, 
-																				global::Neumont.Tools.EntityRelationshipModels.Barker.Attribute.DomainClassId, 
+																				global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute.NameDomainPropertyId, 
+																				global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute.DomainClassId, 
 																				GetElementsFromEntityTypeForAttributesCompartment,
 																				null,
 																				null,
 																				null);
-					compartmentMappings.Add(typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType), mappings);
+					compartmentMappings.Add(typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType), mappings);
 				}
 			}
 			
@@ -359,9 +360,9 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 			#region DomainPath traversal methods to get the list of elements to display in a compartment.
 			internal static global::System.Collections.IList GetElementsFromEntityTypeForAttributesCompartment(DslModeling::ModelElement element)
 			{
-				global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType root = (global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType)element;
+				global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType root = (global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType)element;
 					// Segments 0 and 1
-					DslModeling::LinkedElementCollection<global::Neumont.Tools.EntityRelationshipModels.Barker.Attribute> result = root.AttributeCollection;
+					DslModeling::LinkedElementCollection<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute> result = root.AttributeCollection;
 				return result;
 			}
 			#endregion
@@ -392,11 +393,11 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 		
 		/// <summary>
 		/// Gets or sets the value of UpdateCounter domain property.
-		/// Description for Neumont.Tools.ORM.Views.BarkerERView.BarkerEntityShape.Update
-		/// Counter
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape.Update Counter
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.Views.BarkerERView.BarkerEntityShape/UpdateCounter.DisplayName", typeof(global::Neumont.Tools.ORM.Views.BarkerERView.BarkerERShapeDomainModel), "Neumont.Tools.ORM.Views.BarkerERView.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.Views.BarkerERView.BarkerEntityShape/UpdateCounter.Description", typeof(global::Neumont.Tools.ORM.Views.BarkerERView.BarkerERShapeDomainModel), "Neumont.Tools.ORM.Views.BarkerERView.GeneratedCode.DomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape/UpdateCounter.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel), "ORMSolutions.ORMArchitect.Views.BarkerERView.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape/UpdateCounter.Description", typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel), "ORMSolutions.ORMArchitect.Views.BarkerERView.GeneratedCode.DomainModelResx")]
 		[global::System.ComponentModel.Browsable(false)]
 		[global::System.ComponentModel.ReadOnly(true)]
 		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
@@ -479,7 +480,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 	}
 	/// <summary>
 	/// DomainClass BarkerEntityShape
-	/// Description for Neumont.Tools.ORM.Views.BarkerERView.BarkerEntityShape
+	/// Description for ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape
 	/// </summary>
 			
 	internal partial class BarkerEntityShape : BarkerEntityShapeBase

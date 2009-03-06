@@ -4,11 +4,11 @@ using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Neumont.Tools.Modeling.Shell;
+using ORMSolutions.ORMArchitect.Framework.Shell;
 
 // Common Public License Copyright Notice
 // /**************************************************************************\
-// * Neumont Object-Role Modeling Architect for Visual Studio                 *
+// * Natural Object-Role Modeling Architect for Visual Studio                 *
 // *                                                                          *
 // * Copyright © Neumont University. All rights reserved.                     *
 // *                                                                          *
@@ -21,7 +21,7 @@ using Neumont.Tools.Modeling.Shell;
 // * You must not remove this notice, or any other, from this software.       *
 // \**************************************************************************/
 
-namespace Neumont.Tools.ORM.ExtensionExample
+namespace ORMSolutions.ORMArchitect.ExtensionExample
 {
 	#region ExtensionDomainModel model serialization
 	[CustomSerializedXmlNamespaces("http://schemas.neumont.edu/ORM/ExtensionExample")]
@@ -260,7 +260,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 		protected new CustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			Guid roleId = rolePlayedInfo.Id;
-			if (roleId == Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionModelError.ExtendedElementDomainRoleId)
+			if (roleId == ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModelElementHasExtensionModelError.ExtendedElementDomainRoleId)
 			{
 				return new CustomSerializedElementInfo(null, "ObjectType", null, CustomSerializedElementWriteStyle.Element, null);
 			}
@@ -283,7 +283,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 			{
 				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
 				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
-				match.InitializeRoles(Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionModelError.ExtendedElementDomainRoleId);
+				match.InitializeRoles(ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModelElementHasExtensionModelError.ExtendedElementDomainRoleId);
 				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/ExtensionExample|ObjectType", match);
 				ObjectTypeRequiresMeaningfulNameError.myChildElementMappings = childElementMappings;
 			}

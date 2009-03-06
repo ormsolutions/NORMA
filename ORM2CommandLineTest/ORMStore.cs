@@ -3,20 +3,20 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.Modeling;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.ObjectModel.Design;
-using Neumont.Tools.ORM.ShapeModel;
-using Neumont.Tools.ORM.Shell;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.ObjectModel.Design;
+using ORMSolutions.ORMArchitect.Core.ShapeModel;
+using ORMSolutions.ORMArchitect.Core.Shell;
 using System.Xml;
-using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
-using Neumont.Tools.Modeling;
-using Neumont.Tools.Modeling.Diagrams;
+using ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid;
+using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Framework.Diagrams;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Neumont.Tools.Modeling.Shell;
-using Neumont.Tools.Modeling.Design;
+using ORMSolutions.ORMArchitect.Framework.Shell;
+using ORMSolutions.ORMArchitect.Framework.Design;
 #endregion
 
-namespace Neumont.Tools.ORM.SDK.TestEngine
+namespace ORMSolutions.ORMArchitectSDK.TestEngine
 {
 	public partial struct Suite
 	{

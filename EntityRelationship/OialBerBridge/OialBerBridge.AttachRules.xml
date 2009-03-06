@@ -2,7 +2,7 @@
 <arg:Rules xmlns:arg="http://schemas.neumont.edu/ORM/SDK/AttachRulesGenerator">
 	<arg:Copyright name="Common Public License Copyright Notice">
 		<arg:CopyrightLine>/**************************************************************************\</arg:CopyrightLine>
-		<arg:CopyrightLine>* Neumont Object-Role Modeling Architect for Visual Studio                 *</arg:CopyrightLine>
+		<arg:CopyrightLine>* Natural Object-Role Modeling Architect for Visual Studio                 *</arg:CopyrightLine>
 		<arg:CopyrightLine>*                                                                          *</arg:CopyrightLine>
 		<arg:CopyrightLine>* Copyright © Neumont University. All rights reserved.                     *</arg:CopyrightLine>
 		<arg:CopyrightLine>*                                                                          *</arg:CopyrightLine>
@@ -18,16 +18,16 @@
 	<arg:Model class="ORMAbstractionToBarkerERBridgeDomainModel">
 		<arg:RuleContainer class="ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker">
 			<arg:ChangeRule methodName="AbstractionModelChangedRule">
-				<arg:RuleOn targetType="AbstractionModel" targetTypeQualifier="Neumont.Tools.ORMAbstraction"/>
+				<arg:RuleOn targetType="AbstractionModel" targetTypeQualifier="ORMSolutions.ORMArchitect.ORMAbstraction"/>
 			</arg:ChangeRule>
 			<arg:AddRule methodName="ConceptTypeAddedRule">
-				<arg:RuleOn targetType="AbstractionModelHasConceptType" targetTypeQualifier="Neumont.Tools.ORMAbstraction"/>
+				<arg:RuleOn targetType="AbstractionModelHasConceptType" targetTypeQualifier="ORMSolutions.ORMArchitect.ORMAbstraction"/>
 			</arg:AddRule>
 			<arg:ChangeRule methodName="ConceptTypeChildChangedRule">
-				<arg:RuleOn targetType="ConceptTypeChild" targetTypeQualifier="Neumont.Tools.ORMAbstraction"/>
+				<arg:RuleOn targetType="ConceptTypeChild" targetTypeQualifier="ORMSolutions.ORMArchitect.ORMAbstraction"/>
 			</arg:ChangeRule>
 			<arg:DeleteRule methodName="ConceptTypeDeletedRule">
-				<arg:RuleOn targetType="AbstractionModelHasConceptType" targetTypeQualifier="Neumont.Tools.ORMAbstraction"/>
+				<arg:RuleOn targetType="AbstractionModelHasConceptType" targetTypeQualifier="ORMSolutions.ORMArchitect.ORMAbstraction"/>
 			</arg:DeleteRule>
 		</arg:RuleContainer>
 	</arg:Model>

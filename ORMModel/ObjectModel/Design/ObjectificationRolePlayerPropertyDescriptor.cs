@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -22,16 +22,16 @@ using System.Globalization;
 using System.Security.Permissions;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Design;
-using Neumont.Tools.Modeling;
-using Neumont.Tools.Modeling.Design;
-using Neumont.Tools.ORM.ObjectModel;
+using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Framework.Design;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
 
-namespace Neumont.Tools.ORM.ObjectModel.Design
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 {
 	/// <summary>
 	/// <see cref="RolePlayerElementPropertyDescriptor"/> for <see cref="ObjectType.NestedFactType"/>
-	/// (<see cref="Neumont.Tools.ORM.ObjectModel.Objectification.NestedFactType"/>) and
-	/// <see cref="FactType.NestingType"/> (<see cref="Neumont.Tools.ORM.ObjectModel.Objectification.NestingType"/>).
+	/// (<see cref="ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.NestedFactType"/>) and
+	/// <see cref="FactType.NestingType"/> (<see cref="ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.NestingType"/>).
 	/// </summary>
 	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
 	public class ObjectificationRolePlayerPropertyDescriptor : RolePlayerElementPropertyDescriptor
@@ -58,7 +58,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		/// <summary>
 		/// Ensure that the <see cref="ObjectType.NestedFactType"/> property is read-only when
 		/// <see cref="Objectification"/> is not <see langword="null"/> and
-		/// <see cref="Neumont.Tools.ORM.ObjectModel.Objectification.IsImplied"/> is <see langword="true"/>.
+		/// <see cref="ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.IsImplied"/> is <see langword="true"/>.
 		/// </summary>
 		public override bool IsReadOnly
 		{

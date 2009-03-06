@@ -10,7 +10,7 @@
 	xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:annotation>
 		<xs:appinfo source="Common Public License Copyright Notice">
-			Neumont Object-Role Modeling Architect for Visual Studio
+			Natural Object-Role Modeling Architect for Visual Studio
 
 			Copyright © Neumont University. All rights reserved.
 
@@ -113,7 +113,7 @@
 			<xs:documentation>A class that contains other rules. The rule classes in the container are automatically
 			created and attached, and the user provides a static callback method on the container class to handle
 			the rule. Using a RuleContainer instead of a Rule element allows central management or rule priorities,
-			rule tracing (with the Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRulesSwitch) and additional generated features
+			rule tracing (with the ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRulesSwitch) and additional generated features
 			in the future such as dynamic rule prioritization, bidirectional synchronization, and filtering.</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>

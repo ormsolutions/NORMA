@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
-	Neumont Object-Role Modeling Architect for Visual Studio
+	Natural Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
 
@@ -61,21 +61,21 @@
 	<!-- GUID for NORMA Visual Studio Package (NOT MSI package!) -->
 	<?define NORMAVSPackageGuid="EFDDC549-1646-4451-8A51-E5A5E94D647C"?>
 	<?define BaseAssemblyName="Version=$(var.MajorMinorVersion).0.0, Culture=neutral, PublicKeyToken=$(var.PublicKeyToken)"?>
-	<?define NORMAVSPackageAssemblyName="Neumont.Tools.ORM$(var.VSExt), $(var.BaseAssemblyName)"?>
+	<?define NORMAVSPackageAssemblyName="ORMSolutions.ORMArchitect.Core$(var.VSExt), $(var.BaseAssemblyName)"?>
 	<?define NORMAVSEditorGuid="EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B"?>
 	<?define NORMAVSFactEditorGuid="EE99A954-82C4-4098-A2BD-5C75E3D138A7"?>
 	<?define NORMAVSFontAndColorsServiceGuid="C5AA80F8-F730-4809-AAB1-8D925E36F9F5"?>
 	<?define ORMCustomToolGuid="977BD01E-F2B4-4341-9C47-459420624A20"?>
 	<?define ORMCustomToolExtenderGuid="6FDCC073-20C2-4435-9B2E-9E70451C81D8"?>
-	<?define ORMCustomToolAssemblyName="Neumont.Tools.ORM.ORMCustomTool$(var.VSExt), $(var.BaseAssemblyName)"?>
+	<?define ORMCustomToolAssemblyName="ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt), $(var.BaseAssemblyName)"?>
 	<!-- The LCID of the MSI and the fallback resources. This should NOT be changed. -->
 	<?define DefaultLCID="1033"?>
 	<!-- The Package Load Key information. -->
 	<?define PLKResourceID="150"?>
 	<?define PLKMinEdition="Standard"?>
 	<?define PLKProductVersion="1.0"?>
-	<?define PLKProductName="Neumont ORM Architect for Visual Studio"?>
-	<?define PLKCompanyName="Neumont University"?>
+	<?define PLKProductName="Natural Object-Role Modeling Architect for Visual Studio"?>
+	<?define PLKCompanyName="ORM Solutions, LLC"?>
 
 	<?if $(var.Architecture)=64?>
 		<?define Win64="yes"?>
@@ -107,20 +107,23 @@
 	<?endif?>
 	<?define VSRegRoot="$(var.VSBaseRegRoot)\$(var.RootSuffix)"?>
 	<?define VSClsidRoot="$(var.VSRegRoot)\CLSID"?>
-	<?define NORMAVSRegRoot="$(var.VSRegRoot)\Neumont\ORM Architect"?>
+	<?define NORMAVSRegRoot="$(var.VSRegRoot)\ORM Solutions\Natural ORM Architect"?>
 	<?define NORMAVSExtensionsRegRoot="$(var.NORMAVSRegRoot)\Extensions"?>
 	<?define NeumontRegRoot="SOFTWARE\Neumont"?>
-	<?define NORMARegRoot="$(var.NeumontRegRoot)\ORM Architect for $(var.VSLongName)"?>
+	<?define ORMSolutionsRegRoot="SOFTWARE\ORM Solutions"?>
+	<?define NORMARegRoot="$(var.ORMSolutionsRegRoot)\Natural ORM Architect for $(var.VSLongName)"?>
 	<?define PLiXRegRoot="$(var.NeumontRegRoot)\PLiX for Visual Studio"?>
 	<?define PLiXMinimumSchemaVersion="4"?>
 	<!-- The default target directory for installation (under ProgramFilesFolder). -->
 	<!-- NOTE: This is intentionally not being localized, so that the installation location is constant. -->
-	<?define DefaultCompanyDir="Neumont"?>
-	<?define DefaultShortProductDir="NORMAVS"?>
+	<?define DefaultCompanyDir="ORM Solutions"?>
+	<?define DefaultShortCompanyDir="ORMSoltn"?>
+	<?define DefaultShortProductDir="ORMAVS$(var.VSShortProductYear)"?>
 	<?define DefaultProductDir="ORM Architect for $(var.VSLongName)"?>
 
 	<?define NORMAWebsiteUrl="http://norma.orm.net"?>
 	<?define NeumontWebsiteUrl="http://www.neumont.edu"?>
+	<?define ORMSolutionsWebsiteUrl="http://www.ormsolutions.com"?>
 
 	<!-- Misc. Visual Studio GUIDs -->
 	<?define VSLogicalViewDesignerGuid="7651A702-06E5-11D1-8EBD-00A0C90F26EA"?>

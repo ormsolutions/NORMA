@@ -1,5 +1,5 @@
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -19,7 +19,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio;
 using MSOLE=Microsoft.VisualStudio.OLE.Interop;
 
-namespace Neumont.Tools.ORM.ORMCustomTool
+namespace ORMSolutions.ORMArchitect.ORMCustomTool
 {
 	/// <summary>
 	/// Extender Provider object. This is the "class factory" for the Extender and is registered

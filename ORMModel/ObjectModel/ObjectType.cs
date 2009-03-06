@@ -1,9 +1,9 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © Matthew Curland. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -25,11 +25,11 @@ using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Design;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Neumont.Tools.ORM;
-using Neumont.Tools.Modeling;
-using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
+using ORMSolutions.ORMArchitect.Core;
+using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid;
 
-namespace Neumont.Tools.ORM.ObjectModel
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	#region ObjectTypeVisitor delegate definition
 	/// <summary>
@@ -332,7 +332,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return Neumont.Tools.ORM.ObjectModel.Objectification.GetLinkToNestedFactType(this);
+				return ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.GetLinkToNestedFactType(this);
 			}
 		}
 		#endregion // Objectification Property

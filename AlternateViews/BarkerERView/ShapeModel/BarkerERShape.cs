@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -21,15 +21,15 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.Modeling;
-using Neumont.Tools.Modeling.Shell;
-using Neumont.Tools.ORMToORMAbstractionBridge;
-using Neumont.Tools.ORMAbstraction;
-using Neumont.Tools.EntityRelationshipModels.Barker;
-using Neumont.Tools.ORMAbstractionToBarkerERBridge;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Framework.Shell;
+using ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge;
+using ORMSolutions.ORMArchitect.ORMAbstraction;
+using ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker;
+using ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge;
 
-namespace Neumont.Tools.ORM.Views.BarkerERView
+namespace ORMSolutions.ORMArchitect.Views.BarkerERView
 {
 	/// <summary>
 	/// Represents the framework for the Barker ER view of the ORM Diagram.
@@ -42,7 +42,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 		/// </summary>
 		public static readonly object BarkerEntityPositionDictionaryKey = new object();
 		/// <summary>
-		/// DeletingRule: typeof(Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType)
+		/// DeletingRule: typeof(ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType)
 		/// Cache the position of the <see cref="BarkerEntityShape"/> corresponding to the object type being deleted
 		/// </summary>
 		private static void ConceptTypeDetachingFromObjectTypeRule(ElementDeletingEventArgs e)
@@ -57,7 +57,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 			}
 		}
 		/// <summary>
-		/// DeletingRule: typeof(Neumont.Tools.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType)
+		/// DeletingRule: typeof(ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType)
 		/// Cache the position of the <see cref="BarkerEntityShape"/> corresponding to the object type being deleted
 		/// </summary>
 		private static void ConceptTypeDetachingFromEntityTypeRule(ElementDeletingEventArgs e)

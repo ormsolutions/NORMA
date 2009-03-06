@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Neumont.Tools.ORM.SDK.TestReportViewer
+namespace ORMSolutions.ORMArchitectSDK.TestReportViewer
 {
 	static class Program
 	{

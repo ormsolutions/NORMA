@@ -7,10 +7,10 @@ using Microsoft.VisualStudio.Modeling;
 
 // Common Public License Copyright Notice
 // /**************************************************************************\
-// * Neumont Object-Role Modeling Architect for Visual Studio                 *
+// * Natural Object-Role Modeling Architect for Visual Studio                 *
 // *                                                                          *
 // * Copyright © Neumont University. All rights reserved.                     *
-// * Copyright © Matthew Curland. All rights reserved.                        *
+// * Copyright © ORM Solutions, LLC. All rights reserved.                        *
 // *                                                                          *
 // * The use and distribution terms for this software are covered by the      *
 // * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -21,7 +21,7 @@ using Microsoft.VisualStudio.Modeling;
 // * You must not remove this notice, or any other, from this software.       *
 // \**************************************************************************/
 
-namespace Neumont.Tools.ORM.ObjectModel
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	#region CoreVerbalizationSnippetType enum
 	/// <summary>An enum with one value for each recognized snippet</summary>
@@ -1766,7 +1766,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				snippet7Replace1 = this.DataType.ToString();
 				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat7, snippet7Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
-			if (Neumont.Tools.ORM.Shell.OptionsPage.CurrentVerbalizeFactTypesWithObjectType && verbalizationContext.VerbalizationTarget == ORMCoreDomainModel.VerbalizationTargetName)
+			if (ORMSolutions.ORMArchitect.Core.Shell.OptionsPage.CurrentVerbalizeFactTypesWithObjectType && verbalizationContext.VerbalizationTarget == ORMCoreDomainModel.VerbalizationTargetName)
 			{
 				writer.WriteLine();
 				string snippetFormat8 = snippets.GetSnippet(CoreVerbalizationSnippetType.SelfReference, isDeontic, isNegative);

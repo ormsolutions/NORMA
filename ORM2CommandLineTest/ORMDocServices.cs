@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.ShapeModel;
-using Neumont.Tools.ORM;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.ShapeModel;
+using ORMSolutions.ORMArchitect.Core;
 using System.Diagnostics;
 using System.Drawing;
 using System.Reflection;
@@ -13,16 +13,16 @@ using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using System.Runtime.Serialization;
-using Neumont.Tools.ORM.Shell;
-using Neumont.Tools.Modeling;
+using ORMSolutions.ORMArchitect.Core.Shell;
+using ORMSolutions.ORMArchitect.Framework;
 using System.Xml;
 using System.Xml.Xsl;
 using Microsoft.XmlDiffPatch;
-using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
-using Neumont.Tools.Modeling.Diagrams;
-using Neumont.Tools.Modeling.Design;
+using ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid;
+using ORMSolutions.ORMArchitect.Framework.Diagrams;
+using ORMSolutions.ORMArchitect.Framework.Design;
 
-namespace Neumont.Tools.ORM.SDK.TestEngine
+namespace ORMSolutions.ORMArchitectSDK.TestEngine
 {
 	public partial struct Suite
 	{

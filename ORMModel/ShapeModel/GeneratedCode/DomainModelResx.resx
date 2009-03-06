@@ -117,331 +117,331 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ShapeModel.ORMShape</value>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShape</value>
     <comment>Description for DslLibrary &apos;ORMShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel.DisplayName" xml:space="preserve">
     <value>ORM Shape Domain Model</value>
     <comment>DisplayName for DslLibrary &apos;ORMShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder</value>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShapeHasRoleDisplayOrder.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShapeHasRoleDisplayOrder</value>
     <comment>Description for DomainClass &apos;FactTypeShapeHasRoleDisplayOrder&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShapeHasRoleDisplayOrder.DisplayName" xml:space="preserve">
     <value>Fact Type Shape Has Role Display Order</value>
     <comment>DisplayName for DomainClass &apos;FactTypeShapeHasRoleDisplayOrder&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder/FactTypeShape.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder.FactTypeShape</value>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShapeHasRoleDisplayOrder/FactTypeShape.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShapeHasRoleDisplayOrder.FactTypeShape</value>
     <comment>Description for DomainRole &apos;FactTypeShape&apos; on DomainRelationship &apos;FactTypeShapeHasRoleDisplayOrder&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder/FactTypeShape.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShapeHasRoleDisplayOrder/FactTypeShape.DisplayName" xml:space="preserve">
     <value>FactTypeShape</value>
     <comment>DisplayName for DomainRole &apos;FactTypeShape&apos; on DomainRelationship &apos;FactTypeShapeHasRoleDisplayOrder&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder/FactTypeShape.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShapeHasRoleDisplayOrder/FactTypeShape.PropertyDisplayName" xml:space="preserve">
     <value>Role Display Order Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;FactTypeShape&apos; on DomainRelationship &apos;FactTypeShapeHasRoleDisplayOrder&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder/RoleDisplayOrder.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder.RoleDisplayOrder</value>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShapeHasRoleDisplayOrder/RoleDisplayOrder.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShapeHasRoleDisplayOrder.RoleDisplayOrder</value>
     <comment>Description for DomainRole &apos;RoleDisplayOrder&apos; on DomainRelationship &apos;FactTypeShapeHasRoleDisplayOrder&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder/RoleDisplayOrder.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShapeHasRoleDisplayOrder/RoleDisplayOrder.DisplayName" xml:space="preserve">
     <value>RoleDisplayOrder</value>
     <comment>DisplayName for DomainRole &apos;RoleDisplayOrder&apos; on DomainRelationship &apos;FactTypeShapeHasRoleDisplayOrder&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder/RoleDisplayOrder.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShapeHasRoleDisplayOrder/RoleDisplayOrder.PropertyDisplayName" xml:space="preserve">
     <value>Fact Type Shape Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;RoleDisplayOrder&apos; on DomainRelationship &apos;FactTypeShapeHasRoleDisplayOrder&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ConstraintDisplayPosition/Top.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ConstraintDisplayPosition/Top.DisplayName" xml:space="preserve">
     <value>Top</value>
     <comment>Display name for EnumerationLiteral &apos;Top&apos; on DomainEnumeration &apos;ConstraintDisplayPosition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ConstraintDisplayPosition/Top.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ConstraintDisplayPosition/Top.Description" xml:space="preserve">
     <value>Draw the constraints above the top of the role boxes.</value>
     <comment>Description for EnumerationLiteral &apos;Top&apos; on DomainEnumeration &apos;ConstraintDisplayPosition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ConstraintDisplayPosition/Bottom.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ConstraintDisplayPosition/Bottom.DisplayName" xml:space="preserve">
     <value>Bottom</value>
     <comment>Display name for EnumerationLiteral &apos;Bottom&apos; on DomainEnumeration &apos;ConstraintDisplayPosition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ConstraintDisplayPosition/Bottom.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ConstraintDisplayPosition/Bottom.Description" xml:space="preserve">
     <value>Draw the constraints below the bottom of the role boxes.</value>
     <comment>Description for EnumerationLiteral &apos;Bottom&apos; on DomainEnumeration &apos;ConstraintDisplayPosition&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.DisplayRoleNames/UserDefault.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayRoleNames/UserDefault.DisplayName" xml:space="preserve">
     <value>UserDefault</value>
     <comment>Display name for EnumerationLiteral &apos;UserDefault&apos; on DomainEnumeration &apos;DisplayRoleNames&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.DisplayRoleNames/UserDefault.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayRoleNames/UserDefault.Description" xml:space="preserve">
     <value>Use the global setting.</value>
     <comment>Description for EnumerationLiteral &apos;UserDefault&apos; on DomainEnumeration &apos;DisplayRoleNames&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.DisplayRoleNames/On.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayRoleNames/On.DisplayName" xml:space="preserve">
     <value>On</value>
     <comment>Display name for EnumerationLiteral &apos;On&apos; on DomainEnumeration &apos;DisplayRoleNames&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.DisplayRoleNames/On.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayRoleNames/On.Description" xml:space="preserve">
     <value>Always draw the RoleNameShapes.</value>
     <comment>Description for EnumerationLiteral &apos;On&apos; on DomainEnumeration &apos;DisplayRoleNames&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.DisplayRoleNames/Off.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayRoleNames/Off.DisplayName" xml:space="preserve">
     <value>Off</value>
     <comment>Display name for EnumerationLiteral &apos;Off&apos; on DomainEnumeration &apos;DisplayRoleNames&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.DisplayRoleNames/Off.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayRoleNames/Off.Description" xml:space="preserve">
     <value>Never draw the RoleNameShapes.</value>
     <comment>Description for EnumerationLiteral &apos;Off&apos; on DomainEnumeration &apos;DisplayRoleNames&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.DisplayOrientation/Horizontal.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayOrientation/Horizontal.DisplayName" xml:space="preserve">
     <value>Horizontal</value>
     <comment>Display name for EnumerationLiteral &apos;Horizontal&apos; on DomainEnumeration &apos;DisplayOrientation&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.DisplayOrientation/Horizontal.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayOrientation/Horizontal.Description" xml:space="preserve">
     <value>The fact type is drawn with a horizontal orientation.</value>
     <comment>Description for EnumerationLiteral &apos;Horizontal&apos; on DomainEnumeration &apos;DisplayOrientation&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.DisplayOrientation/VerticalRotatedRight.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayOrientation/VerticalRotatedRight.DisplayName" xml:space="preserve">
     <value>VerticalRotatedRight</value>
     <comment>Display name for EnumerationLiteral &apos;VerticalRotatedRight&apos; on DomainEnumeration &apos;DisplayOrientation&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.DisplayOrientation/VerticalRotatedRight.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayOrientation/VerticalRotatedRight.Description" xml:space="preserve">
     <value>The fact type is drawn with a vertical orientation rotated to the right.</value>
     <comment>Description for EnumerationLiteral &apos;VerticalRotatedRight&apos; on DomainEnumeration &apos;DisplayOrientation&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.DisplayOrientation/VerticalRotatedLeft.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayOrientation/VerticalRotatedLeft.DisplayName" xml:space="preserve">
     <value>VerticalRotatedLeft</value>
     <comment>Display name for EnumerationLiteral &apos;VerticalRotatedLeft&apos; on DomainEnumeration &apos;DisplayOrientation&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.DisplayOrientation/VerticalRotatedLeft.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayOrientation/VerticalRotatedLeft.Description" xml:space="preserve">
     <value>The fact type is drawn with a vertical orientation rotated to the left.</value>
     <comment>Description for EnumerationLiteral &apos;VerticalRotatedLeft&apos; on DomainEnumeration &apos;DisplayOrientation&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ORMBaseShape.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ShapeModel.ORMBaseShape</value>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShape.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShape</value>
     <comment>Description for DomainClass &apos;ORMBaseShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ORMBaseShape.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShape.DisplayName" xml:space="preserve">
     <value>ORMBase Shape</value>
     <comment>DisplayName for DomainClass &apos;ORMBaseShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ORMBaseShape/UpdateCounter.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ShapeModel.ORMBaseShape.Update Counter</value>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShape/UpdateCounter.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShape.Update Counter</value>
     <comment>Description for DomainProperty &apos;UpdateCounter&apos; on DomainClass &apos;ORMBaseShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ORMBaseShape/UpdateCounter.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShape/UpdateCounter.DisplayName" xml:space="preserve">
     <value>Update Counter</value>
     <comment>DisplayName for DomainProperty &apos;UpdateCounter&apos; on DomainClass &apos;ORMBaseShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ShapeModel.ObjectTypeShape</value>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape</value>
     <comment>Description for DomainClass &apos;ObjectTypeShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape.DisplayName" xml:space="preserve">
     <value>Object Type Shape</value>
     <comment>DisplayName for DomainClass &apos;ObjectTypeShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ObjectTypeShape/ExpandRefMode.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape/ExpandRefMode.Description" xml:space="preserve">
     <value>Should shapes for the FactType and ValueType corresponding to this ReferenceMode pattern be displayed on the diagram?</value>
     <comment>Description for DomainProperty &apos;ExpandRefMode&apos; on DomainClass &apos;ObjectTypeShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ObjectTypeShape/ExpandRefMode.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape/ExpandRefMode.DisplayName" xml:space="preserve">
     <value>ExpandRefMode</value>
     <comment>DisplayName for DomainProperty &apos;ExpandRefMode&apos; on DomainClass &apos;ObjectTypeShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.FactTypeShape.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ShapeModel.FactTypeShape</value>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape</value>
     <comment>Description for DomainClass &apos;FactTypeShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.FactTypeShape.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape.DisplayName" xml:space="preserve">
     <value>Fact Type Shape</value>
     <comment>DisplayName for DomainClass &apos;FactTypeShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.FactTypeShape/ConstraintDisplayPosition.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/ConstraintDisplayPosition.Description" xml:space="preserve">
     <value>Determines where internal constraints are drawn on this FactTypeShape.</value>
     <comment>Description for DomainProperty &apos;ConstraintDisplayPosition&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.FactTypeShape/ConstraintDisplayPosition.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/ConstraintDisplayPosition.DisplayName" xml:space="preserve">
     <value>ConstraintDisplayPosition</value>
     <comment>DisplayName for DomainProperty &apos;ConstraintDisplayPosition&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.FactTypeShape/DisplayRoleNames.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayRoleNames.Description" xml:space="preserve">
     <value>Determines whether RoleNameShapes will be drawn for the Roles in the FactType represented by this FactTypeShape, overriding the global setting.</value>
     <comment>Description for DomainProperty &apos;DisplayRoleNames&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.FactTypeShape/DisplayRoleNames.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayRoleNames.DisplayName" xml:space="preserve">
     <value>DisplayRoleNames</value>
     <comment>DisplayName for DomainProperty &apos;DisplayRoleNames&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.FactTypeShape/DisplayOrientation.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayOrientation.Description" xml:space="preserve">
     <value>Determines if the fact type is shown horizontally or vertically.</value>
     <comment>Description for DomainProperty &apos;DisplayOrientation&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.FactTypeShape/DisplayOrientation.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayOrientation.DisplayName" xml:space="preserve">
     <value>DisplayOrientation</value>
     <comment>DisplayName for DomainProperty &apos;DisplayOrientation&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.FactTypeShape/RolesPosition.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ShapeModel.FactTypeShape.Roles Position</value>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/RolesPosition.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape.Roles Position</value>
     <comment>Description for DomainProperty &apos;RolesPosition&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.FactTypeShape/RolesPosition.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/RolesPosition.DisplayName" xml:space="preserve">
     <value>Roles Position</value>
     <comment>DisplayName for DomainProperty &apos;RolesPosition&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.SubtypeLink.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ShapeModel.SubtypeLink</value>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.SubtypeLink.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.SubtypeLink</value>
     <comment>Description for DomainClass &apos;SubtypeLink&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.SubtypeLink.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.SubtypeLink.DisplayName" xml:space="preserve">
     <value>Subtype Link</value>
     <comment>DisplayName for DomainClass &apos;SubtypeLink&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape</value>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintShape.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintShape</value>
     <comment>Description for DomainClass &apos;ExternalConstraintShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintShape.DisplayName" xml:space="preserve">
     <value>External Constraint Shape</value>
     <comment>DisplayName for DomainClass &apos;ExternalConstraintShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.FrequencyConstraintShape.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ShapeModel.FrequencyConstraintShape</value>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FrequencyConstraintShape.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.FrequencyConstraintShape</value>
     <comment>Description for DomainClass &apos;FrequencyConstraintShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.FrequencyConstraintShape.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FrequencyConstraintShape.DisplayName" xml:space="preserve">
     <value>Frequency Constraint Shape</value>
     <comment>DisplayName for DomainClass &apos;FrequencyConstraintShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.RingConstraintShape.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ShapeModel.RingConstraintShape</value>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RingConstraintShape.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.RingConstraintShape</value>
     <comment>Description for DomainClass &apos;RingConstraintShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.RingConstraintShape.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RingConstraintShape.DisplayName" xml:space="preserve">
     <value>Ring Constraint Shape</value>
     <comment>DisplayName for DomainClass &apos;RingConstraintShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.FloatingTextShape.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ShapeModel.FloatingTextShape</value>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FloatingTextShape.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.FloatingTextShape</value>
     <comment>Description for DomainClass &apos;FloatingTextShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.FloatingTextShape.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FloatingTextShape.DisplayName" xml:space="preserve">
     <value>Floating Text Shape</value>
     <comment>DisplayName for DomainClass &apos;FloatingTextShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape</value>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectifiedFactTypeNameShape.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectifiedFactTypeNameShape</value>
     <comment>Description for DomainClass &apos;ObjectifiedFactTypeNameShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectifiedFactTypeNameShape.DisplayName" xml:space="preserve">
     <value>Objectified Fact Type Name Shape</value>
     <comment>DisplayName for DomainClass &apos;ObjectifiedFactTypeNameShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape/ExpandRefMode.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectifiedFactTypeNameShape/ExpandRefMode.Description" xml:space="preserve">
     <value>Should shapes for the FactType and ValueType corresponding to this ReferenceMode pattern be displayed on the diagram?</value>
     <comment>Description for DomainProperty &apos;ExpandRefMode&apos; on DomainClass &apos;ObjectifiedFactTypeNameShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape/ExpandRefMode.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectifiedFactTypeNameShape/ExpandRefMode.DisplayName" xml:space="preserve">
     <value>ExpandRefMode</value>
     <comment>DisplayName for DomainProperty &apos;ExpandRefMode&apos; on DomainClass &apos;ObjectifiedFactTypeNameShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ReadingShape.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ShapeModel.ReadingShape</value>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape</value>
     <comment>Description for DomainClass &apos;ReadingShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ReadingShape.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape.DisplayName" xml:space="preserve">
     <value>Reading Shape</value>
     <comment>DisplayName for DomainClass &apos;ReadingShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ValueConstraintShape.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ShapeModel.ValueConstraintShape</value>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ValueConstraintShape.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ValueConstraintShape</value>
     <comment>Description for DomainClass &apos;ValueConstraintShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ValueConstraintShape.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ValueConstraintShape.DisplayName" xml:space="preserve">
     <value>Value Constraint Shape</value>
     <comment>DisplayName for DomainClass &apos;ValueConstraintShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.RoleNameShape.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ShapeModel.RoleNameShape</value>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RoleNameShape.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.RoleNameShape</value>
     <comment>Description for DomainClass &apos;RoleNameShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.RoleNameShape.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RoleNameShape.DisplayName" xml:space="preserve">
     <value>Role Name Shape</value>
     <comment>DisplayName for DomainClass &apos;RoleNameShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ModelNoteShape.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ShapeModel.ModelNoteShape</value>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteShape.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteShape</value>
     <comment>Description for DomainClass &apos;ModelNoteShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ModelNoteShape.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteShape.DisplayName" xml:space="preserve">
     <value>Model Note Shape</value>
     <comment>DisplayName for DomainClass &apos;ModelNoteShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.LinkConnectorShape.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.LinkConnectorShape.Description" xml:space="preserve">
     <value>Zero-size relative shape used as a proxy connection point for other shapes and links.</value>
     <comment>Description for DomainClass &apos;LinkConnectorShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.LinkConnectorShape.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.LinkConnectorShape.DisplayName" xml:space="preserve">
     <value>Link Connector Shape</value>
     <comment>DisplayName for DomainClass &apos;LinkConnectorShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.FactTypeLinkConnectorShape.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeLinkConnectorShape.Description" xml:space="preserve">
     <value>Zero-size relative shape used to disambiguate multiple duplicate links between FactTypeShape and other shape types.</value>
     <comment>Description for DomainClass &apos;FactTypeLinkConnectorShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.FactTypeLinkConnectorShape.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeLinkConnectorShape.DisplayName" xml:space="preserve">
     <value>Fact Type Link Connector Shape</value>
     <comment>DisplayName for DomainClass &apos;FactTypeLinkConnectorShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape</value>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseBinaryLinkShape.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseBinaryLinkShape</value>
     <comment>Description for DomainClass &apos;ORMBaseBinaryLinkShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseBinaryLinkShape.DisplayName" xml:space="preserve">
     <value>ORMBase Binary Link Shape</value>
     <comment>DisplayName for DomainClass &apos;ORMBaseBinaryLinkShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape/UpdateCounter.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape.Update Counter</value>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseBinaryLinkShape/UpdateCounter.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseBinaryLinkShape.Update Counter</value>
     <comment>Description for DomainProperty &apos;UpdateCounter&apos; on DomainClass &apos;ORMBaseBinaryLinkShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape/UpdateCounter.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseBinaryLinkShape/UpdateCounter.DisplayName" xml:space="preserve">
     <value>Update Counter</value>
     <comment>DisplayName for DomainProperty &apos;UpdateCounter&apos; on DomainClass &apos;ORMBaseBinaryLinkShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.RolePlayerLink.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ShapeModel.RolePlayerLink</value>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RolePlayerLink.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.RolePlayerLink</value>
     <comment>Description for DomainClass &apos;RolePlayerLink&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.RolePlayerLink.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RolePlayerLink.DisplayName" xml:space="preserve">
     <value>Role Player Link</value>
     <comment>DisplayName for DomainClass &apos;RolePlayerLink&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink</value>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink</value>
     <comment>Description for DomainClass &apos;ExternalConstraintLink&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink.DisplayName" xml:space="preserve">
     <value>External Constraint Link</value>
     <comment>DisplayName for DomainClass &apos;ExternalConstraintLink&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ValueRangeLink.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ShapeModel.ValueRangeLink</value>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ValueRangeLink.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ValueRangeLink</value>
     <comment>Description for DomainClass &apos;ValueRangeLink&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ValueRangeLink.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ValueRangeLink.DisplayName" xml:space="preserve">
     <value>Value Range Link</value>
     <comment>DisplayName for DomainClass &apos;ValueRangeLink&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ModelNoteLink.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ShapeModel.ModelNoteLink</value>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteLink.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteLink</value>
     <comment>Description for DomainClass &apos;ModelNoteLink&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ModelNoteLink.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteLink.DisplayName" xml:space="preserve">
     <value>ModelNoteReference</value>
     <comment>DisplayName for DomainClass &apos;ModelNoteLink&apos;</comment>
   </data>
@@ -449,19 +449,19 @@
     <value>ORM Shape Domain Model Explorer</value>
     <comment>Model Explorer Toolwindow title</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ORMDiagram.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ShapeModel.ORMDiagram</value>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram</value>
     <comment>Description for DomainClass &apos;ORMDiagram&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ORMDiagram.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram.DisplayName" xml:space="preserve">
     <value>ORMDiagram</value>
     <comment>DisplayName for DomainClass &apos;ORMDiagram&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ORMDiagram/AutoPopulateShapes.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ShapeModel.ORMDiagram.Auto Populate Shapes</value>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram/AutoPopulateShapes.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram.Auto Populate Shapes</value>
     <comment>Description for DomainProperty &apos;AutoPopulateShapes&apos; on DomainClass &apos;ORMDiagram&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ORMDiagram/AutoPopulateShapes.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram/AutoPopulateShapes.DisplayName" xml:space="preserve">
     <value>Auto Populate Shapes</value>
     <comment>DisplayName for DomainProperty &apos;AutoPopulateShapes&apos; on DomainClass &apos;ORMDiagram&apos;</comment>
   </data>
@@ -806,10 +806,10 @@ A DomainClass can be serialized as a moniker only if
 
 <!-- Common Public License Copyright Notice -->
 <!--
-	Neumont Object-Role Modeling Architect for Visual Studio
+	Natural Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
-	Copyright © Matthew Curland. All rights reserved.
+	Copyright © ORM Solutions, LLC. All rights reserved.
 
 	The use and distribution terms for this software are covered by the
 	Common Public License 1.0 (http://opensource.org/licenses/cpl) which

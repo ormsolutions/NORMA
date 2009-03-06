@@ -4,7 +4,7 @@
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
 	<se:Copyright name="Common Public License Copyright Notice">
 		<se:CopyrightLine>/**************************************************************************\</se:CopyrightLine>
-		<se:CopyrightLine>* Neumont Object-Role Modeling Architect for Visual Studio                 *</se:CopyrightLine>
+		<se:CopyrightLine>* Natural Object-Role Modeling Architect for Visual Studio                 *</se:CopyrightLine>
 		<se:CopyrightLine>*                                                                          *</se:CopyrightLine>
 		<se:CopyrightLine>* Copyright © Neumont University. All rights reserved.                     *</se:CopyrightLine>
 		<se:CopyrightLine>*                                                                          *</se:CopyrightLine>

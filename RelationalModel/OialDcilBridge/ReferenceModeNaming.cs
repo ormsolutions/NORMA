@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -19,20 +19,20 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Microsoft.VisualStudio.Modeling;
-using Neumont.Tools.RelationalModels.ConceptualDatabase;
-using Neumont.Tools.Modeling;
-using Neumont.Tools.ORMToORMAbstractionBridge;
-using Neumont.Tools.ORMAbstraction;
-using Neumont.Tools.ORM.ObjectModel;
+using ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase;
+using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge;
+using ORMSolutions.ORMArchitect.ORMAbstraction;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using System.Diagnostics;
 using System.Security.Permissions;
-using Neumont.Tools.Modeling.Design;
+using ORMSolutions.ORMArchitect.Framework.Design;
 using System.Collections.ObjectModel;
 using System.Drawing.Design;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
-namespace Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge
+namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 {
 	#region ReferenceModeNamingUse enum
 	/// <summary>

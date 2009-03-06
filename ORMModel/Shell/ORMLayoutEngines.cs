@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Neumont.Tools.Modeling.Diagrams;
+using ORMSolutions.ORMArchitect.Framework.Diagrams;
 using Microsoft.VisualStudio.Modeling;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.ShapeModel;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.ShapeModel;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using System.Collections.ObjectModel;
 
-namespace Neumont.Tools.ORM.Shell
+namespace ORMSolutions.ORMArchitect.Core.Shell
 {
 	#region ORMRadialLayoutEngine - actual implementation
 	/// <summary>

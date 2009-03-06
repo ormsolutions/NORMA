@@ -1,9 +1,9 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © Matthew Curland. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -35,15 +35,15 @@ using Microsoft.VisualStudio.Modeling.Design;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
 using Microsoft.VisualStudio.Modeling.Shell;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.Shell;
-using Neumont.Tools.Modeling;
-using Neumont.Tools.Modeling.Design;
-using Neumont.Tools.Modeling.Diagrams;
-using Neumont.Tools.Modeling.Diagrams.Design;
-using Neumont.Tools.Modeling.Shell;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.Shell;
+using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Framework.Design;
+using ORMSolutions.ORMArchitect.Framework.Diagrams;
+using ORMSolutions.ORMArchitect.Framework.Diagrams.Design;
+using ORMSolutions.ORMArchitect.Framework.Shell;
 
-namespace Neumont.Tools.ORM.ShapeModel
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	/// <summary>
 	/// A callback delegate to use during shape placement. Used with <see cref="M:ORMDiagram.PlaceElementOnDiagram"/>
@@ -1193,35 +1193,35 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// The Brush to use when drawing the background of a sticky object.
 		/// </summary>
-		public static readonly StyleSetResourceId StickyBackgroundResource = new StyleSetResourceId("Neumont", "StickyBackgroundResource");
+		public static readonly StyleSetResourceId StickyBackgroundResource = new StyleSetResourceId("ORMArchitect", "StickyBackgroundResource");
 		/// <summary>
 		/// The Brush to use when drawing the foreground of a sticky object.
 		/// </summary>
-		public static readonly StyleSetResourceId StickyForegroundResource = new StyleSetResourceId("Neumont", "StickyForegroundResource");
+		public static readonly StyleSetResourceId StickyForegroundResource = new StyleSetResourceId("ORMArchitect", "StickyForegroundResource");
 		/// <summary>
 		/// The brush or pen used to draw a link decorator as sticky
 		/// </summary>
-		public static readonly StyleSetResourceId StickyConnectionLineDecoratorResource = new StyleSetResourceId("Neumont", "StickyConnectionLineDecorator");
+		public static readonly StyleSetResourceId StickyConnectionLineDecoratorResource = new StyleSetResourceId("ORMArchitect", "StickyConnectionLineDecorator");
 		/// <summary>
 		/// The brush or pen used to draw a link decorator as active. Generally corresponds to the role picker color
 		/// </summary>
-		public static readonly StyleSetResourceId ActiveConnectionLineDecoratorResource = new StyleSetResourceId("Neumont", "ActiveConnectionLineDecorator");
+		public static readonly StyleSetResourceId ActiveConnectionLineDecoratorResource = new StyleSetResourceId("ORMArchitect", "ActiveConnectionLineDecorator");
 		/// <summary>
 		/// The brush used to draw a link as active. Generally corresponds to the role picker color.
 		/// </summary>
-		public static readonly StyleSetResourceId ActiveBackgroundResource = new StyleSetResourceId("Neumont", "ActiveBackgroundResource");
+		public static readonly StyleSetResourceId ActiveBackgroundResource = new StyleSetResourceId("ORMArchitect", "ActiveBackgroundResource");
 		/// <summary>
 		/// The brush used to draw the background for an item with errors.
 		/// </summary>
-		public static readonly StyleSetResourceId ErrorBackgroundResource = new StyleSetResourceId("Neumont", "ErrorBackgroundResource");
+		public static readonly StyleSetResourceId ErrorBackgroundResource = new StyleSetResourceId("ORMArchitect", "ErrorBackgroundResource");
 		/// <summary>
 		/// The brush used to draw the background for an item with errors when the shape is highlighted.
 		/// </summary>
-		public static readonly StyleSetResourceId HighlightedErrorBackgroundResource = new StyleSetResourceId("Neumont", "HighlightedErrorBackgroundResource");
+		public static readonly StyleSetResourceId HighlightedErrorBackgroundResource = new StyleSetResourceId("ORMArchitect", "HighlightedErrorBackgroundResource");
 		/// <summary>
 		/// A transparent brush.
 		/// </summary>
-		public static readonly StyleSetResourceId TransparentBrushResource = new StyleSetResourceId("Neumont", "TransparentBrushResource");
+		public static readonly StyleSetResourceId TransparentBrushResource = new StyleSetResourceId("ORMArchitect", "TransparentBrushResource");
 
 		/// <summary>
 		/// Standard override to populate the style set for the shape type

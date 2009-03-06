@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -17,7 +17,7 @@
 using System;
 using System.IO;
 
-namespace Neumont.Tools.ORM.SDK.TestReportViewer
+namespace ORMSolutions.ORMArchitectSDK.TestReportViewer
 {
 	public sealed partial class ReportViewer
 	{

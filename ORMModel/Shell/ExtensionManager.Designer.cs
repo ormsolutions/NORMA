@@ -1,4 +1,4 @@
-namespace Neumont.Tools.ORM.Shell
+namespace ORMSolutions.ORMArchitect.Core.Shell
 {
 	/// <summary>
 	/// The form that allows users to select or deselect Custom Extensions.

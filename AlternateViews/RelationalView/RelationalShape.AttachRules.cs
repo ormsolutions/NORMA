@@ -3,7 +3,7 @@ using System.Reflection;
 
 // Common Public License Copyright Notice
 // /**************************************************************************\
-// * Neumont Object-Role Modeling Architect for Visual Studio                 *
+// * Natural Object-Role Modeling Architect for Visual Studio                 *
 // *                                                                          *
 // * Copyright © Neumont University. All rights reserved.                     *
 // *                                                                          *
@@ -16,10 +16,10 @@ using System.Reflection;
 // * You must not remove this notice, or any other, from this software.       *
 // \**************************************************************************/
 
-namespace Neumont.Tools.ORM.Views.RelationalView
+namespace ORMSolutions.ORMArchitect.Views.RelationalView
 {
 	#region Attach rules to RelationalShapeDomainModel model
-	partial class RelationalShapeDomainModel : Neumont.Tools.Modeling.Shell.IDomainModelEnablesRulesAfterDeserialization
+	partial class RelationalShapeDomainModel : ORMSolutions.ORMArchitect.Framework.Shell.IDomainModelEnablesRulesAfterDeserialization
 	{
 		private static Type[] myCustomDomainModelTypes;
 		private static Type[] CustomDomainModelTypes
@@ -75,7 +75,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// <seealso cref="Microsoft.VisualStudio.Modeling.DomainModel.GetCustomDomainModelTypes"/>
 		protected override Type[] GetCustomDomainModelTypes()
 		{
-			if (Neumont.Tools.Modeling.FrameworkDomainModel.InitializingToolboxItems)
+			if (ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InitializingToolboxItems)
 			{
 				return Type.EmptyTypes;
 			}
@@ -104,7 +104,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
 		}
-		void Neumont.Tools.Modeling.Shell.IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.Store store)
+		void ORMSolutions.ORMArchitect.Framework.Shell.IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.Store store)
 		{
 			this.EnableRulesAfterDeserialization(store);
 		}
@@ -114,7 +114,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 	#region Rule classes for RelationalDiagram
 	partial class RelationalDiagram
 	{
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class ConceptTypeDetachingFromTableRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -124,9 +124,9 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			}
 			/// <summary>
 			/// Provide the following method in class: 
-			/// Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram
+			/// ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram
 			/// /// <summary>
-			/// /// DeletingRule: typeof(Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType)
+			/// /// DeletingRule: typeof(ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType)
 			/// /// </summary>
 			/// private static void ConceptTypeDetachingFromTableRule(ElementDeletingEventArgs e)
 			/// {
@@ -135,12 +135,12 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.ConceptTypeDetachingFromTableRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.ConceptTypeDetachingFromTableRule");
 				RelationalDiagram.ConceptTypeDetachingFromTableRule(e);
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.ConceptTypeDetachingFromTableRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.ConceptTypeDetachingFromTableRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class ConceptTypeDetachingFromObjectTypeRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -150,9 +150,9 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			}
 			/// <summary>
 			/// Provide the following method in class: 
-			/// Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram
+			/// ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram
 			/// /// <summary>
-			/// /// DeletingRule: typeof(Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType)
+			/// /// DeletingRule: typeof(ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType)
 			/// /// </summary>
 			/// private static void ConceptTypeDetachingFromObjectTypeRule(ElementDeletingEventArgs e)
 			/// {
@@ -161,12 +161,12 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.ConceptTypeDetachingFromObjectTypeRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.ConceptTypeDetachingFromObjectTypeRule");
 				RelationalDiagram.ConceptTypeDetachingFromObjectTypeRule(e);
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.ConceptTypeDetachingFromObjectTypeRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.ConceptTypeDetachingFromObjectTypeRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDataType), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class DataTypeChangedRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -176,9 +176,9 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			}
 			/// <summary>
 			/// Provide the following method in class: 
-			/// Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram
+			/// ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram
 			/// /// <summary>
-			/// /// RolePlayerChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType)
+			/// /// RolePlayerChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDataType)
 			/// /// </summary>
 			/// private static void DataTypeChangedRule(RolePlayerChangedEventArgs e)
 			/// {
@@ -187,12 +187,12 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.DataTypeChangedRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.DataTypeChangedRule");
 				RelationalDiagram.DataTypeChangedRule(e);
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.DataTypeChangedRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.DataTypeChangedRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDataType), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class DataTypeFacetChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -202,9 +202,9 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			}
 			/// <summary>
 			/// Provide the following method in class: 
-			/// Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram
+			/// ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram
 			/// /// <summary>
-			/// /// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType)
+			/// /// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDataType)
 			/// /// </summary>
 			/// private static void DataTypeFacetChangedRule(ElementPropertyChangedEventArgs e)
 			/// {
@@ -213,12 +213,12 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.DataTypeFacetChangedRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.DataTypeFacetChangedRule");
 				RelationalDiagram.DataTypeFacetChangedRule(e);
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.DataTypeFacetChangedRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.DataTypeFacetChangedRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.RelationalModels.ConceptualDatabase.Column), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class DisplayColumnPropertyChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -228,9 +228,9 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			}
 			/// <summary>
 			/// Provide the following method in class: 
-			/// Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram
+			/// ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram
 			/// /// <summary>
-			/// /// ChangeRule: typeof(Neumont.Tools.RelationalModels.ConceptualDatabase.Column)
+			/// /// ChangeRule: typeof(ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column)
 			/// /// </summary>
 			/// private static void DisplayColumnPropertyChangedRule(ElementPropertyChangedEventArgs e)
 			/// {
@@ -239,12 +239,12 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.DisplayColumnPropertyChangedRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.DisplayColumnPropertyChangedRule");
 				RelationalDiagram.DisplayColumnPropertyChangedRule(e);
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.DisplayColumnPropertyChangedRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.DisplayColumnPropertyChangedRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.RelationalModels.ConceptualDatabase.Table), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class DisplayTablePropertyChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -254,9 +254,9 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			}
 			/// <summary>
 			/// Provide the following method in class: 
-			/// Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram
+			/// ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram
 			/// /// <summary>
-			/// /// ChangeRule: typeof(Neumont.Tools.RelationalModels.ConceptualDatabase.Table)
+			/// /// ChangeRule: typeof(ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table)
 			/// /// </summary>
 			/// private static void DisplayTablePropertyChangedRule(ElementPropertyChangedEventArgs e)
 			/// {
@@ -265,12 +265,12 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.DisplayTablePropertyChangedRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.DisplayTablePropertyChangedRule");
 				RelationalDiagram.DisplayTablePropertyChangedRule(e);
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.DisplayTablePropertyChangedRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.DisplayTablePropertyChangedRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RelationalDiagram), Priority=Neumont.Tools.Modeling.FrameworkDomainModel.InlineRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RelationalDiagram), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class NameChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -280,7 +280,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			}
 			/// <summary>
 			/// Provide the following method in class: 
-			/// Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram
+			/// ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram
 			/// /// <summary>
 			/// /// ChangeRule: typeof(RelationalDiagram)
 			/// /// </summary>
@@ -291,19 +291,19 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.NameChangedRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.NameChangedRule");
 				RelationalDiagram.NameChangedRule(e);
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.NameChangedRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.NameChangedRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddConnectionRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddConnectionRulePriority)]
 		private sealed class ReferenceConstraintAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
 			/// <summary>
 			/// Provide the following method in class: 
-			/// Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram
+			/// ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram
 			/// /// <summary>
-			/// /// AddRule: typeof(Neumont.Tools.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+			/// /// AddRule: typeof(ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
 			/// /// </summary>
 			/// private static void ReferenceConstraintAddedRule(ElementAddedEventArgs e)
 			/// {
@@ -312,9 +312,9 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.ReferenceConstraintAddedRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.ReferenceConstraintAddedRule");
 				RelationalDiagram.ReferenceConstraintAddedRule(e);
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.ReferenceConstraintAddedRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.ReferenceConstraintAddedRule");
 			}
 		}
 	}

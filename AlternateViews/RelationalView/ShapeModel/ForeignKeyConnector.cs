@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -15,18 +15,18 @@
 #endregion
 
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Neumont.Tools.RelationalModels.ConceptualDatabase;
+using ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase;
 using System.Text;
-using Neumont.Tools.ORM.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
-using Neumont.Tools.Modeling;
-namespace Neumont.Tools.ORM.Views.RelationalView
+using ORMSolutions.ORMArchitect.Framework;
+namespace ORMSolutions.ORMArchitect.Views.RelationalView
 {
 	partial class ForeignKeyConnector
 	{
 		#region Customize appearance
 		/// <summary>
-		/// Overridden to disallow selection of this <see cref="T:Neumont.Tools.ORM.Views.RelationalView.ForeignKeyConnector"/>.
+		/// Overridden to disallow selection of this <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.ForeignKeyConnector"/>.
 		/// </summary>
 		public override bool CanSelect
 		{
@@ -36,10 +36,10 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			}
 		}
 		/// <summary>
-		/// Overridden to disallow manual routing of this <see cref="T:Neumont.Tools.ORM.Views.RelationalView.ForeignKeyConnector"/>.
+		/// Overridden to disallow manual routing of this <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.ForeignKeyConnector"/>.
 		/// </summary>
 		/// <remarks>
-		/// If this returns <see langword="true"/> while the <see cref="P:Neumont.Tools.ORM.Views.RelationalView.ForeignKeyConnector.CanSelect"/>
+		/// If this returns <see langword="true"/> while the <see cref="P:ORMSolutions.ORMArchitect.Views.RelationalView.ForeignKeyConnector.CanSelect"/>
 		/// property returns <see langword="false"/>, the application will crash while trying to manually route the connector.
 		/// </remarks>
 		public override bool CanManuallyRoute

@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -25,7 +25,7 @@ using Microsoft.VisualStudio.Modeling;
 using IComparer = System.Collections.IComparer;
 using IEqualityComparer = System.Collections.IEqualityComparer;
 
-namespace Neumont.Tools.Modeling
+namespace ORMSolutions.ORMArchitect.Framework
 {
 	#region RuntimeTypeHandleComparer class
 	/// <summary>

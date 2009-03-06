@@ -1,6 +1,6 @@
 ﻿#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -24,14 +24,14 @@
 
 using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
-namespace Neumont.Tools.Modeling
+namespace ORMSolutions.ORMArchitect.Framework
 {
 	/// <summary>
 	/// DomainModel FrameworkDomainModel
-	/// Description for Neumont.Tools.Modeling.Framework
+	/// Description for ORMSolutions.ORMArchitect.Framework.Framework
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.Modeling.FrameworkDomainModel.DisplayName", typeof(global::Neumont.Tools.Modeling.FrameworkDomainModel), "Neumont.Tools.Modeling.GeneratedCode.FrameworkDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.Modeling.FrameworkDomainModel.Description", typeof(global::Neumont.Tools.Modeling.FrameworkDomainModel), "Neumont.Tools.Modeling.GeneratedCode.FrameworkDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel), "ORMSolutions.ORMArchitect.Framework.GeneratedCode.FrameworkDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.Description", typeof(global::ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel), "ORMSolutions.ORMArchitect.Framework.GeneratedCode.FrameworkDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("f60bc3f1-c38e-4c7d-9ee5-9211db26cb45")]
 	public partial class FrameworkDomainModel : DslModeling::DomainModel
@@ -147,7 +147,7 @@ namespace Neumont.Tools.Modeling
 		/// <summary>
 		/// The base name of this model's resources.
 		/// </summary>
-		public const string ResourceBaseName = "Neumont.Tools.Modeling.GeneratedCode.FrameworkDomainModelResx";
+		public const string ResourceBaseName = "ORMSolutions.ORMArchitect.Framework.GeneratedCode.FrameworkDomainModelResx";
 		
 		/// <summary>
 		/// Gets the DomainModel's ResourceManager. If the ResourceManager does not already exist, then it is created.

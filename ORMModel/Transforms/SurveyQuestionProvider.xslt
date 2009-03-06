@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-	Neumont Object-Role Modeling Architect for Visual Studio
+	Natural Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
 
@@ -45,8 +45,8 @@
 			<plx:namespaceImport name="System"/>
 			<plx:namespaceImport name="System.Windows.Forms"/>
 			<plx:namespaceImport name="System.Collections.Generic"/>
-			<plx:namespaceImport name="Neumont.Tools.Modeling.Shell"/>
-			<plx:namespaceImport name="Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid"/>
+			<plx:namespaceImport name="ORMSolutions.ORMArchitect.Framework.Shell"/>
+			<plx:namespaceImport name="ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid"/>
 			<plx:namespace name="{$CustomToolNamespace}">
 				<plx:class name="{@class}" partial="true" visibility="deferToPartial">
 					<plx:implementsInterface dataTypeName="ISurveyQuestionProvider">

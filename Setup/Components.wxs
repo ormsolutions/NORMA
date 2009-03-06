@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
-	Neumont Object-Role Modeling Architect for Visual Studio
+	Natural Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
 	Copyright © Matthew Curland. All rights reserved.
@@ -21,72 +21,72 @@
 			<Directory Id="GAC">
 				<!-- Assemblies to be installed in the Global Assembly Cache go here -->
 				<Component Id="NORMAVSPackageGACComponent" Guid="C1621945-A277-4590-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-					<File Id="Neumont.Tools.ORM$(var.VSExt).dll_GAC" ShortName="ORM.dll" Name="Neumont.Tools.ORM$(var.VSExt).dll" Source="..\ORMModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM$(var.VSExt).dll"
-						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Vital="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORM$(var.VSExt).dll_GAC" ProcessorArchitecture="msil"/>
+					<File Id="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll_GAC" ShortName="ORM.dll" Name="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll" Source="..\ORMModel\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"
+						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Vital="yes" Assembly=".net" AssemblyManifest="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll_GAC" ProcessorArchitecture="msil"/>
 				</Component>
 				<Component Id="NORMAVSCustomPropertiesGACComponent" Guid="0772D284-812E-4ECC-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-					<File Id="Neumont.Tools.ORM.CustomProperties$(var.VSExt).dll_GAC" ShortName="ORMCstPr.dll" Name="Neumont.Tools.ORM.CustomProperties$(var.VSExt).dll" Source="..\CustomProperties\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.CustomProperties$(var.VSExt).dll"
-						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORM.CustomProperties$(var.VSExt).dll_GAC" ProcessorArchitecture="msil"/>
+					<File Id="ORMSolutions.ORMArchitect.CustomProperties$(var.VSExt).dll_GAC" ShortName="ORMCstPr.dll" Name="ORMSolutions.ORMArchitect.CustomProperties$(var.VSExt).dll" Source="..\CustomProperties\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.CustomProperties$(var.VSExt).dll"
+						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="ORMSolutions.ORMArchitect.CustomProperties$(var.VSExt).dll_GAC" ProcessorArchitecture="msil"/>
 				</Component>
 				<Component Id="NORMAVSORMAbstractionGACComponent" Guid="287179E2-73E9-4685-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-					<File Id="Neumont.Tools.ORMAbstraction$(var.VSExt).dll_GAC" ShortName="ORMAbstr.dll" Name="Neumont.Tools.ORMAbstraction$(var.VSExt).dll" Source="..\Oial\OialModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstraction$(var.VSExt).dll"
-						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORMAbstraction$(var.VSExt).dll_GAC" ProcessorArchitecture="msil"/>
+					<File Id="ORMSolutions.ORMArchitect.ORMAbstraction$(var.VSExt).dll_GAC" ShortName="ORMAbstr.dll" Name="ORMSolutions.ORMArchitect.ORMAbstraction$(var.VSExt).dll" Source="..\Oial\OialModel\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.ORMAbstraction$(var.VSExt).dll"
+						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="ORMSolutions.ORMArchitect.ORMAbstraction$(var.VSExt).dll_GAC" ProcessorArchitecture="msil"/>
 				</Component>
 				<Component Id="NORMAVSORMToORMAbstractionGACComponent" Guid="83ACCC60-19F4-4BBE-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-					<File Id="Neumont.Tools.ORMToORMAbstractionBridge$(var.VSExt).dll_GAC" ShortName="ORMAbsBr.dll" Name="Neumont.Tools.ORMToORMAbstractionBridge$(var.VSExt).dll" Source="..\Oial\ORMOialBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMToORMAbstractionBridge$(var.VSExt).dll"
-						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORMToORMAbstractionBridge$(var.VSExt).dll_GAC" ProcessorArchitecture="msil"/>
+					<File Id="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge$(var.VSExt).dll_GAC" ShortName="ORMAbsBr.dll" Name="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge$(var.VSExt).dll" Source="..\Oial\ORMOialBridge\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge$(var.VSExt).dll"
+						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge$(var.VSExt).dll_GAC" ProcessorArchitecture="msil"/>
 				</Component>
 				<Component Id="NORMAVSRelationalModelsGACComponent" Guid="8877E891-60A3-454C-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-					<File Id="Neumont.Tools.RelationalModels$(var.VSExt).dll_GAC" ShortName="RelMods.dll" Name="Neumont.Tools.RelationalModels$(var.VSExt).dll" Source="..\RelationalModel\DcilModel\bin\$(var.BuildConfiguration)\Neumont.Tools.RelationalModels$(var.VSExt).dll"
-						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.RelationalModels$(var.VSExt).dll_GAC" ProcessorArchitecture="msil"/>
+					<File Id="ORMSolutions.ORMArchitect.RelationalModels$(var.VSExt).dll_GAC" ShortName="RelMods.dll" Name="ORMSolutions.ORMArchitect.RelationalModels$(var.VSExt).dll" Source="..\RelationalModel\DcilModel\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.RelationalModels$(var.VSExt).dll"
+						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="ORMSolutions.ORMArchitect.RelationalModels$(var.VSExt).dll_GAC" ProcessorArchitecture="msil"/>
 				</Component>
 				<Component Id="NORMAVSORMAbstractionToConceptualDatabaseGACComponent" Guid="B14BF95A-EC48-49EE-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-					<File Id="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).dll_GAC" ShortName="CDBBr.dll" Name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).dll" Source="..\RelationalModel\OialDcilBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).dll"
-						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).dll_GAC" ProcessorArchitecture="msil"/>
+					<File Id="ORMArchitect.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).dll_GAC" ShortName="CDBBr.dll" Name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).dll" Source="..\RelationalModel\OialDcilBridge\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).dll"
+						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="ORMArchitect.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).dll_GAC" ProcessorArchitecture="msil"/>
 				</Component>
 				<Component Id="NORMAVSEntityRelationshipModelsGACComponent" Guid="ED234F0B-2461-4DC2-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-					<File Id="Neumont.Tools.EntityRelationshipModels$(var.VSExt).dll_GAC" ShortName="ErMods.dll" Name="Neumont.Tools.EntityRelationshipModels$(var.VSExt).dll" Source="..\EntityRelationship\BarkerErModel\bin\$(var.BuildConfiguration)\Neumont.Tools.EntityRelationshipModels$(var.VSExt).dll"
-						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.EntityRelationshipModels$(var.VSExt).dll_GAC" ProcessorArchitecture="msil"/>
+					<File Id="ORMSolutions.ORMArchitect.EntityRelationshipModels$(var.VSExt).dll_GAC" ShortName="ErMods.dll" Name="ORMSolutions.ORMArchitect.EntityRelationshipModels$(var.VSExt).dll" Source="..\EntityRelationship\BarkerErModel\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.EntityRelationshipModels$(var.VSExt).dll"
+						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="ORMSolutions.ORMArchitect.EntityRelationshipModels$(var.VSExt).dll_GAC" ProcessorArchitecture="msil"/>
 				</Component>
 				<Component Id="NORMAVSORMAbstractionToBarkerERGACComponent" Guid="724CB346-8686-4964-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-					<File Id="Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).dll_GAC" ShortName="BarkerBr.dll" Name="Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).dll" Source="..\EntityRelationship\OialBerBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).dll"
-						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).dll_GAC" ProcessorArchitecture="msil"/>
+					<File Id="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge$(var.VSExt).dll_GAC" ShortName="BarkerBr.dll" Name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge$(var.VSExt).dll" Source="..\EntityRelationship\OialBerBridge\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge$(var.VSExt).dll"
+						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge$(var.VSExt).dll_GAC" ProcessorArchitecture="msil"/>
 				</Component>
 				<Component Id="NORMADBImportGACComponent" Guid="029817D9-6779-4801-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-					<File Id="Neumont.Tools.ORM.DatabaseImport$(var.VSExt).dll_GAC" ShortName="DBImport.dll" Name="Neumont.Tools.ORM.DatabaseImport$(var.VSExt).dll" Source="..\Tools\DatabaseImport\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.DatabaseImport$(var.VSExt).dll"
-						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORM.DatabaseImport$(var.VSExt).dll_GAC" ProcessorArchitecture="msil"/>
+					<File Id="ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).dll_GAC" ShortName="DBImport.dll" Name="ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).dll" Source="..\Tools\DatabaseImport\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).dll"
+						DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).dll_GAC" ProcessorArchitecture="msil"/>
 				</Component>
 			</Directory>
 
 			<Directory Id="$(var.ProgramFilesFolder)">
-				<Directory Id="$(var.DefaultCompanyDir)" Name="$(var.DefaultCompanyDir)">
+				<Directory Id="$(var.DefaultShortCompanyDir)" ShortName="$(var.DefaultShortCompanyDir)" Name="$(var.DefaultCompanyDir)">
 					<Directory Id="$(var.DefaultShortProductDir)" ShortName="$(var.DefaultShortProductDir)" Name="$(var.DefaultProductDir)">
 
 						<Component Id="LicenseFilesComponent" Guid="8D623CBC-D6BC-40DA-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 							<File Id="CPL.txt" Name="CPL.txt" Source="..\CPL.txt"
-								DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+								DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 						</Component>
 
 						<Component Id="ReadmeComponent" Guid="818AC083-01BC-4DBC-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 							<File Id="Readme.htm" Name="Readme.htm" Source="Readme.htm"
-								DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+								DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 						</Component>
 
 						<Directory Id="BINDIR" Name="bin">
 
 							<!-- Executables and PDBs go here -->
 							<Component Id="NORMAVSPackageComponent" Guid="568F224E-9C2F-4A85-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-								<File Id="Neumont.Tools.ORM$(var.VSExt).dll" ShortName="ORM.dll" Name="Neumont.Tools.ORM$(var.VSExt).dll" Source="..\ORMModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM$(var.VSExt).dll"
-									DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Vital="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORM$(var.VSExt).dll" ProcessorArchitecture="msil" AssemblyApplication="Neumont.Tools.ORM$(var.VSExt).dll"/>
-								<File Id="Neumont.Tools.ORM$(var.VSExt).pdb" ShortName="ORM.pdb" Name="Neumont.Tools.ORM$(var.VSExt).pdb" Source="..\ORMModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM$(var.VSExt).pdb"
-									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
-								<File Id="Neumont.Tools.ORM$(var.VSExt).xml" ShortName="ORM.xml" Name="Neumont.Tools.ORM$(var.VSExt).xml" Source="..\ORMModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM$(var.VSExt).xml"
-									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+								<File Id="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll" ShortName="ORM.dll" Name="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll" Source="..\ORMModel\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"
+									DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Vital="yes" Assembly=".net" AssemblyManifest="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll" ProcessorArchitecture="msil" AssemblyApplication="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
+								<File Id="ORMSolutions.ORMArchitect.Core$(var.VSExt).pdb" ShortName="ORM.pdb" Name="ORMSolutions.ORMArchitect.Core$(var.VSExt).pdb" Source="..\ORMModel\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.Core$(var.VSExt).pdb"
+									DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
+								<File Id="ORMSolutions.ORMArchitect.Core$(var.VSExt).xml" ShortName="ORM.xml" Name="ORMSolutions.ORMArchitect.Core$(var.VSExt).xml" Source="..\ORMModel\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.Core$(var.VSExt).xml"
+									DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 								<?include NORMAVSPackageRegistry.wxi?>
 								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/2008-11/DiagramDisplay">
-									<RegistryValue Type="string" Name="Class" Value="Neumont.Tools.Modeling.Shell.DiagramDisplayDomainModel"/>
+									<RegistryValue Type="string" Name="Class" Value="ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayDomainModel"/>
 								</RegistryKey>
-								<ProgId Id="ormfile" Description="!(loc.ORMFileDescription)" Icon="Neumont.Tools.ORM$(var.VSExt).dll" IconIndex="0">
+								<ProgId Id="ormfile" Description="!(loc.ORMFileDescription)" Icon="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll" IconIndex="0">
 									<Extension Id="orm" ContentType="application/orm+xml">
 										<MIME ContentType="application/orm+xml" Default="yes"/>
 										<Verb Id="Open" Command="!(loc.ORMFileOpenCommand)" TargetProperty="[VSENVIRONMENTPATH]" Argument="$(var.RootSuffixCmd)/dde"/>
@@ -115,41 +115,41 @@
 							</Component>
 
 							<Component Id="ORMCustomToolComponent" Guid="9B2F677A-1D14-4E9E-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-								<File Id="Neumont.Tools.ORM.ORMCustomTool$(var.VSExt).dll" ShortName="ORMCstTl.dll" Name="Neumont.Tools.ORM.ORMCustomTool$(var.VSExt).dll" Source="..\Tools\ORMCustomTool\bin\Neumont.Tools.ORM.ORMCustomTool$(var.VSExt).dll"
-									DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORM.ORMCustomTool$(var.VSExt).dll" AssemblyApplication="Neumont.Tools.ORM.ORMCustomTool$(var.VSExt).dll" ProcessorArchitecture="msil"/>
-								<File Id="Neumont.Tools.ORM.ORMCustomTool$(var.VSExt).pdb" ShortName="ORMCstTl.pdb" Name="Neumont.Tools.ORM.ORMCustomTool$(var.VSExt).pdb" Source="..\Tools\ORMCustomTool\bin\Neumont.Tools.ORM.ORMCustomTool$(var.VSExt).pdb"
-									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.ORMCustomTool$(var.VSExt).dll"/>
-								<File Id="Neumont.Tools.ORM.ORMCustomTool$(var.VSExt).xml" ShortName="ORMCstTl.xml" Name="Neumont.Tools.ORM.ORMCustomTool$(var.VSExt).xml" Source="..\Tools\ORMCustomTool\bin\Neumont.Tools.ORM.ORMCustomTool$(var.VSExt).xml"
-									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.ORMCustomTool$(var.VSExt).dll"/>
+								<File Id="ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).dll" ShortName="ORMCstTl.dll" Name="ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).dll" Source="..\Tools\ORMCustomTool\bin\ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).dll"
+									DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).dll" AssemblyApplication="ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).dll" ProcessorArchitecture="msil"/>
+								<File Id="ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).pdb" ShortName="ORMCstTl.pdb" Name="ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).pdb" Source="..\Tools\ORMCustomTool\bin\ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).pdb"
+									DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).dll"/>
+								<File Id="ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).xml" ShortName="ORMCstTl.xml" Name="ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).xml" Source="..\Tools\ORMCustomTool\bin\ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).xml"
+									DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).dll"/>
 								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.VSClsidRoot)\{$(var.ORMCustomToolGuid)}">
-									<RegistryValue Type="string" Value="Neumont.Tools.ORM.ORMCustomTool.ORMCustomTool"/>
+									<RegistryValue Type="string" Value="ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool"/>
 									<RegistryKey Action="create" Key="InprocServer32">
 										<RegistryValue Type="string" Value="[$(var.SystemFolder)]mscoree.dll"/>
 										<RegistryValue Type="string" Name="ThreadingModel" Value="Both"/>
-										<RegistryValue Type="string" Name="Class" Value="Neumont.Tools.ORM.ORMCustomTool.ORMCustomTool"/>
+										<RegistryValue Type="string" Name="Class" Value="ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool"/>
 										<RegistryValue Type="string" Name="Assembly" Value="$(var.ORMCustomToolAssemblyName)"/>
-										<RegistryValue Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORM.ORMCustomTool$(var.VSExt).dll]"/>
+										<RegistryValue Type="string" Name="CodeBase" Value="[#ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).dll]"/>
 									</RegistryKey>
 								</RegistryKey>
 								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.VSClsidRoot)\{$(var.ORMCustomToolExtenderGuid)}">
-									<RegistryValue Type="string" Value="Neumont.Tools.ORM.ORMCustomTool.ExtenderProvider"/>
+									<RegistryValue Type="string" Value="ORMSolutions.ORMArchitect.ORMCustomTool.ExtenderProvider"/>
 									<RegistryKey Action="create" Key="InprocServer32">
 										<RegistryValue Type="string" Value="[$(var.SystemFolder)]mscoree.dll"/>
 										<RegistryValue Type="string" Name="ThreadingModel" Value="Both"/>
-										<RegistryValue Type="string" Name="Class" Value="Neumont.Tools.ORM.ORMCustomTool.ExtenderProvider"/>
+										<RegistryValue Type="string" Name="Class" Value="ORMSolutions.ORMArchitect.ORMCustomTool.ExtenderProvider"/>
 										<RegistryValue Type="string" Name="Assembly" Value="$(var.ORMCustomToolAssemblyName)"/>
-										<RegistryValue Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORM.ORMCustomTool$(var.VSExt).dll]"/>
+										<RegistryValue Type="string" Name="CodeBase" Value="[#ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).dll]"/>
 										<RegistryKey Action="create" Key="$(var.MajorMinorVersion).0.0">
-											<RegistryValue Type="string" Name="Class" Value="Neumont.Tools.ORM.ORMCustomTool.ExtenderProvider"/>
+											<RegistryValue Type="string" Name="Class" Value="ORMSolutions.ORMArchitect.ORMCustomTool.ExtenderProvider"/>
 											<RegistryValue Type="string" Name="Assembly" Value="$(var.ORMCustomToolAssemblyName)"/>
-											<RegistryValue Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORM.ORMCustomTool$(var.VSExt).dll]"/>
+											<RegistryValue Type="string" Name="CodeBase" Value="[#ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).dll]"/>
 										</RegistryKey>
 									</RegistryKey>
 								</RegistryKey>
 							</Component>
 							<Component Id="NORMADBImportComponent" Guid="0B49C0D1-EB3A-4E6E-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-								<File Id="Neumont.Tools.ORM.DatabaseImport$(var.VSExt).dll" ShortName="DBImport.dll" Name="Neumont.Tools.ORM.DatabaseImport$(var.VSExt).dll" Source="..\Tools\DatabaseImport\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.DatabaseImport$(var.VSExt).dll"
-									DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORM.DatabaseImport$(var.VSExt).dll" ProcessorArchitecture="msil" AssemblyApplication="Neumont.Tools.ORM.DatabaseImport$(var.VSExt).dll"/>
+								<File Id="ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).dll" ShortName="DBImport.dll" Name="ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).dll" Source="..\Tools\DatabaseImport\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).dll"
+									DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).dll" ProcessorArchitecture="msil" AssemblyApplication="ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).dll"/>
 							</Component>
 							<Component Id="ORMCustomToolVBasicComponent" Guid="0B8DF8D8-7418-47F3-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
 								<CreateFolder/>
@@ -198,125 +198,125 @@
 
 							<Directory Id="EXTENSIONSDIR" ShortName="Ext" Name="Extensions">
 								<Component Id="NORMAVSRelationalViewExtensionComponent" Guid="EB966776-D5B5-4FFE-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-									<File Id="Neumont.Tools.ORM.Views.RelationalView$(var.VSExt).dll" ShortName="ReltnlVw.dll" Name="Neumont.Tools.ORM.Views.RelationalView$(var.VSExt).dll" Source="..\AlternateViews\RelationalView\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.Views.RelationalView$(var.VSExt).dll"
-										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORM.Views.RelationalView$(var.VSExt).dll" AssemblyApplication="Neumont.Tools.ORM.Views.RelationalView$(var.VSExt).dll" ProcessorArchitecture="msil"/>
-									<File Id="Neumont.Tools.ORM.Views.RelationalView$(var.VSExt).pdb" ShortName="ReltnlVw.pdb" Name="Neumont.Tools.ORM.Views.RelationalView$(var.VSExt).pdb" Source="..\AlternateViews\RelationalView\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.Views.RelationalView$(var.VSExt).pdb"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.Views.RelationalView$(var.VSExt).dll"/>
+									<File Id="ORMSolutions.ORMArchitect.Views.RelationalView$(var.VSExt).dll" ShortName="ReltnlVw.dll" Name="ORMSolutions.ORMArchitect.Views.RelationalView$(var.VSExt).dll" Source="..\AlternateViews\RelationalView\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.Views.RelationalView$(var.VSExt).dll"
+										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="ORMSolutions.ORMArchitect.Views.RelationalView$(var.VSExt).dll" AssemblyApplication="ORMSolutions.ORMArchitect.Views.RelationalView$(var.VSExt).dll" ProcessorArchitecture="msil"/>
+									<File Id="ORMSolutions.ORMArchitect.Views.RelationalView$(var.VSExt).pdb" ShortName="ReltnlVw.pdb" Name="ORMSolutions.ORMArchitect.Views.RelationalView$(var.VSExt).pdb" Source="..\AlternateViews\RelationalView\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.Views.RelationalView$(var.VSExt).pdb"
+										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Views.RelationalView$(var.VSExt).dll"/>
 									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/2007-11/RelationalView">
-										<RegistryValue Type="string" Name="Class" Value="Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel"/>
-										<RegistryValue Type="string" Name="Assembly" Value="Neumont.Tools.ORM.Views.RelationalView$(var.VSExt), $(var.BaseAssemblyName)"/>
-										<RegistryValue Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORM.Views.RelationalView$(var.VSExt).dll]"/>
+										<RegistryValue Type="string" Name="Class" Value="ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel"/>
+										<RegistryValue Type="string" Name="Assembly" Value="ORMSolutions.ORMArchitect.Views.RelationalView$(var.VSExt), $(var.BaseAssemblyName)"/>
+										<RegistryValue Type="string" Name="CodeBase" Value="[#ORMSolutions.ORMArchitect.Views.RelationalView$(var.VSExt).dll]"/>
 									</RegistryKey>
 								</Component>
 
 								<Component Id="NORMAVSCustomPropertiesExtensionComponent" Guid="DE8C8B31-B391-44C3-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-									<File Id="Neumont.Tools.ORM.CustomProperties$(var.VSExt).dll" ShortName="ORMCstPr.dll" Name="Neumont.Tools.ORM.CustomProperties$(var.VSExt).dll" Source="..\CustomProperties\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.CustomProperties$(var.VSExt).dll"
-										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORM.CustomProperties$(var.VSExt).dll" AssemblyApplication="Neumont.Tools.ORM.CustomProperties$(var.VSExt).dll" ProcessorArchitecture="msil"/>
-									<File Id="Neumont.Tools.ORM.CustomProperties$(var.VSExt).pdb" ShortName="ORMCstPr.pdb" Name="Neumont.Tools.ORM.CustomProperties$(var.VSExt).pdb" Source="..\CustomProperties\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.CustomProperties$(var.VSExt).pdb"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.CustomProperties$(var.VSExt).dll"/>
+									<File Id="ORMSolutions.ORMArchitect.CustomProperties$(var.VSExt).dll" ShortName="ORMCstPr.dll" Name="ORMSolutions.ORMArchitect.CustomProperties$(var.VSExt).dll" Source="..\CustomProperties\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.CustomProperties$(var.VSExt).dll"
+										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="ORMSolutions.ORMArchitect.CustomProperties$(var.VSExt).dll" AssemblyApplication="ORMSolutions.ORMArchitect.CustomProperties$(var.VSExt).dll" ProcessorArchitecture="msil"/>
+									<File Id="ORMSolutions.ORMArchitect.CustomProperties$(var.VSExt).pdb" ShortName="ORMCstPr.pdb" Name="ORMSolutions.ORMArchitect.CustomProperties$(var.VSExt).pdb" Source="..\CustomProperties\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.CustomProperties$(var.VSExt).pdb"
+										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.CustomProperties$(var.VSExt).dll"/>
 									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/2007-11/CustomProperties">
-										<RegistryValue Type="string" Name="Class" Value="Neumont.Tools.ORM.CustomProperties.CustomPropertiesDomainModel"/>
-										<RegistryValue Type="string" Name="Assembly" Value="Neumont.Tools.ORM.CustomProperties$(var.VSExt), $(var.BaseAssemblyName)"/>
-										<RegistryValue Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORM.CustomProperties$(var.VSExt).dll]"/>
+										<RegistryValue Type="string" Name="Class" Value="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel"/>
+										<RegistryValue Type="string" Name="Assembly" Value="ORMSolutions.ORMArchitect.CustomProperties$(var.VSExt), $(var.BaseAssemblyName)"/>
+										<RegistryValue Type="string" Name="CodeBase" Value="[#ORMSolutions.ORMArchitect.CustomProperties$(var.VSExt).dll]"/>
 									</RegistryKey>
 								</Component>
 
 								<Component Id="NORMAVSORMAbstractionExtensionComponent" Guid="2AF4858D-43CC-4107-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-									<File Id="Neumont.Tools.ORMAbstraction$(var.VSExt).dll" ShortName="ORMAbstr.dll" Name="Neumont.Tools.ORMAbstraction$(var.VSExt).dll" Source="..\Oial\OialModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstraction$(var.VSExt).dll"
-										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORMAbstraction$(var.VSExt).dll" AssemblyApplication="Neumont.Tools.ORMAbstraction$(var.VSExt).dll" ProcessorArchitecture="msil"/>
-									<File Id="Neumont.Tools.ORMAbstraction$(var.VSExt).pdb" ShortName="ORMAbstr.pdb" Name="Neumont.Tools.ORMAbstraction$(var.VSExt).pdb" Source="..\Oial\OialModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstraction$(var.VSExt).pdb"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMAbstraction$(var.VSExt).dll"/>
-									<File Id="Neumont.Tools.ORMAbstraction$(var.VSExt).xml" ShortName="ORMAbstr.xml" Name="Neumont.Tools.ORMAbstraction$(var.VSExt).xml" Source="..\Oial\OialModel\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstraction$(var.VSExt).xml"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMAbstraction$(var.VSExt).dll"/>
+									<File Id="ORMSolutions.ORMArchitect.ORMAbstraction$(var.VSExt).dll" ShortName="ORMAbstr.dll" Name="ORMSolutions.ORMArchitect.ORMAbstraction$(var.VSExt).dll" Source="..\Oial\OialModel\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.ORMAbstraction$(var.VSExt).dll"
+										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="ORMSolutions.ORMArchitect.ORMAbstraction$(var.VSExt).dll" AssemblyApplication="ORMSolutions.ORMArchitect.ORMAbstraction$(var.VSExt).dll" ProcessorArchitecture="msil"/>
+									<File Id="ORMSolutions.ORMArchitect.ORMAbstraction$(var.VSExt).pdb" ShortName="ORMAbstr.pdb" Name="ORMSolutions.ORMArchitect.ORMAbstraction$(var.VSExt).pdb" Source="..\Oial\OialModel\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.ORMAbstraction$(var.VSExt).pdb"
+										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.ORMAbstraction$(var.VSExt).dll"/>
+									<File Id="ORMSolutions.ORMArchitect.ORMAbstraction$(var.VSExt).xml" ShortName="ORMAbstr.xml" Name="ORMSolutions.ORMArchitect.ORMAbstraction$(var.VSExt).xml" Source="..\Oial\OialModel\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.ORMAbstraction$(var.VSExt).xml"
+										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.ORMAbstraction$(var.VSExt).dll"/>
 									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core">
-										<RegistryValue Type="string" Name="Class" Value="Neumont.Tools.ORMAbstraction.AbstractionDomainModel"/>
-										<RegistryValue Type="string" Name="Assembly" Value="Neumont.Tools.ORMAbstraction$(var.VSExt), $(var.BaseAssemblyName)"/>
-										<RegistryValue Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORMAbstraction$(var.VSExt).dll]"/>
+										<RegistryValue Type="string" Name="Class" Value="ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel"/>
+										<RegistryValue Type="string" Name="Assembly" Value="ORMSolutions.ORMArchitect.ORMAbstraction$(var.VSExt), $(var.BaseAssemblyName)"/>
+										<RegistryValue Type="string" Name="CodeBase" Value="[#ORMSolutions.ORMArchitect.ORMAbstraction$(var.VSExt).dll]"/>
 										<RegistryValue Type="integer" Name="SecondaryNamespace" Value="1"/>
 									</RegistryKey>
 								</Component>
 
 								<Component Id="NORMAVSORMToORMAbstractionExtensionComponent" Guid="C6CED0EA-97CA-40AA-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-									<File Id="Neumont.Tools.ORMToORMAbstractionBridge$(var.VSExt).dll" ShortName="ORMAbsBr.dll" Name="Neumont.Tools.ORMToORMAbstractionBridge$(var.VSExt).dll" Source="..\Oial\ORMOialBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMToORMAbstractionBridge$(var.VSExt).dll"
-										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORMToORMAbstractionBridge$(var.VSExt).dll" AssemblyApplication="Neumont.Tools.ORMToORMAbstractionBridge$(var.VSExt).dll" ProcessorArchitecture="msil"/>
-									<File Id="Neumont.Tools.ORMToORMAbstractionBridge$(var.VSExt).pdb" ShortName="ORMAbsBr.pdb" Name="Neumont.Tools.ORMToORMAbstractionBridge$(var.VSExt).pdb" Source="..\Oial\ORMOialBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMToORMAbstractionBridge$(var.VSExt).pdb"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMToORMAbstractionBridge$(var.VSExt).dll"/>
-									<File Id="Neumont.Tools.ORMToORMAbstractionBridge.xml" ShortName="ORMAbsBr.xml" Name="Neumont.Tools.ORMToORMAbstractionBridge$(var.VSExt).xml" Source="..\Oial\ORMOialBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMToORMAbstractionBridge$(var.VSExt).xml"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMToORMAbstractionBridge$(var.VSExt).dll"/>
+									<File Id="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge$(var.VSExt).dll" ShortName="ORMAbsBr.dll" Name="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge$(var.VSExt).dll" Source="..\Oial\ORMOialBridge\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge$(var.VSExt).dll"
+										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge$(var.VSExt).dll" AssemblyApplication="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge$(var.VSExt).dll" ProcessorArchitecture="msil"/>
+									<File Id="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge$(var.VSExt).pdb" ShortName="ORMAbsBr.pdb" Name="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge$(var.VSExt).pdb" Source="..\Oial\ORMOialBridge\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge$(var.VSExt).pdb"
+										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge$(var.VSExt).dll"/>
+									<File Id="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.xml" ShortName="ORMAbsBr.xml" Name="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge$(var.VSExt).xml" Source="..\Oial\ORMOialBridge\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge$(var.VSExt).xml"
+										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge$(var.VSExt).dll"/>
 									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction">
-										<RegistryValue Type="string" Name="Class" Value="Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel"/>
-										<RegistryValue Type="string" Name="Assembly" Value="Neumont.Tools.ORMToORMAbstractionBridge$(var.VSExt), $(var.BaseAssemblyName)"/>
-										<RegistryValue Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORMToORMAbstractionBridge$(var.VSExt).dll]"/>
+										<RegistryValue Type="string" Name="Class" Value="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel"/>
+										<RegistryValue Type="string" Name="Assembly" Value="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge$(var.VSExt), $(var.BaseAssemblyName)"/>
+										<RegistryValue Type="string" Name="CodeBase" Value="[#ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge$(var.VSExt).dll]"/>
 									</RegistryKey>
 								</Component>
 
 								<Component Id="NORMAVSRelationalModelsExtensionComponent" Guid="8CA7B2DB-1669-427B-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-									<File Id="Neumont.Tools.RelationalModels$(var.VSExt).dll" ShortName="RelMods.dll" Name="Neumont.Tools.RelationalModels$(var.VSExt).dll" Source="..\RelationalModel\DcilModel\bin\$(var.BuildConfiguration)\Neumont.Tools.RelationalModels$(var.VSExt).dll"
-										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.RelationalModels$(var.VSExt).dll" AssemblyApplication="Neumont.Tools.RelationalModels$(var.VSExt).dll" ProcessorArchitecture="msil"/>
-									<File Id="Neumont.Tools.RelationalModels$(var.VSExt).pdb" ShortName="RelMods.pdb" Name="Neumont.Tools.RelationalModels$(var.VSExt).pdb" Source="..\RelationalModel\DcilModel\bin\$(var.BuildConfiguration)\Neumont.Tools.RelationalModels$(var.VSExt).pdb"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.RelationalModels$(var.VSExt).dll"/>
-									<File Id="Neumont.Tools.RelationalModels$(var.VSExt).xml" ShortName="RelMods.xml" Name="Neumont.Tools.RelationalModels$(var.VSExt).xml" Source="..\RelationalModel\DcilModel\bin\$(var.BuildConfiguration)\Neumont.Tools.RelationalModels$(var.VSExt).xml"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.RelationalModels$(var.VSExt).dll"/>
+									<File Id="ORMSolutions.ORMArchitect.RelationalModels$(var.VSExt).dll" ShortName="RelMods.dll" Name="ORMSolutions.ORMArchitect.RelationalModels$(var.VSExt).dll" Source="..\RelationalModel\DcilModel\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.RelationalModels$(var.VSExt).dll"
+										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="ORMSolutions.ORMArchitect.RelationalModels$(var.VSExt).dll" AssemblyApplication="ORMSolutions.ORMArchitect.RelationalModels$(var.VSExt).dll" ProcessorArchitecture="msil"/>
+									<File Id="ORMSolutions.ORMArchitect.RelationalModels$(var.VSExt).pdb" ShortName="RelMods.pdb" Name="ORMSolutions.ORMArchitect.RelationalModels$(var.VSExt).pdb" Source="..\RelationalModel\DcilModel\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.RelationalModels$(var.VSExt).pdb"
+										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.RelationalModels$(var.VSExt).dll"/>
+									<File Id="ORMSolutions.ORMArchitect.RelationalModels$(var.VSExt).xml" ShortName="RelMods.xml" Name="ORMSolutions.ORMArchitect.RelationalModels$(var.VSExt).xml" Source="..\RelationalModel\DcilModel\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.RelationalModels$(var.VSExt).xml"
+										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.RelationalModels$(var.VSExt).dll"/>
 									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase">
-										<RegistryValue Type="string" Name="Class" Value="Neumont.Tools.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel"/>
-										<RegistryValue Type="string" Name="Assembly" Value="Neumont.Tools.RelationalModels$(var.VSExt), $(var.BaseAssemblyName)"/>
-										<RegistryValue Type="string" Name="CodeBase" Value="[#Neumont.Tools.RelationalModels$(var.VSExt).dll]"/>
+										<RegistryValue Type="string" Name="Class" Value="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel"/>
+										<RegistryValue Type="string" Name="Assembly" Value="ORMSolutions.ORMArchitect.RelationalModels$(var.VSExt), $(var.BaseAssemblyName)"/>
+										<RegistryValue Type="string" Name="CodeBase" Value="[#ORMSolutions.ORMArchitect.RelationalModels$(var.VSExt).dll]"/>
 										<RegistryValue Type="integer" Name="SecondaryNamespace" Value="1"/>
 									</RegistryKey>
 								</Component>
 
 								<Component Id="NORMAVSORMAbstractionToConceptualDatabaseExtensionComponent" Guid="2D11803B-91D7-446E-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-									<File Id="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).dll" ShortName="CDBBr.dll" Name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).dll" Source="..\RelationalModel\OialDcilBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).dll"
-										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).dll" AssemblyApplication="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).dll" ProcessorArchitecture="msil"/>
-									<File Id="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).pdb" ShortName="CDBBr.pdb" Name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).pdb" Source="..\RelationalModel\OialDcilBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).pdb"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).dll"/>
-									<File Id="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.xml" ShortName="CDBBr.xml" Name="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).xml" Source="..\RelationalModel\OialDcilBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).xml"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).dll"/>
+									<File Id="ORMArchitect.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).dll" ShortName="CDBBr.dll" Name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).dll" Source="..\RelationalModel\OialDcilBridge\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).dll"
+										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="ORMArchitect.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).dll" AssemblyApplication="ORMArchitect.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).dll" ProcessorArchitecture="msil"/>
+									<File Id="ORMArchitect.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).pdb" ShortName="CDBBr.pdb" Name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).pdb" Source="..\RelationalModel\OialDcilBridge\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).pdb"
+										DefaultLanguage="0" CompanionFile="ORMArchitect.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).dll"/>
+									<File Id="ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.xml" ShortName="CDBBr.xml" Name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).xml" Source="..\RelationalModel\OialDcilBridge\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).xml"
+										DefaultLanguage="0" CompanionFile="ORMArchitect.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).dll"/>
 									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase">
-										<RegistryValue Type="string" Name="Class" Value="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel"/>
-										<RegistryValue Type="string" Name="Assembly" Value="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt), $(var.BaseAssemblyName)"/>
-										<RegistryValue Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).dll]"/>
+										<RegistryValue Type="string" Name="Class" Value="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel"/>
+										<RegistryValue Type="string" Name="Assembly" Value="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt), $(var.BaseAssemblyName)"/>
+										<RegistryValue Type="string" Name="CodeBase" Value="[#ORMArchitect.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).dll]"/>
 									</RegistryKey>
 								</Component>
 
 								<Component Id="NORMAVSEntityRelationshipModelsExtensionComponent" Guid="EE32F7FA-A6FB-4CEF-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-									<File Id="Neumont.Tools.EntityRelationshipModels$(var.VSExt).dll" ShortName="ErMods.dll" Name="Neumont.Tools.EntityRelationshipModels$(var.VSExt).dll" Source="..\EntityRelationship\BarkerErModel\bin\$(var.BuildConfiguration)\Neumont.Tools.EntityRelationshipModels$(var.VSExt).dll"
-										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.RelationalModels$(var.VSExt).dll" AssemblyApplication="Neumont.Tools.EntityRelationshipModels$(var.VSExt).dll" ProcessorArchitecture="msil"/>
-									<File Id="Neumont.Tools.EntityRelationshipModels$(var.VSExt).pdb" ShortName="ErMods.pdb" Name="Neumont.Tools.EntityRelationshipModels$(var.VSExt).pdb" Source="..\EntityRelationship\BarkerErModel\bin\$(var.BuildConfiguration)\Neumont.Tools.EntityRelationshipModels$(var.VSExt).pdb"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.EntityRelationshipModels$(var.VSExt).dll"/>
-									<File Id="Neumont.Tools.EntityRelationshipModels$(var.VSExt).xml" ShortName="ErMods.xml" Name="Neumont.Tools.EntityRelationshipModels$(var.VSExt).xml" Source="..\EntityRelationship\BarkerErModel\bin\$(var.BuildConfiguration)\Neumont.Tools.EntityRelationshipModels$(var.VSExt).xml"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.EntityRelationshipModels$(var.VSExt).dll"/>
+									<File Id="ORMSolutions.ORMArchitect.EntityRelationshipModels$(var.VSExt).dll" ShortName="ErMods.dll" Name="ORMSolutions.ORMArchitect.EntityRelationshipModels$(var.VSExt).dll" Source="..\EntityRelationship\BarkerErModel\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.EntityRelationshipModels$(var.VSExt).dll"
+										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="ORMSolutions.ORMArchitect.RelationalModels$(var.VSExt).dll" AssemblyApplication="ORMSolutions.ORMArchitect.EntityRelationshipModels$(var.VSExt).dll" ProcessorArchitecture="msil"/>
+									<File Id="ORMSolutions.ORMArchitect.EntityRelationshipModels$(var.VSExt).pdb" ShortName="ErMods.pdb" Name="ORMSolutions.ORMArchitect.EntityRelationshipModels$(var.VSExt).pdb" Source="..\EntityRelationship\BarkerErModel\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.EntityRelationshipModels$(var.VSExt).pdb"
+										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.EntityRelationshipModels$(var.VSExt).dll"/>
+									<File Id="ORMSolutions.ORMArchitect.EntityRelationshipModels$(var.VSExt).xml" ShortName="ErMods.xml" Name="ORMSolutions.ORMArchitect.EntityRelationshipModels$(var.VSExt).xml" Source="..\EntityRelationship\BarkerErModel\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.EntityRelationshipModels$(var.VSExt).xml"
+										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.EntityRelationshipModels$(var.VSExt).dll"/>
 									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/EntityRelationship/2008-05/Barker">
-										<RegistryValue Type="string" Name="Class" Value="Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel"/>
-										<RegistryValue Type="string" Name="Assembly" Value="Neumont.Tools.EntityRelationshipModels$(var.VSExt), $(var.BaseAssemblyName)"/>
-										<RegistryValue Type="string" Name="CodeBase" Value="[#Neumont.Tools.EntityRelationshipModels$(var.VSExt).dll]"/>
+										<RegistryValue Type="string" Name="Class" Value="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel"/>
+										<RegistryValue Type="string" Name="Assembly" Value="ORMSolutions.ORMArchitect.EntityRelationshipModels$(var.VSExt), $(var.BaseAssemblyName)"/>
+										<RegistryValue Type="string" Name="CodeBase" Value="[#ORMSolutions.ORMArchitect.EntityRelationshipModels$(var.VSExt).dll]"/>
 										<RegistryValue Type="integer" Name="SecondaryNamespace" Value="1"/>
 									</RegistryKey>
 								</Component>
 
 								<Component Id="NORMAVSORMAbstractionToBarkerERSchemaExtensionComponent" Guid="2A0DA5D1-5E8B-4F95-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-									<File Id="Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).dll" ShortName="BarkerBr.dll" Name="Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).dll" Source="..\EntityRelationship\OialBerBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).dll"
-										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).dll" AssemblyApplication="Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).dll" ProcessorArchitecture="msil"/>
-									<File Id="Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).pdb" ShortName="BarkerBr.pdb" Name="Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).pdb" Source="..\EntityRelationship\OialBerBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).pdb"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).dll"/>
-									<File Id="Neumont.Tools.ORMAbstractionToBarkerERBridge.xml" ShortName="BarkerBr.xml" Name="Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).xml" Source="..\EntityRelationship\OialBerBridge\bin\$(var.BuildConfiguration)\Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).xml"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).dll"/>
+									<File Id="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge$(var.VSExt).dll" ShortName="BarkerBr.dll" Name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge$(var.VSExt).dll" Source="..\EntityRelationship\OialBerBridge\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge$(var.VSExt).dll"
+										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge$(var.VSExt).dll" AssemblyApplication="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge$(var.VSExt).dll" ProcessorArchitecture="msil"/>
+									<File Id="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge$(var.VSExt).pdb" ShortName="BarkerBr.pdb" Name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge$(var.VSExt).pdb" Source="..\EntityRelationship\OialBerBridge\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge$(var.VSExt).pdb"
+										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge$(var.VSExt).dll"/>
+									<File Id="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.xml" ShortName="BarkerBr.xml" Name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge$(var.VSExt).xml" Source="..\EntityRelationship\OialBerBridge\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge$(var.VSExt).xml"
+										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge$(var.VSExt).dll"/>
 									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/Bridge/2008-05/ORMAbstractionToBarkerER">
-										<RegistryValue Type="string" Name="Class" Value="Neumont.Tools.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel"/>
-										<RegistryValue Type="string" Name="Assembly" Value="Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt), $(var.BaseAssemblyName)"/>
-										<RegistryValue Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).dll]"/>
+										<RegistryValue Type="string" Name="Class" Value="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel"/>
+										<RegistryValue Type="string" Name="Assembly" Value="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge$(var.VSExt), $(var.BaseAssemblyName)"/>
+										<RegistryValue Type="string" Name="CodeBase" Value="[#ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge$(var.VSExt).dll]"/>
 									</RegistryKey>
 								</Component>
 
 								<Component Id="NORMAVSBarkerERViewExtensionComponent" Guid="6549D6E9-3256-40DC-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-									<File Id="Neumont.Tools.ORM.Views.BarkerERView$(var.VSExt).dll" ShortName="BarkerVw.dll" Name="Neumont.Tools.ORM.Views.BarkerERView$(var.VSExt).dll" Source="..\AlternateViews\BarkerERView\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.Views.BarkerERView$(var.VSExt).dll"
-										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORM.Views.RelationalView$(var.VSExt).dll" AssemblyApplication="Neumont.Tools.ORM.Views.BarkerERView$(var.VSExt).dll" ProcessorArchitecture="msil"/>
-									<File Id="Neumont.Tools.ORM.Views.BarkerERView$(var.VSExt).pdb" ShortName="BarkerVw.pdb" Name="Neumont.Tools.ORM.Views.BarkerERView$(var.VSExt).pdb" Source="..\AlternateViews\BarkerERView\bin\$(var.BuildConfiguration)\Neumont.Tools.ORM.Views.BarkerERView$(var.VSExt).pdb"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.Views.BarkerERView$(var.VSExt).dll"/>
+									<File Id="ORMSolutions.ORMArchitect.Views.BarkerERView$(var.VSExt).dll" ShortName="BarkerVw.dll" Name="ORMSolutions.ORMArchitect.Views.BarkerERView$(var.VSExt).dll" Source="..\AlternateViews\BarkerERView\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.Views.BarkerERView$(var.VSExt).dll"
+										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="ORMSolutions.ORMArchitect.Views.RelationalView$(var.VSExt).dll" AssemblyApplication="ORMSolutions.ORMArchitect.Views.BarkerERView$(var.VSExt).dll" ProcessorArchitecture="msil"/>
+									<File Id="ORMSolutions.ORMArchitect.Views.BarkerERView$(var.VSExt).pdb" ShortName="BarkerVw.pdb" Name="ORMSolutions.ORMArchitect.Views.BarkerERView$(var.VSExt).pdb" Source="..\AlternateViews\BarkerERView\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.Views.BarkerERView$(var.VSExt).pdb"
+										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Views.BarkerERView$(var.VSExt).dll"/>
 									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAVSExtensionsRegRoot)\http://schemas.neumont.edu/ORM/2008-05/BarkerERView">
-										<RegistryValue Type="string" Name="Class" Value="Neumont.Tools.ORM.Views.BarkerERView.BarkerERShapeDomainModel"/>
-										<RegistryValue Type="string" Name="Assembly" Value="Neumont.Tools.ORM.Views.BarkerERView$(var.VSExt), $(var.BaseAssemblyName)"/>
-										<RegistryValue Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORM.Views.BarkerERView$(var.VSExt).dll]"/>
+										<RegistryValue Type="string" Name="Class" Value="ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel"/>
+										<RegistryValue Type="string" Name="Assembly" Value="ORMSolutions.ORMArchitect.Views.BarkerERView$(var.VSExt), $(var.BaseAssemblyName)"/>
+										<RegistryValue Type="string" Name="CodeBase" Value="[#ORMSolutions.ORMArchitect.Views.BarkerERView$(var.VSExt).dll]"/>
 									</RegistryKey>
 								</Component>
 							</Directory>
@@ -327,10 +327,10 @@
 							<!-- Help files go here -->
 							<Component Id="NORMAVSHelpComponent" Guid="31ED0AEA-D66C-4AD0-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 								<File Id="Creating_ORM_Schemas.doc" ShortName="CrORMSch.doc" Name="Creating ORM Schemas.doc" Source="..\Documentation\Creating ORM Schemas.doc"
-									DefaultLanguage="$(var.DefaultLCID)" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+									DefaultLanguage="$(var.DefaultLCID)" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 
 								<File Id="Neumont.ORM.General.hxs" ShortName="ORMGnrl.hxs" Name="Neumont.ORM.General.hxs" Source="..\Documentation\Help Project\Build\Neumont.ORM.General.hxs"
-									DefaultLanguage="$(var.DefaultLCID)" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll">
+									DefaultLanguage="$(var.DefaultLCID)" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll">
 									<vs:HelpFile Id="Neumont.ORM.General" Name="Neumont.ORM.General"/>
 								</File>
 								<File Id="COL_Neumont.ORM.General.HxC" ShortName="ORMGnrl.HxC" Name="COL_Neumont.ORM.General.HxC" Source="..\Documentation\Help Project\Build\COL_Neumont.ORM.General.HxC"
@@ -369,49 +369,49 @@
 								</Component>
 								<Component Id="NORMAVSSettingsSchemaComponent" Guid="B2DEF872-436C-4BED-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 									<File Id="ORMDesignerSettings.xsd" ShortName="DsgnrStg.xsd" Name="ORMDesignerSettings.xsd" Source="..\ORMModel\Shell\ORMDesignerSettings.xsd"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 								</Component>
 								<Component Id="NORMAVSCustomPropertiesSchemaComponent" Guid="27EB4413-1888-4038-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 									<File Id="CustomProperties.xsd" ShortName="ORMCstPr.xsd" Name="CustomProperties.xsd" Source="..\CustomProperties\CustomProperties.xsd"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.CustomProperties$(var.VSExt).dll"/>
+										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.CustomProperties$(var.VSExt).dll"/>
 								</Component>
 								<Component Id="NORMAVSORMAbstractionSchemaComponent" Guid="1AFB3357-16AC-4A2B-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 									<File Id="ORMAbstraction.xsd" ShortName="ORMAbstr.xsd" Name="ORMAbstraction.xsd" Source="..\Oial\OialModel\OIAL.xsd"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMAbstraction$(var.VSExt).dll"/>
+										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.ORMAbstraction$(var.VSExt).dll"/>
 									<File Id="ORMAbstractionDataTypes.xsd" ShortName="ORMAbsDT.xsd" Name="ORMAbstractionDataTypes.xsd" Source="..\Oial\OialModel\OIALDatatypes.xsd"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMAbstraction$(var.VSExt).dll"/>
+										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.ORMAbstraction$(var.VSExt).dll"/>
 								</Component>
 								<Component Id="NORMAVSORMToORMAbstractionSchemaComponent" Guid="D79F2881-1707-4499-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 									<File Id="ORMToORMAbstraction.xsd" ShortName="ORMAbsBr.xsd" Name="ORMToORMAbstraction.xsd" Source="..\Oial\ORMOialBridge\ORMToORMAbstraction.xsd"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMToORMAbstractionBridge$(var.VSExt).dll"/>
+										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge$(var.VSExt).dll"/>
 								</Component>
 								<Component Id="NORMAVSRelationalModelsSchemaComponent" Guid="5D8B0055-6336-4226-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 									<File Id="ConceptualDatabase.xsd" ShortName="CDB.xsd" Name="ConceptualDatabase.xsd" Source="..\RelationalModel\DcilModel\ConceptualDatabase.xsd"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.RelationalModels$(var.VSExt).dll"/>
+										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.RelationalModels$(var.VSExt).dll"/>
 								</Component>
 								<Component Id="NORMAVSORMAbstractionToConceptualDatabaseSchemaComponent" Guid="F3ECE70B-A746-4FDA-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 									<File Id="ORMAbstractionToConceptualDatabase.xsd" ShortName="CDBBr.xsd" Name="ORMAbstractionToConceptualDatabase.xsd" Source="..\RelationalModel\OialDcilBridge\ORMAbstractionToConceptualDatabase.xsd"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).dll"/>
+										DefaultLanguage="0" CompanionFile="ORMArchitect.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).dll"/>
 								</Component>
 								<Component Id="NORMAVSRelationalViewSchemaComponent" Guid="18A6CF00-ECD7-4FDA-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 									<File Id="RelationalView.xsd" ShortName="ReltnlVw.xsd" Name="RelationalView.xsd" Source="..\AlternateViews\RelationalView\RelationalView.xsd"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.Views.RelationalView$(var.VSExt).dll"/>
+										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Views.RelationalView$(var.VSExt).dll"/>
 								</Component>
 								<Component Id="NORMAVSBarkerERModelSchemaComponent" Guid="C6C5DD6E-4546-48A3-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 									<File Id="BarkerERModel.xsd" ShortName="Barker.xsd" Name="BarkerERModel.xsd" Source="..\EntityRelationship\BarkerErModel\BarkerERModel.xsd"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.EntityRelationshipModels$(var.VSExt).dll"/>
+										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.EntityRelationshipModels$(var.VSExt).dll"/>
 								</Component>
 								<Component Id="NORMAVSORMAbstractionToBarkerERSchemaComponent" Guid="34752977-F3E7-4BA8-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 									<File Id="ORMAbstractionToBarkerERBridge.xsd" ShortName="BarkerBr.xsd" Name="ORMAbstractionToBarkerERBridge.xsd" Source="..\EntityRelationship\OialBerBridge\ORMAbstractionToBarkerERBridge.xsd"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORMAbstractionToBarkerERBridge$(var.VSExt).dll"/>
+										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge$(var.VSExt).dll"/>
 								</Component>
 								<Component Id="NORMAVSBarkerERViewSchemaComponent" Guid="BF7FCA1E-0DDD-4118-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 									<File Id="BarkerERView.xsd" ShortName="BarkerVw.xsd" Name="BarkerERView.xsd" Source="..\AlternateViews\BarkerERView\BarkerERView.xsd"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.Views.BarkerERView$(var.VSExt).dll"/>
+										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Views.BarkerERView$(var.VSExt).dll"/>
 								</Component>
 								<Component Id="NORMAVSDiagramDisplaySchemaComponent" Guid="1EFF5DE0-713C-439A-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 									<File Id="DiagramDisplay.xsd" Name="DiagramDisplay.xsd" Source="..\ORMModel\Framework\Shell\DiagramDisplay.xsd"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 								</Component>
 							</Directory>
 							<Directory Id="Transforms" ShortName="Trnsfrms" Name="Transforms">
@@ -419,27 +419,27 @@
 								<Directory Id="Converters" ShortName="Cnvrtrs" Name="Converters">
 									<Component Id="NORMAVSConvertersComponent" Guid="588FBA11-2175-4084-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 										<File Id="CoreModelImport.xslt" ShortName="CrMdlImp.xsl" Name="CoreModelImport.xslt" Source="..\ORMModel\Shell\Converters\CoreModelImport.xslt"
-											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+											DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 										<File Id="CoreUpgradeTo2006_01.xslt" ShortName="CUTo0601.xsl" Name="CoreUpgradeTo2006-01.xslt" Source="..\ORMModel\Shell\Converters\CoreUpgradeTo2006-01.xslt"
-											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+											DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 										<File Id="RootUpgradeTo2006_01.xslt" ShortName="RUTo0601.xsl" Name="RootUpgradeTo2006-01.xslt" Source="..\ORMModel\Shell\Converters\RootUpgradeTo2006-01.xslt"
-											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+											DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 										<File Id="CoreUpgradeTo2006_04.xslt" ShortName="CUTo0604.xsl" Name="CoreUpgradeTo2006-04.xslt" Source="..\ORMModel\Shell\Converters\CoreUpgradeTo2006-04.xslt"
-											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+											DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 										<File Id="RootUpgradeTo2006_04.xslt" ShortName="RUTo0604.xsl" Name="RootUpgradeTo2006-04.xslt" Source="..\ORMModel\Shell\Converters\RootUpgradeTo2006-04.xslt"
-											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+											DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 										<File Id="VisioToCoreModelImport.xslt" ShortName="VsCrMdl.xsl" Name="VisioToCoreModelImport.xslt" Source="..\ORMModel\Shell\Converters\VisioToCoreModelImport.xslt"
-											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+											DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 										<File Id="DCILtoOIAL.xslt" ShortName="DclToOil.xsl" Name="DCILtoOIAL.xslt" Source="..\ORMModel\Shell\Converters\DCILtoOIAL.xslt"
-											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+											DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 										<File Id="OIALtoORM.xslt" ShortName="OilToOrm.xsl" Name="OIALtoORM.xslt" Source="..\ORMModel\Shell\Converters\OIALtoORM.xslt"
-											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+											DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 										<File Id="CustomPropertiesPreviewTo2007_11.xslt" ShortName="CPTo0711.xsl" Name="CustomPropertiesPreviewTo2007-11.xslt" Source="..\ORMModel\Shell\Converters\CustomPropertiesPreviewTo2007-11.xslt"
-											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+											DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 										<File Id="RelationalViewUpgradeTo2007_11.xslt" ShortName="RVTo0711.xsl" Name="RelationalViewUpgradeTo2007-11.xslt" Source="..\ORMModel\Shell\Converters\RelationalViewUpgradeTo2007-11.xslt"
-											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+											DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 										<File Id="RemoveOIAL2006_01.xslt" ShortName="ROil0601.xsl" Name="RemoveOIAL2006-01.xslt" Source="..\ORMModel\Shell\Converters\RemoveOIAL2006-01.xslt"
-											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+											DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 										<RegistryValue Root="HKLM" Key="$(var.NORMAVSRegRoot)" Type="string" Name="ConvertersDir" Value="[Converters]"/>
 									</Component>
 								</Directory>
@@ -447,37 +447,37 @@
 							<Directory Id="Verbalization" ShortName="Verbaliz" Name="Verbalization">
 								<Component Id="NORMAVSVerbalizationComponent"  Guid="C39EDC6D-03BA-4519-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 									<File Id="VerbalizationUntypedSnippets.xsd" ShortName="VrbUnSnp.xsd" Name="VerbalizationUntypedSnippets.xsd" Source="..\ORMModel\ObjectModel\VerbalizationUntypedSnippets.xsd"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 									<RegistryValue Root="HKLM" Key="$(var.NORMAVSRegRoot)" Type="string" Name="VerbalizationDir" Value="[Verbalization]"/>
 								</Component>
 								<Directory Id="CoreVerbalization" Name="Core">
 									<Component Id="NORMAVSVerbalizationCoreComponent" Guid="45D2041A-3025-41E6-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 										<File Id="VrbCrDef.xml" Name="_default.xml" Source="..\ORMModel\ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreSnippets.xml"
-											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+											DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 										<File Id="VrbCrRep.xml" ShortName="VrbCrRep.xml" Name="DefaultReportSnippets.xml"  Source="..\ORMModel\ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreReportSnippets.xml"
-											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+											DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 										<File Id="VrbCrNoH.xml" Name="BrowserNoHyperlinksSnippets.xml" Source="..\ORMModel\ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreBrowserNoHyperlinksSnippets.xml"
-											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+											DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 										<File Id="VerbalizationCoreSnippets.xsd" ShortName="VrbCrSnp.xsd" Name="VerbalizationCoreSnippets.xsd" Source="..\ORMModel\ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreSnippets.xsd"
-											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+											DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 										<File Id="VerbalizationCoreSnippetsDocumentation.html" ShortName="VrbCrSnD.htm" Name="VerbalizationCoreSnippetsDocumentation.html"  Source="..\ORMModel\ObjectModel\VerbalizationCoreSnippetsDocumentation.html"
-											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+											DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 									</Component>
 								</Directory>
 								<Directory Id="ReportVerbalization" ShortName="HtmlRprt" Name="HtmlReport">
 									<Component Id="NORMAVSVerbalizationReportComponent" Guid="6F50F477-F95B-45AE-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 										<File Id="VrbReDef.xml" Name="_default.xml" Source="..\ORMModel\ObjectModel\VerbalizationReportSnippets\VerbalizationReportSnippets.xml"
-											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+											DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 										<File Id="VerbalizationReportSnippets.xsd" ShortName="VrbReSnp.xsd" Name="VerbalizationReportSnippets.xsd" Source="..\ORMModel\ObjectModel\VerbalizationReportSnippets\VerbalizationReportSnippets.xsd"
-											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+											DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 									</Component>
 								</Directory>
 								<Directory Id="CustomPropertiesVerbalization" ShortName="CustProp" Name="CustomProperties">
 									<Component Id="NORMAVSCustomPropertiesVerbalizationComponent" Guid="513D5A05-8FAC-4614-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 										<File Id="CpVrbDef.xml" Name="_default.xml" Source="..\CustomProperties\VerbalizationSnippets\CustomPropertyVerbalizationSnippets.xml"
-											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.CustomProperties$(var.VSExt).dll"/>
+											DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.CustomProperties$(var.VSExt).dll"/>
 										<File Id="CustomPropertyVerbalizationSnippets.xsd" ShortName="CpVrbSnp.xsd" Name="CustomPropertyVerbalizationSnippets.xsd" Source="..\CustomProperties\VerbalizationSnippets\CustomPropertyVerbalizationSnippets.xsd"
-											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.CustomProperties$(var.VSExt).dll"/>
+											DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.CustomProperties$(var.VSExt).dll"/>
 									</Component>
 								</Directory>
 							</Directory>
@@ -503,7 +503,7 @@
 							</Component>
 							<Component Id="ORMSchemasComponent" Guid="55B51F55-EB34-4AC4-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 								<File Id="ORM2Core.xsd" Name="ORM2Core.xsd" Source="..\ORMModel\ObjectModel\ORM2Core.xsd"
-									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+									DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 								<File Id="ORM2Diagram.xsd" ShortName="ORM2Diag.xsd" Name="ORM2Diagram.xsd" Source="..\ORMModel\ShapeModel\ORM2Diagram.xsd"
 									DefaultLanguage="0" CompanionFile="ORM2Core.xsd"/>
 								<File Id="ORM2Root.xsd" Name="ORM2Root.xsd" Source="..\ORMModel\Shell\ORM2Root.xsd"
@@ -511,7 +511,7 @@
 							</Component>
 							<Component Id="OIALSchemasComponent" Guid="D5543428-F53D-42D3-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 								<File Id="OIAL.xsd" Name="OIAL.xsd" Source="..\XML\OIAL\OIAL.xsd"
-									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+									DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 								<File Id="ORMDataTypes.xsd" ShortName="ORMDT.xsd" Name="ORMDataTypes.xsd" Source="..\XML\OIAL\ORMDataTypes.xsd"
 									DefaultLanguage="0" CompanionFile="OIAL.xsd"/>
 								<File Id="ORMDataTypes_Temporal.xsd" ShortName="ORMDT-T.xsd" Name="ORMDataTypes-Temporal.xsd" Source="..\XML\OIAL\ORMDataTypes-Temporal.xsd"
@@ -519,14 +519,14 @@
 							</Component>
 							<Component Id="ORMClassModelSchemasComponent" Guid="9C7D3F0F-0EC5-4933-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 								<File Id="OIALtoPLiX_Properties.xsd" ShortName="O2P_Prop.xsd" Name="OIALtoPLiX_Properties.xsd" Source="..\XML\OIALtoPLiX\OIALtoPLiX_Properties.xsd"
-									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+									DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 							</Component>
 						</Directory>
 						<Directory Id="ORMCOMMONTRANSFORMSDIR" ShortName="Trnsfrms" Name="Transforms">
 
 							<Component Id="ORMTransformsComponent" Guid="92A82A59-CC06-4850-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 								<File Id="CoRefORM.xslt" ShortName="CoRefORM.xsl" Name="CoRefORM.xslt" Source="..\XML\OIAL\CoRefORM.xslt"
-									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+									DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\CoRefORM">
 									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 									<RegistryValue Type="string" Name="OfficialName" Value="CoRefORM"/>
@@ -542,7 +542,7 @@
 
 							<Component Id="OIALTransformsComponent" Guid="165ED455-31BE-4E30-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 								<File Id="ORMtoOIAL.xslt" ShortName="ORM2OIAL.xsl" Name="ORMtoOIAL.xslt" Source="..\XML\OIAL\ORMtoOIAL.xslt"
-									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+									DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\ORMtoOIAL">
 									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 									<RegistryValue Type="string" Name="OfficialName" Value="ORMtoOIAL"/>
@@ -558,7 +558,7 @@
 
 							<Component Id="ORMClassModelTransformsComponent" Guid="82A94F1B-CC68-4924-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 								<File Id="OIALtoCLIProperties.xslt" ShortName="OIL2CLIP.xsl" Name="OIALtoCLIProperties.xslt" Source="..\XML\OIALtoPLiX\OIALtoCLIProperties.xslt"
-									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+									DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoCLIProperties">
 									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 									<RegistryValue Type="string" Name="OfficialName" Value="OIALtoCLIProperties"/>
@@ -676,7 +676,7 @@
 								<Component Id="ORMClassModelPHPTransformsComponent" Guid="63811A03-EFFD-4991-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 
 									<File Id="PHP_PHPEntities.xslt" ShortName="PHPEnt.xsl" Name="PHPEntities.xslt" Source="..\XML\OIALtoPLiX\PHP\PHPEntities.xslt"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPHPEntitiesPLiX">
 										<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 										<RegistryValue Type="string" Name="OfficialName" Value="OIALtoPHPEntitiesPLiX"/>
@@ -790,7 +790,7 @@
 							<Directory Id="ORMCOMMONTRANSFORMSLINQTOSQLDIR" Name="LinqToSql">
 								<Component Id="ORMClassModelLinqToSqlTransformsComponent" Guid="3A361C38-3267-4481-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 									<File Id="LinqToSqlSettings.xslt" ShortName="LqSqlSet.xsl" Name="LinqToSqlSettings.xslt" Source="..\XML\DCILtoLinq\LinqToSqlSettings.xslt"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\LinqToSqlSettings">
 										<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 										<RegistryValue Type="string" Name="OfficialName" Value="LinqToSqlSettings"/>
@@ -805,7 +805,7 @@
 									</RegistryKey>
 
 									<File Id="DCILtoLinqAttributeMapping.xslt" ShortName="DclLqAM.xsl" Name="DCILtoLinqAttributeMapping.xslt" Source="..\XML\DCILtoLinq\DCILtoLinqAttributeMapping.xslt"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DCILtoLinqAttributeMapping">
 										<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 										<RegistryValue Type="string" Name="OfficialName" Value="DCILtoLinqAttributeMapping"/>
@@ -827,7 +827,7 @@
 							<!--<Directory Id="ORMDataLayerTestFormDIR" ShortName="DtaTstFm" Name="DataLayerTestForm">
 								<Component Id="ORMClassModelTransformsTestFormComponent" Guid="870B6A5C-543A-416a-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 									<File Id="OIALtoPLiX_DataLayerTestForm.xslt" ShortName="OIL2DLTF.xsl" Name="OIALtoPLiX_DataLayerTestForm.xslt" Source="..\XML\OIALtoPLiX\DataLayerTestForm\OIALtoPLiX_DataLayerTestForm.xslt"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DataLayerTestForm">
 										<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 										<RegistryValue Type="string" Name="OfficialName" Value="DataLayerTestForm"/>
@@ -843,7 +843,7 @@
 										</RegistryValue>
 									</RegistryKey>
 									<File Id="OIALtoPLiX_InputControl.xslt" ShortName="OIL2IC.xsl" Name="OIALtoPLiX_InputControl.xslt" Source="..\XML\OIALtoPLiX\DataLayerTestForm\OIALtoPLiX_InputControl.xslt"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DataLayerTestFormInputControl">
 										<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 										<RegistryValue Type="string" Name="OfficialName" Value="DataLayerTestFormInputControl"/>
@@ -862,7 +862,7 @@
 										</RegistryValue>
 									</RegistryKey>
 									<File Id="OIALtoPLiX_InputControl_Designer.xslt" ShortName="OIL2ICD.xsl" Name="OIALtoPLiX_InputControl_Designer.xslt" Source="..\XML\OIALtoPLiX\DataLayerTestForm\OIALtoPLiX_InputControl_Designer.xslt"
-										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DataLayerTestFormInputControlDesigner">
 										<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 										<RegistryValue Type="string" Name="OfficialName" Value="DataLayerTestFormInputControlDesigner"/>
@@ -883,7 +883,7 @@
 
 									<Component Id="ORMXmlSchemaTransformsComponent" Guid="E9166531-A29B-49B6-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 										<File Id="OIALtoXSD.xslt" ShortName="OIAL2XSD.xsl" Name="OIALtoXSD.xslt" Source="..\XML\OIALtoXSD\OIALtoXSD.xslt"
-											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+											DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoXSD">
 									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 									<RegistryValue Type="string" Name="OfficialName" Value="OIALtoXSD"/>
@@ -898,7 +898,7 @@
 
 							<Component Id="ORMRelationalSchemaTransformsComponent" Guid="2A455908-5BB2-48A3-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 								<File Id="ConceptualDBtoDCIL.xslt" ShortName="CDB2DCIL.xsl" Name="ConceptualDBtoDCIL.xslt" Source="..\XML\ConceptualDBtoDCIL\ConceptualDBtoDCIL.xslt"
-									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+									DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\ConceptualDBtoDCL">
 									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 									<RegistryValue Type="string" Name="OfficialName" Value="ConceptualDBtoDCL"/>
@@ -911,7 +911,7 @@
 									<RegistryValue Type="integer" Name="GeneratesSupportFile" Value="1"/>
 								</RegistryKey>
 								<File Id="OIALtoDCIL.xslt" ShortName="OIL2DCIL.xsl" Name="OIALtoDCIL.xslt" Source="..\XML\OIALtoDCIL\OIALtoDCIL.xslt"
-									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+									DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoDCIL">
 									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 									<RegistryValue Type="string" Name="OfficialName" Value="OIALtoDCIL"/>
@@ -952,7 +952,7 @@
 						<Directory Id="DILCOMMONTRANSFORMSDIR" ShortName="Trnsfrms" Name="Transforms">
 							<Component Id="DILTransformsComponent" Guid="E0653834-4F4F-426B-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 								<File Id="DILSupportFunctions.xslt" ShortName="DILSF.xsl" Name="DILSupportFunctions.xslt" Source="..\XML\DIL\DILSupportFunctions.xslt"
-									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+									DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 								<File Id="DDILtoSQLStandard.xslt" ShortName="DIL2Stnd.xsl" Name="DDILtoSQLStandard.xslt" Source="..\XML\DILtoSQL\DDILtoSQLStandard.xslt"
 									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
 								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoSQLStandard">
@@ -1084,35 +1084,35 @@
 				<Directory Id="General" Name="General">
 					<Component Id="NORMAVSProjectItemsGeneralComponent" Guid="26D96FE1-69F2-46ED-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 						<File Id="General.zip" Name="ORMModel.zip" Source="..\ORMModel\Shell\ProjectItems\$(var.VSShortName)\General.zip"
-							DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+							DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 					</Component>
 					<Component Id="NORMADBImportProjectItemsGeneralComponent" Guid="1890A3E6-8C17-478C-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 						<File Id="DBImportGeneral.zip" Name="ORMModelFromDatabase.zip" ShortName="DBImpGen.zip" Source="..\Tools\DatabaseImport\ProjectItems\$(var.VSShortName)\General.zip"
-							DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.DatabaseImport$(var.VSExt).dll"/>
+							DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).dll"/>
 					</Component>
 				</Directory>
 				<Directory Id="VisualBasic" ShortName="VBasic" Name="VisualBasic">
 					<Component Id="NORMAVSProjectItemsVBasicComponent" Guid="5D140A94-9C4A-4B60-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 						<Condition>VBASICPACKAGEGUID OR Installed</Condition>
 						<File Id="VisualBasic.zip" Name="ORMModel.zip" Source="..\ORMModel\Shell\ProjectItems\VisualBasic.zip"
-							DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+							DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 					</Component>
 					<Component Id="NORMADBImportProjectItemsVBasicComponent" Guid="8C45B394-60D1-433C-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 						<Condition>VBASICPACKAGEGUID OR Installed</Condition>
 						<File Id="DBImportVisualBasic.zip" Name="ORMModelFromDatabase.zip" ShortName="DBImpVB.zip" Source="..\Tools\DatabaseImport\ProjectItems\$(var.VSShortName)\VisualBasic.zip"
-							DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.DatabaseImport$(var.VSExt).dll"/>
+							DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).dll"/>
 					</Component>
 				</Directory>
 				<Directory Id="CSharp" Name="CSharp">
 					<Component Id="NORMAVSProjectItemsVCSharpComponent" Guid="C1AAAF79-FA94-45C0-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 						<Condition>VCSHARPPACKAGEGUID OR Installed</Condition>
 						<File Id="CSharp.zip" Name="ORMModel.zip" Source="..\ORMModel\Shell\ProjectItems\CSharp.zip"
-							DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+							DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 					</Component>
 					<Component Id="NORMADBImportProjectItemsVCSharpComponent" Guid="08F0D621-59B8-46D1-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 						<Condition>VCSHARPPACKAGEGUID OR Installed</Condition>
 						<File Id="DBImportCSharp.zip" Name="ORMModelFromDatabase.zip" ShortName="DBImpCS.zip" Source="..\Tools\DatabaseImport\ProjectItems\$(var.VSShortName)\CSharp.zip"
-							DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.DatabaseImport$(var.VSExt).dll"/>
+							DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).dll"/>
 					</Component>
 				</Directory>
 				<?ifdef JSharpSupport?>
@@ -1120,12 +1120,12 @@
 					<Component Id="NORMAVSProjectItemsVJSharpComponent" Guid="B6ACBD38-3FAD-4C24-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 						<Condition>VJSHARPPACKAGEGUID OR Installed</Condition>
 						<File Id="JSharp.zip" Name="ORMModel.zip" Source="..\ORMModel\Shell\ProjectItems\JSharp.zip"
-							DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+							DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 					</Component>
 					<Component Id="NORMADBImportProjectItemsVJSharpComponent" Guid="B6711598-65C5-4E23-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 						<Condition>VJSHARPPACKAGEGUID OR Installed</Condition>
 						<File Id="DBImportJSharp.zip" Name="ORMModelFromDatabase.zip" ShortName="DBImpJS.zip" Source="..\Tools\DatabaseImport\ProjectItems\$(var.VSShortName)\JSharp.zip"
-							DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.DatabaseImport$(var.VSExt).dll"/>
+							DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).dll"/>
 					</Component>
 				</Directory>
 				<?endif?>
@@ -1133,12 +1133,12 @@
 					<Component Id="NORMAVSProjectItemsVCPlusPlusComponent" Guid="16B28893-FE72-4BBF-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 						<Condition>VCPLUSPLUSPACKAGEGUID OR Installed</Condition>
 						<File Id="VisualC.zip" Name="ORMModel.zip" Source="..\ORMModel\Shell\ProjectItems\VisualC.zip"
-							DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+							DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 					</Component>
 					<Component Id="NORMADBImportProjectItemsVCPlusPlusComponent" Guid="5BC18298-68CE-46F2-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 						<Condition>VCPLUSPLUSPACKAGEGUID OR Installed</Condition>
 						<File Id="DBImportVisualC.zip" Name="ORMModelFromDatabase.zip" ShortName="DBImpVC.zip" Source="..\Tools\DatabaseImport\ProjectItems\$(var.VSShortName)\VisualC.zip"
-							DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.DatabaseImport$(var.VSExt).dll"/>
+							DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).dll"/>
 					</Component>
 				</Directory>
 				<Directory Id="Web" Name="Web">
@@ -1146,24 +1146,24 @@
 						<Component Id="NORMAVSProjectItemsVWebDevVBasicComponent" Guid="4EC6EE56-3F04-4F0F-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 							<Condition>VWEBDEVPACKAGEGUID OR Installed</Condition>
 							<File Id="WebVisualBasic.zip" Name="ORMModel.zip" Source="..\ORMModel\Shell\ProjectItems\Web\VisualBasic.zip"
-								DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+								DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 						</Component>
 						<Component Id="NORMADBImportProjectItemsVWebDevVBasicComponent" Guid="34C69005-11CA-4F9E-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 							<Condition>VWEBDEVPACKAGEGUID OR Installed</Condition>
 							<File Id="DBImportWebVisualBasic.zip" Name="ORMModelFromDatabase.zip" ShortName="DBImpWVB.zip" Source="..\Tools\DatabaseImport\ProjectItems\$(var.VSShortName)\Web\VisualBasic.zip"
-								DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.DatabaseImport$(var.VSExt).dll"/>
+								DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).dll"/>
 						</Component>
 					</Directory>
 					<Directory Id="WebCSharp" Name="CSharp">
 						<Component Id="NORMAVSProjectItemsVWebDevCSharpComponent" Guid="7E4BA3AB-3831-4520-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 							<Condition>VWEBDEVPACKAGEGUID OR Installed</Condition>
 							<File Id="WebCSharp.zip" Name="ORMModel.zip" Source="..\ORMModel\Shell\ProjectItems\Web\CSharp.zip"
-								DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+								DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 						</Component>
 						<Component Id="NORMADBImportProjectItemsVWebDevCSharpComponent" Guid="46832808-DF7F-43B1-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 							<Condition>VWEBDEVPACKAGEGUID OR Installed</Condition>
 							<File Id="DBImportWebCSharp.zip" Name="ORMModelFromDatabase.zip" ShortName="DBImpWCS.zip" Source="..\Tools\DatabaseImport\ProjectItems\$(var.VSShortName)\Web\CSharp.zip"
-								DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.DatabaseImport$(var.VSExt).dll"/>
+								DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).dll"/>
 						</Component>
 					</Directory>
 					<?ifdef JSharpSupport?>
@@ -1171,12 +1171,12 @@
 						<Component Id="NORMAVSProjectItemsVWebDevJSharpComponent" Guid="E68504E4-D956-4A87-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 							<Condition>VWEBDEVPACKAGEGUID OR Installed</Condition>
 							<File Id="WebJSharp.zip" Name="ORMModel.zip" Source="..\ORMModel\Shell\ProjectItems\Web\JSharp.zip"
-								DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM$(var.VSExt).dll"/>
+								DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 						</Component>
 						<Component Id="NORMADBImportProjectItemsVWebDevJSharpComponent" Guid="4AC8EFAD-DCE3-4509-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 							<Condition>VWEBDEVPACKAGEGUID OR Installed</Condition>
 							<File Id="DBImportWebJSharp.zip" Name="ORMModelFromDatabase.zip" ShortName="DBImpWJS.zip" Source="..\Tools\DatabaseImport\ProjectItems\$(var.VSShortName)\Web\JSharp.zip"
-								DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.DatabaseImport$(var.VSExt).dll"/>
+								DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).dll"/>
 						</Component>
 					</Directory>
 					<?endif?>

@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -32,7 +32,7 @@ using Microsoft.VisualStudio.VirtualTreeGrid;
 using Microsoft.VisualStudio.Shell;
 using System.ComponentModel.Design;
 
-namespace Neumont.Tools.Modeling.Design
+namespace ORMSolutions.ORMArchitect.Framework.Design
 {
 	/// <summary>
 	/// Selected context instances are often represented by a wrapper

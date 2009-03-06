@@ -962,7 +962,7 @@
     <comment>Display name for EnumerationLiteral &apos;Alethic&apos; on DomainEnumeration &apos;MandatoryConstraintModality&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.OIALModel.MandatoryConstraintModality/Alethic.Description" xml:space="preserve">
-    <value>See &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.ConstraintModality.Alethic&quot;/&gt;.</value>
+    <value>See &lt;see cref=&quot;ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintModality.Alethic&quot;/&gt;.</value>
     <comment>Description for EnumerationLiteral &apos;Alethic&apos; on DomainEnumeration &apos;MandatoryConstraintModality&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.OIALModel.MandatoryConstraintModality/Deontic.DisplayName" xml:space="preserve">
@@ -970,7 +970,7 @@
     <comment>Display name for EnumerationLiteral &apos;Deontic&apos; on DomainEnumeration &apos;MandatoryConstraintModality&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.OIALModel.MandatoryConstraintModality/Deontic.Description" xml:space="preserve">
-    <value>See &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.ConstraintModality.Deontic&quot;/&gt;.</value>
+    <value>See &lt;see cref=&quot;ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintModality.Deontic&quot;/&gt;.</value>
     <comment>Description for EnumerationLiteral &apos;Deontic&apos; on DomainEnumeration &apos;MandatoryConstraintModality&apos;</comment>
   </data>
   <data name="AmbiguousSchema" xml:space="preserve">

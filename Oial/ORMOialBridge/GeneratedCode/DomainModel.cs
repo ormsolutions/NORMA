@@ -1,6 +1,6 @@
 ﻿#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -24,16 +24,16 @@
 
 using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
-namespace Neumont.Tools.ORMToORMAbstractionBridge
+namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 {
 	/// <summary>
 	/// DomainModel ORMToORMAbstractionBridgeDomainModel
 	/// Bridge ORM and attribute-centric ORM Abstraction Model
 	/// </summary>
-	[DslModeling::ExtendsDomainModel("3EAE649F-E654-4D04-8289-C25D2C0322D8"/*Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel*/)]
-	[DslModeling::ExtendsDomainModel("F7BC82F4-83D1-408C-BA42-607E90B23BEA"/*Neumont.Tools.ORMAbstraction.AbstractionDomainModel*/)]
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+	[DslModeling::ExtendsDomainModel("3EAE649F-E654-4D04-8289-C25D2C0322D8"/*ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel*/)]
+	[DslModeling::ExtendsDomainModel("F7BC82F4-83D1-408C-BA42-607E90B23BEA"/*ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel*/)]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("1f394f03-8a41-48bc-bded-2268e131b4a3")]
 	public partial class ORMToORMAbstractionBridgeDomainModel : DslModeling::DomainModel
@@ -205,7 +205,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// <summary>
 		/// The base name of this model's resources.
 		/// </summary>
-		public const string ResourceBaseName = "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx";
+		public const string ResourceBaseName = "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx";
 		
 		/// <summary>
 		/// Gets the DomainModel's ResourceManager. If the ResourceManager does not already exist, then it is created.
@@ -330,8 +330,8 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		public ORMToORMAbstractionBridgeDeleteClosureBase()
 		{
 			#region Initialize DomainData Table
-			DomainRoles.Add(global::Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint.UniquenessDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.GenerationSettingDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint.UniquenessDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.GenerationSettingDomainRoleId, true);
 			#endregion
 		}
 		/// <summary>
@@ -451,49 +451,51 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 	#endregion
 		
 }
-namespace Neumont.Tools.ORMToORMAbstractionBridge
+namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 {
 	/// <summary>
 	/// DomainEnumeration: MappingDepth
 	/// Specify whether a mapping is shallow (absorbs just the <see
-	/// cref="Neumont.Tools.ORM.ObjectModel.FactType"/> only) or deep (absorbs the <see
-	/// cref="Neumont.Tools.ORM.ObjectModel.FactType"/> and the opposite <see
-	/// cref="Neumont.Tools.ORM.ObjectModel.ObjectType">role player</see>.
+	/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/> only) or deep
+	/// (absorbs the <see cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/>
+	/// and the opposite <see
+	/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType">role player</see>.
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<MappingDepth, global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<MappingDepth, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel>))]
 	[global::System.Serializable()]
 	[global::System.CLSCompliant(true)]
 	public enum MappingDepth
 	{
 		/// <summary>
 		/// Shallow
-		/// Only the <see cref="Neumont.Tools.ORM.ObjectModel.FactType"/> referenced is
-		/// mapped to the destination <see
-		/// cref="Neumont.Tools.ORM.ObjectModel.ObjectType"/>.
+		/// Only the <see cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/>
+		/// referenced is mapped to the destination <see
+		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType"/>.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.MappingDepth/Shallow.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.MappingDepth/Shallow.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 		Shallow = 0,
 		/// <summary>
 		/// Deep
-		/// The <see cref="Neumont.Tools.ORM.ObjectModel.FactType"/> referenced is mapped to
-		/// the destination <see cref="Neumont.Tools.ORM.ObjectModel.ObjectType"/>, and the
-		/// <see cref="Neumont.Tools.ORM.ObjectModel.ObjectType"/> playing the opposite role
-		/// is absorbed into the destination <see
-		/// cref="Neumont.Tools.ORM.ObjectModel.ObjectType"/>.
+		/// The <see cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/> referenced
+		/// is mapped to the destination <see
+		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType"/>, and the <see
+		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType"/> playing the
+		/// opposite role is absorbed into the destination <see
+		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType"/>.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.MappingDepth/Deep.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.MappingDepth/Deep.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 		Deep = 1,
 	}
 }
-namespace Neumont.Tools.ORMToORMAbstractionBridge
+namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 {
 	/// <summary>
 	/// DomainEnumeration: MappingUniquenessPattern
 	/// Specifies the uniqueness pattern present on the <see
-	/// cref="Neumont.Tools.ORM.ObjectModel.FactType"/> at the time the <see
-	/// cref="FactTypeMapsTowardsRole"/> relationship was last updated.
+	/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/> at the time the
+	/// <see cref="FactTypeMapsTowardsRole"/> relationship was last updated.
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<MappingUniquenessPattern, global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<MappingUniquenessPattern, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel>))]
 	[global::System.Serializable()]
 	[global::System.CLSCompliant(true)]
 	public enum MappingUniquenessPattern
@@ -502,55 +504,55 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// None
 		/// Uniqueness pattern not specified
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.MappingUniquenessPattern/None.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.MappingUniquenessPattern/None.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 		None = 0,
 		/// <summary>
 		/// OneToMany
 		/// The mapping is based on a one-to-many <see
-		/// cref="Neumont.Tools.ORM.ObjectModel.FactType"/> with a <see
-		/// cref="Neumont.Tools.ORM.ObjectModel.UniquenessConstraint"/> on the <see
-		/// cref="FactTypeMapsTowardsRole.TowardsRole"/>.
+		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/> with a <see
+		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint"/> on the
+		/// <see cref="FactTypeMapsTowardsRole.TowardsRole"/>.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.MappingUniquenessPattern/OneToMany.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.MappingUniquenessPattern/OneToMany.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 		OneToMany = 1,
 		/// <summary>
 		/// ManyToOne
 		/// The mapping is based on a many-to-one <see
-		/// cref="Neumont.Tools.ORM.ObjectModel.FactType"/> with a <see
-		/// cref="Neumont.Tools.ORM.ObjectModel.UniquenessConstraint"/> on the role opposite
-		/// <see cref="FactTypeMapsTowardsRole.TowardsRole"/>. Note that this value is
-		/// included for completeness and will not appear in actual <see
+		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/> with a <see
+		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint"/> on the
+		/// role opposite <see cref="FactTypeMapsTowardsRole.TowardsRole"/>. Note that this
+		/// value is included for completeness and will not appear in actual <see
 		/// cref="FactTypeMapsTowardsRole"/> instances.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.MappingUniquenessPattern/ManyToOne.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.MappingUniquenessPattern/ManyToOne.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 		ManyToOne = 2,
 		/// <summary>
 		/// OneToOne
 		/// The mapping is based on a one-to-one <see
-		/// cref="Neumont.Tools.ORM.ObjectModel.FactType"/>.
+		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/>.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.MappingUniquenessPattern/OneToOne.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.MappingUniquenessPattern/OneToOne.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 		OneToOne = 3,
 		/// <summary>
 		/// Subtype
 		/// The mapping is based on a <see
-		/// cref="Neumont.Tools.ORM.ObjectModel.SubtypeFact"/> with the <see
+		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact"/> with the <see
 		/// cref="FactTypeMapsTowardsRole.TowardsRole"/> acting as the superttype.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.MappingUniquenessPattern/Subtype.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.MappingUniquenessPattern/Subtype.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 		Subtype = 4,
 	}
 }
-namespace Neumont.Tools.ORMToORMAbstractionBridge
+namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 {
 	/// <summary>
 	/// DomainEnumeration: MappingMandatoryPattern
 	/// Specifies the mandatory pattern present on the <see
-	/// cref="Neumont.Tools.ORM.ObjectModel.FactType"/> at the time the <see
-	/// cref="FactTypeMapsTowardsRole"/> relationship was last updated. Indicated
+	/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/> at the time the
+	/// <see cref="FactTypeMapsTowardsRole"/> relationship was last updated. Indicated
 	/// mandatory relationships include single-role implied mandatory constraints.
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<MappingMandatoryPattern, global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<MappingMandatoryPattern, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel>))]
 	[global::System.Serializable()]
 	[global::System.CLSCompliant(true)]
 	public enum MappingMandatoryPattern
@@ -559,34 +561,36 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// None
 		/// Mandatory pattern not specified
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.MappingMandatoryPattern/None.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.MappingMandatoryPattern/None.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 		None = 0,
 		/// <summary>
 		/// NotMandatory
-		/// The <see cref="Neumont.Tools.ORM.ObjectModel.FactType"/> has no mandatory roles.
+		/// The <see cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/> has no
+		/// mandatory roles.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.MappingMandatoryPattern/NotMandatory.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.MappingMandatoryPattern/NotMandatory.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 		NotMandatory = 1,
 		/// <summary>
 		/// TowardsRoleMandatory
 		/// The <see cref="FactTypeMapsTowardsRole.TowardsRole"/> of the <see
-		/// cref="Neumont.Tools.ORM.ObjectModel.FactType"/> is mandatory.
+		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/> is mandatory.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.MappingMandatoryPattern/TowardsRoleMandatory.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.MappingMandatoryPattern/TowardsRoleMandatory.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 		TowardsRoleMandatory = 2,
 		/// <summary>
 		/// OppositeRoleMandatory
 		/// The role opposite <see cref="FactTypeMapsTowardsRole.TowardsRole"/> of the <see
-		/// cref="Neumont.Tools.ORM.ObjectModel.FactType"/> is mandatory.
+		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/> is mandatory.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.MappingMandatoryPattern/OppositeRoleMandatory.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.MappingMandatoryPattern/OppositeRoleMandatory.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 		OppositeRoleMandatory = 3,
 		/// <summary>
 		/// BothRolesMandatory
 		/// Both the <see cref="FactTypeMapsTowardsRole.TowardsRole"/> and opposite role of
-		/// the <see cref="Neumont.Tools.ORM.ObjectModel.FactType"/> are mandatory.
+		/// the <see cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/> are
+		/// mandatory.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.MappingMandatoryPattern/BothRolesMandatory.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.MappingMandatoryPattern/BothRolesMandatory.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 		BothRolesMandatory = 4,
 	}
 }

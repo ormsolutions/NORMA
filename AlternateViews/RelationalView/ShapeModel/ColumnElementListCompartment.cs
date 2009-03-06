@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -22,13 +22,13 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Neumont.Tools.RelationalModels.ConceptualDatabase;
+using ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase;
 using System.Collections.ObjectModel;
-using Neumont.Tools.ORM.ObjectModel;
-using UniquenessConstraint = Neumont.Tools.RelationalModels.ConceptualDatabase.UniquenessConstraint;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using UniquenessConstraint = ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraint;
 using System.Windows.Forms;
 
-namespace Neumont.Tools.ORM.Views.RelationalView
+namespace ORMSolutions.ORMArchitect.Views.RelationalView
 {
 	/// <summary>
 	/// A custom compartment element used to customize how individual compartment items are drawn.
@@ -51,7 +51,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// <summary>
 		/// A font used to format the name of mandatory columns.
 		/// </summary>
-		private static readonly StyleSetResourceId MandatoryFont = new StyleSetResourceId("Neumont", "MandatoryFont");
+		private static readonly StyleSetResourceId MandatoryFont = new StyleSetResourceId("ORMSolutions", "MandatoryColumnFont");
 		/// <summary>
 		/// The <see cref="T:System.Drawing.StringFormat"/> used to write text for the columns and table name.
 		/// </summary>
@@ -66,17 +66,17 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		private const string ColonString = " : ";
 		/// <summary>
 		/// Specifies the offset used for measuring a string in updating the size of this
-		/// <see cref="T:Neumont.Tools.ORM.Views.RelationalView.ColumnElementListCompartment"/> based on the table name.
+		/// <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment"/> based on the table name.
 		/// </summary>	
 		private const double TableExtraWidth = .14d;
 		/// <summary>
 		/// Specifies the offset used for measuring a string in updating the size of this
-		/// <see cref="T:Neumont.Tools.ORM.Views.RelationalView.ColumnElementListCompartment"/> based on the column names.
+		/// <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment"/> based on the column names.
 		/// </summary>	
 		private const double ColumnExtraWidth = .33d;
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="T:Neumont.Tools.ORM.RelationalView.ColumnElementListCompartment" /> class.	
+		/// Initializes a new instance of the <see cref="ColumnElementListCompartment" /> class.	
 		/// </summary>
 		/// <param name="partition"></param>
 		/// <param name="propertyAssignments"></param>
@@ -85,10 +85,10 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		{
 		}
 		/// <summary>
-		/// Initializes a new instance of the <see cref="T:Neumont.Tools.ORM.RelationalView.ColumnElementListCompartment" /> class.
+		/// Initializes a new instance of the <see cref="ColumnElementListCompartment" /> class.
 		/// </summary>
 		/// <param name="store">The <see cref="T:Microsoft.VisualStudio.Modeling.Store"/> which will contain this
-		/// <see cref="T:Neumont.Tools.ORM.RelationalView.ColumnElementListCompartment" />.</param>
+		/// <see cref="ColumnElementListCompartment" />.</param>
 		/// <param name="propertyAssignments">An array of <see cref="T:Microsoft.VisualStudio.Modeling.PropertyAssignment"/> that
 		/// works with </param>
 		public ColumnElementListCompartment(Store store, params PropertyAssignment[] propertyAssignments)
@@ -195,18 +195,18 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		}
 		#region DataType Helper Methods
 		/// <summary>
-		/// Gets the SQL-Server compliant data type for the <see cref="T:Neumont.Tools.ORM.ObjectModel.ObjectType"/>.
+		/// Gets the SQL-Server compliant data type for the <see cref="T:ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType"/>.
 		/// </summary>
-		/// <param name="valueType">The <see cref="T:Neumont.Tools.ORM.ObjectModel.ObjectType"/> whose data type is of interest.</param>
+		/// <param name="valueType">The <see cref="T:ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType"/> whose data type is of interest.</param>
 		/// <returns>The data type, a <see cref="T:System.String"/>.</returns>
 		private static string GetDataType(ObjectType valueType)
 		{
 			return GetDataTypeInternal(valueType).ToLowerInvariant();
 		}
 		/// <summary>
-		/// Gets the SQL-Server compliant data type for the <see cref="T:Neumont.Tools.ORM.ObjectModel.ObjectType"/>.
+		/// Gets the SQL-Server compliant data type for the <see cref="T:ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType"/>.
 		/// </summary>
-		/// <param name="valueType">The <see cref="T:Neumont.Tools.ORM.ObjectModel.ObjectType"/> whose data type is of interest.</param>
+		/// <param name="valueType">The <see cref="T:ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType"/> whose data type is of interest.</param>
 		/// <returns>The data type, a <see cref="T:System.String"/>.</returns>
 		private static string GetDataTypeInternal(ObjectType valueType)
 		{
@@ -324,7 +324,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 
 		/// <summary>
 		/// Initializes the default <see cref="T:System.Drawing.StringFormat"/> associated with this 
-		/// <see cref="T:Neumont.Tools.ORM.Views.RelationalView.ColumnElementListCompartment"/>.
+		/// <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment"/>.
 		/// </summary>
 		static ColumnElementListCompartment()
 		{
@@ -333,8 +333,8 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			DefaultStringFormat.Trimming = StringTrimming.EllipsisCharacter;
 		}
 		/// <summary>
-		/// Updates the size of this <see cref="T:Neumont.Tools.ORM.Views.RelationalView.ColumnElementListCompartment"/> and
-		/// its associated <see cref="T:Neumont.Tools.ORM.Views.RelationalView.TableShape"/> to size according to the widest column or
+		/// Updates the size of this <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment"/> and
+		/// its associated <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.TableShape"/> to size according to the widest column or
 		/// table name.
 		/// </summary>
 		public override void UpdateSize()
@@ -455,7 +455,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 	partial class ColumnElementListCompartmentDescription : ElementListCompartmentDescription
 	{
 		/// <summary>
-		/// Initializes a new instance of the <see cref="T:Neumont.Tools.ORM.Views.RelationalView.ColumnElementListCompartmentDescription" /> class.
+		/// Initializes a new instance of the <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartmentDescription" /> class.
 		/// </summary>
 		/// <param name="name">The name of the element.</param>
 		/// <param name="title">The title of the element.</param>

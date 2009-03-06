@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Neumont.Tools.ORM.SDK.TestReportViewer {
+namespace ORMSolutions.ORMArchitectSDK.TestReportViewer {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Neumont.Tools.ORM.SDK.TestReportViewer {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Neumont.Tools.ORM.SDK.TestReportViewer.ResourceStrings", typeof(ResourceStrings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ORMSolutions.ORMArchitectSDK.TestReportViewer.ResourceStrings", typeof(ResourceStrings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

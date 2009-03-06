@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 
-namespace Neumont.Tools.ORM.SDK.TestEngine
+namespace ORMSolutions.ORMArchitectSDK.TestEngine
 {
 	#region TestsAttribute class
 	/// <summary>
 	/// An attribute to apply to a test class to signal the test engine
 	/// to look for methods with a Test attribute in that class. The class
 	/// must have a constructor with a single parameter of type
-	/// Neumont.Tools.ORM.ObjectModel.IORMToolServices.
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.IORMToolServices.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = false)]
 	public sealed class ORMTestFixtureAttribute : Attribute

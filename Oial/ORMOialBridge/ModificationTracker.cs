@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -17,14 +17,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.Modeling;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.Modeling;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Framework;
 using System.Diagnostics;
 using System.Collections;
-using Neumont.Tools.ORMAbstraction;
+using ORMSolutions.ORMArchitect.ORMAbstraction;
 using System.Collections.ObjectModel;
 
-namespace Neumont.Tools.ORMToORMAbstractionBridge
+namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 {
 	public partial class AbstractionModelIsForORMModel
 	{
@@ -33,7 +33,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		{
 			#region ORM modification rule methods
 			/// <summary>
-			/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole)
+			/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole)
 			/// </summary>
 			private static void ConstraintRoleAddedRule(ElementAddedEventArgs e)
 			{
@@ -57,7 +57,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				}
 			}
 			/// <summary>
-			/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole)
+			/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole)
 			/// </summary>
 			private static void ConstraintRoleDeletedRule(ElementDeletedEventArgs e)
 			{
@@ -80,7 +80,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				}
 			}
 			/// <summary>
-			/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectType)
+			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType)
 			/// </summary>
 			private static void ObjectTypeChangedRule(ElementPropertyChangedEventArgs e)
 			{
@@ -106,7 +106,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				}
 			}
 			/// <summary>
-			/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.SetConstraint)
+			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint)
 			/// </summary>
 			private static void SetConstraintChangedRule(ElementPropertyChangedEventArgs e)
 			{
@@ -149,7 +149,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				}
 			}
 			/// <summary>
-			/// DeletingRule: typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole)
+			/// DeletingRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole)
 			/// Propagate role deletion in a uniqueness constraint to an absorbed uniqueness
 			/// </summary>
 			private static void UniquenessConstraintRoleDeleting(ElementDeletingEventArgs e)
@@ -167,7 +167,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				}
 			}
 			/// <summary>
-			/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ORMModel)
+			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel)
 			/// Synchronize the <see cref="P:AbstractionModel.Name">name</see> of the <see cref="AbstractionModel"/>
 			/// with the <see cref="P:ORMModel.Name">name</see> of the <see cref="ORMModel"/>
 			/// </summary>
@@ -184,7 +184,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				}
 			}
 			/// <summary>
-			/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.SubtypeFact)
+			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact)
 			/// Changing the <see cref="P:SubtypeFact.IsPrimary"/> property on a <see cref="SubtypeFact"/>
 			/// can modify preferred identification schemes.
 			/// </summary>
@@ -197,7 +197,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				}
 			}
 			/// <summary>
-			/// RolePlayerChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier)
+			/// RolePlayerChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier)
 			/// Changing the preferred identifier for an <see cref="ObjectType"/> is considered to
 			/// be a significant change until we support full incremental tracking.
 			/// </summary>
@@ -212,7 +212,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				SignificantObjectTypeChange(link.PreferredIdentifierFor);
 			}
 			/// <summary>
-			/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier)
+			/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier)
 			/// If an <see cref="ObjectType"/> is alive after gateway processing when its preferred identifier
 			/// is deleted then it needs to be reprocessed.
 			/// </summary>
@@ -227,7 +227,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 				}
 			}
 			/// <summary>
-			/// RolePlayerChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole)
+			/// RolePlayerChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole)
 			/// Revalidate the model when the <see cref="ObjectType">role player</see> of a <see cref="Role"/>
 			/// is changed.
 			/// </summary>

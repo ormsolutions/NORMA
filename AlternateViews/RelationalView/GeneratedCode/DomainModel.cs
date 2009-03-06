@@ -1,6 +1,6 @@
 ﻿#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -25,15 +25,15 @@
 using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
 using DslDiagrams = global::Microsoft.VisualStudio.Modeling.Diagrams;
-namespace Neumont.Tools.ORM.Views.RelationalView
+namespace ORMSolutions.ORMArchitect.Views.RelationalView
 {
 	/// <summary>
 	/// DomainModel RelationalShapeDomainModel
 	/// Graphical View of Relational Model (slow and temporary)
 	/// </summary>
-	[DslModeling::ExtendsDomainModel("005CBD56-3BA5-4947-9F46-5608BD563CED"/*Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel*/)]
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel.DisplayName", typeof(global::Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel), "Neumont.Tools.ORM.Views.RelationalView.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel.Description", typeof(global::Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel), "Neumont.Tools.ORM.Views.RelationalView.GeneratedCode.DomainModelResx")]
+	[DslModeling::ExtendsDomainModel("005CBD56-3BA5-4947-9F46-5608BD563CED"/*ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel*/)]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel), "ORMSolutions.ORMArchitect.Views.RelationalView.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.Description", typeof(global::ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel), "ORMSolutions.ORMArchitect.Views.RelationalView.GeneratedCode.DomainModelResx")]
 	[DslModeling::DomainObjectId("0144a831-92d5-4c42-b7c5-99a5fa9d79df")]
 	internal partial class RelationalShapeDomainModel : DslModeling::DomainModel
 	{
@@ -67,12 +67,12 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				typeof(RelationalDiagram),
 				typeof(ForeignKeyConnector),
 				typeof(TableShape),
-				typeof(global::Neumont.Tools.ORM.Views.RelationalView.FixUpDiagram),
-				typeof(global::Neumont.Tools.ORM.Views.RelationalView.CompartmentItemAddRule),
-				typeof(global::Neumont.Tools.ORM.Views.RelationalView.CompartmentItemDeleteRule),
-				typeof(global::Neumont.Tools.ORM.Views.RelationalView.CompartmentItemRolePlayerChangeRule),
-				typeof(global::Neumont.Tools.ORM.Views.RelationalView.CompartmentItemRolePlayerPositionChangeRule),
-				typeof(global::Neumont.Tools.ORM.Views.RelationalView.CompartmentItemChangeRule),
+				typeof(global::ORMSolutions.ORMArchitect.Views.RelationalView.FixUpDiagram),
+				typeof(global::ORMSolutions.ORMArchitect.Views.RelationalView.CompartmentItemAddRule),
+				typeof(global::ORMSolutions.ORMArchitect.Views.RelationalView.CompartmentItemDeleteRule),
+				typeof(global::ORMSolutions.ORMArchitect.Views.RelationalView.CompartmentItemRolePlayerChangeRule),
+				typeof(global::ORMSolutions.ORMArchitect.Views.RelationalView.CompartmentItemRolePlayerPositionChangeRule),
+				typeof(global::ORMSolutions.ORMArchitect.Views.RelationalView.CompartmentItemChangeRule),
 			};
 		}
 		/// <summary>
@@ -164,7 +164,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// <summary>
 		/// The base name of this model's resources.
 		/// </summary>
-		public const string ResourceBaseName = "Neumont.Tools.ORM.Views.RelationalView.GeneratedCode.DomainModelResx";
+		public const string ResourceBaseName = "ORMSolutions.ORMArchitect.Views.RelationalView.GeneratedCode.DomainModelResx";
 		
 		/// <summary>
 		/// Gets the DomainModel's ResourceManager. If the ResourceManager does not already exist, then it is created.
@@ -270,12 +270,12 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			if(store == null) throw new global::System.ArgumentNullException("store");
 			
 			DslModeling::RuleManager ruleManager = store.RuleManager;
-			ruleManager.EnableRule(typeof(global::Neumont.Tools.ORM.Views.RelationalView.FixUpDiagram));
-			ruleManager.EnableRule(typeof(global::Neumont.Tools.ORM.Views.RelationalView.CompartmentItemAddRule));
-			ruleManager.EnableRule(typeof(global::Neumont.Tools.ORM.Views.RelationalView.CompartmentItemDeleteRule));
-			ruleManager.EnableRule(typeof(global::Neumont.Tools.ORM.Views.RelationalView.CompartmentItemRolePlayerChangeRule));
-			ruleManager.EnableRule(typeof(global::Neumont.Tools.ORM.Views.RelationalView.CompartmentItemRolePlayerPositionChangeRule));
-			ruleManager.EnableRule(typeof(global::Neumont.Tools.ORM.Views.RelationalView.CompartmentItemChangeRule));
+			ruleManager.EnableRule(typeof(global::ORMSolutions.ORMArchitect.Views.RelationalView.FixUpDiagram));
+			ruleManager.EnableRule(typeof(global::ORMSolutions.ORMArchitect.Views.RelationalView.CompartmentItemAddRule));
+			ruleManager.EnableRule(typeof(global::ORMSolutions.ORMArchitect.Views.RelationalView.CompartmentItemDeleteRule));
+			ruleManager.EnableRule(typeof(global::ORMSolutions.ORMArchitect.Views.RelationalView.CompartmentItemRolePlayerChangeRule));
+			ruleManager.EnableRule(typeof(global::ORMSolutions.ORMArchitect.Views.RelationalView.CompartmentItemRolePlayerPositionChangeRule));
+			ruleManager.EnableRule(typeof(global::ORMSolutions.ORMArchitect.Views.RelationalView.CompartmentItemChangeRule));
 		}
 		
 		/// <summary>
@@ -286,12 +286,12 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			if(store == null) throw new global::System.ArgumentNullException("store");
 			
 			DslModeling::RuleManager ruleManager = store.RuleManager;
-			ruleManager.DisableRule(typeof(global::Neumont.Tools.ORM.Views.RelationalView.FixUpDiagram));
-			ruleManager.DisableRule(typeof(global::Neumont.Tools.ORM.Views.RelationalView.CompartmentItemAddRule));
-			ruleManager.DisableRule(typeof(global::Neumont.Tools.ORM.Views.RelationalView.CompartmentItemDeleteRule));
-			ruleManager.DisableRule(typeof(global::Neumont.Tools.ORM.Views.RelationalView.CompartmentItemRolePlayerChangeRule));
-			ruleManager.DisableRule(typeof(global::Neumont.Tools.ORM.Views.RelationalView.CompartmentItemRolePlayerPositionChangeRule));
-			ruleManager.DisableRule(typeof(global::Neumont.Tools.ORM.Views.RelationalView.CompartmentItemChangeRule));
+			ruleManager.DisableRule(typeof(global::ORMSolutions.ORMArchitect.Views.RelationalView.FixUpDiagram));
+			ruleManager.DisableRule(typeof(global::ORMSolutions.ORMArchitect.Views.RelationalView.CompartmentItemAddRule));
+			ruleManager.DisableRule(typeof(global::ORMSolutions.ORMArchitect.Views.RelationalView.CompartmentItemDeleteRule));
+			ruleManager.DisableRule(typeof(global::ORMSolutions.ORMArchitect.Views.RelationalView.CompartmentItemRolePlayerChangeRule));
+			ruleManager.DisableRule(typeof(global::ORMSolutions.ORMArchitect.Views.RelationalView.CompartmentItemRolePlayerPositionChangeRule));
+			ruleManager.DisableRule(typeof(global::ORMSolutions.ORMArchitect.Views.RelationalView.CompartmentItemChangeRule));
 		}
 		#endregion
 	}

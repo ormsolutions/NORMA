@@ -4,17 +4,17 @@ using System.Text;
 using System.Xml.Serialization;
 using System.Xml;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Neumont.Tools.Modeling.Design;
+using ORMSolutions.ORMArchitect.Framework.Design;
 using System.ComponentModel;
-using Neumont.Tools.ORM.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
-using Neumont.Tools.ORMAbstraction;
-using Neumont.Tools.ORMToORMAbstractionBridge;
-using Neumont.Tools.Modeling.Shell;
-using Neumont.Tools.ORMAbstractionToBarkerERBridge;
-using Neumont.Tools.EntityRelationshipModels.Barker;
+using ORMSolutions.ORMArchitect.ORMAbstraction;
+using ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge;
+using ORMSolutions.ORMArchitect.Framework.Shell;
+using ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge;
+using ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker;
 
-namespace Neumont.Tools.ORM.Views.BarkerERView
+namespace ORMSolutions.ORMArchitect.Views.BarkerERView
 {
 	partial class BarkerERDiagram : IXmlSerializable
 	{
@@ -55,7 +55,7 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 			return null;
 		}
 		/// <summary>
-		/// Processes the XML that this <see cref="T:Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram"/> has
+		/// Processes the XML that this <see cref="BarkerERDiagram"/> has
 		/// written.
 		/// </summary>
 		/// <param name="reader">A <see cref="T:System.Xml.XmlReader"/> that will read the XML associated with the
@@ -114,16 +114,16 @@ namespace Neumont.Tools.ORM.Views.BarkerERView
 			}
 		}
 		/// <summary>
-		/// Serializes this <see cref="T:Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram"/>.
+		/// Serializes this <see cref="BarkerERDiagram"/>.
 		/// </summary>
 		/// <param name="writer">A <see cref="T:System.Xml.XmlWriter"/> that will write the custom serialization contents.</param>
 		void IXmlSerializable.WriteXml(XmlWriter writer)
 		{
 			string rvNamespace = BarkerERShapeDomainModel.XmlNamespace;
-			// <RelationalDiagram>
-			//    <TableShape ObjectTypeRef="" Location="x, y" />
+			// <BarkerERDiagram>
+			//    <BarkerEntityShape ObjectTypeRef="" Location="x, y" />
 			//    ...
-			// </RelationalDiagram>
+			// </BarkerERDiagram>
 			ISerializationContext serializationContext = ((ISerializationContextHost)Store).SerializationContext;
 			writer.WriteStartElement(BarkerERDiagramElementName, rvNamespace);
 			writer.WriteAttributeString(IdAttributeName, serializationContext.GetIdentifierString(Id));

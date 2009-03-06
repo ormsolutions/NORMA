@@ -1,6 +1,6 @@
 ﻿#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -24,14 +24,15 @@
 
 using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
-namespace Neumont.Tools.ORMToORMAbstractionBridge
+namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 {
 	/// <summary>
 	/// DomainRelationship FactTypeMapsTowardsRole
-	/// Description for Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole
+	/// Description for
+	/// ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("98abb729-f2f0-4629-bfa7-801b6615137d")]
@@ -53,7 +54,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		///// </summary>
 		///// <param name="source">FactType to use as the source of the relationship.</param>
 		///// <param name="target">RoleBase to use as the target of the relationship.</param>
-		//public FactTypeMapsTowardsRole(global::Neumont.Tools.ORM.ObjectModel.FactType source, global::Neumont.Tools.ORM.ObjectModel.RoleBase target)
+		//public FactTypeMapsTowardsRole(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleBase target)
 		//	: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(FactTypeMapsTowardsRole.FactTypeDomainRoleId, source), new DslModeling::RoleAssignment(FactTypeMapsTowardsRole.TowardsRoleDomainRoleId, target)}, null)
 		//{
 		//}
@@ -110,18 +111,18 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// <summary>
 		/// DomainRole FactType
 		/// Description for
-		/// Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole.FactType
+		/// ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole.FactType
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/FactType.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/FactType.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TowardsRole", PropertyDisplayNameKey="Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/FactType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/FactType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/FactType.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TowardsRole", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/FactType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("05abb37c-0363-4bd5-be02-f688bfdb55a5")]
-		public virtual global::Neumont.Tools.ORM.ObjectModel.FactType FactType
+		public virtual global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType FactType
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (global::Neumont.Tools.ORM.ObjectModel.FactType)DslModeling::DomainRoleInfo.GetRolePlayer(this, FactTypeDomainRoleId);
+				return (global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType)DslModeling::DomainRoleInfo.GetRolePlayer(this, FactTypeDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -137,9 +138,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.ObjectModel.FactType GetFactType(global::Neumont.Tools.ORM.ObjectModel.RoleBase element)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType GetFactType(global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleBase element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, TowardsRoleDomainRoleId) as global::Neumont.Tools.ORM.ObjectModel.FactType;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, TowardsRoleDomainRoleId) as global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType;
 		}
 		
 		/// <summary>
@@ -147,7 +148,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetFactType(global::Neumont.Tools.ORM.ObjectModel.RoleBase element, global::Neumont.Tools.ORM.ObjectModel.FactType newFactType)
+		public static void SetFactType(global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleBase element, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType newFactType)
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, TowardsRoleDomainRoleId, newFactType);
 		}
@@ -162,18 +163,18 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// <summary>
 		/// DomainRole TowardsRole
 		/// Description for
-		/// Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole.TowardsRole
+		/// ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole.TowardsRole
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/TowardsRole.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/TowardsRole.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FactType", PropertyDisplayNameKey="Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/TowardsRole.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/TowardsRole.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/TowardsRole.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FactType", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/TowardsRole.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("89ebc0d2-380d-4434-9e1e-f5e9c6b7eb16")]
-		public virtual global::Neumont.Tools.ORM.ObjectModel.RoleBase TowardsRole
+		public virtual global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleBase TowardsRole
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (global::Neumont.Tools.ORM.ObjectModel.RoleBase)DslModeling::DomainRoleInfo.GetRolePlayer(this, TowardsRoleDomainRoleId);
+				return (global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleBase)DslModeling::DomainRoleInfo.GetRolePlayer(this, TowardsRoleDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -189,9 +190,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.ObjectModel.RoleBase GetTowardsRole(global::Neumont.Tools.ORM.ObjectModel.FactType element)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleBase GetTowardsRole(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, FactTypeDomainRoleId) as global::Neumont.Tools.ORM.ObjectModel.RoleBase;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, FactTypeDomainRoleId) as global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleBase;
 		}
 		
 		/// <summary>
@@ -199,7 +200,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetTowardsRole(global::Neumont.Tools.ORM.ObjectModel.FactType element, global::Neumont.Tools.ORM.ObjectModel.RoleBase newTowardsRole)
+		public static void SetTowardsRole(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType element, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleBase newTowardsRole)
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, FactTypeDomainRoleId, newTowardsRole);
 		}
@@ -219,10 +220,10 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// <summary>
 		/// Gets or sets the value of Depth domain property.
 		/// Description for
-		/// Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole.Depth
+		/// ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole.Depth
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/Depth.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/Depth.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/Depth.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/Depth.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 		[DslModeling::DomainObjectId("720b9285-cc59-48e2-8b33-d9944a9ed400")]
 		public MappingDepth Depth
 		{
@@ -302,16 +303,16 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// <summary>
 		/// Storage for UniquenessPattern
 		/// </summary>
-		private MappingUniquenessPattern uniquenessPatternPropertyStorage = Neumont.Tools.ORMToORMAbstractionBridge.MappingUniquenessPattern.None;
+		private MappingUniquenessPattern uniquenessPatternPropertyStorage = ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.MappingUniquenessPattern.None;
 		
 		/// <summary>
 		/// Gets or sets the value of UniquenessPattern domain property.
 		/// Description for
-		/// Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole.UniquenessPattern
+		/// ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole.UniquenessPattern
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/UniquenessPattern.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/UniquenessPattern.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[global::System.ComponentModel.DefaultValue(Neumont.Tools.ORMToORMAbstractionBridge.MappingUniquenessPattern.None)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/UniquenessPattern.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/UniquenessPattern.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.MappingUniquenessPattern.None)]
 		[DslModeling::DomainObjectId("8789b1d0-9be1-4c7a-b63b-d8d431af5a47")]
 		public MappingUniquenessPattern UniquenessPattern
 		{
@@ -391,16 +392,16 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// <summary>
 		/// Storage for MandatoryPattern
 		/// </summary>
-		private MappingMandatoryPattern mandatoryPatternPropertyStorage = Neumont.Tools.ORMToORMAbstractionBridge.MappingMandatoryPattern.None;
+		private MappingMandatoryPattern mandatoryPatternPropertyStorage = ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.MappingMandatoryPattern.None;
 		
 		/// <summary>
 		/// Gets or sets the value of MandatoryPattern domain property.
 		/// Description for
-		/// Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole.MandatoryPattern
+		/// ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole.MandatoryPattern
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/MandatoryPattern.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/MandatoryPattern.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[global::System.ComponentModel.DefaultValue(Neumont.Tools.ORMToORMAbstractionBridge.MappingMandatoryPattern.None)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/MandatoryPattern.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole/MandatoryPattern.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.MappingMandatoryPattern.None)]
 		[DslModeling::DomainObjectId("1bee0f25-5e38-4c51-8744-1bcb5feb20cc")]
 		public MappingMandatoryPattern MandatoryPattern
 		{
@@ -476,9 +477,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole GetLinkToTowardsRole (global::Neumont.Tools.ORM.ObjectModel.FactType factTypeInstance)
+		public static global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole GetLinkToTowardsRole (global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType factTypeInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole>(factTypeInstance, global::Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole.FactTypeDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole>(factTypeInstance, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole.FactTypeDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of FactType not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -496,9 +497,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole GetLinkToFactType (global::Neumont.Tools.ORM.ObjectModel.RoleBase towardsRoleInstance)
+		public static global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole GetLinkToFactType (global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleBase towardsRoleInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole>(towardsRoleInstance, global::Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole.TowardsRoleDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole>(towardsRoleInstance, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole.TowardsRoleDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of TowardsRole not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -517,11 +518,11 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole> GetLinks( global::Neumont.Tools.ORM.ObjectModel.FactType source, global::Neumont.Tools.ORM.ObjectModel.RoleBase target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleBase target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole>(source, global::Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole.FactTypeDomainRoleId);
-			foreach ( global::Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole>(source, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole.FactTypeDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole link in links )
 			{
 				if ( target.Equals(link.TowardsRole) )
 				{
@@ -535,10 +536,10 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole GetLink( global::Neumont.Tools.ORM.ObjectModel.FactType source, global::Neumont.Tools.ORM.ObjectModel.RoleBase target )
+		public static global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleBase target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole>(source, global::Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole.FactTypeDomainRoleId);
-			foreach ( global::Neumont.Tools.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole>(source, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole.FactTypeDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.FactTypeMapsTowardsRole link in links )
 			{
 				if ( target.Equals(link.TowardsRole) )
 				{
@@ -551,15 +552,15 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORMToORMAbstractionBridge
+namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 {
 	/// <summary>
 	/// DomainRelationship AbstractionModelIsForORMModel
 	/// Description for
-	/// Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel
+	/// ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("02969205-dc37-4d83-acf2-506a6a3fe02c")]
@@ -579,7 +580,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		/// <param name="source">AbstractionModel to use as the source of the relationship.</param>
 		/// <param name="target">ORMModel to use as the target of the relationship.</param>
-		public AbstractionModelIsForORMModel(global::Neumont.Tools.ORMAbstraction.AbstractionModel source, global::Neumont.Tools.ORM.ObjectModel.ORMModel target)
+		public AbstractionModelIsForORMModel(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel target)
 			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(AbstractionModelIsForORMModel.AbstractionModelDomainRoleId, source), new DslModeling::RoleAssignment(AbstractionModelIsForORMModel.ORMModelDomainRoleId, target)}, null)
 		{
 		}
@@ -636,18 +637,18 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// <summary>
 		/// DomainRole AbstractionModel
 		/// Description for
-		/// Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.AbstractionModel
+		/// ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.AbstractionModel
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel/AbstractionModel.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel/AbstractionModel.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ORMModel", PropertyDisplayNameKey="Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel/AbstractionModel.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel/AbstractionModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel/AbstractionModel.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ORMModel", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel/AbstractionModel.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("fdb675b5-bfe3-4c5c-8b22-c5cfb0333811")]
-		public virtual global::Neumont.Tools.ORMAbstraction.AbstractionModel AbstractionModel
+		public virtual global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel AbstractionModel
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (global::Neumont.Tools.ORMAbstraction.AbstractionModel)DslModeling::DomainRoleInfo.GetRolePlayer(this, AbstractionModelDomainRoleId);
+				return (global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel)DslModeling::DomainRoleInfo.GetRolePlayer(this, AbstractionModelDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -663,9 +664,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMAbstraction.AbstractionModel GetAbstractionModel(global::Neumont.Tools.ORM.ObjectModel.ORMModel element)
+		public static global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel GetAbstractionModel(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ORMModelDomainRoleId) as global::Neumont.Tools.ORMAbstraction.AbstractionModel;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ORMModelDomainRoleId) as global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel;
 		}
 		
 		/// <summary>
@@ -673,7 +674,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetAbstractionModel(global::Neumont.Tools.ORM.ObjectModel.ORMModel element, global::Neumont.Tools.ORMAbstraction.AbstractionModel newAbstractionModel)
+		public static void SetAbstractionModel(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel element, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel newAbstractionModel)
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ORMModelDomainRoleId, newAbstractionModel);
 		}
@@ -688,18 +689,18 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// <summary>
 		/// DomainRole ORMModel
 		/// Description for
-		/// Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMModel
+		/// ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMModel
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel/ORMModel.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel/ORMModel.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "AbstractionModel", PropertyDisplayNameKey="Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel/ORMModel.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel/ORMModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel/ORMModel.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "AbstractionModel", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel/ORMModel.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("5021fd0a-c82f-4319-ac52-f99bdf7b9882")]
-		public virtual global::Neumont.Tools.ORM.ObjectModel.ORMModel ORMModel
+		public virtual global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel ORMModel
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (global::Neumont.Tools.ORM.ObjectModel.ORMModel)DslModeling::DomainRoleInfo.GetRolePlayer(this, ORMModelDomainRoleId);
+				return (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel)DslModeling::DomainRoleInfo.GetRolePlayer(this, ORMModelDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -715,9 +716,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.ObjectModel.ORMModel GetORMModel(global::Neumont.Tools.ORMAbstraction.AbstractionModel element)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel GetORMModel(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, AbstractionModelDomainRoleId) as global::Neumont.Tools.ORM.ObjectModel.ORMModel;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, AbstractionModelDomainRoleId) as global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel;
 		}
 		
 		/// <summary>
@@ -725,7 +726,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetORMModel(global::Neumont.Tools.ORMAbstraction.AbstractionModel element, global::Neumont.Tools.ORM.ObjectModel.ORMModel newORMModel)
+		public static void SetORMModel(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel element, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel newORMModel)
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, AbstractionModelDomainRoleId, newORMModel);
 		}
@@ -736,9 +737,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel GetLinkToORMModel (global::Neumont.Tools.ORMAbstraction.AbstractionModel abstractionModelInstance)
+		public static global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel GetLinkToORMModel (global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel abstractionModelInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel>(abstractionModelInstance, global::Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.AbstractionModelDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel>(abstractionModelInstance, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.AbstractionModelDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of AbstractionModel not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -756,9 +757,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel GetLinkToAbstractionModel (global::Neumont.Tools.ORM.ObjectModel.ORMModel oRMModelInstance)
+		public static global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel GetLinkToAbstractionModel (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel oRMModelInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel>(oRMModelInstance, global::Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMModelDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel>(oRMModelInstance, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMModelDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ORMModel not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -777,11 +778,11 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel> GetLinks( global::Neumont.Tools.ORMAbstraction.AbstractionModel source, global::Neumont.Tools.ORM.ObjectModel.ORMModel target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel> GetLinks( global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel>(source, global::Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.AbstractionModelDomainRoleId);
-			foreach ( global::Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel>(source, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.AbstractionModelDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel link in links )
 			{
 				if ( target.Equals(link.ORMModel) )
 				{
@@ -795,10 +796,10 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel GetLink( global::Neumont.Tools.ORMAbstraction.AbstractionModel source, global::Neumont.Tools.ORM.ObjectModel.ORMModel target )
+		public static global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel GetLink( global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel>(source, global::Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.AbstractionModelDomainRoleId);
-			foreach ( global::Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel>(source, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.AbstractionModelDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel link in links )
 			{
 				if ( target.Equals(link.ORMModel) )
 				{
@@ -811,15 +812,15 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORMToORMAbstractionBridge
+namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 {
 	/// <summary>
 	/// DomainRelationship ConceptTypeIsForObjectType
 	/// Description for
-	/// Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType
+	/// ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("494ee309-435b-4dd1-b2dd-c7e794f768db")]
@@ -839,7 +840,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		/// <param name="source">ConceptType to use as the source of the relationship.</param>
 		/// <param name="target">ObjectType to use as the target of the relationship.</param>
-		public ConceptTypeIsForObjectType(global::Neumont.Tools.ORMAbstraction.ConceptType source, global::Neumont.Tools.ORM.ObjectModel.ObjectType target)
+		public ConceptTypeIsForObjectType(global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType target)
 			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ConceptTypeIsForObjectType.ConceptTypeDomainRoleId, source), new DslModeling::RoleAssignment(ConceptTypeIsForObjectType.ObjectTypeDomainRoleId, target)}, null)
 		{
 		}
@@ -896,18 +897,18 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// <summary>
 		/// DomainRole ConceptType
 		/// Description for
-		/// Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType.ConceptType
+		/// ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType.ConceptType
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType/ConceptType.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType/ConceptType.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ObjectType", PropertyDisplayNameKey="Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType/ConceptType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType/ConceptType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType/ConceptType.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ObjectType", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType/ConceptType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("ee5f768c-b308-480e-a444-f86f81b02f46")]
-		public virtual global::Neumont.Tools.ORMAbstraction.ConceptType ConceptType
+		public virtual global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType ConceptType
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (global::Neumont.Tools.ORMAbstraction.ConceptType)DslModeling::DomainRoleInfo.GetRolePlayer(this, ConceptTypeDomainRoleId);
+				return (global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)DslModeling::DomainRoleInfo.GetRolePlayer(this, ConceptTypeDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -923,9 +924,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMAbstraction.ConceptType GetConceptType(global::Neumont.Tools.ORM.ObjectModel.ObjectType element)
+		public static global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType GetConceptType(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectTypeDomainRoleId) as global::Neumont.Tools.ORMAbstraction.ConceptType;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectTypeDomainRoleId) as global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType;
 		}
 		
 		/// <summary>
@@ -933,7 +934,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetConceptType(global::Neumont.Tools.ORM.ObjectModel.ObjectType element, global::Neumont.Tools.ORMAbstraction.ConceptType newConceptType)
+		public static void SetConceptType(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType element, global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType newConceptType)
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectTypeDomainRoleId, newConceptType);
 		}
@@ -948,18 +949,18 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// <summary>
 		/// DomainRole ObjectType
 		/// Description for
-		/// Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType.ObjectType
+		/// ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType.ObjectType
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType/ObjectType.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType/ObjectType.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ConceptType", PropertyDisplayNameKey="Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType/ObjectType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType/ObjectType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType/ObjectType.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ConceptType", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType/ObjectType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("02c44e70-f770-42a3-80e8-c2339a49687c")]
-		public virtual global::Neumont.Tools.ORM.ObjectModel.ObjectType ObjectType
+		public virtual global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType ObjectType
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (global::Neumont.Tools.ORM.ObjectModel.ObjectType)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectTypeDomainRoleId);
+				return (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectTypeDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -975,9 +976,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.ObjectModel.ObjectType GetObjectType(global::Neumont.Tools.ORMAbstraction.ConceptType element)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType GetObjectType(global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ConceptTypeDomainRoleId) as global::Neumont.Tools.ORM.ObjectModel.ObjectType;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ConceptTypeDomainRoleId) as global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType;
 		}
 		
 		/// <summary>
@@ -985,7 +986,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetObjectType(global::Neumont.Tools.ORMAbstraction.ConceptType element, global::Neumont.Tools.ORM.ObjectModel.ObjectType newObjectType)
+		public static void SetObjectType(global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType element, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType newObjectType)
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ConceptTypeDomainRoleId, newObjectType);
 		}
@@ -996,9 +997,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType GetLinkToObjectType (global::Neumont.Tools.ORMAbstraction.ConceptType conceptTypeInstance)
+		public static global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType GetLinkToObjectType (global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType conceptTypeInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType>(conceptTypeInstance, global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType.ConceptTypeDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType>(conceptTypeInstance, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType.ConceptTypeDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ConceptType not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -1016,9 +1017,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType GetLinkToConceptType (global::Neumont.Tools.ORM.ObjectModel.ObjectType objectTypeInstance)
+		public static global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType GetLinkToConceptType (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType objectTypeInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType>(objectTypeInstance, global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType.ObjectTypeDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType>(objectTypeInstance, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType.ObjectTypeDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ObjectType not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -1037,11 +1038,11 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType> GetLinks( global::Neumont.Tools.ORMAbstraction.ConceptType source, global::Neumont.Tools.ORM.ObjectModel.ObjectType target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType> GetLinks( global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType>(source, global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType.ConceptTypeDomainRoleId);
-			foreach ( global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType>(source, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType.ConceptTypeDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType link in links )
 			{
 				if ( target.Equals(link.ObjectType) )
 				{
@@ -1055,10 +1056,10 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType GetLink( global::Neumont.Tools.ORMAbstraction.ConceptType source, global::Neumont.Tools.ORM.ObjectModel.ObjectType target )
+		public static global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType GetLink( global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType>(source, global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType.ConceptTypeDomainRoleId);
-			foreach ( global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType>(source, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType.ConceptTypeDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType link in links )
 			{
 				if ( target.Equals(link.ObjectType) )
 				{
@@ -1071,15 +1072,15 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORMToORMAbstractionBridge
+namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 {
 	/// <summary>
 	/// DomainRelationship ConceptTypeChildHasPathFactType
 	/// Description for
-	/// Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType
+	/// ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("a7d4ff78-1217-41c4-9c63-559ffbf2af4b")]
@@ -1099,7 +1100,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		/// <param name="source">ConceptTypeChild to use as the source of the relationship.</param>
 		/// <param name="target">FactType to use as the target of the relationship.</param>
-		public ConceptTypeChildHasPathFactType(global::Neumont.Tools.ORMAbstraction.ConceptTypeChild source, global::Neumont.Tools.ORM.ObjectModel.FactType target)
+		public ConceptTypeChildHasPathFactType(global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType target)
 			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ConceptTypeChildHasPathFactType.ConceptTypeChildDomainRoleId, source), new DslModeling::RoleAssignment(ConceptTypeChildHasPathFactType.PathFactTypeDomainRoleId, target)}, null)
 		{
 		}
@@ -1156,18 +1157,18 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// <summary>
 		/// DomainRole ConceptTypeChild
 		/// Description for
-		/// Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType.ConceptTypeChild
+		/// ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType.ConceptTypeChild
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType/ConceptTypeChild.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType/ConceptTypeChild.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "PathFactTypeCollection", PropertyDisplayNameKey="Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType/ConceptTypeChild.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType/ConceptTypeChild.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType/ConceptTypeChild.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "PathFactTypeCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType/ConceptTypeChild.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
 		[DslModeling::DomainObjectId("309ecb8e-8840-48fb-9591-ef74cc1b805c")]
-		public virtual global::Neumont.Tools.ORMAbstraction.ConceptTypeChild ConceptTypeChild
+		public virtual global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild ConceptTypeChild
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (global::Neumont.Tools.ORMAbstraction.ConceptTypeChild)DslModeling::DomainRoleInfo.GetRolePlayer(this, ConceptTypeChildDomainRoleId);
+				return (global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild)DslModeling::DomainRoleInfo.GetRolePlayer(this, ConceptTypeChildDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -1183,9 +1184,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<global::Neumont.Tools.ORMAbstraction.ConceptTypeChild> GetConceptTypeChild(global::Neumont.Tools.ORM.ObjectModel.FactType element)
+		public static DslModeling::LinkedElementCollection<global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild> GetConceptTypeChild(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType element)
 		{
-			return new DslModeling::LinkedElementCollection<global::Neumont.Tools.ORMAbstraction.ConceptTypeChild>(element, PathFactTypeDomainRoleId);
+			return new DslModeling::LinkedElementCollection<global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild>(element, PathFactTypeDomainRoleId);
 		}
 		#endregion
 		#region PathFactType domain role code
@@ -1198,18 +1199,18 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// <summary>
 		/// DomainRole PathFactType
 		/// Description for
-		/// Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType.PathFactType
+		/// ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType.PathFactType
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType/PathFactType.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType/PathFactType.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ConceptTypeChild", PropertyDisplayNameKey="Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType/PathFactType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType/PathFactType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType/PathFactType.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ConceptTypeChild", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType/PathFactType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("a8ead929-e0a5-4dc3-8284-0813173be908")]
-		public virtual global::Neumont.Tools.ORM.ObjectModel.FactType PathFactType
+		public virtual global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType PathFactType
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (global::Neumont.Tools.ORM.ObjectModel.FactType)DslModeling::DomainRoleInfo.GetRolePlayer(this, PathFactTypeDomainRoleId);
+				return (global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType)DslModeling::DomainRoleInfo.GetRolePlayer(this, PathFactTypeDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -1225,9 +1226,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<global::Neumont.Tools.ORM.ObjectModel.FactType> GetPathFactTypeCollection(global::Neumont.Tools.ORMAbstraction.ConceptTypeChild element)
+		public static DslModeling::LinkedElementCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType> GetPathFactTypeCollection(global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild element)
 		{
-			return new DslModeling::LinkedElementCollection<global::Neumont.Tools.ORM.ObjectModel.FactType>(element, ConceptTypeChildDomainRoleId);
+			return new DslModeling::LinkedElementCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType>(element, ConceptTypeChildDomainRoleId);
 		}
 		#endregion
 		#region ConceptTypeChild link accessor
@@ -1236,9 +1237,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType> GetLinksToPathFactTypeCollection ( global::Neumont.Tools.ORMAbstraction.ConceptTypeChild conceptTypeChildInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType> GetLinksToPathFactTypeCollection ( global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild conceptTypeChildInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType>(conceptTypeChildInstance, global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType.ConceptTypeChildDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType>(conceptTypeChildInstance, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType.ConceptTypeChildDomainRoleId);
 		}
 		#endregion
 		#region PathFactType link accessor
@@ -1247,9 +1248,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType> GetLinksToConceptTypeChild ( global::Neumont.Tools.ORM.ObjectModel.FactType pathFactTypeInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType> GetLinksToConceptTypeChild ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType pathFactTypeInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType>(pathFactTypeInstance, global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType.PathFactTypeDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType>(pathFactTypeInstance, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType.PathFactTypeDomainRoleId);
 		}
 		#endregion
 		#region ConceptTypeChildHasPathFactType instance accessors
@@ -1259,11 +1260,11 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType> GetLinks( global::Neumont.Tools.ORMAbstraction.ConceptTypeChild source, global::Neumont.Tools.ORM.ObjectModel.FactType target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType> GetLinks( global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType>(source, global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType.ConceptTypeChildDomainRoleId);
-			foreach ( global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType>(source, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType.ConceptTypeChildDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType link in links )
 			{
 				if ( target.Equals(link.PathFactType) )
 				{
@@ -1277,10 +1278,10 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType GetLink( global::Neumont.Tools.ORMAbstraction.ConceptTypeChild source, global::Neumont.Tools.ORM.ObjectModel.FactType target )
+		public static global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType GetLink( global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType>(source, global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType.ConceptTypeChildDomainRoleId);
-			foreach ( global::Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType>(source, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType.ConceptTypeChildDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeChildHasPathFactType link in links )
 			{
 				if ( target.Equals(link.PathFactType) )
 				{
@@ -1293,15 +1294,15 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORMToORMAbstractionBridge
+namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 {
 	/// <summary>
 	/// DomainRelationship InformationTypeFormatIsForValueType
 	/// Description for
-	/// Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType
+	/// ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("fb9fcda4-030c-4f2f-8201-5287f79c25af")]
@@ -1321,7 +1322,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		/// <param name="source">InformationTypeFormat to use as the source of the relationship.</param>
 		/// <param name="target">ObjectType to use as the target of the relationship.</param>
-		public InformationTypeFormatIsForValueType(global::Neumont.Tools.ORMAbstraction.InformationTypeFormat source, global::Neumont.Tools.ORM.ObjectModel.ObjectType target)
+		public InformationTypeFormatIsForValueType(global::ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType target)
 			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(InformationTypeFormatIsForValueType.InformationTypeFormatDomainRoleId, source), new DslModeling::RoleAssignment(InformationTypeFormatIsForValueType.ValueTypeDomainRoleId, target)}, null)
 		{
 		}
@@ -1378,18 +1379,18 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// <summary>
 		/// DomainRole InformationTypeFormat
 		/// Description for
-		/// Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType.InformationTypeFormat
+		/// ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType.InformationTypeFormat
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType/InformationTypeFormat.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType/InformationTypeFormat.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ValueType", PropertyDisplayNameKey="Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType/InformationTypeFormat.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType/InformationTypeFormat.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType/InformationTypeFormat.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ValueType", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType/InformationTypeFormat.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("e7453c11-962f-4d37-9e69-f01e83810cc8")]
-		public virtual global::Neumont.Tools.ORMAbstraction.InformationTypeFormat InformationTypeFormat
+		public virtual global::ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat InformationTypeFormat
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (global::Neumont.Tools.ORMAbstraction.InformationTypeFormat)DslModeling::DomainRoleInfo.GetRolePlayer(this, InformationTypeFormatDomainRoleId);
+				return (global::ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat)DslModeling::DomainRoleInfo.GetRolePlayer(this, InformationTypeFormatDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -1405,9 +1406,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMAbstraction.InformationTypeFormat GetInformationTypeFormat(global::Neumont.Tools.ORM.ObjectModel.ObjectType element)
+		public static global::ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat GetInformationTypeFormat(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ValueTypeDomainRoleId) as global::Neumont.Tools.ORMAbstraction.InformationTypeFormat;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ValueTypeDomainRoleId) as global::ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat;
 		}
 		
 		/// <summary>
@@ -1415,7 +1416,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetInformationTypeFormat(global::Neumont.Tools.ORM.ObjectModel.ObjectType element, global::Neumont.Tools.ORMAbstraction.InformationTypeFormat newInformationTypeFormat)
+		public static void SetInformationTypeFormat(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType element, global::ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat newInformationTypeFormat)
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ValueTypeDomainRoleId, newInformationTypeFormat);
 		}
@@ -1430,18 +1431,18 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// <summary>
 		/// DomainRole ValueType
 		/// Description for
-		/// Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType.ValueType
+		/// ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType.ValueType
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType/ValueType.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType/ValueType.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "InformationTypeFormat", PropertyDisplayNameKey="Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType/ValueType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType/ValueType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType/ValueType.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "InformationTypeFormat", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType/ValueType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("ee9cf583-cd1b-4df1-bafb-c4c220b6d685")]
-		public virtual global::Neumont.Tools.ORM.ObjectModel.ObjectType ValueType
+		public virtual global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType ValueType
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (global::Neumont.Tools.ORM.ObjectModel.ObjectType)DslModeling::DomainRoleInfo.GetRolePlayer(this, ValueTypeDomainRoleId);
+				return (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType)DslModeling::DomainRoleInfo.GetRolePlayer(this, ValueTypeDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -1457,9 +1458,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.ObjectModel.ObjectType GetValueType(global::Neumont.Tools.ORMAbstraction.InformationTypeFormat element)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType GetValueType(global::ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, InformationTypeFormatDomainRoleId) as global::Neumont.Tools.ORM.ObjectModel.ObjectType;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, InformationTypeFormatDomainRoleId) as global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType;
 		}
 		
 		/// <summary>
@@ -1467,7 +1468,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetValueType(global::Neumont.Tools.ORMAbstraction.InformationTypeFormat element, global::Neumont.Tools.ORM.ObjectModel.ObjectType newValueType)
+		public static void SetValueType(global::ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat element, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType newValueType)
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, InformationTypeFormatDomainRoleId, newValueType);
 		}
@@ -1478,9 +1479,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType GetLinkToValueType (global::Neumont.Tools.ORMAbstraction.InformationTypeFormat informationTypeFormatInstance)
+		public static global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType GetLinkToValueType (global::ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat informationTypeFormatInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType>(informationTypeFormatInstance, global::Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType.InformationTypeFormatDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType>(informationTypeFormatInstance, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType.InformationTypeFormatDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of InformationTypeFormat not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -1498,9 +1499,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType GetLinkToInformationTypeFormat (global::Neumont.Tools.ORM.ObjectModel.ObjectType valueTypeInstance)
+		public static global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType GetLinkToInformationTypeFormat (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType valueTypeInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType>(valueTypeInstance, global::Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType.ValueTypeDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType>(valueTypeInstance, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType.ValueTypeDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ValueType not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -1519,11 +1520,11 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType> GetLinks( global::Neumont.Tools.ORMAbstraction.InformationTypeFormat source, global::Neumont.Tools.ORM.ObjectModel.ObjectType target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType> GetLinks( global::ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType>(source, global::Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType.InformationTypeFormatDomainRoleId);
-			foreach ( global::Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType>(source, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType.InformationTypeFormatDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType link in links )
 			{
 				if ( target.Equals(link.ValueType) )
 				{
@@ -1537,10 +1538,10 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType GetLink( global::Neumont.Tools.ORMAbstraction.InformationTypeFormat source, global::Neumont.Tools.ORM.ObjectModel.ObjectType target )
+		public static global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType GetLink( global::ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType>(source, global::Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType.InformationTypeFormatDomainRoleId);
-			foreach ( global::Neumont.Tools.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType>(source, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType.InformationTypeFormatDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType link in links )
 			{
 				if ( target.Equals(link.ValueType) )
 				{
@@ -1553,15 +1554,15 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORMToORMAbstractionBridge
+namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 {
 	/// <summary>
 	/// DomainRelationship UniquenessIsForUniquenessConstraint
 	/// Description for
-	/// Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint
+	/// ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("e61822c1-04ee-4ae3-a28e-f45879c8fe41")]
@@ -1581,7 +1582,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		/// <param name="source">Uniqueness to use as the source of the relationship.</param>
 		/// <param name="target">UniquenessConstraint to use as the target of the relationship.</param>
-		public UniquenessIsForUniquenessConstraint(global::Neumont.Tools.ORMAbstraction.Uniqueness source, global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraint target)
+		public UniquenessIsForUniquenessConstraint(global::ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint target)
 			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(UniquenessIsForUniquenessConstraint.UniquenessDomainRoleId, source), new DslModeling::RoleAssignment(UniquenessIsForUniquenessConstraint.UniquenessConstraintDomainRoleId, target)}, null)
 		{
 		}
@@ -1638,18 +1639,18 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// <summary>
 		/// DomainRole Uniqueness
 		/// Description for
-		/// Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint.Uniqueness
+		/// ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint.Uniqueness
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint/Uniqueness.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint/Uniqueness.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "UniquenessConstraint", PropertyDisplayNameKey="Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint/Uniqueness.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint/Uniqueness.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint/Uniqueness.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "UniquenessConstraint", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint/Uniqueness.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("4c49f284-81c1-41e8-8a23-137def1d229f")]
-		public virtual global::Neumont.Tools.ORMAbstraction.Uniqueness Uniqueness
+		public virtual global::ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness Uniqueness
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (global::Neumont.Tools.ORMAbstraction.Uniqueness)DslModeling::DomainRoleInfo.GetRolePlayer(this, UniquenessDomainRoleId);
+				return (global::ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness)DslModeling::DomainRoleInfo.GetRolePlayer(this, UniquenessDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -1665,9 +1666,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMAbstraction.Uniqueness GetUniqueness(global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraint element)
+		public static global::ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness GetUniqueness(global::ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, UniquenessConstraintDomainRoleId) as global::Neumont.Tools.ORMAbstraction.Uniqueness;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, UniquenessConstraintDomainRoleId) as global::ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness;
 		}
 		
 		/// <summary>
@@ -1675,7 +1676,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetUniqueness(global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraint element, global::Neumont.Tools.ORMAbstraction.Uniqueness newUniqueness)
+		public static void SetUniqueness(global::ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint element, global::ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness newUniqueness)
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, UniquenessConstraintDomainRoleId, newUniqueness);
 		}
@@ -1690,18 +1691,18 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// <summary>
 		/// DomainRole UniquenessConstraint
 		/// Description for
-		/// Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint.UniquenessConstraint
+		/// ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint.UniquenessConstraint
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint/UniquenessConstraint.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint/UniquenessConstraint.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Uniqueness", PropertyDisplayNameKey="Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint/UniquenessConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint/UniquenessConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint/UniquenessConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Uniqueness", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint/UniquenessConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("6d7dd635-6b8d-4ea7-a2a5-003ada32afd0")]
-		public virtual global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraint UniquenessConstraint
+		public virtual global::ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint UniquenessConstraint
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, UniquenessConstraintDomainRoleId);
+				return (global::ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, UniquenessConstraintDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -1717,9 +1718,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraint GetUniquenessConstraint(global::Neumont.Tools.ORMAbstraction.Uniqueness element)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint GetUniquenessConstraint(global::ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, UniquenessDomainRoleId) as global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraint;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, UniquenessDomainRoleId) as global::ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint;
 		}
 		
 		/// <summary>
@@ -1727,7 +1728,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetUniquenessConstraint(global::Neumont.Tools.ORMAbstraction.Uniqueness element, global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraint newUniquenessConstraint)
+		public static void SetUniquenessConstraint(global::ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness element, global::ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint newUniquenessConstraint)
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, UniquenessDomainRoleId, newUniquenessConstraint);
 		}
@@ -1738,9 +1739,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint GetLinkToUniquenessConstraint (global::Neumont.Tools.ORMAbstraction.Uniqueness uniquenessInstance)
+		public static global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint GetLinkToUniquenessConstraint (global::ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness uniquenessInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint>(uniquenessInstance, global::Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint.UniquenessDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint>(uniquenessInstance, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint.UniquenessDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Uniqueness not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -1758,9 +1759,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint GetLinkToUniqueness (global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraint uniquenessConstraintInstance)
+		public static global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint GetLinkToUniqueness (global::ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint uniquenessConstraintInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint>(uniquenessConstraintInstance, global::Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint.UniquenessConstraintDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint>(uniquenessConstraintInstance, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint.UniquenessConstraintDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of UniquenessConstraint not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -1779,11 +1780,11 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint> GetLinks( global::Neumont.Tools.ORMAbstraction.Uniqueness source, global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraint target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint> GetLinks( global::ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint>(source, global::Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint.UniquenessDomainRoleId);
-			foreach ( global::Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint>(source, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint.UniquenessDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint link in links )
 			{
 				if ( target.Equals(link.UniquenessConstraint) )
 				{
@@ -1797,10 +1798,10 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint GetLink( global::Neumont.Tools.ORMAbstraction.Uniqueness source, global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraint target )
+		public static global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint GetLink( global::ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint>(source, global::Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint.UniquenessDomainRoleId);
-			foreach ( global::Neumont.Tools.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint>(source, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint.UniquenessDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.UniquenessIsForUniquenessConstraint link in links )
 			{
 				if ( target.Equals(link.UniquenessConstraint) )
 				{
@@ -1813,14 +1814,15 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORMToORMAbstractionBridge
+namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 {
 	/// <summary>
 	/// DomainRelationship ExcludedORMModelElement
-	/// Description for Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement
+	/// Description for
+	/// ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ExcludedORMModelElement
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ExcludedORMModelElement.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ExcludedORMModelElement.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("6a9a8efb-4db5-49a2-8818-d66bed21d590")]
@@ -1840,7 +1842,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		/// <param name="source">ORMModelElement to use as the source of the relationship.</param>
 		/// <param name="target">AbstractionModel to use as the target of the relationship.</param>
-		public ExcludedORMModelElement(global::Neumont.Tools.ORM.ObjectModel.ORMModelElement source, global::Neumont.Tools.ORMAbstraction.AbstractionModel target)
+		public ExcludedORMModelElement(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModelElement source, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel target)
 			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ExcludedORMModelElement.ExcludedElementDomainRoleId, source), new DslModeling::RoleAssignment(ExcludedORMModelElement.AbstractionModelDomainRoleId, target)}, null)
 		{
 		}
@@ -1897,18 +1899,18 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// <summary>
 		/// DomainRole ExcludedElement
 		/// Description for
-		/// Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement.ExcludedElement
+		/// ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ExcludedORMModelElement.ExcludedElement
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement/ExcludedElement.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement/ExcludedElement.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "AbstractionModel", PropertyDisplayNameKey="Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement/ExcludedElement.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ExcludedORMModelElement/ExcludedElement.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ExcludedORMModelElement/ExcludedElement.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "AbstractionModel", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ExcludedORMModelElement/ExcludedElement.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("7dccca8c-9283-4167-9cc2-79caea5da008")]
-		public virtual global::Neumont.Tools.ORM.ObjectModel.ORMModelElement ExcludedElement
+		public virtual global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModelElement ExcludedElement
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (global::Neumont.Tools.ORM.ObjectModel.ORMModelElement)DslModeling::DomainRoleInfo.GetRolePlayer(this, ExcludedElementDomainRoleId);
+				return (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModelElement)DslModeling::DomainRoleInfo.GetRolePlayer(this, ExcludedElementDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -1924,9 +1926,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<global::Neumont.Tools.ORM.ObjectModel.ORMModelElement> GetExcludedElement(global::Neumont.Tools.ORMAbstraction.AbstractionModel element)
+		public static DslModeling::LinkedElementCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModelElement> GetExcludedElement(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel element)
 		{
-			return new DslModeling::LinkedElementCollection<global::Neumont.Tools.ORM.ObjectModel.ORMModelElement>(element, AbstractionModelDomainRoleId);
+			return new DslModeling::LinkedElementCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModelElement>(element, AbstractionModelDomainRoleId);
 		}
 		#endregion
 		#region AbstractionModel domain role code
@@ -1939,18 +1941,18 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// <summary>
 		/// DomainRole AbstractionModel
 		/// Description for
-		/// Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement.AbstractionModel
+		/// ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ExcludedORMModelElement.AbstractionModel
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement/AbstractionModel.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement/AbstractionModel.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ExcludedElement", PropertyDisplayNameKey="Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement/AbstractionModel.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ExcludedORMModelElement/AbstractionModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ExcludedORMModelElement/AbstractionModel.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ExcludedElement", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ExcludedORMModelElement/AbstractionModel.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("afbd0d81-5ef6-4d0e-a4cb-0145f8ea939b")]
-		public virtual global::Neumont.Tools.ORMAbstraction.AbstractionModel AbstractionModel
+		public virtual global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel AbstractionModel
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (global::Neumont.Tools.ORMAbstraction.AbstractionModel)DslModeling::DomainRoleInfo.GetRolePlayer(this, AbstractionModelDomainRoleId);
+				return (global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel)DslModeling::DomainRoleInfo.GetRolePlayer(this, AbstractionModelDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -1966,9 +1968,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMAbstraction.AbstractionModel GetAbstractionModel(global::Neumont.Tools.ORM.ObjectModel.ORMModelElement element)
+		public static global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel GetAbstractionModel(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModelElement element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ExcludedElementDomainRoleId) as global::Neumont.Tools.ORMAbstraction.AbstractionModel;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ExcludedElementDomainRoleId) as global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel;
 		}
 		
 		/// <summary>
@@ -1976,7 +1978,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetAbstractionModel(global::Neumont.Tools.ORM.ObjectModel.ORMModelElement element, global::Neumont.Tools.ORMAbstraction.AbstractionModel newAbstractionModel)
+		public static void SetAbstractionModel(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModelElement element, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel newAbstractionModel)
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ExcludedElementDomainRoleId, newAbstractionModel);
 		}
@@ -1987,9 +1989,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement GetLinkToAbstractionModel (global::Neumont.Tools.ORM.ObjectModel.ORMModelElement excludedElementInstance)
+		public static global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ExcludedORMModelElement GetLinkToAbstractionModel (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModelElement excludedElementInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement>(excludedElementInstance, global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement.ExcludedElementDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ExcludedORMModelElement> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ExcludedORMModelElement>(excludedElementInstance, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ExcludedORMModelElement.ExcludedElementDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ExcludedElement not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -2007,9 +2009,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement> GetLinksToExcludedElement ( global::Neumont.Tools.ORMAbstraction.AbstractionModel abstractionModelInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ExcludedORMModelElement> GetLinksToExcludedElement ( global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel abstractionModelInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement>(abstractionModelInstance, global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement.AbstractionModelDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ExcludedORMModelElement>(abstractionModelInstance, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ExcludedORMModelElement.AbstractionModelDomainRoleId);
 		}
 		#endregion
 		#region ExcludedORMModelElement instance accessors
@@ -2019,11 +2021,11 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ORMModelElement source, global::Neumont.Tools.ORMAbstraction.AbstractionModel target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ExcludedORMModelElement> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModelElement source, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement>(source, global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement.ExcludedElementDomainRoleId);
-			foreach ( global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ExcludedORMModelElement> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ExcludedORMModelElement>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ExcludedORMModelElement> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ExcludedORMModelElement>(source, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ExcludedORMModelElement.ExcludedElementDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ExcludedORMModelElement link in links )
 			{
 				if ( target.Equals(link.AbstractionModel) )
 				{
@@ -2037,10 +2039,10 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement GetLink( global::Neumont.Tools.ORM.ObjectModel.ORMModelElement source, global::Neumont.Tools.ORMAbstraction.AbstractionModel target )
+		public static global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ExcludedORMModelElement GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModelElement source, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement>(source, global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement.ExcludedElementDomainRoleId);
-			foreach ( global::Neumont.Tools.ORMToORMAbstractionBridge.ExcludedORMModelElement link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ExcludedORMModelElement> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ExcludedORMModelElement>(source, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ExcludedORMModelElement.ExcludedElementDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ExcludedORMModelElement link in links )
 			{
 				if ( target.Equals(link.AbstractionModel) )
 				{
@@ -2053,15 +2055,15 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORMToORMAbstractionBridge
+namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 {
 	/// <summary>
 	/// DomainRelationship GenerationSettingTargetsAbstractionModel
 	/// Description for
-	/// Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel
+	/// ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("890c6aaf-a4b8-42a7-bc0e-89beae1b8d7f")]
@@ -2081,7 +2083,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		/// <param name="source">AbstractionModelGenerationSetting to use as the source of the relationship.</param>
 		/// <param name="target">AbstractionModel to use as the target of the relationship.</param>
-		public GenerationSettingTargetsAbstractionModel(AbstractionModelGenerationSetting source, global::Neumont.Tools.ORMAbstraction.AbstractionModel target)
+		public GenerationSettingTargetsAbstractionModel(AbstractionModelGenerationSetting source, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel target)
 			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(GenerationSettingTargetsAbstractionModel.GenerationSettingDomainRoleId, source), new DslModeling::RoleAssignment(GenerationSettingTargetsAbstractionModel.GeneratedAbstractionModelDomainRoleId, target)}, null)
 		{
 		}
@@ -2138,11 +2140,11 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// <summary>
 		/// DomainRole GenerationSetting
 		/// Description for
-		/// Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.GenerationSetting
+		/// ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.GenerationSetting
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel/GenerationSetting.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel/GenerationSetting.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "GeneratedAbstractionModel", PropertyDisplayNameKey="Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel/GenerationSetting.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel/GenerationSetting.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel/GenerationSetting.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "GeneratedAbstractionModel", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel/GenerationSetting.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("6b876d00-4e9a-42e9-b984-03f610fa5227")]
 		public virtual AbstractionModelGenerationSetting GenerationSetting
 		{
@@ -2165,7 +2167,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static AbstractionModelGenerationSetting GetGenerationSetting(global::Neumont.Tools.ORMAbstraction.AbstractionModel element)
+		public static AbstractionModelGenerationSetting GetGenerationSetting(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel element)
 		{
 			return DslModeling::DomainRoleInfo.GetLinkedElement(element, GeneratedAbstractionModelDomainRoleId) as AbstractionModelGenerationSetting;
 		}
@@ -2175,7 +2177,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetGenerationSetting(global::Neumont.Tools.ORMAbstraction.AbstractionModel element, AbstractionModelGenerationSetting newGenerationSetting)
+		public static void SetGenerationSetting(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel element, AbstractionModelGenerationSetting newGenerationSetting)
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, GeneratedAbstractionModelDomainRoleId, newGenerationSetting);
 		}
@@ -2190,18 +2192,18 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// <summary>
 		/// DomainRole GeneratedAbstractionModel
 		/// Description for
-		/// Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.GeneratedAbstractionModel
+		/// ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.GeneratedAbstractionModel
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel/GeneratedAbstractionModel.DisplayName", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel/GeneratedAbstractionModel.Description", typeof(global::Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "Neumont.Tools.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "GenerationSetting", PropertyDisplayNameKey="Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel/GeneratedAbstractionModel.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel/GeneratedAbstractionModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel/GeneratedAbstractionModel.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "GenerationSetting", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel/GeneratedAbstractionModel.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("16f8ffd5-2997-475c-a2aa-61c3b1a62dd2")]
-		public virtual global::Neumont.Tools.ORMAbstraction.AbstractionModel GeneratedAbstractionModel
+		public virtual global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel GeneratedAbstractionModel
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (global::Neumont.Tools.ORMAbstraction.AbstractionModel)DslModeling::DomainRoleInfo.GetRolePlayer(this, GeneratedAbstractionModelDomainRoleId);
+				return (global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel)DslModeling::DomainRoleInfo.GetRolePlayer(this, GeneratedAbstractionModelDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -2217,9 +2219,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMAbstraction.AbstractionModel GetGeneratedAbstractionModel(AbstractionModelGenerationSetting element)
+		public static global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel GetGeneratedAbstractionModel(AbstractionModelGenerationSetting element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, GenerationSettingDomainRoleId) as global::Neumont.Tools.ORMAbstraction.AbstractionModel;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, GenerationSettingDomainRoleId) as global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel;
 		}
 		
 		/// <summary>
@@ -2227,7 +2229,7 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetGeneratedAbstractionModel(AbstractionModelGenerationSetting element, global::Neumont.Tools.ORMAbstraction.AbstractionModel newGeneratedAbstractionModel)
+		public static void SetGeneratedAbstractionModel(AbstractionModelGenerationSetting element, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel newGeneratedAbstractionModel)
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, GenerationSettingDomainRoleId, newGeneratedAbstractionModel);
 		}
@@ -2238,9 +2240,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel GetLinkToGeneratedAbstractionModel (global::Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelGenerationSetting generationSettingInstance)
+		public static global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel GetLinkToGeneratedAbstractionModel (global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelGenerationSetting generationSettingInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel>(generationSettingInstance, global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.GenerationSettingDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel>(generationSettingInstance, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.GenerationSettingDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of GenerationSetting not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -2258,9 +2260,9 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel GetLinkToGenerationSetting (global::Neumont.Tools.ORMAbstraction.AbstractionModel generatedAbstractionModelInstance)
+		public static global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel GetLinkToGenerationSetting (global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel generatedAbstractionModelInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel>(generatedAbstractionModelInstance, global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.GeneratedAbstractionModelDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel>(generatedAbstractionModelInstance, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.GeneratedAbstractionModelDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of GeneratedAbstractionModel not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -2279,11 +2281,11 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel> GetLinks( global::Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelGenerationSetting source, global::Neumont.Tools.ORMAbstraction.AbstractionModel target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel> GetLinks( global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelGenerationSetting source, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel>(source, global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.GenerationSettingDomainRoleId);
-			foreach ( global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel>(source, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.GenerationSettingDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel link in links )
 			{
 				if ( target.Equals(link.GeneratedAbstractionModel) )
 				{
@@ -2297,10 +2299,10 @@ namespace Neumont.Tools.ORMToORMAbstractionBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel GetLink( global::Neumont.Tools.ORMToORMAbstractionBridge.AbstractionModelGenerationSetting source, global::Neumont.Tools.ORMAbstraction.AbstractionModel target )
+		public static global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel GetLink( global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelGenerationSetting source, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel>(source, global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.GenerationSettingDomainRoleId);
-			foreach ( global::Neumont.Tools.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel>(source, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel.GenerationSettingDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GenerationSettingTargetsAbstractionModel link in links )
 			{
 				if ( target.Equals(link.GeneratedAbstractionModel) )
 				{

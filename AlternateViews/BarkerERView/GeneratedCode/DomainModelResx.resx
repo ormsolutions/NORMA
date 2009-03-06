@@ -117,27 +117,27 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Neumont.Tools.ORM.Views.BarkerERView.BarkerERShapeDomainModel.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.Description" xml:space="preserve">
     <value>(Preliminary) Graphical View of Barker ER Model</value>
     <comment>Description for DslLibrary &apos;BarkerERShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.Views.BarkerERView.BarkerERShapeDomainModel.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.DisplayName" xml:space="preserve">
     <value>Barker ER View</value>
     <comment>DisplayName for DslLibrary &apos;BarkerERShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.Views.BarkerERView.BarkerEntityShape.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.Views.BarkerERView.BarkerEntityShape</value>
+  <data name="ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape</value>
     <comment>Description for DomainClass &apos;BarkerEntityShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.Views.BarkerERView.BarkerEntityShape.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape.DisplayName" xml:space="preserve">
     <value>Barker Entity Shape</value>
     <comment>DisplayName for DomainClass &apos;BarkerEntityShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.Views.BarkerERView.BarkerEntityShape/UpdateCounter.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.Views.BarkerERView.BarkerEntityShape.Update Counter</value>
+  <data name="ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape/UpdateCounter.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape.Update Counter</value>
     <comment>Description for DomainProperty &apos;UpdateCounter&apos; on DomainClass &apos;BarkerEntityShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.Views.BarkerERView.BarkerEntityShape/UpdateCounter.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape/UpdateCounter.DisplayName" xml:space="preserve">
     <value>Update Counter</value>
     <comment>DisplayName for DomainProperty &apos;UpdateCounter&apos; on DomainClass &apos;BarkerEntityShape&apos;</comment>
   </data>
@@ -149,11 +149,11 @@
     <value>BarkerEntityNameDecorator</value>
     <comment>Text decorator default text</comment>
   </data>
-  <data name="Neumont.Tools.ORM.Views.BarkerERView.AssociationConnector.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.Views.BarkerERView.AssociationConnector</value>
+  <data name="ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector</value>
     <comment>Description for DomainClass &apos;AssociationConnector&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.Views.BarkerERView.AssociationConnector.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector.DisplayName" xml:space="preserve">
     <value>AssociationConnector</value>
     <comment>DisplayName for DomainClass &apos;AssociationConnector&apos;</comment>
   </data>
@@ -161,11 +161,11 @@
     <value>Barker ER View Explorer</value>
     <comment>Model Explorer Toolwindow title</comment>
   </data>
-  <data name="Neumont.Tools.ORM.Views.BarkerERView.BarkerERDiagram.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.Views.BarkerERView.BarkerERDiagram</value>
+  <data name="ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram</value>
     <comment>Description for DomainClass &apos;BarkerERDiagram&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.Views.BarkerERView.BarkerERDiagram.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.DisplayName" xml:space="preserve">
     <value>Barker ERDiagram</value>
     <comment>DisplayName for DomainClass &apos;BarkerERDiagram&apos;</comment>
   </data>
@@ -265,7 +265,7 @@ A DomainClass can be serialized as a moniker only if
 
 <!-- Common Public License Copyright Notice -->
 <!--
-	Neumont Object-Role Modeling Architect for Visual Studio
+	Natural Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
 

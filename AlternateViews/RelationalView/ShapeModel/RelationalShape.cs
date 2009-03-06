@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -21,15 +21,15 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.Modeling;
-using Neumont.Tools.Modeling.Shell;
-using Neumont.Tools.RelationalModels.ConceptualDatabase;
-using Neumont.Tools.ORMToORMAbstractionBridge;
-using Neumont.Tools.ORMAbstraction;
-using Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Framework.Shell;
+using ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase;
+using ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge;
+using ORMSolutions.ORMArchitect.ORMAbstraction;
+using ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge;
 
-namespace Neumont.Tools.ORM.Views.RelationalView
+namespace ORMSolutions.ORMArchitect.Views.RelationalView
 {
 	/// <summary>
 	/// Represents the framework for the relational schema view of the ORM Diagram.
@@ -42,7 +42,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// </summary>
 		public static readonly object TablePositionDictionaryKey = new object();
 		/// <summary>
-		/// DeletingRule: typeof(Neumont.Tools.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType)
+		/// DeletingRule: typeof(ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType)
 		/// Cache the position of the <see cref="TableShape"/> corresponding to the object type being deleted
 		/// </summary>
 		private static void ConceptTypeDetachingFromObjectTypeRule(ElementDeletingEventArgs e)
@@ -57,7 +57,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			}
 		}
 		/// <summary>
-		/// DeletingRule: typeof(Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType)
+		/// DeletingRule: typeof(ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType)
 		/// Cache the position of the <see cref="TableShape"/> corresponding to the object type being deleted
 		/// </summary>
 		private static void ConceptTypeDetachingFromTableRule(ElementDeletingEventArgs e)

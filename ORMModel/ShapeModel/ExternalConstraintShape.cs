@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -24,11 +24,11 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.Shell;
-using Neumont.Tools.Modeling;
-using Neumont.Tools.Modeling.Diagrams;
-namespace Neumont.Tools.ORM.ShapeModel
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.Shell;
+using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Framework.Diagrams;
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	public partial class ExternalConstraintShape : IStickyObject, IModelErrorActivation, IDynamicColorGeometryHost, IDynamicColorAlsoUsedBy
 	{
@@ -36,7 +36,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// A brush used to draw portions of mandatory constraints
 		/// </summary>
-		protected static readonly StyleSetResourceId ExternalConstraintBrush = new StyleSetResourceId("Neumont", "ExternalConstraintBrush");
+		protected static readonly StyleSetResourceId ExternalConstraintBrush = new StyleSetResourceId("ORMArchitect", "ExternalConstraintBrush");
 		/// <summary>
 		/// A style set used for drawing deontic constraints
 		/// </summary>
@@ -837,7 +837,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // Store Event Handlers
 		#region ExclusiveOrCoupler rules
 		/// <summary>
-		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusiveOrConstraintCoupler), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
 		/// Remove shapes associated with the exclusion constraint
 		/// when exclusion and mandatory constraints are coupled.
 		/// </summary>
@@ -868,7 +868,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.ExclusiveOrConstraintCoupler), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusiveOrConstraintCoupler), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
 		/// Split a single shape into two shapes when a exclusion constraint
 		/// is decoupled from a mandatory constraint
 		/// </summary>
@@ -901,7 +901,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // ExclusiveOrCoupler rules
 		#region PreferredIdentifier Shape Redraw rules
 		/// <summary>
-		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
 		/// </summary>
 		private static void PreferredIdentifierAddRule(ElementAddedEventArgs e)
 		{
@@ -946,14 +946,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// DeleteRule: typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
 		/// </summary>
 		private static void PreferredIdentifierDeleteRule(ElementDeletedEventArgs e)
 		{
 			ProcessPreferredIdentifier(e.ModelElement as EntityTypeHasPreferredIdentifier, null);
 		}
 		/// <summary>
-		/// RolePlayerChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// RolePlayerChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
 		/// </summary>
 		private static void PreferredIdentifierRolePlayerChangeRule(RolePlayerChangedEventArgs e)
 		{

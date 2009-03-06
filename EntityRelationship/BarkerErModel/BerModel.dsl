@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
-	Neumont Object-Role Modeling Architect for Visual Studio
+	Natural Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
 
@@ -17,13 +17,13 @@
 	xmlns="http://schemas.microsoft.com/VisualStudio/2005/DslTools/DslDefinitionModel"
 	PackageGuid="EFDDC549-1646-4451-8A51-E5A5E94D647C"
 	Id="B2CAED8E-4155-4317-9405-55006FDE280E"
-	Namespace="Neumont.Tools.EntityRelationshipModels.Barker"
-	PackageNamespace="Neumont.Tools.RelationalModels"
+	Namespace="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker"
+	PackageNamespace="ORMSolutions.ORMArchitect.EntityRelationshipModels"
 	Name="Barker"
 	DisplayName="Barker ER"
 	Description="Barker Entity Relationship View of ORM Model"
-	CompanyName="Neumont University"
-	ProductName="Neumont ORM Architect for Visual Studio"
+	CompanyName="ORM Solutions, LLC"
+	ProductName="Natural Object-Role Modeling Architect for Visual Studio"
 	MajorVersion="1" MinorVersion="0" Build="0" Revision="0">
 
 	<Attributes>
@@ -31,22 +31,22 @@
 		LoadPriority attribute to enable these to be explicitly controlled. -->
 		<ClrAttribute Name="DslModeling::ExtendsDomainModel">
 			<Parameters>
-				<AttributeParameter Value="&quot;1F394F03-8A41-48BC-BDED-2268E131B4A3&quot;/*Neumont.Tools.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel*/"/>
+				<AttributeParameter Value="&quot;1F394F03-8A41-48BC-BDED-2268E131B4A3&quot;/*ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel*/"/>
 			</Parameters>
 		</ClrAttribute>
 	</Attributes>
 
 	<Classes>
-		<DomainClass Id="F8F5677E-5632-4A48-BF24-18F4D32DB589" Namespace="Neumont.Tools.EntityRelationshipModels.Barker" Name="BarkerModelElement" InheritanceModifier="Abstract" Description="Base class for ConceptualData &lt;see cref='DslModeling::ModelElement'/>s.">
+		<DomainClass Id="F8F5677E-5632-4A48-BF24-18F4D32DB589" Namespace="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker" Name="BarkerModelElement" InheritanceModifier="Abstract" Description="Base class for ConceptualData &lt;see cref='DslModeling::ModelElement'/>s.">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;BarkerModelElement, Design.BarkerModelElementTypeDescriptor&lt;BarkerModelElement&gt;&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;BarkerModelElement, Design.BarkerModelElementTypeDescriptor&lt;BarkerModelElement&gt;&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
 		</DomainClass>
-		<DomainClass Id="4AA67E55-0269-49B9-A580-62AE22EDDDED" Namespace="Neumont.Tools.EntityRelationshipModels.Barker" Name="EntityType">
+		<DomainClass Id="4AA67E55-0269-49B9-A580-62AE22EDDDED" Namespace="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker" Name="EntityType">
 			<BaseClass>
 				<DomainClassMoniker Name="BarkerModelElement"/>
 			</BaseClass>
@@ -65,7 +65,7 @@
 				</DomainProperty>
 			</Properties>
 		</DomainClass>
-		<DomainClass Id="2A1C3209-1E17-4E6F-8B2D-2BD051610A29" Namespace="Neumont.Tools.EntityRelationshipModels.Barker" Name="Attribute">
+		<DomainClass Id="2A1C3209-1E17-4E6F-8B2D-2BD051610A29" Namespace="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker" Name="Attribute">
 			<BaseClass>
 				<DomainClassMoniker Name="BarkerModelElement"/>
 			</BaseClass>
@@ -110,7 +110,7 @@
 				</DomainProperty>
 			</Properties>
 		</DomainClass>
-		<DomainClass Id="B34CDD9E-F23C-4190-9194-4260F4DD9A59" Namespace="Neumont.Tools.EntityRelationshipModels.Barker" Name="Value">
+		<DomainClass Id="B34CDD9E-F23C-4190-9194-4260F4DD9A59" Namespace="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker" Name="Value">
 			<BaseClass>
 				<DomainClassMoniker Name="BarkerModelElement"/>
 			</BaseClass>
@@ -129,7 +129,7 @@
 				</DomainProperty>
 			</Properties>
 		</DomainClass>
-		<DomainClass Id="6E5B3828-8A31-4210-B288-6FF1D858686E" Namespace="Neumont.Tools.EntityRelationshipModels.Barker" Name="Role">
+		<DomainClass Id="6E5B3828-8A31-4210-B288-6FF1D858686E" Namespace="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker" Name="Role">
 			<BaseClass>
 				<DomainClassMoniker Name="BarkerModelElement"/>
 			</BaseClass>
@@ -208,7 +208,7 @@
 				</DomainProperty>
 			</Properties>
 		</DomainClass>
-		<DomainClass Id="80EF7F9F-B60A-4929-8D99-6BD734F91056" Namespace="Neumont.Tools.EntityRelationshipModels.Barker" Name="CardinalityQualifier">
+		<DomainClass Id="80EF7F9F-B60A-4929-8D99-6BD734F91056" Namespace="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker" Name="CardinalityQualifier">
 			<BaseClass>
 				<DomainClassMoniker Name="BarkerModelElement"/>
 			</BaseClass>
@@ -234,17 +234,17 @@
 						</ClrAttribute>
 					</Attributes>
 					<Type>
-						<DomainEnumerationMoniker Name="/Neumont.Tools.EntityRelationshipModels.Barker/OperatorSymbol"/>
+						<DomainEnumerationMoniker Name="/ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker/OperatorSymbol"/>
 					</Type>
 				</DomainProperty>
 			</Properties>
 		</DomainClass>
-		<DomainClass Id="958EDC63-93F3-40B2-818D-DC2C764E4DFB" Namespace="Neumont.Tools.EntityRelationshipModels.Barker" Name="OptionalRole">
+		<DomainClass Id="958EDC63-93F3-40B2-818D-DC2C764E4DFB" Namespace="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker" Name="OptionalRole">
 			<BaseClass>
 				<DomainClassMoniker Name="Role"/>
 			</BaseClass>
 		</DomainClass>
-		<DomainClass Id="63311551-B395-492E-B59F-CAA6F521494C" Namespace="Neumont.Tools.EntityRelationshipModels.Barker" Name="ExclusiveArc">
+		<DomainClass Id="63311551-B395-492E-B59F-CAA6F521494C" Namespace="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker" Name="ExclusiveArc">
 			<BaseClass>
 				<DomainClassMoniker Name="BarkerModelElement"/>
 			</BaseClass>
@@ -287,7 +287,7 @@
 				</DomainProperty>
 			</Properties>
 		</DomainClass>
-		<DomainClass Id="AB570194-BCC8-4448-A022-BB07021D5EE5" Namespace="Neumont.Tools.EntityRelationshipModels.Barker" Name="BinaryAssociation">
+		<DomainClass Id="AB570194-BCC8-4448-A022-BB07021D5EE5" Namespace="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker" Name="BinaryAssociation">
 			<BaseClass>
 				<DomainClassMoniker Name="BarkerModelElement"/>
 			</BaseClass>
@@ -307,7 +307,7 @@
 			</Properties>
 		</DomainClass>
 		<!--not sure if we need this class - i created it only to be the root in serialization extensions-->
-		<DomainClass Id="A96FCCEA-0FCC-4207-AC77-F69C0BF2C0CB" Namespace="Neumont.Tools.EntityRelationshipModels.Barker" Name="BarkerErModel">
+		<DomainClass Id="A96FCCEA-0FCC-4207-AC77-F69C0BF2C0CB" Namespace="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker" Name="BarkerErModel">
 			<BaseClass>
 				<DomainClassMoniker Name="BarkerModelElement"/>
 			</BaseClass>
@@ -329,7 +329,7 @@
 	</Classes>
 
 	<Relationships>
-		<DomainRelationship Id="FF7D1A21-8F7F-4392-8BC4-C75E2B44464B" Namespace="Neumont.Tools.EntityRelationshipModels.Barker" Name="EntityTypeHasAttribute" IsEmbedding="true">
+		<DomainRelationship Id="FF7D1A21-8F7F-4392-8BC4-C75E2B44464B" Namespace="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker" Name="EntityTypeHasAttribute" IsEmbedding="true">
 			<Source>
 				<DomainRole Id="60179D80-596A-4646-A240-7ED97AAEDCE2" Name="EntityType" PropertyName="AttributeCollection" Multiplicity="ZeroMany">
 					<RolePlayer>
@@ -346,7 +346,7 @@
 			</Target>
 		</DomainRelationship>
 		<!--
-		<DomainRelationship Id="2D69BA1A-06C0-4491-B85A-2D1ED959DE68" Namespace="Neumont.Tools.EntityRelationshipModels.Barker" Name="AttributeIsBasedOnDomain">
+		<DomainRelationship Id="2D69BA1A-06C0-4491-B85A-2D1ED959DE68" Namespace="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker" Name="AttributeIsBasedOnDomain">
 			<Source>
 				<DomainRole Id="63E6C1D2-DCF0-490A-90E0-BCBA2BE02FFF" Name="Attribute" PropertyName="Domain" Multiplicity="ZeroOne">
 					<RolePlayer>
@@ -363,7 +363,7 @@
 			</Target>
 		</DomainRelationship>
 		-->
-		<DomainRelationship Id="D1BFE73F-E05D-48D2-895B-B4DAAA60908A" Namespace="Neumont.Tools.EntityRelationshipModels.Barker" Name="AttributeHasPossibleValue" IsEmbedding="true">
+		<DomainRelationship Id="D1BFE73F-E05D-48D2-895B-B4DAAA60908A" Namespace="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker" Name="AttributeHasPossibleValue" IsEmbedding="true">
 			<Source>
 				<DomainRole Id="2C5B6EF2-CDF7-4A42-A90F-A08BF4C36C9E" Name="Attribute" PropertyName="PossibleValuesCollection" Multiplicity="ZeroMany">
 					<RolePlayer>
@@ -380,7 +380,7 @@
 			</Target>
 		</DomainRelationship>
 		<!--
-		<DomainRelationship Id="13980B73-2D59-4EF9-B167-985942E211F5" Namespace="Neumont.Tools.EntityRelationshipModels.Barker" Name="DomainHasPossibleValue">
+		<DomainRelationship Id="13980B73-2D59-4EF9-B167-985942E211F5" Namespace="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker" Name="DomainHasPossibleValue">
 			<Source>
 				<DomainRole Id="00ED7745-BF37-408F-880A-3BB9607428FF" Name="Domain" PropertyName="PossibleValuesCollection" Multiplicity="ZeroMany">
 					<RolePlayer>
@@ -397,7 +397,7 @@
 			</Target>
 		</DomainRelationship>
 		-->
-		<DomainRelationship Id="0BDBB7E8-8D3C-4C09-A7FC-9086B04A494E" Namespace="Neumont.Tools.EntityRelationshipModels.Barker" Name="EntityTypeIsSubtypeOfEntityType">
+		<DomainRelationship Id="0BDBB7E8-8D3C-4C09-A7FC-9086B04A494E" Namespace="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker" Name="EntityTypeIsSubtypeOfEntityType">
 			<Source>
 				<DomainRole Id="87A158DB-AE78-4282-811C-8BCBC82F24E7" Name="Subtype" PropertyName="Supertype" Multiplicity="ZeroOne">
 					<RolePlayer>
@@ -413,7 +413,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Id="A7C02288-3E60-4AA5-A509-4F900D42CE46" Namespace="Neumont.Tools.EntityRelationshipModels.Barker" Name="EntityTypePlaysRole">
+		<DomainRelationship Id="A7C02288-3E60-4AA5-A509-4F900D42CE46" Namespace="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker" Name="EntityTypePlaysRole">
 			<Source>
 				<DomainRole Id="C88332B5-35EB-40FC-9FA6-A0D74F0D6337" Name="EntityType" PropertyName="RoleCollection" Multiplicity="ZeroMany">
 					<RolePlayer>
@@ -429,7 +429,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Id="8BD9C7C4-41C6-42D1-B3F6-E124110C9F20" Namespace="Neumont.Tools.EntityRelationshipModels.Barker" Name="RoleHasCardinalityQualifier" IsEmbedding="true">
+		<DomainRelationship Id="8BD9C7C4-41C6-42D1-B3F6-E124110C9F20" Namespace="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker" Name="RoleHasCardinalityQualifier" IsEmbedding="true">
 			<Source>
 				<DomainRole Id="44710950-5BA1-492D-826D-6D59FB659E56" Name="Role" PropertyName="CardinalityQualifier" Multiplicity="ZeroOne">
 					<RolePlayer>
@@ -445,7 +445,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Id="0CAEDC0D-9450-4CE1-B61A-DF55DF75FBEA" Namespace="Neumont.Tools.EntityRelationshipModels.Barker" Name="ExclusiveArcSpansOptionalRole">
+		<DomainRelationship Id="0CAEDC0D-9450-4CE1-B61A-DF55DF75FBEA" Namespace="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker" Name="ExclusiveArcSpansOptionalRole">
 			<Source>
 				<DomainRole Id="5F2B9A73-0D8B-4CB8-BBE0-E09317086E20" Name="ExclusiveArc" PropertyName="RoleCollection" Multiplicity="OneMany">
 					<RolePlayer>
@@ -461,7 +461,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Id="BCAC40EF-38D3-4548-9BBC-804A11E57E08" Namespace="Neumont.Tools.EntityRelationshipModels.Barker" Name="BinaryAssociationContainsRole" IsEmbedding="true">
+		<DomainRelationship Id="BCAC40EF-38D3-4548-9BBC-804A11E57E08" Namespace="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker" Name="BinaryAssociationContainsRole" IsEmbedding="true">
 			<Source>
 				<DomainRole Id="C9B8667E-A51D-47DC-A195-4F4D4CDC2BDA" Name="BinaryAssociation" PropertyName="RoleCollection" Multiplicity="ZeroMany">
 					<RolePlayer>
@@ -479,7 +479,7 @@
 		</DomainRelationship>
 
 		<!--not sure if we need these relationships - i created them only to be containers in the root in serialization extensions-->
-		<DomainRelationship Id="2CCB5738-115C-4470-BDBB-DA4280ACD994" Namespace="Neumont.Tools.EntityRelationshipModels.Barker" Name="BarkerErModelContainsEntityType" IsEmbedding="true">
+		<DomainRelationship Id="2CCB5738-115C-4470-BDBB-DA4280ACD994" Namespace="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker" Name="BarkerErModelContainsEntityType" IsEmbedding="true">
 			<Source>
 				<DomainRole Id="B9AA4A9F-0414-44F1-84A7-80E9D6984A12" Name="BarkerErModel" PropertyName="EntityTypeCollection" Multiplicity="ZeroMany">
 					<RolePlayer>
@@ -495,7 +495,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Id="734A6758-65E4-40F9-B4EC-8B99DEC314AF" Namespace="Neumont.Tools.EntityRelationshipModels.Barker" Name="BarkerErModelContainsBinaryAssociation" IsEmbedding="true">
+		<DomainRelationship Id="734A6758-65E4-40F9-B4EC-8B99DEC314AF" Namespace="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker" Name="BarkerErModelContainsBinaryAssociation" IsEmbedding="true">
 			<Source>
 				<DomainRole Id="400580D3-EB5B-4230-BD4F-E69C33C72751" Name="BarkerErModel" PropertyName="BinaryAssociationCollection" Multiplicity="ZeroMany">
 					<RolePlayer>
@@ -511,7 +511,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Id="B3EC67E1-4E16-47BD-A93A-F798F1765292" Namespace="Neumont.Tools.EntityRelationshipModels.Barker" Name="BarkerErModelContainsExclusiveArc" IsEmbedding="true">
+		<DomainRelationship Id="B3EC67E1-4E16-47BD-A93A-F798F1765292" Namespace="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker" Name="BarkerErModelContainsExclusiveArc" IsEmbedding="true">
 			<Source>
 				<DomainRole Id="ACF7DAB7-7550-4B64-81E3-2F94F1BFAF25" Name="BarkerErModel" PropertyName="ExclusiveArcCollection" Multiplicity="ZeroMany">
 					<RolePlayer>
@@ -530,7 +530,7 @@
 	</Relationships>
 
 	<Types>
-		<DomainEnumeration Namespace="Neumont.Tools.EntityRelationshipModels.Barker" Name="OperatorSymbol" Description="Valid values for comparison operators.">
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker" Name="OperatorSymbol" Description="Valid values for comparison operators.">
 			<Literals>
 				<EnumerationLiteral Name="Equal" Value="0">
 					<Attributes>
@@ -582,13 +582,13 @@
 				<ClrAttribute Name="global::System.Serializable"/>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;OperatorSymbol, global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;OperatorSymbol, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
 		</DomainEnumeration>
 	</Types>
 
-	<XmlSerializationBehavior Name="BerDomainModelSerializationBehavior" Namespace="Neumont.Tools.EntityRelationshipModels.Barker"/>
+	<XmlSerializationBehavior Name="BerDomainModelSerializationBehavior" Namespace="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker"/>
 
 </Dsl>

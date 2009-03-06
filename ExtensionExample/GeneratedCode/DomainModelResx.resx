@@ -117,76 +117,76 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ExtensionExample.ExtensionDomainModel.Description" xml:space="preserve">
     <value>The extension created for testing purposes</value>
     <comment>Description for DslLibrary &apos;Extension&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ExtensionExample.ExtensionDomainModel.DisplayName" xml:space="preserve">
     <value>My Custom Extension</value>
     <comment>DisplayName for DslLibrary &apos;Extension&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement</value>
+  <data name="ORMSolutions.ORMArchitect.ExtensionExample.MyCustomExtensionElement.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ExtensionExample.MyCustomExtensionElement</value>
     <comment>Description for DomainClass &apos;MyCustomExtensionElement&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ExtensionExample.MyCustomExtensionElement.DisplayName" xml:space="preserve">
     <value>MyCustomExtensionElement</value>
     <comment>DisplayName for DomainClass &apos;MyCustomExtensionElement&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement/TestProperty.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement.TestProperty</value>
+  <data name="ORMSolutions.ORMArchitect.ExtensionExample.MyCustomExtensionElement/TestProperty.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ExtensionExample.MyCustomExtensionElement.TestProperty</value>
     <comment>Description for DomainProperty &apos;TestProperty&apos; on DomainClass &apos;MyCustomExtensionElement&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement/TestProperty.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ExtensionExample.MyCustomExtensionElement/TestProperty.DisplayName" xml:space="preserve">
     <value>TestProperty</value>
     <comment>DisplayName for DomainProperty &apos;TestProperty&apos; on DomainClass &apos;MyCustomExtensionElement&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement/CustomEnum.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement.CustomEnum</value>
+  <data name="ORMSolutions.ORMArchitect.ExtensionExample.MyCustomExtensionElement/CustomEnum.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ExtensionExample.MyCustomExtensionElement.CustomEnum</value>
     <comment>Description for DomainProperty &apos;CustomEnum&apos; on DomainClass &apos;MyCustomExtensionElement&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement/CustomEnum.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ExtensionExample.MyCustomExtensionElement/CustomEnum.DisplayName" xml:space="preserve">
     <value>CustomEnum</value>
     <comment>DisplayName for DomainProperty &apos;CustomEnum&apos; on DomainClass &apos;MyCustomExtensionElement&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ExtensionExample.ObjectTypeRequiresMeaningfulNameError.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ExtensionExample.ObjectTypeRequiresMeaningfulNameError</value>
+  <data name="ORMSolutions.ORMArchitect.ExtensionExample.ObjectTypeRequiresMeaningfulNameError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ExtensionExample.ObjectTypeRequiresMeaningfulNameError</value>
     <comment>Description for DomainClass &apos;ObjectTypeRequiresMeaningfulNameError&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ExtensionExample.ObjectTypeRequiresMeaningfulNameError.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ExtensionExample.ObjectTypeRequiresMeaningfulNameError.DisplayName" xml:space="preserve">
     <value>ObjectTypeRequiresMeaningfulNameError</value>
     <comment>DisplayName for DomainClass &apos;ObjectTypeRequiresMeaningfulNameError&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ExtensionExample.TestEnumeration/Zero.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ExtensionExample.TestEnumeration/Zero.DisplayName" xml:space="preserve">
     <value>Zero</value>
     <comment>Display name for EnumerationLiteral &apos;Zero&apos; on DomainEnumeration &apos;TestEnumeration&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ExtensionExample.TestEnumeration/Zero.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ExtensionExample.TestEnumeration.Zero</value>
+  <data name="ORMSolutions.ORMArchitect.ExtensionExample.TestEnumeration/Zero.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ExtensionExample.TestEnumeration.Zero</value>
     <comment>Description for EnumerationLiteral &apos;Zero&apos; on DomainEnumeration &apos;TestEnumeration&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ExtensionExample.TestEnumeration/One.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ExtensionExample.TestEnumeration/One.DisplayName" xml:space="preserve">
     <value>One</value>
     <comment>Display name for EnumerationLiteral &apos;One&apos; on DomainEnumeration &apos;TestEnumeration&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ExtensionExample.TestEnumeration/One.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ExtensionExample.TestEnumeration.One</value>
+  <data name="ORMSolutions.ORMArchitect.ExtensionExample.TestEnumeration/One.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ExtensionExample.TestEnumeration.One</value>
     <comment>Description for EnumerationLiteral &apos;One&apos; on DomainEnumeration &apos;TestEnumeration&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ExtensionExample.TestEnumeration/Two.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ExtensionExample.TestEnumeration/Two.DisplayName" xml:space="preserve">
     <value>Two</value>
     <comment>Display name for EnumerationLiteral &apos;Two&apos; on DomainEnumeration &apos;TestEnumeration&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ExtensionExample.TestEnumeration/Two.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ExtensionExample.TestEnumeration.Two</value>
+  <data name="ORMSolutions.ORMArchitect.ExtensionExample.TestEnumeration/Two.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ExtensionExample.TestEnumeration.Two</value>
     <comment>Description for EnumerationLiteral &apos;Two&apos; on DomainEnumeration &apos;TestEnumeration&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ExtensionExample.TestEnumeration/Three.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ExtensionExample.TestEnumeration/Three.DisplayName" xml:space="preserve">
     <value>Three</value>
     <comment>Display name for EnumerationLiteral &apos;Three&apos; on DomainEnumeration &apos;TestEnumeration&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ExtensionExample.TestEnumeration/Three.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ExtensionExample.TestEnumeration.Three</value>
+  <data name="ORMSolutions.ORMArchitect.ExtensionExample.TestEnumeration/Three.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ExtensionExample.TestEnumeration.Three</value>
     <comment>Description for EnumerationLiteral &apos;Three&apos; on DomainEnumeration &apos;TestEnumeration&apos;</comment>
   </data>
   <data name="AmbiguousSchema" xml:space="preserve">
@@ -285,7 +285,7 @@ A DomainClass can be serialized as a moniker only if
 
 <!-- Common Public License Copyright Notice -->
 <!--
-	Neumont Object-Role Modeling Architect for Visual Studio
+	Natural Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
 

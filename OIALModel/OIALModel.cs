@@ -20,12 +20,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.Modeling;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Framework;
 using System.Globalization;
 using System.Collections;
 using System.Diagnostics;
-using ObjModel = Neumont.Tools.ORM.ObjectModel;
+using ObjModel = ORMSolutions.ORMArchitect.Core.ObjectModel;
 #endregion // Using Directives
 
 namespace Neumont.Tools.ORM.OIALModel

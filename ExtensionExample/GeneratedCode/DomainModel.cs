@@ -1,6 +1,6 @@
 ﻿#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -24,15 +24,15 @@
 
 using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
-namespace Neumont.Tools.ORM.ExtensionExample
+namespace ORMSolutions.ORMArchitect.ExtensionExample
 {
 	/// <summary>
 	/// DomainModel ExtensionDomainModel
 	/// The extension created for testing purposes
 	/// </summary>
-	[DslModeling::ExtendsDomainModel("3EAE649F-E654-4D04-8289-C25D2C0322D8"/*Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel*/)]
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel.DisplayName", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel.Description", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
+	[DslModeling::ExtendsDomainModel("3EAE649F-E654-4D04-8289-C25D2C0322D8"/*ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel*/)]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ExtensionExample.ExtensionDomainModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ExtensionExample.ExtensionDomainModel), "ORMSolutions.ORMArchitect.ExtensionExample.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ExtensionExample.ExtensionDomainModel.Description", typeof(global::ORMSolutions.ORMArchitect.ExtensionExample.ExtensionDomainModel), "ORMSolutions.ORMArchitect.ExtensionExample.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("9f620b5a-9a99-45a4-a022-c9ed95ce85d6")]
 	public partial class ExtensionDomainModel : DslModeling::DomainModel
@@ -155,7 +155,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 		/// <summary>
 		/// The base name of this model's resources.
 		/// </summary>
-		public const string ResourceBaseName = "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx";
+		public const string ResourceBaseName = "ORMSolutions.ORMArchitect.ExtensionExample.GeneratedCode.DomainModelResx";
 		
 		/// <summary>
 		/// Gets the DomainModel's ResourceManager. If the ResourceManager does not already exist, then it is created.
@@ -399,39 +399,39 @@ namespace Neumont.Tools.ORM.ExtensionExample
 	#endregion
 		
 }
-namespace Neumont.Tools.ORM.ExtensionExample
+namespace ORMSolutions.ORMArchitect.ExtensionExample
 {
 	/// <summary>
 	/// DomainEnumeration: TestEnumeration
 	/// Provides test values for our enum sample dropdown.
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<TestEnumeration, global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<TestEnumeration, global::ORMSolutions.ORMArchitect.ExtensionExample.ExtensionDomainModel>))]
 	[global::System.CLSCompliant(true)]
 	public enum TestEnumeration
 	{
 		/// <summary>
 		/// Zero
-		/// Description for Neumont.Tools.ORM.ExtensionExample.TestEnumeration.Zero
+		/// Description for ORMSolutions.ORMArchitect.ExtensionExample.TestEnumeration.Zero
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ExtensionExample.TestEnumeration/Zero.Description", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ExtensionExample.TestEnumeration/Zero.Description", typeof(global::ORMSolutions.ORMArchitect.ExtensionExample.ExtensionDomainModel), "ORMSolutions.ORMArchitect.ExtensionExample.GeneratedCode.DomainModelResx")]
 		Zero = 0,
 		/// <summary>
 		/// One
-		/// Description for Neumont.Tools.ORM.ExtensionExample.TestEnumeration.One
+		/// Description for ORMSolutions.ORMArchitect.ExtensionExample.TestEnumeration.One
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ExtensionExample.TestEnumeration/One.Description", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ExtensionExample.TestEnumeration/One.Description", typeof(global::ORMSolutions.ORMArchitect.ExtensionExample.ExtensionDomainModel), "ORMSolutions.ORMArchitect.ExtensionExample.GeneratedCode.DomainModelResx")]
 		One = 1,
 		/// <summary>
 		/// Two
-		/// Description for Neumont.Tools.ORM.ExtensionExample.TestEnumeration.Two
+		/// Description for ORMSolutions.ORMArchitect.ExtensionExample.TestEnumeration.Two
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ExtensionExample.TestEnumeration/Two.Description", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ExtensionExample.TestEnumeration/Two.Description", typeof(global::ORMSolutions.ORMArchitect.ExtensionExample.ExtensionDomainModel), "ORMSolutions.ORMArchitect.ExtensionExample.GeneratedCode.DomainModelResx")]
 		Two = 2,
 		/// <summary>
 		/// Three
-		/// Description for Neumont.Tools.ORM.ExtensionExample.TestEnumeration.Three
+		/// Description for ORMSolutions.ORMArchitect.ExtensionExample.TestEnumeration.Three
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ExtensionExample.TestEnumeration/Three.Description", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ExtensionExample.TestEnumeration/Three.Description", typeof(global::ORMSolutions.ORMArchitect.ExtensionExample.ExtensionDomainModel), "ORMSolutions.ORMArchitect.ExtensionExample.GeneratedCode.DomainModelResx")]
 		Three = 3,
 	}
 }

@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -26,7 +26,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 
-namespace Neumont.Tools.Modeling.Diagnostics
+namespace ORMSolutions.ORMArchitect.Framework.Diagnostics
 {
 	/// <summary>
 	/// Utility class used for trace diagnostics
@@ -41,11 +41,11 @@ namespace Neumont.Tools.Modeling.Diagnostics
 		/// numbers generated here will correspond to the command values shown in the transaction log viewer.
 		///<system.diagnostics>
 		///    <switches>
-		///        <add name="Neumont.Tools.Modeling.Diagnostics.TraceRules" value="Verbose"/>
+		///        <add name="ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceRules" value="Verbose"/>
 		///    </switches>
 		///</system.diagnostics>
 		/// </summary>
-		public static readonly TraceSwitch TraceRulesSwitch = new TraceSwitch("Neumont.Tools.Modeling.Diagnostics.TraceRules", "Switch determining if rules are traced", "Off");
+		public static readonly TraceSwitch TraceRulesSwitch = new TraceSwitch("ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceRules", "Switch determining if rules are traced", "Off");
 		#region Dynamic Microsoft.VisualStudio.Modeling.Transaction.CommandCount implementation
 		private delegate int TransactionCommandCountDelegate(Transaction @this);
 		/// <summary>

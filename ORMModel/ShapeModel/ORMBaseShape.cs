@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -25,13 +25,13 @@ using System.Drawing.Drawing2D;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.Shell;
-using Neumont.Tools.Modeling;
-using Neumont.Tools.Modeling.Design;
-using Neumont.Tools.Modeling.Diagrams;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.Shell;
+using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Framework.Design;
+using ORMSolutions.ORMArchitect.Framework.Diagrams;
 
-namespace Neumont.Tools.ORM.ShapeModel
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	[DebuggerDisplay("{System.String.Concat(ToString(), \": \",(ModelElement != null) ? ModelElement.ToString() : \"null\")}")]
 	public partial class ORMBaseShape : IInvalidateDisplay
@@ -575,14 +575,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // DuplicateNameError Activation Helper
 		#region Update shapes on ModelError added/removed
 		/// <summary>
-		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasError)
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasError)
 		/// </summary>
 		private static void ModelErrorAddedRule(ElementAddedEventArgs e)
 		{
 			ProcessModelErrorChange(e.ModelElement as ModelHasError);
 		}
 		/// <summary>
-		/// DeletingRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasError)
+		/// DeletingRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasError)
 		/// </summary>
 		private static void ModelErrorDeletingRule(ElementDeletingEventArgs e)
 		{

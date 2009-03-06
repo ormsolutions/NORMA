@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-	Neumont Object-Role Modeling Architect for Visual Studio
+	Natural Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
 
@@ -13,13 +13,13 @@
 	You must not remove this notice, or any other, from this software.
 -->
 <WixLocalization xmlns="http://schemas.microsoft.com/wix/2006/localization" Culture="en-US">
-	<String Id="Manufacturer">Neumont University</String>
-	<String Id="ProductNameVS2005">Neumont ORM Architect for Visual Studio 2005</String>
-	<String Id="ProductNameVS2008">Neumont ORM Architect for Visual Studio 2008</String>
+	<String Id="Manufacturer">ORM Solutions, LLC</String>
+	<String Id="ProductNameVS2005">Natural ORM Architect for Visual Studio 2005</String>
+	<String Id="ProductNameVS2008">Natural ORM Architect for Visual Studio 2008</String>
 	<String Id="PackageCommentsPrefix">This installer database contains the logic and data required to install&#x20;</String>
 	<String Id="PackageCommentsSuffix">.</String>
 
-	<String Id="MainFeatureDescription">Neumont ORM Architect for Visual Studio. Includes the Visual Studio Package.</String>
+	<String Id="MainFeatureDescription">Natural ORM Architect for Visual Studio. Includes the Visual Studio Package.</String>
 	<String Id="HelpFeatureTitle">Help</String>
 	<String Id="HelpFeatureDescription">Help</String>
 	<String Id="DatabaseImportFeatureTitle">DatabaseImport</String>
@@ -38,7 +38,7 @@
 
 	<String Id="ORMCustomToolDescription">ORM Custom Tool</String>
 
-	<String Id="NORMAHelpCollectionDescription">Neumont ORM Architect</String>
+	<String Id="NORMAHelpCollectionDescription">Natural ORM Architect</String>
 
 	<!-- Custom Error Strings -->
 	<String Id="Windows2000OrHigherRequired">This setup requires Microsoft Windows 2000 or later.</String>

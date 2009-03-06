@@ -2,10 +2,10 @@
 <ResourceStrings xmlns="http://schemas.neumont.edu/ORM/SDK/ResourceStringsGenerator">
 	<Copyright name="Common Public License Copyright Notice">
 		<CopyrightLine>/**************************************************************************\</CopyrightLine>
-		<CopyrightLine>* Neumont Object-Role Modeling Architect for Visual Studio                 *</CopyrightLine>
+		<CopyrightLine>* Natural Object-Role Modeling Architect for Visual Studio                 *</CopyrightLine>
 		<CopyrightLine>*                                                                          *</CopyrightLine>
 		<CopyrightLine>* Copyright © Neumont University. All rights reserved.                     *</CopyrightLine>
-		<CopyrightLine>* Copyright © Matthew Curland. All rights reserved.                        *</CopyrightLine>
+		<CopyrightLine>* Copyright © ORM Solutions, LLC. All rights reserved.                        *</CopyrightLine>
 		<CopyrightLine>*                                                                          *</CopyrightLine>
 		<CopyrightLine>* The use and distribution terms for this software are covered by the      *</CopyrightLine>
 		<CopyrightLine>* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *</CopyrightLine>
@@ -41,23 +41,23 @@
 	<ResourceString name="ToolboxDefaultTabName" resourceName="ORM DesignerToolboxTab" model="ShapeModel">
 		<comment>The tab name for default toolbox</comment>
 	</ResourceString>
-	<ResourceString name="ORMDiagramAccessibleName" resourceName="Neumont.Tools.ORM.ShapeModel.ORMDiagram.DisplayName" model="ShapeModel">
+	<ResourceString name="ORMDiagramAccessibleName" resourceName="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram.DisplayName" model="ShapeModel">
 		<comment>The accessible name for a diagram</comment>
 	</ResourceString>
-	<ResourceString name="FactType" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.FactType.DisplayName">
+	<ResourceString name="FactType" model="ObjectModel" resourceName="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.DisplayName">
 		<comment>The display name used for a simple FactType</comment>
 	</ResourceString>
-	<ResourceString name="SubtypeFact" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.SubtypeFact.DisplayName">
+	<ResourceString name="SubtypeFact" model="ObjectModel" resourceName="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.DisplayName">
 		<comment>The display name used for a SubtypeFact</comment>
 	</ResourceString>
-	<ResourceString name="DisjunctiveMandatoryConstraint" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.MandatoryConstraint.DisplayName">
+	<ResourceString name="DisjunctiveMandatoryConstraint" model="ObjectModel" resourceName="ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraint.DisplayName">
 		<comment>The display name used for a disjunctive mandatory constraint</comment>
 	</ResourceString>
-	<ResourceString name="ReadingType" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.Reading.DisplayName">
+	<ResourceString name="ReadingType" model="ObjectModel" resourceName="ORMSolutions.ORMArchitect.Core.ObjectModel.Reading.DisplayName">
 		<comment>The display name used for a ReadingType</comment>
 	</ResourceString>
-	<ResourceString name="ElementGroupingTypeDisplayName" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ElementGroupingType.DisplayName">
-		<comment>The name displayed as the class name for all &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.ElementGroupingType&quot;/&gt; instances</comment>
+	<ResourceString name="ElementGroupingTypeDisplayName" model="ObjectModel" resourceName="ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingType.DisplayName">
+		<comment>The name displayed as the class name for all &lt;see cref=&quot;ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingType&quot;/&gt; instances</comment>
 	</ResourceString>
 	<ResourceString name="ValueType" model="Model" resourceName="ObjectModel.ValueType"/>
 	<ResourceString name="EntityType" model="Model" resourceName="ObjectModel.EntityType"/>

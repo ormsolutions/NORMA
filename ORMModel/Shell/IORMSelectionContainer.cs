@@ -2,9 +2,9 @@ using System;
 using System.ComponentModel.Design;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Shell.Interop;
-using Neumont.Tools.ORM.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
 
-namespace Neumont.Tools.ORM.Shell
+namespace ORMSolutions.ORMArchitect.Core.Shell
 {
 	/// <summary>
 	/// An interface used to mark a window as being a selection container for

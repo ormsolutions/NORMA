@@ -1,9 +1,9 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © Matthew Curland. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -25,13 +25,13 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Neumont.Tools.ORM;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.ShapeModel;
+using ORMSolutions.ORMArchitect.Core;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.ShapeModel;
 using Microsoft.VisualStudio;
 using System.ComponentModel;
 
-namespace Neumont.Tools.ORM.Shell
+namespace ORMSolutions.ORMArchitect.Core.Shell
 {
 	public partial class ORMDesignerDocView
 	{
@@ -436,7 +436,7 @@ namespace Neumont.Tools.ORM.Shell
 				Store store = ((ModelingDocData)CurrentORMView.DocData).Store;
 				if (store != null && !store.Disposed)
 				{
-					Neumont.Tools.Modeling.Diagnostics.TransactionLogViewer.Show(store, ((IORMToolServices)store).ServiceProvider);
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TransactionLogViewer.Show(store, ((IORMToolServices)store).ServiceProvider);
 				}
 			}
 

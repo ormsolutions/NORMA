@@ -19,7 +19,8 @@ IF NOT DEFINED FrameworkDir (CALL:_SetupVsVars)
 :: causes a syntax error. Therefore, we leave the parentheses off here.
 IF NOT DEFINED MSBuildExtensionsPath SET MSBuildExtensionsPath=%ProgramFiles%\MSBuild
 IF NOT DEFINED TrunkDir SET TrunkDir=%~dp0.
-IF NOT DEFINED NORMADir SET NORMADir=%ProgramFiles%\Neumont\ORM Architect for %TargetVisualStudioLongProductName%
+IF NOT DEFINED NORMADir SET NORMADir=%ProgramFiles%\ORM Solutions\ORM Architect for %TargetVisualStudioLongProductName%
+IF NOT DEFINED OldNORMADir SET OldNORMADir=%ProgramFiles%\Neumont\ORM Architect for %TargetVisualStudioLongProductName%
 IF NOT DEFINED NORMAExtensionsDir SET NORMAExtensionsDir=%NORMADir%\bin\Extensions
 IF NOT DEFINED ORMDir SET ORMDir=%CommonProgramFiles%\Neumont\ORM
 IF NOT DEFINED DILDir SET DILDir=%CommonProgramFiles%\Neumont\DIL
@@ -58,6 +59,8 @@ IF NOT DEFINED TargetFrameworkVersion (SET TargetFrameworkVersion=v2.0)
 IF NOT DEFINED TargetVisualStudioMajorMinorVersion (SET TargetVisualStudioMajorMinorVersion=8.0)
 IF NOT DEFINED TargetVisualStudioAssemblyVersion (SET TargetVisualStudioAssemblyVersion=8.0.0.0)
 IF NOT DEFINED TargetVisualStudioFrameworkAssemblyVersion (SET TargetVisualStudioFrameworkAssemblyVersion=2.0.0.0)
+IF NOT DEFINED TargetVisualStudioLongProductYear (SET TargetVisualStudioLongProductYear=2005)
+IF NOT DEFINED TargetVisualStudioShortProductYear (SET TargetVisualStudioShortProductYear=05)
 IF NOT DEFINED TargetVisualStudioShortProductName (SET TargetVisualStudioShortProductName=VS2005)
 IF NOT DEFINED TargetVisualStudioLongProductName (SET TargetVisualStudioLongProductName=Visual Studio 2005)
 IF NOT DEFINED TargetDslToolsAssemblyVersion (SET TargetDslToolsAssemblyVersion=8.2.0.0)
@@ -68,6 +71,8 @@ IF NOT DEFINED TargetFrameworkVersion (SET TargetFrameworkVersion=v3.5)
 IF NOT DEFINED TargetVisualStudioMajorMinorVersion (SET TargetVisualStudioMajorMinorVersion=9.0)
 IF NOT DEFINED TargetVisualStudioAssemblyVersion (SET TargetVisualStudioAssemblyVersion=9.0.0.0)
 IF NOT DEFINED TargetVisualStudioFrameworkAssemblyVersion (SET TargetVisualStudioFrameworkAssemblyVersion=3.5.0.0)
+IF NOT DEFINED TargetVisualStudioLongProductYear (SET TargetVisualStudioLongProductYear=2008)
+IF NOT DEFINED TargetVisualStudioShortProductYear (SET TargetVisualStudioShortProductYear=08)
 IF NOT DEFINED TargetVisualStudioShortProductName (SET TargetVisualStudioShortProductName=VS2008)
 IF NOT DEFINED TargetVisualStudioLongProductName (SET TargetVisualStudioLongProductName=Visual Studio 2008)
 IF NOT DEFINED TargetDslToolsAssemblyVersion (SET TargetDslToolsAssemblyVersion=9.0.0.0)

@@ -2,6 +2,6 @@
 using System.Runtime.InteropServices;
 
 [assembly: ComVisible(false)]
-[assembly: AssemblyTitle("Neumont.Tools.ORMToORMAbstractionBridge.dll")]
-[assembly: AssemblyProduct("Neumont ORM Architect for Visual Studio")]
-[assembly: AssemblyDescription("Neumont ORM Architect for Visual Studio - ORM to ORMAbstraction Bridge DLL")]
+[assembly: AssemblyTitle("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.dll")]
+[assembly: AssemblyProduct("Natural Object-RoleModeling Architect for Visual Studio")]
+[assembly: AssemblyDescription("Natural Object-RoleModeling Architect for Visual Studio - ORM to ORMAbstraction Bridge DLL")]

@@ -3,10 +3,10 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Xml;
 using System.IO;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.SDK.TestEngine;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitectSDK.TestEngine;
 
-namespace Neumont.Tools.ORM.SDK.TestDriver
+namespace ORMSolutions.ORMArchitectSDK.TestDriver
 {
 	internal static class Program
 	{

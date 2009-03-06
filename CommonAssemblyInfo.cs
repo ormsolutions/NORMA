@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Security.Permissions;
 using System.Reflection;
@@ -7,14 +7,14 @@ using System.Runtime.CompilerServices;
 
 [assembly: CLSCompliant(true)]
 [assembly: NeutralResourcesLanguage("en-US")]
-[assembly: AssemblyCompany("Neumont University")]
+[assembly: AssemblyCompany("ORM Solutions, LLC")]
 
 #if !NO_SECURITYPERMISSIONATTRIBUTE
 [assembly: SecurityPermission(SecurityAction.RequestMinimum, Execution = true)]
 #endif //!NO_SECURITYPERMISSIONATTRIBUTE
 
 #if !NO_ASSEMBLYCOPYRIGHTATTRIBUTE
-[assembly: AssemblyCopyright("Copyright © Neumont University. All rights reserved.")]
+[assembly: AssemblyCopyright("Copyright © ORM Solutions, LLC. Portions copyright © Neumont University. All rights reserved.")]
 #endif //!NO_ASSEMBLYCOPYRIGHTATTRIBUTE
 
 [assembly: Debuggable(DebuggableAttribute.DebuggingModes.Default | DebuggableAttribute.DebuggingModes.IgnoreSymbolStoreSequencePoints

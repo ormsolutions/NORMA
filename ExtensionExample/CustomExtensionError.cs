@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.Modeling;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.Modeling;
-using Neumont.Tools.Modeling.Design;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Framework.Design;
 using System.Globalization;
 using System.Resources;
 
-namespace Neumont.Tools.ORM.ExtensionExample
+namespace ORMSolutions.ORMArchitect.ExtensionExample
 {
 	/// <summary>
 	/// This is a ModelError added to the ORM Tool using extensions.
@@ -122,7 +122,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 		#endregion // ModelError Overrides
 		#region ExtensionErrorRules
 		/// <summary>
-		/// AddRule: typeof(Neumont.Tools.ORM.ObjectModel.ModelHasObjectType)
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasObjectType)
 		/// This Rule calls the DelayValidateElement method when a ObjectType is added to the Diagram.
 		/// </summary>
 		private static void ExtensionObjectTypeAddRule(ElementAddedEventArgs e)
@@ -130,7 +130,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 			FrameworkDomainModel.DelayValidateElement(((ModelHasObjectType)e.ModelElement).ObjectType, DelayValidateObjectTypeHasMeaningfulNameError);
 		}
 		/// <summary>
-		/// ChangeRule: typeof(Neumont.Tools.ORM.ObjectModel.ObjectType)
+		/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType)
 		/// This method calls the DelayValidateElement method when the name of an ObjectType has been changed.
 		/// </summary>
 		private static void ExtensionObjectTypeChangeRule(ElementPropertyChangedEventArgs e)

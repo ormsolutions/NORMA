@@ -4,15 +4,15 @@ SET RootDir=%~dp0.
 IF NOT "%~2"=="" (SET TargetVisualStudioVersion=%~2)
 CALL "%RootDir%\SetupEnvironment.bat" %*
 
-IF EXIST "%NORMADir%\bin\Neumont.Tools.ORM.dll" (%RegPkg% /unregister "%NORMADir%\bin\Neumont.Tools.ORM.dll")
-CALL:_CleanupFile "%NORMADir%\bin\Neumont.Tools.ORM.dll"
-CALL:_CleanupFile "%NORMADir%\bin\Neumont.Tools.ORM.pdb"
-CALL:_CleanupFile "%NORMADir%\bin\Neumont.Tools.ORM.xml"
+IF EXIST "%OldNORMADir%\bin\Neumont.Tools.ORM.dll" (%RegPkg% /unregister "%NORMADir%\bin\Neumont.Tools.ORM.dll")
+IF EXIST "%OldNORMADir%\bin\Neumont.Tools.ORM.%TargetVisualStudioShortProductName%.dll" (%RegPkg% /unregister "%OldNORMADir%\bin\Neumont.Tools.ORM.%TargetVisualStudioShortProductName%.dll")
+CALL:_CleanupFile "%OldNORMADir%\bin\Neumont.Tools.ORM.dll"
+CALL:_CleanupFile "%OldNORMADir%\bin\Neumont.Tools.ORM.pdb"
+CALL:_CleanupFile "%OldNORMADir%\bin\Neumont.Tools.ORM.xml"
 
-SET TargetBaseName=Neumont.Tools.ORM.%TargetVisualStudioShortProductName%
+SET TargetBaseName=ORMSolutions.ORMArchitect.Core.%TargetVisualStudioShortProductName%
 if EXIST "%VSDir%" (
 	IF EXIST "%NORMADir%\bin\%TargetBaseName%.dll" (%RegPkg% /unregister "%NORMADir%\bin\%TargetBaseName%.dll")
-
 	IF NOT EXIST "%NORMADir%" (SET RunDevEnvSetup=True)
 )
 
@@ -35,7 +35,7 @@ CALL:_MakeDir "%DILDir%\Transforms"
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\%BuildOutDir%\%TargetBaseName%.dll" "%NORMADir%\bin\"
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\%BuildOutDir%\%TargetBaseName%.pdb" "%NORMADir%\bin\"
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\%BuildOutDir%\%TargetBaseName%.xml" "%NORMADir%\bin\"
-CALL:_CleanupFile "%NORMADir%\bin\1033\Neumont.Tools.ORMUI.dll"
+CALL:_CleanupFile "%OldNORMADir%\bin\1033\Neumont.Tools.ORMUI.dll"
 
 if EXIST "%VSItemTemplatesDir%" (
 	FOR %%A IN ("%RootDir%\ORMModel\Shell\ProjectItems\*.zip") DO ECHO F | XCOPY /Y /D /V /Q "%%~fA" "%VSItemTemplatesDir%\%%~nA\ORMModel.zip"
@@ -103,16 +103,16 @@ if EXIST "%VSDir%" (
 	XCOPY /Y /D /V /Q "%RootDir%\Setup\DILSchemaCatalog.xml" "%VSDir%\Xml\Schemas\"
 	%RegPkg% "%NORMADir%\bin\%TargetBaseName%.dll"
 
-	REG DELETE "HKLM\%VSRegistryRoot%\InstalledProducts\Neumont ORM Architect" /v "UseRegNameAsSplashName" /f 1>NUL
+	REG DELETE "HKLM\%VSRegistryRoot%\InstalledProducts\Natural ORM Architect" /v "UseRegNameAsSplashName" /f 1>NUL
 
 	:: Get rid of our old project item registrations for the General, Misc, and Solution projects.
 	REG DELETE "HKLM\%VSRegistryRoot%\Projects\{2150E333-8FDC-42A3-9474-1A3956D46DE8}\AddItemTemplates\TemplateDirs\{EFDDC549-1646-4451-8A51-E5A5E94D647C}" /f 1>NUL 2>&1
 	REG DELETE "HKLM\%VSRegistryRoot%\Projects\{A2FE74E1-B743-11d0-AE1A-00A0C90FFFC3}\AddItemTemplates\TemplateDirs\{EFDDC549-1646-4451-8A51-E5A5E94D647C}" /f 1>NUL 2>&1
 	REG DELETE "HKLM\%VSRegistryRoot%\Projects\{D1DCDB85-C5E8-11d2-BFCA-00C04F990235}\AddItemTemplates\TemplateDirs\{EFDDC549-1646-4451-8A51-E5A5E94D647C}" /f 1>NUL 2>&1
 
-	REG ADD "HKLM\%VSRegistryRoot%\Neumont\ORM Architect" /v "SettingsPath" /d "%NORMADir%\ORMDesignerSettings.xml" /f 1>NUL
-	REG ADD "HKLM\%VSRegistryRoot%\Neumont\ORM Architect" /v "ConvertersDir" /d "%NORMADir%\Xml\Transforms\Converters\\" /f 1>NUL
-	REG ADD "HKLM\%VSRegistryRoot%\Neumont\ORM Architect" /v "VerbalizationDir" /d "%NORMADir%\Xml\Verbalization\\" /f 1>NUL
+	REG ADD "HKLM\%VSRegistryRoot%\ORM Solutions\Natural ORM Architect" /v "SettingsPath" /d "%NORMADir%\ORMDesignerSettings.xml" /f 1>NUL
+	REG ADD "HKLM\%VSRegistryRoot%\ORM Solutions\Natural ORM Architect" /v "ConvertersDir" /d "%NORMADir%\Xml\Transforms\Converters\\" /f 1>NUL
+	REG ADD "HKLM\%VSRegistryRoot%\ORM Solutions\Natural ORM Architect" /v "VerbalizationDir" /d "%NORMADir%\Xml\Verbalization\\" /f 1>NUL
 	REG ADD "HKLM\%VSRegistryRoot%\FontAndColors\Orm Designer" /v "Category" /d "{663DE24F-8E3A-4C0F-A307-53053ED6C59B}" /f 1>NUL
 	REG ADD "HKLM\%VSRegistryRoot%\FontAndColors\Orm Designer" /v "Package" /d "{C5AA80F8-F730-4809-AAB1-8D925E36F9F5}" /f 1>NUL
 	REG ADD "HKLM\%VSRegistryRoot%\FontAndColors\Orm Verbalizer" /v "Category" /d "{663DE24F-5A08-4490-80E7-EA332DFFE7F0}" /f 1>NUL
@@ -128,7 +128,7 @@ if EXIST "%VSDir%" (
 	REG ADD "HKLM\SOFTWARE\Microsoft\.NETFramework\v2.0.50727\AssemblyFoldersEx\NORMAVS" /ve /d "%NORMADir%\bin" /f 1>NUL
 	REG ADD "HKLM\SOFTWARE\Microsoft\.NETFramework\v2.0.50727\AssemblyFoldersEx\NORMAVSExtensions" /ve /d "%NORMADir%\bin\Extensions" /f 1>NUL
 
-	REG ADD "HKLM\%VSRegistryRoot%\Neumont\ORM Architect\Extensions\http://schemas.neumont.edu/ORM/2008-11/DiagramDisplay" /v "Class" /d "Neumont.Tools.Modeling.Shell.DiagramDisplayDomainModel" /f 1>NUL
+	REG ADD "HKLM\%VSRegistryRoot%\ORM Solutions\Natural ORM Architect\Extensions\http://schemas.neumont.edu/ORM/2008-11/DiagramDisplay" /v "Class" /d "ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayDomainModel" /f 1>NUL
 
 	REG ADD "HKCR\MIME\Database\Content Type\application/orm+xml" /v "Extension" /d ".orm" /f 1>NUL
 	REG ADD "HKCR\.orm" /ve /d "ormfile" /f 1>NUL

@@ -1,9 +1,9 @@
 ﻿#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © Matthew Curland. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -27,15 +27,15 @@ using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
 using DslDiagrams = global::Microsoft.VisualStudio.Modeling.Diagrams;
 
-namespace Neumont.Tools.ORM.ShapeModel
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	/// <summary>
 	/// DomainClass ORMBaseShape
-	/// Description for Neumont.Tools.ORM.ShapeModel.ORMBaseShape
+	/// Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShape
 	/// </summary>
-	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::Neumont.Tools.Modeling.Diagrams.Design.PresentationElementTypeDescriptionProvider<ORMBaseShape, global::Neumont.Tools.ORM.ObjectModel.ORMModelElement, Design.ORMBaseShapeTypeDescriptor<ORMBaseShape, global::Neumont.Tools.ORM.ObjectModel.ORMModelElement>>))]
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ORMBaseShape.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ORMBaseShape.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::ORMSolutions.ORMArchitect.Framework.Diagrams.Design.PresentationElementTypeDescriptionProvider<ORMBaseShape, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModelElement, Design.ORMBaseShapeTypeDescriptor<ORMBaseShape, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModelElement>>))]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShape.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShape.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("55131f4b-0f9a-408d-bed0-79451ba7f4f0")]
 	public abstract partial class ORMBaseShape : DslDiagrams::NodeShape
@@ -90,10 +90,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 		
 		/// <summary>
 		/// Gets or sets the value of UpdateCounter domain property.
-		/// Description for Neumont.Tools.ORM.ShapeModel.ORMBaseShape.Update Counter
+		/// Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShape.Update
+		/// Counter
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ORMBaseShape/UpdateCounter.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ORMBaseShape/UpdateCounter.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShape/UpdateCounter.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShape/UpdateCounter.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 		[global::System.ComponentModel.Browsable(false)]
 		[global::System.ComponentModel.ReadOnly(true)]
 		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
@@ -175,14 +176,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORM.ShapeModel
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	/// <summary>
 	/// DomainClass ObjectTypeShape
-	/// Description for Neumont.Tools.ORM.ShapeModel.ObjectTypeShape
+	/// Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("00c1f246-d8f1-4eea-ac88-39ba238143a8")]
 	public partial class ObjectTypeShape : ORMBaseShape
@@ -327,8 +328,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Should shapes for the FactType and ValueType corresponding to this ReferenceMode
 		/// pattern be displayed on the diagram?
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ObjectTypeShape/ExpandRefMode.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ObjectTypeShape/ExpandRefMode.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape/ExpandRefMode.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape/ExpandRefMode.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 		[DslModeling::DomainObjectId("b2415bb1-1c83-4f0b-b2c3-58b67bc620dd")]
 		public global::System.Boolean ExpandRefMode
 		{
@@ -400,15 +401,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORM.ShapeModel
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	/// <summary>
 	/// DomainClass FactTypeShape
-	/// Description for Neumont.Tools.ORM.ShapeModel.FactTypeShape
+	/// Description for ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape
 	/// </summary>
-	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::Neumont.Tools.Modeling.Diagrams.Design.PresentationElementTypeDescriptionProvider<FactTypeShape, global::Neumont.Tools.ORM.ObjectModel.FactType, Design.FactTypeShapeTypeDescriptor<FactTypeShape, global::Neumont.Tools.ORM.ObjectModel.FactType>>))]
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.FactTypeShape.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.FactTypeShape.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::ORMSolutions.ORMArchitect.Framework.Diagrams.Design.PresentationElementTypeDescriptionProvider<FactTypeShape, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType, Design.FactTypeShapeTypeDescriptor<FactTypeShape, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType>>))]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("8e440a3b-275e-42f7-868b-d5d473158acd")]
 	public partial class FactTypeShape : ORMBaseShape
@@ -546,15 +547,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Storage for ConstraintDisplayPosition
 		/// </summary>
-		private ConstraintDisplayPosition constraintDisplayPositionPropertyStorage = Neumont.Tools.ORM.ShapeModel.ConstraintDisplayPosition.Top;
+		private ConstraintDisplayPosition constraintDisplayPositionPropertyStorage = ORMSolutions.ORMArchitect.Core.ShapeModel.ConstraintDisplayPosition.Top;
 		
 		/// <summary>
 		/// Gets or sets the value of ConstraintDisplayPosition domain property.
 		/// Determines where internal constraints are drawn on this FactTypeShape.
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.FactTypeShape/ConstraintDisplayPosition.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.FactTypeShape/ConstraintDisplayPosition.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-		[global::System.ComponentModel.DefaultValue(Neumont.Tools.ORM.ShapeModel.ConstraintDisplayPosition.Top)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/ConstraintDisplayPosition.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/ConstraintDisplayPosition.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.Core.ShapeModel.ConstraintDisplayPosition.Top)]
 		[DslModeling::DomainObjectId("802767fd-de7d-4541-b42b-90b613dfe22d")]
 		public ConstraintDisplayPosition ConstraintDisplayPosition
 		{
@@ -634,16 +635,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Storage for DisplayRoleNames
 		/// </summary>
-		private DisplayRoleNames displayRoleNamesPropertyStorage = Neumont.Tools.ORM.ShapeModel.DisplayRoleNames.UserDefault;
+		private DisplayRoleNames displayRoleNamesPropertyStorage = ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayRoleNames.UserDefault;
 		
 		/// <summary>
 		/// Gets or sets the value of DisplayRoleNames domain property.
 		/// Determines whether RoleNameShapes will be drawn for the Roles in the FactType
 		/// represented by this FactTypeShape, overriding the global setting.
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.FactTypeShape/DisplayRoleNames.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.FactTypeShape/DisplayRoleNames.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-		[global::System.ComponentModel.DefaultValue(Neumont.Tools.ORM.ShapeModel.DisplayRoleNames.UserDefault)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayRoleNames.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayRoleNames.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayRoleNames.UserDefault)]
 		[DslModeling::DomainObjectId("9607af0f-2e12-4215-b8a5-91b67c1a9f08")]
 		public DisplayRoleNames DisplayRoleNames
 		{
@@ -723,15 +724,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Storage for DisplayOrientation
 		/// </summary>
-		private DisplayOrientation displayOrientationPropertyStorage = Neumont.Tools.ORM.ShapeModel.DisplayOrientation.Horizontal;
+		private DisplayOrientation displayOrientationPropertyStorage = ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayOrientation.Horizontal;
 		
 		/// <summary>
 		/// Gets or sets the value of DisplayOrientation domain property.
 		/// Determines if the fact type is shown horizontally or vertically.
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.FactTypeShape/DisplayOrientation.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.FactTypeShape/DisplayOrientation.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-		[global::System.ComponentModel.DefaultValue(Neumont.Tools.ORM.ShapeModel.DisplayOrientation.Horizontal)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayOrientation.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayOrientation.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayOrientation.Horizontal)]
 		[DslModeling::DomainObjectId("31a8f13e-97c6-421f-820d-001cd8e774f3")]
 		public DisplayOrientation DisplayOrientation
 		{
@@ -815,10 +816,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 		
 		/// <summary>
 		/// Gets or sets the value of RolesPosition domain property.
-		/// Description for Neumont.Tools.ORM.ShapeModel.FactTypeShape.Roles Position
+		/// Description for ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape.Roles
+		/// Position
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.FactTypeShape/RolesPosition.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.FactTypeShape/RolesPosition.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/RolesPosition.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/RolesPosition.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 		[global::System.ComponentModel.Browsable(false)]
 		[global::System.ComponentModel.ReadOnly(true)]
 		[DslModeling::DomainObjectId("89244439-fbb1-4deb-bff3-69d47cb90a6b")]
@@ -895,30 +897,30 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Gets a list of RoleDisplayOrderCollection.
 		/// Description for
-		/// Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder.FactTypeShape
+		/// ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShapeHasRoleDisplayOrder.FactTypeShape
 		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<global::Neumont.Tools.ORM.ObjectModel.RoleBase> RoleDisplayOrderCollection
+		public virtual DslModeling::LinkedElementCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleBase> RoleDisplayOrderCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::LinkedElementCollection<global::Neumont.Tools.ORM.ObjectModel.RoleBase>(this, global::Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder.FactTypeShapeDomainRoleId);
+				return new DslModeling::LinkedElementCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleBase>(this, global::ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShapeHasRoleDisplayOrder.FactTypeShapeDomainRoleId);
 			}
 		}
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORM.ShapeModel
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	/// <summary>
 	/// DomainClass SubtypeLink
-	/// Description for Neumont.Tools.ORM.ShapeModel.SubtypeLink
+	/// Description for ORMSolutions.ORMArchitect.Core.ShapeModel.SubtypeLink
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.SubtypeLink.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.SubtypeLink.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.SubtypeLink.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.SubtypeLink.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("87ddaeda-1fd8-4433-bb1e-7482c7f471a7")]
-	public partial class SubtypeLink : global::Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape
+	public partial class SubtypeLink : global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseBinaryLinkShape
 	{
 		#region DiagramElement boilerplate
 		private static DslDiagrams::StyleSet classStyleSet;
@@ -1045,14 +1047,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORM.ShapeModel
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	/// <summary>
 	/// DomainClass ExternalConstraintShape
-	/// Description for Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintShape
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintShape.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintShape.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("00a08f56-73ba-4c8f-8fa1-ae61b8fc1cae")]
 	public partial class ExternalConstraintShape : ORMBaseShape
@@ -1182,14 +1185,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORM.ShapeModel
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	/// <summary>
 	/// DomainClass FrequencyConstraintShape
-	/// Description for Neumont.Tools.ORM.ShapeModel.FrequencyConstraintShape
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ShapeModel.FrequencyConstraintShape
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.FrequencyConstraintShape.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.FrequencyConstraintShape.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FrequencyConstraintShape.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FrequencyConstraintShape.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("ec47cd7d-023b-4971-8b5b-1242dbc7356f")]
 	public partial class FrequencyConstraintShape : ExternalConstraintShape
@@ -1319,14 +1323,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORM.ShapeModel
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	/// <summary>
 	/// DomainClass RingConstraintShape
-	/// Description for Neumont.Tools.ORM.ShapeModel.RingConstraintShape
+	/// Description for ORMSolutions.ORMArchitect.Core.ShapeModel.RingConstraintShape
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.RingConstraintShape.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.RingConstraintShape.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.RingConstraintShape.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.RingConstraintShape.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("61b334c5-d37f-4a74-90e9-ac793d35bdf1")]
 	public partial class RingConstraintShape : ExternalConstraintShape
@@ -1456,14 +1460,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORM.ShapeModel
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	/// <summary>
 	/// DomainClass FloatingTextShape
-	/// Description for Neumont.Tools.ORM.ShapeModel.FloatingTextShape
+	/// Description for ORMSolutions.ORMArchitect.Core.ShapeModel.FloatingTextShape
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.FloatingTextShape.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.FloatingTextShape.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FloatingTextShape.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FloatingTextShape.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("0904999f-d9c5-4c4e-a08f-f8dd4b2f29a3")]
 	public abstract partial class FloatingTextShape : ORMBaseShape
@@ -1498,15 +1502,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORM.ShapeModel
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	/// <summary>
 	/// DomainClass ObjectifiedFactTypeNameShape
-	/// Description for Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectifiedFactTypeNameShape
 	/// </summary>
-	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::Neumont.Tools.Modeling.Diagrams.Design.PresentationElementTypeDescriptionProvider<ObjectifiedFactTypeNameShape, global::Neumont.Tools.ORM.ObjectModel.ObjectType, Design.ObjectifiedFactTypeNameShapeTypeDescriptor<ObjectifiedFactTypeNameShape, global::Neumont.Tools.ORM.ObjectModel.ObjectType>>))]
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::ORMSolutions.ORMArchitect.Framework.Diagrams.Design.PresentationElementTypeDescriptionProvider<ObjectifiedFactTypeNameShape, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType, Design.ObjectifiedFactTypeNameShapeTypeDescriptor<ObjectifiedFactTypeNameShape, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType>>))]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectifiedFactTypeNameShape.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectifiedFactTypeNameShape.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("7fd5183a-8bc2-43bb-8474-a0a2d558d90a")]
 	public partial class ObjectifiedFactTypeNameShape : FloatingTextShape
@@ -1638,8 +1643,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Should shapes for the FactType and ValueType corresponding to this ReferenceMode
 		/// pattern be displayed on the diagram?
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape/ExpandRefMode.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape/ExpandRefMode.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectifiedFactTypeNameShape/ExpandRefMode.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectifiedFactTypeNameShape/ExpandRefMode.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 		[DslModeling::DomainObjectId("5bdafe8c-afa7-4b78-adc6-cae876ab2140")]
 		public global::System.Boolean ExpandRefMode
 		{
@@ -1711,14 +1716,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORM.ShapeModel
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	/// <summary>
 	/// DomainClass ReadingShape
-	/// Description for Neumont.Tools.ORM.ShapeModel.ReadingShape
+	/// Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ReadingShape.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ReadingShape.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("c567ed6d-d0a6-4fd8-a974-c567aa309d5e")]
 	public partial class ReadingShape : FloatingTextShape
@@ -1835,14 +1840,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORM.ShapeModel
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	/// <summary>
 	/// DomainClass ValueConstraintShape
-	/// Description for Neumont.Tools.ORM.ShapeModel.ValueConstraintShape
+	/// Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ValueConstraintShape
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ValueConstraintShape.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ValueConstraintShape.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ValueConstraintShape.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ValueConstraintShape.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("b65f916a-06a5-4efe-bbf9-8d8e55b5c7eb")]
 	public partial class ValueConstraintShape : FloatingTextShape
@@ -1959,14 +1964,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORM.ShapeModel
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	/// <summary>
 	/// DomainClass RoleNameShape
-	/// Description for Neumont.Tools.ORM.ShapeModel.RoleNameShape
+	/// Description for ORMSolutions.ORMArchitect.Core.ShapeModel.RoleNameShape
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.RoleNameShape.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.RoleNameShape.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.RoleNameShape.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.RoleNameShape.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("2cb7393c-4502-4c59-979d-94d6c89b4080")]
 	public partial class RoleNameShape : FloatingTextShape
@@ -2083,14 +2088,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORM.ShapeModel
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	/// <summary>
 	/// DomainClass ModelNoteShape
-	/// Description for Neumont.Tools.ORM.ShapeModel.ModelNoteShape
+	/// Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteShape
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ModelNoteShape.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ModelNoteShape.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteShape.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteShape.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("8252e1d1-3c59-4595-8c32-9fb79e84924e")]
 	public partial class ModelNoteShape : FloatingTextShape
@@ -2220,15 +2225,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORM.ShapeModel
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	/// <summary>
 	/// DomainClass LinkConnectorShape
 	/// Zero-size relative shape used as a proxy connection point for other shapes and
 	/// links.
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.LinkConnectorShape.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.LinkConnectorShape.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.LinkConnectorShape.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.LinkConnectorShape.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("51770447-28e0-4bff-977f-2d2625f7978d")]
 	public partial class LinkConnectorShape : DslDiagrams::NodeShape
@@ -2358,15 +2363,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion
 	}
 }
-namespace Neumont.Tools.ORM.ShapeModel
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	/// <summary>
 	/// DomainClass FactTypeLinkConnectorShape
 	/// Zero-size relative shape used to disambiguate multiple duplicate links between
 	/// FactTypeShape and other shape types.
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.FactTypeLinkConnectorShape.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.FactTypeLinkConnectorShape.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeLinkConnectorShape.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeLinkConnectorShape.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("6a50cbaf-5ea0-4963-9fe6-a288b180a5b8")]
 	public partial class FactTypeLinkConnectorShape : LinkConnectorShape

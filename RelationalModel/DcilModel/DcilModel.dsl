@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
-	Neumont Object-Role Modeling Architect for Visual Studio
+	Natural Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
-	Copyright © Matthew Curland. All rights reserved.
+	Copyright © ORM Solutions, LLC. All rights reserved.
 
 	The use and distribution terms for this software are covered by the
 	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
@@ -17,26 +17,26 @@
 	xmlns="http://schemas.microsoft.com/VisualStudio/2005/DslTools/DslDefinitionModel"
 	PackageGuid="EFDDC549-1646-4451-8A51-E5A5E94D647C"
 	Id="CEDE46B1-9CA1-4C55-BC88-3DACFADD70EA"
-	Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase"
-	PackageNamespace="Neumont.Tools.RelationalModels"
+	Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase"
+	PackageNamespace="ORMSolutions.ORMArchitect.RelationalModels"
 	Name="ConceptualDatabase"
 	DisplayName="Relational Model"
 	Description="Relational Database View of ORM Model"
-	CompanyName="Neumont University"
-	ProductName="Neumont ORM Architect for Visual Studio"
+	CompanyName="ORM Solutions, LLC"
+	ProductName="Natural Object-Role Modeling Architect for Visual Studio"
 	MajorVersion="1" MinorVersion="0" Build="0" Revision="0">
 
 	<Classes>
-		<DomainClass Id="35796255-F8FB-4D5E-A2CE-B3D48911EBEB" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="ConceptualDatabaseModelElement" InheritanceModifier="Abstract" Description="Base class for ConceptualData &lt;see cref='DslModeling::ModelElement'/>s.">
+		<DomainClass Id="35796255-F8FB-4D5E-A2CE-B3D48911EBEB" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="ConceptualDatabaseModelElement" InheritanceModifier="Abstract" Description="Base class for ConceptualData &lt;see cref='DslModeling::ModelElement'/>s.">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;ConceptualDatabaseModelElement, Design.ConceptualDatabaseElementTypeDescriptor&lt;ConceptualDatabaseModelElement&gt;&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;ConceptualDatabaseModelElement, Design.ConceptualDatabaseElementTypeDescriptor&lt;ConceptualDatabaseModelElement&gt;&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
 		</DomainClass>
-		<DomainClass Id="0A5DCA22-AF17-4C53-9BAF-B7DA1650119C" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="Catalog" Description="A named collection of schemas (commonly referred to as a database). Equivalent to a 'CATALOG' in the SQL Standard.">
+		<DomainClass Id="0A5DCA22-AF17-4C53-9BAF-B7DA1650119C" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="Catalog" Description="A named collection of schemas (commonly referred to as a database). Equivalent to a 'CATALOG' in the SQL Standard.">
 			<BaseClass>
 				<DomainClassMoniker Name="ConceptualDatabaseModelElement"/>
 			</BaseClass>
@@ -55,7 +55,7 @@
 				</DomainProperty>
 			</Properties>
 		</DomainClass>
-		<DomainClass Id="DDBACED7-C013-419B-A305-9937379038D0" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="Schema" Description="Equivalent to a 'SCHEMA' in the SQL Standard.">
+		<DomainClass Id="DDBACED7-C013-419B-A305-9937379038D0" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="Schema" Description="Equivalent to a 'SCHEMA' in the SQL Standard.">
 			<BaseClass>
 				<DomainClassMoniker Name="ConceptualDatabaseModelElement"/>
 			</BaseClass>
@@ -74,7 +74,7 @@
 				</DomainProperty>
 			</Properties>
 		</DomainClass>
-		<DomainClass Id="99E0B931-A6B9-4248-B6DE-5AFD95BBB21A" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="Table" Description="Equivalent to a 'TABLE' in the SQL Standard.">
+		<DomainClass Id="99E0B931-A6B9-4248-B6DE-5AFD95BBB21A" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="Table" Description="Equivalent to a 'TABLE' in the SQL Standard.">
 			<BaseClass>
 				<DomainClassMoniker Name="ConceptualDatabaseModelElement"/>
 			</BaseClass>
@@ -93,11 +93,11 @@
 				</DomainProperty>
 			</Properties>
 		</DomainClass>
-		<DomainClass Id="16628BD3-D761-4C6A-816E-C98AEFBADC41" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="Column" Description="Equivalent to a 'COLUMN' in the SQL Standard.">
+		<DomainClass Id="16628BD3-D761-4C6A-816E-C98AEFBADC41" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="Column" Description="Equivalent to a 'COLUMN' in the SQL Standard.">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;Column, Design.ColumnTypeDescriptor&lt;Column&gt;&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;Column, Design.ColumnTypeDescriptor&lt;Column&gt;&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -146,7 +146,7 @@
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.RelationalModels.ConceptualDatabase.Design.ColumnDataTypePicker)"/>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Design.ColumnDataTypePicker)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 							</Parameters>
 						</ClrAttribute>
@@ -174,7 +174,7 @@
 				</DomainProperty>-->
 			</Properties>
 		</DomainClass>
-		<DomainClass Id="A966AAA8-E770-4696-8865-A1396B7871BD" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="Constraint" InheritanceModifier="Abstract" Description="Base class for ConceptualData constraints.">
+		<DomainClass Id="A966AAA8-E770-4696-8865-A1396B7871BD" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="Constraint" InheritanceModifier="Abstract" Description="Base class for ConceptualData constraints.">
 			<BaseClass>
 				<DomainClassMoniker Name="ConceptualDatabaseModelElement"/>
 			</BaseClass>
@@ -193,7 +193,7 @@
 				</DomainProperty>
 			</Properties>
 		</DomainClass>
-		<DomainClass Id="18DC9CAA-3F7B-49E2-8DB3-71898C66423A" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="UniquenessConstraint" Description="A constraint on the uniqueness of a set of columns. Equivalent to a 'UNIQUE' or 'PRIMARY KEY' in the SQL Standard.">
+		<DomainClass Id="18DC9CAA-3F7B-49E2-8DB3-71898C66423A" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="UniquenessConstraint" Description="A constraint on the uniqueness of a set of columns. Equivalent to a 'UNIQUE' or 'PRIMARY KEY' in the SQL Standard.">
 			<BaseClass>
 				<DomainClassMoniker Name="Constraint"/>
 			</BaseClass>
@@ -214,12 +214,12 @@
 				</DomainProperty>
 			</Properties>
 		</DomainClass>
-		<DomainClass Id="17F929CE-D332-40F6-BCE3-6A7901790FE3" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="ReferenceConstraint" Description="A reference to a &lt;see cref='UniquenessConstraint'/> in another table. Equivalent to a 'FOREIGN KEY' in the SQL Standard.">
+		<DomainClass Id="17F929CE-D332-40F6-BCE3-6A7901790FE3" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="ReferenceConstraint" Description="A reference to a &lt;see cref='UniquenessConstraint'/> in another table. Equivalent to a 'FOREIGN KEY' in the SQL Standard.">
 			<BaseClass>
 				<DomainClassMoniker Name="Constraint"/>
 			</BaseClass>
 		</DomainClass>
-		<DomainClass Id="A8F18E46-FC02-4DC1-AF0A-47FA4C5D8DDC" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="CheckConstraint" Description="Equivalent to a table-level or domain 'CHECK' clause in the SQL Standard.">
+		<DomainClass Id="A8F18E46-FC02-4DC1-AF0A-47FA4C5D8DDC" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="CheckConstraint" Description="Equivalent to a table-level or domain 'CHECK' clause in the SQL Standard.">
 			<BaseClass>
 				<DomainClassMoniker Name="Constraint"/>
 			</BaseClass>
@@ -232,7 +232,7 @@
 				</DomainProperty>-->
 			</Properties>
 		</DomainClass>
-		<DomainClass Id="C06C8520-E087-4A6A-8E41-24A195773EDC" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="Domain" Description="A user-defined data domain, which can have custom restrictions on it.">
+		<DomainClass Id="C06C8520-E087-4A6A-8E41-24A195773EDC" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="Domain" Description="A user-defined data domain, which can have custom restrictions on it.">
 			<BaseClass>
 				<DomainClassMoniker Name="ConceptualDatabaseModelElement"/>
 			</BaseClass>
@@ -251,7 +251,7 @@
 				</DomainProperty>
 			</Properties>
 		</DomainClass>
-		<DomainClass Id="14B0A424-4646-4B01-80AA-F67D118F46CA" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="PredefinedDataType">
+		<DomainClass Id="14B0A424-4646-4B01-80AA-F67D118F46CA" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="PredefinedDataType">
 			<BaseClass>
 				<DomainClassMoniker Name="ConceptualDatabaseModelElement"/>
 			</BaseClass>
@@ -265,7 +265,7 @@
 						</ClrAttribute>
 					</Attributes>
 					<Type>
-						<DomainEnumerationMoniker Name="/Neumont.Tools.RelationalModels.DatabaseDefinition/PredefinedType"/>
+						<DomainEnumerationMoniker Name="/ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition/PredefinedType"/>
 					</Type>
 				</DomainProperty>
 				<DomainProperty Id="C1982D15-4BFF-4075-8AB3-6BA723A88915" Name="Length" Description="The number of characters in a CHARACTER, CHARACTER VARYING, or CHARACTER LARGE OBJECT, or the number of bytes in a BINARY LARGE OBJECT.">
@@ -315,7 +315,7 @@
 				</DomainProperty>
 			</Properties>
 		</DomainClass>
-		<!--<DomainClass Id="22200B9F-5E51-4CE7-86E4-0A94A0EE2A46" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="Trigger" Description="Equivalent to a 'TRIGGER' in the SQL Standard.">
+		<!--<DomainClass Id="22200B9F-5E51-4CE7-86E4-0A94A0EE2A46" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="Trigger" Description="Equivalent to a 'TRIGGER' in the SQL Standard.">
 			<BaseClass>
 				<DomainClassMoniker Name="ConceptualDatabaseModelElement"/>
 			</BaseClass>
@@ -369,7 +369,7 @@
 				</DomainProperty>
 			</Properties>
 		</DomainClass>-->
-		<!--<DomainClass Id="1D1E4A80-F62A-401A-9096-3191B8FD90DC" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="Procedure" Description="Equivalent to a 'PROCEDURE' in the SQL standard.">
+		<!--<DomainClass Id="1D1E4A80-F62A-401A-9096-3191B8FD90DC" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="Procedure" Description="Equivalent to a 'PROCEDURE' in the SQL standard.">
 			<BaseClass>
 				<DomainClassMoniker Name="ConceptualDatabaseModelElement"/>
 			</BaseClass>
@@ -395,7 +395,7 @@
 						</ClrAttribute>
 					</Attributes>
 					<Type>
-						<DomainEnumerationMoniker Name="/Neumont.Tools.RelationalModels.DatabaseDefinition/SqlDataAccessIndication"/>
+						<DomainEnumerationMoniker Name="/ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition/SqlDataAccessIndication"/>
 					</Type>
 				</DomainProperty>
 			</Properties>
@@ -403,7 +403,7 @@
 	</Classes>
 
 	<Relationships>
-		<DomainRelationship Id="7CBDB2CD-2E18-4F16-BAE8-C81D0F72F90D" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="CatalogContainsSchema" IsEmbedding="true">
+		<DomainRelationship Id="7CBDB2CD-2E18-4F16-BAE8-C81D0F72F90D" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="CatalogContainsSchema" IsEmbedding="true">
 			<Source>
 				<DomainRole Id="F7B037D9-D101-463A-8BDE-62EEBD5430F3" Name="Catalog" PropertyName="SchemaCollection" Multiplicity="ZeroMany">
 					<RolePlayer>
@@ -421,7 +421,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Id="CE3DCF73-DA08-4116-A95A-BD9BC2A9D418" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="SchemaContainsContent" IsEmbedding="true" InheritanceModifier="Abstract">
+		<DomainRelationship Id="CE3DCF73-DA08-4116-A95A-BD9BC2A9D418" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="SchemaContainsContent" IsEmbedding="true" InheritanceModifier="Abstract">
 			<Source>
 				<DomainRole Id="6D64020B-CF32-4AC6-A74B-59E2F6421B65" Name="Schema" PropertyName="SchemaContent" IsPropertyGenerator="false" Multiplicity="ZeroMany">
 					<RolePlayer>
@@ -437,7 +437,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Id="3AC7CBD0-A619-4F31-8C8C-F0AA586D2C69" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="SchemaContainsTable" IsEmbedding="true">
+		<DomainRelationship Id="3AC7CBD0-A619-4F31-8C8C-F0AA586D2C69" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="SchemaContainsTable" IsEmbedding="true">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="SchemaContainsContent"/>
 			</BaseRelationship>
@@ -456,7 +456,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Id="4E787A64-2A01-4AF0-A28B-35052693B1AB" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="SchemaContainsDomain" IsEmbedding="true">
+		<DomainRelationship Id="4E787A64-2A01-4AF0-A28B-35052693B1AB" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="SchemaContainsDomain" IsEmbedding="true">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="SchemaContainsContent"/>
 			</BaseRelationship>
@@ -475,7 +475,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<!--<DomainRelationship Id="6BB09D05-C03F-4785-B26F-73DC97255734" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="SchemaContainsTrigger" IsEmbedding="true">
+		<!--<DomainRelationship Id="6BB09D05-C03F-4785-B26F-73DC97255734" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="SchemaContainsTrigger" IsEmbedding="true">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="SchemaContainsContent"/>
 			</BaseRelationship>
@@ -494,7 +494,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>-->
-		<!--<DomainRelationship Id="E918781A-0363-48CA-A215-A6BFFCB62726" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="SchemaContainsProcedure" IsEmbedding="true">
+		<!--<DomainRelationship Id="E918781A-0363-48CA-A215-A6BFFCB62726" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="SchemaContainsProcedure" IsEmbedding="true">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="SchemaContainsContent"/>
 			</BaseRelationship>
@@ -514,7 +514,7 @@
 			</Target>
 		</DomainRelationship>-->
 
-		<DomainRelationship Id="FB5B6B20-8A4E-4BA3-BC8B-FBEAADBF9C33" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="TableContainsColumn" IsEmbedding="true">
+		<DomainRelationship Id="FB5B6B20-8A4E-4BA3-BC8B-FBEAADBF9C33" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="TableContainsColumn" IsEmbedding="true">
 			<Source>
 				<DomainRole Id="C3A52815-E9B9-4757-9985-717E54F884ED" Name="Table" PropertyName="ColumnCollection" Multiplicity="OneMany">
 					<RolePlayer>
@@ -530,7 +530,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Id="DAD57818-93B6-4584-A94E-71D31E4F959C" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="TableContainsConstraint" IsEmbedding="true" InheritanceModifier="Abstract">
+		<DomainRelationship Id="DAD57818-93B6-4584-A94E-71D31E4F959C" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="TableContainsConstraint" IsEmbedding="true" InheritanceModifier="Abstract">
 			<Source>
 				<DomainRole Id="E64C339F-8AC5-494D-A913-D22D5034E961" Name="Table" PropertyName="ConstraintCollection" IsPropertyGenerator="false" Multiplicity="OneMany">
 					<RolePlayer>
@@ -546,7 +546,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Id="8F420258-5C3D-4383-A657-13C0085500C5" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="TableContainsUniquenessConstraint" IsEmbedding="true">
+		<DomainRelationship Id="8F420258-5C3D-4383-A657-13C0085500C5" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="TableContainsUniquenessConstraint" IsEmbedding="true">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="TableContainsConstraint"/>
 			</BaseRelationship>
@@ -565,7 +565,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Id="8E95A446-7557-4E60-B011-79F28F2F0773" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="TableContainsReferenceConstraint" IsEmbedding="true">
+		<DomainRelationship Id="8E95A446-7557-4E60-B011-79F28F2F0773" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="TableContainsReferenceConstraint" IsEmbedding="true">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="TableContainsConstraint"/>
 			</BaseRelationship>
@@ -584,7 +584,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Id="C129490D-491C-426F-B04B-7C11D461F608" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="TableContainsCheckConstraint" IsEmbedding="true">
+		<DomainRelationship Id="C129490D-491C-426F-B04B-7C11D461F608" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="TableContainsCheckConstraint" IsEmbedding="true">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="TableContainsConstraint"/>
 			</BaseRelationship>
@@ -604,7 +604,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Id="25D67B3B-A209-480A-B708-684F1A4B887C" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="DomainContainsCheckConstraint" IsEmbedding="true">
+		<DomainRelationship Id="25D67B3B-A209-480A-B708-684F1A4B887C" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="DomainContainsCheckConstraint" IsEmbedding="true">
 			<Source>
 				<DomainRole Id="4B1BC8FC-29CA-4004-9395-2AE5BF2015A1" Name="Domain" PropertyName="CheckConstraint" Multiplicity="One">
 					<RolePlayer>
@@ -621,7 +621,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Id="AB00E63E-3F80-443F-A2C1-DF38B3B3CC4F" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="ColumnHasDomain">
+		<DomainRelationship Id="AB00E63E-3F80-443F-A2C1-DF38B3B3CC4F" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="ColumnHasDomain">
 			<Source>
 				<DomainRole Id="DB3A68AF-C144-41A1-89CC-5410AA813D4F" Name="Column" PropertyName="Domain" Multiplicity="ZeroOne">
 					<RolePlayer>
@@ -637,7 +637,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Id="7DF7C60C-BB01-4D69-A884-11B62EB0DF4C" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="ColumnHasPredefinedDataType" IsEmbedding="true">
+		<DomainRelationship Id="7DF7C60C-BB01-4D69-A884-11B62EB0DF4C" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="ColumnHasPredefinedDataType" IsEmbedding="true">
 			<Source>
 				<DomainRole Id="213FD4BF-DD0C-4281-88B3-B19FF0F930C0" Name="Column" PropertyName="PredefinedDataType" Multiplicity="ZeroOne">
 					<RolePlayer>
@@ -653,7 +653,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Id="D889DCCC-682C-4588-ABD7-EA0F89F16EC3" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="DomainHasPredefinedDataType" IsEmbedding="true">
+		<DomainRelationship Id="D889DCCC-682C-4588-ABD7-EA0F89F16EC3" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="DomainHasPredefinedDataType" IsEmbedding="true">
 			<Source>
 				<DomainRole Id="90609E27-B82A-4B38-9CD9-A1852E4AE8BC" Name="Domain" PropertyName="PredefinedDataType" Multiplicity="One">
 					<RolePlayer>
@@ -670,11 +670,11 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Id="0A87B269-0D2C-4D7D-80A7-6DC1B5E0C5F6" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="UniquenessConstraintIncludesColumn">
+		<DomainRelationship Id="0A87B269-0D2C-4D7D-80A7-6DC1B5E0C5F6" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="UniquenessConstraintIncludesColumn">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;UniquenessConstraintIncludesColumn, Design.ConceptualDatabaseElementTypeDescriptor&lt;UniquenessConstraintIncludesColumn&gt;&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;UniquenessConstraintIncludesColumn, Design.ConceptualDatabaseElementTypeDescriptor&lt;UniquenessConstraintIncludesColumn&gt;&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -694,11 +694,11 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Id="27A4368B-C175-4F67-803F-AD902B5E7753" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="ReferenceConstraintTargetsTable">
+		<DomainRelationship Id="27A4368B-C175-4F67-803F-AD902B5E7753" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="ReferenceConstraintTargetsTable">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;ReferenceConstraintTargetsTable, Design.ConceptualDatabaseElementTypeDescriptor&lt;ReferenceConstraintTargetsTable&gt;&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;ReferenceConstraintTargetsTable, Design.ConceptualDatabaseElementTypeDescriptor&lt;ReferenceConstraintTargetsTable&gt;&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -717,7 +717,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Id="44C97277-D3AD-4B88-8360-8B5FA1C1EFF2" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="ReferenceConstraintTargetsUniquenessConstraint">
+		<DomainRelationship Id="44C97277-D3AD-4B88-8360-8B5FA1C1EFF2" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="ReferenceConstraintTargetsUniquenessConstraint">
 			<Source>
 				<DomainRole Id="AD67D427-5D9A-4195-A702-0F994B715E9F" Name="ReferenceConstraint" PropertyName="TargetUniquenessConstraint" Multiplicity="One" PropagatesDelete="true">
 					<RolePlayer>
@@ -733,11 +733,11 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Id="2CA33A35-0FD3-4B68-9222-F2851A909C2F" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="ColumnReference" AllowsDuplicates="true">
+		<DomainRelationship Id="2CA33A35-0FD3-4B68-9222-F2851A909C2F" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="ColumnReference" AllowsDuplicates="true">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;ColumnReference, Design.ConceptualDatabaseElementTypeDescriptor&lt;ColumnReference&gt;&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;ColumnReference, Design.ConceptualDatabaseElementTypeDescriptor&lt;ColumnReference&gt;&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -756,7 +756,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Id="59F535BC-8DAF-43A0-8CFC-519086A5A9DE" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="ReferenceConstraintContainsColumnReference">
+		<DomainRelationship Id="59F535BC-8DAF-43A0-8CFC-519086A5A9DE" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="ReferenceConstraintContainsColumnReference">
 			<Source>
 				<DomainRole Id="FA2DFF9B-4E4B-4BDE-BDDD-090D6B6A6893" Name="ReferenceConstraint" PropertyName="ColumnReferenceCollection" Multiplicity="OneMany">
 					<RolePlayer>
@@ -775,7 +775,7 @@
 	</Relationships>
 
 	<Types>
-		<DomainEnumeration Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="TriggerTarget" Description="The valid values for the target attribute of a trigger.">
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="TriggerTarget" Description="The valid values for the target attribute of a trigger.">
 			<Literals>
 				<EnumerationLiteral Name="OldRow" Value="0">
 					<Attributes>
@@ -818,12 +818,12 @@
 				<ClrAttribute Name="global::System.Serializable"/>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;TriggerTarget, global::Neumont.Tools.RelationalModels.ConceptualDatabase.Catalog&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;TriggerTarget, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Catalog&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
 		</DomainEnumeration>
-		<DomainEnumeration Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="TriggerActionTime" Description="The valid values for the actionTime attribute of a trigger.">
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="TriggerActionTime" Description="The valid values for the actionTime attribute of a trigger.">
 			<Literals>
 				<EnumerationLiteral Name="Before" Value="0">
 					<Attributes>
@@ -848,12 +848,12 @@
 				<ClrAttribute Name="global::System.Serializable"/>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;TriggerActionTime, global::Neumont.Tools.RelationalModels.ConceptualDatabase.Catalog&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;TriggerActionTime, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Catalog&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
 		</DomainEnumeration>
-		<DomainEnumeration Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="TriggerEvent" Description="The valid values for the event attribute of a trigger.">
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="TriggerEvent" Description="The valid values for the event attribute of a trigger.">
 			<Literals>
 				<EnumerationLiteral Name="Insert" Value="0">
 					<Attributes>
@@ -887,12 +887,12 @@
 				<ClrAttribute Name="global::System.Serializable"/>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;TriggerEvent, global::Neumont.Tools.RelationalModels.ConceptualDatabase.Catalog&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;TriggerEvent, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Catalog&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
 		</DomainEnumeration>
-		<DomainEnumeration Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase" Name="TriggerForEach" Description="The valid values for the event attribute of a trigger.">
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="TriggerForEach" Description="The valid values for the event attribute of a trigger.">
 			<Literals>
 				<EnumerationLiteral Name="Statement" Value="0">
 					<Attributes>
@@ -917,12 +917,12 @@
 				<ClrAttribute Name="global::System.Serializable"/>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;TriggerForEach, global::Neumont.Tools.RelationalModels.ConceptualDatabase.Catalog&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;TriggerForEach, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Catalog&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
 		</DomainEnumeration>
-		<DomainEnumeration Namespace="Neumont.Tools.RelationalModels.DatabaseDefinition" Name="SqlDataAccessIndication" Description="Used to indicate the type of access to SQL-data for a SQL-invoked routine.">
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition" Name="SqlDataAccessIndication" Description="Used to indicate the type of access to SQL-data for a SQL-invoked routine.">
 			<Literals>
 				<EnumerationLiteral Name="NoSql" Value="0" Description="Indicates that the SQL-invoked routine does not possibly contain SQL.">
 					<Attributes>
@@ -965,12 +965,12 @@
 				<ClrAttribute Name="global::System.Serializable"/>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;SqlDataAccessIndication, global::Neumont.Tools.RelationalModels.ConceptualDatabase.Catalog&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;SqlDataAccessIndication, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Catalog&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
 		</DomainEnumeration>
-		<DomainEnumeration Namespace="Neumont.Tools.RelationalModels.DatabaseDefinition" Name="PredefinedType">
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition" Name="PredefinedType">
 			<Literals>
 				<EnumerationLiteral Name="StringMask" Value="1140850688">
 					<Notes>CharacterStringMask | BinaryStringMask</Notes>
@@ -1213,13 +1213,13 @@
 				<ClrAttribute Name="global::System.Serializable"/>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;PredefinedType, global::Neumont.Tools.RelationalModels.ConceptualDatabase.Catalog&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;PredefinedType, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Catalog&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
 		</DomainEnumeration>
 	</Types>
 
-	<XmlSerializationBehavior Name="DcilDomainModelSerializationBehavior" Namespace="Neumont.Tools.RelationalModels.ConceptualDatabase"/>
+	<XmlSerializationBehavior Name="DcilDomainModelSerializationBehavior" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase"/>
 
 </Dsl>

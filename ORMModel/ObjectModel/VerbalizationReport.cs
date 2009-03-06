@@ -1,9 +1,9 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © Matthew Curland. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -32,11 +32,11 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using Neumont.Tools.Modeling;
-using Neumont.Tools.ORM.Shell;
-using Neumont.Tools.ORM.ObjectModel;
+using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Core.Shell;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
 
-namespace Neumont.Tools.ORM.ObjectModel.Verbalization
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 {
 	#region HtmlReport class
 	/// <summary>
@@ -102,7 +102,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 	/// <summary>
 	/// Determines the elements of the Model to report
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<VerbalizationReportContent, global::Neumont.Tools.ORM.ObjectModel.ORMModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<VerbalizationReportContent, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel>))]
 	[Flags]
 	public enum VerbalizationReportContent
 	{
@@ -516,7 +516,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Verbalization
 		{
 			private IVerbalizationSets<ReportVerbalizationSnippetType> myReportSnippets;
 			/// <summary>
-			/// Initializes a new instance of Neumont.Tools.ORM.ObjectModel.VerbalizationReportCallbackWriter
+			/// Initializes a new instance of ORMSolutions.ORMArchitect.Core.ObjectModel.VerbalizationReportCallbackWriter
 			/// </summary>
 			public VerbalizationReportCallbackWriter(IDictionary<Type, IVerbalizationSets> snippetDictionary, TextWriter writer)
 				: base((IVerbalizationSets<CoreVerbalizationSnippetType>)snippetDictionary[typeof(CoreVerbalizationSnippetType)], writer)

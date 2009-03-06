@@ -1,6 +1,6 @@
 ﻿#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -24,15 +24,15 @@
 
 using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
-namespace Neumont.Tools.EntityRelationshipModels.Barker
+namespace ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker
 {
 	/// <summary>
 	/// DomainRelationship EntityTypeHasAttribute
 	/// Description for
-	/// Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute
+	/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute.DisplayName", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute.DisplayName", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship(IsEmbedding=true)]
 	[DslModeling::DomainObjectId("ff7d1a21-8f7f-4392-8bc4-c75e2b44464b")]
@@ -109,11 +109,11 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// <summary>
 		/// DomainRole EntityType
 		/// Description for
-		/// Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute.EntityType
+		/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute.EntityType
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute/EntityType.DisplayName", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute/EntityType.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "AttributeCollection", PropertyDisplayNameKey="Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute/EntityType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute/EntityType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute/EntityType.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "AttributeCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute/EntityType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("60179d80-596a-4646-a240-7ed97aaedce2")]
 		public virtual EntityType EntityType
 		{
@@ -161,11 +161,11 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// <summary>
 		/// DomainRole Attribute
 		/// Description for
-		/// Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute.Attribute
+		/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute.Attribute
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute/Attribute.DisplayName", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute/Attribute.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "EntityType", PropertyDisplayNameKey="Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute/Attribute.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute/Attribute.DisplayName", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute/Attribute.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "EntityType", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute/Attribute.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("9f98b07b-ea08-4c6b-ae5d-6ea871155650")]
 		public virtual Attribute Attribute
 		{
@@ -199,9 +199,9 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute> GetLinksToAttributeCollection ( global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType entityTypeInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute> GetLinksToAttributeCollection ( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType entityTypeInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute>(entityTypeInstance, global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute.EntityTypeDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute>(entityTypeInstance, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute.EntityTypeDomainRoleId);
 		}
 		#endregion
 		#region Attribute link accessor
@@ -210,9 +210,9 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute GetLinkToEntityType (global::Neumont.Tools.EntityRelationshipModels.Barker.Attribute attributeInstance)
+		public static global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute GetLinkToEntityType (global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute attributeInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute>(attributeInstance, global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute.AttributeDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute>(attributeInstance, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute.AttributeDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Attribute not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -231,11 +231,11 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute> GetLinks( global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType source, global::Neumont.Tools.EntityRelationshipModels.Barker.Attribute target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute> GetLinks( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute>(source, global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute.EntityTypeDomainRoleId);
-			foreach ( global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute>(source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute.EntityTypeDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute link in links )
 			{
 				if ( target.Equals(link.Attribute) )
 				{
@@ -249,10 +249,10 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute GetLink( global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType source, global::Neumont.Tools.EntityRelationshipModels.Barker.Attribute target )
+		public static global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute GetLink( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute>(source, global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute.EntityTypeDomainRoleId);
-			foreach ( global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeHasAttribute link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute>(source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute.EntityTypeDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeHasAttribute link in links )
 			{
 				if ( target.Equals(link.Attribute) )
 				{
@@ -265,15 +265,15 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		#endregion
 	}
 }
-namespace Neumont.Tools.EntityRelationshipModels.Barker
+namespace ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker
 {
 	/// <summary>
 	/// DomainRelationship AttributeHasPossibleValue
 	/// Description for
-	/// Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue
+	/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue.DisplayName", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue.DisplayName", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship(IsEmbedding=true)]
 	[DslModeling::DomainObjectId("d1bfe73f-e05d-48d2-895b-b4daaa60908a")]
@@ -350,11 +350,11 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// <summary>
 		/// DomainRole Attribute
 		/// Description for
-		/// Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue.Attribute
+		/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue.Attribute
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue/Attribute.DisplayName", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue/Attribute.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "PossibleValuesCollection", PropertyDisplayNameKey="Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue/Attribute.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue/Attribute.DisplayName", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue/Attribute.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "PossibleValuesCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue/Attribute.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("2c5b6ef2-cdf7-4a42-a90f-a08bf4c36c9e")]
 		public virtual Attribute Attribute
 		{
@@ -402,11 +402,11 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// <summary>
 		/// DomainRole Value
 		/// Description for
-		/// Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue.Value
+		/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue.Value
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue/Value.DisplayName", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue/Value.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Attribute", PropertyDisplayNameKey="Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue/Value.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue/Value.DisplayName", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue/Value.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Attribute", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue/Value.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("cffa86f5-0271-4416-ad85-d52934459d56")]
 		public virtual Value Value
 		{
@@ -440,9 +440,9 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue> GetLinksToPossibleValuesCollection ( global::Neumont.Tools.EntityRelationshipModels.Barker.Attribute attributeInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue> GetLinksToPossibleValuesCollection ( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute attributeInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue>(attributeInstance, global::Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue.AttributeDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue>(attributeInstance, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue.AttributeDomainRoleId);
 		}
 		#endregion
 		#region Value link accessor
@@ -451,9 +451,9 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue GetLinkToAttribute (global::Neumont.Tools.EntityRelationshipModels.Barker.Value valueInstance)
+		public static global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue GetLinkToAttribute (global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Value valueInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue>(valueInstance, global::Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue.ValueDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue>(valueInstance, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue.ValueDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Value not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -472,11 +472,11 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue> GetLinks( global::Neumont.Tools.EntityRelationshipModels.Barker.Attribute source, global::Neumont.Tools.EntityRelationshipModels.Barker.Value target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue> GetLinks( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Value target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue>(source, global::Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue.AttributeDomainRoleId);
-			foreach ( global::Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue>(source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue.AttributeDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue link in links )
 			{
 				if ( target.Equals(link.Value) )
 				{
@@ -490,10 +490,10 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue GetLink( global::Neumont.Tools.EntityRelationshipModels.Barker.Attribute source, global::Neumont.Tools.EntityRelationshipModels.Barker.Value target )
+		public static global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue GetLink( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Value target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue>(source, global::Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue.AttributeDomainRoleId);
-			foreach ( global::Neumont.Tools.EntityRelationshipModels.Barker.AttributeHasPossibleValue link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue>(source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue.AttributeDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.AttributeHasPossibleValue link in links )
 			{
 				if ( target.Equals(link.Value) )
 				{
@@ -506,15 +506,15 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		#endregion
 	}
 }
-namespace Neumont.Tools.EntityRelationshipModels.Barker
+namespace ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker
 {
 	/// <summary>
 	/// DomainRelationship EntityTypeIsSubtypeOfEntityType
 	/// Description for
-	/// Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType
+	/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType.DisplayName", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("0bdbb7e8-8d3c-4c09-a7fc-9086b04a494e")]
@@ -591,11 +591,11 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// <summary>
 		/// DomainRole Subtype
 		/// Description for
-		/// Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType.Subtype
+		/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType.Subtype
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType/Subtype.DisplayName", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType/Subtype.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Supertype", PropertyDisplayNameKey="Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType/Subtype.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType/Subtype.DisplayName", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType/Subtype.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Supertype", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType/Subtype.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("87a158db-ae78-4282-811c-8bcbc82f24e7")]
 		public virtual EntityType Subtype
 		{
@@ -633,11 +633,11 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// <summary>
 		/// DomainRole Supertype
 		/// Description for
-		/// Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType.Supertype
+		/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType.Supertype
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType/Supertype.DisplayName", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType/Supertype.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "SubtypesCollection", PropertyDisplayNameKey="Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType/Supertype.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType/Supertype.DisplayName", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType/Supertype.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "SubtypesCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType/Supertype.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("c19b7670-8950-425f-96c6-e4ebc546f279")]
 		public virtual EntityType Supertype
 		{
@@ -681,9 +681,9 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType GetLinkToSupertype (global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType subtypeInstance)
+		public static global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType GetLinkToSupertype (global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType subtypeInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType>(subtypeInstance, global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType.SubtypeDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType>(subtypeInstance, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType.SubtypeDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Subtype not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -701,9 +701,9 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType> GetLinksToSubtypesCollection ( global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType supertypeInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType> GetLinksToSubtypesCollection ( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType supertypeInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType>(supertypeInstance, global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType.SupertypeDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType>(supertypeInstance, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType.SupertypeDomainRoleId);
 		}
 		#endregion
 		#region EntityTypeIsSubtypeOfEntityType instance accessors
@@ -713,11 +713,11 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType> GetLinks( global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType source, global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType> GetLinks( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType>(source, global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType.SubtypeDomainRoleId);
-			foreach ( global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType>(source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType.SubtypeDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType link in links )
 			{
 				if ( target.Equals(link.Supertype) )
 				{
@@ -731,10 +731,10 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType GetLink( global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType source, global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType target )
+		public static global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType GetLink( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType>(source, global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType.SubtypeDomainRoleId);
-			foreach ( global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType>(source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType.SubtypeDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypeIsSubtypeOfEntityType link in links )
 			{
 				if ( target.Equals(link.Supertype) )
 				{
@@ -747,15 +747,15 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		#endregion
 	}
 }
-namespace Neumont.Tools.EntityRelationshipModels.Barker
+namespace ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker
 {
 	/// <summary>
 	/// DomainRelationship EntityTypePlaysRole
 	/// Description for
-	/// Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole
+	/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole.DisplayName", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole.DisplayName", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("a7c02288-3e60-4aa5-a509-4f900d42ce46")]
@@ -832,11 +832,11 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// <summary>
 		/// DomainRole EntityType
 		/// Description for
-		/// Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole.EntityType
+		/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole.EntityType
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole/EntityType.DisplayName", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole/EntityType.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "RoleCollection", PropertyDisplayNameKey="Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole/EntityType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole/EntityType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole/EntityType.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "RoleCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole/EntityType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("c88332b5-35eb-40fc-9fa6-a0d74f0d6337")]
 		public virtual EntityType EntityType
 		{
@@ -884,11 +884,11 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// <summary>
 		/// DomainRole Role
 		/// Description for
-		/// Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole.Role
+		/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole.Role
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole/Role.DisplayName", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole/Role.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "EntityType", PropertyDisplayNameKey="Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole/Role.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole/Role.DisplayName", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole/Role.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "EntityType", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole/Role.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("fe8eb808-17fa-4f28-aa8f-19a240f9791d")]
 		public virtual Role Role
 		{
@@ -922,9 +922,9 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole> GetLinksToRoleCollection ( global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType entityTypeInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole> GetLinksToRoleCollection ( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType entityTypeInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole>(entityTypeInstance, global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole.EntityTypeDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole>(entityTypeInstance, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole.EntityTypeDomainRoleId);
 		}
 		#endregion
 		#region Role link accessor
@@ -933,9 +933,9 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole GetLinkToEntityType (global::Neumont.Tools.EntityRelationshipModels.Barker.Role roleInstance)
+		public static global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole GetLinkToEntityType (global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Role roleInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole>(roleInstance, global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole.RoleDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole>(roleInstance, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole.RoleDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Role not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -954,11 +954,11 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole> GetLinks( global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType source, global::Neumont.Tools.EntityRelationshipModels.Barker.Role target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole> GetLinks( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Role target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole>(source, global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole.EntityTypeDomainRoleId);
-			foreach ( global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole>(source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole.EntityTypeDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole link in links )
 			{
 				if ( target.Equals(link.Role) )
 				{
@@ -972,10 +972,10 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole GetLink( global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType source, global::Neumont.Tools.EntityRelationshipModels.Barker.Role target )
+		public static global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole GetLink( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Role target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole>(source, global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole.EntityTypeDomainRoleId);
-			foreach ( global::Neumont.Tools.EntityRelationshipModels.Barker.EntityTypePlaysRole link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole>(source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole.EntityTypeDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityTypePlaysRole link in links )
 			{
 				if ( target.Equals(link.Role) )
 				{
@@ -988,15 +988,15 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		#endregion
 	}
 }
-namespace Neumont.Tools.EntityRelationshipModels.Barker
+namespace ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker
 {
 	/// <summary>
 	/// DomainRelationship RoleHasCardinalityQualifier
 	/// Description for
-	/// Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier
+	/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier.DisplayName", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier.DisplayName", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship(IsEmbedding=true)]
 	[DslModeling::DomainObjectId("8bd9c7c4-41c6-42d1-b3f6-e124110c9f20")]
@@ -1073,11 +1073,11 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// <summary>
 		/// DomainRole Role
 		/// Description for
-		/// Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier.Role
+		/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier.Role
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier/Role.DisplayName", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier/Role.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "CardinalityQualifier", PropertyDisplayNameKey="Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier/Role.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier/Role.DisplayName", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier/Role.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "CardinalityQualifier", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier/Role.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("44710950-5ba1-492d-826d-6d59fb659e56")]
 		public virtual Role Role
 		{
@@ -1125,11 +1125,11 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// <summary>
 		/// DomainRole CardinalityQualifier
 		/// Description for
-		/// Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier.CardinalityQualifier
+		/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier.CardinalityQualifier
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier/CardinalityQualifier.DisplayName", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier/CardinalityQualifier.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Role", PropertyDisplayNameKey="Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier/CardinalityQualifier.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier/CardinalityQualifier.DisplayName", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier/CardinalityQualifier.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Role", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier/CardinalityQualifier.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("c910c3d7-0e8e-4657-bb3b-56b3f84ff7d8")]
 		public virtual CardinalityQualifier CardinalityQualifier
 		{
@@ -1173,9 +1173,9 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier GetLinkToCardinalityQualifier (global::Neumont.Tools.EntityRelationshipModels.Barker.Role roleInstance)
+		public static global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier GetLinkToCardinalityQualifier (global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Role roleInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier>(roleInstance, global::Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier.RoleDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier>(roleInstance, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier.RoleDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Role not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -1193,9 +1193,9 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier GetLinkToRole (global::Neumont.Tools.EntityRelationshipModels.Barker.CardinalityQualifier cardinalityQualifierInstance)
+		public static global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier GetLinkToRole (global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.CardinalityQualifier cardinalityQualifierInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier>(cardinalityQualifierInstance, global::Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier.CardinalityQualifierDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier>(cardinalityQualifierInstance, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier.CardinalityQualifierDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of CardinalityQualifier not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -1214,11 +1214,11 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier> GetLinks( global::Neumont.Tools.EntityRelationshipModels.Barker.Role source, global::Neumont.Tools.EntityRelationshipModels.Barker.CardinalityQualifier target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier> GetLinks( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Role source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.CardinalityQualifier target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier>(source, global::Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier.RoleDomainRoleId);
-			foreach ( global::Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier>(source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier.RoleDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier link in links )
 			{
 				if ( target.Equals(link.CardinalityQualifier) )
 				{
@@ -1232,10 +1232,10 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier GetLink( global::Neumont.Tools.EntityRelationshipModels.Barker.Role source, global::Neumont.Tools.EntityRelationshipModels.Barker.CardinalityQualifier target )
+		public static global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier GetLink( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Role source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.CardinalityQualifier target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier>(source, global::Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier.RoleDomainRoleId);
-			foreach ( global::Neumont.Tools.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier>(source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier.RoleDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.RoleHasCardinalityQualifier link in links )
 			{
 				if ( target.Equals(link.CardinalityQualifier) )
 				{
@@ -1248,15 +1248,15 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		#endregion
 	}
 }
-namespace Neumont.Tools.EntityRelationshipModels.Barker
+namespace ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker
 {
 	/// <summary>
 	/// DomainRelationship ExclusiveArcSpansOptionalRole
 	/// Description for
-	/// Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole
+	/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole.DisplayName", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole.DisplayName", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("0caedc0d-9450-4ce1-b61a-df55df75fbea")]
@@ -1333,11 +1333,11 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// <summary>
 		/// DomainRole ExclusiveArc
 		/// Description for
-		/// Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole.ExclusiveArc
+		/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole.ExclusiveArc
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole/ExclusiveArc.DisplayName", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole/ExclusiveArc.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "RoleCollection", PropertyDisplayNameKey="Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole/ExclusiveArc.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole/ExclusiveArc.DisplayName", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole/ExclusiveArc.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "RoleCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole/ExclusiveArc.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
 		[DslModeling::DomainObjectId("5f2b9a73-0d8b-4cb8-bbe0-e09317086e20")]
 		public virtual ExclusiveArc ExclusiveArc
 		{
@@ -1385,11 +1385,11 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// <summary>
 		/// DomainRole ConstrainedRole
 		/// Description for
-		/// Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole.ConstrainedRole
+		/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole.ConstrainedRole
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole/ConstrainedRole.DisplayName", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole/ConstrainedRole.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ExclusiveArc", PropertyDisplayNameKey="Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole/ConstrainedRole.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole/ConstrainedRole.DisplayName", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole/ConstrainedRole.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ExclusiveArc", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole/ConstrainedRole.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("7890570b-8556-46bf-9ad1-7f11b6a18906")]
 		public virtual Role ConstrainedRole
 		{
@@ -1423,9 +1423,9 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole> GetLinksToRoleCollection ( global::Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArc exclusiveArcInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole> GetLinksToRoleCollection ( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArc exclusiveArcInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole>(exclusiveArcInstance, global::Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole.ExclusiveArcDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole>(exclusiveArcInstance, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole.ExclusiveArcDomainRoleId);
 		}
 		#endregion
 		#region ConstrainedRole link accessor
@@ -1434,9 +1434,9 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole GetLinkToExclusiveArc (global::Neumont.Tools.EntityRelationshipModels.Barker.Role constrainedRoleInstance)
+		public static global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole GetLinkToExclusiveArc (global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Role constrainedRoleInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole>(constrainedRoleInstance, global::Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole.ConstrainedRoleDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole>(constrainedRoleInstance, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole.ConstrainedRoleDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ConstrainedRole not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -1455,11 +1455,11 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole> GetLinks( global::Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArc source, global::Neumont.Tools.EntityRelationshipModels.Barker.Role target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole> GetLinks( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArc source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Role target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole>(source, global::Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole.ExclusiveArcDomainRoleId);
-			foreach ( global::Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole>(source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole.ExclusiveArcDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole link in links )
 			{
 				if ( target.Equals(link.ConstrainedRole) )
 				{
@@ -1473,10 +1473,10 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole GetLink( global::Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArc source, global::Neumont.Tools.EntityRelationshipModels.Barker.Role target )
+		public static global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole GetLink( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArc source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Role target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole>(source, global::Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole.ExclusiveArcDomainRoleId);
-			foreach ( global::Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole>(source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole.ExclusiveArcDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArcSpansOptionalRole link in links )
 			{
 				if ( target.Equals(link.ConstrainedRole) )
 				{
@@ -1489,15 +1489,15 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		#endregion
 	}
 }
-namespace Neumont.Tools.EntityRelationshipModels.Barker
+namespace ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker
 {
 	/// <summary>
 	/// DomainRelationship BinaryAssociationContainsRole
 	/// Description for
-	/// Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole
+	/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole.DisplayName", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole.DisplayName", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship(IsEmbedding=true)]
 	[DslModeling::DomainObjectId("bcac40ef-38d3-4548-9bbc-804a11e57e08")]
@@ -1574,11 +1574,11 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// <summary>
 		/// DomainRole BinaryAssociation
 		/// Description for
-		/// Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole.BinaryAssociation
+		/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole.BinaryAssociation
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole/BinaryAssociation.DisplayName", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole/BinaryAssociation.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "RoleCollection", PropertyDisplayNameKey="Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole/BinaryAssociation.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole/BinaryAssociation.DisplayName", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole/BinaryAssociation.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "RoleCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole/BinaryAssociation.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("c9b8667e-a51d-47dc-a195-4f4d4cdc2bda")]
 		public virtual BinaryAssociation BinaryAssociation
 		{
@@ -1626,11 +1626,11 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// <summary>
 		/// DomainRole Role
 		/// Description for
-		/// Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole.Role
+		/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole.Role
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole/Role.DisplayName", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole/Role.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "BinaryAssociation", PropertyDisplayNameKey="Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole/Role.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole/Role.DisplayName", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole/Role.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "BinaryAssociation", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole/Role.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("a70f9695-2f99-4483-9ac7-9314ce08d14b")]
 		public virtual Role Role
 		{
@@ -1664,9 +1664,9 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole> GetLinksToRoleCollection ( global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation binaryAssociationInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole> GetLinksToRoleCollection ( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation binaryAssociationInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole>(binaryAssociationInstance, global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole.BinaryAssociationDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole>(binaryAssociationInstance, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole.BinaryAssociationDomainRoleId);
 		}
 		#endregion
 		#region Role link accessor
@@ -1675,9 +1675,9 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole GetLinkToBinaryAssociation (global::Neumont.Tools.EntityRelationshipModels.Barker.Role roleInstance)
+		public static global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole GetLinkToBinaryAssociation (global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Role roleInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole>(roleInstance, global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole.RoleDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole>(roleInstance, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole.RoleDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Role not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -1696,11 +1696,11 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole> GetLinks( global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation source, global::Neumont.Tools.EntityRelationshipModels.Barker.Role target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole> GetLinks( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Role target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole>(source, global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole.BinaryAssociationDomainRoleId);
-			foreach ( global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole>(source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole.BinaryAssociationDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole link in links )
 			{
 				if ( target.Equals(link.Role) )
 				{
@@ -1714,10 +1714,10 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole GetLink( global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation source, global::Neumont.Tools.EntityRelationshipModels.Barker.Role target )
+		public static global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole GetLink( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Role target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole>(source, global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole.BinaryAssociationDomainRoleId);
-			foreach ( global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociationContainsRole link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole>(source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole.BinaryAssociationDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociationContainsRole link in links )
 			{
 				if ( target.Equals(link.Role) )
 				{
@@ -1730,15 +1730,15 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		#endregion
 	}
 }
-namespace Neumont.Tools.EntityRelationshipModels.Barker
+namespace ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker
 {
 	/// <summary>
 	/// DomainRelationship BarkerErModelContainsEntityType
 	/// Description for
-	/// Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType
+	/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType.DisplayName", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship(IsEmbedding=true)]
 	[DslModeling::DomainObjectId("2ccb5738-115c-4470-bdbb-da4280acd994")]
@@ -1815,11 +1815,11 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// <summary>
 		/// DomainRole BarkerErModel
 		/// Description for
-		/// Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType.BarkerErModel
+		/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType.BarkerErModel
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType/BarkerErModel.DisplayName", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType/BarkerErModel.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "EntityTypeCollection", PropertyDisplayNameKey="Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType/BarkerErModel.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType/BarkerErModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType/BarkerErModel.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "EntityTypeCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType/BarkerErModel.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("b9aa4a9f-0414-44f1-84a7-80e9d6984a12")]
 		public virtual BarkerErModel BarkerErModel
 		{
@@ -1867,11 +1867,11 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// <summary>
 		/// DomainRole EntityType
 		/// Description for
-		/// Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType.EntityType
+		/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType.EntityType
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType/EntityType.DisplayName", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType/EntityType.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "BarkerErModel", PropertyDisplayNameKey="Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType/EntityType.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType/EntityType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType/EntityType.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "BarkerErModel", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType/EntityType.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("8ea97980-b6e3-45a5-8447-6ceebf5d62de")]
 		public virtual EntityType EntityType
 		{
@@ -1905,9 +1905,9 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType> GetLinksToEntityTypeCollection ( global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel barkerErModelInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType> GetLinksToEntityTypeCollection ( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel barkerErModelInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType>(barkerErModelInstance, global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType.BarkerErModelDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType>(barkerErModelInstance, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType.BarkerErModelDomainRoleId);
 		}
 		#endregion
 		#region EntityType link accessor
@@ -1916,9 +1916,9 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType GetLinkToBarkerErModel (global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType entityTypeInstance)
+		public static global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType GetLinkToBarkerErModel (global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType entityTypeInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType>(entityTypeInstance, global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType.EntityTypeDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType>(entityTypeInstance, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType.EntityTypeDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of EntityType not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -1937,11 +1937,11 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType> GetLinks( global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel source, global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType> GetLinks( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType>(source, global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType.BarkerErModelDomainRoleId);
-			foreach ( global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType>(source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType.BarkerErModelDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType link in links )
 			{
 				if ( target.Equals(link.EntityType) )
 				{
@@ -1955,10 +1955,10 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType GetLink( global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel source, global::Neumont.Tools.EntityRelationshipModels.Barker.EntityType target )
+		public static global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType GetLink( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType>(source, global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType.BarkerErModelDomainRoleId);
-			foreach ( global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType>(source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType.BarkerErModelDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsEntityType link in links )
 			{
 				if ( target.Equals(link.EntityType) )
 				{
@@ -1971,15 +1971,15 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		#endregion
 	}
 }
-namespace Neumont.Tools.EntityRelationshipModels.Barker
+namespace ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker
 {
 	/// <summary>
 	/// DomainRelationship BarkerErModelContainsBinaryAssociation
 	/// Description for
-	/// Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation
+	/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation.DisplayName", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation.DisplayName", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship(IsEmbedding=true)]
 	[DslModeling::DomainObjectId("734a6758-65e4-40f9-b4ec-8b99dec314af")]
@@ -2056,11 +2056,11 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// <summary>
 		/// DomainRole BarkerErModel
 		/// Description for
-		/// Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation.BarkerErModel
+		/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation.BarkerErModel
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation/BarkerErModel.DisplayName", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation/BarkerErModel.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "BinaryAssociationCollection", PropertyDisplayNameKey="Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation/BarkerErModel.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation/BarkerErModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation/BarkerErModel.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "BinaryAssociationCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation/BarkerErModel.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("400580d3-eb5b-4230-bd4f-e69c33c72751")]
 		public virtual BarkerErModel BarkerErModel
 		{
@@ -2108,11 +2108,11 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// <summary>
 		/// DomainRole BinaryAssociation
 		/// Description for
-		/// Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation.BinaryAssociation
+		/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation.BinaryAssociation
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation/BinaryAssociation.DisplayName", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation/BinaryAssociation.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "BarkerErModel", PropertyDisplayNameKey="Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation/BinaryAssociation.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation/BinaryAssociation.DisplayName", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation/BinaryAssociation.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "BarkerErModel", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation/BinaryAssociation.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("7bd4b726-1526-47ee-9e4c-a887a52a7e27")]
 		public virtual BinaryAssociation BinaryAssociation
 		{
@@ -2146,9 +2146,9 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation> GetLinksToBinaryAssociationCollection ( global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel barkerErModelInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation> GetLinksToBinaryAssociationCollection ( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel barkerErModelInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation>(barkerErModelInstance, global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation.BarkerErModelDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation>(barkerErModelInstance, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation.BarkerErModelDomainRoleId);
 		}
 		#endregion
 		#region BinaryAssociation link accessor
@@ -2157,9 +2157,9 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation GetLinkToBarkerErModel (global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation binaryAssociationInstance)
+		public static global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation GetLinkToBarkerErModel (global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation binaryAssociationInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation>(binaryAssociationInstance, global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation.BinaryAssociationDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation>(binaryAssociationInstance, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation.BinaryAssociationDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of BinaryAssociation not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -2178,11 +2178,11 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation> GetLinks( global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel source, global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation> GetLinks( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation>(source, global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation.BarkerErModelDomainRoleId);
-			foreach ( global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation>(source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation.BarkerErModelDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation link in links )
 			{
 				if ( target.Equals(link.BinaryAssociation) )
 				{
@@ -2196,10 +2196,10 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation GetLink( global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel source, global::Neumont.Tools.EntityRelationshipModels.Barker.BinaryAssociation target )
+		public static global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation GetLink( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation>(source, global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation.BarkerErModelDomainRoleId);
-			foreach ( global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation>(source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation.BarkerErModelDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation link in links )
 			{
 				if ( target.Equals(link.BinaryAssociation) )
 				{
@@ -2212,15 +2212,15 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		#endregion
 	}
 }
-namespace Neumont.Tools.EntityRelationshipModels.Barker
+namespace ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker
 {
 	/// <summary>
 	/// DomainRelationship BarkerErModelContainsExclusiveArc
 	/// Description for
-	/// Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc
+	/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc.DisplayName", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc.DisplayName", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship(IsEmbedding=true)]
 	[DslModeling::DomainObjectId("b3ec67e1-4e16-47bd-a93a-f798f1765292")]
@@ -2297,11 +2297,11 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// <summary>
 		/// DomainRole BarkerErModel
 		/// Description for
-		/// Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc.BarkerErModel
+		/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc.BarkerErModel
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc/BarkerErModel.DisplayName", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc/BarkerErModel.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ExclusiveArcCollection", PropertyDisplayNameKey="Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc/BarkerErModel.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc/BarkerErModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc/BarkerErModel.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ExclusiveArcCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc/BarkerErModel.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("acf7dab7-7550-4b64-81e3-2f94f1bfaf25")]
 		public virtual BarkerErModel BarkerErModel
 		{
@@ -2349,11 +2349,11 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// <summary>
 		/// DomainRole ExclusiveArc
 		/// Description for
-		/// Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc.ExclusiveArc
+		/// ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc.ExclusiveArc
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc/ExclusiveArc.DisplayName", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc/ExclusiveArc.Description", typeof(global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerDomainModel), "Neumont.Tools.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "BarkerErModel", PropertyDisplayNameKey="Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc/ExclusiveArc.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc/ExclusiveArc.DisplayName", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc/ExclusiveArc.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "BarkerErModel", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc/ExclusiveArc.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("153a27e8-b3de-4c63-b7b1-918c09a95645")]
 		public virtual ExclusiveArc ExclusiveArc
 		{
@@ -2387,9 +2387,9 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc> GetLinksToExclusiveArcCollection ( global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel barkerErModelInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc> GetLinksToExclusiveArcCollection ( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel barkerErModelInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc>(barkerErModelInstance, global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc.BarkerErModelDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc>(barkerErModelInstance, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc.BarkerErModelDomainRoleId);
 		}
 		#endregion
 		#region ExclusiveArc link accessor
@@ -2398,9 +2398,9 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc GetLinkToBarkerErModel (global::Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArc exclusiveArcInstance)
+		public static global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc GetLinkToBarkerErModel (global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArc exclusiveArcInstance)
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc>(exclusiveArcInstance, global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc.ExclusiveArcDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc>(exclusiveArcInstance, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc.ExclusiveArcDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ExclusiveArc not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -2419,11 +2419,11 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc> GetLinks( global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel source, global::Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArc target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc> GetLinks( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArc target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc>(source, global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc.BarkerErModelDomainRoleId);
-			foreach ( global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc>(source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc.BarkerErModelDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc link in links )
 			{
 				if ( target.Equals(link.ExclusiveArc) )
 				{
@@ -2437,10 +2437,10 @@ namespace Neumont.Tools.EntityRelationshipModels.Barker
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc GetLink( global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModel source, global::Neumont.Tools.EntityRelationshipModels.Barker.ExclusiveArc target )
+		public static global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc GetLink( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.ExclusiveArc target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc>(source, global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc.BarkerErModelDomainRoleId);
-			foreach ( global::Neumont.Tools.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc>(source, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc.BarkerErModelDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsExclusiveArc link in links )
 			{
 				if ( target.Equals(link.ExclusiveArc) )
 				{

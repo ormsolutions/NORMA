@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
-	Neumont Object-Role Modeling Architect for Visual Studio
+	Natural Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
 
@@ -17,24 +17,24 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	PackageGuid="EFDDC549-1646-4451-8A51-E5A5E94D647C"
 	Id="0144A831-92D5-4C42-B7C5-99A5FA9D79DF"
-	Namespace="Neumont.Tools.ORM.Views.RelationalView"
+	Namespace="ORMSolutions.ORMArchitect.Views.RelationalView"
 	Name="RelationalShape"
 	DisplayName="Relational View"
 	Description="Graphical View of Relational Model (slow and temporary)"
-	CompanyName="Neumont University"
-	ProductName="Neumont ORM Architect for Visual Studio"
+	CompanyName="ORM Solutions, LLC"
+	ProductName="Natural Object-Role Modeling Architect for Visual Studio"
 	MajorVersion="1" MinorVersion="0" Build="0" Revision="0"
 	AccessModifier="Assembly">
 	<Attributes>
 		<ClrAttribute Name="DslModeling::ExtendsDomainModel">
 			<Parameters>
-				<AttributeParameter Value="&quot;005CBD56-3BA5-4947-9F46-5608BD563CED&quot;/*Neumont.Tools.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel*/"/>
+				<AttributeParameter Value="&quot;005CBD56-3BA5-4947-9F46-5608BD563CED&quot;/*ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel*/"/>
 			</Parameters>
 		</ClrAttribute>
 	</Attributes>
 
 	<Shapes>
-		<CompartmentShape Name="TableShape" Id="50DABFCD-909C-418A-8895-172AADAAD4FB" Namespace="Neumont.Tools.ORM.Views.RelationalView" GeneratesDoubleDerived="true" InitialHeight="0.3" InitialWidth="1" OutlineThickness="0.015625" AccessModifier="Assembly">
+		<CompartmentShape Name="TableShape" Id="50DABFCD-909C-418A-8895-172AADAAD4FB" Namespace="ORMSolutions.ORMArchitect.Views.RelationalView" GeneratesDoubleDerived="true" InitialHeight="0.3" InitialWidth="1" OutlineThickness="0.015625" AccessModifier="Assembly">
 			<Properties>
 				<DomainProperty Name="UpdateCounter" Id="9D49FFBB-3BB3-4711-B88E-9DBBD984C63D" GetterAccessModifier="Private" SetterAccessModifier="Private" Kind="CustomStorage" IsBrowsable="false">
 					<Type>
@@ -50,17 +50,17 @@
 	</Shapes>
 
 	<Connectors>
-		<Connector Id="42F16D0D-8D7D-4452-8146-6A543F683C11" Name="ForeignKeyConnector" Namespace="Neumont.Tools.ORM.Views.RelationalView" DisplayName="ForeignKeyConnector" Thickness="0.0234375" Color="Purple" TargetEndStyle="FilledArrow" AccessModifier="Assembly"/>
+		<Connector Id="42F16D0D-8D7D-4452-8146-6A543F683C11" Name="ForeignKeyConnector" Namespace="ORMSolutions.ORMArchitect.Views.RelationalView" DisplayName="ForeignKeyConnector" Thickness="0.0234375" Color="Purple" TargetEndStyle="FilledArrow" AccessModifier="Assembly"/>
 	</Connectors>
 	
-	<XmlSerializationBehavior Name="RelationalShapeModelSerializationBehavior" Namespace="Neumont.Tools.ORM.Views.RelationalView"/>
+	<XmlSerializationBehavior Name="RelationalShapeModelSerializationBehavior" Namespace="ORMSolutions.ORMArchitect.Views.RelationalView"/>
 
 	<!-- Diagram is double-derived so that we can override CreateChildShape. -->
-	<Diagram Name="RelationalDiagram" Namespace="Neumont.Tools.ORM.Views.RelationalView" Id="9DD5AFCE-2B3C-4854-AE9F-8FF5D5B7BF08" AccessModifier="Assembly" GeneratesDoubleDerived="true" HasCustomConstructor="true">
+	<Diagram Name="RelationalDiagram" Namespace="ORMSolutions.ORMArchitect.Views.RelationalView" Id="9DD5AFCE-2B3C-4854-AE9F-8FF5D5B7BF08" AccessModifier="Assembly" GeneratesDoubleDerived="true" HasCustomConstructor="true">
 		<Attributes>
 			<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 				<Parameters>
-					<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;RelationalDiagram, global::Neumont.Tools.Modeling.Design.ElementTypeDescriptor&lt;RelationalDiagram&gt;&gt;)"/>
+					<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;RelationalDiagram, global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptor&lt;RelationalDiagram&gt;&gt;)"/>
 				</Parameters>
 			</ClrAttribute>
 		</Attributes>
@@ -72,19 +72,19 @@
 			</DomainProperty>
 		</Properties>
 		<Class>
-			<DomainClassMoniker Name="/Neumont.Tools.RelationalModels.ConceptualDatabase/Catalog"/>
+			<DomainClassMoniker Name="/ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase/Catalog"/>
 		</Class>
 		<ShapeMaps>
 			<CompartmentShapeMap>
-				<DomainClassMoniker Name="/Neumont.Tools.RelationalModels.ConceptualDatabase/Table"/>
+				<DomainClassMoniker Name="/ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase/Table"/>
 				<ParentElementPath>
-					<DomainPath>Neumont.Tools.RelationalModels.ConceptualDatabase.SchemaContainsTable.Schema/!Schema/Neumont.Tools.RelationalModels.ConceptualDatabase.CatalogContainsSchema.Catalog/!Catalog</DomainPath>
+					<DomainPath>ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.SchemaContainsTable.Schema/!Schema/ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.CatalogContainsSchema.Catalog/!Catalog</DomainPath>
 				</ParentElementPath>
 				<DecoratorMap>
 					<TextDecoratorMoniker Name="TableShape/TableNameDecorator"/>
 					<PropertyDisplayed>
 						<PropertyPath>
-							<DomainPropertyMoniker Name="/Neumont.Tools.RelationalModels.ConceptualDatabase/Table/Name"/>
+							<DomainPropertyMoniker Name="/ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase/Table/Name"/>
 						</PropertyPath>
 					</PropertyDisplayed>
 				</DecoratorMap>
@@ -92,11 +92,11 @@
 				<CompartmentMap>
 					<CompartmentMoniker Name="TableShape/ColumnsCompartment" />
 					<ElementsDisplayed>
-						<DomainPath>Neumont.Tools.RelationalModels.ConceptualDatabase.TableContainsColumn.ColumnCollection/!Column</DomainPath>
+						<DomainPath>ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn.ColumnCollection/!Column</DomainPath>
 					</ElementsDisplayed>
 					<PropertyDisplayed>
 						<PropertyPath>
-							<DomainPropertyMoniker Name="/Neumont.Tools.RelationalModels.ConceptualDatabase/Column/Name" />
+							<DomainPropertyMoniker Name="/ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase/Column/Name" />
 						</PropertyPath>
 					</PropertyDisplayed>
 				</CompartmentMap>
@@ -107,17 +107,17 @@
 			find the source shape. -->
 			<!-- <ConnectorMap>
 				<ConnectorMoniker Name="ForeignKeyConnector"/>
-				<DomainRelationshipMoniker Name="/Neumont.Tools.RelationalModels.ConceptualDatabase/ReferenceConstraintTargetsTable"/>
+				<DomainRelationshipMoniker Name="/ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase/ReferenceConstraintTargetsTable"/>
 			</ConnectorMap> -->
 		</ConnectorMaps>
 	</Diagram>
 
 	<Designer EditorGuid="81DF6430-142D-4BCC-9E09-F873DED5BA0E">
 		<RootClass>
-			<DomainClassMoniker Name="/Neumont.Tools.RelationalModels.ConceptualDatabase/Catalog"/>
+			<DomainClassMoniker Name="/ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase/Catalog"/>
 		</RootClass>
 		<XmlSerializationDefinition>
-			<XmlSerializationBehaviorMoniker Name="/Neumont.Tools.ORM.Views.RelationalView/RelationalShapeModelSerializationBehavior"/>
+			<XmlSerializationBehaviorMoniker Name="/ORMSolutions.ORMArchitect.Views.RelationalView/RelationalShapeModelSerializationBehavior"/>
 		</XmlSerializationDefinition>
 		<DiagramMoniker Name="RelationalDiagram"/>
 	</Designer>

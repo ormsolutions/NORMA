@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -28,11 +28,11 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.Shell;
-using Neumont.Tools.Modeling.Diagrams;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.Shell;
+using ORMSolutions.ORMArchitect.Framework.Diagrams;
 
-namespace Neumont.Tools.ORM.ShapeModel
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	public partial class ModelNoteLink : ISelectionContainerFilter, IReconfigureableLink, IConfigureAsChildShape, IAutoCreatedSelectableShape
 	{
@@ -137,11 +137,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Gets whether this link is anchored to its ToShape or FromShape
 		/// </summary>
-		protected override Neumont.Tools.Modeling.Diagrams.BinaryLinkAnchor Anchor
+		protected override ORMSolutions.ORMArchitect.Framework.Diagrams.BinaryLinkAnchor Anchor
 		{
 			get
 			{
-				return Neumont.Tools.Modeling.Diagrams.BinaryLinkAnchor.FromShape;
+				return ORMSolutions.ORMArchitect.Framework.Diagrams.BinaryLinkAnchor.FromShape;
 			}
 		}
 #endif //LINKS_ALWAYS_CONNECT

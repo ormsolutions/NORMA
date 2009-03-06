@@ -1,5 +1,5 @@
 /**************************************************************************\
-* Neumont Object-Role Modeling Architect for Visual Studio                 *
+* Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -19,7 +19,7 @@ using System.ComponentModel;
 using System.Drawing.Design;
 using System.Diagnostics;
 
-namespace Neumont.Tools.ORM.ORMCustomTool
+namespace ORMSolutions.ORMArchitect.ORMCustomTool
 {
 	/// <summary>
 	/// The interface for the Extender object. It implements one property ORMGeneratorSettings:

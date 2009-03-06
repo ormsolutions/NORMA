@@ -3,7 +3,7 @@ using System.Reflection;
 
 // Common Public License Copyright Notice
 // /**************************************************************************\
-// * Neumont Object-Role Modeling Architect for Visual Studio                 *
+// * Natural Object-Role Modeling Architect for Visual Studio                 *
 // *                                                                          *
 // * Copyright © Neumont University. All rights reserved.                     *
 // *                                                                          *
@@ -16,7 +16,7 @@ using System.Reflection;
 // * You must not remove this notice, or any other, from this software.       *
 // \**************************************************************************/
 
-namespace Neumont.Tools.Modeling
+namespace ORMSolutions.ORMArchitect.Framework
 {
 	#region Attach rules to FrameworkDomainModel model
 	partial class FrameworkDomainModel
@@ -46,7 +46,7 @@ namespace Neumont.Tools.Modeling
 		/// <seealso cref="Microsoft.VisualStudio.Modeling.DomainModel.GetCustomDomainModelTypes"/>
 		protected override Type[] GetCustomDomainModelTypes()
 		{
-			if (Neumont.Tools.Modeling.FrameworkDomainModel.InitializingToolboxItems)
+			if (ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InitializingToolboxItems)
 			{
 				return Type.EmptyTypes;
 			}
@@ -70,12 +70,12 @@ namespace Neumont.Tools.Modeling
 	#region Rule classes for FrameworkDomainModel
 	partial class FrameworkDomainModel
 	{
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(DelayValidateSignal), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=Neumont.Tools.Modeling.FrameworkDomainModel.DelayValidateRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(DelayValidateSignal), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.DelayValidateRulePriority)]
 		private sealed class DelayValidateElementsClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
 			/// <summary>
 			/// Provide the following method in class: 
-			/// Neumont.Tools.Modeling.FrameworkDomainModel
+			/// ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel
 			/// /// <summary>
 			/// /// AddRule: typeof(DelayValidateSignal), FireTime=LocalCommit, Priority=FrameworkDomainModel.DelayValidateRulePriority;
 			/// /// </summary>
@@ -86,9 +86,9 @@ namespace Neumont.Tools.Modeling
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "Neumont.Tools.Modeling.FrameworkDomainModel.DelayValidateElements");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.DelayValidateElements");
 				FrameworkDomainModel.DelayValidateElements(e);
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "Neumont.Tools.Modeling.FrameworkDomainModel.DelayValidateElements");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.DelayValidateElements");
 			}
 		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FrameworkDomainModel))]
@@ -96,7 +96,7 @@ namespace Neumont.Tools.Modeling
 		{
 			/// <summary>
 			/// Provide the following method in class: 
-			/// Neumont.Tools.Modeling.FrameworkDomainModel
+			/// ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel
 			/// partial class TransactionRulesFixupHack
 			/// {
 			/// 	/// <summary>
@@ -110,9 +110,9 @@ namespace Neumont.Tools.Modeling
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void TransactionBeginning(Microsoft.VisualStudio.Modeling.TransactionBeginningEventArgs e)
 			{
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleStart(e.Transaction.Store, "Neumont.Tools.Modeling.FrameworkDomainModel.TransactionRulesFixupHack");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.Transaction.Store, "ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.TransactionRulesFixupHack");
 				this.ProcessTransactionBeginning(e);
-				Neumont.Tools.Modeling.Diagnostics.TraceUtility.TraceRuleEnd(e.Transaction.Store, "Neumont.Tools.Modeling.FrameworkDomainModel.TransactionRulesFixupHack");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.Transaction.Store, "ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.TransactionRulesFixupHack");
 			}
 		}
 	}

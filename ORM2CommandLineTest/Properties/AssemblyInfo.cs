@@ -5,25 +5,6 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: ComVisible(false)]
-[assembly: NeutralResourcesLanguage("en-US")]
-[assembly: AssemblyTitle("Neumont.Tools.ORM.SDK.TestEngine.dll")]
-[assembly: AssemblyProduct("Neumont ORM Architect for Visual Studio")]
-[assembly: AssemblyDescription("Neumont ORM Architect for Visual Studio - Unit Test Engine DLL")]
-[assembly: AssemblyCompany("Neumont University")]
-[assembly: AssemblyCopyright("Copyright © Neumont University. All rights reserved.")]
-#if DEBUG
-[assembly: AssemblyConfiguration("Debug")]
-#else
-[assembly: AssemblyConfiguration("Release")]
-#endif
-
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-//[assembly: AssemblyVersion("1.0.*")]
+[assembly: AssemblyTitle("ORMSolutions.ORMArchitectSDK.TestEngine.dll")]
+[assembly: AssemblyProduct("Natural Object-Role Modeling Architect for Visual Studio")]
+[assembly: AssemblyDescription("Natural Object-Role Modeling Architect for Visual Studio - Unit Test Engine DLL")]

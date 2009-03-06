@@ -2,7 +2,7 @@
 /**************************************************************************\
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
-* Copyright © Matthew Curland. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                        *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -24,15 +24,15 @@
 
 using DslModeling = global::Microsoft.VisualStudio.Modeling;
 using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
-namespace Neumont.Tools.Modeling.Shell
+namespace ORMSolutions.ORMArchitect.Framework.Shell
 {
 	/// <summary>
 	/// DomainModel DiagramDisplayDomainModel
 	/// Reorder diagrams and cache diagram positions
 	/// </summary>
 	[DslModeling::ExtendsDomainModel("91D59B16-E488-4A28-8D51-59273AD5BF2E"/*Microsoft.VisualStudio.Modeling.Diagrams.CoreDesignSurfaceDomainModel*/)]
-	[DslDesign::DisplayNameResource("Neumont.Tools.Modeling.Shell.DiagramDisplayDomainModel.DisplayName", typeof(global::Neumont.Tools.Modeling.Shell.DiagramDisplayDomainModel), "Neumont.Tools.ORM.GeneratedCode.DiagramDisplayDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.Modeling.Shell.DiagramDisplayDomainModel.Description", typeof(global::Neumont.Tools.Modeling.Shell.DiagramDisplayDomainModel), "Neumont.Tools.ORM.GeneratedCode.DiagramDisplayDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayDomainModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.DiagramDisplayDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayDomainModel.Description", typeof(global::ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.DiagramDisplayDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("b5149d2b-5b64-49d1-aca0-f8dde50e2c24")]
 	public partial class DiagramDisplayDomainModel : DslModeling::DomainModel
@@ -170,7 +170,7 @@ namespace Neumont.Tools.Modeling.Shell
 		/// <summary>
 		/// The base name of this model's resources.
 		/// </summary>
-		public const string ResourceBaseName = "Neumont.Tools.ORM.GeneratedCode.DiagramDisplayDomainModelResx";
+		public const string ResourceBaseName = "ORMSolutions.ORMArchitect.Core.GeneratedCode.DiagramDisplayDomainModelResx";
 		
 		/// <summary>
 		/// Gets the DomainModel's ResourceManager. If the ResourceManager does not already exist, then it is created.
