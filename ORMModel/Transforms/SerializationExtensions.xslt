@@ -111,7 +111,7 @@
 							<xsl:with-param name="containerElements" select="boolean(se:Container)"/>
 							<xsl:with-param name="element" select="count(@Prefix)+count(@Name)+count(@Namespace)+count(@WriteStyle)+count(@DoubleTagName)+count(se:ConditionalName)"/>
 							<xsl:with-param name="attributes" select="boolean(se:Attribute)"/>
-							<xsl:with-param name="links" select="boolean(se:Link)"/>
+							<xsl:with-param name="links" select="boolean(se:Link | se:StandaloneLink)"/>
 							<xsl:with-param name="aggregatingLinks" select="boolean(se:Link[@WriteStyle='EmbeddingLinkElement'])"/>
 							<xsl:with-param name="customSort" select="@SortChildElements='true'"/>
 							<xsl:with-param name="mixedTypedAttributes" select="boolean(se:Attribute[@WriteStyle='Element' or @WriteStyle='DoubleTaggedElement'][not(@ReadOnly='true' or @ReadOnly='1')])"/>
