@@ -50,15 +50,15 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			public XslORMGenerator(RegistryKey generatorKey)
 			{
 				// TODO: We need a better way to localize DisplayName and DisplayDescription for XSLT stylesheets...
+				string outputFormat;
 				this._displayDescription = generatorKey.GetValue("DisplayDescription", null) as string;
 				Debug.Assert(this._displayDescription != null);
 				this._displayName = generatorKey.GetValue("DisplayName", null) as string;
 				Debug.Assert(this._displayName != null);
 				this._fileExtension = generatorKey.GetValue("FileExtension", null) as string;
-				Debug.Assert(this._fileExtension != null);
 				this._officialName = generatorKey.GetValue("OfficialName", null) as string;
 				Debug.Assert(this._officialName != null);
-				this._providesOutputFormat = generatorKey.GetValue("ProvidesOutputFormat", null) as string;
+				this._providesOutputFormat = outputFormat = generatorKey.GetValue("ProvidesOutputFormat", null) as string;
 				Debug.Assert(this._providesOutputFormat != null);
 				this._compilable = Convert.ToBoolean((int)generatorKey.GetValue("Compilable", 0));
 				this._generatesSupportFile = Convert.ToBoolean((int)generatorKey.GetValue("GeneratesSupportFile", 0));
@@ -69,24 +69,40 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				string sourceInputFormat = generatorKey.GetValue("SourceInputFormat", null) as string;
 				Debug.Assert(sourceInputFormat != null);
 				string[] referenceInputFormats = generatorKey.GetValue("ReferenceInputFormats", EmptyStringArray) as string[];
-				string[] prerequisiteInputFormats = generatorKey.GetValue("PrerequisiteInputFormats", EmptyStringArray) as string[];
+				string[] companionOutputFormats = generatorKey.GetValue("CompanionOutputFormats", EmptyStringArray) as string[];
 
 				List<string> requiresInputFormats;
 
-				requiresInputFormats = new List<string>(referenceInputFormats.Length + prerequisiteInputFormats.Length + 1);
+				requiresInputFormats = new List<string>(referenceInputFormats.Length + companionOutputFormats.Length + 1);
 				requiresInputFormats.Add(sourceInputFormat = StripFormatExtensions(sourceInputFormat, ref extensions));
+				bool generatorCycles = sourceInputFormat == outputFormat;
 				for (int i = 0; i < referenceInputFormats.Length; ++i)
 				{
-					requiresInputFormats.Add(referenceInputFormats[i] = StripFormatExtensions(referenceInputFormats[i], ref extensions));
+					string inputFormat = StripFormatExtensions(referenceInputFormats[i], ref extensions);
+					referenceInputFormats[i] = inputFormat;
+					if (!generatorCycles && inputFormat == outputFormat)
+					{
+						generatorCycles = true;
+					}
+					requiresInputFormats.Add(inputFormat);
 				}
-				for (int i = 0; i < prerequisiteInputFormats.Length; ++i)
+				for (int i = 0; i < companionOutputFormats.Length; ++i)
 				{
-					requiresInputFormats.Add(StripFormatExtensions(prerequisiteInputFormats[i], ref extensions));
+					companionOutputFormats[i] = StripFormatExtensions(companionOutputFormats[i], ref extensions);
 				}
+				if (generatorCycles)
+				{
+					object priorityObject;
+					this._modifyFormatPriority = (null != (priorityObject = generatorKey.GetValue("ModifyFormatPriority")) && generatorKey.GetValueKind("ModifyFormatPriority") == RegistryValueKind.DWord) ?
+						(int)priorityObject :
+						0;
+				}
+				Debug.Assert(generatorCycles || this._fileExtension != null);
 				this._sourceInputFormat = sourceInputFormat;
 				this._referenceInputFormats = referenceInputFormats;
 				this._requiredExtensions = extensions;
 				this._requiresInputFormats = new ReadOnlyCollection<string>(requiresInputFormats);
+				this._companionOutputFormats = Array.AsReadOnly<string>(companionOutputFormats);
 
 				this._transform = new XslCompiledTransform(System.Diagnostics.Debugger.IsAttached);
 
@@ -199,6 +215,16 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				get { return this._providesOutputFormat; }
 			}
 
+			private readonly int? _modifyFormatPriority;
+			public int FormatModifierPriority
+			{
+				get { return this._modifyFormatPriority.GetValueOrDefault(0); }
+			}
+			public bool IsFormatModifier
+			{
+				get { return this._modifyFormatPriority.HasValue; }
+			}
+
 			private readonly IDictionary<string, IEnumerable<string>> _requiredExtensions;
 			public IEnumerable<string> GetRequiredExtensionsForInputFormat(string outputFormat)
 			{
@@ -227,6 +253,12 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			public IList<string> RequiresInputFormats
 			{
 				get { return this._requiresInputFormats; }
+			}
+
+			private readonly IList<string> _companionOutputFormats;
+			public IList<string> RequiresCompanionFormats
+			{
+				get { return this._companionOutputFormats; }
 			}
 
 			private readonly string _fileExtension;

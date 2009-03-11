@@ -82,9 +82,6 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 		/// <summary>
 		/// The official name of the output format provided by this <see cref="IORMGenerator"/>.
 		/// </summary>
-		/// <remarks>
-		/// The official names for several predefined output formats are accessible through <see cref="ORMOutputFormat"/>.
-		/// </remarks>
 		string ProvidesOutputFormat
 		{
 			get;
@@ -93,10 +90,41 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 		/// <summary>
 		/// The official name(s) of the output format(s) required by this <see cref="IORMGenerator"/> as input.
 		/// </summary>
-		/// <remarks>
-		/// The official names for several predefined output formats are accessible through <see cref="ORMOutputFormat"/>.
-		/// </remarks>
 		IList<string> RequiresInputFormats
+		{
+			get;
+		}
+
+		/// <summary>
+		/// The official name(s) of the output format(s) that need to be generated along
+		/// with this generator. Companion formats differ from input formats in that
+		/// companions are not used as input. Generators for two output formats may
+		/// reference each other without causing a cycle. The output format may not
+		/// be one of the companion formats.
+		/// </summary>
+		IList<string> RequiresCompanionFormats
+		{
+			get;
+		}
+
+		/// <summary>
+		/// If <see cref="ProvidesOutputFormat"/> is part of the set of
+		/// <see cref="RequiresInputFormats"/> then this generator is used
+		/// to modify a previously generated instance of the same format.
+		/// If more than one intra-format modifier is registered, then
+		/// this property is used to determine the execution order. Lower
+		/// numbers execute first, and 0 is the default priority.
+		/// </summary>
+		int FormatModifierPriority
+		{
+			get;
+		}
+
+		/// <summary>
+		/// True if the generator modifies a format instead of initially
+		/// creating it.
+		/// </summary>
+		bool IsFormatModifier
 		{
 			get;
 		}
@@ -138,8 +166,8 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 		/// <param name="defaultNamespace">A <see cref="String"/> containing the default namespace that should be used in the generated output, as appropriate.</param>
 		/// <param name="itemProperties">An implementation of <see cref="IORMGeneratorItemProperties"/> to allow retrieval of additional properties</param>
 		/// <remarks>
-		/// <para><paramref name="inputFormatStreams"/> is only guarenteed to contain the output <see cref="Stream"/>s for
-		/// the formats "ORM", "OIAL", and any formats returned by this <see cref="IORMGenerator"/>'s implementation of
+		/// <para><paramref name="inputFormatStreams"/> is guaranteed to contain the output <see cref="Stream"/>s for
+		/// the "ORM" format and any formats returned by this <see cref="IORMGenerator"/>'s implementation of
 		/// <see cref="IORMGenerator.RequiresInputFormats"/>.</para>
 		/// <para>Implementations of this method are responsible for resetting the <see cref="Stream.Position"/> of any
 		/// <see cref="Stream"/> obtained from <paramref name="inputFormatStreams"/> to the beginning of that <see cref="Stream"/>

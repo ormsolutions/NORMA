@@ -96,7 +96,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			this.virtualTreeControl.SetColumnHeaders(new VirtualTreeColumnHeader[]
 				{
 					// TODO: Localize these.
-					new VirtualTreeColumnHeader("Generated Format", 0.30f, VirtualTreeColumnHeaderStyles.ColumnPositionLocked | VirtualTreeColumnHeaderStyles.DragDisabled),
+					new VirtualTreeColumnHeader("Generated File Format", 0.30f, VirtualTreeColumnHeaderStyles.ColumnPositionLocked | VirtualTreeColumnHeaderStyles.DragDisabled),
 					new VirtualTreeColumnHeader("Generated File Name", 1f, VirtualTreeColumnHeaderStyles.ColumnPositionLocked | VirtualTreeColumnHeaderStyles.DragDisabled)
 				}, true);
 			MainBranch mainBranch = this._mainBranch = new MainBranch(this);
@@ -131,25 +131,53 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 					primaryIndices[i] = modifiedIndex - 1;
 				}
 			}
+			int modifierCount = totalCount - mainBranch.Branches.Count;
 			tree.Root = (lastPrimary == -1) ? (IBranch)mainBranch : new BranchPartition(
 				mainBranch,
 				primaryIndices,
 				new BranchPartitionSection(0, lastPrimary + 1, null),
-				new BranchPartitionSection(lastPrimary + 1, totalCount - lastPrimary - 1, "Intermediate and Secondary Files")); // UNDONE: Localize Header
+				new BranchPartitionSection(totalCount - modifierCount, modifierCount, "Generated File Modifiers"),
+				new BranchPartitionSection(lastPrimary + 1, totalCount - lastPrimary - modifierCount - 1, "Intermediate and Secondary Files")); // UNDONE: Localize Header
 			this.virtualTreeControl.ShowToolTips = true;
 			this.virtualTreeControl.FullCellSelect = true;
 
 			Dictionary<string, BuildItem> buildItemsByGenerator = this._buildItemsByGenerator = new Dictionary<string, BuildItem>(buildItemGroup.Count, StringComparer.OrdinalIgnoreCase);
 			foreach (BuildItem buildItem in buildItemGroup)
 			{
-				string ormGeneratorName = buildItem.GetEvaluatedMetadata(ITEMMETADATA_ORMGENERATOR);
-				if (!String.IsNullOrEmpty(ormGeneratorName) && String.Equals(buildItem.GetEvaluatedMetadata(ITEMMETADATA_DEPENDENTUPON), sourceFileName, StringComparison.OrdinalIgnoreCase))
+				// Do this very defensively so that the dialog can still be opened if a project is out
+				// of step with the generators registered on a specific machine.
+				string generatorNameData = buildItem.GetEvaluatedMetadata(ITEMMETADATA_ORMGENERATOR);
+				string[] generatorNames; // The first string is the primary generator, others are the format modifiers
+				int generatorNameCount;
+				IORMGenerator primaryGenerator;
+				MainBranch.OutputFormatBranch primaryFormatBranch;
+				if (!String.IsNullOrEmpty(generatorNameData) &&
+					String.Equals(buildItem.GetEvaluatedMetadata(ITEMMETADATA_DEPENDENTUPON), sourceFileName, StringComparison.OrdinalIgnoreCase) &&
+					null != (generatorNames = generatorNameData.Split((char[])null, StringSplitOptions.RemoveEmptyEntries)) &&
+					0 != (generatorNameCount = generatorNames.Length) &&
+					ORMCustomTool.ORMGenerators.TryGetValue(generatorNames[0], out primaryGenerator) &&
+					mainBranch.Branches.TryGetValue(primaryGenerator.ProvidesOutputFormat, out primaryFormatBranch))
 				{
-					IORMGenerator ormGenerator = ORMCustomTool.ORMGenerators[ormGeneratorName];
-					MainBranch.OutputFormatBranch outputFormatBranch = mainBranch.Branches[ormGenerator.ProvidesOutputFormat];
-					System.Diagnostics.Debug.Assert(outputFormatBranch.SelectedORMGenerator == null);
-					outputFormatBranch.SelectedORMGenerator = ormGenerator;
-					buildItemsByGenerator.Add(ormGeneratorName, buildItem);
+					System.Diagnostics.Debug.Assert(primaryFormatBranch.SelectedORMGenerator == null);
+					primaryFormatBranch.SelectedORMGenerator = primaryGenerator;
+					buildItemsByGenerator.Add(generatorNames[0], buildItem);
+
+					// Format modifiers are attached to the end of the list
+					for (int i = 1; i < generatorNameCount; ++i )
+					{
+						MainBranch.OutputFormatBranch modifierBranch = primaryFormatBranch.NextModifier;
+						string findName = generatorNames[i];
+						while (modifierBranch != null)
+						{
+							IORMGenerator testGenerator = modifierBranch.ORMGenerators[0];
+							if (testGenerator.OfficialName == findName)
+							{
+								modifierBranch.SelectedORMGenerator = testGenerator;
+								break;
+							}
+							modifierBranch = modifierBranch.NextModifier;
+						}
+					}
 				}
 			}
 		}

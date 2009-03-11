@@ -625,7 +625,7 @@
 									<RegistryValue Type="multiString" Name="ReferenceInputFormats">
 										<MultiStringValue>OIAL</MultiStringValue>
 									</RegistryKey>
-									<RegistryValue Type="multiString" Name="PrerequisiteInputFormats">
+									<RegistryValue Type="multiString" Name="CompanionOutputFormats">
 										<MultiStringValue>PLiX_Abstract</MultiStringValue>
 									</RegistryValue>
 								</RegistryKey>
@@ -645,7 +645,7 @@
 									<RegistryValue Type="multiString" Name="ReferenceInputFormats">
 										<MultiStringValue>OIAL</MultiStringValue>
 									</RegistryValue>
-									<RegistryValue Type="multiString" Name="PrerequisiteInputFormats">
+									<RegistryValue Type="multiString" Name="CompanionOutputFormats">
 										<MultiStringValue>PLiX_Abstract</MultiStringValue>
 									</RegistryValue>
 								</RegistryKey>-->
@@ -665,7 +665,7 @@
 									<RegistryValue Type="multiString" Name="ReferenceInputFormats">
 										<MultiStringValue>OIAL</MultiStringValue>
 									</RegistryValue>
-									<RegistryValue Type="multiString" Name="PrerequisiteInputFormats">
+									<RegistryValue Type="multiString" Name="CompanionOutputFormats">
 										<MultiStringValue>PLiX_Abstract</MultiStringValue>
 									</RegistryValue>
 								</RegistryKey>
@@ -687,7 +687,7 @@
 										<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="PHPEntitiesPLiX"/>
 										<RegistryValue Type="string" Name="TransformUri" Value="[#PHP_PHPEntities.xslt]"/>
 										<RegistryValue Type="integer" Name="GeneratesSupportFile" Value="1"/>
-										<RegistryValue Type="multiString" Name="PrerequisiteInputFormats">
+										<RegistryValue Type="multiString" Name="CompanionOutputFormats">
 											<MultiStringValue>PHPProxiesPLiX</MultiStringValue>
 											<MultiStringValue>PHPServicesPLiX</MultiStringValue>
 											<MultiStringValue>PHPDataLayerPLiX</MultiStringValue>
@@ -702,7 +702,7 @@
 										<RegistryValue Type="string" Name="SourceInputFormat" Value="PHPEntitiesPLiX"/>
 										<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="PHPEntitiesImplementation"/>
 										<RegistryValue Type="string" Name="TransformUri" Value="[NEUMONTCOMMONFILESDIR]\PLiX\Formatters\PLiXPHP.xslt"/>
-										<RegistryValue Type="multiString" Name="PrerequisiteInputFormats">
+										<RegistryValue Type="multiString" Name="CompanionOutputFormats">
 											<MultiStringValue>PHPProxiesImplementation</MultiStringValue>
 											<MultiStringValue>PHPServicesImplementation</MultiStringValue>
 											<MultiStringValue>PHPDataLayerImplementation</MultiStringValue>
@@ -838,7 +838,7 @@
 										<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="DataLayerTestForm"/>
 										<RegistryValue Type="string" Name="TransformUri" Value="[#OIALtoPLiX_DataLayerTestForm.xslt]"/>
 										<RegistryValue Type="string" Name="CustomTool" Value="NUPlixLoader"/>
-										<RegistryValue Type="multiString" Name="PrerequisiteInputFormats">
+										<RegistryValue Type="multiString" Name="CompanionOutputFormats">
 											<MultiStringValue>DataLayerTestFormInputControl</MultiStringValue>
 										</RegistryValue>
 									</RegistryKey>
@@ -857,7 +857,7 @@
 										<RegistryValue Type="multiString" Name="ReferenceInputFormats">
 											<MultiStringValue>OIAL</MultiStringValue>
 										</RegistryValue>
-										<RegistryValue Type="multiString" Name="PrerequisiteInputFormats">
+										<RegistryValue Type="multiString" Name="CompanionOutputFormats">
 											<MultiStringValue>DataLayerTestFormInputControlDesigner</MultiStringValue>
 										</RegistryValue>
 									</RegistryKey>

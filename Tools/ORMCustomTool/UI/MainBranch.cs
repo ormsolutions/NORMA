@@ -29,29 +29,140 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 	{
 		private sealed partial class MainBranch : BranchBase, IMultiColumnBranch
 		{
+			private readonly ORMGeneratorSelectionControl _parent;
+			private readonly SortedList<string, OutputFormatBranch> _branches;
+			private readonly List<OutputFormatBranch> _modifiers;
 			private static class ColumnNumber
 			{
 				public const int GeneratedFormat = 0;
 				public const int GeneratedFileName = 1;
 			}
+			private enum RowStyle
+			{
+				/// <summary>
+				/// The row corresponds to a primary generator
+				/// </summary>
+				Generator,
+				/// <summary>
+				/// The row corresponds to a modifier
+				/// </summary>
+				Modifier,
+			}
+			private RowStyle TranslateRow(ref int row)
+			{
+				int branchCount = _branches.Count;
+				if (row < branchCount)
+				{
+					return RowStyle.Generator;
+				}
+				row -= branchCount;
+				return RowStyle.Modifier;
+			}
 			public MainBranch(ORMGeneratorSelectionControl parent)
 			{
-				this._parent = parent;
-				SortedList<string, OutputFormatBranch> branches = this._branches = new SortedList<string, OutputFormatBranch>(StringComparer.OrdinalIgnoreCase);
+				SortedList<string, OutputFormatBranch> branches = new SortedList<string, OutputFormatBranch>(StringComparer.OrdinalIgnoreCase);
+				List<OutputFormatBranch> modifiers = null;
+				int modifierAsGeneratorCount = 0;
 				foreach (IORMGenerator ormGenerator in ORMCustomTool.ORMGenerators.Values)
 				{
 					string outputFormatName = ormGenerator.ProvidesOutputFormat;
-					OutputFormatBranch outputFormatBranch;
-					if (!branches.TryGetValue(outputFormatName, out outputFormatBranch))
+					OutputFormatBranch formatBranch;
+					if (ormGenerator.IsFormatModifier)
 					{
-						outputFormatBranch = new OutputFormatBranch(this);
-						branches.Add(outputFormatName, outputFormatBranch);
+						// Track modifiers separately
+						if (modifiers == null)
+						{
+							modifiers = new List<OutputFormatBranch>();
+						}
+						formatBranch = new OutputFormatBranch(this);
+						formatBranch.ORMGenerators.Add(ormGenerator);
+						OutputFormatBranch primaryFormatBranch;
+						if (branches.TryGetValue(outputFormatName, out primaryFormatBranch))
+						{
+							if (primaryFormatBranch.IsModifier)
+							{
+								if (primaryFormatBranch.ORMGenerators[0].FormatModifierPriority <= ormGenerator.FormatModifierPriority)
+								{
+									primaryFormatBranch.NextModifier = formatBranch;
+								}
+								else
+								{
+									formatBranch.NextModifier = primaryFormatBranch;
+									branches[outputFormatName] = formatBranch;
+								}
+							}
+							else
+							{
+								primaryFormatBranch.NextModifier = formatBranch;
+							}
+						}
+						else
+						{
+							// We don't have a branch yet for a primary generator, track
+							// the modifier by adding it here. We will verify later that
+							// all modifiers have a non-modifier primary generator.
+							branches.Add(outputFormatName, formatBranch);
+							++modifierAsGeneratorCount;
+						}
+						modifiers.Add(formatBranch);
 					}
-					outputFormatBranch.ORMGenerators.Add(ormGenerator);
+					else
+					{
+						if (branches.TryGetValue(outputFormatName, out formatBranch))
+						{
+							if (formatBranch.IsModifier)
+							{
+								OutputFormatBranch modifierBranch = formatBranch;
+								formatBranch = new OutputFormatBranch(this);
+								formatBranch.NextModifier = modifierBranch;
+								branches[outputFormatName] = formatBranch;
+								--modifierAsGeneratorCount;
+							}
+						}
+						else
+						{
+							formatBranch = new OutputFormatBranch(this);
+							branches.Add(outputFormatName, formatBranch);
+						}
+						formatBranch.ORMGenerators.Add(ormGenerator);
+					}
+				}
+				if (modifierAsGeneratorCount != 0)
+				{
+					// A modifier with no associated generator does not
+					// make sense, but is currently stored as a branch.
+					// Pull it out of the list.
+					for (int i = modifiers.Count - 1; i >= 0; --i)
+					{
+						OutputFormatBranch testBranch;
+						string outputFormat = modifiers[i].ORMGenerators[0].ProvidesOutputFormat;
+						if (!branches.TryGetValue(outputFormat, out testBranch) ||
+							testBranch.IsModifier)
+						{
+							if (testBranch != null)
+							{
+								branches.Remove(outputFormat);
+							}
+							modifiers.RemoveAt(i);
+						}
+					}
+				}
+				_parent = parent;
+				_branches = branches;
+				int modifierCount;
+				if (modifiers != null && 0 != (modifierCount = modifiers.Count))
+				{
+					if (modifierCount > 1)
+					{
+						modifiers.Sort(delegate(OutputFormatBranch left, OutputFormatBranch right)
+						{
+							return string.Compare(left.ORMGenerators[0].DisplayName, right.ORMGenerators[0].DisplayName);
+						});
+					}
+					_modifiers = modifiers;
 				}
 			}
 
-			private readonly ORMGeneratorSelectionControl _parent;
 			private ORMGeneratorSelectionControl Parent
 			{
 				get
@@ -60,7 +171,6 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				}
 			}
 
-			private readonly SortedList<string, OutputFormatBranch> _branches;
 			public IDictionary<string, OutputFormatBranch> Branches
 			{
 				get
@@ -81,31 +191,52 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 							yield return selectedGenerator;
 						}
 					}
+					List<OutputFormatBranch> modifiers = _modifiers;
+					if (modifiers != null)
+					{
+						foreach (OutputFormatBranch branch in _modifiers)
+						{
+							IORMGenerator selectedGenerator = branch.SelectedORMGenerator;
+							if (selectedGenerator != null)
+							{
+								yield return selectedGenerator;
+							}
+						}
+					}
 				}
 			}
 
 			public bool IsPrimaryDisplayItem(int index)
 			{
-				OutputFormatBranch branch = _branches.Values[index];
-				IList<IORMGenerator> generators = branch.ORMGenerators;
-				int generatorCount = generators.Count;
-				bool retVal = true;
-				for (int i = 0; i < generatorCount; ++i)
+				switch (TranslateRow(ref index))
 				{
-					if (generators[i].GeneratesSupportFile)
-					{
-						retVal = false;
-						break;
-					}
+					case RowStyle.Generator:
+						OutputFormatBranch branch = _branches.Values[index];
+						IList<IORMGenerator> generators = branch.ORMGenerators;
+						int generatorCount = generators.Count;
+						bool retVal = true;
+						for (int i = 0; i < generatorCount; ++i)
+						{
+							if (generators[i].GeneratesSupportFile)
+							{
+								retVal = false;
+								break;
+							}
+						}
+						return retVal;
+					default: // case RowStyle.Modifier:
+						return false;
 				}
-				return retVal;
 			}
 
 			public override object GetObject(int row, int column, ObjectStyle style, ref int options)
 			{
 				if (style == ObjectStyle.ExpandedBranch)
 				{
-					return this._branches.Values[row];
+					if (RowStyle.Generator == TranslateRow(ref row))
+					{
+						return this._branches.Values[row];
+					}
 				}
 				return base.GetObject(row, column, style, ref options);
 			}
@@ -116,11 +247,32 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				switch (column)
 				{
 					case ColumnNumber.GeneratedFormat:
-						retVal = _branches.Keys[row];
+						switch (TranslateRow(ref row))
+						{
+							case RowStyle.Generator:
+								retVal = _branches.Keys[row];
+								break;
+							case RowStyle.Modifier:
+								retVal = _modifiers[row].ORMGenerators[0].DisplayName;
+								break;
+						}
 						break;
 					case ColumnNumber.GeneratedFileName:
 						{
-							IORMGenerator selectedORMGenerator = this._branches.Values[row].SelectedORMGenerator;
+							IORMGenerator selectedORMGenerator = null;
+							switch (TranslateRow(ref row))
+							{
+								case RowStyle.Generator:
+									selectedORMGenerator = _branches.Values[row].SelectedORMGenerator;
+									break;
+								case RowStyle.Modifier:
+									selectedORMGenerator = _modifiers[row].SelectedORMGenerator;
+									if (selectedORMGenerator != null)
+									{
+										selectedORMGenerator = _branches[selectedORMGenerator.ProvidesOutputFormat].SelectedORMGenerator;
+									}
+									break;
+							}
 							if (selectedORMGenerator != null)
 							{
 								retVal = _parent.BuildItemsByGenerator[selectedORMGenerator.OfficialName].FinalItemSpec;
@@ -134,7 +286,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			{
 				if (column == ColumnNumber.GeneratedFormat && tipType == ToolTipType.StateIcon)
 				{
-					OutputFormatBranch currentBranch = _branches.Values[row];
+					OutputFormatBranch currentBranch = (TranslateRow(ref row) == RowStyle.Generator) ? _branches.Values[row] : _modifiers[row];
 					IORMGenerator useGenerator = currentBranch.SelectedORMGenerator;
 					if (useGenerator == null)
 					{
@@ -147,7 +299,8 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			public override VirtualTreeDisplayData GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
 			{
 				VirtualTreeDisplayData displayData = VirtualTreeDisplayData.Empty;
-				IORMGenerator selectedGenerator = _branches.Values[row].SelectedORMGenerator;
+				bool isModifierRow = TranslateRow(ref row) == RowStyle.Modifier;
+				IORMGenerator selectedGenerator = isModifierRow ? _modifiers[row].SelectedORMGenerator : _branches.Values[row].SelectedORMGenerator;
 				switch (column)
 				{
 					case ColumnNumber.GeneratedFormat:
@@ -160,7 +313,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 							if (selectedGenerator != null)
 							{
 								// Don't allow this to uncheck if another tool is using it
-								displayData.StateImageIndex = (short)(CanRemoveGenerator(row) ? StandardCheckBoxImage.Checked : StandardCheckBoxImage.CheckedDisabled);
+								displayData.StateImageIndex = (short)((isModifierRow || CanRemoveGenerator(row)) ? StandardCheckBoxImage.Checked : StandardCheckBoxImage.CheckedDisabled);
 							}
 							else
 							{
@@ -177,17 +330,17 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			/// <summary>
 			/// Test if a generator for an item can be removed
 			/// </summary>
-			/// <param name="row">The row to test.</param>
-			/// <returns>true if the generator can be removed without removing a prerequisite for another generator</returns>
-			private bool CanRemoveGenerator(int row)
+			/// <param name="generatorIndex">The row to test.</param>
+			/// <returns>true if the generator can be removed without removing a format required by another generator</returns>
+			private bool CanRemoveGenerator(int generatorIndex)
 			{
-				return CanRemoveGenerator(_branches.Values[row]);
+				return CanRemoveGenerator(_branches.Values[generatorIndex]);
 			}
 			/// <summary>
 			/// Test if a generator for an item can be removed
 			/// </summary>
 			/// <param name="branch">The branch to test.</param>
-			/// <returns>true if the generator can be removed without removing a prerequisite for another generator</returns>
+			/// <returns>true if the generator can be removed without removing a format required by another generator</returns>
 			private bool CanRemoveGenerator(OutputFormatBranch branch)
 			{
 				return !branch.IsDependency;
@@ -196,12 +349,13 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			{
 				get
 				{
-					return this.Branches.Count;
+					List<OutputFormatBranch> modifiers = _modifiers;
+					return _branches.Count + ((modifiers != null) ? modifiers.Count : 0);
 				}
 			}
 			public override StateRefreshChanges ToggleState(int row, int column)
 			{
-				return ToggleOnRequiredBranches(_branches.Values[row], 0);
+				return ToggleOnRequiredBranches((TranslateRow(ref row) == RowStyle.Generator) ? _branches.Values[row] : _modifiers[row], 0);
 			}
 			private StateRefreshChanges ToggleOnRequiredBranches(OutputFormatBranch formatBranch, int branchGeneratorIndex)
 			{
@@ -210,7 +364,40 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			private StateRefreshChanges ToggleOnRequiredBranches(OutputFormatBranch formatBranch, int branchGeneratorIndex, bool testToggleOff)
 			{
 				StateRefreshChanges retVal = StateRefreshChanges.None;
-				if (formatBranch.SelectedORMGenerator == null)
+				if (formatBranch.IsModifier)
+				{
+					if (formatBranch.SelectedORMGenerator == null)
+					{
+						// The build item is associated primarily with the primary generator,
+						// not the modifier. We need to make sure that the primary generator
+						// is turned on.
+						IORMGenerator modifierGenerator = formatBranch.ORMGenerators[0];
+						OutputFormatBranch primaryBranch = _branches[modifierGenerator.ProvidesOutputFormat];
+						IORMGenerator primaryGenerator = primaryBranch.SelectedORMGenerator;
+						if (primaryGenerator == null)
+						{
+							if (StateRefreshChanges.None != ToggleOnRequiredBranches(primaryBranch, 0, false))
+							{
+								retVal = StateRefreshChanges.Entire;
+							}
+							primaryGenerator = primaryBranch.SelectedORMGenerator;
+							if (primaryGenerator == null)
+							{
+								return StateRefreshChanges.None;
+							}
+						}
+						formatBranch.SelectedORMGenerator = modifierGenerator;
+						_parent.BuildItemsByGenerator[primaryGenerator.OfficialName].SetMetadata(ITEMMETADATA_ORMGENERATOR, primaryBranch.SelectedGeneratorOfficialNames);
+						retVal |= StateRefreshChanges.Children | StateRefreshChanges.Children;
+					}
+					else if (testToggleOff)
+					{
+						// Note that we can always remove a modifier, do not call CanRemoveGenerator
+						RemoveGenerator(formatBranch);
+						retVal |= StateRefreshChanges.Current | StateRefreshChanges.Children;
+					}
+				}
+				else if (formatBranch.SelectedORMGenerator == null)
 				{
 					Microsoft.Build.BuildEngine.Project project = Parent._project;
 					EnvDTE.ProjectItem projectItem = Parent._projectItem;
@@ -230,11 +417,14 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 					_parent.RemoveRemovedItem(newBuildItem);
 					formatBranch.SelectedORMGenerator = useGenerator;
 					IList<string> requiredFormats = useGenerator.RequiresInputFormats;
-					int requiredFormatsCount = requiredFormats.Count;
-					for (int i = 0; i < requiredFormatsCount; ++i)
+					int requiredFormatCount = requiredFormats.Count;
+					IList<string> companionFormats = useGenerator.RequiresCompanionFormats;
+					int companionFormatCount = companionFormats.Count;
+					int totalCount = requiredFormatCount + companionFormatCount;
+					for (int i = 0; i < totalCount; ++i)
 					{
 						OutputFormatBranch requiredBranch;
-						if (_branches.TryGetValue(requiredFormats[i], out requiredBranch))
+						if (_branches.TryGetValue(i < requiredFormatCount ? requiredFormats[i] : companionFormats[i - requiredFormatCount], out requiredBranch))
 						{
 							if (StateRefreshChanges.None != ToggleOnRequiredBranches(requiredBranch, 0, false))
 							{
@@ -252,7 +442,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			}
 			/// <summary>
 			/// Remove the generator for this branch. Note that there is
-			/// not checking here as to whether or not the generator is required
+			/// no checking here as to whether or not the generator is required
 			/// in other places. Most uses will first call CanRemoveGenerator, but
 			/// switching generators for a format will want to remove this blindly
 			/// then toggle on the other format provider.
@@ -262,12 +452,26 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			{
 				IORMGenerator removeGenerator = formatBranch.SelectedORMGenerator;
 				IDictionary<string, BuildItem> buildItemsByGeneratorName = _parent.BuildItemsByGenerator;
-				string generatorKey = removeGenerator.OfficialName;
-				formatBranch.SelectedORMGenerator = null;
-				BuildItem removeBuildItem = buildItemsByGeneratorName[generatorKey];
-				buildItemsByGeneratorName.Remove(generatorKey);
-				_parent._buildItemGroup.RemoveItem(removeBuildItem);
-				_parent.AddRemovedItem(removeBuildItem);
+				if (removeGenerator.IsFormatModifier)
+				{
+					OutputFormatBranch primaryBranch = _branches[removeGenerator.ProvidesOutputFormat];
+					IORMGenerator primaryGenerator = primaryBranch.SelectedORMGenerator;
+					if (primaryGenerator != null)
+					{
+						BuildItem updateBuildItem = buildItemsByGeneratorName[primaryGenerator.OfficialName];
+						formatBranch.SelectedORMGenerator = null;
+						updateBuildItem.SetMetadata(ITEMMETADATA_ORMGENERATOR, primaryBranch.SelectedGeneratorOfficialNames);
+					}
+				}
+				else
+				{
+					string generatorKey = removeGenerator.OfficialName;
+					formatBranch.SelectedORMGenerator = null;
+					BuildItem removeBuildItem = buildItemsByGeneratorName[generatorKey];
+					buildItemsByGeneratorName.Remove(generatorKey);
+					_parent._buildItemGroup.RemoveItem(removeBuildItem);
+					_parent.AddRemovedItem(removeBuildItem);
+				}
 			}
 			public override BranchFeatures Features
 			{
@@ -279,7 +483,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 
 			public override bool IsExpandable(int row, int column)
 			{
-				return true;
+				return TranslateRow(ref row) == RowStyle.Generator;
 			}
 			#region IMultiColumnBranch Members
 			int IMultiColumnBranch.ColumnCount

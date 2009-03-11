@@ -196,7 +196,7 @@ REG ADD "%NORMAGenerators%\%~1" /f /v "Type" /d "XSLT" 1>NUL
 REG ADD "%NORMAGenerators%\%~1" /f /v "OfficialName" /d "%~1" 1>NUL
 REG ADD "%NORMAGenerators%\%~1" /f /v "DisplayName" /d "%~2" 1>NUL
 REG ADD "%NORMAGenerators%\%~1" /f /v "DisplayDescription" /d "%~3" 1>NUL
-REG ADD "%NORMAGenerators%\%~1" /f /v "FileExtension" /d "%~4" 1>NUL 2>&1
+IF NOT "%~4"=="" (REG ADD "%NORMAGenerators%\%~1" /f /v "FileExtension" /d "%~4") 1>NUL 2>&1
 REG ADD "%NORMAGenerators%\%~1" /f /v "SourceInputFormat" /d "%~5" 1>NUL
 REG ADD "%NORMAGenerators%\%~1" /f /v "ProvidesOutputFormat" /d "%~6" 1>NUL
 REG ADD "%NORMAGenerators%\%~1" /f /v "TransformUri" /d "%~7" 1>NUL
@@ -209,7 +209,7 @@ IF NOT "%~9"=="" (REG ADD "%NORMAGenerators%\%~1" /f /v "Compilable" /t REG_DWOR
 SHIFT /8
 IF NOT "%~9"=="" (REG ADD "%NORMAGenerators%\%~1" /f /v "ReferenceInputFormats" /t REG_MULTI_SZ /d "%~9") 1>NUL
 SHIFT /8
-IF NOT "%~9"=="" (REG ADD "%NORMAGenerators%\%~1" /f /v "PrerequisiteInputFormats" /t REG_MULTI_SZ /d "%~9") 1>NUL
+IF NOT "%~9"=="" (REG ADD "%NORMAGenerators%\%~1" /f /v "CompanionOutputFormats" /t REG_MULTI_SZ /d "%~9") 1>NUL
 GOTO:EOF
 
 :_CleanupFile

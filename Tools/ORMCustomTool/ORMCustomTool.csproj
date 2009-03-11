@@ -94,7 +94,6 @@
     <Compile Include="UI\ORMGeneratorSelectionControl.Designer.cs">
       <DependentUpon>ORMGeneratorSelectionControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="ORMOutputFormat.cs" />
     <Compile Include="ReadOnlyDictionary.cs" />
     <Compile Include="ORMCustomTool.cs" />
     <Compile Include="IORMGenerator.cs" />

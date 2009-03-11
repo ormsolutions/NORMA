@@ -41,6 +41,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				private readonly List<IORMGenerator> _ormGenerators;
 				private readonly MainBranch _mainBranch;
 				private int _selectedUseCount;
+				private OutputFormatBranch _nextModifier;
 				
 				public IORMGenerator SelectedORMGenerator
 				{
@@ -74,6 +75,78 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 					}
 				}
 				/// <summary>
+				/// Manage a singly linked list of format modifiers.
+				/// The modifier should always be added to the head node
+				/// to maintain an order modifier priority.
+				/// </summary>
+				public OutputFormatBranch NextModifier
+				{
+					get
+					{
+						return _nextModifier;
+					}
+					set
+					{
+						Debug.Assert(value != null && value.IsModifier);
+						OutputFormatBranch oldModifier = _nextModifier;
+						if (oldModifier != null)
+						{
+							if (oldModifier._ormGenerators[0].FormatModifierPriority <= value._ormGenerators[0].FormatModifierPriority)
+							{
+								oldModifier.NextModifier = value;
+							}
+							else
+							{
+								_nextModifier = value;
+								value.NextModifier = oldModifier;
+							}
+						}
+						else
+						{
+							_nextModifier = value;
+						}
+					}
+				}
+				/// <summary>
+				/// Get a space-separated list of the selected generator
+				/// followed by the official names of all selected modifiers.
+				/// </summary>
+				public string SelectedGeneratorOfficialNames
+				{
+					get
+					{
+						string retVal = "";
+						IORMGenerator selectedGenerator = _selectedORMGenerator;
+						if (selectedGenerator != null)
+						{
+							retVal = selectedGenerator.OfficialName;
+							OutputFormatBranch modifierBranch = _nextModifier;
+							while (modifierBranch != null)
+							{
+								selectedGenerator = modifierBranch.SelectedORMGenerator;
+								if (selectedGenerator != null)
+								{
+									retVal += " " + selectedGenerator.OfficialName;
+								}
+								modifierBranch = modifierBranch.NextModifier;
+							}
+						}
+						return retVal;
+					}
+				}
+				/// <summary>
+				/// Does this branch represent a format modifier.
+				/// A format modifier has exactly one generator.
+				/// </summary>
+				public bool IsModifier
+				{
+					get
+					{
+						List<IORMGenerator> generators = _ormGenerators;
+						return generators.Count == 1 && generators[0].IsFormatModifier;
+					}
+				}
+				/// <summary>
 				/// Update dependency counts for branches of required formats
 				/// </summary>
 				/// <param name="generator">The generator to add or remove dependencies for</param>
@@ -81,31 +154,47 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				private void UpdateDependencyUseCounts(IORMGenerator generator, bool addOrRemove)
 				{
 					IList<string> requiredFormats = generator.RequiresInputFormats;
-					int dependencyCount = requiredFormats.Count;
+					int requiredFormatCount = requiredFormats.Count;
+					IList<string> companionFormats = generator.RequiresCompanionFormats;
+					int requiredCompanionCount = companionFormats.Count;
+					int dependencyCount = requiredFormatCount + requiredCompanionCount;
 					if (dependencyCount != 0)
 					{
+						string outputFormat = generator.ProvidesOutputFormat;
 						SortedList<string, OutputFormatBranch> branchDictionary = _mainBranch._branches;
 						for (int i = 0; i < dependencyCount; ++i)
 						{
 							OutputFormatBranch dependentUponBranch;
-							if (branchDictionary.TryGetValue(requiredFormats[i], out dependentUponBranch))
+							bool isRequired = i < requiredFormatCount;
+							if (branchDictionary.TryGetValue(isRequired ? requiredFormats[i] : companionFormats[i - requiredFormatCount], out dependentUponBranch))
 							{
 								int currentUseCount = dependentUponBranch._selectedUseCount;
+								IORMGenerator selectedGenerator; 
 								if (addOrRemove)
 								{
-									if (currentUseCount != -1 && dependentUponBranch._selectedORMGenerator != null)
+									if (currentUseCount != -1 &&
+										null != (selectedGenerator = dependentUponBranch._selectedORMGenerator) &&
+										(isRequired || !selectedGenerator.RequiresCompanionFormats.Contains(outputFormat)))
 									{
 										dependentUponBranch._selectedUseCount = currentUseCount + 1;
 									}
 								}
 								else
 								{
-									IORMGenerator selectedGenerator = dependentUponBranch._selectedORMGenerator;
+									selectedGenerator = dependentUponBranch._selectedORMGenerator;
 									bool autoRemove = (selectedGenerator != null) ? selectedGenerator.GeneratesSupportFile : false;
 									if (currentUseCount > 0)
 									{
-										dependentUponBranch._selectedUseCount = currentUseCount - 1;
-										autoRemove = autoRemove && currentUseCount == 1;
+										bool companionCycle;
+										if (isRequired || !(companionCycle = selectedGenerator.RequiresCompanionFormats.Contains(outputFormat)))
+										{
+											dependentUponBranch._selectedUseCount = currentUseCount - 1;
+											autoRemove = autoRemove && currentUseCount == 1;
+										}
+										else if (companionCycle)
+										{
+											autoRemove = autoRemove && currentUseCount == 1;
+										}
 									}
 									else if (autoRemove)
 									{
@@ -117,6 +206,12 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 										{
 											autoRemove = false;
 										}
+									}
+									else if (!isRequired &&
+										selectedGenerator != null &&
+										selectedGenerator.RequiresCompanionFormats.Contains(outputFormat))
+									{
+										autoRemove = (currentUseCount == -1) ? !dependentUponBranch.IsDependency : (currentUseCount == 0);
 									}
 									if (autoRemove)
 									{
@@ -150,7 +245,6 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				{
 					get
 					{
-						IList<OutputFormatBranch> allBranches = _mainBranch._branches.Values;
 						int useCount = _selectedUseCount;
 						bool retVal = false;
 						switch (useCount)
@@ -167,17 +261,22 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 									if (selectedGenerator != null)
 									{
 										// Don't allow this to uncheck if another tool is using it
+										IList<OutputFormatBranch> allBranches = _mainBranch._branches.Values;
+										IList<OutputFormatBranch> modifierBranches = _mainBranch._modifiers;
 										int branchCount = allBranches.Count;
+										int allCount = branchCount + (modifierBranches != null ? modifierBranches.Count : 0);
 										string outputFormat = selectedGenerator.ProvidesOutputFormat;
 										int i = 0;
-										for (; i < branchCount; ++i)
+										for (; i < allCount; ++i)
 										{
-											OutputFormatBranch currentBranch = allBranches[i];
+											bool isPrimaryBranch = i < branchCount;
+											OutputFormatBranch currentBranch = isPrimaryBranch ? allBranches[i] : modifierBranches[i - branchCount];
 											if (currentBranch != this)
 											{
 												IORMGenerator testGenerator = currentBranch.SelectedORMGenerator;
 												if (testGenerator != null &&
-													testGenerator.RequiresInputFormats.Contains(outputFormat))
+													(testGenerator.RequiresInputFormats.Contains(outputFormat) ||
+													(testGenerator.RequiresCompanionFormats.Contains(outputFormat) && !selectedGenerator.RequiresCompanionFormats.Contains(testGenerator.ProvidesOutputFormat))))
 												{
 													++useCount;
 												}

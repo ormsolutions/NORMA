@@ -37,7 +37,7 @@ IF NOT "%~9"=="" (ECHO 	^<RegistryValue Type="integer" Name="Compilable" Value="
 SHIFT /8
 IF NOT "%~9"=="" (CALL:_GenerateMultiString "ReferenceInputFormats" "%~9")
 SHIFT /8
-IF NOT "%~9"=="" (CALL:_GenerateMultiString "PrerequisiteInputFormats" "%~9")
+IF NOT "%~9"=="" (CALL:_GenerateMultiString "CompanionOutputFormats" "%~9")
 ECHO ^</RegistryKey^> >> Output.WiX.xml
 ECHO. >> Output.WiX.xml
 ECHO. >> Output.WiX.xml

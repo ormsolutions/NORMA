@@ -834,7 +834,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					string[] clonedExtensions = (string[])extensions.Clone();
 					IDictionary<string, ORMExtensionType> availableExtensions = ORMDesignerPackage.GetAvailableCustomExtensions();
 					ICollection<ORMExtensionType> availableExtensionsCollection = availableExtensions.Values;
-					Dictionary<string, ORMExtensionType> loadedExtensions = null;
+					Dictionary<string, ORMExtensionType> requestedExtensions = null;
+					List<ORMExtensionType> nonRequestedLoadedExtensions = null;
 					foreach (DomainModel domainModel in myDocData.Store.DomainModels)
 					{
 						Type domainModelType = domainModel.GetType();
@@ -843,22 +844,20 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							if (extensionInfo.Type == domainModelType)
 							{
 								string namespaceUri = extensionInfo.NamespaceUri;
-								for (int i = 0; i < clonedExtensions.Length; ++i)
+								int clonedIndex = Array.IndexOf<string>(clonedExtensions, namespaceUri);
+								if (clonedIndex == -1)
 								{
-									if (clonedExtensions[i] == namespaceUri)
+									(nonRequestedLoadedExtensions ?? (nonRequestedLoadedExtensions = new List<ORMExtensionType>())).Add(extensionInfo);
+								}
+								else
+								{
+									--ensureCount;
+									if (ensureCount == 0)
 									{
-										--ensureCount;
-										if (ensureCount == 0)
-										{
-											return; // Nothing to do, everything we need is already loaded
-										}
-										if (loadedExtensions == null)
-										{
-											loadedExtensions = new Dictionary<string, ORMExtensionType>();
-										}
-										loadedExtensions.Add(extensionInfo.NamespaceUri, extensionInfo);
-										clonedExtensions[i] = null;
+										return; // Nothing to do, everything we need is already loaded
 									}
+									(requestedExtensions ?? (requestedExtensions = new Dictionary<string,ORMExtensionType>())).Add(namespaceUri, extensionInfo);
+									clonedExtensions[clonedIndex] = null;
 								}
 								break;
 							}
@@ -873,11 +872,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							ORMExtensionType extensionInfo;
 							if (availableExtensions.TryGetValue(newExtension, out extensionInfo))
 							{
-								if (loadedExtensions == null)
-								{
-									loadedExtensions = new Dictionary<string, ORMExtensionType>();
-								}
-								loadedExtensions.Add(extensionInfo.NamespaceUri, extensionInfo);
+								(requestedExtensions ?? (requestedExtensions = new Dictionary<string,ORMExtensionType>())).Add(extensionInfo.NamespaceUri, extensionInfo);
 							}
 							if (ensureCount == 0)
 							{
@@ -891,8 +886,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 
 					Debug.Assert(stream != null);
 
-					ORMDesignerPackage.VerifyRequiredExtensions(loadedExtensions);
-					stream = ExtensionManager.CleanupStream(stream, ORMDesignerPackage.StandardDomainModels, loadedExtensions.Values);
+					ORMDesignerPackage.VerifyRequiredExtensions(requestedExtensions);
+					ICollection<ORMExtensionType> allExtensions = requestedExtensions.Values;
+					if (nonRequestedLoadedExtensions != null)
+					{
+						nonRequestedLoadedExtensions.AddRange(allExtensions);
+						allExtensions = nonRequestedLoadedExtensions;
+					}
+					stream = ExtensionManager.CleanupStream(stream, ORMDesignerPackage.StandardDomainModels, allExtensions);
 					myDocData.ReloadFromStream(stream);
 				}
 			}
