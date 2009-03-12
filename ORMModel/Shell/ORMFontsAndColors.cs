@@ -347,7 +347,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			,new DefaultColorSetting(
 			VerbalizerNotesItemColorName,
 			ResourceStrings.FontsAndColorsVerbalizerNotesItemColorId,
-			(uint)COLORINDEX.CI_DARKGRAY | StandardPaletteBit,
+			(uint)COLORINDEX.CI_BLACK | StandardPaletteBit,
 			(int)COLORINDEX.CI_SYSPLAINTEXT_BK | StandardPaletteBit,
 			__FCITEMFLAGS.FCIF_ALLOWFGCHANGE | __FCITEMFLAGS.FCIF_ALLOWCUSTOMCOLORS | __FCITEMFLAGS.FCIF_ALLOWBOLDCHANGE,
 			false)
