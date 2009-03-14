@@ -3,7 +3,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
-<title>NORMA January 2009 CTP Readme</title>
+<title>NORMA February 2009 CTP Readme</title>
 <style type="text/css">
 	.new {font-size:x-small; background-color:Gold; color:Blue; }
 	li {padding-bottom: 3px;}
@@ -12,9 +12,9 @@
 
 <body>
 
-<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA January 2009 CTP Readme</a>&nbsp;</b></p>
+<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA February 2009 CTP Readme</a>&nbsp;</b></p>
 <p>This file supersedes the previous readme.txt and older readme.htm files. This readme has parallel indexing mechanisms: by topic, and by release date (starting with the October 2008 (2008-10) release, I won't be adding historical dates). The file will be extended for future product releases.<br/><br/>
-The January 2009 drop is a bug-fix drop with no new major functionality relative to the December 2008 CTP release.
+The February 2009 drop adds grouping support and a number of stability improvements in the tool.
 <br/><br/></p>
 <h2>Contents</h2>
 <ul>
@@ -26,6 +26,7 @@ The January 2009 drop is a bug-fix drop with no new major functionality relative
   <li><a href="#SamplePopulation">Sample Population</a></li>
   <li><a href="#Notation">ORM Notation</a></li>
   <li><a href="#Notes and Definitions">Notes and Definitions</a></li>
+  <li><a href="#Groups">Groups</a></li>
   <li><a href="#Relational">Relational Extensions</a></li>
   <li><a href="#Database Import">Database Import</a></li>
   <li><a href="#Code Generation">Code Generation</a></li>
@@ -39,8 +40,26 @@ The January 2009 drop is a bug-fix drop with no new major functionality relative
 <li><a href="#TOPIC DAILY">TOPIC DESCRIPTION</a>&nbsp;(Changeset ####)</li>
 </ul>-->
 <hr/>
+<h2>February 2009 CTP Changes</h2>
+<div>The February 2009 CTP drop includes all modifications through changeset 1370. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<ul>
+<li><a href="#Element Grouping 2009-02">Element Grouping</a>&nbsp;</li>
+<li>Other Changes:
+<ol>
+<li>The absorption algorithm has been changed to eliminate extreme memory consumption and the associated performance slowdowns in a number of common cases. Specifically, we will not absorb towards an implied mandatory constraint if considering that constraint results in a symmetric (meaning both roles are mandatory, or both roles are not mandatory) one-to-one FactType.</li>
+<li>The toolbox issue where a ValueType drops as an EntityType has been fixed (hopefully once and for all).</li>
+<li>Verbalization of spanning uniqueness constraints is now more specific.</li>
+<li>The name of the <em>Informal Definition</em> tool window has been changed to <em>Informal Desription</em> to better reflect what it is.</li>
+<li>The default verbalization color for Note and Description fields is now black instead of dark grey, which was difficult to see. The lack of color emphasizes the lack of formal semantics. Note that the verbalization colors can be changed using the <em>Environment/Fonts and Colors</em> page of the <em>Tools/Options</em> dialog. Choose the <em>ORM Verbalizer</em> value in the <em>Show settings for</em> dropdown to see the available color categories.</li>
+<li>The number of tool window refreshes has been reduced. This should improve performance when the selection changes, and enables the Verbalization Browser hyperlinks to be clicked directly when an element is selected in the primary document window. Previously, clicking the hyperlink with a document window focused would first repopulate the tool windows, which would invalidate the hyperlink and force a second click.</li>
+<li>A number of issues with exclusive or constraints were fixed (reloading the model displayed both halves of the constraint in the model browser; if multiple shapes were defined for the constraint then only the selected one would be visibly split while the others shapes just moved left; the constraint could not be dropped from the model browser).</li>
+<li>Neumont University stopped funding this project in June 2008 (changeset number 1313 was the final Neumont-funded submission). We have no license (nor are we seeking a license) to continue use of their trademarked name. The official product name is now 'Natural Object-Role Modeling Architect', and the new backing company is ORM Solutions, LLC. Dll names, product installation directories, registry entries, and setup screens have been changed accordingly. We will migrate XML schema namespaces when schemas require a new version, but did not want to submit our users to an unnecessary file format upgrade by modifying the XML schema names.</li>
+</ol>
+</li>
+</ul>
+<hr/>
 <h2>January 2009 CTP Changes</h2>
-<div>The Januar 2009 CTP drop includes all modifications through changeset 1356. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<div>The January 2009 CTP drop includes all modifications through changeset 1356.</div>
 <ul>
 <li><a href="#FactEditor Inverse Readings 2009-01">Fact Editor inverse readings</a>&nbsp;</li>
 <li>Other Changes:
@@ -242,6 +261,22 @@ so changing the subtype relationship in the same session will not lose your deri
 The Notes and InformationDefinition semantics are now supported with a Model selection. The resulting information is verbalized and appears in the generated reports.</li>
 </ol>
 <a href="#The Top">Return to top</a>
+<hr />
+<h3><a id="Groups">Groups</a></h3>
+<ol>
+<li><a id="Element Grouping 2009-02" class="new" title="February 2009 CTP: Element Grouping">2009-02</a>&nbsp;
+The <em>Groups</em> menu and corresponding Model Browser node is a facility for applying arbitrary grouping across elements of a model. This can be used to track groups of elements within a model in any way the user chooses. However, the full power of groups will be more apparent in future tool releases that apply additional meaning to these groups of elements through the notion of <em>Group Types</em>. Note that there are no group types installed with the initial (February 2009) release, we've just added the facility.
+<ul>
+<li>A new group can be added via the context menu on the Groups node in the Model Browser, or by the <em>Groups/Include In/New Group</em> command. Groups can be renamed the same as any other element (via the Properties Window, or by pressing F2 to edit the name inline in the Model Browser).</li>
+<li>Most elements can be dragged onto a Group node to add them to the group. Any element than cannot be dragged (for example, Role and Internal UniquessConstraint) can be included in a group using the Groups menu, or by dragging the individual elements from another branch of the model browser.</li>
+<li>Elements can be deleted from a group using the Groups menu or by using 'Delete' with the linked element selection in the Model Browser.</li>
+<li>Double-clicking a linked element in the Model Browser will navigate to the specified element. It is possible for a grouped element to have no corresponding primary node in the tree. These elements do not provide a link indicator on the icon.</li>
+<li>[The remaining points are part of the grouping facility, but are not applicable until group types are added in future releases.] The <em>GroupTypes</em> property contains a checked list of Group Types, which can be added to the system by extension models. Multiple group types can be specified for one group. A group type can automatically add member elements to a group as well as blocking elements from inclusion in the group.</li>
+<li>The <em>GroupTypeCompliance</em> property is used to determine how tightly the group types control constrain group membership. The default setting (<em>Not Excluded)</em> allows element inclusion as long as no group type explicitly excludes the element. The other two settings (<em>Approved by Some Type</em> and <em>Approved by All types</em>) require one or all associated group types to either formally recognize or automatically include the element. Any automatically included elements can be explicitly excluded by the user, and will appear greyed out with an 'x' on the icon. If an element is automatically included by one group type and excluded by another then an error state is display with a '?' on the group member icon and a validation error '!' on the group node icon.</li>
+</ul>
+</li>
+</ol>
+<a href="#The Top">Return to top</a>
 <hr/>
 <h3><a id="Relational">Relational Extensions</a></h3>
 <ol>
@@ -294,6 +329,8 @@ The settings file for the LinqToSqlAttributeMapping layer has been updated. This
 <ol>
 <li>We have had cases where the Custom Properties extension does not work correctly on Vista. The 'PropertiesEditor' property is available on the model, but the custom properties do not appear on the target elements. This does not happen on all machines, but when it does, the workaround is to launch VS2008 as an administrator instead of as a normal user.</li>
 <li>The FactEditor has refused to load properly immediate after installation on Visual Studio 2008. Restarting Visual Studio fixed the problem.</li>
+<li>Occasionally when closing Visual Studio, a message appears stating that a modal dialog is open, and VS must be forcibly terminated with the task manager.</li>
+<li>Reloading a model can reveal duplicate name errors on generated names for UniquenessConstraint and ImpliedMandatoryConstraint. The UniquenessConstraint errors are easily fixed because they can be selected in the model browser (double click the error, delete the name to regenerate one of the names), but the implied mandatory constraints cannot be selected. The are two ways to fix these: open the .orm file with an xml editor (Open With in Visual Studio, notepad also works) and delete one of the offending name occurrences then reload in NORMA, or use the Store Viewer (a debug common on the context menu) to determine an Object Type associated with the offending constraint. In the Store Viewer, select and recursively expand the ORMStore/Partition/Links/ObjectTypeImpliesMandatoryConstraint node (recursive expansion is done with the * key on the number pad), then scan for the offending constraint name, note the ObjectType name above it, and close the dialog. Find that ObjectType in the model and toggle (twice) either the IsIndependent property on the ObjectType or the IsMandatory property on an optional attached role. The naming error will go away. My apologies for the hassle, I just haven't managed to reproduce the scenario that causes this problem, and the issue is not visible until the file is reloaded.</li>
 </ol>
 </body>
 </html>
