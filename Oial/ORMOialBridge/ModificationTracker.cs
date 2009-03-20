@@ -43,7 +43,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				{
 					if (IsRelevantConstraint(constraint))
 					{
-						FactTypeConstraintPatternChanged(link.Role.FactType);
+						FactTypeConstraintPatternChanged(link.Role.BinarizedFactType);
 					}
 					switch (constraint.ConstraintType)
 					{
@@ -67,7 +67,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				{
 					if (IsRelevantConstraint(constraint))
 					{
-						FactTypeConstraintPatternChanged(link.Role.FactType);
+						FactTypeConstraintPatternChanged(link.Role.BinarizedFactType);
 					}
 					switch (constraint.ConstraintType)
 					{
@@ -116,9 +116,12 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 					SetConstraint constraint = (SetConstraint)e.ModelElement;
 					if (IsRelevantConstraint(constraint.Constraint))
 					{
-						foreach (FactType factType in constraint.FactTypeCollection)
+						foreach (Role role in constraint.RoleCollection)
 						{
-							FactTypeConstraintPatternChanged(factType);
+							// Note that constraint.FactTypeCollection does not resolve the
+							// BinarizedFactType. Notifying twice on one FactType is harmless
+							// due to delayed validation.
+							FactTypeConstraintPatternChanged(role.BinarizedFactType);
 						}
 					}
 				}
@@ -240,14 +243,14 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				ObjectTypePlaysRole link = (ObjectTypePlaysRole)e.ElementLink;
 				if (e.DomainRole.Id == ObjectTypePlaysRole.PlayedRoleDomainRoleId)
 				{
-					SignificantFactTypeChange(((Role)e.OldRolePlayer).FactType);
+					SignificantFactTypeChange(((Role)e.OldRolePlayer).BinarizedFactType);
 				}
 				else
 				{
 					SignificantObjectTypeChange((ObjectType)e.OldRolePlayer);
 				}
 				SignificantObjectTypeChange(link.RolePlayer);
-				SignificantFactTypeChange(link.PlayedRole.FactType);
+				SignificantFactTypeChange(link.PlayedRole.BinarizedFactType);
 			}
 			#endregion // ORM modification rule methods
 			#region Bridge deletion rule methods

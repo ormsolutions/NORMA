@@ -867,6 +867,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			foreach (ConceptType conceptType in this.AbstractionModel.ConceptTypeCollection)
 			{
 				ObjectType objectType = ConceptTypeIsForObjectType.GetObjectType(conceptType);
+				bool? conceptTypeHasDeepMappingAway = null;
 
 				// NOTE: We don't need the ShouldIgnoreObjectType filter here, because object
 				// types that we want to ignore won't be in the OIAL model in the first place.
@@ -884,7 +885,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 					{
 						// The fact type has a mapping and that mapping is towards the role played by
 						// this concept type, so we need to generate concept type children for it.
-						GenerateConceptTypeChildrenForFactTypeMapping(factTypeMappings, conceptType, factTypeMapping, factTypePath, true);
+						GenerateConceptTypeChildrenForFactTypeMapping(factTypeMappings, conceptType, ref conceptTypeHasDeepMappingAway, factTypeMapping, factTypePath, true);
 					}
 				}
 			}
@@ -900,6 +901,10 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 		/// <param name="parentConceptType">
 		/// The <see cref="ConceptType"/> into which <see cref="ConceptTypeChild">concept type children</see> should be generated.
 		/// </param>
+		/// <param name="parentConceptTypeHasDeepAway">
+		/// Test if the parent concept type has a deep mapping away from it. Handles some cyclic cases by making a potential assimilation
+		/// into a reference. Delay calculated because this is not always needed.
+		/// </param>
 		/// <param name="factTypeMapping">
 		/// The <see cref="FactTypeMapping"/> for which <see cref="ConceptTypeChild">concept type children</see> should be generated.
 		/// </param>
@@ -909,7 +914,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 		/// <param name="isMandatorySoFar">
 		/// Indicates whether every step in <paramref name="factTypePath"/> is mandatory for the parent concept type (towards object type).
 		/// </param>
-		private static void GenerateConceptTypeChildrenForFactTypeMapping(FactTypeMappingDictionary factTypeMappings, ConceptType parentConceptType, FactTypeMapping factTypeMapping, List<FactType> factTypePath, bool isMandatorySoFar)
+		private static void GenerateConceptTypeChildrenForFactTypeMapping(FactTypeMappingDictionary factTypeMappings, ConceptType parentConceptType, ref bool? parentConceptTypeHasDeepAway, FactTypeMapping factTypeMapping, List<FactType> factTypePath, bool isMandatorySoFar)
 		{
 			// Push the current fact type onto the path.
 			factTypePath.Add(factTypeMapping.FactType);
@@ -1080,8 +1085,46 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 							// UNDONE: Would we ever want to use a depth other than shallow here? Probably not, but it might be worth looking in to.
 							preferredIdentifierFactTypeMapping = new FactTypeMapping(preferredIdentifierFactType, preferredIdentifierFactTypeMapping.TowardsRole, preferredIdentifierFactTypeMapping.FromRole, MappingDepth.Shallow);
 						}
+						else if (preferredIdentifierFactTypeMapping.MappingDepth == MappingDepth.Deep)
+						{
+							// Handle cyclic deep mapping scenario with collapsed entities.
+							// The primary scenario here is:
+							// 1) B is a subtype of A and identified by A's identifier
+							// 2) A and B participate in an objectified 1-1 FactType
+							// 3) The uniqueness constraint on the A role is the preferred identifier
+							// 4) The A role is mandatory
+							// In this case, without this code, you get an assimilation mapping B into A
+							// and mapping A into B. We fix this case by forwarding a shallow mapping,
+							// which generates a reference instad of an assimilation.
+							if (!parentConceptTypeHasDeepAway.HasValue)
+							{
+								ObjectType objectType = ConceptTypeIsForObjectType.GetObjectType(parentConceptType);
+								foreach (Role role in ConceptTypeIsForObjectType.GetObjectType(parentConceptType).PlayedRoleCollection)
+								{
+									FactType factType;
+									FactTypeMapping testMapping;
+									if (null != (factType = role.BinarizedFactType) &&
+										factTypeMappings.TryGetValue(factType, out testMapping) &&
+										testMapping.MappingDepth == MappingDepth.Deep &&
+										testMapping.FromObjectType == objectType)
+									{
+										preferredIdentifierFactTypeMapping = new FactTypeMapping(preferredIdentifierFactType, preferredIdentifierFactTypeMapping.FromRole, preferredIdentifierFactTypeMapping.TowardsRole, MappingDepth.Shallow);
+										parentConceptTypeHasDeepAway = true;
+										break;
+									}
+								}
+								if (!parentConceptTypeHasDeepAway.HasValue)
+								{
+									parentConceptTypeHasDeepAway = false;
+								}
+							}
+							else if (parentConceptTypeHasDeepAway.Value)
+							{
+								preferredIdentifierFactTypeMapping = new FactTypeMapping(preferredIdentifierFactType, preferredIdentifierFactTypeMapping.FromRole, preferredIdentifierFactTypeMapping.TowardsRole, MappingDepth.Shallow);
+							}
+						}
 
-						GenerateConceptTypeChildrenForFactTypeMapping(factTypeMappings, parentConceptType, preferredIdentifierFactTypeMapping, factTypePath, isMandatory);
+						GenerateConceptTypeChildrenForFactTypeMapping(factTypeMappings, parentConceptType, ref parentConceptTypeHasDeepAway, preferredIdentifierFactTypeMapping, factTypePath, isMandatory);
 					}
 				}
 			}
