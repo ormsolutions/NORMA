@@ -31,7 +31,7 @@
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="cp:CustomPropertyGroup" maxOccurs="unbounded" minOccurs="1"/>
+				<xs:element ref="cp:CustomPropertyGroup" maxOccurs="unbounded" minOccurs="0"/>
 			</xs:sequence>
 		</xs:complexType>
 		<xs:key name="CustomPropertyGroupKey">
@@ -49,10 +49,10 @@
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="PropertyDefinitions">
+				<xs:element name="PropertyDefinitions" minOccurs="0">
 					<xs:complexType>
 						<xs:sequence>
-							<xs:element ref="cp:Definition" maxOccurs="unbounded" minOccurs="1"/>
+							<xs:element ref="cp:Definition" maxOccurs="unbounded" minOccurs="0"/>
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
@@ -164,7 +164,7 @@
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="cp:ORMType" maxOccurs="unbounded" minOccurs="1"/>
+				<xs:element ref="cp:ORMType" maxOccurs="unbounded" minOccurs="0"/>
 			</xs:sequence>
 		</xs:complexType>
 		<xs:unique name="ORMTypeUniquessConstraint">

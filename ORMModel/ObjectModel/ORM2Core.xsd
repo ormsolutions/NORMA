@@ -236,12 +236,12 @@
 	<xs:complexType name="ValueTypeInstanceRef">
 		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
 	</xs:complexType>
-	<xs:complexType name="ObjectTypeRoleInstances">
-		<xs:sequence>
-			<xs:element name="EntityTypeRoleInstance" type="RoleInstance" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="ValueTypeRoleInstance" type="RoleInstance" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="FactTypeRoleInstance" type="RoleInstance" minOccurs="0" maxOccurs="unbounded"/>
-		</xs:sequence>
+	<xs:complexType name="RoleInstanceDefinitions">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="EntityTypeRoleInstance" type="RoleInstance"/>
+			<xs:element name="ValueTypeRoleInstance" type="RoleInstance"/>
+			<xs:element name="FactTypeRoleInstance" type="RoleInstance"/>
+		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="RoleInstance">
 		<xs:simpleContent>
@@ -589,7 +589,7 @@
 		<xs:sequence>
 			<xs:element name="RolePlayer" type="ObjectRef" minOccurs="0"/>
 			<xs:element name="ValueRestriction" type="RoleValueRestriction" minOccurs="0"/>
-			<xs:element name="RoleInstances" type="ObjectTypeRoleInstances" minOccurs="0"/>
+			<xs:element name="RoleInstances" type="RoleInstanceDefinitions" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="Name" type="xs:string" use="required"/>
 		<xs:attribute name="id" type="xs:ID" use="required"/>
