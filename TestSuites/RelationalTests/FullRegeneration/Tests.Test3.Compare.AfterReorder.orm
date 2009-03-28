@@ -748,7 +748,7 @@
 			<ormtooial:AbstractionModelGenerationSetting id="_93A125B5-363A-454B-A6FC-473B4987BBF7" AlgorithmVersion="1.005">
 				<ormtooial:AbstractionModel ref="_B227B9F1-E66D-4885-9EBB-FA6C30E3AC66" />
 			</ormtooial:AbstractionModelGenerationSetting>
-			<oialtocdb:SchemaGenerationSetting id="_75FDA8E6-2EB8-493D-A6BF-CB382F439713" CoreAlgorithmVersion="1.004" NameAlgorithmVersion="1.009">
+			<oialtocdb:SchemaGenerationSetting id="_75FDA8E6-2EB8-493D-A6BF-CB382F439713" CoreAlgorithmVersion="1.004" NameAlgorithmVersion="1.010">
 				<oialtocdb:Schema ref="_0C507CBC-61D4-4B2D-ACE1-7BED6CF800A3" />
 			</oialtocdb:SchemaGenerationSetting>
 		</orm:GenerationSettings>

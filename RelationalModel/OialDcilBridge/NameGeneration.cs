@@ -781,7 +781,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 							// Don't add names for reverse path types
 							lastStepConsumedNextNode = false;
 							lastStepUsedExplicitRoleName = false;
-							treatNextIdentifierAsFirstStep = true;
+							treatNextIdentifierAsFirstStep = firstPass;
 							if (nextLoopNode == null)
 							{
 								// Unusual, but can happen with a ValueType with its own table
