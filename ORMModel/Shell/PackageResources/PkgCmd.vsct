@@ -207,13 +207,13 @@
 				<Parent guid="guidORMDesignerCommandSet" id="menuIdReportGeneratorList"/>
 			</Group>
 
-			<Group guid="guidORMDesignerCommandSet" id="groupIdDisplayOrientation" priority="0x0010">
+			<Group guid="guidORMDesignerCommandSet" id="groupIdDisplayReverseRoleOrder" priority="0x0010">
 				<Parent guid="guidORMDesignerCommandSet" id="menuIdDisplayOrientation"/>
 			</Group>
-			<Group guid="guidORMDesignerCommandSet" id="groupIdDisplayConstraintPosition" priority="0x0020">
+			<Group guid="guidORMDesignerCommandSet" id="groupIdDisplayOrientation" priority="0x0020">
 				<Parent guid="guidORMDesignerCommandSet" id="menuIdDisplayOrientation"/>
 			</Group>
-			<Group guid="guidORMDesignerCommandSet" id="groupIdDisplayReverseRoleOrder" priority="0x0030">
+			<Group guid="guidORMDesignerCommandSet" id="groupIdDisplayConstraintPosition" priority="0x0030">
 				<Parent guid="guidORMDesignerCommandSet" id="menuIdDisplayOrientation"/>
 			</Group>
 

@@ -212,7 +212,7 @@
     <comment xml:space="preserve">This text appears on the 'Select on Diagram' menu if there is more than one shape for the selected element on the current diagram.</comment>
   </data>
   <data name="Command.SwapRoleOrder.Text">
-    <value xml:space="preserve">S&amp;wap Role Order</value>
+    <value xml:space="preserve">Re&amp;verse Role Order</value>
     <comment xml:space="preserve">This text appears on the move role left/right when the fact type is binary.</comment>
   </data>
   <data name="ConstraintDisplayPosition.Bottom" xml:space="preserve">

@@ -398,32 +398,35 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Retrieve the best matching alias for the provided set of aliases
 		/// </summary>
+		/// <remarks>If an exact type/usage match is not available, then this will
+		/// return the closest usage match over the closest type match. The closest
+		/// matches are determined by walking up the parent hierarchy of name generators.</remarks>
 		/// <param name="aliases">A set of alias elements. The best match is returned.</param>
 		/// <returns>A <see cref="NameAlias"/>, or <see langword="null"/> if none is available.</returns>
 		public NameAlias FindMatchingAlias(IEnumerable<NameAlias> aliases)
 		{
-			NameAlias bestMatch = null;
+			NameAlias bestUsageMatch = null;
+			NameAlias bestTypeMatch = null;
 			Type usageType = NameUsageType;
 			DomainClassInfo thisClassInfo = GetDomainClass();
-			DomainClassInfo matchedClassInfo = null;
-			bool matchedUsageType = false;
-			int closestDistance = int.MaxValue;
+			int closestTypeDistance = int.MaxValue;
+			int closestUsageDistance = int.MaxValue;
 			foreach (NameAlias alias in aliases)
 			{
 				DomainClassInfo testClassInfo = alias.NameConsumerDomainClass;
 				Type testUsageType = alias.NameUsageType;
 				if (testClassInfo == thisClassInfo)
 				{
-					if (usageType == testUsageType)
+					if (usageType == testUsageType) // intentionally handles two null values
 					{
-						bestMatch = alias;
+						bestUsageMatch = alias;
 						break;
 					}
 					else if (usageType != null && testUsageType == null)
 					{
-						matchedClassInfo = testClassInfo;
-						bestMatch = alias;
-						// Keep going to see if we get an exact usage match
+						closestTypeDistance = 0; // Matched self, can't get any closer
+						bestTypeMatch = alias;
+						// Keep going to see if we get a higher priority usage match
 					}
 				}
 				else
@@ -435,29 +438,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						++testDistance;
 						if (iterateClassInfo == testClassInfo)
 						{
-							if (testDistance <= closestDistance)
+							if (usageType == testUsageType) // intentionally handles two null values
 							{
-								if (testClassInfo == matchedClassInfo)
+								if (testDistance < closestUsageDistance)
 								{
-									if (!matchedUsageType)
-									{
-										bestMatch = alias;
-										matchedUsageType = usageType == testUsageType;
-									}
+									closestUsageDistance = testDistance;
+									bestUsageMatch = alias;
 								}
-								else if (usageType == testUsageType)
+							}
+							else if (usageType != null && testUsageType == null)
+							{
+								if (testDistance < closestTypeDistance)
 								{
-									closestDistance = testDistance;
-									matchedClassInfo = testClassInfo;
-									matchedUsageType = true;
-									bestMatch = alias;
-								}
-								else if (usageType != null && testUsageType == null)
-								{
-									closestDistance = testDistance;
-									matchedClassInfo = testClassInfo;
-									matchedUsageType = false;
-									bestMatch = alias;
+									closestTypeDistance = testDistance;
+									bestTypeMatch = alias;
 								}
 							}
 							break;
@@ -466,7 +460,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					} while (iterateClassInfo != null);
 				}
 			}
-			return bestMatch;
+			return bestUsageMatch ?? bestTypeMatch;
 		}
 		#endregion // GetGeneratorSettings
 	}
