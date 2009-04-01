@@ -25,6 +25,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
+using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.Modeling;
 
 namespace ORMSolutions.ORMArchitect.Framework
@@ -584,6 +585,18 @@ namespace ORMSolutions.ORMArchitect.Framework
 			return null;
 		}
 		/// <summary>
+		/// If a duplicate name is caught during load, then determine if the name
+		/// is an auto-generated name that should be regenerated instead of tracked
+		/// as a duplicate name error. The default implementation returns <see langword="false"/>.
+		/// </summary>
+		/// <param name="element">The element with the duplicate name</param>
+		/// <param name="elementName">The pre-fetched element name</param>
+		/// <returns>Return <see langword="true"/> to reset the name.</returns>
+		protected virtual bool ShouldResetDuplicateName(ModelElement element, string elementName)
+		{
+			return false;
+		}
+		/// <summary>
 		/// Override to throw a custom exception when
 		/// adding duplicate names is not allowed.
 		/// </summary>
@@ -626,6 +639,25 @@ namespace ORMSolutions.ORMArchitect.Framework
 				newKey = string.Format(CultureInfo.InvariantCulture, rootName, i.ToString(CultureInfo.InvariantCulture));
 			} while(dic.ContainsKey(newKey));
 			return newKey;
+		}
+		/// <summary>
+		/// Test if an <paramref name="elementName"/> is a decorated form of the root name pattern
+		/// for an <paramref name="element"/>. Provides a stock implementation for derived implementations
+		/// of the <see cref="ShouldResetDuplicateName"/> method.
+		/// </summary>
+		/// <param name="element">The element to retrieve the root name pattern for.</param>
+		/// <param name="elementName">The pre-fetched element name to compare to.</param>
+		/// <returns><see langword="true"/> if the name could have been generated from
+		/// the string returned from <see cref="GetRootNamePattern"/></returns>
+		protected bool IsDecoratedRootName(ModelElement element, string elementName)
+		{
+			string rootName = this.GetRootNamePattern(element);
+			return Regex.IsMatch(
+				elementName,
+				rootName.Contains("{0}") ?
+					@"\A" + string.Format(CultureInfo.InvariantCulture, rootName, @"\d+") + @"\z" :
+					@"\A" + rootName + @"\d+\z",
+				RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 		}
 		#endregion // Unique name generation
 		#region INamedElementDictionary Members
@@ -737,6 +769,10 @@ namespace ORMSolutions.ORMArchitect.Framework
 				// The return will only be hit if a derived class chooses
 				// to not throw an exception
 				return;
+			}
+			else if (notifyAdded != null && ShouldResetDuplicateName(element, elementName))
+			{
+				AddElement(element, duplicateAction, "", notifyAdded);
 			}
 			else
 			{

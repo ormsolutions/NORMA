@@ -6,18 +6,36 @@ using ORMSolutions.ORMArchitect.Core.ObjectModel;
 
 namespace ORMSolutions.ORMArchitect.ExtensionExample
 {
+	/// <summary>
+	/// A custom fixup phase for the extension example
+	/// </summary>
+	public enum ExtensionExampleFixupPhase
+	{
+		/// <summary>
+		/// Validate meaningful names after the ORM model has completed its name validation.
+		/// This enables any names that require regeneration to be automatically generated
+		/// before we determine if the names are meaningful.
+		/// </summary>
+		ValidateMeaningfulNames = ORMDeserializationFixupPhase.ValidateElementNames + 1,
+	}
 	public partial class ExtensionDomainModel : IDeserializationFixupListenerProvider
 	{
 		#region IDeserializationFixupListenerProvider Implementation
 		/// <summary>
 		/// Implements IDeserializationFixupListenerProvider.DeserializationFixupListenerCollection
 		/// </summary>
-		protected static IEnumerable<IDeserializationFixupListener> DeserializationFixupListenerCollection
+		protected IEnumerable<IDeserializationFixupListener> DeserializationFixupListenerCollection
 		{
 			get
 			{
 				yield return new MyCustomExtensionElementFixupListener();
 				yield return ObjectTypeRequiresMeaningfulNameError.ObjectTypeNameErrorFixupListener;
+				// The errors in this model will be ignore by the ORM error validator because they are
+				// in the wrong domain model. Register our own handler to deal with these errors.
+				// Note that this could also be handled by explicitly add/removing validating errors
+				// from the task provider when we create them, but this general facility is easier to
+				// use because it does this for us.
+				yield return ModelError.GetFixupListener((int)ORMDeserializationFixupPhase.ValidateErrors, DomainModelInfo);
 			}
 		}
 		IEnumerable<IDeserializationFixupListener> IDeserializationFixupListenerProvider.DeserializationFixupListenerCollection
@@ -35,7 +53,7 @@ namespace ORMSolutions.ORMArchitect.ExtensionExample
 		{
 			get
 			{
-				return null;
+				return typeof(ExtensionExampleFixupPhase);
 			}
 		}
 		Type IDeserializationFixupListenerProvider.DeserializationFixupPhaseType

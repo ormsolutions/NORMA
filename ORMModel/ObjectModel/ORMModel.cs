@@ -1043,6 +1043,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return base.GetRootNamePattern(element);
 			}
 			/// <summary>
+			/// Duplicate automatically generated constraint names should regenerate on load.
+			/// Caters for common merging scenario.
+			/// </summary>
+			protected override bool ShouldResetDuplicateName(ModelElement element, string elementName)
+			{
+				return IsDecoratedRootName(element, elementName);
+			}
+			/// <summary>
 			/// Raise an exception with text specific to a name in a model
 			/// </summary>
 			/// <param name="element">Element we're attempting to name</param>

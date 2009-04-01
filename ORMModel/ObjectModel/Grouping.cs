@@ -1023,6 +1023,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	}
 	#endregion // GroupDuplicateNameError class
 	#region GroupMembershipContradictionError class
+	[ModelErrorDisplayFilter(typeof(ElementGroupingErrorCategory))]
 	partial class ElementGroupingMembershipContradictionError
 	{
 		/// <summary>
@@ -1263,6 +1264,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			protected override string GetRootNamePattern(ModelElement element)
 			{
 				return ResourceStrings.ElementGroupingDefaultNamePattern;
+			}
+			/// <summary>
+			/// Duplicate automatically generated group names should regenerate on load.
+			/// Caters for common merging scenario.
+			/// </summary>
+			protected override bool ShouldResetDuplicateName(ModelElement element, string elementName)
+			{
+				return IsDecoratedRootName(element, elementName);
 			}
 			/// <summary>
 			/// Raise an exception with text specific to a name in a model

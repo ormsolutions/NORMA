@@ -158,7 +158,7 @@ namespace ORMSolutions.ORMArchitect.ExtensionExample
 		private sealed class ObjectTypeNameFixupListener : DeserializationFixupListener<ObjectType>
 		{
 			public ObjectTypeNameFixupListener()
-				: base((int)ORMDeserializationFixupPhase.ValidateImplicitStoredElements)
+				: base((int)ExtensionExampleFixupPhase.ValidateMeaningfulNames)
 			{
 			}
 			protected sealed override void ProcessElement(ObjectType element, Store store, INotifyElementAdded notifyAdded)
