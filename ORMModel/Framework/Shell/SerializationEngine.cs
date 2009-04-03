@@ -2884,26 +2884,41 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 									for (int k = 0; k < linkCount; ++k)
 									{
 										ElementLink link = relationshipElements[k] as ElementLink;
-										if (relationship.IsPrimaryLinkElement)
+										if (ns.ShouldSerializeRootElement(link))
 										{
-											SerializeElement(file, link, new SerializeExtraAttributesCallback(delegate(XmlWriter xmlFile)
+											int testSerialize = 0;
+											for (; testSerialize < customRelationshipRoles.Length; ++testSerialize)
 											{
+												if (!ShouldSerializeElement(DomainRoleInfo.GetRolePlayer(link, customRelationshipRoles[testSerialize].DomainRoleId)))
+												{
+													break;
+												}
+											}
+											if (testSerialize != customRelationshipRoles.Length)
+											{
+												continue;
+											}
+											if (relationship.IsPrimaryLinkElement)
+											{
+												SerializeElement(file, link, new SerializeExtraAttributesCallback(delegate(XmlWriter xmlFile)
+												{
+													for (int l = 0; l < customRelationshipRoles.Length; ++l)
+													{
+														CustomSerializedStandaloneRelationshipRole role = customRelationshipRoles[l];
+														xmlFile.WriteAttributeString(role.AttributeName, ToXml(DomainRoleInfo.GetRolePlayer(link, role.DomainRoleId).Id));
+													}
+												}));
+											}
+											else
+											{
+												file.WriteStartElement(relationship.ElementPrefix, relationship.ElementName, relationship.ElementNamespace);
 												for (int l = 0; l < customRelationshipRoles.Length; ++l)
 												{
 													CustomSerializedStandaloneRelationshipRole role = customRelationshipRoles[l];
-													xmlFile.WriteAttributeString(role.AttributeName, ToXml(DomainRoleInfo.GetRolePlayer(link, role.DomainRoleId).Id));
+													file.WriteAttributeString(role.AttributeName, ToXml(DomainRoleInfo.GetRolePlayer(link, role.DomainRoleId).Id));
 												}
-											}));
-										}
-										else
-										{
-											file.WriteStartElement(relationship.ElementPrefix, relationship.ElementName, relationship.ElementNamespace);
-											for (int l = 0; l < customRelationshipRoles.Length; ++l)
-											{
-												CustomSerializedStandaloneRelationshipRole role = customRelationshipRoles[l];
-												file.WriteAttributeString(role.AttributeName, ToXml(DomainRoleInfo.GetRolePlayer(link, role.DomainRoleId).Id));
+												file.WriteEndElement();
 											}
-											file.WriteEndElement();
 										}
 									}
 								}

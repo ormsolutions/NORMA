@@ -14,6 +14,7 @@
 			Natural Object-Role Modeling Architect for Visual Studio
 
 			Copyright © Neumont University. All rights reserved.
+			Copyright © ORM Solutions, LLC. All rights reserved.
 
 			The use and distribution terms for this software are covered by the
 			Common Public License 1.0 (http://opensource.org/licenses/cpl) which
@@ -320,7 +321,15 @@
 						<xs:element name="Container">
 							<xs:complexType>
 								<xs:sequence minOccurs="1" maxOccurs="unbounded">
-									<xs:element name="RootLink" type="StandaloneLinkType"/>
+									<xs:element name="RootLink">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element ref="ConditionalSerialization" minOccurs="0"/>
+												<xs:group ref="StandaloneLinkRoleGroup"/>
+											</xs:sequence>
+											<xs:attributeGroup ref="StandaloneLinkAttributeGroup"/>
+										</xs:complexType>
+									</xs:element>
 								</xs:sequence>
 								<xs:attribute name="Name" type="xs:string" use="required"/>
 								<xs:attribute name="Prefix" type="xs:string" use="optional"/>
@@ -388,6 +397,10 @@
 		<xs:annotation>
 			<xs:documentation>Represents a link that is created directly without being in the parent context of one of its role players.</xs:documentation>
 		</xs:annotation>
+		<xs:group ref="StandaloneLinkRoleGroup"/>
+		<xs:attributeGroup ref="StandaloneLinkAttributeGroup"/>
+	</xs:complexType>
+	<xs:group name="StandaloneLinkRoleGroup">
 		<xs:sequence>
 			<xs:element name="Role" minOccurs="2" maxOccurs="2">
 				<xs:complexType>
@@ -404,6 +417,8 @@
 				</xs:complexType>
 			</xs:element>
 		</xs:sequence>
+	</xs:group>
+	<xs:attributeGroup name="StandaloneLinkAttributeGroup">
 		<xs:attribute name="Class" type="xs:string" use="required">
 			<xs:annotation>
 				<xs:documentation>The name of the link class.</xs:documentation>
@@ -424,7 +439,7 @@
 				<xs:documentation>If true, then an id attribute will be written out for this link and serialization will defer to the link treated as a class after the source and target role player elements are written.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-	</xs:complexType>
+	</xs:attributeGroup>
 	<xs:complexType name="ElementType">
 		<xs:sequence>
 			<xs:sequence>

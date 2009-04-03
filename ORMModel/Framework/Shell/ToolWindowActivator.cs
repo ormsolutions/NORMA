@@ -479,8 +479,8 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 					monitor.SelectionChanged += new EventHandler<MonitorSelectionEventArgs>(MonitorSelectionChanged);
 					monitor.DocumentWindowChanged += new EventHandler<MonitorSelectionEventArgs>(DocumentWindowChanged);
 					SetCurrentDocument(SafeGetCurrentDocument(monitor) as DocDataType, monitor.CurrentDocumentView as DocViewType);
-					CurrentSelectionContainer = monitor.CurrentSelectionContainer as SelectionContainerType ?? monitor.CurrentDocumentView as SelectionContainerType;
 					myFrameVisibility = FrameVisibilityFlags.Visible | (flags & FrameVisibilityFlags.PersistentFlagsMask) | FrameVisibilityFlags.HasBeenVisible;
+					CurrentSelectionContainer = monitor.CurrentSelectionContainer as SelectionContainerType ?? monitor.CurrentDocumentView as SelectionContainerType;
 					break;
 			}
 		}

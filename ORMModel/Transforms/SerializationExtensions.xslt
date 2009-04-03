@@ -2424,7 +2424,7 @@
 				<plx:interfaceMember dataTypeName="ICustomSerializedDomainModel" memberName="ShouldSerializeRootElement"/>
 				<plx:param name="element" dataTypeName="ModelElement"/>
 				<plx:returns dataTypeName=".boolean"/>
-				<xsl:variable name="rootElementConditions" select="se:RootElements/se:RootElement/se:ConditionalSerialization"/>
+				<xsl:variable name="rootElementConditions" select=".//se:ConditionalSerialization"/>
 				<xsl:if test="$rootElementConditions">
 					<plx:local name="elementDomainClass" dataTypeName="DomainClassInfo">
 						<plx:initialize>
