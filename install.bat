@@ -65,7 +65,8 @@ XCOPY /Y /D /V /Q "%RootDir%\EntityRelationship\OialBerBridge\ORMAbstractionToBa
 XCOPY /Y /D /V /Q "%RootDir%\AlternateViews\BarkerERView\BarkerERView.xsd" "%NORMADir%\Xml\Schemas\"
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Framework\Shell\DiagramDisplay.xsd" "%NORMADir%\Xml\Schemas\"
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\catalog.xml" "%NORMADir%\Xml\Schemas\"
-XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\ORMDesignerSettings.xml" "%NORMADir%\"
+CALL:_CleanupFile "%NORMADir%\ORMDesignerSettings.xml"
+XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\ORMDesignerSettings.xml" "%NORMADir%\Xml\"
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\Converters\*.xslt" "%NORMADir%\Xml\Transforms\Converters\"
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\ObjectModel\VerbalizationUntypedSnippets.xsd" "%NORMADir%\Xml\Verbalization\"
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\ObjectModel\VerbalizationCoreSnippets\*.x??" "%NORMADir%\Xml\Verbalization\Core\"
@@ -110,8 +111,12 @@ if EXIST "%VSDir%" (
 	REG DELETE "HKLM\%VSRegistryRoot%\Projects\{A2FE74E1-B743-11d0-AE1A-00A0C90FFFC3}\AddItemTemplates\TemplateDirs\{EFDDC549-1646-4451-8A51-E5A5E94D647C}" /f 1>NUL 2>&1
 	REG DELETE "HKLM\%VSRegistryRoot%\Projects\{D1DCDB85-C5E8-11d2-BFCA-00C04F990235}\AddItemTemplates\TemplateDirs\{EFDDC549-1646-4451-8A51-E5A5E94D647C}" /f 1>NUL 2>&1
 
-	REG ADD "HKLM\%VSRegistryRoot%\ORM Solutions\Natural ORM Architect" /v "SettingsPath" /d "%NORMADir%\ORMDesignerSettings.xml" /f 1>NUL
-	REG ADD "HKLM\%VSRegistryRoot%\ORM Solutions\Natural ORM Architect" /v "ConvertersDir" /d "%NORMADir%\Xml\Transforms\Converters\\" /f 1>NUL
+	:: Get rid of single-settings-file-only values
+	REG DELETE "HKLM\%VSRegistryRoot%\ORM Solutions\Natural ORM Architect" /v "SettingsPath" /f 1>NUL 2>&1
+	REG DELETE "HKLM\%VSRegistryRoot%\ORM Solutions\Natural ORM Architect" /v "ConvertersDir" /f 1>NUL 2>&1
+
+	REG ADD "HKLM\%VSRegistryRoot%\ORM Solutions\Natural ORM Architect\DesignerSettings\Core" /v "SettingsFile" /d "%NORMADir%\Xml\ORMDesignerSettings.xml" /f 1>NUL
+	REG ADD "HKLM\%VSRegistryRoot%\ORM Solutions\Natural ORM Architect\DesignerSettings\Core" /v "ConvertersDir" /d "%NORMADir%\Xml\Transforms\Converters\\" /f 1>NUL
 	REG ADD "HKLM\%VSRegistryRoot%\ORM Solutions\Natural ORM Architect" /v "VerbalizationDir" /d "%NORMADir%\Xml\Verbalization\\" /f 1>NUL
 	REG ADD "HKLM\%VSRegistryRoot%\FontAndColors\Orm Designer" /v "Category" /d "{663DE24F-8E3A-4C0F-A307-53053ED6C59B}" /f 1>NUL
 	REG ADD "HKLM\%VSRegistryRoot%\FontAndColors\Orm Designer" /v "Package" /d "{C5AA80F8-F730-4809-AAB1-8D925E36F9F5}" /f 1>NUL

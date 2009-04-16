@@ -446,7 +446,7 @@
 											DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 										<File Id="RemoveOIAL2006_01.xslt" ShortName="ROil0601.xsl" Name="RemoveOIAL2006-01.xslt" Source="..\ORMModel\Shell\Converters\RemoveOIAL2006-01.xslt"
 											DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
-										<RegistryValue Root="HKLM" Key="$(var.NORMAVSRegRoot)" Type="string" Name="ConvertersDir" Value="[Converters]"/>
+										<RegistryValue Root="HKLM" Key="$(var.NORMAVSRegRoot)\DesignerSettings\Core" Type="string" Name="ConvertersDir" Value="[Converters]"/>
 									</Component>
 								</Directory>
 							</Directory>
@@ -487,14 +487,12 @@
 									</Component>
 								</Directory>
 							</Directory>
+							<Component Id="NORMAVSSettingsComponent" Guid="956063F7-13D9-4083-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
+								<File Id="ORMDesignerSettings.xml" ShortName="DsgnrStg.xml" Name="ORMDesignerSettings.xml" Source="..\ORMModel\Shell\ORMDesignerSettings.xml"
+									DefaultLanguage="0" KeyPath="yes"/>
+								<RegistryValue Root="HKLM" Key="$(var.NORMAVSRegRoot)\DesignerSettings\Core" Type="string" Name="SettingsFile" Value="[#ORMDesignerSettings.xml]"/>
+							</Component>
 						</Directory>
-
-						<Component Id="NORMAVSSettingsComponent" Guid="956063F7-13D9-4083-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-							<File Id="ORMDesignerSettings.xml" ShortName="DsgnrStg.xml" Name="ORMDesignerSettings.xml" Source="..\ORMModel\Shell\ORMDesignerSettings.xml"
-								DefaultLanguage="0" KeyPath="yes"/>
-							<RegistryValue Root="HKLM" Key="$(var.NORMAVSRegRoot)" Type="string" Name="SettingsPath" Value="[#ORMDesignerSettings.xml]"/>
-						</Component>
-
 					</Directory>
 				</Directory>
 			</Directory>

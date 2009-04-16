@@ -27,6 +27,7 @@ using System.Windows.Forms.Design;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio;
+using Microsoft.Win32;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using System.ComponentModel;
 
@@ -36,6 +37,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 	/// A class used to read XmlConverters section of the designer settings file
 	/// and run transforms between registered converter types.
 	/// </summary>
+	[CLSCompliant(false)]
 	public partial class ORMDesignerSettings
 	{
 		#region Schema definition classes
@@ -169,46 +171,32 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		}
 		#endregion // ORMDesignerNameTable class
 		#endregion // Schema definition classes
+		#region Constants
+		private const string REGISTRYKEY_CORESETTINGS = "Core";
+		private const string REGISTRYVALUE_SETTINGSFILE = "SettingsFile";
+		private const string REGISTRYVALUE_CONVERTERSDIR = "ConvertersDir";
+		#endregion // Constraints
 		#region Member Variables
-		private IServiceProvider myServiceProvider;
+		private Package myPackage;
+		private string myRootRegistryKey; // Relative to the package application root
 		private bool myIsLoaded;
 		private Dictionary<XmlElementIdentifier, LinkedList<TransformNode>> myXmlConverters;
 		#endregion // Member Variables
 		#region Static Variables
-		private static string mySettingsPath;
-		private static string myXmlConvertersDirectory;
 		private static readonly object LockObject = new object();
 		#endregion // Static Variables
 		#region Constructors
 		/// <summary>
 		/// Construct new designer settings
 		/// </summary>
-		/// <param name="serviceProvider">The service provider to use</param>
-		/// <param name="settingsPath">The full path to the settings file.</param>
-		/// <param name="xmlConvertersDirectory">The directory where the XML converters are located.</param>
-		public ORMDesignerSettings(IServiceProvider serviceProvider, string settingsPath, string xmlConvertersDirectory)
+		/// <param name="package">The context package</param>
+		/// <param name="rootKey">The root key for designer settings, relative to the package registry root.</param>
+		public ORMDesignerSettings(Package package, string rootKey)
 		{
-			myServiceProvider = serviceProvider;
-			mySettingsPath = settingsPath;
-			myXmlConvertersDirectory = xmlConvertersDirectory;
+			myPackage = package;
+			myRootRegistryKey = rootKey;
 		}
 		#endregion // Constructors
-		#region SettingsDirectory property
-		private string SettingsPath
-		{
-			get
-			{
-				return mySettingsPath;
-			}
-		}
-		private string XmlConvertersDirectory
-		{
-			get
-			{
-				return myXmlConvertersDirectory;
-			}
-		}
-		#endregion // SettingsDirectory property
 		#region ConvertStream method
 		/// <summary>
 		/// Convert the given stream to a new stream with converted contents.
@@ -316,6 +304,103 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		}
 		#endregion // ConvertStream method
 		#region Global Settings Loader
+		/// <summary>
+		/// Structure representing a single settings file
+		/// </summary>
+		private struct SettingsLocation
+		{
+			/// <summary>
+			/// The settings file to load
+			/// </summary>
+			public readonly string SettingsFile;
+			/// <summary>
+			/// The directory for converter transforms
+			/// </summary>
+			public readonly string ConvertersDirectory;
+			private SettingsLocation(string settingsFile, string convertersDirectory)
+			{
+				SettingsFile = settingsFile;
+				ConvertersDirectory = convertersDirectory;
+			}
+			/// <summary>
+			/// Enumerate all registered settings files
+			/// </summary>
+			/// <param name="package">The context package, provides a starting key for registry information</param>
+			/// <param name="registryRoot">The root key relative to the package root</param>
+			/// <returns>Enumeration of settings files</returns>
+			public static IEnumerable<SettingsLocation> SettingsLocations(Package package, string registryRoot)
+			{
+				RegistryKey applicationRegistryRoot = null;
+				RegistryKey settingsRegistryRoot = null;
+				try
+				{
+					applicationRegistryRoot = package.ApplicationRegistryRoot;
+					settingsRegistryRoot = applicationRegistryRoot.OpenSubKey(registryRoot, RegistryKeyPermissionCheck.ReadSubTree);
+					if (settingsRegistryRoot != null)
+					{
+						string[] settingsKeyNames = settingsRegistryRoot.GetSubKeyNames();
+						int settingsCount = (settingsKeyNames == null) ? 0 : settingsKeyNames.Length;
+						if (settingsCount > 1)
+						{
+							// Treat the Core key specially to get a default converters directory
+							int coreIndex = Array.IndexOf<string>(settingsKeyNames, REGISTRYKEY_CORESETTINGS);
+							if (coreIndex > 0)
+							{
+								string swap = settingsKeyNames[0];
+								settingsKeyNames[0] = settingsKeyNames[coreIndex];
+								settingsKeyNames[coreIndex] = swap;
+							}
+						}
+						if (settingsCount != 0 && settingsKeyNames[0] == REGISTRYKEY_CORESETTINGS)
+						{
+							string defaultConvertersDirectory = null;
+							for (int i = 0; i < settingsCount; ++i)
+							{
+								using (RegistryKey settingsKey = settingsRegistryRoot.OpenSubKey(settingsKeyNames[i], RegistryKeyPermissionCheck.ReadSubTree))
+								{
+									string settingsFile = settingsKey.GetValue(REGISTRYVALUE_SETTINGSFILE, "", RegistryValueOptions.None) as string;
+									if (settingsFile != null && File.Exists(settingsFile))
+									{
+										string convertersDirectory = settingsKey.GetValue(REGISTRYVALUE_CONVERTERSDIR, "", RegistryValueOptions.None) as string;
+										if (string.IsNullOrEmpty(convertersDirectory))
+										{
+											if (i == 0)
+											{
+												break; // Invalid registration, Core information required
+											}
+											convertersDirectory = defaultConvertersDirectory;
+										}
+										if (Directory.Exists(convertersDirectory))
+										{
+											if (i == 0)
+											{
+												defaultConvertersDirectory = convertersDirectory;
+											}
+											yield return new SettingsLocation(settingsFile, convertersDirectory);
+										}
+										else if (i == 0)
+										{
+											break; // Invalid registration, Core information required
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				finally
+				{
+					if (applicationRegistryRoot != null)
+					{
+						applicationRegistryRoot.Close();
+					}
+					if (settingsRegistryRoot != null)
+					{
+						settingsRegistryRoot.Close();
+					}
+				}
+			}
+		}
 		private void EnsureGlobalSettingsLoaded()
 		{
 			if (myIsLoaded)
@@ -323,11 +408,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				return;
 			}
 			myIsLoaded = true;
-			string settingsFile = SettingsPath;
-			if (File.Exists(settingsFile))
+			ORMDesignerNameTable names = ORMDesignerSchema.Names;
+			foreach (SettingsLocation location in SettingsLocation.SettingsLocations(myPackage, myRootRegistryKey))
 			{
-				ORMDesignerNameTable names = ORMDesignerSchema.Names;
-				using (FileStream designerSettingsStream = new FileStream(settingsFile, FileMode.Open, FileAccess.Read))
+				string convertersDirectory = location.ConvertersDirectory;
+				using (FileStream designerSettingsStream = new FileStream(location.SettingsFile, FileMode.Open, FileAccess.Read))
 				{
 					using (XmlTextReader settingsReader = new XmlTextReader(new StreamReader(designerSettingsStream), names))
 					{
@@ -344,7 +429,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 										{
 											if (TestElementName(reader.LocalName, names.XmlConvertersElement))
 											{
-												ProcessXmlConverters(reader, names);
+												ProcessXmlConverters(reader, names, convertersDirectory);
 											}
 											else
 											{
@@ -364,7 +449,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 		}
-		private void ProcessXmlConverters(XmlReader reader, ORMDesignerNameTable names)
+		private void ProcessXmlConverters(XmlReader reader, ORMDesignerNameTable names, string convertersDirectory)
 		{
 			if (reader.IsEmptyElement)
 			{
@@ -378,7 +463,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					if (TestElementName(reader.LocalName, names.XmlConverterElement) ||
 						TestElementName(reader.LocalName, names.XmlExtensionConverterElement))
 					{
-						ProcessXmlConverter(reader, names);
+						ProcessXmlConverter(reader, names, convertersDirectory);
 					}
 					else
 					{
@@ -964,7 +1049,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		}
 		#endregion // TransformNode Class
 		#endregion // Helper Classes
-		private void ProcessXmlConverter(XmlReader reader, ORMDesignerNameTable names)
+		private void ProcessXmlConverter(XmlReader reader, ORMDesignerNameTable names, string convertersDirectory)
 		{
 			if (myXmlConverters == null)
 			{
@@ -1060,7 +1145,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 				}
 			}
-			TransformNode transformNode = new TransformNode(targetIdentifier, description, Path.Combine(XmlConvertersDirectory, transformFile), arguments, dynamicParameters, runsWithSourceIdentifier);
+			TransformNode transformNode = new TransformNode(targetIdentifier, description, Path.Combine(convertersDirectory, transformFile), arguments, dynamicParameters, runsWithSourceIdentifier);
 			LinkedList<TransformNode> nodes;
 			if (myXmlConverters.TryGetValue(sourceIdentifier, out nodes))
 			{

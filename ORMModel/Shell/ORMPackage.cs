@@ -110,8 +110,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		#region Constants
 		private const string REGISTRYROOT_PACKAGE = @"ORM Solutions\Natural ORM Architect";
 		private const string REGISTRYROOT_EXTENSIONS = REGISTRYROOT_PACKAGE + @"\Extensions\";
-		private const string REGISTRYVALUE_SETTINGSPATH = "SettingsPath";
-		private const string REGISTRYVALUE_CONVERTERSDIR = "ConvertersDir";
+		private const string REGISTRYROOT_DESIGNERSETTINGS = REGISTRYROOT_PACKAGE + @"\DesignerSettings\";
 		private const string REGISTRYVALUE_VERBALIZATIONDIR = "VerbalizationDir";
 		private const string REGISTRYVALUE_TOOLBOXREVISION_OBSOLETESINGLEVALUE = "ToolboxRevision";
 		private const string REGISTRYKEY_TOOLBOXREVISIONS = "ToolboxRevisions";
@@ -197,28 +196,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					ORMDesignerSettings retVal = package.myDesignerSettings;
 					if (retVal == null)
 					{
-						RegistryKey applicationRegistryRoot = null;
-						RegistryKey normaRegistryRoot = null;
-						try
-						{
-							applicationRegistryRoot = package.ApplicationRegistryRoot;
-							normaRegistryRoot = applicationRegistryRoot.OpenSubKey(REGISTRYROOT_PACKAGE, RegistryKeyPermissionCheck.ReadSubTree);
-							string settingsPath = (string)normaRegistryRoot.GetValue(REGISTRYVALUE_SETTINGSPATH, String.Empty);
-							string xmlConvertersDir = (string)normaRegistryRoot.GetValue(REGISTRYVALUE_CONVERTERSDIR, String.Empty);
-							retVal = new ORMDesignerSettings(package, settingsPath, xmlConvertersDir);
-							package.myDesignerSettings = retVal;
-						}
-						finally
-						{
-							if (applicationRegistryRoot != null)
-							{
-								applicationRegistryRoot.Close();
-							}
-							if (normaRegistryRoot != null)
-							{
-								normaRegistryRoot.Close();
-							}
-						}
+						package.myDesignerSettings = retVal = new ORMDesignerSettings(package, REGISTRYROOT_DESIGNERSETTINGS);
 					}
 					return retVal;
 				}
@@ -244,7 +222,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						{
 							applicationRegistryRoot = package.ApplicationRegistryRoot;
 							normaRegistryRoot = applicationRegistryRoot.OpenSubKey(REGISTRYROOT_PACKAGE, RegistryKeyPermissionCheck.ReadSubTree);
-							string settingsPath = (string)normaRegistryRoot.GetValue(REGISTRYVALUE_SETTINGSPATH, String.Empty);
 							retVal = (string)normaRegistryRoot.GetValue(REGISTRYVALUE_VERBALIZATIONDIR, String.Empty);
 							package.myVerbalizationDirectory = retVal;
 						}
