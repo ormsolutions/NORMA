@@ -2876,7 +2876,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get
 			{
-				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.ChildElementInfo | CustomSerializedElementSupportedOperations.ElementInfo | CustomSerializedElementSupportedOperations.LinkInfo;
+				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.ChildElementInfo | CustomSerializedElementSupportedOperations.ElementInfo | CustomSerializedElementSupportedOperations.LinkInfo | CustomSerializedElementSupportedOperations.CustomSortChildRoles;
 			}
 		}
 		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
@@ -2903,12 +2903,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						baseInfoCount = baseInfo.Length;
 					}
 				}
-				ret = new CustomSerializedContainerElementInfo[baseInfoCount + 1];
+				ret = new CustomSerializedContainerElementInfo[baseInfoCount + 3];
 				if (baseInfoCount != 0)
 				{
-					baseInfo.CopyTo(ret, 1);
+					baseInfo.CopyTo(ret, 3);
 				}
-				ret[0] = new CustomSerializedContainerElementInfo(null, "ValueRanges", null, CustomSerializedElementWriteStyle.Element, null, ValueConstraintHasValueRange.ValueRangeDomainRoleId);
+				ret[0] = new CustomSerializedContainerElementInfo(null, "Definitions", null, CustomSerializedElementWriteStyle.Element, null, ValueConstraintHasDefinition.DefinitionDomainRoleId);
+				ret[1] = new CustomSerializedContainerElementInfo(null, "Notes", null, CustomSerializedElementWriteStyle.Element, null, ValueConstraintHasNote.NoteDomainRoleId);
+				ret[2] = new CustomSerializedContainerElementInfo(null, "ValueRanges", null, CustomSerializedElementWriteStyle.Element, null, ValueConstraintHasValueRange.ValueRangeDomainRoleId);
 				ValueConstraint.myCustomSerializedChildElementInfo = ret;
 			}
 			return ret;
@@ -2958,6 +2960,80 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
+		private static IComparer<DomainRoleInfo> myCustomSortChildComparer;
+		private sealed class CustomSortChildComparer : IComparer<DomainRoleInfo>
+		{
+			private readonly Dictionary<string, int> myRoleOrderDictionary;
+			private IComparer<DomainRoleInfo> myBaseComparer;
+			public CustomSortChildComparer(Store store, IComparer<DomainRoleInfo> baseComparer)
+			{
+				this.myBaseComparer = baseComparer;
+				DomainDataDirectory domainDataDirectory = store.DomainDataDirectory;
+				Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
+				DomainRoleInfo domainRole;
+				domainRole = domainDataDirectory.FindDomainRole(ValueConstraintHasDefinition.DefinitionDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
+				domainRole = domainDataDirectory.FindDomainRole(ValueConstraintHasNote.NoteDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
+				domainRole = domainDataDirectory.FindDomainRole(ValueConstraintHasValueRange.ValueRangeDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 2;
+				domainRole = domainDataDirectory.FindDomainRole(ValueConstraintHasDuplicateNameError.DuplicateNameErrorDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 3;
+				domainRole = domainDataDirectory.FindDomainRole(ValueConstraintHasValueRangeOverlapError.ValueRangeOverlapErrorDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 4;
+				domainRole = domainDataDirectory.FindDomainRole(ValueConstraintHasValueTypeDetachedError.ValueTypeDetachedErrorDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 5;
+				this.myRoleOrderDictionary = roleOrderDictionary;
+			}
+			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
+			{
+				if (this.myBaseComparer != null)
+				{
+					int baseOpinion = this.myBaseComparer.Compare(x, y);
+					if (0 != baseOpinion)
+					{
+						return baseOpinion;
+					}
+				}
+				int xPos;
+				if (!this.myRoleOrderDictionary.TryGetValue(string.Concat(x.DomainRelationship.ImplementationClass.FullName, ".", x.Name), out xPos))
+				{
+					xPos = int.MaxValue;
+				}
+				int yPos;
+				if (!this.myRoleOrderDictionary.TryGetValue(string.Concat(y.DomainRelationship.ImplementationClass.FullName, ".", y.Name), out yPos))
+				{
+					yPos = int.MaxValue;
+				}
+				return xPos.CompareTo(yPos);
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
+		protected new IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				IComparer<DomainRoleInfo> retVal = ValueConstraint.myCustomSortChildComparer;
+				if (null == retVal)
+				{
+					IComparer<DomainRoleInfo> baseComparer = null;
+					if (0 != (CustomSerializedElementSupportedOperations.CustomSortChildRoles & base.SupportedCustomSerializedOperations))
+					{
+						baseComparer = base.CustomSerializedChildRoleComparer;
+					}
+					retVal = new CustomSortChildComparer(this.Store, baseComparer);
+					ValueConstraint.myCustomSortChildComparer = retVal;
+				}
+				return retVal;
+			}
+		}
+		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				return this.CustomSerializedChildRoleComparer;
+			}
+		}
 		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;
 		/// <summary>Implements ICustomSerializedElement.MapChildElement</summary>
 		protected new CustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
@@ -2967,6 +3043,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
 				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
+				match.InitializeRoles(ValueConstraintHasDefinition.DefinitionDomainRoleId);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|Definitions||", match);
+				match.InitializeRoles(ValueConstraintHasNote.NoteDomainRoleId);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|Notes||", match);
 				match.InitializeRoles(ValueConstraintHasValueRange.ValueRangeDomainRoleId);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|ValueRanges||", match);
 				ValueConstraint.myChildElementMappings = childElementMappings;
@@ -4693,12 +4773,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						baseInfoCount = baseInfo.Length;
 					}
 				}
-				ret = new CustomSerializedContainerElementInfo[baseInfoCount + 1];
+				ret = new CustomSerializedContainerElementInfo[baseInfoCount + 3];
 				if (baseInfoCount != 0)
 				{
-					baseInfo.CopyTo(ret, 1);
+					baseInfo.CopyTo(ret, 3);
 				}
-				ret[0] = new CustomSerializedContainerElementInfo(null, "RoleSequences", null, CustomSerializedElementWriteStyle.Element, null, SetComparisonConstraintHasRoleSequence.RoleSequenceDomainRoleId);
+				ret[0] = new CustomSerializedContainerElementInfo(null, "Definitions", null, CustomSerializedElementWriteStyle.Element, null, SetComparisonConstraintHasDefinition.DefinitionDomainRoleId);
+				ret[1] = new CustomSerializedContainerElementInfo(null, "Notes", null, CustomSerializedElementWriteStyle.Element, null, SetComparisonConstraintHasNote.NoteDomainRoleId);
+				ret[2] = new CustomSerializedContainerElementInfo(null, "RoleSequences", null, CustomSerializedElementWriteStyle.Element, null, SetComparisonConstraintHasRoleSequence.RoleSequenceDomainRoleId);
 				SetComparisonConstraint.myCustomSerializedChildElementInfo = ret;
 			}
 			return ret;
@@ -4789,26 +4871,30 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				DomainDataDirectory domainDataDirectory = store.DomainDataDirectory;
 				Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
 				DomainRoleInfo domainRole;
-				domainRole = domainDataDirectory.FindDomainRole(SetComparisonConstraintHasRoleSequence.RoleSequenceDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(SetComparisonConstraintHasDefinition.DefinitionDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
-				domainRole = domainDataDirectory.FindDomainRole(SetComparisonConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(SetComparisonConstraintHasNote.NoteDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
-				domainRole = domainDataDirectory.FindDomainRole(SetComparisonConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(SetComparisonConstraintHasRoleSequence.RoleSequenceDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 2;
-				domainRole = domainDataDirectory.FindDomainRole(SetComparisonConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(SetComparisonConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 3;
-				domainRole = domainDataDirectory.FindDomainRole(SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError.ArityMismatchErrorDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(SetComparisonConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 4;
-				domainRole = domainDataDirectory.FindDomainRole(SetComparisonConstraintHasImplicationError.ImplicationErrorDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(SetComparisonConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 5;
-				domainRole = domainDataDirectory.FindDomainRole(SetComparisonConstraintHasContradictionError.ContradictionErrorDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError.ArityMismatchErrorDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 6;
-				domainRole = domainDataDirectory.FindDomainRole(SetComparisonConstraintHasDuplicateNameError.DuplicateNameErrorDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(SetComparisonConstraintHasImplicationError.ImplicationErrorDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 7;
-				domainRole = domainDataDirectory.FindDomainRole(SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError.EqualityOrSubsetImpliedByMandatoryErrorDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(SetComparisonConstraintHasContradictionError.ContradictionErrorDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 8;
-				domainRole = domainDataDirectory.FindDomainRole(ModelNoteReferencesSetComparisonConstraint.NoteDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(SetComparisonConstraintHasDuplicateNameError.DuplicateNameErrorDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 9;
+				domainRole = domainDataDirectory.FindDomainRole(SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError.EqualityOrSubsetImpliedByMandatoryErrorDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 10;
+				domainRole = domainDataDirectory.FindDomainRole(ModelNoteReferencesSetComparisonConstraint.NoteDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 11;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
 			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
@@ -4869,6 +4955,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
 				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
+				match.InitializeRoles(SetComparisonConstraintHasDefinition.DefinitionDomainRoleId);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|Definitions||", match);
+				match.InitializeRoles(SetComparisonConstraintHasNote.NoteDomainRoleId);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|Notes||", match);
 				match.InitializeRoles(SetComparisonConstraintHasRoleSequence.RoleSequenceDomainRoleId);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|RoleSequences||", match);
 				SetComparisonConstraint.myChildElementMappings = childElementMappings;
@@ -5141,13 +5231,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						baseInfoCount = baseInfo.Length;
 					}
 				}
-				ret = new CustomSerializedContainerElementInfo[baseInfoCount + 2];
+				ret = new CustomSerializedContainerElementInfo[baseInfoCount + 4];
 				if (baseInfoCount != 0)
 				{
-					baseInfo.CopyTo(ret, 2);
+					baseInfo.CopyTo(ret, 4);
 				}
-				ret[0] = new CustomSerializedContainerElementInfo(null, "RoleSequence", null, CustomSerializedElementWriteStyle.Element, null, ConstraintRoleSequenceHasRole.RoleDomainRoleId);
-				ret[1] = new CustomSerializedInnerContainerElementInfo(null, "JoinPath", null, CustomSerializedElementWriteStyle.Element, null, ret[0], ConstraintRoleSequenceHasJoinPath.JoinDomainRoleId);
+				ret[0] = new CustomSerializedContainerElementInfo(null, "Definitions", null, CustomSerializedElementWriteStyle.Element, null, SetConstraintHasDefinition.DefinitionDomainRoleId);
+				ret[1] = new CustomSerializedContainerElementInfo(null, "Notes", null, CustomSerializedElementWriteStyle.Element, null, SetConstraintHasNote.NoteDomainRoleId);
+				ret[2] = new CustomSerializedContainerElementInfo(null, "RoleSequence", null, CustomSerializedElementWriteStyle.Element, null, ConstraintRoleSequenceHasRole.RoleDomainRoleId);
+				ret[3] = new CustomSerializedInnerContainerElementInfo(null, "JoinPath", null, CustomSerializedElementWriteStyle.Element, null, ret[2], ConstraintRoleSequenceHasJoinPath.JoinDomainRoleId);
 				SetConstraint.myCustomSerializedChildElementInfo = ret;
 			}
 			return ret;
@@ -5234,24 +5326,28 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				DomainDataDirectory domainDataDirectory = store.DomainDataDirectory;
 				Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
 				DomainRoleInfo domainRole;
-				domainRole = domainDataDirectory.FindDomainRole(ConstraintRoleSequenceHasRole.RoleDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(SetConstraintHasDefinition.DefinitionDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
-				domainRole = domainDataDirectory.FindDomainRole(ConstraintRoleSequenceHasJoinPath.JoinDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(SetConstraintHasNote.NoteDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
-				domainRole = domainDataDirectory.FindDomainRole(SetConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(ConstraintRoleSequenceHasRole.RoleDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 2;
-				domainRole = domainDataDirectory.FindDomainRole(SetConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(ConstraintRoleSequenceHasJoinPath.JoinDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 3;
-				domainRole = domainDataDirectory.FindDomainRole(SetConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(SetConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 4;
-				domainRole = domainDataDirectory.FindDomainRole(FactSetConstraint.FactTypeDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(SetConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 5;
-				domainRole = domainDataDirectory.FindDomainRole(SetConstraintHasImplicationError.ImplicationErrorDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(SetConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 6;
-				domainRole = domainDataDirectory.FindDomainRole(SetConstraintHasDuplicateNameError.DuplicateNameErrorDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(FactSetConstraint.FactTypeDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 7;
-				domainRole = domainDataDirectory.FindDomainRole(ModelNoteReferencesSetConstraint.NoteDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(SetConstraintHasImplicationError.ImplicationErrorDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 8;
+				domainRole = domainDataDirectory.FindDomainRole(SetConstraintHasDuplicateNameError.DuplicateNameErrorDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 9;
+				domainRole = domainDataDirectory.FindDomainRole(ModelNoteReferencesSetConstraint.NoteDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 10;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
 			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
@@ -5314,6 +5410,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
 				match.InitializeRoles(ConstraintRoleSequenceHasRole.RoleDomainRoleId);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|RoleSequence||Role", match);
+				match.InitializeRoles(SetConstraintHasDefinition.DefinitionDomainRoleId);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|Definitions||", match);
+				match.InitializeRoles(SetConstraintHasNote.NoteDomainRoleId);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|Notes||", match);
 				match.InitializeRoles(ConstraintRoleSequenceHasJoinPath.JoinDomainRoleId);
 				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-04/ORMCore|RoleSequence||JoinPath||", match);
 				SetConstraint.myChildElementMappings = childElementMappings;
@@ -9624,14 +9724,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						baseInfoCount = baseInfo.Length;
 					}
 				}
-				ret = new CustomSerializedContainerElementInfo[baseInfoCount + 3];
+				ret = new CustomSerializedContainerElementInfo[baseInfoCount + 5];
 				if (baseInfoCount != 0)
 				{
-					baseInfo.CopyTo(ret, 3);
+					baseInfo.CopyTo(ret, 5);
 				}
-				ret[0] = new CustomSerializedContainerElementInfo(null, "GroupTypes", null, CustomSerializedElementWriteStyle.Element, null, ElementGroupingIsOfElementGroupingType.GroupingTypeDomainRoleId);
-				ret[1] = new CustomSerializedContainerElementInfo(null, "Elements", null, CustomSerializedElementWriteStyle.Element, null, GroupingElementInclusion.IncludedElementDomainRoleId, GroupingElementExclusion.ExcludedElementDomainRoleId);
-				ret[2] = new CustomSerializedContainerElementInfo(null, "NestedGroups", null, CustomSerializedElementWriteStyle.Element, null, ElementGroupingIncludesElementGrouping.IncludedChildGroupingDomainRoleId, ElementGroupingExcludesElementGrouping.ExcludedChildGroupingDomainRoleId);
+				ret[0] = new CustomSerializedContainerElementInfo(null, "Definitions", null, CustomSerializedElementWriteStyle.Element, null, ElementGroupingHasDefinition.DefinitionDomainRoleId);
+				ret[1] = new CustomSerializedContainerElementInfo(null, "Notes", null, CustomSerializedElementWriteStyle.Element, null, ElementGroupingHasNote.NoteDomainRoleId);
+				ret[2] = new CustomSerializedContainerElementInfo(null, "GroupTypes", null, CustomSerializedElementWriteStyle.Element, null, ElementGroupingIsOfElementGroupingType.GroupingTypeDomainRoleId);
+				ret[3] = new CustomSerializedContainerElementInfo(null, "Elements", null, CustomSerializedElementWriteStyle.Element, null, GroupingElementInclusion.IncludedElementDomainRoleId, GroupingElementExclusion.ExcludedElementDomainRoleId);
+				ret[4] = new CustomSerializedContainerElementInfo(null, "NestedGroups", null, CustomSerializedElementWriteStyle.Element, null, ElementGroupingIncludesElementGrouping.IncludedChildGroupingDomainRoleId, ElementGroupingExcludesElementGrouping.ExcludedChildGroupingDomainRoleId);
 				ElementGrouping.myCustomSerializedChildElementInfo = ret;
 			}
 			return ret;
@@ -9741,24 +9843,28 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				DomainDataDirectory domainDataDirectory = store.DomainDataDirectory;
 				Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
 				DomainRoleInfo domainRole;
-				domainRole = domainDataDirectory.FindDomainRole(ElementGroupingIsOfElementGroupingType.GroupingTypeDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(ElementGroupingHasDefinition.DefinitionDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
-				domainRole = domainDataDirectory.FindDomainRole(GroupingElementInclusion.IncludedElementDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(ElementGroupingHasNote.NoteDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
-				domainRole = domainDataDirectory.FindDomainRole(GroupingElementExclusion.ExcludedElementDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(ElementGroupingIsOfElementGroupingType.GroupingTypeDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 2;
-				domainRole = domainDataDirectory.FindDomainRole(ElementGroupingIncludesElementGrouping.IncludedChildGroupingDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(GroupingElementInclusion.IncludedElementDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 3;
-				domainRole = domainDataDirectory.FindDomainRole(ElementGroupingExcludesElementGrouping.ExcludedChildGroupingDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(GroupingElementExclusion.ExcludedElementDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 4;
-				domainRole = domainDataDirectory.FindDomainRole(ElementGroupingHasDuplicateNameError.DuplicateNameErrorDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(ElementGroupingIncludesElementGrouping.IncludedChildGroupingDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 5;
-				domainRole = domainDataDirectory.FindDomainRole(ElementGroupingHasMembershipContradictionError.MembershipContradictionErrorDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(ElementGroupingExcludesElementGrouping.ExcludedChildGroupingDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 6;
-				domainRole = domainDataDirectory.FindDomainRole(ElementGroupingIncludesElementGrouping.ParentGroupingDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(ElementGroupingHasDuplicateNameError.DuplicateNameErrorDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 7;
-				domainRole = domainDataDirectory.FindDomainRole(ElementGroupingExcludesElementGrouping.ParentGroupingDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(ElementGroupingHasMembershipContradictionError.MembershipContradictionErrorDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 8;
+				domainRole = domainDataDirectory.FindDomainRole(ElementGroupingIncludesElementGrouping.ParentGroupingDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 9;
+				domainRole = domainDataDirectory.FindDomainRole(ElementGroupingExcludesElementGrouping.ParentGroupingDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 10;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
 			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
@@ -9827,6 +9933,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|NestedGroups||IncludedGroup", match);
 				match.InitializeRoles(ElementGroupingExcludesElementGrouping.ExcludedChildGroupingDomainRoleId);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|NestedGroups||ExcludedGroup", match);
+				match.InitializeRoles(ElementGroupingHasDefinition.DefinitionDomainRoleId);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|Definitions||", match);
+				match.InitializeRoles(ElementGroupingHasNote.NoteDomainRoleId);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|Notes||", match);
 				match.InitializeRoles(ElementGroupingIsOfElementGroupingType.GroupingTypeDomainRoleId);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|GroupTypes||", match);
 				ElementGrouping.myChildElementMappings = childElementMappings;

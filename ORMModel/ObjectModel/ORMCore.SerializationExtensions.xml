@@ -470,7 +470,13 @@
 	<se:Element Class="ReferenceModeKind" Name="ReferenceModeKind" Override="true">
 		<se:Link RelationshipName="ReferenceModeHasReferenceModeKind" RoleName="ReferenceMode" WriteStyle="NotWritten" />
 	</se:Element>
-	<se:Element Name="BaseValueConstraint" Class="ValueConstraint" Override="true">
+	<se:Element Name="BaseValueConstraint" Class="ValueConstraint" SortChildElements="true" Override="true">
+		<se:Container Name="Definitions">
+			<se:Embed RelationshipName="ValueConstraintHasDefinition" RoleName="Definition"/>
+		</se:Container>
+		<se:Container Name="Notes">
+			<se:Embed RelationshipName="ValueConstraintHasNote" RoleName="Note"/>
+		</se:Container>
 		<se:Container Name="ValueRanges">
 			<se:Embed RelationshipName="ValueConstraintHasValueRange" RoleName="ValueRange"/>
 		</se:Container>
@@ -712,6 +718,12 @@
 				</plx:binaryOperator>
 			</se:Condition>
 		</se:Attribute>
+		<se:Container Name="Definitions">
+			<se:Embed RelationshipName="SetComparisonConstraintHasDefinition" RoleName="Definition"/>
+		</se:Container>
+		<se:Container Name="Notes">
+			<se:Embed RelationshipName="SetComparisonConstraintHasNote" RoleName="Note"/>
+		</se:Container>
 		<se:Container Name="RoleSequences">
 			<se:Embed RelationshipName="SetComparisonConstraintHasRoleSequence" RoleName="RoleSequence"/>
 		</se:Container>
@@ -745,6 +757,12 @@
 				</plx:binaryOperator>
 			</se:Condition>
 		</se:Attribute>
+		<se:Container Name="Definitions">
+			<se:Embed RelationshipName="SetConstraintHasDefinition" RoleName="Definition"/>
+		</se:Container>
+		<se:Container Name="Notes">
+			<se:Embed RelationshipName="SetConstraintHasNote" RoleName="Note"/>
+		</se:Container>
 		<se:Container Name="RoleSequence">
 			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="Role"/>
 			<se:Container Name="JoinPath">
@@ -1156,6 +1174,12 @@
 				</plx:binaryOperator>
 			</se:Condition>
 		</se:Attribute>
+		<se:Container Name="Definitions">
+			<se:Embed RelationshipName="ElementGroupingHasDefinition" RoleName="Definition"/>
+		</se:Container>
+		<se:Container Name="Notes">
+			<se:Embed RelationshipName="ElementGroupingHasNote" RoleName="Note"/>
+		</se:Container>
 		<se:Container Name="GroupTypes">
 			<se:Embed RelationshipName="ElementGroupingIsOfElementGroupingType" RoleName="GroupingType"/>
 		</se:Container>

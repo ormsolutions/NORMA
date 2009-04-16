@@ -490,6 +490,48 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return retVal;
 		}
 		#endregion // SetConstraint Specific
+		#region CustomStorage Handling
+		private void SetDefinitionTextValue(string newValue)
+		{
+			if (!Store.InUndoRedoOrRollback)
+			{
+				Definition definition = Definition;
+				if (definition != null)
+				{
+					definition.Text = newValue;
+				}
+				else if (!string.IsNullOrEmpty(newValue))
+				{
+					Definition = new Definition(Store, new PropertyAssignment(Definition.TextDomainPropertyId, newValue));
+				}
+			}
+		}
+		private void SetNoteTextValue(string newValue)
+		{
+			if (!Store.InUndoRedoOrRollback)
+			{
+				Note note = Note;
+				if (note != null)
+				{
+					note.Text = newValue;
+				}
+				else if (!string.IsNullOrEmpty(newValue))
+				{
+					Note = new Note(Store, new PropertyAssignment(Note.TextDomainPropertyId, newValue));
+				}
+			}
+		}
+		private string GetDefinitionTextValue()
+		{
+			Definition currentDefinition = Definition;
+			return (currentDefinition != null) ? currentDefinition.Text : String.Empty;
+		}
+		private string GetNoteTextValue()
+		{
+			Note currentNote = Note;
+			return (currentNote != null) ? currentNote.Text : String.Empty;
+		}
+		#endregion // CustomStorage Handling
 		#region SetConstraint synchronization rules
 		/// <summary>
 		/// Make sure the model for the constraint and fact are consistent
@@ -1582,6 +1624,48 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return retVal;
 		}
 		#endregion // SetComparisonConstraint Specific
+		#region CustomStorage Handling
+		private void SetDefinitionTextValue(string newValue)
+		{
+			if (!Store.InUndoRedoOrRollback)
+			{
+				Definition definition = Definition;
+				if (definition != null)
+				{
+					definition.Text = newValue;
+				}
+				else if (!string.IsNullOrEmpty(newValue))
+				{
+					Definition = new Definition(Store, new PropertyAssignment(Definition.TextDomainPropertyId, newValue));
+				}
+			}
+		}
+		private void SetNoteTextValue(string newValue)
+		{
+			if (!Store.InUndoRedoOrRollback)
+			{
+				Note note = Note;
+				if (note != null)
+				{
+					note.Text = newValue;
+				}
+				else if (!string.IsNullOrEmpty(newValue))
+				{
+					Note = new Note(Store, new PropertyAssignment(Note.TextDomainPropertyId, newValue));
+				}
+			}
+		}
+		private string GetDefinitionTextValue()
+		{
+			Definition currentDefinition = Definition;
+			return (currentDefinition != null) ? currentDefinition.Text : String.Empty;
+		}
+		private string GetNoteTextValue()
+		{
+			Note currentNote = Note;
+			return (currentNote != null) ? currentNote.Text : String.Empty;
+		}
+		#endregion // CustomStorage Handling
 		#region SetComparisonConstraint synchronization rules
 		/// <summary>
 		/// Make sure the model for the constraint and fact are consistent

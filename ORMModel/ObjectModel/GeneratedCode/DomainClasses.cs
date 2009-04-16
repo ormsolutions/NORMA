@@ -1693,6 +1693,194 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 		}
 		#endregion
+		#region DefinitionText domain property code
+		
+		/// <summary>
+		/// DefinitionText domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DefinitionTextDomainPropertyId = new global::System.Guid(0xd1539042, 0x2a67, 0x413b, 0x8b, 0x3b, 0x12, 0xd0, 0x07, 0x75, 0xbb, 0x8d);
+		
+		/// <summary>
+		/// Gets or sets the value of DefinitionText domain property.
+		/// An informal description of this group.
+		///     To insert new lines, use Control-Enter in the dropdown editor, or open the
+		/// 'ORM Informal Description Editor' tool window.
+		/// </summary>
+		[global::System.ComponentModel.Editor(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.MultilineTextEditor<global::ORMSolutions.ORMArchitect.Core.ObjectModel.Definition>), typeof(global::System.Drawing.Design.UITypeEditor))]
+		[global::System.ComponentModel.MergableProperty(false)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping/DefinitionText.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping/DefinitionText.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("d1539042-2a67-413b-8b3b-12d00775bb8d")]
+		public global::System.String DefinitionText
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DefinitionTextPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DefinitionTextPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ElementGrouping.DefinitionText domain property.
+		/// </summary>
+		internal sealed partial class DefinitionTextPropertyHandler : DslModeling::DomainPropertyValueHandler<ElementGrouping, global::System.String>
+		{
+			private DefinitionTextPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ElementGrouping.DefinitionText domain property value handler.
+			/// </summary>
+			public static readonly DefinitionTextPropertyHandler Instance = new DefinitionTextPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ElementGrouping.DefinitionText domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DefinitionTextDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(ElementGrouping element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for DefinitionText because its Kind is
+				// set to CustomStorage. Please provide the GetDefinitionTextValue()
+				// method on the domain class.
+				return element.GetDefinitionTextValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ElementGrouping element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for DefinitionText because its Kind is
+					// set to CustomStorage. Please provide the SetDefinitionTextValue()
+					// method on the domain class.
+					element.SetDefinitionTextValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region NoteText domain property code
+		
+		/// <summary>
+		/// NoteText domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid NoteTextDomainPropertyId = new global::System.Guid(0x39b0228b, 0x8884, 0x4e4e, 0xb5, 0x95, 0x4f, 0x05, 0x8f, 0x19, 0x2b, 0x50);
+		
+		/// <summary>
+		/// Gets or sets the value of NoteText domain property.
+		/// A note to associate with this group.
+		///     To insert new lines, use Control-Enter in the dropdown editor, or open the
+		/// 'ORM Notes Editor' tool window.
+		/// </summary>
+		[global::System.ComponentModel.Editor(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.MultilineTextEditor<global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note>), typeof(global::System.Drawing.Design.UITypeEditor))]
+		[global::System.ComponentModel.MergableProperty(false)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping/NoteText.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping/NoteText.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("39b0228b-8884-4e4e-b595-4f058f192b50")]
+		public global::System.String NoteText
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return NoteTextPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				NoteTextPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ElementGrouping.NoteText domain property.
+		/// </summary>
+		internal sealed partial class NoteTextPropertyHandler : DslModeling::DomainPropertyValueHandler<ElementGrouping, global::System.String>
+		{
+			private NoteTextPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ElementGrouping.NoteText domain property value handler.
+			/// </summary>
+			public static readonly NoteTextPropertyHandler Instance = new NoteTextPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ElementGrouping.NoteText domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return NoteTextDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(ElementGrouping element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for NoteText because its Kind is
+				// set to CustomStorage. Please provide the GetNoteTextValue()
+				// method on the domain class.
+				return element.GetNoteTextValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ElementGrouping element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for NoteText because its Kind is
+					// set to CustomStorage. Please provide the SetNoteTextValue()
+					// method on the domain class.
+					element.SetNoteTextValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region TypeCompliance domain property code
 		
 		/// <summary>
@@ -1875,6 +2063,70 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		
+		#endregion
+		#region Definition opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Definition.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition.Grouping
+		/// </summary>
+		public virtual Definition Definition
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition.GroupingDomainRoleId) as Definition;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition.DefinitionDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition.DefinitionDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition.GroupingDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region Note opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Note.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote.Grouping
+		/// </summary>
+		public virtual Note Note
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote.GroupingDomainRoleId) as Note;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote.NoteDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote.NoteDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote.GroupingDomainRoleId, value);
+				}
+			}
+		}
 		#endregion
 		#region GroupingSet opposite domain role accessor
 		/// <summary>
@@ -8388,6 +8640,194 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		
 		#endregion
+		#region DefinitionText domain property code
+		
+		/// <summary>
+		/// DefinitionText domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DefinitionTextDomainPropertyId = new global::System.Guid(0x57b17d7f, 0xc707, 0x4ceb, 0x8b, 0x95, 0x36, 0xa1, 0x96, 0x48, 0xc0, 0x59);
+		
+		/// <summary>
+		/// Gets or sets the value of DefinitionText domain property.
+		/// An informal description of this constraint.
+		///     To insert new lines, use Control-Enter in the dropdown editor, or open the
+		/// 'ORM Informal Description Editor' tool window.
+		/// </summary>
+		[global::System.ComponentModel.Editor(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.MultilineTextEditor<global::ORMSolutions.ORMArchitect.Core.ObjectModel.Definition>), typeof(global::System.Drawing.Design.UITypeEditor))]
+		[global::System.ComponentModel.MergableProperty(false)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint/DefinitionText.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint/DefinitionText.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("57b17d7f-c707-4ceb-8b95-36a19648c059")]
+		public global::System.String DefinitionText
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DefinitionTextPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DefinitionTextPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the SetComparisonConstraint.DefinitionText domain property.
+		/// </summary>
+		internal sealed partial class DefinitionTextPropertyHandler : DslModeling::DomainPropertyValueHandler<SetComparisonConstraint, global::System.String>
+		{
+			private DefinitionTextPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the SetComparisonConstraint.DefinitionText domain property value handler.
+			/// </summary>
+			public static readonly DefinitionTextPropertyHandler Instance = new DefinitionTextPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the SetComparisonConstraint.DefinitionText domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DefinitionTextDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(SetComparisonConstraint element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for DefinitionText because its Kind is
+				// set to CustomStorage. Please provide the GetDefinitionTextValue()
+				// method on the domain class.
+				return element.GetDefinitionTextValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(SetComparisonConstraint element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for DefinitionText because its Kind is
+					// set to CustomStorage. Please provide the SetDefinitionTextValue()
+					// method on the domain class.
+					element.SetDefinitionTextValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region NoteText domain property code
+		
+		/// <summary>
+		/// NoteText domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid NoteTextDomainPropertyId = new global::System.Guid(0x00a8bec9, 0x8fdb, 0x4961, 0xb3, 0x45, 0x3a, 0x7c, 0x8f, 0xd1, 0x8c, 0xfa);
+		
+		/// <summary>
+		/// Gets or sets the value of NoteText domain property.
+		/// A note to associate with this constraint.
+		///     To insert new lines, use Control-Enter in the dropdown editor, or open the
+		/// 'ORM Notes Editor' tool window.
+		/// </summary>
+		[global::System.ComponentModel.Editor(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.MultilineTextEditor<global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note>), typeof(global::System.Drawing.Design.UITypeEditor))]
+		[global::System.ComponentModel.MergableProperty(false)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint/NoteText.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint/NoteText.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("00a8bec9-8fdb-4961-b345-3a7c8fd18cfa")]
+		public global::System.String NoteText
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return NoteTextPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				NoteTextPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the SetComparisonConstraint.NoteText domain property.
+		/// </summary>
+		internal sealed partial class NoteTextPropertyHandler : DslModeling::DomainPropertyValueHandler<SetComparisonConstraint, global::System.String>
+		{
+			private NoteTextPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the SetComparisonConstraint.NoteText domain property value handler.
+			/// </summary>
+			public static readonly NoteTextPropertyHandler Instance = new NoteTextPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the SetComparisonConstraint.NoteText domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return NoteTextDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(SetComparisonConstraint element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for NoteText because its Kind is
+				// set to CustomStorage. Please provide the GetNoteTextValue()
+				// method on the domain class.
+				return element.GetNoteTextValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(SetComparisonConstraint element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for NoteText because its Kind is
+					// set to CustomStorage. Please provide the SetNoteTextValue()
+					// method on the domain class.
+					element.SetNoteTextValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region FactTypeCollection opposite domain role accessor
 		/// <summary>
 		/// Gets a list of FactTypeCollection.
@@ -8621,6 +9061,70 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				return new DslModeling::LinkedElementCollection<CompatibleRolePlayerTypeError>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasCompatibleRolePlayerTypeError.SetComparisonConstraintDomainRoleId);
+			}
+		}
+		#endregion
+		#region Definition opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Definition.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition.SetComparisonConstraint
+		/// </summary>
+		public virtual Definition Definition
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition.SetComparisonConstraintDomainRoleId) as Definition;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition.DefinitionDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition.DefinitionDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition.SetComparisonConstraintDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region Note opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Note.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote.SetComparisonConstraint
+		/// </summary>
+		public virtual Note Note
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote.SetComparisonConstraintDomainRoleId) as Note;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote.NoteDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote.NoteDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote.SetComparisonConstraintDomainRoleId, value);
+				}
 			}
 		}
 		#endregion
@@ -10183,6 +10687,194 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		
 		#endregion
+		#region DefinitionText domain property code
+		
+		/// <summary>
+		/// DefinitionText domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DefinitionTextDomainPropertyId = new global::System.Guid(0x27353884, 0xff01, 0x4da8, 0x9c, 0x95, 0xa4, 0x18, 0x6e, 0x1b, 0x56, 0x9f);
+		
+		/// <summary>
+		/// Gets or sets the value of DefinitionText domain property.
+		/// An informal description of this constraint.
+		///     To insert new lines, use Control-Enter in the dropdown editor, or open the
+		/// 'ORM Informal Description Editor' tool window.
+		/// </summary>
+		[global::System.ComponentModel.Editor(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.MultilineTextEditor<global::ORMSolutions.ORMArchitect.Core.ObjectModel.Definition>), typeof(global::System.Drawing.Design.UITypeEditor))]
+		[global::System.ComponentModel.MergableProperty(false)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint/DefinitionText.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint/DefinitionText.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("27353884-ff01-4da8-9c95-a4186e1b569f")]
+		public global::System.String DefinitionText
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DefinitionTextPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DefinitionTextPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the SetConstraint.DefinitionText domain property.
+		/// </summary>
+		internal sealed partial class DefinitionTextPropertyHandler : DslModeling::DomainPropertyValueHandler<SetConstraint, global::System.String>
+		{
+			private DefinitionTextPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the SetConstraint.DefinitionText domain property value handler.
+			/// </summary>
+			public static readonly DefinitionTextPropertyHandler Instance = new DefinitionTextPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the SetConstraint.DefinitionText domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DefinitionTextDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(SetConstraint element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for DefinitionText because its Kind is
+				// set to CustomStorage. Please provide the GetDefinitionTextValue()
+				// method on the domain class.
+				return element.GetDefinitionTextValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(SetConstraint element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for DefinitionText because its Kind is
+					// set to CustomStorage. Please provide the SetDefinitionTextValue()
+					// method on the domain class.
+					element.SetDefinitionTextValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region NoteText domain property code
+		
+		/// <summary>
+		/// NoteText domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid NoteTextDomainPropertyId = new global::System.Guid(0x63e2f8fc, 0x6003, 0x47f0, 0xaf, 0x9a, 0xac, 0x53, 0x99, 0x07, 0xcf, 0x11);
+		
+		/// <summary>
+		/// Gets or sets the value of NoteText domain property.
+		/// A note to associate with this constraint.
+		///     To insert new lines, use Control-Enter in the dropdown editor, or open the
+		/// 'ORM Notes Editor' tool window.
+		/// </summary>
+		[global::System.ComponentModel.Editor(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.MultilineTextEditor<global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note>), typeof(global::System.Drawing.Design.UITypeEditor))]
+		[global::System.ComponentModel.MergableProperty(false)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint/NoteText.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint/NoteText.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("63e2f8fc-6003-47f0-af9a-ac539907cf11")]
+		public global::System.String NoteText
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return NoteTextPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				NoteTextPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the SetConstraint.NoteText domain property.
+		/// </summary>
+		internal sealed partial class NoteTextPropertyHandler : DslModeling::DomainPropertyValueHandler<SetConstraint, global::System.String>
+		{
+			private NoteTextPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the SetConstraint.NoteText domain property value handler.
+			/// </summary>
+			public static readonly NoteTextPropertyHandler Instance = new NoteTextPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the SetConstraint.NoteText domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return NoteTextDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(SetConstraint element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for NoteText because its Kind is
+				// set to CustomStorage. Please provide the GetNoteTextValue()
+				// method on the domain class.
+				return element.GetNoteTextValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(SetConstraint element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for NoteText because its Kind is
+					// set to CustomStorage. Please provide the SetNoteTextValue()
+					// method on the domain class.
+					element.SetNoteTextValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region FactTypeCollection opposite domain role accessor
 		/// <summary>
 		/// Gets a list of FactTypeCollection.
@@ -10330,6 +11022,70 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				else
 				{
 					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasTooManyRoleSequencesError.SetConstraintDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region Definition opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Definition.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition.SetConstraint
+		/// </summary>
+		public virtual Definition Definition
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition.SetConstraintDomainRoleId) as Definition;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition.DefinitionDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition.DefinitionDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition.SetConstraintDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region Note opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Note.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote.SetConstraint
+		/// </summary>
+		public virtual Note Note
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote.SetConstraintDomainRoleId) as Note;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote.NoteDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote.NoteDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote.SetConstraintDomainRoleId, value);
 				}
 			}
 		}
@@ -16290,6 +17046,194 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 		}
 		#endregion
+		#region DefinitionText domain property code
+		
+		/// <summary>
+		/// DefinitionText domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DefinitionTextDomainPropertyId = new global::System.Guid(0x728c6254, 0xdc03, 0x4ff3, 0xb3, 0xf2, 0x9b, 0xa8, 0xb3, 0x4f, 0x60, 0xc1);
+		
+		/// <summary>
+		/// Gets or sets the value of DefinitionText domain property.
+		/// An informal description of this constraint.
+		///     To insert new lines, use Control-Enter in the dropdown editor, or open the
+		/// 'ORM Informal Description Editor' tool window.
+		/// </summary>
+		[global::System.ComponentModel.Editor(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.MultilineTextEditor<global::ORMSolutions.ORMArchitect.Core.ObjectModel.Definition>), typeof(global::System.Drawing.Design.UITypeEditor))]
+		[global::System.ComponentModel.MergableProperty(false)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint/DefinitionText.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint/DefinitionText.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("728c6254-dc03-4ff3-b3f2-9ba8b34f60c1")]
+		public global::System.String DefinitionText
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DefinitionTextPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DefinitionTextPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ValueConstraint.DefinitionText domain property.
+		/// </summary>
+		internal sealed partial class DefinitionTextPropertyHandler : DslModeling::DomainPropertyValueHandler<ValueConstraint, global::System.String>
+		{
+			private DefinitionTextPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ValueConstraint.DefinitionText domain property value handler.
+			/// </summary>
+			public static readonly DefinitionTextPropertyHandler Instance = new DefinitionTextPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ValueConstraint.DefinitionText domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DefinitionTextDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(ValueConstraint element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for DefinitionText because its Kind is
+				// set to CustomStorage. Please provide the GetDefinitionTextValue()
+				// method on the domain class.
+				return element.GetDefinitionTextValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ValueConstraint element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for DefinitionText because its Kind is
+					// set to CustomStorage. Please provide the SetDefinitionTextValue()
+					// method on the domain class.
+					element.SetDefinitionTextValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region NoteText domain property code
+		
+		/// <summary>
+		/// NoteText domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid NoteTextDomainPropertyId = new global::System.Guid(0x49306d45, 0x6a55, 0x4d4f, 0x9c, 0x83, 0xfc, 0x95, 0xd3, 0x37, 0x97, 0xd0);
+		
+		/// <summary>
+		/// Gets or sets the value of NoteText domain property.
+		/// A note to associate with this constraint.
+		///     To insert new lines, use Control-Enter in the dropdown editor, or open the
+		/// 'ORM Notes Editor' tool window.
+		/// </summary>
+		[global::System.ComponentModel.Editor(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.MultilineTextEditor<global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note>), typeof(global::System.Drawing.Design.UITypeEditor))]
+		[global::System.ComponentModel.MergableProperty(false)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint/NoteText.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint/NoteText.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("49306d45-6a55-4d4f-9c83-fc95d33797d0")]
+		public global::System.String NoteText
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return NoteTextPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				NoteTextPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ValueConstraint.NoteText domain property.
+		/// </summary>
+		internal sealed partial class NoteTextPropertyHandler : DslModeling::DomainPropertyValueHandler<ValueConstraint, global::System.String>
+		{
+			private NoteTextPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ValueConstraint.NoteText domain property value handler.
+			/// </summary>
+			public static readonly NoteTextPropertyHandler Instance = new NoteTextPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ValueConstraint.NoteText domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return NoteTextDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(ValueConstraint element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for NoteText because its Kind is
+				// set to CustomStorage. Please provide the GetNoteTextValue()
+				// method on the domain class.
+				return element.GetNoteTextValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ValueConstraint element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for NoteText because its Kind is
+					// set to CustomStorage. Please provide the SetNoteTextValue()
+					// method on the domain class.
+					element.SetNoteTextValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region Text domain property code
 		
 		/// <summary>
@@ -16509,6 +17453,70 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			set
 			{
 				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDuplicateNameError.ValueConstraintDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region Definition opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Definition.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition.ValueConstraint
+		/// </summary>
+		public virtual Definition Definition
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition.ValueConstraintDomainRoleId) as Definition;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition.DefinitionDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition.DefinitionDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition.ValueConstraintDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region Note opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Note.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote.ValueConstraint
+		/// </summary>
+		public virtual Note Note
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote.ValueConstraintDomainRoleId) as Note;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote.NoteDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote.NoteDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote.ValueConstraintDomainRoleId, value);
+				}
 			}
 		}
 		#endregion
@@ -17272,6 +18280,134 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
+		#region SetConstraint opposite domain role accessor
+		/// <summary>
+		/// Gets or sets SetConstraint.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition.Definition
+		/// </summary>
+		public virtual SetConstraint SetConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition.DefinitionDomainRoleId) as SetConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition.SetConstraintDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition.SetConstraintDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition.DefinitionDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region SetComparisonConstraint opposite domain role accessor
+		/// <summary>
+		/// Gets or sets SetComparisonConstraint.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition.Definition
+		/// </summary>
+		public virtual SetComparisonConstraint SetComparisonConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition.DefinitionDomainRoleId) as SetComparisonConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition.SetComparisonConstraintDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition.SetComparisonConstraintDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition.DefinitionDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region ValueConstraint opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ValueConstraint.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition.Definition
+		/// </summary>
+		public virtual ValueConstraint ValueConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition.DefinitionDomainRoleId) as ValueConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition.ValueConstraintDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition.ValueConstraintDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition.DefinitionDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region Grouping opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Grouping.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition.Definition
+		/// </summary>
+		public virtual ElementGrouping Grouping
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition.DefinitionDomainRoleId) as ElementGrouping;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition.GroupingDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition.GroupingDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition.DefinitionDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
 	}
 }
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
@@ -17461,6 +18597,134 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				else
 				{
 					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasNote.NoteDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region SetConstraint opposite domain role accessor
+		/// <summary>
+		/// Gets or sets SetConstraint.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote.Note
+		/// </summary>
+		public virtual SetConstraint SetConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote.NoteDomainRoleId) as SetConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote.SetConstraintDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote.SetConstraintDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote.NoteDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region SetComparisonConstraint opposite domain role accessor
+		/// <summary>
+		/// Gets or sets SetComparisonConstraint.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote.Note
+		/// </summary>
+		public virtual SetComparisonConstraint SetComparisonConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote.NoteDomainRoleId) as SetComparisonConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote.SetComparisonConstraintDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote.SetComparisonConstraintDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote.NoteDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region ValueConstraint opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ValueConstraint.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote.Note
+		/// </summary>
+		public virtual ValueConstraint ValueConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote.NoteDomainRoleId) as ValueConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote.ValueConstraintDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote.ValueConstraintDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote.NoteDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region Grouping opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Grouping.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote.Note
+		/// </summary>
+		public virtual ElementGrouping Grouping
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote.NoteDomainRoleId) as ElementGrouping;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote.GroupingDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote.GroupingDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote.NoteDomainRoleId, value);
 				}
 			}
 		}

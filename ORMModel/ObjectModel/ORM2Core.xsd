@@ -16,37 +16,66 @@
 			3. This notice may not be removed or altered from any source distribution.
 		</xs:appinfo>
 	</xs:annotation>
-	<xs:complexType name="Extensions">
+	<xs:complexType name="ExtensionsType">
+		<xs:annotation>
+			<xs:documentation>Standard container for extension data related to the containing element.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence minOccurs="0" maxOccurs="unbounded">
 			<xs:any namespace="##other" processContents="strict"/>
 		</xs:sequence>
 	</xs:complexType>
-	<!--ORMModel-->
-	<xs:element name="ORMModel" type="ORMModel"/>
-	<xs:complexType name="ORMModel">
+	<xs:element name="ORMModel" type="ORMModelType"/>
+	<xs:complexType name="ORMModelType">
+		<xs:annotation>
+			<xs:documentation>Definition of elements used in the primary definition of an ORM model.</xs:documentation>
+		</xs:annotation>
 		<xs:all>
 			<xs:element name="Definitions" type="DefinitionsType" minOccurs="0"/>
 			<xs:element name="Notes" type="NotesType" minOccurs="0"/>
-			<xs:element name="Objects" type="Objects" minOccurs="0"/>
-			<xs:element name="Facts" type="Facts" minOccurs="0"/>
-			<xs:element name="Constraints" type="Constraints" minOccurs="0"/>
-			<xs:element name="DataTypes" type="DataTypes" minOccurs="0"/>
-			<xs:element name="CustomReferenceModes" type="CustomReferenceModes" minOccurs="0"/>
-			<xs:element name="ModelNotes" type="ModelNotes" minOccurs="0"/>
-			<xs:element name="ModelErrors" type="ModelErrors" minOccurs="0"/>
-			<xs:element name="ReferenceModeKinds" type="ReferenceModeKinds" minOccurs="0"/>
+			<xs:element name="Objects" type="ObjectTypesType" minOccurs="0"/>
+			<xs:element name="Facts" type="FactTypesType" minOccurs="0"/>
+			<xs:element name="Constraints" type="ConstraintsType" minOccurs="0"/>
+			<xs:element name="DataTypes" type="DataTypesType" minOccurs="0"/>
+			<xs:element name="CustomReferenceModes" type="CustomReferenceModesType" minOccurs="0"/>
+			<xs:element name="ModelNotes" type="ModelNotesType" minOccurs="0"/>
+			<xs:element name="ModelErrors" type="ModelErrorsType" minOccurs="0"/>
+			<xs:element name="ReferenceModeKinds" type="ReferenceModeKindsType" minOccurs="0"/>
 			<xs:element name="RecognizedPhrases" type="RecognizedPhrasesType" minOccurs="0"/>
-			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+			<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
 		</xs:all>
-		<xs:attribute name="Name" type="xs:string"/>
-		<xs:attribute name="id" type="xs:ID"/>
+		<xs:attribute name="Name" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>The name of the model.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attributeGroup ref="idAttribute"/>
 	</xs:complexType>
+	<xs:attributeGroup name="idAttribute">
+		<xs:attribute name="id" type="xs:ID" use="required">
+			<xs:annotation>
+				<xs:documentation>A unique identifier for this element.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="refAttribute">
+		<xs:attribute name="ref" type="xs:IDREF" use="required">
+			<xs:annotation>
+				<xs:documentation>The value of the referenced element's unique id.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
 	<xs:complexType name="ORMModelRef">
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+		<xs:annotation>
+			<xs:documentation>Reference to an ORM model element.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
 	<!--End ORMModel-->
 	<xs:element name="ModelErrorDisplayFilter" type="ModelErrorDisplayFilterType"/>
 	<xs:complexType name="ModelErrorDisplayFilterType">
+		<xs:annotation>
+			<xs:documentation>Validation error display filters based on error type and category.</xs:documentation>
+		</xs:annotation>
 		<!-- UNDONE: Temporary to pass XSD validation -->
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:any namespace="##any" processContents="skip"/>
@@ -54,128 +83,238 @@
 		<xs:anyAttribute namespace="##any" processContents="skip"/>
 	</xs:complexType>
 	<xs:complexType name="DefinitionsType">
+		<xs:annotation>
+			<xs:documentation>The container for informal description elements.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence minOccurs="0">
 			<xs:element name="Definition" type="DefinitionType"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="DefinitionType">
+		<xs:annotation>
+			<xs:documentation>An information description for the containing element.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="Text" type="xs:string" minOccurs="0"/>
+			<xs:element name="Text" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Plain text description.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
 		</xs:sequence>
-		<xs:attribute name="id" type="xs:ID"/>
+		<xs:attributeGroup ref="idAttribute"/>
 	</xs:complexType>
 	<xs:complexType name="AliasesType">
+		<xs:annotation>
+			<xs:documentation>Alternative names for the containing named element.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="Alias" type="AliasType"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="AliasType">
-		<xs:attribute name="id" type="xs:ID" use="required"/>
-		<xs:attribute name="Name" type="xs:string" use="required"/>
-		<xs:attribute name="NameConsumer" type="xs:string" use="required"/>
-		<xs:attribute name="NameUsage" type="xs:string"/>
+		<xs:annotation>
+			<xs:documentation>An alternative name for the containing named element</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="idAttribute"/>
+		<xs:attribute name="Name" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>The alternative name</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="NameConsumer" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>The type of consumer for this form of the name. NameConsumer types are provided by extension models.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="NameUsage" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>Additional extension-provided categorization type for how a name should be used.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="NotesType">
+		<xs:annotation>
+			<xs:documentation>The container for note elements.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence minOccurs="0">
 			<xs:element name="Note" type="NoteType"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="NoteType">
+		<xs:annotation>
+			<xs:documentation>A note for the containing element.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="Text" type="xs:string" minOccurs="0"/>
+			<xs:element name="Text" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Plain text note.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
 		</xs:sequence>
-		<xs:attribute name="id" type="xs:ID"/>
+		<xs:attributeGroup ref="idAttribute"/>
 	</xs:complexType>
-	<xs:complexType name="ModelNotes">
+	<xs:complexType name="ModelNotesType">
+		<xs:annotation>
+			<xs:documentation>Container for miscellaneous notest associated with this model.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence minOccurs="0" maxOccurs="unbounded">
-			<xs:element name="ModelNote" type="ModelNote"/>
+			<xs:element name="ModelNote" type="ModelNoteType"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="ModelNote">
+	<xs:complexType name="ModelNoteType">
+		<xs:annotation>
+			<xs:documentation>A miscellaneous note for this model.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="NoteType">
 				<xs:sequence minOccurs="0">
-					<xs:element name="ReferencedBy" type="NoteReferencedBy"/>
+					<xs:element name="ReferencedBy" type="ModelNoteReferencedByType"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="NoteReferencedBy">
+	<xs:complexType name="ModelNoteReferencedByType">
+		<xs:annotation>
+			<xs:documentation>A reference from a model note indicating a related element discussed by the note.</xs:documentation>
+		</xs:annotation>
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
-			<xs:element name="FactType" type="FactRef"/>
-			<xs:element name="ObjectType" type="ObjectRef"/>
+			<xs:element name="FactType" type="FactTypeRef"/>
+			<xs:element name="ObjectType" type="ObjectTypeRef"/>
 			<xs:element name="SetConstraint" type="SetConstraintRef"/>
 			<xs:element name="SetComparisonConstraint" type="SetComparisonConstraintRef"/>
 		</xs:choice>
 	</xs:complexType>
 	<!--Objects and Object Types-->
-	<xs:complexType name="ObjectRef">
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+	<xs:complexType name="ObjectTypeRef">
+		<xs:annotation>
+			<xs:documentation>A reference to an object type.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
-	<xs:complexType name="Objects">
+	<xs:complexType name="ObjectTypesType">
+		<xs:annotation>
+			<xs:documentation>Container for all object types in the model.</xs:documentation>
+		</xs:annotation>
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
-			<xs:element name="EntityType" type="EntityType"/>
-			<xs:element name="ObjectifiedType" type="ObjectifiedType"/>
-			<xs:element name="ValueType" type="ValueType"/>
+			<xs:element name="EntityType" type="EntityTypeType"/>
+			<xs:element name="ObjectifiedType" type="ObjectifiedTypeType"/>
+			<xs:element name="ValueType" type="ValueTypeType"/>
 		</xs:choice>
 	</xs:complexType>
-	<xs:complexType name="ObjectType" abstract="true">
+	<xs:complexType name="ObjectTypeType" abstract="true">
 		<xs:sequence>
 			<xs:element name="Definitions" type="DefinitionsType" minOccurs="0"/>
 			<xs:element name="Notes" type="NotesType" minOccurs="0"/>
 			<xs:element name="Abbreviations" type="AliasesType" minOccurs="0"/>
-			<xs:element name="PlayedRoles" type="PlayedRoles" minOccurs="0"/>
+			<xs:element name="PlayedRoles" type="PlayedRolesType" minOccurs="0"/>
 			<xs:element name="SubtypeDerivationRule" type="SubtypeDerivationRuleType" minOccurs="0"/>
 		</xs:sequence>
-		<xs:attribute name="Name" use="required" type="xs:string"/>
-		<xs:attribute name="id" use="required" type="xs:ID"/>
-		<xs:attribute name="IsIndependent" type="xs:boolean" default="false"/>
-		<xs:attribute name="IsExternal" type="xs:boolean" default="false"/>
-		<xs:attribute name="IsPersonal" type="xs:boolean" default="false"/>
+		<xs:attribute name="Name" use="required" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>The object type name. Validation errors will be present for any object type name that is not unique within the model.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attributeGroup ref="idAttribute"/>
+		<xs:attribute name="IsIndependent" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>An instance of this object type can exist without playing any non-identifying roles.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="IsExternal" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>This object type is externally defined (not used).</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="IsPersonal" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>This object type refers to a person, not a thing. A directive to tell the verbalization to use personal pronouns.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
-	<xs:complexType name="EntityType">
+	<xs:complexType name="EntityTypeType">
+		<xs:annotation>
+			<xs:documentation>An object type with an external identification scheme.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
-			<xs:extension base="ObjectType">
+			<xs:extension base="ObjectTypeType">
 				<xs:sequence>
-					<xs:element name="PreferredIdentifier" type="ConstraintRef" minOccurs="0"/>
-					<xs:element name="Instances" type="EntityTypeInstances" minOccurs="0"/>
-					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+					<xs:element name="PreferredIdentifier" type="UniquenessConstraintRef" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>A reference to the uniqueness constraint that provides the preferred identification scheme for this entity type.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Instances" type="EntityTypeInstancesType" minOccurs="0"/>
+					<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
 				</xs:sequence>
 				<!--ReferenceMode is derived.-->
-				<xs:attribute name="_ReferenceMode" type="xs:string"/>
+				<xs:attribute name="_ReferenceMode" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>The name of the reference mode pattern used to identify this element. Derived from a single-role preferred identifier with a ValueType role player.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<!--The fact that an object is an ObjectifiedType is derrived.-->
-	<xs:complexType name="ObjectifiedType">
+	<xs:complexType name="ObjectifiedTypeType">
+		<xs:annotation>
+			<xs:documentation>An entity type that objectifies a fact type.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
-			<xs:extension base="ObjectType">
+			<xs:extension base="ObjectTypeType">
 				<xs:sequence>
-					<xs:element name="PreferredIdentifier" type="ConstraintRef" minOccurs="0"/>
-					<xs:element name="NestedPredicate" type="ObjectifiedFactRef"/>
-					<xs:element name="Instances" type="EntityTypeInstances" minOccurs="0"/>
-					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+					<xs:element name="PreferredIdentifier" type="UniquenessConstraintRef" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>A reference to the uniqueness constraint that provides the preferred identification scheme for this entity type.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="NestedPredicate" type="ObjectifiedFactTypeRef"/>
+					<xs:element name="Instances" type="EntityTypeInstancesType" minOccurs="0"/>
+					<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
 				</xs:sequence>
 				<!--ReferenceMode is derived.-->
-				<xs:attribute name="_ReferenceMode" type="xs:string"/>
+				<xs:attribute name="_ReferenceMode" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>The name of the reference mode pattern used to identify this element. Derived from a single-role preferred identifier with a ValueType role player.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<!--The fact that an object is a valuetype is derrived-->
-	<xs:complexType name="ValueType">
+	<xs:complexType name="ValueTypeType">
+		<xs:annotation>
+			<xs:documentation>An object type representing a self-identifying value.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
-			<xs:extension base="ObjectType">
+			<xs:extension base="ObjectTypeType">
 				<xs:sequence>
 					<xs:element name="ConceptualDataType" type="DataTypeRef"/>
-					<xs:element name="ValueRestriction" type="ValueRestriction" minOccurs="0"/>
-					<xs:element name="Instances" type="ValueTypeInstances" minOccurs="0"/>
-					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+					<xs:element name="ValueRestriction" type="ValueTypeValueRestrictionType" minOccurs="0"/>
+					<xs:element name="Instances" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Container for instances of this value type.</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="ValueTypeInstance" type="ValueTypeInstanceType" minOccurs="0" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
 				</xs:sequence>
-				<xs:attribute name="IsImplicitBooleanValue" type="xs:boolean" default="false"/>
+				<xs:attribute name="IsImplicitBooleanValue" type="xs:boolean" default="false">
+					<xs:annotation>
+						<xs:documentation>True if this is an implied boolean value type. The implied boolean values are automatically created to provide a binarized form of a unary fact type.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="SubtypeDerivationRuleType">
+		<xs:annotation>
+			<xs:documentation>The formal derivation rule defining a subtype.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence minOccurs="0">
 			<xs:element name="SubtypeDerivationExpression" type="DerivationExpressionType"/>
 		</xs:sequence>
@@ -183,90 +322,141 @@
 	<!--End Objects and Object Types-->
 	<!--ObjectTypeInstances-->
 	<xs:complexType name="ObjectTypeInstanceRef">
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+		<xs:annotation>
+			<xs:documentation>A reference to an object type instance. An object type instance may be a value instance, an entity instance, or a subtype instance.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
-	<xs:complexType name="EntityTypeInstances">
+	<xs:complexType name="EntityTypeInstancesType">
+		<xs:annotation>
+			<xs:documentation>Container for instances associated with an entity type.</xs:documentation>
+		</xs:annotation>
 		<xs:choice>
-			<xs:element name="EntityTypeInstance" type="EntityTypeInstance" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="EntityTypeSubtypeInstance" type="EntityTypeSubtypeInstance" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="EntityTypeInstance" type="EntityTypeInstanceType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="EntityTypeSubtypeInstance" type="EntityTypeSubtypeInstanceType" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:choice>
 	</xs:complexType>
-	<xs:complexType name="EntityTypeInstance">
+	<xs:complexType name="EntityTypeInstanceType">
+		<xs:annotation>
+			<xs:documentation>An instance of a directly identified entity type.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="RoleInstances" type="EntityTypeRoleInstances" minOccurs="0"/>
-			<xs:element name="ObjectifiedInstance" type="FactTypeInstanceRef" minOccurs="0"/>
-			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+			<xs:element name="RoleInstances" type="EntityTypeRoleInstancesType" minOccurs="0"/>
+			<xs:element name="ObjectifiedInstance" type="FactTypeInstanceRef" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A reference to the fact instance associated with this entity instance.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
 		</xs:sequence>
-		<xs:attribute name="id" type="xs:ID" use="required"/>
+		<xs:attributeGroup ref="idAttribute"/>
 	</xs:complexType>
-	<xs:complexType name="EntityTypeSubtypeInstance">
+	<xs:complexType name="EntityTypeSubtypeInstanceType">
+		<xs:annotation>
+			<xs:documentation>An instance of a subtype instance defined as a relationship to an instance of the identifying supertype.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence>
 			<xs:element name="SupertypeInstance" type="EntityTypeInstanceRef" minOccurs="0"/>
-			<xs:element name="ObjectifiedInstance" type="FactTypeInstanceRef" minOccurs="0"/>
-			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+			<xs:element name="ObjectifiedInstance" type="FactTypeInstanceRef" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A reference to the fact instance associated with this subtype instance.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
 		</xs:sequence>
-		<xs:attribute name="id" type="xs:ID" use="required"/>
+		<xs:attributeGroup ref="idAttribute"/>
 	</xs:complexType>
 	<xs:complexType name="EntityTypeInstanceRef">
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+		<xs:annotation>
+			<xs:documentation>A reference to an entity type instance.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
 	<xs:complexType name="EntityTypeSubtypeInstanceRef">
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+		<xs:annotation>
+			<xs:documentation>A reference to an entity type subtype instance.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
-	<xs:complexType name="EntityTypeRoleInstances">
+	<xs:complexType name="EntityTypeRoleInstancesType">
+		<xs:annotation>
+			<xs:documentation>Container for the role instances associated with an entity instance.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence>
 			<xs:element name="EntityTypeRoleInstance" type="ObjectTypeRoleInstanceRef" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="ObjectTypeRoleInstanceRef">
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+		<xs:annotation>
+			<xs:documentation>A reference to a role instance, which is a use of an object instance by a role in a single entity instance or fact instance.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
-	<xs:complexType name="ValueTypeInstances">
+	<xs:complexType name="ValueTypeInstanceType">
+		<xs:annotation>
+			<xs:documentation>Value instance. All other instance specifications are ultimately combinations of value instances.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="ValueTypeInstance" type="ValueTypeInstance" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Value" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The text form of an instance value.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
 		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="ValueTypeInstance">
-		<xs:sequence>
-			<xs:element name="Value" type="xs:string"/>
-			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
-		</xs:sequence>
-		<xs:attribute name="id" type="xs:ID" use="required"/>
+		<xs:attributeGroup ref="idAttribute"/>
 	</xs:complexType>
 	<xs:complexType name="ValueTypeInstanceRef">
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+		<xs:annotation>
+			<xs:documentation>A reference to a value instance</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
-	<xs:complexType name="RoleInstanceDefinitions">
+	<xs:complexType name="RoleInstancesType">
+		<xs:annotation>
+			<xs:documentation>Container for relationships between instances of the role player and roles used in other complex instance definitions.</xs:documentation>
+		</xs:annotation>
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
-			<xs:element name="EntityTypeRoleInstance" type="RoleInstance"/>
-			<xs:element name="ValueTypeRoleInstance" type="RoleInstance"/>
-			<xs:element name="FactTypeRoleInstance" type="RoleInstance"/>
+			<xs:element name="EntityTypeRoleInstance" type="RoleInstanceType"/>
+			<xs:element name="ValueTypeRoleInstance" type="RoleInstanceType"/>
+			<xs:element name="FactTypeRoleInstance" type="RoleInstanceType"/>
 		</xs:choice>
 	</xs:complexType>
-	<xs:complexType name="RoleInstance">
-		<xs:simpleContent>
-			<xs:extension base="xs:string">
-				<xs:attribute name="id" type="xs:ID" use="required"/>
-				<xs:attribute name="ref" type="xs:IDREF" use="required"/>
-			</xs:extension>
-		</xs:simpleContent>
+	<xs:complexType name="RoleInstanceType">
+		<xs:annotation>
+			<xs:documentation>An identified reference to an object type instance. An object type instance may be a value instance, an entity instance, or a subtype instance.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="idAttribute"/>
+		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
-	<xs:complexType name="FactTypeInstances">
+	<xs:complexType name="FactTypeInstancesType">
+		<xs:annotation>
+			<xs:documentation>Container for instances associated with a fact type.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="FactTypeInstance" type="FactTypeInstance" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="FactTypeInstance" type="FactTypeInstanceType" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="FactTypeInstance">
+	<xs:complexType name="FactTypeInstanceType">
+		<xs:annotation>
+			<xs:documentation>A fact instance defined by a population of the fact roles.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="RoleInstances" type="FactTypeRoleInstances" minOccurs="0"/>
-			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+			<xs:element name="RoleInstances" type="FactTypeRoleInstancesType" minOccurs="0"/>
+			<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
 		</xs:sequence>
-		<xs:attribute name="id" type="xs:ID" use="required"/>
+		<xs:attributeGroup ref="idAttribute"/>
 	</xs:complexType>
 	<xs:complexType name="FactTypeInstanceRef">
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+		<xs:annotation>
+			<xs:documentation>A reference to a fact instance.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
-	<xs:complexType name="FactTypeRoleInstances">
+	<xs:complexType name="FactTypeRoleInstancesType">
+		<xs:annotation>
+			<xs:documentation>Container for the role instances associated with a fact instance.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence>
 			<xs:element name="FactTypeRoleInstance" type="ObjectTypeRoleInstanceRef" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
@@ -275,242 +465,360 @@
 	<!--DataType -->
 	<!--DataTypeRef indicates a reference to a datatype -->
 	<xs:complexType name="DataTypeRef">
-		<xs:attribute name="id" type="xs:ID"/>
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
-		<xs:attribute name="Scale" type="xs:int"/>
-		<xs:attribute name="Length" type="xs:int"/>
+		<xs:annotation>
+			<xs:documentation>A use of a data type, including facet information.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="idAttribute"/>
+		<xs:attributeGroup ref="refAttribute"/>
+		<xs:attribute name="Scale" type="xs:int">
+			<xs:annotation>
+				<xs:documentation>The value of the Scale facet.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Length" type="xs:int">
+			<xs:annotation>
+				<xs:documentation>The value of the Length facet. Holds the Precision fact for Decimal and Money data types.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="DataTypeRefRef">
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+		<xs:annotation>
+			<xs:documentation>A reference to the use of a data type.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
 	<!--end DataTypeRef-->
-	<xs:complexType name="DataTypes">
+	<xs:complexType name="DataTypesType">
+		<xs:annotation>
+			<xs:documentation>Container for all data types used in the model.</xs:documentation>
+		</xs:annotation>
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
-			<xs:element name="UnspecifiedDataType" type="UnspecifiedDataType"/>
-			<xs:element name="FixedLengthTextDataType" type="FixedLengthTextDataType"/>
-			<xs:element name="VariableLengthTextDataType" type="VariableLengthTextDataType"/>
-			<xs:element name="LargeLengthTextDataType" type="LargeLengthTextDataType"/>
-			<xs:element name="SignedIntegerNumericDataType" type="SignedIntegerNumericDataType"/>
-			<xs:element name="SignedSmallIntegerNumericDataType" type="SignedSmallIntegerNumericDataType"/>
-			<xs:element name="SignedLargeIntegerNumericDataType" type="SignedLargeIntegerNumericDataType"/>
-			<xs:element name="UnsignedIntegerNumericDataType" type="UnsignedIntegerNumericDataType"/>
-			<xs:element name="UnsignedTinyIntegerNumericDataType" type="UnsignedTinyIntegerNumericDataType"/>
-			<xs:element name="UnsignedSmallIntegerNumericDataType" type="UnsignedSmallIntegerNumericDataType"/>
-			<xs:element name="UnsignedLargeIntegerNumericDataType" type="UnsignedLargeIntegerNumericDataType"/>
-			<xs:element name="AutoCounterNumericDataType" type="AutoCounterNumericDataType"/>
-			<xs:element name="FloatingPointNumericDataType" type="FloatingPointNumericDataType"/>
-			<xs:element name="SinglePrecisionFloatingPointNumericDataType" type="SinglePrecisionFloatingPointNumericDataType"/>
-			<xs:element name="DoublePrecisionFloatingPointNumericDataType" type="DoublePrecisionFloatingPointNumericDataType"/>
-			<xs:element name="DecimalNumericDataType" type="DecimalNumericDataType"/>
-			<xs:element name="MoneyNumericDataType" type="MoneyNumericDataType"/>
-			<xs:element name="FixedLengthRawDataDataType" type="FixedLengthRawDataDataType"/>
-			<xs:element name="VariableLengthRawDataDataType" type="VariableLengthRawDataDataType"/>
-			<xs:element name="LargeLengthRawDataDataType" type="LargeLengthRawDataDataType"/>
-			<xs:element name="PictureRawDataDataType" type="PictureRawDataDataType"/>
-			<xs:element name="OleObjectRawDataDataType" type="OleObjectRawDataDataType"/>
-			<xs:element name="AutoTimestampTemporalDataType" type="AutoTimestampTemporalDataType"/>
-			<xs:element name="TimeTemporalDataType" type="TimeTemporalDataType"/>
-			<xs:element name="DateTemporalDataType" type="DateTemporalDataType"/>
-			<xs:element name="DateAndTimeTemporalDataType" type="DateAndTimeTemporalDataType"/>
-			<xs:element name="TrueOrFalseLogicalDataType" type="TrueOrFalseLogicalDataType"/>
-			<xs:element name="YesOrNoLogicalDataType" type="YesOrNoLogicalDataType"/>
-			<xs:element name="RowIdOtherDataType" type="RowIdOtherDataType"/>
-			<xs:element name="ObjectIdOtherDataType" type="ObjectIdOtherDataType"/>
+			<xs:element name="UnspecifiedDataType" type="UnspecifiedDataTypeType"/>
+			<xs:element name="FixedLengthTextDataType" type="FixedLengthTextDataTypeType"/>
+			<xs:element name="VariableLengthTextDataType" type="VariableLengthTextDataTypeType"/>
+			<xs:element name="LargeLengthTextDataType" type="LargeLengthTextDataTypeType"/>
+			<xs:element name="SignedIntegerNumericDataType" type="SignedIntegerNumericDataTypeType"/>
+			<xs:element name="SignedSmallIntegerNumericDataType" type="SignedSmallIntegerNumericDataTypeType"/>
+			<xs:element name="SignedLargeIntegerNumericDataType" type="SignedLargeIntegerNumericDataTypeType"/>
+			<xs:element name="UnsignedIntegerNumericDataType" type="UnsignedIntegerNumericDataTypeType"/>
+			<xs:element name="UnsignedTinyIntegerNumericDataType" type="UnsignedTinyIntegerNumericDataTypeType"/>
+			<xs:element name="UnsignedSmallIntegerNumericDataType" type="UnsignedSmallIntegerNumericDataTypeType"/>
+			<xs:element name="UnsignedLargeIntegerNumericDataType" type="UnsignedLargeIntegerNumericDataTypeType"/>
+			<xs:element name="AutoCounterNumericDataType" type="AutoCounterNumericDataTypeType"/>
+			<xs:element name="FloatingPointNumericDataType" type="FloatingPointNumericDataTypeType"/>
+			<xs:element name="SinglePrecisionFloatingPointNumericDataType" type="SinglePrecisionFloatingPointNumericDataTypeType"/>
+			<xs:element name="DoublePrecisionFloatingPointNumericDataType" type="DoublePrecisionFloatingPointNumericDataTypeType"/>
+			<xs:element name="DecimalNumericDataType" type="DecimalNumericDataTypeType"/>
+			<xs:element name="MoneyNumericDataType" type="MoneyNumericDataTypeType"/>
+			<xs:element name="FixedLengthRawDataDataType" type="FixedLengthRawDataDataTypeType"/>
+			<xs:element name="VariableLengthRawDataDataType" type="VariableLengthRawDataDataTypeType"/>
+			<xs:element name="LargeLengthRawDataDataType" type="LargeLengthRawDataDataTypeType"/>
+			<xs:element name="PictureRawDataDataType" type="PictureRawDataDataTypeType"/>
+			<xs:element name="OleObjectRawDataDataType" type="OleObjectRawDataDataTypeType"/>
+			<xs:element name="AutoTimestampTemporalDataType" type="AutoTimestampTemporalDataTypeType"/>
+			<xs:element name="TimeTemporalDataType" type="TimeTemporalDataTypeType"/>
+			<xs:element name="DateTemporalDataType" type="DateTemporalDataTypeType"/>
+			<xs:element name="DateAndTimeTemporalDataType" type="DateAndTimeTemporalDataTypeType"/>
+			<xs:element name="TrueOrFalseLogicalDataType" type="TrueOrFalseLogicalDataTypeType"/>
+			<xs:element name="YesOrNoLogicalDataType" type="YesOrNoLogicalDataTypeType"/>
+			<xs:element name="RowIdOtherDataType" type="RowIdOtherDataTypeType"/>
+			<xs:element name="ObjectIdOtherDataType" type="ObjectIdOtherDataTypeType"/>
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="DataType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>The base type for all data types</xs:documentation>
+		</xs:annotation>
 		<xs:choice>
-			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+			<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
 		</xs:choice>
-		<xs:attribute name="id" type="xs:ID" use="required"/>
+		<xs:attributeGroup ref="idAttribute"/>
 	</xs:complexType>
-	<xs:complexType name="UnspecifiedDataType">
+	<xs:complexType name="UnspecifiedDataTypeType">
+		<xs:annotation>
+			<xs:documentation>Placeholder for an unspecified data type. Each use of this type results in a DataTypeNotSpecified model validation error.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="FixedLengthTextDataType">
+	<xs:complexType name="FixedLengthTextDataTypeType">
+		<xs:annotation>
+			<xs:documentation>Values are in the set of fixed length strings. Supports the Length facet.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="VariableLengthTextDataType">
+	<xs:complexType name="VariableLengthTextDataTypeType">
+		<xs:annotation>
+			<xs:documentation>Values are in the set of variable length strings. Supports the Length facet.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="LargeLengthTextDataType">
+	<xs:complexType name="LargeLengthTextDataTypeType">
+		<xs:annotation>
+			<xs:documentation>Values are in the set of large length strings. Supports the Length facet.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="SignedIntegerNumericDataType">
+	<xs:complexType name="SignedIntegerNumericDataTypeType">
+		<xs:annotation>
+			<xs:documentation>Values are in the set of 4-byte signed integers.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="SignedSmallIntegerNumericDataType">
+	<xs:complexType name="SignedSmallIntegerNumericDataTypeType">
+		<xs:annotation>
+			<xs:documentation>Values are in the set of 2-byte signed integers.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="SignedLargeIntegerNumericDataType">
+	<xs:complexType name="SignedLargeIntegerNumericDataTypeType">
+		<xs:annotation>
+			<xs:documentation>Values are in the set of 8-byte signed integers.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="UnsignedIntegerNumericDataType">
+	<xs:complexType name="UnsignedIntegerNumericDataTypeType">
+		<xs:annotation>
+			<xs:documentation>Values are in the set of 4-byte unsigned integers.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="UnsignedTinyIntegerNumericDataType">
+	<xs:complexType name="UnsignedTinyIntegerNumericDataTypeType">
+		<xs:annotation>
+			<xs:documentation>Values are in the set of unsigned byte integers.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="UnsignedSmallIntegerNumericDataType">
+	<xs:complexType name="UnsignedSmallIntegerNumericDataTypeType">
+		<xs:annotation>
+			<xs:documentation>Values are in the set of 2-byte unsigned integers.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="UnsignedLargeIntegerNumericDataType">
+	<xs:complexType name="UnsignedLargeIntegerNumericDataTypeType">
+		<xs:annotation>
+			<xs:documentation>Values are in the set of 8-byte unsigned integers.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="AutoCounterNumericDataType">
+	<xs:complexType name="AutoCounterNumericDataTypeType">
+		<xs:annotation>
+			<xs:documentation>Values are in the set of automatically generated unsigned long integers.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="FloatingPointNumericDataType">
+	<xs:complexType name="FloatingPointNumericDataTypeType">
+		<xs:annotation>
+			<xs:documentation>Values are in the set of floating point numbers. Supports the Precision facet.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="SinglePrecisionFloatingPointNumericDataType">
+	<xs:complexType name="SinglePrecisionFloatingPointNumericDataTypeType">
+		<xs:annotation>
+			<xs:documentation>Values are in the set of 4-byte floating point numbers.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="DoublePrecisionFloatingPointNumericDataType">
+	<xs:complexType name="DoublePrecisionFloatingPointNumericDataTypeType">
+		<xs:annotation>
+			<xs:documentation>Values are in the set of 8-byte floating point numbers.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="DecimalNumericDataType">
+	<xs:complexType name="DecimalNumericDataTypeType">
+		<xs:annotation>
+			<xs:documentation>Values are in the set of moveable decimal point exact numbers. Supports the Precision and Scale facets.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="MoneyNumericDataType">
+	<xs:complexType name="MoneyNumericDataTypeType">
+		<xs:annotation>
+			<xs:documentation>Values are in the set of moveable decimal point exact numbers. Supports the Precision and Scale facets.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="FixedLengthRawDataDataType">
+	<xs:complexType name="FixedLengthRawDataDataTypeType">
+		<xs:annotation>
+			<xs:documentation>Values are in the set of fixed length binary data. Supports the Length facet.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="VariableLengthRawDataDataType">
+	<xs:complexType name="VariableLengthRawDataDataTypeType">
+		<xs:annotation>
+			<xs:documentation>Values are in the set of variable length binary data. Supports the Length facet.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="LargeLengthRawDataDataType">
+	<xs:complexType name="LargeLengthRawDataDataTypeType">
+		<xs:annotation>
+			<xs:documentation>Values are in the set of large length binary data. Supports the Length facet.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="PictureRawDataDataType">
+	<xs:complexType name="PictureRawDataDataTypeType">
+		<xs:annotation>
+			<xs:documentation>Values are in the set of binary data representing an image.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="OleObjectRawDataDataType">
+	<xs:complexType name="OleObjectRawDataDataTypeType">
+		<xs:annotation>
+			<xs:documentation>Values are in the set of binary data representing an embedded OLE object.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="AutoTimestampTemporalDataType">
+	<xs:complexType name="AutoTimestampTemporalDataTypeType">
+		<xs:annotation>
+			<xs:documentation>Values are in the set of automatically generated timestamps.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="TimeTemporalDataType">
+	<xs:complexType name="TimeTemporalDataTypeType">
+		<xs:annotation>
+			<xs:documentation>Values represent time information.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="DateTemporalDataType">
+	<xs:complexType name="DateTemporalDataTypeType">
+		<xs:annotation>
+			<xs:documentation>Values represent date information.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="DateAndTimeTemporalDataType">
+	<xs:complexType name="DateAndTimeTemporalDataTypeType">
+		<xs:annotation>
+			<xs:documentation>Values represent date and time information.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="TrueOrFalseLogicalDataType">
+	<xs:complexType name="TrueOrFalseLogicalDataTypeType">
+		<xs:annotation>
+			<xs:documentation>Values are either true or false.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="YesOrNoLogicalDataType">
+	<xs:complexType name="YesOrNoLogicalDataTypeType">
+		<xs:annotation>
+			<xs:documentation>Values are either yes or no.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="RowIdOtherDataType">
+	<xs:complexType name="RowIdOtherDataTypeType">
+		<xs:annotation>
+			<xs:documentation>Values are in the set of row identifiers.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="ObjectIdOtherDataType">
+	<xs:complexType name="ObjectIdOtherDataTypeType">
+		<xs:annotation>
+			<xs:documentation>Values represent an object identifier.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<!--End DataType -->
-	<!--Data is a gereral purpose element wrapper to enclose data.  This helps make the schema more extendable.-->
-	<xs:complexType name="Data">
-		<xs:sequence>
-			<xs:element name="Data" type="xs:string"/>
-		</xs:sequence>
-	</xs:complexType>
-	<!--end data-->
 	<!--Roles-->
 	<!-- RoleRef, RoleSequence and  RoleSequences define references to roles and collections of roles and collections of collections of roles-->
-	<xs:complexType name="RoleSequences">
+	<xs:complexType name="ConstraintRoleSequencesType">
+		<xs:annotation>
+			<xs:documentation>Container for constraint role sequences.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="RoleSequence" type="RoleSequenceWithId" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="RoleSequence" type="ConstraintRoleSequenceWithIdType" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="PlayedRoles">
+	<xs:complexType name="PlayedRolesType">
+		<xs:annotation>
+			<xs:documentation>Container for the roles played an entity type. Duplicates the RolePlayer information specified on the played roles.</xs:documentation>
+		</xs:annotation>
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="Role" type="RoleRef"/>
 			<xs:element name="SubtypeMetaRole" type="RoleRef"/>
 			<xs:element name="SupertypeMetaRole" type="RoleRef"/>
 		</xs:choice>
 	</xs:complexType>
-	<xs:complexType name="RoleContainer">
+	<xs:complexType name="ReadingRoleSequenceType">
+		<xs:annotation>
+			<xs:documentation>An order sequence of roles in a single fact type.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="Role" type="RoleRef"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="RoleSequence">
+	<xs:complexType name="ConstraintRoleSequenceType">
+		<xs:annotation>
+			<xs:documentation>A sequence of constraint roles.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence>
 			<xs:element name="Role" type="RoleSequenceRoleRef" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="JoinPath" type="JoinPath" minOccurs="0"/>
+			<xs:element name="JoinPath" type="JoinPathType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="RoleSequenceWithId">
+	<xs:complexType name="ConstraintRoleSequenceWithIdType">
+		<xs:annotation>
+			<xs:documentation>A sequence of constraint roles with an identifier.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
-			<xs:extension base="RoleSequence">
-				<xs:attribute name="id" type="xs:ID" use="required"/>
+			<xs:extension base="ConstraintRoleSequenceType">
+				<xs:attributeGroup ref="idAttribute"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -520,508 +828,836 @@
 				<xs:sequence>
 					<xs:element name="ProjectionJoin" type="JoinRef" minOccurs="0"/>
 				</xs:sequence>
-				<xs:attribute name="id" type="xs:ID"/>
+				<xs:attributeGroup ref="idAttribute"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="RoleRef">
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
-	</xs:complexType>
-	<xs:complexType name="SubtypeMetaRoleRef">
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
-	</xs:complexType>
-	<xs:complexType name="SupertypeMetaRoleRef">
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+		<xs:annotation>
+			<xs:documentation>A reference to a role.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
 	<!--end RoleRef, RoleSequence and  RoleSequences-->
-	<xs:complexType name="JoinPath">
+	<xs:complexType name="JoinPathType">
+		<xs:annotation>
+			<xs:documentation>A path linking roles from different fact types in the same constraint role sequence. (preliminary)</xs:documentation>
+		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="Join" type="Join" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Join" type="JoinType" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="Join">
+	<xs:complexType name="JoinType">
+		<xs:annotation>
+			<xs:documentation>A between two roles with the same role player.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="InputRole" type="RoleRef" minOccurs="0"/>
-			<xs:element name="OutputRole" type="RoleRef" minOccurs="0"/>
+			<xs:element name="InputRole" type="RoleRef" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A reference to the input role of the join operation.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OutputRole" type="RoleRef" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A reference to the output role of the join operation.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
 		</xs:sequence>
-		<xs:attribute name="id" type="xs:ID"/>
-		<xs:attribute name="JoinType" type="JoinType" default="Inner"/>
+		<xs:attributeGroup ref="idAttribute"/>
+		<xs:attribute name="JoinType" type="JoinCombinationValues" default="Inner"/>
 	</xs:complexType>
-	<xs:simpleType name="JoinType">
+	<xs:simpleType name="JoinCombinationValues">
+		<xs:annotation>
+			<xs:documentation>Specify whether instances used by the input role but not the output role are included in the join.</xs:documentation>
+		</xs:annotation>
 		<xs:restriction base="xs:token">
-			<xs:enumeration value="Inner"/>
-			<xs:enumeration value="Outer"/>
+			<xs:enumeration value="Inner">
+				<xs:annotation>
+					<xs:documentation>Use inner join semantics. An instance must be used by both the input and output roles.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Outer">
+				<xs:annotation>
+					<xs:documentation>Use outer join semantics. An instance used by the input role must not be used by the output role.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:complexType name="JoinRef">
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+		<xs:annotation>
+			<xs:documentation>A reference to a join.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
-	<xs:complexType name="Roles">
+	<xs:complexType name="FactRolesType">
+		<xs:annotation>
+			<xs:documentation>Container for roles in a fact type.</xs:documentation>
+		</xs:annotation>
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
-			<xs:element name="Role" type="Role"/>
+			<xs:element name="Role" type="RoleType"/>
 		</xs:choice>
 	</xs:complexType>
-	<xs:complexType name="ImpliedFactRoles">
+	<xs:complexType name="ImpliedFactRolesType">
+		<xs:annotation>
+			<xs:documentation>Container for roles in a fact type.</xs:documentation>
+		</xs:annotation>
 		<xs:choice>
 			<xs:sequence>
-				<xs:element name="Role" type="Role"/>
+				<xs:element name="Role" type="RoleType"/>
 				<xs:choice>
-					<xs:element name="RoleProxy" type="RoleProxy"/>
-					<xs:element name="ObjectifiedUnaryRole" type="ObjectifiedUnaryRole"/>
+					<xs:element name="RoleProxy" type="RoleProxyType"/>
+					<xs:element name="ObjectifiedUnaryRole" type="ObjectifiedUnaryRoleType"/>
 				</xs:choice>
 			</xs:sequence>
 			<xs:sequence>
 				<xs:choice>
-					<xs:element name="RoleProxy" type="RoleProxy"/>
-					<xs:element name="ObjectifiedUnaryRole" type="ObjectifiedUnaryRole"/>
+					<xs:element name="RoleProxy" type="RoleProxyType"/>
+					<xs:element name="ObjectifiedUnaryRole" type="ObjectifiedUnaryRoleType"/>
 				</xs:choice>
-				<xs:element name="Role" type="Role"/>
+				<xs:element name="Role" type="RoleType"/>
 			</xs:sequence>
 		</xs:choice>
 	</xs:complexType>
-	<xs:complexType name="SubtypeRoles">
+	<xs:complexType name="SubtypeRolesType">
+		<xs:annotation>
+			<xs:documentation>Container for the meta roles associated with a subtype fact.</xs:documentation>
+		</xs:annotation>
 		<xs:all>
-			<xs:element name="SupertypeMetaRole" type="Role"/>
-			<xs:element name="SubtypeMetaRole" type="Role"/>
+			<xs:element name="SupertypeMetaRole" type="RoleType">
+				<xs:annotation>
+					<xs:documentation>The meta role associated with the supertype role player.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SubtypeMetaRole" type="RoleType">
+				<xs:annotation>
+					<xs:documentation>The meta role associated with the subtype role player.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
 		</xs:all>
 	</xs:complexType>
-	<xs:complexType name="RoleBase">
+	<xs:complexType name="RoleBaseType" abstract="true">
 		<xs:sequence>
-			<xs:element name="RolePlayer" type="ObjectRef" minOccurs="0"/>
-			<xs:element name="ValueRestriction" type="RoleValueRestriction" minOccurs="0"/>
-			<xs:element name="RoleInstances" type="RoleInstanceDefinitions" minOccurs="0"/>
+			<xs:element name="RolePlayer" type="ObjectTypeRef" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A reference to the object type that plays this role.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValueRestriction" type="RoleValueRestrictionType" minOccurs="0"/>
+			<xs:element name="RoleInstances" type="RoleInstancesType"  minOccurs="0"/>
 		</xs:sequence>
-		<xs:attribute name="Name" type="xs:string" use="required"/>
-		<xs:attribute name="id" type="xs:ID" use="required"/>
+		<xs:attribute name="Name" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>An explicit name for this role.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attributeGroup ref="idAttribute"/>
 		<!--Derived-->
-		<xs:attribute name="_IsMandatory" type="xs:boolean" default="false"/>
+		<xs:attribute name="_IsMandatory" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>Derived attribute set to true if this role is associated with a simple mandatory constraint.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 		<!--Derived-->
-		<xs:attribute name="_Multiplicity" type="MultiplicityEnum" default="ZeroToOne"/>
+		<xs:attribute name="_Multiplicity" type="MultiplicityValues" default="ZeroToOne"/>
 	</xs:complexType>
-	<xs:complexType name="Role">
+	<xs:complexType name="RoleType">
+		<xs:annotation>
+			<xs:documentation>A primary role declaration.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
-			<xs:extension base="RoleBase">
+			<xs:extension base="RoleBaseType">
 				<xs:sequence>
-					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+					<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="RoleProxy">
+	<xs:complexType name="RoleProxyType">
+		<xs:annotation>
+			<xs:documentation>The role in an implied fact type that corresponds to a role in the objectified fact type. In terms of constraints, the role proxy is treated as the same role. The only normal role relationship allowed on a proxy role is inclusion in a reading order.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence>
 			<xs:element name="Role" type="RoleRef"/>
-			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+			<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
 		</xs:sequence>
-		<xs:attribute name="id" type="xs:ID" use="required"/>
+		<xs:attributeGroup ref="idAttribute"/>
 	</xs:complexType>
-	<xs:complexType name="ObjectifiedUnaryRole">
+	<xs:complexType name="ObjectifiedUnaryRoleType">
+		<xs:annotation>
+			<xs:documentation>A role representing the identifying role in the fact type implied between the object type that objectifies a unary role and the unary role player. There is an implied equality constraint between this role and the referenced unary role.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
-			<xs:extension base="RoleBase">
+			<xs:extension base="RoleBaseType">
 				<xs:sequence>
-					<xs:element name="UnaryRole" type="RoleRef"/>
-					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+					<xs:element name="UnaryRole" type="RoleRef">
+						<xs:annotation>
+							<xs:documentation>A reference to the objectified unary role.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<!--Look up enum values.-->
-	<xs:simpleType name="MultiplicityEnum">
+	<xs:simpleType name="MultiplicityValues">
+		<xs:annotation>
+			<xs:documentation>The UML-style multiplicity for a role in a binary fact type. Derived from internal uniqueness and mandatory constraints.</xs:documentation>
+		</xs:annotation>
 		<xs:restriction base="xs:string">
-			<xs:enumeration value="Unspecified"/>
-			<xs:enumeration value="Indeterminate"/>
-			<xs:enumeration value="ZeroToOne"/>
-			<xs:enumeration value="ZeroToMany"/>
-			<xs:enumeration value="ExactlyOne"/>
-			<xs:enumeration value="OneToMany"/>
+			<xs:enumeration value="Unspecified">
+				<xs:annotation>
+					<xs:documentation>No internal constraints are specified.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Indeterminate">
+				<xs:annotation>
+					<xs:documentation>Specified internal constraints are inconsistent, resulting in a multiplicity that cannot be determined.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ZeroToOne">
+				<xs:annotation>
+					<xs:documentation>At most one instance of this role player may be associated with the opposite role player. Corresponds to a single role uniqueness constraint on the opposite role.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ZeroToMany">
+				<xs:annotation>
+					<xs:documentation>Zero or more instances of this role player can be associated a single instance of the opposite role player.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ExactlyOne">
+				<xs:annotation>
+					<xs:documentation>Exactly one instance of this role player may be associated with the opposite role player. Corresponds to single role uniqueness and mandatory constraints on the opposite role.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="OneToMany">
+				<xs:annotation>
+					<xs:documentation>One or more instances of this role player can be associated a single instance of the opposite role player.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	<!--End Roles-->
 	<!-- Facts -->
 	<!--Fact Ref defines a reference to a fact-->
-	<xs:complexType name="FactRef">
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+	<xs:complexType name="FactTypeRef">
+		<xs:annotation>
+			<xs:documentation>A reference to a fact type.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
-	<xs:complexType name="ObjectifiedFactRef">
-		<!-- An id for this element so we can refer back to it -->
-		<xs:attribute name="id" type="xs:ID"/>
-		<!-- A reference to a fact type -->
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
-		<xs:attribute name="IsImplied" type="xs:boolean" default="false"/>
+	<xs:complexType name="ObjectifiedFactTypeRef">
+		<xs:annotation>
+			<xs:documentation>A reference to the fact type, representing the objectification relationship between the entity type and the referenced fact type.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="idAttribute"/>
+		<xs:attributeGroup ref="refAttribute"/>
+		<xs:attribute name="IsImplied" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>True if the objectification relationship is implied by a spanning uniqueness constraint on a binary fact type or an n-ary fact type where n&gt;2. The objectifying entity type for an implied fact type is always independent.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="ObjectificationRef">
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+		<xs:annotation>
+			<xs:documentation>A reference to an objectification relationship.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
 	<!--end Fact Ref-->
-	<xs:complexType name="Facts">
+	<xs:complexType name="FactTypesType">
+		<xs:annotation>
+			<xs:documentation>Container for all fact types in the model.</xs:documentation>
+		</xs:annotation>
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
-			<xs:element name="Fact" type="Fact"/>
-			<xs:element name="SubtypeFact" type="SubtypeFact"/>
-			<xs:element name="ImpliedFact" type="ImpliedFact"/>
+			<xs:element name="Fact" type="FactTypeType"/>
+			<xs:element name="SubtypeFact" type="SubtypeFactTypeType"/>
+			<xs:element name="ImpliedFact" type="ImpliedFactTypeType"/>
 		</xs:choice>
 	</xs:complexType>
-	<xs:complexType name="Fact">
-		<!-- These are duplicated in ImpliedFact and SubtypeFact without type extension -->
+	<xs:complexType name="FactTypeType">
+		<xs:annotation>
+			<xs:documentation>A fact type directly specified by the modeler.</xs:documentation>
+		</xs:annotation>
+		<!-- These are duplicated in ImpliedFactTypeType and SubtypeFactTypeType without type extension -->
 		<xs:sequence minOccurs="0">
 			<xs:element name="Definitions" type="DefinitionsType" minOccurs="0"/>
 			<xs:element name="Notes" type="NotesType" minOccurs="0"/>
-			<xs:element name="FactRoles" type="Roles" minOccurs="0"/>
-			<xs:element name="ReadingOrders" type="ReadingOrders" minOccurs="0"/>
-			<xs:element name="InternalConstraints" type="InternalConstraints" minOccurs="0"/>
+			<xs:element name="FactRoles" type="FactRolesType" minOccurs="0"/>
+			<xs:element name="ReadingOrders" type="ReadingOrdersType" minOccurs="0"/>
+			<xs:element name="InternalConstraints" type="InternalConstraintsType" minOccurs="0"/>
 			<xs:element name="DerivationRule" type="FactTypeDerivationRuleType" minOccurs="0"/>
-			<xs:element name="Instances" type="FactTypeInstances" minOccurs="0"/>
-			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+			<xs:element name="Instances" type="FactTypeInstancesType" minOccurs="0"/>
+			<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
 		</xs:sequence>
-		<xs:attribute name="_Name" type="xs:string"/>
-		<xs:attribute name="id" use="required" type="xs:ID"/>
-		<xs:attribute name="IsExternal" type="xs:boolean" default="false"/>
+		<xs:attribute name="_Name" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>A name generated from the first reading of the first reading order, or the name of the objectifying entity type.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attributeGroup ref="idAttribute"/>
+		<xs:attribute name="IsExternal" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>This fact type is externally defined (not used).</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
-	<xs:complexType name="ImpliedFact">
+	<xs:complexType name="ImpliedFactTypeType">
+		<xs:annotation>
+			<xs:documentation>A fact type representing the implied relationship between an objectifying entity type and the role player of a role in the objectified fact type.</xs:documentation>
+		</xs:annotation>
 		<!-- This is a straight copy from Fact with a change to FactRoles -->
 		<xs:sequence minOccurs="0">
 			<xs:element name="Definitions" type="DefinitionsType" minOccurs="0"/>
 			<xs:element name="Notes" type="NotesType" minOccurs="0"/>
-			<xs:element name="FactRoles" type="ImpliedFactRoles" minOccurs="0"/>
-			<xs:element name="ReadingOrders" type="ReadingOrders" minOccurs="0"/>
-			<xs:element name="InternalConstraints" type="InternalConstraints" minOccurs="0"/>
+			<xs:element name="FactRoles" type="ImpliedFactRolesType" minOccurs="0"/>
+			<xs:element name="ReadingOrders" type="ReadingOrdersType" minOccurs="0"/>
+			<xs:element name="InternalConstraints" type="InternalConstraintsType" minOccurs="0"/>
 			<xs:element name="DerivationRule" type="FactTypeDerivationRuleType" minOccurs="0"/>
-			<xs:element name="ImpliedByObjectification" type="ObjectificationRef"/>
-			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+			<xs:element name="ImpliedByObjectification" type="ObjectificationRef">
+				<xs:annotation>
+					<xs:documentation>A reference to the objectification relationship that implies this fact type.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
 		</xs:sequence>
-		<xs:attribute name="_Name" type="xs:string"/>
-		<xs:attribute name="id" use="required" type="xs:ID"/>
-		<xs:attribute name="IsExternal" type="xs:boolean" default="false"/>
+		<xs:attribute name="_Name" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>A name generated from the first reading of the first reading order.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attributeGroup ref="idAttribute"/>
+		<xs:attribute name="IsExternal" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>This fact type is externally defined (not used).</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
-	<xs:complexType name="SubtypeFact">
-		<!-- This is a straight copy from Fact with a change to FactRoles -->
+	<xs:complexType name="SubtypeFactTypeType">
+		<xs:annotation>
+			<xs:documentation>A fact type representing the subtype meta relationship between a subtype and a supertype.</xs:documentation>
+		</xs:annotation>
+		<!-- This is a straight copy from FactTypeType with a change to FactRoles -->
 		<xs:sequence minOccurs="0">
 			<xs:element name="Definitions" type="DefinitionsType" minOccurs="0"/>
 			<xs:element name="Notes" type="NotesType" minOccurs="0"/>
-			<xs:element name="FactRoles" type="SubtypeRoles"/>
-			<xs:element name="ReadingOrders" type="ReadingOrders" minOccurs="0"/>
-			<xs:element name="InternalConstraints" type="InternalConstraints" minOccurs="0"/>
-			<!-- UNDONE: Remove SubtypeFact.DerivationRule when file format is officially updated -->
-			<xs:element name="DerivationRule" type="FactTypeDerivationRuleType" minOccurs="0"/>
-			<xs:element name="Instances" type="FactTypeInstances" minOccurs="0"/>
-			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+			<xs:element name="FactRoles" type="SubtypeRolesType"/>
+			<xs:element name="ReadingOrders" type="ReadingOrdersType" minOccurs="0"/>
+			<xs:element name="InternalConstraints" type="InternalConstraintsType" minOccurs="0"/>
+			<!-- UNDONE: Remove SubtypeFactTypeType.DerivationRule when file format is officially updated -->
+			<xs:element name="DerivationRule" type="FactTypeDerivationRuleType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>(deprecated) Subtype derivation rules are expressed directly on the subtype, not the subtype fact relationship.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Instances" type="FactTypeInstancesType" minOccurs="0"/>
+			<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
 		</xs:sequence>
-		<xs:attribute name="_Name" type="xs:string"/>
-		<xs:attribute name="id" use="required" type="xs:ID"/>
-		<xs:attribute name="IsExternal" type="xs:boolean" default="false"/>
+		<xs:attribute name="_Name" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>A name generated from the implied reading for subtype fact, name 'AIsASubtypeOfB'.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attributeGroup ref="idAttribute"/>
+		<xs:attribute name="IsExternal" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>This fact type is externally defined (not used).</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 		<xs:attribute name="IsPrimary" type="xs:boolean" default="false">
 			<xs:annotation>
 				<!-- UNDONE: Remove IsPrimary when file format is officially updated -->
 				<xs:documentation>Deprecated property, use PreferredIdentificationPath instead.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="PreferredIdentificationPath" type="xs:boolean" default="false"/>
+		<xs:attribute name="PreferredIdentificationPath" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>The subtype fact is a possible path through the subtype graph for retrieving the identifying supertype for the subtype. The identifying supertype can be a direct or indirect supertype.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	<!--Derived FactType-->
 	<xs:complexType name="FactTypeDerivationRuleType">
+		<xs:annotation>
+			<xs:documentation>The formal derivation rule defining a fact type.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence minOccurs="0">
 			<xs:element name="DerivationExpression" type="FactTypeDerivationExpressionType"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="DerivationExpressionType">
+		<xs:annotation>
+			<xs:documentation>A derivation expression.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="Body" type="xs:string"/>
+			<xs:element name="Body" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>A textual derivation expression. This will be replaced in the future with a formal definition involving role paths and other relationships.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
 		</xs:sequence>
-		<xs:attribute name="id" type="xs:ID" use="required"/>
+		<xs:attributeGroup ref="idAttribute"/>
 	</xs:complexType>
 	<xs:complexType name="FactTypeDerivationExpressionType">
 		<xs:complexContent>
 			<xs:extension base="DerivationExpressionType">
-				<xs:attribute name="DerivationStorage" type="DerivationStorageType" use="required"/>
+				<xs:attribute name="DerivationStorage" type="DerivationStorageValues" use="required"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:simpleType name="DerivationStorageType">
+	<xs:simpleType name="DerivationStorageValues">
+		<xs:annotation>
+			<xs:documentation>Specify how instances of derived fact type are stored.</xs:documentation>
+		</xs:annotation>
 		<xs:restriction base="xs:string">
-			<xs:enumeration value="Derived"/>
-			<xs:enumeration value="DerivedAndStored"/>
-			<xs:enumeration value="PartiallyDerived"/>
+			<xs:enumeration value="Derived">
+				<xs:annotation>
+					<xs:documentation>The fact instance population is calculated on demand.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DerivedAndStored">
+				<xs:annotation>
+					<xs:documentation>The fact instance population is calculated immediated and stored.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PartiallyDerived">
+				<xs:annotation>
+					<xs:documentation>The fact instance population can be asserted as well as derived.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	<!--End Derived FactType-->
 	<!-- End Facts -->
 	<!--Constraints-->
-	<!--ConstraintRef and  ConstraintRefs define references to constrains and collections of constraints-->
-	<xs:complexType name="ConstraintRefs">
-		<xs:sequence minOccurs="0" maxOccurs="unbounded">
-			<xs:element name="Constraint" type="ConstraintRef"/>
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="ConstraintRef">
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
-	</xs:complexType>
 	<xs:complexType name="EqualityConstraintRef">
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+		<xs:annotation>
+			<xs:documentation>A reference to an equality constraint.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
 	<xs:complexType name="ExclusionConstraintRef">
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+		<xs:annotation>
+			<xs:documentation>A reference to an exclusion constraint.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
 	<xs:complexType name="MandatoryConstraintRef">
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+		<xs:annotation>
+			<xs:documentation>A reference to a mandatory constraint.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
 	<xs:complexType name="FrequencyConstraintRef">
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+		<xs:annotation>
+			<xs:documentation>A reference to a frequency constraint.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
 	<xs:complexType name="RingConstraintRef">
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+		<xs:annotation>
+			<xs:documentation>A reference to a ring constraint.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
-	<!--end ConstraintRef and  ConstraintRefs-->
-	<xs:complexType name="Constraints">
+	<xs:complexType name="ConstraintsType">
+		<xs:annotation>
+			<xs:documentation>Container for SetConstraints and SetComparisonConstraints.</xs:documentation>
+		</xs:annotation>
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
-			<xs:element name="EqualityConstraint" type="EqualityConstraint"/>
-			<xs:element name="ExclusionConstraint" type="ExclusionConstraint"/>
-			<xs:element name="SubsetConstraint" type="SubsetConstraint"/>
-			<xs:element name="FrequencyConstraint" type="FrequencyConstraint"/>
-			<xs:element name="MandatoryConstraint" type="MandatoryConstraint"/>
-			<xs:element name="UniquenessConstraint" type="UniquenessConstraint"/>
-			<xs:element name="RingConstraint" type="RingConstraint"/>
+			<xs:element name="EqualityConstraint" type="EqualityConstraintType"/>
+			<xs:element name="ExclusionConstraint" type="ExclusionConstraintType"/>
+			<xs:element name="SubsetConstraint" type="SubsetConstraintType"/>
+			<xs:element name="FrequencyConstraint" type="FrequencyConstraintType"/>
+			<xs:element name="MandatoryConstraint" type="MandatoryConstraintType"/>
+			<xs:element name="UniquenessConstraint" type="UniquenessConstraintType"/>
+			<xs:element name="RingConstraint" type="RingConstraintType"/>
 		</xs:choice>
 	</xs:complexType>
-	<xs:complexType name="Constraint">
+	<xs:complexType name="ConstraintType" abstract="true">
 		<xs:sequence>
-			<xs:element name="ConstraintNote" type="Data" minOccurs="0"/>
+			<xs:element name="Definitions" type="DefinitionsType" minOccurs="0"/>
+			<xs:element name="Notes" type="NotesType" minOccurs="0"/>
 		</xs:sequence>
-		<xs:attribute name="id" type="xs:ID"/>
-		<xs:attribute name="Name" type="xs:string" use="required"/>
-		<xs:attribute name="Modality" type="ConstraintModality" default="Alethic"/>
+		<xs:attributeGroup ref="idAttribute"/>
+		<xs:attribute name="Name" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>The constraint name. Validation errors will be present for any constraint name that is not unique within the model.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Modality" type="ConstraintModalityValues" default="Alethic"/>
 	</xs:complexType>
 	<!-- SetComparison constraints-->
-	<xs:complexType name="SetComparisonConstraint" abstract="true">
+	<xs:complexType name="SetComparisonConstraintType" abstract="true">
 		<xs:complexContent>
-			<xs:extension base="Constraint">
+			<xs:extension base="ConstraintType">
 				<xs:sequence>
-					<xs:element name="RoleSequences" type="RoleSequences" minOccurs="0"/>
+					<xs:element name="RoleSequences" type="ConstraintRoleSequencesType" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="EqualityConstraint">
+	<xs:complexType name="EqualityConstraintType">
+		<xs:annotation>
+			<xs:documentation>A constraint specifying that two set populations must be equal.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
-			<xs:extension base="SetComparisonConstraint">
+			<xs:extension base="SetComparisonConstraintType">
 				<xs:sequence>
-					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+					<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="ExclusionConstraint">
+	<xs:complexType name="ExclusionConstraintType">
+		<xs:annotation>
+			<xs:documentation>A constraint specifying that two set populations must not be equal.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
-			<xs:extension base="SetComparisonConstraint">
+			<xs:extension base="SetComparisonConstraintType">
 				<xs:sequence>
 					<xs:element name="ExclusiveOrMandatoryConstraint" type="MandatoryConstraintRef" minOccurs="0"/>
-					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+					<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="SubsetConstraint">
+	<xs:complexType name="SubsetConstraintType">
+		<xs:annotation>
+			<xs:documentation>A constraint specifying that the population of one set must be included in the population of another set.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
-			<xs:extension base="SetComparisonConstraint">
+			<xs:extension base="SetComparisonConstraintType">
 				<xs:sequence>
-					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+					<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="SetComparisonConstraintRef">
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+		<xs:annotation>
+			<xs:documentation>A reference to a subset, equality, or exclusion constraint.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
 	<xs:complexType name="SetConstraintRef">
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
-	</xs:complexType>
-	<xs:complexType name="InternalConstraintRef">
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+		<xs:annotation>
+			<xs:documentation>A reference to a mandatory, uniqueness, frequency, or ring constraint.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
 	<xs:complexType name="ValueConstraintRef">
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+		<xs:annotation>
+			<xs:documentation>A reference to a role or value type value constraint.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
 	<!-- end SetComparison constraints-->
 	<!--Set constraints-->
-	<xs:complexType name="SetConstraint">
+	<xs:complexType name="SetConstraintType" abstract="true">
 		<xs:complexContent>
-			<xs:extension base="Constraint">
+			<xs:extension base="ConstraintType">
 				<xs:sequence>
-					<xs:element name="RoleSequence" type="RoleSequence" minOccurs="0"/>
+					<xs:element name="RoleSequence" type="ConstraintRoleSequenceType" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="FrequencyConstraint">
+	<xs:complexType name="FrequencyConstraintType">
+		<xs:annotation>
+			<xs:documentation>A constraint specifying the number of times an instance must occur in a set population. Applies only if the instance appears at all.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
-			<xs:extension base="SetConstraint">
+			<xs:extension base="SetConstraintType">
 				<xs:sequence>
-					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+					<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
 				</xs:sequence>
-				<xs:attribute name="MinFrequency" type="xs:int"/>
-				<xs:attribute name="MaxFrequency" type="xs:int"/>
+				<xs:attribute name="MinFrequency" type="xs:int">
+					<xs:annotation>
+						<xs:documentation>The minimum number of times an instance must be played by the constrained role(s).</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="MaxFrequency" type="xs:int">
+					<xs:annotation>
+						<xs:documentation>The maximum number of times an instance must be played by the constrained role(s).</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
 			</xs:extension >
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="MandatoryConstraint">
+	<xs:complexType name="MandatoryConstraintType">
+		<xs:annotation>
+			<xs:documentation>A constraint specifying that a set must be populated.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
-			<xs:extension base="SetConstraint">
+			<xs:extension base="SetConstraintType">
 				<xs:sequence>
 					<xs:element name="ExclusiveOrExclusionConstraint" type="ExclusionConstraintRef" minOccurs="0"/>
-					<xs:element name="ImpliedByObjectType" type="ObjectRef" minOccurs="0"/>
-					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+					<xs:element name="ImpliedByObjectType" type="ObjectTypeRef" minOccurs="0"/>
+					<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
 				</xs:sequence>
-				<xs:attribute name="IsSimple" type="xs:boolean" default="false"/>
-				<xs:attribute name="IsImplied" type="xs:boolean" default="false"/>
+				<xs:attribute name="IsSimple" type="xs:boolean" default="false">
+					<xs:annotation>
+						<xs:documentation>True if this is an internal constraint associated with a single role.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="IsImplied" type="xs:boolean" default="false">
+					<xs:annotation>
+						<xs:documentation>True if this constraint is implied by a lack of a mandatory role on any non-existential role on the non-independent role player. An implied mandatory constraint may have a single role or multiple roles, but IsSimple is never true for an implied mandatory constraint.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="UniquenessConstraint">
+	<xs:complexType name="UniquenessConstraintType">
+		<xs:annotation>
+			<xs:documentation>A constraint specifying that the population of a set must be unique.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
-			<xs:extension base="SetConstraint">
+			<xs:extension base="SetConstraintType">
 				<xs:sequence>
-					<xs:element name="PreferredIdentifierFor" type="ObjectRef" minOccurs="0"/>
-					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+					<xs:element name="PreferredIdentifierFor" type="ObjectTypeRef" minOccurs="0"/>
+					<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
 				</xs:sequence>
-				<xs:attribute name="IsInternal" type="xs:boolean" default="false"/>
+				<xs:attribute name="IsInternal" type="xs:boolean" default="false">
+					<xs:annotation>
+						<xs:documentation>If true, this uniqueness constraint is internal to a single fact type.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="RingConstraint">
+	<xs:complexType name="RingConstraintType">
+		<xs:annotation>
+			<xs:documentation>A constraint specifying relationships between elements of the same type in a set population.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
-			<xs:extension base="SetConstraint">
+			<xs:extension base="SetConstraintType">
 				<xs:sequence>
-					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+					<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
 				</xs:sequence>
-				<xs:attribute name="Type" type="RingConstraintType" use="required"/>
+				<xs:attribute name="Type" type="RingConstraintTypeValues" use="required"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:simpleType name="RingConstraintType">
+	<xs:simpleType name="RingConstraintTypeValues">
+		<xs:annotation>
+			<xs:documentation>Restrictions on the intersections of instances associated with roles in a ring constraint.</xs:documentation>
+		</xs:annotation>
 		<xs:restriction base="xs:string">
-			<xs:enumeration value="Undefined"/>
-			<xs:enumeration value="PurelyReflexive"/>
-			<xs:enumeration value="Irreflexive"/>
-			<xs:enumeration value="Acyclic"/>
-			<xs:enumeration value="Intransitive"/>
-			<xs:enumeration value="Symmetric"/>
-			<xs:enumeration value="Asymmetric"/>
-			<xs:enumeration value="Antisymmetric"/>
-			<xs:enumeration value="AcyclicIntransitive"/>
-			<xs:enumeration value="SymmetricIrreflexive"/>
-			<xs:enumeration value="SymmetricIntransitive"/>
-			<xs:enumeration value="AsymmetricIntransitive"/>
+			<xs:enumeration value="Undefined">
+				<xs:annotation>
+					<xs:documentation>The ring type is undefined. Corresponds to a model validation error.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PurelyReflexive">
+				<xs:annotation>
+					<xs:documentation>Each instance plays itself and cannot play another instance.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Irreflexive">
+				<xs:annotation>
+					<xs:documentation>No instance can play itself.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Acyclic">
+				<xs:annotation>
+					<xs:documentation>Cycles are not allowed.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Intransitive">
+				<xs:annotation>
+					<xs:documentation>If instance A plays instance B and instance B plays instance C, then instance A cannot play instance C.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Symmetric">
+				<xs:annotation>
+					<xs:documentation>If instance A plays instance B then intance B plays instance A.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Asymmetric">
+				<xs:annotation>
+					<xs:documentation>If instance A plays instance B then instance B cannot play instance A.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Antisymmetric">
+				<xs:annotation>
+					<xs:documentation>If instance A is not equal to instance B and A plays B, then B cannot play A.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AcyclicIntransitive">
+				<xs:annotation>
+					<xs:documentation>Cycles are not allowed; and if instance A plays instance B and instance B plays instance C, then instance A cannot play instance C.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SymmetricIrreflexive">
+				<xs:annotation>
+					<xs:documentation>If instance A plays instance B then intance B plays instance A. No instance can play itself.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SymmetricIntransitive">
+				<xs:annotation>
+					<xs:documentation>If instance A plays instance B then intance B plays instance A. If instance A plays instance B and instance B plays instance C, then instance A cannot play instance C.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AsymmetricIntransitive">
+				<xs:annotation>
+					<xs:documentation>If instance A plays instance B then instance B cannot play instance A. If instance A plays instance B and instance B plays instance C, then instance A cannot play instance C.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	<!--End Set constraints-->
 	<!--InternalConstraint -->
-	<xs:complexType name="InternalConstraints">
+	<xs:complexType name="InternalConstraintsType">
+		<xs:annotation>
+			<xs:documentation>Container for references to set constraints that are internal to a fact type.</xs:documentation>
+		</xs:annotation>
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="UniquenessConstraint" type="UniquenessConstraintRef"/>
 			<xs:element name="MandatoryConstraint" type="MandatoryConstraintRef"/>
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="UniquenessConstraintRef">
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+		<xs:annotation>
+			<xs:documentation>A reference to a uniqueness constraint.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
 	<!--End InternalConstraint-->
 	<!--End Constraints-->
 	<!--Fact Readings and reading Orders-->
 	<xs:complexType name="ReadingRef">
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+		<xs:annotation>
+			<xs:documentation>A reference to a predicate reading.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
-	<xs:complexType name="ReadingOrders">
+	<xs:complexType name="ReadingOrdersType">
+		<xs:annotation>
+			<xs:documentation>Container for reading orders.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence minOccurs="0" maxOccurs="unbounded">
-			<xs:element name="ReadingOrder" type="ReadingOrder"/>
+			<xs:element name="ReadingOrder" type="ReadingOrderType"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="ReadingOrder">
+	<xs:complexType name="ReadingOrderType">
+		<xs:annotation>
+			<xs:documentation>A sequence of roles from a single fact type representing representing a complete role traversal. Also called a predicate.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="Readings" type="Readings"/>
-			<xs:element name="RoleSequence" type="RoleContainer"/>
+			<xs:element name="Readings" type="ReadingsType"/>
+			<xs:element name="RoleSequence" type="ReadingRoleSequenceType"/>
 		</xs:sequence>
-		<xs:attribute name="id" type="xs:ID"/>
+		<xs:attributeGroup ref="idAttribute"/>
 	</xs:complexType>
-	<xs:complexType name="Readings">
+	<xs:complexType name="ReadingsType">
+		<xs:annotation>
+			<xs:documentation>Container for readings corresponding to a reading order.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence maxOccurs="unbounded">
-			<xs:element name="Reading" type="Reading"/>
+			<xs:element name="Reading" type="ReadingType"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="Reading">
-		<xs:complexContent>
-			<xs:extension base="Data">
-				<xs:attribute name="id" type="xs:ID" use="required"/>
-			</xs:extension>
-		</xs:complexContent>
+	<xs:complexType name="ReadingType">
+		<xs:annotation>
+			<xs:documentation>Predicate text corresponding to a specific role traversal.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Data" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Reading text with numbered replacemented fields in the format {n}, where n is a zero-based index into the corresponding role traversal order. n is also strictly increasing, so the first replacement field corresponds to the first role, etc. Reading text also includes hyphen-binding specifications, where 'WORD- ' (or ' -WORD') binds WORD and all intermediate words to the nearest right (left) placeholder.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attributeGroup ref="idAttribute"/>
 	</xs:complexType>
 	<!--End Fact Readings and reading Orders-->
 	<!-- Should Model errors be part of the core schema or in another namespace?-->
 	<!--ModelErrors-->
-	<xs:complexType name="ModelErrors">
+	<xs:complexType name="ModelErrorsType">
+		<xs:annotation>
+			<xs:documentation>Container for all model validation errors.</xs:documentation>
+		</xs:annotation>
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element ref="ExtensionModelError"/>
-			<xs:element name="ConstraintDuplicateNameError" type="ConstraintDuplicateNameError"/>
-			<xs:element name="ObjectTypeDuplicateNameError" type="ObjectTypeDuplicateNameError"/>
-			<xs:element name="RecognizedPhraseDuplicateNameError" type="RecognizedPhraseDuplicateNameError"/>
+			<xs:element name="ConstraintDuplicateNameError" type="ConstraintDuplicateNameErrorType"/>
+			<xs:element name="ObjectTypeDuplicateNameError" type="ObjectTypeDuplicateNameErrorType"/>
+			<xs:element name="RecognizedPhraseDuplicateNameError" type="RecognizedPhraseDuplicateNameErrorType"/>
 			<xs:element name="GroupDuplicateNameError" type="GroupDuplicateNameErrorType"/>
 			<xs:element name="GroupMembershipContradictionError" type="GroupMembershipContradictionErrorType"/>
-			<xs:element name="ExternalConstraintRoleSequenceArityMismatchError" type="ExternalConstraintRoleSequenceArityMismatchError"/>
-			<xs:element name="FactTypeRequiresInternalUniquenessConstraintError" type="FactTypeRequiresInternalUniquenessConstraintError"/>
-			<xs:element name="FactTypeRequiresReadingError" type="FactTypeRequiresReadingError"/>
-			<xs:element name="TooFewEntityTypeRoleInstancesError" type="TooFewEntityTypeRoleInstancesError"/>
-			<xs:element name="TooFewFactTypeRoleInstancesError" type="TooFewFactTypeRoleInstancesError"/>
-			<xs:element name="TooFewReadingRolesError" type="TooFewReadingRolesError"/>
-			<xs:element name="ReadingRequiresUserModificationError" type="ReadingRequiresUserModificationError"/>
-			<xs:element name="TooFewRoleSequencesError" type="TooFewRoleSequencesError"/>
-			<xs:element name="TooManyReadingRolesError" type="TooManyReadingRolesError"/>
-			<xs:element name="TooManyRoleSequencesError" type="TooManyRoleSequencesError"/>
-			<xs:element name="DataTypeNotSpecifiedError" type="DataTypeNotSpecifiedError"/>
-			<xs:element name="NMinusOneError" type="NMinusOneError"/>
-			<xs:element name="CompatibleRolePlayerTypeError" type="CompatibleRolePlayerTypeError"/>
-			<xs:element name="RolePlayerRequiredError" type="RolePlayerRequiredError"/>
+			<xs:element name="ExternalConstraintRoleSequenceArityMismatchError" type="ExternalConstraintRoleSequenceArityMismatchErrorType"/>
+			<xs:element name="FactTypeRequiresInternalUniquenessConstraintError" type="FactTypeRequiresInternalUniquenessConstraintErrorType"/>
+			<xs:element name="FactTypeRequiresReadingError" type="FactTypeRequiresReadingErrorType"/>
+			<xs:element name="TooFewEntityTypeRoleInstancesError" type="TooFewEntityTypeRoleInstancesErrorType"/>
+			<xs:element name="TooFewFactTypeRoleInstancesError" type="TooFewFactTypeRoleInstancesErrorType"/>
+			<xs:element name="TooFewReadingRolesError" type="TooFewReadingRolesErrorType"/>
+			<xs:element name="ReadingRequiresUserModificationError" type="ReadingRequiresUserModificationErrorType"/>
+			<xs:element name="TooFewRoleSequencesError" type="TooFewRoleSequencesErrorType"/>
+			<xs:element name="TooManyReadingRolesError" type="TooManyReadingRolesErrorType"/>
+			<xs:element name="TooManyRoleSequencesError" type="TooManyRoleSequencesErrorType"/>
+			<xs:element name="DataTypeNotSpecifiedError" type="DataTypeNotSpecifiedErrorType"/>
+			<xs:element name="NMinusOneError" type="NMinusOneErrorType"/>
+			<xs:element name="CompatibleRolePlayerTypeError" type="CompatibleRolePlayerTypeErrorType"/>
+			<xs:element name="RolePlayerRequiredError" type="RolePlayerRequiredErrorType"/>
 			<!-- UNDONE: Remove EqualityImpliedByMandatoryError when file format is officially updated -->
-			<xs:element name="EqualityImpliedByMandatoryError" type="EqualityImpliedByMandatoryError"/>
-			<xs:element name="EntityTypeRequiresReferenceSchemeError" type="EntityTypeRequiresReferenceSchemeError"/>
-			<xs:element name="FrequencyConstraintMinMaxError" type="FrequencyConstraintMinMaxError"/>
-			<xs:element name="FrequencyConstraintExactlyOneError" type="FrequencyConstraintExactlyOneError"/>
-			<xs:element name="FrequencyConstraintContradictsInternalUniquenessConstraintError" type="FrequencyConstraintContradictsInternalUniquenessConstraintError"/>
-			<xs:element name="MinValueMismatchError" type="MinValueMismatchError"/>
-			<xs:element name="MaxValueMismatchError" type="MaxValueMismatchError"/>
-			<xs:element name="ValueRangeOverlapError" type="ValueRangeOverlapError"/>
-			<xs:element name="ValueTypeDetachedError" type="ValueTypeDetachedError"/>
-			<xs:element name="RingConstraintTypeNotSpecifiedError" type="RingConstraintTypeNotSpecifiedError"/>
-			<xs:element name="ImplicationError" type="ImplicationError"/>
-			<xs:element name="SubsetConstraintImpliedByMandatoryConstraintsError" type="SubsetConstraintImpliedByMandatoryConstraintsError"/>
-			<xs:element name="EqualityConstraintImpliedByMandatoryConstraintsError" type="EqualityConstraintImpliedByMandatoryConstraintsError"/>
-			<xs:element name="ContradictionError" type="ContradictionError"/>
-			<xs:element name="ExclusionContradictsMandatoryError" type="ExclusionContradictsMandatoryError"/>
-			<xs:element name="NotWellModeledSubsetAndMandatoryError" type="NotWellModeledSubsetAndMandatoryError"/>
-			<xs:element name="ImpliedInternalUniquenessConstraintError" type="ImpliedInternalUniquenessConstraintError"/>
+			<xs:element name="EqualityImpliedByMandatoryError" type="EqualityImpliedByMandatoryErrorType"/>
+			<xs:element name="EntityTypeRequiresReferenceSchemeError" type="EntityTypeRequiresReferenceSchemeErrorType"/>
+			<xs:element name="FrequencyConstraintMinMaxError" type="FrequencyConstraintMinMaxErrorType"/>
+			<xs:element name="FrequencyConstraintExactlyOneError" type="FrequencyConstraintExactlyOneErrorType"/>
+			<xs:element name="FrequencyConstraintContradictsInternalUniquenessConstraintError" type="FrequencyConstraintContradictsInternalUniquenessConstraintErrorType"/>
+			<xs:element name="MinValueMismatchError" type="MinValueMismatchErrorType"/>
+			<xs:element name="MaxValueMismatchError" type="MaxValueMismatchErrorType"/>
+			<xs:element name="ValueRangeOverlapError" type="ValueRangeOverlapErrorType"/>
+			<xs:element name="ValueTypeDetachedError" type="ValueTypeDetachedErrorType"/>
+			<xs:element name="RingConstraintTypeNotSpecifiedError" type="RingConstraintTypeNotSpecifiedErrorType"/>
+			<xs:element name="ImplicationError" type="ImplicationErrorType"/>
+			<xs:element name="SubsetConstraintImpliedByMandatoryConstraintsError" type="SubsetConstraintImpliedByMandatoryConstraintsErrorType"/>
+			<xs:element name="EqualityConstraintImpliedByMandatoryConstraintsError" type="EqualityConstraintImpliedByMandatoryConstraintsErrorType"/>
+			<xs:element name="ExclusionContradictsMandatoryError" type="ExclusionContradictsMandatoryErrorType"/>
+			<xs:element name="NotWellModeledSubsetAndMandatoryError" type="NotWellModeledSubsetAndMandatoryErrorType"/>
+			<xs:element name="ImpliedInternalUniquenessConstraintError" type="ImpliedInternalUniquenessConstraintErrorType"/>
 			<!-- UNDONE: Remove ObjectTypeRequiresPrimarySupertypeError when file format is officially updated -->
-			<xs:element name="ObjectTypeRequiresPrimarySupertypeError" type="ObjectTypeRequiresPrimarySupertypeError"/>
-			<xs:element name="PreferredIdentifierRequiresMandatoryError" type="PreferredIdentifierRequiresMandatoryError"/>
-			<xs:element name="CompatibleSupertypesError" type="CompatibleSupertypesError"/>
-			<xs:element name="ObjectifyingInstanceRequiredError" type="ObjectifyingInstanceRequiredError"/>
-			<xs:element name="ObjectifiedInstanceRequiredError" type="ObjectifiedInstanceRequiredError"/>
-			<xs:element name="CompatibleValueTypeInstanceValueError" type="CompatibleValueTypeInstanceValueError"/>
-			<xs:element name="PopulationMandatoryError" type="PopulationMandatoryError"/>
-			<xs:element name="PopulationUniquenessError" type="PopulationUniquenessError"/>
-			<xs:element name="ExclusionContradictsEqualityError" type="ExclusionContradictsEqualityError"/>
-			<xs:element name="ExclusionContradictsSubsetError" type="ExclusionContradictsSubsetError"/>
+			<xs:element name="ObjectTypeRequiresPrimarySupertypeError" type="ObjectTypeRequiresPrimarySupertypeErrorType"/>
+			<xs:element name="PreferredIdentifierRequiresMandatoryError" type="PreferredIdentifierRequiresMandatoryErrorType"/>
+			<xs:element name="CompatibleSupertypesError" type="CompatibleSupertypesErrorType"/>
+			<xs:element name="ObjectifyingInstanceRequiredError" type="ObjectifyingInstanceRequiredErrorType"/>
+			<xs:element name="ObjectifiedInstanceRequiredError" type="ObjectifiedInstanceRequiredErrorType"/>
+			<xs:element name="CompatibleValueTypeInstanceValueError" type="CompatibleValueTypeInstanceValueErrorType"/>
+			<xs:element name="PopulationMandatoryError" type="PopulationMandatoryErrorType"/>
+			<xs:element name="PopulationUniquenessError" type="PopulationUniquenessErrorType"/>
+			<xs:element name="ExclusionContradictsEqualityError" type="ExclusionContradictsEqualityErrorType"/>
+			<xs:element name="ExclusionContradictsSubsetError" type="ExclusionContradictsSubsetErrorType"/>
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="ModelError" abstract="true">
-		<xs:attribute name="id" type="xs:ID" use="required"/>
-		<xs:attribute name="Name" type="xs:string" use="required"/>
+		<xs:attributeGroup ref="idAttribute"/>
+		<xs:attribute name="Name" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>Description of the model validation error.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
-	<xs:element name="ExtensionModelError" type="ModelError" abstract="true"/>
-	<xs:complexType name="ConstraintDuplicateNameError">
+	<xs:element name="ExtensionModelError" type="ModelError" abstract="true">
+		<xs:annotation>
+			<xs:documentation>Extension point for model validation errors in extension models.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="ConstraintDuplicateNameErrorType">
+		<xs:annotation>
+			<xs:documentation>Multiple constraints share the same name.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
 					<xs:element name="Constraints">
+						<xs:annotation>
+							<xs:documentation>Like-named constraints.</xs:documentation>
+						</xs:annotation>
 						<xs:complexType>
 							<xs:choice minOccurs="2" maxOccurs="unbounded">
 								<xs:element name="SetComparisonConstraint" type="SetComparisonConstraintRef"/>
 								<xs:element name="SetConstraint" type="SetConstraintRef"/>
-								<xs:element name="InternalConstraint" type="InternalConstraintRef"/>
 								<xs:element name="ValueConstraint" type="ValueConstraintRef"/>
 							</xs:choice>
 						</xs:complexType>
@@ -1030,14 +1666,20 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="ObjectTypeDuplicateNameError">
+	<xs:complexType name="ObjectTypeDuplicateNameErrorType">
+		<xs:annotation>
+			<xs:documentation>Multiple object types share the same name.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
 					<xs:element name="Objects">
+						<xs:annotation>
+							<xs:documentation>Like-named object types.</xs:documentation>
+						</xs:annotation>
 						<xs:complexType>
 							<xs:sequence minOccurs="2" maxOccurs="unbounded">
-								<xs:element name="Object" type="ObjectRef"/>
+								<xs:element name="Object" type="ObjectTypeRef"/>
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
@@ -1045,11 +1687,17 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="RecognizedPhraseDuplicateNameError">
+	<xs:complexType name="RecognizedPhraseDuplicateNameErrorType">
+		<xs:annotation>
+			<xs:documentation>Multiple recognized phrases have the same text.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
 					<xs:element name="RecognizedPhrases">
+						<xs:annotation>
+							<xs:documentation>Like-named phrases.</xs:documentation>
+						</xs:annotation>
 						<xs:complexType>
 							<xs:sequence minOccurs="2" maxOccurs="unbounded">
 								<xs:element name="RecognizedPhrase" type="RecognizedPhraseRef"/>
@@ -1060,43 +1708,58 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="EntityTypeRequiresReferenceSchemeError">
+	<xs:complexType name="EntityTypeRequiresReferenceSchemeErrorType">
+		<xs:annotation>
+			<xs:documentation>An entity type requires a reference scheme or a supertype that provides a preferred identification path.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
-					<xs:element name="EntityType" type="ObjectRef"/>
+					<xs:element name="EntityType" type="ObjectTypeRef"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="ExternalConstraintRoleSequenceArityMismatchError">
+	<xs:complexType name="ExternalConstraintRoleSequenceArityMismatchErrorType">
+		<xs:annotation>
+			<xs:documentation>A SetComparisonConstraint has an inconsistent number of columns.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
-					<xs:element name="Constraint" type="ConstraintRef"/>
+					<xs:element name="Constraint" type="SetComparisonConstraintRef"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="FactTypeRequiresInternalUniquenessConstraintError">
+	<xs:complexType name="FactTypeRequiresInternalUniquenessConstraintErrorType">
+		<xs:annotation>
+			<xs:documentation>A ground fact type does not have at least on internal uniqueness constraint.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
-					<xs:element name="Fact" type="FactRef"/>
+					<xs:element name="Fact" type="FactTypeRef"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="FactTypeRequiresReadingError">
+	<xs:complexType name="FactTypeRequiresReadingErrorType">
+		<xs:annotation>
+			<xs:documentation>A predicate reading has not been specified for a fact type.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
-					<xs:element name="Fact" type="FactRef"/>
+					<xs:element name="Fact" type="FactTypeRef"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="TooFewReadingRolesError">
+	<xs:complexType name="TooFewReadingRolesErrorType">
+		<xs:annotation>
+			<xs:documentation>Reading text has more placeholders than the fact type has roles.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
@@ -1105,7 +1768,10 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="ReadingRequiresUserModificationError">
+	<xs:complexType name="ReadingRequiresUserModificationErrorType">
+		<xs:annotation>
+			<xs:documentation>A reading has been automatically modified and must be edited by the user to restore its meaning.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
@@ -1116,7 +1782,10 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="TooFewRoleSequencesError">
+	<xs:complexType name="TooFewRoleSequencesErrorType">
+		<xs:annotation>
+			<xs:documentation>An external constraint requires multiple roles (SetConstraint) or multiple role sequences (SetComparisonConstraint).</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
@@ -1128,7 +1797,10 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="TooFewEntityTypeRoleInstancesError">
+	<xs:complexType name="TooFewEntityTypeRoleInstancesErrorType">
+		<xs:annotation>
+			<xs:documentation>An entity instance is missing instance associations for some of the roles in its preferred identifier.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
@@ -1137,7 +1809,10 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="TooFewFactTypeRoleInstancesError">
+	<xs:complexType name="TooFewFactTypeRoleInstancesErrorType">
+		<xs:annotation>
+			<xs:documentation>A fact instance is missing instance associations for some roles in the fact type.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
@@ -1146,7 +1821,10 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="TooManyReadingRolesError">
+	<xs:complexType name="TooManyReadingRolesErrorType">
+		<xs:annotation>
+			<xs:documentation>Reading text does not have enough placeholders for all roles.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
@@ -1155,7 +1833,10 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="DataTypeNotSpecifiedError">
+	<xs:complexType name="DataTypeNotSpecifiedErrorType">
+		<xs:annotation>
+			<xs:documentation>A value type is using the unspecified data type.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
@@ -1164,7 +1845,10 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="FrequencyConstraintMinMaxError">
+	<xs:complexType name="FrequencyConstraintMinMaxErrorType">
+		<xs:annotation>
+			<xs:documentation>A frequency constraints maximum values is less that its minimum value.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
@@ -1173,7 +1857,10 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="FrequencyConstraintExactlyOneError">
+	<xs:complexType name="FrequencyConstraintExactlyOneErrorType">
+		<xs:annotation>
+			<xs:documentation>A frequency constraint with a minimum and maximum range of 1 should be represented by a uniqueness constraint.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
@@ -1182,17 +1869,23 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="FrequencyConstraintContradictsInternalUniquenessConstraintError">
+	<xs:complexType name="FrequencyConstraintContradictsInternalUniquenessConstraintErrorType">
+		<xs:annotation>
+			<xs:documentation>A frequency constraint requires more role players than are allowed by an internal uniqueness constraint.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:all>
 					<xs:element name="FrequencyConstraint" type="FrequencyConstraintRef"/>
-					<xs:element name="Fact" type="FactRef"/>
+					<xs:element name="Fact" type="FactTypeRef"/>
 				</xs:all>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="MaxValueMismatchError">
+	<xs:complexType name="MaxValueMismatchErrorType">
+		<xs:annotation>
+			<xs:documentation>The maximum value of a value range cannot be interpreted as the specified data type.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
@@ -1201,7 +1894,10 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="MinValueMismatchError">
+	<xs:complexType name="MinValueMismatchErrorType">
+		<xs:annotation>
+			<xs:documentation>The minimum value of a value range cannot be interpreted as the specified data type.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
@@ -1210,7 +1906,10 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="ValueRangeOverlapError">
+	<xs:complexType name="ValueRangeOverlapErrorType">
+		<xs:annotation>
+			<xs:documentation>Two value ranges for the same value constraint have overlapping ranges.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
@@ -1219,7 +1918,10 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="ValueTypeDetachedError">
+	<xs:complexType name="ValueTypeDetachedErrorType">
+		<xs:annotation>
+			<xs:documentation>A role value constraint is specified for a role that is no longer associated with a value type.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
@@ -1228,47 +1930,59 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="ImpliedInternalUniquenessConstraintError">
+	<xs:complexType name="ImpliedInternalUniquenessConstraintErrorType">
+		<xs:annotation>
+			<xs:documentation>One or more internal uniqueness constraints in a fact type are implied by other internal uniqueness constraints on the same fact type.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
-					<xs:element name="Fact" type="FactRef"/>
+					<xs:element name="Fact" type="FactTypeRef"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<!-- UNDONE: Remove ObjectTypeRequiresPrimarySupertypeError when file format is officially updated -->
-	<xs:complexType name="ObjectTypeRequiresPrimarySupertypeError">
+	<xs:complexType name="ObjectTypeRequiresPrimarySupertypeErrorType">
 		<xs:annotation>
 			<xs:documentation>Deprecated along with SubtypeFact.IsPrimary property</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
-					<xs:element name="ObjectType" type="ObjectRef"/>
+					<xs:element name="ObjectType" type="ObjectTypeRef"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="PreferredIdentifierRequiresMandatoryError">
+	<xs:complexType name="PreferredIdentifierRequiresMandatoryErrorType">
+		<xs:annotation>
+			<xs:documentation>The roles opposite a preferred identifier must have at least one mandatory constraint that covers a subset of the opposite roles.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
-					<xs:element name="ObjectType" type="ObjectRef"/>
+					<xs:element name="ObjectType" type="ObjectTypeRef"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="CompatibleSupertypesError">
+	<xs:complexType name="CompatibleSupertypesErrorType">
+		<xs:annotation>
+			<xs:documentation>Multiple supertypes are specified that do not share a common ancestor, or a supertype is specified that is implied by other supertypes.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
-					<xs:element name="ObjectType" type="ObjectRef"/>
+					<xs:element name="ObjectType" type="ObjectTypeRef"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="RingConstraintTypeNotSpecifiedError">
+	<xs:complexType name="RingConstraintTypeNotSpecifiedErrorType">
+		<xs:annotation>
+			<xs:documentation>The type of a ring constraint is not specified.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
@@ -1278,7 +1992,10 @@
 		</xs:complexContent>
 	</xs:complexType>
 	
-	<xs:complexType name="ImplicationError">
+	<xs:complexType name="ImplicationErrorType">
+		<xs:annotation>
+			<xs:documentation>A constraint is implied by another constraint in the model.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
@@ -1291,11 +2008,17 @@
 		</xs:complexContent>
 	</xs:complexType>
 
-	<xs:complexType name="ExclusionContradictsMandatoryError">
+	<xs:complexType name="ExclusionContradictsMandatoryErrorType">
+		<xs:annotation>
+			<xs:documentation>Exclusion and mandatory constraints defined on intersecting roles contradict.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 					<xs:sequence>
 						<xs:element name="Constraints">
+							<xs:annotation>
+								<xs:documentation>The contradictory constraints.</xs:documentation>
+							</xs:annotation>
 							<xs:complexType>
 								<xs:choice minOccurs="2" maxOccurs="unbounded">
 									<xs:element name="MandatoryConstraint" type="MandatoryConstraintRef"/>
@@ -1308,11 +2031,17 @@
 		</xs:complexContent>
 	</xs:complexType>
 
-	<xs:complexType name="NotWellModeledSubsetAndMandatoryError">
+	<xs:complexType name="NotWellModeledSubsetAndMandatoryErrorType">
+		<xs:annotation>
+			<xs:documentation>Subset and mandatory constraints on intersecting roles are incorrectly modeled.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
 					<xs:element name="Constraints">
+						<xs:annotation>
+							<xs:documentation>Conflicting constraints.</xs:documentation>
+						</xs:annotation>
 						<xs:complexType>
 							<xs:all>
 								<xs:element name="MandatoryConstraint" type="MandatoryConstraintRef"/>
@@ -1325,7 +2054,10 @@
 		</xs:complexContent>
 	</xs:complexType>
 
-	<xs:complexType name="SubsetConstraintImpliedByMandatoryConstraintsError">
+	<xs:complexType name="SubsetConstraintImpliedByMandatoryConstraintsErrorType">
+		<xs:annotation>
+			<xs:documentation>A subset constraint is implied by one or more mandatory constraints.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 				<xs:extension base="ModelError">
 				<xs:sequence>
@@ -1335,7 +2067,10 @@
 		</xs:complexContent>
 	</xs:complexType>
 	
-	<xs:complexType name="EqualityConstraintImpliedByMandatoryConstraintsError">
+	<xs:complexType name="EqualityConstraintImpliedByMandatoryConstraintsErrorType">
+		<xs:annotation>
+			<xs:documentation>An equality constraint is implied by one or more mandatory constraints.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
@@ -1344,29 +2079,18 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	
 
-	<xs:complexType name="ContradictionError">
+	<xs:complexType name="ExclusionContradictsSubsetErrorType">
+		<xs:annotation>
+			<xs:documentation>Exclusion and subset constraints defined on intersecting roles contradict.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
 					<xs:element name="Constraints">
-						<xs:complexType>
-							<xs:sequence>
-								<xs:element name="SetComparisonConstraint" type="SetComparisonConstraintRef"/>
-							</xs:sequence>
-						</xs:complexType>
-					</xs:element>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
-	</xs:complexType>
-
-	<xs:complexType name="ExclusionContradictsSubsetError">
-		<xs:complexContent>
-			<xs:extension base="ModelError">
-				<xs:sequence>
-					<xs:element name="Constraints">
+						<xs:annotation>
+							<xs:documentation>The contradictory constraints.</xs:documentation>
+						</xs:annotation>
 						<xs:complexType>
 							<xs:choice maxOccurs="unbounded">
 								<xs:element name="ExclusionConstraintThatContradictsWithSubset" type="SetComparisonConstraintRef" minOccurs="1"/>
@@ -1379,11 +2103,17 @@
 		</xs:complexContent>
 	</xs:complexType>
 
-	<xs:complexType name="ExclusionContradictsEqualityError">
+	<xs:complexType name="ExclusionContradictsEqualityErrorType">
+		<xs:annotation>
+			<xs:documentation>Exclusion and equality constraints defined on intersecting roles contradict.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
 					<xs:element name="Constraints">
+						<xs:annotation>
+							<xs:documentation>The contradictory constraints.</xs:documentation>
+						</xs:annotation>
 						<xs:complexType>
 							<xs:choice maxOccurs="unbounded">
 								<xs:element name="ExclusionConstraintThatContradictsWithEquality" type="SetComparisonConstraintRef" minOccurs="1"/>
@@ -1396,7 +2126,10 @@
 		</xs:complexContent>
 	</xs:complexType>
 	
-	<xs:complexType name="TooManyRoleSequencesError">
+	<xs:complexType name="TooManyRoleSequencesErrorType">
+		<xs:annotation>
+			<xs:documentation>A SetConstraint has too many roles for the constraint type, or a SetComparisonConstraint has too many role sequences.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
@@ -1408,18 +2141,28 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="CompatibleRolePlayerTypeError">
+	<xs:complexType name="CompatibleRolePlayerTypeErrorType">
+		<xs:annotation>
+			<xs:documentation>The roles in a SetConstraint or a column of a SetComparisonConstraint have incompatible role players.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:choice>
 					<xs:element name="SetComparisonConstraint" type="SetComparisonConstraintRef"/>
 					<xs:element name="SetConstraint" type="SetConstraintRef"/>
 				</xs:choice>
-				<xs:attribute name="Column" type="xs:int" use="optional"/>
+				<xs:attribute name="Column" type="xs:int" use="optional">
+					<xs:annotation>
+						<xs:documentation>The zero-based column with incompatible types (specified with a SetComparisonConstraint).</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
 			</xs:extension >
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="RolePlayerRequiredError">
+	<xs:complexType name="RolePlayerRequiredErrorType">
+		<xs:annotation>
+			<xs:documentation>A role must have a specified role player.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:choice>
@@ -1429,7 +2172,10 @@
 		</xs:complexContent>
 	</xs:complexType>
 	<!-- UNDONE: Remove EqualityImpliedByMandatoryError when file format is officially updated -->
-	<xs:complexType name="EqualityImpliedByMandatoryError">
+	<xs:complexType name="EqualityImpliedByMandatoryErrorType">
+		<xs:annotation>
+			<xs:documentation>An equality constraint is implied by a mandatory constraint (deprecated, replaced by EqualityConstraintImpliedByMandatoryConstraintsError).</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:choice>
@@ -1438,7 +2184,10 @@
 			</xs:extension >
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="NMinusOneError">
+	<xs:complexType name="NMinusOneErrorType">
+		<xs:annotation>
+			<xs:documentation>An internal uniqueness constraint must span at least n minus one roles, where n is the number of roles in the fact type.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
@@ -1447,7 +2196,10 @@
 			</xs:extension >
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="CompatibleValueTypeInstanceValueError">
+	<xs:complexType name="CompatibleValueTypeInstanceValueErrorType">
+		<xs:annotation>
+			<xs:documentation>The value of an instance is not compatible with the data type of the corresponding value type.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
@@ -1456,7 +2208,10 @@
 			</xs:extension >
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="PopulationMandatoryError">
+	<xs:complexType name="PopulationMandatoryErrorType">
+		<xs:annotation>
+			<xs:documentation>The role player of the roles in a mandatory constraint has an instance that is not used by any of the roles.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:all>
@@ -1466,11 +2221,17 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="PopulationUniquenessError">
+	<xs:complexType name="PopulationUniquenessErrorType">
+		<xs:annotation>
+			<xs:documentation>An instance is used twice by a role with a single-column uniqueness constraint.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
 					<xs:element name="RoleInstances">
+						<xs:annotation>
+							<xs:documentation>Conflicting role instances.</xs:documentation>
+						</xs:annotation>
 						<xs:complexType>
 							<xs:choice minOccurs="2" maxOccurs="unbounded">
 								<xs:element name="FactTypeRoleInstance" type="ObjectTypeRoleInstanceRef"/>
@@ -1482,7 +2243,10 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="ObjectifyingInstanceRequiredError">
+	<xs:complexType name="ObjectifyingInstanceRequiredErrorType">
+		<xs:annotation>
+			<xs:documentation>An instance of an objectified fact type does not have an associated instance for the objectifying entity type.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:choice>
@@ -1491,7 +2255,10 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="ObjectifiedInstanceRequiredError">
+	<xs:complexType name="ObjectifiedInstanceRequiredErrorType">
+		<xs:annotation>
+			<xs:documentation>An instance an objectifying entity does not have an associated instance for the objectifed fact type.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:choice>
@@ -1504,98 +2271,193 @@
 	<!--End ModelErrors-->
 	<!--Custom Reference Modes-->
 	<!--Reference Modes and Kinds-->
-	<xs:complexType name="ReferenceModeKinds">
+	<xs:complexType name="ReferenceModeKindsType">
+		<xs:annotation>
+			<xs:documentation>Container for the reference mode kinds.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence>
-			<xs:element maxOccurs="unbounded" name="ReferenceModeKind" type="ReferenceModeKind"/>
+			<xs:element maxOccurs="unbounded" name="ReferenceModeKind" type="ReferenceModeKindType"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="ReferenceModeKindRef">
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+		<xs:annotation>
+			<xs:documentation>A reference to a reference mode kind.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
-	<xs:complexType name="ReferenceModeKind">
-		<xs:attribute name="id" type="xs:ID" use="required"/>
-		<xs:attribute name="FormatString" type="xs:string" use="required"/>
-		<xs:attribute name="ReferenceModeType" type="ReferenceModeTypeType" use="required"/>
+	<xs:complexType name="ReferenceModeKindType">
+		<xs:annotation>
+			<xs:documentation>Setting for a specific kind of reference mode pattern.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="idAttribute"/>
+		<xs:attribute name="FormatString" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>A string with replacement fields representing a custom format for a value type name based on the entity type name (replacement field {0}) and reference mode name (replacement field {1}). Given an entity type name and a value type name, reference mode FormatStrings are used to determine the associated reference mode and reference mode kind.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ReferenceModeType" type="ReferenceModeKindValues" use="required"/>
 	</xs:complexType>
-	<xs:simpleType name="ReferenceModeTypeType">
+	<xs:simpleType name="ReferenceModeKindValues">
+		<xs:annotation>
+			<xs:documentation>Classification of reference mode patterns.</xs:documentation>
+		</xs:annotation>
 		<xs:restriction base="xs:string">
-			<xs:enumeration value="General"/>
-			<xs:enumeration value="Popular"/>
-			<xs:enumeration value="UnitBased"/>
+			<xs:enumeration value="General">
+				<xs:annotation>
+					<xs:documentation>The reference mode patterns resolves to a value type with no special semantics.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Popular">
+				<xs:annotation>
+					<xs:documentation>The reference mode patterns resolves to a value type with a name based on the identified entity type. The value type identifies exactly one entity type.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="UnitBased">
+				<xs:annotation>
+					<xs:documentation>The reference mode patterns resolves to a value type that is associated with a measurable unit.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:complexType name="CustomReferenceModeRef">
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
-	</xs:complexType>
 	<xs:complexType name="ValueRangeRef">
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+		<xs:annotation>
+			<xs:documentation>A reference to a value range.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
 	<!--Reference Mdoes and Kinds-->
-	<xs:complexType name="CustomReferenceModes">
+	<xs:complexType name="CustomReferenceModesType">
+		<xs:annotation>
+			<xs:documentation>Container for custom reference mode pattern definitions.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence minOccurs="0" maxOccurs="unbounded">
-			<xs:element name="CustomReferenceMode" type="CustomReferenceMode"/>
+			<xs:element name="CustomReferenceMode" type="CustomReferenceModeType"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="CustomReferenceMode">
+	<xs:complexType name="CustomReferenceModeType">
+		<xs:annotation>
+			<xs:documentation>Definition of a custom reference mode pattern.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence minOccurs="0">
-			<xs:element name="CustomFormatString" type="xs:string"/>
+			<xs:element name="CustomFormatString" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>A string with replacement fields representing a custom format for a value type name based on the entity type name (replacement field {0}) and reference mode name (replacement field {1}). If not specified, defaults to the ReferenceModeKind FormatString attribute.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
 			<xs:element name="Kind" type="ReferenceModeKindRef"/>
 		</xs:sequence>
-		<xs:attribute name="id" type="xs:ID"/>
-		<xs:attribute name="Name" type="xs:string" default=""/>
+		<xs:attributeGroup ref="idAttribute"/>
+		<xs:attribute name="Name" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>The reference mode name.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	<!--End Custom Reference Modes-->
-	<xs:complexType name="ValueRestriction">
+	<xs:complexType name="ValueTypeValueRestrictionType">
+		<xs:annotation>
+			<xs:documentation>Restrict the values allowed for any instance of the containing value type.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="ValueConstraint">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="ValueRanges" type="ValueRangeCollection"/>
-						<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
-					</xs:sequence>
-					<xs:attribute name="Name" type="xs:string" use="required"/>
-					<xs:attribute name="id" type="xs:ID" use="required"/>
-				</xs:complexType>
-			</xs:element>
+			<xs:element name="ValueConstraint" type="ValueConstraintType"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="RoleValueRestriction">
+	<xs:complexType name="ValueConstraintType">
+		<xs:annotation>
+			<xs:documentation>A constraint limiting the set of allowed values.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="RoleValueConstraint">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="ValueRanges" type="ValueRangeCollection"/>
-						<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
-					</xs:sequence>
-					<xs:attribute name="id" type="xs:ID" use="required"/>
-					<xs:attribute name="Name" type="xs:string" use="required"/>
-				</xs:complexType>
-			</xs:element>
+			<xs:element name="Definitions" type="DefinitionsType" minOccurs="0"/>
+			<xs:element name="Notes" type="NotesType" minOccurs="0"/>
+			<xs:element name="ValueRanges" type="ValueRangesType"/>
+			<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="Name" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>The constraint name. Validation errors will be present for any constraint name that is not unique within the model.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attributeGroup ref="idAttribute"/>
+	</xs:complexType>
+	<xs:complexType name="RoleValueRestrictionType">
+		<xs:annotation>
+			<xs:documentation>Restrict the values allowed for role players associated with this role.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="RoleValueConstraint" type="ValueConstraintType"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="ValueRangeCollection">
+	<xs:complexType name="ValueRangesType">
+		<xs:annotation>
+			<xs:documentation>Container for value ranges. A value instance must be contained in the union of these ranges.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence maxOccurs="unbounded">
-			<xs:element name="ValueRange" type="ValueRange"/>
+			<xs:element name="ValueRange" type="ValueRangeType"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:simpleType name="RangeInclusion">
+	<xs:simpleType name="RangeInclusionValues">
+		<xs:annotation>
+			<xs:documentation>Specify whether the endpoint of a range is included in the range.</xs:documentation>
+		</xs:annotation>
 		<xs:restriction base="xs:string">
-			<xs:enumeration value="NotSet"/>
-			<xs:enumeration value="Open"/>
-			<xs:enumeration value="Closed"/>
+			<xs:enumeration value="NotSet">
+				<xs:annotation>
+					<xs:documentation>Inclusion not explicitly set.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Open">
+				<xs:annotation>
+					<xs:documentation>The endpoint is not included in the range of values.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Closed">
+				<xs:annotation>
+					<xs:documentation>The endpoint is included in the range of values.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:complexType name="ValueRange">
-		<xs:attribute name="id" type="xs:ID" use="required"/>
-		<xs:attribute name="MinValue" type="xs:string" use="required"/>
-		<xs:attribute name="MaxValue" type="xs:string" use="required"/>
-		<xs:attribute name="MinInclusion" type="RangeInclusion" default="NotSet"/>
-		<xs:attribute name="MaxInclusion" type="RangeInclusion" default="NotSet"/>
+	<xs:complexType name="ValueRangeType">
+		<xs:annotation>
+			<xs:documentation>A simple value range.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="idAttribute"/>
+		<xs:attribute name="MinValue" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>The lower bound for the range.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="MaxValue" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>The upper bound of the range. Duplicate of the MinValue for a single value.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="MinInclusion" type="RangeInclusionValues" default="NotSet">
+			<xs:annotation>
+				<xs:documentation>Does the range include the lower bound?</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="MaxInclusion" type="RangeInclusionValues" default="NotSet">
+			<xs:annotation>
+				<xs:documentation>Does the range include the upper bound?</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
-	<xs:simpleType name="ConstraintModality">
+	<xs:simpleType name="ConstraintModalityValues">
+		<xs:annotation>
+			<xs:documentation>The strength of a constraint.</xs:documentation>
+		</xs:annotation>
 		<xs:restriction base="xs:string">
-			<xs:enumeration value="Alethic"/>
-			<xs:enumeration value="Deontic"/>
+			<xs:enumeration value="Alethic">
+				<xs:annotation>
+					<xs:documentation>A strong constraint that is enforced by the structure of a generated system.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Deontic">
+				<xs:annotation>
+					<xs:documentation>A weak constraint that should not be violated. Instances violating a deontic constraint can be structurally stored in a generated system.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:element name="NameGenerator" type="NameGeneratorType"/>
@@ -1604,8 +2466,11 @@
 			<xs:documentation>Name generation settings</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+			<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
 			<xs:element name="Refinements" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Container specifying additional name generator instances that provide settings for a more specific use of the generated names.</xs:documentation>
+				</xs:annotation>
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element ref="NameGenerator" minOccurs="0" maxOccurs="unbounded"/>
@@ -1613,18 +2478,38 @@
 				</xs:complexType>
 			</xs:element>
 		</xs:sequence>
-		<xs:attribute name="id" type="xs:ID"/>
+		<xs:attributeGroup ref="idAttribute"/>
 		<xs:attribute name="CasingOption" default="None">
 			<xs:annotation>
 				<xs:documentation>Specify casing modifications for name parts and combinations.</xs:documentation>
 			</xs:annotation>
 			<xs:simpleType>
 				<xs:restriction base="xs:token">
-					<xs:enumeration value="None"/>
-					<xs:enumeration value="Camel"/>
-					<xs:enumeration value="Pascal"/>
-					<xs:enumeration value="Upper"/>
-					<xs:enumeration value="Lower"/>
+					<xs:enumeration value="None">
+						<xs:annotation>
+							<xs:documentation>No casing options specified.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="Camel">
+						<xs:annotation>
+							<xs:documentation>Generate names using camel casing (first letter of first word lower case, first letter of subsequent words upper case).</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="Pascal">
+						<xs:annotation>
+							<xs:documentation>Generate names using Pascal casing (first letter of all words upper case).</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="Upper">
+						<xs:annotation>
+							<xs:documentation>Generate names using all upper case letters.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="Lower">
+						<xs:annotation>
+							<xs:documentation>Generate names using all lower case letters.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
@@ -1634,15 +2519,27 @@
 			</xs:annotation>
 			<xs:simpleType>
 				<xs:restriction base="xs:token">
-					<xs:enumeration value="Retain"/>
-					<xs:enumeration value="Remove"/>
-					<xs:enumeration value="ReplaceWith"/>
+					<xs:enumeration value="Retain">
+						<xs:annotation>
+							<xs:documentation>Keep any spaces specified in names used in the ORM model.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="Remove">
+						<xs:annotation>
+							<xs:documentation>Generate names using all upper case letters.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="ReplaceWith">
+						<xs:annotation>
+							<xs:documentation>Replace one or more spaces in model names with the character specified in the SpacingReplacement attribute.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
 		<xs:attribute name="SpacingReplacement" default="" type="xs:string">
 			<xs:annotation>
-				<xs:documentation>The string used in place of spaces when @SpacingFormat is ReplaceWith</xs:documentation>
+				<xs:documentation>The string used in place of spaces when the SpacingFormat attribute is ReplaceWith</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 		<xs:attribute name="NameUsage" type="xs:string" use="optional">
@@ -1667,107 +2564,201 @@
 		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="RecognizedPhrasesType">
+		<xs:annotation>
+			<xs:documentation>Container for recognized phrases.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="RecognizedPhrase" minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="RecognizedPhrase" type="RecognizedPhraseType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RecognizedPhraseType">
+		<xs:annotation>
+			<xs:documentation>A phrase with one or more words that can be abbreviated during name generation.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Abbreviations" type="AliasesType" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="Name" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>A recognized word to map to a different text value during name generation. Generally a common word such as 'has' or 'the'. Allows mapping to an empty alias value.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attributeGroup ref="idAttribute"/>
+	</xs:complexType>
+	<xs:complexType name="RecognizedPhraseRef">
+		<xs:annotation>
+			<xs:documentation>A reference to a recognized phrase.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
+	</xs:complexType>
+	<xs:element name="GenerationState" type="GenerationStateType"/>
+	<xs:complexType name="GenerationStateType">
+		<xs:annotation>
+			<xs:documentation>State information relating to automatic mapping algorithms.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="GenerationSettings" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Container for extension-defined data relating to how elements were generated from the ORM model.</xs:documentation>
+				</xs:annotation>
 				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="Abbreviations" type="AliasesType" minOccurs="0"/>
+					<xs:sequence minOccurs="0" maxOccurs="unbounded">
+						<xs:element ref="GenerationSetting"/>
 					</xs:sequence>
-					<xs:attribute name="Name" type="xs:string" use="required">
-						<xs:annotation>
-							<xs:documentation>A recognized word to map to a different text value during name generation. Generally a common word such as 'has' or 'the'. Allows mapping to an empty alias value.</xs:documentation>
-						</xs:annotation>
-					</xs:attribute>
-					<xs:attribute name="id" type="xs:ID"/>
 				</xs:complexType>
 			</xs:element>
 		</xs:sequence>
+		<xs:attributeGroup ref="idAttribute"/>
 	</xs:complexType>
-	<xs:complexType name="RecognizedPhraseRef">
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
-	</xs:complexType>
-	<xs:element name="GenerationState">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element name="GenerationSettings" minOccurs="0">
-					<xs:complexType>
-						<xs:sequence minOccurs="0" maxOccurs="unbounded">
-							<xs:element ref="GenerationSetting"/>
-						</xs:sequence>
-					</xs:complexType>
-				</xs:element>
-			</xs:sequence>
-			<xs:attribute name="id" type="xs:ID"/>
-		</xs:complexType>
-	</xs:element>
 	<xs:element name="GenerationSetting" type="GenerationSettingType" abstract="true"/>
 	<xs:complexType name="GenerationSettingType">
-		<xs:attribute name="id" type="xs:ID"/>
+		<xs:annotation>
+			<xs:documentation>A generation setting representing the extension-defined algorithm used to generate elements from the ORM elements.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="idAttribute"/>
 	</xs:complexType>
 	<xs:element name="Grouping" type="GroupingType"/>
 	<xs:complexType name="GroupingType">
+		<xs:annotation>
+			<xs:documentation>User-defined and rule-based element groupings.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="ORMModel" type="ORMModelRef"/>
+			<xs:element name="ORMModel" type="ORMModelRef">
+				<xs:annotation>
+					<xs:documentation>The ORMModel element associated with these groups.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
 			<xs:element name="Groups" type="GroupsType" minOccurs="0"/>
 		</xs:sequence>
-		<xs:attribute name="id" type="xs:ID" use="required"/>
+		<xs:attributeGroup ref="idAttribute"/>
 	</xs:complexType>
 	<xs:complexType name="GroupsType">
+		<xs:annotation>
+			<xs:documentation>Container for Group elements.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence>
 			<xs:element name="Group" type="GroupType" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="GroupRef">
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+		<xs:annotation>
+			<xs:documentation>A reference to a group</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
 	<xs:complexType name="GroupType">
+		<xs:annotation>
+			<xs:documentation>References to set of related elements.</xs:documentation>
+		</xs:annotation>
 		<xs:all>
+			<xs:element name="Definitions" type="DefinitionsType" minOccurs="0"/>
+			<xs:element name="Notes" type="NotesType" minOccurs="0"/>
 			<xs:element name="GroupTypes" type="GroupTypesType" minOccurs="0"/>
 			<xs:element name="Elements" type="GroupElementsType" minOccurs="0"/>
 			<xs:element name="NestedGroups" type="NestedGroupsType" minOccurs="0"/>
 		</xs:all>
-		<xs:attribute name="id" type="xs:ID" use="required"/>
-		<xs:attribute name="Name" use="required" type="xs:string"/>
-		<xs:attribute name="Priority" default="0" type="xs:int"/>
+		<xs:attributeGroup ref="idAttribute"/>
+		<xs:attribute name="Name" use="required" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>The group name. Validation errors will be present for any object type name that is not unique within the model.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Priority" default="0" type="xs:int">
+			<xs:annotation>
+				<xs:documentation>The priority of this group, used to determine precedence if the same element is included in more than one group with the same group type. Higher numbers have higher priority.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 		<xs:attribute name="TypeCompliance" default="NotExcluded">
+			<xs:annotation>
+				<xs:documentation>Determine how strictly group types control the group contents.</xs:documentation>
+			</xs:annotation>
 			<xs:simpleType>
 				<xs:restriction base="xs:token">
-					<xs:enumeration value="NotExcluded"/>
-					<xs:enumeration value="PartiallyApproved"/>
-					<xs:enumeration value="FullyApproved"/>
+					<xs:enumeration value="NotExcluded">
+						<xs:annotation>
+							<xs:documentation>Allow any element that is not explicitly blocked by a group type.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="PartiallyApproved">
+						<xs:annotation>
+							<xs:documentation>At least one associated group type recognizes the element.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="FullyApproved">
+						<xs:annotation>
+							<xs:documentation>All associated group types recognize the element.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="GroupTypesType">
+		<xs:annotation>
+			<xs:documentation>Container for group types.</xs:documentation>
+		</xs:annotation>
 		<xs:sequence>
 			<xs:element ref="GroupType" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="GroupTypeType">
-		<xs:attribute name="id" type="xs:ID" use="required"/>
+		<xs:annotation>
+			<xs:documentation>Extension point for an instance of a group type, which associates meaning with elements contained in a group.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="idAttribute"/>
 	</xs:complexType>
 	<xs:element name="GroupType" type="GroupTypeType" abstract="true"/>
 	<xs:complexType name="GroupElementsType">
+		<xs:annotation>
+			<xs:documentation>Container for elements associated with a group.</xs:documentation>
+		</xs:annotation>
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
-			<xs:element name="IncludedElement" type="ElementRef"/>
-			<xs:element name="ExcludedElement" type="ElementRef"/>
+			<xs:element name="IncludedElement" type="ElementRef">
+				<xs:annotation>
+					<xs:documentation>A reference to an element included in this group.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ExcludedElement" type="ElementRef">
+				<xs:annotation>
+					<xs:documentation>A reference to an element automatically included in this group by a group type but explicitly excluded from the group by the user.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="ElementRef">
-		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+		<xs:annotation>
+			<xs:documentation>A reference to any directly identified element.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
 	<xs:complexType name="NestedGroupsType">
+		<xs:annotation>
+			<xs:documentation>Container for groups whose elements are included or excluded from the containing group.</xs:documentation>
+		</xs:annotation>
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
-			<xs:element name="IncludedGroup" type="GroupRef"/>
-			<xs:element name="ExcludedGroup" type="GroupRef"/>
+			<xs:element name="IncludedGroup" type="GroupRef">
+				<xs:annotation>
+					<xs:documentation>All included elements from the referenced group are included in the containing group.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ExcludedGroup" type="GroupRef">
+				<xs:annotation>
+					<xs:documentation>All included elements from the referenced group are excluded from the containing group.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="GroupDuplicateNameErrorType">
+		<xs:annotation>
+			<xs:documentation>Multiple groups share the same name.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
 					<xs:element name="Groups">
+						<xs:annotation>
+							<xs:documentation>Link-named groups.</xs:documentation>
+						</xs:annotation>
 						<xs:complexType>
 							<xs:sequence minOccurs="2" maxOccurs="unbounded">
 								<xs:element name="Group" type="GroupRef"/>
@@ -1779,6 +2770,9 @@
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="GroupMembershipContradictionErrorType">
+		<xs:annotation>
+			<xs:documentation>A group member is required by one group type and blocked by another group type.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:all>
@@ -1787,9 +2781,13 @@
 							<xs:complexContent>
 								<xs:extension base="GroupRef">
 									<xs:sequence>
-										<xs:element name="Element" type="ElementRef"/>
+										<xs:element name="Element" type="ElementRef">
+											<xs:annotation>
+												<xs:documentation>A reference to the conflicting element.</xs:documentation>
+											</xs:annotation>
+										</xs:element>
 									</xs:sequence>
-									<xs:attribute name="id" type="xs:ID"/>
+									<xs:attributeGroup ref="idAttribute"/>
 								</xs:extension>
 							</xs:complexContent>
 						</xs:complexType>
@@ -1801,7 +2799,7 @@
 	<xs:element name="DynamicColor" type="DynamicColorType" abstract="true"/>
 	<xs:complexType name="DynamicColorType">
 		<xs:annotation>
-			<xs:documentation>Support the general notion of a dynamic color. This is not core ORM, but all other schemas reference this one, and the general notion is broader than any of the shape types.</xs:documentation>
+			<xs:documentation>Dynamic color information used by extension models with shape representations.</xs:documentation>
 		</xs:annotation>
 		<xs:attribute name="ColorRole" type="xs:token">
 			<xs:annotation>
@@ -1810,7 +2808,7 @@
 		</xs:attribute>
 		<xs:attribute name="ColorValue" type="xs:string">
 			<xs:annotation>
-				<xs:documentation>The name of the color played by this role</xs:documentation>
+				<xs:documentation>The name of the color played by this role.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>

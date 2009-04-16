@@ -21709,6 +21709,1046 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship SetConstraintHasDefinition
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("7cf6a973-7693-41e1-b366-8f225b354818")]
+	public partial class SetConstraintHasDefinition : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// SetConstraintHasDefinition domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x7cf6a973, 0x7693, 0x41e1, 0xb3, 0x66, 0x8f, 0x22, 0x5b, 0x35, 0x48, 0x18);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a SetConstraintHasDefinition link in the same Partition as the given SetConstraint
+		/// </summary>
+		/// <param name="source">SetConstraint to use as the source of the relationship.</param>
+		/// <param name="target">Definition to use as the target of the relationship.</param>
+		public SetConstraintHasDefinition(SetConstraint source, Definition target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(SetConstraintHasDefinition.SetConstraintDomainRoleId, source), new DslModeling::RoleAssignment(SetConstraintHasDefinition.DefinitionDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public SetConstraintHasDefinition(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public SetConstraintHasDefinition(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public SetConstraintHasDefinition(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public SetConstraintHasDefinition(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region SetConstraint domain role code
+		
+		/// <summary>
+		/// SetConstraint domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid SetConstraintDomainRoleId = new global::System.Guid(0x51269942, 0x962e, 0x49db, 0x84, 0xa0, 0x59, 0x4f, 0xf2, 0x20, 0xb2, 0x78);
+		
+		/// <summary>
+		/// DomainRole SetConstraint
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition.SetConstraint
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition/SetConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition/SetConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Definition", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition/SetConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("51269942-962e-49db-84a0-594ff220b278")]
+		public virtual SetConstraint SetConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (SetConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, SetConstraintDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, SetConstraintDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access SetConstraint of a Definition
+		/// <summary>
+		/// Gets SetConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static SetConstraint GetSetConstraint(Definition element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, DefinitionDomainRoleId) as SetConstraint;
+		}
+		
+		/// <summary>
+		/// Sets SetConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetSetConstraint(Definition element, SetConstraint newSetConstraint)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, DefinitionDomainRoleId, newSetConstraint);
+		}
+		#endregion
+		#region Definition domain role code
+		
+		/// <summary>
+		/// Definition domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DefinitionDomainRoleId = new global::System.Guid(0x004f7feb, 0x02f9, 0x4f4e, 0xb3, 0x0b, 0xb7, 0x9e, 0x92, 0x49, 0xf4, 0x79);
+		
+		/// <summary>
+		/// DomainRole Definition
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition.Definition
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition/Definition.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition/Definition.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "SetConstraint", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition/Definition.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("004f7feb-02f9-4f4e-b30b-b79e9249f479")]
+		public virtual Definition Definition
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (Definition)DslModeling::DomainRoleInfo.GetRolePlayer(this, DefinitionDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DefinitionDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Definition of a SetConstraint
+		/// <summary>
+		/// Gets Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static Definition GetDefinition(SetConstraint element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, SetConstraintDomainRoleId) as Definition;
+		}
+		
+		/// <summary>
+		/// Sets Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetDefinition(SetConstraint element, Definition newDefinition)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, SetConstraintDomainRoleId, newDefinition);
+		}
+		#endregion
+		#region SetConstraint link accessor
+		/// <summary>
+		/// Get the SetConstraintHasDefinition link to a SetConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition GetLinkToDefinition (global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint setConstraintInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition>(setConstraintInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition.SetConstraintDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of SetConstraint not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region Definition link accessor
+		/// <summary>
+		/// Get the SetConstraintHasDefinition link to a Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition GetLinkToSetConstraint (global::ORMSolutions.ORMArchitect.Core.ObjectModel.Definition definitionInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition>(definitionInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition.DefinitionDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Definition not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region SetConstraintHasDefinition instance accessors
+		
+		/// <summary>
+		/// Get any SetConstraintHasDefinition links between a given SetConstraint and a Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.Definition target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition.SetConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition link in links )
+			{
+				if ( target.Equals(link.Definition) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one SetConstraintHasDefinition link between a given SetConstraintand a Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.Definition target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition.SetConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasDefinition link in links )
+			{
+				if ( target.Equals(link.Definition) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship SetComparisonConstraintHasDefinition
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("6134c02a-9a2c-4b67-8b61-f31067b39070")]
+	public partial class SetComparisonConstraintHasDefinition : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// SetComparisonConstraintHasDefinition domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x6134c02a, 0x9a2c, 0x4b67, 0x8b, 0x61, 0xf3, 0x10, 0x67, 0xb3, 0x90, 0x70);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a SetComparisonConstraintHasDefinition link in the same Partition as the given SetComparisonConstraint
+		/// </summary>
+		/// <param name="source">SetComparisonConstraint to use as the source of the relationship.</param>
+		/// <param name="target">Definition to use as the target of the relationship.</param>
+		public SetComparisonConstraintHasDefinition(SetComparisonConstraint source, Definition target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(SetComparisonConstraintHasDefinition.SetComparisonConstraintDomainRoleId, source), new DslModeling::RoleAssignment(SetComparisonConstraintHasDefinition.DefinitionDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public SetComparisonConstraintHasDefinition(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public SetComparisonConstraintHasDefinition(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public SetComparisonConstraintHasDefinition(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public SetComparisonConstraintHasDefinition(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region SetComparisonConstraint domain role code
+		
+		/// <summary>
+		/// SetComparisonConstraint domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid SetComparisonConstraintDomainRoleId = new global::System.Guid(0xe97bb07f, 0x315b, 0x4038, 0xb8, 0x9c, 0xa8, 0xd3, 0x86, 0x73, 0x42, 0x2a);
+		
+		/// <summary>
+		/// DomainRole SetComparisonConstraint
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition.SetComparisonConstraint
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition/SetComparisonConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition/SetComparisonConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Definition", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition/SetComparisonConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("e97bb07f-315b-4038-b89c-a8d38673422a")]
+		public virtual SetComparisonConstraint SetComparisonConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (SetComparisonConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, SetComparisonConstraintDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, SetComparisonConstraintDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access SetComparisonConstraint of a Definition
+		/// <summary>
+		/// Gets SetComparisonConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static SetComparisonConstraint GetSetComparisonConstraint(Definition element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, DefinitionDomainRoleId) as SetComparisonConstraint;
+		}
+		
+		/// <summary>
+		/// Sets SetComparisonConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetSetComparisonConstraint(Definition element, SetComparisonConstraint newSetComparisonConstraint)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, DefinitionDomainRoleId, newSetComparisonConstraint);
+		}
+		#endregion
+		#region Definition domain role code
+		
+		/// <summary>
+		/// Definition domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DefinitionDomainRoleId = new global::System.Guid(0xd6e68100, 0x7417, 0x41af, 0x8c, 0x67, 0x82, 0xe4, 0xb3, 0x1c, 0x66, 0x39);
+		
+		/// <summary>
+		/// DomainRole Definition
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition.Definition
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition/Definition.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition/Definition.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "SetComparisonConstraint", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition/Definition.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("d6e68100-7417-41af-8c67-82e4b31c6639")]
+		public virtual Definition Definition
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (Definition)DslModeling::DomainRoleInfo.GetRolePlayer(this, DefinitionDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DefinitionDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Definition of a SetComparisonConstraint
+		/// <summary>
+		/// Gets Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static Definition GetDefinition(SetComparisonConstraint element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, SetComparisonConstraintDomainRoleId) as Definition;
+		}
+		
+		/// <summary>
+		/// Sets Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetDefinition(SetComparisonConstraint element, Definition newDefinition)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, SetComparisonConstraintDomainRoleId, newDefinition);
+		}
+		#endregion
+		#region SetComparisonConstraint link accessor
+		/// <summary>
+		/// Get the SetComparisonConstraintHasDefinition link to a SetComparisonConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition GetLinkToDefinition (global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint setComparisonConstraintInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition>(setComparisonConstraintInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition.SetComparisonConstraintDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of SetComparisonConstraint not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region Definition link accessor
+		/// <summary>
+		/// Get the SetComparisonConstraintHasDefinition link to a Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition GetLinkToSetComparisonConstraint (global::ORMSolutions.ORMArchitect.Core.ObjectModel.Definition definitionInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition>(definitionInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition.DefinitionDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Definition not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region SetComparisonConstraintHasDefinition instance accessors
+		
+		/// <summary>
+		/// Get any SetComparisonConstraintHasDefinition links between a given SetComparisonConstraint and a Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.Definition target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition.SetComparisonConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition link in links )
+			{
+				if ( target.Equals(link.Definition) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one SetComparisonConstraintHasDefinition link between a given SetComparisonConstraintand a Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.Definition target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition.SetComparisonConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasDefinition link in links )
+			{
+				if ( target.Equals(link.Definition) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship ValueConstraintHasDefinition
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("94530978-1a69-47db-bf78-0f075b8a5fc9")]
+	public partial class ValueConstraintHasDefinition : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ValueConstraintHasDefinition domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x94530978, 0x1a69, 0x47db, 0xbf, 0x78, 0x0f, 0x07, 0x5b, 0x8a, 0x5f, 0xc9);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ValueConstraintHasDefinition link in the same Partition as the given ValueConstraint
+		/// </summary>
+		/// <param name="source">ValueConstraint to use as the source of the relationship.</param>
+		/// <param name="target">Definition to use as the target of the relationship.</param>
+		public ValueConstraintHasDefinition(ValueConstraint source, Definition target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ValueConstraintHasDefinition.ValueConstraintDomainRoleId, source), new DslModeling::RoleAssignment(ValueConstraintHasDefinition.DefinitionDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ValueConstraintHasDefinition(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ValueConstraintHasDefinition(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ValueConstraintHasDefinition(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ValueConstraintHasDefinition(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ValueConstraint domain role code
+		
+		/// <summary>
+		/// ValueConstraint domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ValueConstraintDomainRoleId = new global::System.Guid(0x4402d3b6, 0x2d2f, 0x4a2a, 0x99, 0xcc, 0xbf, 0x25, 0x55, 0x46, 0x14, 0x79);
+		
+		/// <summary>
+		/// DomainRole ValueConstraint
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition.ValueConstraint
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition/ValueConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition/ValueConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Definition", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition/ValueConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("4402d3b6-2d2f-4a2a-99cc-bf2555461479")]
+		public virtual ValueConstraint ValueConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ValueConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, ValueConstraintDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ValueConstraintDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ValueConstraint of a Definition
+		/// <summary>
+		/// Gets ValueConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ValueConstraint GetValueConstraint(Definition element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, DefinitionDomainRoleId) as ValueConstraint;
+		}
+		
+		/// <summary>
+		/// Sets ValueConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetValueConstraint(Definition element, ValueConstraint newValueConstraint)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, DefinitionDomainRoleId, newValueConstraint);
+		}
+		#endregion
+		#region Definition domain role code
+		
+		/// <summary>
+		/// Definition domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DefinitionDomainRoleId = new global::System.Guid(0xb41bff8e, 0xfecf, 0x4a56, 0xaf, 0x41, 0xd1, 0xf7, 0x6d, 0x9e, 0x9d, 0xbc);
+		
+		/// <summary>
+		/// DomainRole Definition
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition.Definition
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition/Definition.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition/Definition.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ValueConstraint", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition/Definition.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("b41bff8e-fecf-4a56-af41-d1f76d9e9dbc")]
+		public virtual Definition Definition
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (Definition)DslModeling::DomainRoleInfo.GetRolePlayer(this, DefinitionDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DefinitionDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Definition of a ValueConstraint
+		/// <summary>
+		/// Gets Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static Definition GetDefinition(ValueConstraint element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ValueConstraintDomainRoleId) as Definition;
+		}
+		
+		/// <summary>
+		/// Sets Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetDefinition(ValueConstraint element, Definition newDefinition)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ValueConstraintDomainRoleId, newDefinition);
+		}
+		#endregion
+		#region ValueConstraint link accessor
+		/// <summary>
+		/// Get the ValueConstraintHasDefinition link to a ValueConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition GetLinkToDefinition (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint valueConstraintInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition>(valueConstraintInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition.ValueConstraintDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ValueConstraint not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region Definition link accessor
+		/// <summary>
+		/// Get the ValueConstraintHasDefinition link to a Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition GetLinkToValueConstraint (global::ORMSolutions.ORMArchitect.Core.ObjectModel.Definition definitionInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition>(definitionInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition.DefinitionDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Definition not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ValueConstraintHasDefinition instance accessors
+		
+		/// <summary>
+		/// Get any ValueConstraintHasDefinition links between a given ValueConstraint and a Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.Definition target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition.ValueConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition link in links )
+			{
+				if ( target.Equals(link.Definition) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ValueConstraintHasDefinition link between a given ValueConstraintand a Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.Definition target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition.ValueConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDefinition link in links )
+			{
+				if ( target.Equals(link.Definition) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship ElementGroupingHasDefinition
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("772a73a6-4362-494a-9f40-36228f0802c9")]
+	public partial class ElementGroupingHasDefinition : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ElementGroupingHasDefinition domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x772a73a6, 0x4362, 0x494a, 0x9f, 0x40, 0x36, 0x22, 0x8f, 0x08, 0x02, 0xc9);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ElementGroupingHasDefinition link in the same Partition as the given ElementGrouping
+		/// </summary>
+		/// <param name="source">ElementGrouping to use as the source of the relationship.</param>
+		/// <param name="target">Definition to use as the target of the relationship.</param>
+		public ElementGroupingHasDefinition(ElementGrouping source, Definition target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ElementGroupingHasDefinition.GroupingDomainRoleId, source), new DslModeling::RoleAssignment(ElementGroupingHasDefinition.DefinitionDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ElementGroupingHasDefinition(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ElementGroupingHasDefinition(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ElementGroupingHasDefinition(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ElementGroupingHasDefinition(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Grouping domain role code
+		
+		/// <summary>
+		/// Grouping domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid GroupingDomainRoleId = new global::System.Guid(0x1df300ce, 0x7575, 0x4602, 0xbe, 0x59, 0xd3, 0x7b, 0xec, 0xc8, 0xe9, 0xba);
+		
+		/// <summary>
+		/// DomainRole Grouping
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition.Grouping
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition/Grouping.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition/Grouping.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Definition", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition/Grouping.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("1df300ce-7575-4602-be59-d37becc8e9ba")]
+		public virtual ElementGrouping Grouping
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ElementGrouping)DslModeling::DomainRoleInfo.GetRolePlayer(this, GroupingDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, GroupingDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Grouping of a Definition
+		/// <summary>
+		/// Gets Grouping.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ElementGrouping GetGrouping(Definition element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, DefinitionDomainRoleId) as ElementGrouping;
+		}
+		
+		/// <summary>
+		/// Sets Grouping.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetGrouping(Definition element, ElementGrouping newGrouping)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, DefinitionDomainRoleId, newGrouping);
+		}
+		#endregion
+		#region Definition domain role code
+		
+		/// <summary>
+		/// Definition domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DefinitionDomainRoleId = new global::System.Guid(0x8acd65f1, 0x0b2c, 0x40f1, 0xb2, 0xe8, 0xfa, 0xc3, 0xd3, 0x4f, 0x84, 0x56);
+		
+		/// <summary>
+		/// DomainRole Definition
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition.Definition
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition/Definition.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition/Definition.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Grouping", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition/Definition.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("8acd65f1-0b2c-40f1-b2e8-fac3d34f8456")]
+		public virtual Definition Definition
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (Definition)DslModeling::DomainRoleInfo.GetRolePlayer(this, DefinitionDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DefinitionDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Definition of a ElementGrouping
+		/// <summary>
+		/// Gets Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static Definition GetDefinition(ElementGrouping element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, GroupingDomainRoleId) as Definition;
+		}
+		
+		/// <summary>
+		/// Sets Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetDefinition(ElementGrouping element, Definition newDefinition)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, GroupingDomainRoleId, newDefinition);
+		}
+		#endregion
+		#region Grouping link accessor
+		/// <summary>
+		/// Get the ElementGroupingHasDefinition link to a ElementGrouping.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition GetLinkToDefinition (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping groupingInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition>(groupingInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition.GroupingDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Grouping not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region Definition link accessor
+		/// <summary>
+		/// Get the ElementGroupingHasDefinition link to a Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition GetLinkToGrouping (global::ORMSolutions.ORMArchitect.Core.ObjectModel.Definition definitionInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition>(definitionInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition.DefinitionDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Definition not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ElementGroupingHasDefinition instance accessors
+		
+		/// <summary>
+		/// Get any ElementGroupingHasDefinition links between a given ElementGrouping and a Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.Definition target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition.GroupingDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition link in links )
+			{
+				if ( target.Equals(link.Definition) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ElementGroupingHasDefinition link between a given ElementGroupingand a Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.Definition target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition.GroupingDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition link in links )
+			{
+				if ( target.Equals(link.Definition) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship FactTypeHasNote
 	/// Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasNote
 	/// </summary>
@@ -22211,6 +23251,1045 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasNote>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasNote.ObjectTypeDomainRoleId);
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasNote link in links )
+			{
+				if ( target.Equals(link.Note) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship SetConstraintHasNote
+	/// Description for ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("a6d0352f-f155-431a-b798-e89342c8f05f")]
+	public partial class SetConstraintHasNote : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// SetConstraintHasNote domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xa6d0352f, 0xf155, 0x431a, 0xb7, 0x98, 0xe8, 0x93, 0x42, 0xc8, 0xf0, 0x5f);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a SetConstraintHasNote link in the same Partition as the given SetConstraint
+		/// </summary>
+		/// <param name="source">SetConstraint to use as the source of the relationship.</param>
+		/// <param name="target">Note to use as the target of the relationship.</param>
+		public SetConstraintHasNote(SetConstraint source, Note target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(SetConstraintHasNote.SetConstraintDomainRoleId, source), new DslModeling::RoleAssignment(SetConstraintHasNote.NoteDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public SetConstraintHasNote(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public SetConstraintHasNote(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public SetConstraintHasNote(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public SetConstraintHasNote(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region SetConstraint domain role code
+		
+		/// <summary>
+		/// SetConstraint domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid SetConstraintDomainRoleId = new global::System.Guid(0x4f6a92ac, 0x0643, 0x461f, 0xbf, 0x0a, 0x09, 0xa9, 0xdd, 0x3c, 0x7e, 0x0d);
+		
+		/// <summary>
+		/// DomainRole SetConstraint
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote.SetConstraint
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote/SetConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote/SetConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Note", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote/SetConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("4f6a92ac-0643-461f-bf0a-09a9dd3c7e0d")]
+		public virtual SetConstraint SetConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (SetConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, SetConstraintDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, SetConstraintDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access SetConstraint of a Note
+		/// <summary>
+		/// Gets SetConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static SetConstraint GetSetConstraint(Note element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, NoteDomainRoleId) as SetConstraint;
+		}
+		
+		/// <summary>
+		/// Sets SetConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetSetConstraint(Note element, SetConstraint newSetConstraint)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, NoteDomainRoleId, newSetConstraint);
+		}
+		#endregion
+		#region Note domain role code
+		
+		/// <summary>
+		/// Note domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid NoteDomainRoleId = new global::System.Guid(0xfd8d1e32, 0x54de, 0x40f6, 0xa5, 0x38, 0xcb, 0xba, 0x90, 0x9f, 0xe5, 0xbb);
+		
+		/// <summary>
+		/// DomainRole Note
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote.Note
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote/Note.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote/Note.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "SetConstraint", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote/Note.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("fd8d1e32-54de-40f6-a538-cbba909fe5bb")]
+		public virtual Note Note
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (Note)DslModeling::DomainRoleInfo.GetRolePlayer(this, NoteDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, NoteDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Note of a SetConstraint
+		/// <summary>
+		/// Gets Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static Note GetNote(SetConstraint element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, SetConstraintDomainRoleId) as Note;
+		}
+		
+		/// <summary>
+		/// Sets Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetNote(SetConstraint element, Note newNote)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, SetConstraintDomainRoleId, newNote);
+		}
+		#endregion
+		#region SetConstraint link accessor
+		/// <summary>
+		/// Get the SetConstraintHasNote link to a SetConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote GetLinkToNote (global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint setConstraintInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote>(setConstraintInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote.SetConstraintDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of SetConstraint not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region Note link accessor
+		/// <summary>
+		/// Get the SetConstraintHasNote link to a Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote GetLinkToSetConstraint (global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note noteInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote>(noteInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote.NoteDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Note not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region SetConstraintHasNote instance accessors
+		
+		/// <summary>
+		/// Get any SetConstraintHasNote links between a given SetConstraint and a Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote.SetConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote link in links )
+			{
+				if ( target.Equals(link.Note) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one SetConstraintHasNote link between a given SetConstraintand a Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote.SetConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasNote link in links )
+			{
+				if ( target.Equals(link.Note) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship SetComparisonConstraintHasNote
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("4c6469f2-688e-4475-ba7a-3722a052f935")]
+	public partial class SetComparisonConstraintHasNote : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// SetComparisonConstraintHasNote domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x4c6469f2, 0x688e, 0x4475, 0xba, 0x7a, 0x37, 0x22, 0xa0, 0x52, 0xf9, 0x35);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a SetComparisonConstraintHasNote link in the same Partition as the given SetComparisonConstraint
+		/// </summary>
+		/// <param name="source">SetComparisonConstraint to use as the source of the relationship.</param>
+		/// <param name="target">Note to use as the target of the relationship.</param>
+		public SetComparisonConstraintHasNote(SetComparisonConstraint source, Note target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(SetComparisonConstraintHasNote.SetComparisonConstraintDomainRoleId, source), new DslModeling::RoleAssignment(SetComparisonConstraintHasNote.NoteDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public SetComparisonConstraintHasNote(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public SetComparisonConstraintHasNote(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public SetComparisonConstraintHasNote(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public SetComparisonConstraintHasNote(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region SetComparisonConstraint domain role code
+		
+		/// <summary>
+		/// SetComparisonConstraint domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid SetComparisonConstraintDomainRoleId = new global::System.Guid(0x7b0ac9c2, 0x0e88, 0x4f0d, 0xb5, 0x2c, 0x0f, 0x70, 0xd0, 0xaa, 0xd9, 0x74);
+		
+		/// <summary>
+		/// DomainRole SetComparisonConstraint
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote.SetComparisonConstraint
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote/SetComparisonConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote/SetComparisonConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Note", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote/SetComparisonConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("7b0ac9c2-0e88-4f0d-b52c-0f70d0aad974")]
+		public virtual SetComparisonConstraint SetComparisonConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (SetComparisonConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, SetComparisonConstraintDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, SetComparisonConstraintDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access SetComparisonConstraint of a Note
+		/// <summary>
+		/// Gets SetComparisonConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static SetComparisonConstraint GetSetComparisonConstraint(Note element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, NoteDomainRoleId) as SetComparisonConstraint;
+		}
+		
+		/// <summary>
+		/// Sets SetComparisonConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetSetComparisonConstraint(Note element, SetComparisonConstraint newSetComparisonConstraint)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, NoteDomainRoleId, newSetComparisonConstraint);
+		}
+		#endregion
+		#region Note domain role code
+		
+		/// <summary>
+		/// Note domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid NoteDomainRoleId = new global::System.Guid(0xf2f2a25d, 0xd4c1, 0x47be, 0xa5, 0x67, 0xd9, 0x59, 0x39, 0xd7, 0xc8, 0xb1);
+		
+		/// <summary>
+		/// DomainRole Note
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote.Note
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote/Note.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote/Note.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "SetComparisonConstraint", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote/Note.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("f2f2a25d-d4c1-47be-a567-d95939d7c8b1")]
+		public virtual Note Note
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (Note)DslModeling::DomainRoleInfo.GetRolePlayer(this, NoteDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, NoteDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Note of a SetComparisonConstraint
+		/// <summary>
+		/// Gets Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static Note GetNote(SetComparisonConstraint element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, SetComparisonConstraintDomainRoleId) as Note;
+		}
+		
+		/// <summary>
+		/// Sets Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetNote(SetComparisonConstraint element, Note newNote)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, SetComparisonConstraintDomainRoleId, newNote);
+		}
+		#endregion
+		#region SetComparisonConstraint link accessor
+		/// <summary>
+		/// Get the SetComparisonConstraintHasNote link to a SetComparisonConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote GetLinkToNote (global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint setComparisonConstraintInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote>(setComparisonConstraintInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote.SetComparisonConstraintDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of SetComparisonConstraint not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region Note link accessor
+		/// <summary>
+		/// Get the SetComparisonConstraintHasNote link to a Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote GetLinkToSetComparisonConstraint (global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note noteInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote>(noteInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote.NoteDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Note not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region SetComparisonConstraintHasNote instance accessors
+		
+		/// <summary>
+		/// Get any SetComparisonConstraintHasNote links between a given SetComparisonConstraint and a Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote.SetComparisonConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote link in links )
+			{
+				if ( target.Equals(link.Note) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one SetComparisonConstraintHasNote link between a given SetComparisonConstraintand a Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote.SetComparisonConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasNote link in links )
+			{
+				if ( target.Equals(link.Note) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship ValueConstraintHasNote
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("24e5a243-aa38-458f-acf8-11b71ea3d7d3")]
+	public partial class ValueConstraintHasNote : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ValueConstraintHasNote domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x24e5a243, 0xaa38, 0x458f, 0xac, 0xf8, 0x11, 0xb7, 0x1e, 0xa3, 0xd7, 0xd3);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ValueConstraintHasNote link in the same Partition as the given ValueConstraint
+		/// </summary>
+		/// <param name="source">ValueConstraint to use as the source of the relationship.</param>
+		/// <param name="target">Note to use as the target of the relationship.</param>
+		public ValueConstraintHasNote(ValueConstraint source, Note target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ValueConstraintHasNote.ValueConstraintDomainRoleId, source), new DslModeling::RoleAssignment(ValueConstraintHasNote.NoteDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ValueConstraintHasNote(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ValueConstraintHasNote(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ValueConstraintHasNote(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ValueConstraintHasNote(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ValueConstraint domain role code
+		
+		/// <summary>
+		/// ValueConstraint domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ValueConstraintDomainRoleId = new global::System.Guid(0xe9e038e7, 0x1054, 0x4f14, 0x99, 0xcb, 0xc6, 0x98, 0x87, 0x45, 0x45, 0x29);
+		
+		/// <summary>
+		/// DomainRole ValueConstraint
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote.ValueConstraint
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote/ValueConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote/ValueConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Note", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote/ValueConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("e9e038e7-1054-4f14-99cb-c69887454529")]
+		public virtual ValueConstraint ValueConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ValueConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, ValueConstraintDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ValueConstraintDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ValueConstraint of a Note
+		/// <summary>
+		/// Gets ValueConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ValueConstraint GetValueConstraint(Note element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, NoteDomainRoleId) as ValueConstraint;
+		}
+		
+		/// <summary>
+		/// Sets ValueConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetValueConstraint(Note element, ValueConstraint newValueConstraint)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, NoteDomainRoleId, newValueConstraint);
+		}
+		#endregion
+		#region Note domain role code
+		
+		/// <summary>
+		/// Note domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid NoteDomainRoleId = new global::System.Guid(0x168403a0, 0x3ba7, 0x440e, 0x92, 0x02, 0x1a, 0x7c, 0xfa, 0xaf, 0x12, 0xe1);
+		
+		/// <summary>
+		/// DomainRole Note
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote.Note
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote/Note.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote/Note.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ValueConstraint", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote/Note.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("168403a0-3ba7-440e-9202-1a7cfaaf12e1")]
+		public virtual Note Note
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (Note)DslModeling::DomainRoleInfo.GetRolePlayer(this, NoteDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, NoteDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Note of a ValueConstraint
+		/// <summary>
+		/// Gets Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static Note GetNote(ValueConstraint element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ValueConstraintDomainRoleId) as Note;
+		}
+		
+		/// <summary>
+		/// Sets Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetNote(ValueConstraint element, Note newNote)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ValueConstraintDomainRoleId, newNote);
+		}
+		#endregion
+		#region ValueConstraint link accessor
+		/// <summary>
+		/// Get the ValueConstraintHasNote link to a ValueConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote GetLinkToNote (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint valueConstraintInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote>(valueConstraintInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote.ValueConstraintDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ValueConstraint not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region Note link accessor
+		/// <summary>
+		/// Get the ValueConstraintHasNote link to a Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote GetLinkToValueConstraint (global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note noteInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote>(noteInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote.NoteDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Note not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ValueConstraintHasNote instance accessors
+		
+		/// <summary>
+		/// Get any ValueConstraintHasNote links between a given ValueConstraint and a Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote.ValueConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote link in links )
+			{
+				if ( target.Equals(link.Note) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ValueConstraintHasNote link between a given ValueConstraintand a Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote.ValueConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote link in links )
+			{
+				if ( target.Equals(link.Note) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship ElementGroupingHasNote
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("090bfbf3-1514-41ab-9356-b82d8858bff6")]
+	public partial class ElementGroupingHasNote : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ElementGroupingHasNote domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x090bfbf3, 0x1514, 0x41ab, 0x93, 0x56, 0xb8, 0x2d, 0x88, 0x58, 0xbf, 0xf6);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ElementGroupingHasNote link in the same Partition as the given ElementGrouping
+		/// </summary>
+		/// <param name="source">ElementGrouping to use as the source of the relationship.</param>
+		/// <param name="target">Note to use as the target of the relationship.</param>
+		public ElementGroupingHasNote(ElementGrouping source, Note target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ElementGroupingHasNote.GroupingDomainRoleId, source), new DslModeling::RoleAssignment(ElementGroupingHasNote.NoteDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ElementGroupingHasNote(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ElementGroupingHasNote(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ElementGroupingHasNote(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ElementGroupingHasNote(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Grouping domain role code
+		
+		/// <summary>
+		/// Grouping domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid GroupingDomainRoleId = new global::System.Guid(0x3da67e56, 0x0612, 0x4cac, 0x95, 0x13, 0x89, 0xae, 0xc5, 0xeb, 0xeb, 0xfa);
+		
+		/// <summary>
+		/// DomainRole Grouping
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote.Grouping
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote/Grouping.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote/Grouping.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Note", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote/Grouping.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("3da67e56-0612-4cac-9513-89aec5ebebfa")]
+		public virtual ElementGrouping Grouping
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ElementGrouping)DslModeling::DomainRoleInfo.GetRolePlayer(this, GroupingDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, GroupingDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Grouping of a Note
+		/// <summary>
+		/// Gets Grouping.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ElementGrouping GetGrouping(Note element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, NoteDomainRoleId) as ElementGrouping;
+		}
+		
+		/// <summary>
+		/// Sets Grouping.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetGrouping(Note element, ElementGrouping newGrouping)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, NoteDomainRoleId, newGrouping);
+		}
+		#endregion
+		#region Note domain role code
+		
+		/// <summary>
+		/// Note domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid NoteDomainRoleId = new global::System.Guid(0x24750293, 0x0741, 0x45a9, 0xaf, 0x7f, 0xce, 0xa4, 0xb6, 0xd2, 0x0e, 0x96);
+		
+		/// <summary>
+		/// DomainRole Note
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote.Note
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote/Note.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote/Note.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Grouping", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote/Note.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("24750293-0741-45a9-af7f-cea4b6d20e96")]
+		public virtual Note Note
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (Note)DslModeling::DomainRoleInfo.GetRolePlayer(this, NoteDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, NoteDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Note of a ElementGrouping
+		/// <summary>
+		/// Gets Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static Note GetNote(ElementGrouping element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, GroupingDomainRoleId) as Note;
+		}
+		
+		/// <summary>
+		/// Sets Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetNote(ElementGrouping element, Note newNote)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, GroupingDomainRoleId, newNote);
+		}
+		#endregion
+		#region Grouping link accessor
+		/// <summary>
+		/// Get the ElementGroupingHasNote link to a ElementGrouping.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote GetLinkToNote (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping groupingInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote>(groupingInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote.GroupingDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Grouping not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region Note link accessor
+		/// <summary>
+		/// Get the ElementGroupingHasNote link to a Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote GetLinkToGrouping (global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note noteInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote>(noteInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote.NoteDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Note not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ElementGroupingHasNote instance accessors
+		
+		/// <summary>
+		/// Get any ElementGroupingHasNote links between a given ElementGrouping and a Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote.GroupingDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote link in links )
+			{
+				if ( target.Equals(link.Note) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ElementGroupingHasNote link between a given ElementGroupingand a Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote.GroupingDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote link in links )
 			{
 				if ( target.Equals(link.Note) )
 				{

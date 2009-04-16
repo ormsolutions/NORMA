@@ -24,8 +24,14 @@
 
 	<xs:element name="settings" type="DesignerSettingsType"/>
 	<xs:complexType name="DesignerSettingsType">
+		<xs:annotation>
+			<xs:documentation>Options for the ORM designer.</xs:documentation>
+		</xs:annotation>
 		<xs:all>
 			<xs:element name="xmlConverters" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Container for conversion transforms used during file import.</xs:documentation>
+				</xs:annotation>
 				<xs:complexType>
 					<xs:sequence minOccurs="0" maxOccurs="unbounded">
 						<xs:element ref="xmlConverterBase"/>
@@ -94,7 +100,7 @@
 					</xs:attribute>
 					<xs:attribute name="dynamicType">
 						<xs:annotation>
-							<xs:documentation>If specified, allow the user to </xs:documentation>
+							<xs:documentation>If specified, allow the user to enter the value for this parameter. A list of possible values can be specified with dynamicValue elements, and the value attribute provides the default setting.</xs:documentation>
 						</xs:annotation>
 						<xs:simpleType>
 							<xs:restriction base="xs:token">

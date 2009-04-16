@@ -259,6 +259,48 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			DelayValidateErrors();
 		}
 		#endregion // IModelErrorOwner Implementation
+		#region CustomStorage Handling
+		private void SetDefinitionTextValue(string newValue)
+		{
+			if (!Store.InUndoRedoOrRollback)
+			{
+				Definition definition = Definition;
+				if (definition != null)
+				{
+					definition.Text = newValue;
+				}
+				else if (!string.IsNullOrEmpty(newValue))
+				{
+					Definition = new Definition(Store, new PropertyAssignment(Definition.TextDomainPropertyId, newValue));
+				}
+			}
+		}
+		private void SetNoteTextValue(string newValue)
+		{
+			if (!Store.InUndoRedoOrRollback)
+			{
+				Note note = Note;
+				if (note != null)
+				{
+					note.Text = newValue;
+				}
+				else if (!string.IsNullOrEmpty(newValue))
+				{
+					Note = new Note(Store, new PropertyAssignment(Note.TextDomainPropertyId, newValue));
+				}
+			}
+		}
+		private string GetDefinitionTextValue()
+		{
+			Definition currentDefinition = Definition;
+			return (currentDefinition != null) ? currentDefinition.Text : String.Empty;
+		}
+		private string GetNoteTextValue()
+		{
+			Note currentNote = Note;
+			return (currentNote != null) ? currentNote.Text : String.Empty;
+		}
+		#endregion // CustomStorage Handling
 		#region Public Helper Methods
 		/// <summary>
 		/// Remove a <see cref="GroupingElementInclusion"/> relationship

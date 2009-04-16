@@ -46,7 +46,7 @@
 		<xs:complexContent>
 			<xs:extension base="orm:ModelError">
 				<xs:sequence>
-					<xs:element name="ObjectType" type="orm:ObjectRef" />
+					<xs:element name="ObjectType" type="orm:ObjectTypeRef" />
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>

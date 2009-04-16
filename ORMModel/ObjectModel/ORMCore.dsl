@@ -189,6 +189,42 @@
 				<DomainClassMoniker Name="ORMNamedElement"/>
 			</BaseClass>
 			<Properties>
+				<DomainProperty Name="DefinitionText" DefaultValue="" DisplayName="InformalDescription" Description="An informal description of this group.&#xd;&#xa;    To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Informal Description Editor' tool window." Id="D1539042-2A67-413B-8B3B-12D00775BB8D" Kind="CustomStorage">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.Editor">
+							<Parameters>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.MultilineTextEditor&lt;global::ORMSolutions.ORMArchitect.Core.ObjectModel.Definition&gt;)"/>
+								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
+							</Parameters>
+						</ClrAttribute>
+						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
+							<Parameters>
+								<AttributeParameter Value="false"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="NoteText" DefaultValue="" DisplayName="Note" Description="A note to associate with this group.&#xd;&#xa;    To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Notes Editor' tool window." Id="39B0228B-8884-4E4E-B595-4F058F192B50" Kind="CustomStorage">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.Editor">
+							<Parameters>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.MultilineTextEditor&lt;global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note&gt;)"/>
+								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
+							</Parameters>
+						</ClrAttribute>
+						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
+							<Parameters>
+								<AttributeParameter Value="false"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
 				<DomainProperty Name="TypeCompliance" DefaultValue="NotExcluded" DisplayName="GroupTypeCompliance" Id="16E7B546-46CE-4A46-AED5-1437EDB5FA6C" Description="Specify the level of GroupType compliance for elements in this group.&#xd;&#xa;    Not Excluded: Allow elements not explicitly excluded by a selected GroupType.&#xd;&#xa;    Approved by Some Type: Allow elements explicitly approved by at least one GroupType.&#xd;&#xa;    Approved by All Types: Allow elements explicitly approved by all selected GroupTypes.">
 					<Type>
 						<DomainEnumerationMoniker Name="GroupingMembershipTypeCompliance"/>
@@ -825,6 +861,42 @@
 						<DomainEnumerationMoniker Name="ConstraintModality"/>
 					</Type>
 				</DomainProperty>
+				<DomainProperty Name="DefinitionText" DefaultValue="" DisplayName="InformalDescription" Description="An informal description of this constraint.&#xd;&#xa;    To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Informal Description Editor' tool window." Id="57B17D7F-C707-4CEB-8B95-36A19648C059" Kind="CustomStorage">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.Editor">
+							<Parameters>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.MultilineTextEditor&lt;global::ORMSolutions.ORMArchitect.Core.ObjectModel.Definition&gt;)"/>
+								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
+							</Parameters>
+						</ClrAttribute>
+						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
+							<Parameters>
+								<AttributeParameter Value="false"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="NoteText" DefaultValue="" DisplayName="Note" Description="A note to associate with this constraint.&#xd;&#xa;    To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Notes Editor' tool window." Id="00A8BEC9-8FDB-4961-B345-3A7C8FD18CFA" Kind="CustomStorage">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.Editor">
+							<Parameters>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.MultilineTextEditor&lt;global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note&gt;)"/>
+								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
+							</Parameters>
+						</ClrAttribute>
+						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
+							<Parameters>
+								<AttributeParameter Value="false"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
 			</Properties>
 		</DomainClass>
 
@@ -968,6 +1040,42 @@
 				<DomainProperty Name="Modality" DefaultValue="Alethic" DisplayName="Modality" Id="B4F1902A-7EB9-464F-A0F8-F816658C1BD8" Description="The Modality of the simple mandatory constraint on this Role.&#xd;&#xa;    Alethic modality means the constraint is structurally enforced and data violating the constraint cannot be entered in the system;&#xd;&#xa;    Deontic modality means that data violating the constraint can be recorded.">
 					<Type>
 						<DomainEnumerationMoniker Name="ConstraintModality"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="DefinitionText" DefaultValue="" DisplayName="InformalDescription" Description="An informal description of this constraint.&#xd;&#xa;    To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Informal Description Editor' tool window." Id="27353884-FF01-4DA8-9C95-A4186E1B569F" Kind="CustomStorage">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.Editor">
+							<Parameters>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.MultilineTextEditor&lt;global::ORMSolutions.ORMArchitect.Core.ObjectModel.Definition&gt;)"/>
+								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
+							</Parameters>
+						</ClrAttribute>
+						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
+							<Parameters>
+								<AttributeParameter Value="false"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="NoteText" DefaultValue="" DisplayName="Note" Description="A note to associate with this constraint.&#xd;&#xa;    To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Notes Editor' tool window." Id="63E2F8FC-6003-47F0-AF9A-AC539907CF11" Kind="CustomStorage">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.Editor">
+							<Parameters>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.MultilineTextEditor&lt;global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note&gt;)"/>
+								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
+							</Parameters>
+						</ClrAttribute>
+						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
+							<Parameters>
+								<AttributeParameter Value="false"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
 			</Properties>
@@ -1604,6 +1712,42 @@
 				<DomainClassMoniker Name="ORMNamedElement"/>
 			</BaseClass>
 			<Properties>
+				<DomainProperty Name="DefinitionText" DefaultValue="" DisplayName="InformalDescription" Description="An informal description of this constraint.&#xd;&#xa;    To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Informal Description Editor' tool window." Id="728C6254-DC03-4FF3-B3F2-9BA8B34F60C1" Kind="CustomStorage">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.Editor">
+							<Parameters>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.MultilineTextEditor&lt;global::ORMSolutions.ORMArchitect.Core.ObjectModel.Definition&gt;)"/>
+								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
+							</Parameters>
+						</ClrAttribute>
+						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
+							<Parameters>
+								<AttributeParameter Value="false"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="NoteText" DefaultValue="" DisplayName="Note" Description="A note to associate with this constraint.&#xd;&#xa;    To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Notes Editor' tool window." Id="49306D45-6A55-4D4F-9C83-FC95D33797D0" Kind="CustomStorage">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.Editor">
+							<Parameters>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.MultilineTextEditor&lt;global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note&gt;)"/>
+								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
+							</Parameters>
+						</ClrAttribute>
+						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
+							<Parameters>
+								<AttributeParameter Value="false"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
 				<DomainProperty Name="Text" DefaultValue="" DisplayName="Text" Id="410FCE34-DACB-4F59-94A6-FF7E42108E74" Kind="CustomStorage" Description="The range of possible values.&#xd;&#xa;    To specify a range, use '..' between the range endpoints, square brackets to specify a closed endpoint, and parentheses to specify an open endpoint. Commas are used to entered multiple ranges or discrete values.&#xd;&#xa;    Example: {[10..20), 30} specifies all values between 10 and 20 (but not including 20) and the value 30.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
@@ -3544,6 +3688,86 @@
 			</Target>
 		</DomainRelationship>
 
+		<DomainRelationship Name="SetConstraintHasDefinition" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="7CF6A973-7693-41E1-B366-8F225B354818">
+			<!--<BaseRelationship>
+				<DomainRelationshipMoniker Name="ORMElementLink"/>
+			</BaseRelationship>-->
+			<Source>
+				<DomainRole Name="SetConstraint" PropertyName="Definition" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetConstraint" Id="51269942-962E-49DB-84A0-594FF220B278">
+					<RolePlayer>
+						<DomainClassMoniker Name="SetConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Definition" PropertyName="SetConstraint" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Definition" Id="004F7FEB-02F9-4F4E-B30B-B79E9249F479">
+					<RolePlayer>
+						<DomainClassMoniker Name="Definition"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="SetComparisonConstraintHasDefinition" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="6134C02A-9A2C-4B67-8B61-F31067B39070">
+			<!--<BaseRelationship>
+				<DomainRelationshipMoniker Name="ORMElementLink"/>
+			</BaseRelationship>-->
+			<Source>
+				<DomainRole Name="SetComparisonConstraint" PropertyName="Definition" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetComparisonConstraint" Id="E97BB07F-315B-4038-B89C-A8D38673422A">
+					<RolePlayer>
+						<DomainClassMoniker Name="SetComparisonConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Definition" PropertyName="SetComparisonConstraint" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Definition" Id="D6E68100-7417-41AF-8C67-82E4B31C6639">
+					<RolePlayer>
+						<DomainClassMoniker Name="Definition"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="ValueConstraintHasDefinition" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="94530978-1A69-47DB-BF78-0F075B8A5FC9">
+			<!--<BaseRelationship>
+				<DomainRelationshipMoniker Name="ORMElementLink"/>
+			</BaseRelationship>-->
+			<Source>
+				<DomainRole Name="ValueConstraint" PropertyName="Definition" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ValueConstraint" Id="4402D3B6-2D2F-4A2A-99CC-BF2555461479">
+					<RolePlayer>
+						<DomainClassMoniker Name="ValueConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Definition" PropertyName="ValueConstraint" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Definition" Id="B41BFF8E-FECF-4A56-AF41-D1F76D9E9DBC">
+					<RolePlayer>
+						<DomainClassMoniker Name="Definition"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="ElementGroupingHasDefinition" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="772A73A6-4362-494A-9F40-36228F0802C9">
+			<!--<BaseRelationship>
+				<DomainRelationshipMoniker Name="ORMElementLink"/>
+			</BaseRelationship>-->
+			<Source>
+				<DomainRole Name="Grouping" PropertyName="Definition" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ElementGrouping" Id="1DF300CE-7575-4602-BE59-D37BECC8E9BA">
+					<RolePlayer>
+						<DomainClassMoniker Name="ElementGrouping"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Definition" PropertyName="Grouping" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Definition" Id="8ACD65F1-0B2C-40F1-B2E8-FAC3D34F8456">
+					<RolePlayer>
+						<DomainClassMoniker Name="Definition"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
 		<DomainRelationship Name="FactTypeHasNote" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="B41C4D61-2A9F-4C91-B948-52E53A8E525F">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
@@ -3577,6 +3801,86 @@
 			</Source>
 			<Target>
 				<DomainRole Name="Note" PropertyName="ObjectType" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Note" Id="B2BC6ECC-430A-48AE-A862-D4D876748130">
+					<RolePlayer>
+						<DomainClassMoniker Name="Note"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="SetConstraintHasNote" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="A6D0352F-F155-431A-B798-E89342C8F05F">
+			<!--<BaseRelationship>
+				<DomainRelationshipMoniker Name="ORMElementLink"/>
+			</BaseRelationship>-->
+			<Source>
+				<DomainRole Name="SetConstraint" PropertyName="Note" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetConstraint" Id="4F6A92AC-0643-461F-BF0A-09A9DD3C7E0D">
+					<RolePlayer>
+						<DomainClassMoniker Name="SetConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Note" PropertyName="SetConstraint" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Note" Id="FD8D1E32-54DE-40F6-A538-CBBA909FE5BB">
+					<RolePlayer>
+						<DomainClassMoniker Name="Note"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="SetComparisonConstraintHasNote" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="4C6469F2-688E-4475-BA7A-3722A052F935">
+			<!--<BaseRelationship>
+				<DomainRelationshipMoniker Name="ORMElementLink"/>
+			</BaseRelationship>-->
+			<Source>
+				<DomainRole Name="SetComparisonConstraint" PropertyName="Note" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetComparisonConstraint" Id="7B0AC9C2-0E88-4F0D-B52C-0F70D0AAD974">
+					<RolePlayer>
+						<DomainClassMoniker Name="SetComparisonConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Note" PropertyName="SetComparisonConstraint" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Note" Id="F2F2A25D-D4C1-47BE-A567-D95939D7C8B1">
+					<RolePlayer>
+						<DomainClassMoniker Name="Note"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="ValueConstraintHasNote" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="24E5A243-AA38-458F-ACF8-11B71EA3D7D3">
+			<!--<BaseRelationship>
+				<DomainRelationshipMoniker Name="ORMElementLink"/>
+			</BaseRelationship>-->
+			<Source>
+				<DomainRole Name="ValueConstraint" PropertyName="Note" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ValueConstraint" Id="E9E038E7-1054-4F14-99CB-C69887454529">
+					<RolePlayer>
+						<DomainClassMoniker Name="ValueConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Note" PropertyName="ValueConstraint" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Note" Id="168403A0-3BA7-440E-9202-1A7CFAAF12E1">
+					<RolePlayer>
+						<DomainClassMoniker Name="Note"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="ElementGroupingHasNote" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="090BFBF3-1514-41AB-9356-B82D8858BFF6">
+			<!--<BaseRelationship>
+				<DomainRelationshipMoniker Name="ORMElementLink"/>
+			</BaseRelationship>-->
+			<Source>
+				<DomainRole Name="Grouping" PropertyName="Note" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Grouping" Id="3DA67E56-0612-4CAC-9513-89AEC5EBEBFA">
+					<RolePlayer>
+						<DomainClassMoniker Name="ElementGrouping"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Note" PropertyName="Grouping" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Note" Id="24750293-0741-45A9-AF7F-CEA4B6D20E96">
 					<RolePlayer>
 						<DomainClassMoniker Name="Note"/>
 					</RolePlayer>

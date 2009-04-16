@@ -67,10 +67,16 @@
 								DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 						</Component>
 
-						<Component Id="ReadmeComponent" Guid="818AC083-01BC-4DBC-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-							<File Id="Readme.htm" Name="Readme.htm" Source="Readme.htm"
-								DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
-						</Component>
+						<Directory Id="DOCUMENTATION" ShortName="Docs" Name="Documentation">
+							<Component Id="DocumentationComponent" Guid="818AC083-01BC-4DBC-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+								<File Id="Readme.htm" Name="Readme.htm" Source="Readme.htm"
+									DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
+								<File Id="ORM2CoreXsd.htm" Name="ORM2CoreXsd.htm" ShortName="ORM2Xsd.htm" Source="..\ORMModel\ObjectModel\ORM2CoreXsd.htm"
+									DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
+								<File Id="ORMDesignerSettingsXsd.htm" Name="ORMDesignerSettingsXsd.htm" ShortName="DsgnrXsd.htm" Source="..\ORMModel\Shell\ORMDesignerSettingsXsd.htm"
+									DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
+							</Component>
+						</Directory>
 
 						<Directory Id="BINDIR" Name="bin">
 
