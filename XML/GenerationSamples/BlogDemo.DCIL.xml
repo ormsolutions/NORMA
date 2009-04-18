@@ -33,7 +33,7 @@
 			<dcl:columnRef sourceName="blogCommentParentEntryId" targetName="blogEntryId" />
 		</dcl:referenceConstraint>
 	</dcl:table>
-	<dcl:table name="&quot;User&quot;">
+	<dcl:table name="&quot;User&quot;" requestedName="User">
 		<dcl:column name="firstName" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
 		</dcl:column>

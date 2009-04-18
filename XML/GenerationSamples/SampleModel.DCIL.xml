@@ -9,7 +9,7 @@
 			</dep:comparisonPredicate>
 		</dcl:checkConstraint>
 	</dcl:domain>
-	<dcl:domain name="&quot;Integer&quot;">
+	<dcl:domain name="&quot;Integer&quot;" requestedName="Integer">
 		<dcl:predefinedDataType name="INTEGER" />
 		<dcl:checkConstraint name="ValueTypeValueConstraint1">
 			<dep:and>
@@ -101,7 +101,7 @@
 		<dcl:column name="lastName" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="64" />
 		</dcl:column>
-		<dcl:column name="&quot;date&quot;" isNullable="false" isIdentity="false">
+		<dcl:column name="&quot;date&quot;" requestedName="date" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="DATE" />
 		</dcl:column>
 		<dcl:column name="mandatoryUniqueDecimal" isNullable="false" isIdentity="false">
@@ -314,7 +314,7 @@
 		</dcl:referenceConstraint>
 	</dcl:table>
 	<dcl:table name="ValueType1">
-		<dcl:column name="&quot;value&quot;" isNullable="false" isIdentity="false">
+		<dcl:column name="&quot;value&quot;" requestedName="value" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="INTEGER" />
 		</dcl:column>
 		<dcl:column name="doesSomethingWithPerson" isNullable="true" isIdentity="false">

@@ -43,12 +43,71 @@
 		</dil:root>
 	</xsl:template>
 
+	<xsl:template match="dcl:catalog">
+		<!-- Define elements in all schemas so that they can reference each other, then
+		add references, triggers, and procedures. -->
+		<xsl:variable name="schemas" select="dcl:schema"/>
+		<dil:root>
+			<dms:startTransactionStatement isolationLevel="SERIALIZABLE" accessMode="READ WRITE"/>
+			<xsl:for-each select="$schemas">
+				<ddl:schemaDefinition schemaName="{@name}" defaultCharacterSet="UTF8"/>
+				<dms:setSchemaStatement>
+					<ddt:characterStringLiteral value="{dsf:getInformationSchemaForm(@name)}"/>
+				</dms:setSchemaStatement>
+				<xsl:apply-templates select="dcl:domain"/>
+				<xsl:apply-templates select="dcl:table" mode="GenerateTableBase"/>
+			</xsl:for-each>
+			<xsl:for-each select="$schemas">
+				<dms:setSchemaStatement>
+					<ddt:characterStringLiteral value="{dsf:getInformationSchemaForm(@name)}"/>
+				</dms:setSchemaStatement>
+				<xsl:apply-templates select="dcl:table" mode="GenerateTableReferences"/>
+				<xsl:apply-templates select="dcl:trigger"/>
+				<xsl:apply-templates select="dcl:procedure" />
+			</xsl:for-each>
+			<dms:commitStatement/>
+		</dil:root>
+	</xsl:template>
+
 	<xsl:template name="GenerateSchemaAttribute">
-		<xsl:if test="ancestor::dcl:schema">
+		<xsl:apply-templates select="." mode="GenerateSchemaAttribute"/>
+	</xsl:template>
+	<xsl:template name="GenerateSchemaAttributeFromContext">
+		<xsl:variable name="contextSchema" select="ancestor::dcl:schema[1]"/>
+		<xsl:if test="$contextSchema">
 			<xsl:attribute name="schema">
-				<xsl:value-of select="ancestor::dcl:schema[1]/@name"/>
+				<xsl:value-of select="$contextSchema/@name"/>
 			</xsl:attribute>
 		</xsl:if>
+	</xsl:template>
+	<xsl:template match="*" mode="GenerateSchemaAttribute">
+		<xsl:call-template name="GenerateSchemaAttributeFromContext"/>
+	</xsl:template>
+	<xsl:template match="dcl:referenceConstraint" mode="GenerateSchemaAttribute">
+		<xsl:variable name="explicitSchema" select="@targetSchema"/>
+		<xsl:choose>
+			<xsl:when test="$explicitSchema">
+				<xsl:attribute name="schema">
+					<xsl:value-of select="$explicitSchema"/>
+				</xsl:attribute>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:call-template name="GenerateSchemaAttributeFromContext"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	<xsl:template match="dcl:domainRef" mode="GenerateSchemaAttribute">
+		<xsl:variable name="explicitSchema" select="@schemaName"/>
+		<xsl:choose>
+			<xsl:when test="$explicitSchema">
+				<xsl:attribute name="schema">
+					<xsl:value-of select="$explicitSchema"/>
+				</xsl:attribute>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:call-template name="GenerateSchemaAttributeFromContext"/>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template match="dcl:domain">
@@ -112,9 +171,12 @@
 
 	<xsl:template match="dcl:table" mode="GenerateTableReferences">
 		<xsl:variable name="tableName" select="@name"/>
+		<xsl:variable name="table" select="."/>
 		<xsl:for-each select="dcl:referenceConstraint">
 			<ddl:alterTableStatement name="{$tableName}">
-				<xsl:call-template name="GenerateSchemaAttribute"/>
+				<xsl:for-each select="$table">
+					<xsl:call-template name="GenerateSchemaAttribute"/>
+				</xsl:for-each>
 				<xsl:apply-templates select="." mode="GenerateConstraint">
 					<xsl:with-param name="ElementName" select="'ddl:addTableConstraintDefinition'"/>
 				</xsl:apply-templates>

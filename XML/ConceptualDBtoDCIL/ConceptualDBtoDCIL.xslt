@@ -79,7 +79,8 @@
 		</xsl:variable>
 		<xsl:variable name="dataTypeMappings" select="exsl:node-set($dataTypeMappingsFragment)/child::*"/>
 
-		<dcl:schema name="{dsf:makeValidIdentifier(@Name)}">
+		<dcl:schema>
+			<xsl:call-template name="AddNameAttributes"/>
 			<xsl:copy-of select="$initialDataTypeMappings/dcl:domain"/>
 			<xsl:apply-templates mode="GenerateSchemaContent" select="cdb:Tables/cdb:Table">
 				<xsl:with-param name="oialDcilBridge" select="$oialDcilBridge"/>
@@ -99,7 +100,10 @@
 		<xsl:param name="dataTypeMappings"/>
 		<xsl:param name="initialDataTypeMappings"/>
 		<xsl:variable name="rawTableName" select="string(@Name)"/>
-		<dcl:table name="{dsf:makeValidIdentifier($rawTableName)}">
+		<dcl:table>
+			<xsl:call-template name="AddNameAttributes">
+				<xsl:with-param name="requestedName" select="$rawTableName"/>
+			</xsl:call-template>
 			<xsl:variable name="uniquenessConstraints" select="cdb:Constraints/cdb:UniquenessConstraint"/>
 			<xsl:apply-templates mode="GenerateTableContent" select="cdb:Columns/cdb:Column">
 				<xsl:sort data-type="number" select="number(not(boolean(@id = $uniquenessConstraints[@IsPrimary='true' or @IsPrimary=1]/cdb:Columns/cdb:Column/@ref)))"/>
@@ -201,7 +205,18 @@
 		<xsl:variable name="rawColumnName" select="string(@Name)"/>
 		<xsl:variable name="columnName" select="dsf:makeValidIdentifier($rawColumnName)"/>
 
-		<dcl:column name="{$columnName}" isNullable="{@IsNullable='true' or @IsNullable=1}" isIdentity="false">
+		<dcl:column name="{$columnName}">
+			<xsl:if test="$columnName!=$rawColumnName">
+				<xsl:attribute name="requestedName">
+					<xsl:value-of select="$rawColumnName"/>
+				</xsl:attribute>
+			</xsl:if>
+			<xsl:attribute name="isNullable">
+				<xsl:value-of select="@IsNullable='true' or @IsNullable=1"/>
+			</xsl:attribute>
+			<xsl:attribute name="isIdentity">
+				<xsl:value-of select="false()"/>
+			</xsl:attribute>
 			<xsl:if test="
 				count($conceptTypeChildPath) = 1 or
 				(not($oialModel/oial:conceptTypes/oial:conceptType/oial:children/oial:*[@id = $conceptTypeChildPath/@ConceptTypeChild and self::oial:relatedConceptType]) and
@@ -297,7 +312,10 @@
 			<xsl:variable name="valueReference" select="exsl:node-set($valueReferenceFragment)/child::*"/>
 
 			<xsl:for-each select="$roleValueConstraints">
-				<dcl:checkConstraint name="{dsf:makeValidIdentifier(concat($rawTableName, '_', $rawColumnName, '_', @Name))}">
+				<dcl:checkConstraint>
+					<xsl:call-template name="AddNameAttributes">
+						<xsl:with-param name="requestedName" select="concat($rawTableName, '_', $rawColumnName, '_', @Name)"/>
+					</xsl:call-template>
 					<xsl:call-template name="ProcessValueConstraintRanges">
 						<xsl:with-param name="literalName" select="$literalName"/>
 						<xsl:with-param name="valueRanges" select="orm:ValueRanges/orm:ValueRange"/>
@@ -311,7 +329,11 @@
 
 	<xsl:template match="cdb:UniquenessConstraint" mode="GenerateTableContent">
 		<xsl:variable name="sourceTable" select="parent::cdb:Constraints/parent::cdb:Table"/>
-		<dcl:uniquenessConstraint name="{dsf:makeValidIdentifier(@Name)}" isPrimary="{@IsPrimary='true' or @IsPrimary=1}">
+		<dcl:uniquenessConstraint>
+			<xsl:call-template name="AddNameAttributes"/>
+			<xsl:attribute name="isPrimary">
+				<xsl:value-of select="@IsPrimary='true' or @IsPrimary=1"/>
+			</xsl:attribute>
 			<xsl:for-each select="cdb:Columns/cdb:Column">
 				<dcl:columnRef name="{dsf:makeValidIdentifier($sourceTable/cdb:Columns/cdb:Column[@id = current()/@ref]/@Name)}"/>
 			</xsl:for-each>
@@ -321,7 +343,11 @@
 	<xsl:template match="cdb:ReferenceConstraint" mode="GenerateTableContent">
 		<xsl:variable name="sourceTable" select="parent::cdb:Constraints/parent::cdb:Table"/>
 		<xsl:variable name="targetTable" select="$sourceTable/parent::cdb:Tables/cdb:Table[@id = current()/cdb:TargetTable/@ref]"/>
-		<dcl:referenceConstraint name="{dsf:makeValidIdentifier(@Name)}" targetTable="{dsf:makeValidIdentifier($targetTable/@Name)}">
+		<dcl:referenceConstraint>
+			<xsl:call-template name="AddNameAttributes"/>
+			<xsl:attribute name="targetTable">
+				<xsl:value-of select="dsf:makeValidIdentifier($targetTable/@Name)"/>
+			</xsl:attribute>
 			<xsl:for-each select="cdb:ColumnReferences/cdb:ColumnReference">
 				<dcl:columnRef sourceName="{dsf:makeValidIdentifier($sourceTable/cdb:Columns/cdb:Column[@id = current()/@SourceColumn]/@Name)}" targetName="{dsf:makeValidIdentifier($targetTable/cdb:Columns/cdb:Column[@id = current()/@TargetColumn]/@Name)}"/>
 			</xsl:for-each>
@@ -481,7 +507,10 @@
 						</xsl:when>
 					</xsl:choose>
 				</xsl:variable>
-				<dcl:checkConstraint name="{dsf:makeValidIdentifier(concat($tableName,'_',@name,$nameInstanceCount,'_MandatoryGroup'))}">
+				<dcl:checkConstraint>
+					<xsl:call-template name="AddNameAttributes">
+						<xsl:with-param name="requestedName" select="concat($tableName,'_',@name,$nameInstanceCount,'_MandatoryGroup')"/>
+					</xsl:call-template>
 					<xsl:copy-of select="@*[local-name()!='name']"/>
 					<xsl:copy-of select="*"/>
 				</dcl:checkConstraint>
@@ -769,10 +798,16 @@
 
 				<xsl:choose>
 					<xsl:when test="$modelValueRanges or $needsUnsignedEnforcement">
-						<dcl:domain name="{dsf:makeValidIdentifier($dataTypeName)}">
+						<dcl:domain>
+							<xsl:call-template name="AddNameAttributes">
+								<xsl:with-param name="requestedName" select="$dataTypeName"/>
+							</xsl:call-template>
 							<xsl:copy-of select="exsl:node-set($predefinedDataType)"/>
 							<xsl:if test="$needsUnsignedEnforcement and not($modelValueRanges)">
-								<dcl:checkConstraint name="{dsf:makeValidIdentifier(concat($dataTypeName, '_Unsigned_Chk'))}">
+								<dcl:checkConstraint>
+									<xsl:call-template name="AddNameAttributes">
+										<xsl:with-param name="requestedName" select="concat($dataTypeName, '_Unsigned_Chk')"/>
+									</xsl:call-template>
 									<dep:comparisonPredicate operator="greaterThanOrEquals">
 										<dep:valueKeyword/>
 										<ddt:exactNumericLiteral value="0"/>
@@ -780,7 +815,10 @@
 								</dcl:checkConstraint>
 							</xsl:if>
 							<xsl:if test="$modelValueRanges">
-								<dcl:checkConstraint name="{dsf:makeValidIdentifier($modelValueConstraint/@Name)}">
+								<dcl:checkConstraint>
+									<xsl:call-template name="AddNameAttributes">
+										<xsl:with-param name="requestedName" select="$modelValueConstraint/@Name"/>
+									</xsl:call-template>
 									<xsl:choose>
 										<xsl:when test="$needsUnsignedEnforcement">
 											<dep:and>
@@ -850,10 +888,16 @@
 
 				<xsl:choose>
 					<xsl:when test="$modelValueRanges">
-						<dcl:domain name="{dsf:makeValidIdentifier($dataTypeName)}">
+						<dcl:domain>
+							<xsl:call-template name="AddNameAttributes">
+								<xsl:with-param name="requestedName" select="$dataTypeName"/>
+							</xsl:call-template>
 							<xsl:copy-of select="exsl:node-set($predefinedDataType)"/>
 							<dcl:predefinedDataType/>
-							<dcl:checkConstraint name="{dsf:makeValidIdentifier($modelValueConstraint/@Name)}">
+							<dcl:checkConstraint>
+								<xsl:call-template name="AddNameAttributes">
+									<xsl:with-param name="requestedName" select="$modelValueConstraint/@Name"/>
+								</xsl:call-template>
 								<xsl:call-template name="ProcessValueConstraintRanges">
 									<xsl:with-param name="literalName" select="'ddt:approximateNumericLiteral'"/>
 									<xsl:with-param name="valueRanges" select="$modelValueRanges"/>
@@ -902,9 +946,15 @@
 
 				<xsl:choose>
 					<xsl:when test="$modelValueRanges and not($modelDataType/self::orm:LargeLengthTextDataType)">
-						<dcl:domain name="{dsf:makeValidIdentifier($dataTypeName)}">
+						<dcl:domain>
+							<xsl:call-template name="AddNameAttributes">
+								<xsl:with-param name="requestedName" select="$dataTypeName"/>
+							</xsl:call-template>
 							<xsl:copy-of select="exsl:node-set($predefinedDataType)"/>
-							<dcl:checkConstraint name="{dsf:makeValidIdentifier($modelValueConstraint/@Name)}">
+							<dcl:checkConstraint>
+								<xsl:call-template name="AddNameAttributes">
+									<xsl:with-param name="requestedName" select="$modelValueConstraint/@Name"/>
+								</xsl:call-template>
 								<!-- This may or may not work for actual ranges (where @MinValue != @MaxValue). -->
 								<xsl:call-template name="ProcessValueConstraintRanges">
 									<xsl:with-param name="literalName" select="'ddt:characterStringLiteral'"/>
@@ -986,9 +1036,15 @@
 
 				<xsl:choose>
 					<xsl:when test="$modelValueRanges">
-						<dcl:domain name="{dsf:makeValidIdentifier($dataTypeName)}">
+						<dcl:domain>
+							<xsl:call-template name="AddNameAttributes">
+								<xsl:with-param name="requestedName" select="$dataTypeName"/>
+							</xsl:call-template>
 							<dcl:predefinedDataType name="{$predefinedDataTypeName}"/>
-							<dcl:checkConstraint name="{dsf:makeValidIdentifier($modelValueConstraint/@Name)}">
+							<dcl:checkConstraint>
+								<xsl:call-template name="AddNameAttributes">
+									<xsl:with-param name="requestedName" select="$modelValueConstraint/@Name"/>
+								</xsl:call-template>
 								<xsl:call-template name="ProcessValueConstraintRanges">
 									<xsl:with-param name="literalName" select="concat('ddt:', translate($predefinedDataTypeName, 'DATEIMSAP', 'dateimsap'), 'Literal')"/>
 									<xsl:with-param name="valueRanges" select="$modelValueRanges"/>
@@ -1188,5 +1244,17 @@
 				<xsl:copy-of select="exsl:node-set($rangeCode)"/>
 			</xsl:otherwise>
 		</xsl:choose>
+	</xsl:template>
+	<xsl:template name="AddNameAttributes">
+		<xsl:param name="requestedName" select="string(@Name)"/>
+		<xsl:variable name="decoratedName" select="dsf:makeValidIdentifier($requestedName)"/>
+		<xsl:attribute name="name">
+			<xsl:value-of select="$decoratedName"/>
+		</xsl:attribute>
+		<xsl:if test="$decoratedName!=$requestedName">
+			<xsl:attribute name="requestedName">
+				<xsl:value-of select="$requestedName"/>
+			</xsl:attribute>
+		</xsl:if>
 	</xsl:template>
 </xsl:stylesheet>

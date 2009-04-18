@@ -67,15 +67,10 @@
 			<xs:sequence>
 				<xs:element ref="dcl:schema" maxOccurs="unbounded"/>
 			</xs:sequence>
-			<xs:attribute name="name" use="required">
+			<xs:attribute name="name" use="required" type="ddt:identifier">
 				<xs:annotation>
 					<xs:documentation>The name of the catalog.</xs:documentation>
 				</xs:annotation>
-				<xs:simpleType>
-					<xs:restriction base="xs:NMTOKEN">
-						<xs:maxLength value="8"/>
-					</xs:restriction>
-				</xs:simpleType>
 			</xs:attribute>
 		</xs:complexType>
 		<xs:key name="schemaNameKey">
@@ -100,6 +95,7 @@
 					<xs:documentation>The name of the schema.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
+			<xs:attributeGroup ref="dcl:requestedNameAttribute"/>
 		</xs:complexType>
 		<xs:key name="tableNameKey">
 			<xs:selector xpath="dcl:table"/>
@@ -133,6 +129,7 @@
 					<xs:documentation>The name of the table.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
+			<xs:attributeGroup ref="dcl:requestedNameAttribute"/>
 		</xs:complexType>
 		<xs:key name="tableChildNameKey">
 			<xs:selector xpath="dcl:table/*"/>
@@ -183,11 +180,19 @@
 									<xs:documentation>The name of the data domain being referenced.</xs:documentation>
 								</xs:annotation>
 							</xs:attribute>
+							<xs:attribute name="schemaName" type="ddt:identifier">
+								<xs:annotation>
+									<xs:documentation>The name of the external schema for the referenced domain.</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
 						</xs:complexType>
-						<xs:keyref name="domainRef" refer="dcl:domainNameKey">
+						<!-- UNDONE: This is invalid if the targetSchema is set. The key needs to be defined
+						at the catalog level, but we currently generate files with just a schema element, so
+						there is no good way to enforce this key. -->
+						<!--<xs:keyref name="domainRef" refer="dcl:domainNameKey">
 							<xs:selector xpath="."/>
 							<xs:field xpath="@name"/>
-						</xs:keyref>
+						</xs:keyref>-->
 					</xs:element>
 					<xs:element name="predefinedDataType" type="dcl:predefinedDataType"/>
 				</xs:choice>
@@ -203,6 +208,7 @@
 					<xs:documentation>The name of the column.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
+			<xs:attributeGroup ref="dcl:requestedNameAttribute"/>
 			<xs:attribute name="isNullable" use="required" type="xs:boolean">
 				<xs:annotation>
 					<xs:documentation>Is NULL a valid value for this column?</xs:documentation>
@@ -236,6 +242,7 @@
 					<xs:documentation>The name of the data domain.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
+			<xs:attributeGroup ref="dcl:requestedNameAttribute"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -255,6 +262,7 @@
 				<xs:documentation>The name of the constraint.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attributeGroup ref="dcl:requestedNameAttribute"/>
 	</xs:complexType>
 
 	<xs:element name="uniquenessConstraint">
@@ -327,13 +335,21 @@
 							<xs:documentation>The name of the table being referenced.</xs:documentation>
 						</xs:annotation>
 					</xs:attribute>
+					<xs:attribute name="targetSchema" type="ddt:identifier">
+						<xs:annotation>
+							<xs:documentation>The name of the external target schema.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
 				</xs:extension>
 			</xs:complexContent>
 		</xs:complexType>
-		<xs:keyref name="referenceConstraintTargetTableRef" refer="dcl:tableNameKey">
+		<!-- UNDONE: This is invalid if the targetSchema is set. The key needs to be defined
+		at the catalog level, but we currently generate files with just a schema element, so
+		there is no good way to enforce this key. -->
+		<!-- <xs:keyref name="referenceConstraintTargetTableRef" refer="dcl:tableNameKey">
 			<xs:selector xpath="."/>
-			<xs:field xpath="@tableName"/>
-		</xs:keyref>
+			<xs:field xpath="@targetTable"/>
+		</xs:keyref> -->
 	</xs:element>
 
 	<xs:element name="checkConstraint">
@@ -422,6 +438,7 @@
 					<xs:documentation>The name of the trigger.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
+			<xs:attributeGroup ref="dcl:requestedNameAttribute"/>
 			<xs:attribute name="targetTable" use="required" type="ddt:identifier">
 				<xs:annotation>
 					<xs:documentation>The name of the table being referenced.</xs:documentation>
@@ -501,6 +518,7 @@
 								<xs:documentation>The name of the parameter.</xs:documentation>
 							</xs:annotation>
 						</xs:attribute>
+						<xs:attributeGroup ref="dcl:requestedNameAttribute"/>
 					</xs:complexType>
 				</xs:element>
 				<xs:group ref="dil:sqlProcedureStatement"/>
@@ -510,6 +528,7 @@
 					<xs:documentation>The name of the procedure.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
+			<xs:attributeGroup ref="dcl:requestedNameAttribute"/>
 			<xs:attribute name="sqlDataAccessIndication" use="required">
 				<xs:simpleType>
 					<xs:restriction base="xs:string">
@@ -526,5 +545,11 @@
 			<xs:field xpath="@name"/>
 		</xs:key>
 	</xs:element>
-
+	<xs:attributeGroup name="requestedNameAttribute">
+		<xs:attribute name="requestedName" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>If specified, then the name was modified to satisfy SQL standards. This is the original name that was automatically modified.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
 </xs:schema>
