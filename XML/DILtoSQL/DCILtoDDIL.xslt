@@ -51,19 +51,36 @@
 			<dms:startTransactionStatement isolationLevel="SERIALIZABLE" accessMode="READ WRITE"/>
 			<xsl:for-each select="$schemas">
 				<ddl:schemaDefinition schemaName="{@name}" defaultCharacterSet="UTF8"/>
-				<dms:setSchemaStatement>
-					<ddt:characterStringLiteral value="{dsf:getInformationSchemaForm(@name)}"/>
-				</dms:setSchemaStatement>
-				<xsl:apply-templates select="dcl:domain"/>
-				<xsl:apply-templates select="dcl:table" mode="GenerateTableBase"/>
+				<xsl:variable name="domains" select="dcl:domain"/>
+				<xsl:if test="$domains">
+					<dms:setSchemaStatement>
+						<ddt:characterStringLiteral value="{dsf:getInformationSchemaForm(@name)}"/>
+					</dms:setSchemaStatement>
+					<xsl:apply-templates select="dcl:domain"/>
+				</xsl:if>
 			</xsl:for-each>
 			<xsl:for-each select="$schemas">
-				<dms:setSchemaStatement>
-					<ddt:characterStringLiteral value="{dsf:getInformationSchemaForm(@name)}"/>
-				</dms:setSchemaStatement>
-				<xsl:apply-templates select="dcl:table" mode="GenerateTableReferences"/>
-				<xsl:apply-templates select="dcl:trigger"/>
-				<xsl:apply-templates select="dcl:procedure" />
+				<xsl:variable name="tables" select="dcl:table"/>
+				<xsl:if test="$tables">
+					<dms:setSchemaStatement>
+						<ddt:characterStringLiteral value="{dsf:getInformationSchemaForm(@name)}"/>
+					</dms:setSchemaStatement>
+					<xsl:apply-templates select="dcl:table" mode="GenerateTableBase"/>
+				</xsl:if>
+			</xsl:for-each>
+			<xsl:for-each select="$schemas">
+				<xsl:variable name="otherFragment">
+					<xsl:apply-templates select="dcl:table" mode="GenerateTableReferences"/>
+					<xsl:apply-templates select="dcl:trigger"/>
+					<xsl:apply-templates select="dcl:procedure" />
+				</xsl:variable>
+				<xsl:variable name="other" select="exsl:node-set($otherFragment)/*"/>
+				<xsl:if test="$other">
+					<dms:setSchemaStatement>
+						<ddt:characterStringLiteral value="{dsf:getInformationSchemaForm(@name)}"/>
+					</dms:setSchemaStatement>
+					<xsl:copy-of select="$other"/>
+				</xsl:if>
 			</xsl:for-each>
 			<dms:commitStatement/>
 		</dil:root>

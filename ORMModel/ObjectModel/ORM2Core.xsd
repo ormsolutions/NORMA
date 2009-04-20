@@ -57,6 +57,13 @@
 			</xs:annotation>
 		</xs:attribute>
 	</xs:attributeGroup>
+	<xs:attributeGroup name="idAttributeOptional">
+		<xs:attribute name="id" type="xs:ID">
+			<xs:annotation>
+				<xs:documentation>A unique identifier for this element.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
 	<xs:attributeGroup name="refAttribute">
 		<xs:attribute name="ref" type="xs:IDREF" use="required">
 			<xs:annotation>
@@ -468,7 +475,7 @@
 		<xs:annotation>
 			<xs:documentation>A use of a data type, including facet information.</xs:documentation>
 		</xs:annotation>
-		<xs:attributeGroup ref="idAttribute"/>
+		<xs:attributeGroup ref="idAttributeOptional"/>
 		<xs:attributeGroup ref="refAttribute"/>
 		<xs:attribute name="Scale" type="xs:int">
 			<xs:annotation>
@@ -828,7 +835,7 @@
 				<xs:sequence>
 					<xs:element name="ProjectionJoin" type="JoinRef" minOccurs="0"/>
 				</xs:sequence>
-				<xs:attributeGroup ref="idAttribute"/>
+				<xs:attributeGroup ref="idAttributeOptional"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
