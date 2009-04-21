@@ -814,7 +814,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			FrameworkDomainModel.DelayValidateElement(this, DelayValidateCompatibleRolePlayerTypeError);
 			FrameworkDomainModel.DelayValidateElement(this, DelayValidateRoleSequenceCountErrors);
-			FrameworkDomainModel.DelayValidateElement(this, DelayValidateConstraintPatternError);
+			DelayValidateConstraintPatternError(this);
 		}
 		void IModelErrorOwner.DelayValidateErrors()
 		{
@@ -2556,11 +2556,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			VerifyRoleSequenceCountForRule(notifyAdded);
 			// VerifyRoleSequenceArityForRule(notifyAdded); // This is called by VeryRoleSequenceCountForRule
 			// VerifyCompatibleRolePlayerTypeForRule(notifyAdded); // This is called by VerifyRoleSequenqeArityForRule
-			foreach (SetComparisonConstraintRoleSequence sequence in RoleSequenceCollection)
-			{
-				sequence.ValidateIntersectingConstraints(notifyAdded);
-				break;
-			}
+			SetComparisonConstraintRoleSequence.ValidateIntersectingConstraints(this, notifyAdded);
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{
@@ -2843,7 +2839,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
 			if (!sequence.IsDeleted)
 			{
-				FrameworkDomainModel.DelayValidateElement(sequence, DelayValidateConstraintPatternError);
+				sequence.DelayValidatePatternError();
 			}
 			SetComparisonConstraintRoleSequence setComparisonSequence = link.ConstraintRoleSequence as SetComparisonConstraintRoleSequence;
 			if (setComparisonSequence != null)
@@ -2995,18 +2991,50 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 			if (!sequence.IsDeleted)
 			{
-				FrameworkDomainModel.DelayValidateElement(sequence, DelayValidateConstraintPatternError);
+				sequence.DelayValidatePatternError();
 			}
 		}
 		#endregion // Rules
 		#region Validation
 		/// <summary>
+		/// Register pattern validation for this sequencye
+		/// </summary>
+		protected void DelayValidatePatternError()
+		{
+			ModelElement constraint = Constraint as ModelElement;
+			if (constraint != null)
+			{
+				FrameworkDomainModel.DelayValidateElement(constraint, DelayValidatePatternErrorForConstraint);
+			}
+			else
+			{
+				FrameworkDomainModel.DelayValidateElement(this, DelayValidatePatternErrorForSequence);
+			}
+		}
+		/// <summary>
+		/// A pass through validator used to map a role sequence that may not
+		/// have been added to a constraint when the constraint was added to
+		/// validation on the constrant itself. Most pattern validation should
+		/// go directly to the constraint, not the sequence, because for set comparison
+		/// constraint cases, the sequence can be detached before validation, making it
+		/// impossible to determine the constraint to validate.
+		/// </summary>
+		[DelayValidatePriority(-1)]
+		private static void DelayValidatePatternErrorForSequence(ModelElement element)
+		{
+			ModelElement constraint = ((ConstraintRoleSequence)element).Constraint as ModelElement;
+			if (constraint != null)
+			{
+				FrameworkDomainModel.DelayValidateElement(constraint, DelayValidatePatternErrorForConstraint);
+			}
+		}
+		/// <summary>
 		/// Validator callback for MandatoryImpliedByMandatoryError
 		/// and UniquenessImpliedByUniquenessError
 		/// </summary>
-		protected static void DelayValidateConstraintPatternError(ModelElement element)
+		private static void DelayValidatePatternErrorForConstraint(ModelElement element)
 		{
-			(element as ConstraintRoleSequence).ValidateConstraintPatternError(null);
+			ValidateConstraintPatternError(element as IConstraint, null);
 		}
 		/// <summary>
 		/// A helper function to delay validate pattern errors on an <see cref="IConstraint"/>
@@ -3014,28 +3042,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		protected static void DelayValidateConstraintPatternError(IConstraint constraint)
 		{
 			// Delay validate. Note that DelayValidateElement will automatically filter out duplicates
-			switch (constraint.ConstraintStorageStyle)
+			ModelElement element = (ModelElement)constraint;
+			if (!element.IsDeleted && !element.IsDeleting)
 			{
-				case ConstraintStorageStyle.SetConstraint:
-					SetConstraint setConstraint = (SetConstraint)constraint;
-					if (!setConstraint.IsDeleted && !setConstraint.IsDeleting)
-					{
-						FrameworkDomainModel.DelayValidateElement((ModelElement)setConstraint, DelayValidateConstraintPatternError);
-					}
-					break;
-				case ConstraintStorageStyle.SetComparisonConstraint:
-					SetComparisonConstraint setComparisonConstraint = (SetComparisonConstraint)constraint;
-					if (!setComparisonConstraint.IsDeleted && !setComparisonConstraint.IsDeleting)
-					{
-						//The validation code will just need to pull the .Constraint property
-						//off of this object, so it does not matter what sequence to send
-						LinkedElementCollection<SetComparisonConstraintRoleSequence> sequences = setComparisonConstraint.RoleSequenceCollection;
-						if (sequences.Count != 0)
-						{
-							FrameworkDomainModel.DelayValidateElement(sequences[0], DelayValidateConstraintPatternError);
-						}
-					}
-					break;
+				FrameworkDomainModel.DelayValidateElement(element, DelayValidatePatternErrorForConstraint);
 			}
 		}
 
@@ -3043,16 +3053,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Validates a subset of predefined constraint patterns (cases where SetConstraints conflict
 		/// with SetComparison constraints)
 		/// </summary>
-		/// <param name="notifyAdded"></param>
-		protected void ValidateConstraintPatternError(INotifyElementAdded notifyAdded)
+		protected static void ValidateConstraintPatternError(IConstraint constraint, INotifyElementAdded notifyAdded)
 		{
-			IConstraint constraint = this.Constraint;
 			if (constraint != null)
 			{
 				ValidateConstraintPatternErrorWithKnownConstraint(notifyAdded, constraint, IntersectingConstraintPattern.None, null);
 			}
 		}
-		private void ValidateConstraintPatternErrorWithKnownConstraint(INotifyElementAdded notifyAdded,	IConstraint currentConstraint, IntersectingConstraintPattern pattern, List<IConstraint> constraintsAlreadyValidated)
+		private static void ValidateConstraintPatternErrorWithKnownConstraint(INotifyElementAdded notifyAdded,	IConstraint currentConstraint, IntersectingConstraintPattern pattern, List<IConstraint> constraintsAlreadyValidated)
 		{
 			#region Declare and Assign necessary variables
 			if (constraintsAlreadyValidated != null)
@@ -3072,16 +3080,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			SetConstraint currentSetConstraint = null;
 			LinkedElementCollection<Role> setConstraintRoles = null;
 			ConstraintModality currentModality;
+			Store store;
 			if (null != (currentSetConstraint = currentConstraint as SetConstraint))
 			{
 				currentModality = currentSetConstraint.Modality;
 				setConstraintRoles = currentSetConstraint.RoleCollection;
+				store = currentSetConstraint.Store;
 			}
 			else
 			{
 				currentSetComparisonConstraint = (SetComparisonConstraint)currentConstraint;
 				currentModality = currentSetComparisonConstraint.Modality;
 				sequences = currentSetComparisonConstraint.RoleSequenceCollection;
+				store = currentSetComparisonConstraint.Store;
 			}
 			#endregion
 
@@ -3150,7 +3161,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 
 				//Get these GUIDs from data
-				Store store = Store;
 				DomainRoleInfo towardsErrorRoleInfo = null;
 				ModelError error = null;
 				Guid? domainRoleErrorId = validationInfo.DomainRoleToError;
@@ -3265,10 +3275,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							if (error != null)
 							{
 								//Validate other constraints on this error
-								List<IConstraint> list = GetAllConstraintsOnError(error);
 								int validatedCount = 0;
 
-								foreach (IConstraint constr in list)
+								foreach (IConstraint constr in GetAllConstraintsOnError(error))
 								{
 									if (constr != currentSetComparisonConstraint)
 									{
@@ -3365,7 +3374,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 						if (hasError)
 						{
-							HandleError(true, ref error, domainRoleErrorId.Value, notifyAdded, currentConstraint);
+							HandleError(store, true, ref error, domainRoleErrorId.Value, notifyAdded, currentConstraint);
 						}
 						else if (error != null)
 						{
@@ -3429,8 +3438,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 
 
-							HandleError(false, ref error, domainRoleErrorId.Value, notifyAdded, currentConstraint);
-							HandleError(true, ref error, mandatoryDomainRoleId, null, contradictingMandatory);
+							HandleError(store, false, ref error, domainRoleErrorId.Value, notifyAdded, currentConstraint);
+							HandleError(store, true, ref error, mandatoryDomainRoleId, null, contradictingMandatory);
 						}
 						else if (error != null)
 						{
@@ -3468,22 +3477,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 
-		private List<IConstraint> GetAllConstraintsOnError(ModelError error)
+		private static IEnumerable<IConstraint> GetAllConstraintsOnError(ModelError error)
 		{
-			List<IConstraint> constraintsAttached = new List<IConstraint>();
-			ReadOnlyCollection<ElementLink> links = DomainRoleInfo.GetAllElementLinks(error);
-
-			foreach (ElementLink link in links)
+			foreach (ElementLink link in DomainRoleInfo.GetAllElementLinks(error))
 			{
 				IConstraint cur = DomainRoleInfo.GetSourceRolePlayer(link) as IConstraint;
 
 				if (cur != null)
 				{
-					constraintsAttached.Add(cur);
+					yield return cur;
 				}
 			}
-
-			return constraintsAttached;
 		}
 
 		/// <summary>
@@ -3524,7 +3528,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 
-		private bool CheckIfHasOneColumn(LinkedElementCollection<SetComparisonConstraintRoleSequence> sequences)
+		private static bool CheckIfHasOneColumn(LinkedElementCollection<SetComparisonConstraintRoleSequence> sequences)
 		{
 			bool hasOneColumn = true;
 
@@ -3549,7 +3553,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="allConstraintsThatNeedToBeAttached_And_TheirRoleIds">
 		/// The key is Iconstraint and the value is a Guis of the role this constraint plays in the relationship with this error
 		/// </param>
-		private void UpdateErrorObject(ref ModelError error, Hashtable allConstraintsThatNeedToBeAttached_And_TheirRoleIds)
+		private static void UpdateErrorObject(ref ModelError error, Hashtable allConstraintsThatNeedToBeAttached_And_TheirRoleIds)
 		{
 			if (error == null)
 			{
@@ -3575,54 +3579,59 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 		}
-
-		/// <summary>
-		/// Takes care of attaching the constraint to the error and updating error text if requested
-		/// </summary>
-		/// <param name="generateText"></param>
-		/// <param name="error"></param>
-		/// <param name="domainRoleErrorId"></param>
-		/// <param name="notifyAdded"></param>
-		/// <param name="constraintToAttachErrorTo">
-		/// Constraint to attach the error to
-		/// </param>
-		private void HandleError(bool generateText, ref ModelError error,
-			Guid domainRoleErrorId, INotifyElementAdded notifyAdded,
-			IConstraint constraintToAttachErrorTo)
-		{
-			HandleError(generateText, ref error, domainRoleErrorId, notifyAdded, new IConstraint[]{constraintToAttachErrorTo});
-		}
-
 		/// <summary>
 		/// Takes care of attaching the constraints to the error and updating error text if requested
 		/// </summary>
-		/// <param name="generateText"></param>
-		/// <param name="error"></param>
-		/// <param name="domainRoleErrorId"></param>
-		/// <param name="notifyAdded"></param>
-		/// <param name="allConstraintsConflicting">
-		/// All constraints that need to be added to the error, better to send all of 
-		/// them at once
-		/// </param>
-		private void HandleError(bool generateText, ref ModelError error,
-			Guid domainRoleErrorId, INotifyElementAdded notifyAdded,
-			IList<IConstraint> allConstraintsConflicting)
+		/// <param name="store">Context <see cref="Store"/></param>
+		/// <param name="generateText">True to generated text for the error</param>
+		/// <param name="error">The error being created or modified</param>
+		/// <param name="domainRoleErrorId">The role on the error object that is opposite the error to create</param>
+		/// <param name="notifyAdded"><see cref="INotifyElementAdded"/> callback, set during deserialization</param>
+		/// <param name="conflictingConstraints">All constraints that need to be added to the error</param>
+		private static void HandleError(
+			Store store,
+			bool generateText,
+			ref ModelError error,
+			Guid domainRoleErrorId,
+			INotifyElementAdded notifyAdded,
+			params IConstraint[] conflictingConstraints)
 		{
-			if (allConstraintsConflicting == null)
+			HandleError(store, generateText, ref error, domainRoleErrorId, notifyAdded, (IList<IConstraint>)conflictingConstraints);
+		}
+		/// <summary>
+		/// Takes care of attaching the constraints to the error and updating error text if requested
+		/// </summary>
+		/// <param name="store">Context <see cref="Store"/></param>
+		/// <param name="generateText">True to generated text for the error</param>
+		/// <param name="error">The error being created or modified</param>
+		/// <param name="domainRoleErrorId">The role on the error object that is opposite the error to create</param>
+		/// <param name="notifyAdded"><see cref="INotifyElementAdded"/> callback, set during deserialization</param>
+		/// <param name="conflictingConstraints">All constraints that need to be added to the error</param>
+		private static void HandleError(
+			Store store,
+			bool generateText,
+			ref ModelError error,
+			Guid domainRoleErrorId,
+			INotifyElementAdded notifyAdded,
+			IList<IConstraint> conflictingConstraints)
+		{
+			int constraintCount;
+			if (conflictingConstraints == null ||
+				0 == (constraintCount = conflictingConstraints.Count))
 			{
 				return;
 			}
 			if (error == null)
 			{
 				//Create it
-				error = (ModelError)Store.ElementFactory.CreateElement(
-					Store.DomainDataDirectory.FindDomainRole(domainRoleErrorId).OppositeDomainRole.RolePlayer);
+				error = (ModelError)store.ElementFactory.CreateElement(store.DomainDataDirectory.FindDomainRole(domainRoleErrorId).OppositeDomainRole.RolePlayer);
 			}
 
 			ModelElement errorLinked;
 
-			foreach (IConstraint curConstraint in allConstraintsConflicting)
+			for (int i = 0; i < constraintCount; ++i)
 			{
+				IConstraint curConstraint = conflictingConstraints[i];
 				errorLinked = DomainRoleInfo.GetLinkedElement((ModelElement)curConstraint, domainRoleErrorId);
 
 				if (errorLinked != error || errorLinked == null)
@@ -3642,10 +3651,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 			if (generateText)
 			{
-				if (allConstraintsConflicting.Count > 0)
-				{
-					error.Model = allConstraintsConflicting[0].Model;
-				}
+				error.Model = conflictingConstraints[0].Model;
 				error.GenerateErrorText();
 			}
 
@@ -3669,7 +3675,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="curConstraint"></param>
 		/// <param name="hasErrorDefault"></param>
 		/// <returns></returns>
-		private bool HandleExclusionOrEqualityAndMandatory(
+		private static bool HandleExclusionOrEqualityAndMandatory(
 			LinkedElementCollection<SetComparisonConstraintRoleSequence> sequences,
 			bool shouldExecuteValidationCode,
 			bool isExclusion, int minNumViolatingConstraints,
@@ -3687,12 +3693,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			Guid domainRoleErrorId = optionalDomainRoleErrorId.Value;
 			IList<IConstraint> constrFound = null;
 			bool hasError = hasErrorDefault;
+			Store store = ((ModelElement)curConstraint).Store;
 
 			if (shouldExecuteValidationCode &&
 				(0 < minNumViolatingConstraints ||
 				0 < (minNumViolatingConstraints = (sequences != null) ? sequences.Count : 0)))
 			{
-				Store store = Store;
 				int numOfViolatingConstraints = 0;
 
 				//For these patterns: there can be an error only if there are more than one sequences on
@@ -3756,14 +3762,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 					//!isExclusion means that if it is not exclusion constraint - no more error handling will
 					//occur, so error text needs to be generated now
-					HandleError(!isExclusion, ref error, domainRoleErrorId, notifyAdded, curConstraint);
-					HandleError(true, ref error, mandatoriesDomainRoleId, null, constrFound);
+					HandleError(store, !isExclusion, ref error, domainRoleErrorId, notifyAdded, curConstraint);
+					HandleError(store, true, ref error, mandatoriesDomainRoleId, null, constrFound);
 				}
 				else
 				{
 					//!isExclusion means that if it is not exclusion constraint - no more error handling will
 					//occur, so error text needs to be generated now
-					HandleError(!isExclusion, ref error, domainRoleErrorId, notifyAdded, curConstraint);
+					HandleError(store, !isExclusion, ref error, domainRoleErrorId, notifyAdded, curConstraint);
 				}
 			}
 			else if (error != null)
@@ -3782,7 +3788,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="notifyAdded"></param>
 		/// <param name="validationInfo">Validation information of the current constraint</param>
 		/// <param name="constraintSequences">Sequences linked to the constraint</param>
-		private void ValidateSetComparisonConstraintSubsetPattern(
+		private static void ValidateSetComparisonConstraintSubsetPattern(
 			SetComparisonConstraint setComparsionConstraint,
 			INotifyElementAdded notifyAdded,
 			IntersectingConstraintValidation validationInfo,
@@ -3902,7 +3908,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Handling the error
 			int constraintsInErrorCount = (constraintsInError == null) ? 0 : constraintsInError.Count;
 			Guid domainRoleErrorId = validationInfo.DomainRoleToError.Value;
-			Store store = Store;
+			Store store = setComparsionConstraint.Store;
 			DomainRoleInfo constraintRoleInfo = store.DomainDataDirectory.FindDomainRole(domainRoleErrorId);
 			DomainRoleInfo errorRoleInfo = constraintRoleInfo.OppositeDomainRole;
 
@@ -3935,8 +3941,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 
 						//Need to attach the error to all: the current constraint and all constraints, which were found to conflict with it
-						HandleError(false, ref error, domainRoleErrorId, notifyAdded, setComparsionConstraint);
-						HandleError(true, ref error, domainRoleErrorId, notifyAdded, constraintsInError);
+						HandleError(store, false, ref error, domainRoleErrorId, notifyAdded, setComparsionConstraint);
+						HandleError(store, true, ref error, domainRoleErrorId, notifyAdded, constraintsInError);
 					}
 				}
 				else if (error != null)
@@ -3968,7 +3974,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						if (constraintSequenceCount > 1)
 						{
 							//Attach the error only to the current constraint
-							HandleError(true, ref error, domainRoleErrorId, notifyAdded, curConstraint);
+							HandleError(store, true, ref error, domainRoleErrorId, notifyAdded, curConstraint);
 						}
 					}
 					else if (error != null) //there was an error but not anymore
@@ -4097,12 +4103,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#region Error validation
 		/// <summary>
 		/// Called during initial validation of a <see cref="SetComparisonConstraint"/> to
-		/// verify intersecting constraints. This methods needs to be called for one sequence
-		/// on a constraint only.
+		/// verify intersecting constraints.
 		/// </summary>
-		public void ValidateIntersectingConstraints(INotifyElementAdded notifyAdded)
+		public static void ValidateIntersectingConstraints(IConstraint constraint, INotifyElementAdded notifyAdded)
 		{
-			base.ValidateConstraintPatternError(notifyAdded);
+			ValidateConstraintPatternError(constraint, notifyAdded);
 		}
 		#endregion // Error validation
 	}

@@ -3,7 +3,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
-<title>NORMA February 2009 CTP Readme</title>
+<title>NORMA March 2009 CTP Readme</title>
 <style type="text/css">
 	.new {font-size:x-small; background-color:Gold; color:Blue; }
 	li {padding-bottom: 3px;}
@@ -12,9 +12,9 @@
 
 <body>
 
-<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA February 2009 CTP Readme</a>&nbsp;</b></p>
+<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA March 2009 CTP Readme</a>&nbsp;</b></p>
 <p>This file supersedes the previous readme.txt and older readme.htm files. This readme has parallel indexing mechanisms: by topic, and by release date (starting with the October 2008 (2008-10) release, I won't be adding historical dates). The file will be extended for future product releases.<br/><br/>
-The February 2009 drop adds grouping support and a number of stability improvements in the tool.
+The March 2009 release is a stabilization release with targeted fixes. 
 <br/><br/></p>
 <h2>Contents</h2>
 <ul>
@@ -40,8 +40,24 @@ The February 2009 drop adds grouping support and a number of stability improveme
 <li><a href="#TOPIC DAILY">TOPIC DESCRIPTION</a>&nbsp;(Changeset ####)</li>
 </ul>-->
 <hr/>
-<h2>February 2009 CTP Changes</h2>
-<div>The February 2009 CTP drop includes all modifications through changeset 1370. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<h2>March 2009 CTP Changes</h2>
+<div>The Math 2009 CTP release includes all modifications through changeset 1382. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<ul>
+<li>Notable Changes:
+<ol>
+<li>Column name generation in separate or partitioned tables was incorrectly the 'identifier' naming pattern instead of the 'reference' naming pattern, resulting in overly simplified names for referenced elements.</li>
+<li>Any duplicate constraint names that match the automatically generated name are automatically resolved when the file loads. This makes it much easier to merge multiple versions of the same model file.</li>
+<li>Opening the Fact Editor with an existing selection would not populate for that selection. Selection had to be changed with the editor visible.</li>
+<li><em>Notes</em> and <em>Informal Descriptions</em> are now available for all constraints and for groups.</li>
+<li>The readme file has been moved to the <em>Documentation</em> directory, which also contains an html form of the core schema file with full comments. The schema comments should also improve the experience of looking at an .orm file in the Visual Studio Xml editor.</li>
+<li>Added support for external developers to register their own Xml file importers. Additional settings files can be added to the <em>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\8.0\ORM Solutions\Natural ORM Architect\DesignerSettings</em> key using the pattern shown in the 'Core' subkey. Note that the <em>ConvertersDir</em> specified for the core settings file will be used if another directory is not specified. Use <em>9.0</em> instead of <em>8.0</em> for Visual Studio 2008.</li>
+<li>Added support for generating multiple database schemas. Mechanisms for leveraging this support with custom properties are discussed in the forums at <a href="http://www.ormfoundation.org">orm foundation</a>.</li>
+<li>Fixed an issue with contradition errors not clearly when a role sequence was deleted from a set comparison constraint. This could leave the .orm file in an invalid state.</li>
+</ol>
+</li>
+</ul>
+<hr/>
+<div>The February 2009 CTP release includes all modifications through changeset 1370.</div>
 <ul>
 <li><a href="#Element Grouping 2009-02">Element Grouping</a>&nbsp;</li>
 <li>Other Changes:
@@ -59,7 +75,7 @@ The February 2009 drop adds grouping support and a number of stability improveme
 </ul>
 <hr/>
 <h2>January 2009 CTP Changes</h2>
-<div>The January 2009 CTP drop includes all modifications through changeset 1356.</div>
+<div>The January 2009 CTP release includes all modifications through changeset 1356.</div>
 <ul>
 <li><a href="#FactEditor Inverse Readings 2009-01">Fact Editor inverse readings</a>&nbsp;</li>
 <li>Other Changes:
@@ -73,7 +89,7 @@ The February 2009 drop adds grouping support and a number of stability improveme
 </li>
 </ul><hr/>
 <h2>December 2008 CTP Changes</h2>
-<div>The December 2008 CTP (a) drop includes all modifications through changeset 1350.</div>
+<div>The December 2008 CTP (a) release includes all modifications through changeset 1350.</div>
 <ul>
 <li><a href="#Diagram Management 2008-12">Diagram order and position caching</a>&nbsp;</li>
 <li><a href="#Model Browser Links 2008-12">Model Browser link nodes</a>&nbsp;</li>
@@ -85,8 +101,8 @@ The February 2009 drop adds grouping support and a number of stability improveme
 </li>
 </ul><hr/>
 <h2>October 2008 CTP Changes</h2>
-<div>The October 2008 CTP drop includes all modifications through changeset 1340.<br/><br/>
-The October 2008 drop includes two major functionality additions plus a number of smaller pieces. The major changes relate to sample population (you can now fully populate a model, including objectified FactTypes and Subtypes) and model navigation using the Verbalization Browser and the new 'ORM Diagram Spy' tool window.
+<div>The October 2008 CTP release includes all modifications through changeset 1340.<br/><br/>
+The October 2008 release includes two major functionality additions plus a number of smaller pieces. The major changes relate to sample population (you can now fully populate a model, including objectified FactTypes and Subtypes) and model navigation using the Verbalization Browser and the new 'ORM Diagram Spy' tool window.
 </div>
 <ul>
   <li><a href="#Setup 2008-10">SetupVista.bat elevates install permissions on Vista</a></li>
@@ -116,7 +132,7 @@ The October 2008 drop includes two major functionality additions plus a number o
 <li>First extract the files from the .zip file first unless you open them with the standard 'Compressed (zipped) Folders' viewer, in which case you can usually run Setup.bat without pre-expanding the zip file. Vista is likely to recommend expansion even with the standard viewer.</li>
 <li><a id="#Setup 2008-10" class="new" title="October 2008 CTP: SetupVista.bat elevates install permissions on Vista">2008-10</a>&nbsp;
 The setup process must be run with admistrative permissions on Vista. You can either right-click the Setup.bat file and choose 'Run as Administrator', or you can run SetupVista.bat instead of Setup.bat and agree to the Vista security warnings.</li>
-<li>(Visual Studio 2005 Install Only) The DSLToolsRedist.msi included with this drop will not automatically upgrade if you have an older DSL installation on your machine. If you were an early user of NORMA or other DSL products and have not previously upgraded, or have experience designer issues on Windows Vista, then you may want to explicit uninstall the 'Microsoft DSL Tools Redistributable' product before running NORMA setup.</li>
+<li>(Visual Studio 2005 Install Only) The DSLToolsRedist.msi included with this release will not automatically upgrade if you have an older DSL installation on your machine. If you were an early user of NORMA or other DSL products and have not previously upgraded, or have experience designer issues on Windows Vista, then you may want to explicit uninstall the 'Microsoft DSL Tools Redistributable' product before running NORMA setup.</li>
 </ol>
 <a href="#The Top">Return to top</a>
 <hr/>
