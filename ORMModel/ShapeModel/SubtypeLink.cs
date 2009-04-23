@@ -437,11 +437,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			SubtypeFact subtypeFact = AssociatedSubtypeFact;
 			ObjectType subType = subtypeFact.Subtype;
 			ObjectType superType = subtypeFact.Supertype;
-			FactType nestedSubFact = subType.NestedFactType;
-			FactType nestedSuperFact = superType.NestedFactType;
+			if (subType != null && superType != null)
+			{
+				FactType nestedSubFact = subType.NestedFactType;
+				FactType nestedSuperFact = superType.NestedFactType;
 
-			MultiShapeUtility.ReconfigureLink(this, (nestedSubFact == null) ? subType as ModelElement : nestedSubFact as ModelElement,
-				(nestedSuperFact == null) ? superType as ModelElement : nestedSuperFact as ModelElement, discludedShape);
+				MultiShapeUtility.ReconfigureLink(this, (nestedSubFact == null) ? subType as ModelElement : nestedSubFact as ModelElement,
+					(nestedSuperFact == null) ? superType as ModelElement : nestedSuperFact as ModelElement, discludedShape);
+			}
 		}
 		void IReconfigureableLink.Reconfigure(ShapeElement discludedShape)
 		{

@@ -555,7 +555,12 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 			{
 				throw new ArgumentNullException("link");
 			}
-			Dictionary<object, object> contextInfo = link.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+			Store store = link.Store;
+			if (store.InUndoRedoOrRollback)
+			{
+				return;
+			}
+			Dictionary<object, object> contextInfo = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
 			if (IsSecondaryLinkReconfigureBlocked(contextInfo, link))
 			{
 				return;
