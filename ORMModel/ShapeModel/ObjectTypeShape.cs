@@ -33,7 +33,7 @@ using ORMSolutions.ORMArchitect.Framework.Diagrams;
 using ORMSolutions.ORMArchitect.Core.Shell;
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
-	public partial class ObjectTypeShape : IModelErrorActivation, IDynamicColorGeometryHost
+	public partial class ObjectTypeShape : IModelErrorActivation, IDynamicColorGeometryHost, IConfigureableLinkEndpoint
 	{
 		#region Member Variables
 		private static AutoSizeTextField myTextShapeField;
@@ -42,6 +42,55 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		private const double VerticalMargin = 0.050;
 		private static readonly StyleSetResourceId DashedShapeOutlinePen = new StyleSetResourceId("ORMArchitect", "DashedShapeOutlinePen");
 		#endregion // Member Variables
+		#region DisplayFlags
+		/// <summary>
+		/// Bitfield for display settings. All flags are assumed to default to false. 
+		/// </summary>
+		[Flags]
+		private enum DisplayFlags
+		{
+			/// <summary>
+			/// Corresponds to the ExpandRefMode property
+			/// </summary>
+			ExpandRefMode = 1,
+			/// <summary>
+			/// Corresponds to the suptypes part of the DisplayRelatedTypes property
+			/// </summary>
+			HideSubtypes = 2,
+			/// <summary>
+			/// Corresponds to the supertypes part of the DisplayRelatedTypes property
+			/// </summary>
+			HideSupertypes = 4,
+		}
+		private DisplayFlags myDisplayFlags;
+		/// <summary>
+		/// Test if a display flag is set
+		/// </summary>
+		private bool GetDisplayFlag(DisplayFlags flag)
+		{
+			return 0 != (myDisplayFlags & flag);
+		}
+		/// <summary>
+		/// Set a value for a display flag. Returns true if the flag value changed.
+		/// </summary>
+		private bool SetDisplayFlag(DisplayFlags flag, bool value)
+		{
+			if (value)
+			{
+				if ((myDisplayFlags & flag) != flag)
+				{
+					myDisplayFlags |= flag;
+					return true;
+				}
+			}
+			else if (0 != (myDisplayFlags & flag))
+			{
+				myDisplayFlags &= ~flag;
+				return true;
+			}
+			return false;
+		}
+		#endregion // DisplayFlags
 		#region Customize appearance
 		/// <summary>
 		/// Show a shadow if this <see cref="ObjectTypeShape"/> represents an <see cref="ObjectType"/> that appears
@@ -903,6 +952,18 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			ResizeAssociatedShapes(((SubtypeHasDerivationExpression)e.ModelElement).Subtype);
 		}
+		/// <summary>
+		/// ChangeRule: typeof(Microsoft.VisualStudio.Modeling.Diagrams.ObjectTypeShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+		/// </summary>
+		private static void ConnectionPropertyChangeRule(ElementPropertyChangedEventArgs e)
+		{
+			ObjectTypeShape objectTypeShape;
+			if (e.DomainProperty.Id == DisplayRelatedTypesDomainPropertyId &&
+				!(objectTypeShape = (ObjectTypeShape)e.ModelElement).IsDeleted)
+			{
+				MultiShapeUtility.AttachLinkConfigurationChanged(objectTypeShape);
+			}
+		}
 		#endregion // Shape display update rules
 		#region Store Event Handlers
 		/// <summary>
@@ -1116,5 +1177,94 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 		}
 		#endregion // Deserialization Fixup
+		#region CustomStorage Properties
+		private bool GetExpandRefModeValue()
+		{
+			return GetDisplayFlag(DisplayFlags.ExpandRefMode);
+		}
+		private void SetExpandRefModeValue(bool value)
+		{
+			SetDisplayFlag(DisplayFlags.ExpandRefMode, value);
+		}
+		private RelatedTypesDisplay GetDisplayRelatedTypesValue()
+		{
+			if (GetDisplayFlag(DisplayFlags.HideSubtypes))
+			{
+				return GetDisplayFlag(DisplayFlags.HideSupertypes) ? RelatedTypesDisplay.AttachNoTypes : RelatedTypesDisplay.AttachSupertypes;
+			}
+			return GetDisplayFlag(DisplayFlags.HideSupertypes) ? RelatedTypesDisplay.AttachSubtypes : RelatedTypesDisplay.AttachAllTypes;
+		}
+		private void SetDisplayRelatedTypesValue(RelatedTypesDisplay value)
+		{
+			switch (value)
+			{
+				case RelatedTypesDisplay.AttachAllTypes:
+					SetDisplayFlag(DisplayFlags.HideSubtypes | DisplayFlags.HideSupertypes, false);
+					break;
+				case RelatedTypesDisplay.AttachSubtypes:
+					SetDisplayFlag(DisplayFlags.HideSubtypes, false);
+					SetDisplayFlag(DisplayFlags.HideSupertypes, true);
+					break;
+				case RelatedTypesDisplay.AttachSupertypes:
+					SetDisplayFlag(DisplayFlags.HideSubtypes, true);
+					SetDisplayFlag(DisplayFlags.HideSupertypes, false);
+					break;
+				case RelatedTypesDisplay.AttachNoTypes:
+					SetDisplayFlag(DisplayFlags.HideSubtypes | DisplayFlags.HideSupertypes, true);
+					break;
+			}
+		}
+		#endregion // CustomStorage Properties
+		#region IConfigureableLinkEndpoint Implementation
+		/// <summary>
+		/// Implements <see cref="IConfigureableLinkEndpoint.CanAttachLink"/>
+		/// </summary>
+		protected AttachLinkResult CanAttachLink(ModelElement element, bool toRole)
+		{
+			if (toRole)
+			{
+				if (GetDisplayFlag(DisplayFlags.HideSubtypes) && element is SubtypeFact)
+				{
+					return AttachLinkResult.Defer;
+				}
+			}
+			else if (GetDisplayFlag(DisplayFlags.HideSupertypes) &&
+				element is SubtypeFact)
+			{
+				return AttachLinkResult.Defer;
+			}
+			return AttachLinkResult.Attach;
+		}
+		AttachLinkResult IConfigureableLinkEndpoint.CanAttachLink(ModelElement element, bool toRole)
+		{
+			return CanAttachLink(element, toRole);
+		}
+		/// <summary>
+		/// Implements <see cref="IConfigureableLinkEndpoint.FixupUnattachedLinkElements"/>
+		/// </summary>
+		protected void FixupUnattachedLinkElements(Diagram diagram)
+		{
+			ObjectType objectType;
+			ORMDiagram ormDiagram;
+			if (null != (objectType = AssociatedObjectType) &&
+				null != (ormDiagram = diagram as ORMDiagram))
+			{
+				foreach (Role role in objectType.PlayedRoleCollection)
+				{
+					FactType subtypeFact = null;
+					if ((role is SubtypeMetaRole ||	role is SupertypeMetaRole) &&
+						null != (subtypeFact = role.FactType) &&
+						null == ormDiagram.FindShapeForElement<SubtypeLink>(subtypeFact))
+					{
+						ormDiagram.FixUpLocalDiagram(subtypeFact);
+					}
+				}
+			}
+		}
+		void IConfigureableLinkEndpoint.FixupUnattachedLinkElements(Diagram diagram)
+		{
+			FixupUnattachedLinkElements(diagram);
+		}
+		#endregion // IConfigureableLinkEndpoint Implementation
 	}
 }

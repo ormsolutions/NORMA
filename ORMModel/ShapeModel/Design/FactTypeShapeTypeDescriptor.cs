@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -67,6 +68,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 		private static volatile bool myCustomPropertyAttributesInitialized;
 		private static Attribute[] ConstraintDisplayPositionDomainPropertyAttributes;
 		private static Attribute[] DisplayOrientationDomainPropertyAttributes;
+		private static Attribute[] DisplayRelatedTypesDomainPropertyAttributes;
 		private static Attribute[] DisplayRoleNamesDomainPropertyAttributes;
 		private static Attribute[] NameDomainPropertyAttributes;
 		private static Attribute[] IsIndependentDomainPropertyAttributes;
@@ -83,6 +85,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 					{
 						ConstraintDisplayPositionDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(FactTypeShape.ConstraintDisplayPositionDomainPropertyId));
 						DisplayOrientationDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayOrientationDomainPropertyId));
+						DisplayRelatedTypesDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayRelatedTypesDomainPropertyId));
 						DisplayRoleNamesDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayRoleNamesDomainPropertyId));
 						NameDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(ORMNamedElement.NameDomainPropertyId));
 						IsIndependentDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(ObjectType.IsIndependentDomainPropertyId));
@@ -120,18 +123,24 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 			{
 				FactTypeShape factTypeShape = PresentationElement;
 				ObjectType nestingType = factType.NestingType;
+				bool nestingTypeHasRelatedTypes = nestingType.IsSubtypeOrSupertype;
 				DomainDataDirectory domainDataDirectory = factType.Store.DomainDataDirectory;
 				EnsureDomainAttributesInitialized(domainDataDirectory);
 
-				return new PropertyDescriptorCollection(new PropertyDescriptor[]{
-					CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.ConstraintDisplayPositionDomainPropertyId), ConstraintDisplayPositionDomainPropertyAttributes),
-					CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayOrientationDomainPropertyId), DisplayOrientationDomainPropertyAttributes),
-					CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayRoleNamesDomainPropertyId), DisplayRoleNamesDomainPropertyAttributes),
-					CreatePropertyDescriptor(nestingType, domainDataDirectory.FindDomainProperty(ORMNamedElement.NameDomainPropertyId), NameDomainPropertyAttributes),
-					CreatePropertyDescriptor(nestingType, domainDataDirectory.FindDomainProperty(ObjectType.IsIndependentDomainPropertyId), IsIndependentDomainPropertyAttributes),
-					new ObjectificationRolePlayerPropertyDescriptor(factType, domainDataDirectory.FindDomainRole(Objectification.NestingTypeDomainRoleId), NestedFactTypeDomainRoleAttributes),
-					new ObjectificationRolePlayerPropertyDescriptor(nestingType, domainDataDirectory.FindDomainRole(Objectification.NestedFactTypeDomainRoleId), NestingTypeDomainRoleAttributes)
-				});
+				PropertyDescriptor[] descriptors = new PropertyDescriptor[nestingTypeHasRelatedTypes ? 8 : 7];
+				descriptors[0] = CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.ConstraintDisplayPositionDomainPropertyId), ConstraintDisplayPositionDomainPropertyAttributes);
+				descriptors[1] = CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayOrientationDomainPropertyId), DisplayOrientationDomainPropertyAttributes);
+				descriptors[2] = CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayRoleNamesDomainPropertyId), DisplayRoleNamesDomainPropertyAttributes);
+				descriptors[3] = CreatePropertyDescriptor(nestingType, domainDataDirectory.FindDomainProperty(ORMNamedElement.NameDomainPropertyId), NameDomainPropertyAttributes);
+				descriptors[4] = CreatePropertyDescriptor(nestingType, domainDataDirectory.FindDomainProperty(ObjectType.IsIndependentDomainPropertyId), IsIndependentDomainPropertyAttributes);
+				descriptors[5] = new ObjectificationRolePlayerPropertyDescriptor(factType, domainDataDirectory.FindDomainRole(Objectification.NestingTypeDomainRoleId), NestedFactTypeDomainRoleAttributes);
+				descriptors[6] = new ObjectificationRolePlayerPropertyDescriptor(nestingType, domainDataDirectory.FindDomainRole(Objectification.NestedFactTypeDomainRoleId), NestingTypeDomainRoleAttributes);
+				if (nestingTypeHasRelatedTypes)
+				{
+					descriptors[7] = CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayRelatedTypesDomainPropertyId), DisplayRelatedTypesDomainPropertyAttributes);
+				}
+
+				return new PropertyDescriptorCollection(descriptors);
 			}
 			return base.GetProperties(attributes);
 		}

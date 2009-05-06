@@ -42,7 +42,7 @@ using ORMSolutions.ORMArchitect.Framework.Diagrams;
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	#region FactTypeShape class
-	public partial class FactTypeShape : ICustomShapeFolding, IModelErrorActivation, IProvideConnectorShape, IProxyDisplayProvider, IConfigureAsChildShape, IDynamicColorGeometryHost
+	public partial class FactTypeShape : ICustomShapeFolding, IModelErrorActivation, IProvideConnectorShape, IProxyDisplayProvider, IConfigureAsChildShape, IDynamicColorGeometryHost, IConfigureableLinkEndpoint
 	{
 		#region ConstraintBoxRoleActivity enum
 		/// <summary>
@@ -3589,7 +3589,211 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			Debug.Assert(childShape is ObjectifiedFactTypeNameShape || childShape is ReadingShape || childShape is ValueConstraintShape || childShape is RoleNameShape);
 			return RelationshipType.Relative;
 		}
+		/// <summary>
+		/// Highlight a visible role name shape along with the corresponding role box
+		/// </summary>
+		public override void OnSubFieldMouseEnter(ShapeField field, ShapeSubField subField, DiagramPointEventArgs e)
+		{
+			DiagramClientView view = e.DiagramClientView;
+			if (view != null)
+			{
+				RoleSubField roleField = subField as RoleSubField;
+				if (roleField != null)
+				{
+					RoleBase findRole = roleField.AssociatedRole;
+					foreach (ShapeElement pel in RelativeChildShapes)
+					{
+						RoleNameShape nameShape;
+						if (null != (nameShape = pel as RoleNameShape) &&
+							nameShape.ModelElement == findRole)
+						{
+							DiagramItemCollection items = new DiagramItemCollection();
+							items.Add(new DiagramItem(this, field, subField));
+							items.Add(new DiagramItem(nameShape));
+							view.HighlightedShapes.Set(items);
+							return;
+						}
+					}
+				}
+				view.HighlightedShapes.Set(new DiagramItem(this, field, subField));
+			}
+		}
+		/// <summary>
+		/// Highlight a visible role name shape along with the corresponding role box
+		/// </summary>
+		public override void OnSubFieldMouseLeave(ShapeField field, ShapeSubField subField, DiagramPointEventArgs e)
+		{
+			DiagramClientView view = e.DiagramClientView;
+			if (view != null)
+			{
+				RoleSubField roleField = subField as RoleSubField;
+				if (roleField != null)
+				{
+					RoleBase findRole = roleField.AssociatedRole;
+					foreach (ShapeElement pel in RelativeChildShapes)
+					{
+						RoleNameShape nameShape;
+						if (null != (nameShape = pel as RoleNameShape) &&
+							nameShape.ModelElement == findRole)
+						{
+							view.HighlightedShapes.Remove(new DiagramItem[]{new DiagramItem(this, field, subField), new DiagramItem(nameShape)});
+							return;
+						}
+					}
+				}
+				view.HighlightedShapes.Remove(new DiagramItem(this, field, subField));
+			}
+		}
 		#endregion // Customize appearance
+		#region DisplayFlags
+		/// <summary>
+		/// Bitfield for display settings. All flags are assumed to default to false. 
+		/// </summary>
+		[Flags]
+		private enum DisplayFlags
+		{
+			/// <summary>
+			/// Corresponds to the ConstraintDisplayPosition property
+			/// </summary>
+			ConstraintsOnBottom = 1,
+			/// <summary>
+			/// Corresponds to the On value of the DisplayRoleNames property
+			/// </summary>
+			RoleNamesOn = 2,
+			/// <summary>
+			/// Corresponds to the Off value of the DisplayRoleNames property
+			/// </summary>
+			RoleNamesOff = 4,
+			/// <summary>
+			/// Corresponds to the VerticalRotatedLeft property of DisplayOrientation
+			/// </summary>
+			VerticalLeft = 8,
+			/// <summary>
+			/// Corresponds to the VerticalRotatedRight property of DisplayOrientation
+			/// </summary>
+			VerticalRight = 0x10,
+			/// <summary>
+			/// Corresponds to the suptypes part of the DisplayRelatedTypes property
+			/// </summary>
+			HideSubtypes = 0x20,
+			/// <summary>
+			/// Corresponds to the supertypes part of the DisplayRelatedTypes property
+			/// </summary>
+			HideSupertypes = 0x40,
+		}
+		private DisplayFlags myDisplayFlags;
+		/// <summary>
+		/// Test if a display flag is set
+		/// </summary>
+		private bool GetDisplayFlag(DisplayFlags flag)
+		{
+			return 0 != (myDisplayFlags & flag);
+		}
+		/// <summary>
+		/// Set a value for a display flag. Returns true if the flag value changed.
+		/// </summary>
+		private bool SetDisplayFlag(DisplayFlags flag, bool value)
+		{
+			if (value)
+			{
+				if ((myDisplayFlags & flag) != flag)
+				{
+					myDisplayFlags |= flag;
+					return true;
+				}
+			}
+			else if (0 != (myDisplayFlags & flag))
+			{
+				myDisplayFlags &= ~flag;
+				return true;
+			}
+			return false;
+		}
+		#endregion // DisplayFlags
+		#region Custom Stored Display Settings
+		private ConstraintDisplayPosition GetConstraintDisplayPositionValue()
+		{
+			return GetDisplayFlag(DisplayFlags.ConstraintsOnBottom) ? ConstraintDisplayPosition.Bottom : ConstraintDisplayPosition.Top;
+		}
+		private void SetConstraintDisplayPositionValue(ConstraintDisplayPosition value)
+		{
+			SetDisplayFlag(DisplayFlags.ConstraintsOnBottom, value == ConstraintDisplayPosition.Bottom);
+		}
+		private DisplayRoleNames GetDisplayRoleNamesValue()
+		{
+			return GetDisplayFlag(DisplayFlags.RoleNamesOn) ?
+				DisplayRoleNames.On :
+				(GetDisplayFlag(DisplayFlags.RoleNamesOff) ? DisplayRoleNames.Off : DisplayRoleNames.UserDefault);
+		}
+		private void SetDisplayRoleNamesValue(DisplayRoleNames value)
+		{
+			switch (value)
+			{
+				case DisplayRoleNames.UserDefault:
+					SetDisplayFlag(DisplayFlags.RoleNamesOn | DisplayFlags.RoleNamesOff, false);
+					break;
+				case DisplayRoleNames.On:
+					SetDisplayFlag(DisplayFlags.RoleNamesOn, true);
+					SetDisplayFlag(DisplayFlags.RoleNamesOff, false);
+					break;
+				case DisplayRoleNames.Off:
+					SetDisplayFlag(DisplayFlags.RoleNamesOff, true);
+					SetDisplayFlag(DisplayFlags.RoleNamesOn, false);
+					break;
+			}
+		}
+		private DisplayOrientation GetDisplayOrientationValue()
+		{
+			return GetDisplayFlag(DisplayFlags.VerticalLeft) ?
+				DisplayOrientation.VerticalRotatedLeft :
+				(GetDisplayFlag(DisplayFlags.VerticalRight) ? DisplayOrientation.VerticalRotatedRight : DisplayOrientation.Horizontal);
+		}
+		private void SetDisplayOrientationValue(DisplayOrientation value)
+		{
+			switch (value)
+			{
+				case DisplayOrientation.Horizontal:
+					SetDisplayFlag(DisplayFlags.VerticalLeft | DisplayFlags.VerticalRight, false);
+					break;
+				case DisplayOrientation.VerticalRotatedLeft:
+					SetDisplayFlag(DisplayFlags.VerticalLeft, true);
+					SetDisplayFlag(DisplayFlags.VerticalRight, false);
+					break;
+				case DisplayOrientation.VerticalRotatedRight:
+					SetDisplayFlag(DisplayFlags.VerticalRight, true);
+					SetDisplayFlag(DisplayFlags.VerticalLeft, false);
+					break;
+			}
+		}
+		private RelatedTypesDisplay GetDisplayRelatedTypesValue()
+		{
+			if (GetDisplayFlag(DisplayFlags.HideSubtypes))
+			{
+				return GetDisplayFlag(DisplayFlags.HideSupertypes) ? RelatedTypesDisplay.AttachNoTypes : RelatedTypesDisplay.AttachSupertypes;
+			}
+			return GetDisplayFlag(DisplayFlags.HideSupertypes) ? RelatedTypesDisplay.AttachSubtypes : RelatedTypesDisplay.AttachAllTypes;
+		}
+		private void SetDisplayRelatedTypesValue(RelatedTypesDisplay value)
+		{
+			switch (value)
+			{
+				case RelatedTypesDisplay.AttachAllTypes:
+					SetDisplayFlag(DisplayFlags.HideSubtypes | DisplayFlags.HideSupertypes, false);
+					break;
+				case RelatedTypesDisplay.AttachSubtypes:
+					SetDisplayFlag(DisplayFlags.HideSubtypes, false);
+					SetDisplayFlag(DisplayFlags.HideSupertypes, true);
+					break;
+				case RelatedTypesDisplay.AttachSupertypes:
+					SetDisplayFlag(DisplayFlags.HideSubtypes, true);
+					SetDisplayFlag(DisplayFlags.HideSupertypes, false);
+					break;
+				case RelatedTypesDisplay.AttachNoTypes:
+					SetDisplayFlag(DisplayFlags.HideSubtypes | DisplayFlags.HideSupertypes, true);
+					break;
+			}
+		}
+		#endregion // Custom Stored Display Settings
 		#region Accessibility Settings
 		/// <summary>
 		/// Get the accessible name for a shape field
@@ -4380,6 +4584,59 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			return UpdateDynamicColor(brushId, brush);
 		}
 		#endregion // IDynamicColorGeometryHost Implementation
+		#region IConfigureableLinkEndpoint Implementation
+		/// <summary>
+		/// Implements <see cref="IConfigureableLinkEndpoint.CanAttachLink"/>
+		/// </summary>
+		protected AttachLinkResult CanAttachLink(ModelElement element, bool toRole)
+		{
+			if (toRole)
+			{
+				if (GetDisplayFlag(DisplayFlags.HideSubtypes) && element is SubtypeFact)
+				{
+					return AttachLinkResult.Defer;
+				}
+			}
+			else if (GetDisplayFlag(DisplayFlags.HideSupertypes) &&
+				element is SubtypeFact)
+			{
+				return AttachLinkResult.Defer;
+			}
+			return AttachLinkResult.Attach;
+		}
+		AttachLinkResult IConfigureableLinkEndpoint.CanAttachLink(ModelElement element, bool toRole)
+		{
+			return CanAttachLink(element, toRole);
+		}
+		/// <summary>
+		/// Implements <see cref="IConfigureableLinkEndpoint.FixupUnattachedLinkElements"/>
+		/// </summary>
+		protected void FixupUnattachedLinkElements(Diagram diagram)
+		{
+			FactType factType;
+			ObjectType objectType;
+			ORMDiagram ormDiagram;
+			if (null != (factType = AssociatedFactType) && 
+				null != (objectType = factType.NestingType) &&
+				null != (ormDiagram = diagram as ORMDiagram))
+			{
+				foreach (Role role in objectType.PlayedRoleCollection)
+				{
+					FactType subtypeFact = null;
+					if ((role is SubtypeMetaRole || role is SupertypeMetaRole) &&
+						null != (subtypeFact = role.FactType) &&
+						null == ormDiagram.FindShapeForElement<SubtypeLink>(subtypeFact))
+					{
+						ormDiagram.FixUpLocalDiagram(subtypeFact);
+					}
+				}
+			}
+		}
+		void IConfigureableLinkEndpoint.FixupUnattachedLinkElements(Diagram diagram)
+		{
+			FixupUnattachedLinkElements(diagram);
+		}
+		#endregion // IConfigureableLinkEndpoint Implementation
 		#region Mouse handling
 		/// <summary>
 		/// Attempt model error activation
@@ -5177,11 +5434,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			ProcessObjectificationDelete(link, oldFactType, oldObjectType, false);
 			ProcessObjectificationAdd(link, null, null);
 		}
-		#region ConstraintDisplayPositionChangeRule
+		#region ConnectionPropertyChangeRule
 		/// <summary>
 		/// ChangeRule: typeof(FactTypeShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
 		/// </summary>
-		private static void ConstraintDisplayPositionChangeRule(ElementPropertyChangedEventArgs e)
+		private static void ConnectionPropertyChangeRule(ElementPropertyChangedEventArgs e)
 		{
 			Guid attributeId = e.DomainProperty.Id;
 			bool orientationChange = false;
@@ -5240,8 +5497,16 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					}
 				}
 			}
+			else if (attributeId == DisplayRelatedTypesDomainPropertyId)
+			{
+				FactTypeShape factTypeShape = e.ModelElement as FactTypeShape;
+				if (!factTypeShape.IsDeleted)
+				{
+					MultiShapeUtility.AttachLinkConfigurationChanged(factTypeShape);
+				}
+			}
 		}
-		#endregion // ConstraintDisplayPositionChangeRule
+		#endregion // ConnectionPropertyChangeRule
 		#region ExternalConstraintShapeChangeRule
 		/// <summary>
 		/// ChangeRule: typeof(ExternalConstraintShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;

@@ -182,6 +182,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 	/// DomainClass ObjectTypeShape
 	/// Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape
 	/// </summary>
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::ORMSolutions.ORMArchitect.Framework.Diagrams.Design.PresentationElementTypeDescriptionProvider<ObjectTypeShape, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType, Design.ObjectTypeShapeTypeDescriptor<ObjectTypeShape, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType>>))]
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
@@ -319,24 +320,20 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		public static readonly global::System.Guid ExpandRefModeDomainPropertyId = new global::System.Guid(0xb2415bb1, 0x1c83, 0x4f0b, 0xb2, 0xc3, 0x58, 0xb6, 0x7b, 0xc6, 0x20, 0xdd);
 		
 		/// <summary>
-		/// Storage for ExpandRefMode
-		/// </summary>
-		private global::System.Boolean expandRefModePropertyStorage;
-		
-		/// <summary>
 		/// Gets or sets the value of ExpandRefMode domain property.
 		/// Should shapes for the FactType and ValueType corresponding to this ReferenceMode
 		/// pattern be displayed on the diagram?
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape/ExpandRefMode.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape/ExpandRefMode.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("b2415bb1-1c83-4f0b-b2c3-58b67bc620dd")]
 		public global::System.Boolean ExpandRefMode
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return expandRefModePropertyStorage;
+				return ExpandRefModePropertyHandler.Instance.GetValue(this);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -376,7 +373,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			public override sealed global::System.Boolean GetValue(ObjectTypeShape element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.expandRefModePropertyStorage;
+				// There is no storage for ExpandRefMode because its Kind is
+				// set to CustomStorage. Please provide the GetExpandRefModeValue()
+				// method on the domain class.
+				return element.GetExpandRefModeValue();
 			}
 		
 			/// <summary>
@@ -392,7 +392,102 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				if (newValue != oldValue)
 				{
 					ValueChanging(element, oldValue, newValue);
-					element.expandRefModePropertyStorage = newValue;
+					// There is no storage for ExpandRefMode because its Kind is
+					// set to CustomStorage. Please provide the SetExpandRefModeValue()
+					// method on the domain class.
+					element.SetExpandRefModeValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region DisplayRelatedTypes domain property code
+		
+		/// <summary>
+		/// DisplayRelatedTypes domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DisplayRelatedTypesDomainPropertyId = new global::System.Guid(0x28f09348, 0x418e, 0x4f01, 0x90, 0x8a, 0xb5, 0x85, 0x58, 0xaf, 0x18, 0xfc);
+		
+		/// <summary>
+		/// Gets or sets the value of DisplayRelatedTypes domain property.
+		/// Should links to subtypes and supertypes be attached to this shape?
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape/DisplayRelatedTypes.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape/DisplayRelatedTypes.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.Core.ShapeModel.RelatedTypesDisplay.AttachAllTypes)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("28f09348-418e-4f01-908a-b58558af18fc")]
+		public RelatedTypesDisplay DisplayRelatedTypes
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DisplayRelatedTypesPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DisplayRelatedTypesPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ObjectTypeShape.DisplayRelatedTypes domain property.
+		/// </summary>
+		internal sealed partial class DisplayRelatedTypesPropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectTypeShape, RelatedTypesDisplay>
+		{
+			private DisplayRelatedTypesPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ObjectTypeShape.DisplayRelatedTypes domain property value handler.
+			/// </summary>
+			public static readonly DisplayRelatedTypesPropertyHandler Instance = new DisplayRelatedTypesPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ObjectTypeShape.DisplayRelatedTypes domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DisplayRelatedTypesDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed RelatedTypesDisplay GetValue(ObjectTypeShape element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for DisplayRelatedTypes because its Kind is
+				// set to CustomStorage. Please provide the GetDisplayRelatedTypesValue()
+				// method on the domain class.
+				return element.GetDisplayRelatedTypesValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ObjectTypeShape element, RelatedTypesDisplay newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				RelatedTypesDisplay oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for DisplayRelatedTypes because its Kind is
+					// set to CustomStorage. Please provide the SetDisplayRelatedTypesValue()
+					// method on the domain class.
+					element.SetDisplayRelatedTypesValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
@@ -545,24 +640,20 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		public static readonly global::System.Guid ConstraintDisplayPositionDomainPropertyId = new global::System.Guid(0x802767fd, 0xde7d, 0x4541, 0xb4, 0x2b, 0x90, 0xb6, 0x13, 0xdf, 0xe2, 0x2d);
 		
 		/// <summary>
-		/// Storage for ConstraintDisplayPosition
-		/// </summary>
-		private ConstraintDisplayPosition constraintDisplayPositionPropertyStorage = ORMSolutions.ORMArchitect.Core.ShapeModel.ConstraintDisplayPosition.Top;
-		
-		/// <summary>
 		/// Gets or sets the value of ConstraintDisplayPosition domain property.
 		/// Determines where internal constraints are drawn on this FactTypeShape.
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/ConstraintDisplayPosition.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/ConstraintDisplayPosition.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.Core.ShapeModel.ConstraintDisplayPosition.Top)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("802767fd-de7d-4541-b42b-90b613dfe22d")]
 		public ConstraintDisplayPosition ConstraintDisplayPosition
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return constraintDisplayPositionPropertyStorage;
+				return ConstraintDisplayPositionPropertyHandler.Instance.GetValue(this);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -602,7 +693,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			public override sealed ConstraintDisplayPosition GetValue(FactTypeShape element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.constraintDisplayPositionPropertyStorage;
+				// There is no storage for ConstraintDisplayPosition because its Kind is
+				// set to CustomStorage. Please provide the GetConstraintDisplayPositionValue()
+				// method on the domain class.
+				return element.GetConstraintDisplayPositionValue();
 			}
 		
 			/// <summary>
@@ -618,7 +712,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				if (newValue != oldValue)
 				{
 					ValueChanging(element, oldValue, newValue);
-					element.constraintDisplayPositionPropertyStorage = newValue;
+					// There is no storage for ConstraintDisplayPosition because its Kind is
+					// set to CustomStorage. Please provide the SetConstraintDisplayPositionValue()
+					// method on the domain class.
+					element.SetConstraintDisplayPositionValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
@@ -633,11 +731,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		public static readonly global::System.Guid DisplayRoleNamesDomainPropertyId = new global::System.Guid(0x9607af0f, 0x2e12, 0x4215, 0xb8, 0xa5, 0x91, 0xb6, 0x7c, 0x1a, 0x9f, 0x08);
 		
 		/// <summary>
-		/// Storage for DisplayRoleNames
-		/// </summary>
-		private DisplayRoleNames displayRoleNamesPropertyStorage = ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayRoleNames.UserDefault;
-		
-		/// <summary>
 		/// Gets or sets the value of DisplayRoleNames domain property.
 		/// Determines whether RoleNameShapes will be drawn for the Roles in the FactType
 		/// represented by this FactTypeShape, overriding the global setting.
@@ -645,13 +738,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayRoleNames.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayRoleNames.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayRoleNames.UserDefault)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("9607af0f-2e12-4215-b8a5-91b67c1a9f08")]
 		public DisplayRoleNames DisplayRoleNames
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return displayRoleNamesPropertyStorage;
+				return DisplayRoleNamesPropertyHandler.Instance.GetValue(this);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -691,7 +785,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			public override sealed DisplayRoleNames GetValue(FactTypeShape element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.displayRoleNamesPropertyStorage;
+				// There is no storage for DisplayRoleNames because its Kind is
+				// set to CustomStorage. Please provide the GetDisplayRoleNamesValue()
+				// method on the domain class.
+				return element.GetDisplayRoleNamesValue();
 			}
 		
 			/// <summary>
@@ -707,7 +804,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				if (newValue != oldValue)
 				{
 					ValueChanging(element, oldValue, newValue);
-					element.displayRoleNamesPropertyStorage = newValue;
+					// There is no storage for DisplayRoleNames because its Kind is
+					// set to CustomStorage. Please provide the SetDisplayRoleNamesValue()
+					// method on the domain class.
+					element.SetDisplayRoleNamesValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
@@ -722,24 +823,20 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		public static readonly global::System.Guid DisplayOrientationDomainPropertyId = new global::System.Guid(0x31a8f13e, 0x97c6, 0x421f, 0x82, 0x0d, 0x00, 0x1c, 0xd8, 0xe7, 0x74, 0xf3);
 		
 		/// <summary>
-		/// Storage for DisplayOrientation
-		/// </summary>
-		private DisplayOrientation displayOrientationPropertyStorage = ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayOrientation.Horizontal;
-		
-		/// <summary>
 		/// Gets or sets the value of DisplayOrientation domain property.
 		/// Determines if the fact type is shown horizontally or vertically.
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayOrientation.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayOrientation.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayOrientation.Horizontal)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("31a8f13e-97c6-421f-820d-001cd8e774f3")]
 		public DisplayOrientation DisplayOrientation
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return displayOrientationPropertyStorage;
+				return DisplayOrientationPropertyHandler.Instance.GetValue(this);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -779,7 +876,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			public override sealed DisplayOrientation GetValue(FactTypeShape element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.displayOrientationPropertyStorage;
+				// There is no storage for DisplayOrientation because its Kind is
+				// set to CustomStorage. Please provide the GetDisplayOrientationValue()
+				// method on the domain class.
+				return element.GetDisplayOrientationValue();
 			}
 		
 			/// <summary>
@@ -795,7 +895,102 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				if (newValue != oldValue)
 				{
 					ValueChanging(element, oldValue, newValue);
-					element.displayOrientationPropertyStorage = newValue;
+					// There is no storage for DisplayOrientation because its Kind is
+					// set to CustomStorage. Please provide the SetDisplayOrientationValue()
+					// method on the domain class.
+					element.SetDisplayOrientationValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region DisplayRelatedTypes domain property code
+		
+		/// <summary>
+		/// DisplayRelatedTypes domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DisplayRelatedTypesDomainPropertyId = new global::System.Guid(0x1bfdf35d, 0xe620, 0x442e, 0x9e, 0x18, 0xba, 0x10, 0x47, 0x8b, 0x67, 0x68);
+		
+		/// <summary>
+		/// Gets or sets the value of DisplayRelatedTypes domain property.
+		/// Should links to subtypes and supertypes be attached to this shape?
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayRelatedTypes.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayRelatedTypes.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.Core.ShapeModel.RelatedTypesDisplay.AttachAllTypes)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("1bfdf35d-e620-442e-9e18-ba10478b6768")]
+		public RelatedTypesDisplay DisplayRelatedTypes
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DisplayRelatedTypesPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DisplayRelatedTypesPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the FactTypeShape.DisplayRelatedTypes domain property.
+		/// </summary>
+		internal sealed partial class DisplayRelatedTypesPropertyHandler : DslModeling::DomainPropertyValueHandler<FactTypeShape, RelatedTypesDisplay>
+		{
+			private DisplayRelatedTypesPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the FactTypeShape.DisplayRelatedTypes domain property value handler.
+			/// </summary>
+			public static readonly DisplayRelatedTypesPropertyHandler Instance = new DisplayRelatedTypesPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the FactTypeShape.DisplayRelatedTypes domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DisplayRelatedTypesDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed RelatedTypesDisplay GetValue(FactTypeShape element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for DisplayRelatedTypes because its Kind is
+				// set to CustomStorage. Please provide the GetDisplayRelatedTypesValue()
+				// method on the domain class.
+				return element.GetDisplayRelatedTypesValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(FactTypeShape element, RelatedTypesDisplay newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				RelatedTypesDisplay oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for DisplayRelatedTypes because its Kind is
+					// set to CustomStorage. Please provide the SetDisplayRelatedTypesValue()
+					// method on the domain class.
+					element.SetDisplayRelatedTypesValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
 					ValueChanged(element, oldValue, newValue);
 				}
 			}

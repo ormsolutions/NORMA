@@ -221,6 +221,38 @@
     <value>The fact type is drawn with a vertical orientation rotated to the left.</value>
     <comment>Description for EnumerationLiteral &apos;VerticalRotatedLeft&apos; on DomainEnumeration &apos;DisplayOrientation&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RelatedTypesDisplay/AttachAllTypes.DisplayName" xml:space="preserve">
+    <value>AttachAllTypes</value>
+    <comment>Display name for EnumerationLiteral &apos;AttachAllTypes&apos; on DomainEnumeration &apos;RelatedTypesDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RelatedTypesDisplay/AttachAllTypes.Description" xml:space="preserve">
+    <value>The shape attaches to both its supertypes and its subtypes.</value>
+    <comment>Description for EnumerationLiteral &apos;AttachAllTypes&apos; on DomainEnumeration &apos;RelatedTypesDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RelatedTypesDisplay/AttachSubtypes.DisplayName" xml:space="preserve">
+    <value>AttachSubtypes</value>
+    <comment>Display name for EnumerationLiteral &apos;AttachSubtypes&apos; on DomainEnumeration &apos;RelatedTypesDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RelatedTypesDisplay/AttachSubtypes.Description" xml:space="preserve">
+    <value>The shape attaches to its subtypes, but not its supertypes.</value>
+    <comment>Description for EnumerationLiteral &apos;AttachSubtypes&apos; on DomainEnumeration &apos;RelatedTypesDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RelatedTypesDisplay/AttachSupertypes.DisplayName" xml:space="preserve">
+    <value>AttachSupertypes</value>
+    <comment>Display name for EnumerationLiteral &apos;AttachSupertypes&apos; on DomainEnumeration &apos;RelatedTypesDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RelatedTypesDisplay/AttachSupertypes.Description" xml:space="preserve">
+    <value>The shape attaches to its supertypes, but not its subtypes.</value>
+    <comment>Description for EnumerationLiteral &apos;AttachSupertypes&apos; on DomainEnumeration &apos;RelatedTypesDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RelatedTypesDisplay/AttachNoTypes.DisplayName" xml:space="preserve">
+    <value>AttachNoTypes</value>
+    <comment>Display name for EnumerationLiteral &apos;AttachNoTypes&apos; on DomainEnumeration &apos;RelatedTypesDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RelatedTypesDisplay/AttachNoTypes.Description" xml:space="preserve">
+    <value>The shape attaches to neither its subtypes nor its supertypes.</value>
+    <comment>Description for EnumerationLiteral &apos;AttachNoTypes&apos; on DomainEnumeration &apos;RelatedTypesDisplay&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShape.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShape</value>
     <comment>Description for DomainClass &apos;ORMBaseShape&apos;</comment>
@@ -253,6 +285,14 @@
     <value>ExpandRefMode</value>
     <comment>DisplayName for DomainProperty &apos;ExpandRefMode&apos; on DomainClass &apos;ObjectTypeShape&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape/DisplayRelatedTypes.Description" xml:space="preserve">
+    <value>Should links to subtypes and supertypes be attached to this shape?</value>
+    <comment>Description for DomainProperty &apos;DisplayRelatedTypes&apos; on DomainClass &apos;ObjectTypeShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape/DisplayRelatedTypes.DisplayName" xml:space="preserve">
+    <value>DisplayRelatedTypes</value>
+    <comment>DisplayName for DomainProperty &apos;DisplayRelatedTypes&apos; on DomainClass &apos;ObjectTypeShape&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape</value>
     <comment>Description for DomainClass &apos;FactTypeShape&apos;</comment>
@@ -284,6 +324,14 @@
   <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayOrientation.DisplayName" xml:space="preserve">
     <value>DisplayOrientation</value>
     <comment>DisplayName for DomainProperty &apos;DisplayOrientation&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayRelatedTypes.Description" xml:space="preserve">
+    <value>Should links to subtypes and supertypes be attached to this shape?</value>
+    <comment>Description for DomainProperty &apos;DisplayRelatedTypes&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayRelatedTypes.DisplayName" xml:space="preserve">
+    <value>DisplayRelatedTypes</value>
+    <comment>DisplayName for DomainProperty &apos;DisplayRelatedTypes&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/RolesPosition.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape.Roles Position</value>

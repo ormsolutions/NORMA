@@ -585,7 +585,15 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				{
 					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
 				}
-				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+				return new CustomSerializedPropertyInfo(null, null, null, true, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (domainPropertyInfo.Id == ObjectTypeShape.DisplayRelatedTypesDomainPropertyId)
+			{
+				if (this.DisplayRelatedTypes == RelatedTypesDisplay.AttachAllTypes || !this.AssociatedObjectType.IsSubtypeOrSupertype)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, true, CustomSerializedAttributeWriteStyle.Attribute, null);
 			}
 			if (0 != (CustomSerializedElementSupportedOperations.PropertyInfo & base.SupportedCustomSerializedOperations))
 			{
@@ -606,6 +614,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				customSerializedAttributes = new Dictionary<string, Guid>();
 				customSerializedAttributes.Add("ExpandRefMode", ObjectTypeShape.ExpandRefModeDomainPropertyId);
+				customSerializedAttributes.Add("DisplayRelatedTypes", ObjectTypeShape.DisplayRelatedTypesDomainPropertyId);
 				ObjectTypeShape.myCustomSerializedAttributes = customSerializedAttributes;
 			}
 			Guid rVal;
@@ -812,7 +821,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				{
 					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
 				}
-				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+				return new CustomSerializedPropertyInfo(null, null, null, true, CustomSerializedAttributeWriteStyle.Attribute, null);
 			}
 			if (domainPropertyInfo.Id == FactTypeShape.DisplayOrientationDomainPropertyId)
 			{
@@ -820,11 +829,30 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				{
 					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
 				}
-				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+				return new CustomSerializedPropertyInfo(null, null, null, true, CustomSerializedAttributeWriteStyle.Attribute, null);
 			}
 			if (domainPropertyInfo.Id == FactTypeShape.RolesPositionDomainPropertyId)
 			{
 				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+			}
+			if (domainPropertyInfo.Id == FactTypeShape.ConstraintDisplayPositionDomainPropertyId)
+			{
+				if (this.ConstraintDisplayPosition == ConstraintDisplayPosition.Top)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, true, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (domainPropertyInfo.Id == FactTypeShape.DisplayRelatedTypesDomainPropertyId)
+			{
+				ORMSolutions.ORMArchitect.Core.ObjectModel.FactType factType;
+				ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification objectification;
+				ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType objectifyingEntityType;
+				if (this.DisplayRelatedTypes == RelatedTypesDisplay.AttachAllTypes || null == (factType = this.AssociatedFactType) || null == (objectification = factType.Objectification) || objectification.IsImplied || null == (objectifyingEntityType = objectification.NestingType) || !objectifyingEntityType.IsSubtypeOrSupertype)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, true, CustomSerializedAttributeWriteStyle.Attribute, null);
 			}
 			if (0 != (CustomSerializedElementSupportedOperations.PropertyInfo & base.SupportedCustomSerializedOperations))
 			{
@@ -952,6 +980,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				customSerializedAttributes = new Dictionary<string, Guid>();
 				customSerializedAttributes.Add("DisplayRoleNames", FactTypeShape.DisplayRoleNamesDomainPropertyId);
 				customSerializedAttributes.Add("DisplayOrientation", FactTypeShape.DisplayOrientationDomainPropertyId);
+				customSerializedAttributes.Add("ConstraintDisplayPosition", FactTypeShape.ConstraintDisplayPositionDomainPropertyId);
+				customSerializedAttributes.Add("DisplayRelatedTypes", FactTypeShape.DisplayRelatedTypesDomainPropertyId);
 				FactTypeShape.myCustomSerializedAttributes = customSerializedAttributes;
 			}
 			Guid rVal;

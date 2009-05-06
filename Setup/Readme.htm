@@ -33,12 +33,14 @@ The March 2009 release is a stabilization release with targeted fixes.
   <li><a href="#Reporting Issues">Instructions for reporting issues with NORMA</a></li>
   <li><a href="#Mystery Bugs">Things we've seen or heard about but can't reproduce</a></li>
 </ul>
-<!--<hr/>
+<hr/>
 <h2>Daily Changes</h2>
-<div>The daily drop includes all modifications since the last CTP drop. Changeset numbers are marked below.</div>
+<div>The daily drop includes all modifications since the last CTP drop. Build numbers are marked below.</div>
 <ul>
-<li><a href="#TOPIC DAILY">TOPIC DESCRIPTION</a>&nbsp;(Changeset ####)</li>
-</ul>-->
+<!--<li><a href="#TOPIC DAILY">TOPIC DESCRIPTION</a>&nbsp;(Build ####)</li>-->
+<li><a href="#Display Related Types DAILY">Controlling Subtype Lines</a>&nbsp;(Build 1384, results in <strong>incremental file format change</strong> if the new DisplayRelatedTypes property is set)</li>
+<li><a href="#Role Name Highlighting DAILY">Role Name Highlighting</a>&nbsp;(Build 1384)</li>
+</ul>
 <hr/>
 <h2>March 2009 CTP Changes</h2>
 <div>The March 2009 CTP release includes all modifications through changeset 1383. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
@@ -52,11 +54,13 @@ The March 2009 release is a stabilization release with targeted fixes.
 <li>The readme file has been moved to the <em>Documentation</em> directory, which also contains an html form of the core schema file with full comments. The schema comments should also improve the experience of looking at an .orm file in the Visual Studio Xml editor.</li>
 <li>Added support for external developers to register their own Xml file importers. Additional settings files can be added to the <em>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\8.0\ORM Solutions\Natural ORM Architect\DesignerSettings</em> key using the pattern shown in the 'Core' subkey. Note that the <em>ConvertersDir</em> specified for the core settings file will be used if another directory is not specified. Use <em>9.0</em> instead of <em>8.0</em> for Visual Studio 2008.</li>
 <li>Added support for generating multiple database schemas. Mechanisms for leveraging this support with custom properties are discussed in the forums at <a href="http://www.ormfoundation.org">orm foundation</a>.</li>
-<li>Fixed an issue with contradition errors not clearly when a role sequence was deleted from a set comparison constraint. This could leave the .orm file in an invalid state.</li>
+<li>Fixed an issue with contradition errors not clearing when a role sequence was deleted from a set comparison constraint. This could leave the .orm file in an invalid state.</li>
+<li>Fixed a crashing issue with multiple subtype shapes on the same diagram. With a single supertype shape and two subtype shapes, deleting the subtype element/undo/redo would crash.</li>
 </ol>
 </li>
 </ul>
 <hr/>
+<h2>February 2009 CTP Changes</h2>
 <div>The February 2009 CTP release includes all modifications through changeset 1370.</div>
 <ul>
 <li><a href="#Element Grouping 2009-02">Element Grouping</a>&nbsp;</li>
@@ -266,6 +270,11 @@ Although derivation rules in NORMA are still informal, they are now display them
 so changing the subtype relationship in the same session will not lose your derivation rule.</li>
 <li>Verbalization of derivation rules has not been done.</li>
 </ul>
+</li>
+<li><a id="Display Related Types DAILY" class="new" title="DAILY: Controlling Subtype Lines">DAILY</a>&nbsp;
+Subtype lines are automatically displayed between a subtype shape and the nearest supertype shape on the diagram. However, it is not uncommon to use both a subtype and its supertype on a secondary diagram that does not need to display the subtyping relationship between the two types. This can often lead to an awkward subtype line being drawn across the diagram that can (previously) only be fixed by adding a second shape for the subtype or supertype nearer to the other endpoint. The <em>DisplayRelatedTypes</em> property will now display on all object type shapes (and all objectified fact type shapes) where the associated object type participates in either end of at least one subtyping relationship. You can choose to display lines to supertypes, lines to subtypes, lines to neither, or lines to both (the default) for each object shape.</li>
+<li><a id="Role Name Highlighting DAILY" class="new" title="DAILY: Role Name Highlighting">DAILY</a>&nbsp;
+ORM2 specifies freeform placement of role name shapes. The modeler is responsible for placing the role names in such a way that the clutter of connector lines back to the associated roles are not needed. Additional highlighting has been added to the NORMA designer, so that moving the mouse over a role will highlight the corresponding role name shape, and vice versa. The highlighting is subtle (the background darkens in the role box and on the role name shape), but is sufficient to indicate that the role name/role box pairs without selecting the role box and examining its properties.
 </li>
 </ol>
 <a href="#The Top">Return to top</a>

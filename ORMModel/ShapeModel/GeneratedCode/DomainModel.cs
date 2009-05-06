@@ -105,9 +105,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				new DomainMemberInfo(typeof(ORMBaseBinaryLinkShape), "UpdateCounter", ORMBaseBinaryLinkShape.UpdateCounterDomainPropertyId, typeof(ORMBaseBinaryLinkShape.UpdateCounterPropertyHandler)),
 				new DomainMemberInfo(typeof(ORMBaseShape), "UpdateCounter", ORMBaseShape.UpdateCounterDomainPropertyId, typeof(ORMBaseShape.UpdateCounterPropertyHandler)),
 				new DomainMemberInfo(typeof(ObjectTypeShape), "ExpandRefMode", ObjectTypeShape.ExpandRefModeDomainPropertyId, typeof(ObjectTypeShape.ExpandRefModePropertyHandler)),
+				new DomainMemberInfo(typeof(ObjectTypeShape), "DisplayRelatedTypes", ObjectTypeShape.DisplayRelatedTypesDomainPropertyId, typeof(ObjectTypeShape.DisplayRelatedTypesPropertyHandler)),
 				new DomainMemberInfo(typeof(FactTypeShape), "ConstraintDisplayPosition", FactTypeShape.ConstraintDisplayPositionDomainPropertyId, typeof(FactTypeShape.ConstraintDisplayPositionPropertyHandler)),
 				new DomainMemberInfo(typeof(FactTypeShape), "DisplayRoleNames", FactTypeShape.DisplayRoleNamesDomainPropertyId, typeof(FactTypeShape.DisplayRoleNamesPropertyHandler)),
 				new DomainMemberInfo(typeof(FactTypeShape), "DisplayOrientation", FactTypeShape.DisplayOrientationDomainPropertyId, typeof(FactTypeShape.DisplayOrientationPropertyHandler)),
+				new DomainMemberInfo(typeof(FactTypeShape), "DisplayRelatedTypes", FactTypeShape.DisplayRelatedTypesDomainPropertyId, typeof(FactTypeShape.DisplayRelatedTypesPropertyHandler)),
 				new DomainMemberInfo(typeof(FactTypeShape), "RolesPosition", FactTypeShape.RolesPositionDomainPropertyId, typeof(FactTypeShape.RolesPositionPropertyHandler)),
 				new DomainMemberInfo(typeof(ObjectifiedFactTypeNameShape), "ExpandRefMode", ObjectifiedFactTypeNameShape.ExpandRefModeDomainPropertyId, typeof(ObjectifiedFactTypeNameShape.ExpandRefModePropertyHandler)),
 			};
@@ -590,6 +592,43 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayOrientation/VerticalRotatedLeft.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 		VerticalRotatedLeft = 2,
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
+{
+	/// <summary>
+	/// DomainEnumeration: RelatedTypesDisplay
+	/// Determines whether an ObjectTypeShape or objectified FactTypeShape is attached
+	/// to its supertypes or subtypes.
+	/// </summary>
+	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<RelatedTypesDisplay, global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram>))]
+	[global::System.CLSCompliant(true)]
+	public enum RelatedTypesDisplay
+	{
+		/// <summary>
+		/// AttachAllTypes
+		/// The shape attaches to both its supertypes and its subtypes.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.RelatedTypesDisplay/AttachAllTypes.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		AttachAllTypes = 0,
+		/// <summary>
+		/// AttachSubtypes
+		/// The shape attaches to its subtypes, but not its supertypes.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.RelatedTypesDisplay/AttachSubtypes.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		AttachSubtypes = 1,
+		/// <summary>
+		/// AttachSupertypes
+		/// The shape attaches to its supertypes, but not its subtypes.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.RelatedTypesDisplay/AttachSupertypes.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		AttachSupertypes = 2,
+		/// <summary>
+		/// AttachNoTypes
+		/// The shape attaches to neither its subtypes nor its supertypes.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.RelatedTypesDisplay/AttachNoTypes.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		AttachNoTypes = 3,
 	}
 }
 

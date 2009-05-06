@@ -80,11 +80,36 @@
 		<se:Link Name="Subject" RelationshipName="PresentationViewsSubject" RoleName="Subject" Prefix="ormDiagram"/>
 	</se:Element>
 	<se:Element Class="ObjectTypeShape" Override="true">
-		<se:Attribute ID="ExpandRefMode">
+		<se:Attribute ID="ExpandRefMode" WriteCustomStorage="true">
 			<se:Condition WriteStyle="NotWritten">
 				<plx:unaryOperator type="booleanNot">
 					<plx:callThis name="ExpandRefMode" type="property"/>
 				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="DisplayRelatedTypes" WriteCustomStorage="true">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="booleanOr">
+					<plx:left>
+						<plx:binaryOperator type="equality">
+							<plx:left>
+								<plx:callThis name="DisplayRelatedTypes" type="property"/>
+							</plx:left>
+							<plx:right>
+								<plx:callStatic dataTypeName="RelatedTypesDisplay" name="AttachAllTypes" type="field"/>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:left>
+					<plx:right>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callInstance name="IsSubtypeOrSupertype" type="property">
+								<plx:callObject>
+									<plx:callThis name="AssociatedObjectType" type="property"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:unaryOperator>
+					</plx:right>
+				</plx:binaryOperator>
 			</se:Condition>
 		</se:Attribute>
 	</se:Element>
@@ -101,7 +126,7 @@
 	<se:Element Class="ValueConstraintShape" Override="true"/>
 	<se:Element Class="RoleNameShape" Override="true"/>
 	<se:Element Class="FactTypeShape" Override="true" SortChildElements="true">
-		<se:Attribute ID="DisplayRoleNames" WriteStyle="Attribute">
+		<se:Attribute ID="DisplayRoleNames" WriteStyle="Attribute" WriteCustomStorage="true">
 			<se:Condition WriteStyle="NotWritten">
 				<plx:binaryOperator type="equality">
 					<plx:left>
@@ -113,7 +138,7 @@
 				</plx:binaryOperator>
 			</se:Condition>
 		</se:Attribute>
-		<se:Attribute ID="DisplayOrientation">
+		<se:Attribute ID="DisplayOrientation" WriteCustomStorage="true">
 			<se:Condition WriteStyle="NotWritten">
 				<plx:binaryOperator type="equality">
 					<plx:left>
@@ -126,6 +151,134 @@
 			</se:Condition>
 		</se:Attribute>
 		<se:Attribute ID="RolesPosition" WriteStyle="NotWritten"/>
+		<se:Attribute ID="ConstraintDisplayPosition" WriteCustomStorage="true">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callThis name="ConstraintDisplayPosition" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic dataTypeName="ConstraintDisplayPosition" name="Top" type="field"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="DisplayRelatedTypes" WriteCustomStorage="true">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:local name="factType" dataTypeName="FactType" dataTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+				<plx:local name="objectification" dataTypeName="Objectification" dataTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+				<plx:local name="objectifyingEntityType" dataTypeName="ObjectType" dataTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+				<plx:binaryOperator type="booleanOr">
+					<plx:left>
+						<plx:binaryOperator type="equality">
+							<plx:left>
+								<plx:callThis name="DisplayRelatedTypes" type="property"/>
+							</plx:left>
+							<plx:right>
+								<plx:callStatic dataTypeName="RelatedTypesDisplay" name="AttachAllTypes" type="field"/>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:left>
+					<plx:right>
+						<plx:binaryOperator type="booleanOr">
+							<plx:left>
+								<plx:binaryOperator type="booleanOr">
+									<plx:left>
+										<plx:binaryOperator type="identityEquality">
+											<plx:left>
+												<plx:nullKeyword/>
+											</plx:left>
+											<plx:right>
+												<plx:inlineStatement dataTypeName="ObjectType" dataTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel">
+													<plx:assign>
+														<plx:left>
+															<plx:nameRef name="factType"/>
+														</plx:left>
+														<plx:right>
+															<plx:callThis name="AssociatedFactType" type="property"/>
+														</plx:right>
+													</plx:assign>
+												</plx:inlineStatement>
+											</plx:right>
+										</plx:binaryOperator>
+									</plx:left>
+									<plx:right>
+										<plx:binaryOperator type="identityEquality">
+											<plx:left>
+												<plx:nullKeyword/>
+											</plx:left>
+											<plx:right>
+												<plx:inlineStatement dataTypeName="Objectification" dataTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel">
+													<plx:assign>
+														<plx:left>
+															<plx:nameRef name="objectification"/>
+														</plx:left>
+														<plx:right>
+															<plx:callInstance name="Objectification" type="property">
+																<plx:callObject>
+																	<plx:nameRef name="factType"/>
+																</plx:callObject>
+															</plx:callInstance>
+														</plx:right>
+													</plx:assign>
+												</plx:inlineStatement>
+											</plx:right>
+										</plx:binaryOperator>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:left>
+							<plx:right>
+								<plx:binaryOperator type="booleanOr">
+									<plx:left>
+										<plx:callInstance name="IsImplied" type="property">
+											<plx:callObject>
+												<plx:nameRef name="objectification"/>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:left>
+									<plx:right>
+										<plx:binaryOperator type="booleanOr">
+											<plx:left>
+												<plx:binaryOperator type="identityEquality">
+													<plx:left>
+														<plx:nullKeyword/>
+													</plx:left>
+													<plx:right>
+														<plx:inlineStatement dataTypeName="ObjectType" dataTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel">
+															<plx:assign>
+																<plx:left>
+																	<plx:nameRef name="objectifyingEntityType"/>
+																</plx:left>
+																<plx:right>
+																	<plx:callInstance name="NestingType" type="property">
+																		<plx:callObject>
+																			<plx:nameRef name="objectification"/>
+																		</plx:callObject>
+																	</plx:callInstance>
+																</plx:right>
+															</plx:assign>
+														</plx:inlineStatement>
+													</plx:right>
+												</plx:binaryOperator>
+											</plx:left>
+											<plx:right>
+												<plx:unaryOperator type="booleanNot">
+													<plx:callInstance name="IsSubtypeOrSupertype" type="property">
+														<plx:callObject>
+															<plx:nameRef name="objectifyingEntityType"/>
+														</plx:callObject>
+													</plx:callInstance>
+												</plx:unaryOperator>
+											</plx:right>
+										</plx:binaryOperator>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
 		<se:Container Name="RoleDisplayOrder">
 			<se:Link RelationshipName="FactTypeShapeHasRoleDisplayOrder" RoleName="RoleDisplayOrder"/>
 		</se:Container>

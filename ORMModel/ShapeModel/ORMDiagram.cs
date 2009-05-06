@@ -346,12 +346,42 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		private void FixupFactType(FactType factType, FactTypeShape factTypeShape, bool childShapesMerged)
 		{
 			bool duplicateShape = false;
+			Objectification objectification = factType.Objectification;
+			ObjectType nestingType = (objectification != null) ? objectification.NestingType : null;
+			bool lookForNonDisplayedRelatedTypes = false;
+			bool haveNonDisplayedRelatedTypes = false;
 			foreach (FactTypeShape testShape in MultiShapeUtility.FindAllShapesForElement<FactTypeShape>(factTypeShape.Diagram, factType))
 			{
 				if (testShape != factTypeShape)
 				{
 					duplicateShape = true;
-					break;
+					if (nestingType != null)
+					{
+						if (lookForNonDisplayedRelatedTypes)
+						{
+							if (haveNonDisplayedRelatedTypes = testShape.DisplayRelatedTypes != RelatedTypesDisplay.AttachAllTypes)
+							{
+								break;
+							}
+						}
+						else if (nestingType.IsSubtypeOrSupertype &&
+							factTypeShape.DisplayRelatedTypes != RelatedTypesDisplay.AttachAllTypes)
+						{
+							lookForNonDisplayedRelatedTypes = true;
+							if (haveNonDisplayedRelatedTypes = testShape.DisplayRelatedTypes != RelatedTypesDisplay.AttachAllTypes)
+							{
+								break;
+							}
+						}
+						else
+						{
+							break;
+						}
+					}
+					else
+					{
+						break;
+					}
 				}
 			}
 			LinkedElementCollection<RoleBase> roleCollection = factType.RoleCollection;
@@ -418,10 +448,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				FixupRelatedLinks(DomainRoleInfo.GetElementLinks<ElementLink>(factType, ModelNoteReferencesFactType.ElementDomainRoleId));
 			}
-			Objectification objectification = factType.Objectification;
 			if (objectification != null && !objectification.IsImplied)
 			{
-				ObjectType nestingType = objectification.NestingType;
 				if (!childShapesMerged)
 				{
 					if (factTypeShape == null)
@@ -433,26 +461,47 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						FixUpLocalDiagram(factTypeShape as ShapeElement, nestingType);
 					}
 				}
-				if (!duplicateShape)
+				if (!duplicateShape || haveNonDisplayedRelatedTypes)
 				{
-					FixupObjectTypeLinks(nestingType);
+					FixupObjectTypeLinks(nestingType, false);
 				}
 			}
 		}
 		private void FixupObjectType(ObjectType objectType, ObjectTypeShape objectTypeShape, bool childShapesMerged)
 		{
 			bool duplicateShape = false;
+			bool lookForNonDisplayedRelatedTypes = false;
+			bool haveNonDisplayedRelatedTypes = false;
 			foreach (ObjectTypeShape testShape in MultiShapeUtility.FindAllShapesForElement<ObjectTypeShape>(objectTypeShape.Diagram, objectType))
 			{
 				if (testShape != objectTypeShape)
 				{
 					duplicateShape = true;
-					break;
+					if (lookForNonDisplayedRelatedTypes)
+					{
+						if (haveNonDisplayedRelatedTypes = testShape.DisplayRelatedTypes != RelatedTypesDisplay.AttachAllTypes)
+						{
+							break;
+						}
+					}
+					else if (objectType.IsSubtypeOrSupertype &&
+						objectTypeShape.DisplayRelatedTypes != RelatedTypesDisplay.AttachAllTypes)
+					{
+						lookForNonDisplayedRelatedTypes = true;
+						if (haveNonDisplayedRelatedTypes = testShape.DisplayRelatedTypes != RelatedTypesDisplay.AttachAllTypes)
+						{
+							break;
+						}
+					}
+					else
+					{
+						break;
+					}
 				}
 			}
-			if (!duplicateShape)
+			if (!duplicateShape || haveNonDisplayedRelatedTypes)
 			{
-				FixupObjectTypeLinks(objectType);
+				FixupObjectTypeLinks(objectType, haveNonDisplayedRelatedTypes);
 			}
 			if (!childShapesMerged)
 			{
@@ -474,7 +523,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <summary>
 		/// Helper function for FixupFactType and FixupObjectType
 		/// </summary>
-		private void FixupObjectTypeLinks(ObjectType objectType)
+		private void FixupObjectTypeLinks(ObjectType objectType, bool supertypeLinksOnly)
 		{
 			ReadOnlyCollection<ObjectTypePlaysRole> rolePlayerLinks = DomainRoleInfo.GetElementLinks<ObjectTypePlaysRole>(objectType, ObjectTypePlaysRole.RolePlayerDomainRoleId);
 			int linksCount = rolePlayerLinks.Count;
@@ -489,6 +538,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				{
 					subtypeFact = role.FactType;
 				}
+				else if (supertypeLinksOnly)
+				{
+					continue;
+				}
 				else if (null != (superRole = role as SupertypeMetaRole))
 				{
 					subtypeFact = role.FactType;
@@ -502,7 +555,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					FixUpLocalDiagram(link);
 				}
 			}
-			FixupRelatedLinks(DomainRoleInfo.GetElementLinks<ElementLink>(objectType, ModelNoteReferencesObjectType.ElementDomainRoleId));
+			if (!supertypeLinksOnly)
+			{
+				FixupRelatedLinks(DomainRoleInfo.GetElementLinks<ElementLink>(objectType, ModelNoteReferencesObjectType.ElementDomainRoleId));
+			}
 		}
 		private void FixupConstraint(IConstraint constraint, ExternalConstraintShape constraintShape)
 		{

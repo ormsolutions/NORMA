@@ -443,6 +443,14 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 			return retVal;
 		}
 		/// <summary>
+		/// The <see cref="IConfigureableLinkEndpoint.CanAttachLink"/> results have changed.
+		/// </summary>
+		/// <param name="shapeElement"></param>
+		public static void AttachLinkConfigurationChanged(ShapeElement shapeElement)
+		{
+			CheckLinks(shapeElement, false);
+		}
+		/// <summary>
 		/// Check and reconfigure links related to a <see cref="NodeShape"/> when it moves. Called
 		/// from the ChangeRule of any <see cref="NodeShape"/> that supports multiple shapes at
 		/// TopLevelCommit with priority <see cref="DiagramFixupConstants.AddConnectionRulePriority"/>
@@ -468,12 +476,15 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 
 			ShapeElement originalShape = ResolvePrimaryShape(checkShape);
 			ShapeElement discludedShape = discludeOriginal ? originalShape : null;
+			ModelElement element;
 
-			if (originalShape != null && originalShape.ModelElement != null)
+			if (null != originalShape &&
+				null != (element = originalShape.ModelElement))
 			{
 				//check the links for each shape for the model element
+				Diagram diagram = originalShape.Diagram;
 #if LINKS_ALWAYS_CONNECT
-				foreach (ShapeElement shape in FindAllShapesForElement<ShapeElement>(originalShape.Diagram, originalShape.ModelElement))
+				foreach (ShapeElement shape in FindAllShapesForElement<ShapeElement>(diagram, originalShape.ModelElement))
 				{
 					bool shapeIsOriginal = (shape == originalShape);
 					foreach (BinaryLinkShape toLinkShape in GetExistingLinks(shape, true, false))
@@ -487,7 +498,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 				}
 #else // LINKS_ALWAYS_CONNECT
 				Dictionary<ModelElement, IReconfigureableLink> reconfigureableLinks = null;
-				foreach (ShapeElement shape in FindAllShapesForElement<ShapeElement>(originalShape.Diagram, originalShape.ModelElement))
+				foreach (ShapeElement shape in FindAllShapesForElement<ShapeElement>(diagram, element))
 				{
 					foreach (BinaryLinkShape linkShape in GetExistingLinks(shape, true, true, null))
 					{
@@ -514,6 +525,11 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 					{
 						link.Reconfigure(discludedShape);
 					}
+				}
+				IConfigureableLinkEndpoint configurableEndpoint = originalShape as IConfigureableLinkEndpoint;
+				if (configurableEndpoint != null)
+				{
+					configurableEndpoint.FixupUnattachedLinkElements(diagram);
 				}
 #endif //LINKS_ALWAYS_CONNECT
 			}
@@ -705,6 +721,9 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 					{
 						continue;
 					}
+					IConfigureableLinkEndpoint configurableFromEndpoint;
+					bool detachFromShape = null != (configurableFromEndpoint = currentFromShape as IConfigureableLinkEndpoint) &&
+						AttachLinkResult.Attach != configurableFromEndpoint.CanAttachLink(backingLink, false);
 
 					// Find the nearest to shape
 					ShapeElement closestToShape = null;
@@ -723,13 +742,30 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 						{
 							continue;
 						}
+						bool blockingShape = false;
+						IConfigureableLinkEndpoint configurableToEndpoint = currentToShape as IConfigureableLinkEndpoint;
+						if (configurableToEndpoint != null)
+						{
+							switch (configurableToEndpoint.CanAttachLink(backingLink, true))
+							{
+								//case AttachLinkResult.Attach:
+								//    break;
+								case AttachLinkResult.Defer:
+									// Find a farther one if possible
+									continue;
+								case AttachLinkResult.Block:
+									// If this is closest, pretend we didn't find any
+									blockingShape = true;
+									break;
+							}
+						}
 						center = GetReliableShapeCenter(currentToShape);
 						if ((currentDistance = (distanceX = testCenterX - center.X) * distanceX
 							+ (distanceY = testCenterY - center.Y) * distanceY) < closestToShapeDistance)
 						{
 							closestToShapeDistance = currentDistance;
 							closestToShapeCenter = center;
-							closestToShape = currentToShape;
+							closestToShape = blockingShape ? null : currentToShape;
 						}
 					}
 
@@ -740,7 +776,9 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 						// Before connecting, find out up front if we have a closer from shape than the current from shape.
 						// If we do, then the current to/from shapes should not be connected for this link.
 						ShapeElement closerFromShape = null;
-						double closerFromShapeDistance = closestToShapeDistance;
+						bool closerFromShapeBlocking = false;
+						bool closerFromShapeDeferred = false;
+						double closerFromShapeDistance = detachFromShape ? double.MaxValue : closestToShapeDistance;
 						testCenterX = closestToShapeCenter.X;
 						testCenterY = closestToShapeCenter.Y;
 						// See if there is another closer fromShape to the closest to shape
@@ -752,13 +790,45 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 							{
 								continue;
 							}
+							bool blockingShape = false;
+							bool deferredShape = false;
+							IConfigureableLinkEndpoint configurableCloserFromEndpoint = currentFromShape2 as IConfigureableLinkEndpoint;
+							if (configurableCloserFromEndpoint != null)
+							{
+								switch (configurableCloserFromEndpoint.CanAttachLink(backingLink, false))
+								{
+									//case AttachLinkResult.Attach:
+									//    break;
+									case AttachLinkResult.Defer:
+										// Find a farther one if possible
+										deferredShape = true;
+										break;
+									case AttachLinkResult.Block:
+										// If this is closest, pretend we didn't find any
+										blockingShape = true;
+										break;
+								}
+							}
 							center = GetReliableShapeCenter(currentFromShape2);
 							if ((currentDistance = (distanceX = testCenterX - center.X) * distanceX
 								+ (distanceY = testCenterY - center.Y) * distanceY) < closerFromShapeDistance)
 							{
-								closerFromShapeDistance = currentDistance;
-								closerFromShape = currentFromShape2;
+								if (deferredShape)
+								{
+									closerFromShapeDeferred = true;
+								}
+								else
+								{
+									closerFromShapeDistance = currentDistance;
+									closerFromShape = currentFromShape2;
+									closerFromShapeDeferred = false;
+									closerFromShapeBlocking = blockingShape;
+								}
 							}
+						}
+						if (closerFromShapeDeferred && closerFromShape == null)
+						{
+							closerFromShapeBlocking = true;
 						}
 
 						BinaryLinkShape connectLink = null;
@@ -784,7 +854,15 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 							}
 							ShapeElement resolvedFromShape = ResolvePrimaryShape(existingLink.FromShape);
 							bool testDeleteLinksOnCurrentFromShape = false;
-							if (resolvedFromShape == currentFromShape)
+							if (closerFromShapeBlocking)
+							{
+								pendingDeleteLinkShape = existingLink;
+								if (existingLink == link)
+								{
+									link = null;
+								}
+							}
+							else if (resolvedFromShape == currentFromShape)
 							{
 								// If the closerFromShape is null, then we're correctly attached for this link.
 								// If not, then move the link to the closer from shape unless the closer from
@@ -798,21 +876,36 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 									{
 										if (linkShape.ModelElement == backingLink)
 										{
-											pendingDeleteLinkShape = linkShape;
-											if (linkShape == link)
+											if (detachFromShape)
 											{
-												link = null;
+												// Leave the existing link alone
+												testDeleteLinksOnCurrentFromShape = true;
+											}
+											else
+											{
+												pendingDeleteLinkShape = linkShape;
+												if (linkShape == link)
+												{
+													link = null;
+												}
 											}
 											break;
 										}
 									}
-									// Instead of deleting, move the existing link
-									connectLink = existingLink;
-									connectFromShape = closerFromShape;
-									connectToShape = closestToShape;
+									if (!testDeleteLinksOnCurrentFromShape)
+									{
+										// Instead of deleting, move the existing link
+										connectLink = existingLink;
+										connectFromShape = closerFromShape;
+										connectToShape = closestToShape;
+									}
+								}
+								else if (detachFromShape)
+								{
+									testDeleteLinksOnCurrentFromShape = true;
 								}
 							}
-							else if (closerFromShape != null)
+							else if (closerFromShape != null || detachFromShape)
 							{
 								// No links needed on current from shape
 								testDeleteLinksOnCurrentFromShape = true;
@@ -863,7 +956,15 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 									originalLinkProcessed = true;
 								}
 								Debug.Assert(ResolvePrimaryShape(existingLink.ToShape) != closestToShape, "The link would also have been attached to the to shape");
-								if (closerFromShape != null)
+								if (closerFromShapeBlocking)
+								{
+									pendingDeleteLinkShape = existingLink;
+									if (existingLink == link)
+									{
+										link = null;
+									}
+								}
+								else if (closerFromShape != null)
 								{
 									// If the closer from shape is not already attached to any link, then attempt to preserve this
 									// link by moving it to the closer from shape. Note that the link will not be moved if the
@@ -893,7 +994,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 									connectFromShape = currentFromShape;
 								}
 							}
-							else if (closerFromShape == null)
+							else if (closerFromShape == null && !detachFromShape)
 							{
 								connectFromShape = currentFromShape;
 								connectToShape = closestToShape;
@@ -1198,6 +1299,52 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 		/// </summary>
 		/// <param name="discludedShape">A <see cref="ShapeElement"/> to disclude from potential nodes to connect</param>
 		void Reconfigure(ShapeElement discludedShape);
+	}
+	/// <summary>
+	/// Use with <see cref="IConfigureableLinkEndpoint.CanAttachLink"/> to
+	/// determine whether a link can be attached to an endpoint shape.
+	/// </summary>
+	public enum AttachLinkResult
+	{
+		/// <summary>
+		/// The link can be attached
+		/// </summary>
+		Attach,
+		/// <summary>
+		/// The link cannot be attached to this shape, but a
+		/// shape that is farther away may be used as an attach
+		/// point.
+		/// </summary>
+		Defer,
+		/// <summary>
+		/// The link cannot be attached to this shape, and no
+		/// shape that is farther away should be used an attach
+		/// point for this link.
+		/// </summary>
+		Block,
+	}
+	/// <summary>
+	/// Test if a shape supports being used as a relationship endpoint.
+	/// Allows dynamic configuration on a per-instance basis.
+	/// </summary>
+	public interface IConfigureableLinkEndpoint
+	{
+		/// <summary>
+		/// Allow an individual <see cref="ShapeElement"/> to determine if a
+		/// configurable link should attach to the shape.
+		/// </summary>
+		/// <param name="element">The <see cref="ModelElement"/> backing the link shape</param>
+		/// <param name="toRole">Set to true if the 'to' role is being attached to this shape, false for the 'from' role.</param>
+		/// <returns><see cref="AttachLinkResult"/> values.</returns>
+		AttachLinkResult CanAttachLink(ModelElement element, bool toRole);
+		/// <summary>
+		/// Fixup any elements that are displayed as links and whose endpoints can
+		/// refuse to attach the link using <see cref="CanAttachLink"/>.
+		/// The implementation should do fixup on the local diagram for any link
+		/// element that is not represented by any shape on the current diagram.
+		/// </summary>
+		/// <param name="diagram">The context diagram.</param>
+		void FixupUnattachedLinkElements(Diagram diagram);
 	}
 	/// <summary>
 	/// Support the creation of place holder shape objects

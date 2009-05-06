@@ -49,7 +49,7 @@
 			</arg:RolePlayerChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="FactTypeShape">
-			<arg:ChangeRule methodName="ConstraintDisplayPositionChangeRule">
+			<arg:ChangeRule methodName="ConnectionPropertyChangeRule">
 				<arg:RuleOn targetType="FactTypeShape" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>
 			</arg:ChangeRule>
 			<arg:ChangeRule methodName="ExternalConstraintShapeChangeRule">
@@ -94,6 +94,9 @@
 			</arg:ChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="ObjectTypeShape">
+			<arg:ChangeRule methodName="ConnectionPropertyChangeRule">
+				<arg:RuleOn targetType="ObjectTypeShape" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>
+			</arg:ChangeRule>
 			<arg:AddRule methodName="DataTypeAddedRule">
 				<arg:RuleOn targetType="ValueTypeHasDataType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:AddRule>

@@ -110,6 +110,47 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 			Location = new PointD(x, y);
 		}
+		/// <summary>
+		/// Highlight both the name shape and the corresponding role box.
+		/// </summary>
+		public override void OnMouseEnter(DiagramPointEventArgs e)
+		{
+			DiagramClientView clientView;
+			FactTypeShape parentShape;
+			Role role;
+			if (null != (clientView = e.DiagramClientView) &&
+				null != (parentShape = ParentShape as FactTypeShape) &&
+				null != (role = this.ModelElement as Role))
+			{
+				DiagramItemCollection items = new DiagramItemCollection();
+				items.Add(new DiagramItem(this));
+				items.Add(parentShape.GetDiagramItem(role));
+				clientView.HighlightedShapes.Set(items);
+			}
+			else
+			{
+				base.OnMouseEnter(e);
+			}
+		}
+		/// <summary>
+		/// Highlight both the name shape and the corresponding role box.
+		/// </summary>
+		public override void OnMouseLeave(DiagramPointEventArgs e)
+		{
+			DiagramClientView clientView;
+			FactTypeShape parentShape;
+			Role role;
+			if (null != (clientView = e.DiagramClientView) &&
+				null != (parentShape = ParentShape as FactTypeShape) &&
+				null != (role = this.ModelElement as Role))
+			{
+				clientView.HighlightedShapes.Remove(new DiagramItem[]{new DiagramItem(this), parentShape.GetDiagramItem(role)});
+			}
+			else
+			{
+				base.OnMouseLeave(e);
+			}
+		}
 		#endregion // Base overrides
 		#region IDynamicColorGeometryHost Implementation
 		/// <summary>
@@ -175,20 +216,23 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <summary>
 		/// Sets the isVisible property for the given Role
 		/// </summary>
-		private static void SetRoleNameDisplay(Role role, bool shouldDisplay, bool shouldRemove)
+		private static void SetRoleNameDisplay(Role role, FactTypeShape parentShape, bool shouldDisplay, bool shouldRemove)
 		{
 			if (!shouldRemove)
 			{
 				Diagram.FixUpDiagram(role.FactType, role);
 			}
-			foreach (PresentationElement element in PresentationViewsSubject.GetPresentation(role))
+			LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(role);
+			int pelCount = pels.Count;
+			for (int i = pelCount - 1; i >= 0; --i)
 			{
-				RoleNameShape rns = element as RoleNameShape;
-				if (rns != null)
+				RoleNameShape rns = pels[i] as RoleNameShape;
+				if (rns != null &&
+					(parentShape == null || rns.ParentShape == parentShape))
 				{
 					if (shouldRemove)
 					{
-						RemoveRoleNameShapeFromRole(role);
+						rns.Delete();
 					}
 					else
 					{
@@ -202,7 +246,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							rns.Size = SizeD.Empty;
 						}
 					}
-					break;
 				}
 			}
 		}
@@ -211,13 +254,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		public static void SetRoleNameDisplay(FactType fact)
 		{
-			bool shouldDisplay = false;
-			bool shouldRemove = false;
 			foreach (PresentationElement element in PresentationViewsSubject.GetPresentation(fact))
 			{
 				FactTypeShape fts = element as FactTypeShape;
 				if (fts != null)
 				{
+					bool shouldDisplay = false;
+					bool shouldRemove = false;
 					if (fts.DisplayRoleNames == DisplayRoleNames.UserDefault
 						&& OptionsPage.CurrentRoleNameDisplay == RoleNameDisplay.On)
 					{
@@ -231,14 +274,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					{
 						shouldRemove = true;
 					}
-				}
-			}
-			foreach (RoleBase roleBase in fact.RoleCollection)
-			{
-				Role role = roleBase as Role;
-				if (role != null && !string.IsNullOrEmpty(role.Name))
-				{
-					SetRoleNameDisplay(role, shouldDisplay, shouldRemove);
+					foreach (RoleBase roleBase in fact.RoleCollection)
+					{
+						Role role = roleBase as Role;
+						if (role != null && !string.IsNullOrEmpty(role.Name))
+						{
+							SetRoleNameDisplay(role, fts, shouldDisplay, shouldRemove);
+						}
+					}
 				}
 			}
 		}

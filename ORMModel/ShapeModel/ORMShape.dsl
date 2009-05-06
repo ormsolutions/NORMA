@@ -105,6 +105,21 @@
 				</ClrAttribute>
 			</Attributes>
 		</DomainEnumeration>
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel" Name="RelatedTypesDisplay" Description="Determines whether an ObjectTypeShape or objectified FactTypeShape is attached to its supertypes or subtypes.">
+			<Literals>
+				<EnumerationLiteral Name="AttachAllTypes" Value="0" Description="The shape attaches to both its supertypes and its subtypes."/>
+				<EnumerationLiteral Name="AttachSubtypes" Value="1" Description="The shape attaches to its subtypes, but not its supertypes."/>
+				<EnumerationLiteral Name="AttachSupertypes" Value="2" Description="The shape attaches to its supertypes, but not its subtypes."/>
+				<EnumerationLiteral Name="AttachNoTypes" Value="3" Description="The shape attaches to neither its subtypes nor its supertypes."/>
+			</Literals>
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;RelatedTypesDisplay, global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+		</DomainEnumeration>
 	</Types>
 
 	<Shapes>
@@ -125,13 +140,25 @@
 			</Properties>
 		</GeometryShape>
 		<GeometryShape Name="ObjectTypeShape" Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel" Id="00C1F246-D8F1-4EEA-AC88-39BA238143A8" FillGradientMode="None" InitialWidth=".7" InitialHeight=".35">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Diagrams.Design.PresentationElementTypeDescriptionProvider&lt;ObjectTypeShape, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType, Design.ObjectTypeShapeTypeDescriptor&lt;ObjectTypeShape, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
 			<BaseGeometryShape>
 				<GeometryShapeMoniker Name="ORMBaseShape"/>
 			</BaseGeometryShape>
 			<Properties>
-				<DomainProperty Name="ExpandRefMode" DisplayName="ExpandRefMode" Id="B2415BB1-1C83-4F0B-B2C3-58B67BC620DD" DefaultValue="false" Description="Should shapes for the FactType and ValueType corresponding to this ReferenceMode pattern be displayed on the diagram?">
+				<DomainProperty Name="ExpandRefMode" DisplayName="ExpandRefMode" Id="B2415BB1-1C83-4F0B-B2C3-58B67BC620DD" DefaultValue="false" Kind="CustomStorage" Description="Should shapes for the FactType and ValueType corresponding to this ReferenceMode pattern be displayed on the diagram?">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="DisplayRelatedTypes" DisplayName="DisplayRelatedTypes" Id="28F09348-418E-4F01-908A-B58558AF18FC" DefaultValue="AttachAllTypes" Kind="CustomStorage" Description="Should links to subtypes and supertypes be attached to this shape?">
+					<Type>
+						<DomainEnumerationMoniker Name="RelatedTypesDisplay"/>
 					</Type>
 				</DomainProperty>
 			</Properties>
@@ -148,19 +175,24 @@
 				<GeometryShapeMoniker Name="ORMBaseShape"/>
 			</BaseGeometryShape>
 			<Properties>
-				<DomainProperty Name="ConstraintDisplayPosition" DisplayName="ConstraintDisplayPosition" Id="802767FD-DE7D-4541-B42B-90B613DFE22D" DefaultValue="Top" Description="Determines where internal constraints are drawn on this FactTypeShape.">
+				<DomainProperty Name="ConstraintDisplayPosition" DisplayName="ConstraintDisplayPosition" Id="802767FD-DE7D-4541-B42B-90B613DFE22D" DefaultValue="Top" Kind="CustomStorage" Description="Determines where internal constraints are drawn on this FactTypeShape.">
 					<Type>
 						<DomainEnumerationMoniker Name="ConstraintDisplayPosition"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="DisplayRoleNames" DisplayName="DisplayRoleNames" Id="9607AF0F-2E12-4215-B8A5-91B67C1A9F08" DefaultValue="UserDefault" Description="Determines whether RoleNameShapes will be drawn for the Roles in the FactType represented by this FactTypeShape, overriding the global setting." >
+				<DomainProperty Name="DisplayRoleNames" DisplayName="DisplayRoleNames" Id="9607AF0F-2E12-4215-B8A5-91B67C1A9F08" DefaultValue="UserDefault" Kind="CustomStorage" Description="Determines whether RoleNameShapes will be drawn for the Roles in the FactType represented by this FactTypeShape, overriding the global setting." >
 					<Type>
 						<DomainEnumerationMoniker Name="DisplayRoleNames"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="DisplayOrientation" DisplayName="DisplayOrientation" Id="31A8F13E-97C6-421F-820D-001CD8E774F3" DefaultValue="Horizontal" Description="Determines if the fact type is shown horizontally or vertically.">
+				<DomainProperty Name="DisplayOrientation" DisplayName="DisplayOrientation" Id="31A8F13E-97C6-421F-820D-001CD8E774F3" DefaultValue="Horizontal" Kind="CustomStorage" Description="Determines if the fact type is shown horizontally or vertically.">
 					<Type>
 						<DomainEnumerationMoniker Name="DisplayOrientation"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="DisplayRelatedTypes" DisplayName="DisplayRelatedTypes" Id="1BFDF35D-E620-442E-9E18-BA10478B6768" DefaultValue="AttachAllTypes" Kind="CustomStorage" Description="Should links to subtypes and supertypes be attached to this shape?">
+					<Type>
+						<DomainEnumerationMoniker Name="RelatedTypesDisplay"/>
 					</Type>
 				</DomainProperty>
 				<DomainProperty Name="RolesPosition" Id="89244439-FBB1-4DEB-BFF3-69D47CB90A6B" DefaultValue="0" IsBrowsable="false" GetterAccessModifier="Private" SetterAccessModifier="Private">

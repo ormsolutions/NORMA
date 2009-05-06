@@ -505,6 +505,7 @@
     <Compile Include="ObjectModel\Design\Editors\AliasManagerForm.Designer.cs">
       <DependentUpon>AliasManagerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ShapeModel\Design\ObjectTypeShapeTypeDescriptor.cs" />
     <Compile Include="ShapeModel\DynamicColorTextField.cs" />
     <Compile Include="Shell\ORMDesignerCommandManager.cs" />
     <Compile Include="Shell\ORMDiagramSpy.cs">

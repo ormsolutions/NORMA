@@ -265,10 +265,10 @@
     <value xml:space="preserve">Horizontal</value>
   </data>
   <data name="DisplayOrientation.VerticalRotatedLeft">
-    <value xml:space="preserve">RotatedLeft</value>
+    <value xml:space="preserve">Rotated Left</value>
   </data>
   <data name="DisplayOrientation.VerticalRotatedRight">
-    <value xml:space="preserve">RotatedRight</value>
+    <value xml:space="preserve">Rotated Right</value>
   </data>
   <data name="DisplayRoleNames.Off">
     <value xml:space="preserve">Off</value>
@@ -866,6 +866,18 @@
   <data name="ReadingShape.UnattachedRoleDisplay">
     <value xml:space="preserve">[Missing{0}]</value>
     <comment xml:space="preserve">The string used to display a reading with a non-primary order when the role is not attached.</comment>
+  </data>
+  <data name="RelatedTypesDisplay.AttachAllTypes">
+    <value xml:space="preserve">Subtypes and Supertypes</value>
+  </data>
+  <data name="RelatedTypesDisplay.AttachSubtypes">
+    <value xml:space="preserve">Subtypes</value>
+  </data>
+  <data name="RelatedTypesDisplay.AttachSupertypes">
+    <value xml:space="preserve">Supertypes</value>
+  </data>
+  <data name="RelatedTypesDisplay.AttachNoTypes">
+    <value xml:space="preserve">None</value>
   </data>
   <data name="ReverseRoleOrder.TransactionName">
     <value xml:space="preserve">Reverse Role Order</value>

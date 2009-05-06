@@ -71,6 +71,7 @@
 					<xs:element ref="Subject"/>
 				</xs:sequence>
 				<xs:attribute name="ExpandRefMode" type="xs:boolean" default="false"/>
+				<xs:attribute name="DisplayRelatedTypes" type="DisplayRelatedTypesType" default="AttachAllTypes"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -128,9 +129,34 @@
 						</xs:restriction>
 					</xs:simpleType>
 				</xs:attribute>
+				<xs:attribute name="DisplayRelatedTypes" type="DisplayRelatedTypesType" default="AttachAllTypes"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+	<xs:simpleType name="DisplayRelatedTypesType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="AttachAllTypes">
+				<xs:annotation>
+					<xs:documentation>The shape attaches to both its supertypes and its subtypes.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AttachSubtypes">
+				<xs:annotation>
+					<xs:documentation>The shape attaches to its subtypes, but not its supertypes.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AttachSupertypes">
+				<xs:annotation>
+					<xs:documentation>The shape attaches to its supertypes, but not its subtypes.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AttachNoTypes">
+				<xs:annotation>
+					<xs:documentation>The shape attaches to neither its subtypes nor its supertypes.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:complexType name="ReadingShape">
 		<xs:complexContent>
 			<xs:extension base="ShapeType">
