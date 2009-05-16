@@ -1,8 +1,9 @@
-#region Common Public License Copyright Notice
+﻿#region Common Public License Copyright Notice
 /**************************************************************************\
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -59,26 +60,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		protected static Color UpdateDynamicColor(StyleSetResourceId penId, Pen pen)
 		{
-#if FALSE
-			Color retVal = Color.Empty;
-			IDynamicShapeColorProvider<ORMDiagramDynamicColor, ValueConstraintShape, ValueConstraint>[] providers;
-			if (penId == DiagramPens.ShapeOutline &&
-				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintShape, IConstraint>>()))
-			{
-				ValueConstraint element = (ValueConstraint)ModelElement;
-				for (int i = 0; i < providers.Length; ++i)
-				{
-					Color alternateColor = providers[i].GetDynamicColor(ORMDiagramDynamicColor.Constraint, this, element);
-					if (alternateColor != Color.Empty)
-					{
-						retVal = pen.Color;
-						pen.Color = alternateColor;
-						break;
-					}
-				}
-			}
-			return retVal;
-#endif // FALSE
 			return Color.Empty;
 		}
 		Color IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId penId, Pen pen)

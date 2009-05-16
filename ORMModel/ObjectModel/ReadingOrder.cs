@@ -152,12 +152,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			RoleBase linkRole = link.Role;
 			ReadingOrder linkReadingOrder = link.ReadingOrder;
 
-			if (linkReadingOrder.IsDeleting)
+			if (linkReadingOrder.IsDeleting || linkReadingOrder.IsDeleted)
 			{
 				// Don't validate if we're removing the reading order
 				return;
 			}
-			Debug.Assert(!linkReadingOrder.IsDeleted);
 			FactType factType = linkReadingOrder.FactType;
 			if (factType != null)
 			{

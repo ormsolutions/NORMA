@@ -353,7 +353,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		private ElementGrouping[] myDeleteFromGroups;
 
 		/// <summary>
-		/// The filter for multi selection when the elements are all of the same type.`
+		/// The filter for multi selection when the elements are all of the same type.
 		/// </summary>
 		private const ORMDesignerCommands EnabledSimpleMultiSelectCommandFilter =
 			ORMDesignerCommands.DisplayStandardWindows |
@@ -361,6 +361,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			ORMDesignerCommands.DisplayOrientation |
 			ORMDesignerCommands.DisplayConstraintsPosition |
 			ORMDesignerCommands.ExclusiveOrDecoupler |
+			ORMDesignerCommands.ObjectifyFactType |
+			ORMDesignerCommands.UnobjectifyFactType |
 			ORMDesignerCommands.SelectAll |
 			ORMDesignerCommands.AlignShapes |
 			ORMDesignerCommands.AutoLayout |
@@ -3419,43 +3421,64 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			ORMDiagram diagram = view.CurrentDiagram as ORMDiagram;
 			if (diagram != null)
 			{
-				IList selectedElements = view.SelectedElements;
-				int selectedElementsCount = selectedElements.Count;
-				for (int i = 0; i < selectedElementsCount; i++)
+				Store store = diagram.Store;
+				IORMToolServices toolServices = null;
+				AutomatedElementFilterCallback callback = null;
+				if (null != (toolServices = store as IORMToolServices))
 				{
-					FactType factType = ORMEditorUtility.ResolveContextFactType(selectedElements[i]);
-					if (factType != null)
+					callback = delegate(ModelElement filterElement)
 					{
-						Store store = factType.Store;
-						using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.ObjectifyFactTypeTransactionName))
+						FactType factType;
+						return filterElement is ObjectType || (null != (factType = filterElement as FactType) && null == factType.ImpliedByObjectification) ?
+							AutomatedElementDirective.NeverIgnore :
+							AutomatedElementDirective.None;
+					};
+					toolServices.AutomatedElementFilter += callback;
+				}
+				try
+				{
+					IList selectedElements = view.SelectedElements;
+					int selectedElementsCount = selectedElements.Count;
+					for (int i = 0; i < selectedElementsCount; ++i)
+					{
+						FactType factType = ORMEditorUtility.ResolveContextFactType(selectedElements[i]);
+						if (factType != null)
 						{
-							Objectification objectification = factType.Objectification;
-							if (objectification != null)
+							using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.ObjectifyFactTypeTransactionName))
 							{
-								Debug.Assert(objectification.IsImplied);
-								// Set the objectifying type to not be independent, which breaks the implication pattern and makes
-								// the objectification change to be explicit
-								ObjectType nestingType = objectification.NestingType;
-								if (nestingType.IsIndependent)
+								Objectification objectification = factType.Objectification;
+								if (objectification != null)
 								{
-									nestingType.IsIndependent = false;
+									Debug.Assert(objectification.IsImplied);
+									// Set the objectifying type to not be independent, which breaks the implication pattern and makes
+									// the objectification change to be explicit
+									ObjectType nestingType = objectification.NestingType;
+									if (nestingType.IsIndependent)
+									{
+										nestingType.IsIndependent = false;
+									}
+									else
+									{
+										objectification.IsImplied = false;
+									}
 								}
 								else
 								{
-									objectification.IsImplied = false;
+									Objectification.CreateObjectificationForFactType(factType, false);
+								}
+								if (t.HasPendingChanges)
+								{
+									t.Commit();
 								}
 							}
-							else
-							{
-								Objectification.CreateObjectificationForFactType(factType, false);
-							}
-							if (t.HasPendingChanges)
-							{
-								t.Commit();
-							}
 						}
-						// Once we've objectified a fact type, we're done
-						break;
+					}
+				}
+				finally
+				{
+					if (toolServices != null)
+					{
+						toolServices.AutomatedElementFilter -= callback;
 					}
 				}
 			}
@@ -3469,30 +3492,51 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			ORMDiagram diagram = view.CurrentDiagram as ORMDiagram;
 			if (diagram != null)
 			{
-				IList selectedElements = view.SelectedElements;
-				int selectedElementsCount = selectedElements.Count;
-				for (int i = 0; i < selectedElementsCount; i++)
+				Store store = diagram.Store;
+				IORMToolServices toolServices = null;
+				AutomatedElementFilterCallback callback = null;
+				if (null != (toolServices = store as IORMToolServices))
 				{
-					// ResolveContextFactType will resolve an ObjectType to the FactType that it nests,
-					// so we don't need to worry about doing that ourselves.
-					FactType factType = ORMEditorUtility.ResolveContextFactType(selectedElements[i]);
-					if (factType != null)
+					callback = delegate(ModelElement filterElement)
 					{
-						Store store = factType.Store;
-						using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.UnobjectifyFactTypeTransactionName))
+						FactType factType;
+						return filterElement is ObjectType || (null != (factType = filterElement as FactType) && null == factType.ImpliedByObjectification) ?
+							AutomatedElementDirective.NeverIgnore :
+							AutomatedElementDirective.None;
+					};
+					toolServices.AutomatedElementFilter += callback;
+				}
+				try
+				{
+					IList selectedElements = view.SelectedElements;
+					int selectedElementsCount = selectedElements.Count;
+					for (int i = 0; i < selectedElementsCount; ++i)
+					{
+						// ResolveContextFactType will resolve an ObjectType to the FactType that it nests,
+						// so we don't need to worry about doing that ourselves.
+						FactType factType = ORMEditorUtility.ResolveContextFactType(selectedElements[i]);
+						if (factType != null)
 						{
-							Objectification objectification = factType.Objectification;
-							Debug.Assert(objectification != null && !objectification.IsImplied);
-
-							Objectification.RemoveExplicitObjectification(objectification);
-
-							if (t.HasPendingChanges)
+							using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.UnobjectifyFactTypeTransactionName))
 							{
-								t.Commit();
+								Objectification objectification = factType.Objectification;
+								Debug.Assert(objectification != null && !objectification.IsImplied);
+
+								Objectification.RemoveExplicitObjectification(objectification);
+
+								if (t.HasPendingChanges)
+								{
+									t.Commit();
+								}
 							}
 						}
-						// Once we've objectified a fact type, we're done
-						break;
+					}
+				}
+				finally
+				{
+					if (toolServices != null)
+					{
+						toolServices.AutomatedElementFilter -= callback;
 					}
 				}
 			}

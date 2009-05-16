@@ -4156,7 +4156,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						Objectification objectification = forType.Objectification;
 						if (constraint.IsInternal)
 						{
-							if (objectification != null &&
+							ReadOnlyCollection<ConstraintRoleSequenceHasRole> constraintRoleLinks = DomainRoleInfo.GetElementLinks<ConstraintRoleSequenceHasRole>(constraint, ConstraintRoleSequenceHasRole.ConstraintRoleSequenceDomainRoleId);
+							int constraintRoleLinkCount = constraintRoleLinks.Count;
+							if (constraintRoleLinkCount == 0)
+							{
+								// Intentionally empty
+							}
+							else if (objectification != null &&
 								objectification.NestedFactType == constraint.FactTypeCollection[0])
 							{
 								remove = objectification.IsDeleting;
@@ -4167,12 +4173,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								// relationship, so the link can be gone without the role
 								// being removed. Get the links first instead of using the
 								// generated counterpart collection.
-								ReadOnlyCollection<ConstraintRoleSequenceHasRole> constraintRoleLinks = DomainRoleInfo.GetElementLinks<ConstraintRoleSequenceHasRole>(constraint, ConstraintRoleSequenceHasRole.ConstraintRoleSequenceDomainRoleId);
 								ConstraintRoleSequenceHasRole constraintRoleLink;
 								LinkedElementCollection<RoleBase> factRoles;
 								Role constraintRole;
 								FactType factType;
-								if (1 == constraintRoleLinks.Count &&
+								if (1 == constraintRoleLinkCount &&
 									!(constraintRoleLink = constraintRoleLinks[0]).IsDeleting &&
 									!(constraintRole = constraintRoleLink.Role).IsDeleting &&
 									null != (factType = constraintRole.FactType) &&
@@ -5131,12 +5136,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				LinkedElementCollection<Role> constraintRoles;
 				RoleProxy proxy;
 				FactType impliedFact;
+				Role role;
 				return preferredFor != null &&
 					null != (objectification = preferredFor.Objectification) &&
 					1 == (constraintRoles = RoleCollection).Count &&
-					null != (proxy = constraintRoles[0].Proxy) &&
+					((role = constraintRoles[0]) is ObjectifiedUnaryRole ||
+					(null != (proxy = role.Proxy) &&
 					null != (impliedFact = proxy.FactType) &&
-					impliedFact.ImpliedByObjectification == objectification;
+					impliedFact.ImpliedByObjectification == objectification));
 			}
 		}
 		/// <summary>

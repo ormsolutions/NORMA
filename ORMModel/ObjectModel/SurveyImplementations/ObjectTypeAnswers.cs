@@ -36,7 +36,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		protected int AskErrorQuestion(object contextElement)
 		{
 			ORMModel model = Model;
-			return (Model == null) ?
+			return (model == null) ?
 				-1 :
 				(int)(ModelError.HasErrors(this, ModelErrorUses.DisplayPrimary, model.ModelErrorDisplayFilter) ? SurveyErrorState.HasError : SurveyErrorState.NoError);
 		}

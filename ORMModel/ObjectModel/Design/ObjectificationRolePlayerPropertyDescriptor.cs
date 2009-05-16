@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -28,6 +29,7 @@ using ORMSolutions.ORMArchitect.Core.ObjectModel;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 {
+	#region ObjectificationRolePlayerPropertyDescriptor class
 	/// <summary>
 	/// <see cref="RolePlayerElementPropertyDescriptor"/> for <see cref="ObjectType.NestedFactType"/>
 	/// (<see cref="ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.NestedFactType"/>) and
@@ -36,10 +38,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
 	public class ObjectificationRolePlayerPropertyDescriptor : RolePlayerElementPropertyDescriptor
 	{
+		#region Constructor
 		private static readonly Guid[] ObjectificationDomainRoleIds =
 			new Guid[] { Objectification.NestedFactTypeDomainRoleId, Objectification.NestingTypeDomainRoleId };
-
-		#region Constructor
 		/// <summary>
 		/// Initializes a new instance of <see cref="ObjectificationRolePlayerPropertyDescriptor"/>.
 		/// </summary>
@@ -53,7 +54,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			}
 		}
 		#endregion // Constructor
-
 		#region IsReadOnly property
 		/// <summary>
 		/// Ensure that the <see cref="ObjectType.NestedFactType"/> property is read-only when
@@ -77,7 +77,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			}
 		}
 		#endregion // IsReadOnly property
-
 		#region ResetValue method
 		/// <summary>See <see cref="RolePlayerElementPropertyDescriptor.ResetValue"/>.</summary>
 		public override void ResetValue(object component)
@@ -85,7 +84,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			this.SetValue(component, null);
 		}
 		#endregion // ResetValue method
-
 		#region SetValue method
 		/// <summary>See <see cref="RolePlayerElementPropertyDescriptor.SetValue"/>.</summary>
 		public override void SetValue(object component, object value)
@@ -94,34 +92,59 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			{
 				return;
 			}
-			using (Transaction transaction = this.BeginTransaction())
+			IORMToolServices toolServices = null;
+			ModelElement element;
+			AutomatedElementFilterCallback callback = null;
+			if (null != (element = component as ModelElement) &&
+				null != (toolServices = element.Store as IORMToolServices))
 			{
-				ObjectType objectType = this.SourcePlayer as ObjectType;
-				if (objectType != null)
+				callback = delegate(ModelElement filterElement)
 				{
-					FactType factType = value as FactType;
-					if (factType != null)
+					FactType factType;
+					return filterElement is ObjectType || (null != (factType = filterElement as FactType) && null == factType.ImpliedByObjectification) ?
+						AutomatedElementDirective.NeverIgnore :
+						AutomatedElementDirective.None;
+				};
+				toolServices.AutomatedElementFilter += callback;
+			}
+			try
+			{
+				using (Transaction transaction = this.BeginTransaction())
+				{
+					ObjectType objectType = this.SourcePlayer as ObjectType;
+					if (objectType != null)
 					{
-						Objectification.CreateExplicitObjectification(factType, objectType);
+						FactType factType = value as FactType;
+						if (factType != null)
+						{
+							Objectification.CreateExplicitObjectification(factType, objectType);
+						}
+						else
+						{
+							objectType.NestedFactType = null;
+						}
 					}
 					else
 					{
-						objectType.NestedFactType = null;
+						FactType factType = this.SourcePlayer as FactType;
+						Debug.Assert(factType != null, "SourcePlayer should only ever be an ObjectType or a FactType.");
+						Objectification.CreateExplicitObjectification(factType, value as ObjectType);
+					}
+					if (transaction.HasPendingChanges)
+					{
+						transaction.Commit();
 					}
 				}
-				else
+			}
+			finally
+			{
+				if (toolServices != null)
 				{
-					FactType factType = this.SourcePlayer as FactType;
-					Debug.Assert(factType != null, "SourcePlayer should only ever be an ObjectType or a FactType.");
-					Objectification.CreateExplicitObjectification(factType, value as ObjectType);
-				}
-				if (transaction.HasPendingChanges)
-				{
-					transaction.Commit();
+					toolServices.AutomatedElementFilter -= callback;
 				}
 			}
 		}
 		#endregion // SetValue method
-
 	}
+	#endregion // ObjectificationRolePlayerPropertyDescriptor class
 }

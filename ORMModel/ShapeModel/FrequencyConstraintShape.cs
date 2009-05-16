@@ -210,7 +210,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				!(convertingTo = (UniquenessConstraint)contextInfo[FrequencyConstraint.ConvertingToUniquenessConstraintKey]).IsInternal &&
 				shape.ModelElement == contextInfo[FrequencyConstraint.ConvertingFromFrequencyConstraintKey])
 			{
-				((ORMDiagram)shape.Diagram).PlaceORMElementOnDiagram(null, convertingTo, shape.Location, ORMPlacementOption.AllowMultipleShapes);
+				((ORMDiagram)shape.Diagram).PlaceORMElementOnDiagram(null, convertingTo, shape.Location, ORMPlacementOption.AllowMultipleShapes, null, null);
 			}
 		}
 		#endregion // FrequencyConstraintConversionDeletingRule

@@ -599,7 +599,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private string GetNameValue()
 		{
 			Store store = Store;
-			if (store.InUndoRedoOrRollback)
+			if (store.Disposed || store.ShuttingDown || store.InUndoRedoOrRollback)
 			{
 				return myGeneratedName;
 			}
@@ -3115,7 +3115,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		protected string GetNameValue()
 		{
 			Store store = Store;
-			if (store.InUndoRedoOrRollback || !HasGeneratedNames)
+			if (store.Disposed || store.ShuttingDown || store.InUndoRedoOrRollback || !HasGeneratedNames)
 			{
 				return GeneratedName;
 			}
@@ -3144,7 +3144,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		protected virtual string GetIdentifierNameValue()
 		{
 			Store store = Store;
-			if (store.InUndoRedoOrRollback || !HasGeneratedNames)
+			if (store.Disposed || store.ShuttingDown || store.InUndoRedoOrRollback || !HasGeneratedNames)
 			{
 				return GeneratedIdentifierName;
 			}

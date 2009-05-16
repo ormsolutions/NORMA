@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -22,6 +23,7 @@ using System.Drawing.Design;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Framework.Diagrams;
 
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
@@ -167,7 +169,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// <returns></returns>
 			public override bool IsValidSourceAndTarget(ShapeElement sourceShapeElement, ShapeElement targetShapeElement)
 			{
-				RoleConnectAction action = (sourceShapeElement.Diagram as ORMDiagram).RoleConnectAction;
+				ORMDiagram diagram = (ORMDiagram)sourceShapeElement.Diagram;
+				RoleConnectAction action = diagram.RoleConnectAction;
 				ObjectType objectType;
 				Role role;
 				Objectification objectification;
@@ -176,6 +179,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					(null != (objectType = action.mySourceObjectType) && null != (role = action.myLastMouseMoveRole)))
 				{
 					return role.FactType != objectType.NestedFactType;
+				}
+				// Allow the user to drag out an existing role player from a
+				// role on a shape that is not connected.
+				else if (targetShapeElement == diagram &&
+					action.mySourceRoleMissingConnector)
+				{
+					return true;
 				}
 				return false;
 			}
@@ -205,7 +215,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// <param name="paintFeedbackArgs">PaintFeedbackArgs</param>
 			public override void CreateConnection(ShapeElement sourceShapeElement, ShapeElement targetShapeElement, PaintFeedbackArgs paintFeedbackArgs)
 			{
-				RoleConnectAction action = (sourceShapeElement.Diagram as ORMDiagram).RoleConnectAction;
+				ORMDiagram diagram = (ORMDiagram)sourceShapeElement.Diagram;
+				RoleConnectAction action = diagram.RoleConnectAction;
 				ObjectType objectType;
 				Role role;
 				if ((null != (role = action.mySourceRole) && null != (objectType = ObjectTypeFromShape(targetShapeElement))) ||
@@ -217,13 +228,18 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						role.RolePlayer = objectType;
 					}
 				}
+				else if (targetShapeElement == diagram &&
+					action.mySourceRoleMissingConnector)
+				{
+					diagram.PlaceORMElementOnDiagram(null, role.RolePlayer, paintFeedbackArgs.TargetFeedbackBounds.Location, ORMPlacementOption.AllowMultipleShapes, null, null);
+				}
 			}
 			/// <summary>
 			/// Provide the transaction name. The name is displayed in the undo and redo lists.
 			/// </summary>
 			public override string GetConnectTransactionName(ShapeElement sourceShape, ShapeElement targetShape)
 			{
-				return ResourceStrings.RoleConnectActionTransactionName;
+				return (targetShape is ORMDiagram) ? ResourceStrings.DropShapeTransactionName : ResourceStrings.RoleConnectActionTransactionName;
 			}
 		}
 		#endregion // ExternalConstraintConnectionType class
@@ -235,6 +251,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		private Role myLastMouseDownRole;
 		private Role myLastMouseMoveRole;
 		private Role mySourceRole;
+		private bool mySourceRoleMissingConnector;
 		private ObjectType mySourceObjectType;
 		private bool myEmulateDrag;
 		#endregion // Member variables
@@ -290,9 +307,25 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			base.OnClicked(e);
 			if (mySourceObjectType == null && mySourceRole == null)
 			{
-				if (myLastMouseDownRole != null)
+				Role role = myLastMouseDownRole;
+				if (role != null)
 				{
-					mySourceRole = myLastMouseDownRole;
+					mySourceRole = role;
+					FactTypeShape factShape;
+					if (null != role.RolePlayer &&
+						null != (factShape = MouseDownHitShape as FactTypeShape))
+					{
+						bool haveConnectorForRole = false;
+						foreach (RolePlayerLink connector in MultiShapeUtility.GetEffectiveAttachedLinkShapesFrom<RolePlayerLink>(factShape))
+						{
+							if (connector.AssociatedRolePlayerLink.PlayedRole == role)
+							{
+								haveConnectorForRole = true;
+								break;
+							}
+						}
+						mySourceRoleMissingConnector = !haveConnectorForRole;
+					}
 				}
 				else
 				{
@@ -368,6 +401,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		private void Reset()
 		{
 			mySourceRole = null;
+			mySourceRoleMissingConnector = false;
 			mySourceObjectType = null;
 			myLastMouseDownRole = null;
 			myLastMouseMoveRole = null;

@@ -353,7 +353,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					continue;
 				}
-				myDiagram.PlaceORMElementOnDiagram(null, (ModelElement)elem, PointD.Empty, ORMPlacementOption.None);
+				myDiagram.PlaceORMElementOnDiagram(null, (ModelElement)elem, PointD.Empty, ORMPlacementOption.None, null, null);
 			}
 		}
 		/// <summary>

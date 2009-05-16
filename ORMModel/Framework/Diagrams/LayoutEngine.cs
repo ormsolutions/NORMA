@@ -636,18 +636,16 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 			NodeShape nodeShape = shape.Shape;
 
 			// We did not place the shape, there may be existing children on the map that we don't want to overlap
-			ReadOnlyCollection<LinkConnectsToNode> links = DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(nodeShape, LinkConnectsToNode.NodesDomainRoleId);
-			foreach (LinkConnectsToNode link in links)
+			foreach (BinaryLinkShape binaryLink in MultiShapeUtility.GetEffectiveAttachedLinkShapes<BinaryLinkShape>(nodeShape))
 			{
-				BinaryLinkShape binaryLink = link.Link as BinaryLinkShape;
-				if (binaryLink == null)
+				NodeShape relation = MultiShapeUtility.ResolvePrimaryShape(binaryLink.FromShape) as NodeShape;
+				if (relation == nodeShape)
 				{
-					continue;
+					relation = MultiShapeUtility.ResolvePrimaryShape(binaryLink.ToShape) as NodeShape;
 				}
-
-				NodeShape relation = (binaryLink.FromShape != nodeShape ? binaryLink.FromShape : binaryLink.ToShape);
 				LayoutShape childShape = null;
-				if (myLayoutShapes.TryGetValue(relation, out childShape) && !childShape.Pinned)
+				if (relation == null ||
+					(myLayoutShapes.TryGetValue(relation, out childShape) && !childShape.Pinned))
 				{
 					continue;
 				}
@@ -1196,18 +1194,17 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 				return;
 			}
 
-			ReadOnlyCollection<LinkConnectsToNode> links = DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(Shape, LinkConnectsToNode.NodesDomainRoleId);
-			foreach (LinkConnectsToNode link in links)
+			foreach (BinaryLinkShape binaryLink in MultiShapeUtility.GetEffectiveAttachedLinkShapes<BinaryLinkShape>(Shape))
 			{
-				BinaryLinkShape binaryLink = link.Link as BinaryLinkShape;
-				if (binaryLink == null)
+				NodeShape relation = MultiShapeUtility.ResolvePrimaryShape(binaryLink.FromShape) as NodeShape;
+				if (relation == Shape)
 				{
-					continue;
+					relation = MultiShapeUtility.ResolvePrimaryShape(binaryLink.ToShape) as NodeShape;
 				}
-
-				NodeShape relation = (binaryLink.FromShape != Shape ? binaryLink.FromShape : binaryLink.ToShape);
 				LayoutShape relative;
-				if (allShapes.TryGetValue(relation, out relative))
+				if (relation != null &&
+					allShapes.TryGetValue(relation, out relative) &&
+					!RelatedShapes.Contains(relative))
 				{
 					RelatedShapes.Add(relative);
 				}

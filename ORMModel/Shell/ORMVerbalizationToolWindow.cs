@@ -378,7 +378,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						{
 							if (snippetsDictionary == null)
 							{
-								snippetsDictionary = (mel.Store as IORMToolServices).GetVerbalizationSnippetsDictionary(ORMCoreDomainModel.VerbalizationTargetName);
+								Store store = mel.Store;
+								if (store.ShuttingDown || store.Disposed)
+								{
+									break;
+								}
+								snippetsDictionary = (store as IORMToolServices).GetVerbalizationSnippetsDictionary(ORMCoreDomainModel.VerbalizationTargetName);
 								snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
 								callbackWriter = new VerbalizationCallbackWriter(snippets, myStringWriter, GetDocumentHeaderReplacementFields(mel, snippets));
 							}

@@ -23,6 +23,7 @@ using ORMSolutions.ORMArchitect.Core.ObjectModel;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 {
+	#region AutomatedElementFilterPropertyDescriptor class
 	/// <summary>
 	/// An <see cref="ElementPropertyDescriptor"/> that can be used to
 	/// filter side-effect elements creating while setting the property
@@ -64,7 +65,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			}
 		}
 		/// <summary>
-		/// Return <see langword="true"/> to classify the provided <see cref="ModelElement"/>
+		/// Return <see cref="AutomatedElementDirective.Ignore"/> to classify the provided <see cref="ModelElement"/>
 		/// as an automated element.
 		/// The default implementation classifies all elements as automated.
 		/// </summary>
@@ -73,4 +74,5 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			return AutomatedElementDirective.Ignore;
 		}
 	}
+	#endregion // AutomatedElementFilterPropertyDescriptor class
 }

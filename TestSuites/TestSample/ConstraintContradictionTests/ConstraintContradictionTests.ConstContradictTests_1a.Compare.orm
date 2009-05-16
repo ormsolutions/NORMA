@@ -1,4 +1,5 @@
-﻿<ormRoot:ORM2 xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ormRoot:ORM2 xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot">
 	<orm:ORMModel id="_1FBB3D13-EF36-4305-8832-46ADB33600E4" Name="ORMModel1">
 		<orm:Objects>
 			<orm:EntityType id="_9D7A48DA-33A9-4236-B239-03BED71E9A9C" Name="A" _ReferenceMode="name">
@@ -334,7 +335,7 @@
 			<ormDiagram:ObjectTypeShape id="_49925F14-2487-4546-946B-A26D442F4A8A" IsExpanded="true" AbsoluteBounds="1.4708333730697629, 1.9317470528682075, 0.55363896012306213, 0.35900605320930479">
 				<ormDiagram:Subject ref="_9D7A48DA-33A9-4236-B239-03BED71E9A9C" />
 			</ormDiagram:ObjectTypeShape>
-			<ormDiagram:FactTypeShape id="_775677D8-EF2F-48E5-A653-AC505066C5A0" IsExpanded="true" AbsoluteBounds="3.1213888093642903, 1.0975585821084675, 0.38388888899236917, 0.24388888899236916" ConstraintDisplayPosition="Top">
+			<ormDiagram:FactTypeShape id="_775677D8-EF2F-48E5-A653-AC505066C5A0" IsExpanded="true" AbsoluteBounds="3.1213888093642903, 1.0975585821084675, 0.38388888899236917, 0.24388888899236916">
 				<ormDiagram:RelativeShapes>
 					<ormDiagram:ReadingShape id="_F87ADACB-CF92-48C9-82B8-8B993828E983" IsExpanded="true" AbsoluteBounds="3.22138880936429, 1.3561989844031628, 0.18545643985271454, 0.12950302660465241">
 						<ormDiagram:Subject ref="_181AE15D-B92D-45FA-BB2C-12C4FB994AB1" />
@@ -342,7 +343,7 @@
 				</ormDiagram:RelativeShapes>
 				<ormDiagram:Subject ref="_83D9A09C-842E-468C-ADC2-B4CC814BA25B" />
 			</ormDiagram:FactTypeShape>
-			<ormDiagram:FactTypeShape id="_F2E1FD12-4A4C-4DC5-86A6-39CDADD46184" IsExpanded="true" AbsoluteBounds="3.1213888093642903, 2.7100585821084677, 0.38388888899236917, 0.24388888899236916" ConstraintDisplayPosition="Top">
+			<ormDiagram:FactTypeShape id="_F2E1FD12-4A4C-4DC5-86A6-39CDADD46184" IsExpanded="true" AbsoluteBounds="3.1213888093642903, 2.7100585821084677, 0.38388888899236917, 0.24388888899236916">
 				<ormDiagram:RelativeShapes>
 					<ormDiagram:ReadingShape id="_E9C73EE5-C078-4847-8F34-D2A99B81E440" IsExpanded="true" AbsoluteBounds="3.22138880936429, 2.9686989844031633, 0.18545643985271454, 0.12950302660465241">
 						<ormDiagram:Subject ref="_3752A578-ACE1-4F7A-A6B6-969F2690A132" />

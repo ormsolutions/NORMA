@@ -350,16 +350,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#region UtilityMethods
 		/// <summary>
 		/// Utility function to create the reference mode objects.  Creates the fact, value type, and
-		/// preffered internal uniqueness constraint.
+		/// preferred internal uniqueness constraint.
 		/// </summary>
 		private void CreateReferenceMode(string valueTypeName)
 		{
 			ORMModel model = this.Model;
 			Store store = model.Store;
 			ObjectType valueType = FindValueType(valueTypeName, model);
-
-			FactType refFact = new FactType(store);
-			refFact.Model = model;
 
 			if (valueType == null)
 			{
@@ -368,6 +365,55 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				valueType.Model = model;
 				valueType.IsValueType = true;
 			}
+			else
+			{
+				FactType nestedFactType = NestedFactType;
+				if (nestedFactType != null)
+				{
+					Role unaryRole;
+					if (null != (unaryRole = nestedFactType.UnaryRole))
+					{
+						if (unaryRole.RolePlayer == valueType)
+						{
+							unaryRole.ObjectifiedUnaryRole.SingleRoleAlethicUniquenessConstraint.IsPreferred = true;
+							return;
+						}
+					}
+					else
+					{
+						UniquenessConstraint objectifiedUniqueness = null;
+						foreach (RoleBase testRoleBase in nestedFactType.RoleCollection)
+						{
+							Role testRole = testRoleBase.Role;
+							UniquenessConstraint testUniqueness;
+							if (testRole.RolePlayer == valueType &&
+								null != (testUniqueness = testRole.SingleRoleAlethicUniquenessConstraint))
+							{
+								if (objectifiedUniqueness == null)
+								{
+									objectifiedUniqueness = testUniqueness;
+								}
+								else
+								{
+									// The constraint to choose is ambiguous, allow this to be
+									// a no op and generate a preferred identifier required error. Note
+									// that this is an extremely rare use case. (objectified 1-1 binary
+									// with the same ValueType playing both roles).
+									return;
+								}
+							}
+						}
+						if (objectifiedUniqueness != null)
+						{
+							objectifiedUniqueness.IsPreferred = true;
+							return;
+						}
+					}
+				}
+			}
+
+			FactType refFact = new FactType(store);
+			refFact.Model = model;
 
 			Role objectTypeRole = new Role(store);
 			objectTypeRole.RolePlayer = this;
@@ -432,6 +478,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			else
 			{
+				bool internalizedReferenceMode = false;
+				FactType nestedFactType = NestedFactType;
 				if (valueType == null)
 				{
 					Store store = model.Store;
@@ -482,9 +530,63 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						valueType.IsValueType = true;
 					}
 				}
+				else if (nestedFactType != null)
+				{
+					// If the existing ValueType is a role player of the
+					// objectified fact type and has an internal single role
+					// uniqueness then we should not use the internal fact type
+					// to identify the objectified entity.
+					Role unaryRole;
+					UniquenessConstraint objectifiedUniqueness = null;
+					if (null != (unaryRole = nestedFactType.UnaryRole))
+					{
+						if (unaryRole.RolePlayer == valueType)
+						{
+							objectifiedUniqueness = unaryRole.ObjectifiedUnaryRole.SingleRoleAlethicUniquenessConstraint;
+						}
+					}
+					else
+					{
+						foreach (RoleBase testRoleBase in nestedFactType.RoleCollection)
+						{
+							Role testRole = testRoleBase.Role;
+							UniquenessConstraint testUniqueness;
+							if (testRole.RolePlayer == valueType &&
+								null != (testUniqueness = testRole.SingleRoleAlethicUniquenessConstraint))
+							{
+								if (objectifiedUniqueness == null)
+								{
+									objectifiedUniqueness = testUniqueness;
+								}
+								else
+								{
+									// The constraint to choose is ambiguous, allow this to generate
+									// a preferred identifier required error. Note that this is an
+									// extremely rare use case. (objectified 1-1 binary with the same
+									// ValueType playing both roles).
+									objectifiedUniqueness = null;
+									internalizedReferenceMode = true;
+									break;
+								}
+							}
+						}
+					}
+					if (objectifiedUniqueness != null)
+					{
+						objectifiedUniqueness.IsPreferred = true;
+						internalizedReferenceMode = true;
+					}
+				}
 
-				ObjectType deleteOldRolePlayer = valueTypeNotShared ? constrainedRole.RolePlayer : null;
-				constrainedRole.RolePlayer = valueType;
+				ObjectType deleteOldRolePlayer = valueTypeNotShared && (nestedFactType == null || constrainedRole.FactType != nestedFactType) ? constrainedRole.RolePlayer : null;
+				if (internalizedReferenceMode)
+				{
+					constrainedRole.FactType.Delete();
+				}
+				else
+				{
+					constrainedRole.RolePlayer = valueType;
+				}
 				if (null != deleteOldRolePlayer)
 				{
 					deleteOldRolePlayer.Delete();

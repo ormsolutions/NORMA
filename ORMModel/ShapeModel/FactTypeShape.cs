@@ -281,7 +281,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						else
 						{
 							IConstraint constraint = myFactConstraint.Constraint;
-							retVal = !ModelError.HasErrors(constraint as ModelElement, ModelErrorUses.DisplayPrimary, constraint.Model.ModelErrorDisplayFilter);
+							ORMModel model = constraint.Model;
+							retVal = !ModelError.HasErrors(constraint as ModelElement, ModelErrorUses.DisplayPrimary, (null != model) ? model.ModelErrorDisplayFilter : null);
 						}
 						myIsValid = retVal;
 						return retVal;
@@ -670,27 +671,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					FactTypeShape factShape;
 					if (null != (factShape = pElem as FactTypeShape) && factShape.Partition == sourcePartition)
 					{
-						foreach (LinkConnectsToNode connection in DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(factShape, LinkConnectsToNode.NodesDomainRoleId))
+						foreach (BinaryLinkShape binaryLink in MultiShapeUtility.GetEffectiveAttachedLinkShapes<BinaryLinkShape>(factShape))
 						{
-							BinaryLinkShape binaryLink = connection.Link as BinaryLinkShape;
-							if (binaryLink != null)
-							{
-								binaryLink.RecalculateRoute();
-							}
-						}
-						foreach (ShapeElement childShape in factShape.RelativeChildShapes)
-						{
-							if (childShape is IProxyConnectorShape)
-							{
-								foreach (LinkConnectsToNode connection in DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(childShape, LinkConnectsToNode.NodesDomainRoleId))
-								{
-									BinaryLinkShape binaryLink = connection.Link as BinaryLinkShape;
-									if (binaryLink != null)
-									{
-										binaryLink.RecalculateRoute();
-									}
-								}
-							}
+							binaryLink.RecalculateRoute();
 						}
 						SizeD oldSize = factShape.Size;
 						factShape.AutoResize();
@@ -1781,7 +1764,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							}
 						}
 						IConstraint constraint = factConstraint.Constraint;
-						if (ModelError.HasErrors(constraint as ModelElement, ModelErrorUses.DisplayPrimary, constraint.Model.ModelErrorDisplayFilter) && isInternalConstraint && !isSticky)
+						ORMModel model;
+						if (ModelError.HasErrors(constraint as ModelElement, ModelErrorUses.DisplayPrimary, (null != (model = constraint.Model)) ? model.ModelErrorDisplayFilter : null) && isInternalConstraint && !isSticky)
 						{
 							Brush backBrush;
 							if (factShapeHighlighted || isHighlighted || isSticky)
@@ -1797,7 +1781,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						else
 						{
 							FactType factType;
-							if (isHighlighted || isSticky || ModelError.HasErrors(factType = factShape.AssociatedFactType, ModelErrorUses.DisplayPrimary, factType.Model.ModelErrorDisplayFilter))
+							if (isHighlighted || isSticky || ModelError.HasErrors(factType = factShape.AssociatedFactType, ModelErrorUses.DisplayPrimary, (null != (model = factType.Model)) ? model.ModelErrorDisplayFilter : null))
 							{
 								factShape.DrawHighlight(g, boundsF, isSticky ? null : factShape.BackgroundBrushId, null, isSticky, factShapeHighlighted || isHighlighted);
 							}
@@ -2612,9 +2596,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 								#endregion // Handling StickyObject highlighting and selection
 								if (fillBackground)
 								{
+									ORMModel model = factType.Model;
 									if (highlightThisRole)
 									{
-										if (ModelError.HasErrors(currentRoleBase, ModelErrorUses.DisplayPrimary, factType.Model.ModelErrorDisplayFilter))
+										if (ModelError.HasErrors(currentRoleBase, ModelErrorUses.DisplayPrimary, (model != null) ? model.ModelErrorDisplayFilter : null))
 										{
 											backgroundFillResourceId = ORMDiagram.HighlightedErrorBackgroundResource;
 										}
@@ -2623,7 +2608,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 											backgroundHighlighted = true;
 										}
 									}
-									else if (ModelError.HasErrors(currentRoleBase, ModelErrorUses.DisplayPrimary, factType.Model.ModelErrorDisplayFilter))
+									else if (ModelError.HasErrors(currentRoleBase, ModelErrorUses.DisplayPrimary, (model != null) ? model.ModelErrorDisplayFilter : null))
 									{
 										backgroundFillResourceId = ORMDiagram.ErrorBackgroundResource;
 									}
@@ -3105,9 +3090,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				Objectification objectification;
 				FactType associatedFact = AssociatedFactType;
+				ORMModel model;
 				if (null == associatedFact ||
 					(null != (objectification = associatedFact.Objectification) && !objectification.IsImplied) ||
-					ModelError.HasErrors(associatedFact, ModelErrorUses.DisplayPrimary, associatedFact.Model.ModelErrorDisplayFilter))
+					ModelError.HasErrors(associatedFact, ModelErrorUses.DisplayPrimary, (null != (model = associatedFact.Model)) ? model.ModelErrorDisplayFilter : null))
 				{
 					return base.BackgroundBrushId;
 				}
@@ -3390,13 +3376,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							if ((factType = AssociatedFactType).RoleCollection.Count == 2 &&
 								factType.UnaryRole == null)
 							{
-								foreach (LinkConnectsToNode connection in DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(this, LinkConnectsToNode.NodesDomainRoleId))
+								foreach (RolePlayerLink rolePlayerLink in MultiShapeUtility.GetEffectiveAttachedLinkShapes<RolePlayerLink>(this))
 								{
-									RolePlayerLink rolePlayerLink = connection.Link as RolePlayerLink;
-									if (rolePlayerLink != null)
-									{
-										((IInvalidateDisplay)rolePlayerLink).InvalidateRequired(true);
-									}
+									((IInvalidateDisplay)rolePlayerLink).InvalidateRequired(true);
 								}
 							}
 							break;
@@ -3421,13 +3403,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 			if (resize)
 			{
-				foreach (LinkConnectsToNode connection in DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(this, LinkConnectsToNode.NodesDomainRoleId))
+				foreach (BinaryLinkShape binaryLink in MultiShapeUtility.GetEffectiveAttachedLinkShapes<BinaryLinkShape>(this))
 				{
-					BinaryLinkShape binaryLink = connection.Link as BinaryLinkShape;
-					if (binaryLink != null)
-					{
-						binaryLink.RecalculateRoute();
-					}
+					binaryLink.RecalculateRoute();
 				}
 				SizeD oldSize = Size;
 				AutoResize();
@@ -5066,12 +5044,12 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				nestingType = link.NestingType;
 			}
 
+			LinkedElementCollection<PresentationElement> pels;
 			// If the objectification should not be drawn, we only need to make sure that the nesting ObjectType has no shapes
 			if (!ShouldDrawObjectification(link, nestingType))
 			{
-				LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(nestingType);
-				int pelCount = pels.Count;
-				for (int i = pelCount - 1; i >= 0; --i)
+				pels = PresentationViewsSubject.GetPresentation(nestingType);
+				for (int i = pels.Count - 1; i >= 0; --i)
 				{
 					ObjectTypeShape pel = pels[i] as ObjectTypeShape;
 					if (pel != null)
@@ -5082,117 +5060,91 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				return;
 			}
 
-			// Part1: Make sure the fact shape is visible on any diagram where the
-			// corresponding nestingType is displayed
-			foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(nestingType))
-			{
-				ObjectTypeShape objectShape = pel as ObjectTypeShape;
-				if (objectShape != null)
-				{
-					ORMDiagram currentDiagram = objectShape.Diagram as ORMDiagram;
-					NodeShape factShape = currentDiagram.FindShapeForElement<NodeShape>(nestingType);
-					if (factShape == null)
-					{
-						Diagram.FixUpDiagram(currentDiagram.ModelElement, nestedFactType);
-						factShape = currentDiagram.FindShapeForElement<NodeShape>(nestingType);
-					}
-					if (factShape != null)
-					{
-						factShape.Location = objectShape.Location;
-					}
-				}
-			}
-
-			// Part2: Move any links from the object type to the fact type
-			foreach (ObjectTypePlaysRole modelLink in DomainRoleInfo.GetElementLinks<ObjectTypePlaysRole>(nestingType, ObjectTypePlaysRole.RolePlayerDomainRoleId))
-			{
-				Role playedRole = modelLink.PlayedRole;
-				SubtypeFact subType = playedRole.FactType as SubtypeFact;
-				if (subType != null)
-				{
-					LinkedElementCollection<PresentationElement> presentationElements = PresentationViewsSubject.GetPresentation(subType);
-					for (int i = presentationElements.Count - 1; i >= 0; i--)
-					{
-						SubtypeLink subtypeLink = presentationElements[i] as SubtypeLink;
-						if (subtypeLink != null)
-						{
-							ORMDiagram currentDiagram = subtypeLink.Diagram as ORMDiagram;
-							NodeShape factShape = currentDiagram.FindShapeForElement<NodeShape>(nestedFactType);
-							if (factShape != null)
-							{
-								if (playedRole == subType.SupertypeRole)
-								{
-									subtypeLink.ToShape = factShape;
-								}
-								else
-								{
-									Debug.Assert(playedRole == subType.SubtypeRole);
-									subtypeLink.FromShape = factShape;
-								}
-							}
-							else
-							{
-								// Backup. Should only happen if the FixupDiagram call in part 1
-								// did not add the fact type.
-								subtypeLink.Delete();
-							}
-						}
-					}
-				}
-				else
-				{
-					LinkedElementCollection<PresentationElement> presentationElements = PresentationViewsSubject.GetPresentation(modelLink);
-					for (int i = presentationElements.Count - 1; i >= 0; i--)
-					{
-						RolePlayerLink rolePlayer = presentationElements[i] as RolePlayerLink;
-						if (rolePlayer != null)
-						{
-							ORMDiagram currentDiagram = rolePlayer.Diagram as ORMDiagram;
-							NodeShape factShape = currentDiagram.FindShapeForElement<NodeShape>(nestedFactType);
-							if (factShape != null)
-							{
-								rolePlayer.ToShape = factShape;
-							}
-							else
-							{
-								// Backup. Should only happen if the FixupDiagram call in part 1
-								// did not add the fact type.
-								rolePlayer.Delete();
-							}
-						}
-					}
-				}
-			}
-
-			// Part3: Remove object type shapes from the diagram. Do this before
-			// adding the labels to the objectified fact types so clearing the role
-			// players doesn't blow the labels away. Also, FixUpDiagram will attempt
-			// to fix up the existing shapes instead of creating new ones if the existing
-			// ones are not cleared away.
-			{
-				LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(nestingType);
-				int pelCount = pels.Count;
-				for (int i = pelCount - 1; i >= 0; --i)
-				{
-					ObjectTypeShape pel = pels[i] as ObjectTypeShape;
-					if (pel != null)
-					{
-						pel.Delete();
-					}
-				}
-			}
-
-			// Part4: Resize the fact type wherever it is displayed and add the
-			// labels for the fact type display.
+			// Part 1: Resize the existing fact shapes
 			foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(nestedFactType))
 			{
-				FactTypeShape shape = pel as FactTypeShape;
-				if (shape != null)
+				FactTypeShape factShape = pel as FactTypeShape;
+				if (factShape != null)
 				{
-					shape.AutoResize();
-					Diagram.FixUpDiagram(nestedFactType, nestingType);
+					factShape.AutoResize();
 				}
 			}
+
+			// Part2: Create additional shapes for object shapes corresponding to the new type
+			pels = PresentationViewsSubject.GetPresentation(nestingType);
+#if TRACKNEWSHAPES
+			List<FactTypeShape> newShapes = null;
+#endif // TRACKNEWSHAPES
+			for (int i = pels.Count - 1; i >= 0; --i)
+			{
+				ObjectTypeShape objectShape = pels[i] as ObjectTypeShape;
+				if (objectShape != null)
+				{
+					ORMDiagram currentDiagram = (ORMDiagram)objectShape.Diagram;
+					currentDiagram.PlaceORMElementOnDiagram(
+						null,
+						nestedFactType,
+						objectShape.Location,
+						ORMPlacementOption.AllowMultipleShapes,
+						delegate(ModelElement fixupElement, ShapeElement newShape)
+						{
+							FactTypeShape factShape = (FactTypeShape)newShape;
+#if TRACKNEWSHAPES
+							(newShapes ?? (newShapes = new List<FactTypeShape>())).Add(factShape);
+#endif // TRACKNEWSHAPES
+							factShape.DisplayRelatedTypes = objectShape.DisplayRelatedTypes;
+						},
+						delegate(ModelElement fixupElement, ShapeElement newShape)
+						{
+							foreach (PresentationElement relativePel in newShape.RelativeChildShapes)
+							{
+								ObjectifiedFactTypeNameShape nameShape = relativePel as ObjectifiedFactTypeNameShape;
+								if (nameShape != null)
+								{
+									nameShape.ExpandRefMode = objectShape.ExpandRefMode;
+									break;
+								}
+							}
+							MultiShapeUtility.DetachLinks(objectShape);
+							objectShape.Delete();
+						});
+				}
+			}
+#if TRACKNEWSHAPES
+			if (newShapes != null)
+			{
+				// Having replaced ObjectTypeShapes with a bunch of FactTypeShapes,
+				// we now check if we actually need the shapes. Any new shape that
+				// has no links attached to it and is not the last shape on the diagram
+				// is removed.
+				// UNDONE: The code here is finding the correct shapes, but the framework
+				// Microsoft.VisualStudio.Modeling.Diagrams.ShapeSizeChangeRule is crashing
+				// on commit if we remove shapes added during the same transaction.
+				foreach (FactTypeShape newShape in newShapes)
+				{
+					if (!newShape.IsDeleted)
+					{
+						bool hasLink = false;
+						foreach (BinaryLinkShape attachedLink in MultiShapeUtility.GetEffectiveAttachedLinkShapes<BinaryLinkShape>(newShape))
+						{
+							hasLink = true;
+							break;
+						}
+						if (!hasLink)
+						{
+							foreach (FactTypeShape otherShape in MultiShapeUtility.FindAllShapesForElement<FactTypeShape>(newShape.Diagram, nestedFactType))
+							{
+								if (otherShape != newShape)
+								{
+									newShape.Delete();
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+#endif // TRACKNEWSHAPES
 		}
 		/// <summary>
 		/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
@@ -5239,145 +5191,178 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				if (nestedFactTypeRemoved)
 				{
-					// If we're just removing the fact, then we need to readd the normal object shape
-					Store store = nestingType.Store;
-					IList<PresentationElement> pels = PresentationViewsSubject.GetPresentation(nestingType);
-					int pelCount = pels.Count;
-					for (int i = pelCount - 1; i >= 0; --i)
+					// This is a borderline scenario that can't be done through the UI.
+					// With delete propagation on the shapes associated with the FactType,
+					// if the FactType is removed, then so are all of its shapes and
+					// their subshapes, so we have no information to create any replacement
+					// ObjectTypeShape elements in this condition.
+					return;
+				}
+				else if (switchingToImplied)
+				{
+					LinkedElementCollection<PresentationElement> presentationElements = PresentationViewsSubject.GetPresentation(nestingType);
+					for (int i = presentationElements.Count - 1; i >= 0; --i)
 					{
-						ObjectifiedFactTypeNameShape oldShape;
-						ORMDiagram shapeDiagram;
-						if (null != (oldShape = pels[i] as ObjectifiedFactTypeNameShape) &&
-							!oldShape.IsDeleted &&
-							null != (shapeDiagram = oldShape.Diagram as ORMDiagram))
+						// Grab name shapes specifically in case the work has already been done to
+						// transform into the unobjectified state, in which case just clearing the collection
+						// would blow away the ObjectTypeShape elements as well as the name shapes.
+						ObjectifiedFactTypeNameShape objectifiedNameShape = presentationElements[i] as ObjectifiedFactTypeNameShape;
+						if (objectifiedNameShape != null)
 						{
-							ObjectTypeShape newShape = new ObjectTypeShape(store);
-							shapeDiagram.NestedChildShapes.Add(newShape);
-							newShape.AbsoluteBounds = oldShape.AbsoluteBounds;
-							oldShape.Delete();
-							newShape.Associate(nestingType);
-							newShape.AutoResize();
+							objectifiedNameShape.Delete();
 						}
 					}
 				}
-				else
-				{
-					PresentationViewsSubject.GetPresentation(nestingType).Clear();
-				}
 			}
 
-			// Part2: Resize the fact type wherever it is displayed, and make sure
-			// the object type is made visible in the same location.
+			// Part2: Decide whether to keep the FactTypeShape, replace
+			// it with an ObjectTypeShape, or have both shapes. Move
+			// links as appropriate if an ObjectTypeShape is created.
 			ORMModel nestingTypeModel = nestingTypeRemoved ? null : nestingType.Model;
 			if (!nestedFactTypeRemoved)
 			{
-				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(nestedFactType))
+				LinkedElementCollection<PresentationElement> presentationElements = PresentationViewsSubject.GetPresentation(nestedFactType);
+				for (int i = presentationElements.Count - 1; i >= 0; --i)
 				{
-					FactTypeShape factShape = pel as FactTypeShape;
+					FactTypeShape factShape = presentationElements[i] as FactTypeShape;
 					if (factShape != null)
 					{
-						factShape.AutoResize();
-						// We don't want to add a shape for the nestingType if the objectification is switching to implied
 						if (!nestingTypeRemoved && !switchingToImplied)
 						{
-							ORMDiagram currentDiagram = factShape.Diagram as ORMDiagram;
-							NodeShape objectShape = currentDiagram.FindShapeForElement<NodeShape>(nestingType);
-							if (objectShape == null)
+							// See if any links coming in apply to the ObjectType
+							bool needObjectShape = false;
+							bool needFactShape = false;
+							// The contents of the enumerator change over the course of this function,
+							// cache the list.
+							List<BinaryLinkShape> factShapeAttachedLinkShapes = new List<BinaryLinkShape>(MultiShapeUtility.GetEffectiveAttachedLinkShapes<BinaryLinkShape>(factShape));
+							foreach (BinaryLinkShape linkShape in factShapeAttachedLinkShapes)
 							{
-								Diagram.FixUpDiagram(nestingTypeModel, nestingType);
-								objectShape = currentDiagram.FindShapeForElement<NodeShape>(nestingType);
-								// We're placing the shape explicitly, don't allow an automatic placement
-								IDictionary unplacedShapes;
-								if (objectShape != null &&
-									null != (unplacedShapes = UnplacedShapesContext.GetUnplacedShapesMap(link.Store.TransactionManager.CurrentTransaction, currentDiagram.Id)) &&
-									unplacedShapes.Contains(objectShape))
+								RolePlayerLink rolePlayerLink;
+								if (linkShape is SubtypeLink ||
+									(null != (rolePlayerLink = linkShape as RolePlayerLink) &&
+									factShape == MultiShapeUtility.ResolvePrimaryShape(rolePlayerLink.ToShape)))
 								{
-									unplacedShapes.Remove(objectShape);
-								}
-							}
-							if (objectShape != null)
-							{
-								PointD location = factShape.Location;
-								location.Offset(0.0, 2 * factShape.Size.Height);
-								objectShape.Location = location;
-							}
-						}
-					}
-				}
-			}
-
-			// Part3: Move any links from the fact type to the object type.
-			// Note: If we are switching to implied, then we don't need to move links to the object type shape,
-			// since there won't be any object type shape.
-			if (!nestingTypeRemoved && !switchingToImplied)
-			{
-				foreach (ObjectTypePlaysRole modelLink in DomainRoleInfo.GetElementLinks<ObjectTypePlaysRole>(nestingType, ObjectTypePlaysRole.RolePlayerDomainRoleId))
-				{
-					Role playedRole = modelLink.PlayedRole;
-					SubtypeFact subType = playedRole.FactType as SubtypeFact;
-					if (subType != null)
-					{
-						if (nestedFactTypeRemoved)
-						{
-							Diagram.FixUpDiagram(nestingTypeModel, subType);
-						}
-						else
-						{
-							foreach (PresentationElement obj in PresentationViewsSubject.GetPresentation(subType))
-							{
-								SubtypeLink subtypeLink = obj as SubtypeLink;
-								if (subtypeLink != null)
-								{
-									ORMDiagram currentDiagram = subtypeLink.Diagram as ORMDiagram;
-									NodeShape objShape = currentDiagram.FindShapeForElement<NodeShape>(nestingType);
-									if (objShape != null)
+									needObjectShape = true;
+									if (needFactShape)
 									{
-										if (playedRole == subType.SupertypeRole)
-										{
-											subtypeLink.ToShape = objShape;
-										}
-										else
-										{
-											Debug.Assert(playedRole == subType.SubtypeRole);
-											subtypeLink.FromShape = objShape;
-										}
+										break;
 									}
-									else
-									{
-										// Backup. Should only happen if the FixupDiagram call in part 1
-										// did not add the fact type.
-										subtypeLink.Delete();
-									}
-								}
-							}
-						}
-					}
-					else
-					{
-						if (nestedFactTypeRemoved)
-						{
-							Diagram.FixUpDiagram(nestingTypeModel, modelLink);
-						}
-						else
-						{
-							LinkedElementCollection<PresentationElement> presentationElements = PresentationViewsSubject.GetPresentation(modelLink);
-							for (int i = presentationElements.Count - 1; i >= 0; i--)
-							{
-								RolePlayerLink rolePlayer = presentationElements[i] as RolePlayerLink;
-								if (rolePlayer == null)
-								{
-									continue;
-								}
-								NodeShape objShape = ((ORMDiagram)rolePlayer.Diagram).FindShapeForElement<NodeShape>(nestingType);
-								if (objShape != null)
-								{
-									rolePlayer.ToShape = objShape;
 								}
 								else
 								{
-									rolePlayer.Delete();
+									needFactShape = true;
+									if (needObjectShape)
+									{
+										break;
+									}
 								}
 							}
+							ObjectifiedFactTypeNameShape objectifiedNameShape = null;
+							ReadOnlyCollection<LinkConnectsToNode> nameShapeLinks = null; // Handle note connectors and anything an extension element model might add
+							foreach (ShapeElement relativeShape in factShape.RelativeChildShapes)
+							{
+								if (null != (objectifiedNameShape = relativeShape as ObjectifiedFactTypeNameShape))
+								{
+									nameShapeLinks = LinkConnectsToNode.GetLinksToLink(objectifiedNameShape);
+									if (nameShapeLinks.Count != 0)
+									{
+										needObjectShape = true;
+									}
+									else
+									{
+										nameShapeLinks = null;
+									}
+									break;
+								}
+							}
+							if (!needObjectShape)
+							{
+								if (!needFactShape && !needObjectShape)
+								{
+									// We need to keep something at this spot on the screen
+									needFactShape = true;
+								}
+							}
+							ORMDiagram currentDiagram = factShape.Diagram as ORMDiagram;
+							if (needObjectShape)
+							{
+								RectangleD bounds = factShape.AbsoluteBounds;
+								if (needFactShape)
+								{
+									factShape.AutoResize();
+									bounds.Offset(0, factShape.Size.Height * 2);
+								}
+								currentDiagram.PlaceElementOnDiagram(
+									nestingType,
+									bounds.Location,
+									ORMPlacementOption.AllowMultipleShapes,
+									delegate(ModelElement element, ShapeElement newShape)
+									{
+										ObjectTypeShape newObjectShape = (ObjectTypeShape)newShape;
+										newObjectShape.DisplayRelatedTypes = factShape.DisplayRelatedTypes;
+										if (objectifiedNameShape != null)
+										{
+											newObjectShape.ExpandRefMode = objectifiedNameShape.ExpandRefMode;
+										}
+
+										foreach (BinaryLinkShape linkShape in factShapeAttachedLinkShapes)
+										{
+											SubtypeLink subtypeLink;
+											RolePlayerLink rolePlayerLink;
+											if (null != (subtypeLink = linkShape as SubtypeLink))
+											{
+												if (subtypeLink.ToShape == factShape)
+												{
+													subtypeLink.ToShape = newObjectShape;
+												}
+												else
+												{
+													subtypeLink.FromShape = newObjectShape;
+												}
+											}
+											else if (null != (rolePlayerLink = linkShape as RolePlayerLink) &&
+												factShape == MultiShapeUtility.ResolvePrimaryShape(rolePlayerLink.ToShape))
+											{
+												rolePlayerLink.ToShape = newObjectShape;
+											}
+										}
+										// Move links from the name shape
+										if (nameShapeLinks != null)
+										{
+											foreach (LinkConnectsToNode linkConnector in nameShapeLinks)
+											{
+												BinaryLinkShape connector = linkConnector.Link as BinaryLinkShape;
+												if (connector != null)
+												{
+													if (connector.ToShape == objectifiedNameShape)
+													{
+														connector.ToShape = newObjectShape;
+													}
+													else
+													{
+														connector.FromShape = newObjectShape;
+													}
+												}
+											}
+										}
+									});
+							}
+							else if (needFactShape)
+							{
+								factShape.AutoResize();
+							}
+							if (!needFactShape)
+							{
+								factShape.Delete();
+							}
+							else if (objectifiedNameShape != null)
+							{
+								objectifiedNameShape.Delete();
+							}
+						}
+						else
+						{
+							factShape.AutoResize();
 						}
 					}
 				}
@@ -5432,7 +5417,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				oldFactType = (FactType)e.OldRolePlayer;
 			}
 			ProcessObjectificationDelete(link, oldFactType, oldObjectType, false);
-			ProcessObjectificationAdd(link, null, null);
+			if (!link.IsImplied)
+			{
+				ProcessObjectificationAdd(link, null, null);
+			}
 		}
 		#region ConnectionPropertyChangeRule
 		/// <summary>
@@ -5448,13 +5436,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				FactTypeShape factTypeShape = e.ModelElement as FactTypeShape;
 				if (!factTypeShape.IsDeleted)
 				{
-					foreach (LinkConnectsToNode connection in DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(factTypeShape, LinkConnectsToNode.NodesDomainRoleId))
+					foreach (BinaryLinkShape binaryLink in MultiShapeUtility.GetEffectiveAttachedLinkShapes<BinaryLinkShape>(factTypeShape))
 					{
-						BinaryLinkShape binaryLink = connection.Link as BinaryLinkShape;
-						if (binaryLink != null)
-						{
-							binaryLink.RecalculateRoute();
-						}
+						binaryLink.RecalculateRoute();
 					}
 					if (orientationChange)
 					{
@@ -5521,88 +5505,83 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				ExternalConstraintShape externalConstraintShape = e.ModelElement as ExternalConstraintShape;
 				if (!externalConstraintShape.IsDeleted)
 				{
-					foreach (LinkConnectsToNode connection in DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(externalConstraintShape, LinkConnectsToNode.NodesDomainRoleId))
+					foreach (BinaryLinkShape binaryLink in MultiShapeUtility.GetEffectiveAttachedLinkShapes<BinaryLinkShape>(externalConstraintShape))
 					{
-						BinaryLinkShape binaryLink = connection.Link as BinaryLinkShape;
-						if (binaryLink != null && !binaryLink.IsDeleted)
+						Debug.Assert(binaryLink.ToShape == externalConstraintShape);
+						FactTypeShape factShape = MultiShapeUtility.ResolvePrimaryShape(binaryLink.FromShape) as FactTypeShape;
+						if (factShape != null)
 						{
-							Debug.Assert(binaryLink.ToShape == externalConstraintShape);
-							FactTypeShape factShape = binaryLink.FromShape as FactTypeShape;
-							if (factShape != null)
+							IFactConstraint factConstraint = binaryLink.ModelElement as IFactConstraint;
+							IList<Role> roles;
+							if (null != (factConstraint = binaryLink.ModelElement as IFactConstraint) &&
+								null != (roles = factConstraint.RoleCollection))
 							{
-								IFactConstraint factConstraint = binaryLink.ModelElement as IFactConstraint;
-								IList<Role> roles;
-								if (null != (factConstraint = binaryLink.ModelElement as IFactConstraint) &&
-									null != (roles = factConstraint.RoleCollection))
+								ExternalConstraintRoleBarDisplay displayOption = OptionsPage.CurrentExternalConstraintRoleBarDisplay;
+								bool constraintBarVisible;
+								LinkedElementCollection<RoleBase> factRoles = null;
+								switch (roles.Count)
 								{
-									ExternalConstraintRoleBarDisplay displayOption = OptionsPage.CurrentExternalConstraintRoleBarDisplay;
-									bool constraintBarVisible;
-									LinkedElementCollection<RoleBase> factRoles = null;
-									switch (roles.Count)
-									{
-										case 0:
-											constraintBarVisible = false;
-											break;
-										case 1:
-											constraintBarVisible = displayOption == ExternalConstraintRoleBarDisplay.AnyRole;
-											break;
-										case 2:
+									case 0:
+										constraintBarVisible = false;
+										break;
+									case 1:
+										constraintBarVisible = displayOption == ExternalConstraintRoleBarDisplay.AnyRole;
+										break;
+									case 2:
+										{
+											// Handle possible duplicates in IFactConstraint.RoleCollection
+											Role role0 = roles[0];
+											Role role1 = roles[1];
+											if (role0 == role1)
 											{
-												// Handle possible duplicates in IFactConstraint.RoleCollection
-												Role role0 = roles[0];
-												Role role1 = roles[1];
-												if (role0 == role1)
-												{
-													goto case 1;
-												}
-												else if (displayOption == ExternalConstraintRoleBarDisplay.SplitRoles)
-												{
-													factRoles = factShape.DisplayedRoleOrder;
-													constraintBarVisible = Math.Abs(factRoles.IndexOf(role0) - factRoles.IndexOf(role1)) > 1;
-												}
-												else
-												{
-													constraintBarVisible = true;
-												}
+												goto case 1;
 											}
-											break;
-										default:
-											constraintBarVisible = true;
-											break;
+											else if (displayOption == ExternalConstraintRoleBarDisplay.SplitRoles)
+											{
+												factRoles = factShape.DisplayedRoleOrder;
+												constraintBarVisible = Math.Abs(factRoles.IndexOf(role0) - factRoles.IndexOf(role1)) > 1;
+											}
+											else
+											{
+												constraintBarVisible = true;
+											}
+										}
+										break;
+									default:
+										constraintBarVisible = true;
+										break;
+								}
+								if (constraintBarVisible)
+								{
+									bool resized = false;
+									if (displayOption == ExternalConstraintRoleBarDisplay.AnyRole)
+									{
+										if (factRoles == null)
+										{
+											factRoles = factConstraint.FactType.RoleCollection;
+										}
+										if (factRoles.Count == 2)
+										{
+											// If AnyRole is on, then a binary fact can compress the display
+											// of an external constraint role. Moving the connection point from
+											// the top to the bottom will require more space and change the
+											// size of the fact shape.
+											factShape.AutoResize();
+											resized = true;
+										}
 									}
-									if (constraintBarVisible)
+									// All links going into the FactTypeShape are
+									// suspect, get rid of all of them.
+									foreach (BinaryLinkShape binaryLinkToFact in MultiShapeUtility.GetEffectiveAttachedLinkShapes<BinaryLinkShape>(factShape))
 									{
-										bool resized = false;
-										if (displayOption == ExternalConstraintRoleBarDisplay.AnyRole)
+										if (binaryLink != binaryLinkToFact)
 										{
-											if (factRoles == null)
-											{
-												factRoles = factConstraint.FactType.RoleCollection;
-											}
-											if (factRoles.Count == 2)
-											{
-												// If AnyRole is on, then a binary fact can compress the display
-												// of an external constraint role. Moving the connection point from
-												// the top to the bottom will require more space and change the
-												// size of the fact shape.
-												factShape.AutoResize();
-												resized = true;
-											}
+											binaryLinkToFact.RecalculateRoute();
 										}
-										// All links going into the FactTypeShape are
-										// suspect, get rid of all of them.
-										foreach (LinkConnectsToNode factConnection in DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(factShape, LinkConnectsToNode.NodesDomainRoleId))
-										{
-											BinaryLinkShape binaryLinkToFact = factConnection.Link as BinaryLinkShape;
-											if (binaryLinkToFact != null && binaryLink != binaryLinkToFact)
-											{
-												binaryLinkToFact.RecalculateRoute();
-											}
-										}
-										if (!resized)
-										{
-											factShape.UpdateRolesPosition(SizeD.Empty);
-										}
+									}
+									if (!resized)
+									{
+										factShape.UpdateRolesPosition(SizeD.Empty);
 									}
 								}
 							}
@@ -5873,7 +5852,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 	/// A specialized display of the nesting type as a relative
 	/// child element of an objectified fact type
 	/// </summary>
-	public partial class ObjectifiedFactTypeNameShape : IModelErrorActivation, ISelectionContainerFilter
+	public partial class ObjectifiedFactTypeNameShape : IModelErrorActivation, ISelectionContainerFilter, IConfigureAsChildShape
 	{
 		#region ObjectifiedFactTypeNameShape specific
 		/// <summary>
@@ -5896,6 +5875,18 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			AutoResize();
 			SizeD size = Size;
 			Location = new PointD(0, -1.5 * size.Height);
+			foreach (ShapeElement childShape in RelativeChildShapes)
+			{
+				ORMBaseShape shape = childShape as ORMBaseShape;
+				if (shape != null)
+				{
+					// Child configuration is the most reliable spot
+					// for creating any value shape on this shape. However,
+					// it has the side effect of placing the value element
+					// before this one is placed. Repeat the call.
+					shape.PlaceAsChildOf(this, createdDuringViewFixup);
+				}
+			}
 		}
 		/// <summary>
 		/// Allow a role value constraint to attach to this object shape.
@@ -5920,6 +5911,29 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			return RelationshipType.Relative;
 		}
 		#endregion // Shape initialize overrides
+		#region IConfigureAsChildShape Members
+		/// <summary>
+		/// Implements <see cref="IConfigureAsChildShape.ConfiguringAsChildOf"/>
+		/// </summary>
+		protected void ConfiguringAsChildOf(NodeShape parentShape, bool createdDuringViewFixup)
+		{
+			ObjectType objectType;
+			ValueConstraint valueConstraint;
+			ORMDiagram diagram;
+			if (createdDuringViewFixup &&
+				null != (objectType = AssociatedObjectType) &&
+				null != (valueConstraint = objectType.FindValueConstraint(false)) &&
+				null != (diagram = parentShape.Diagram as ORMDiagram))
+			{
+				diagram.FixUpLocalDiagram(this, valueConstraint);
+			}
+		}
+		void IConfigureAsChildShape.ConfiguringAsChildOf(NodeShape parentShape, bool createdDuringViewFixup)
+		{
+			ConfiguringAsChildOf(parentShape, createdDuringViewFixup);
+		}
+
+		#endregion
 		#region Customize appearance
 		/// <summary>
 		/// Connect lines to the edge of the rectangular shape

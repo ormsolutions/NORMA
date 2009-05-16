@@ -1,4 +1,5 @@
-﻿<ormRoot:ORM2 xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ormRoot:ORM2 xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot">
 	<orm:ORMModel Name="ORMModel1" id="_A7BBE18D-6E22-4EC9-8EF7-D5EDD60F5CF0">
 		<orm:Objects>
 			<orm:EntityType Name="A" _ReferenceMode="id" id="_F39B4363-0CDB-45F0-87F6-CE26A6CEFCDA">
@@ -249,7 +250,7 @@
 	</orm:ORMModel>
 	<ormDiagram:ORMDiagram BaseFontName="Tahoma" BaseFontSize="0.0972222238779068" IsCompleteView="false" Name="ORMModel1" id="_7BE671BF-9A03-4CAF-93C0-B9F2A7DE9770">
 		<ormDiagram:Shapes>
-			<ormDiagram:FactTypeShape AbsoluteBounds="3.2604166666666665, 0.9375, 0.38388888899236917, 0.24388888899236916" ConstraintDisplayPosition="Top" IsExpanded="true" id="_3F051F37-78B7-4C69-98F4-B47D951957EC">
+			<ormDiagram:FactTypeShape AbsoluteBounds="3.2604166666666665, 0.9375, 0.38388888899236917, 0.24388888899236916" IsExpanded="true" id="_3F051F37-78B7-4C69-98F4-B47D951957EC">
 				<ormDiagram:RelativeShapes>
 					<ormDiagram:ReadingShape AbsoluteBounds="3.2604166666666665, 1.2461404022946954, 0.068485960364341736, 0.12950302660465241" IsExpanded="true" id="_504E8B45-5CA1-4890-83AA-88991EAB89C2">
 						<ormDiagram:Subject ref="_76CBDBD1-1803-4C9C-AF67-C353AF255762" />
@@ -257,7 +258,7 @@
 				</ormDiagram:RelativeShapes>
 				<ormDiagram:Subject ref="_6BD70395-0345-43F2-8A40-7BF77770DAD0" />
 			</ormDiagram:FactTypeShape>
-			<ormDiagram:FactTypeShape AbsoluteBounds="3.15625, 2.2812499999999996, 0.38388888899236917, 0.24388888899236916" ConstraintDisplayPosition="Top" IsExpanded="true" id="_A5BD828D-CDA9-4FBC-9121-516AABF890C5">
+			<ormDiagram:FactTypeShape AbsoluteBounds="3.15625, 2.2812499999999996, 0.38388888899236917, 0.24388888899236916" IsExpanded="true" id="_A5BD828D-CDA9-4FBC-9121-516AABF890C5">
 				<ormDiagram:RelativeShapes>
 					<ormDiagram:ReadingShape AbsoluteBounds="3.15625, 2.5898904022946949, 0.077078357338905334, 0.12950302660465241" IsExpanded="true" id="_8F91692F-B829-4A21-A2D1-61EB2D19ABF2">
 						<ormDiagram:Subject ref="_EF00FF4B-3C0A-47BA-8D77-D56A2766C2CD" />

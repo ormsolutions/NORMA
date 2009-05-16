@@ -55,7 +55,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 	/// <summary>
 	/// Implement this interface on any shape (generally a link shape) that is auto-created
 	/// and also selectable. If this is set, then the element is filtered out of any drag/drop
-	/// or copy or shapes.
+	/// or copy of shapes.
 	/// </summary>
 	public interface IAutoCreatedSelectableShape
 	{
@@ -128,7 +128,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				return;
 			}
-			if (PlaceORMElementOnDiagram(dataObject, null, e.MousePosition, ORMPlacementOption.AllowMultipleShapes))
+			if (PlaceORMElementOnDiagram(dataObject, null, e.MousePosition, ORMPlacementOption.AllowMultipleShapes, null, null))
 			{
 				e.Effect = DragDropEffects.All;
 				e.Handled = true;
@@ -153,8 +153,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <param name="elementToPlace">The the element to place. If this is set, dataObject must be null.</param>
 		/// <param name="elementPosition">An initial position for the element</param>
 		/// <param name="placementOptions">Controls the actions by this method</param>
+		/// <param name="beforeStandardFixupCallback">A <see cref="FixupNewShape"/> callback used to configure the shape before standard processing is applied</param>
+		/// <param name="afterStandardFixupCallback">A <see cref="FixupNewShape"/> callback used to configure the shape after standard processing is applied</param>
 		/// <returns>true if the element was placed</returns>
-		public bool PlaceORMElementOnDiagram(IDataObject dataObject, ModelElement elementToPlace, PointD elementPosition, ORMPlacementOption placementOptions)
+		public bool PlaceORMElementOnDiagram(IDataObject dataObject, ModelElement elementToPlace, PointD elementPosition, ORMPlacementOption placementOptions, FixupNewShape beforeStandardFixupCallback, FixupNewShape afterStandardFixupCallback)
 		{
 			Debug.Assert((dataObject == null) ^ (elementToPlace == null), "Pass in dataObject or elementToPlace");
 			bool retVal = false;
@@ -227,6 +229,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					}
 					if (shapeElement != null)
 					{
+						// Perform preliminary fixup
+						if (null != beforeStandardFixupCallback)
+						{
+							beforeStandardFixupCallback(element, shapeElement);
+						}
 						if (factType != null)
 						{
 							FixupFactType(factType, (FactTypeShape)shapeElement, false);
@@ -246,6 +253,12 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						else if (modelNote != null)
 						{
 							FixupModelNote(modelNote, (ModelNoteShape)shapeElement);
+						}
+						
+						// Perform additional fixup
+						if (null != afterStandardFixupCallback)
+						{
+							afterStandardFixupCallback(element, shapeElement);
 						}
 					}
 					if (placementOptions == ORMPlacementOption.AllowMultipleShapes)
@@ -844,9 +857,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				// MSBUG ActiveDiagramView should be null if the containing window is not active.
 				//else if (!isLink && (!this.AutoPopulateShapes && this.ActiveDiagramView == null))
 				DiagramView activeDiagramView = this.ActiveDiagramView;
+				Store store = Store;
+				TransactionManager transactionManager = store.TransactionManager;
 				if (activeDiagramView == null)
 				{
-					return false;
+					if (!(transactionManager.InTransaction && AutomatedElementDirective.NeverIgnore == ((IORMToolServices)store).GetAutomatedElementDirective(element)))
+					{
+						return false;
+					}
 				}
 				else
 				{
@@ -860,8 +878,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					IMonitorSelectionService selectionService;
 					object selectionContainer;
 					IORMDesignerView currentView;
-					Store store = Store;
-					TransactionManager transactionManager = store.TransactionManager;
 					Guid diagramDropTargetId;
 					IORMToolServices toolServices;
 					AutomatedElementDirective directive;
@@ -1415,7 +1431,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			if (toolbox != null)
 			{
 				// Select the connector action on the toolbox
-				Debug.Assert(toolbox.GetSelectedToolboxItem() == null); // Should be turned off during MouseActionDeactivated
 				ToolboxItemCollection items = toolbox.GetToolboxItems(tabName);
 				foreach (ToolboxItem item in items)
 				{

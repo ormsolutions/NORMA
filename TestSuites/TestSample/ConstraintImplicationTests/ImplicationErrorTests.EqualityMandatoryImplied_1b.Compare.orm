@@ -1,4 +1,5 @@
-﻿<ormRoot:ORM2 xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ormRoot:ORM2 xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot">
 	<orm:ORMModel Name="ORMModel1" id="_8390E2C3-90A4-4957-A678-F5D8CCB1A586">
 		<orm:Objects>
 			<orm:EntityType Name="A" _ReferenceMode="id" id="_E9EA3062-61D1-46A4-81CE-C8BB31B85792">
@@ -329,7 +330,7 @@
 			<ormDiagram:ObjectTypeShape IsExpanded="true" id="_17127E7F-DF34-45D1-9E3E-4051BF01E479" AbsoluteBounds="1.3562499999999997, 2.4921635605891539, 0.36792931973934173, 0.35900605320930479">
 				<ormDiagram:Subject ref="_E9EA3062-61D1-46A4-81CE-C8BB31B85792" />
 			</ormDiagram:ObjectTypeShape>
-			<ormDiagram:FactTypeShape AbsoluteBounds="2.8255555555038154, 1.8246419154418012, 0.38388888899236917, 0.24388888899236916" ConstraintDisplayPosition="Top" IsExpanded="true" id="_A1DC8D66-B0CF-4259-97F0-F2D633C611A7">
+			<ormDiagram:FactTypeShape AbsoluteBounds="2.8255555555038154, 1.8246419154418012, 0.38388888899236917, 0.24388888899236916" IsExpanded="true" id="_A1DC8D66-B0CF-4259-97F0-F2D633C611A7">
 				<ormDiagram:RelativeShapes>
 					<ormDiagram:ReadingShape AbsoluteBounds="2.9255555555038151, 2.1332823177364966, 0.18545643985271454, 0.12950302660465241" IsExpanded="true" id="_13B17F3D-1C27-4035-8455-39D7838D8A96">
 						<ormDiagram:Subject ref="_0CE347E1-FBDF-42D0-A7DD-DBDC3C1F6907" />

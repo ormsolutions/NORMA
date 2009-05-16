@@ -516,7 +516,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			Objectification objectification;
 			ObjectType nestingType;
 			Store store = Store;
-			if (store.InUndoRedoOrRollback)
+			if (store.Disposed || store.ShuttingDown || store.InUndoRedoOrRollback)
 			{
 				return myGeneratedName;
 			}
@@ -2688,9 +2688,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			foreach (RoleBase roleBase in RoleCollection)
 			{
 				ObjectType rolePlayer = roleBase.Role.RolePlayer;
-				if (!rolePlayer.IsImplicitBooleanValue)
+				if (rolePlayer != null && !rolePlayer.IsImplicitBooleanValue)
 				{
-					yield return roleBase.Role.RolePlayer;
+					yield return rolePlayer;
 				}
 			}
 			if (!minimalElements)
@@ -2719,7 +2719,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							foreach (RoleBase roleBase in relatedFactType.RoleCollection)
 							{
 								ObjectType rolePlayer = roleBase.Role.RolePlayer;
-								if (rolePlayer != nestingType &&
+								if (rolePlayer != null &&
+									rolePlayer != nestingType &&
 									!rolePlayer.IsImplicitBooleanValue)
 								{
 									yield return rolePlayer;

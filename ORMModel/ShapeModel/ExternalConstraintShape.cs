@@ -893,7 +893,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						bounds = diagram.BoundsRules.GetCompliantBounds(shape, bounds);
 						shape.AbsoluteBounds = bounds;
 						bounds.Offset(width, 0);
-						diagram.PlaceORMElementOnDiagram(null, exclusion, bounds.Location, ORMPlacementOption.None);
+						diagram.PlaceORMElementOnDiagram(null, exclusion, bounds.Location, ORMPlacementOption.None, null, null);
 					}
 				}
 			}

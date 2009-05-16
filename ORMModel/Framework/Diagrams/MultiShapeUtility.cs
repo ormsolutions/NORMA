@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -470,6 +471,15 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 			{
 				CheckLinks(shapeElement, false);
 			}
+		}
+		/// <summary>
+		/// Detach all links from a shape in preparation for deletion
+		/// of the element.
+		/// </summary>
+		/// <param name="shapeElement">The shape to detach from.</param>
+		public static void DetachLinks(ShapeElement shapeElement)
+		{
+			CheckLinks(shapeElement, true);
 		}
 		private static void CheckLinks(ShapeElement checkShape, bool discludeOriginal)
 		{
@@ -1201,7 +1211,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 					fromShape)).HasValue ? testPoint.Value : toShapeCenter;
 				return new PointD((fromPoint.X + toPoint.X) / 2, (fromPoint.Y + toPoint.Y) / 2);
 			}
-			return shape.Center;
+			return shape.AbsoluteCenter;
 		}
 #endif // !LINKS_ALWAYS_CONNECT
 #if LINKS_ALWAYS_CONNECT
