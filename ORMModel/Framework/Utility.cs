@@ -392,6 +392,49 @@ namespace ORMSolutions.ORMArchitect.Framework
 			return false;
 		}
 		#endregion // EnumerableContains
+		#region EnumerableTrueForAll method
+		/// <summary>
+		/// Helper method to see if the items in an <see cref="IEnumerable{T}"/>
+		/// are all true for the specified <paramref name="match"/>
+		/// </summary>
+		/// <typeparam name="T">Any type</typeparam>
+		/// <param name="enumerable">The items to verify</param>
+		/// <param name="match">The callback to verify with</param>
+		/// <returns>true if the <paramref name="match"/> returns true for all items in <paramref name="enumerable"/></returns>
+		public static bool EnumerableTrueForAll<T>(IEnumerable<T> enumerable, Predicate<T> match)
+		{
+			foreach (T testItem in enumerable)
+			{
+				if (!match(testItem))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+		#endregion // EnumerableTrueForAll method
+		#region EnumerableTrueCount method
+		/// <summary>
+		/// Helper method to count the number of items in an <see cref="IEnumerable{T}"/>
+		/// are all true for the specified <paramref name="match"/>
+		/// </summary>
+		/// <typeparam name="T">Any type</typeparam>
+		/// <param name="enumerable">The items to verify</param>
+		/// <param name="match">The callback to verify with</param>
+		/// <returns>The count of items for which <paramref name="match"/> returns true</returns>
+		public static int EnumerableTrueCount<T>(IEnumerable<T> enumerable, Predicate<T> match)
+		{
+			int retVal = 0;
+			foreach (T testItem in enumerable)
+			{
+				if (match(testItem))
+				{
+					++retVal;
+				}
+			}
+			return retVal;
+		}
+		#endregion // EnumerableTrueCount method
 		#region GetBaseInterfaceMethodDelegate method
 		/// <summary>
 		/// Return a delegate that can be used to call the implementation of a private

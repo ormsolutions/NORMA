@@ -240,24 +240,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Implements <see cref="IVerbalizeCustomChildren.GetCustomChildVerbalizations"/>.
 		/// Explicitly verbalizes the definitions and notes fields
 		/// </summary>
-		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, bool isNegative)
+		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)
 		{
 			Definition definition;
 			if (null != (definition = Definition) &&
-				(filter == null || !filter.FilterChildVerbalizer(definition, isNegative).IsBlocked))
+				(filter == null || !filter.FilterChildVerbalizer(definition, sign).IsBlocked))
 			{
 				yield return CustomChildVerbalizer.VerbalizeInstance(definition);
 			}
 			Note note = Note;
 			if (null != (note = Note) &&
-				(filter == null || !filter.FilterChildVerbalizer(note, isNegative).IsBlocked))
+				(filter == null || !filter.FilterChildVerbalizer(note, sign).IsBlocked))
 			{
 				yield return CustomChildVerbalizer.VerbalizeInstance(note);
 			}
 		}
-		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, bool isNegative)
+		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)
 		{
-			return GetCustomChildVerbalizations(filter, isNegative);
+			return GetCustomChildVerbalizations(filter, sign);
 		}
 		#endregion // IVerbalizeCustomChildren Implementation
 		#region IVerbalizeFilterChildrenByRole Implementation

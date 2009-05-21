@@ -188,7 +188,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 		public static void GenerateReport(ORMModel model, VerbalizationReportContent reportContent, string baseDir)
 		{
 			#region Member Variable
-			bool isNegative = false;
+			const VerbalizationSign sign = VerbalizationSign.Positive | VerbalizationSign.AttemptOppositeSign;
 			IDictionary<Type, IVerbalizationSets> snippetsDictionary = (model.Store as IORMToolServices).GetVerbalizationSnippetsDictionary(HtmlReport.HtmlReportTargetName);
 			IVerbalizationSets<ReportVerbalizationSnippetType> snippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
 			Dictionary<IVerbalize, IVerbalize> verbalized;
@@ -220,7 +220,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 						HtmlReport.HtmlReportTargetName,
 						verbalized,
 						null,
-						isNegative,
+						sign,
 						writer,
 						false,
 						ref firstCall);
@@ -255,7 +255,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 							HtmlReport.HtmlReportTargetName,
 							verbalized,
 							objectTypePageReport,
-							isNegative,
+							sign,
 							writer,
 							false,
 							ref firstCallPending);
@@ -303,7 +303,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 							HtmlReport.HtmlReportTargetName,
 							verbalized,
 							factTypePageReport,
-							isNegative,
+							sign,
 							writer,
 							false,
 							ref firstCallPending);
@@ -342,7 +342,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 						HtmlReport.HtmlReportTargetName,
 						verbalized,
 						factTypeConstraintValidationReport,
-						isNegative,
+						sign,
 						writer,
 						false,
 						ref firstCall);
@@ -565,14 +565,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			}
 			#endregion // Constructor
 			#region IVerbalizeCustomChildren Implementation
-			IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, bool isNegative)
+			IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)
 			{
-				return GetCustomChildVerbalizations(filter, isNegative);
+				return GetCustomChildVerbalizations(filter, sign);
 			}
 			/// <summary>
 			/// Implements IVerbalizeCustomChildren.GetCustomChildVerbalizations
 			/// </summary>
-			protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, bool isNegative)
+			protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)
 			{
 				yield return CustomChildVerbalizer.VerbalizeInstance(new ObjectTypePageHeaderSummary(myObjectType, filter));
 				yield return CustomChildVerbalizer.VerbalizeInstance(new ObjectTypePageFactTypeSection(myObjectType));
@@ -582,22 +582,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			}
 			#endregion // IVerbalizeCustomChildren Implementation
 			#region IVerbalizeFilterChildren Implementation
-			CustomChildVerbalizer IVerbalizeFilterChildren.FilterChildVerbalizer(object child, bool isNegative)
+			CustomChildVerbalizer IVerbalizeFilterChildren.FilterChildVerbalizer(object child, VerbalizationSign sign)
 			{
-				return FilterChildVerbalizer(child, isNegative);
+				return FilterChildVerbalizer(child, sign);
 			}
 			/// <summary>
 			/// Provides an opportunity for a parent object to filter the
 			/// verbalization of aggregated child verbalization implementations
 			/// </summary>
 			/// <param name="child">A direct or indirect child object.</param>
-			/// <param name="isNegative">true if a negative verbalization is being requested</param>
+			/// <param name="sign">The preferred verbalization sign</param>
 			/// <returns>
 			/// Return the provided childVerbalizer to verbalize normally, null to block verbalization, or an
 			/// alternate IVerbalize. The value is returned with a boolean option. The element will be disposed with
 			/// this is true.
 			/// </returns>
-			protected CustomChildVerbalizer FilterChildVerbalizer(object child, bool isNegative)
+			protected CustomChildVerbalizer FilterChildVerbalizer(object child, VerbalizationSign sign)
 			{
 				return CustomChildVerbalizer.VerbalizeInstance(child as IVerbalize);
 			}
@@ -645,9 +645,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			}
 			#endregion // Constructor
 			#region IVerbalizeCustomChildren Implementation
-			IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, bool isNegative)
+			IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)
 			{
-				return GetCustomChildVerbalizations(filter, isNegative);
+				return GetCustomChildVerbalizations(filter, sign);
 			}
 			/// <summary>
 			/// Implements IVerbalizeCustomChildren.GetCustomChildVerbalizations
@@ -656,11 +656,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			/// If the <see cref="IVerbalizeFilterChildren.FilterChildVerbalizer">FilterChildVerbalizer</see> method returns
 			/// <see cref="CustomChildVerbalizer.Block"/> for any constituent components used to create a <see cref="CustomChildVerbalizer"/>,
 			/// then that custom child should not be created</param>
-			/// <param name="isNegative">true if a negative verbalization is being requested</param>
+			/// <param name="sign">The preferred verbalization sign</param>
 			/// <returns>
 			/// IEnumerable of CustomChildVerbalizer structures
 			/// </returns>
-			protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, bool isNegative)
+			protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)
 			{
 				yield return CustomChildVerbalizer.VerbalizeInstance(new VerbalizationReportTableOfContentsWrapper(myReportContent, mySnippets));
 				yield return CustomChildVerbalizer.VerbalizeInstance(new ModelContextWrapper(myModel, ReportVerbalizationSnippetType.ContextModelDescriptionOpen, ReportVerbalizationSnippetType.ContextModelDescriptionClose));
@@ -692,14 +692,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			}
 			#endregion // Constructor
 			#region IVerbalize Implementation
-			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 			{
-				return GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+				return GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 			}
 			/// <summary>
 			/// Implements <see cref="IVerbalize.GetVerbalization"/>
 			/// </summary>
-			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 			{
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				IVerbalizationSets<ReportVerbalizationSnippetType> snippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
@@ -754,14 +754,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			}
 			#endregion // Property
 			#region IVerbalize Implementation
-			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 			{
-				return GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+				return GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 			}
 			/// <summary>
 			/// Implements <see cref="IVerbalize.GetVerbalization"/>
 			/// </summary>
-			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 			{
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				IVerbalizationSets<ReportVerbalizationSnippetType> mySnippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
@@ -776,7 +776,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 					for (int i = 0; i < factTypeCount; ++i)
 					{
 						wrapper.VerbalizationObject = uniqueFactTypes[i];
-						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 					}
 				}
 				writer.Write(mySnippets.GetSnippet(ReportVerbalizationSnippetType.ObjectTypePageFactTypeListClose));
@@ -845,14 +845,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			}
 			#endregion // Property
 			#region IVerbalize Members
-			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 			{
-				return GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+				return GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 			}
 			/// <summary>
 			/// Implements <see cref="IVerbalize.GetVerbalization"/>
 			/// </summary>
-			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 			{
 				IVerbalizationSets<ReportVerbalizationSnippetType> mySnippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
@@ -867,7 +867,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 					for (int i = 0; i < relatedObjectCount; ++i)
 					{
 						wrapper.VerbalizationObject = relatedObjects[i];
-						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 					}
 				}
 
@@ -916,14 +916,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			}
 			#endregion // Accessor properties
 			#region IVerbalize Implementation
-			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 			{
-				return GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+				return GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 			}
 			/// <summary>
 			/// Implements <see cref="IVerbalize.GetVerbalization"/>
 			/// </summary>
-			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 			{
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				IVerbalizationSets<ReportVerbalizationSnippetType> snippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
@@ -961,14 +961,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			}
 			#endregion // Constructor
 			#region IVerbalize Implementation
-			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 			{
-				return GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+				return GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 			}
 			/// <summary>
 			/// Implements <see cref="IVerbalize.GetVerbalization"/>
 			/// </summary>
-			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 			{
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				IVerbalizationSets<ReportVerbalizationSnippetType> snippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
@@ -982,7 +982,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 					for (int i = 0; i < objectCount; ++i)
 					{
 						wrapper.VerbalizationObject = objectTypes[i];
-						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 					}
 				}
 				writer.Write(snippets.GetSnippet(myFooterSnippet));
@@ -1016,14 +1016,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			}
 			#endregion // Constructor
 			#region IVerbalizeCustomChildren Implementation
-			IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, bool isNegative)
+			IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)
 			{
-				return GetCustomChildVerbalizations(filter, isNegative);
+				return GetCustomChildVerbalizations(filter, sign);
 			}
 			/// <summary>
 			/// Implements IVerbalizeCustomChildren.GetCustomChildVerbalizations
 			/// </summary>
-			protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, bool isNegative)
+			protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)
 			{
 				yield return CustomChildVerbalizer.VerbalizeInstance(new FactTypePageHeaderSummary(myFactType, filter));
 				yield return CustomChildVerbalizer.VerbalizeInstance(new FactTypePageObjectTypeSection(ReportVerbalizationSnippetType.ObjectTypeRelationshipValueLink, myFactType));
@@ -1036,22 +1036,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			}
 			#endregion // IVerbalizeCustomChildren Implementation
 			#region IVerbalizeFilterChildren Members
-			CustomChildVerbalizer IVerbalizeFilterChildren.FilterChildVerbalizer(object child, bool isNegative)
+			CustomChildVerbalizer IVerbalizeFilterChildren.FilterChildVerbalizer(object child, VerbalizationSign sign)
 			{
-				return FilterChildVerbalizer(child, isNegative);
+				return FilterChildVerbalizer(child, sign);
 			}
 			/// <summary>
 			/// Provides an opportunity for a parent object to filter the
 			/// verbalization of aggregated child verbalization implementations
 			/// </summary>
 			/// <param name="child">A direct or indirect child object.</param>
-			/// <param name="isNegative">true if a negative verbalization is being requested</param>
+			/// <param name="sign">The preferred verbalization sign</param>
 			/// <returns>
 			/// Return the provided childVerbalizer to verbalize normally, null to block verbalization, or an
 			/// alternate IVerbalize. The value is returned with a boolean option. The element will be disposed with
 			/// this is true.
 			/// </returns>
-			protected CustomChildVerbalizer FilterChildVerbalizer(object child, bool isNegative)
+			protected CustomChildVerbalizer FilterChildVerbalizer(object child, VerbalizationSign sign)
 			{
 				if (child is IConstraint)
 				{
@@ -1085,14 +1085,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			}
 			#endregion // Constructor
 			#region IVerbalize Implementation
-			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 			{
-				return GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+				return GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 			}
 			/// <summary>
 			/// Implements <see cref="IVerbalize.GetVerbalization"/>
 			/// </summary>
-			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 			{
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				IVerbalizationSets<ReportVerbalizationSnippetType> snippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
@@ -1156,14 +1156,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			}
 			#endregion // Property
 			#region IVerbalize Members
-			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 			{
-				return GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+				return GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 			}
 			/// <summary>
 			/// Implements <see cref="IVerbalize.GetVerbalization"/>
 			/// </summary>
-			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 			{
 				IVerbalizationSets<ReportVerbalizationSnippetType> mySnippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
@@ -1178,7 +1178,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 					for (int i = 0; i < objectTypeCount; ++i)
 					{
 						wrapper.VerbalizationObject = objectTypes[i];
-						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 					}
 				}
 				writer.Write(mySnippets.GetSnippet(ReportVerbalizationSnippetType.FactTypePageObjectTypeListClose));
@@ -1223,20 +1223,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			}
 			#endregion // Accessor properties
 			#region IVerbalize Implementation
-			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 			{
-				return GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+				return GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 			}
 			/// <summary>
 			/// Implements <see cref="IVerbalize.GetVerbalization"/>
 			/// </summary>
-			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 			{
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				IVerbalizationSets<ReportVerbalizationSnippetType> snippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
 				writer.Write(snippets.GetSnippet(ReportVerbalizationSnippetType.GenericListItemOpen));
 				writer.Write(string.Format(snippets.GetSnippet(ReportVerbalizationSnippetType.FactTypeRelationshipLinkOpen), (myVerbalizationObject as FactType).Name));
-				myVerbalizationObject.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+				myVerbalizationObject.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 				writer.Write(snippets.GetSnippet(ReportVerbalizationSnippetType.FactTypeRelationshipLinkClose));
 				writer.Write(snippets.GetSnippet(ReportVerbalizationSnippetType.GenericListItemClose));
 				return false; // No children to verbalize
@@ -1267,14 +1267,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			}
 			#endregion // Constructor
 			#region IVerbalize Implementation
-			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 			{
-				return GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+				return GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 			}
 			/// <summary>
 			/// Implements <see cref="IVerbalize.GetVerbalization"/>
 			/// </summary>
-			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 			{
 				ReportVerbalizationSnippetType snippetFormat = 0;
 				if (0 != (myReportContent & VerbalizationReportContent.ObjectTypes) &&
@@ -1321,14 +1321,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			}
 			#endregion // Constructor
 			#region IVerbalize Implementation
-			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 			{
-				return GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+				return GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 			}
 			/// <summary>
 			/// Implements <see cref="IVerbalize.GetVerbalization"/>
 			/// </summary>
-			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 			{
 				IVerbalizationSets<ReportVerbalizationSnippetType> mySnippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
@@ -1345,7 +1345,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 					for (int i = 0; i < constraintCount; ++i)
 					{
 						wrapper.VerbalizationObject = constraintList[i];
-						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 					}
 				}
 				// External Uniqueness Constraints
@@ -1356,7 +1356,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 					for (int i = 0; i < constraintCount; ++i)
 					{
 						wrapper.VerbalizationObject = constraintList[i];
-						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 					}
 				}
 				// Frequency Constraints
@@ -1367,7 +1367,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 					for (int i = 0; i < constraintCount; ++i)
 					{
 						wrapper.VerbalizationObject = constraintList[i];
-						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 					}
 				}
 				// Simple Mandatory Constraints
@@ -1378,7 +1378,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 					for (int i = 0; i < constraintCount; ++i)
 					{
 						wrapper.VerbalizationObject = constraintList[i];
-						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 					}
 				}
 				// Disjunctive Mandatory Constraints
@@ -1389,7 +1389,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 					for (int i = 0; i < constraintCount; ++i)
 					{
 						wrapper.VerbalizationObject = constraintList[i];
-						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 					}
 				}
 				// Ring Constraints
@@ -1400,7 +1400,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 					for (int i = 0; i < constraintCount; ++i)
 					{
 						wrapper.VerbalizationObject = constraintList[i];
-						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 					}
 				}
 				// Equality Constraints
@@ -1411,7 +1411,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 					for (int i = 0; i < constraintCount; ++i)
 					{
 						wrapper.VerbalizationObject = constraintList[i];
-						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 					}
 				}
 				// Exclusion Constraints
@@ -1422,7 +1422,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 					for (int i = 0; i < constraintCount; ++i)
 					{
 						wrapper.VerbalizationObject = constraintList[i];
-						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 					}
 				}
 				// Subset Constraints
@@ -1433,7 +1433,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 					for (int i = 0; i < constraintCount; ++i)
 					{
 						wrapper.VerbalizationObject = constraintList[i];
-						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 					}
 				}
 
@@ -1462,14 +1462,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			}
 			#endregion // Constructor
 			#region IVerbalize Implementation
-			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 			{
-				return GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+				return GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 			}
 			/// <summary>
 			/// Implements <see cref="IVerbalize.GetVerbalization"/>
 			/// </summary>
-			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 			{
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				IVerbalizationSets<ReportVerbalizationSnippetType> snippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
@@ -1498,14 +1498,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			}
 			#endregion // Constructor
 			#region IVerbalize Implementation
-			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 			{
-				return GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+				return GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 			}
 			/// <summary>
 			/// Implements <see cref="IVerbalize.GetVerbalization"/>
 			/// </summary>
-			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 			{
 				IVerbalizationSets<ReportVerbalizationSnippetType> mySnippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
@@ -1527,7 +1527,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 						wrapper.VerbalizationObject = objectType;
 					}
 					IVerbalize instance = new ObjectTypeVerbalizationWrapper(ReportVerbalizationSnippetType.ObjectTypeRelationshipValueLink, objectType);
-					verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+					verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 				}
 				if (!hasContent)
 				{
@@ -1559,14 +1559,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			}
 			#endregion // Constructor
 			#region IVerbalize Implementation
-			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 			{
-				return GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+				return GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 			}
 			/// <summary>
 			/// Implements <see cref="IVerbalize.GetVerbalization"/>
 			/// </summary>
-			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 			{
 				IVerbalizationSets<ReportVerbalizationSnippetType> mySnippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
@@ -1588,7 +1588,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 						wrapper.VerbalizationObject = objectType;
 					}
 					IVerbalize instance = new ObjectTypeVerbalizationWrapper(ReportVerbalizationSnippetType.ObjectTypeRelationshipValueLink, objectType);
-					verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+					verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 				}
 				if (!hasContent)
 				{
@@ -1630,14 +1630,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			}
 			#endregion // Constructor
 			#region IVerbalizeCustomChildren Implementation
-			IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, bool isNegative)
+			IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)
 			{
-				return GetCustomChildVerbalizations(filter, isNegative);
+				return GetCustomChildVerbalizations(filter, sign);
 			}
 			/// <summary>
 			/// Implements IVerbalizeCustomChildren.GetCustomChildVerbalizations
 			/// </summary>
-			protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, bool isNegative)
+			protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)
 			{
 				yield return CustomChildVerbalizer.VerbalizeInstance(new VerbalizationReportTableOfContentsWrapper(myReportContent, mySnippets));
 				yield return CustomChildVerbalizer.VerbalizeInstance(new ModelContextWrapper(myModel, ReportVerbalizationSnippetType.ContextModelDescriptionOpen, ReportVerbalizationSnippetType.ContextModelDescriptionClose));
@@ -1653,22 +1653,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			}
 			#endregion // IVerbalizeCustomChildren Implementation
 			#region IVerbalizeFilterChildren Implementation
-			CustomChildVerbalizer IVerbalizeFilterChildren.FilterChildVerbalizer(object child, bool isNegative)
+			CustomChildVerbalizer IVerbalizeFilterChildren.FilterChildVerbalizer(object child, VerbalizationSign sign)
 			{
-				return FilterChildVerbalizer(child, isNegative);
+				return FilterChildVerbalizer(child, sign);
 			}
 			/// <summary>
 			/// Provides an opportunity for a parent object to filter the
 			/// verbalization of aggregated child verbalization implementations
 			/// </summary>
 			/// <param name="child">A direct or indirect child object.</param>
-			/// <param name="isNegative">true if a negative verbalization is being requested</param>
+			/// <param name="sign">The preferred verbalization sign</param>
 			/// <returns>
 			/// Return the provided childVerbalizer to verbalize normally, null to block verbalization, or an
 			/// alternate IVerbalize. The value is returned with a boolean option. The element will be disposed with
 			/// this is true.
 			/// </returns>
-			protected CustomChildVerbalizer FilterChildVerbalizer(object child, bool isNegative)
+			protected CustomChildVerbalizer FilterChildVerbalizer(object child, VerbalizationSign sign)
 			{
 				if (child is IConstraint)
 				{
@@ -1701,14 +1701,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			}
 			#endregion // Constructor
 			#region IVerbalize Implementation
-			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 			{
-				return GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+				return GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 			}
 			/// <summary>
 			/// Implements <see cref="IVerbalize.GetVerbalization"/>
 			/// </summary>
-			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 			{
 				IVerbalizationSets<ReportVerbalizationSnippetType> mySnippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
@@ -1725,7 +1725,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 					for (int i = 0; i < constraintCount; ++i)
 					{
 						wrapper.VerbalizationObject = constraintList[i];
-						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 					}
 				}
 				// External Uniqueness Constraints
@@ -1736,7 +1736,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 					for (int i = 0; i < constraintCount; ++i)
 					{
 						wrapper.VerbalizationObject = constraintList[i];
-						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 					}
 				}
 				// Frequency Constraints
@@ -1747,7 +1747,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 					for (int i = 0; i < constraintCount; ++i)
 					{
 						wrapper.VerbalizationObject = constraintList[i];
-						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 					}
 				}
 				// Simple Mandatory Constraints
@@ -1758,7 +1758,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 					for (int i = 0; i < constraintCount; ++i)
 					{
 						wrapper.VerbalizationObject = constraintList[i];
-						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 					}
 				}
 				// Disjunctive Mandatory Constraints
@@ -1769,7 +1769,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 					for (int i = 0; i < constraintCount; ++i)
 					{
 						wrapper.VerbalizationObject = constraintList[i];
-						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 					}
 				}
 				// Ring Constraints
@@ -1780,7 +1780,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 					for (int i = 0; i < constraintCount; ++i)
 					{
 						wrapper.VerbalizationObject = constraintList[i];
-						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 					}
 				}
 				// Equality Constraints
@@ -1791,7 +1791,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 					for (int i = 0; i < constraintCount; ++i)
 					{
 						wrapper.VerbalizationObject = constraintList[i];
-						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 					}
 				}
 				// Exclusion Constraints
@@ -1802,7 +1802,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 					for (int i = 0; i < constraintCount; ++i)
 					{
 						wrapper.VerbalizationObject = constraintList[i];
-						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 					}
 				}
 				// Subset Constraints
@@ -1813,7 +1813,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 					for (int i = 0; i < constraintCount; ++i)
 					{
 						wrapper.VerbalizationObject = constraintList[i];
-						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 					}
 				}
 
@@ -1865,14 +1865,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			}
 			#endregion // Accessor properties
 			#region IVerbalize Implementation
-			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 			{
-				return GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+				return GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 			}
 			/// <summary>
 			/// Implements <see cref="IVerbalize.GetVerbalization"/>
 			/// </summary>
-			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 			{
 				object verbalizationObject = this.myVerbalizationObject;
 				if (verbalizationObject == null || verbalizationContext.AlreadyVerbalized(verbalizationObject))
@@ -1918,14 +1918,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			}
 			#endregion // Constructor
 			#region IVerbalize Implementation
-			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 			{
-				return GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+				return GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 			}
 			/// <summary>
 			/// Implements <see cref="IVerbalize.GetVerbalization"/>
 			/// </summary>
-			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 			{
 				ORMModel model = myModel;
 				if (model != null)

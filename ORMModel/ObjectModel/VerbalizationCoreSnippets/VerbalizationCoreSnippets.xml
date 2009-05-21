@@ -231,6 +231,7 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="GroupExclusion"><![CDATA[<span class="quantifier">at most one of the following holds:</span> {0}]]></Snippet>
 			<Snippet type="GroupExclusiveOr"><![CDATA[<span class="quantifier">exactly one of the following holds:</span> {0}]]></Snippet>
 			<Snippet type="Conditional"><![CDATA[<span class="quantifier">if </span>{0}<span class="quantifier"> then </span>{1}]]></Snippet>
+			<Snippet type="ConditionalMultiLine"><![CDATA[<span class="quantifier">if </span>{0}<br/><span class="smallIndent"><span class="quantifier">then </span>{1}</span>]]></Snippet>
 			<Snippet type="Equality"><![CDATA[{0}<span class="quantifier"> if and only if </span>{1}]]></Snippet>
 			<Snippet type="ExclusionBinaryLeadReading"><![CDATA[<span class="quantifier">no</span> {0}<span class="quantifier"> the same </span>{1}]]></Snippet>
 			<Snippet type="ExclusionCombined"><![CDATA[{0} {1}]]></Snippet>
@@ -240,6 +241,10 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="FrequencyRangeMaxUnbounded"><![CDATA[<span class="quantifier">at least <span class="instance">{0}</span> times</span>]]></Snippet>
 			<Snippet type="FrequencyRangeMinUnbounded"><![CDATA[<span class="quantifier">at most <span class="instance">{1}</span> times</span>]]></Snippet>
 			<Snippet type="FrequencyRangeMinUnboundedOptimized"><![CDATA[<span class="quantifier">at most <span class="instance">{1}</span> {0} instances</span>]]></Snippet>
+			<Snippet type="LogicalAndOperator"><![CDATA[{0}<span class="logicalOperator"> and </span>{1}]]></Snippet>
+			<Snippet type="IdentityInequalityOperator"><![CDATA[{0}<span class="logicalOperator"> is not </span>{1}]]></Snippet>
+			<Snippet type="Acyclicity"><![CDATA[<span class="quantifier">no {0} may cycle back to itself via one or more traversals through </span>{1}]]></Snippet>
+			<Snippet type="AcyclicityWithRoleNumbers"><![CDATA[<span class="quantifier">no {0} may cycle back to itself via one or more instances of the role pair:</span></br><span class="smallIndent"><span class="quantifier">roles <span class="objectType">{2}</span> and <span class="objectType">{3}</span> of </span>{1}</span>]]></Snippet>
 		</Snippets>
 	</Language>
 </Languages>

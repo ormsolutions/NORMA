@@ -25,6 +25,8 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.Modeling;
+using ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid;
+using ORMSolutions.ORMArchitect.Framework;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
@@ -44,6 +46,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		ErrorReport = 1,
 	}
+    /// <summary>
+    /// An enum representing the sign of the requested verbalization.
+    /// </summary>
+    [Flags]
+    public enum VerbalizationSign
+    {
+        /// <summary>
+        /// Verbalize with the positive form
+        /// </summary>
+        Positive = 1,
+        /// <summary>
+        /// Verbalize with the negative form
+        /// </summary>
+        Negative = 2,
+        /// <summary>
+        /// If verbalization is not available for the requested
+        /// form, then attempt to verbalize with the opposite sign.
+        /// </summary>
+        AttemptOppositeSign = 4,
+    }
 	/// <summary>
 	/// Options for the <see cref="IVerbalizationContext.DeferVerbalization"/> method
 	/// </summary>
@@ -122,9 +144,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="writer">The output text writer</param>
 		/// <param name="snippetsDictionary">The IVerbalizationSets to use</param>
 		/// <param name="verbalizationContext">A set callback function to interact with the outer verbalization context</param>
-		/// <param name="isNegative">true for a negative reading</param>
+		/// <param name="sign">The preferred verbalization sign</param>
 		/// <returns>true to continue with child verbalization, otherwise false</returns>
-		bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative);
+		bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign);
 	}
 	/// <summary>
 	/// Interface to redirect verbalization. Called for top-level selected objects only
@@ -157,7 +179,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private sealed class BlockVerbalize : IVerbalize
 		{
 			#region IVerbalize Implementation
-			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 			{
 				Debug.Fail("Placeholder instance, should not be called");
 				return false;
@@ -190,7 +212,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				myDisposeAfterVerbalization = disposeAfterVerbalization;
 			}
 			#region IVerbalize Implementation
-			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 			{
 				IVerbalize verbalize = myVerbalizeTarget;
 				if (verbalize != null)
@@ -395,9 +417,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// If the <see cref="IVerbalizeFilterChildren.FilterChildVerbalizer">FilterChildVerbalizer</see> method returns
 		/// <see cref="CustomChildVerbalizer.Block"/> for any constituent components used to create a <see cref="CustomChildVerbalizer"/>,
 		/// then that custom child should not be created</param>
-		/// <param name="isNegative">true if a negative verbalization is being requested</param>
+		/// <param name="sign">The preferred verbalization sign</param>
 		/// <returns>IEnumerable of CustomChildVerbalizer structures</returns>
-		IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, bool isNegative);
+		IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign);
 	}
 	#endregion // IVerbalizeCustomChildren interface
 	#region IVerbalizeFilterChildren interface
@@ -412,11 +434,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// verbalization of aggregated child verbalization implementations
 		/// </summary>
 		/// <param name="child">A direct or indirect child object.</param>
-		/// <param name="isNegative">true if a negative verbalization is being requested</param>
+		/// <param name="sign">The preferred verbalization sign</param>
 		/// <returns>Return the provided childVerbalizer to verbalize normally, null to block verbalization, or an
 		/// alternate IVerbalize. The value is returned with a boolean option. The element will be disposed with
 		/// this is true.</returns>
-		CustomChildVerbalizer FilterChildVerbalizer(object child, bool isNegative);
+		CustomChildVerbalizer FilterChildVerbalizer(object child, VerbalizationSign sign);
 	}
 	#endregion // IVerbalizeFilterChildren interface
 	#region IVerbalizeFilterChildrenByRole
@@ -1590,7 +1612,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Callback for child verbalizations
 		/// </summary>
-		private delegate VerbalizationResult VerbalizationHandler(VerbalizationCallbackWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IVerbalize verbalizer, VerbalizationHandler callback, int indentationLevel, bool isNegative, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel);
+		private delegate VerbalizationResult VerbalizationHandler(VerbalizationCallbackWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IVerbalize verbalizer, VerbalizationHandler callback, int indentationLevel, VerbalizationSign sign, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel);
 		#endregion // VerbalizationHandler Delegate
 		#region VerbalizationContextImpl class
 		private sealed class VerbalizationContextImpl : IVerbalizationContext
@@ -1658,13 +1680,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="verbalizer">The IVerbalize element to verbalize</param>
 		/// <param name="callback">The original callback handler.</param>
 		/// <param name="indentationLevel">The indentation level of the verbalization</param>
-		/// <param name="isNegative"></param>
+		/// <param name="sign"></param>
 		/// <param name="writeSecondaryLines">True to automatically add a line between callbacks. Set to <see langword="true"/> for multi-select scenarios.</param>
 		/// <param name="firstCallPending"></param>
 		/// <param name="firstWrite"></param>
 		/// <param name="lastLevel"></param>
 		/// <returns></returns>
-		private static VerbalizationResult VerbalizeElement_VerbalizationResult(VerbalizationCallbackWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IVerbalize verbalizer, VerbalizationHandler callback, int indentationLevel, bool isNegative, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel)
+		private static VerbalizationResult VerbalizeElement_VerbalizationResult(VerbalizationCallbackWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IVerbalize verbalizer, VerbalizationHandler callback, int indentationLevel, VerbalizationSign sign, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel)
 		{
 			if (indentationLevel == 0 &&
 				alreadyVerbalized != null &&
@@ -1726,14 +1748,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					bool localfw = localFirstWrite;
 					int localll = localLastLevel;
 					VerbalizationHelper.VerbalizeElement(
-						target as ModelElement,
+						target,
 						snippetsDictionary,
 						verbalizationTarget,
 						(0 == (options & DeferVerbalizationOptions.MultipleVerbalizations)) ? alreadyVerbalized : null,
 						childFilter,
 						writer,
 						callback,
-						isNegative,
+						sign,
 						indentationLevel,
 						(0 != (options & DeferVerbalizationOptions.AlwaysWriteLine)) ?
 							true :
@@ -1758,7 +1780,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					return (verbalizerKey == null) ? false : alreadyVerbalized.ContainsKey(verbalizerKey);
 				},
 				verbalizationTarget),
-				isNegative);
+				sign);
 			lastLevel = localLastLevel;
 			firstWrite = localFirstWrite;
 			firstCallPending = localFirstCallPending;
@@ -1783,11 +1805,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="snippetsDictionary">The default or loaded verbalization sets. Passed through all verbalization calls.</param>
 		/// <param name="verbalizationTarget">The verbalization target name, representing the container for the verbalization output.</param>
 		/// <param name="alreadyVerbalized">A dictionary of top-level (indentationLevel == 0) elements that have already been verbalized.</param>
-		/// <param name="isNegative">Use the negative form of the reading</param>
+		/// <param name="sign">The preferred verbalization sign</param>
 		/// <param name="writer">The VerbalizationCallbackWriter for verbalization output</param>
 		/// <param name="writeSecondaryLines">True to automatically add a line between callbacks. Set to <see langword="true"/> for multi-select scenarios.</param>
 		/// <param name="firstCallPending"></param>
-		public static void VerbalizeElement(ModelElement element, IDictionary<Type, IVerbalizationSets> snippetsDictionary, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, bool isNegative, VerbalizationCallbackWriter writer, bool writeSecondaryLines, ref bool firstCallPending)
+		public static void VerbalizeElement(object element, IDictionary<Type, IVerbalizationSets> snippetsDictionary, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, VerbalizationSign sign, VerbalizationCallbackWriter writer, bool writeSecondaryLines, ref bool firstCallPending)
 		{
 			int lastLevel = 0;
 			bool firstWrite = true;
@@ -1800,7 +1822,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				null,
 				writer,
 				new VerbalizationHandler(VerbalizeElement_VerbalizationResult),
-				isNegative,
+				sign,
 				0,
 				writeSecondaryLines,
 				ref localFirstCallPending,
@@ -1827,11 +1849,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="verbalizationTarget">The verbalization target name, representing the container for the verbalization output.</param>
 		/// <param name="alreadyVerbalized">A dictionary of top-level (indentationLevel == 0) elements that have already been verbalized.</param>
 		/// <param name="filter"></param>
-		/// <param name="isNegative">Use the negative form of the reading</param>
+		/// <param name="sign">The preferred verbalization sign</param>
 		/// <param name="writer">The VerbalizationCallbackWriter for verbalization output</param>
 		/// <param name="writeSecondaryLines">True to automatically add a line between callbacks. Set to <see langword="true"/> for multi-select scenarios.</param>
 		/// <param name="firstCallPending"></param>
-		public static void VerbalizeElement(IVerbalizeCustomChildren customChildren, IDictionary<Type, IVerbalizationSets> snippetsDictionary, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IVerbalizeFilterChildren filter, bool isNegative, VerbalizationCallbackWriter writer, bool writeSecondaryLines, ref bool firstCallPending)
+		public static void VerbalizeElement(IVerbalizeCustomChildren customChildren, IDictionary<Type, IVerbalizationSets> snippetsDictionary, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IVerbalizeFilterChildren filter, VerbalizationSign sign, VerbalizationCallbackWriter writer, bool writeSecondaryLines, ref bool firstCallPending)
 		{
 			if (customChildren == null)
 			{
@@ -1848,7 +1870,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				verbalizationTarget,
 				alreadyVerbalized,
 				filter,
-				isNegative,
+				sign,
 				0,
 				writeSecondaryLines,
 				ref localFirstCallPending,
@@ -1876,13 +1898,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="outerFilter"></param>
 		/// <param name="writer"></param>
 		/// <param name="callback"></param>
-		/// <param name="isNegative"></param>
+		/// <param name="sign">The preferred verbalization sign</param>
 		/// <param name="indentLevel"></param>
 		/// <param name="writeSecondaryLines">True to automatically add a line between callbacks. Set to <see langword="true"/> for multi-select scenarios.</param>
 		/// <param name="firstCallPending"></param>
 		/// <param name="firstWrite"></param>
 		/// <param name="lastLevel"></param>
-		private static void VerbalizeElement(ModelElement element, IDictionary<Type, IVerbalizationSets> snippetsDictionary, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IVerbalizeFilterChildren outerFilter, VerbalizationCallbackWriter writer, VerbalizationHandler callback, bool isNegative, int indentLevel, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel)
+		private static void VerbalizeElement(object element, IDictionary<Type, IVerbalizationSets> snippetsDictionary, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IVerbalizeFilterChildren outerFilter, VerbalizationCallbackWriter writer, VerbalizationHandler callback, VerbalizationSign sign, int indentLevel, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel)
 		{
 			IVerbalize parentVerbalize = null;
 			IRedirectVerbalization surrogateRedirect;
@@ -1899,19 +1921,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			bool disposeVerbalizer = false;
 			if (outerFilter != null && parentVerbalize != null)
 			{
-				CustomChildVerbalizer filterResult = outerFilter.FilterChildVerbalizer(parentVerbalize, isNegative);
+				CustomChildVerbalizer filterResult = outerFilter.FilterChildVerbalizer(parentVerbalize, sign);
 				parentVerbalize = filterResult.Instance;
 				disposeVerbalizer = filterResult.DisposeAfterVerbalization;
 			}
 			try
 			{
-				VerbalizationResult result = (parentVerbalize != null) ? callback(writer, snippetsDictionary, verbalizationTarget, alreadyVerbalized, parentVerbalize, callback, indentLevel, isNegative, writeSecondaryLines, ref firstCallPending, ref firstWrite, ref lastLevel) : VerbalizationResult.NotVerbalized;
+				VerbalizationResult result = (parentVerbalize != null) ? callback(writer, snippetsDictionary, verbalizationTarget, alreadyVerbalized, parentVerbalize, callback, indentLevel, sign, writeSecondaryLines, ref firstCallPending, ref firstWrite, ref lastLevel) : VerbalizationResult.NotVerbalized;
 				if (result == VerbalizationResult.AlreadyVerbalized)
 				{
 					return;
 				}
+				ModelElement modelElement = element as ModelElement;
 				bool parentVerbalizeOK = result == VerbalizationResult.Verbalized;
-				bool verbalizeChildren = parentVerbalizeOK ? (element != null) : (element is IVerbalizeChildren);
+				bool verbalizeChildren = parentVerbalizeOK ? (modelElement != null) : (element is IVerbalizeChildren);
 				IVerbalizeCustomChildren customChildren = element as IVerbalizeCustomChildren;
 				if (verbalizeChildren || (customChildren != null))
 				{
@@ -1935,7 +1958,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					if (verbalizeChildren)
 					{
 						IVerbalizeFilterChildrenByRole roleFilter = parentVerbalize as IVerbalizeFilterChildrenByRole;
-						ReadOnlyCollection<DomainRoleInfo> aggregatingList = element.GetDomainClass().AllDomainRolesPlayed;
+						ReadOnlyCollection<DomainRoleInfo> aggregatingList = modelElement.GetDomainClass().AllDomainRolesPlayed;
 						int aggregatingCount = aggregatingList.Count;
 						for (int i = 0; i < aggregatingCount; ++i)
 						{
@@ -1943,11 +1966,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							if (roleInfo.IsEmbedding &&
 								(roleFilter == null || !roleFilter.BlockEmbeddedVerbalization(roleInfo)))
 							{
-								LinkedElementCollection<ModelElement> children = roleInfo.GetLinkedElements(element);
+								LinkedElementCollection<ModelElement> children = roleInfo.GetLinkedElements(modelElement);
 								int childCount = children.Count;
 								for (int j = 0; j < childCount; ++j)
 								{
-									VerbalizeElement(children[j], snippetsDictionary, verbalizationTarget, alreadyVerbalized, filter, writer, callback, isNegative, indentLevel, writeSecondaryLines, ref firstCallPending, ref firstWrite, ref lastLevel);
+									VerbalizeElement(children[j], snippetsDictionary, verbalizationTarget, alreadyVerbalized, filter, writer, callback, sign, indentLevel, writeSecondaryLines, ref firstCallPending, ref firstWrite, ref lastLevel);
 								}
 							}
 						}
@@ -1963,12 +1986,31 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							ORMCoreDomainModel.VerbalizationTargetName,
 							alreadyVerbalized,
 							filter,
-							isNegative,
+							sign,
 							indentLevel,
 							writeSecondaryLines,
 							ref firstCallPending,
 							ref firstWrite,
 							ref lastLevel);
+					}
+				}
+				else if (!parentVerbalizeOK && indentLevel == 0)
+				{
+					ISurveyNodeReference surveyReference = element as ISurveyNodeReference;
+					if (surveyReference != null)
+					{
+						SurveyNodeReferenceOptions options = surveyReference.SurveyNodeReferenceOptions;
+						object deferToElement;
+						if (0 != (options & SurveyNodeReferenceOptions.SelectReferenceReason) &&
+							null != (deferToElement = surveyReference.SurveyNodeReferenceReason))
+						{
+							VerbalizeElement(deferToElement, snippetsDictionary, verbalizationTarget, alreadyVerbalized, sign, writer, writeSecondaryLines, ref firstCallPending);
+							return;
+						}
+						if (null != (deferToElement = surveyReference.ReferencedElement))
+						{
+							VerbalizeElement(deferToElement, snippetsDictionary, verbalizationTarget, alreadyVerbalized, sign, writer, writeSecondaryLines, ref firstCallPending);
+						}
 					}
 				}
 			}
@@ -1997,13 +2039,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			#endregion // Constructor
 			#region IVerbalizeFilterChildren Implementation
-			CustomChildVerbalizer IVerbalizeFilterChildren.FilterChildVerbalizer(object child, bool isNegative)
+			CustomChildVerbalizer IVerbalizeFilterChildren.FilterChildVerbalizer(object child, VerbalizationSign sign)
 			{
 				CustomChildVerbalizer retVal = CustomChildVerbalizer.Empty;
 				IVerbalizeFilterChildren[] filters = myFilters;
 				for (int i = 0; i < filters.Length; ++i)
 				{
-					retVal = filters[i].FilterChildVerbalizer(child, isNegative);
+					retVal = filters[i].FilterChildVerbalizer(child, sign);
 					if (!retVal.IsEmpty)
 					{
 						break;
@@ -2028,22 +2070,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="verbalizationTarget"></param>
 		/// <param name="alreadyVerbalized"></param>
 		/// <param name="filter"></param>
-		/// <param name="isNegative">Whether or not the verbalization is negative</param>
+		/// <param name="sign">The preferred verbalization sign</param>
 		/// <param name="indentationLevel">The current level of indentation</param>
 		/// <param name="writeSecondaryLines">True to automatically add a line between callbacks. Set to <see langword="true"/> for multi-select scenarios.</param>
 		/// <param name="firstCallPending"></param>
 		/// <param name="firstWrite"></param>
 		/// <param name="lastLevel"></param>
-		private static void VerbalizeCustomChildren(IVerbalizeCustomChildren customChildren, VerbalizationCallbackWriter writer, VerbalizationHandler callback, IDictionary<Type, IVerbalizationSets> snippetsDictionary, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IVerbalizeFilterChildren filter, bool isNegative, int indentationLevel, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel)
+		private static void VerbalizeCustomChildren(IVerbalizeCustomChildren customChildren, VerbalizationCallbackWriter writer, VerbalizationHandler callback, IDictionary<Type, IVerbalizationSets> snippetsDictionary, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IVerbalizeFilterChildren filter, VerbalizationSign sign, int indentationLevel, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel)
 		{
-			foreach (CustomChildVerbalizer customChild in customChildren.GetCustomChildVerbalizations(filter, isNegative))
+			foreach (CustomChildVerbalizer customChild in customChildren.GetCustomChildVerbalizations(filter, sign))
 			{
 				IVerbalize childVerbalize = customChild.Instance;
 				if (childVerbalize != null)
 				{
 					try
 					{
-						callback(writer, snippetsDictionary, verbalizationTarget, alreadyVerbalized, childVerbalize, callback, indentationLevel, isNegative, writeSecondaryLines, ref firstCallPending, ref firstWrite, ref lastLevel);
+						callback(writer, snippetsDictionary, verbalizationTarget, alreadyVerbalized, childVerbalize, callback, indentationLevel, sign, writeSecondaryLines, ref firstCallPending, ref firstWrite, ref lastLevel);
 					}
 					finally
 					{

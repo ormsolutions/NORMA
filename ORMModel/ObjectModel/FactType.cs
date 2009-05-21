@@ -2336,7 +2336,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Implements IVerbalizeCustomChildren.GetCustomChildVerbalizations. Responsible
 		/// for internal constraints, combinations of internals, and defaults
 		/// </summary>
-		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, bool isNegative)
+		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)
 		{
 			if (ReadingRequiredError != null)
 			{
@@ -2348,7 +2348,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				// All internal constraints (and combinations) are non-aggregated, so they
 				// are verbalized as custom children.
-				bool lookForDefault = !isNegative && Shell.OptionsPage.CurrentShowDefaultConstraintVerbalization;
+				bool isNegative = 0 != (sign & VerbalizationSign.Negative);
+				bool lookForDefault = Shell.OptionsPage.CurrentShowDefaultConstraintVerbalization;
 				bool lookForCombined = !isNegative && Shell.OptionsPage.CurrentCombineMandatoryAndUniqueVerbalization;
 
 				LinkedElementCollection<RoleBase> factRoles = RoleCollection;
@@ -2399,7 +2400,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						SetConstraint constraint = setConstraints[i];
 						IConstraint iConstraint = constraint.Constraint;
 						if (iConstraint.ConstraintIsInternal &&
-							(filter == null || !filter.FilterChildVerbalizer(constraint, isNegative).IsBlocked))
+							(filter == null || !filter.FilterChildVerbalizer(constraint, sign).IsBlocked))
 						{
 							LinkedElementCollection<Role> constraintRoles = constraint.RoleCollection;
 							if (constraintRoles.Count == 1)
@@ -2575,7 +2576,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						SetConstraint constraint = setConstraints[i];
 						if (constraint.Constraint.ConstraintIsInternal &&
-							(filter == null || !filter.FilterChildVerbalizer(constraint, isNegative).IsBlocked))
+							(filter == null || !filter.FilterChildVerbalizer(constraint, sign).IsBlocked))
 						{
 							yield return CustomChildVerbalizer.VerbalizeInstance((IVerbalize)constraint);
 						}
@@ -2592,7 +2593,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					case ConstraintType.Frequency: // UNDONE: Consider collapsing single-role frequency constraints with simple mandatories
 					case ConstraintType.Ring:
 						if (constraint.FactTypeCollection.Count == 1 &&
-							(filter == null || !filter.FilterChildVerbalizer(constraint, isNegative).IsBlocked))
+							(filter == null || !filter.FilterChildVerbalizer(constraint, sign).IsBlocked))
 						{
 							yield return CustomChildVerbalizer.VerbalizeInstance((IVerbalize)constraint);
 						}
@@ -2621,9 +2622,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				yield return CustomChildVerbalizer.VerbalizeInstance(FactTypeInstanceBlockEnd.GetVerbalizer(), true);
 			}
 		}
-		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, bool isNegative)
+		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)
 		{
-			return GetCustomChildVerbalizations(filter, isNegative);
+			return GetCustomChildVerbalizations(filter, sign);
 		}
 		#endregion // IVerbalizeCustomChildren Implementation
 		#region DefaultBinaryMissingUniquenessVerbalizer

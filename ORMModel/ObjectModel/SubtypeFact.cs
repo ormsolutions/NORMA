@@ -861,13 +861,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Implements IVerbalizeCustomChildren.GetCustomChildVerbalizations. Hides
 		/// implementation in <see cref="FactType"/>
 		/// </summary>
-		protected static new IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, bool isNegative)
+		protected static new IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)
 		{
 			yield break;
 		}
-		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, bool isNegative)
+		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)
 		{
-			return GetCustomChildVerbalizations(filter, isNegative);
+			return GetCustomChildVerbalizations(filter, sign);
 		}
 		#endregion // IVerbalizeCustomChildren Implementation
 		#region IAnswerSurveyQuestion<SurveyQuestionGlyph> Implementation

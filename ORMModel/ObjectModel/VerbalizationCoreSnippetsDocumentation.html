@@ -268,6 +268,12 @@
             <h4 id="snippetLinkHeader">Snippets</h4>
             <ol>
               <li>
+                <a href="#Acyclicity">Acyclicity</a>
+              </li>
+              <li>
+                <a href="#AcyclicityWithRoleNumbers">AcyclicityWithRoleNumbers</a>
+              </li>
+              <li>
                 <a href="#AtMostOneQuantifier">AtMostOneQuantifier</a>
               </li>
               <li>
@@ -317,6 +323,9 @@
               </li>
               <li>
                 <a href="#Conditional">Conditional</a>
+              </li>
+              <li>
+                <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
               </li>
               <li>
                 <a href="#ConstraintProvidesPreferredIdentifier">ConstraintProvidesPreferredIdentifier</a>
@@ -448,6 +457,9 @@
                 <a href="#IdentityEqualityListSeparator">IdentityEqualityListSeparator</a>
               </li>
               <li>
+                <a href="#IdentityInequalityOperator">IdentityInequalityOperator</a>
+              </li>
+              <li>
                 <a href="#IdentityReferenceQuantifier">IdentityReferenceQuantifier</a>
               </li>
               <li>
@@ -521,6 +533,9 @@
               </li>
               <li>
                 <a href="#InQuantifier">InQuantifier</a>
+              </li>
+              <li>
+                <a href="#LogicalAndOperator">LogicalAndOperator</a>
               </li>
               <li>
                 <a href="#MinClosedMaxClosed">MinClosedMaxClosed</a>
@@ -771,6 +786,86 @@
         </b>
       </div>
       <div id="snippetContainer">
+        <div id="Acyclicity" class="snippet">
+          <span class="snippetHeader">
+            <a name="Acyclicity" id="Acyclicity">Acyclicity</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Used to verbalize acyclic ring constraint in the majority of cases.
+							<br />
+            <strong>Format: </strong> No {0} may cycle back to itself via one or more traversals through {1}
+						</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>2</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">no {0} may cycle back to itself via one or more traversals through {1}</pre>
+            </div>
+          </div>
+          <div class="snippetContains">
+            <p>The <strong>Acyclicity</strong> snippet contains the following snippets: <ul class="contains">
+                <li>
+                  <a href="#SelfReference">SelfReference</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>Acyclicity</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+          <div class="snippetUsedBy">
+            <p>The <strong>Acyclicity</strong> snippet is used by the following Constraints: <ul class="usedBy">
+                <li>AcyclicRingVerbalizer</li>
+              </ul>
+            </p>
+          </div>
+        </div>
+        <div id="AcyclicityWithRoleNumbers" class="snippet">
+          <span class="snippetHeader">
+            <a name="AcyclicityWithRoleNumbers" id="AcyclicityWithRoleNumbers">AcyclicityWithRoleNumbers</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Used to verbalize acyclic ring constraints where more than two roles have a role player of the constrained type.
+							<br />
+            <strong>Format: </strong> No {0} may cycle back to itself via one or more instances of the role pair: roles {2} and {3} of {1}
+						</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>4</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">no {0} may cycle back to itself via one or more instances of the role pair:roles {2} and {3} of {1}</pre>
+            </div>
+          </div>
+          <div class="snippetContains">
+            <p>The <strong>AcyclicityWithRoleNumbers</strong> snippet contains the following snippets: <ul class="contains">
+                <li>
+                  <a href="#SelfReference">SelfReference</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>AcyclicityWithRoleNumbers</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+          <div class="snippetUsedBy">
+            <p>The <strong>AcyclicityWithRoleNumbers</strong> snippet is used by the following Constraints: <ul class="usedBy">
+                <li>AcyclicRingVerbalizer</li>
+              </ul>
+            </p>
+          </div>
+        </div>
         <div id="AtMostOneQuantifier" class="snippet">
           <span class="snippetHeader">
             <a name="AtMostOneQuantifier" id="AtMostOneQuantifier">AtMostOneQuantifier</a>
@@ -1267,6 +1362,65 @@
             </p>
           </div>
         </div>
+        <div id="ConditionalMultiLine" class="snippet">
+          <span class="snippetHeader">
+            <a name="ConditionalMultiLine" id="ConditionalMultiLine">ConditionalMultiLine</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Verbalizes a conditional statement on two lines.
+							<br />
+            <strong>Format: </strong> if {0}
+							        then {1}
+						</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>2</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">if {0}then {1}</pre>
+            </div>
+          </div>
+          <div class="snippetContains">
+            <p>The <strong>ConditionalMultiLine</strong> snippet contains the following snippets: <ul class="contains">
+                <li>
+                  <a href="#DefiniteArticle">DefiniteArticle</a>
+                </li>
+                <li>
+                  <a href="#ExistentialQuantifier">ExistentialQuantifier</a>
+                </li>
+                <li>
+                  <a href="#IdentityInequalityOperator">IdentityInequalityOperator</a>
+                </li>
+                <li>
+                  <a href="#LogicalAndOperator">LogicalAndOperator</a>
+                </li>
+                <li>
+                  <a href="#ModalPossibilityOperator">ModalPossibilityOperator</a>
+                </li>
+                <li>
+                  <a href="#SelfReference">SelfReference</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>ConditionalMultiLine</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+          <div class="snippetUsedBy">
+            <p>The <strong>ConditionalMultiLine</strong> snippet is used by the following Constraints: <ul class="usedBy">
+                <li>AntisymmetricRingVerbalizer</li>
+                <li>AsymmetricRingVerbalizer</li>
+                <li>IntransitiveRingVerbalizer</li>
+                <li>SymmetricRingVerbalizer</li>
+              </ul>
+            </p>
+          </div>
+        </div>
         <div id="ConstraintProvidesPreferredIdentifier" class="snippet">
           <span class="snippetHeader">
             <a name="ConstraintProvidesPreferredIdentifier" id="ConstraintProvidesPreferredIdentifier">ConstraintProvidesPreferredIdentifier</a>
@@ -1395,6 +1549,9 @@
                   <a href="#Conditional">Conditional</a>
                 </li>
                 <li>
+                  <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
+                </li>
+                <li>
                   <a href="#Equality">Equality</a>
                 </li>
                 <li>
@@ -1413,6 +1570,9 @@
                   <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
                 </li>
                 <li>
+                  <a href="#LogicalAndOperator">LogicalAndOperator</a>
+                </li>
+                <li>
                   <a href="#ModalPossibilityOperator">ModalPossibilityOperator</a>
                 </li>
               </ul>
@@ -1420,13 +1580,17 @@
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>DefiniteArticle</strong> snippet is used by the following Constraints: <ul class="usedBy">
+                <li>AntisymmetricRingVerbalizer</li>
+                <li>AsymmetricRingVerbalizer</li>
                 <li>CombinedMandatoryUniqueVerbalizer</li>
                 <li>EqualityConstraint</li>
                 <li>ExclusionConstraint</li>
                 <li>ImpliedMandatoryVerbalizer</li>
                 <li>ImpliedUniqueVerbalizer</li>
+                <li>IntransitiveRingVerbalizer</li>
                 <li>MandatoryConstraint</li>
                 <li>SubsetConstraint</li>
+                <li>SymmetricRingVerbalizer</li>
                 <li>UniquenessConstraint</li>
               </ul>
             </p>
@@ -1754,6 +1918,9 @@
                   <a href="#Conditional">Conditional</a>
                 </li>
                 <li>
+                  <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
+                </li>
+                <li>
                   <a href="#Equality">Equality</a>
                 </li>
                 <li>
@@ -1771,17 +1938,27 @@
                 <li>
                   <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
                 </li>
+                <li>
+                  <a href="#LogicalAndOperator">LogicalAndOperator</a>
+                </li>
+                <li>
+                  <a href="#ModalPossibilityOperator">ModalPossibilityOperator</a>
+                </li>
               </ul>
             </p>
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>ExistentialQuantifier</strong> snippet is used by the following Constraints: <ul class="usedBy">
+                <li>AntisymmetricRingVerbalizer</li>
+                <li>AsymmetricRingVerbalizer</li>
                 <li>EqualityConstraint</li>
                 <li>ExclusionConstraint</li>
                 <li>ImpliedMandatoryVerbalizer</li>
+                <li>IntransitiveRingVerbalizer</li>
+                <li>IrreflexiveRingVerbalizer</li>
                 <li>MandatoryConstraint</li>
-                <li>RingConstraint</li>
                 <li>SubsetConstraint</li>
+                <li>SymmetricRingVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -2506,6 +2683,41 @@
             </div>
           </div>
         </div>
+        <div id="IdentityInequalityOperator" class="snippet">
+          <span class="snippetHeader">
+            <a name="IdentityInequalityOperator" id="IdentityInequalityOperator">IdentityInequalityOperator</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Used to specify that two instances are not the same.
+							<br />
+            <strong>Format: </strong> {0} is not {1}
+						</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>2</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">{0} is not {1}</pre>
+            </div>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>IdentityInequalityOperator</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
+                </li>
+                <li>
+                  <a href="#LogicalAndOperator">LogicalAndOperator</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+          <div class="snippetUsedBy">
+            <p>The <strong>IdentityInequalityOperator</strong> snippet is used by the following Constraints: <ul class="usedBy">
+                <li>AntisymmetricRingVerbalizer</li>
+              </ul>
+            </p>
+          </div>
+        </div>
         <div id="IdentityReferenceQuantifier" class="snippet">
           <span class="snippetHeader">
             <a name="IdentityReferenceQuantifier" id="IdentityReferenceQuantifier">IdentityReferenceQuantifier</a>
@@ -2548,7 +2760,7 @@
           <div class="snippetUsedBy">
             <p>The <strong>IdentityReferenceQuantifier</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>DefaultBinaryMissingUniquenessVerbalizer</li>
-                <li>RingConstraint</li>
+                <li>IrreflexiveRingVerbalizer</li>
                 <li>UniquenessConstraint</li>
               </ul>
             </p>
@@ -2595,6 +2807,12 @@
           <div class="snippetContains">
             <p>The <strong>ImpliedModalNecessityOperator</strong> snippet contains the following snippets: <ul class="contains">
                 <li>
+                  <a href="#Acyclicity">Acyclicity</a>
+                </li>
+                <li>
+                  <a href="#AcyclicityWithRoleNumbers">AcyclicityWithRoleNumbers</a>
+                </li>
+                <li>
                   <a href="#CombinationAssociation">CombinationAssociation</a>
                 </li>
                 <li>
@@ -2602,6 +2820,9 @@
                 </li>
                 <li>
                   <a href="#Conditional">Conditional</a>
+                </li>
+                <li>
+                  <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
                 </li>
                 <li>
                   <a href="#DefiniteArticle">DefiniteArticle</a>
@@ -2667,6 +2888,9 @@
                   <a href="#OneQuantifier">OneQuantifier</a>
                 </li>
                 <li>
+                  <a href="#SelfReference">SelfReference</a>
+                </li>
+                <li>
                   <a href="#SubtypeMetaReading">SubtypeMetaReading</a>
                 </li>
                 <li>
@@ -2691,15 +2915,17 @@
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>ImpliedModalNecessityOperator</strong> snippet is used by the following Constraints: <ul class="usedBy">
+                <li>AcyclicRingVerbalizer</li>
                 <li>CombinedMandatoryUniqueVerbalizer</li>
                 <li>EqualityConstraint</li>
                 <li>ExclusionConstraint</li>
                 <li>FrequencyConstraint</li>
                 <li>ImpliedMandatoryVerbalizer</li>
                 <li>ImpliedUniqueVerbalizer</li>
+                <li>IrreflexiveRingVerbalizer</li>
                 <li>MandatoryConstraint</li>
-                <li>RingConstraint</li>
                 <li>SubsetConstraint</li>
+                <li>SymmetricRingVerbalizer</li>
                 <li>UniquenessConstraint</li>
               </ul>
             </p>
@@ -3183,6 +3409,56 @@
             </p>
           </div>
         </div>
+        <div id="LogicalAndOperator" class="snippet">
+          <span class="snippetHeader">
+            <a name="LogicalAndOperator" id="LogicalAndOperator">LogicalAndOperator</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Used to 'and' together exactly two other snippets.
+							<br />
+            <strong>Format: </strong> {0} and {1}
+						</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>2</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">{0} and {1}</pre>
+            </div>
+          </div>
+          <div class="snippetContains">
+            <p>The <strong>LogicalAndOperator</strong> snippet contains the following snippets: <ul class="contains">
+                <li>
+                  <a href="#DefiniteArticle">DefiniteArticle</a>
+                </li>
+                <li>
+                  <a href="#ExistentialQuantifier">ExistentialQuantifier</a>
+                </li>
+                <li>
+                  <a href="#IdentityInequalityOperator">IdentityInequalityOperator</a>
+                </li>
+                <li>
+                  <a href="#SelfReference">SelfReference</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>LogicalAndOperator</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+          <div class="snippetUsedBy">
+            <p>The <strong>LogicalAndOperator</strong> snippet is used by the following Constraints: <ul class="usedBy">
+                <li>AntisymmetricRingVerbalizer</li>
+                <li>IntransitiveRingVerbalizer</li>
+              </ul>
+            </p>
+          </div>
+        </div>
         <div id="MinClosedMaxClosed" class="snippet">
           <span class="snippetHeader">
             <a name="MinClosedMaxClosed" id="MinClosedMaxClosed">MinClosedMaxClosed</a>
@@ -3444,6 +3720,9 @@
                   <a href="#DefiniteArticle">DefiniteArticle</a>
                 </li>
                 <li>
+                  <a href="#ExistentialQuantifier">ExistentialQuantifier</a>
+                </li>
+                <li>
                   <a href="#IdentityReferenceQuantifier">IdentityReferenceQuantifier</a>
                 </li>
                 <li>
@@ -3458,11 +3737,17 @@
                 <li>
                   <a href="#OneQuantifier">OneQuantifier</a>
                 </li>
+                <li>
+                  <a href="#SelfReference">SelfReference</a>
+                </li>
               </ul>
             </p>
           </div>
           <div classs="snippetContainedIn">
             <p>The <strong>ModalPossibilityOperator</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
+                </li>
                 <li>
                   <a href="#ContextScopeReference">ContextScopeReference</a>
                 </li>
@@ -3474,8 +3759,11 @@
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>ModalPossibilityOperator</strong> snippet is used by the following Constraints: <ul class="usedBy">
+                <li>AntisymmetricRingVerbalizer</li>
+                <li>AsymmetricRingVerbalizer</li>
                 <li>DefaultBinaryMissingUniquenessVerbalizer</li>
                 <li>ImpliedUniqueVerbalizer</li>
+                <li>IntransitiveRingVerbalizer</li>
                 <li>MandatoryConstraint</li>
                 <li>UniquenessConstraint</li>
               </ul>
@@ -4204,10 +4492,38 @@
               <pre class="unformattedSnippetDecorator">{0}</pre>
             </div>
           </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>SelfReference</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#Acyclicity">Acyclicity</a>
+                </li>
+                <li>
+                  <a href="#AcyclicityWithRoleNumbers">AcyclicityWithRoleNumbers</a>
+                </li>
+                <li>
+                  <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
+                </li>
+                <li>
+                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                </li>
+                <li>
+                  <a href="#LogicalAndOperator">LogicalAndOperator</a>
+                </li>
+                <li>
+                  <a href="#ModalPossibilityOperator">ModalPossibilityOperator</a>
+                </li>
+              </ul>
+            </p>
+          </div>
           <div class="snippetUsedBy">
             <p>The <strong>SelfReference</strong> snippet is used by the following Constraints: <ul class="usedBy">
+                <li>AcyclicRingVerbalizer</li>
+                <li>AntisymmetricRingVerbalizer</li>
+                <li>AsymmetricRingVerbalizer</li>
+                <li>IntransitiveRingVerbalizer</li>
                 <li>NearestValueConstraintVerbalizer</li>
                 <li>RoleValueConstraint</li>
+                <li>SymmetricRingVerbalizer</li>
                 <li>ValueTypeValueConstraint</li>
               </ul>
             </p>

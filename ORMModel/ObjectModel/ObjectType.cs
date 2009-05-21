@@ -4314,7 +4314,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Implements IVerbalizeCustomChildren.GetCustomChildVerbalizations. Responsible
 		/// for instance verbalizations
 		/// </summary>
-		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, bool isNegative)
+		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)
 		{
 			ValueConstraint valueConstraint;
 			if (!IsValueType && null != (valueConstraint = NearestValueConstraint))
@@ -4325,16 +4325,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			IList<ObjectTypeInstance> instances = ObjectTypeInstanceCollection;
 			if (instances.Count != 0 &&
-				(filter == null || !filter.FilterChildVerbalizer(instances[0], isNegative).IsBlocked))
+				(filter == null || !filter.FilterChildVerbalizer(instances[0], sign).IsBlocked))
 			{
 				ObjectTypeInstanceVerbalizer verbalizer = ObjectTypeInstanceVerbalizer.GetVerbalizer();
 				verbalizer.Initialize(this, instances);
 				yield return CustomChildVerbalizer.VerbalizeInstance(verbalizer, true);
 			}
 		}
-		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, bool isNegative)
+		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)
 		{
-			return GetCustomChildVerbalizations(filter, isNegative);
+			return GetCustomChildVerbalizations(filter, sign);
 		}
 
 		#endregion

@@ -45,7 +45,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 	partial class CustomProperty : IVerbalize
 	{
 		#region IVerbalize Members
-		bool IVerbalize.GetVerbalization(System.IO.TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+		bool IVerbalize.GetVerbalization(System.IO.TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 		{
 			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 			IVerbalizationSets<CustomPropertyVerbalizationSnippetType> snippets = (IVerbalizationSets<CustomPropertyVerbalizationSnippetType>)snippetsDictionary[typeof(CustomPropertyVerbalizationSnippetType)];

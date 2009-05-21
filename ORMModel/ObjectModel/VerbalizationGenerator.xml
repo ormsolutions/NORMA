@@ -9,7 +9,7 @@
 		<CopyrightLine>* Natural Object-Role Modeling Architect for Visual Studio                 *</CopyrightLine>
 		<CopyrightLine>*                                                                          *</CopyrightLine>
 		<CopyrightLine>* Copyright © Neumont University. All rights reserved.                     *</CopyrightLine>
-		<CopyrightLine>* Copyright © ORM Solutions, LLC. All rights reserved.                        *</CopyrightLine>
+		<CopyrightLine>* Copyright © ORM Solutions, LLC. All rights reserved.                     *</CopyrightLine>
 		<CopyrightLine>*                                                                          *</CopyrightLine>
 		<CopyrightLine>* The use and distribution terms for this software are covered by the      *</CopyrightLine>
 		<CopyrightLine>* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *</CopyrightLine>
@@ -616,6 +616,13 @@
 							</Snippet>
 						</Snippet>
 					</ReadingContext>
+					<Snippet ref="ConstraintProvidesPreferredIdentifier" conditionalMatch="IsPreferredIdentifier" conditionalBlockContext="PreferredFor">
+						<IterateRoles listStyle="null" match="included"/>
+						<Snippet ref="ObjectType">
+							<PreferredIdentifierFor/>
+							<PreferredIdentifierForId/>
+						</Snippet>
+					</Snippet>
 				</ConstrainedRoles>
 				<ConstrainedRoles factCount="1" span="all" sign="positive">
 					<!-- UNDONE: Subscripting requirements specify on for binary, off for n-ary. Currently
@@ -656,6 +663,18 @@
 				</ConstrainedRoles>
 				<ConstrainedRoles factCount="1" span="all">
 					<!-- sign="negative" is implied by the previous element -->
+					<Snippet ref="ModalPossibilityOperator" alternateSign="positive">
+						<IterateRoles listStyle="TopLevelIndentedLogicalAndList">
+							<Fact readingChoice="PreferPrimaryLeadReading">
+								<PredicateReplacement match="primary">
+									<Snippet ref="MoreThanOneQuantifier" alternateSign="positive"/>
+								</PredicateReplacement>
+								<PredicateReplacement>
+									<Snippet ref="IdentityReferenceQuantifier" alternateSign="positive"/>
+								</PredicateReplacement>
+							</Fact>
+						</IterateRoles>
+					</Snippet>
 					<ReadingContext>
 						<Snippet ref="ModalPossibilityOperator">
 							<Snippet ref="OccursInPopulation">
@@ -668,6 +687,13 @@
 							</Snippet>
 						</Snippet>
 					</ReadingContext>
+					<Snippet ref="ConstraintProvidesPreferredIdentifier" conditionalMatch="IsPreferredIdentifier" conditionalBlockContext="PreferredFor">
+						<IterateRoles listStyle="CompactSimpleList" match="included"/>
+						<Snippet ref="ObjectType">
+							<PreferredIdentifierFor/>
+							<PreferredIdentifierForId/>
+						</Snippet>
+					</Snippet>
 				</ConstrainedRoles>
 				<ConstrainedRoles factCount="1" factArity="2" sign="positive">
 					<ConditionalReading>
@@ -725,6 +751,13 @@
 							</Snippet>
 						</Snippet>
 					</ReadingContext>
+					<Snippet ref="ConstraintProvidesPreferredIdentifier" conditionalMatch="IsPreferredIdentifier" conditionalBlockContext="PreferredFor">
+						<IterateRoles listStyle="CompactSimpleList" match="included"/>
+						<Snippet ref="ObjectType">
+							<PreferredIdentifierFor/>
+							<PreferredIdentifierForId/>
+						</Snippet>
+					</Snippet>
 				</ConstrainedRoles>
 				<ConstrainedRoles factCount="1" sign="negative">
 					<Snippet ref="ModalPossibilityOperator">
@@ -736,6 +769,13 @@
 								<Snippet ref="MoreThanOneQuantifier"/>
 							</PredicateReplacement>
 						</Fact>
+					</Snippet>
+					<Snippet ref="ConstraintProvidesPreferredIdentifier" conditionalMatch="IsPreferredIdentifier" conditionalBlockContext="PreferredFor">
+						<IterateRoles listStyle="CompactSimpleList" match="included"/>
+						<Snippet ref="ObjectType">
+							<PreferredIdentifierFor/>
+							<PreferredIdentifierForId/>
+						</Snippet>
 					</Snippet>
 				</ConstrainedRoles>
 				<ConstrainedRoles factCount="1">
@@ -755,6 +795,13 @@
 							</Snippet>
 						</Snippet>
 					</ReadingContext>
+					<Snippet ref="ConstraintProvidesPreferredIdentifier" conditionalMatch="IsPreferredIdentifier" conditionalBlockContext="PreferredFor">
+						<IterateRoles listStyle="CompactSimpleList" match="included"/>
+						<Snippet ref="ObjectType">
+							<PreferredIdentifierFor/>
+							<PreferredIdentifierForId/>
+						</Snippet>
+					</Snippet>
 				</ConstrainedRoles>
 
 				<!-- External constraints -->
@@ -851,6 +898,13 @@
 							</Snippet>
 						</ReadingChoice>
 					</ConditionalReading>
+					<Snippet ref="ConstraintProvidesPreferredIdentifier" conditionalMatch="IsPreferredIdentifier" conditionalBlockContext="PreferredFor">
+						<IterateRoles listStyle="CompactSimpleList" match="constraintRoles"/>
+						<Snippet ref="ObjectType">
+							<PreferredIdentifierFor/>
+							<PreferredIdentifierForId/>
+						</Snippet>
+					</Snippet>
 				</ConstrainedRoles>
 			</Constraint>
 			<!-- End Uniqueness Constraint  -->
@@ -1071,20 +1125,427 @@
 				</ConditionalSnippet>
 			</Constraint>
 			<!-- End nearest EntityType ValueConstraint -->
-			<Constraint type="RingConstraint" patternGroup="SetConstraint">
-				<EnableSubscripts minFactArity="3"/>
-				<ConstrainedRoles constraintArity="2" factCount="1" ringType="Irreflexive">
-					<Snippet ref="ImpliedModalNecessityOperator">
-						<IterateRoles match="included" listStyle="null" pass="first">
-							<Fact readingChoice="PreferLeadReading">
-								<PredicateReplacement match="primary">
-									<Snippet ref="ExistentialQuantifier" reverseSign="true"/>
+			<Constraint type="RingConstraint" patternGroup="SetConstraint" deferMatchesTo="VerbalizeByRingType"/>
+			<!-- Implementation note on ring constraints:
+			The following child helper classes (with adjustments for custom subscript settings) can be combined into
+			one verbalization implementation of RingConstraint. However, the resulting function is huge and cyclomatically
+			off the charts, and the conditions are significantly different for the combinations, so the final result would
+			end up being even larger. Breaking into pieces duplicates some runtime effort for the combined settings,
+			but the maintenance and combination enhancements are worth the tradeoff. -->
+			<Constraint type="AcyclicRingVerbalizer" childHelperFor="RingConstraint" patternGroup="SetConstraint">
+				<EnableSubscripts minFactArity="2" custom="defaultPlain"/>
+				<ConstrainedRoles constraintArity="2" factCount="1" sign="positive" sameConstraintRolePlayers="true" rolePlayerLimitedToConstraintRoles="true">
+					<ReadingContext match="PreferLeadReading">
+						<Snippet ref="ImpliedModalNecessityOperator">
+							<Snippet ref="Acyclicity">
+								<IterateRoles match="included" listStyle="null" pass="first"/>
+								<Fact readingChoice="Context">
+									<PredicateReplacement subscript="true">
+										<Snippet ref="SelfReference"/>
+									</PredicateReplacement>
+								</Fact>
+							</Snippet>
+						</Snippet>
+					</ReadingContext>
+				</ConstrainedRoles>
+				<ConstrainedRoles constraintArity="2" factCount="1" sign="positive">
+					<ReadingContext match="PreferLeadReading">
+						<Snippet ref="ImpliedModalNecessityOperator">
+							<Snippet ref="AcyclicityWithRoleNumbers">
+								<IterateRoles match="included" listStyle="null" pass="first"/>
+								<Fact readingChoice="Context">
+									<PredicateReplacement subscript="true">
+										<Snippet ref="SelfReference"/>
+									</PredicateReplacement>
+								</Fact>
+								<IterateRoles match="included" listStyle="null" pass="first">
+									<RoleIndex/>
+								</IterateRoles>
+								<IterateRoles match="included" listStyle="null" pass="notFirst">
+									<RoleIndex/>
+								</IterateRoles>
+							</Snippet>
+						</Snippet>
+					</ReadingContext>
+				</ConstrainedRoles>
+			</Constraint>
+			<Constraint type="AntisymmetricRingVerbalizer" childHelperFor="RingConstraint" patternGroup="SetConstraint">
+				<EnableSubscripts minFactArity="2" custom="defaultSubscript"/>
+				<ConstrainedRoles constraintArity="2" factCount="1" sameConstraintRolePlayers="true" sign="positive">
+					<Snippet ref="ConditionalMultiLine">
+						<Snippet ref="LogicalAndOperator">
+							<IterateRoles match="included" listStyle="null" conditionalReading="PreferPrimaryLeadReading" pass="first">
+								<Fact readingChoice="ConditionalContext">
+									<PredicateReplacement match="included">
+										<Snippet ref="SelfReference"/>
+									</PredicateReplacement>
+									<PredicateReplacement>
+										<Snippet ref="ExistentialQuantifier"/>
+									</PredicateReplacement>
+								</Fact>
+							</IterateRoles>
+							<Snippet ref="IdentityInequalityOperator">
+								<IterateRoles match="constraintRoles" listStyle="null" pass="first"/>
+								<IterateRoles match="constraintRoles" listStyle="null" pass="notFirst"/>
+							</Snippet>
+						</Snippet>
+						<Snippet ref="ModalPossibilityOperator" alternateSign="negative">
+							<IterateRoles match="included" listStyle="null" conditionalReading="PreferPrimaryLeadReading" pass="first">
+								<Fact readingChoice="ConditionalContext">
+									<PredicateReplacement match="primary" alternateRolePlayer="other">
+										<Snippet ref="SelfReference"/>
+									</PredicateReplacement>
+									<PredicateReplacement match="secondary" alternateRolePlayer="primary">
+										<Snippet ref="SelfReference"/>
+									</PredicateReplacement>
+									<PredicateReplacement>
+										<Snippet ref="ExistentialQuantifier"/>
+									</PredicateReplacement>
+								</Fact>
+							</IterateRoles>
+						</Snippet>
+					</Snippet>
+				</ConstrainedRoles>
+				<ConstrainedRoles constraintArity="2" factCount="1" sign="positive">
+					<Snippet ref="ConditionalMultiLine">
+						<Snippet ref="LogicalAndOperator">
+							<IterateRoles match="included" listStyle="null" conditionalReading="PreferPrimaryLeadReading" pass="first" subscript="true">
+								<Fact readingChoice="ConditionalContext">
+									<PredicateReplacement>
+										<Snippet ref="ExistentialQuantifier"/>
+									</PredicateReplacement>
+								</Fact>
+							</IterateRoles>
+							<Snippet ref="IdentityInequalityOperator">
+								<IterateRoles match="constraintRoles" listStyle="null" pass="first" subscript="true"/>
+								<IterateRoles match="constraintRoles" listStyle="null" pass="notFirst" subscript="true"/>
+							</Snippet>
+						</Snippet>
+						<Snippet ref="ModalPossibilityOperator" alternateSign="negative">
+							<IterateRoles match="included" listStyle="null" conditionalReading="PreferPrimaryLeadReading" pass="first" subscript="true">
+								<Fact readingChoice="ConditionalContext">
+									<PredicateReplacement match="primary" alternateRolePlayer="other">
+										<Snippet ref="DefiniteArticle"/>
+									</PredicateReplacement>
+									<PredicateReplacement match="secondary" alternateRolePlayer="primary">
+										<Snippet ref="DefiniteArticle"/>
+									</PredicateReplacement>
+									<PredicateReplacement>
+										<Snippet ref="ExistentialQuantifier"/>
+									</PredicateReplacement>
+								</Fact>
+							</IterateRoles>
+						</Snippet>
+					</Snippet>
+				</ConstrainedRoles>
+			</Constraint>
+			<Constraint type="AsymmetricRingVerbalizer" childHelperFor="RingConstraint" patternGroup="SetConstraint">
+				<EnableSubscripts minFactArity="2" custom="defaultSubscript"/>
+				<ConstrainedRoles constraintArity="2" factCount="1" sameConstraintRolePlayers="true" sign="positive">
+					<Snippet ref="ConditionalMultiLine">
+						<IterateRoles match="included" listStyle="null" conditionalReading="PreferPrimaryLeadReading" pass="first">
+							<Fact readingChoice="ConditionalContext">
+								<PredicateReplacement match="included">
+									<Snippet ref="SelfReference"/>
 								</PredicateReplacement>
-								<PredicateReplacement match="secondary">
-									<Snippet ref="IdentityReferenceQuantifier"/>
+								<PredicateReplacement>
+									<Snippet ref="ExistentialQuantifier"/>
 								</PredicateReplacement>
 							</Fact>
 						</IterateRoles>
+						<Snippet ref="ModalPossibilityOperator" alternateSign="negative">
+							<IterateRoles match="included" listStyle="null" conditionalReading="PreferPrimaryLeadReading" pass="first">
+								<Fact readingChoice="ConditionalContext">
+									<PredicateReplacement match="primary" alternateRolePlayer="other">
+										<Snippet ref="SelfReference"/>
+									</PredicateReplacement>
+									<PredicateReplacement match="secondary" alternateRolePlayer="primary">
+										<Snippet ref="SelfReference"/>
+									</PredicateReplacement>
+									<PredicateReplacement>
+										<Snippet ref="ExistentialQuantifier"/>
+									</PredicateReplacement>
+								</Fact>
+							</IterateRoles>
+						</Snippet>
+					</Snippet>
+				</ConstrainedRoles>
+				<ConstrainedRoles constraintArity="2" factCount="1" sign="positive">
+					<Snippet ref="ConditionalMultiLine">
+						<IterateRoles match="included" listStyle="null" conditionalReading="PreferPrimaryLeadReading" pass="first">
+							<Fact readingChoice="ConditionalContext">
+								<PredicateReplacement>
+									<Snippet ref="ExistentialQuantifier"/>
+								</PredicateReplacement>
+							</Fact>
+						</IterateRoles>
+						<Snippet ref="ModalPossibilityOperator" alternateSign="negative">
+							<IterateRoles match="included" listStyle="null" conditionalReading="PreferPrimaryLeadReading" pass="first">
+								<Fact readingChoice="ConditionalContext">
+									<PredicateReplacement match="primary" alternateRolePlayer="other">
+										<Snippet ref="DefiniteArticle"/>
+									</PredicateReplacement>
+									<PredicateReplacement match="secondary" alternateRolePlayer="primary">
+										<Snippet ref="DefiniteArticle"/>
+									</PredicateReplacement>
+									<PredicateReplacement>
+										<Snippet ref="ExistentialQuantifier"/>
+									</PredicateReplacement>
+								</Fact>
+							</IterateRoles>
+						</Snippet>
+					</Snippet>
+				</ConstrainedRoles>
+			</Constraint>
+			<Constraint type="IrreflexiveRingVerbalizer" childHelperFor="RingConstraint" patternGroup="SetConstraint">
+				<EnableSubscripts minFactArity="2" custom="defaultPlain"/>
+				<ConstrainedRoles constraintArity="2" factCount="1" sign="positive">
+					<ConditionalReading>
+						<ReadingChoice match="RequireLeadReadingNoFrontText">
+							<Snippet ref="ImpliedModalNecessityOperator">
+								<IterateRoles match="included" listStyle="null" conditionalReading="RequirePrimaryLeadReadingNoFrontText" pass="first">
+									<Fact readingChoice="ConditionalContext">
+										<PredicateReplacement match="primary">
+											<Snippet ref="ExistentialQuantifier" alternateSign="negative"/>
+										</PredicateReplacement>
+										<PredicateReplacement match="secondary" alternateRolePlayer="primary">
+											<Snippet ref="IdentityReferenceQuantifier"/>
+										</PredicateReplacement>
+										<PredicateReplacement subscript="true">
+											<Snippet ref="ExistentialQuantifier"/>
+										</PredicateReplacement>
+									</Fact>
+								</IterateRoles>
+							</Snippet>
+						</ReadingChoice>
+					</ConditionalReading>
+				</ConstrainedRoles>
+				<ConstrainedRoles constraintArity="2" factCount="1">
+					<!-- sign="negative" is implied -->
+					<ConditionalReading>
+						<ReadingChoice match="RequireLeadReadingNoFrontText">
+							<Snippet ref="ImpliedModalNecessityOperator">
+								<IterateRoles match="included" listStyle="null" conditionalReading="RequirePrimaryLeadReadingNoFrontText" pass="first">
+									<Fact readingChoice="ConditionalContext">
+										<PredicateReplacement match="primary">
+											<Snippet ref="ExistentialQuantifier" alternateSign="positive"/>
+										</PredicateReplacement>
+										<PredicateReplacement match="secondary" alternateRolePlayer="primary">
+											<Snippet ref="IdentityReferenceQuantifier"/>
+										</PredicateReplacement>
+										<PredicateReplacement subscript="true">
+											<Snippet ref="ExistentialQuantifier" alternateSign="positive"/>
+										</PredicateReplacement>
+									</Fact>
+								</IterateRoles>
+							</Snippet>
+						</ReadingChoice>
+						<ReadingChoice>
+							<Snippet ref="ImpliedModalNecessityOperator">
+								<!-- UNDONE: This is correct for binaries, but not quite right for n-aries, which need to pick
+								a reading where the first role encountered in the constrained roles (not necessarily the lead role)
+								matches the current primary reading. This currently gives '...same A r some A...' instead of
+								'...some A r the -->
+								<IterateRoles match="included" listStyle="null" conditionalReading="PreferPrimaryLeadReading" pass="first">
+									<Fact readingChoice="ConditionalContext">
+										<PredicateReplacement match="primary">
+											<Snippet ref="ExistentialQuantifier" alternateSign="positive"/>
+										</PredicateReplacement>
+										<PredicateReplacement match="secondary" alternateRolePlayer="primary">
+											<Snippet ref="IdentityReferenceQuantifier"/>
+										</PredicateReplacement>
+										<PredicateReplacement subscript="true">
+											<Snippet ref="ExistentialQuantifier" alternateSign="positive"/>
+										</PredicateReplacement>
+									</Fact>
+								</IterateRoles>
+							</Snippet>
+						</ReadingChoice>
+					</ConditionalReading>
+				</ConstrainedRoles>
+			</Constraint>
+			<Constraint type="IntransitiveRingVerbalizer" childHelperFor="RingConstraint" patternGroup="SetConstraint">
+				<EnableSubscripts minFactArity="2" custom="defaultPlain"/>
+				<ConstrainedRoles constraintArity="2" factCount="1" sameConstraintRolePlayers="true" sign="positive">
+					<Snippet ref="ConditionalMultiLine">
+						<Snippet ref="LogicalAndOperator">
+							<IterateRoles match="included" listStyle="null" conditionalReading="PreferPrimaryLeadReading" pass="first" subscript="true">
+								<Fact readingChoice="ConditionalContext">
+									<PredicateReplacement match="included">
+										<Snippet ref="SelfReference"/>
+									</PredicateReplacement>
+									<PredicateReplacement>
+										<Snippet ref="ExistentialQuantifier"/>
+									</PredicateReplacement>
+								</Fact>
+							</IterateRoles>
+							<IterateRoles match="included" listStyle="null" conditionalReading="PreferPrimaryLeadReading" pass="first" subscript="true">
+								<Fact readingChoice="ConditionalContext">
+									<PredicateReplacement match="primary" alternateRolePlayer="other">
+										<Snippet ref="SelfReference"/>
+									</PredicateReplacement>
+									<PredicateReplacement match="secondary" alternateRolePlayer="primary" overflowSubscript="1">
+										<Snippet ref="SelfReference"/>
+									</PredicateReplacement>
+									<PredicateReplacement>
+										<Snippet ref="ExistentialQuantifier"/>
+									</PredicateReplacement>
+								</Fact>
+							</IterateRoles>
+						</Snippet>
+						<Snippet ref="ModalPossibilityOperator" alternateSign="negative">
+							<IterateRoles match="included" listStyle="null" conditionalReading="PreferPrimaryLeadReading" pass="first" subscript="true">
+								<Fact readingChoice="ConditionalContext">
+									<PredicateReplacement match="primary">
+										<Snippet ref="SelfReference"/>
+									</PredicateReplacement>
+									<PredicateReplacement match="secondary" overflowSubscript="1">
+										<Snippet ref="SelfReference"/>
+									</PredicateReplacement>
+									<PredicateReplacement>
+										<Snippet ref="ExistentialQuantifier"/>
+									</PredicateReplacement>
+								</Fact>
+							</IterateRoles>
+						</Snippet>
+					</Snippet>
+				</ConstrainedRoles>
+				<ConstrainedRoles constraintArity="2" factCount="1" factArity="2" sign="positive">
+					<!-- Section 8.4.2, binary with different role players -->
+					<Snippet ref="ConditionalMultiLine">
+						<Snippet ref="LogicalAndOperator">
+							<IterateRoles match="included" listStyle="null" conditionalReading="RequirePrimaryLeadReading" pass="first">
+								<Fact readingChoice="ConditionalContext">
+									<PredicateReplacement match="primary">
+										<Snippet ref="ExistentialQuantifier"/>
+									</PredicateReplacement>
+									<PredicateReplacement match="secondary" overflowSubscript="0">
+										<Snippet ref="SelfReference"/>
+									</PredicateReplacement>
+								</Fact>
+							</IterateRoles>
+							<IterateRoles match="included" listStyle="null" conditionalReading="RequirePrimaryLeadReading" pass="first">
+								<Fact readingChoice="ConditionalContext">
+									<PredicateReplacement match="primary" alternateRolePlayer="other" overflowSubscript="0">
+										<Snippet ref="SelfReference"/>
+									</PredicateReplacement>
+									<PredicateReplacement match="secondary" overflowSubscript="1">
+										<Snippet ref="SelfReference"/>
+									</PredicateReplacement>
+								</Fact>
+							</IterateRoles>
+						</Snippet>
+						<Snippet ref="ModalPossibilityOperator" alternateSign="negative">
+							<IterateRoles match="included" listStyle="null" conditionalReading="RequirePrimaryLeadReading" pass="first">
+								<Fact readingChoice="ConditionalContext">
+									<PredicateReplacement match="primary">
+										<Snippet ref="DefiniteArticle"/>
+									</PredicateReplacement>
+									<PredicateReplacement match="secondary" overflowSubscript="1">
+										<Snippet ref="SelfReference"/>
+									</PredicateReplacement>
+								</Fact>
+							</IterateRoles>
+						</Snippet>
+					</Snippet>
+				</ConstrainedRoles>
+				<ConstrainedRoles constraintArity="2" factCount="1" sign="positive">
+					<Snippet ref="ConditionalMultiLine">
+						<Snippet ref="LogicalAndOperator">
+							<IterateRoles match="included" listStyle="null" conditionalReading="PreferPrimaryLeadReading" pass="first" subscript="true">
+								<Fact readingChoice="ConditionalContext">
+									<PredicateReplacement>
+										<Snippet ref="ExistentialQuantifier"/>
+									</PredicateReplacement>
+								</Fact>
+							</IterateRoles>
+							<IterateRoles match="included" listStyle="null" conditionalReading="PreferPrimaryLeadReading" pass="first" subscript="true">
+								<Fact readingChoice="ConditionalContext">
+									<PredicateReplacement match="primary" alternateRolePlayer="other">
+										<Snippet ref="DefiniteArticle"/>
+									</PredicateReplacement>
+									<PredicateReplacement match="secondary" alternateRolePlayer="primary" overflowSubscript="1">
+										<Snippet ref="ExistentialQuantifier"/>
+									</PredicateReplacement>
+									<PredicateReplacement>
+										<Snippet ref="ExistentialQuantifier"/>
+									</PredicateReplacement>
+								</Fact>
+							</IterateRoles>
+						</Snippet>
+						<Snippet ref="ModalPossibilityOperator" alternateSign="negative">
+							<IterateRoles match="included" listStyle="null" conditionalReading="PreferPrimaryLeadReading" pass="first" subscript="true">
+								<Fact readingChoice="ConditionalContext">
+									<PredicateReplacement match="primary">
+										<Snippet ref="DefiniteArticle"/>
+									</PredicateReplacement>
+									<PredicateReplacement match="secondary" alternateRolePlayer="primary" overflowSubscript="1">
+										<Snippet ref="DefiniteArticle"/>
+									</PredicateReplacement>
+									<PredicateReplacement>
+										<Snippet ref="ExistentialQuantifier"/>
+									</PredicateReplacement>
+								</Fact>
+							</IterateRoles>
+						</Snippet>
+					</Snippet>
+				</ConstrainedRoles>
+			</Constraint>
+			<Constraint type="SymmetricRingVerbalizer" childHelperFor="RingConstraint" patternGroup="SetConstraint">
+				<EnableSubscripts minFactArity="2" custom="defaultSubscript"/>
+				<ConstrainedRoles constraintArity="2" factCount="1" sameConstraintRolePlayers="true" sign="positive">
+					<Snippet ref="ImpliedModalNecessityOperator">
+						<Snippet ref="ConditionalMultiLine">
+							<IterateRoles match="included" listStyle="null" conditionalReading="PreferPrimaryLeadReading" pass="first">
+								<Fact readingChoice="ConditionalContext">
+									<PredicateReplacement match="included">
+										<Snippet ref="SelfReference"/>
+									</PredicateReplacement>
+									<PredicateReplacement>
+										<Snippet ref="ExistentialQuantifier"/>
+									</PredicateReplacement>
+								</Fact>
+							</IterateRoles>
+							<IterateRoles match="included" listStyle="null" conditionalReading="PreferPrimaryLeadReading" pass="first">
+								<Fact readingChoice="ConditionalContext">
+									<PredicateReplacement match="primary" alternateRolePlayer="other">
+										<Snippet ref="SelfReference"/>
+									</PredicateReplacement>
+									<PredicateReplacement match="secondary" alternateRolePlayer="primary">
+										<Snippet ref="SelfReference"/>
+									</PredicateReplacement>
+									<PredicateReplacement>
+										<Snippet ref="ExistentialQuantifier"/>
+									</PredicateReplacement>
+								</Fact>
+							</IterateRoles>
+						</Snippet>
+					</Snippet>
+				</ConstrainedRoles>
+				<ConstrainedRoles constraintArity="2" factCount="1" sign="positive">
+					<Snippet ref="ImpliedModalNecessityOperator">
+						<Snippet ref="ConditionalMultiLine">
+							<IterateRoles match="included" listStyle="null" conditionalReading="PreferPrimaryLeadReading" pass="first">
+								<Fact readingChoice="ConditionalContext">
+									<PredicateReplacement>
+										<Snippet ref="ExistentialQuantifier"/>
+									</PredicateReplacement>
+								</Fact>
+							</IterateRoles>
+							<IterateRoles match="included" listStyle="null" conditionalReading="PreferPrimaryLeadReading" pass="first">
+								<Fact readingChoice="ConditionalContext">
+									<PredicateReplacement match="primary" alternateRolePlayer="other">
+										<Snippet ref="DefiniteArticle"/>
+									</PredicateReplacement>
+									<PredicateReplacement match="secondary" alternateRolePlayer="primary">
+										<Snippet ref="DefiniteArticle"/>
+									</PredicateReplacement>
+									<PredicateReplacement>
+										<Snippet ref="ExistentialQuantifier"/>
+									</PredicateReplacement>
+								</Fact>
+							</IterateRoles>
+						</Snippet>
 					</Snippet>
 				</ConstrainedRoles>
 			</Constraint>

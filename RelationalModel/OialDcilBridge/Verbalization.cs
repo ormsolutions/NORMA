@@ -32,7 +32,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// Implements <see cref="IVerbalize.GetVerbalization"/>
 		/// </summary>
-		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 		{
 			// We are redirected to this point by the associated Table element
 			ConceptType conceptType = this.ConceptType;
@@ -51,9 +51,9 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			}
 			return false;
 		}
-		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 		{
-			return GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+			return GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 		}
 		#endregion // IVerbalize Implementation
 	}
@@ -63,7 +63,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// Implements <see cref="IVerbalize.GetVerbalization"/>
 		/// </summary>
-		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 		{
 			// We are redirected to this point by the associated Column element
 			Column column = this.Column;
@@ -85,9 +85,9 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			}
 			return false;
 		}
-		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 		{
-			return GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+			return GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 		}
 		#endregion // IVerbalize Implementation
 	}
@@ -97,7 +97,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// Implements <see cref="IVerbalize.GetVerbalization"/>
 		/// </summary>
-		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 		{
 			ORMCore.UniquenessConstraint constraint = UniquenessIsForUniquenessConstraint.GetUniquenessConstraint(this.Uniqueness);
 			if (constraint != null)
@@ -106,9 +106,9 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			}
 			return false;
 		}
-		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, bool isNegative)
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 		{
-			return GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative);
+			return GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 		}
 		#endregion // IVerbalize Implementation
 	}

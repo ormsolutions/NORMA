@@ -229,7 +229,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 				myInner = inner;
 			}
 			#region IGeometryHost Implementation
-			void IGeometryHost.ExcludeGeometryFromClipRegion(System.Drawing.Graphics graphics, System.Drawing.Drawing2D.Matrix matrix, System.Drawing.Drawing2D.GraphicsPath perimeter)
+			void IGeometryHost.ExcludeGeometryFromClipRegion(Graphics graphics, Matrix matrix, GraphicsPath perimeter)
 			{
 				myInner.ExcludeGeometryFromClipRegion(graphics, matrix, perimeter);
 			}
@@ -290,11 +290,11 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 			{
 				return myInner.TranslateGeometryToRelativeBounds(absoluteBounds);
 			}
-			System.Drawing.Color IGeometryHost.UpdateGeometryLuminosity(DiagramClientView view, System.Drawing.Brush brush)
+			Color IGeometryHost.UpdateGeometryLuminosity(DiagramClientView view, Brush brush)
 			{
 				return myInner.UpdateGeometryLuminosity(view, brush);
 			}
-			System.Drawing.Color IGeometryHost.UpdateGeometryLuminosity(DiagramClientView view, System.Drawing.Pen pen)
+			Color IGeometryHost.UpdateGeometryLuminosity(DiagramClientView view, Pen pen)
 			{
 				return myInner.UpdateGeometryLuminosity(view, pen);
 			}
@@ -360,19 +360,19 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 		}
 
 		/// <summary>
-		/// Gets the <see cref="System.Drawing.PointF"/>s of a triangle that fills the circle that files <paramref name="boundingBox"/>.
+		/// Gets the <see cref="PointF"/>s of a triangle that fills the circle that files <paramref name="boundingBox"/>.
 		/// </summary>
-		/// <param name="boundingBox">The <see cref="System.Drawing.RectangleF"/> that the triangle should fill the circle that fills.</param>
-		/// <returns>An array of <see cref="System.Drawing.PointF"/>s that represent a triangle that fills the circle that fills <paramref name="boundingBox"/>.</returns>
+		/// <param name="boundingBox">The <see cref="RectangleF"/> that the triangle should fill the circle that fills.</param>
+		/// <returns>An array of <see cref="PointF"/>s that represent a triangle that fills the circle that fills <paramref name="boundingBox"/>.</returns>
 		/// <remarks>
-		/// Four <see cref="System.Drawing.PointF"/>s are returned in the array.
-		/// The first <see cref="System.Drawing.PointF"/> (index 0) is the top center corner of the triangle.
-		/// The second <see cref="System.Drawing.PointF"/> (index 1) is the bottom left corner of the triangle.
-		/// The third <see cref="System.Drawing.PointF"/> (index 2) is the bottom right corner of the triangle.
-		/// The fourth <see cref="System.Drawing.PointF"/> (index 3) is the top center corner of the triangle.
-		/// The first and fourth <see cref="System.Drawing.PointF"/>s are equivalent.
+		/// Four <see cref="PointF"/>s are returned in the array.
+		/// The first <see cref="PointF"/> (index 0) is the top center corner of the triangle.
+		/// The second <see cref="PointF"/> (index 1) is the bottom left corner of the triangle.
+		/// The third <see cref="PointF"/> (index 2) is the bottom right corner of the triangle.
+		/// The fourth <see cref="PointF"/> (index 3) is the top center corner of the triangle.
+		/// The first and fourth <see cref="PointF"/>s are equivalent.
 		/// </remarks>
-		public static System.Drawing.PointF[] GetTrianglePoints(System.Drawing.RectangleF boundingBox)
+		public static PointF[] GetTrianglePointsF(RectangleF boundingBox)
 		{
 			float radius = boundingBox.Width / 2f;
 			float bottomOffsetX = (float)(Math.Sqrt(3) * radius / 2);
@@ -380,10 +380,32 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 			float centerX = boundingBox.X + radius;
 			float centerY = boundingBox.Y + radius;
 
-			System.Drawing.PointF topPoint = new System.Drawing.PointF(centerX, boundingBox.Y);
-			System.Drawing.PointF leftPoint = new System.Drawing.PointF(centerX - bottomOffsetX, centerY + bottomOffsetY);
-			System.Drawing.PointF rightPoint = new System.Drawing.PointF(centerX + bottomOffsetX, centerY + bottomOffsetY);
-			return new System.Drawing.PointF[] { topPoint, leftPoint, rightPoint, topPoint };
+			PointF topPoint = new PointF(centerX, boundingBox.Y);
+			return new PointF[] { topPoint, new PointF(centerX - bottomOffsetX, centerY + bottomOffsetY), new PointF(centerX + bottomOffsetX, centerY + bottomOffsetY), topPoint };
+		}
+		/// <summary>
+		/// Gets the <see cref="PointD"/>s of a triangle that fills the circle that files <paramref name="boundingBox"/>.
+		/// </summary>
+		/// <param name="boundingBox">The <see cref="RectangleD"/> that the triangle should fill the circle that fills.</param>
+		/// <returns>An array of <see cref="PointD"/>s that represent a triangle that fills the circle that fills <paramref name="boundingBox"/>.</returns>
+		/// <remarks>
+		/// Four <see cref="PointD"/>s are returned in the array.
+		/// The first <see cref="PointD"/> (index 0) is the top center corner of the triangle.
+		/// The second <see cref="PointD"/> (index 1) is the bottom left corner of the triangle.
+		/// The third <see cref="PointD"/> (index 2) is the bottom right corner of the triangle.
+		/// The fourth <see cref="PointD"/> (index 3) is the top center corner of the triangle.
+		/// The first and fourth <see cref="PointD"/>s are equivalent.
+		/// </remarks>
+		public static PointD[] GetTrianglePointsD(RectangleD boundingBox)
+		{
+			double radius = boundingBox.Width / 2d;
+			double bottomOffsetX = (float)(Math.Sqrt(3) * radius / 2);
+			double bottomOffsetY = radius / 2d;
+			double centerX = boundingBox.X + radius;
+			double centerY = boundingBox.Y + radius;
+
+			PointD topPoint = new PointD(centerX, boundingBox.Y);
+			return new PointD[] { topPoint, new PointD(centerX - bottomOffsetX, centerY + bottomOffsetY), new PointD(centerX + bottomOffsetX, centerY + bottomOffsetY), topPoint };
 		}
 		/// <summary>
 		/// Paint the background and outline of a <see cref="IGeometryHost"/> using
@@ -1738,19 +1760,81 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 		/// <returns>A point on the triangular border</returns>
 		public override PointD DoFoldToShape(IGeometryHost geometryHost, PointD potentialPoint, PointD vectorEndPoint)
 		{
-			// UNDONE: Triangles aren't ellipses, so this isn't going to work right.
-			// UNDONE: DoHitTest needs to be overridden as well.
-			return potentialPoint;
+			// Get an endpoint we can work with
+			NodeShape oppositeShape;
+			vectorEndPoint = GeometryUtility.AdjustVectorEndPoint(geometryHost, vectorEndPoint, out oppositeShape);
+			PointD? customPoint = GeometryUtility.DoCustomFoldShape(geometryHost, vectorEndPoint, oppositeShape);
+			if (customPoint.HasValue)
+			{
+				return customPoint.Value;
+			}
+			vectorEndPoint = GeometryUtility.ResolveProxyConnectorVectorEndPoint(vectorEndPoint, oppositeShape);
+			RectangleD bounds = geometryHost.TranslateGeometryToAbsoluteBounds(geometryHost.GeometryBoundingBox);
+			PointD center = bounds.Center;
+			PointD[] trianglePoints = GeometryUtility.GetTrianglePointsD(bounds);
+			double offsetByX = -center.X;
+			double offsetByY = -center.Y;
+			for (int i = 0; i < trianglePoints.Length; ++i)
+			{
+				trianglePoints[i].Offset(offsetByX, offsetByY);
+			}
+			vectorEndPoint.Offset(offsetByX, offsetByY);
+			bool negativeX = vectorEndPoint.X < 0;
+			bool negativeY = vectorEndPoint.Y < 0;
+			double halfWidth = bounds.Width / 2;
+			double halfHeight = bounds.Height / 2;
+
+			if (VGConstants.FuzzZero(vectorEndPoint.X, VGConstants.FuzzDistance))
+			{
+				// Vertical line, skip slope calculations
+				return new PointD(halfWidth, trianglePoints[negativeY ? 0 : 1].Y + halfHeight);
+			}
+			else if (VGConstants.FuzzZero(vectorEndPoint.Y, VGConstants.FuzzDistance))
+			{
+				// Horizontal line, skip slope calculations
+				// Solve two-point form of line between triangle points for x with y = 0.
+				PointD topPoint = trianglePoints[0];
+				PointD bottomPoint = trianglePoints[negativeX ? 1 : 2];
+				return new PointD(topPoint.X - topPoint.Y * (bottomPoint.X - topPoint.X)/(bottomPoint.Y - topPoint.Y) + halfWidth, halfHeight);
+			}
+			else
+			{
+				double slope = vectorEndPoint.Y / vectorEndPoint.X;
+				double x;
+				double y;
+				if (negativeY || (Math.Abs(slope) < (halfHeight / halfWidth))) // Reasonable, but allows y to spill below the bottom
+				{
+					// Try to attach to the left/right lines
+					PointD topPoint = trianglePoints[0];
+					PointD bottomPoint = trianglePoints[negativeX ? 1 : 2];
+					double inverseTriangleSlope = (bottomPoint.X - topPoint.X) / (bottomPoint.Y - topPoint.Y);
+					x = (topPoint.X - topPoint.Y * inverseTriangleSlope) / (1 - slope * inverseTriangleSlope);
+					y = slope * x;
+					if (y > bottomPoint.Y)
+					{
+						// Adjust for a y below the bottom point.
+						y = bottomPoint.Y;
+						x = y / slope;
+					}
+				}
+				else
+				{
+					// Attach to the bottom edge
+					y = trianglePoints[1].Y;
+					x = y / slope;
+				}
+				return new PointD(x + halfWidth, y + halfHeight);
+			}
 		}
 
 		/// <summary>
 		/// See <see cref="M:ShapeGeometry.GetPath"/>.
 		/// </summary>
-		protected override System.Drawing.Drawing2D.GraphicsPath GetPath(RectangleD boundingBox)
+		protected override GraphicsPath GetPath(RectangleD boundingBox)
 		{
-			System.Drawing.Drawing2D.GraphicsPath graphicsPath = base.UninitializedPath;
+			GraphicsPath graphicsPath = base.UninitializedPath;
 			graphicsPath.Reset();
-			graphicsPath.AddPolygon(GeometryUtility.GetTrianglePoints(RectangleD.ToRectangleF(boundingBox)));
+			graphicsPath.AddPolygon(GeometryUtility.GetTrianglePointsF(RectangleD.ToRectangleF(boundingBox)));
 			return graphicsPath;
 		}
 	}

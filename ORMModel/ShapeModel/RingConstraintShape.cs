@@ -277,7 +277,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		}
 		private void DrawTriangle(Graphics g, RectangleF bounds)
 		{
-			g.DrawLines(this.PaintPen, GeometryUtility.GetTrianglePoints(bounds));
+			g.DrawLines(this.PaintPen, GeometryUtility.GetTrianglePointsF(bounds));
 		}
 		private void DrawEllipse(Graphics g, RectangleF bounds)
 		{
@@ -299,7 +299,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			DashStyle originalDashStyle = pen.DashStyle;
 			pen.DashStyle = DashStyle.Solid;
 			float midpointX = GetMidpoint(bounds).X;
-			float bottomY = GeometryUtility.GetTrianglePoints(bounds)[1].Y;
+			float bottomY = GeometryUtility.GetTrianglePointsF(bounds)[1].Y;
 			float halfLength = (bounds.Height * SMALL_LENGTH_FACTOR) / 2;
 			g.DrawLine(pen, new PointF(midpointX, bottomY - halfLength), new PointF(midpointX, bottomY + (halfLength * 1.15f)));
 			pen.DashStyle = originalDashStyle;
@@ -337,7 +337,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			Brush brush = this.PaintBrush;
 			float length = bounds.Height * SMALL_LENGTH_FACTOR;
 			float halfLength = length / 2;
-			PointF[] trianglePoints = GeometryUtility.GetTrianglePoints(bounds);
+			PointF[] trianglePoints = GeometryUtility.GetTrianglePointsF(bounds);
 			for (int i = 0; i < 3; ++i)
 			{
 				PointF point = trianglePoints[i];

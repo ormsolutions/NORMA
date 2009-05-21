@@ -22,10 +22,11 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
+using System.Text;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using ORMSolutions.ORMArchitect.Framework;
-using System.Text;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
@@ -6603,6 +6604,123 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // RingConstraintTypeChangeRule
+		#region Verbalization
+		/// <summary>
+		/// Helper function for defering ring verbalization to its constituent parts
+		/// </summary>
+		private void VerbalizeByRingType(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
+		{
+			RingVerbalizerBase verbalizeFirst = null;
+			RingVerbalizerBase verbalizeSecond = null;
+			switch (RingType)
+			{
+				case RingConstraintType.Acyclic:
+					verbalizeFirst = AcyclicRingVerbalizer.GetVerbalizer();
+					break;
+				case RingConstraintType.AcyclicIntransitive:
+					verbalizeFirst = AcyclicRingVerbalizer.GetVerbalizer();
+					verbalizeSecond = IntransitiveRingVerbalizer.GetVerbalizer();
+					break;
+				case RingConstraintType.Antisymmetric:
+					verbalizeFirst = AntisymmetricRingVerbalizer.GetVerbalizer();
+					break;
+				case RingConstraintType.Asymmetric:
+					verbalizeFirst = AsymmetricRingVerbalizer.GetVerbalizer();
+					break;
+				case RingConstraintType.AsymmetricIntransitive:
+					verbalizeFirst = AsymmetricRingVerbalizer.GetVerbalizer();
+					verbalizeSecond = IntransitiveRingVerbalizer.GetVerbalizer();
+					break;
+				case RingConstraintType.Intransitive:
+					verbalizeFirst = IntransitiveRingVerbalizer.GetVerbalizer();
+					break;
+				case RingConstraintType.Irreflexive:
+					verbalizeFirst = IrreflexiveRingVerbalizer.GetVerbalizer();
+					break;
+				case RingConstraintType.Symmetric:
+					verbalizeFirst = IntransitiveRingVerbalizer.GetVerbalizer();
+					break;
+				case RingConstraintType.SymmetricIntransitive:
+					verbalizeFirst = SymmetricRingVerbalizer.GetVerbalizer();
+					verbalizeSecond = IntransitiveRingVerbalizer.GetVerbalizer();
+					break;
+				case RingConstraintType.SymmetricIrreflexive:
+					verbalizeFirst = SymmetricRingVerbalizer.GetVerbalizer();
+					verbalizeSecond = IrreflexiveRingVerbalizer.GetVerbalizer();
+					break;
+			}
+			if (verbalizeFirst != null)
+			{
+				using ((IDisposable)verbalizeFirst)
+				{
+					verbalizeFirst.Initialize(this);
+					verbalizationContext.DeferVerbalization(verbalizeFirst, DeferVerbalizationOptions.None, null);
+				}
+			}
+			if (verbalizeSecond != null)
+			{
+				using ((IDisposable)verbalizeSecond)
+				{
+					verbalizeSecond.Initialize(this);
+					verbalizationContext.DeferVerbalization(verbalizeSecond, DeferVerbalizationOptions.AlwaysWriteLine, null);
+				}
+			}
+		}
+		#region RingVerbalizerBase class and partials for each standalone ring type
+		/// <summary>
+		/// Base class for child helper ring verbalizations.
+		/// Provides properties expected by the generated verbalization code.
+		/// </summary>
+		private abstract class RingVerbalizerBase
+		{
+			#region Member Variables
+			private RingConstraint myConstraint;
+			#endregion // Member Variables
+			#region Cache Methods
+			/// <summary>
+			/// Attach this instance to a context <see cref="RingConstraint"/>
+			/// </summary>
+			public void Initialize(RingConstraint constraint)
+			{
+				myConstraint = constraint;
+			}
+			protected void DisposeHelper()
+			{
+				myConstraint = null;
+			}
+			#endregion // Cache Methods
+			#region Passthrough properties
+			protected ConstraintModality Modality
+			{
+				get
+				{
+					return myConstraint.Modality;
+				}
+			}
+			protected LinkedElementCollection<Role> RoleCollection
+			{
+				get
+				{
+					return myConstraint.RoleCollection;
+				}
+			}
+			protected LinkedElementCollection<FactType> FactTypeCollection
+			{
+				get
+				{
+					return myConstraint.FactTypeCollection;
+				}
+			}
+			#endregion // Passthrough properties
+		}
+		private partial class AcyclicRingVerbalizer : RingVerbalizerBase { }
+		private partial class AntisymmetricRingVerbalizer : RingVerbalizerBase { }
+		private partial class AsymmetricRingVerbalizer : RingVerbalizerBase { }
+		private partial class IntransitiveRingVerbalizer : RingVerbalizerBase { }
+		private partial class IrreflexiveRingVerbalizer : RingVerbalizerBase { }
+		private partial class SymmetricRingVerbalizer : RingVerbalizerBase { }
+		#endregion // RingVerbalizerBase class and partials for each standalone ring type
+		#endregion // Verbalization
 	}
 	#endregion //Ring Constraint class
 	#region PreferredIdentifierFor implementation

@@ -392,7 +392,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								snippetsDictionary,
 								ORMCoreDomainModel.VerbalizationTargetName,
 								verbalized,
-								showNegative,
+								(showNegative ? VerbalizationSign.Negative : VerbalizationSign.Positive) | VerbalizationSign.AttemptOppositeSign,
 								callbackWriter,
 								true,
 								ref firstCallPending);

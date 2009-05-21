@@ -667,7 +667,7 @@
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
-					<ButtonText>Show positive verbalizations</ButtonText>
+					<ButtonText>Prefer positive verbalizations</ButtonText>
 				</Strings>
 			</Button>
 			<Button guid="guidORMDesignerCommandSet" id="cmdIdShowNegativeVerbalization" priority="0x040" type="Button">
@@ -676,7 +676,7 @@
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
-					<ButtonText>Show negative verbalizations, if available</ButtonText>
+					<ButtonText>Prefer negative verbalizations</ButtonText>
 				</Strings>
 			</Button>
 

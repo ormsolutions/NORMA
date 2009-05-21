@@ -79,6 +79,36 @@
 					<xs:documentation>Helper class for verbalizing implied simple mandatory constraints. The childHelperFor attribute should be set to FactType.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="AcyclicRingVerbalizer">
+				<xs:annotation>
+					<xs:documentation>Individual ring verbalization. The childHelperFor attribute should be set to RingConstraint.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AntisymmetricRingVerbalizer">
+				<xs:annotation>
+					<xs:documentation>Individual ring verbalization. The childHelperFor attribute should be set to RingConstraint.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AsymmetricRingVerbalizer">
+				<xs:annotation>
+					<xs:documentation>Individual ring verbalization. The childHelperFor attribute should be set to RingConstraint.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IntransitiveRingVerbalizer">
+				<xs:annotation>
+					<xs:documentation>Individual ring verbalization. The childHelperFor attribute should be set to RingConstraint.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IrreflexiveRingVerbalizer">
+				<xs:annotation>
+					<xs:documentation>Individual ring verbalization. The childHelperFor attribute should be set to RingConstraint.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SymmetricRingVerbalizer">
+				<xs:annotation>
+					<xs:documentation>Individual ring verbalization. The childHelperFor attribute should be set to RingConstraint.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="ChildHelperForEnum">
@@ -94,6 +124,11 @@
 			<xs:enumeration value="ObjectType">
 				<xs:annotation>
 					<xs:documentation>Use with the ObjectTypeInstanceVerbalizer</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RingConstraint">
+				<xs:annotation>
+					<xs:documentation>Use for individual ringtype verbalizers.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 		</xs:restriction>
@@ -126,6 +161,11 @@
 			<xs:enumeration value="Context">
 				<xs:annotation>
 					<xs:documentation>Use the reading from the current ReadingChoice or ReadingContext elements</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ConditionalContext">
+				<xs:annotation>
+					<xs:documentation>Use the reading specified with the IterateRoles/@conditionalReading attribute.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="PreferLeadReading"/>
@@ -270,7 +310,30 @@
 				</xs:union>
 			</xs:simpleType>
 		</xs:attribute>
-		<xs:attribute name="reverseSign" use="optional"/>
+		<xs:attribute name="alternateSign" use="optional">
+			<xs:annotation>
+				<xs:documentation>Retrieve a snippet with a sign other than the one specified by the caller.</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="opposite">
+						<xs:annotation>
+							<xs:documentation>Use the opposite of the requested sign.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="positive">
+						<xs:annotation>
+							<xs:documentation>Use a positively-signed snippet.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="negative">
+						<xs:annotation>
+							<xs:documentation>Use a negatively-signed snippet.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="SnippetLeafTypeWithConditionalMatch">
 		<xs:complexContent>
@@ -918,6 +981,11 @@
 			</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
+	<xs:complexType name="RoleIndexType">
+		<xs:annotation>
+			<xs:documentation>Returns the index of the current role player in a context reading order. A context reading is required.</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
 	<xs:complexType name="RolePlayerType">
 		<xs:annotation>
 			<xs:documentation>
@@ -942,6 +1010,35 @@
 			</xs:element>
 		</xs:choice>
 		<xs:attribute name="match" use="optional" type="RoleIteratorContextMatchEnum"/>
+		<xs:attribute name="alternateRolePlayer">
+			<xs:annotation>
+				<xs:documentation>Use with a binary constraint to use a role player other than the current role player.</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="other">
+						<xs:annotation>
+							<xs:documentation>Use the role player for the other constraint role.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="primary">
+						<xs:annotation>
+							<xs:documentation>Use the role player for the primary role. This is equivalent to 'other' for the secondary role, but is easier to calculate because it is already tracked.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="subscript" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>Explicitly use (or don't use) subscripts for this predicate replacement. Overrides the context EnableSubscripts/@custom or IterateRoles/@subscript values.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="overflowSubscript" type="xs:nonNegativeInteger">
+			<xs:annotation>
+				<xs:documentation>Add a subscript incremented beyond the normal required count for the factType. The specified value is added to the number of role players with this role player type that exist in the context fact type.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 		<xs:attribute name="pass" use="optional" type="PassEnum"/>
 	</xs:complexType>
 	<xs:complexType name="FactConstructType">
@@ -1036,12 +1133,26 @@
 				<xs:element name="Snippet" type="SnippetType"/>
 				<xs:element name="IterateContextRoles" type="IterateContextRolesType"/>
 				<xs:element name="RolePlayer" type="RolePlayerType"/>
+				<xs:element name="RoleIndex" type="RoleIndexType"/>
 			</xs:choice>
 		</xs:choice>
 		<xs:attribute name="match" type="IterateRolesMatchEnum" default="all"/>
 		<xs:attributeGroup ref="FactArityAttributes"/>
 		<xs:attribute name="pass" use="optional" type="PassEnum"/>
 		<xs:attribute name="hyphenBind" type="xs:boolean" default="false"/>
+		<xs:attribute name="subscript" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>Explicitly use (or don't use) subscripts for predicate replacements in this contect. Overrides the context EnableSubscripts/@custom value.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="conditionalReading">
+			<xs:annotation>
+				<xs:documentation>A filter based on the availability of the required reading for the specified context. Use with pass="first" to use a single reading only. The readingChoice for a nested Fact element should be ConditionalContext.</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:union memberTypes="ReadingChoicePreferSingleMatchEnum ReadingChoiceFullRequiredMatchEnum"/>
+			</xs:simpleType>
+		</xs:attribute>
 		<xs:attribute name="uniqueFactType" type="xs:boolean" default="false">
 			<xs:annotation>
 				<xs:documentation>Set to true if a visited FactTypes should be tracked. If this is set, then a later role with the same FactType will be ignored.</xs:documentation>
@@ -1122,7 +1233,7 @@
 	</xs:complexType>
 	<xs:complexType name="ConditionalReadingType">
 		<xs:sequence>
-			<xs:element name="ReadingChoice" type="ReadingChoiceType" minOccurs="2" maxOccurs="unbounded"/>
+			<xs:element name="ReadingChoice" type="ReadingChoiceType" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="ReadingContextType">
@@ -1171,10 +1282,34 @@
 		<xs:attribute name="minFactCount" type="xs:positiveInteger"/>
 		<xs:attribute name="maxFactCount" type="xs:positiveInteger"/>
 		<xs:attribute name="nonOptimizedFrequencyPattern" type="xs:boolean"/>
+		<xs:attribute name="custom">
+			<xs:annotation>
+				<xs:documentation>Should replacement fields be generated for both subscripted and non-subscripted names?</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="defaultPlain">
+						<xs:annotation>
+							<xs:documentation>By default, use predicate replacements values without subscripts.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="defaultSubscript">
+						<xs:annotation>
+							<xs:documentation>By default, use predicate replacements values with subscripts.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:simpleType name="RingTypeEnum">
 		<xs:restriction base="xs:token">
+			<xs:enumeration value="Acyclic"/>
+			<xs:enumeration value="Antisymmetric"/>
+			<xs:enumeration value="Asymmetric"/>
+			<xs:enumeration value="Intransitive"/>
 			<xs:enumeration value="Irreflexive"/>
+			<xs:enumeration value="Symmetric"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="FrequencyRangePatternEnum">
@@ -1202,7 +1337,7 @@
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:complexType name="ConstraintType">
-		<xs:choice minOccurs="1" maxOccurs="unbounded">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="EnableSubscripts" type="EnableSubscriptsType"/>
 			<xs:element name="ConstrainedRoles">
 				<xs:complexType>
@@ -1223,6 +1358,16 @@
 					<xs:attribute name="sign" type="ve:SignEnum" use="optional"/>
 					<xs:attribute name="ringType" type="RingTypeEnum" use="optional"/>
 					<xs:attribute name="columnArity" type="xs:positiveInteger" use="optional"/>
+					<xs:attribute name="sameConstraintRolePlayers" type="xs:boolean" use="optional">
+						<xs:annotation>
+							<xs:documentation>Used for a constraint with two roles that have the same role players. Use after a constraintArity attribute of 2.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="rolePlayerLimitedToConstraintRoles" type="xs:boolean" use="optional">
+						<xs:annotation>
+							<xs:documentation>Used to verify that the role players for the constraint roles are not used elsewhere in the fact type. Use after sameConstraintRolePlayers.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
 					<xs:attribute name="frequencyRangePattern" type="FrequencyRangePatternEnum" use="optional">
 						<xs:annotation>
 							<xs:documentation>The frequency range pattern to check</xs:documentation>
@@ -1237,6 +1382,11 @@
 		<xs:attribute name="patternGroup" type="ConstraintPatternGroupEnum" use="required"/>
 		<xs:attribute name="compatibleColumns" type="xs:boolean" default="false"/>
 		<xs:attribute name="childHelperFor" type="ChildHelperForEnum" use="optional"/>
+		<xs:attribute name="deferMatchesTo" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>Perform standard error handling, but defer all pattern matches to the specified function. Designed to work with either fully custom verbalization, or with wrapper code around generated helper classes.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="SampleInstanceType">
 		<xs:annotation>
