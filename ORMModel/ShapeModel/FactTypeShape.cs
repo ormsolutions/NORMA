@@ -5061,12 +5061,29 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 
 			// Part 1: Resize the existing fact shapes
+			bool missingNameShapes = false;
 			foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(nestedFactType))
 			{
 				FactTypeShape factShape = pel as FactTypeShape;
 				if (factShape != null)
 				{
 					factShape.AutoResize();
+					if (!missingNameShapes)
+					{
+						bool foundNameShape = false;
+						foreach (PresentationElement testNameShape in factShape.RelativeChildShapes)
+						{
+							if (testNameShape is ObjectifiedFactTypeNameShape)
+							{
+								foundNameShape = true;
+								break;
+							}
+						}
+						if (!foundNameShape)
+						{
+							missingNameShapes = true;
+						}
+					}
 				}
 			}
 
@@ -5145,6 +5162,12 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				}
 			}
 #endif // TRACKNEWSHAPES
+
+			// Make sure we have name shapes for all fact type shapes
+			if (missingNameShapes)
+			{
+				Diagram.FixUpDiagram(nestedFactType, nestingType);
+			}
 		}
 		/// <summary>
 		/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;

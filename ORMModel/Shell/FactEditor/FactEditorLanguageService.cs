@@ -1104,7 +1104,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 										// replace as if the opposite direction were selected. However, with the
 										// added slash, the replacement fields are backwards, so we translate the
 										// requested index against the known order.
-										return FormatReplacementField(reverseReadingOrderRoles[(replaceIndex + 1) % 2], reverseReadingOrderRoles, false);
+										string replacementField = FormatReplacementField(reverseReadingOrderRoles[(replaceIndex + 1) % 2], reverseReadingOrderRoles, false);
+										if (replaceIndex == 0)
+										{
+											newCaretPosition = replacementField.Length + insertAfter - 3;
+										}
+										return replacementField;
 									}
 									return null;
 								});

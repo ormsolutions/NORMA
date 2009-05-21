@@ -40,6 +40,7 @@ using ORMSolutions.ORMArchitect.Core.ObjectModel.Design;
 using ORMSolutions.ORMArchitect.Core.ShapeModel;
 using ORMSolutions.ORMArchitect.Framework.Shell;
 using System.Collections.ObjectModel;
+using ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid;
 
 namespace ORMSolutions.ORMArchitect.Core.Shell
 {
@@ -1887,12 +1888,21 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 
 								if (newPelCount == 0)
 								{
-									if (finalDeleteBehavior == FinalShapeDeleteBehavior.Prompt &&
-										(int)DialogResult.No == VsShellUtilities.ShowMessageBox(view.ServiceProvider,
-											string.Format(CultureInfo.CurrentCulture, ResourceStrings.FinalShapeDeletionMessage, TypeDescriptor.GetClassName(backingMel), TypeDescriptor.GetComponentName(backingMel)),
-											string.Empty, OLEMSGICON.OLEMSGICON_QUERY, OLEMSGBUTTON.OLEMSGBUTTON_YESNO, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_SECOND))
+									if (finalDeleteBehavior == FinalShapeDeleteBehavior.Prompt)
 									{
-										continue;
+										string componentName = TypeDescriptor.GetComponentName(backingMel);
+										ISurveyNode surveyNode;
+										if (string.IsNullOrEmpty(componentName) &&
+											null != (surveyNode = backingMel as ISurveyNode))
+										{
+											componentName = surveyNode.SurveyName;
+										}
+										if ((int)DialogResult.No == VsShellUtilities.ShowMessageBox(view.ServiceProvider,
+											string.Format(CultureInfo.CurrentCulture, ResourceStrings.FinalShapeDeletionMessage, TypeDescriptor.GetClassName(backingMel), componentName),
+											string.Empty, OLEMSGICON.OLEMSGICON_QUERY, OLEMSGBUTTON.OLEMSGBUTTON_YESNO, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_SECOND))
+										{
+											continue;
+										}
 									}
 									backingMel.Delete();
 									if (backingObjectifiedType != null && !backingObjectifiedType.IsDeleted && PresentationViewsSubject.GetPresentation(backingObjectifiedType).Count <= 1)

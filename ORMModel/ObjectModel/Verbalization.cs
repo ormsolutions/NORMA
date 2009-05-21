@@ -1154,7 +1154,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				//            string mainPatternCommented = @"(?xn)
 				//\G
 				//# Test if there is a hyphen binding match before the next format replacement field
-				//(?(.*?\S-\s.*?(?<!\{)\{\d+\}(?!\}))
+				//(?((.(?!\s+-\S))*?\S-\s.*?(?<!\{)\{\d+\}(?!\}))
 				//	# If there is a hyphen bind before the next replacement field then use it
 				//	((?<BeforeLeftHyphenWord>.*?\s??)(?<LeftHyphenWord>\S+?)(?<!(?<!\{)\{\d+\}(?!\}))-(?<AfterLeftHyphen>\s.*?))
 				//	|
@@ -1185,7 +1185,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					System.Threading.Interlocked.CompareExchange<Regex>(
 						ref myMainRegex,
 						new Regex(
-							@"(?n)\G(?(.*?\S-\s.*?(?<!\{)\{\d+\}(?!\}))((?<BeforeLeftHyphenWord>.*?\s??)(?<LeftHyphenWord>\S+?)(?<!(?<!\{)\{\d+\}(?!\}))-(?<AfterLeftHyphen>\s.*?))|((?<BeforeLeftHyphenWord>.*?)))((?<!\{)\{)(?<ReplaceIndex>\d+)(\}(?!\}))((?=(?(.+(?<!\{)\{\d+\}(?!\}))(((?!(?<!\{)\{\d+\}(?!\})).)*?\s-\S.*?(?<!\{)\{\d+\}(?!\}))|([^\-]*?\s-\S.*?)))(?<BeforeRightHyphen>.*?\s+?)-(?<RightHyphenWord>\S+))?",
+							@"(?n)\G(?((.(?!\s+-\S))*?\S-\s.*?(?<!\{)\{\d+\}(?!\}))((?<BeforeLeftHyphenWord>.*?\s??)(?<LeftHyphenWord>\S+?)(?<!(?<!\{)\{\d+\}(?!\}))-(?<AfterLeftHyphen>\s.*?))|((?<BeforeLeftHyphenWord>.*?)))((?<!\{)\{)(?<ReplaceIndex>\d+)(\}(?!\}))((?=(?(.+(?<!\{)\{\d+\}(?!\}))(((?!(?<!\{)\{\d+\}(?!\})).)*?\s-\S.*?(?<!\{)\{\d+\}(?!\}))|([^\-]*?\s-\S.*?)))(?<BeforeRightHyphen>.*?\s+?)-(?<RightHyphenWord>\S+))?",
 							RegexOptions.Compiled),
 						null);
 					regexMain = myMainRegex;
