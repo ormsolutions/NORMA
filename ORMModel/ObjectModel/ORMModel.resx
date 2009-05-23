@@ -266,10 +266,6 @@
 		<value>Constraint '{0}' has role sequences with different numbers of roles.</value>
 		<comment>Model validation error text when role sequences in a multi column constraint have different role counts (arity).</comment>
 	</data>
-	<data name="ModelError.Constraint.FrequencyConstraintContradictsInternalUniquenessConstraintError.Text" xml:space="preserve">
-		<value>Frequency constraint '{0}' in model '{2}' contradicts one or more internal uniqueness constraints on FactType '{1}'.</value>
-		<comment>Model validation error text used when a frequency constraint contradicts an internal uniqueness constraint</comment>
-	</data>
 	<data name="ModelError.Constraint.FrequencyConstraintExactlyOneError.Text" xml:space="preserve">
 		<value>Constraint '{0}' in model '{1}' has a range of exactly one, should be a Uniqueness constraint.</value>
 		<comment>The frequency constraint has minimum and maximum values of exactly one, should be represented as a uniqueness constraint. {0}=constraint name {1}=model name</comment>
@@ -277,6 +273,10 @@
 	<data name="ModelError.Constraint.FrequencyConstraintMinMaxError.Text" xml:space="preserve">
 		<value>Maximum value for constraint '{0}' in model '{1}' cannot be less than the minimum value.</value>
 		<comment>The frequency constraint minimum must be less than or equal to the maximum. {0}=constraint name {1}=model name</comment>
+	</data>
+	<data name="ModelError.Constraint.FrequencyConstraintViolatedByUniquenessConstraintError.Text" xml:space="preserve">
+		<value>Frequency constraint '{0}' in model '{1}' is violated by a Uniqueness constraint on the same roles.</value>
+		<comment>Model validation error text used when a frequency constraint is places on the same roles as a uniqueness constraint. {0}=constraint name {1}=model name</comment>
 	</data>
 	<data name="ModelError.Constraint.ImplicationError.Text" xml:space="preserve">
 		<value>Constraint '{0}' in model '{1}' is implied by at least one constraint of the same type attached to a subset of the same roles.</value>

@@ -168,7 +168,7 @@
 	<ResourceString name="ModelErrorNotWellModeledSubsetAndMandatoryError" model="Model" resourceName="ModelError.Constraint.NotWellModeledSubsetAndMandatoryError.Text"/>
 	<ResourceString name="ModelErrorConstraintContradiction" model="Model" resourceName="ModelError.Constraint.ContradictionError.Text"/>
 	<ResourceString name="ModelErrorConstraintHasTooFewRoleSequencesText" model="Model" resourceName="ModelError.Constraint.TooFewRoleSequences.Text"/>
-	<ResourceString name="FrequencyConstraintContradictsInternalUniquenessConstraintText" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintContradictsInternalUniquenessConstraintError.Text"/>
+	<ResourceString name="ModelErrorFrequencyConstraintViolatedByUniquenessConstraintText" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintViolatedByUniquenessConstraintError.Text"/>
 	<ResourceString name="ModelErrorConstraintHasTooManyRoleSequencesText" model="Model" resourceName="ModelError.Constraint.TooManyRoleSequences.Text"/>
 	<ResourceString name="ModelErrorConstraintExternalConstraintArityMismatch" model="Model" resourceName="ModelError.Constraint.ExternalConstraintArityMismatch.Text"/>
 	<ResourceString name="ModelErrorModelHasDuplicateConstraintNames" model="Model" resourceName="ModelError.Model.DuplicateConstraintNames.Text"/>

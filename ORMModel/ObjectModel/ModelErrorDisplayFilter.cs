@@ -141,8 +141,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					int typeCount = typeNames.Length;
 					for (int i = 0; i < typeCount; ++i)
 					{
-						Type type = dataDir.GetDomainClass(typeNames[i]).ImplementationClass;
-						retVal.Add(type, null);
+						DomainClassInfo classInfo;
+						if (null != (classInfo = dataDir.FindDomainClass(typeNames[i])))
+						{
+							retVal.Add(classInfo.ImplementationClass, null);
+						}
 					}
 				}
 				return retVal;

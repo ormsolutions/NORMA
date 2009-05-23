@@ -362,16 +362,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				switch ((VSConstants.VSStd97CmdID)cmd.cmdID)
 				{
 					case VSConstants.VSStd97CmdID.Delete:
-						// Inform the shell that we should have a chance to handle the delete command.
-						if (this.myEditor.FullRowSelect)
-						{
-							cmd.cmdf = (int)(MSOLE.OLECMDF.OLECMDF_SUPPORTED | MSOLE.OLECMDF.OLECMDF_ENABLED);
-							prgCmds[0] = cmd;
-						}
-						else
-						{
-							goto default;
-						}
+						// Always support this command, disabling it if necessary per the control.
+						cmd.cmdf = (uint)(MSOLE.OLECMDF.OLECMDF_SUPPORTED | (myEditor.CanDelete ? MSOLE.OLECMDF.OLECMDF_ENABLED : 0));
+						prgCmds[0] = cmd;
 						break;
 					case VSConstants.VSStd97CmdID.EditLabel:
 						// Support this command regardless of the current state of the inline editor.
@@ -423,48 +416,39 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// </summary>
 		protected int Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
 		{
-			int hr = 0;
+			int hr = VSConstants.S_OK;
 			bool handled = true;
 			// Only handle commands from the Office 97 Command Set (aka VSStandardCommandSet97).
 			if (pguidCmdGroup == VSConstants.GUID_VSStandardCommandSet97)
 			{
-				SamplePopulationEditor samplePopulationEditor = this.myEditor;
+				SamplePopulationEditor samplePopulationEditor;
 				// Default to a not-supported status.
 				switch ((VSConstants.VSStd97CmdID)nCmdID)
 				{
 					case VSConstants.VSStd97CmdID.Delete:
-						if (samplePopulationEditor.SelectedEntityType != null
-							|| samplePopulationEditor.SelectedFactType != null
-							|| samplePopulationEditor.SelectedValueType != null)
+						if ((samplePopulationEditor = myEditor) != null)
 						{
-							if (samplePopulationEditor.FullRowSelect)
+							Control editControl = samplePopulationEditor.LabelEditControl;
+							if (editControl != null)
 							{
-								samplePopulationEditor.DeleteSelectedSamplePopulationInstance();
+								IntPtr editHandle = editControl.Handle;
+								// WM_KEYDOWN == 0x100
+								SendMessage(editHandle, 0x100, (int)Keys.Delete, 1);
+								// WM_KEYUP == 0x101
+								SendMessage(editHandle, 0x101, (int)Keys.Delete, 0x40000001);
 							}
 							else
 							{
-								Control editControl = samplePopulationEditor.LabelEditControl;
-								if (editControl != null)
-								{
-									IntPtr editHandle = editControl.Handle;
-									// WM_KEYDOWN == 0x100
-									SendMessage(editHandle, 0x100, (int)Keys.Delete, 1);
-									// WM_KEYUP == 0x101
-									SendMessage(editHandle, 0x101, (int)Keys.Delete, 0x40000001);
-								}
+								samplePopulationEditor.DeleteSelectedCell();
 							}
-							// We enabled the command, so we say we handled it regardless of the further conditions
-							hr = VSConstants.S_OK;
 						}
-						else
-						{
-							goto default;
-						}
+						// We enabled the command, so we say we handled it regardless of the further conditions
 						break;
 					case VSConstants.VSStd97CmdID.EditLabel:
-						if (samplePopulationEditor.SelectedEntityType != null
+						if ((samplePopulationEditor = myEditor) != null &&
+							(samplePopulationEditor.SelectedEntityType != null
 							|| samplePopulationEditor.SelectedFactType != null
-							|| samplePopulationEditor.SelectedValueType != null)
+							|| samplePopulationEditor.SelectedValueType != null))
 						{
 							if (!samplePopulationEditor.FullRowSelect && !samplePopulationEditor.InLabelEdit)
 							{

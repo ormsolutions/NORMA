@@ -1890,13 +1890,13 @@
     <value>FactType has Implied Internal Uniqueness Constraint(s)</value>
     <comment>DisplayName for DomainClass &apos;ImpliedInternalUniquenessConstraintError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintContradictsInternalUniquenessConstraintError.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintViolatedByUniquenessConstraintError.Description" xml:space="preserve">
     <value></value>
-    <comment>Description for DomainClass &apos;FrequencyConstraintContradictsInternalUniquenessConstraintError&apos;</comment>
+    <comment>Description for DomainClass &apos;FrequencyConstraintViolatedByUniquenessConstraintError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintContradictsInternalUniquenessConstraintError.DisplayName" xml:space="preserve">
-    <value>Contradicting Frequency and Internal Uniqueness Constraints</value>
-    <comment>DisplayName for DomainClass &apos;FrequencyConstraintContradictsInternalUniquenessConstraintError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintViolatedByUniquenessConstraintError.DisplayName" xml:space="preserve">
+    <value>Frequency Constraint Violated By Uniqueness Constraint</value>
+    <comment>DisplayName for DomainClass &apos;FrequencyConstraintViolatedByUniquenessConstraintError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintTypeNotSpecifiedError.Description" xml:space="preserve">
     <value></value>
@@ -4508,69 +4508,37 @@
     <value>Set Constraint</value>
     <comment>PropertyDisplayName for DomainRole &apos;TooManyRoleSequencesError&apos; on DomainRelationship &apos;SetConstraintHasTooManyRoleSequencesError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError</value>
-    <comment>Description for DomainClass &apos;FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError</value>
+    <comment>Description for DomainClass &apos;FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError.DisplayName" xml:space="preserve">
-    <value>Frequency Constraint Has Frequency Constraint Invalidated By Internal Uniqueness Constraint Error</value>
-    <comment>DisplayName for DomainClass &apos;FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError.DisplayName" xml:space="preserve">
+    <value>Frequency Constraint Has Frequency Constraint Violated By Uniqueness Constraint Error</value>
+    <comment>DisplayName for DomainClass &apos;FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError/FrequencyConstraint.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError.FrequencyConstraint</value>
-    <comment>Description for DomainRole &apos;FrequencyConstraint&apos; on DomainRelationship &apos;FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError/FrequencyConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError.FrequencyConstraint</value>
+    <comment>Description for DomainRole &apos;FrequencyConstraint&apos; on DomainRelationship &apos;FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError/FrequencyConstraint.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError/FrequencyConstraint.DisplayName" xml:space="preserve">
     <value>FrequencyConstraint</value>
-    <comment>DisplayName for DomainRole &apos;FrequencyConstraint&apos; on DomainRelationship &apos;FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;FrequencyConstraint&apos; on DomainRelationship &apos;FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError/FrequencyConstraint.PropertyDisplayName" xml:space="preserve">
-    <value>Frequency Constraint Contradicts Internal Uniqueness Constraint Error Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;FrequencyConstraint&apos; on DomainRelationship &apos;FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError/FrequencyConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Frequency Constraint Violated By Uniqueness Constraint Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;FrequencyConstraint&apos; on DomainRelationship &apos;FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError/FrequencyConstraintContradictsInternalUniquenessConstraintError.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintError</value>
-    <comment>Description for DomainRole &apos;FrequencyConstraintContradictsInternalUniquenessConstraintError&apos; on DomainRelationship &apos;FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError/FrequencyConstraintViolatedByUniquenessConstraintError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError.FrequencyConstraintViolatedByUniquenessConstraintError</value>
+    <comment>Description for DomainRole &apos;FrequencyConstraintViolatedByUniquenessConstraintError&apos; on DomainRelationship &apos;FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError/FrequencyConstraintContradictsInternalUniquenessConstraintError.DisplayName" xml:space="preserve">
-    <value>FrequencyConstraintContradictsInternalUniquenessConstraintError</value>
-    <comment>DisplayName for DomainRole &apos;FrequencyConstraintContradictsInternalUniquenessConstraintError&apos; on DomainRelationship &apos;FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError/FrequencyConstraintViolatedByUniquenessConstraintError.DisplayName" xml:space="preserve">
+    <value>FrequencyConstraintViolatedByUniquenessConstraintError</value>
+    <comment>DisplayName for DomainRole &apos;FrequencyConstraintViolatedByUniquenessConstraintError&apos; on DomainRelationship &apos;FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError/FrequencyConstraintContradictsInternalUniquenessConstraintError.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError/FrequencyConstraintViolatedByUniquenessConstraintError.PropertyDisplayName" xml:space="preserve">
     <value>Frequency Constraint</value>
-    <comment>PropertyDisplayName for DomainRole &apos;FrequencyConstraintContradictsInternalUniquenessConstraintError&apos; on DomainRelationship &apos;FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError</value>
-    <comment>Description for DomainClass &apos;FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.DisplayName" xml:space="preserve">
-    <value>Fact Type Has Frequency Constraint Contradicts Internal Uniqueness Constraint Error</value>
-    <comment>DisplayName for DomainClass &apos;FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError/FactType.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.FactType</value>
-    <comment>Description for DomainRole &apos;FactType&apos; on DomainRelationship &apos;FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError/FactType.DisplayName" xml:space="preserve">
-    <value>FactType</value>
-    <comment>DisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError/FactType.PropertyDisplayName" xml:space="preserve">
-    <value>Frequency Constraint Contradicts Internal Uniqueness Constraint Error Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError/FrequencyConstraintContradictsInternalUniquenessConstraintError.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintError</value>
-    <comment>Description for DomainRole &apos;FrequencyConstraintContradictsInternalUniquenessConstraintError&apos; on DomainRelationship &apos;FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError/FrequencyConstraintContradictsInternalUniquenessConstraintError.DisplayName" xml:space="preserve">
-    <value>FrequencyConstraintContradictsInternalUniquenessConstraintError</value>
-    <comment>DisplayName for DomainRole &apos;FrequencyConstraintContradictsInternalUniquenessConstraintError&apos; on DomainRelationship &apos;FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError/FrequencyConstraintContradictsInternalUniquenessConstraintError.PropertyDisplayName" xml:space="preserve">
-    <value>Fact Type</value>
-    <comment>PropertyDisplayName for DomainRole &apos;FrequencyConstraintContradictsInternalUniquenessConstraintError&apos; on DomainRelationship &apos;FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;FrequencyConstraintViolatedByUniquenessConstraintError&apos; on DomainRelationship &apos;FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError</value>

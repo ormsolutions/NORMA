@@ -1,6 +1,9 @@
-﻿<TestReport xmlns="http://schemas.neumont.edu/ORM/SDK/TestReport">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestReport xmlns="http://schemas.neumont.edu/ORM/SDK/TestReport">
 	<ValidationErrors name="Before constraint duplication/implication repair">
 		<ValidationError>Constraint 'InternalUniquenessConstraint10' in model 'NewModel' is implied by at least one constraint of the same type attached to a subset of the same roles.</ValidationError>
+		<ValidationError>Constraint 'InternalUniquenessConstraint11' in model 'NewModel' is implied by at least one constraint of the same type attached to a subset of the same roles.</ValidationError>
+		<ValidationError>Constraint 'InternalUniquenessConstraint7' in model 'NewModel' is implied by at least one constraint of the same type attached to a subset of the same roles.</ValidationError>
 		<ValidationError>Entity type 'EntityType1IsRunningFromEntityType1ToEntityType2EntityType2' in model 'NewModel' requires a local preferred reference scheme or supertype(s) that provide preferred identification.</ValidationError>
 		<ValidationError>FactType 'EntityType1HadTeaAndCrumpetsWithEntityType2' in model 'NewModel' contains one or more internal uniqueness constraints that are implied by or duplicates of other internal uniqueness constraints.</ValidationError>
 		<ValidationError>FactType 'EntityType1IsRunningFromEntityType1ToEntityType2EntityType2' in model 'NewModel' contains one or more internal uniqueness constraints that are implied by or duplicates of other internal uniqueness constraints.</ValidationError>

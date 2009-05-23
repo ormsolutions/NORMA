@@ -216,6 +216,23 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		}
 
 		/// <summary>
+		/// Return true if delete should be enabled for current contents.
+		/// </summary>
+		/// <remarks>The 'CanDelete' status should correspond to the main
+		/// selection in the selection container, not the sub-selection
+		/// within the control. Supporting different commands for different
+		/// situations requires refreshing the command status on an internal
+		/// selection change.</remarks>
+		public bool CanDelete
+		{
+			get
+			{
+				BaseBranch branch;
+				return null != (branch = myBranch) && !branch.IsReadOnly;
+			}
+		}
+
+		/// <summary>
 		/// Returns true if the pane is active
 		/// </summary>
 		public bool IsPaneActive
@@ -739,23 +756,40 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			vtr.MultiColumnHighlight = multiColumnHighlight;
 		}
-
 		/// <summary>
-		/// Deletes selected row of the branch
+		/// Perform a delete action on the selected cell
 		/// </summary>
-		public void DeleteSelectedSamplePopulationInstance()
+		public void DeleteSelectedCell()
 		{
-			VirtualTreeControl vtr = vtrSamplePopulation;
-			ITree tree = vtr.Tree;
-			if (tree != null)
+			BaseBranch rootBranch;
+			if (!CanDelete ||
+				null == (rootBranch = myBranch))
 			{
-				int currentColumn = vtr.CurrentColumn;
-				int currentRow = vtr.CurrentIndex;
-				VirtualTreeItemInfo info = tree.GetItemInfo(currentRow, currentColumn, false);
-				BaseBranch baseBranch = info.Branch as BaseBranch;
-				if (null != baseBranch)
+				return;
+			}
+
+			int currentColumn;
+			int currentRow;
+			VirtualTreeControl vtr;
+			ITree tree;
+			BaseBranch resolvedBranch;
+			VirtualTreeItemInfo info;
+			if (null != (vtr = vtrSamplePopulation) &&
+				null != (tree = vtr.Tree) &&
+				VirtualTreeConstant.NullIndex != (currentColumn = vtr.CurrentColumn) &&
+				VirtualTreeConstant.NullIndex != (currentRow = vtr.CurrentIndex) &&
+				!(info =  tree.GetItemInfo(currentRow, currentColumn, false)).Blank &&
+				null != (resolvedBranch = info.Branch as BaseBranch))
+			{
+				int resolvedColumn = info.Column;
+				int resolvedRow = info.Row;
+				if (rootBranch == resolvedBranch && rootBranch.IsFullRowSelectColumn(resolvedColumn))
 				{
-					baseBranch.DeleteInstance(currentRow, currentColumn);
+					resolvedBranch.DeleteInstance(resolvedRow, resolvedColumn);
+				}
+				else
+				{
+					resolvedBranch.DeleteInstancePart(resolvedRow, resolvedColumn);
 				}
 			}
 		}
@@ -2323,7 +2357,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 				#endregion // InstanceColumnDescriptor class
 				#region Member Variables
-				private static readonly InstanceColumnDescriptor Descriptor = new InstanceColumnDescriptor();
+				public static readonly PropertyDescriptor Descriptor = new InstanceColumnDescriptor();
 				private readonly EntityEditorBranch myEditBranch;
 				private readonly Role myRole;
 				private readonly ObjectType myEntityType;
@@ -2607,7 +2641,26 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					// request it.
 					return VirtualTreeLabelEditData.Invalid;
 				}
-				return VirtualTreeLabelEditData.Default;
+
+				VirtualTreeLabelEditData retVal = VirtualTreeLabelEditData.Default;
+				if (UsesEditContext)
+				{
+					CellEditContext editContext = CreateEditContext(row, column);
+					if (editContext != null)
+					{
+						retVal.CustomInPlaceEdit = editContext.CreateInPlaceEditControl();
+						retVal.CustomCommit = delegate(VirtualTreeItemInfo itemInfo, Control editControl)
+						{
+							// Defer to the normal text edit if the control is not dirty
+							return (editControl as IVirtualTreeInPlaceControl).Dirty ? itemInfo.Branch.CommitLabelEdit(itemInfo.Row, itemInfo.Column, editControl.Text) : LabelEditResult.CancelEdit;
+						};
+					}
+					else
+					{
+						retVal = VirtualTreeLabelEditData.Invalid;
+					}
+				}
+				return retVal;
 			}
 			VirtualTreeLabelEditData IBranch.BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
 			{
@@ -2962,13 +3015,13 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// <summary>
 			/// Whether or not the branch is read only
 			/// </summary>
-			protected bool IsReadOnly
+			public bool IsReadOnly
 			{
 				get
 				{
 					return myIsReadOnly;
 				}
-				set
+				protected set
 				{
 					myIsReadOnly = value;
 				}
@@ -3546,6 +3599,49 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 
 			// Remove the instance at the given row
 			public abstract void DeleteInstance(int row, int column);
+			/// <summary>
+			/// Provide an entry point for deleting part of an instance.
+			/// </summary>
+			/// <remarks>If <see cref="UsesEditContext"/> is false then the
+			/// derived branch must explicitly override this method.</remarks>
+			/// <param name="row">The row to delete</param>
+			/// <param name="column">The column to delete</param>
+			public virtual void DeleteInstancePart(int row, int column)
+			{
+				Debug.Assert(UsesEditContext);
+				CellEditContext editContext = CreateEditContext(row, column);
+				if (editContext != null)
+				{
+					CellEditContext.Descriptor.SetValue(editContext, null);
+				}
+			}
+			/// <summary>
+			/// Return true if the branch creates an edit context, false
+			/// if it deletes directly.
+			/// </summary>
+			protected virtual bool UsesEditContext
+			{
+				get
+				{
+					return true;
+				}
+			}
+			/// <summary>
+			/// Create an editing context for the specified entry. Provides shared
+			/// code to allow for consistent behavior between selecting 'Unspecified'
+			/// in the editing dropdown and executing the delete command without the editor.
+			/// </summary>
+			/// <remarks><see cref="UsesEditContext"/> must return false, or an override
+			/// is required for this method.</remarks>
+			/// <param name="row">The row to create a context for</param>
+			/// <param name="column">The column to create a context for.</param>
+			/// <returns><see cref="CellEditContext"/> or <see langword="null"/> if
+			/// a context is not available.</returns>
+			protected virtual CellEditContext CreateEditContext(int row, int column)
+			{
+				Debug.Assert(!UsesEditContext);
+				return null;
+			}
 			#endregion // Branch Update Methods
 		}
 		private sealed class ValueTypeBranch : BaseBranch, IBranch, IMultiColumnBranch
@@ -3717,6 +3813,27 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			#endregion // Event Handlers
 			#region Base overrides
+			/// <summary>
+			/// Provide custom code for part deletion and always
+			/// allow a label edit for data cells
+			/// </summary>
+			protected override bool UsesEditContext
+			{
+				get
+				{
+					return false;
+				}
+			}
+			/// <summary>
+			/// Delete the instance part by deferring to CommitLabelEdit
+			/// </summary>
+			public override void DeleteInstancePart(int row, int column)
+			{
+				if (!IsFullRowSelectColumn(column))
+				{
+					CommitLabelEdit(row, column, "");
+				}
+			}
 			public sealed override void DeleteInstance(int row, int column)
 			{
 				if(base.IsFullRowSelectColumn(column) && row < myCachedInstances.Count)
@@ -3821,47 +3938,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			#endregion
 			#region IBranch Interface Members
-			VirtualTreeLabelEditData IBranch.BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
-			{
-				VirtualTreeLabelEditData retVal = base.BeginLabelEdit(row, column, activationStyle);
-				if (retVal.IsValid)
-				{
-					ObjectType entityType = myEntityType;
-					ObjectType entityTypeSubtype = myEntityTypeSubtype;
-					Role identifierRole = entityType.PreferredIdentifier.RoleCollection[column - 1];
-					ObjectType columnRolePlayer = identifierRole.RolePlayer;
-					if (columnRolePlayer != null && (columnRolePlayer.IsValueType || columnRolePlayer.ResolvedPreferredIdentifier != null))
-					{
-						List<ObjectTypeInstance> instances = myCachedInstances;
-						EntityTypeInstance editInstance = null;
-						EntityTypeSubtypeInstance editSubtypeInstance = null;
-						if (row < myNonEmptyInstanceCount)
-						{
-							editInstance = (entityTypeSubtype != null) ?
-								(editSubtypeInstance = (EntityTypeSubtypeInstance)myCachedInstances[row]).SupertypeInstance :
-								(EntityTypeInstance)myCachedInstances[row];
-						}
-						retVal.CustomInPlaceEdit = new CellEditContext(
-							entityType,
-							entityTypeSubtype,
-							entityTypeSubtype != null ? GetIdentifyingSupertypeRole(entityTypeSubtype) : identifierRole,
-							editInstance,
-							editSubtypeInstance,
-							null).CreateInPlaceEditControl();
-						retVal.CustomCommit = delegate(VirtualTreeItemInfo itemInfo, Control editControl)
-						{
-							// Defer to the normal text edit if the control is not dirty
-							return (editControl as IVirtualTreeInPlaceControl).Dirty ? itemInfo.Branch.CommitLabelEdit(itemInfo.Row, itemInfo.Column, editControl.Text) : LabelEditResult.CancelEdit;
-						};
-					}
-					else
-					{
-						retVal = VirtualTreeLabelEditData.Invalid;
-					}
-				}
-				return retVal;
-			}
-
 			LabelEditResult IBranch.CommitLabelEdit(int row, int column, string newText)
 			{
 				bool delete = newText.Length == 0;
@@ -4503,6 +4579,34 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			#endregion // Helper Methods
 			#region Base overrides
+			protected sealed override CellEditContext CreateEditContext(int row, int column)
+			{
+				CellEditContext retVal = null;
+				ObjectType entityType = myEntityType;
+				ObjectType entityTypeSubtype = myEntityTypeSubtype;
+				Role identifierRole = entityType.PreferredIdentifier.RoleCollection[column - 1];
+				ObjectType columnRolePlayer = identifierRole.RolePlayer;
+				if (columnRolePlayer != null && (columnRolePlayer.IsValueType || columnRolePlayer.ResolvedPreferredIdentifier != null))
+				{
+					List<ObjectTypeInstance> instances = myCachedInstances;
+					EntityTypeInstance editInstance = null;
+					EntityTypeSubtypeInstance editSubtypeInstance = null;
+					if (row < myNonEmptyInstanceCount)
+					{
+						editInstance = (entityTypeSubtype != null) ?
+							(editSubtypeInstance = (EntityTypeSubtypeInstance)myCachedInstances[row]).SupertypeInstance :
+							(EntityTypeInstance)myCachedInstances[row];
+					}
+					retVal = new CellEditContext(
+						entityType,
+						entityTypeSubtype,
+						entityTypeSubtype != null ? GetIdentifyingSupertypeRole(entityTypeSubtype) : identifierRole,
+						editInstance,
+						editSubtypeInstance,
+						null);
+				}
+				return retVal;
+			}
 			public sealed override void DeleteInstance(int row, int column)
 			{
 				if (base.IsFullRowSelectColumn(column) && row < myNonEmptyInstanceCount)
@@ -4588,59 +4692,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			#endregion
 			#region IBranch Interface Members
-			VirtualTreeLabelEditData IBranch.BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
-			{
-				VirtualTreeLabelEditData retVal = base.BeginLabelEdit(row, column, activationStyle);
-				if (retVal.IsValid)
-				{
-					ObjectType rolePlayer;
-					switch (ResolveColumn(ref column))
-					{
-						case ColumnType.FactType:
-							Role role = myFactType.OrderedRoleCollection[column + myUnaryColumn].Role;
-							rolePlayer = role.RolePlayer;
-							if (rolePlayer == null || (!rolePlayer.IsValueType && rolePlayer.ResolvedPreferredIdentifier == null))
-							{
-								retVal = VirtualTreeLabelEditData.Invalid;
-							}
-							else
-							{
-								List<FactTypeInstance> instances = myCachedFactInstances;
-								retVal.CustomInPlaceEdit = new CellEditContext(
-									role,
-									(row < instances.Count) ? instances[row] : null,
-									null).CreateInPlaceEditControl();
-							}
-							break;
-						case ColumnType.EntityType:
-							rolePlayer = myObjectifyingType;
-							if (rolePlayer.ResolvedPreferredIdentifier == null)
-							{
-								retVal = VirtualTreeLabelEditData.Invalid;
-							}
-							else
-							{
-								List<FactTypeInstance> instances = myCachedFactInstances;
-								FactTypeInstance factInstance = (row < instances.Count) ? instances[row] : null;
-								retVal.CustomInPlaceEdit = new CellEditContext(
-									rolePlayer,
-									factInstance,
-									(factInstance != null) ? factInstance.ObjectifyingInstance : null,
-									null).CreateInPlaceEditControl();
-							}
-							break;
-					}
-					if (retVal.IsValid)
-					{
-						retVal.CustomCommit = delegate(VirtualTreeItemInfo itemInfo, Control editControl)
-						{
-							// Defer to the normal text edit if the control is not dirty
-							return (editControl as IVirtualTreeInPlaceControl).Dirty ? itemInfo.Branch.CommitLabelEdit(itemInfo.Row, itemInfo.Column, editControl.Text) : LabelEditResult.CancelEdit;
-						};
-					}
-				}
-				return retVal;
-			}
 			LabelEditResult IBranch.CommitLabelEdit(int row, int column, string newText)
 			{
 				bool delete = newText.Length == 0;
@@ -5715,6 +5766,40 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			#endregion // Branch Update Methods
 			#region Base overrides
+			protected override CellEditContext CreateEditContext(int row, int column)
+			{
+				CellEditContext retVal = null;
+				ObjectType rolePlayer;
+				switch (ResolveColumn(ref column))
+				{
+					case ColumnType.FactType:
+						Role role = myFactType.OrderedRoleCollection[column + myUnaryColumn].Role;
+						rolePlayer = role.RolePlayer;
+						if (rolePlayer != null && (rolePlayer.IsValueType || rolePlayer.ResolvedPreferredIdentifier != null))
+						{
+							List<FactTypeInstance> instances = myCachedFactInstances;
+							retVal = new CellEditContext(
+								role,
+								(row < instances.Count) ? instances[row] : null,
+								null);
+						}
+						break;
+					case ColumnType.EntityType:
+						rolePlayer = myObjectifyingType;
+						if (rolePlayer.ResolvedPreferredIdentifier != null)
+						{
+							List<FactTypeInstance> instances = myCachedFactInstances;
+							FactTypeInstance factInstance = (row < instances.Count) ? instances[row] : null;
+							retVal = new CellEditContext(
+								rolePlayer,
+								factInstance,
+								(factInstance != null) ? factInstance.ObjectifyingInstance : null,
+								null);
+						}
+						break;
+				}
+				return retVal;
+			}
 			public sealed override void DeleteInstance(int row, int column)
 			{
 				if (base.IsFullRowSelectColumn(column) && myProxyEntityType == null)
@@ -5891,62 +5976,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					return (base.Features & (~BranchFeatures.ComplexColumns)) | BranchFeatures.Expansions;
 				}
 			}
-			VirtualTreeLabelEditData IBranch.BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
-			{
-				VirtualTreeLabelEditData retVal = base.BeginLabelEdit(row, column, activationStyle);
-				if (retVal.IsValid)
-				{
-					ObjectType rowType;
-					ObjectTypeInstance rowInstance;
-					Role rowRole;
-					FactTypeInstance rowFactInstance;
-					CellEditContext editContext = null;
-					Role supertypeIdentifyingRole;
-					switch (ResolveRow(ref row, out rowType, out rowRole, out rowFactInstance, out rowInstance))
-					{
-						case RowType.FactRole:
-							editContext = new CellEditContext(rowRole, rowFactInstance, this);
-							break;
-						case RowType.IdentifierRole:
-							supertypeIdentifyingRole = GetIdentifyingSupertypeRole(rowType);
-							editContext = new CellEditContext(
-								(supertypeIdentifyingRole != null) ? supertypeIdentifyingRole.RolePlayer : rowType,
-								(supertypeIdentifyingRole != null) ? rowType : null,
-								rowRole,
-								myEditInstance,
-								myEditSubtypeInstance,
-								this);
-							break;
-						case RowType.ObjectifyingIdentifier:
-							editContext = new CellEditContext(rowType, rowFactInstance, rowInstance, this);
-							break;
-						case RowType.Supertype:
-							supertypeIdentifyingRole = GetIdentifyingSupertypeRole(rowType);
-							editContext = new CellEditContext(
-								(supertypeIdentifyingRole != null) ? supertypeIdentifyingRole.RolePlayer : rowType,
-								(supertypeIdentifyingRole != null) ? rowType : null,
-								GetPreferredSubtypeRole(rowType),
-								myEditInstance,
-								myEditSubtypeInstance, this);
-							break;
-					}
-					if (editContext != null)
-					{
-						retVal.CustomInPlaceEdit = editContext.CreateInPlaceEditControl();
-						retVal.CustomCommit = delegate(VirtualTreeItemInfo itemInfo, Control editControl)
-						{
-							// Defer to the normal text edit if the control is not dirty
-							return (editControl as IVirtualTreeInPlaceControl).Dirty ? itemInfo.Branch.CommitLabelEdit(itemInfo.Row, itemInfo.Column, editControl.Text) : LabelEditResult.CancelEdit;
-						};
-					}
-					else
-					{
-						retVal = VirtualTreeLabelEditData.Invalid;
-					}
-				}
-				return retVal;
-			}
-
 			LabelEditResult IBranch.CommitLabelEdit(int row, int column, string newText)
 			{
 				bool delete = newText.Length == 0;
@@ -7743,6 +7772,44 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			#endregion // Helper Methods
 			#region Base overrides
+			protected override CellEditContext CreateEditContext(int row, int column)
+			{
+				CellEditContext retVal = null;
+				ObjectType rowType;
+				ObjectTypeInstance rowInstance;
+				Role rowRole;
+				FactTypeInstance rowFactInstance;
+				Role supertypeIdentifyingRole;
+				switch (ResolveRow(ref row, out rowType, out rowRole, out rowFactInstance, out rowInstance))
+				{
+					case RowType.FactRole:
+						retVal = new CellEditContext(rowRole, rowFactInstance, this);
+						break;
+					case RowType.IdentifierRole:
+						supertypeIdentifyingRole = GetIdentifyingSupertypeRole(rowType);
+						retVal = new CellEditContext(
+							(supertypeIdentifyingRole != null) ? supertypeIdentifyingRole.RolePlayer : rowType,
+							(supertypeIdentifyingRole != null) ? rowType : null,
+							rowRole,
+							myEditInstance,
+							myEditSubtypeInstance,
+							this);
+						break;
+					case RowType.ObjectifyingIdentifier:
+						retVal = new CellEditContext(rowType, rowFactInstance, rowInstance, this);
+						break;
+					case RowType.Supertype:
+						supertypeIdentifyingRole = GetIdentifyingSupertypeRole(rowType);
+						retVal = new CellEditContext(
+							(supertypeIdentifyingRole != null) ? supertypeIdentifyingRole.RolePlayer : rowType,
+							(supertypeIdentifyingRole != null) ? rowType : null,
+							GetPreferredSubtypeRole(rowType),
+							myEditInstance,
+							myEditSubtypeInstance, this);
+						break;
+				}
+				return retVal;
+			}
 			public sealed override void DeleteInstance(int row, int column)
 			{
 				// Empty implementation

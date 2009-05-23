@@ -737,11 +737,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 			if (0 == (filter & (ModelErrorUses.Verbalize | ModelErrorUses.BlockVerbalization | ModelErrorUses.DisplayPrimary)) || filter == (ModelErrorUses)(-1))
 			{
-				// The fact name is used in the generated error text, it needs to be an owner
-				foreach (FrequencyConstraintContradictsInternalUniquenessConstraintError frequencyContradictionError in FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection)
-				{
-					yield return new ModelErrorUsage(frequencyContradictionError, ModelErrorUses.None);
-				}
 				// NMinusOneError is parented off InternalConstraint. The constraint has a name,
 				// but the name is often arbitrary. Including the fact name as well makes the
 				// error message much more meaningful.

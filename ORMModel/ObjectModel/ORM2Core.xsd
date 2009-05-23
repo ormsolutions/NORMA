@@ -1612,7 +1612,9 @@
 			<xs:element name="EntityTypeRequiresReferenceSchemeError" type="EntityTypeRequiresReferenceSchemeErrorType"/>
 			<xs:element name="FrequencyConstraintMinMaxError" type="FrequencyConstraintMinMaxErrorType"/>
 			<xs:element name="FrequencyConstraintExactlyOneError" type="FrequencyConstraintExactlyOneErrorType"/>
+			<!-- UNDONE: Remove FrequencyConstraintContradictsInternalUniquenessConstraintError when file format is officially updated -->
 			<xs:element name="FrequencyConstraintContradictsInternalUniquenessConstraintError" type="FrequencyConstraintContradictsInternalUniquenessConstraintErrorType"/>
+			<xs:element name="FrequencyConstraintViolatedByUniquenessConstraintError" type="FrequencyConstraintViolatedByUniquenessConstraintErrorType"/>
 			<xs:element name="MinValueMismatchError" type="MinValueMismatchErrorType"/>
 			<xs:element name="MaxValueMismatchError" type="MaxValueMismatchErrorType"/>
 			<xs:element name="ValueRangeOverlapError" type="ValueRangeOverlapErrorType"/>
@@ -1876,15 +1878,28 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+	<!-- UNDONE: Remove FrequencyConstraintContradictsInternalUniquenessConstraintErrorType when file format is officially updated -->
 	<xs:complexType name="FrequencyConstraintContradictsInternalUniquenessConstraintErrorType">
 		<xs:annotation>
-			<xs:documentation>A frequency constraint requires more role players than are allowed by an internal uniqueness constraint.</xs:documentation>
+			<xs:documentation>(Deprecated by FrequencyConstraintViolatedByUniquenessConstraintErrorType) A frequency constraint requires more role players than are allowed by an internal uniqueness constraint.</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:all>
 					<xs:element name="FrequencyConstraint" type="FrequencyConstraintRef"/>
 					<xs:element name="Fact" type="FactTypeRef"/>
+				</xs:all>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="FrequencyConstraintViolatedByUniquenessConstraintErrorType">
+		<xs:annotation>
+			<xs:documentation>A frequency constraint covers the same roles as a uniqueness constraint.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:all>
+					<xs:element name="FrequencyConstraint" type="FrequencyConstraintRef"/>
 				</xs:all>
 			</xs:extension>
 		</xs:complexContent>

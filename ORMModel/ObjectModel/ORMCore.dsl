@@ -1785,7 +1785,7 @@
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="FrequencyConstraintContradictsInternalUniquenessConstraintError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="A080C2B2-F666-4689-A63E-BD97CB0491E2" DisplayName="Contradicting Frequency and Internal Uniqueness Constraints" Description="">
+		<DomainClass Name="FrequencyConstraintViolatedByUniquenessConstraintError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="4A239F5F-2FF9-4E5A-AAA8-50D313ED0193" DisplayName="Frequency Constraint Violated By Uniqueness Constraint" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
@@ -3548,41 +3548,21 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="78716CE5-DB71-4367-A912-9B622A3C480B">
+		<DomainRelationship Name="FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="F6B8084D-4406-4AB3-9BA9-C89FB7BBA074">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
 			<Source>
-				<DomainRole Name="FrequencyConstraint" PropertyName="FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FrequencyConstraint" Id="4A87A658-BE43-4337-A7E1-DB66219CB52C">
+				<DomainRole Name="FrequencyConstraint" PropertyName="FrequencyConstraintViolatedByUniquenessConstraintError" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FrequencyConstraint" Id="D0F67CC7-1A3D-4875-B7C1-267C0CAA2D98">
 					<RolePlayer>
 						<DomainClassMoniker Name="FrequencyConstraint"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="FrequencyConstraintContradictsInternalUniquenessConstraintError" PropertyName="FrequencyConstraint" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="FrequencyConstraintContradictsInternalUniquenessConstraintError" Id="56817FD9-B572-46EA-A2B5-CBD06F09C64A">
+				<DomainRole Name="FrequencyConstraintViolatedByUniquenessConstraintError" PropertyName="FrequencyConstraint" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="FrequencyConstraintViolatedByUniquenessConstraintError" Id="758254C3-BC61-4FD6-BFFB-29BAE506B204">
 					<RolePlayer>
-						<DomainClassMoniker Name="FrequencyConstraintContradictsInternalUniquenessConstraintError"/>
-					</RolePlayer>
-				</DomainRole>
-			</Target>
-		</DomainRelationship>
-
-		<DomainRelationship Name="FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="57656C65-6812-4E80-AB3C-199DEB82B3EF">
-			<BaseRelationship>
-				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
-			</BaseRelationship>
-			<Source>
-				<DomainRole Name="FactType" PropertyName="FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactType" Id="D2203F28-3CB7-4474-892C-25EE95AB22A6">
-					<RolePlayer>
-						<DomainClassMoniker Name="FactType"/>
-					</RolePlayer>
-				</DomainRole>
-			</Source>
-			<Target>
-				<DomainRole Name="FrequencyConstraintContradictsInternalUniquenessConstraintError" PropertyName="FactType" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="FrequencyConstraintContradictsInternalUniquenessConstraintError" Id="2B477358-D3E1-4F15-979D-C2D486BB3A1B">
-					<RolePlayer>
-						<DomainClassMoniker Name="FrequencyConstraintContradictsInternalUniquenessConstraintError"/>
+						<DomainClassMoniker Name="FrequencyConstraintViolatedByUniquenessConstraintError"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>

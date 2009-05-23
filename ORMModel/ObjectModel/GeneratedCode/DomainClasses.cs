@@ -6550,21 +6550,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
-		#region FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection opposite domain role accessor
-		/// <summary>
-		/// Gets a list of FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.FactType
-		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<FrequencyConstraintContradictsInternalUniquenessConstraintError> FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return new DslModeling::LinkedElementCollection<FrequencyConstraintContradictsInternalUniquenessConstraintError>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.FactTypeDomainRoleId);
-			}
-		}
-		#endregion
 		#region Definition opposite domain role accessor
 		/// <summary>
 		/// Gets or sets Definition.
@@ -9914,18 +9899,35 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
-		#region FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection opposite domain role accessor
+		#region FrequencyConstraintViolatedByUniquenessConstraintError opposite domain role accessor
 		/// <summary>
-		/// Gets a list of FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection.
+		/// Gets or sets FrequencyConstraintViolatedByUniquenessConstraintError.
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError.FrequencyConstraint
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError.FrequencyConstraint
 		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<FrequencyConstraintContradictsInternalUniquenessConstraintError> FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection
+		public virtual FrequencyConstraintViolatedByUniquenessConstraintError FrequencyConstraintViolatedByUniquenessConstraintError
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::LinkedElementCollection<FrequencyConstraintContradictsInternalUniquenessConstraintError>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError.FrequencyConstraintDomainRoleId);
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError.FrequencyConstraintDomainRoleId) as FrequencyConstraintViolatedByUniquenessConstraintError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError.FrequencyConstraintViolatedByUniquenessConstraintErrorDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError.FrequencyConstraintViolatedByUniquenessConstraintErrorDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError.FrequencyConstraintDomainRoleId, value);
+				}
 			}
 		}
 		#endregion
@@ -17831,26 +17833,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
-	/// DomainClass FrequencyConstraintContradictsInternalUniquenessConstraintError
+	/// DomainClass FrequencyConstraintViolatedByUniquenessConstraintError
 	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintContradictsInternalUniquenessConstraintError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintContradictsInternalUniquenessConstraintError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintViolatedByUniquenessConstraintError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintViolatedByUniquenessConstraintError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainObjectId("a080c2b2-f666-4689-a63e-bd97cb0491e2")]
-	public partial class FrequencyConstraintContradictsInternalUniquenessConstraintError : ModelError
+	[DslModeling::DomainObjectId("4a239f5f-2ff9-4e5a-aaa8-50d313ed0193")]
+	public partial class FrequencyConstraintViolatedByUniquenessConstraintError : ModelError
 	{
 		#region Constructors, domain class Id
 	
 		/// <summary>
-		/// FrequencyConstraintContradictsInternalUniquenessConstraintError domain class Id.
+		/// FrequencyConstraintViolatedByUniquenessConstraintError domain class Id.
 		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xa080c2b2, 0xf666, 0x4689, 0xa6, 0x3e, 0xbd, 0x97, 0xcb, 0x04, 0x91, 0xe2);
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x4a239f5f, 0x2ff9, 0x4e5a, 0xaa, 0xa8, 0x50, 0xd3, 0x13, 0xed, 0x01, 0x93);
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		/// <param name="store">Store where new element is to be created.</param>
 		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public FrequencyConstraintContradictsInternalUniquenessConstraintError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+		public FrequencyConstraintViolatedByUniquenessConstraintError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
@@ -17860,7 +17862,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="partition">Partition where new element is to be created.</param>
 		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public FrequencyConstraintContradictsInternalUniquenessConstraintError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+		public FrequencyConstraintViolatedByUniquenessConstraintError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, propertyAssignments)
 		{
 		}
@@ -17869,39 +17871,31 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Gets or sets FrequencyConstraint.
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintError
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError.FrequencyConstraintViolatedByUniquenessConstraintError
 		/// </summary>
 		public virtual FrequencyConstraint FrequencyConstraint
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintErrorDomainRoleId) as FrequencyConstraint;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError.FrequencyConstraintViolatedByUniquenessConstraintErrorDomainRoleId) as FrequencyConstraint;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintErrorDomainRoleId, value);
-			}
-		}
-		#endregion
-		#region FactType opposite domain role accessor
-		/// <summary>
-		/// Gets or sets FactType.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintError
-		/// </summary>
-		public virtual FactType FactType
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintErrorDomainRoleId) as FactType;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintErrorDomainRoleId, value);
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError.FrequencyConstraintDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError.FrequencyConstraintDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError.FrequencyConstraintViolatedByUniquenessConstraintErrorDomainRoleId, value);
+				}
 			}
 		}
 		#endregion

@@ -321,9 +321,6 @@
 			<arg:ChangeRule methodName="FrequencyConstraintMinMaxRule">
 				<arg:RuleOn targetType="FrequencyConstraint"/>
 			</arg:ChangeRule>
-			<arg:DeleteRule methodName="RemoveContradictionErrorsWithFactTypeRule">
-				<arg:RuleOn targetType="FactSetConstraint"/>
-			</arg:DeleteRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="MandatoryConstraint">
 			<arg:ChangeRule methodName="MandatoryConstraintChangeRule">

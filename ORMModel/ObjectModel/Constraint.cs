@@ -133,6 +133,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		SetConstraintSubset,
 		/// <summary>
+		/// Pertains to two set constraints on the same set of roles.
+		/// For example, a frequency constraint should not be associated
+		/// with the same roles as a uniqueness constraint.
+		/// </summary>
+		SetConstraintSameSet,
+		/// <summary>
 		/// Pertains to 2 SetComparisonContaints (Exclusion, Equality, Subset) existing
 		/// in a subset relationship.  This pattern is used for a set comparison constraint that cannot be a 
 		/// subset of another set comparison constraint (for example, exclusion cannot be a subset of 
@@ -1332,6 +1338,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (setConstraint != null)
 			{
 				IConstraint constraint = setConstraint.Constraint;
+				ConstraintType constraintType = constraint.ConstraintType;
 				IList<IntersectingConstraintValidation> validations = constraint.GetIntersectingConstraintValidationInfo();
 				if (validations == null)
 				{
@@ -1346,12 +1353,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						continue;
 					}
-					IList<ConstraintType> intersectingTypes = validationInfo.ConstraintTypesInPotentialConflict;
+					ConstraintType[] intersectingTypes = validationInfo.ConstraintTypesInPotentialConflict;
 					switch (validationInfo.IntersectionValidationPattern)
 					{
 						case IntersectingConstraintPattern.SetConstraintSubset:
+						case IntersectingConstraintPattern.SetConstraintSameSet:
 							FrameworkDomainModel.DelayValidateElement(setConstraint, DelayValidateSetConstraintSubsetPattern);
-							if (intersectingTypes.Contains(constraint.ConstraintType))
+							if (Array.IndexOf<ConstraintType>(intersectingTypes, constraintType) != -1)
 							{
 								// Any constraint of one of the listed types that intersects this one
 								// must also be validated.
@@ -1368,10 +1376,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										if (eligibleSequence != setConstraint)
 										{
 											IConstraint eligibleConstraint = eligibleSequence.Constraint;
-											if ((modalityChange || validationInfo.TestModality(eligibleConstraint.Modality, modality)) &&
-												intersectingTypes.Contains(eligibleConstraint.ConstraintType))
+											if (eligibleConstraint.ConstraintStorageStyle == ConstraintStorageStyle.SetConstraint &&
+												(modalityChange || validationInfo.TestModality(eligibleConstraint.Modality, modality)) &&
+												Array.IndexOf<ConstraintType>(validationInfo.ConstraintTypesInPotentialConflict, constraintType) != -1)
 											{
-												// The delayed validation mechanism automatically takes care of any duplicates
+												// The delayed validation mechanism automatically takes care of any duplicate requests
 												FrameworkDomainModel.DelayValidateElement(eligibleSequence, DelayValidateSetConstraintSubsetPattern);
 											}
 										}
@@ -1412,9 +1421,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			for (int i = 0; i < validationCount; ++i)
 			{
 				IntersectingConstraintValidation validationInfo = validations[i];
-				if (validationInfo.IntersectionValidationPattern != IntersectingConstraintPattern.SetConstraintSubset)
+				bool sameSet;
+				switch (validationInfo.IntersectionValidationPattern)
 				{
-					continue;
+					case IntersectingConstraintPattern.SetConstraintSubset:
+						sameSet = false;
+						break;
+					case IntersectingConstraintPattern.SetConstraintSameSet:
+						sameSet = true;
+						break;
+					default:
+						continue;
 				}
 				bool hasError = false;
 				LinkedElementCollection<Role> constraintRoles = this.RoleCollection;
@@ -1436,7 +1453,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								SetConstraint intersectingSetConstraint = (SetConstraint)intersectingSequence;
 								LinkedElementCollection<Role> intersectingRoles = intersectingSetConstraint.RoleCollection;
 								int intersectingRoleCount = intersectingRoles.Count;
-								if (intersectingRoleCount <= constraintRoleCount) // Can't be a subset if the count is greater
+								if (sameSet ? intersectingRoleCount == constraintRoleCount : intersectingRoleCount <= constraintRoleCount) // Can't be a subset if the count is greater
 								{
 									hasError = true; // Assume we have the problem, disprove it
 									for (int iIntersectingRole = 0; hasError && iIntersectingRole < intersectingRoleCount; ++iIntersectingRole)
@@ -1458,24 +1475,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					ModelError error = (ModelError)DomainRoleInfo.GetLinkedElement(this, domainRoleErrorId);
 					if (hasError)
 					{
-						//Will be an error that makes sense only on a constraint that has at least 2 roles
-						if (constraintRoleCount > 1)
+						if (error == null)
 						{
-							if (error == null)
+							error = (ModelError)store.ElementFactory.CreateElement(store.DomainDataDirectory.FindDomainRole(domainRoleErrorId).OppositeDomainRole.RolePlayer);
+							DomainRoleInfo.SetLinkedElement(this, domainRoleErrorId, error);
+							error.Model = Constraint.Model;
+							error.GenerateErrorText();
+							if (notifyAdded != null)
 							{
-								error = (ModelError)store.ElementFactory.CreateElement(store.DomainDataDirectory.FindDomainRole(domainRoleErrorId).OppositeDomainRole.RolePlayer);
-								DomainRoleInfo.SetLinkedElement(this, domainRoleErrorId, error);
-								error.Model = Constraint.Model;
-								error.GenerateErrorText();
-								if (notifyAdded != null)
-								{
-									notifyAdded.ElementAdded(error, true);
-								}
+								notifyAdded.ElementAdded(error, true);
 							}
-						}
-						else if (error != null)
-						{
-							error.Delete();
 						}
 					}
 					else if (error != null)
@@ -6152,9 +6161,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					yield return exactlyOneError;
 				}
-				foreach (FrequencyConstraintContradictsInternalUniquenessConstraintError contradictionError in FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection)
+				FrequencyConstraintViolatedByUniquenessConstraintError uniquenessViolationError = FrequencyConstraintViolatedByUniquenessConstraintError;
+				if (uniquenessViolationError != null)
 				{
-					yield return contradictionError;
+					yield return uniquenessViolationError;
 				}
 			}
 		}
@@ -6169,7 +6179,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			base.ValidateErrors(notifyAdded);
 			VerifyMinMaxError(notifyAdded);
-			VerifyFactTypeContradictionErrors(notifyAdded);
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{
@@ -6182,133 +6191,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			base.DelayValidateErrors();
 			FrameworkDomainModel.DelayValidateElement(this, DelayValidateFrequencyConstraintMinMaxError);
-			FrameworkDomainModel.DelayValidateElement(this, DelayValidateFrequencyConstraintContradictsInternalUniquenessConstraintError);
 		}
 		void IModelErrorOwner.DelayValidateErrors()
 		{
 			DelayValidateErrors();
 		}
 		#endregion //IModelErrorOwner Implementation
-		#region VerifyFactTypeContradictionErrors
-		/// <summary>
-		/// Validator callback for FrequencyConstraintContradictsInternalUniquenessConstraintError
-		/// </summary>
-		private static void DelayValidateFrequencyConstraintContradictsInternalUniquenessConstraintError(ModelElement element)
-		{
-			(element as FrequencyConstraint).VerifyFactTypeContradictionErrors(null);
-		}
-		/// <summary>
-		/// Called when the model is loaded to verify that the 
-		/// FrequencyConstraintContradictsInternalUniquenessConstraintErrors
-		/// are still nessecary, or add any that are needed
-		/// </summary>
-		/// <param name="notifyAdded"></param>
-		private void VerifyFactTypeContradictionErrors(INotifyElementAdded notifyAdded)
-		{
-			//create a list of the links between the constraint and the fact types it is attached to
-			//to preserve all information between the constraint and each fact type
-			ReadOnlyCollection<FactSetConstraint> factLinks = DomainRoleInfo.GetElementLinks<FactSetConstraint>(this, FactSetConstraint.SetConstraintDomainRoleId);
-			int linkCount = factLinks.Count;
-			//if there are no fact links, there is no reason to step further into the method
-			if (linkCount != 0)
-			{
-				//create local variables that will be recreated regularly
-				FactSetConstraint factLink;
-				FactType factType;
-				LinkedElementCollection<ConstraintRoleSequenceHasRole> roleLinks;
-				Role roleOnFact;
-				//the error collection only needs to be called for once
-				LinkedElementCollection<FrequencyConstraintContradictsInternalUniquenessConstraintError> errors = this.FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection;
-				for (int i = 0; i < linkCount; ++i)
-				{
-					bool needError = false, haveError = false;//booleans to determine what to do as far as the error is concerned
-					factLink = factLinks[i];
-					factType = factLink.FactType;
-					roleLinks = factLink.ConstrainedRoleCollection;
-					//determine if an error is needed
-					LinkedElementCollection<RoleBase> factRoles = factType.RoleCollection;//localize the role collection
-					int iucCount = factType.GetInternalConstraintsCount(ConstraintType.InternalUniqueness);//count of the IUCs
-					if (iucCount >= 0)//not passing this means needError stays false
-					{
-						int[] roleBits = new int[iucCount];//int array to accomodate the bit representation of the IUCs
-						int bits, roleCount, index = 0;//declare local integer variables which will see frequent use in the upcoming loop
-						LinkedElementCollection<Role> constraintRoles;//declare local role collection which will be reset several times in the upcoming loop
-						foreach (UniquenessConstraint ic in factType.GetInternalConstraints<UniquenessConstraint>())
-						{
-							bits = 0;
-							constraintRoles = ic.RoleCollection;
-							roleCount = constraintRoles.Count;
-							for (int j = 0; j < roleCount; ++j)
-							{
-								bits |= 1 << factRoles.IndexOf(constraintRoles[j]);//bit shift the roles applied to by the internal uniqueness constraints
-							}
-							roleBits[index] = bits;
-							++index;
-						}
-						int fqBits = 0;//representation of the roles covered by the frequency constraint
-						//create similar bit for roles covered by the frequency constraint
-						roleCount = roleLinks.Count;//reuse roleCount
-						for (int j = 0; j < roleCount; ++j)
-						{
-							roleOnFact = roleLinks[j].Role;
-							fqBits |= 1 << Role.IndexOf(factRoles, roleOnFact);//hoping it's safe to assume the role is on the factType
-						}
-
-						int rbLength = roleBits.Length;
-						for (int j = 0; !needError && j < rbLength; ++j)
-						{
-							//compare roleBits[i] with fqBits
-							//set needError to true if an error needs to be added for this factType
-							int iBits = roleBits[j];
-							if (iBits != 0)
-							{
-								if ((fqBits & iBits) == iBits)
-								{
-									needError = true;
-									break;
-								}
-							}
-						}
-					}//end IUC count check
-					//walk the error collection (backwards) and determine if there is an error for this factType
-					//during the walk of the collection, if the error is not needed and found, remove it
-					int errorCount = errors.Count;
-					for (int j = errorCount - 1; j >= 0; --j)
-					{
-						FrequencyConstraintContradictsInternalUniquenessConstraintError error = errors[j];
-						if (error.FactType == factType)
-						{
-							if (needError)
-							{
-								haveError = true;//have it, need it, good
-								break;
-							}
-							else
-							{
-								error.Delete();//have it, don't need it, get rid of it
-								continue;//continue checking the collection in case of duplicates
-							}//no reason to set haveError because needError is false
-						}
-					}
-					if (needError && !haveError)//need the error, but don't have it
-					{
-						//add the error - don't know how to do this part...
-						FrequencyConstraintContradictsInternalUniquenessConstraintError contraError = new FrequencyConstraintContradictsInternalUniquenessConstraintError(Store);
-						contraError.FrequencyConstraint = this;
-						contraError.FactType = factType;
-						contraError.Model = this.Model;
-						contraError.GenerateErrorText();
-						if (notifyAdded != null)
-						{
-							notifyAdded.ElementAdded(contraError, true);
-						}
-					}
-					//repeat for the next factType
-				}//end fact type collection foreach
-			}//end ftCount check
-			//method ends at this point
-		}
-		#endregion //VerifyFactTypeContradictionErrors
 		#region MinMaxError Validation
 		/// <summary>
 		/// Validator callback for FrequencyConstraintMinMaxError
@@ -6457,35 +6345,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return retVal;
 		}
 		#endregion // ConvertToUniquenessConstraint method
-		#region RemoveContradictionErrorsWithFactTypeRule
-		/// <summary>
-		/// DeleteRule: typeof(FactSetConstraint)
-		/// There is no automatic delete propagation when a role used by the
-		/// frequency constraint is removed and the role is the last role of that
-		/// fact used by the constraint. However, the FactSetConstraint link
-		/// is removed automatically for us in this case, so we go ahead and clear
-		/// out the appropriate errors here.
-		/// </summary>
-		private static void RemoveContradictionErrorsWithFactTypeRule(ElementDeletedEventArgs e)
-		{
-			FactSetConstraint link = e.ModelElement as FactSetConstraint;
-			FrequencyConstraint fc = link.SetConstraint as FrequencyConstraint;
-			if (fc != null)
-			{
-				FactType fact = link.FactType;
-				foreach (FrequencyConstraintContradictsInternalUniquenessConstraintError contradictionError in fc.FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection)
-				{
-					Debug.Assert(!contradictionError.IsDeleted); // Removed errors should not be in the collection
-					if (contradictionError.FactType == fact)
-					{
-						contradictionError.Delete();
-						// Note we can break here because there will only be one error per fact, and we must break here because we've modified the collection
-						break;
-					}
-				}
-			}
-		}
-		#endregion // RemoveContradictionErrorsWithFactTypeRule
 	}
 	#endregion // FrequencyConstraint class
 	#region Ring Constraint class
@@ -6971,9 +6830,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // Base overrides
 	}
 	#endregion // FrequencyConstraintExactlyOneError class
-	#region FrequencyConstraintContradictsInternalUniquenessConstraintError class
+	#region FrequencyConstraintViolatedByUniquenessConstraintError class
 	[ModelErrorDisplayFilter(typeof(ConstraintImplicationAndContradictionErrorCategory))]
-	public partial class FrequencyConstraintContradictsInternalUniquenessConstraintError : IRepresentModelElements
+	public partial class FrequencyConstraintViolatedByUniquenessConstraintError : IRepresentModelElements
 	{
 		#region Base Overrides
 		/// <summary>
@@ -6981,16 +6840,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			FrequencyConstraint parent = this.FrequencyConstraint;
-			FactType fact = this.FactType;
+			FrequencyConstraint parent = FrequencyConstraint;
+			ORMModel model = Model;
 			string parentName = (parent != null) ? parent.Name : "";
-			string factName = (fact != null) ? fact.Name : "";
+			string modelName = (model != null) ? model.Name : "";
+			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorFrequencyConstraintViolatedByUniquenessConstraintText, parentName, modelName);
 			string currentText = ErrorText;
-			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.FrequencyConstraintContradictsInternalUniquenessConstraintText, parentName, factName, Model.Name);
-			if (currentText != newText)
-			{
-				ErrorText = newText;
-			}
 		}
 		/// <summary>
 		/// Regenerate the error text when the constraint name changes
@@ -7011,7 +6866,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			// The base implementation returns the same set of elements, but
 			// order is not guaranteed.
-			return new ModelElement[] { FrequencyConstraint, FactType };
+			return new ModelElement[] { FrequencyConstraint };
 		}
 		ModelElement[] IRepresentModelElements.GetRepresentedElements()
 		{
@@ -7019,7 +6874,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // IRepresentModelElements Implementation
 	}
-	#endregion // FrequencyConstraintContradictsInternalUniquenessConstraintError class
+	#endregion // FrequencyConstraintViolatedByUniquenessConstraintError class
 	#region ImpliedInternalUniquenessConstraintError class
 	[ModelErrorDisplayFilter(typeof(FactTypeDefinitionErrorCategory))]
 	public partial class ImpliedInternalUniquenessConstraintError
@@ -7522,6 +7377,28 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	public partial class FrequencyConstraint : IConstraint
 	{
 		#region IConstraint Implementation
+		private static readonly IntersectingConstraintValidation[] myIntersectingValidationInfo = new IntersectingConstraintValidation[]
+		{
+				new IntersectingConstraintValidation(
+				    IntersectingConstraintPattern.SetConstraintSameSet,
+					IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotWeaker,
+					FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError.FrequencyConstraintDomainRoleId,
+					null,
+				    ConstraintType.InternalUniqueness,
+				    ConstraintType.ExternalUniqueness),
+		};
+		/// <summary>
+		/// Implements <see cref="IConstraint.GetIntersectingConstraintValidationInfo"/>
+		/// </summary>
+		/// <returns></returns>
+		protected new static IList<IntersectingConstraintValidation> GetIntersectingConstraintValidationInfo()
+		{
+			return myIntersectingValidationInfo;
+		}
+		IList<IntersectingConstraintValidation> IConstraint.GetIntersectingConstraintValidationInfo()
+		{
+			return GetIntersectingConstraintValidationInfo();
+		}
 		/// <summary>
 		/// Implements IConstraint.ConstraintType. Returns ConstraintType.Frequency.
 		/// </summary>
@@ -7603,12 +7480,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static readonly IntersectingConstraintValidation[] myIntersectingValidationInfo = new IntersectingConstraintValidation[]
 		{
 				new IntersectingConstraintValidation(
-				    IntersectingConstraintPattern.SetConstraintSubset,
+					IntersectingConstraintPattern.SetConstraintSubset,
 					IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotWeaker,
-				    SetConstraintHasImplicationError.SetConstraintDomainRoleId,
+					SetConstraintHasImplicationError.SetConstraintDomainRoleId,
 					null,
-				    ConstraintType.InternalUniqueness,
-				    ConstraintType.ExternalUniqueness),
+					ConstraintType.InternalUniqueness,
+					ConstraintType.ExternalUniqueness),
 		};
 		/// <summary>
 		/// Implements <see cref="IConstraint.GetIntersectingConstraintValidationInfo"/>

@@ -949,12 +949,12 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooFewRoleSequences.Text");
 			}
 		}
-		/// <summary>Model validation error text used when a frequency constraint contradicts an internal uniqueness constraint</summary>
-		public static string FrequencyConstraintContradictsInternalUniquenessConstraintText
+		/// <summary>Model validation error text used when a frequency constraint is places on the same roles as a uniqueness constraint. {0}=constraint name {1}=model name</summary>
+		public static string ModelErrorFrequencyConstraintViolatedByUniquenessConstraintText
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.FrequencyConstraintContradictsInternalUniquenessConstraintError.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.FrequencyConstraintViolatedByUniquenessConstraintError.Text");
 			}
 		}
 		/// <summary>Model validation error text when too many role sequences are specified for a constraint. This is an uncommon condition that should only occur with a hand edit to a model file.</summary>

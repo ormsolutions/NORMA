@@ -584,7 +584,6 @@
 		<se:Link RelationshipName="FactTypeHasFactTypeRequiresInternalUniquenessConstraintError" RoleName="InternalUniquenessConstraintRequiredError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeHasFactTypeRequiresReadingError" RoleName="ReadingRequiredError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeHasImpliedInternalUniquenessConstraintError" RoleName="ImpliedInternalUniquenessConstraintError" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError" RoleName="FrequencyConstraintContradictsInternalUniquenessConstraintError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ModelNoteReferencesFactType" RoleName="Note" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="FactTypeInstance" Name="FactTypeInstance" Override="true">
@@ -805,7 +804,7 @@
 	<se:Element Class="FrequencyConstraint" Override="true">
 		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintExactlyOneError" RoleName="FrequencyConstraintExactlyOneError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintMinMaxError" RoleName="FrequencyConstraintMinMaxError" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError" RoleName="FrequencyConstraintContradictsInternalUniquenessConstraintError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError" RoleName="FrequencyConstraintViolatedByUniquenessConstraintError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="UniquenessConstraint" Override="true" SortChildElements="true">
 		<se:Attribute ID="IsInternal">
@@ -1108,9 +1107,8 @@
 	<se:Element Class="RolePlayerRequiredError" Override="true">
 		<se:Link RelationshipName="RoleHasRolePlayerRequiredError" RoleName="Role" Name="Role"/>
 	</se:Element>
-	<se:Element Class="FrequencyConstraintContradictsInternalUniquenessConstraintError" Override="true">
-		<se:Link RelationshipName="FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError" RoleName="FactType" Name="Fact"/>
-		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError" RoleName="FrequencyConstraint" Name="FrequencyConstraint"/>
+	<se:Element Class="FrequencyConstraintViolatedByUniquenessConstraintError" Override="true">
+		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError" RoleName="FrequencyConstraint" Name="FrequencyConstraint"/>
 	</se:Element>
 	<se:Element Class="EqualityOrSubsetImpliedByMandatoryError" Name="EqualityConstraintImpliedByMandatoryConstraintsError" Override="true">
 		<se:ConditionalName Name="SubsetConstraintImpliedByMandatoryConstraintsError">

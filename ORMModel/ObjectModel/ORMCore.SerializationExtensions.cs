@@ -271,7 +271,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				classNameMap.Add("CompatibleSupertypesError", CompatibleSupertypesError.DomainClassId);
 				classNameMap.Add("CompatibleRolePlayerTypeError", CompatibleRolePlayerTypeError.DomainClassId);
 				classNameMap.Add("RolePlayerRequiredError", RolePlayerRequiredError.DomainClassId);
-				classNameMap.Add("FrequencyConstraintContradictsInternalUniquenessConstraintError", FrequencyConstraintContradictsInternalUniquenessConstraintError.DomainClassId);
+				classNameMap.Add("FrequencyConstraintViolatedByUniquenessConstraintError", FrequencyConstraintViolatedByUniquenessConstraintError.DomainClassId);
 				classNameMap.Add("EqualityConstraintImpliedByMandatoryConstraintsError", EqualityOrSubsetImpliedByMandatoryError.DomainClassId);
 				classNameMap.Add("SubsetConstraintImpliedByMandatoryConstraintsError", EqualityOrSubsetImpliedByMandatoryError.DomainClassId);
 				classNameMap.Add("Grouping", ElementGroupingSet.DomainClassId);
@@ -3316,10 +3316,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
 			}
-			if (roleId == FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintErrorDomainRoleId)
-			{
-				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
-			}
 			if (roleId == ModelNoteReferencesFactType.NoteDomainRoleId)
 			{
 				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
@@ -3369,10 +3365,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 10;
 				domainRole = domainDataDirectory.FindDomainRole(FactTypeHasImpliedInternalUniquenessConstraintError.ImpliedInternalUniquenessConstraintErrorDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 11;
-				domainRole = domainDataDirectory.FindDomainRole(FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintErrorDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 12;
 				domainRole = domainDataDirectory.FindDomainRole(ModelNoteReferencesFactType.NoteDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 13;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 12;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
 			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
@@ -5818,7 +5812,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
 			}
-			if (roleId == FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintErrorDomainRoleId)
+			if (roleId == FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError.FrequencyConstraintViolatedByUniquenessConstraintErrorDomainRoleId)
 			{
 				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
 			}
@@ -9403,8 +9397,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // RolePlayerRequiredError serialization
-	#region FrequencyConstraintContradictsInternalUniquenessConstraintError serialization
-	partial class FrequencyConstraintContradictsInternalUniquenessConstraintError : ICustomSerializedElement
+	#region FrequencyConstraintViolatedByUniquenessConstraintError serialization
+	partial class FrequencyConstraintViolatedByUniquenessConstraintError : ICustomSerializedElement
 	{
 		/// <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
 		protected new CustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -9425,11 +9419,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		protected new CustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			Guid roleId = rolePlayedInfo.Id;
-			if (roleId == FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.FactTypeDomainRoleId)
-			{
-				return new CustomSerializedElementInfo(null, "Fact", null, CustomSerializedElementWriteStyle.Element, null);
-			}
-			if (roleId == FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError.FrequencyConstraintDomainRoleId)
+			if (roleId == FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError.FrequencyConstraintDomainRoleId)
 			{
 				return new CustomSerializedElementInfo(null, "FrequencyConstraint", null, CustomSerializedElementWriteStyle.Element, null);
 			}
@@ -9447,16 +9437,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>Implements ICustomSerializedElement.MapChildElement</summary>
 		protected new CustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
 		{
-			Dictionary<string, CustomSerializedElementMatch> childElementMappings = FrequencyConstraintContradictsInternalUniquenessConstraintError.myChildElementMappings;
+			Dictionary<string, CustomSerializedElementMatch> childElementMappings = FrequencyConstraintViolatedByUniquenessConstraintError.myChildElementMappings;
 			if (childElementMappings == null)
 			{
 				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
 				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
-				match.InitializeRoles(FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.FactTypeDomainRoleId);
-				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/2006-04/ORMCore|Fact", match);
-				match.InitializeRoles(FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError.FrequencyConstraintDomainRoleId);
+				match.InitializeRoles(FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError.FrequencyConstraintDomainRoleId);
 				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/2006-04/ORMCore|FrequencyConstraint", match);
-				FrequencyConstraintContradictsInternalUniquenessConstraintError.myChildElementMappings = childElementMappings;
+				FrequencyConstraintViolatedByUniquenessConstraintError.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
 			if (!childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", (object)containerNamespace != (object)outerContainerNamespace ? containerNamespace : null, "|", containerName, "|", (object)elementNamespace != (object)containerNamespace ? elementNamespace : null, "|", elementName), out rVal))
@@ -9470,7 +9458,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
 		}
 	}
-	#endregion // FrequencyConstraintContradictsInternalUniquenessConstraintError serialization
+	#endregion // FrequencyConstraintViolatedByUniquenessConstraintError serialization
 	#region EqualityOrSubsetImpliedByMandatoryError serialization
 	partial class EqualityOrSubsetImpliedByMandatoryError : ICustomSerializedElement
 	{
