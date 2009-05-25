@@ -75,8 +75,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		ContextScopeReference,
 		/// <summary>The 'DefiniteArticle' format string snippet. Contains 1 replacement field.</summary>
 		DefiniteArticle,
-		/// <summary>The 'DefinitionVerbalization' format string snippet. Contains 1 replacement field.</summary>
-		DefinitionVerbalization,
+		/// <summary>The 'DerivationRuleVerbalization' format string snippet. Contains 1 replacement field.</summary>
+		DerivationRuleVerbalization,
+		/// <summary>The 'DescriptionVerbalization' format string snippet. Contains 1 replacement field.</summary>
+		DescriptionVerbalization,
 		/// <summary>The 'EachInstanceQuantifier' format string snippet. Contains 1 replacement field.</summary>
 		EachInstanceQuantifier,
 		/// <summary>The 'EntityTypeVerbalization' format string snippet. Contains 1 replacement field.</summary>
@@ -403,7 +405,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">context: </span>{0}",
 				@"<span class=""quantifier"">in this context,</span> {0}",
 				@"<span class=""quantifier"">that</span> {0}",
-				@"<span class=""quantifier"">Definition:</span> <span class=""definition"">{0}</span>",
+				@"<span class=""quantifier"">Derivation Rule:</span> <span class=""definition"">{0}</span>",
+				@"<span class=""quantifier"">Informal Description:</span> <span class=""definition"">{0}</span>",
 				@"<span class=""quantifier"">each instance of</span> {0} <span class=""quantifier"">occurs only once</span>",
 				@"{0} <span class=""quantifier"">is an entity type</span>",
 				@"{0}<span class=""quantifier""> if and only if </span>{1}",
@@ -599,7 +602,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">context: </span>{0}",
 				@"<span class=""quantifier"">in this context,</span> {0}",
 				@"<span class=""quantifier"">that</span> {0}",
-				@"<span class=""quantifier"">Definition:</span> <span class=""definition"">{0}</span>",
+				@"<span class=""quantifier"">Derivation Rule:</span> <span class=""definition"">{0}</span>",
+				@"<span class=""quantifier"">Informal Description:</span> <span class=""definition"">{0}</span>",
 				@"<span class=""quantifier"">each instance of</span> {0} <span class=""quantifier"">occurs only once</span>",
 				@"{0} <span class=""quantifier"">is an entity type</span>",
 				@"{0}<span class=""quantifier""> if and only if </span>{1}",
@@ -795,7 +799,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">context: </span>{0}",
 				@"<span class=""quantifier"">in this context,</span> {0}",
 				@"<span class=""quantifier"">that</span> {0}",
-				@"<span class=""quantifier"">Definition:</span> <span class=""definition"">{0}</span>",
+				@"<span class=""quantifier"">Derivation Rule:</span> <span class=""definition"">{0}</span>",
+				@"<span class=""quantifier"">Informal Description:</span> <span class=""definition"">{0}</span>",
 				@"<span class=""quantifier"">each instance of</span> {0} <span class=""quantifier"">occurs only once</span>",
 				@"{0} <span class=""quantifier"">is an entity type</span>",
 				@"{0}<span class=""quantifier""> if and only if </span>{1}",
@@ -991,7 +996,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">context: </span>{0}",
 				@"<span class=""quantifier"">in this context,</span> {0}",
 				@"<span class=""quantifier"">that</span> {0}",
-				@"<span class=""quantifier"">Definition:</span> <span class=""definition"">{0}</span>",
+				@"<span class=""quantifier"">Derivation Rule:</span> <span class=""definition"">{0}</span>",
+				@"<span class=""quantifier"">Informal Description:</span> <span class=""definition"">{0}</span>",
 				@"<span class=""quantifier"">each instance of</span> {0} <span class=""quantifier"">occurs only once</span>",
 				@"{0} <span class=""quantifier"">is an entity type</span>",
 				@"{0}<span class=""quantifier""> if and only if </span>{1}",
@@ -1979,7 +1985,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#endregion // Preliminary
 			#region Pattern Matches
 			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
-			string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.DefinitionVerbalization, isDeontic, isNegative);
+			string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.DescriptionVerbalization, isDeontic, isNegative);
 			string snippet1Replace1 = null;
 			snippet1Replace1 = this.Text;
 			FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
@@ -2127,6 +2133,223 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // Note verbalization
+	#region FactTypeDerivationExpression verbalization
+	public partial class FactTypeDerivationExpression : IVerbalize
+	{
+		/// <summary><see cref="IVerbalize.GetVerbalization"/> implementation</summary>
+		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
+		{
+			#region Preliminary
+			bool isNegative = 0 != (sign & VerbalizationSign.Negative);
+			IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
+			#region Prerequisite error check
+			IModelErrorOwner errorOwner = this as IModelErrorOwner;
+			bool firstErrorPending;
+			if (errorOwner != null)
+			{
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
+				{
+					if (firstErrorPending)
+					{
+						firstErrorPending = false;
+						verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenPrimaryReport, false, false));
+					}
+					else
+					{
+						writer.WriteLine();
+					}
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText, error.Id.ToString("D")));
+				}
+				if (!firstErrorPending)
+				{
+					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorClosePrimaryReport, false, false));
+					firstErrorPending = true;
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+					{
+						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+						{
+							continue;
+						}
+						if (firstErrorPending)
+						{
+							firstErrorPending = false;
+							writer.WriteLine();
+							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
+						}
+						else
+						{
+							writer.WriteLine();
+						}
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
+					}
+					if (!firstErrorPending)
+					{
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorCloseSecondaryReport, false, false));
+					}
+					return true;
+				}
+			}
+			#endregion // Prerequisite error check
+			const bool isDeontic = false;
+			#endregion // Preliminary
+			#region Pattern Matches
+			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
+			string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.DerivationRuleVerbalization, isDeontic, isNegative);
+			string snippet1Replace1 = null;
+			snippet1Replace1 = this.Body;
+			FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+			#endregion // Pattern Matches
+			#region Error report
+			if (errorOwner != null)
+			{
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+				{
+					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+					{
+						continue;
+					}
+					if (firstErrorPending)
+					{
+						firstErrorPending = false;
+						writer.WriteLine();
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
+					}
+					else
+					{
+						writer.WriteLine();
+					}
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
+				}
+				if (!firstErrorPending)
+				{
+					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorCloseSecondaryReport, false, false));
+				}
+			}
+			#endregion // Error report
+			return true;
+		}
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
+		{
+			return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
+		}
+	}
+	#endregion // FactTypeDerivationExpression verbalization
+	#region SubtypeDerivationExpression verbalization
+	public partial class SubtypeDerivationExpression : IVerbalize
+	{
+		/// <summary><see cref="IVerbalize.GetVerbalization"/> implementation</summary>
+		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
+		{
+			#region Preliminary
+			if (!this.Subtype.IsSubtype)
+			{
+				// A subtype derivation rule is maintained (but not saved) if the element was formerly a subtype.
+				return false;
+			}
+			bool isNegative = 0 != (sign & VerbalizationSign.Negative);
+			IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
+			#region Prerequisite error check
+			IModelErrorOwner errorOwner = this as IModelErrorOwner;
+			bool firstErrorPending;
+			if (errorOwner != null)
+			{
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
+				{
+					if (firstErrorPending)
+					{
+						firstErrorPending = false;
+						verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenPrimaryReport, false, false));
+					}
+					else
+					{
+						writer.WriteLine();
+					}
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText, error.Id.ToString("D")));
+				}
+				if (!firstErrorPending)
+				{
+					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorClosePrimaryReport, false, false));
+					firstErrorPending = true;
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+					{
+						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+						{
+							continue;
+						}
+						if (firstErrorPending)
+						{
+							firstErrorPending = false;
+							writer.WriteLine();
+							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
+						}
+						else
+						{
+							writer.WriteLine();
+						}
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
+					}
+					if (!firstErrorPending)
+					{
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorCloseSecondaryReport, false, false));
+					}
+					return true;
+				}
+			}
+			#endregion // Prerequisite error check
+			const bool isDeontic = false;
+			#endregion // Preliminary
+			#region Pattern Matches
+			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
+			string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.DerivationRuleVerbalization, isDeontic, isNegative);
+			string snippet1Replace1 = null;
+			snippet1Replace1 = this.Body;
+			FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+			#endregion // Pattern Matches
+			#region Error report
+			if (errorOwner != null)
+			{
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+				{
+					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+					{
+						continue;
+					}
+					if (firstErrorPending)
+					{
+						firstErrorPending = false;
+						writer.WriteLine();
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
+					}
+					else
+					{
+						writer.WriteLine();
+					}
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
+				}
+				if (!firstErrorPending)
+				{
+					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorCloseSecondaryReport, false, false));
+				}
+			}
+			#endregion // Error report
+			return true;
+		}
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
+		{
+			return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
+		}
+	}
+	#endregion // SubtypeDerivationExpression verbalization
 	#region SubsetConstraint verbalization
 	public partial class SubsetConstraint : IVerbalize
 	{

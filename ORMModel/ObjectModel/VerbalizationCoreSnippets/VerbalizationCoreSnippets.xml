@@ -25,7 +25,8 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="ValueTypeVerbalization"><![CDATA[{0} <span class="quantifier">is a value type</span>]]></Snippet>
 			<Snippet type="ModelVerbalization"><![CDATA[<span class="quantifier">Object-Role Model:</span> {0}]]></Snippet>
 			<Snippet type="NotesVerbalization"><![CDATA[<span class="quantifier">Notes:</span> <span class="note">{0}</span>]]></Snippet>
-			<Snippet type="DefinitionVerbalization"><![CDATA[<span class="quantifier">Definition:</span> <span class="definition">{0}</span>]]></Snippet>
+			<Snippet type="DescriptionVerbalization"><![CDATA[<span class="quantifier">Informal Description:</span> <span class="definition">{0}</span>]]></Snippet>
+			<Snippet type="DerivationRuleVerbalization"><![CDATA[<span class="quantifier">Derivation Rule:</span> <span class="definition">{0}</span>]]></Snippet>
 			<Snippet type="ConstraintProvidesPreferredIdentifier"><![CDATA[<span class="smallIndent"><span class="quantifier">this association with</span> {0} <span class="quantifier">provides the preferred identification scheme for</span> {1}</span>]]></Snippet>
  
 			<!-- All object type names are wrapped with this style automatically.

@@ -106,7 +106,19 @@
 			</plx:right>
 		</plx:assign>
 	</xsl:template>
-	<xsl:template match="cvg:Note|cvg:Definition" mode="GenerateClasses">
+	<xsl:template match="cvg:ExpressionBody" mode="ConstraintVerbalization">
+		<xsl:param name="VariableDecorator" select="position()"/>
+		<xsl:param name="VariablePrefix" select="'variableSnippet'"/>
+		<plx:assign>
+			<plx:left>
+				<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}" type="local"/>
+			</plx:left>
+			<plx:right>
+				<plx:callThis name="Body" type="property"/>
+			</plx:right>
+		</plx:assign>
+	</xsl:template>
+	<xsl:template match="cvg:Note|cvg:Definition|cvg:FactTypeDerivationExpression|cvg:SubtypeDerivationExpression" mode="GenerateClasses">
 		<xsl:variable name="className" select="name()"/>
 		<plx:class name="{$className}" visibility="public" partial="true">
 			<plx:leadingInfo>
@@ -133,6 +145,27 @@
 				<plx:returns dataTypeName=".boolean"/>
 
 				<plx:pragma type="region" data="Preliminary"/>
+				<xsl:if test="self::cvg:SubtypeDerivationExpression">
+					<!-- UNDONE: This check would correspond to a 'prerequisiteCondition'
+					attribute at the construct level, but we don't have one, and rarely
+					need it because blocking conditions are generally caught by checking
+					for blocking validation errors. -->
+					<plx:branch>
+						<plx:condition>
+							<plx:unaryOperator type="booleanNot">
+								<plx:callInstance name="IsSubtype" type="property">
+									<plx:callObject>
+										<plx:callThis name="Subtype" type="property"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:unaryOperator>
+						</plx:condition>
+						<plx:comment>A subtype derivation rule is maintained (but not saved) if the element was formerly a subtype.</plx:comment>
+						<plx:return>
+							<plx:falseKeyword/>
+						</plx:return>
+					</plx:branch>
+				</xsl:if>
 				<!-- Verbalizing a fact type is a simple case of verbalizing a constraint.
 					 Leverage the code snippets we use for constraints by setting the right
 					 variable names and calling the constraint verbalization templates -->
@@ -6820,6 +6853,13 @@
 							</plx:binaryOperator>
 						</plx:right>
 					</plx:binaryOperator>
+				</xsl:when>
+				<xsl:when test="$ConditionalMatch='IsSubtypeActive'">
+					<plx:callInstance name="IsSubtype" type="property">
+						<plx:callObject>
+							<plx:callThis name="Subtype" type="property"/>
+						</plx:callObject>
+					</plx:callInstance>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:message terminate="yes">

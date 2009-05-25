@@ -88,7 +88,7 @@
 			</Snippet>
 		</ObjectType>
 		<Definition>
-			<Snippet ref="DefinitionVerbalization">
+			<Snippet ref="DescriptionVerbalization">
 				<NoteText/>
 			</Snippet>
 		</Definition>
@@ -97,6 +97,16 @@
 				<NoteText/>
 			</Snippet>
 		</Note>
+		<FactTypeDerivationExpression>
+			<Snippet ref="DerivationRuleVerbalization">
+				<ExpressionBody/>
+			</Snippet>
+		</FactTypeDerivationExpression>
+		<SubtypeDerivationExpression>
+			<Snippet ref="DerivationRuleVerbalization">
+				<ExpressionBody/>
+			</Snippet>
+		</SubtypeDerivationExpression>
 		<!-- Generate constraint verbalizations -->
 		<Constraints>
 			<Constraint type="SubsetConstraint" patternGroup="SetComparisonConstraint">

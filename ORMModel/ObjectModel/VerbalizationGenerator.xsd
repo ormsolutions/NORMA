@@ -610,6 +610,7 @@
 			<xs:element name="ContextName" type="ContextNameType"/>
 			<xs:element name="ObjectifyingInstanceIdentifierName" type="ObjectifyingInstanceIdentifierNameType"/>
 			<xs:element name="ContextId" type="ElementIdType"/>
+			<xs:element name="ExpressionBody" type="ExpressionBodyType"/>
 			<xs:element name="NoteText" type="NoteTextType"/>
 			<xs:element name="ReferenceMode" type="ReferenceModeType"/>
 			<xs:element name="PortableDataType" type="PortableDataTypeType"/>
@@ -932,6 +933,13 @@
 			</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
+	<xs:complexType name="ExpressionBodyType">
+		<xs:annotation>
+			<xs:documentation>
+				Returns the body of a derivation expression.
+			</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
 	<xs:complexType name="NoteTextType">
 		<xs:annotation>
 			<xs:documentation>
@@ -1044,34 +1052,45 @@
 	<xs:complexType name="FactConstructType">
 		<!-- Nothing here yet, this is for the top-level verbalization of a Fact -->
 	</xs:complexType>
+	<xs:complexType name="SnippetContainerType" abstract="true">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="Snippet" type="SnippetTypeWithConditionalMatch" />
+			<xs:element name="ConditionalSnippet" type="ConditionalSnippetType" />
+		</xs:choice>
+	</xs:complexType>
 	<xs:complexType name="SubtypeConstructType">
 		<xs:annotation>
 			<xs:documentation>
 				Returns the full verbalization for a subtype fact, i.e, Man is a subtype of Person.
 			</xs:documentation>
 		</xs:annotation>
-		<xs:choice maxOccurs="unbounded">
-			<xs:element name="Snippet" type="SnippetTypeWithConditionalMatch" />
-			<xs:element name="ConditionalSnippet" type="ConditionalSnippetType" />
-		</xs:choice>
+		<xs:complexContent>
+			<xs:extension base="SnippetContainerType"/>
+		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="NoteConstructType">
 		<xs:annotation>
 			<xs:documentation>Returns the verbalization for the notes associated with an objectType.</xs:documentation>
 		</xs:annotation>
-		<xs:choice maxOccurs="unbounded">
-			<xs:element name="Snippet" type="SnippetTypeWithConditionalMatch" />
-			<xs:element name="ConditionalSnippet" type="ConditionalSnippetType" />
-		</xs:choice>
+		<xs:complexContent>
+			<xs:extension base="SnippetContainerType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DerivationExpressionConstructType">
+		<xs:annotation>
+			<xs:documentation>Returns the verbalization for a derivation expression.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="SnippetContainerType"/>
+		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="ModelConstructType">
 		<xs:annotation>
 			<xs:documentation>Returns the verbalization for the ORMModel.</xs:documentation>
 		</xs:annotation>
-		<xs:choice maxOccurs="unbounded">
-			<xs:element name="Snippet" type="SnippetTypeWithConditionalMatch" />
-			<xs:element name="ConditionalSnippet" type="ConditionalSnippetType" />
-		</xs:choice>
+		<xs:complexContent>
+			<xs:extension base="SnippetContainerType"/>
+		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="ObjectConstructType">
 		<xs:annotation>
@@ -1440,6 +1459,8 @@
 							<xs:element name="ObjectType" type="ObjectConstructType" />
 							<xs:element name="Definition" type="NoteConstructType" />
 							<xs:element name="Note" type="NoteConstructType" />
+							<xs:element name="SubtypeDerivationExpression" type="DerivationExpressionConstructType"/>
+							<xs:element name="FactTypeDerivationExpression" type="DerivationExpressionConstructType"/>
 							<xs:element name="ORMModel" type="ModelConstructType" />
 						</xs:all>
 					</xs:complexType>

@@ -25,9 +25,14 @@
 	<xs:redefine schemaLocation="../VerbalizationUntypedSnippets.xsd">
 		<xs:simpleType name="SnippetTypeEnum">
 			<xs:restriction base="SnippetTypeEnum">
-				<xs:enumeration value="DefinitionVerbalization">
+				<xs:enumeration value="DescriptionVerbalization">
 					<xs:annotation>
-						<xs:documentation>Description: Verbalizes the text specified for a n element definition.  Format: Definition: {0}</xs:documentation>
+						<xs:documentation>Description: Verbalizes the text specified for an element description.  Format: Informal Description: {0}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="DerivationRuleVerbalization">
+					<xs:annotation>
+						<xs:documentation>Description: Verbalizes the text specified for an element derivation rule.  Format: Derivation  Rule: {0}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="NotesVerbalization">
