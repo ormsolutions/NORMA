@@ -299,8 +299,8 @@
     <value xml:space="preserve">To select role sequences to populate the constraint:
 -Click a role to add it to the active role sequence
 -Control-Click a role to remove it from the active role sequence
--Double-Click a role to commit the active role sequence and open a new role sequence
--Click the diagram background or press Escape when you're finish connecting roles</value>
+-Double-Click a role to commit the active role sequence and begin a new role sequence
+-Click the diagram background or press Escape to finish</value>
     <comment xml:space="preserve">The text shown to explain how to hook up an external constraint to its associated roles.</comment>
   </data>
   <data name="ExternalConstraintConnectAction.SetConstraint.Instructions">
@@ -308,7 +308,7 @@
 -Click a role to add it to the constraint
 -Control-Click a role to remove it from the constaint
 -Double-Click a role to commit
--Click the diagram background or press Escape when you're finish connecting roles</value>
+-Click the diagram background or press Escape to finish</value>
     <comment xml:space="preserve">The text shown to explain how to hook up an external constraint to its associated roles.</comment>
   </data>
   <data name="ExternalConstraintConnectAction.TransactionName">
