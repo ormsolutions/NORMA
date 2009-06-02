@@ -422,6 +422,53 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign);
 	}
 	#endregion // IVerbalizeCustomChildren interface
+	#region IVerbalizeExtensionChildren interface
+	/// <summary>
+	/// Interface to allow extension elements to add child verbalizations
+	/// to any element.
+	/// </summary>
+	public interface IVerbalizeExtensionChildren
+	{
+		/// <summary>
+		/// Retrieve children to verbalize that are provided by
+		/// extension elements.
+		/// </summary>
+		/// <param name="parentElement">The parent element being verbalized.</param>
+		/// <param name="filter">A <see cref="IVerbalizeFilterChildren"/> instance. Can be <see langword="null"/>.
+		/// If the <see cref="IVerbalizeFilterChildren.FilterChildVerbalizer">FilterChildVerbalizer</see> method returns
+		/// <see cref="CustomChildVerbalizer.Block"/> for any constituent components used to create a <see cref="CustomChildVerbalizer"/>,
+		/// then that custom child should not be created</param>
+		/// <param name="sign">The preferred verbalization sign</param>
+		/// <returns>IEnumerable of CustomChildVerbalizer structures</returns>
+		IEnumerable<CustomChildVerbalizer> GetExtensionChildVerbalizations(object parentElement, IVerbalizeFilterChildren filter, VerbalizationSign sign);
+	}
+	#endregion // IVerbalizeExtensionChildren interface
+	#region IExtensionVerbalizerService interface
+	/// <summary>
+	/// Standard mechanism to register and unregister extension child
+	/// verbalizers for specific types.
+	/// </summary>
+	public interface IExtensionVerbalizerService
+	{
+		/// <summary>
+		/// Registers or unregisters an <see cref="IVerbalizeExtensionChildren"/> specified by
+		/// <paramref name="extensionVerbalizer"/> for the type specified by <paramref name="verbalizedElementType"/>.
+		/// </summary>
+		/// <param name="verbalizedElementType">The type for which the <paramref name="extensionVerbalizer"/> should be called.</param>
+		/// <param name="extensionVerbalizer">The <see cref="IVerbalizeExtensionChildren"/> being registered.</param>
+		/// <param name="includeSubtypes">Specifies whether the <paramref name="extensionVerbalizer"/> should also be registered for subtypes of <paramref name="verbalizedElementType"/>. Supported only for <see cref="ModelElement"/>-derived types.</param>
+		/// <param name="action">Specifies whether the property provider is being added or removed. See <see cref="EventHandlerAction"/></param>
+		void AddOrRemoveExtensionVerbalizer(Type verbalizedElementType, IVerbalizeExtensionChildren extensionVerbalizer, bool includeSubtypes, EventHandlerAction action);
+
+		/// <summary>
+		/// Get an <see cref="IVerbalizeExtensionChildren"/> instance for the
+		/// specified <paramref name="verbalizedElement"/>
+		/// </summary>
+		/// <param name="verbalizedElement">An element being verbalized.</param>
+		/// <returns>Child verbalizer, or <see langword="null"/></returns>
+		IVerbalizeExtensionChildren GetExtensionVerbalizer(object verbalizedElement);
+	}
+	#endregion // IExtensionVerbalizerService interface
 	#region IVerbalizeFilterChildren interface
 	/// <summary>
 	/// Implement to remove or provide an alternate verbalization for
@@ -1612,7 +1659,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Callback for child verbalizations
 		/// </summary>
-		private delegate VerbalizationResult VerbalizationHandler(VerbalizationCallbackWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IVerbalize verbalizer, VerbalizationHandler callback, int indentationLevel, VerbalizationSign sign, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel);
+		private delegate VerbalizationResult VerbalizationHandler(VerbalizationCallbackWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IExtensionVerbalizerService extensionVerbalizer, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IVerbalize verbalizer, VerbalizationHandler callback, int indentationLevel, VerbalizationSign sign, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel);
 		#endregion // VerbalizationHandler Delegate
 		#region VerbalizationContextImpl class
 		private sealed class VerbalizationContextImpl : IVerbalizationContext
@@ -1675,6 +1722,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="writer">The VerbalizationCallbackWriter object used to write target specific snippets</param>
 		/// <param name="snippetsDictionary"></param>
+		/// <param name="extensionVerbalizer"></param>
 		/// <param name="verbalizationTarget"></param>
 		/// <param name="alreadyVerbalized"></param>
 		/// <param name="verbalizer">The IVerbalize element to verbalize</param>
@@ -1686,7 +1734,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="firstWrite"></param>
 		/// <param name="lastLevel"></param>
 		/// <returns></returns>
-		private static VerbalizationResult VerbalizeElement_VerbalizationResult(VerbalizationCallbackWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IVerbalize verbalizer, VerbalizationHandler callback, int indentationLevel, VerbalizationSign sign, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel)
+		private static VerbalizationResult VerbalizeElement_VerbalizationResult(VerbalizationCallbackWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IExtensionVerbalizerService extensionVerbalizer, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IVerbalize verbalizer, VerbalizationHandler callback, int indentationLevel, VerbalizationSign sign, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel)
 		{
 			if (indentationLevel == 0 &&
 				alreadyVerbalized != null &&
@@ -1750,6 +1798,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					VerbalizationHelper.VerbalizeElement(
 						target,
 						snippetsDictionary,
+						extensionVerbalizer,
 						verbalizationTarget,
 						(0 == (options & DeferVerbalizationOptions.MultipleVerbalizations)) ? alreadyVerbalized : null,
 						childFilter,
@@ -1803,13 +1852,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="element">The element to verbalize</param>
 		/// <param name="snippetsDictionary">The default or loaded verbalization sets. Passed through all verbalization calls.</param>
+		/// <param name="extensionVerbalizer">The service to retrieve additional child verbalizations from extension elements</param>
 		/// <param name="verbalizationTarget">The verbalization target name, representing the container for the verbalization output.</param>
 		/// <param name="alreadyVerbalized">A dictionary of top-level (indentationLevel == 0) elements that have already been verbalized.</param>
 		/// <param name="sign">The preferred verbalization sign</param>
 		/// <param name="writer">The VerbalizationCallbackWriter for verbalization output</param>
 		/// <param name="writeSecondaryLines">True to automatically add a line between callbacks. Set to <see langword="true"/> for multi-select scenarios.</param>
 		/// <param name="firstCallPending"></param>
-		public static void VerbalizeElement(object element, IDictionary<Type, IVerbalizationSets> snippetsDictionary, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, VerbalizationSign sign, VerbalizationCallbackWriter writer, bool writeSecondaryLines, ref bool firstCallPending)
+		public static void VerbalizeElement(object element, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IExtensionVerbalizerService extensionVerbalizer, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, VerbalizationSign sign, VerbalizationCallbackWriter writer, bool writeSecondaryLines, ref bool firstCallPending)
 		{
 			int lastLevel = 0;
 			bool firstWrite = true;
@@ -1817,6 +1867,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			VerbalizeElement(
 				element,
 				snippetsDictionary,
+				extensionVerbalizer,
 				verbalizationTarget,
 				alreadyVerbalized,
 				null,
@@ -1841,41 +1892,63 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			firstCallPending = localFirstCallPending;
 		}
 		/// <summary>
-		/// Determine the indentation level for verbalizing an implementation of IVerbalizeCustomChildren, and fire
+		/// Determine the indentation level for verbalizing custom and extension children, and fire
 		/// the delegate for verbalization
 		/// </summary>
-		/// <param name="customChildren">The IVerbalizeCustomChildren implementation to verbalize</param>
+		/// <param name="customChildren">The enumeration of custom children to verbalize</param>
+		/// <param name="extensionChildren">The enumeration of extension children to verbalize</param>
 		/// <param name="snippetsDictionary">The default or loaded verbalization sets. Passed through all verbalization calls.</param>
+		/// <param name="extensionVerbalizer">The service to retrieve additional child verbalizations from extension elements</param>
 		/// <param name="verbalizationTarget">The verbalization target name, representing the container for the verbalization output.</param>
 		/// <param name="alreadyVerbalized">A dictionary of top-level (indentationLevel == 0) elements that have already been verbalized.</param>
-		/// <param name="filter"></param>
 		/// <param name="sign">The preferred verbalization sign</param>
 		/// <param name="writer">The VerbalizationCallbackWriter for verbalization output</param>
 		/// <param name="writeSecondaryLines">True to automatically add a line between callbacks. Set to <see langword="true"/> for multi-select scenarios.</param>
 		/// <param name="firstCallPending"></param>
-		public static void VerbalizeElement(IVerbalizeCustomChildren customChildren, IDictionary<Type, IVerbalizationSets> snippetsDictionary, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IVerbalizeFilterChildren filter, VerbalizationSign sign, VerbalizationCallbackWriter writer, bool writeSecondaryLines, ref bool firstCallPending)
+		public static void VerbalizeElement(IEnumerable<CustomChildVerbalizer> customChildren, IEnumerable<CustomChildVerbalizer> extensionChildren, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IExtensionVerbalizerService extensionVerbalizer, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, VerbalizationSign sign, VerbalizationCallbackWriter writer, bool writeSecondaryLines, ref bool firstCallPending)
 		{
-			if (customChildren == null)
+			if (customChildren == null && extensionChildren == null)
 			{
 				return;
 			}
+			VerbalizationHandler handler = new VerbalizationHandler(VerbalizeElement_VerbalizationResult);
 			int lastLevel = 0;
 			bool firstWrite = true;
 			bool localFirstCallPending = firstCallPending;
-			VerbalizeCustomChildren(
-				customChildren,
-				writer,
-				new VerbalizationHandler(VerbalizeElement_VerbalizationResult),
-				snippetsDictionary,
-				verbalizationTarget,
-				alreadyVerbalized,
-				filter,
-				sign,
-				0,
-				writeSecondaryLines,
-				ref localFirstCallPending,
-				ref firstWrite,
-				ref lastLevel);
+			if (customChildren != null)
+			{
+				VerbalizeCustomChildren(
+					customChildren,
+					writer,
+					handler,
+					snippetsDictionary,
+					extensionVerbalizer,
+					verbalizationTarget,
+					alreadyVerbalized,
+					sign,
+					0,
+					writeSecondaryLines,
+					ref localFirstCallPending,
+					ref firstWrite,
+					ref lastLevel);
+			}
+			if (extensionChildren != null)
+			{
+				VerbalizeCustomChildren(
+					extensionChildren,
+					writer,
+					handler,
+					snippetsDictionary,
+					extensionVerbalizer,
+					verbalizationTarget,
+					alreadyVerbalized,
+					sign,
+					0,
+					writeSecondaryLines,
+					ref localFirstCallPending,
+					ref firstWrite,
+					ref lastLevel);
+			}
 			while (lastLevel > 0)
 			{
 				writer.DecreaseIndent();
@@ -1893,6 +1966,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="element"></param>
 		/// <param name="snippetsDictionary"></param>
+		/// <param name="extensionVerbalizer"></param>
 		/// <param name="verbalizationTarget"></param>
 		/// <param name="alreadyVerbalized"></param>
 		/// <param name="outerFilter"></param>
@@ -1904,7 +1978,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="firstCallPending"></param>
 		/// <param name="firstWrite"></param>
 		/// <param name="lastLevel"></param>
-		private static void VerbalizeElement(object element, IDictionary<Type, IVerbalizationSets> snippetsDictionary, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IVerbalizeFilterChildren outerFilter, VerbalizationCallbackWriter writer, VerbalizationHandler callback, VerbalizationSign sign, int indentLevel, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel)
+		private static void VerbalizeElement(object element, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IExtensionVerbalizerService extensionVerbalizer, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IVerbalizeFilterChildren outerFilter, VerbalizationCallbackWriter writer, VerbalizationHandler callback, VerbalizationSign sign, int indentLevel, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel)
 		{
 			IVerbalize parentVerbalize = null;
 			IRedirectVerbalization surrogateRedirect;
@@ -1912,7 +1986,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				null != (surrogateRedirect = element as IRedirectVerbalization) &&
 				null != (parentVerbalize = surrogateRedirect.SurrogateVerbalizer))
 			{
-				element = parentVerbalize as ModelElement;
+				element = parentVerbalize;
 			}
 			else
 			{
@@ -1927,7 +2001,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			try
 			{
-				VerbalizationResult result = (parentVerbalize != null) ? callback(writer, snippetsDictionary, verbalizationTarget, alreadyVerbalized, parentVerbalize, callback, indentLevel, sign, writeSecondaryLines, ref firstCallPending, ref firstWrite, ref lastLevel) : VerbalizationResult.NotVerbalized;
+				VerbalizationResult result = (parentVerbalize != null) ? callback(writer, snippetsDictionary, extensionVerbalizer, verbalizationTarget, alreadyVerbalized, parentVerbalize, callback, indentLevel, sign, writeSecondaryLines, ref firstCallPending, ref firstWrite, ref lastLevel) : VerbalizationResult.NotVerbalized;
 				if (result == VerbalizationResult.AlreadyVerbalized)
 				{
 					return;
@@ -1936,7 +2010,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				bool parentVerbalizeOK = result == VerbalizationResult.Verbalized;
 				bool verbalizeChildren = parentVerbalizeOK ? (modelElement != null) : (element is IVerbalizeChildren);
 				IVerbalizeCustomChildren customChildren = element as IVerbalizeCustomChildren;
-				if (verbalizeChildren || (customChildren != null))
+				IVerbalizeExtensionChildren extensionChildren = extensionVerbalizer.GetExtensionVerbalizer(element);
+				if (verbalizeChildren || (customChildren != null) || (extensionChildren != null))
 				{
 					if (parentVerbalizeOK)
 					{
@@ -1970,7 +2045,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								int childCount = children.Count;
 								for (int j = 0; j < childCount; ++j)
 								{
-									VerbalizeElement(children[j], snippetsDictionary, verbalizationTarget, alreadyVerbalized, filter, writer, callback, sign, indentLevel, writeSecondaryLines, ref firstCallPending, ref firstWrite, ref lastLevel);
+									VerbalizeElement(children[j], snippetsDictionary, extensionVerbalizer, verbalizationTarget, alreadyVerbalized, filter, writer, callback, sign, indentLevel, writeSecondaryLines, ref firstCallPending, ref firstWrite, ref lastLevel);
 								}
 							}
 						}
@@ -1979,13 +2054,30 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					if (customChildren != null)
 					{
 						VerbalizeCustomChildren(
-							customChildren,
+							customChildren.GetCustomChildVerbalizations(filter, sign),
 							writer,
 							callback,
 							snippetsDictionary,
+							extensionVerbalizer,
 							ORMCoreDomainModel.VerbalizationTargetName,
 							alreadyVerbalized,
-							filter,
+							sign,
+							indentLevel,
+							writeSecondaryLines,
+							ref firstCallPending,
+							ref firstWrite,
+							ref lastLevel);
+					}
+					if (extensionChildren != null)
+					{
+						VerbalizeCustomChildren(
+							extensionChildren.GetExtensionChildVerbalizations(element, filter, sign),
+							writer,
+							callback,
+							snippetsDictionary,
+							extensionVerbalizer,
+							ORMCoreDomainModel.VerbalizationTargetName,
+							alreadyVerbalized,
 							sign,
 							indentLevel,
 							writeSecondaryLines,
@@ -2004,12 +2096,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						if (0 != (options & SurveyNodeReferenceOptions.SelectReferenceReason) &&
 							null != (deferToElement = surveyReference.SurveyNodeReferenceReason))
 						{
-							VerbalizeElement(deferToElement, snippetsDictionary, verbalizationTarget, alreadyVerbalized, sign, writer, writeSecondaryLines, ref firstCallPending);
+							VerbalizeElement(deferToElement, snippetsDictionary, extensionVerbalizer, verbalizationTarget, alreadyVerbalized, sign, writer, writeSecondaryLines, ref firstCallPending);
 							return;
 						}
 						if (null != (deferToElement = surveyReference.ReferencedElement))
 						{
-							VerbalizeElement(deferToElement, snippetsDictionary, verbalizationTarget, alreadyVerbalized, sign, writer, writeSecondaryLines, ref firstCallPending);
+							VerbalizeElement(deferToElement, snippetsDictionary, extensionVerbalizer, verbalizationTarget, alreadyVerbalized, sign, writer, writeSecondaryLines, ref firstCallPending);
 						}
 					}
 				}
@@ -2061,31 +2153,35 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // CompositeChildFilter class
 		/// <summary>
-		/// Verbalizes the children specified by the given IVerbalizeCustomChildren implementation
+		/// Verbalizes CustomChildVerbalizer elements
 		/// </summary>
-		/// <param name="customChildren">The IVerbalizeCustomChildren implementation to verbalize</param>
+		/// <param name="customChildren">The CustomChildVerbalizer elements to verbalize</param>
 		/// <param name="writer">The target specific Writer to use</param>
 		/// <param name="callback">The delegate used to handle the verbalization</param>
 		/// <param name="snippetsDictionary"></param>
+		/// <param name="extensionVerbalizer"></param>
 		/// <param name="verbalizationTarget"></param>
 		/// <param name="alreadyVerbalized"></param>
-		/// <param name="filter"></param>
 		/// <param name="sign">The preferred verbalization sign</param>
 		/// <param name="indentationLevel">The current level of indentation</param>
 		/// <param name="writeSecondaryLines">True to automatically add a line between callbacks. Set to <see langword="true"/> for multi-select scenarios.</param>
 		/// <param name="firstCallPending"></param>
 		/// <param name="firstWrite"></param>
 		/// <param name="lastLevel"></param>
-		private static void VerbalizeCustomChildren(IVerbalizeCustomChildren customChildren, VerbalizationCallbackWriter writer, VerbalizationHandler callback, IDictionary<Type, IVerbalizationSets> snippetsDictionary, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IVerbalizeFilterChildren filter, VerbalizationSign sign, int indentationLevel, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel)
+		private static void VerbalizeCustomChildren(IEnumerable<CustomChildVerbalizer> customChildren, VerbalizationCallbackWriter writer, VerbalizationHandler callback, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IExtensionVerbalizerService extensionVerbalizer, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, VerbalizationSign sign, int indentationLevel, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel)
 		{
-			foreach (CustomChildVerbalizer customChild in customChildren.GetCustomChildVerbalizations(filter, sign))
+			if (customChildren == null)
+			{
+				return;
+			}
+			foreach (CustomChildVerbalizer customChild in customChildren)
 			{
 				IVerbalize childVerbalize = customChild.Instance;
 				if (childVerbalize != null)
 				{
 					try
 					{
-						callback(writer, snippetsDictionary, verbalizationTarget, alreadyVerbalized, childVerbalize, callback, indentationLevel, sign, writeSecondaryLines, ref firstCallPending, ref firstWrite, ref lastLevel);
+						callback(writer, snippetsDictionary, extensionVerbalizer, verbalizationTarget, alreadyVerbalized, childVerbalize, callback, indentationLevel, sign, writeSecondaryLines, ref firstCallPending, ref firstWrite, ref lastLevel);
 					}
 					finally
 					{
@@ -2104,4 +2200,240 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // VerbalizeElement methods
 	}
 	#endregion // VerbalizationHelper class
+	#region ExtensionVerbalizerService class
+	/// <summary>
+	/// A standard implementation of <see cref="IExtensionVerbalizerService"/>
+	/// </summary>
+	public sealed class ExtensionVerbalizerService : IExtensionVerbalizerService
+	{
+		#region VerbalizeExtensionChildrenWrapper class
+		private sealed class VerbalizeExtensionChildrenWrapper : IVerbalizeExtensionChildren
+		{
+			private List<IVerbalizeExtensionChildren> myWrappedItems;
+			private VerbalizeExtensionChildrenWrapper()
+			{
+				myWrappedItems = new List<IVerbalizeExtensionChildren>();
+			}
+			#region Helper methods
+			/// <summary>
+			/// Combine two extension verbalizers.
+			/// </summary>
+			/// <param name="left">A starting element.</param>
+			/// <param name="right">An element to combine with the starting element</param>
+			/// <returns>Combined implementation</returns>
+			public static IVerbalizeExtensionChildren Combine(IVerbalizeExtensionChildren left, IVerbalizeExtensionChildren right)
+			{
+				VerbalizeExtensionChildrenWrapper leftWrapper;
+				VerbalizeExtensionChildrenWrapper rightWrapper;
+				if (right == null)
+				{
+					return left;
+				}
+				else if (left == null)
+				{
+					return right;
+				}
+				else if (null != (leftWrapper = left as VerbalizeExtensionChildrenWrapper))
+				{
+					rightWrapper = right as VerbalizeExtensionChildrenWrapper;
+					if (rightWrapper != null)
+					{
+						leftWrapper.myWrappedItems.AddRange(rightWrapper.myWrappedItems);
+					}
+					else
+					{
+						leftWrapper.myWrappedItems.Add(right);
+					}
+					return leftWrapper;
+				}
+				else if (null != (rightWrapper = left as VerbalizeExtensionChildrenWrapper))
+				{
+					rightWrapper.myWrappedItems.Insert(0, left);
+					return rightWrapper;
+				}
+				else
+				{
+					rightWrapper = new VerbalizeExtensionChildrenWrapper();
+					List<IVerbalizeExtensionChildren> list = rightWrapper.myWrappedItems;
+					list.Add(left);
+					list.Add(right);
+					return rightWrapper;
+				}
+			}
+			/// <summary>
+			/// Remove an extension verbalizer from a verbalizer previously returned by
+			/// <see cref="Combine"/>
+			/// </summary>
+			/// <param name="combinedChildVerbalizer">The combined <see cref="IVerbalizeExtensionChildren"/> element.</param>
+			/// <param name="removeVerbalizer">An element to remove;</param>
+			/// <returns>Combined implementation</returns>
+			public static IVerbalizeExtensionChildren Remove(IVerbalizeExtensionChildren combinedChildVerbalizer, IVerbalizeExtensionChildren removeVerbalizer)
+			{
+				VerbalizeExtensionChildrenWrapper removeFromWrapper;
+				if (removeVerbalizer == null)
+				{
+					return combinedChildVerbalizer;
+				}
+				else if (combinedChildVerbalizer == null)
+				{
+					return null;
+				}
+				else if (combinedChildVerbalizer == removeVerbalizer)
+				{
+					return null;
+				}
+				else if (null != (removeFromWrapper = combinedChildVerbalizer as VerbalizeExtensionChildrenWrapper))
+				{
+					List<IVerbalizeExtensionChildren> removeFromList = removeFromWrapper.myWrappedItems;
+					VerbalizeExtensionChildrenWrapper removeWrapper = removeVerbalizer as VerbalizeExtensionChildrenWrapper;
+					int matchIndex;
+					if (removeWrapper != null)
+					{
+						foreach (IVerbalizeExtensionChildren removeItem in removeWrapper.myWrappedItems)
+						{
+							matchIndex = removeFromList.IndexOf(removeItem);
+							if (matchIndex != -1)
+							{
+								removeFromList.RemoveAt(matchIndex);
+							}
+						}
+					}
+					else
+					{
+						matchIndex = removeFromList.IndexOf(removeVerbalizer);
+						if (matchIndex != -1)
+						{
+							removeFromList.RemoveAt(matchIndex);
+						}
+					}
+					switch (removeFromList.Count)
+					{
+						case 0:
+							return null;
+						case 1:
+							return removeFromList[0];
+					}
+					return combinedChildVerbalizer;
+				}
+				else
+				{
+					return combinedChildVerbalizer;
+				}
+			}
+			#endregion // Helper methods
+			#region IVerbalizeExtensionChildren Implementation
+			public IEnumerable<CustomChildVerbalizer> GetExtensionChildVerbalizations(object parentElement, IVerbalizeFilterChildren filter, VerbalizationSign sign)
+			{
+				foreach (IVerbalizeExtensionChildren child in myWrappedItems)
+				{
+					foreach (CustomChildVerbalizer nestedVerbalizer in child.GetExtensionChildVerbalizations(parentElement, filter, sign))
+					{
+						yield return nestedVerbalizer;
+					}
+				}
+			}
+			#endregion // IVerbalizeExtensionChildren Implementation
+		}
+		#endregion // VerbalizeExtensionChildrenWrapper class
+		#region Member Variables
+		private readonly Store myStore;
+		private readonly Dictionary<RuntimeTypeHandle, IVerbalizeExtensionChildren> myExtensionVerbalizersDictionary;
+		#endregion // Member Variables
+		#region Constructor
+		/// <summary>
+		/// Create a <see cref="ExtensionVerbalizerService"/> for the specified <see cref="Store"/>
+		/// </summary>
+		public ExtensionVerbalizerService(Store store)
+		{
+			Debug.Assert(store != null);
+			this.myStore = store;
+			this.myExtensionVerbalizersDictionary = new Dictionary<RuntimeTypeHandle, IVerbalizeExtensionChildren>(RuntimeTypeHandleComparer.Instance);
+		}
+		#endregion // Constructor
+		#region Accessor Properties
+		/// <summary>
+		/// Get the context <see cref="Store"/>
+		/// </summary>
+		private Store Store
+		{
+			get
+			{
+				return myStore;
+			}
+		}
+		#endregion // Access Properties
+		#region IExtensionVerbalizerService Implementation
+		void IExtensionVerbalizerService.AddOrRemoveExtensionVerbalizer(Type verbalizedElementType, IVerbalizeExtensionChildren extensionVerbalizer, bool includeSubtypes, EventHandlerAction action)
+		{
+			bool register = action == EventHandlerAction.Add;
+			if (register)
+			{
+				this.RegisterExtensionVerbalizer(verbalizedElementType.TypeHandle, extensionVerbalizer);
+			}
+			else
+			{
+				this.UnregisterExtensionVerbalizer(verbalizedElementType.TypeHandle, extensionVerbalizer);
+			}
+			if (includeSubtypes)
+			{
+				Store store = this.myStore;
+				DomainClassInfo domainClassInfo = store.DomainDataDirectory.FindDomainClass(verbalizedElementType);
+				if (domainClassInfo != null)
+				{
+					foreach (DomainClassInfo subtypeInfo in domainClassInfo.AllDescendants)
+					{
+						if (register)
+						{
+							this.RegisterExtensionVerbalizer(subtypeInfo.ImplementationClass.TypeHandle, extensionVerbalizer);
+						}
+						else
+						{
+							this.UnregisterExtensionVerbalizer(subtypeInfo.ImplementationClass.TypeHandle, extensionVerbalizer);
+						}
+					}
+				}
+			}
+		}
+		private void RegisterExtensionVerbalizer(RuntimeTypeHandle key, IVerbalizeExtensionChildren extensionVerbalizer)
+		{
+			Dictionary<RuntimeTypeHandle, IVerbalizeExtensionChildren> dictionary = myExtensionVerbalizersDictionary;
+			IVerbalizeExtensionChildren existingElement = null;
+			if (dictionary.TryGetValue(key, out existingElement))
+			{
+				dictionary[key] = VerbalizeExtensionChildrenWrapper.Combine(existingElement, extensionVerbalizer);
+			}
+			else
+			{
+				dictionary[key] = extensionVerbalizer;
+			}
+		}
+		private void UnregisterExtensionVerbalizer(RuntimeTypeHandle key, IVerbalizeExtensionChildren extensionVerbalizer)
+		{
+			Dictionary<RuntimeTypeHandle, IVerbalizeExtensionChildren> dictionary = this.myExtensionVerbalizersDictionary;
+			IVerbalizeExtensionChildren existingElement;
+			if (dictionary.TryGetValue(key, out existingElement))
+			{
+				IVerbalizeExtensionChildren newElement = VerbalizeExtensionChildrenWrapper.Remove(existingElement, extensionVerbalizer);
+				if (newElement == null)
+				{
+					dictionary.Remove(key);
+				}
+				else if (newElement != existingElement)
+				{
+					dictionary[key] = newElement;
+				}
+			}
+		}
+		IVerbalizeExtensionChildren IExtensionVerbalizerService.GetExtensionVerbalizer(object verbalizedElement)
+		{
+			IVerbalizeExtensionChildren retVal;
+			if (verbalizedElement != null && myExtensionVerbalizersDictionary.TryGetValue(verbalizedElement.GetType().TypeHandle, out retVal))
+			{
+				return retVal;
+			}
+			return null;
+		}
+		#endregion // IExtensionVerbalizerService Implementation
+	}
+	#endregion // ExtensionVerbalizerService class
 }

@@ -359,6 +359,43 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 			#endregion // ISurveyDynamicValues Implementation
 		}
 		#endregion // DiagramGlyphSurveyType class
+		/// <summary>
+		/// Retrieve an <see cref="ImageList"/> of the diagram images for the specified <see cref="Store"/>.
+		/// Use with <see cref="GetDiagramImageIndex"/> to provide glyphs for diagrams outside the survey tree.
+		/// </summary>
+		public static ImageList GetDiagramImageList(Store store)
+		{
+			foreach (ISurveyQuestionProvider<Store> questionProvider in ((IFrameworkServices)store).GetTypedDomainModelProviders<ISurveyQuestionProvider<Store>>())
+			{
+				DiagramSurvey diagramSurvey = questionProvider as DiagramSurvey;
+				if (diagramSurvey != null)
+				{
+					// Copied from generated code, will need to change if the generator changes
+					diagramSurvey.EnsureSurveyQuestionTypeInfo1(store);
+					return ((DiagramGlyphSurveyType)diagramSurvey.myDynamicDiagramGlyphSurveyTypeQuestionInstance.DynamicQuestionValues).DiagramImages;
+				}
+			}
+			return null;
+		}
+		/// <summary>
+		/// Retrieve the index of a <see cref="Diagram"/>.
+		/// Use with <see cref="GetDiagramImageList"/> to provide glyphs for diagrams outside the survey tree.
+		/// </summary>
+		public static int GetDiagramImageIndex(Diagram diagram)
+		{
+			Store store = diagram.Store;
+			foreach (ISurveyQuestionProvider<Store> questionProvider in ((IFrameworkServices)store).GetTypedDomainModelProviders<ISurveyQuestionProvider<Store>>())
+			{
+				DiagramSurvey diagramSurvey = questionProvider as DiagramSurvey;
+				if (diagramSurvey != null)
+				{
+					// Copied from generated code, will need to change if the generator changes
+					diagramSurvey.EnsureSurveyQuestionTypeInfo1(store);
+					return ((DiagramGlyphSurveyType)diagramSurvey.myDynamicDiagramGlyphSurveyTypeQuestionInstance.DynamicQuestionValues).GetDiagramIndex(diagram);
+				}
+			}
+			return -1;
+		}
 	}
 	#endregion // DiagramSurvey class
 }

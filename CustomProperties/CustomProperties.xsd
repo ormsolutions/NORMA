@@ -3,6 +3,7 @@
 	<xs:annotation>
 		<xs:appinfo source="zlib/libpng License Copyright Notice">
 			Copyright © Neumont University. All rights reserved.
+			Copyright © ORM Solutions, LLC. All rights reserved.
 
 			This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
 			Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
@@ -127,6 +128,11 @@
 			<xs:attribute name="defaultValue" use="optional" type="xs:anySimpleType">
 				<xs:annotation>
 					<xs:documentation>Default value to be used for the property, zero (0) for numeric properties, empty string for all others.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="verbalizeDefaultValue" type="xs:boolean" default="true">
+				<xs:annotation>
+					<xs:documentation>Verbalize a custom property that matches the specified default value.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
 			<xs:attribute name="customEnumValues" use="optional" type="xs:string"/>

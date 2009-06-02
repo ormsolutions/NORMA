@@ -95,6 +95,13 @@ namespace ORMSolutions.ORMArchitectSDK.TestEngine
 			{
 				return null;
 			}
+			IExtensionVerbalizerService IORMToolServices.ExtensionVerbalizerService
+			{
+				get
+				{
+					return null;
+				}
+			}
 			INotifySurveyElementChanged IFrameworkServices.NotifySurveyElementChanged
 			{
 				get

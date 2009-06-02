@@ -1387,6 +1387,27 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		/// can be made at any time to efficiently retrieve the current element for this identifier.</returns>
 		ModelElement RealizeElement(string idValue, Guid domainClassIdentifier, bool isReference);
 		/// <summary>
+		/// Get an element of the specified type and identifier. If the element
+		/// is created as a reference, then there is no guarantee that the returned
+		/// element will be the final form of this element or that the <see cref="ModelElement.Id"/>
+		/// of the returned element matches the requested <paramref name="idValue"/>.
+		/// May be used during deserialization.
+		/// </summary>
+		/// <param name="idValue">An identifier value unique across the file.</param>
+		/// <param name="domainClassIdentifier">The identifier of the <see cref="DomainClassInfo"/> for
+		/// the element to create.</param>
+		/// <param name="isReference">Determine if the element is being primarily created or referenced.</param>
+		/// <param name="explicitForwardReferenceDomainClassIdentifier">If a reference is being created and the
+		/// target element is serialized as a top-level element, but has not yet been created, then the true type
+		/// of the target elements is not known. However, if a 'lucky' guess is made and the true type of the
+		/// element is created, then it can change the top-level element order, resulting in a large change in
+		/// the serialized file. This specifies a class to create as a temporary placeholder for the forward
+		/// reference. The temporary class will be deleted before serialization completes</param>
+		/// <returns>A corresponding <see cref="ModelElement"/>. If <paramref name="isReference"/> is <see langword="true"/>,
+		/// then the returned element should never be cached. A subsequent call with the same parameter values
+		/// can be made at any time to efficiently retrieve the current element for this identifier.</returns>
+		ModelElement RealizeElement(string idValue, Guid domainClassIdentifier, bool isReference, Guid explicitForwardReferenceDomainClassIdentifier);
+		/// <summary>
 		/// Create an element link after verifying that the link needs to be created. May be
 		/// used during deserialization.
 		/// </summary>
@@ -2736,6 +2757,11 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 				// Only support during load, not save
 				throw new InvalidOperationException();
 			}
+			ModelElement ISerializationContext.RealizeElement(string idValue, Guid domainClassIdentifier, bool isReference, Guid explicitForwardReferenceDomainClassIdentifier)
+			{
+				// Only support during load, not save
+				throw new InvalidOperationException();
+			}
 			ElementLink ISerializationContext.RealizeElementLink(string idValue, ModelElement rolePlayer, ModelElement oppositeRolePlayer, Guid oppositeDomainRoleInfoId, Guid? explicitDomainRelationshipInfoId)
 			{
 				// Only support during load, not save
@@ -3428,6 +3454,10 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 			}
 			ModelElement ISerializationContext.RealizeElement(string idValue, Guid domainClassIdentifier, bool isReference)
 			{
+				return ((ISerializationContext)this).RealizeElement(idValue, domainClassIdentifier, isReference, Guid.Empty);
+			}
+			ModelElement ISerializationContext.RealizeElement(string idValue, Guid domainClassIdentifier, bool isReference, Guid explicitForwardReferenceDomainClassIdentifier)
+			{
 				SerializationEngine engine = myEngine;
 				Store store = engine.myStore;
 				bool createAsPlaceHolder = false;
@@ -3441,7 +3471,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 					}
 				}
 				bool isNewElementDummy;
-				return myEngine.CreateElement(idValue, classInfo, domainClassIdentifier, Guid.Empty, createAsPlaceHolder, out isNewElementDummy);
+				return myEngine.CreateElement(idValue, classInfo, domainClassIdentifier, explicitForwardReferenceDomainClassIdentifier, createAsPlaceHolder, out isNewElementDummy);
 			}
 			ElementLink ISerializationContext.RealizeElementLink(string idValue, ModelElement rolePlayer, ModelElement oppositeRolePlayer, Guid oppositeDomainRoleInfoId, Guid? explicitDomainRelationshipInfoId)
 			{

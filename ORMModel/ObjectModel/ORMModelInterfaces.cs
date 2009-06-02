@@ -120,6 +120,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		IDictionary<string, VerbalizationTargetData> VerbalizationTargets { get;}
 		/// <summary>
+		/// Get a service to all extension models to inject verbalized child
+		/// elements into the standard verbalization.
+		/// </summary>
+		IExtensionVerbalizerService ExtensionVerbalizerService { get;}
+		/// <summary>
 		/// Retrieve the LayoutEngines dictionary for this store
 		/// </summary>
 		LayoutEngine GetLayoutEngine(Type engineType);

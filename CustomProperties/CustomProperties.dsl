@@ -3,6 +3,7 @@
 	Natural Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
+	Copyright © ORM Solutions, LLC. All rights reserved.
 
 	The use and distribution terms for this software are covered by the
 	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
@@ -76,7 +77,7 @@
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="Category" DisplayName="Category" Id="A600653C-13CF-4DD1-B849-EB61B44FB785" DefaultValue="Default">
+				<DomainProperty Name="Category" DisplayName="Category" Id="A600653C-13CF-4DD1-B849-EB61B44FB785">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
@@ -89,6 +90,11 @@
 				<DomainProperty Name="DefaultValue" DisplayName="Default" Id="A3023163-70D8-4E90-ACA9-315CFDDC7F44">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Object"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="VerbalizeDefaultValue" DisplayName="VerbalizeDefaultValue" Id="B3084EFA-E0FD-4533-BA2B-EA534A5BA0D4" DefaultValue="true">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
 				<DomainProperty Name="ORMTypes" DisplayName="ORMTypes" Id="C1D2D7A1-787C-4BF8-9EA3-3C0FFA6E39B0">

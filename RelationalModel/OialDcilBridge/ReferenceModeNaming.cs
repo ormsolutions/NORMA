@@ -58,7 +58,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// An <see cref="PropertyProvider"/> callback for adding extender properties to an <see cref="ObjectType"/>
 		/// </summary>
-		public static void PopulateReferenceModeNamingExtensionProperties(ModelElement extendableElement, PropertyDescriptorCollection properties)
+		public static void PopulateReferenceModeNamingExtensionProperties(object extendableElement, PropertyDescriptorCollection properties)
 		{
 			ObjectType objectType;
 			IReferenceModePattern referenceMode;
@@ -86,7 +86,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// An <see cref="PropertyProvider"/> callback for adding extender properties to an <see cref="ORMModel"/>
 		/// </summary>
-		public static void PopulateDefaultReferenceModeNamingExtensionPropertiesOnORMModel(ModelElement extendableElement, PropertyDescriptorCollection properties)
+		public static void PopulateDefaultReferenceModeNamingExtensionPropertiesOnORMModel(object extendableElement, PropertyDescriptorCollection properties)
 		{
 			ORMModel model;
 			if (null != (model = extendableElement as ORMModel) &&
@@ -100,7 +100,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// An <see cref="PropertyProvider"/> callback for adding extender properties to an <see cref="RelationalNameGenerator"/>
 		/// </summary>
-		public static void PopulateDefaultReferenceModeNamingExtensionPropertiesOnColumnNameGenerator(ModelElement extendableElement, PropertyDescriptorCollection properties)
+		public static void PopulateDefaultReferenceModeNamingExtensionPropertiesOnColumnNameGenerator(object extendableElement, PropertyDescriptorCollection properties)
 		{
 			RelationalNameGenerator generator;
 			if (null != (generator = extendableElement as RelationalNameGenerator) &&

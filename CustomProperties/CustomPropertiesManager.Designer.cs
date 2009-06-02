@@ -114,7 +114,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			this.groupBox1.Size = new System.Drawing.Size(220, 351);
 			this.groupBox1.TabIndex = 0;
 			this.groupBox1.TabStop = false;
-			this.groupBox1.Text = "Properties";
+			this.groupBox1.Text = "&Properties";
 			// 
 			// toolStrip1
 			// 

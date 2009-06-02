@@ -639,7 +639,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 					IPropertyProviderService providerService = ((IFrameworkServices)store).PropertyProviderService;
 					if (providerService != null)
 					{
-						providerService.AddOrRemovePropertyProvider<Diagram>(DiagramDisplay.ProvideDiagramProperties, true, action);
+						providerService.AddOrRemovePropertyProvider(typeof(Diagram), DiagramDisplay.ProvideDiagramProperties, true, action);
 					}
 					if (0 != (reasons & EventSubscriberReasons.UserInterfaceEvents))
 					{

@@ -205,6 +205,14 @@
     <value>Default</value>
     <comment>DisplayName for DomainProperty &apos;DefaultValue&apos; on DomainClass &apos;CustomPropertyDefinition&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/VerbalizeDefaultValue.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition.VerbalizeDefaultValue</value>
+    <comment>Description for DomainProperty &apos;VerbalizeDefaultValue&apos; on DomainClass &apos;CustomPropertyDefinition&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/VerbalizeDefaultValue.DisplayName" xml:space="preserve">
+    <value>VerbalizeDefaultValue</value>
+    <comment>DisplayName for DomainProperty &apos;VerbalizeDefaultValue&apos; on DomainClass &apos;CustomPropertyDefinition&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/ORMTypes.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition.ORMTypes</value>
     <comment>Description for DomainProperty &apos;ORMTypes&apos; on DomainClass &apos;CustomPropertyDefinition&apos;</comment>
@@ -560,6 +568,7 @@ A DomainClass can be serialized as a moniker only if
 	Natural Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
+	Copyright © ORM Solutions, LLC. All rights reserved.
 
 	The use and distribution terms for this software are covered by the
 	Common Public License 1.0 (http://opensource.org/licenses/cpl) which

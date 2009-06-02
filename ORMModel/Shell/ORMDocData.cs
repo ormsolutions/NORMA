@@ -231,6 +231,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				// Remove the cached verbalization snippets and targets, this set will change
 				myTargetedVerbalizationSnippets = null;
 				myVerbalizationTargets = null;
+				myExtensionVerbalizerService = null;
 			}
 			// Convert early so we can accurately check extension elements
 			int retVal = 0;

@@ -53,7 +53,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(60, 13);
 			this.label2.TabIndex = 2;
-			this.label2.Text = "Description";
+			this.label2.Text = "&Description";
 			// 
 			// tbxName
 			// 
@@ -73,7 +73,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(35, 13);
 			this.label1.TabIndex = 0;
-			this.label1.Text = "Name";
+			this.label1.Text = "&Name";
 			// 
 			// btnEditDescription
 			// 

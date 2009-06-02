@@ -59,6 +59,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			this.tbxName = new System.Windows.Forms.TextBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.btnEditDescription = new System.Windows.Forms.Button();
+			this.chkVerbalizeDefaultValue = new System.Windows.Forms.CheckBox();
 			this.groupBox2.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -70,9 +71,9 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			this.groupBox2.Location = new System.Drawing.Point(2, 160);
 			this.groupBox2.Name = "groupBox2";
 			this.groupBox2.Size = new System.Drawing.Size(235, 130);
-			this.groupBox2.TabIndex = 14;
+			this.groupBox2.TabIndex = 15;
 			this.groupBox2.TabStop = false;
-			this.groupBox2.Text = "Model Elements";
+			this.groupBox2.Text = "&Model Elements";
 			// 
 			// tvModelElements
 			// 
@@ -112,7 +113,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			this.btnEditCustomEnum.Location = new System.Drawing.Point(213, 132);
 			this.btnEditCustomEnum.Name = "btnEditCustomEnum";
 			this.btnEditCustomEnum.Size = new System.Drawing.Size(25, 23);
-			this.btnEditCustomEnum.TabIndex = 13;
+			this.btnEditCustomEnum.TabIndex = 14;
 			this.btnEditCustomEnum.Text = "...";
 			this.btnEditCustomEnum.UseVisualStyleBackColor = true;
 			this.btnEditCustomEnum.Visible = false;
@@ -125,7 +126,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			this.tbxCustomEnum.Location = new System.Drawing.Point(79, 134);
 			this.tbxCustomEnum.Name = "tbxCustomEnum";
 			this.tbxCustomEnum.Size = new System.Drawing.Size(133, 20);
-			this.tbxCustomEnum.TabIndex = 12;
+			this.tbxCustomEnum.TabIndex = 13;
 			this.tbxCustomEnum.Visible = false;
 			// 
 			// label4
@@ -134,7 +135,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			this.label4.Location = new System.Drawing.Point(2, 137);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(72, 13);
-			this.label4.TabIndex = 11;
+			this.label4.TabIndex = 12;
 			this.label4.Text = "Custom Enum";
 			this.label4.Visible = false;
 			// 
@@ -156,7 +157,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(71, 13);
 			this.label3.TabIndex = 9;
-			this.label3.Text = "Default Value";
+			this.label3.Text = "Default &Value";
 			// 
 			// cmbxDataType
 			// 
@@ -193,7 +194,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			this.label10.Name = "label10";
 			this.label10.Size = new System.Drawing.Size(49, 13);
 			this.label10.TabIndex = 5;
-			this.label10.Text = "Category";
+			this.label10.Text = "&Category";
 			// 
 			// label9
 			// 
@@ -202,7 +203,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			this.label9.Name = "label9";
 			this.label9.Size = new System.Drawing.Size(57, 13);
 			this.label9.TabIndex = 7;
-			this.label9.Text = "Data Type";
+			this.label9.Text = "Data &Type";
 			// 
 			// tbxDescription
 			// 
@@ -222,7 +223,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(60, 13);
 			this.label2.TabIndex = 2;
-			this.label2.Text = "Description";
+			this.label2.Text = "&Description";
 			// 
 			// tbxName
 			// 
@@ -242,7 +243,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(35, 13);
 			this.label1.TabIndex = 0;
-			this.label1.Text = "Name";
+			this.label1.Text = "&Name";
 			// 
 			// btnEditDescription
 			// 
@@ -255,10 +256,23 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			this.btnEditDescription.UseVisualStyleBackColor = true;
 			this.btnEditDescription.Click += new System.EventHandler(this.btnEditDescription_Click);
 			// 
+			// chkVerbalizeDefaultValue
+			// 
+			this.chkVerbalizeDefaultValue.AutoSize = true;
+			this.chkVerbalizeDefaultValue.Location = new System.Drawing.Point(2, 137);
+			this.chkVerbalizeDefaultValue.Name = "chkVerbalizeDefaultValue";
+			this.chkVerbalizeDefaultValue.Size = new System.Drawing.Size(178, 13);
+			this.chkVerbalizeDefaultValue.TabIndex = 11;
+			this.chkVerbalizeDefaultValue.Tag = "verbalizeDefaultValue";
+			this.chkVerbalizeDefaultValue.Text = "Ver&balize Default Value";
+			this.chkVerbalizeDefaultValue.UseVisualStyleBackColor = true;
+			this.chkVerbalizeDefaultValue.CheckedChanged += new System.EventHandler(this.chkVerbalizeDefaultValue_CheckedChanged);
+			// 
 			// DefinitionEditor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.Controls.Add(this.chkVerbalizeDefaultValue);
 			this.Controls.Add(this.btnEditDescription);
 			this.Controls.Add(this.groupBox2);
 			this.Controls.Add(this.btnEditCustomEnum);
@@ -300,5 +314,6 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Button btnEditDescription;
 		private System.Windows.Forms.TreeView tvModelElements;
+		private System.Windows.Forms.CheckBox chkVerbalizeDefaultValue;
 	}
 }

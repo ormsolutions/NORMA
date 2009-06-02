@@ -61,11 +61,11 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				return;
 			}
 			IPropertyProviderService propertyProvider = ((IFrameworkServices)Store).PropertyProviderService;
-			propertyProvider.AddOrRemovePropertyProvider<FactType>(AssimilationMapping.PopulateAssimilationMappingExtensionProperties, true, action);
-			propertyProvider.AddOrRemovePropertyProvider<ObjectType>(AssimilationMapping.PopulateObjectTypeAbsorptionExtensionProperties, false, action);
-			propertyProvider.AddOrRemovePropertyProvider<ObjectType>(ReferenceModeNaming.PopulateReferenceModeNamingExtensionProperties, false, action);
-			propertyProvider.AddOrRemovePropertyProvider<ORMModel>(ReferenceModeNaming.PopulateDefaultReferenceModeNamingExtensionPropertiesOnORMModel, false, action);
-			propertyProvider.AddOrRemovePropertyProvider<RelationalNameGenerator>(ReferenceModeNaming.PopulateDefaultReferenceModeNamingExtensionPropertiesOnColumnNameGenerator, false, action);
+			propertyProvider.AddOrRemovePropertyProvider(typeof(FactType), AssimilationMapping.PopulateAssimilationMappingExtensionProperties, true, action);
+			propertyProvider.AddOrRemovePropertyProvider(typeof(ObjectType), AssimilationMapping.PopulateObjectTypeAbsorptionExtensionProperties, false, action);
+			propertyProvider.AddOrRemovePropertyProvider(typeof(ObjectType), ReferenceModeNaming.PopulateReferenceModeNamingExtensionProperties, false, action);
+			propertyProvider.AddOrRemovePropertyProvider(typeof(ORMModel), ReferenceModeNaming.PopulateDefaultReferenceModeNamingExtensionPropertiesOnORMModel, false, action);
+			propertyProvider.AddOrRemovePropertyProvider(typeof(RelationalNameGenerator), ReferenceModeNaming.PopulateDefaultReferenceModeNamingExtensionPropertiesOnColumnNameGenerator, false, action);
 		}
 		void IModelingEventSubscriber.ManageModelingEventHandlers(ModelingEventManager eventManager, EventSubscriberReasons reasons, EventHandlerAction action)
 		{

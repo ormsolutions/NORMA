@@ -21,27 +21,27 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
+using System.IO;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Runtime.InteropServices;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Modeling;
 using StoreUndoManager = Microsoft.VisualStudio.Modeling.UndoManager;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Shell;
 using ShellUndoManager = Microsoft.VisualStudio.Modeling.Shell.UndoManager;
+using MSOLE = Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.VirtualTreeGrid;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.ShapeModel;
 using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Framework.Design;
 using ORMSolutions.ORMArchitect.Framework.Diagrams;
 using ORMSolutions.ORMArchitect.Framework.Shell;
 using ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid;
-using ORMSolutions.ORMArchitect.Core.ObjectModel;
-using ORMSolutions.ORMArchitect.Core.ShapeModel;
-using MSOLE = Microsoft.VisualStudio.OLE.Interop;
-using System.IO;
-using ORMSolutions.ORMArchitect.Framework.Design;
 
 namespace ORMSolutions.ORMArchitect.Core.Shell
 {
@@ -250,6 +250,24 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			IDictionary<Type, IVerbalizationSets> IORMToolServices.GetVerbalizationSnippetsDictionary(string target)
 			{
 				return GetVerbalizationSnippetsDictionary(target);
+			}
+			/// <summary>
+			/// Defer to ExtensionVerbalizerService on the document. Implements
+			/// <see cref="IORMToolServices.ExtensionVerbalizerService"/>
+			/// </summary>
+			protected IExtensionVerbalizerService ExtensionVerbalizerService
+			{
+				get
+				{
+					return myServices.ExtensionVerbalizerService;
+				}
+			}
+			IExtensionVerbalizerService IORMToolServices.ExtensionVerbalizerService
+			{
+				get
+				{
+					return ExtensionVerbalizerService;
+				}
 			}
 			/// <summary>
 			/// Defer to VerbalizationTargets on the document. Implements
@@ -1214,6 +1232,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		private static FileSystemWatcher myVerbalizationChangeWatcher;
 		private static uint myVerbalizationChangeCookie;
 		private IDictionary<string, VerbalizationTargetData> myVerbalizationTargets;
+		private IExtensionVerbalizerService myExtensionVerbalizerService;
 		private IDictionary<Type, LayoutEngineData> myLayoutEngines;
 		private int myCustomBlockCanAddTransactionCount;
 		private int myCustomProcessingVisibleTransactionItemEventsCount;
@@ -1434,6 +1453,24 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		IDictionary<Type, IVerbalizationSets> IORMToolServices.GetVerbalizationSnippetsDictionary(string target)
 		{
 			return GetVerbalizationSnippetsDictionary(target);
+		}
+		/// <summary>
+		/// Implements <see cref="IORMToolServices.ExtensionVerbalizerService"/>
+		/// </summary>
+		protected IExtensionVerbalizerService ExtensionVerbalizerService
+		{
+			get
+			{
+				IExtensionVerbalizerService retVal = myExtensionVerbalizerService;
+				return retVal ?? (myExtensionVerbalizerService = new ExtensionVerbalizerService(Store));
+			}
+		}
+		IExtensionVerbalizerService IORMToolServices.ExtensionVerbalizerService
+		{
+			get
+			{
+				return ExtensionVerbalizerService;
+			}
 		}
 		/// <summary>
 		/// Implements <see cref="IORMToolServices.VerbalizationTargets"/>

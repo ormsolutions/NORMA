@@ -978,14 +978,22 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			foreach (XmlNode xmlDef in xmlDefinitions)
 			{
 				CustomPropertyDefinition def = new CustomPropertyDefinition(store);
+				XmlAttributeCollection attributes = xmlDef.Attributes;
 				def.CustomPropertyGroup = grp;
-				def.Name = xmlDef.Attributes["name"].Value;
-				def.Category = xmlDef.Attributes["category"].Value;
-				def.Description = xmlDef.Attributes["description"].Value;
-				def.DataType = (CustomPropertyDataType)Enum.Parse(typeof(CustomPropertyDataType), xmlDef.Attributes["dataType"].Value, true);
-				if (xmlDef.Attributes["defaultValue"] != null)
+				def.Name = attributes["name"].Value;
+				def.Category = attributes["category"].Value;
+				def.Description = attributes["description"].Value;
+				def.DataType = (CustomPropertyDataType)Enum.Parse(typeof(CustomPropertyDataType), attributes["dataType"].Value, true);
+				XmlAttribute defaultValueAttribute = attributes["defaultValue"];
+				if (defaultValueAttribute != null)
 				{
-					def.DefaultValue = xmlDef.Attributes["defaultValue"].Value;
+					def.DefaultValue = defaultValueAttribute.Value;
+				}
+				XmlAttribute verbalizeDefaultAttribute = attributes["verbalizeDefaultValue"];
+				if (verbalizeDefaultAttribute != null)
+				{
+					string verbalizeDefaultText = verbalizeDefaultAttribute.Value.Trim();
+					def.VerbalizeDefaultValue = verbalizeDefaultText == "true" || verbalizeDefaultText == "1";
 				}
 				XmlNodeList types = xmlDef.SelectNodes("def:ORMTypes/def:ORMType", _namespaceManager);
 				foreach (XmlNode ormType in types)

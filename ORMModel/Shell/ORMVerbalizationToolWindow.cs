@@ -351,6 +351,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				ICollection selectedObjects = base.GetSelectedComponents();
 				IDictionary<Type, IVerbalizationSets> snippetsDictionary = null;
 				IVerbalizationSets<CoreVerbalizationSnippetType> snippets = null;
+				IExtensionVerbalizerService extensionVerbalizer = null;
 				VerbalizationCallbackWriter callbackWriter = null;
 				bool showNegative = ORMDesignerPackage.VerbalizationWindowSettings.ShowNegativeVerbalizations;
 				bool firstCallPending = true;
@@ -383,6 +384,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								{
 									break;
 								}
+								extensionVerbalizer = ((IORMToolServices)CurrentDocument.Store).ExtensionVerbalizerService;
 								snippetsDictionary = (store as IORMToolServices).GetVerbalizationSnippetsDictionary(ORMCoreDomainModel.VerbalizationTargetName);
 								snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
 								callbackWriter = new VerbalizationCallbackWriter(snippets, myStringWriter, GetDocumentHeaderReplacementFields(mel, snippets));
@@ -390,6 +392,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							VerbalizationHelper.VerbalizeElement(
 								mel,
 								snippetsDictionary,
+								extensionVerbalizer,
 								ORMCoreDomainModel.VerbalizationTargetName,
 								verbalized,
 								(showNegative ? VerbalizationSign.Negative : VerbalizationSign.Positive) | VerbalizationSign.AttemptOppositeSign,

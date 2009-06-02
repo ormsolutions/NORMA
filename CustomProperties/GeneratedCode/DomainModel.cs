@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -86,6 +87,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 				new DomainMemberInfo(typeof(CustomPropertyDefinition), "Category", CustomPropertyDefinition.CategoryDomainPropertyId, typeof(CustomPropertyDefinition.CategoryPropertyHandler)),
 				new DomainMemberInfo(typeof(CustomPropertyDefinition), "DataType", CustomPropertyDefinition.DataTypeDomainPropertyId, typeof(CustomPropertyDefinition.DataTypePropertyHandler)),
 				new DomainMemberInfo(typeof(CustomPropertyDefinition), "DefaultValue", CustomPropertyDefinition.DefaultValueDomainPropertyId, typeof(CustomPropertyDefinition.DefaultValuePropertyHandler)),
+				new DomainMemberInfo(typeof(CustomPropertyDefinition), "VerbalizeDefaultValue", CustomPropertyDefinition.VerbalizeDefaultValueDomainPropertyId, typeof(CustomPropertyDefinition.VerbalizeDefaultValuePropertyHandler)),
 				new DomainMemberInfo(typeof(CustomPropertyDefinition), "ORMTypes", CustomPropertyDefinition.ORMTypesDomainPropertyId, typeof(CustomPropertyDefinition.ORMTypesPropertyHandler)),
 				new DomainMemberInfo(typeof(CustomPropertyDefinition), "CustomEnumValue", CustomPropertyDefinition.CustomEnumValueDomainPropertyId, typeof(CustomPropertyDefinition.CustomEnumValuePropertyHandler)),
 				new DomainMemberInfo(typeof(CustomProperty), "Value", CustomProperty.ValueDomainPropertyId, typeof(CustomProperty.ValuePropertyHandler)),

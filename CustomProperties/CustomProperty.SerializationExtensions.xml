@@ -7,6 +7,7 @@
 		<se:CopyrightLine>* Natural Object-Role Modeling Architect for Visual Studio                 *</se:CopyrightLine>
 		<se:CopyrightLine>*                                                                          *</se:CopyrightLine>
 		<se:CopyrightLine>* Copyright © Neumont University. All rights reserved.                     *</se:CopyrightLine>
+		<se:CopyrightLine>* Copyright © ORM Solutions, LLC. All rights reserved.                     *</se:CopyrightLine>
 		<se:CopyrightLine>*                                                                          *</se:CopyrightLine>
 		<se:CopyrightLine>* The use and distribution terms for this software are covered by the      *</se:CopyrightLine>
 		<se:CopyrightLine>* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *</se:CopyrightLine>
@@ -54,25 +55,11 @@
 		</se:Attribute>
 		<se:Attribute ID="Category" Name="category">
 			<se:Condition WriteStyle="NotWritten">
-				<plx:binaryOperator type="booleanOr">
-					<plx:left>
-						<plx:callStatic type="methodCall" dataTypeName=".string" name="IsNullOrEmpty">
-							<plx:passParam>
-								<plx:callThis accessor="this" type="property" name="Category"/>
-							</plx:passParam>
-						</plx:callStatic>
-					</plx:left>
-					<plx:right>
-						<plx:binaryOperator type="identityEquality">
-							<plx:left>
-								<plx:callThis accessor="this" type="property" name="Category"/>
-							</plx:left>
-							<plx:right>
-								<plx:string>Default</plx:string>
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:right>
-				</plx:binaryOperator>
+				<plx:callStatic type="methodCall" dataTypeName=".string" name="IsNullOrEmpty">
+					<plx:passParam>
+						<plx:callThis accessor="this" type="property" name="Category"/>
+					</plx:passParam>
+				</plx:callStatic>
 			</se:Condition>
 		</se:Attribute>
 		<se:Attribute ID="DataType" Name="dataType"/>
@@ -84,6 +71,25 @@
 					</plx:left>
 					<plx:right>
 						<plx:nullKeyword/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="VerbalizeDefaultValue" Name="verbalizeDefaultValue">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="booleanOr">
+					<plx:left>
+						<plx:callThis accessor="this" type="property" name="VerbalizeDefaultValue"/>
+					</plx:left>
+					<plx:right>
+						<plx:binaryOperator type="identityEquality">
+							<plx:left>
+								<plx:callThis accessor="this" type="property" name="DefaultValue"/>
+							</plx:left>
+							<plx:right>
+								<plx:nullKeyword/>
+							</plx:right>
+						</plx:binaryOperator>
 					</plx:right>
 				</plx:binaryOperator>
 			</se:Condition>

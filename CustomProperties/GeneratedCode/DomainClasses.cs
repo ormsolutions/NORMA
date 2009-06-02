@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -566,7 +567,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 		/// <summary>
 		/// Storage for Category
 		/// </summary>
-		private global::System.String categoryPropertyStorage = "Default";
+		private global::System.String categoryPropertyStorage = string.Empty;
 		
 		/// <summary>
 		/// Gets or sets the value of Category domain property.
@@ -575,7 +576,6 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/Category.DisplayName", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/Category.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
-		[global::System.ComponentModel.DefaultValue("Default")]
 		[DslModeling::DomainObjectId("a600653c-13cf-4dd1-b849-eb61b44fb785")]
 		public global::System.String Category
 		{
@@ -816,6 +816,95 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 				{
 					ValueChanging(element, oldValue, newValue);
 					element.defaultValuePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region VerbalizeDefaultValue domain property code
+		
+		/// <summary>
+		/// VerbalizeDefaultValue domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid VerbalizeDefaultValueDomainPropertyId = new global::System.Guid(0xb3084efa, 0xe0fd, 0x4533, 0xba, 0x2b, 0xea, 0x53, 0x4a, 0x5b, 0xa0, 0xd4);
+		
+		/// <summary>
+		/// Storage for VerbalizeDefaultValue
+		/// </summary>
+		private global::System.Boolean verbalizeDefaultValuePropertyStorage = true;
+		
+		/// <summary>
+		/// Gets or sets the value of VerbalizeDefaultValue domain property.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition.VerbalizeDefaultValue
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/VerbalizeDefaultValue.DisplayName", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDefinition/VerbalizeDefaultValue.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(true)]
+		[DslModeling::DomainObjectId("b3084efa-e0fd-4533-ba2b-ea534a5ba0d4")]
+		public global::System.Boolean VerbalizeDefaultValue
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return verbalizeDefaultValuePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				VerbalizeDefaultValuePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the CustomPropertyDefinition.VerbalizeDefaultValue domain property.
+		/// </summary>
+		internal sealed partial class VerbalizeDefaultValuePropertyHandler : DslModeling::DomainPropertyValueHandler<CustomPropertyDefinition, global::System.Boolean>
+		{
+			private VerbalizeDefaultValuePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the CustomPropertyDefinition.VerbalizeDefaultValue domain property value handler.
+			/// </summary>
+			public static readonly VerbalizeDefaultValuePropertyHandler Instance = new VerbalizeDefaultValuePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the CustomPropertyDefinition.VerbalizeDefaultValue domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return VerbalizeDefaultValueDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(CustomPropertyDefinition element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.verbalizeDefaultValuePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(CustomPropertyDefinition element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.verbalizeDefaultValuePropertyStorage = newValue;
 					ValueChanged(element, oldValue, newValue);
 				}
 			}

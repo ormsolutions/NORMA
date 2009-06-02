@@ -211,7 +211,21 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 
 			TextBox tbox = sender as TextBox;
 			string attribName = (string)tbox.Tag;
-			UpdateAttribute(attribName, tbox.Text);
+			string text = tbox.Text;
+			if (attribName == "defaultValue")
+			{
+				chkVerbalizeDefaultValue.Enabled = text.Length != 0;
+			}
+			UpdateAttribute(attribName, text);
+		}
+		private void chkVerbalizeDefaultValue_CheckedChanged(object sender, EventArgs e)
+		{
+			if (_loadingDefinition)
+			{
+				return;
+			}
+			CheckBox checkbox = (CheckBox)sender;
+			UpdateAttribute((string)checkbox.Tag, checkbox.Checked ? "true" : "false");
 		}
 		#endregion
 		#region Methods
@@ -226,20 +240,35 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 
 			if (_definitionNode != null)
 			{
-				tbxName.Text = _definitionNode.Attributes["name"].Value;
-				tbxDescription.Text = _definitionNode.Attributes["description"].Value;
-				Console.WriteLine(_definitionNode.Attributes["dataType"].Value);
-				cmbxDataType.SelectedIndex = cmbxDataType.FindString(_definitionNode.Attributes["dataType"].Value);
+				XmlAttributeCollection attributes = _definitionNode.Attributes;
+				tbxName.Text = attributes["name"].Value;
+				tbxDescription.Text = attributes["description"].Value;
+				cmbxDataType.SelectedIndex = cmbxDataType.FindString(attributes["dataType"].Value);
 
-				if (_definitionNode.Attributes["defaultValue"] != null)
+				XmlAttribute defaultValueAttribute = attributes["defaultValue"];
+				if (defaultValueAttribute != null)
 				{
-					tbxDefaultValue.Text = _definitionNode.Attributes["defaultValue"].Value;
+					tbxDefaultValue.Text = defaultValueAttribute.Value;
+					chkVerbalizeDefaultValue.Enabled = true;
 				}
 				else
 				{
 					tbxDefaultValue.Clear();
+					chkVerbalizeDefaultValue.Enabled = false;
 				}
-				tbxCategory.Text = _definitionNode.Attributes["category"].Value;
+
+				XmlAttribute verbalizeDefaultAttribute = attributes["verbalizeDefaultValue"];
+				if (verbalizeDefaultAttribute != null)
+				{
+					string verbalizeDefaultText = verbalizeDefaultAttribute.Value.Trim();
+					chkVerbalizeDefaultValue.Checked = verbalizeDefaultText == "true" || verbalizeDefaultText == "1";
+				}
+				else
+				{
+					chkVerbalizeDefaultValue.Checked = true;
+				}
+
+				tbxCategory.Text = attributes["category"].Value;
 
 				tbxCustomEnum.Clear();
 				XmlNodeList enums = _definitionNode.SelectNodes("def:CustomEnumValues/def:CustomEnumValue", CustomPropertiesManager.NamespaceManager);
@@ -262,7 +291,11 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 				tbxDescription.Text = _definitionObject.Description;
 				tbxCategory.Text = _definitionObject.Category;
 				cmbxDataType.SelectedIndex = cmbxDataType.FindString(_definitionObject.DataType.ToString());
-				tbxDefaultValue.Text = _definitionObject.DefaultValue == null ? string.Empty : _definitionObject.DefaultValue.ToString();
+				object defaultValue = _definitionObject.DefaultValue;
+				string defaultText = defaultValue == null ? string.Empty : defaultValue.ToString();
+				tbxDefaultValue.Text = defaultText;
+				chkVerbalizeDefaultValue.Checked = _definitionObject.VerbalizeDefaultValue;
+				chkVerbalizeDefaultValue.Enabled = defaultText.Length != 0;
 				ClearCheckedItems(tvModelElements.Nodes);
 				CheckTypeIfNeeded(ORMTypes.EntityType);
 				CheckTypeIfNeeded(ORMTypes.FactType);
@@ -371,6 +404,9 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 						break;
 					case "category":
 						_definitionObject.Category = newValue;
+						break;
+					case "verbalizeDefaultValue":
+						_definitionObject.VerbalizeDefaultValue = newValue == "true";
 						break;
 				}
 			}

@@ -189,8 +189,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 		{
 			#region Member Variable
 			const VerbalizationSign sign = VerbalizationSign.Positive | VerbalizationSign.AttemptOppositeSign;
-			IDictionary<Type, IVerbalizationSets> snippetsDictionary = (model.Store as IORMToolServices).GetVerbalizationSnippetsDictionary(HtmlReport.HtmlReportTargetName);
+			IORMToolServices toolServices = (IORMToolServices)model.Store;
+			IDictionary<Type, IVerbalizationSets> snippetsDictionary = toolServices.GetVerbalizationSnippetsDictionary(HtmlReport.HtmlReportTargetName);
 			IVerbalizationSets<ReportVerbalizationSnippetType> snippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
+			IExtensionVerbalizerService extensionVerbalizer = toolServices.ExtensionVerbalizerService;
 			Dictionary<IVerbalize, IVerbalize> verbalized;
 			Stream fileStream;
 			TextWriter textWriter;
@@ -213,13 +215,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 					writer = new VerbalizationReportCallbackWriter(snippetsDictionary, textWriter);
 					bool firstCall = true;
 
-					ObjectTypeListReport objectTypeListReport = new ObjectTypeListReport(model, objectTypeList, snippets, ReportVerbalizationSnippetType.ObjectTypeListHeader, ReportVerbalizationSnippetType.ObjectTypeListFooter, reportContent);
+					IVerbalizeCustomChildren objectTypeListReport = new ObjectTypeListReport(model, objectTypeList, snippets, ReportVerbalizationSnippetType.ObjectTypeListHeader, ReportVerbalizationSnippetType.ObjectTypeListFooter, reportContent);
 					VerbalizationHelper.VerbalizeElement(
-						objectTypeListReport,
+						objectTypeListReport.GetCustomChildVerbalizations(null, sign),
+						null,
 						snippetsDictionary,
+						extensionVerbalizer,
 						HtmlReport.HtmlReportTargetName,
 						verbalized,
-						null,
 						sign,
 						writer,
 						false,
@@ -250,11 +253,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 
 						ObjectTypePageReport objectTypePageReport = new ObjectTypePageReport(objectType, reportContent, snippets);
 						VerbalizationHelper.VerbalizeElement(
-							objectTypePageReport,
+							((IVerbalizeCustomChildren)objectTypePageReport).GetCustomChildVerbalizations(objectTypePageReport, sign),
+							null,
 							snippetsDictionary,
+							extensionVerbalizer,
 							HtmlReport.HtmlReportTargetName,
 							verbalized,
-							objectTypePageReport,
 							sign,
 							writer,
 							false,
@@ -298,11 +302,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 
 						FactTypePageReport factTypePageReport = new FactTypePageReport(factTypeList[i], reportContent, snippets);
 						VerbalizationHelper.VerbalizeElement(
-							factTypePageReport,
+							((IVerbalizeCustomChildren)factTypePageReport).GetCustomChildVerbalizations(factTypePageReport, sign),
 							snippetsDictionary,
+							extensionVerbalizer,
 							HtmlReport.HtmlReportTargetName,
 							verbalized,
-							factTypePageReport,
 							sign,
 							writer,
 							false,
@@ -337,11 +341,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 
 					FactTypeConstraintValidationListReport factTypeConstraintValidationReport = new FactTypeConstraintValidationListReport(model, factTypeList, reportContent, snippets);
 					VerbalizationHelper.VerbalizeElement(
-						factTypeConstraintValidationReport,
+						((IVerbalizeCustomChildren)factTypeConstraintValidationReport).GetCustomChildVerbalizations(factTypeConstraintValidationReport, sign),
+						null,
 						snippetsDictionary,
+						extensionVerbalizer,
 						HtmlReport.HtmlReportTargetName,
 						verbalized,
-						factTypeConstraintValidationReport,
 						sign,
 						writer,
 						false,

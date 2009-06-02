@@ -209,6 +209,13 @@ namespace ORMSolutions.ORMArchitectSDK.TestEngine
 			{
 				return myServices.GetVerbalizationSnippetsDictionary(target);
 			}
+			IExtensionVerbalizerService IORMToolServices.ExtensionVerbalizerService
+			{
+				get
+				{
+					return myServices.ExtensionVerbalizerService;
+				}
+			}
 			INotifySurveyElementChanged IFrameworkServices.NotifySurveyElementChanged
 			{
 				get

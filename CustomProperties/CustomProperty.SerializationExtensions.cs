@@ -11,6 +11,7 @@ using ORMSolutions.ORMArchitect.Framework.Shell;
 // * Natural Object-Role Modeling Architect for Visual Studio                 *
 // *                                                                          *
 // * Copyright © Neumont University. All rights reserved.                     *
+// * Copyright © ORM Solutions, LLC. All rights reserved.                     *
 // *                                                                          *
 // * The use and distribution terms for this software are covered by the      *
 // * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -293,7 +294,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			}
 			if (domainPropertyInfo.Id == CustomPropertyDefinition.CategoryDomainPropertyId)
 			{
-				if (string.IsNullOrEmpty(this.Category) || this.Category == "Default")
+				if (string.IsNullOrEmpty(this.Category))
 				{
 					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
 				}
@@ -310,6 +311,14 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
 				}
 				return new CustomSerializedPropertyInfo(null, "defaultValue", null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (domainPropertyInfo.Id == CustomPropertyDefinition.VerbalizeDefaultValueDomainPropertyId)
+			{
+				if (this.VerbalizeDefaultValue || this.DefaultValue == null)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, "verbalizeDefaultValue", null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
 			}
 			if (domainPropertyInfo.Id == CustomPropertyDefinition.CustomEnumValueDomainPropertyId)
 			{
@@ -361,6 +370,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 				customSerializedAttributes.Add("category", CustomPropertyDefinition.CategoryDomainPropertyId);
 				customSerializedAttributes.Add("dataType", CustomPropertyDefinition.DataTypeDomainPropertyId);
 				customSerializedAttributes.Add("defaultValue", CustomPropertyDefinition.DefaultValueDomainPropertyId);
+				customSerializedAttributes.Add("verbalizeDefaultValue", CustomPropertyDefinition.VerbalizeDefaultValueDomainPropertyId);
 				customSerializedAttributes.Add("customEnumValues", CustomPropertyDefinition.CustomEnumValueDomainPropertyId);
 				customSerializedAttributes.Add("ORMTypes", CustomPropertyDefinition.ORMTypesDomainPropertyId);
 				CustomPropertyDefinition.myCustomSerializedAttributes = customSerializedAttributes;

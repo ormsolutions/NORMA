@@ -167,10 +167,12 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		/// </summary>
 		/// <param name="element">The <see cref="ModelElement"/> to attach properties to.</param>
 		/// <param name="properties">The set of <see cref="PropertyDescriptor"/> elements to extend.</param>
-		public static void ProvideDiagramProperties(ModelElement element, PropertyDescriptorCollection properties)
+		public static void ProvideDiagramProperties(object element, PropertyDescriptorCollection properties)
 		{
-			PropertyDescriptor contextDescriptor = DiagramContextDescriptor.CreateDescriptor(element);
-			if (contextDescriptor != null)
+			ModelElement modelElement;
+			PropertyDescriptor contextDescriptor;
+			if (null != (modelElement = element as ModelElement) &&
+				null != (contextDescriptor = DiagramContextDescriptor.CreateDescriptor(modelElement)))
 			{
 				properties.Add(contextDescriptor);
 			}

@@ -622,22 +622,18 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			void INotifyToolWindowActivation<ORMDesignerDocData, DiagramDocView, IORMSelectionContainer>.ActivatorAttachEventHandlers(ORMDesignerDocData docData)
 			{
-				Store store = docData.Store;
-				if (store != null)
-				{
-					ManageEvents(docData.Store, EventHandlerAction.Add);
-				}
+				ManageEvents(docData.Store, EventHandlerAction.Add);
 			}
 			void INotifyToolWindowActivation<ORMDesignerDocData, DiagramDocView, IORMSelectionContainer>.ActivatorDetachEventHandlers(ORMDesignerDocData docData)
 			{
-				Store store = docData.Store;
-				if (store != null)
-				{
-					ManageEvents(docData.Store, EventHandlerAction.Remove);
-				}
+				ManageEvents(docData.Store, EventHandlerAction.Remove);
 			}
 			private void ManageEvents(Store store, EventHandlerAction action)
 			{
+				if (store == null || store.ShuttingDown)
+				{
+					return;
+				}
 				ModelingEventManager eventManager = ((IModelingEventManagerProvider)store).ModelingEventManager;
 				DomainDataDirectory directory = store.DomainDataDirectory;
 
@@ -721,7 +717,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					return;
 				}
 				myRequireUpdate = false;
-				IORMSelectionContainer selectionContainer = myActivator.CurrentSelectionContainer;
 				FactType currentFactType = null;
 				ObjectType firstObjectType = null;
 				const int MaxSelectedObjectTypes = 10;
@@ -738,7 +733,13 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 
 				IList<RoleBase> defaultOrder = null;
 				int openRoleIndex = 0;
-				if (selectionContainer != null)
+				IORMSelectionContainer selectionContainer;
+				ORMDesignerDocData docData;
+				Store store;
+				if (null != (selectionContainer = myActivator.CurrentSelectionContainer) &&
+					null != (docData = myActivator.CurrentDocument) &&
+					null != (store = docData.Store) &&
+					!store.ShuttingDown)
 				{
 					ICollection selectedObjects = selectionContainer.GetSelectedComponents();
 					if (selectedObjects != null)

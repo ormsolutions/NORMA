@@ -25,45 +25,33 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 {
 	#region PropertyProvider delegate
 	/// <summary>
-	/// Adds extension <see cref="PropertyDescriptor"/>s for a <see cref="ModelElement"/> instance specified
-	/// by <paramref name="extendableElement"/> to the <see cref="PropertyDescriptorCollection"/> specified by
-	/// <paramref name="properties"/>.
+	/// Adds extension <see cref="PropertyDescriptor"/>s for <paramref name="extendableElement"/>
+	/// to the <see cref="PropertyDescriptorCollection"/> specified by <paramref name="properties"/>.
 	/// </summary>
-	public delegate void PropertyProvider(ModelElement extendableElement, PropertyDescriptorCollection properties);
+	public delegate void PropertyProvider(object extendableElement, PropertyDescriptorCollection properties);
 	#endregion // PropertyProvider delegate
 	#region IPropertyProviderService interface
 	/// <summary>
-	/// Provides methods for registrating and unregistrating <see cref="PropertyProvider"/>s for
+	/// Provides methods for registering and unregistering <see cref="PropertyProvider"/>s for
 	/// <see cref="ModelElement"/> instances.
 	/// </summary>
 	public interface IPropertyProviderService
 	{
 		/// <summary>
 		/// Registers or unregisters the <see cref="PropertyProvider"/> specified by <paramref name="provider"/> for the
-		/// type specified by <typeparamref name="TExtendableElement"/>.
+		/// type specified by <paramref name="extendableElementType"/>.
 		/// </summary>
-		/// <typeparam name="TExtendableElement">
-		/// The type for which the <see cref="PropertyProvider"/> should be added. This type specified must
-		/// by a subtype of <see cref="ModelElement"/>.
-		/// </typeparam>
-		/// <param name="provider">
-		/// The <see cref="PropertyProvider"/> being registered.
-		/// </param>
-		/// <param name="includeSubtypes">
-		/// Specifies whether the <see cref="PropertyProvider"/> should also be registered for subtypes of
-		/// <typeparamref name="TExtendableElement"/>.
-		/// </param>
-		/// <param name="action">
-		/// Specifies whether the property provider is being added or removed. See <see cref="EventHandlerAction"/></param>
-		void AddOrRemovePropertyProvider<TExtendableElement>(PropertyProvider provider, bool includeSubtypes, EventHandlerAction action)
-			where TExtendableElement : ModelElement;
+		/// <param name="extendableElementType">The <see cref="Type"/> of element to extend.</param>
+		/// <param name="provider">The <see cref="PropertyProvider"/> being registered.</param>
+		/// <param name="includeSubtypes">Specifies whether the <see cref="PropertyProvider"/> should also be registered for subtypes of <paramref name="extendableElementType"/>. Applicable only if the extended element type is derived from <see cref="ModelElement"/></param>
+		/// <param name="action">Specifies whether the property provider is being added or removed. See <see cref="EventHandlerAction"/></param>
+		void AddOrRemovePropertyProvider(Type extendableElementType, PropertyProvider provider, bool includeSubtypes, EventHandlerAction action);
 
 		/// <summary>
-		/// Adds extension <see cref="PropertyDescriptor"/>s for the <see cref="ModelElement"/> instance specified
-		/// by <paramref name="extendableElement"/> to the <see cref="PropertyDescriptorCollection"/> specified by
-		/// <paramref name="properties"/>.
+		/// Adds extension <see cref="PropertyDescriptor"/>s for <paramref name="extendableElement"/>
+		/// to the <see cref="PropertyDescriptorCollection"/> specified by <paramref name="properties"/>.
 		/// </summary>
-		void GetProvidedProperties(ModelElement extendableElement, PropertyDescriptorCollection properties);
+		void GetProvidedProperties(object extendableElement, PropertyDescriptorCollection properties);
 	}
 	#endregion // IPropertyProviderService interface
 	#region PropertyProviderService class
@@ -101,7 +89,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		}
 		#endregion // Access Properties
 		#region IPropertyProviderService implementation
-		void IPropertyProviderService.AddOrRemovePropertyProvider<TExtendableElement>(PropertyProvider provider, bool includeSubtypes, EventHandlerAction action)
+		void IPropertyProviderService.AddOrRemovePropertyProvider(Type extendableElementType, PropertyProvider provider, bool includeSubtypes, EventHandlerAction action)
 		{
 			if ((object)provider == null)
 			{
@@ -109,8 +97,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 			}
 
 			bool register = action == EventHandlerAction.Add;
-
-			Type extendableElementType = typeof(TExtendableElement);
 
 			if (register)
 			{
@@ -123,16 +109,19 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 			if (includeSubtypes)
 			{
 				Store store = this.myStore;
-				DomainClassInfo domainClassInfo = store.DomainDataDirectory.GetDomainClass(extendableElementType);
-				foreach (DomainClassInfo subtypeInfo in domainClassInfo.AllDescendants)
+				DomainClassInfo domainClassInfo = store.DomainDataDirectory.FindDomainClass(extendableElementType);
+				if (null != domainClassInfo)
 				{
-					if (register)
+					foreach (DomainClassInfo subtypeInfo in domainClassInfo.AllDescendants)
 					{
-						this.RegisterPropertyProvider(subtypeInfo.ImplementationClass.TypeHandle, provider);
-					}
-					else
-					{
-						this.UnregisterPropertyProvider(subtypeInfo.ImplementationClass.TypeHandle, provider);
+						if (register)
+						{
+							this.RegisterPropertyProvider(subtypeInfo.ImplementationClass.TypeHandle, provider);
+						}
+						else
+						{
+							this.UnregisterPropertyProvider(subtypeInfo.ImplementationClass.TypeHandle, provider);
+						}
 					}
 				}
 			}
@@ -160,7 +149,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 				providerDictionary[extendableElementRuntimeTypeHandle] = existingPropertyProvider;
 			}
 		}
-		void IPropertyProviderService.GetProvidedProperties(ModelElement extendableElement, PropertyDescriptorCollection properties)
+		void IPropertyProviderService.GetProvidedProperties(object extendableElement, PropertyDescriptorCollection properties)
 		{
 			if (extendableElement == null)
 			{

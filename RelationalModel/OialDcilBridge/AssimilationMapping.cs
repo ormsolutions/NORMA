@@ -87,7 +87,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// An <see cref="PropertyProvider"/> callback for adding extender properties to a <see cref="FactType"/>
 		/// </summary>
-		public static void PopulateAssimilationMappingExtensionProperties(ModelElement extendableElement, PropertyDescriptorCollection properties)
+		public static void PopulateAssimilationMappingExtensionProperties(object extendableElement, PropertyDescriptorCollection properties)
 		{
 			FactType factType;
 			if (null != (factType = extendableElement as FactType) &&
@@ -100,7 +100,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// An <see cref="PropertyProvider"/> callback for adding extender properties to an <see cref="ObjectType"/>
 		/// </summary>
-		public static void PopulateObjectTypeAbsorptionExtensionProperties(ModelElement extendableElement, PropertyDescriptorCollection properties)
+		public static void PopulateObjectTypeAbsorptionExtensionProperties(object extendableElement, PropertyDescriptorCollection properties)
 		{
 			ObjectType objectType;
 			ConceptType conceptType;
