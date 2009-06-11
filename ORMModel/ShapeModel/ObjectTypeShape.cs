@@ -468,7 +468,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 			else if (null != (populationMandatory = error as PopulationMandatoryError))
 			{
-				ORMDesignerPackage.SamplePopulationEditorWindow.AutoCorrectMandatoryError(populationMandatory);
+				retVal = ORMDesignerPackage.SamplePopulationEditorWindow.AutoCorrectMandatoryError(populationMandatory, AssociatedObjectType);
 			}
 			else if (error is TooFewEntityTypeRoleInstancesError)
 			{

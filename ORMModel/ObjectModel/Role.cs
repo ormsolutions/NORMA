@@ -111,7 +111,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		ImpliedObjectificationRole,
 	}
 	#endregion // ReferenceSchemePattern enum
-	public partial class Role : IModelErrorOwner, IRedirectVerbalization, IVerbalizeChildren, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent, IHasIndirectModelErrorOwner, IHierarchyContextEnabled
+	public partial class Role : IModelErrorOwner, IRedirectVerbalization, IVerbalizeChildren, IVerbalizeCustomChildren, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent, IHasIndirectModelErrorOwner, IHierarchyContextEnabled
 	{
 		#region Helper methods
 		#region IndexOf helper method for LinkedElementCollection<RoleBase>
@@ -1122,9 +1122,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					yield return requiredError;
 				}
-			}
-			if (0 != (filter & (ModelErrorUses.DisplayPrimary)))
-			{
 				foreach (ConstraintRoleSequence sequence in ConstraintRoleSequenceCollection)
 				{
 					MandatoryConstraint mandatoryConstraint = sequence as MandatoryConstraint;
@@ -1399,6 +1396,48 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // IRedirectVerbalization Implementation
+		#region IVerbalizeCustomChildren Implementation
+		/// <summary>
+		/// Implements <see cref="IVerbalizeCustomChildren.GetCustomChildVerbalizations"/>
+		/// Returns standalone error verbalizer.
+		/// </summary>
+		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)
+		{
+			ErrorReport verbalizer = ErrorReport.GetVerbalizer();
+			verbalizer.Initialize(this);
+			yield return CustomChildVerbalizer.VerbalizeInstance(verbalizer, true);
+		}
+		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)
+		{
+			return GetCustomChildVerbalizations(filter, sign);
+		}
+		#region ErrorReport verbalizer class
+		partial class ErrorReport : IModelErrorOwner
+		{
+			private Role myRole;
+			public void Initialize(Role role)
+			{
+				myRole = role;
+			}
+			public void DisposeHelper()
+			{
+				myRole = null;
+			}
+			#region IModelErrorOwner Implementation
+			IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)
+			{
+				return ((IModelErrorOwner)myRole).GetErrorCollection(filter);
+			}
+			void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
+			{
+			}
+			void IModelErrorOwner.DelayValidateErrors()
+			{
+			}
+			#endregion // IModelErrorOwner Implementation
+		}
+		#endregion // ErrorReport verbalizer class
+		#endregion // IVerbalizeCustomChildren Implementation
 		#region INamedElementDictionaryParent implementation
 		INamedElementDictionary INamedElementDictionaryParent.GetCounterpartRoleDictionary(Guid parentDomainRoleId, Guid childDomainRoleId)
 		{

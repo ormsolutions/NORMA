@@ -5577,18 +5577,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		protected Guid[] GetIndirectModelErrorOwnerLinkRoles()
 		{
-			if (PopulationMandatoryErrorCollection.Count != 0)
+			// Note that the roles are only indirect error owners when
+			// the PopulationMandatoryErrorCollection is not empty. However,
+			// we need to navigate this link in deleted scenarios as well
+			// when there is no way to check this population.
+			// Creating a static readonly guid array is causing static field initialization
+			// ordering issues with the partial classes. Defer initialization.
+			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+			if (linkRoles == null)
 			{
-				// Creating a static readonly guid array is causing static field initialization
-				// ordering issues with the partial classes. Defer initialization.
-				Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
-				if (linkRoles == null)
-				{
-					myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { ConstraintRoleSequenceHasRole.ConstraintRoleSequenceDomainRoleId };
-				}
-				return linkRoles;
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { ConstraintRoleSequenceHasRole.ConstraintRoleSequenceDomainRoleId };
 			}
-			return null;
+			return linkRoles;
 		}
 		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
 		{

@@ -395,9 +395,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			PopulationMandatoryError populationMandatoryError;
 			if (null != (populationMandatoryError = error as PopulationMandatoryError))
 			{
-				ORMSamplePopulationToolWindow window = ORMDesignerPackage.SamplePopulationEditorWindow;
-				window.AutoCorrectMandatoryError(populationMandatoryError);
-				return true;
+				return ORMDesignerPackage.SamplePopulationEditorWindow.AutoCorrectMandatoryError(populationMandatoryError, null, AssociatedSubtypeFact);
 			}
 			return false;
 		}

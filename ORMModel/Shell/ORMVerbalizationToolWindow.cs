@@ -101,6 +101,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		private StringWriter myStringWriter;
 		private static string[] myDocumentHeaderReplacementFields;
 		private Dictionary<IVerbalize, IVerbalize> myAlreadyVerbalized;
+		private Dictionary<object, object> myLocallyVerbalized;
 		/// <summary>
 		/// An enum to determine callback handling during verbalization
 		/// </summary>
@@ -355,15 +356,21 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				VerbalizationCallbackWriter callbackWriter = null;
 				bool showNegative = ORMDesignerPackage.VerbalizationWindowSettings.ShowNegativeVerbalizations;
 				bool firstCallPending = true;
-				Dictionary<IVerbalize, IVerbalize> verbalized = myAlreadyVerbalized;
-				if (verbalized == null)
+				Dictionary<IVerbalize, IVerbalize> alreadyVerbalized = myAlreadyVerbalized;
+				if (alreadyVerbalized == null)
 				{
-					verbalized = new Dictionary<IVerbalize, IVerbalize>();
-					myAlreadyVerbalized = verbalized;
+					alreadyVerbalized = new Dictionary<IVerbalize, IVerbalize>();
+					myAlreadyVerbalized = alreadyVerbalized;
 				}
 				else
 				{
-					verbalized.Clear();
+					alreadyVerbalized.Clear();
+				}
+				Dictionary<object, object> locallyVerbalized = myLocallyVerbalized;
+				if (locallyVerbalized == null)
+				{
+					locallyVerbalized = new Dictionary<object, object>();
+					myLocallyVerbalized = locallyVerbalized;
 				}
 				if (selectedObjects != null)
 				{
@@ -384,17 +391,20 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								{
 									break;
 								}
-								extensionVerbalizer = ((IORMToolServices)CurrentDocument.Store).ExtensionVerbalizerService;
-								snippetsDictionary = (store as IORMToolServices).GetVerbalizationSnippetsDictionary(ORMCoreDomainModel.VerbalizationTargetName);
+								IORMToolServices toolServices = (IORMToolServices)store;
+								extensionVerbalizer = toolServices.ExtensionVerbalizerService;
+								snippetsDictionary = toolServices.GetVerbalizationSnippetsDictionary(ORMCoreDomainModel.VerbalizationTargetName);
 								snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
 								callbackWriter = new VerbalizationCallbackWriter(snippets, myStringWriter, GetDocumentHeaderReplacementFields(mel, snippets));
 							}
+							locallyVerbalized.Clear();
 							VerbalizationHelper.VerbalizeElement(
 								mel,
 								snippetsDictionary,
 								extensionVerbalizer,
 								ORMCoreDomainModel.VerbalizationTargetName,
-								verbalized,
+								alreadyVerbalized,
+								locallyVerbalized,
 								(showNegative ? VerbalizationSign.Negative : VerbalizationSign.Positive) | VerbalizationSign.AttemptOppositeSign,
 								callbackWriter,
 								true,
@@ -407,7 +417,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					// Write footer
 					callbackWriter.WriteDocumentFooter();
 					// Clear cache
-					verbalized.Clear();
+					alreadyVerbalized.Clear();
 				}
 				else
 				{

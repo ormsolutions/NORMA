@@ -836,50 +836,70 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// <summary>
 		/// Attempts to fix a PopulationMandatoryError
 		/// </summary>
-		public void AutoCorrectMandatoryError(PopulationMandatoryError error)
+		/// <param name="error">The error being repaired</param>
+		/// <param name="autoCorrectRole">The role to correct</param>
+		/// <returns>true if the error was automatically corrected. This can return false
+		/// if the <paramref name="autoCorrectRole"/> is a role in a <see cref="FactType"/>
+		/// with an implied population.</returns>
+		public bool AutoCorrectMandatoryError(PopulationMandatoryError error, Role autoCorrectRole)
 		{
-			ObjectTypeInstance instance = error.ObjectTypeInstance;
-			MandatoryConstraint constraint = error.MandatoryConstraint as MandatoryConstraint;
-			LinkedElementCollection<Role> roles = constraint.RoleCollection;
-			// Only handle simple mandatory constraints for now
-			if (roles.Count == 1)
+			if (autoCorrectRole != null)
 			{
-				Role role = roles[0];
-				FactType factType = role.FactType;
-				SubtypeFact subtypeFact;
+				// The represented elements for the error correspond to either
+				// a role if the FactType is not automatically populated, or the
+				// identified ObjectType if it is read only.
+				ModelElement[] representedElements = ((IRepresentModelElements)error).GetRepresentedElements();
+				FactType factType = autoCorrectRole.FactType;
+				SubtypeFact subtypeFact = factType as SubtypeFact;
 				ObjectType subtype = null;
-				if (role is SupertypeMetaRole &&
-					(subtypeFact = (SubtypeFact)factType).ProvidesPreferredIdentifier)
+				if ((Array.IndexOf<ModelElement>(representedElements, (ModelElement)subtypeFact ?? autoCorrectRole) != -1 ||
+					subtypeFact != null && subtypeFact.ProvidesPreferredIdentifier && autoCorrectRole is SupertypeMetaRole && Array.IndexOf<ModelElement>(representedElements, subtype = subtypeFact.Subtype) != -1))
 				{
-					subtype = subtypeFact.Subtype;
-				}
-				EntityTypeSubtypeInstance subtypeInstance = null;
-				Store store = instance.Store;
-				using (Transaction t = store.TransactionManager.BeginTransaction(string.Format(ResourceStrings.ModelSamplePopulationEditorNewInstanceTransactionText, (subtype != null) ? subtype.Name : factType.Name)))
-				{
-					if (subtype != null)
+					ObjectTypeInstance instance = error.ObjectTypeInstance;
+					MandatoryConstraint constraint = error.MandatoryConstraint;
+					EntityTypeSubtypeInstance subtypeInstance = null;
+					FactTypeInstance factInstance = null;
+					Store store = instance.Store;
+					using (Transaction t = store.TransactionManager.BeginTransaction(string.Format(ResourceStrings.ModelSamplePopulationEditorNewInstanceTransactionText, (subtype != null) ? subtype.Name : factType.Name)))
 					{
-						EntityTypeSubtypeInstance.GetSubtypeInstance((EntityTypeInstance)instance, subtype, false, true);
+						if (subtype != null)
+						{
+							subtypeInstance = EntityTypeSubtypeInstance.GetSubtypeInstance((EntityTypeInstance)instance, subtype, false, true);
+						}
+						else
+						{
+							FactTypeBranch.ConnectInstance(ref factInstance, instance, autoCorrectRole, null);
+						}
+						t.Commit();
 					}
-					else
+					ObjectifiedInstanceRequiredError objectifiedInstanceRequired;
+					TooFewFactTypeRoleInstancesError partialFactInstanceError;
+					object selectErrorObject = null;
+					if (null != subtypeInstance &&
+						null != (objectifiedInstanceRequired = subtypeInstance.ObjectifiedInstanceRequiredError))
 					{
-						FactTypeInstance nullInstance = null;
-						FactTypeBranch.ConnectInstance(ref nullInstance, instance, role, null);
+						// We need to create the subtypeinstance and attach it to a FactType, but we don't know
+						// which one, so we defer to the branches to get a good selection.
+						selectErrorObject = objectifiedInstanceRequired;
 					}
-					t.Commit();
-				}
-				ObjectifiedInstanceRequiredError objectifiedInstanceRequired;
-				if (null != subtypeInstance &&
-					null != (objectifiedInstanceRequired = subtypeInstance.ObjectifiedInstanceRequiredError))
-				{
-					// We need to create the subtypeinstance and attach it to a FactType, but we don't know
-					// which one, so we defer to the branches to get a good selection.
-					if (vtrSamplePopulation.SelectObject(null, objectifiedInstanceRequired, (int)ErrorObject, 0))
+					else if (null != factInstance &&
+						null != (partialFactInstanceError = factInstance.TooFewFactTypeRoleInstancesError))
 					{
-						vtrSamplePopulation.BeginLabelEdit();
+						// The new fact instance is likely to have a partial
+						// population. Activate the row if this is the case.
+						selectErrorObject = partialFactInstanceError;
 					}
+					if (selectErrorObject != null)
+					{
+						if (vtrSamplePopulation.SelectObject(null, selectErrorObject, (int)ErrorObject, 0))
+						{
+							vtrSamplePopulation.BeginLabelEdit();
+						}
+					}
+					return true;
 				}
 			}
+			return false;
 		}
 		/// <summary>
 		/// Select the instance for the given error in the population window and activate in place editors as appropriate

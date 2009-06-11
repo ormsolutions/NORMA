@@ -2026,7 +2026,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				if (!currentRoleIsMandatory && canBeIndependent)
 				{
-					bool nonMandatoryRoleInPreferredIdentifier = false;
 					if (!checkedPreferredRoles)
 					{
 						checkedPreferredRoles = true;
@@ -2039,11 +2038,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					if (preferredIdentifierRoles != null)
 					{
 						RoleBase oppositeRole = playedRole.OppositeRole;
-						nonMandatoryRoleInPreferredIdentifier =
+						currentRoleIsWithPreferredIdentifier =
 							null != oppositeRole &&
 							preferredIdentifierRoles.Contains(oppositeRole.Role);
 					}
-					if (!nonMandatoryRoleInPreferredIdentifier)
+					if (!currentRoleIsWithPreferredIdentifier)
 					{
 						seenNonMandatoryRole = true;
 					}

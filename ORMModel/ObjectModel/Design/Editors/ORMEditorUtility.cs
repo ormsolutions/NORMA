@@ -278,7 +278,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 						}
 						else if (null != (populationMandatory = error as PopulationMandatoryError))
 						{
-							ORMDesignerPackage.SamplePopulationEditorWindow.AutoCorrectMandatoryError(populationMandatory);
+							retVal = ORMDesignerPackage.SamplePopulationEditorWindow.AutoCorrectMandatoryError(populationMandatory, (ObjectType)selectedElement);
 						}
 						else
 						{
@@ -304,7 +304,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 						bool retVal = true;
 						if (null != (populationMandatory = error as PopulationMandatoryError))
 						{
-							ORMDesignerPackage.SamplePopulationEditorWindow.AutoCorrectMandatoryError(populationMandatory);
+							retVal = ORMDesignerPackage.SamplePopulationEditorWindow.AutoCorrectMandatoryError(populationMandatory, null, (FactType)selectedElement);
 						}
 						else if (null != (tooFew = error as TooFewReadingRolesError))
 						{

@@ -1728,6 +1728,35 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				currentDesigner = currentDocView.CurrentDesigner;
 			}
 		}
+		/// <summary>
+		/// Currently focused ORM designer view
+		/// </summary>
+		private IORMDesignerView CurrentORMView
+		{
+			get
+			{
+				IServiceProvider serviceProvider;
+				IMonitorSelectionService selectionService;
+				if (null != (serviceProvider = ServiceProvider) &&
+					null != (selectionService = (IMonitorSelectionService)serviceProvider.GetService(typeof(IMonitorSelectionService))))
+				{
+					IORMDesignerView retVal = null;
+					if (null != (retVal = selectionService.CurrentWindow as IORMDesignerView) &&
+						null != retVal.CurrentDesigner &&
+						retVal.DocData == this)
+					{
+						return retVal;
+					}
+					retVal = selectionService.CurrentDocumentView as IORMDesignerView;
+					if (retVal != null &&
+						retVal.DocData == this)
+					{
+						return retVal;
+					}
+				}
+				return null;
+			}
+		}
 		private bool ActivateShapeHelper(ShapeElement shape, DiagramItem diagramItem, ref DiagramDocView currentDocView, ref VSDiagramView currentDesigner, ref bool haveCurrentDesigner)
 		{
 			bool retVal = false;
@@ -1869,10 +1898,39 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			if (elementRep != null)
 			{
 				ModelElement[] elements = elementRep.GetRepresentedElements();
-				if (elements != null && elements.Length != 0)
+				if (elements != null)
 				{
-					// UNDONE: Support selection of multiple elements
-					element = elements[0];
+					int elementCount = elements.Length;
+					if (elementCount != 0)
+					{
+						// UNDONE: Support selection of multiple elements
+						if (elementCount != 1)
+						{
+							IORMDesignerView contextView;
+							ModelElement primarySelection;
+							if (null != (contextView = CurrentORMView) &&
+								null != (primarySelection = EditorUtility.ResolveContextInstance(contextView.PrimarySelection, false) as ModelElement))
+							{
+								for (int i = 0; i < elementCount; ++i)
+								{
+									ModelElement testElement = elements[i];
+									if (testElement == primarySelection)
+									{
+										element = testElement;
+										break;
+									}
+								}
+							}
+							if (element == null)
+							{
+								element = elements[0];
+							}
+						}
+						else
+						{
+							element = elements[0];
+						}
+					}
 				}
 			}
 			if (element == null)

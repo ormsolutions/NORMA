@@ -270,9 +270,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // Base overrides
 		#region IRepresentModelElements Members
 		/// <summary>
-		/// Implements <see cref="IRepresentModelElements.GetRepresentedElements"/>. Returns all <see cref="FactType"/>s
+		/// Implements <see cref="IRepresentModelElements.GetRepresentedElements"/>. Returns all <see cref="Role"/>s
 		/// associated with the error constraint, unless the population of the FactType is implied, in which case
-		/// the identified <see cref="ObjectType"/> is returned.
+		/// the identified <see cref="ObjectType"/> is returned. For an error on a <see cref="SubtypeMetaRole"/> or
+		/// <see cref="SupertypeMetaRole"/>, the <see cref="SubtypeFact"/> is returned instead of the role.
 		/// </summary>
 		protected new ModelElement[] GetRepresentedElements()
 		{
@@ -284,14 +285,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				// For each role, we want the identified object type
 				// if the population of the associated FactType is implied.
-				// Otherwise, we want the FactType. For now, we don't care
+				// Otherwise, we want the Role. For now, we don't care
 				// about duplicates in the returned list.
 				Role role = roles[i];
 				SupertypeMetaRole supertypeRole;
+				SubtypeMetaRole subtypeRole;
 				if (null != (supertypeRole = role as SupertypeMetaRole))
 				{
 					SubtypeFact subtypeFact = (SubtypeFact)role.FactType;
 					retVal[i] = subtypeFact.ProvidesPreferredIdentifier ? (ModelElement)subtypeFact.Subtype : subtypeFact;
+				}
+				else if (null != (subtypeRole = role as SubtypeMetaRole))
+				{
+					retVal[i] = (SubtypeFact)role.FactType;
 				}
 				else
 				{
@@ -303,7 +309,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							retVal[i] = identifiedType;
 							break;
 						default:
-							retVal[i] = role.FactType;
+							retVal[i] = role;
 							break;
 					}
 				}
@@ -2470,6 +2476,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				// Defer to TooFew validation for a full check on FactTypeInstance references on empty instances
 				FrameworkDomainModel.DelayValidateElement(entityInstance, ObjectTypeInstance.DelayValidateNamePartChanged);
 				FrameworkDomainModel.DelayValidateElement(entityInstance, DelayValidateTooFewEntityTypeRoleInstancesError);
+				ObjectTypeInstance oppositeInstance = link.RoleInstance.ObjectTypeInstance;
+				if (!oppositeInstance.IsDeleted)
+				{
+					FrameworkDomainModel.DelayValidateElement(oppositeInstance, ObjectTypeInstance.DelayValidateInstancePopulationMandatoryError);
+				}
 			}
 		}
 		/// <summary>

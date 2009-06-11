@@ -4256,7 +4256,22 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			bool retVal = true;
 			if (null != (populationMandatory = error as PopulationMandatoryError))
 			{
-				ORMDesignerPackage.SamplePopulationEditorWindow.AutoCorrectMandatoryError(populationMandatory);
+				FactType autoCorrectFactType = AssociatedFactType;
+				Role autoCorrectRole = null;
+				DiagramView diagramView;
+				SelectedShapesCollection selection;
+				DiagramItem currentItem;
+				RoleSubField roleSubField;
+				if (null != (diagramView = Diagram.ActiveDiagramView) &&
+					null != (selection = diagramView.Selection) &&
+					1 == selection.Count &&
+					null != (currentItem = selection.PrimaryItem) &&
+					currentItem.Shape == this &&
+					null != (roleSubField = currentItem.SubField as RoleSubField))
+				{
+					autoCorrectRole = roleSubField.AssociatedRole.Role;
+				}
+				retVal = ORMDesignerPackage.SamplePopulationEditorWindow.AutoCorrectMandatoryError(populationMandatory, autoCorrectRole, autoCorrectFactType);
 			}
 			else if (null != (tooFew = error as TooFewReadingRolesError))
 			{
@@ -6045,7 +6060,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 			else if (null != (populationMandatory = error as PopulationMandatoryError))
 			{
-				ORMDesignerPackage.SamplePopulationEditorWindow.AutoCorrectMandatoryError(populationMandatory);
+				retVal = ORMDesignerPackage.SamplePopulationEditorWindow.AutoCorrectMandatoryError(populationMandatory, AssociatedObjectType);
 			}
 			else
 			{

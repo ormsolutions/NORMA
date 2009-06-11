@@ -272,18 +272,68 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// Attempts to fix a PopulationMandatoryError
 		/// </summary>
 		/// <param name="error">Error to be corrected</param>
-		public void AutoCorrectMandatoryError(PopulationMandatoryError error)
+		/// <param name="autoCorrectRole">The <see cref="Role"/> to correct the error for.</param>
+		/// <param name="autoCorrectFactType">If the <paramref name="autoCorrectRole"/> is not specified, select
+		/// a unique constrained role from this <see cref="FactType"/></param>
+		/// <returns><see langword="true"/> if the error was automatically corrected.</returns>
+		public bool AutoCorrectMandatoryError(PopulationMandatoryError error, Role autoCorrectRole, FactType autoCorrectFactType)
 		{
+			bool retVal = false;
 			ObjectTypeInstance objectInstance = error.ObjectTypeInstance;
 			LinkedElementCollection<Role> constraintRoles = error.MandatoryConstraint.RoleCollection;
-			// Only supports simple mandatory constraints
+
+			// If the constraint has multiple roles, then we need to pick
+			// a role to activate. This is trivial for a simple mandatory
+			// constraint, or if a role in the constraint is selected. However,
+			// if we have only a FactType selection, then there may be multiple
+			// potential roles in the constraint for ring situations.
 			if (constraintRoles.Count == 1)
 			{
+				autoCorrectRole = constraintRoles[0];
+				autoCorrectFactType = autoCorrectRole.FactType;
+			}
+			else
+			{
+				// We're only interested in one selected item, this code
+				// path should not be running with multiple items selected.
+				if (autoCorrectRole == null)
+				{
+					if (autoCorrectFactType != null)
+					{
+						foreach (Role testRole in constraintRoles)
+						{
+							if (testRole.FactType == autoCorrectFactType)
+							{
+								if (autoCorrectRole == null)
+								{
+									autoCorrectRole = testRole;
+								}
+								else
+								{
+									// Ambiguous selection, there is nothing further we can do
+									autoCorrectRole = null;
+									break;
+								}
+							}
+						}
+					}
+				}
+				else if (autoCorrectFactType == null)
+				{
+					autoCorrectFactType = autoCorrectRole.FactType;
+				}
+			}
+			if (autoCorrectFactType != null)
+			{
 				// Verify the selection, which needs to be set before this method is called
-				FactType factType = constraintRoles[0].FactType;
 				SubtypeFact subtypeFact;
 				bool correctSelection;
-				if (null != (subtypeFact = factType as SubtypeFact) &&
+				if (CurrentFrameVisibility != FrameVisibility.Visible)
+				{
+					// If the window is not active then it does not have a selection
+					this.ShowNoActivate();
+				}
+				if (null != (subtypeFact = autoCorrectFactType as SubtypeFact) &&
 					subtypeFact.ProvidesPreferredIdentifier)
 				{
 					ObjectType subtype = subtypeFact.Subtype;
@@ -294,14 +344,53 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 				else
 				{
-					correctSelection = SelectedFactType == factType;
+					correctSelection = SelectedFactType == autoCorrectFactType;
 				}
 				if (correctSelection)
 				{
 					this.Show();
-					myEditor.AutoCorrectMandatoryError(error);
+					if (autoCorrectRole != null)
+					{
+						retVal = myEditor.AutoCorrectMandatoryError(error, autoCorrectRole);
+					}
 				}
 			}
+			return retVal;
+		}
+		/// <summary>
+		/// Attempts to fix a PopulationMandatoryError
+		/// </summary>
+		/// <param name="error">Error to be corrected</param>
+		/// <param name="autoCorrectObjectType">The <see cref="ObjectType"/> to correct the error for.</param>
+		/// <returns><see langword="true"/> if the error was automatically corrected.</returns>
+		public bool AutoCorrectMandatoryError(PopulationMandatoryError error, ObjectType autoCorrectObjectType)
+		{
+			// Find a role in the mandatory constraint that corresponds to
+			// the object type
+			Role matchingRole = null;
+			foreach (Role role in error.MandatoryConstraint.RoleCollection)
+			{
+				SubtypeFact subtypeFact;
+				SupertypeMetaRole supertypeRole;
+				if (role.RolePlayer == autoCorrectObjectType ||
+					(null != (supertypeRole = role as SupertypeMetaRole) &&
+					(subtypeFact = (SubtypeFact)supertypeRole.FactType).ProvidesPreferredIdentifier &&
+					subtypeFact.Subtype == autoCorrectObjectType))
+				{
+					if (matchingRole != null)
+					{
+						// Multiple matches, nothing to do
+						matchingRole = null;
+						break;
+					}
+					matchingRole = role;
+				}
+			}
+			if (matchingRole != null)
+			{
+				return AutoCorrectMandatoryError(error, matchingRole, null);
+			}
+			return false;
 		}
 		#endregion
 		#region Error Activation

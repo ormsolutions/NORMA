@@ -28,8 +28,25 @@ using ORMSolutions.ORMArchitect.Framework;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
-	partial class RoleBase : IAnswerSurveyQuestion<SurveyFactTypeDetailType>, ISurveyNodeContext, ICustomComparableSurveyNode
+	partial class RoleBase : IAnswerSurveyQuestion<SurveyFactTypeDetailType>, IAnswerSurveyQuestion<SurveyErrorState>, ISurveyNodeContext, ICustomComparableSurveyNode
 	{
+		#region IAnswerSurveyQuestion<SurveyErrorState> Implementation
+		int IAnswerSurveyQuestion<SurveyErrorState>.AskQuestion(object contextElement)
+		{
+			return AskErrorQuestion(contextElement);
+		}
+		/// <summary>
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyErrorState}.AskQuestion"/>
+		/// </summary>
+		protected int AskErrorQuestion(object contextElement)
+		{
+			FactType factType;
+			ORMModel model;
+			return (null == (factType = FactType) || null == (model = factType.Model)) ?
+				-1 :
+				(int)(ModelError.HasErrors(this, ModelErrorUses.DisplayPrimary, model.ModelErrorDisplayFilter) ? SurveyErrorState.HasError : SurveyErrorState.NoError);
+		}
+		#endregion // IAnswerSurveyQuestion<SurveyErrorState> Implementation
 		#region IAnswerSurveyQuestion<SurveyFactTypeDetailType> Implementation
 		int IAnswerSurveyQuestion<SurveyFactTypeDetailType>.AskQuestion(object contextElement)
 		{

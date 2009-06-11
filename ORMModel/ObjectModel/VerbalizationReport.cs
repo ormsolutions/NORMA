@@ -193,7 +193,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			IDictionary<Type, IVerbalizationSets> snippetsDictionary = toolServices.GetVerbalizationSnippetsDictionary(HtmlReport.HtmlReportTargetName);
 			IVerbalizationSets<ReportVerbalizationSnippetType> snippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
 			IExtensionVerbalizerService extensionVerbalizer = toolServices.ExtensionVerbalizerService;
-			Dictionary<IVerbalize, IVerbalize> verbalized;
+			Dictionary<IVerbalize, IVerbalize> alreadyVerbalized;
+			Dictionary<object, object> locallyVerbalized = new Dictionary<object, object>();
 			Stream fileStream;
 			TextWriter textWriter;
 			VerbalizationCallbackWriter writer;
@@ -202,7 +203,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			ObjectType[] objectTypeList = null;
 			if (0 != (reportContent & VerbalizationReportContent.ObjectTypes))
 			{
-				verbalized = new Dictionary<IVerbalize, IVerbalize>();
+				alreadyVerbalized = new Dictionary<IVerbalize, IVerbalize>();
 				objectTypeList = model.ObjectTypeCollection.ToArray();
 
 				int objectTypeCount = objectTypeList.Length;
@@ -222,7 +223,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 						snippetsDictionary,
 						extensionVerbalizer,
 						HtmlReport.HtmlReportTargetName,
-						verbalized,
+						alreadyVerbalized,
+						locallyVerbalized,
 						sign,
 						writer,
 						false,
@@ -245,6 +247,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 					for (int i = 0; i < objectTypeCount; ++i)
 					{
 						bool firstCallPending = true;
+						locallyVerbalized.Clear();
 						ObjectType objectType = objectTypeList[i];
 
 						fileStream = new FileStream(Path.Combine(objectTypeDir, objectType.Name + ".html"), FileMode.Create, FileAccess.ReadWrite);
@@ -258,7 +261,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 							snippetsDictionary,
 							extensionVerbalizer,
 							HtmlReport.HtmlReportTargetName,
-							verbalized,
+							alreadyVerbalized,
+							locallyVerbalized,
 							sign,
 							writer,
 							false,
@@ -280,7 +284,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			if (0 != (VerbalizationReportContent.FactTypes & reportContent))
 			{
 				factTypeList = model.FactTypeCollection.ToArray();
-				verbalized = new Dictionary<IVerbalize, IVerbalize>();
+				alreadyVerbalized = new Dictionary<IVerbalize, IVerbalize>();
 
 				int factCount = factTypeList.Length;
 				if (factCount != 0)
@@ -295,7 +299,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 					for (int i = 0; i < factCount; ++i)
 					{
 						bool firstCallPending = true;
-						verbalized.Clear();
+						alreadyVerbalized.Clear();
+						locallyVerbalized.Clear();
 						fileStream = new FileStream(Path.Combine(factTypeDir, factTypeList[i].Name + ".html"), FileMode.Create, FileAccess.ReadWrite);
 						textWriter = new StreamWriter(fileStream);
 						writer = new VerbalizationReportCallbackWriter(snippetsDictionary, textWriter);
@@ -306,7 +311,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 							snippetsDictionary,
 							extensionVerbalizer,
 							HtmlReport.HtmlReportTargetName,
-							verbalized,
+							alreadyVerbalized,
+							locallyVerbalized,
 							sign,
 							writer,
 							false,
@@ -325,7 +331,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			#region Constraint Validation Report
 			if (0 != (reportContent & VerbalizationReportContent.ValidationReport))
 			{
-				verbalized = new Dictionary<IVerbalize, IVerbalize>();
+				alreadyVerbalized = new Dictionary<IVerbalize, IVerbalize>();
 				bool firstCall = true;
 				if (factTypeList == null)
 				{
@@ -346,7 +352,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 						snippetsDictionary,
 						extensionVerbalizer,
 						HtmlReport.HtmlReportTargetName,
-						verbalized,
+						alreadyVerbalized,
+						null,
 						sign,
 						writer,
 						false,

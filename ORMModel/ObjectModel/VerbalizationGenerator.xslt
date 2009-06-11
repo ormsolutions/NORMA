@@ -94,6 +94,9 @@
 		<xsl:apply-templates select="cvg:SingleSnippet" mode="GenerateClasses"/>
 		<xsl:apply-templates select="cvg:SampleInstance" mode="GenerateClasses"/>
 	</xsl:template>
+	<xsl:template match="cvg:ErrorReports" mode="GenerateClasses">
+		<xsl:apply-templates select="cvg:ErrorReport" mode="GenerateClasses"/>
+	</xsl:template>
 	<xsl:template match="cvg:NoteText" mode="ConstraintVerbalization">
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="'variableSnippet'"/>
@@ -812,6 +815,66 @@
 			</plx:function>
 		</plx:class>
 	</xsl:template>
+	<xsl:template match="cvg:ErrorReport" mode="GenerateClasses">
+		<xsl:variable name="parentClass" select="string(@childHelperFor)"/>
+		<xsl:variable name="isChildHelper" select="boolean($parentClass)"/>
+		<xsl:if test="$isChildHelper">
+			<xsl:text disable-output-escaping="yes"><![CDATA[<plx:class name="]]></xsl:text>
+			<xsl:value-of select="$parentClass"/>
+			<xsl:text disable-output-escaping="yes"><![CDATA[" visibility="public" partial="true"><plx:leadingInfo><plx:pragma type="region" data="]]></xsl:text>
+			<xsl:value-of select="concat($parentClass,'.',@type)"/>
+			<xsl:text disable-output-escaping="yes"><![CDATA[ verbalization"/></plx:leadingInfo><plx:trailingInfo><plx:pragma type="closeRegion" data="]]></xsl:text>
+			<xsl:value-of select="concat($parentClass,'.',@type)"/>
+			<xsl:text disable-output-escaping="yes"><![CDATA[ verbalization"/></plx:trailingInfo>]]></xsl:text>
+		</xsl:if>
+		<plx:class name="{@type}" visibility="public" partial="true">
+			<xsl:choose>
+				<xsl:when test="$isChildHelper">
+					<xsl:attribute name="visibility">
+						<xsl:text>private</xsl:text>
+					</xsl:attribute>
+				</xsl:when>
+				<xsl:otherwise>
+					<plx:leadingInfo>
+						<plx:pragma type="region" data="{@type} verbalization"/>
+					</plx:leadingInfo>
+					<plx:trailingInfo>
+						<plx:pragma type="closeRegion" data="{@type} verbalization"/>
+					</plx:trailingInfo>
+				</xsl:otherwise>
+			</xsl:choose>
+			<plx:implementsInterface dataTypeName="IVerbalize"/>
+			<xsl:if test="$isChildHelper">
+				<xsl:call-template name="GetVerbalizer">
+					<xsl:with-param name="type" select="@type"/>
+				</xsl:call-template>
+			</xsl:if>
+			<plx:function name="GetVerbalization" visibility="protected">
+				<plx:leadingInfo>
+					<plx:docComment>
+						<summary><see cref="IVerbalize.GetVerbalization"/> implementation</summary>
+					</plx:docComment>
+				</plx:leadingInfo>
+				<plx:interfaceMember memberName="GetVerbalization" dataTypeName="IVerbalize"/>
+				<plx:param name="writer" dataTypeName="TextWriter"/>
+				<plx:param name="snippetsDictionary" dataTypeName="IDictionary">
+					<plx:passTypeParam dataTypeName="Type"/>
+					<plx:passTypeParam dataTypeName="IVerbalizationSets"/>
+				</plx:param>
+				<plx:param name="verbalizationContext" dataTypeName="IVerbalizationContext"/>
+				<plx:param name="sign" dataTypeName="VerbalizationSign"/>
+				<plx:returns dataTypeName=".boolean"/>
+
+				<xsl:call-template name="DeclareSnippetsLocal"/>
+				<xsl:call-template name="CheckErrorConditions">
+					<xsl:with-param name="Standalone" select="true()"/>
+				</xsl:call-template>
+			</plx:function>
+		</plx:class>
+		<xsl:if test="$isChildHelper">
+			<xsl:text disable-output-escaping="yes"><![CDATA[</plx:class>]]></xsl:text>
+		</xsl:if>
+	</xsl:template>
 	<xsl:template match="cvg:ErrorReportHere" mode="ConstraintVerbalization">
 		<xsl:call-template name="CheckErrorConditions">
 			<xsl:with-param name="Primary" select="false()"/>
@@ -827,6 +890,7 @@
 		<xsl:variable name="isSingleColumn" select="$patternGroup='SetConstraint'"/>
 		<xsl:variable name="parentClass" select="string(@childHelperFor)"/>
 		<xsl:variable name="isChildHelper" select="boolean($parentClass)"/>
+		<xsl:variable name="errorReport" select="not($isChildHelper) or (@childHelperErrorReport='true' or @childHelperErrorReport='1')"/>
 		<xsl:variable name="isSetComparisonConstraint" select="$patternGroup='SetComparisonConstraint'"/>
 		<xsl:variable name="compatibleColumns" select="@compatibleColumns='true' or @compatibleColumns='1'"/>
 		<xsl:variable name="deferMatchesTo" select="string(@deferMatchesTo)"/>
@@ -880,7 +944,7 @@
 				<plx:pragma type="region" data="Preliminary"/>
 				<xsl:call-template name="DeclareSnippetsLocal"/>
 				<!-- Don't proceed with verbalization if blocking errors are present -->
-				<xsl:if test="not($isChildHelper)">
+				<xsl:if test="$errorReport">
 					<xsl:call-template name="CheckErrorConditions"/>
 				</xsl:if>
 				<xsl:if test="not($deferMatchesTo)">
@@ -1202,7 +1266,7 @@
 									</plx:right>
 								</plx:binaryOperator>
 							</plx:condition>
-							<xsl:if test="not($isChildHelper)">
+							<xsl:if test="$errorReport">
 								<xsl:call-template name="CheckErrorConditions">
 									<xsl:with-param name="Primary" select="false()"/>
 									<xsl:with-param name="DeclareErrorOwner" select="false()"/>
@@ -1258,7 +1322,7 @@
 										</plx:right>
 									</plx:binaryOperator>
 								</plx:condition>
-								<xsl:if test="not($isChildHelper)">
+								<xsl:if test="$errorReport">
 									<xsl:call-template name="CheckErrorConditions">
 										<xsl:with-param name="Primary" select="false()"/>
 										<xsl:with-param name="DeclareErrorOwner" select="false()"/>
@@ -1373,7 +1437,7 @@
 											</plx:right>
 										</plx:binaryOperator>
 									</plx:condition>
-									<xsl:if test="not($isChildHelper)">
+									<xsl:if test="$errorReport">
 										<xsl:call-template name="CheckErrorConditions">
 											<xsl:with-param name="Primary" select="false()"/>
 											<xsl:with-param name="DeclareErrorOwner" select="false()"/>
@@ -1665,7 +1729,7 @@
 					</xsl:otherwise>
 				</xsl:choose>
 				<plx:pragma type="closeRegion" data="Pattern Matches"/>
-				<xsl:if test="not($isChildHelper)">
+				<xsl:if test="$errorReport">
 					<xsl:call-template name="CheckErrorConditions">
 						<xsl:with-param name="Primary" select="false()"/>
 						<xsl:with-param name="DeclareErrorOwner" select="false()"/>
@@ -1786,10 +1850,11 @@
 	</xsl:template>
 	<xsl:template name="CheckErrorConditions">
 		<xsl:param name="Primary" select="true()"/>
+		<xsl:param name="Standalone" select="false()"/>
 		<xsl:param name="BeginVerbalization" select="$Primary"/>
 		<xsl:param name="DeclareErrorOwner" select="true()"/>
 		<plx:pragma type="region" data="Prerequisite error check">
-			<xsl:if test="not($Primary)">
+			<xsl:if test="not($Primary) or $Standalone">
 				<xsl:attribute name="data">
 					<xsl:text>Error report</xsl:text>
 				</xsl:attribute>
@@ -1804,6 +1869,13 @@
 				</plx:initialize>
 			</plx:local>
 			<plx:local name="firstErrorPending" dataTypeName=".boolean"/>
+			<xsl:if test="not($Standalone)">
+				<plx:local name="blockingErrors" dataTypeName=".boolean">
+					<plx:initialize>
+						<plx:falseKeyword/>
+					</plx:initialize>
+				</plx:local>
+			</xsl:if>
 		</xsl:if>
 		<plx:branch>
 			<plx:condition>
@@ -1818,19 +1890,26 @@
 			</plx:condition>
 			<xsl:call-template name="CheckErrorConditionsBody">
 				<xsl:with-param name="Primary" select="$Primary"/>
+				<xsl:with-param name="Standalone" select="$Standalone"/>
 				<xsl:with-param name="BeginVerbalization" select="$BeginVerbalization"/>
 			</xsl:call-template>
 		</plx:branch>
 		<plx:pragma type="closeRegion" data="Prerequisite error check">
-			<xsl:if test="not($Primary)">
+			<xsl:if test="not($Primary) or $Standalone">
 				<xsl:attribute name="data">
 					<xsl:text>Error report</xsl:text>
 				</xsl:attribute>
 			</xsl:if>
 		</plx:pragma>
+		<xsl:if test="$Standalone">
+			<plx:return>
+				<plx:falseKeyword/>
+			</plx:return>
+		</xsl:if>
 	</xsl:template>
 	<xsl:template name="CheckErrorConditionsBody">
 		<xsl:param name="Primary" select="true()"/>
+		<xsl:param name="Standalone" select="false()"/>
 		<xsl:param name="BeginVerbalization" select="$Primary"/>
 		<xsl:variable name="stageFragment">
 			<xsl:choose>
@@ -1854,7 +1933,6 @@
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:variable name="filter" select="string($filterFragment)"/>
-
 		<plx:assign>
 			<plx:left>
 				<plx:nameRef name="firstErrorPending"/>
@@ -1874,50 +1952,87 @@
 					</plx:passParam>
 				</plx:callInstance>
 			</plx:initialize>
-			<xsl:if test="not($Primary)">
-				<plx:local name="errorDisplayFilter" dataTypeName="ModelErrorDisplayFilter">
-					<plx:initialize>
-						<plx:callInstance name="ModelErrorDisplayFilter" type="property">
-							<plx:callObject>
-								<plx:callInstance name="Model" type="property">
-									<plx:callObject>
-										<plx:nameRef name="error"/>
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:initialize>
-				</plx:local>
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="booleanAnd">
+			<xsl:variable name="alreadyVerbalized">
+				<plx:callInstance name="TestVerbalizedLocally">
+					<plx:callObject>
+						<plx:nameRef name="verbalizationContext" type="parameter"/>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:nameRef name="error"/>
+					</plx:passParam>
+				</plx:callInstance>
+			</xsl:variable>
+			<xsl:choose>
+				<xsl:when test="$Primary">
+					<xsl:if test="not($Standalone)">
+						<plx:assign>
 							<plx:left>
-								<plx:binaryOperator type="identityInequality">
-									<plx:left>
-										<plx:nameRef name="errorDisplayFilter"/>
-									</plx:left>
-									<plx:right>
-										<plx:nullKeyword/>
-									</plx:right>
-								</plx:binaryOperator>
+								<plx:nameRef name="blockingErrors"/>
 							</plx:left>
 							<plx:right>
-								<plx:unaryOperator type="booleanNot">
-									<plx:callInstance name="ShouldDisplay">
-										<plx:callObject>
-											<plx:nameRef name="errorDisplayFilter"/>
-										</plx:callObject>
-										<plx:passParam>
-											<plx:nameRef name="error"/>
-										</plx:passParam>
-									</plx:callInstance>
-								</plx:unaryOperator>
+								<plx:trueKeyword/>
 							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:continue/>
-				</plx:branch>
-			</xsl:if>
+						</plx:assign>
+					</xsl:if>
+					<plx:branch>
+						<plx:condition>
+							<xsl:copy-of select="$alreadyVerbalized"/>
+						</plx:condition>
+						<plx:continue/>
+					</plx:branch>
+				</xsl:when>
+				<xsl:otherwise>
+					<plx:local name="errorDisplayFilter" dataTypeName="ModelErrorDisplayFilter">
+						<plx:initialize>
+							<plx:callInstance name="ModelErrorDisplayFilter" type="property">
+								<plx:callObject>
+									<plx:callInstance name="Model" type="property">
+										<plx:callObject>
+											<plx:nameRef name="error"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="booleanOr">
+								<plx:left>
+									<plx:binaryOperator type="booleanAnd">
+										<plx:left>
+											<plx:binaryOperator type="identityInequality">
+												<plx:left>
+													<plx:nameRef name="errorDisplayFilter"/>
+												</plx:left>
+												<plx:right>
+													<plx:nullKeyword/>
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:left>
+										<plx:right>
+											<plx:unaryOperator type="booleanNot">
+												<plx:callInstance name="ShouldDisplay">
+													<plx:callObject>
+														<plx:nameRef name="errorDisplayFilter"/>
+													</plx:callObject>
+													<plx:passParam>
+														<plx:nameRef name="error"/>
+													</plx:passParam>
+												</plx:callInstance>
+											</plx:unaryOperator>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:left>
+								<plx:right>
+									<xsl:copy-of select="$alreadyVerbalized"/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:continue/>
+					</plx:branch>
+				</xsl:otherwise>
+			</xsl:choose>
 			<plx:branch>
 				<plx:condition>
 					<plx:nameRef name="firstErrorPending"/>
@@ -1932,14 +2047,40 @@
 				</plx:assign>
 				<xsl:choose>
 					<xsl:when test="$BeginVerbalization">
-						<plx:callInstance name="BeginVerbalization">
-							<plx:callObject>
-								<plx:nameRef name="verbalizationContext" type="parameter"/>
-							</plx:callObject>
-							<plx:passParam>
-								<plx:callStatic name="ErrorReport" dataTypeName="VerbalizationContent" type="field"/>
-							</plx:passParam>
-						</plx:callInstance>
+						<xsl:choose>
+							<xsl:when test="$Standalone and not($Primary)">
+								<plx:branch>
+									<plx:condition>
+										<plx:nameRef name="blockingErrorsReported"/>
+									</plx:condition>
+									<plx:callInstance name="WriteLine">
+										<plx:callObject>
+											<plx:nameRef type="parameter" name="writer"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:branch>
+								<plx:fallbackBranch>
+									<plx:callInstance name="BeginVerbalization">
+										<plx:callObject>
+											<plx:nameRef name="verbalizationContext" type="parameter"/>
+										</plx:callObject>
+										<plx:passParam>
+											<plx:callStatic name="ErrorReport" dataTypeName="VerbalizationContent" type="field"/>
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:fallbackBranch>
+							</xsl:when>
+							<xsl:otherwise>
+								<plx:callInstance name="BeginVerbalization">
+									<plx:callObject>
+										<plx:nameRef name="verbalizationContext" type="parameter"/>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:callStatic name="ErrorReport" dataTypeName="VerbalizationContent" type="field"/>
+									</plx:passParam>
+								</plx:callInstance>
+							</xsl:otherwise>
+						</xsl:choose>
 					</xsl:when>
 					<xsl:otherwise>
 						<plx:callInstance name="WriteLine">
@@ -2044,15 +2185,46 @@
 					</xsl:call-template>
 				</plx:passParam>
 			</plx:callInstance>
-			<xsl:if test="$Primary">
-				<xsl:call-template name="CheckErrorConditionsBody">
-					<xsl:with-param name="Primary" select="false()"/>
-				</xsl:call-template>
-				<plx:return>
-					<plx:trueKeyword/>
-				</plx:return>
-			</xsl:if>
 		</plx:branch>
+		<xsl:choose>
+			<xsl:when test="$Primary and not($Standalone)">
+				<plx:branch>
+					<plx:condition>
+						<plx:nameRef name="blockingErrors"/>
+					</plx:condition>
+					<xsl:call-template name="CheckErrorConditionsBody">
+						<xsl:with-param name="Primary" select="false()"/>
+					</xsl:call-template>
+					<plx:return>
+						<plx:trueKeyword/>
+					</plx:return>
+				</plx:branch>
+			</xsl:when>
+		</xsl:choose>
+		<xsl:if test="$Standalone and $Primary">
+			<plx:local name="blockingErrorsReported" dataTypeName=".boolean">
+				<plx:initialize>
+					<plx:unaryOperator type="booleanNot">
+						<plx:nameRef name="firstErrorPending"/>
+					</plx:unaryOperator>
+				</plx:initialize>
+			</plx:local>
+			<xsl:call-template name="CheckErrorConditionsBody">
+				<xsl:with-param name="Primary" select="false()"/>
+				<xsl:with-param name="Standalone" select="true()"/>
+				<xsl:with-param name="BeginVerbalization" select="$BeginVerbalization"/>
+			</xsl:call-template>
+			<plx:return>
+				<plx:binaryOperator type="booleanOr">
+					<plx:left>
+						<plx:nameRef name="blockingErrorsReported"/>
+					</plx:left>
+					<plx:right>
+						<plx:nameRef name="firstErrorPending"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</plx:return>
+		</xsl:if>
 	</xsl:template>
 	<!-- Handle the span constraint condition attribute -->
 	<xsl:template match="@span" mode="ConstraintConditionOperator">

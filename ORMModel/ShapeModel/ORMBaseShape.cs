@@ -413,6 +413,25 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 										retVal = true;
 										break;
 									}
+									else
+									{
+										if (!retVal)
+										{
+											IORMToolTaskItem task;
+											IORMToolServices services;
+											IORMToolTaskProvider provider;
+											if (null != (task = error.TaskData as IORMToolTaskItem) &&
+												null != (services = error.Store as IORMToolServices) &&
+												null != (provider = services.TaskProvider))
+											{
+												if (provider.NavigateTo(task))
+												{
+													retVal = true;
+													break;
+												}
+											}
+										}
+									}
 								}
 							}
 						}

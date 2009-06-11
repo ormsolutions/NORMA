@@ -107,6 +107,9 @@
 				<ExpressionBody/>
 			</Snippet>
 		</SubtypeDerivationExpression>
+		<ErrorReports>
+			<ErrorReport type="ErrorReport" childHelperFor="Role" childHelperErrorReport="true"/>
+		</ErrorReports>
 		<!-- Generate constraint verbalizations -->
 		<Constraints>
 			<Constraint type="SubsetConstraint" patternGroup="SetComparisonConstraint">
@@ -350,7 +353,7 @@
 				</ConstrainedRoles>
 			</Constraint>
 			<!-- FactType.CombinedMandatoryUniqueVerbalizer -->
-			<Constraint type="CombinedMandatoryUniqueVerbalizer" childHelperFor="FactType" patternGroup="InternalConstraint">
+			<Constraint type="CombinedMandatoryUniqueVerbalizer" childHelperFor="FactType" childHelperErrorReport="true" patternGroup="InternalConstraint">
 				<!-- 3.1.2 binary predicate -->
 				<ConstrainedRoles factArity="2" sign="positive">
 					<ConditionalReading>

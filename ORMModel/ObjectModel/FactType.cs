@@ -749,7 +749,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 				}
 			}
-			if (0 == (filter & (ModelErrorUses.BlockVerbalization | ModelErrorUses.DisplayPrimary)) || filter == (ModelErrorUses)(-1)) // Roles don't verbalize, we need to show these here
+			if (filter == (ModelErrorUses)(-1))
 			{
 				// Show the fact type as an owner of the role errors as well
 				// so the fact can be accurately named in the error text. However,
@@ -759,22 +759,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					Role role = roleBase as Role;
 					if (role != null)
 					{
-						if (0 != (filter & ModelErrorUses.Verbalize))
+						foreach (ModelErrorUsage roleError in (role as IModelErrorOwner).GetErrorCollection(filter))
 						{
-							foreach (ModelErrorUsage roleError in (role as IModelErrorOwner).GetErrorCollection(filter))
-							{
-								yield return new ModelErrorUsage(roleError, ModelErrorUses.Verbalize);
-							}
+							yield return new ModelErrorUsage(roleError, ModelErrorUses.None);
 						}
-						if (filter == (ModelErrorUses)(-1))
+						IModelErrorOwner valueErrors = role.ValueConstraint as IModelErrorOwner;
+						if (valueErrors != null)
 						{
-							IModelErrorOwner valueErrors = role.ValueConstraint as IModelErrorOwner;
-							if (valueErrors != null)
+							foreach (ModelErrorUsage valueError in valueErrors.GetErrorCollection(filter))
 							{
-								foreach (ModelErrorUsage valueError in valueErrors.GetErrorCollection(filter))
-								{
-									yield return new ModelErrorUsage(valueError, ModelErrorUses.None);
-								}
+								yield return new ModelErrorUsage(valueError, ModelErrorUses.None);
 							}
 						}
 					}
@@ -2245,19 +2239,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Non-generated portions of verbalization helper used to verbalize a
 		/// combined internal uniqueness constraint and simple mandatory constraint.
 		/// </summary>
-		private partial class CombinedMandatoryUniqueVerbalizer
+		private partial class CombinedMandatoryUniqueVerbalizer : IModelErrorOwner
 		{
 			private FactType myFact;
-			private UniquenessConstraint myConstraint;
-			public void Initialize(FactType fact, UniquenessConstraint constraint)
+			private UniquenessConstraint myUniquenessConstraint;
+			private MandatoryConstraint myMandatoryConstraint;
+			public void Initialize(FactType fact, UniquenessConstraint uniquenessConstraint, MandatoryConstraint mandatoryConstraint)
 			{
 				myFact = fact;
-				myConstraint = constraint;
+				myUniquenessConstraint = uniquenessConstraint;
+				myMandatoryConstraint = mandatoryConstraint;
 			}
 			private void DisposeHelper()
 			{
 				myFact = null;
-				myConstraint = null;
+				myUniquenessConstraint = null;
+				myMandatoryConstraint = null;
 			}
 			private FactType FactType
 			{
@@ -2270,16 +2267,37 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				get
 				{
-					return myConstraint.RoleCollection;
+					return myUniquenessConstraint.RoleCollection;
 				}
 			}
 			private ConstraintModality Modality
 			{
 				get
 				{
-					return myConstraint.Modality;
+					return myUniquenessConstraint.Modality;
 				}
 			}
+
+			#region IModelErrorOwner Implementation
+			IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)
+			{
+				// Defer to the errors on the mandatory and uniqueness constraint
+				foreach (ModelErrorUsage usage in ((IModelErrorOwner)myMandatoryConstraint).GetErrorCollection(filter))
+				{
+					yield return usage;
+				}
+				foreach (ModelErrorUsage usage in ((IModelErrorOwner)myUniquenessConstraint).GetErrorCollection(filter))
+				{
+					yield return usage;
+				}
+			}
+			void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
+			{
+			}
+			void IModelErrorOwner.DelayValidateErrors()
+			{
+			}
+			#endregion // IModelErrorOwner Implementation
 		}
 		#endregion // CombinedMandatoryUniqueVerbalizer class
 		#region FactTypeInstanceVerbalizer class
@@ -2490,7 +2508,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									{
 										// Combine verbalizations into one
 										CombinedMandatoryUniqueVerbalizer verbalizer = CombinedMandatoryUniqueVerbalizer.GetVerbalizer();
-										verbalizer.Initialize(this, uniquenessConstraint);
+										verbalizer.Initialize(this, uniquenessConstraint, mandatoryConstraint);
 										yield return CustomChildVerbalizer.VerbalizeInstance(verbalizer, true);
 									}
 									else if (uniquenessConstraint != null)

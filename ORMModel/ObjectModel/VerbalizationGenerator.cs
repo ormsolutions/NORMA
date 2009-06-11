@@ -1188,11 +1188,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Prerequisite error check
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
 			bool firstErrorPending;
+			bool blockingErrors = false;
 			if (errorOwner != null)
 			{
 				firstErrorPending = true;
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
 				{
+					blockingErrors = true;
+					if (verbalizationContext.TestVerbalizedLocally(error))
+					{
+						continue;
+					}
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
@@ -1208,11 +1214,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (!firstErrorPending)
 				{
 					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorClosePrimaryReport, false, false));
+				}
+				if (blockingErrors)
+				{
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -1254,7 +1263,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -1296,11 +1305,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Prerequisite error check
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
 			bool firstErrorPending;
+			bool blockingErrors = false;
 			if (errorOwner != null)
 			{
 				firstErrorPending = true;
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
 				{
+					blockingErrors = true;
+					if (verbalizationContext.TestVerbalizedLocally(error))
+					{
+						continue;
+					}
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
@@ -1316,11 +1331,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (!firstErrorPending)
 				{
 					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorClosePrimaryReport, false, false));
+				}
+				if (blockingErrors)
+				{
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -1384,7 +1402,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -1426,11 +1444,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Prerequisite error check
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
 			bool firstErrorPending;
+			bool blockingErrors = false;
 			if (errorOwner != null)
 			{
 				firstErrorPending = true;
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
 				{
+					blockingErrors = true;
+					if (verbalizationContext.TestVerbalizedLocally(error))
+					{
+						continue;
+					}
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
@@ -1446,11 +1470,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (!firstErrorPending)
 				{
 					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorClosePrimaryReport, false, false));
+				}
+				if (blockingErrors)
+				{
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -1509,7 +1536,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -1551,11 +1578,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Prerequisite error check
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
 			bool firstErrorPending;
+			bool blockingErrors = false;
 			if (errorOwner != null)
 			{
 				firstErrorPending = true;
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
 				{
+					blockingErrors = true;
+					if (verbalizationContext.TestVerbalizedLocally(error))
+					{
+						continue;
+					}
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
@@ -1571,11 +1604,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (!firstErrorPending)
 				{
 					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorClosePrimaryReport, false, false));
+				}
+				if (blockingErrors)
+				{
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -1632,7 +1668,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -1933,11 +1969,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Prerequisite error check
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
 			bool firstErrorPending;
+			bool blockingErrors = false;
 			if (errorOwner != null)
 			{
 				firstErrorPending = true;
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
 				{
+					blockingErrors = true;
+					if (verbalizationContext.TestVerbalizedLocally(error))
+					{
+						continue;
+					}
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
@@ -1953,11 +1995,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (!firstErrorPending)
 				{
 					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorClosePrimaryReport, false, false));
+				}
+				if (blockingErrors)
+				{
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -1997,7 +2042,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -2039,11 +2084,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Prerequisite error check
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
 			bool firstErrorPending;
+			bool blockingErrors = false;
 			if (errorOwner != null)
 			{
 				firstErrorPending = true;
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
 				{
+					blockingErrors = true;
+					if (verbalizationContext.TestVerbalizedLocally(error))
+					{
+						continue;
+					}
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
@@ -2059,11 +2110,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (!firstErrorPending)
 				{
 					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorClosePrimaryReport, false, false));
+				}
+				if (blockingErrors)
+				{
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -2103,7 +2157,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -2145,11 +2199,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Prerequisite error check
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
 			bool firstErrorPending;
+			bool blockingErrors = false;
 			if (errorOwner != null)
 			{
 				firstErrorPending = true;
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
 				{
+					blockingErrors = true;
+					if (verbalizationContext.TestVerbalizedLocally(error))
+					{
+						continue;
+					}
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
@@ -2165,11 +2225,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (!firstErrorPending)
 				{
 					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorClosePrimaryReport, false, false));
+				}
+				if (blockingErrors)
+				{
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -2209,7 +2272,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -2256,11 +2319,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Prerequisite error check
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
 			bool firstErrorPending;
+			bool blockingErrors = false;
 			if (errorOwner != null)
 			{
 				firstErrorPending = true;
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
 				{
+					blockingErrors = true;
+					if (verbalizationContext.TestVerbalizedLocally(error))
+					{
+						continue;
+					}
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
@@ -2276,11 +2345,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (!firstErrorPending)
 				{
 					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorClosePrimaryReport, false, false));
+				}
+				if (blockingErrors)
+				{
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -2320,7 +2392,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -2350,6 +2422,112 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // SubtypeDerivationExpression verbalization
+	#region Role.ErrorReport verbalization
+	public partial class Role
+	{
+		private partial class ErrorReport : IVerbalize, IDisposable
+		{
+			#region Cache management
+			// Cache an instance so we only create one helper in single-threaded scenarios
+			private static ErrorReport myCache;
+			public static ErrorReport GetVerbalizer()
+			{
+				ErrorReport retVal = myCache;
+				if (retVal != null)
+				{
+					retVal = System.Threading.Interlocked.CompareExchange<ErrorReport>(ref myCache, null as ErrorReport, retVal);
+				}
+				if (retVal == null)
+				{
+					retVal = new ErrorReport();
+				}
+				return retVal;
+			}
+			void IDisposable.Dispose()
+			{
+				this.DisposeHelper();
+				if (myCache == null)
+				{
+					System.Threading.Interlocked.CompareExchange<ErrorReport>(ref myCache, this, null as ErrorReport);
+				}
+			}
+			#endregion // Cache management
+			/// <summary><see cref="IVerbalize.GetVerbalization"/> implementation</summary>
+			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
+			{
+				IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
+				#region Error report
+				IModelErrorOwner errorOwner = this as IModelErrorOwner;
+				bool firstErrorPending;
+				if (errorOwner != null)
+				{
+					firstErrorPending = true;
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
+					{
+						if (verbalizationContext.TestVerbalizedLocally(error))
+						{
+							continue;
+						}
+						if (firstErrorPending)
+						{
+							firstErrorPending = false;
+							verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
+							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenPrimaryReport, false, false));
+						}
+						else
+						{
+							writer.WriteLine();
+						}
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText, error.Id.ToString("D")));
+					}
+					if (!firstErrorPending)
+					{
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorClosePrimaryReport, false, false));
+					}
+					bool blockingErrorsReported = !firstErrorPending;
+					firstErrorPending = true;
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+					{
+						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+						{
+							continue;
+						}
+						if (firstErrorPending)
+						{
+							firstErrorPending = false;
+							if (blockingErrorsReported)
+							{
+								writer.WriteLine();
+							}
+							else
+							{
+								verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
+							}
+							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
+						}
+						else
+						{
+							writer.WriteLine();
+						}
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
+					}
+					if (!firstErrorPending)
+					{
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorCloseSecondaryReport, false, false));
+					}
+					return blockingErrorsReported || firstErrorPending;
+				}
+				#endregion // Error report
+				return false;
+			}
+			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
+			{
+				return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
+			}
+		}
+	}
+	#endregion // Role.ErrorReport verbalization
 	#region SubsetConstraint verbalization
 	public partial class SubsetConstraint : IVerbalize
 	{
@@ -2361,11 +2539,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Prerequisite error check
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
 			bool firstErrorPending;
+			bool blockingErrors = false;
 			if (errorOwner != null)
 			{
 				firstErrorPending = true;
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
 				{
+					blockingErrors = true;
+					if (verbalizationContext.TestVerbalizedLocally(error))
+					{
+						continue;
+					}
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
@@ -2381,11 +2565,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (!firstErrorPending)
 				{
 					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorClosePrimaryReport, false, false));
+				}
+				if (blockingErrors)
+				{
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -2438,7 +2625,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -2479,7 +2666,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 						{
 							ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-							if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+							if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 							{
 								continue;
 							}
@@ -3193,7 +3380,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -3867,6 +4054,66 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				#region Preliminary
 				IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
+				#region Prerequisite error check
+				IModelErrorOwner errorOwner = this as IModelErrorOwner;
+				bool firstErrorPending;
+				bool blockingErrors = false;
+				if (errorOwner != null)
+				{
+					firstErrorPending = true;
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
+					{
+						blockingErrors = true;
+						if (verbalizationContext.TestVerbalizedLocally(error))
+						{
+							continue;
+						}
+						if (firstErrorPending)
+						{
+							firstErrorPending = false;
+							verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
+							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenPrimaryReport, false, false));
+						}
+						else
+						{
+							writer.WriteLine();
+						}
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText, error.Id.ToString("D")));
+					}
+					if (!firstErrorPending)
+					{
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorClosePrimaryReport, false, false));
+					}
+					if (blockingErrors)
+					{
+						firstErrorPending = true;
+						foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+						{
+							ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+							if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+							{
+								continue;
+							}
+							if (firstErrorPending)
+							{
+								firstErrorPending = false;
+								writer.WriteLine();
+								writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
+							}
+							else
+							{
+								writer.WriteLine();
+							}
+							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
+						}
+						if (!firstErrorPending)
+						{
+							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorCloseSecondaryReport, false, false));
+						}
+						return true;
+					}
+				}
+				#endregion // Prerequisite error check
 				bool isNegative = 0 != (sign & VerbalizationSign.Negative);
 				bool isDeontic = this.Modality == ConstraintModality.Deontic;
 				StringBuilder sbTemp = null;
@@ -3881,6 +4128,35 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				int includedArity = includedRoles.Count;
 				if (allReadingOrders.Count == 0 || includedArity == 0)
 				{
+					#region Error report
+					if (errorOwner != null)
+					{
+						firstErrorPending = true;
+						foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+						{
+							ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+							if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+							{
+								continue;
+							}
+							if (firstErrorPending)
+							{
+								firstErrorPending = false;
+								verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
+								writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
+							}
+							else
+							{
+								writer.WriteLine();
+							}
+							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
+						}
+						if (!firstErrorPending)
+						{
+							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorCloseSecondaryReport, false, false));
+						}
+					}
+					#endregion // Error report
 					return false;
 				}
 				string[] basicRoleReplacements = new string[factArity];
@@ -4018,6 +4294,35 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative ? VerbalizationSign.Positive : VerbalizationSign.Negative);
 				}
 				#endregion // Pattern Matches
+				#region Error report
+				if (errorOwner != null)
+				{
+					firstErrorPending = true;
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+					{
+						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+						{
+							continue;
+						}
+						if (firstErrorPending)
+						{
+							firstErrorPending = false;
+							writer.WriteLine();
+							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
+						}
+						else
+						{
+							writer.WriteLine();
+						}
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
+					}
+					if (!firstErrorPending)
+					{
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorCloseSecondaryReport, false, false));
+					}
+				}
+				#endregion // Error report
 				return true;
 			}
 			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
@@ -4038,11 +4343,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Prerequisite error check
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
 			bool firstErrorPending;
+			bool blockingErrors = false;
 			if (errorOwner != null)
 			{
 				firstErrorPending = true;
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
 				{
+					blockingErrors = true;
+					if (verbalizationContext.TestVerbalizedLocally(error))
+					{
+						continue;
+					}
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
@@ -4058,11 +4369,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (!firstErrorPending)
 				{
 					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorClosePrimaryReport, false, false));
+				}
+				if (blockingErrors)
+				{
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -4108,7 +4422,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -4149,7 +4463,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 						{
 							ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-							if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+							if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 							{
 								continue;
 							}
@@ -5161,7 +5475,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -5202,11 +5516,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Prerequisite error check
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
 			bool firstErrorPending;
+			bool blockingErrors = false;
 			if (errorOwner != null)
 			{
 				firstErrorPending = true;
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
 				{
+					blockingErrors = true;
+					if (verbalizationContext.TestVerbalizedLocally(error))
+					{
+						continue;
+					}
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
@@ -5222,11 +5542,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (!firstErrorPending)
 				{
 					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorClosePrimaryReport, false, false));
+				}
+				if (blockingErrors)
+				{
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -5272,7 +5595,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -5313,7 +5636,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 						{
 							ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-							if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+							if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 							{
 								continue;
 							}
@@ -7120,7 +7443,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -7161,11 +7484,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Prerequisite error check
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
 			bool firstErrorPending;
+			bool blockingErrors = false;
 			if (errorOwner != null)
 			{
 				firstErrorPending = true;
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
 				{
+					blockingErrors = true;
+					if (verbalizationContext.TestVerbalizedLocally(error))
+					{
+						continue;
+					}
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
@@ -7181,11 +7510,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (!firstErrorPending)
 				{
 					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorClosePrimaryReport, false, false));
+				}
+				if (blockingErrors)
+				{
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -7231,7 +7563,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -7271,7 +7603,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 						{
 							ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-							if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+							if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 							{
 								continue;
 							}
@@ -7582,7 +7914,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -7623,11 +7955,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Prerequisite error check
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
 			bool firstErrorPending;
+			bool blockingErrors = false;
 			if (errorOwner != null)
 			{
 				firstErrorPending = true;
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
 				{
+					blockingErrors = true;
+					if (verbalizationContext.TestVerbalizedLocally(error))
+					{
+						continue;
+					}
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
@@ -7643,11 +7981,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (!firstErrorPending)
 				{
 					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorClosePrimaryReport, false, false));
+				}
+				if (blockingErrors)
+				{
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -7694,7 +8035,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -7945,7 +8286,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -7986,11 +8327,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Prerequisite error check
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
 			bool firstErrorPending;
+			bool blockingErrors = false;
 			if (errorOwner != null)
 			{
 				firstErrorPending = true;
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
 				{
+					blockingErrors = true;
+					if (verbalizationContext.TestVerbalizedLocally(error))
+					{
+						continue;
+					}
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
@@ -8006,11 +8353,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (!firstErrorPending)
 				{
 					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorClosePrimaryReport, false, false));
+				}
+				if (blockingErrors)
+				{
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -8180,7 +8530,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -8404,11 +8754,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Prerequisite error check
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
 			bool firstErrorPending;
+			bool blockingErrors = false;
 			if (errorOwner != null)
 			{
 				firstErrorPending = true;
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
 				{
+					blockingErrors = true;
+					if (verbalizationContext.TestVerbalizedLocally(error))
+					{
+						continue;
+					}
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
@@ -8424,11 +8780,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (!firstErrorPending)
 				{
 					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorClosePrimaryReport, false, false));
+				}
+				if (blockingErrors)
+				{
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -8463,7 +8822,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -10755,11 +11114,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Prerequisite error check
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
 			bool firstErrorPending;
+			bool blockingErrors = false;
 			if (errorOwner != null)
 			{
 				firstErrorPending = true;
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
 				{
+					blockingErrors = true;
+					if (verbalizationContext.TestVerbalizedLocally(error))
+					{
+						continue;
+					}
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
@@ -10775,11 +11140,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (!firstErrorPending)
 				{
 					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorClosePrimaryReport, false, false));
+				}
+				if (blockingErrors)
+				{
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -10832,7 +11200,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -10873,7 +11241,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 						{
 							ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-							if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+							if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 							{
 								continue;
 							}
@@ -11390,7 +11758,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -11431,11 +11799,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Prerequisite error check
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
 			bool firstErrorPending;
+			bool blockingErrors = false;
 			if (errorOwner != null)
 			{
 				firstErrorPending = true;
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
 				{
+					blockingErrors = true;
+					if (verbalizationContext.TestVerbalizedLocally(error))
+					{
+						continue;
+					}
 					if (firstErrorPending)
 					{
 						firstErrorPending = false;
@@ -11451,11 +11825,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (!firstErrorPending)
 				{
 					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorClosePrimaryReport, false, false));
+				}
+				if (blockingErrors)
+				{
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -11508,7 +11885,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -11549,7 +11926,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 						{
 							ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-							if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+							if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 							{
 								continue;
 							}
@@ -12385,7 +12762,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -12549,11 +12926,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				#region Prerequisite error check
 				IModelErrorOwner errorOwner = this as IModelErrorOwner;
 				bool firstErrorPending;
+				bool blockingErrors = false;
 				if (errorOwner != null)
 				{
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
 					{
+						blockingErrors = true;
+						if (verbalizationContext.TestVerbalizedLocally(error))
+						{
+							continue;
+						}
 						if (firstErrorPending)
 						{
 							firstErrorPending = false;
@@ -12569,11 +12952,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					if (!firstErrorPending)
 					{
 						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorClosePrimaryReport, false, false));
+					}
+					if (blockingErrors)
+					{
 						firstErrorPending = true;
 						foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 						{
 							ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-							if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+							if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 							{
 								continue;
 							}
@@ -12671,7 +13057,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -12743,11 +13129,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				#region Prerequisite error check
 				IModelErrorOwner errorOwner = this as IModelErrorOwner;
 				bool firstErrorPending;
+				bool blockingErrors = false;
 				if (errorOwner != null)
 				{
 					firstErrorPending = true;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
 					{
+						blockingErrors = true;
+						if (verbalizationContext.TestVerbalizedLocally(error))
+						{
+							continue;
+						}
 						if (firstErrorPending)
 						{
 							firstErrorPending = false;
@@ -12763,11 +13155,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					if (!firstErrorPending)
 					{
 						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorClosePrimaryReport, false, false));
+					}
+					if (blockingErrors)
+					{
 						firstErrorPending = true;
 						foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 						{
 							ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-							if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+							if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 							{
 								continue;
 							}
@@ -12843,7 +13238,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error))
+						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}

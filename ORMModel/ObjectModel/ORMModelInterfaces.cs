@@ -22,7 +22,6 @@ using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using ORMSolutions.ORMArchitect.Core.Shell;
-using ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid;
 using ORMSolutions.ORMArchitect.Framework;
 using ORMSolutions.ORMArchitect.Framework.Design;
 using ORMSolutions.ORMArchitect.Framework.Diagrams;

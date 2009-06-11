@@ -131,6 +131,11 @@
 					<xs:documentation>Use for individual ringtype verbalizers.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="Role">
+				<xs:annotation>
+					<xs:documentation>Use for child helpers of Role.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="ConstraintPatternGroupEnum">
@@ -1107,6 +1112,32 @@
 			<xs:documentation>Add this tag between top-level snippets to indidate that the error report should be placed here instead of at the end.</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
+	<xs:complexType name="ErrorReportsType">
+		<xs:annotation>
+			<xs:documentation>Container for ErrorReport elements, which enable error generation of error reports without any additional verbalization.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ErrorReport" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:attributeGroup ref="childHelperAttributes"/>
+					<xs:attribute name="type" use="required">
+						<xs:annotation>
+							<xs:documentation>The class name for the error report</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:token">
+								<xs:enumeration value="ErrorReport">
+									<xs:annotation>
+										<xs:documentation>The class name for a standalone error report</xs:documentation>
+									</xs:annotation>
+								</xs:enumeration>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
 	<xs:complexType name="FactType">
 		<xs:annotation>
 			<xs:documentation>
@@ -1400,13 +1431,25 @@
 		<xs:attribute name="type" type="ConstraintTypeEnum" use="required"/>
 		<xs:attribute name="patternGroup" type="ConstraintPatternGroupEnum" use="required"/>
 		<xs:attribute name="compatibleColumns" type="xs:boolean" default="false"/>
-		<xs:attribute name="childHelperFor" type="ChildHelperForEnum" use="optional"/>
+		<xs:attributeGroup ref="childHelperAttributes"/>
 		<xs:attribute name="deferMatchesTo" type="xs:string">
 			<xs:annotation>
 				<xs:documentation>Perform standard error handling, but defer all pattern matches to the specified function. Designed to work with either fully custom verbalization, or with wrapper code around generated helper classes.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>
+	<xs:attributeGroup name="childHelperAttributes">
+		<xs:attribute name="childHelperFor" type="ChildHelperForEnum" use="optional">
+			<xs:annotation>
+				<xs:documentation>Generate a nested helper class that can conditionally used by the parent class to verbalize custom children or with deferred verbalization.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="childHelperErrorReport" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>Enable error report generation for a child helper.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
 	<xs:complexType name="SampleInstanceType">
 		<xs:annotation>
 			<xs:documentation>
@@ -1423,7 +1466,7 @@
 			</xs:sequence>
 		</xs:choice>
 		<xs:attribute name="type" use="required"/>
-		<xs:attribute name="childHelperFor" type="ChildHelperForEnum" use="optional"/>
+		<xs:attributeGroup ref="childHelperAttributes"/>
 	</xs:complexType>
 	<xs:complexType name="SingleSnippetType">
 		<xs:annotation>
@@ -1432,7 +1475,7 @@
 			</xs:documentation>
 		</xs:annotation>
 		<xs:attribute name="type" use="required"/>
-		<xs:attribute name="childHelperFor" type="ChildHelperForEnum" use="optional"/>
+		<xs:attributeGroup ref="childHelperAttributes"/>
 		<xs:attribute name="snippetRef" use="required" type="ve:SnippetTypeEnum"/>
 	</xs:complexType>
 	<xs:element name="VerbalizationRoot">
@@ -1461,7 +1504,8 @@
 							<xs:element name="Note" type="NoteConstructType" />
 							<xs:element name="SubtypeDerivationExpression" type="DerivationExpressionConstructType"/>
 							<xs:element name="FactTypeDerivationExpression" type="DerivationExpressionConstructType"/>
-							<xs:element name="ORMModel" type="ModelConstructType" />
+							<xs:element name="ORMModel" type="ModelConstructType"/>
+							<xs:element name="ErrorReports" type="ErrorReportsType"/>
 						</xs:all>
 					</xs:complexType>
 				</xs:element>
