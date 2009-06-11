@@ -271,16 +271,12 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 		/// <returns><see cref="IEnumerable{LinkShapeType}"/></returns>
 		public static IEnumerable<LinkShapeType> GetEffectiveAttachedLinkShapes<LinkShapeType>(ShapeElement shape) where LinkShapeType : LinkShape
 		{
-			LinkedElementCollection<LinkShape> links;
-			int linkCount;
 			NodeShape nodeShape = shape as NodeShape;
 			if (nodeShape != null)
 			{
-				links = LinkConnectsToNode.GetLink(nodeShape);
-				linkCount = links.Count;
-				for (int i = 0; i < linkCount; ++i)
+				foreach (LinkShape link in LinkConnectsToNode.GetLink(nodeShape))
 				{
-					LinkShapeType linkShape = links[i] as LinkShapeType;
+					LinkShapeType linkShape = link as LinkShapeType;
 					if (linkShape != null)
 					{
 						yield return linkShape;
@@ -289,22 +285,74 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 			}
 			if (shape is IProvideConnectorShape)
 			{
-				LinkedElementCollection<ShapeElement> childShapes = shape.RelativeChildShapes;
-				int childCount = childShapes.Count;
-				for (int j = 0; j < childCount; ++j)
+				foreach (ShapeElement child in shape.RelativeChildShapes)
 				{
-					NodeShape child;
+					NodeShape childShape;
 					IProxyConnectorShape proxy;
-					if (null != (child = childShapes[j] as NodeShape) &&
-						null != (proxy = child as IProxyConnectorShape))
+					if (null != (childShape = child as NodeShape) &&
+						null != (proxy = childShape as IProxyConnectorShape))
 					{
 						Debug.Assert(proxy.ProxyConnectorShapeFor == shape);
-						links = LinkConnectsToNode.GetLink(child);
-						linkCount = links.Count;
-						for (int i = 0; i < linkCount; ++i)
+						foreach (LinkShape link in LinkConnectsToNode.GetLink(childShape))
 						{
-							LinkShapeType linkShape = links[i] as LinkShapeType;
+							LinkShapeType linkShape = link as LinkShapeType;
 							if (linkShape != null)
+							{
+								yield return linkShape;
+							}
+						}
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Get all link shapes of a given type attached to the specified <paramref name="shape"/>
+		/// or to any relative child shapes that implement <see cref="IProxyConnectorShape"/>.
+		/// </summary>
+		/// <typeparam name="LinkShapeType">A link shape type derived from <see cref="LinkShape"/></typeparam>
+		/// <param name="shape">The shape to retrieve links for</param>
+		/// <param name="snapshot">The caller may change the resulting set, return a snapshot copy of the current data. Default false.</param>
+		/// <returns><see cref="IEnumerable{LinkShapeType}"/></returns>
+		public static IEnumerable<LinkShapeType> GetEffectiveAttachedLinkShapes<LinkShapeType>(ShapeElement shape, bool snapshot) where LinkShapeType : LinkShape
+		{
+			IEnumerable<LinkShapeType> retVal = GetEffectiveAttachedLinkShapes<LinkShapeType>(shape);
+			return snapshot ? new List<LinkShapeType>(retVal) : retVal;
+		}
+		/// <summary>
+		/// Get all <see cref="BinaryLinkShape">binary link shapes</see> of a given type originating from
+		/// the specified <paramref name="shape"/> or to any relative child shapes that implement <see cref="IProxyConnectorShape"/>.
+		/// </summary>
+		/// <typeparam name="LinkShapeType">A link shape type derived from <see cref="LinkShape"/></typeparam>
+		/// <param name="shape">The shape to retrieve links for</param>
+		/// <returns><see cref="IEnumerable{LinkShapeType}"/></returns>
+		public static IEnumerable<LinkShapeType> GetEffectiveAttachedLinkShapesFrom<LinkShapeType>(ShapeElement shape) where LinkShapeType : BinaryLinkShape
+		{
+			NodeShape nodeShape = shape as NodeShape;
+			if (nodeShape != null)
+			{
+				foreach (LinkShape link in LinkConnectsToNode.GetLink(nodeShape))
+				{
+					LinkShapeType linkShape = link as LinkShapeType;
+					if (linkShape != null && linkShape.FromShape == shape)
+					{
+						yield return linkShape;
+					}
+				}
+			}
+			if (shape is IProvideConnectorShape)
+			{
+				foreach (ShapeElement child in shape.RelativeChildShapes)
+				{
+					NodeShape childShape;
+					IProxyConnectorShape proxy;
+					if (null != (childShape = child as NodeShape) &&
+						null != (proxy = childShape as IProxyConnectorShape))
+					{
+						Debug.Assert(proxy.ProxyConnectorShapeFor == shape);
+						foreach (LinkShape link in LinkConnectsToNode.GetLink(childShape))
+						{
+							LinkShapeType linkShape = link as LinkShapeType;
+							if (linkShape != null && linkShape.FromShape == childShape)
 							{
 								yield return linkShape;
 							}
@@ -319,20 +367,29 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 		/// </summary>
 		/// <typeparam name="LinkShapeType">A link shape type derived from <see cref="LinkShape"/></typeparam>
 		/// <param name="shape">The shape to retrieve links for</param>
+		/// <param name="snapshot">The caller may change the resulting set, return a snapshot copy of the current data. Default false.</param>
 		/// <returns><see cref="IEnumerable{LinkShapeType}"/></returns>
-		public static IEnumerable<LinkShapeType> GetEffectiveAttachedLinkShapesFrom<LinkShapeType>(ShapeElement shape) where LinkShapeType : BinaryLinkShape
+		public static IEnumerable<LinkShapeType> GetEffectiveAttachedLinkShapesFrom<LinkShapeType>(ShapeElement shape, bool snapshot) where LinkShapeType : BinaryLinkShape
 		{
-			LinkedElementCollection<LinkShape> links;
-			int linkCount;
+			IEnumerable<LinkShapeType> retVal = GetEffectiveAttachedLinkShapesFrom<LinkShapeType>(shape);
+			return snapshot ? new List<LinkShapeType>(retVal) : retVal;
+		}
+		/// <summary>
+		/// Get all <see cref="BinaryLinkShape">binary link shapes</see> of a given type going to
+		/// the specified <paramref name="shape"/> or to any relative child shapes that implement <see cref="IProxyConnectorShape"/>.
+		/// </summary>
+		/// <typeparam name="LinkShapeType">A link shape type derived from <see cref="BinaryLinkShape"/></typeparam>
+		/// <param name="shape">The shape to retrieve links for</param>
+		/// <returns><see cref="IEnumerable{LinkShapeType}"/></returns>
+		public static IEnumerable<LinkShapeType> GetEffectiveAttachedLinkShapesTo<LinkShapeType>(ShapeElement shape) where LinkShapeType : BinaryLinkShape
+		{
 			NodeShape nodeShape = shape as NodeShape;
 			if (nodeShape != null)
 			{
-				links = LinkConnectsToNode.GetLink(nodeShape);
-				linkCount = links.Count;
-				for (int i = 0; i < linkCount; ++i)
+				foreach (LinkShape link in LinkConnectsToNode.GetLink(nodeShape))
 				{
-					LinkShapeType linkShape = links[i] as LinkShapeType;
-					if (linkShape != null && linkShape.FromShape == shape)
+					LinkShapeType linkShape = link as LinkShapeType;
+					if (linkShape != null && linkShape.ToShape == shape)
 					{
 						yield return linkShape;
 					}
@@ -340,22 +397,18 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 			}
 			if (shape is IProvideConnectorShape)
 			{
-				LinkedElementCollection<ShapeElement> childShapes = shape.RelativeChildShapes;
-				int childCount = childShapes.Count;
-				for (int j = 0; j < childCount; ++j)
+				foreach (ShapeElement child in shape.RelativeChildShapes)
 				{
-					NodeShape child;
+					NodeShape childShape;
 					IProxyConnectorShape proxy;
-					if (null != (child = childShapes[j] as NodeShape) &&
-						null != (proxy = child as IProxyConnectorShape))
+					if (null != (childShape = child as NodeShape) &&
+						null != (proxy = childShape as IProxyConnectorShape))
 					{
 						Debug.Assert(proxy.ProxyConnectorShapeFor == shape);
-						links = LinkConnectsToNode.GetLink(child);
-						linkCount = links.Count;
-						for (int i = 0; i < linkCount; ++i)
+						foreach (LinkShape link in LinkConnectsToNode.GetLink(childShape))
 						{
-							LinkShapeType linkShape = links[i] as LinkShapeType;
-							if (linkShape != null && linkShape.FromShape == child)
+							LinkShapeType linkShape = link as LinkShapeType;
+							if (linkShape != null && linkShape.ToShape == childShape)
 							{
 								yield return linkShape;
 							}
@@ -370,50 +423,12 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 		/// </summary>
 		/// <typeparam name="LinkShapeType">A link shape type derived from <see cref="BinaryLinkShape"/></typeparam>
 		/// <param name="shape">The shape to retrieve links for</param>
+		/// <param name="snapshot">The caller may change the resulting set, return a snapshot copy of the current data. Default false.</param>
 		/// <returns><see cref="IEnumerable{LinkShapeType}"/></returns>
-		public static IEnumerable<LinkShapeType> GetEffectiveAttachedLinkShapesTo<LinkShapeType>(ShapeElement shape) where LinkShapeType : BinaryLinkShape
+		public static IEnumerable<LinkShapeType> GetEffectiveAttachedLinkShapesTo<LinkShapeType>(ShapeElement shape, bool snapshot) where LinkShapeType : BinaryLinkShape
 		{
-			LinkedElementCollection<LinkShape> links;
-			int linkCount;
-			NodeShape nodeShape = shape as NodeShape;
-			if (nodeShape != null)
-			{
-				links = LinkConnectsToNode.GetLink(nodeShape);
-				linkCount = links.Count;
-				for (int i = 0; i < linkCount; ++i)
-				{
-					LinkShapeType linkShape = links[i] as LinkShapeType;
-					if (linkShape != null && linkShape.ToShape == shape)
-					{
-						yield return linkShape;
-					}
-				}
-			}
-			if (shape is IProvideConnectorShape)
-			{
-				LinkedElementCollection<ShapeElement> childShapes = shape.RelativeChildShapes;
-				int childCount = childShapes.Count;
-				for (int j = 0; j < childCount; ++j)
-				{
-					NodeShape child;
-					IProxyConnectorShape proxy;
-					if (null != (child = childShapes[j] as NodeShape) &&
-						null != (proxy = child as IProxyConnectorShape))
-					{
-						Debug.Assert(proxy.ProxyConnectorShapeFor == shape);
-						links = LinkConnectsToNode.GetLink(child);
-						linkCount = links.Count;
-						for (int i = 0; i < linkCount; ++i)
-						{
-							LinkShapeType linkShape = links[i] as LinkShapeType;
-							if (linkShape != null && linkShape.ToShape == child)
-							{
-								yield return linkShape;
-							}
-						}
-					}
-				}
-			}
+			IEnumerable<LinkShapeType> retVal = GetEffectiveAttachedLinkShapesTo<LinkShapeType>(shape);
+			return snapshot ? new List<LinkShapeType>(retVal) : retVal;
 		}
 		#endregion // GetEffectiveAttachedLinkShapes variants
 		#region Link Configuration
@@ -497,11 +512,11 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 				foreach (ShapeElement shape in FindAllShapesForElement<ShapeElement>(diagram, originalShape.ModelElement))
 				{
 					bool shapeIsOriginal = (shape == originalShape);
-					foreach (BinaryLinkShape toLinkShape in GetExistingLinks(shape, true, false))
+					foreach (BinaryLinkShape toLinkShape in GetExistingLinks(shape, true, false, null, true))
 					{
 						CheckLink(toLinkShape, shapeIsOriginal, BinaryLinkAnchor.ToShape, discludedShape);
 					}
-					foreach (BinaryLinkShape fromLinkShape in GetExistingLinks(shape, false, true))
+					foreach (BinaryLinkShape fromLinkShape in GetExistingLinks(shape, false, true, null, true))
 					{
 						CheckLink(fromLinkShape, shapeIsOriginal, BinaryLinkAnchor.FromShape, discludedShape);
 					}
@@ -510,7 +525,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 				Dictionary<ModelElement, IReconfigureableLink> reconfigureableLinks = null;
 				foreach (ShapeElement shape in FindAllShapesForElement<ShapeElement>(diagram, element))
 				{
-					foreach (BinaryLinkShape linkShape in GetExistingLinks(shape, true, true, null))
+					foreach (BinaryLinkShape linkShape in GetExistingLinks(shape, true, true, null, true))
 					{
 						if (linkShape is IProvideConnectorShape)
 						{
@@ -1100,7 +1115,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 								// A link could be attached to this link. Make sure the
 								// link is moved to a new location or cleanly deleted before
 								// the link itself is deleted.
-								foreach (BinaryLinkShape recursiveLink in GetExistingLinks(pendingDeleteLinkShape, true, true, null))
+								foreach (BinaryLinkShape recursiveLink in GetExistingLinks(pendingDeleteLinkShape, true, true, null, true))
 								{
 									IReconfigureableLink recurseReconfigureLink = recursiveLink as IReconfigureableLink;
 									if (recurseReconfigureLink != null)
@@ -1218,7 +1233,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 		private static bool AlreadyConnectedTo(ShapeElement currentShape, ModelElement oppositeElement, bool isFromShape, BinaryLinkShape currentLink)
 		{
 			//check each link to see if it connects to the opposite element
-			foreach (BinaryLinkShape linkShape in GetExistingLinks(currentShape, !isFromShape, isFromShape, currentLink.ModelElement))
+			foreach (BinaryLinkShape linkShape in GetExistingLinks(currentShape, !isFromShape, isFromShape, currentLink.ModelElement, false))
 			{
 				//if the link is the one currently being configured, count it as not connected
 				if (linkShape == currentLink)
@@ -1257,17 +1272,18 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 		/// <param name="getToLinks">True to collect all to role links</param>
 		/// <param name="getFromLinks">True to collect all from role links</param>
 		/// <param name="linkBackingElement">Only return links that have this element as the <see cref="PresentationElement.ModelElement">ModelElement</see>.</param>
+		/// <param name="snapshot">The caller may change the resulting set, return a snapshot copy of the current data.</param>
 		/// <returns>The attached link shapes</returns>
-		private static IEnumerable<BinaryLinkShape> GetExistingLinks(ShapeElement shape, bool getToLinks, bool getFromLinks, ModelElement linkBackingElement)
+		private static IEnumerable<BinaryLinkShape> GetExistingLinks(ShapeElement shape, bool getToLinks, bool getFromLinks, ModelElement linkBackingElement, bool snapshot)
 		{
 			Debug.Assert(getToLinks || getFromLinks, "Either getToLinks or fromFromLinks needs to be true");
 
 			foreach (BinaryLinkShape linkShape in
 				(getToLinks && getFromLinks) ?
-					MultiShapeUtility.GetEffectiveAttachedLinkShapes<BinaryLinkShape>(shape) :
+					MultiShapeUtility.GetEffectiveAttachedLinkShapes<BinaryLinkShape>(shape, snapshot) :
 					(getToLinks ?
-					MultiShapeUtility.GetEffectiveAttachedLinkShapesTo<BinaryLinkShape>(shape) :
-					MultiShapeUtility.GetEffectiveAttachedLinkShapesFrom<BinaryLinkShape>(shape)))
+					MultiShapeUtility.GetEffectiveAttachedLinkShapesTo<BinaryLinkShape>(shape, snapshot) :
+					MultiShapeUtility.GetEffectiveAttachedLinkShapesFrom<BinaryLinkShape>(shape, snapshot)))
 			{
 				if (linkBackingElement == null || linkShape.ModelElement == linkBackingElement)
 				{

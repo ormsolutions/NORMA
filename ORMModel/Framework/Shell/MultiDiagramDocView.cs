@@ -428,6 +428,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 			{
 				throw new ArgumentNullException("designer");
 			}
+			myVerifyPageOrder = true;
 			MultiDiagramDocViewControl docViewControl = DocViewControl;
 			int tabCount = docViewControl.TabCount;
 			DiagramTabPage tabPage = new DiagramTabPage(docViewControl, designer);
@@ -653,9 +654,13 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 							eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(VerifyPageOrderEvent), action);
 							eventManager.AddOrRemoveHandler(classInfo, new EventHandler<RolePlayerOrderChangedEventArgs>(VerifyPageOrderEvent), action);
 							eventManager.AddOrRemoveHandler(classInfo, new EventHandler<RolePlayerChangedEventArgs>(VerifyPageOrderEvent), action);
-							eventManager.AddOrRemoveHandler(new EventHandler<ElementEventsEndedEventArgs>(ElementEventsEndedEvent), action);
 						}
 					}
+				}
+				else if (0 != (reasons & EventSubscriberReasons.UserInterfaceEvents))
+				{
+					eventManager.AddOrRemoveHandler(new EventHandler<ElementEventsBegunEventArgs>(ElementEventsBegunEvent), action);
+					eventManager.AddOrRemoveHandler(new EventHandler<ElementEventsEndedEventArgs>(ElementEventsEndedEvent), action);
 				}
 			}
 		}
@@ -670,6 +675,10 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		{
 			myVerifyPageOrder = true;
 		}
+		private void ElementEventsBegunEvent(object sender, ElementEventsBegunEventArgs e)
+		{
+			myVerifyPageOrder = false;
+		}
 		/// <summary>
 		/// Verify tab order when events have complete
 		/// </summary>
@@ -680,12 +689,25 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 				myVerifyPageOrder = false;
 				MultiDiagramDocViewControl control;
 				Store store;
-				IList<DiagramDisplay> containers;
 				if (null != (control = myDocViewControl) &&
-					null != (store = this.Store) &&
-					0 != (containers = store.ElementDirectory.FindElements<DiagramDisplay>(false)).Count)
+					null != (store = this.Store))
 				{
-					control.VerifyDiagramOrder(containers[0].OrderedDiagramCollection);
+					if (null != store.FindDomainModel(DiagramDisplayDomainModel.DomainModelId))
+					{
+						IList<DiagramDisplay> containers;
+						if (0 != (containers = store.ElementDirectory.FindElements<DiagramDisplay>(false)).Count)
+						{
+							control.VerifyDiagramOrder(containers[0].OrderedDiagramCollection);
+						}
+					}
+					else
+					{
+						IList<Diagram> diagrams;
+						if (0 != (diagrams = store.DefaultPartition.ElementDirectory.FindElements<Diagram>(true)).Count)
+						{
+							control.VerifyDiagramOrder(diagrams);
+						}
+					}
 				}
 			}
 		}

@@ -196,11 +196,11 @@ namespace ORMSolutions.ORMArchitectSDK.TestEngine
 			}
 			#endregion // IORMFontAndColorService Implementation
 			#region IPropertyProviderService Implementation
-			void IPropertyProviderService.GetProvidedProperties(ModelElement extendableElement, System.ComponentModel.PropertyDescriptorCollection properties)
+			void IPropertyProviderService.GetProvidedProperties(object extendableElement, System.ComponentModel.PropertyDescriptorCollection properties)
 			{
 				// This is implemented on a per-store basis, we don't implement it on the testing document
 			}
-			void IPropertyProviderService.AddOrRemovePropertyProvider<TExtendableElement>(PropertyProvider propertyProvider, bool includeSubtypes, EventHandlerAction action)
+			void IPropertyProviderService.AddOrRemovePropertyProvider(Type extendableElementType, PropertyProvider propertyProvider, bool includeSubtypes, EventHandlerAction action)
 			{
 				// This is implemented on a per-store basis, we don't implement it on the testing document
 			}

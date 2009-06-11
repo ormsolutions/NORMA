@@ -2261,10 +2261,8 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		}
 
 		/// <summary>
-		/// 
+		/// Override default values used to create the initial state of the object.
 		/// </summary>
-		/// <param name="propertyAssignments"></param>
-		/// <returns></returns>
 		private static PropertyAssignment[] GenerateDefaultValues(params PropertyAssignment[] propertyAssignments)
 		{
 			PropertyAssignment[] properties = propertyAssignments;
@@ -2307,6 +2305,62 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				}
 			}
 			return properties;
+		}
+		/// <summary>
+		/// Track default property values that differ from the default values on the base.
+		/// </summary>
+		protected override bool HasDefaultAttributeValues(Guid[] ignorePropertyIds)
+		{
+			bool retVal = true;
+			string nameUsage = NameUsage;
+			Guid ignoreNewPropertyId = Guid.Empty;
+			if (string.IsNullOrEmpty(nameUsage))
+			{
+				// The default spacing format is modified
+				if (ignorePropertyIds == null || Array.IndexOf<Guid>(ignorePropertyIds, SpacingFormatDomainPropertyId) == -1)
+				{
+					retVal = SpacingFormat == NameGeneratorSpacingFormat.Remove;
+					ignoreNewPropertyId = SpacingFormatDomainPropertyId;
+				}
+			}
+			else if (nameUsage == "RelationalColumn")
+			{
+				// The default casing option is modified
+				if (ignorePropertyIds == null || Array.IndexOf<Guid>(ignorePropertyIds, CasingOptionDomainPropertyId) == -1)
+				{
+					retVal = CasingOption == NameGeneratorCasingOption.Camel;
+					ignoreNewPropertyId = CasingOptionDomainPropertyId;
+				}
+			}
+			else if (nameUsage == "RelationalTable")
+			{
+				// The default casing option is modified
+				if (ignorePropertyIds == null || Array.IndexOf<Guid>(ignorePropertyIds, CasingOptionDomainPropertyId) == -1)
+				{
+					retVal = CasingOption == NameGeneratorCasingOption.Pascal;
+					ignoreNewPropertyId = CasingOptionDomainPropertyId;
+				}
+			}
+			if (retVal)
+			{
+				Guid[] forwardIgnorePropertyIds;
+				if (ignoreNewPropertyId == Guid.Empty)
+				{
+					forwardIgnorePropertyIds = ignorePropertyIds;
+				}
+				else if (ignorePropertyIds != null)
+				{
+					forwardIgnorePropertyIds = new Guid[ignorePropertyIds.Length + 1];
+					ignorePropertyIds.CopyTo(forwardIgnorePropertyIds, 0);
+					forwardIgnorePropertyIds[forwardIgnorePropertyIds.Length - 1] = ignoreNewPropertyId;
+				}
+				else
+				{
+					forwardIgnorePropertyIds = new Guid[] { ignoreNewPropertyId };
+				}
+				return base.HasDefaultAttributeValues(forwardIgnorePropertyIds);
+			}
+			return false;
 		}
 	}
 	#endregion // ORMAbstractionToConceptualDatabaseBridgeDomainModel.RelationalNameGenerator Class

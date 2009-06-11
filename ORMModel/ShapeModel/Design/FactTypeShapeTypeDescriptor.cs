@@ -64,6 +64,18 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
 		}
 
+		/// <summary>
+		/// Block display of the DisplayRelatedTypes property on an unobjectified FactType
+		/// </summary>
+		protected override bool ShouldCreatePropertyDescriptor(ModelElement requestor, DomainPropertyInfo domainProperty)
+		{
+			if (domainProperty.Id == FactTypeShape.DisplayRelatedTypesDomainPropertyId)
+			{
+				return false;
+			}
+			return base.ShouldCreatePropertyDescriptor(requestor, domainProperty);
+		}
+
 		private static readonly object LockObject = new object();
 		private static volatile bool myCustomPropertyAttributesInitialized;
 		private static Attribute[] ConstraintDisplayPositionDomainPropertyAttributes;

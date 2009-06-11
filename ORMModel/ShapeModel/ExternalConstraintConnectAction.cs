@@ -622,7 +622,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			// The ChainMouseAction call can reactivate this connect action,
 			// so make sure we snapshot the state we need and do all requisite
 			// cleanup before a potential reactivation.
-			ExternalConstraintShape chainOnShape = (myPendingOnClickedAction == OnClickedAction.Complete && !(myInitialSelectedRoles != null && myInitialSelectedRoles.Count != 0)) ? mySourceShape : null;
+			ExternalConstraintShape chainOnShape = (myPendingOnClickedAction == OnClickedAction.Complete) ? mySourceShape : null;
+			bool chainOnlyIfIncomplete = chainOnShape != null && myInitialSelectedRoles != null && myInitialSelectedRoles.Count != 0;
 			bool editingSubtypeFact = mySubtypeConnection;
 			Reset();
 			if (chainOnShape != null)
@@ -640,8 +641,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							if (!editingSubtypeFact)
 							{
 								IConstraint editConstraint = chainOnShape.AssociatedConstraint;
-								int maximum = ConstraintUtility.RoleSequenceCountMaximum(editConstraint);
-								if (maximum < 0 || ((SetComparisonConstraint)editConstraint).RoleSequenceCollection.Count < maximum)
+								int maximum;
+								SetComparisonConstraint comparisonConstraint = (SetComparisonConstraint)editConstraint;
+								if (chainOnlyIfIncomplete ?
+									comparisonConstraint.TooFewRoleSequencesError != null :
+									(maximum = ConstraintUtility.RoleSequenceCountMaximum(editConstraint)) < 0 || comparisonConstraint.RoleSequenceCollection.Count < maximum)
 								{
 									ChainMouseAction(chainOnShape, e.DiagramClientView);
 								}

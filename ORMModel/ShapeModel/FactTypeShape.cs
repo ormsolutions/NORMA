@@ -5098,33 +5098,57 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				if (objectShape != null)
 				{
 					ORMDiagram currentDiagram = (ORMDiagram)objectShape.Diagram;
-					currentDiagram.PlaceORMElementOnDiagram(
-						null,
-						nestedFactType,
-						objectShape.Location,
-						ORMPlacementOption.AllowMultipleShapes,
-						delegate(ModelElement fixupElement, ShapeElement newShape)
+
+					// Search the current diagram and see if we have a shape for the FactType
+					// in the general vicinity. If we do, then we just delete the object shape
+					// and let role players bind directly to the FactType.
+					bool createNewShape = true;
+					RectangleD objectShapeVicinity = objectShape.AbsoluteBoundingBox;
+					objectShapeVicinity.Inflate(objectShapeVicinity.Height * 1.5, objectShapeVicinity.Width);
+					foreach (FactTypeShape factShape in MultiShapeUtility.FindAllShapesForElement<FactTypeShape>(currentDiagram, nestedFactType, true))
+					{
+						if (factShape.AbsoluteBoundingBox.IntersectsWith(objectShapeVicinity))
 						{
-							FactTypeShape factShape = (FactTypeShape)newShape;
-#if TRACKNEWSHAPES
-							(newShapes ?? (newShapes = new List<FactTypeShape>())).Add(factShape);
-#endif // TRACKNEWSHAPES
-							factShape.DisplayRelatedTypes = objectShape.DisplayRelatedTypes;
-						},
-						delegate(ModelElement fixupElement, ShapeElement newShape)
-						{
-							foreach (PresentationElement relativePel in newShape.RelativeChildShapes)
+							createNewShape = false;
+							break;
+						}
+					}
+
+					if (createNewShape)
+					{
+						currentDiagram.PlaceORMElementOnDiagram(
+							null,
+							nestedFactType,
+							objectShape.Location,
+							ORMPlacementOption.AllowMultipleShapes,
+							delegate(ModelElement fixupElement, ShapeElement newShape)
 							{
-								ObjectifiedFactTypeNameShape nameShape = relativePel as ObjectifiedFactTypeNameShape;
-								if (nameShape != null)
+								FactTypeShape factShape = (FactTypeShape)newShape;
+#if TRACKNEWSHAPES
+								(newShapes ?? (newShapes = new List<FactTypeShape>())).Add(factShape);
+#endif // TRACKNEWSHAPES
+								factShape.DisplayRelatedTypes = objectShape.DisplayRelatedTypes;
+							},
+							delegate(ModelElement fixupElement, ShapeElement newShape)
+							{
+								foreach (PresentationElement relativePel in newShape.RelativeChildShapes)
 								{
-									nameShape.ExpandRefMode = objectShape.ExpandRefMode;
-									break;
+									ObjectifiedFactTypeNameShape nameShape = relativePel as ObjectifiedFactTypeNameShape;
+									if (nameShape != null)
+									{
+										nameShape.ExpandRefMode = objectShape.ExpandRefMode;
+										break;
+									}
 								}
-							}
-							MultiShapeUtility.DetachLinks(objectShape);
-							objectShape.Delete();
-						});
+								MultiShapeUtility.DetachLinks(objectShape);
+								objectShape.Delete();
+							});
+					}
+					else
+					{
+						MultiShapeUtility.DetachLinks(objectShape);
+						objectShape.Delete();
+					}
 				}
 			}
 #if TRACKNEWSHAPES
@@ -5255,9 +5279,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							// See if any links coming in apply to the ObjectType
 							bool needObjectShape = false;
 							bool needFactShape = false;
-							// The contents of the enumerator change over the course of this function,
-							// cache the list.
-							List<BinaryLinkShape> factShapeAttachedLinkShapes = new List<BinaryLinkShape>(MultiShapeUtility.GetEffectiveAttachedLinkShapes<BinaryLinkShape>(factShape));
+							// The contents of the enumerator change over the course of this function, get a snapshot enumerator
+							IEnumerable<BinaryLinkShape> factShapeAttachedLinkShapes = MultiShapeUtility.GetEffectiveAttachedLinkShapes<BinaryLinkShape>(factShape, true);
 							foreach (BinaryLinkShape linkShape in factShapeAttachedLinkShapes)
 							{
 								RolePlayerLink rolePlayerLink;

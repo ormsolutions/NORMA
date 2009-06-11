@@ -72,20 +72,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		protected bool RequiresSerialization()
 		{
-			NameGenerator refinesGenerator = RefinesGenerator;
-			bool retVal = (refinesGenerator != null) ?
-				(refinesGenerator.CasingOption != CasingOption ||
-				refinesGenerator.SpacingFormat != SpacingFormat ||
-				refinesGenerator.SpacingReplacement != SpacingReplacement ||
-				refinesGenerator.AutomaticallyShortenNames != AutomaticallyShortenNames ||
-				refinesGenerator.UserDefinedMaximum != UserDefinedMaximum ||
-				refinesGenerator.UseTargetDefaultMaximum != UseTargetDefaultMaximum) :
-				(CasingOption != NameGeneratorCasingOption.None ||
-				SpacingFormat != NameGeneratorSpacingFormat.Retain ||
-				SpacingReplacement.Length != 0 ||
-				!AutomaticallyShortenNames ||
-				UserDefinedMaximum != 128 ||
-				!UseTargetDefaultMaximum);
+			bool retVal = !HasDefaultAttributeValues(null);
+			NameGenerator refinesGenerator;
+			if (!retVal &&
+				null != (refinesGenerator = RefinesGenerator))
+			{
+				retVal = refinesGenerator.CasingOption != CasingOption ||
+					refinesGenerator.SpacingFormat != SpacingFormat ||
+					refinesGenerator.SpacingReplacement != SpacingReplacement ||
+					refinesGenerator.AutomaticallyShortenNames != AutomaticallyShortenNames ||
+					refinesGenerator.UserDefinedMaximum != UserDefinedMaximum ||
+					refinesGenerator.UseTargetDefaultMaximum != UseTargetDefaultMaximum;
+			}
 			if (!retVal)
 			{
 				foreach (NameGenerator refinement in RefinedByGeneratorCollection)
@@ -98,6 +96,30 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 			return retVal;
+		}
+		/// <summary>
+		/// Verify if this instance has fully default values
+		/// </summary>
+		/// <param name="ignorePropertyIds">Domain property identifiers that should not be checked. Designed
+		/// to be called by a derived class that overrides specific properties.</param>
+		/// <returns><see langword="true"/> if all values are default</returns>
+		protected virtual bool HasDefaultAttributeValues(Guid[] ignorePropertyIds)
+		{
+			if (ignorePropertyIds == null || ignorePropertyIds.Length == 0)
+			{
+				return CasingOption == NameGeneratorCasingOption.None &&
+					SpacingFormat == NameGeneratorSpacingFormat.Retain &&
+					SpacingReplacement.Length == 0 &&
+					AutomaticallyShortenNames &&
+					UserDefinedMaximum == 128 &&
+					UseTargetDefaultMaximum;
+			}
+			return (CasingOption == NameGeneratorCasingOption.None || Array.IndexOf<Guid>(ignorePropertyIds, CasingOptionDomainPropertyId) != -1) &&
+				(SpacingFormat == NameGeneratorSpacingFormat.Retain || Array.IndexOf<Guid>(ignorePropertyIds, SpacingFormatDomainPropertyId) != -1) &&
+				(SpacingReplacement.Length == 0 || Array.IndexOf<Guid>(ignorePropertyIds, SpacingReplacementDomainPropertyId) != -1) &&
+				(AutomaticallyShortenNames || Array.IndexOf<Guid>(ignorePropertyIds, AutomaticallyShortenNamesDomainPropertyId) != -1) &&
+				(UserDefinedMaximum == 128 || Array.IndexOf<Guid>(ignorePropertyIds, UserDefinedMaximumDomainPropertyId) != -1) &&
+				(UseTargetDefaultMaximum || Array.IndexOf<Guid>(ignorePropertyIds, UseTargetDefaultMaximumDomainPropertyId) != -1);
 		}
 		partial class SynchronizedRefinementsPropertyChangedRuleClass
 		{

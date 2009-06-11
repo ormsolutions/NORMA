@@ -594,6 +594,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			ORMModel model;
 			if (!link.IsDeleted &&
 				null != (associatedFact = link.PlayedRole.FactType) &&
+				null == associatedFact.ImpliedByObjectification &&
 				null != (model = (rolePlayer = link.RolePlayer).Model))
 			{
 				FactType nestedFact;
