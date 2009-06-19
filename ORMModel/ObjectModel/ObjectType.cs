@@ -2158,7 +2158,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get
 			{
-				return this.IsIndependent || (!this.IsValueType && this.ImpliedMandatoryConstraint == null && this.AllowIsIndependent(false));
+				return IsIndependent || (ImpliedMandatoryConstraint == null && AllowIsIndependent(false));
 			}
 		}
 		/// <summary>

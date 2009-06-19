@@ -7683,6 +7683,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					yield return exclusionContradictsMandatory;
 				}
 			}
+			MandatoryConstraint coupledMandatory = ExclusiveOrMandatoryConstraint;
+			if (coupledMandatory != null)
+			{
+				foreach (ModelErrorUsage usage in ((IModelErrorOwner)coupledMandatory).GetErrorCollection(filter))
+				{
+					yield return usage;
+				}
+			}
 		}
 		IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)
 		{

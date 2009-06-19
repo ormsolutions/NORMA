@@ -68,9 +68,6 @@
 					<orm:SubtypeMetaRole ref="_E61B61CE-258C-49D1-8831-C59CE50B4A10" />
 				</orm:PlayedRoles>
 			</orm:EntityType>
-			<orm:ValueType id="_FC5194B8-D9E0-489B-9BC6-06F40986E43E" Name="Party_id">
-				<orm:ConceptualDataType id="_C3C1B46D-C442-41D1-944F-D83C034DDBB2" ref="_56A81310-588E-4CCE-9E1E-418FFBF41C19" Scale="0" Length="0" />
-			</orm:ValueType>
 			<orm:ValueType id="_9F872F80-D8B0-43C7-AAAF-4AB8221BDEAF" Name="PartyName">
 				<orm:PlayedRoles>
 					<orm:Role ref="_0F7274B6-21EE-49AB-A95B-2017D9CCFA3A" />
@@ -1035,7 +1032,6 @@
 		<oial:informationTypeFormats>
 			<odt:dataType id="_E66BF8A6-3774-41D3-AAFC-BA1CC65CF2FC" name="ymd" />
 			<odt:dataType id="_A026FE17-097D-4366-A26C-751479E931AD" name="Person died" />
-			<odt:dataType id="_1BE4081C-0A79-48D5-9A0A-91002317D85D" name="Party_id" />
 			<odt:dataType id="_E417828C-CE7F-4D3D-8349-6508D7D9C651" name="PartyName" />
 			<odt:dataType id="_0FC8D5EB-5A0E-4D79-83D1-DC98F30D5458" name="Accuracy_level" />
 			<odt:dataType id="_199095C5-1FF2-4B9F-BAC2-08237CDE99D5" name="Thing_id" />
@@ -1191,7 +1187,6 @@
 		<ormtooial:ConceptTypeChildHasPathFactType id="_60A3A6F3-A100-4F27-BA9C-655F0EC705DC" ConceptTypeChild="_70D88A9B-4F49-47DE-AFE2-4196022A0A1A" PathFactType="_A9CAFF58-E876-4A28-AC63-70D9149517F2" />
 		<ormtooial:InformationTypeFormatIsForValueType id="_9372CA33-C7A6-4981-AE2C-D9278A73743C" InformationTypeFormat="_0FC8D5EB-5A0E-4D79-83D1-DC98F30D5458" ValueType="_BC073DDC-1A02-4FA1-8873-BE0C03E5EB85" />
 		<ormtooial:InformationTypeFormatIsForValueType id="_F44E71BA-25A1-4053-99F4-595C2F038336" InformationTypeFormat="_E417828C-CE7F-4D3D-8349-6508D7D9C651" ValueType="_9F872F80-D8B0-43C7-AAAF-4AB8221BDEAF" />
-		<ormtooial:InformationTypeFormatIsForValueType id="_E91807BC-B6B2-4B95-AB73-806EE854F858" InformationTypeFormat="_1BE4081C-0A79-48D5-9A0A-91002317D85D" ValueType="_FC5194B8-D9E0-489B-9BC6-06F40986E43E" />
 		<ormtooial:InformationTypeFormatIsForValueType id="_8B46616B-3C7D-4358-A227-B3457A7A5279" InformationTypeFormat="_A026FE17-097D-4366-A26C-751479E931AD" ValueType="_62971E4F-AB50-4FE5-964D-D7CE728B9E0D" />
 		<ormtooial:InformationTypeFormatIsForValueType id="_D5E1EA1F-9342-4241-B209-619B89C0C9D5" InformationTypeFormat="_199095C5-1FF2-4B9F-BAC2-08237CDE99D5" ValueType="_B9D663E7-D13D-4AF8-AF51-47F4FCB2D88C" />
 		<ormtooial:InformationTypeFormatIsForValueType id="_AC3FED93-9BA7-46AF-87EE-1B813BBEE76C" InformationTypeFormat="_E66BF8A6-3774-41D3-AAFC-BA1CC65CF2FC" ValueType="_B967A5DE-3F06-4347-95E5-7B2ED5AB8118" />

@@ -3399,7 +3399,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					factInstance.ObjectifyingInstance = identifierInstance;
 				}
 			}
-			protected static ObjectTypeInstance RecurseValueTypeInstance(ObjectTypeInstance objectTypeInstance, ObjectType parentType, string newText, ref ValueTypeInstance rootInstance, bool create)
+			protected static ObjectTypeInstance RecurseValueTypeInstance(ObjectTypeInstance objectTypeInstance, ObjectType parentType, string newText, ref ValueTypeInstance rootInstance, bool create, bool allowValueEdit)
 			{
 				if (parentType.IsValueType)
 				{
@@ -3433,7 +3433,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					ValueTypeInstance editValueTypeInstance = objectTypeInstance as ValueTypeInstance;
 					if (editValueTypeInstance != null)
 					{
-						if (RoleInstance.GetLinksToRoleCollection(editValueTypeInstance).Count <= 1)
+						if (allowValueEdit && RoleInstance.GetLinksToRoleCollection(editValueTypeInstance).Count <= 1)
 						{
 							editValueTypeInstance.Value = newText;
 						}
@@ -3458,16 +3458,38 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					// Note that we don't offer direct text editing of subtype instances, so is either a ValueTypeInstance
 					// of an EntityTypeInstance.
 					EntityTypeRoleInstance editingRoleInstance = null;
+					bool recurseAllowValueEdit = create;
 					if (editEntityInstance != null)
 					{
 						editingRoleInstance = editEntityInstance.FindRoleInstance(identifierRole);
+						if (recurseAllowValueEdit)
+						{
+							// Before recursing and potentially allowing an edit to the underlying value instance,
+							// we first need to check this parent instance is itself used multiple times.
+							// The scenario we want to protect against is:
+							// Person(.name) has Gender(.code)
+							// 1) Enter F in two gender fields with the 'Person has Gender' FactType selected
+							// 2) Editing the second F to be an M needs to create a new instance, not edit the single existing instance
+							int maxLeft = editEntityInstance.ObjectifiedInstance == null ? 0 : 1;
+							int setCount = RoleInstance.GetLinksToRoleCollection(editEntityInstance).Count;
+							if (setCount > maxLeft)
+							{
+								recurseAllowValueEdit = false;
+							}
+							else
+							{
+								maxLeft -= setCount;
+								recurseAllowValueEdit = editEntityInstance.EntityTypeSubtypeInstanceCollection.Count <= maxLeft;
+							}
+						}
 					}
 					ObjectTypeInstance objectInstance = RecurseValueTypeInstance(
 						(editingRoleInstance != null) ? editingRoleInstance.ObjectTypeInstance : null,
 						identifierRole.RolePlayer,
 						newText,
 						ref rootInstance,
-						create);
+						create,
+						recurseAllowValueEdit);
 					LinkedElementCollection<EntityTypeInstance> instances = parentType.EntityTypeInstanceCollection;
 					int instanceCount = instances.Count;
 					for(int i = 0; i < instanceCount; ++i)
@@ -4025,7 +4047,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							using (Transaction t = store.TransactionManager.BeginTransaction(string.Format(ResourceStrings.ModelSamplePopulationEditorEditInstanceTransactionText, editRolePlayer.Name, objectInstance.Name)))
 							{
 								ValueTypeInstance instance = null;
-								ObjectTypeInstance result = RecurseValueTypeInstance(objectInstance, editRolePlayer, newText, ref instance, true);
+								ObjectTypeInstance result = RecurseValueTypeInstance(objectInstance, editRolePlayer, newText, ref instance, true, true);
 								ConnectInstance(myEntityType, myEntityTypeSubtype, ref editInstance, ref editSubtypeInstance, result, identifierRole);
 								t.Commit();
 							}
@@ -4038,7 +4060,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						using (Transaction t = store.TransactionManager.BeginTransaction(string.Format(ResourceStrings.ModelSamplePopulationEditorNewInstanceTransactionText, selectedEntityType.Name)))
 						{
 							ValueTypeInstance instance = null;
-							ObjectTypeInstance result = RecurseValueTypeInstance(null, identifierRole.RolePlayer, newText, ref instance, true);
+							ObjectTypeInstance result = RecurseValueTypeInstance(null, identifierRole.RolePlayer, newText, ref instance, true, true);
 							ConnectInstance(myEntityType, myEntityTypeSubtype, ref editInstance, ref editSubtypeInstance, result, identifierRole);
 							t.Commit();
 						}
@@ -4052,7 +4074,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					{
 						Role identifierRole = selectedEntityType.PreferredIdentifier.RoleCollection[column - 1];
 						ValueTypeInstance instance = null;
-						ObjectTypeInstance result = RecurseValueTypeInstance(null, identifierRole.RolePlayer, newText, ref instance, true);
+						ObjectTypeInstance result = RecurseValueTypeInstance(null, identifierRole.RolePlayer, newText, ref instance, true, true);
 						EntityTypeInstance parentInstance = null;
 						EntityTypeSubtypeInstance parentSubtypeInstance = null;
 						ConnectInstance(selectedEntityType, selectedEntityTypeSubtype, ref parentInstance, ref parentSubtypeInstance, result, identifierRole);
@@ -4756,7 +4778,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 									ObjectType editRolePlayer = editRoleInstance.Role.RolePlayer;
 									using (Transaction t = store.TransactionManager.BeginTransaction(string.Format(ResourceStrings.ModelSamplePopulationEditorEditInstanceTransactionText, editRolePlayer.Name, attachedInstance.Name)))
 									{
-										ObjectTypeInstance result = RecurseValueTypeInstance(attachedInstance, editRolePlayer, newText, ref instance, true);
+										ObjectTypeInstance result = RecurseValueTypeInstance(attachedInstance, editRolePlayer, newText, ref instance, true, true);
 										ConnectInstance(ref editInstance, result, factRole, null);
 										if (t.HasPendingChanges)
 										{
@@ -4772,7 +4794,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								using (Transaction t = store.TransactionManager.BeginTransaction(string.Format(ResourceStrings.ModelSamplePopulationEditorNewInstanceTransactionText, selectedFactType.Name)))
 								{
 									ValueTypeInstance instance = null;
-									ObjectTypeInstance result = RecurseValueTypeInstance(null, factRole.RolePlayer, newText, ref instance, true);
+									ObjectTypeInstance result = RecurseValueTypeInstance(null, factRole.RolePlayer, newText, ref instance, true, true);
 									editInstance.EnsureRoleInstance(factRole, result);
 									t.Commit();
 								}
@@ -4826,7 +4848,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 									ValueTypeInstance instance = null;
 									using (Transaction t = store.TransactionManager.BeginTransaction(string.Format(ResourceStrings.ModelSamplePopulationEditorEditInstanceTransactionText, objectifyingType.Name, objectifyingInstance.Name)))
 									{
-										ObjectTypeInstance result = RecurseValueTypeInstance(objectifyingInstance, objectifyingType, newText, ref instance, true);
+										ObjectTypeInstance result = RecurseValueTypeInstance(objectifyingInstance, objectifyingType, newText, ref instance, true, true);
 										if (result != objectifyingInstance)
 										{
 											ConnectInstance(ref editInstance, result, null, objectifyingType);
@@ -4844,7 +4866,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								using (Transaction t = store.TransactionManager.BeginTransaction(string.Format(ResourceStrings.ModelSamplePopulationEditorNewInstanceTransactionText, selectedFactType.Name)))
 								{
 									ValueTypeInstance instance = null;
-									ObjectTypeInstance result = RecurseValueTypeInstance(null, objectifyingType, newText, ref instance, true);
+									ObjectTypeInstance result = RecurseValueTypeInstance(null, objectifyingType, newText, ref instance, true, true);
 									FactTypeInstance existingResultInstance;
 									if (null != (existingResultInstance = result.ObjectifiedInstance) &&
 										existingResultInstance.RoleInstanceCollection.Count != 0)
@@ -4875,7 +4897,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								newInstance.FactType = selectedFactType;
 								Role factRole = selectedFactType.OrderedRoleCollection[column + myUnaryColumn].Role;
 								ValueTypeInstance instance = null;
-								ObjectTypeInstance result = RecurseValueTypeInstance(null, factRole.RolePlayer, newText, ref instance, true);
+								ObjectTypeInstance result = RecurseValueTypeInstance(null, factRole.RolePlayer, newText, ref instance, true, true);
 								instance.Value = newText;
 								new FactTypeRoleInstance(factRole, result).FactTypeInstance = newInstance;
 								t.Commit();
@@ -4888,7 +4910,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								FactTypeInstance newInstance = new FactTypeInstance(store);
 								newInstance.FactType = myFactType;
 								ValueTypeInstance instance = null;
-								ObjectTypeInstance result = RecurseValueTypeInstance(null, objectifyingType, newText, ref instance, true);
+								ObjectTypeInstance result = RecurseValueTypeInstance(null, objectifyingType, newText, ref instance, true, true);
 								instance.Value = newText;
 								newInstance.ObjectifyingInstance = result;
 								t.Commit();
@@ -6043,6 +6065,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 									rowType,
 									newText,
 									ref instance,
+									true,
 									true);
 								instance.Value = newText;
 								ConnectInstance(result, rowRole, null, null);
@@ -6085,6 +6108,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 									rowType,
 									newText,
 									ref instance,
+									true,
 									true);
 								instance.Value = newText;
 								ConnectInstance(result, rowRole, null, null);
@@ -6138,6 +6162,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 									supertypeRole.RolePlayer,
 									newText,
 									ref instance,
+									true,
 									true);
 								instance.Value = newText;
 								ConnectInstance(result, supertypeRole, null, null);
@@ -6190,6 +6215,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 									rowType,
 									newText,
 									ref instance,
+									true,
 									true);
 								instance.Value = newText;
 								ConnectInstance(result, null, rowType, null);

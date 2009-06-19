@@ -8,9 +8,6 @@
 				</orm:PlayedRoles>
 				<orm:PreferredIdentifier ref="_9E113A63-0DB1-49D9-97EB-F5DE1EE6455E" />
 			</orm:EntityType>
-			<orm:ValueType id="_C9C0B814-05EB-4152-8E92-164793853AA5" Name="Foo_id">
-				<orm:ConceptualDataType id="_AEF6F505-F8C8-49D9-90D0-6489FFF0388A" ref="_C263C032-CA5E-4A58-8381-C49BF1B65751" Scale="0" Length="0" />
-			</orm:ValueType>
 			<orm:EntityType id="_F6FCFBBF-4BBA-4030-B728-CA6B7A2D2105" Name="Bar" _ReferenceMode="id">
 				<orm:PlayedRoles>
 					<orm:Role ref="_FBE13C84-0F4A-48F6-B7B9-E1474E19A241" />
@@ -244,7 +241,6 @@
 	</ormDiagram:ORMDiagram>
 	<oial:model id="_9C9BECFF-37EA-4156-B4BF-55AD6ED21CD2" name="SeparateAssimilationPreferredForParent">
 		<oial:informationTypeFormats>
-			<odt:dataType id="_442974BD-764D-498D-AE3D-517765A147B5" name="Foo_id" />
 			<odt:dataType id="_B9494645-975A-4881-B2E0-3D7370A98DA1" name="Bar_id" />
 		</oial:informationTypeFormats>
 		<oial:conceptTypes>
@@ -315,7 +311,6 @@
 		<ormtooial:ConceptTypeChildHasPathFactType id="_75221445-45A8-46F0-AEC0-D3BB68E02BD1" PathFactType="_A8F5A104-F52C-4331-8515-606253CBC003" ConceptTypeChild="_12806CA7-0786-4D86-8F66-282EC3A17AA8" />
 		<ormtooial:ConceptTypeChildHasPathFactType id="_E5813942-476A-42DF-8A55-F9CB68056B4D" PathFactType="_60FE3D5D-7AFA-4EDA-B338-23F1F355A9F2" ConceptTypeChild="_D343720E-85B3-418B-9705-4A55A3EBD1E6" />
 		<ormtooial:InformationTypeFormatIsForValueType id="_7C6103E2-7011-4907-83F2-A0E1F11C236E" InformationTypeFormat="_B9494645-975A-4881-B2E0-3D7370A98DA1" ValueType="_CFF6500D-0D4B-450F-B821-45446D1209EF" />
-		<ormtooial:InformationTypeFormatIsForValueType id="_E879738D-BCED-4A3F-9DCC-A5CF7FF6D00E" InformationTypeFormat="_442974BD-764D-498D-AE3D-517765A147B5" ValueType="_C9C0B814-05EB-4152-8E92-164793853AA5" />
 		<ormtooial:UniquenessIsForUniquenessConstraint id="_74933EFF-73D3-4EB7-A259-8CEA8092D481" AbstractionUniquenessConstraint="_4C845723-45EA-4DEB-8A08-3B970904ADC0" ORMUniquenessConstraint="_CBCD88D1-23A9-48D4-812A-DA14E199836B" />
 	</ormtooial:Bridge>
 	<oialtocdb:Bridge>

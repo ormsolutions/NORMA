@@ -177,7 +177,7 @@ namespace RelationalTests.FullRegeneration
 			AssimilationMapping partyIsThingAssimilationMapping;
 			using (Transaction t = store.TransactionManager.BeginTransaction("Longer assimilation chain"))
 			{
-				partyObjectType.ReferenceModeString = "";
+				partyObjectType.ReferenceModeDisplay = ""; // Using ReferenceModeDisplay instead of ReferenceModeString to automatically kill Party_id
 				ObjectType thingObjectType = new ObjectType(store, new PropertyAssignment(ObjectType.NameDomainPropertyId, "Thing"), new PropertyAssignment(ObjectType.IsIndependentDomainPropertyId, true));
 				thingObjectType.Model = model;
 				thingObjectType.ReferenceModeString = "id";

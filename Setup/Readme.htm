@@ -3,7 +3,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
-<title>NORMA May 2009 CTP Readme</title>
+<title>NORMA June 2009 CTP Readme</title>
 <style type="text/css">
 	.new {font-size:x-small; background-color:Gold; color:Blue; }
 	li {padding-bottom: 3px;}
@@ -12,9 +12,9 @@
 
 <body>
 
-<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA May 2009 CTP Readme</a>&nbsp;</b></p>
+<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA June 2009 CTP Readme</a>&nbsp;</b></p>
 <p>This file supersedes the previous readme.txt and older readme.htm files. This readme has parallel indexing mechanisms: by topic, and by release date (starting with the October 2008 (2008-10) release). The file will be extended for future product releases.<br/><br/>
-The May 2009 release adds verbalization of ring constraints and other targeted fixes. 
+The June 2009 release is a stabilization release with minor feature changes. See detailed change notes below for specifics. 
 <br/><br/></p>
 <h2>Contents</h2>
 <ul>
@@ -40,8 +40,31 @@ The May 2009 release adds verbalization of ring constraints and other targeted f
 <li><a href="#TOPIC DAILY">TOPIC DESCRIPTION</a>&nbsp;(Build ####)</li>
 </ul>-->
 <hr/>
+<h2>June 2009 CTP Changes</h2>
+<div>The June 2009 CTP release includes all modifications through changeset 1394. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<ul>
+<li><a href="#Sample population mandatory error activation 2009-06">Sample population mandatory error activation</a>&nbsp;</li>
+<li>Other Features:
+<ol>
+<li>Added verbalization of default values for custom properties. This setting can be configured on a per-property basis.</li>
+<li>Do not ignore a ValueType that is not explicitly independent and plays no roles when generating of other views on the model (relational, etc). We now make no distinction between an unattached ValueType and and EntityType that plays no roles outside of its identifying FactTypes.<em> This may expose long-abandonded ValueTypes in existing models, which will get tables instead of simply being ignored.</em></li>
+</ol>
+</li>
+<li>Bug Fixes:
+<ol>
+<li>Phantom partially constructed shapes appearing in corner of diagram(s) during 'Objectify' command.</li>
+<li>Symmetric ring constraints verbalizing the same as Intransitive (SymmetricAndIntransitive verbalizes correctly).</li>
+<li>DisplayRelatedTypes property showing on all FactType shapes instead of being limited to objectified fact types with subtypes and/or supertypes.</li>
+<li>Delete Page/Undo not restoring the page to the same position if the <em>Diagram Management</em> extension is not enabled.</li>
+<li>Name generation settings that exactly matched the parent node settings need to be saved if they differ from the default values; settings revert on load.</li>
+<li>Validation errors for mandatory constraint associated with the collapsed 'exactly one' verbalization are not verbalized. Similar issue with validation errors on mandatory portion of the combined exclusive-or constraint.</li>
+<li>Some validation errors appearing twice within the verbalization of a single top-level element.</li>
+</ol>
+</li>
+</ul>
+<hr/>
 <h2>May 2009 CTP Changes</h2>
-<div>The May 2009 CTP release includes all modifications through changeset 1390. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<div>The May 2009 CTP release includes all modifications through changeset 1390.</div>
 <ul>
 <li><a href="#Display Related Types 2009-05">Controlling display of subtype lines</a>&nbsp;</li>
 <li><a href="#Role name highlighting 2009-05">Role name highlighting</a>&nbsp;</li>
@@ -274,6 +297,8 @@ In previous builds, indirect editing of a ValueType used as an identifier would 
 Most models have a number of FactType populations that are fully implied by one of the role players. The most common of these cases is the standard reference mode pattern, where the population of a one-to-one FactType is implied by the identified EntityType. Other FactType patterns that are implied are SubtypeFacts where the subtype uses a supertype identifier and the binary FactTypes implied by an objectification pattern. Implied FactTypes appear read-only in the sample population editor.</li>
 <li><a id="Sample population deletion 2009-05" class="new" title="May 2009 CTP: Sample population deletion">2009-05</a>&nbsp;
 The delete key can be used at any time to delete a cell with a value in it. Deleting the last value-containing cell deletes the instance for that row. To delete a row instance directly without deleting its parts, place the selection in the first column (with the numbers) before pressing delete.</li>
+<li><a id="Sample population mandatory error activation 2009-06" class="new" title="June 2009 CTP: Sample population mandatory error activation">2009-06</a>&nbsp;
+Automatic activation of sample population errors has been extended to support disjunctive mandatory constraints. Activating a 'population mandatory' error through a specific role by selecting the item in the 'Validation Errors' context submenu or double-clicking the role adds a new fact instance for the context FactType with that role prepopulated. If you want to add the other value to another fact instance, simply escape any active editors and undo the last action. Activating a disjunctive mandatory error through the error list will populate the first role player mentioned in the error text.</li>
 </ol>
 <a href="#The Top">Return to top</a>
 <hr />
@@ -377,7 +402,7 @@ The settings file for the LinqToSqlAttributeMapping layer has been updated. This
 <li>We have had cases where the Custom Properties extension does not work correctly on Vista. The 'PropertiesEditor' property is available on the model, but the custom properties do not appear on the target elements. This does not happen on all machines, but when it does, the workaround is to launch VS2008 as an administrator instead of as a normal user.</li>
 <li>The FactEditor has refused to load properly immediate after installation on Visual Studio 2008. Restarting Visual Studio fixed the problem.</li>
 <li>Occasionally when closing Visual Studio, a message appears stating that a modal dialog is open, and VS must be forcibly terminated with the task manager.</li>
-<li>Reloading a model can reveal duplicate name errors on generated names for UniquenessConstraint and ImpliedMandatoryConstraint. The UniquenessConstraint errors are easily fixed because they can be selected in the model browser (double click the error, delete the name to regenerate one of the names), but the implied mandatory constraints cannot be selected. The are two ways to fix these: open the .orm file with an xml editor (Open With in Visual Studio, notepad also works) and delete one of the offending name occurrences then reload in NORMA, or use the Store Viewer (a debug common on the context menu) to determine an Object Type associated with the offending constraint. In the Store Viewer, select and recursively expand the ORMStore/Partition/Links/ObjectTypeImpliesMandatoryConstraint node (recursive expansion is done with the * key on the number pad), then scan for the offending constraint name, note the ObjectType name above it, and close the dialog. Find that ObjectType in the model and toggle (twice) either the IsIndependent property on the ObjectType or the IsMandatory property on an optional attached role. The naming error will go away. My apologies for the hassle, I just haven't managed to reproduce the scenario that causes this problem, and the issue is not visible until the file is reloaded.</li>
+<li>Reloading a model can reveal duplicate name errors on generated names for UniquenessConstraint and ImpliedMandatoryConstraint. The UniquenessConstraint errors are easily fixed because they can be selected in the model browser (double click the error, delete the name to regenerate one of the names), but the implied mandatory constraints cannot be selected. The are two ways to fix these: open the .orm file with an xml editor (Open With in Visual Studio, notepad also works) and delete one of the offending name occurrences then reload in NORMA, or use the Store Viewer (a debug command on the context menu) to determine an Object Type associated with the offending constraint. In the Store Viewer, select and recursively expand the ORMStore/Partition/Links/ObjectTypeImpliesMandatoryConstraint node (recursive expansion is done with the * key on the number pad), then scan for the offending constraint name, note the ObjectType name above it, and close the dialog. Find that ObjectType in the model and toggle (twice) either the IsIndependent property on the ObjectType or the IsMandatory property on an optional attached role. The naming error will go away. My apologies for the hassle, I just haven't managed to reproduce the scenario that causes this problem, and the issue is not visible until the file is reloaded. <em>Update on this issue:</em> The underlying problem has not been fixed, but duplicate generated names are automatically regenerated on reload. The intent of this change was to make it easier to merge models under source control, but it also has the side-effect of making this bug even more obscure. The error will now be visible only as duplicate names in generated code, not in the designer. Reload the model and explicitly save to clean the file.</li>
 </ol>
 </body>
 </html>

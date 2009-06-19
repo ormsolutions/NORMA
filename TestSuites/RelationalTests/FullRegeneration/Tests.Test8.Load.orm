@@ -8,9 +8,6 @@
 				</orm:PlayedRoles>
 				<orm:PreferredIdentifier ref="_9E113A63-0DB1-49D9-97EB-F5DE1EE6455E" />
 			</orm:EntityType>
-			<orm:ValueType id="_C9C0B814-05EB-4152-8E92-164793853AA5" Name="Foo_id">
-				<orm:ConceptualDataType id="_AEF6F505-F8C8-49D9-90D0-6489FFF0388A" ref="_C263C032-CA5E-4A58-8381-C49BF1B65751" Scale="0" Length="0" />
-			</orm:ValueType>
 			<orm:EntityType id="_F6FCFBBF-4BBA-4030-B728-CA6B7A2D2105" Name="Bar" _ReferenceMode="id">
 				<orm:PlayedRoles>
 					<orm:Role ref="_FBE13C84-0F4A-48F6-B7B9-E1474E19A241" />
