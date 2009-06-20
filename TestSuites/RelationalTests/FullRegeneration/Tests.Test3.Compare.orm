@@ -748,7 +748,7 @@
 			<ormtooial:AbstractionModelGenerationSetting id="_4F4B5F39-12A2-4488-9BA9-EEF2F2BB5E6D" AlgorithmVersion="1.005">
 				<ormtooial:AbstractionModel ref="_21511FEB-5B88-4FBD-A74C-06B4A3C70480" />
 			</ormtooial:AbstractionModelGenerationSetting>
-			<oialtocdb:SchemaGenerationSetting id="_6E61D4EE-E269-4EB5-8CD2-5D643CA8F6AB" CoreAlgorithmVersion="1.004" NameAlgorithmVersion="1.010">
+			<oialtocdb:SchemaGenerationSetting id="_6E61D4EE-E269-4EB5-8CD2-5D643CA8F6AB" CoreAlgorithmVersion="1.004" NameAlgorithmVersion="1.011">
 				<oialtocdb:Schema ref="_318C6F91-A8B5-4657-8FF0-8BC95C2C83B5" />
 			</oialtocdb:SchemaGenerationSetting>
 		</orm:GenerationSettings>
@@ -971,7 +971,7 @@
 					</rcd:Table>
 					<rcd:Table Name="I" id="_01DCCA5F-E5CE-4753-8CED-179AD8135A06">
 						<rcd:Columns>
-							<rcd:Column id="_7591C84C-A78E-484E-887D-628AD1BF5AC4" Name="id" />
+							<rcd:Column id="_7591C84C-A78E-484E-887D-628AD1BF5AC4" Name="iId" />
 							<rcd:Column id="_A642E016-33BC-402F-8723-A4759EDBA71A" Name="c" />
 							<rcd:Column id="_7C6D1CB3-BFD7-45C7-B74C-8D91EA55E515" Name="bId" />
 							<rcd:Column id="_F56A54F0-F93A-4346-974F-C792A13595B6" Name="f" />

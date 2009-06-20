@@ -51,7 +51,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// The algorithm version written to the file for the name generation algorithm
 		/// </summary>
-		public const string CurrentNameAlgorithmVersion = "1.010";
+		public const string CurrentNameAlgorithmVersion = "1.011";
 		#endregion // Algorithm Version Constants
 		#region Fully populate from OIAL
 

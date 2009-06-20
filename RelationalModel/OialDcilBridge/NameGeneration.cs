@@ -674,26 +674,77 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				}
 				#endregion // Accessor properties
 				#region Regex patterns
-				private static Regex myReplaceFieldsPattern;
-				private Regex ReplaceFieldsPattern
+				private static Regex myEmbeddedCapsRegex;
+				/// <summary>
+				/// The regular expression used to determine if a string contains
+				/// an embedded capital
+				/// </summary>
+				private Regex EmbeddedCapsRegex
 				{
 					get
 					{
-						Regex retVal = myReplaceFieldsPattern;
+						Regex retVal = myEmbeddedCapsRegex;
 						if (retVal == null)
 						{
 							System.Threading.Interlocked.CompareExchange<Regex>(
-								ref myReplaceFieldsPattern,
+								ref myEmbeddedCapsRegex,
 								new Regex(
-									@"{\d+}",
+									@"(\s|.)+\p{Lu}",
 									RegexOptions.Compiled),
 								null);
-							retVal = myReplaceFieldsPattern;
+							retVal = myEmbeddedCapsRegex;
+						}
+						return retVal;
+					}
+				}
+				private static Regex myAdjacentCapsRegex;
+				/// <summary>
+				/// The regular expression used to determine if a string contains
+				/// two adjacent upper case characters.
+				/// </summary>
+				private static Regex AdjacentCapsRegex
+				{
+					get
+					{
+						Regex retVal = myAdjacentCapsRegex;
+						if (retVal == null)
+						{
+							System.Threading.Interlocked.CompareExchange<Regex>(
+								ref myAdjacentCapsRegex,
+								new Regex(
+									@"\p{Lu}(?=\p{Lu})",
+									RegexOptions.Compiled),
+								null);
+							retVal = myAdjacentCapsRegex;
 						}
 						return retVal;
 					}
 				}
 				#endregion // Regex patterns
+				private static Regex mySplitOnUpperRegex;
+				/// <summary>
+				/// The regular expression used to split a camel or
+				/// pascal cased string into pieces. Assumes spaces
+				/// are previously stripped.
+				/// </summary>
+				private static Regex SplitOnUpperRegex
+				{
+					get
+					{
+						Regex retVal = mySplitOnUpperRegex;
+						if (retVal == null)
+						{
+							System.Threading.Interlocked.CompareExchange<Regex>(
+								ref mySplitOnUpperRegex,
+								new Regex(
+									@"(?n)\G(?<name>((^(\s|.))|\p{Lu})\P{Lu}*)",
+									RegexOptions.Compiled),
+								null);
+							retVal = mySplitOnUpperRegex;
+						}
+						return retVal;
+					}
+				}
 				#region Name generation methods
 				private string GenerateTableName(Table table, int phase)
 				{
@@ -843,7 +894,10 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 								{
 									string readingText = string.Format(CultureInfo.CurrentCulture, reading.Text, isUnary ? "\x1" : "", "\x1");
 									int splitPosition = readingText.LastIndexOf('\x1');
-									addPart(readingText.Substring(0, splitPosition), null);
+									if (splitPosition > 0)
+									{
+										addPart(readingText.Substring(0, splitPosition), null);
+									}
 									if (!isUnary)
 									{
 										if (nextNode != null)
@@ -1073,7 +1127,6 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 					string newName = newNamePart;
 					newName = newName.Trim();
 					NamePartOptions options = newNamePart.Options;
-					Debug.Assert(newName != null);
 					if (newName.IndexOfAny(NameDelimiterArray) != -1)
 					{
 						string[] individualEntries = newName.Split(NameDelimiterArray, StringSplitOptions.RemoveEmptyEntries);
@@ -1081,6 +1134,22 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 						{
 							//add each space separated name individually
 							AddToNameCollection(ref singleName, ref nameCollection, individualEntries[i], index == -1 ? -1 : index + i);
+						}
+						return;
+					}
+
+					// Test for multi-part names
+					if (0 == (options & NamePartOptions.ExplicitCasing) &&
+						EmbeddedCapsRegex.IsMatch(newName) &&
+						!AdjacentCapsRegex.IsMatch(newName))
+					{
+						Match match = SplitOnUpperRegex.Match(newName);
+						int matchIndex = 0;
+						while (match.Success)
+						{
+							AddToNameCollection(ref singleName, ref nameCollection, match.Value, index == -1 ? -1 : index + matchIndex);
+							++matchIndex;
+							match = match.NextMatch();
 						}
 						return;
 					}
@@ -1113,8 +1182,8 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 						}
 						//remove duplicate information
 						int nextIndex;
-						if ((index > 0 && ((string)nameCollection[index - 1]).EndsWith(newName, StringComparison.CurrentCultureIgnoreCase))
-							|| ((nextIndex = index + 1) < count && ((string)nameCollection[nextIndex]).StartsWith(newName, StringComparison.CurrentCultureIgnoreCase)))
+						if ((index > 0 && ((string)nameCollection[index - 1]).Equals(newName, StringComparison.CurrentCultureIgnoreCase))
+							|| ((nextIndex = index + 1) < count && ((string)nameCollection[nextIndex]).Equals(newName, StringComparison.CurrentCultureIgnoreCase)))
 						{
 							//we don't need the name that was just added
 							// UNDONE: Possiblye kill this check? Name scrubbing should be handled by the current algorithm
@@ -1125,7 +1194,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 							//check if we need the following name
 							while (nextIndex < count)
 							{
-								if (newName.EndsWith(nameCollection[nextIndex], StringComparison.CurrentCultureIgnoreCase))
+								if (newName.Equals(nameCollection[nextIndex], StringComparison.CurrentCultureIgnoreCase))
 								{
 									nameCollection.RemoveAt(nextIndex);
 									--count;
@@ -1139,7 +1208,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 							nextIndex = index - 1;
 							while (nextIndex > -1)
 							{
-								if (newName.StartsWith(nameCollection[nextIndex], StringComparison.CurrentCultureIgnoreCase))
+								if (newName.Equals(nameCollection[nextIndex], StringComparison.CurrentCultureIgnoreCase))
 								{
 									nameCollection.RemoveAt(nextIndex--);
 								}
@@ -1545,6 +1614,10 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				private string DoFirstLetterCase(NamePart name, bool upper, TextInfo textInfo)
 				{
 					string nameValue = name;
+					if (string.IsNullOrEmpty(nameValue))
+					{
+						return nameValue;
+					}
 					char c = nameValue[0];
 					if (upper)
 					{

@@ -4329,7 +4329,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			private void RoleNameChangedEvent(object sender, ElementPropertyChangedEventArgs e)
 			{
 				Role role = (Role)e.ModelElement;
-				if (!role.IsDeleted && IsPartOfDisplayedIdentifier(myEntityTypeSubtype ?? myEntityTypeSubtype, role))
+				if (!role.IsDeleted && IsPartOfDisplayedIdentifier(myEntityTypeSubtype ?? myEntityType, role))
 				{
 					UpdateColumnHeaders();
 				}
