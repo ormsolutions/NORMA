@@ -657,7 +657,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 						}
 					}
 				}
-				else if (0 != (reasons & EventSubscriberReasons.UserInterfaceEvents))
+				if (0 != (reasons & EventSubscriberReasons.UserInterfaceEvents))
 				{
 					eventManager.AddOrRemoveHandler(new EventHandler<ElementEventsBegunEventArgs>(ElementEventsBegunEvent), action);
 					eventManager.AddOrRemoveHandler(new EventHandler<ElementEventsEndedEventArgs>(ElementEventsEndedEvent), action);
