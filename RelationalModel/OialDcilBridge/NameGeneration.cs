@@ -1952,6 +1952,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 							ConceptTypeChild child = childPath[iChild];
 							ConceptTypeAssimilatesConceptType assimilation = child as ConceptTypeAssimilatesConceptType;
 							bool reverseAssimilation = false;
+							bool forwardToReverseTransition = false;
 							bool towardsSubtype = false;
 							if (assimilation != null)
 							{
@@ -1976,6 +1977,12 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 									if (0 != (stepFlags & ColumnPathStepFlags.ForwardAssimilation))
 									{
 										// Keep going forward
+										if (0 != (stepFlags & ColumnPathStepFlags.AssimilationIsSubtype) &&
+											AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation) != AssimilationAbsorptionChoice.Absorb &&
+											comingFromConceptType == (0 == (stepFlags & ColumnPathStepFlags.AssimilationTowardsSubtype) ? assimilation.AssimilatedConceptType : assimilation.AssimilatorConceptType))
+										{
+											forwardToReverseTransition = true;
+										}
 									}
 									else if (0 != (stepFlags & ColumnPathStepFlags.ReverseAssimilation))
 									{
@@ -2038,13 +2045,22 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 											bool tailIsSubtype = 0 != (tailFlags & ColumnPathStepFlags.AssimilationIsSubtype);
 											if (tailIsSubtype && assimilationIsSubtype)
 											{
-												if (secondarySubtype && 0 == (tailFlags & ColumnPathStepFlags.NonPreferredSubtype))
+												if (forwardToReverseTransition)
 												{
-													tailNode.Value = new ColumnPathStep(pathStep.FromRole, pathStep.ObjectType, pathStep.AlternateObjectType, tailFlags | ColumnPathStepFlags.NonPreferredSubtype);
+													flags |= ColumnPathStepFlags.DeclinedAssimilation;
+													targetRole = towardsSubtype ? targetRole.OppositeRoleAlwaysResolveProxy.Role : nonAssimilationTargetRole;
+													processAsFactType = true;
 												}
-												// If this is a subtype chain, then keep going, using the first
-												// subtype in the chain as a node used in the final name.
-												continue;
+												else
+												{
+													if (secondarySubtype && 0 == (tailFlags & ColumnPathStepFlags.NonPreferredSubtype))
+													{
+														tailNode.Value = new ColumnPathStep(pathStep.FromRole, pathStep.ObjectType, pathStep.AlternateObjectType, tailFlags | ColumnPathStepFlags.NonPreferredSubtype);
+													}
+													// If this is a subtype chain, then keep going, using the first
+													// subtype in the chain as a node used in the final name.
+													continue;
+												}
 											}
 											else if (assimilationObjectification != null)
 											{
