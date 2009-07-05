@@ -545,7 +545,7 @@
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="DerivationRuleDisplay" DefaultValue="" DisplayName="DerivationRule" Id="B852BC09-7887-4BA7-A7AA-09D4F4E2AAD2" Kind="CustomStorage" Description="The derivation rule for this subtype. If a rule is not specified, then this is treated as an asserted subtype.">
+				<DomainProperty Name="DerivationExpressionDisplay" DefaultValue="" DisplayName="DerivationRule" Id="B852BC09-7887-4BA7-A7AA-09D4F4E2AAD2" Kind="CustomStorage" Description="The derivation rule for this subtype. If a rule is not specified, then this is treated as an asserted subtype.">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -641,7 +641,7 @@
 						<ExternalTypeMoniker Name="/System/Int64"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="DerivationRuleDisplay" DefaultValue="" DisplayName="DerivationRule" Id="7AF5C436-C28A-49BA-B8E0-05C409B67358" Kind="CustomStorage" Description="A derivation rule for this FactType.">
+				<DomainProperty Name="DerivationExpressionDisplay" DefaultValue="" DisplayName="DerivationRule" Id="7AF5C436-C28A-49BA-B8E0-05C409B67358" Kind="CustomStorage" Description="A derivation rule for this FactType.">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -1105,6 +1105,95 @@
 					</Type>
 				</DomainProperty>
 			</Properties>
+		</DomainClass>
+
+		<DomainClass Name="RolePath" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="37599E0F-212C-4290-88A6-7406B8EF7E57" DisplayName="RolePath" InheritanceModifier="Abstract" Description="An ordered sequence of roles through ORM space with a tail split branching into other subpaths">
+			<BaseClass>
+				<DomainClassMoniker Name="ORMModelElement"/>
+			</BaseClass>
+			<Properties>
+				<DomainProperty Name="SplitIsNegated" DefaultValue="False" DisplayName="SplitIsNegated" Id="2670BB76-4732-4C0D-916B-3F07F54F71C7" Description="Indicates if the tail split in its entirety should be treated as a negation.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="SplitCombinationOperator" DefaultValue="And" DisplayName="SplitCombinationOperator" Id="2E4570B4-163C-4ADD-959D-246CC454409D" Description="Determines the logical operator used to combine split paths.">
+					<Type>
+						<DomainEnumerationMoniker Name="LogicalCombinationOperator"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
+		</DomainClass>
+		<DomainClass Name="PrimaryRolePath" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="404B14CD-3F82-44F3-8DDD-E1E729EBB9FB" DisplayName="PrimaryRolePath" InheritanceModifier="Abstract" Description="A top level role path starting at a root object type. Provides a context for subpaths, functions, and constraints specific to this path.">
+			<BaseClass>
+				<DomainClassMoniker Name="RolePath"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="RoleSubPath" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="AA7B4894-C286-45C3-A95F-09D04E286038" DisplayName="RoleSubPath" Description="A branched path split from the end of another path.">
+			<BaseClass>
+				<DomainClassMoniker Name="RolePath"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="CalculatedPathValue" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="C4C327B6-F1DE-4F02-AF04-3EA358ED0684" DisplayName="CalculatedValue" Description="A calculated value used in a role path.">
+			<BaseClass>
+				<DomainClassMoniker Name="ORMModelElement"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="PathConstant" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="B8F65CC9-2BDE-4688-9671-9F4789A3828A" DisplayName="A constant value used directly in a path.">
+			<BaseClass>
+				<DomainClassMoniker Name="ORMModelElement"/>
+			</BaseClass>
+			<Properties>
+				<DomainProperty Name="LexicalValue" Id="4E5C5B55-B001-44C6-B057-D5DA26B63246" DisplayName="Value" Description="A lexical constant value interpreted based on context.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
+		</DomainClass>
+		<DomainClass Name="Function" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="921037FF-D266-4F31-9256-9A6D4F410109" DisplayName="Function" Description="A function or operator used to represented a calculation algorithm.">
+			<BaseClass>
+				<DomainClassMoniker Name="ORMNamedElement"/>
+			</BaseClass>
+			<Properties>
+				<DomainProperty Name="IsBoolean" Id="363BE96E-1BD8-46B1-B54B-41DFE6B9D4CF" DisplayName="IsBoolean" DefaultValue="false" Description="Set if this function returns a boolean value that can be evaluated directly as a condition.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="OperatorSymbol" Id="ECE5DDEC-7AB3-4B65-BDE9-DDD836E92288" DisplayName="OperatorSymbol" DefaultValue="" Description="A string indicating this function should be displayed as an operator instead of using functional notation. Represents infix notation for a binary operator and prefix notation for a unary.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
+		</DomainClass>
+		<DomainClass Name="FunctionParameter" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="1C650E60-597E-4B84-A007-ACD640654354" DisplayName="FunctionParameter" Description="A formal function parameter describing expected input to a function.">
+			<BaseClass>
+				<DomainClassMoniker Name="ORMNamedElement"/>
+			</BaseClass>
+			<Properties>
+				<DomainProperty Name="BagInput" Id="42ACD532-5E46-4200-AC29-C20E926DC73F" DisplayName="BagInput" DefaultValue="false" Description="Set if a bag input is expected for this parameter, such as with an aggregation function.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
+		</DomainClass>
+		<DomainClass Name="CalculatedPathValueInput" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="79E5EBEF-2FFA-49E6-8A22-CC90B68A6941" DisplayName="CalculatedPathValueInput" Description="An input value or bag passed to a function parameter calculate a value.">
+			<BaseClass>
+				<DomainClassMoniker Name="ORMModelElement"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="FactTypeDerivationRule" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="DEDADFCE-C351-4FCB-A455-B19FB91875B8" DisplayName="SubtypeDerivationRule" Description="A role path defining a fact type derivation.">
+			<BaseClass>
+				<DomainClassMoniker Name="PrimaryRolePath"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="SubtypeDerivationRule" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="7B27FBFE-0A5E-447C-89B7-1BA25F9ED880" DisplayName="SubtypeDerivationRule" Description="A role path defining subtype population.">
+			<BaseClass>
+				<DomainClassMoniker Name="PrimaryRolePath"/>
+			</BaseClass>
 		</DomainClass>
 
 		<DomainClass Name="TooFewRoleSequencesError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="686A4B07-0ED9-4143-8225-5524C4D6C001" DisplayName="Too Few Role Sequences" Description="">
@@ -4240,7 +4329,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="FactType" PropertyName="DerivationRule" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactType" Id="73B1A9D8-42A4-44E0-B906-AEF10E346DB6">
+				<DomainRole Name="FactType" PropertyName="DerivationExpression" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactType" Id="73B1A9D8-42A4-44E0-B906-AEF10E346DB6">
 					<RolePlayer>
 						<DomainClassMoniker Name="FactType"/>
 					</RolePlayer>
@@ -4260,7 +4349,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="Subtype" PropertyName="DerivationRule" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Subtype" Id="10EA88C0-446D-4F1C-84E2-726031C14211">
+				<DomainRole Name="Subtype" PropertyName="DerivationExpression" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Subtype" Id="10EA88C0-446D-4F1C-84E2-726031C14211">
 					<RolePlayer>
 						<DomainClassMoniker Name="ObjectType"/>
 					</RolePlayer>
@@ -4971,6 +5060,343 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
+		<DomainRelationship Name="PrimaryRolePathHasRootObjectType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="4FFD036F-FC35-41AF-A318-27DB84E2D7B4">
+			<Source>
+				<DomainRole Name="PrimaryRolePath" PropertyName="RootObjectType" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="PrimaryRolePath" Id="1F8DDC17-4BE8-4BD6-87D2-960058BF9F5B">
+					<RolePlayer>
+						<DomainClassMoniker Name="PrimaryRolePath"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="RootObjectType" PropertyName="PrimaryRolePathCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="RootObjectType" Id="7C63FEDF-5F2C-4C95-82B5-D20AB15B2A03">
+					<RolePlayer>
+						<DomainClassMoniker Name="ObjectType"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="PathedRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="8F28981E-E8B5-4205-82BA-2487B9B3EF13" DisplayName="PathedRole" Description="An occurrence of a &lt;see cref=&quot;Role&quot;/&gt; in a &lt;see cref=&quot;RolePath&quot;/&gt;. A single role may occur multiple times in the same path.">
+			<Properties>
+				<DomainProperty Name="IsNegated" DefaultValue="False" DisplayName="IsNegated" Id="1260F1F6-15BB-425A-8FF7-B7841E8252AD" Description="Indicates that this step in the path is negated.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="PathedRolePurpose" DisplayName="PathedRolePurpose" Id="FFAF4EF9-CA23-4D14-BB6D-8F5B3C90E680" Description="Specifies how this pathed role relates to the previous pathed role.">
+					<Type>
+						<DomainEnumerationMoniker Name="PathedRolePurpose"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
+			<Source>
+				<DomainRole Name="RolePath" PropertyName="PathedRoleCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="RolePath" Id="E1A7228B-6F79-42FB-8877-803ADCFBB54A" Description="The roles included in this path.">
+					<RolePlayer>
+						<DomainClassMoniker Name="RolePath"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Role" PropertyName="RolePathCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="Role" Id="18A191C8-4202-4DC2-A40D-9A75F5E6117F" Description="The role paths that reference this role.">
+					<RolePlayer>
+						<DomainClassMoniker Name="Role"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="PathedRoleIsRemotelyCorrelatedWithPathedRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="8019DBA6-0330-4DD5-ABC8-27197537008D">
+			<Source>
+				<DomainRole Name="CorrelatedChild" PropertyName="CorrelatingParent" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="CorrelatedChild" Id="9071C1B5-9D76-496B-B3DC-5ACCDA9A3D23" Description="The parent node this pathed role is correlated with.">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="PathedRole"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="CorrelatingParent" PropertyName="CorrelatedChildCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="CorrelatingParent" Id="6EFF9DCC-4BB7-4406-9E90-794681036C51" Description="All pathed roles that are directly correlated with this pathed role.">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="PathedRole"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="RoleSubPathPathIsContinuationOfRolePath" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="79BE9E2C-9E3F-4EA0-957C-4D4EAD2389B2">
+			<Source>
+				<DomainRole Name="ParentRolePath" PropertyName="SplitPathCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="ParentRolePath" Id="97C4E687-6FF4-403A-AA36-376476CBA5D4" Description="Sub paths branched from the end of the current path.">
+					<RolePlayer>
+						<DomainClassMoniker Name="RolePath"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="SubPath" PropertyName="ParentRolePath" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="RoleSubPath" Id="7EA4F7E9-149F-4DB9-8307-2E561ADCFC8A" Description="The containing path this sub path branches off of.">
+					<RolePlayer>
+						<DomainClassMoniker Name="RoleSubPath"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="ModelDefinesFunction" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="1179E7FD-F395-4BE3-9615-E4F0ED0A09CD">
+			<Source>
+				<DomainRole Name="Model" PropertyName="FunctionCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Model" Id="520D2EE0-8507-4EFD-A0D6-A6A8E7FB2D84" Description="Function definitions used for calculated role path values.">
+					<RolePlayer>
+						<DomainClassMoniker Name="ORMModel"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Function" PropertyName="Model" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Function" Id="176ECDCE-FE02-4563-9C88-BC598E963400" Description="The model defining this function.">
+					<RolePlayer>
+						<DomainClassMoniker Name="Function"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="FunctionOperatesOnParameter" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="717BFBDA-13E0-4868-ADC3-FF64A45D4CE9">
+			<Source>
+				<DomainRole Name="Function" PropertyName="ParameterCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="Function" Id="F519D4E8-375B-4781-8D43-07B9132E9CE6" Description="Parameters defined by this function.">
+					<RolePlayer>
+						<DomainClassMoniker Name="Function"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Parameter" PropertyName="Function" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Parameter" Id="5605B4DC-2009-49F1-B5B0-714A8F34600A" Description="The function this parameter is defined for.">
+					<RolePlayer>
+						<DomainClassMoniker Name="FunctionParameter"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="PrimaryRolePathCalculatesCalculatedPathValue" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="CC8D4B04-3F04-4C0C-995B-E9B24E3134FB">
+			<Source>
+				<DomainRole Name="PrimaryRolePath" PropertyName="CalculatedValueCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="PrimaryRolePath" Id="60542704-5E9E-4F7C-B0EB-29ECB9C3DF46" Description="The values calculated for all branches of this path.">
+					<RolePlayer>
+						<DomainClassMoniker Name="PrimaryRolePath"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="CalculatedValue" PropertyName="PrimaryRolePath" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="CalculatedValue" Id="455B7520-EED3-489B-95A6-7EA07B7FAA0A" Description="The primary role path this value is calculated for.">
+					<RolePlayer>
+						<DomainClassMoniker Name="CalculatedPathValue"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="PrimaryRolePathSatisfiesCalculatedCondition" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="34F4B6C3-1575-4A4C-838E-261B981DEE83">
+			<Source>
+				<DomainRole Name="PrimaryRolePath" PropertyName="CalculatedConditionCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="PrimaryRolePath" Id="2F17D947-3334-4729-BAF1-CE5EFAE039EE" Description="The calculated values that must be satisfied by the path.">
+					<RolePlayer>
+						<DomainClassMoniker Name="PrimaryRolePath"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="CalculatedCondition" PropertyName="PrimaryRolePath" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="CalculatedCondition" Id="18F0E45A-F8F2-4AE5-919C-C5946C7193BD" Description="The primary role path that requires this condition to be true.">
+					<RolePlayer>
+						<DomainClassMoniker Name="CalculatedPathValue"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="CalculatedPathValueHasInput" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="EEF80C4B-8D52-441E-896A-D3BF11724028">
+			<Source>
+				<DomainRole Name="CalculatedValue" PropertyName="InputCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="CalculatedValue" Id="5E165681-2C7A-44B2-AAC5-982A36829790" Description="Inputs used to calculate this value.">
+					<RolePlayer>
+						<DomainClassMoniker Name="CalculatedPathValue"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Input" PropertyName="CalculatedValue" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Input" Id="EC5A5FB9-BEBD-4463-8549-15A0AE77E99A" Description="The calculated value that owns this input for.">
+					<RolePlayer>
+						<DomainClassMoniker Name="CalculatedPathValueInput"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="CalculatedPathValueScopedWithPathedRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="627FCA97-86EF-473F-AAA7-FFF2F8295624">
+			<Source>
+				<DomainRole Name="CalculatedValue" PropertyName="Scope" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="CalculatedValue" Id="63C8F93E-641D-4AA5-B42B-1A1E0C4AE9A4" Description="The PathedRole that provides context for this function. The scope must be related in the role path to any path inputs.">
+					<RolePlayer>
+						<DomainClassMoniker Name="CalculatedPathValue"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Scope" PropertyName="ScopedCalculatedValueCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="Input" Id="AE6B0A16-55A0-4805-BDDC-35C45C202A30" Description="Calculated values that are scoped using this PathedRole.">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="PathedRole"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="CalculatedPathValueIsCalculatedWithFunction" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="B0BB8774-8BF6-440A-ADDA-FA9DB0712824">
+			<Source>
+				<DomainRole Name="CalculatedValue" PropertyName="Function" Multiplicity="One" IsPropertyGenerator="true" DisplayName="CalculatedValue" Id="620BE174-61D3-48B5-99C7-17F2B7A8694D" Description="The function used to calculate this value.">
+					<RolePlayer>
+						<DomainClassMoniker Name="CalculatedPathValue"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Function" PropertyName="CalculatedValueCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="Function" Id="C1C8CCCF-1406-4BAC-B736-9AA2BCC5B07D" Description="The calculated values based on this function.">
+					<RolePlayer>
+						<DomainClassMoniker Name="Function"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="CalculatedPathValueInputCorrespondsToFunctionParameter" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="441EAE3E-ED05-45B5-B532-17833234930E">
+			<Source>
+				<DomainRole Name="Input" PropertyName="Parameter" Multiplicity="One" IsPropertyGenerator="true" DisplayName="Input" Id="B70D105D-8639-41AA-9CE8-135BB3CD6F51" Description="The function parameter associated with this input value.">
+					<RolePlayer>
+						<DomainClassMoniker Name="CalculatedPathValueInput"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Parameter" PropertyName="CalculatedInputCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="Parameter" Id="EEB1F768-E8D3-49D0-88F8-8DCFF8F87300" Description="The calculated value inputs that use this parameter.">
+					<RolePlayer>
+						<DomainClassMoniker Name="FunctionParameter"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="CalculatedPathValueInputBindsToPathedRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="520DE89C-FA70-46F1-9BE2-03B4D361371A">
+			<Source>
+				<DomainRole Name="Input" PropertyName="SourcePathedRole" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="Input" Id="2F9FB7FA-6381-4EF7-B910-B6EC54D34627" Description="The pathed value bound to this function input.">
+					<RolePlayer>
+						<DomainClassMoniker Name="CalculatedPathValueInput"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Source" PropertyName="BoundInputCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="Source" Id="391D3273-F1A5-4FC5-814B-5155BD93D92B" Description="The calculated value inputs bound to this path node.">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="PathedRole"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="CalculatedPathValueInputBindsToCalculatedPathValue" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="FB107CB5-6A10-4F58-9BD3-F57400AC0352">
+			<Source>
+				<DomainRole Name="Input" PropertyName="SourceCalculatedValue" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="Input" Id="C2EFADA8-08E7-4703-8DE5-0456C5DEF1A1" Description="The pathed value bound to this function input.">
+					<RolePlayer>
+						<DomainClassMoniker Name="CalculatedPathValueInput"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Source" PropertyName="BoundInputCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="Source" Id="F261C4C8-0974-4690-901F-FC558B14021A" Description="The calculated value inputs bound to this path node.">
+					<RolePlayer>
+						<DomainClassMoniker Name="CalculatedPathValue"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="CalculatedPathValueInputBindsToPathConstant" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="365F3AB4-212D-4205-BFBC-4B9482E9E6B3">
+			<Source>
+				<DomainRole Name="Input" PropertyName="SourceConstant" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="Input" Id="5D3FE47E-C811-43F9-BFC9-ED0635BEC71B" Description="The constant value bound to this function input.">
+					<RolePlayer>
+						<DomainClassMoniker Name="CalculatedPathValueInput"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Source" PropertyName="BoundInput" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Source" Id="7FDD0F7D-FD00-4A77-88B2-35CDCAD1F211" Description="The calculated value input that uses this path constant.">
+					<RolePlayer>
+						<DomainClassMoniker Name="PathConstant"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="FactTypeHasDerivationRule" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="BB165F20-D91A-44E3-AED4-687E4C2D6474">
+			<Source>
+				<DomainRole Name="FactType" PropertyName="DerivationRule" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactType" Id="8991A795-F786-42B6-ADFE-2645E4FCF91E">
+					<RolePlayer>
+						<DomainClassMoniker Name="FactType"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="DerivationRule" PropertyName="FactType" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="DerivationRule" Id="5F0E53BF-A6D2-439A-90B9-465A5E85A7DD">
+					<RolePlayer>
+						<DomainClassMoniker Name="FactTypeDerivationRule"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+
+		<DomainRelationship Name="RoleDerivesFromPathedRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="C57BC0E8-04B7-4A3A-B021-3A6437969762">
+			<Source>
+				<DomainRole Name="Role" PropertyName="DerivedFromPathedRole" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="Role" Id="FA366136-A169-4509-BB6A-6028E7886A13" Description="The pathed role used to populate the derived fact type for this role.">
+					<RolePlayer>
+						<DomainClassMoniker Name="Role"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Source" PropertyName="DerivedRole" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="Source" Id="E71D53D7-C4A2-4367-A2F3-5A27CE70DCE0" Description="The derived role associated with this pathed role.">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="PathedRole"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="RoleDerivesFromCalculatedPathValue" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="A9FEB04A-4C32-4576-95C9-500B6B77CA03">
+			<Source>
+				<DomainRole Name="Role" PropertyName="DerivedFromCalculatedValue" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="Role" Id="BAA7CAA2-A8C0-49E0-8965-C3B8F1CA8C8A" Description="The calculated value used to populate the derived fact type for this role.">
+					<RolePlayer>
+						<DomainClassMoniker Name="Role"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Source" PropertyName="DerivedRole" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="Source" Id="0C4A9FEC-D093-43B9-89E5-08B892FC443B" Description="The derived role associated with this calculated value.">
+					<RolePlayer>
+						<DomainClassMoniker Name="CalculatedPathValue"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="RoleDerivesFromPathConstant" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="1DC37758-2350-4476-883C-5F971AE32B34">
+			<Source>
+				<DomainRole Name="Role" PropertyName="DerivedFromConstant" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="Role" Id="B4D23A52-418B-429A-B425-91222DA61D9B" Description="The constant value used to populate this role in the derived fact type.">
+					<RolePlayer>
+						<DomainClassMoniker Name="Role"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Source" PropertyName="DerivedRole" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Source" Id="06D66903-36CD-427B-9473-03FF462B4650" Description="The derived role that uses this path constant.">
+					<RolePlayer>
+						<DomainClassMoniker Name="PathConstant"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+
+
+		<DomainRelationship Name="SubtypeHasDerivationRule" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="54240547-EBF8-4235-8C09-BB3E0876511A">
+			<Source>
+				<DomainRole Name="Subtype" PropertyName="DerivationRule" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Subtype" Id="EEBCAF86-7B3C-4E5B-A4AB-DACE7547947F">
+					<RolePlayer>
+						<DomainClassMoniker Name="ObjectType"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="DerivationRule" PropertyName="Subtype" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="DerivationRule" Id="556D13CB-9B64-46D7-8D2C-312D3F30CC75">
+					<RolePlayer>
+						<DomainClassMoniker Name="SubtypeDerivationRule"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
 	</Relationships>
 
 	<Types>
@@ -5121,6 +5547,36 @@
 			</Attributes>
 		</DomainEnumeration>
 
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="LogicalCombinationOperator">
+			<Literals>
+				<EnumerationLiteral Name="And" Value="0" Description="The logical and operator"/>
+				<EnumerationLiteral Name="Or" Value="1" Description="The logical inclusive-or operator"/>
+				<EnumerationLiteral Name="Xor" Value="2" Description="The logical exclusive-or operator"/>
+			</Literals>
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;LogicalCombinationOperator, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+		</DomainEnumeration>
+
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="PathedRolePurpose">
+			<Literals>
+				<EnumerationLiteral Name="StartRole" Value="0" Description="The role is the beginning of a path and directly attached to the root object type."/>
+				<EnumerationLiteral Name="SameFactType" Value="1" Description="The role is the same fact type as the previous join or start role."/>
+				<EnumerationLiteral Name="PostInnerJoin" Value="2" Description="The role represents an inner over a role player shared with the previous role in the path."/>
+				<EnumerationLiteral Name="PostOuterJoin" Value="3" Description="The role represents an outer join over a role player shared with the previous role in the path."/>
+			</Literals>
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;PathedRolePurpose, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+		</DomainEnumeration>
 
 		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="NameGeneratorCasingOption">
 			<Literals>

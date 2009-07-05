@@ -238,6 +238,15 @@
 	<data name="JoinType.Outer" xml:space="preserve">
 		<value>Outer</value>
 	</data>
+	<data name="LogicalCombinationOperator.And" xml:space="preserve">
+		<value>And</value>
+	</data>
+	<data name="LogicalCombinationOperator.Or" xml:space="preserve">
+		<value>Or (Inclusive)</value>
+	</data>
+	<data name="LogicalCombinationOperator.Xor" xml:space="preserve">
+		<value>Or (Exclusive)</value>
+	</data>
 	<data name="Model.Reading.RoleDeletedText" xml:space="preserve">
 		<value>DELETED</value>
 		<comment>Text used to replace a role place holder when the role is deleted</comment>
@@ -909,6 +918,18 @@
 	<data name="NameGeneratorAbbreviations.PropertyDescriptor.DisplayName" xml:space="preserve">
 		<value>Abbreviations</value>
 		<comment>Display name shown in the properties window for the custom 'Abbreviations' property of a NameGenerator.</comment>
+	</data>
+	<data name="PathedRolePurpose.PostInnerJoin" xml:space="preserve">
+		<value>PostInnerJoin</value>
+	</data>
+	<data name="PathedRolePurpose.PostOuterJoin" xml:space="preserve">
+		<value>PostOuterJoin</value>
+	</data>
+	<data name="PathedRolePurpose.SameFactType" xml:space="preserve">
+		<value>SameFactType</value>
+	</data>
+	<data name="PathedRolePurpose.StartRole" xml:space="preserve">
+		<value>StartRole</value>
 	</data>
 	<data name="ReferenceMode.PredicateInverseReading" xml:space="preserve">
 		<value>{0} is of {1}</value>

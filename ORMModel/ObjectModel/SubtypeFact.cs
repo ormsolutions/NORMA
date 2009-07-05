@@ -744,13 +744,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					// Move any derivation rules to the subtype
 					// UNDONE: Do this during file format upgrade transformation
 					FactTypeDerivationExpression derivation;
-					if (null != (derivation = element.DerivationRule))
+					if (null != (derivation = element.DerivationExpression))
 					{
 						string ruleBody = derivation.Body;
 						if (!string.IsNullOrEmpty(ruleBody))
 						{
 							ObjectType subtype = element.Subtype;
-							SubtypeDerivationExpression subtypeDerivation = subtype.DerivationRule;
+							SubtypeDerivationExpression subtypeDerivation = subtype.DerivationExpression;
 							if (subtypeDerivation == null)
 							{
 								subtypeDerivation = new SubtypeDerivationExpression(

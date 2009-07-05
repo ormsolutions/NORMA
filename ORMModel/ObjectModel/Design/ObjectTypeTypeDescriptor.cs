@@ -134,7 +134,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			{
 				return !objectType.IsValueType;
 			}
-			else if (propertyId == ObjectType.DerivationRuleDisplayDomainPropertyId)
+			else if (propertyId == ObjectType.DerivationExpressionDisplayDomainPropertyId)
 			{
 				return objectType.IsSubtype;
 			}

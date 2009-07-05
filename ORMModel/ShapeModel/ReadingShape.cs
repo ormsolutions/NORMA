@@ -416,7 +416,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			string retVal = null;
 			if (factType != null)
 			{
-				FactTypeDerivationExpression derivation = factType.DerivationRule;
+				FactTypeDerivationExpression derivation = factType.DerivationExpression;
 				if (derivation != null && !derivation.IsDeleted)
 				{
 					// UNDONE: Localize the derived fact marks. This should probably be a format expression, not just an append
@@ -1236,7 +1236,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				if (!element.IsDeleted &&
 					null != (order = (ReadingOrder)element.ModelElement) &&
 					null != (factType = order.FactType) &&
-					null != (derivationExpression = factType.DerivationRule))
+					null != (derivationExpression = factType.DerivationExpression))
 				{
 					element.AutoResize();
 				}

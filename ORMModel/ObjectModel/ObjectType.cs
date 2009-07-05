@@ -138,7 +138,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			// Handled by ObjectTypeChangeRule
 		}
-		private void SetDerivationRuleDisplayValue(string newValue)
+		private void SetDerivationExpressionDisplayValue(string newValue)
 		{
 			// Handled by ObjectTypeChangeRule
 		}
@@ -249,9 +249,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			Note currentNote = Note;
 			return (currentNote != null) ? currentNote.Text : String.Empty;
 		}
-		private string GetDerivationRuleDisplayValue()
+		private string GetDerivationExpressionDisplayValue()
 		{
-			SubtypeDerivationExpression derivation = DerivationRule;
+			SubtypeDerivationExpression derivation = DerivationExpression;
 			return (derivation == null || derivation.IsDeleted) ? String.Empty : derivation.Body;
 		}
 		/// <summary>
@@ -1673,10 +1673,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					FrameworkDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
 				}
 			}
-			else if (attributeGuid == ObjectType.DerivationRuleDisplayDomainPropertyId)
+			else if (attributeGuid == ObjectType.DerivationExpressionDisplayDomainPropertyId)
 			{
 				string newVal = e.NewValue as string;
-				SubtypeDerivationExpression currentRule = objectType.DerivationRule;
+				SubtypeDerivationExpression currentRule = objectType.DerivationExpression;
 				if (string.IsNullOrEmpty(newVal))
 				{
 					if (currentRule != null)
@@ -1689,7 +1689,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					if (null == currentRule)
 					{
 						currentRule = new SubtypeDerivationExpression(objectType.Store);
-						objectType.DerivationRule = currentRule;
+						objectType.DerivationExpression = currentRule;
 					}
 					currentRule.Body = newVal;
 				}

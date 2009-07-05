@@ -1243,7 +1243,7 @@ namespace Neumont.Tools.ORM.OIALModel
 				FactType factType = role.FactType;
 				// We have already accounted for nested concept types
 				int roleCount = factType.RoleCollection.Count;
-				if (roleCount > 2 || (factType.DerivationStorageDisplay == DerivationStorageType.Derived && !string.IsNullOrEmpty(factType.DerivationRuleDisplay)))
+				if (roleCount > 2 || (factType.DerivationStorageDisplay == DerivationStorageType.Derived && !string.IsNullOrEmpty(factType.DerivationExpressionDisplay)))
 				{
 					continue;
 				}
@@ -1914,7 +1914,7 @@ namespace Neumont.Tools.ORM.OIALModel
 				// never reach the continue statement. Also we do not want to interpret any fact types that are
 				// not binarized.
 				FactType roleFactType = role.FactType;
-				if (role.Equals(startingRole) || roleFactType.Objectification != null || roleFactType.RoleCollection.Count != 2 || (roleFactType.DerivationStorageDisplay == DerivationStorageType.Derived && !string.IsNullOrEmpty(roleFactType.DerivationRuleDisplay)))
+				if (role.Equals(startingRole) || roleFactType.Objectification != null || roleFactType.RoleCollection.Count != 2 || (roleFactType.DerivationStorageDisplay == DerivationStorageType.Derived && !string.IsNullOrEmpty(roleFactType.DerivationExpressionDisplay)))
 				{
 					continue;
 				}
@@ -1996,7 +1996,7 @@ namespace Neumont.Tools.ORM.OIALModel
 				// never reach the continue statement. Also we do not want to interpret any fact types that are
 				// not binarized.
 				FactType roleFactType = role.FactType;
-				if (role.Equals(startingRole) || roleFactType.Objectification != null || roleFactType.RoleCollection.Count != 2 || (roleFactType.DerivationStorageDisplay == DerivationStorageType.Derived && !string.IsNullOrEmpty(roleFactType.DerivationRuleDisplay)))
+				if (role.Equals(startingRole) || roleFactType.Objectification != null || roleFactType.RoleCollection.Count != 2 || (roleFactType.DerivationStorageDisplay == DerivationStorageType.Derived && !string.IsNullOrEmpty(roleFactType.DerivationExpressionDisplay)))
 				{
 					continue;
 				}

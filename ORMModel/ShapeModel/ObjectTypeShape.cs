@@ -820,7 +820,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				}
 			}
 			if (link.PlayedRole is SubtypeMetaRole &&
-				null != rolePlayer.DerivationRule)
+				null != rolePlayer.DerivationExpression)
 			{
 				int subtypeCount = 0;
 				ObjectType.WalkSupertypeRelationships(
@@ -861,7 +861,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			ObjectType rolePlayer = link.RolePlayer;
 			if (!rolePlayer.IsDeleted &&
 				role is SubtypeMetaRole &&
-				rolePlayer.DerivationRule != null &&
+				rolePlayer.DerivationExpression != null &&
 				!rolePlayer.IsSubtype)
 			{
 				ResizeAssociatedShapes(rolePlayer);
@@ -1121,7 +1121,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					{
 						retVal = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ObjectTypeShapeIndependentFormatString, retVal);
 					}
-					else if (objectType.DerivationRule != null && objectType.IsSubtype) // Note that subtypes are never independent
+					else if (objectType.DerivationExpression != null && objectType.IsSubtype) // Note that subtypes are never independent
 					{
 						retVal = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ObjectTypeShapeDerivedSubtypeFormatString, retVal);
 					}
@@ -1167,7 +1167,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				if (!element.IsDeleted &&
 					null != (objectType = element.AssociatedObjectType) &&
 					(objectType.IsIndependent ||
-					(objectType.DerivationRule != null && objectType.IsSubtype)))
+					(objectType.DerivationExpression != null && objectType.IsSubtype)))
 				{
 					// Note that technically the size may be wrong if a derivation rule or an independent
 					// setting has been removed. However, in this case, the length will be a little too long,

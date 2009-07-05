@@ -6154,7 +6154,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				if (objectType != null)
 				{
 					bool independent = objectType.IsIndependent;
-					bool derived = !independent && objectType.DerivationRule != null && objectType.IsSubtype;
+					bool derived = !independent && objectType.DerivationExpression != null && objectType.IsSubtype;
 					refModeString = objectType.ReferenceModeDecoratedString;
 					if (refModeString.Length != 0)
 					{
@@ -6218,7 +6218,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				if (!element.IsDeleted &&
 					null != (objectType = element.AssociatedObjectType) &&
 					(objectType.IsIndependent ||
-					(objectType.DerivationRule != null && objectType.IsSubtype)))
+					(objectType.DerivationExpression != null && objectType.IsSubtype)))
 				{
 					// Note that technically the size may be wrong if a derivation rule or an independent
 					// setting has been removed. However, in this case, the length will be a little too long,

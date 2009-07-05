@@ -36,6 +36,7 @@
 			<xs:element name="Facts" type="FactTypesType" minOccurs="0"/>
 			<xs:element name="Constraints" type="ConstraintsType" minOccurs="0"/>
 			<xs:element name="DataTypes" type="DataTypesType" minOccurs="0"/>
+			<xs:element name="Functions" type="FunctionsType" minOccurs="0"/>
 			<xs:element name="CustomReferenceModes" type="CustomReferenceModesType" minOccurs="0"/>
 			<xs:element name="ModelNotes" type="ModelNotesType" minOccurs="0"/>
 			<xs:element name="ModelErrors" type="ModelErrorsType" minOccurs="0"/>
@@ -322,8 +323,9 @@
 		<xs:annotation>
 			<xs:documentation>The formal derivation rule defining a subtype.</xs:documentation>
 		</xs:annotation>
-		<xs:sequence minOccurs="0">
-			<xs:element name="SubtypeDerivationExpression" type="DerivationExpressionType"/>
+		<xs:sequence>
+			<xs:element name="SubtypeDerivationExpression" type="DerivationExpressionType" minOccurs="0"/>
+			<xs:element name="SubtypeDerivationPath" type="SubtypeDerivationPathType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<!--End Objects and Object Types-->
@@ -950,6 +952,18 @@
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="ValueRestriction" type="RoleValueRestrictionType" minOccurs="0"/>
+			<xs:element name="DerivationSource" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The node in the derivation path used to populate this role in a derived fact type.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice minOccurs="0">
+						<xs:element name="PathedRole" type="PathedRoleRef"/>
+						<xs:element name="CalculatedValue" type="CalculatedValueRef"/>
+						<xs:element name="Constant" type="PathConstantType"/>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
 			<xs:element name="RoleInstances" type="RoleInstancesType"  minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="Name" type="xs:string">
@@ -1188,8 +1202,9 @@
 		<xs:annotation>
 			<xs:documentation>The formal derivation rule defining a fact type.</xs:documentation>
 		</xs:annotation>
-		<xs:sequence minOccurs="0">
-			<xs:element name="DerivationExpression" type="FactTypeDerivationExpressionType"/>
+		<xs:sequence>
+			<xs:element name="DerivationExpression" type="FactTypeDerivationExpressionType" minOccurs="0"/>
+			<xs:element name="FactTypeDerivationPath" type="FactTypeDerivationPathType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="DerivationExpressionType">
@@ -1236,6 +1251,306 @@
 	</xs:simpleType>
 	<!--End Derived FactType-->
 	<!-- End Facts -->
+	<!-- Role Paths -->
+	<xs:complexType name="FunctionsType">
+		<xs:annotation>
+			<xs:documentation>A container for all Function definitions used in the model.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Function" type="FunctionType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FunctionType">
+		<xs:annotation>
+			<xs:documentation>Specifies a function definition used for calculating values.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Parameters" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A container for function parameters</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Parameter" type="FunctionParameterType" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attributeGroup ref="idAttribute"/>
+		<xs:attribute name="Name" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>The name of the function.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="IsBoolean" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>True if this function or operator returns a boolean value, making it appropriate for use as a path condition.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="OperatorSymbol" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>A symbol used to display this function as an operator. Treated as an infix operator for binary functions and a prefix operator for unary functions.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="FunctionRef">
+		<xs:annotation>
+			<xs:documentation>A reference to an function.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
+	</xs:complexType>
+	<xs:complexType name="FunctionParameterType">
+		<xs:annotation>
+			<xs:documentation>A function parameter, defines the type of function input.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="idAttribute"/>
+		<xs:attribute name="Name" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>The name of the function parameter.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="BagInput" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>Set to true if this functions takes a bag input instead of a single value.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="FunctionParameterRef">
+		<xs:annotation>
+			<xs:documentation>A reference to an function parameter.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
+	</xs:complexType>
+	<xs:complexType name="RolePathType" abstract="true">
+		<xs:sequence>
+			<xs:element name="PathedRoles" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A container for PathedRole elements.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="PathedRole" type="PathedRoleType" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="SubPaths" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A container for SubPath elements.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="SubPath" type="RoleSubPathType" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attributeGroup ref="idAttribute"/>
+		<xs:attribute name="SplitIsNegated" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>Should all sub paths split from this path be treated as negations?</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="SplitCombinationOperator" type="LogicalCombinationOperatorType" default="And">
+			<xs:annotation>
+				<xs:documentation>Specify how sub paths split from this path should be combined.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="RoleSubPathType">
+		<xs:annotation>
+			<xs:documentation>A role path that extends a parent path with a split condition.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="RolePathType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="PathedRoleType">
+		<xs:annotation>
+			<xs:documentation>A role in connected path.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CorrelatedWith" type="PathedRoleRef" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="idAttribute"/>
+		<xs:attributeGroup ref="refAttribute"/>
+		<xs:attribute name="Purpose" type="PathedRolePurposeType" use="required"/>
+		<xs:attribute name="IsNegated" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>The path step is treated as a negation.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="PathedRoleRef">
+		<xs:annotation>
+			<xs:documentation>A reference to an pathed role.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
+	</xs:complexType>
+	<xs:simpleType name="PathedRolePurposeType">
+		<xs:annotation>
+			<xs:documentation>Specify how a role in a path is used to step within and between fact types.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="StartRole">
+				<xs:annotation>
+					<xs:documentation>The role is the beginning of a path and directly attached to the root object type.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SameFactType">
+				<xs:annotation>
+					<xs:documentation>The role is the same fact type as the previous join or start role.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PostInnerJoin">
+				<xs:annotation>
+					<xs:documentation>The role represents an inner over a role player shared with the previous role in the path.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PostOuterJoin">
+				<xs:annotation>
+					<xs:documentation>The role represents an outer join over a role player shared with the previous role in the path.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LogicalCombinationOperatorType">
+		<xs:annotation>
+			<xs:documentation>Specifies the logical operator used to combine 2 or more elements.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="And">
+				<xs:annotation>
+					<xs:documentation>All values must be true.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Or">
+				<xs:annotation>
+					<xs:documentation>At least one value must be true.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Xor">
+				<xs:annotation>
+					<xs:documentation>Applied to two values, exactly one value must be true.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="PrimaryRolePathType" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="RolePathType">
+				<xs:sequence>
+					<xs:element name="RootObjectType" minOccurs="0" type="ObjectTypeRef"/>
+					<xs:element name="CalculatedValues" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>A container for calculated values applied to any roles in the primary role path.</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="CalculatedValue" type="CalculatedValueType" minOccurs="0" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Conditions" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>A list of calculated boolean results that are necessary conditions for this role path.</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="CalculatedCondition" type="CalculatedValueRef" minOccurs="0" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CalculatedValueType">
+		<xs:annotation>
+			<xs:documentation>Specifies the function, scope, and inputs used for an algorithmic calculation.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Function" type="FunctionRef" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The function used to perform the calculation.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Scope" type="PathedRoleRef" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The pathed role that provides the context for this calculation. Generally used to defined the extent of elements based to a bag parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Inputs" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Inputs passed to the function used for the calculation.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Input" type="CalculatedValueInputType" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attributeGroup ref="idAttribute"/>
+	</xs:complexType>
+	<xs:complexType name="CalculatedValueInputType">
+		<xs:annotation>
+			<xs:documentation>An input to the function used to calculate a value.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Parameter" type="FunctionParameterRef" minOccurs="0"/>
+			<xs:element name="Source" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The source of value or bag passed to this parameter.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice minOccurs="0">
+						<xs:element name="PathedRole" type="PathedRoleRef"/>
+						<xs:element name="CalculatedValue" type="CalculatedValueRef"/>
+						<xs:element name="Constant" type="PathConstantType"/>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attributeGroup ref="idAttribute"/>
+	</xs:complexType>
+	<xs:complexType name="PathConstantType">
+		<xs:annotation>
+			<xs:documentation>A constant value used in a role path.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Value" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The lexical constant value. The value is interpreted based on context.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attributeGroup ref="idAttribute"/>
+	</xs:complexType>
+	<xs:complexType name="CalculatedValueRef">
+		<xs:annotation>
+			<xs:documentation>A reference to a calculated value.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
+	</xs:complexType>
+	<xs:complexType name="FactTypeDerivationPathType">
+		<xs:annotation>
+			<xs:documentation>A role path with projected nodes used to define the population of a derived fact type.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="PrimaryRolePathType">
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="SubtypeDerivationPathType">
+		<xs:annotation>
+			<xs:documentation>A role path used to define the population of a derived subtype.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="PrimaryRolePathType">
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- End Role Paths -->
 	<!--Constraints-->
 	<xs:complexType name="EqualityConstraintRef">
 		<xs:annotation>

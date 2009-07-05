@@ -3247,6 +3247,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
+		#region FunctionCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of FunctionCollection.
+		/// Function definitions used for calculated role path values.
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<Function> FunctionCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<Function>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesFunction.ModelDomainRoleId);
+			}
+		}
+		#endregion
 		#region ElementGroupPrototype Merge methods
 		/// <summary>
 		/// Returns a value indicating whether the source element represented by the
@@ -4982,58 +4996,58 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		
 		#endregion
-		#region DerivationRuleDisplay domain property code
+		#region DerivationExpressionDisplay domain property code
 		
 		/// <summary>
-		/// DerivationRuleDisplay domain property Id.
+		/// DerivationExpressionDisplay domain property Id.
 		/// </summary>
-		public static readonly global::System.Guid DerivationRuleDisplayDomainPropertyId = new global::System.Guid(0xb852bc09, 0x7887, 0x4ba7, 0xa7, 0xaa, 0x09, 0xd4, 0xf4, 0xe2, 0xaa, 0xd2);
+		public static readonly global::System.Guid DerivationExpressionDisplayDomainPropertyId = new global::System.Guid(0xb852bc09, 0x7887, 0x4ba7, 0xa7, 0xaa, 0x09, 0xd4, 0xf4, 0xe2, 0xaa, 0xd2);
 		
 		/// <summary>
-		/// Gets or sets the value of DerivationRuleDisplay domain property.
+		/// Gets or sets the value of DerivationExpressionDisplay domain property.
 		/// The derivation rule for this subtype. If a rule is not specified, then this is
 		/// treated as an asserted subtype.
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.DerivationRuleEditor), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[global::System.ComponentModel.MergableProperty(false)]
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/DerivationRuleDisplay.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/DerivationRuleDisplay.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/DerivationExpressionDisplay.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/DerivationExpressionDisplay.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("b852bc09-7887-4ba7-a7aa-09d4f4e2aad2")]
-		public global::System.String DerivationRuleDisplay
+		public global::System.String DerivationExpressionDisplay
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DerivationRuleDisplayPropertyHandler.Instance.GetValue(this);
+				return DerivationExpressionDisplayPropertyHandler.Instance.GetValue(this);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DerivationRuleDisplayPropertyHandler.Instance.SetValue(this, value);
+				DerivationExpressionDisplayPropertyHandler.Instance.SetValue(this, value);
 			}
 		}
 		/// <summary>
-		/// Value handler for the ObjectType.DerivationRuleDisplay domain property.
+		/// Value handler for the ObjectType.DerivationExpressionDisplay domain property.
 		/// </summary>
-		internal sealed partial class DerivationRuleDisplayPropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, global::System.String>
+		internal sealed partial class DerivationExpressionDisplayPropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, global::System.String>
 		{
-			private DerivationRuleDisplayPropertyHandler() { }
+			private DerivationExpressionDisplayPropertyHandler() { }
 		
 			/// <summary>
-			/// Gets the singleton instance of the ObjectType.DerivationRuleDisplay domain property value handler.
+			/// Gets the singleton instance of the ObjectType.DerivationExpressionDisplay domain property value handler.
 			/// </summary>
-			public static readonly DerivationRuleDisplayPropertyHandler Instance = new DerivationRuleDisplayPropertyHandler();
+			public static readonly DerivationExpressionDisplayPropertyHandler Instance = new DerivationExpressionDisplayPropertyHandler();
 		
 			/// <summary>
-			/// Gets the Id of the ObjectType.DerivationRuleDisplay domain property.
+			/// Gets the Id of the ObjectType.DerivationExpressionDisplay domain property.
 			/// </summary>
 			public sealed override global::System.Guid DomainPropertyId
 			{
 				[global::System.Diagnostics.DebuggerStepThrough]
 				get
 				{
-					return DerivationRuleDisplayDomainPropertyId;
+					return DerivationExpressionDisplayDomainPropertyId;
 				}
 			}
 			
@@ -5045,10 +5059,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			public override sealed global::System.String GetValue(ObjectType element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-				// There is no storage for DerivationRuleDisplay because its Kind is
-				// set to CustomStorage. Please provide the GetDerivationRuleDisplayValue()
+				// There is no storage for DerivationExpressionDisplay because its Kind is
+				// set to CustomStorage. Please provide the GetDerivationExpressionDisplayValue()
 				// method on the domain class.
-				return element.GetDerivationRuleDisplayValue();
+				return element.GetDerivationExpressionDisplayValue();
 			}
 		
 			/// <summary>
@@ -5064,10 +5078,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (newValue != oldValue)
 				{
 					ValueChanging(element, oldValue, newValue);
-					// There is no storage for DerivationRuleDisplay because its Kind is
-					// set to CustomStorage. Please provide the SetDerivationRuleDisplayValue()
+					// There is no storage for DerivationExpressionDisplay because its Kind is
+					// set to CustomStorage. Please provide the SetDerivationExpressionDisplayValue()
 					// method on the domain class.
-					element.SetDerivationRuleDisplayValue(newValue);
+					element.SetDerivationExpressionDisplayValue(newValue);
 					//ValueChanged(element, oldValue, GetValue(element));
 					ValueChanged(element, oldValue, newValue);
 				}
@@ -5467,13 +5481,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
-		#region DerivationRule opposite domain role accessor
+		#region DerivationExpression opposite domain role accessor
 		/// <summary>
-		/// Gets or sets DerivationRule.
+		/// Gets or sets DerivationExpression.
 		/// Description for
 		/// ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationExpression.Subtype
 		/// </summary>
-		public virtual SubtypeDerivationExpression DerivationRule
+		public virtual SubtypeDerivationExpression DerivationExpression
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
@@ -5556,6 +5570,53 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				return new DslModeling::LinkedElementCollection<ValueTypeInstance>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance.ValueTypeDomainRoleId);
+			}
+		}
+		#endregion
+		#region PrimaryRolePathCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of PrimaryRolePathCollection.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathHasRootObjectType.RootObjectType
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<PrimaryRolePath> PrimaryRolePathCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<PrimaryRolePath>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathHasRootObjectType.RootObjectTypeDomainRoleId);
+			}
+		}
+		#endregion
+		#region DerivationRule opposite domain role accessor
+		/// <summary>
+		/// Gets or sets DerivationRule.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationRule.Subtype
+		/// </summary>
+		public virtual SubtypeDerivationRule DerivationRule
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationRule.SubtypeDomainRoleId) as SubtypeDerivationRule;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationRule.DerivationRuleDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationRule.DerivationRuleDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationRule.SubtypeDomainRoleId, value);
+				}
 			}
 		}
 		#endregion
@@ -6156,57 +6217,57 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		
 		#endregion
-		#region DerivationRuleDisplay domain property code
+		#region DerivationExpressionDisplay domain property code
 		
 		/// <summary>
-		/// DerivationRuleDisplay domain property Id.
+		/// DerivationExpressionDisplay domain property Id.
 		/// </summary>
-		public static readonly global::System.Guid DerivationRuleDisplayDomainPropertyId = new global::System.Guid(0x7af5c436, 0xc28a, 0x49ba, 0xb8, 0xe0, 0x05, 0xc4, 0x09, 0xb6, 0x73, 0x58);
+		public static readonly global::System.Guid DerivationExpressionDisplayDomainPropertyId = new global::System.Guid(0x7af5c436, 0xc28a, 0x49ba, 0xb8, 0xe0, 0x05, 0xc4, 0x09, 0xb6, 0x73, 0x58);
 		
 		/// <summary>
-		/// Gets or sets the value of DerivationRuleDisplay domain property.
+		/// Gets or sets the value of DerivationExpressionDisplay domain property.
 		/// A derivation rule for this FactType.
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.DerivationRuleEditor), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[global::System.ComponentModel.MergableProperty(false)]
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactType/DerivationRuleDisplay.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactType/DerivationRuleDisplay.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactType/DerivationExpressionDisplay.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactType/DerivationExpressionDisplay.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("7af5c436-c28a-49ba-b8e0-05c409b67358")]
-		public global::System.String DerivationRuleDisplay
+		public global::System.String DerivationExpressionDisplay
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DerivationRuleDisplayPropertyHandler.Instance.GetValue(this);
+				return DerivationExpressionDisplayPropertyHandler.Instance.GetValue(this);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DerivationRuleDisplayPropertyHandler.Instance.SetValue(this, value);
+				DerivationExpressionDisplayPropertyHandler.Instance.SetValue(this, value);
 			}
 		}
 		/// <summary>
-		/// Value handler for the FactType.DerivationRuleDisplay domain property.
+		/// Value handler for the FactType.DerivationExpressionDisplay domain property.
 		/// </summary>
-		internal sealed partial class DerivationRuleDisplayPropertyHandler : DslModeling::DomainPropertyValueHandler<FactType, global::System.String>
+		internal sealed partial class DerivationExpressionDisplayPropertyHandler : DslModeling::DomainPropertyValueHandler<FactType, global::System.String>
 		{
-			private DerivationRuleDisplayPropertyHandler() { }
+			private DerivationExpressionDisplayPropertyHandler() { }
 		
 			/// <summary>
-			/// Gets the singleton instance of the FactType.DerivationRuleDisplay domain property value handler.
+			/// Gets the singleton instance of the FactType.DerivationExpressionDisplay domain property value handler.
 			/// </summary>
-			public static readonly DerivationRuleDisplayPropertyHandler Instance = new DerivationRuleDisplayPropertyHandler();
+			public static readonly DerivationExpressionDisplayPropertyHandler Instance = new DerivationExpressionDisplayPropertyHandler();
 		
 			/// <summary>
-			/// Gets the Id of the FactType.DerivationRuleDisplay domain property.
+			/// Gets the Id of the FactType.DerivationExpressionDisplay domain property.
 			/// </summary>
 			public sealed override global::System.Guid DomainPropertyId
 			{
 				[global::System.Diagnostics.DebuggerStepThrough]
 				get
 				{
-					return DerivationRuleDisplayDomainPropertyId;
+					return DerivationExpressionDisplayDomainPropertyId;
 				}
 			}
 			
@@ -6218,10 +6279,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			public override sealed global::System.String GetValue(FactType element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-				// There is no storage for DerivationRuleDisplay because its Kind is
-				// set to CustomStorage. Please provide the GetDerivationRuleDisplayValue()
+				// There is no storage for DerivationExpressionDisplay because its Kind is
+				// set to CustomStorage. Please provide the GetDerivationExpressionDisplayValue()
 				// method on the domain class.
-				return element.GetDerivationRuleDisplayValue();
+				return element.GetDerivationExpressionDisplayValue();
 			}
 		
 			/// <summary>
@@ -6237,10 +6298,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (newValue != oldValue)
 				{
 					ValueChanging(element, oldValue, newValue);
-					// There is no storage for DerivationRuleDisplay because its Kind is
-					// set to CustomStorage. Please provide the SetDerivationRuleDisplayValue()
+					// There is no storage for DerivationExpressionDisplay because its Kind is
+					// set to CustomStorage. Please provide the SetDerivationExpressionDisplayValue()
 					// method on the domain class.
-					element.SetDerivationRuleDisplayValue(newValue);
+					element.SetDerivationExpressionDisplayValue(newValue);
 					//ValueChanged(element, oldValue, GetValue(element));
 					ValueChanged(element, oldValue, newValue);
 				}
@@ -6644,13 +6705,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
-		#region DerivationRule opposite domain role accessor
+		#region DerivationExpression opposite domain role accessor
 		/// <summary>
-		/// Gets or sets DerivationRule.
+		/// Gets or sets DerivationExpression.
 		/// Description for
 		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationExpression.FactType
 		/// </summary>
-		public virtual FactTypeDerivationExpression DerivationRule
+		public virtual FactTypeDerivationExpression DerivationExpression
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
@@ -6688,6 +6749,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				return new DslModeling::LinkedElementCollection<FactTypeInstance>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance.FactTypeDomainRoleId);
+			}
+		}
+		#endregion
+		#region DerivationRule opposite domain role accessor
+		/// <summary>
+		/// Gets or sets DerivationRule.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationRule.FactType
+		/// </summary>
+		public virtual FactTypeDerivationRule DerivationRule
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationRule.FactTypeDomainRoleId) as FactTypeDerivationRule;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationRule.DerivationRuleDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationRule.DerivationRuleDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationRule.FactTypeDomainRoleId, value);
+				}
 			}
 		}
 		#endregion
@@ -7992,6 +8085,113 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				return new DslModeling::ReadOnlyLinkedElementCollection<Join>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.JoinHasRole.RoleDomainRoleId);
+			}
+		}
+		#endregion
+		#region RolePathCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of RolePathCollection.
+		/// The role paths that reference this role.
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<RolePath> RolePathCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<RolePath>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole.RoleDomainRoleId);
+			}
+		}
+		#endregion
+		#region DerivedFromPathedRole opposite domain role accessor
+		/// <summary>
+		/// Gets or sets DerivedFromPathedRole.
+		/// The pathed role used to populate the derived fact type for this role.
+		/// </summary>
+		public virtual PathedRole DerivedFromPathedRole
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathedRole.RoleDomainRoleId) as PathedRole;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathedRole.SourceDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathedRole.SourceDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathedRole.RoleDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region DerivedFromCalculatedValue opposite domain role accessor
+		/// <summary>
+		/// Gets or sets DerivedFromCalculatedValue.
+		/// The calculated value used to populate the derived fact type for this role.
+		/// </summary>
+		public virtual CalculatedPathValue DerivedFromCalculatedValue
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromCalculatedPathValue.RoleDomainRoleId) as CalculatedPathValue;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromCalculatedPathValue.SourceDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromCalculatedPathValue.SourceDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromCalculatedPathValue.RoleDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region DerivedFromConstant opposite domain role accessor
+		/// <summary>
+		/// Gets or sets DerivedFromConstant.
+		/// The constant value used to populate this role in the derived fact type.
+		/// </summary>
+		public virtual PathConstant DerivedFromConstant
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathConstant.RoleDomainRoleId) as PathConstant;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathConstant.SourceDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathConstant.SourceDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathConstant.RoleDomainRoleId, value);
+				}
 			}
 		}
 		#endregion
@@ -11377,6 +11577,1440 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModelElementHasJoinPath.JoinDomainRoleId) as ORMModelElement;
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainClass RolePath
+	/// An ordered sequence of roles through ORM space with a tail split branching into
+	/// other subpaths
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePath.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePath.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("37599e0f-212c-4290-88a6-7406b8ef7e57")]
+	public abstract partial class RolePath : ORMModelElement
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// RolePath domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x37599e0f, 0x212c, 0x4290, 0x88, 0xa6, 0x74, 0x06, 0xb8, 0xef, 0x7e, 0x57);
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		protected RolePath(DslModeling::Partition partition, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region SplitIsNegated domain property code
+		
+		/// <summary>
+		/// SplitIsNegated domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid SplitIsNegatedDomainPropertyId = new global::System.Guid(0x2670bb76, 0x4732, 0x4c0d, 0x91, 0x6b, 0x3f, 0x07, 0xf5, 0x4f, 0x71, 0xc7);
+		
+		/// <summary>
+		/// Storage for SplitIsNegated
+		/// </summary>
+		private global::System.Boolean splitIsNegatedPropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of SplitIsNegated domain property.
+		/// Indicates if the tail split in its entirety should be treated as a negation.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePath/SplitIsNegated.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePath/SplitIsNegated.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainObjectId("2670bb76-4732-4c0d-916b-3f07f54f71c7")]
+		public global::System.Boolean SplitIsNegated
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return splitIsNegatedPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				SplitIsNegatedPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the RolePath.SplitIsNegated domain property.
+		/// </summary>
+		internal sealed partial class SplitIsNegatedPropertyHandler : DslModeling::DomainPropertyValueHandler<RolePath, global::System.Boolean>
+		{
+			private SplitIsNegatedPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the RolePath.SplitIsNegated domain property value handler.
+			/// </summary>
+			public static readonly SplitIsNegatedPropertyHandler Instance = new SplitIsNegatedPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the RolePath.SplitIsNegated domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return SplitIsNegatedDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(RolePath element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.splitIsNegatedPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(RolePath element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.splitIsNegatedPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region SplitCombinationOperator domain property code
+		
+		/// <summary>
+		/// SplitCombinationOperator domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid SplitCombinationOperatorDomainPropertyId = new global::System.Guid(0x2e4570b4, 0x163c, 0x4add, 0x95, 0x9d, 0x24, 0x6c, 0xc4, 0x54, 0x40, 0x9d);
+		
+		/// <summary>
+		/// Storage for SplitCombinationOperator
+		/// </summary>
+		private LogicalCombinationOperator splitCombinationOperatorPropertyStorage = ORMSolutions.ORMArchitect.Core.ObjectModel.LogicalCombinationOperator.And;
+		
+		/// <summary>
+		/// Gets or sets the value of SplitCombinationOperator domain property.
+		/// Determines the logical operator used to combine split paths.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePath/SplitCombinationOperator.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePath/SplitCombinationOperator.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.Core.ObjectModel.LogicalCombinationOperator.And)]
+		[DslModeling::DomainObjectId("2e4570b4-163c-4add-959d-246cc454409d")]
+		public LogicalCombinationOperator SplitCombinationOperator
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return splitCombinationOperatorPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				SplitCombinationOperatorPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the RolePath.SplitCombinationOperator domain property.
+		/// </summary>
+		internal sealed partial class SplitCombinationOperatorPropertyHandler : DslModeling::DomainPropertyValueHandler<RolePath, LogicalCombinationOperator>
+		{
+			private SplitCombinationOperatorPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the RolePath.SplitCombinationOperator domain property value handler.
+			/// </summary>
+			public static readonly SplitCombinationOperatorPropertyHandler Instance = new SplitCombinationOperatorPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the RolePath.SplitCombinationOperator domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return SplitCombinationOperatorDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed LogicalCombinationOperator GetValue(RolePath element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.splitCombinationOperatorPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(RolePath element, LogicalCombinationOperator newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				LogicalCombinationOperator oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.splitCombinationOperatorPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region PathedRoleCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of PathedRoleCollection.
+		/// The roles included in this path.
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<Role> PathedRoleCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<Role>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole.RolePathDomainRoleId);
+			}
+		}
+		#endregion
+		#region SplitPathCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of SplitPathCollection.
+		/// Sub paths branched from the end of the current path.
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<RoleSubPath> SplitPathCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<RoleSubPath>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath.ParentRolePathDomainRoleId);
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainClass PrimaryRolePath
+	/// A top level role path starting at a root object type. Provides a context for
+	/// subpaths, functions, and constraints specific to this path.
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePath.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePath.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("404b14cd-3f82-44f3-8ddd-e1e729ebb9fb")]
+	public abstract partial class PrimaryRolePath : RolePath
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// PrimaryRolePath domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x404b14cd, 0x3f82, 0x44f3, 0x8d, 0xdd, 0xe1, 0xe7, 0x29, 0xeb, 0xb9, 0xfb);
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		protected PrimaryRolePath(DslModeling::Partition partition, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region RootObjectType opposite domain role accessor
+		/// <summary>
+		/// Gets or sets RootObjectType.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathHasRootObjectType.PrimaryRolePath
+		/// </summary>
+		public virtual ObjectType RootObjectType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathHasRootObjectType.PrimaryRolePathDomainRoleId) as ObjectType;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathHasRootObjectType.PrimaryRolePathDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region CalculatedValueCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of CalculatedValueCollection.
+		/// The values calculated for all branches of this path.
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<CalculatedPathValue> CalculatedValueCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<CalculatedPathValue>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathCalculatesCalculatedPathValue.PrimaryRolePathDomainRoleId);
+			}
+		}
+		#endregion
+		#region CalculatedConditionCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of CalculatedConditionCollection.
+		/// The calculated values that must be satisfied by the path.
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<CalculatedPathValue> CalculatedConditionCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<CalculatedPathValue>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathSatisfiesCalculatedCondition.PrimaryRolePathDomainRoleId);
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainClass RoleSubPath
+	/// A branched path split from the end of another path.
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPath.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPath.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("aa7b4894-c286-45c3-a95f-09d04e286038")]
+	public partial class RoleSubPath : RolePath
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// RoleSubPath domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xaa7b4894, 0xc286, 0x45c3, 0xa9, 0x5f, 0x09, 0xd0, 0x4e, 0x28, 0x60, 0x38);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public RoleSubPath(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public RoleSubPath(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ParentRolePath opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ParentRolePath.
+		/// The containing path this sub path branches off of.
+		/// </summary>
+		public virtual RolePath ParentRolePath
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath.SubPathDomainRoleId) as RolePath;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath.SubPathDomainRoleId, value);
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainClass CalculatedPathValue
+	/// A calculated value used in a role path.
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("c4c327b6-f1de-4f02-af04-3ea358ed0684")]
+	public partial class CalculatedPathValue : ORMModelElement
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// CalculatedPathValue domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xc4c327b6, 0xf1de, 0x4f02, 0xaf, 0x04, 0x3e, 0xa3, 0x58, 0xed, 0x06, 0x84);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public CalculatedPathValue(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public CalculatedPathValue(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region PrimaryRolePath opposite domain role accessor
+		/// <summary>
+		/// Gets or sets PrimaryRolePath.
+		/// The primary role path this value is calculated for.
+		/// </summary>
+		public virtual PrimaryRolePath PrimaryRolePath
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathCalculatesCalculatedPathValue.CalculatedValueDomainRoleId) as PrimaryRolePath;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathCalculatesCalculatedPathValue.CalculatedValueDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region InputCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of InputCollection.
+		/// Inputs used to calculate this value.
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<CalculatedPathValueInput> InputCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<CalculatedPathValueInput>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasInput.CalculatedValueDomainRoleId);
+			}
+		}
+		#endregion
+		#region Scope opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Scope.
+		/// The PathedRole that provides context for this function. The scope must be
+		/// related in the role path to any path inputs.
+		/// </summary>
+		public virtual PathedRole Scope
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole.CalculatedValueDomainRoleId) as PathedRole;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole.CalculatedValueDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region Function opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Function.
+		/// The function used to calculate this value.
+		/// </summary>
+		public virtual Function Function
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueIsCalculatedWithFunction.CalculatedValueDomainRoleId) as Function;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueIsCalculatedWithFunction.CalculatedValueDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region BoundInputCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of BoundInputCollection.
+		/// The calculated value inputs bound to this path node.
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<CalculatedPathValueInput> BoundInputCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<CalculatedPathValueInput>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToCalculatedPathValue.SourceDomainRoleId);
+			}
+		}
+		#endregion
+		#region DerivedRole opposite domain role accessor
+		/// <summary>
+		/// Gets or sets DerivedRole.
+		/// The derived role associated with this calculated value.
+		/// </summary>
+		public virtual Role DerivedRole
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromCalculatedPathValue.SourceDomainRoleId) as Role;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromCalculatedPathValue.RoleDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromCalculatedPathValue.RoleDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromCalculatedPathValue.SourceDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainClass PathConstant
+	/// Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathConstant
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathConstant.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathConstant.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("b8f65cc9-2bde-4688-9671-9f4789a3828a")]
+	public partial class PathConstant : ORMModelElement
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// PathConstant domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xb8f65cc9, 0x2bde, 0x4688, 0x96, 0x71, 0x9f, 0x47, 0x89, 0xa3, 0x82, 0x8a);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public PathConstant(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public PathConstant(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region LexicalValue domain property code
+		
+		/// <summary>
+		/// LexicalValue domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid LexicalValueDomainPropertyId = new global::System.Guid(0x4e5c5b55, 0xb001, 0x44c6, 0xb0, 0x57, 0xd5, 0xda, 0x26, 0xb6, 0x32, 0x46);
+		
+		/// <summary>
+		/// Storage for LexicalValue
+		/// </summary>
+		private global::System.String lexicalValuePropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// Gets or sets the value of LexicalValue domain property.
+		/// A lexical constant value interpreted based on context.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathConstant/LexicalValue.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathConstant/LexicalValue.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainObjectId("4e5c5b55-b001-44c6-b057-d5da26b63246")]
+		public global::System.String LexicalValue
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return lexicalValuePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				LexicalValuePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the PathConstant.LexicalValue domain property.
+		/// </summary>
+		internal sealed partial class LexicalValuePropertyHandler : DslModeling::DomainPropertyValueHandler<PathConstant, global::System.String>
+		{
+			private LexicalValuePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the PathConstant.LexicalValue domain property value handler.
+			/// </summary>
+			public static readonly LexicalValuePropertyHandler Instance = new LexicalValuePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the PathConstant.LexicalValue domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return LexicalValueDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(PathConstant element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.lexicalValuePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(PathConstant element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.lexicalValuePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region BoundInput opposite domain role accessor
+		/// <summary>
+		/// Gets or sets BoundInput.
+		/// The calculated value input that uses this path constant.
+		/// </summary>
+		public virtual CalculatedPathValueInput BoundInput
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToPathConstant.SourceDomainRoleId) as CalculatedPathValueInput;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToPathConstant.InputDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToPathConstant.InputDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToPathConstant.SourceDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region DerivedRole opposite domain role accessor
+		/// <summary>
+		/// Gets or sets DerivedRole.
+		/// The derived role that uses this path constant.
+		/// </summary>
+		public virtual Role DerivedRole
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathConstant.SourceDomainRoleId) as Role;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathConstant.RoleDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathConstant.RoleDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathConstant.SourceDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainClass Function
+	/// A function or operator used to represented a calculation algorithm.
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.Function.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.Function.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("921037ff-d266-4f31-9256-9a6d4f410109")]
+	public partial class Function : ORMNamedElement
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// Function domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x921037ff, 0xd266, 0x4f31, 0x92, 0x56, 0x9a, 0x6d, 0x4f, 0x41, 0x01, 0x09);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public Function(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public Function(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region IsBoolean domain property code
+		
+		/// <summary>
+		/// IsBoolean domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid IsBooleanDomainPropertyId = new global::System.Guid(0x363be96e, 0x1bd8, 0x46b1, 0xb5, 0x4b, 0x41, 0xdf, 0xe6, 0xb9, 0xd4, 0xcf);
+		
+		/// <summary>
+		/// Storage for IsBoolean
+		/// </summary>
+		private global::System.Boolean isBooleanPropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of IsBoolean domain property.
+		/// Set if this function returns a boolean value that can be evaluated directly as a
+		/// condition.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.Function/IsBoolean.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.Function/IsBoolean.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainObjectId("363be96e-1bd8-46b1-b54b-41dfe6b9d4cf")]
+		public global::System.Boolean IsBoolean
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return isBooleanPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				IsBooleanPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the Function.IsBoolean domain property.
+		/// </summary>
+		internal sealed partial class IsBooleanPropertyHandler : DslModeling::DomainPropertyValueHandler<Function, global::System.Boolean>
+		{
+			private IsBooleanPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the Function.IsBoolean domain property value handler.
+			/// </summary>
+			public static readonly IsBooleanPropertyHandler Instance = new IsBooleanPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the Function.IsBoolean domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return IsBooleanDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(Function element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.isBooleanPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(Function element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.isBooleanPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region OperatorSymbol domain property code
+		
+		/// <summary>
+		/// OperatorSymbol domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid OperatorSymbolDomainPropertyId = new global::System.Guid(0xece5ddec, 0x7ab3, 0x4b65, 0xbd, 0xe9, 0xdd, 0xd8, 0x36, 0xe9, 0x22, 0x88);
+		
+		/// <summary>
+		/// Storage for OperatorSymbol
+		/// </summary>
+		private global::System.String operatorSymbolPropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// Gets or sets the value of OperatorSymbol domain property.
+		/// A string indicating this function should be displayed as an operator instead of
+		/// using functional notation. Represents infix notation for a binary operator and
+		/// prefix notation for a unary.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.Function/OperatorSymbol.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.Function/OperatorSymbol.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainObjectId("ece5ddec-7ab3-4b65-bde9-ddd836e92288")]
+		public global::System.String OperatorSymbol
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return operatorSymbolPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				OperatorSymbolPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the Function.OperatorSymbol domain property.
+		/// </summary>
+		internal sealed partial class OperatorSymbolPropertyHandler : DslModeling::DomainPropertyValueHandler<Function, global::System.String>
+		{
+			private OperatorSymbolPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the Function.OperatorSymbol domain property value handler.
+			/// </summary>
+			public static readonly OperatorSymbolPropertyHandler Instance = new OperatorSymbolPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the Function.OperatorSymbol domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return OperatorSymbolDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(Function element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.operatorSymbolPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(Function element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.operatorSymbolPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region Model opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Model.
+		/// The model defining this function.
+		/// </summary>
+		public virtual ORMModel Model
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesFunction.FunctionDomainRoleId) as ORMModel;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesFunction.FunctionDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region ParameterCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of ParameterCollection.
+		/// Parameters defined by this function.
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<FunctionParameter> ParameterCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<FunctionParameter>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionOperatesOnParameter.FunctionDomainRoleId);
+			}
+		}
+		#endregion
+		#region CalculatedValueCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of CalculatedValueCollection.
+		/// The calculated values based on this function.
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<CalculatedPathValue> CalculatedValueCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<CalculatedPathValue>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueIsCalculatedWithFunction.FunctionDomainRoleId);
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainClass FunctionParameter
+	/// A formal function parameter describing expected input to a function.
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionParameter.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionParameter.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("1c650e60-597e-4b84-a007-acd640654354")]
+	public partial class FunctionParameter : ORMNamedElement
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// FunctionParameter domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x1c650e60, 0x597e, 0x4b84, 0xa0, 0x07, 0xac, 0xd6, 0x40, 0x65, 0x43, 0x54);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public FunctionParameter(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public FunctionParameter(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region BagInput domain property code
+		
+		/// <summary>
+		/// BagInput domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid BagInputDomainPropertyId = new global::System.Guid(0x42acd532, 0x5e46, 0x4200, 0xac, 0x29, 0xc2, 0x0e, 0x92, 0x6d, 0xc7, 0x3f);
+		
+		/// <summary>
+		/// Storage for BagInput
+		/// </summary>
+		private global::System.Boolean bagInputPropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of BagInput domain property.
+		/// Set if a bag input is expected for this parameter, such as with an aggregation
+		/// function.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionParameter/BagInput.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionParameter/BagInput.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainObjectId("42acd532-5e46-4200-ac29-c20e926dc73f")]
+		public global::System.Boolean BagInput
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return bagInputPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				BagInputPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the FunctionParameter.BagInput domain property.
+		/// </summary>
+		internal sealed partial class BagInputPropertyHandler : DslModeling::DomainPropertyValueHandler<FunctionParameter, global::System.Boolean>
+		{
+			private BagInputPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the FunctionParameter.BagInput domain property value handler.
+			/// </summary>
+			public static readonly BagInputPropertyHandler Instance = new BagInputPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the FunctionParameter.BagInput domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return BagInputDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(FunctionParameter element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.bagInputPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(FunctionParameter element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.bagInputPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region Function opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Function.
+		/// The function this parameter is defined for.
+		/// </summary>
+		public virtual Function Function
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionOperatesOnParameter.ParameterDomainRoleId) as Function;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionOperatesOnParameter.ParameterDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region CalculatedInputCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of CalculatedInputCollection.
+		/// The calculated value inputs that use this parameter.
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<CalculatedPathValueInput> CalculatedInputCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<CalculatedPathValueInput>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputCorrespondsToFunctionParameter.ParameterDomainRoleId);
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainClass CalculatedPathValueInput
+	/// An input value or bag passed to a function parameter calculate a value.
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInput.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInput.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("79e5ebef-2ffa-49e6-8a22-cc90b68a6941")]
+	public partial class CalculatedPathValueInput : ORMModelElement
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// CalculatedPathValueInput domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x79e5ebef, 0x2ffa, 0x49e6, 0x8a, 0x22, 0xcc, 0x90, 0xb6, 0x8a, 0x69, 0x41);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public CalculatedPathValueInput(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public CalculatedPathValueInput(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region CalculatedValue opposite domain role accessor
+		/// <summary>
+		/// Gets or sets CalculatedValue.
+		/// The calculated value that owns this input for.
+		/// </summary>
+		public virtual CalculatedPathValue CalculatedValue
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasInput.InputDomainRoleId) as CalculatedPathValue;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasInput.InputDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region Parameter opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Parameter.
+		/// The function parameter associated with this input value.
+		/// </summary>
+		public virtual FunctionParameter Parameter
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputCorrespondsToFunctionParameter.InputDomainRoleId) as FunctionParameter;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputCorrespondsToFunctionParameter.InputDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region SourcePathedRole opposite domain role accessor
+		/// <summary>
+		/// Gets or sets SourcePathedRole.
+		/// The pathed value bound to this function input.
+		/// </summary>
+		public virtual PathedRole SourcePathedRole
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToPathedRole.InputDomainRoleId) as PathedRole;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToPathedRole.InputDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region SourceCalculatedValue opposite domain role accessor
+		/// <summary>
+		/// Gets or sets SourceCalculatedValue.
+		/// The pathed value bound to this function input.
+		/// </summary>
+		public virtual CalculatedPathValue SourceCalculatedValue
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToCalculatedPathValue.InputDomainRoleId) as CalculatedPathValue;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToCalculatedPathValue.InputDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region SourceConstant opposite domain role accessor
+		/// <summary>
+		/// Gets or sets SourceConstant.
+		/// The constant value bound to this function input.
+		/// </summary>
+		public virtual PathConstant SourceConstant
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToPathConstant.InputDomainRoleId) as PathConstant;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToPathConstant.SourceDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToPathConstant.SourceDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToPathConstant.InputDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainClass FactTypeDerivationRule
+	/// A role path defining a fact type derivation.
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("dedadfce-c351-4fcb-a455-b19fb91875b8")]
+	public partial class FactTypeDerivationRule : PrimaryRolePath
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// FactTypeDerivationRule domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xdedadfce, 0xc351, 0x4fcb, 0xa4, 0x55, 0xb1, 0x9f, 0xb9, 0x18, 0x75, 0xb8);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public FactTypeDerivationRule(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public FactTypeDerivationRule(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region FactType opposite domain role accessor
+		/// <summary>
+		/// Gets or sets FactType.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationRule.DerivationRule
+		/// </summary>
+		public virtual FactType FactType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationRule.DerivationRuleDomainRoleId) as FactType;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationRule.FactTypeDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationRule.FactTypeDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationRule.DerivationRuleDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainClass SubtypeDerivationRule
+	/// A role path defining subtype population.
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("7b27fbfe-0a5e-447c-89b7-1ba25f9ed880")]
+	public partial class SubtypeDerivationRule : PrimaryRolePath
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// SubtypeDerivationRule domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x7b27fbfe, 0x0a5e, 0x447c, 0x89, 0xb7, 0x1b, 0xa2, 0x5f, 0x9e, 0xd8, 0x80);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public SubtypeDerivationRule(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public SubtypeDerivationRule(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Subtype opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Subtype.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationRule.DerivationRule
+		/// </summary>
+		public virtual ObjectType Subtype
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationRule.DerivationRuleDomainRoleId) as ObjectType;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationRule.SubtypeDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationRule.SubtypeDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationRule.DerivationRuleDomainRoleId, value);
+				}
 			}
 		}
 		#endregion

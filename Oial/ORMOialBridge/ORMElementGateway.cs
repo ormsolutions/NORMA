@@ -187,7 +187,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				FactTypeDerivationExpression derivation;
 				if (null == factType.InternalUniquenessConstraintRequiredError &&
 					null == factType.ImpliedInternalUniquenessConstraintError &&
-					(null == (derivation = factType.DerivationRule) || (derivation.DerivationStorage != DerivationStorageType.Derived || factType is SubtypeFact)))
+					(null == (derivation = factType.DerivationExpression) || (derivation.DerivationStorage != DerivationStorageType.Derived || factType is SubtypeFact)))
 				{
 					foreach (RoleBase role in factType.RoleCollection)
 					{

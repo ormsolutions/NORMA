@@ -110,6 +110,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				typeof(SetConstraint),
 				typeof(ConstraintRoleSequence),
 				typeof(Join),
+				typeof(RolePath),
+				typeof(PrimaryRolePath),
+				typeof(RoleSubPath),
+				typeof(CalculatedPathValue),
+				typeof(PathConstant),
+				typeof(Function),
+				typeof(FunctionParameter),
+				typeof(CalculatedPathValueInput),
+				typeof(FactTypeDerivationRule),
+				typeof(SubtypeDerivationRule),
 				typeof(TooFewRoleSequencesError),
 				typeof(TooManyRoleSequencesError),
 				typeof(ObjectTypeDuplicateNameError),
@@ -358,6 +368,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				typeof(ElementGroupingHasDuplicateNameError),
 				typeof(ElementGroupingHasMembershipContradictionError),
 				typeof(GroupingMembershipContradictionErrorIsForElement),
+				typeof(PrimaryRolePathHasRootObjectType),
+				typeof(PathedRole),
+				typeof(PathedRoleIsRemotelyCorrelatedWithPathedRole),
+				typeof(RoleSubPathPathIsContinuationOfRolePath),
+				typeof(ModelDefinesFunction),
+				typeof(FunctionOperatesOnParameter),
+				typeof(PrimaryRolePathCalculatesCalculatedPathValue),
+				typeof(PrimaryRolePathSatisfiesCalculatedCondition),
+				typeof(CalculatedPathValueHasInput),
+				typeof(CalculatedPathValueScopedWithPathedRole),
+				typeof(CalculatedPathValueIsCalculatedWithFunction),
+				typeof(CalculatedPathValueInputCorrespondsToFunctionParameter),
+				typeof(CalculatedPathValueInputBindsToPathedRole),
+				typeof(CalculatedPathValueInputBindsToCalculatedPathValue),
+				typeof(CalculatedPathValueInputBindsToPathConstant),
+				typeof(FactTypeHasDerivationRule),
+				typeof(RoleDerivesFromPathedRole),
+				typeof(RoleDerivesFromCalculatedPathValue),
+				typeof(RoleDerivesFromPathConstant),
+				typeof(SubtypeHasDerivationRule),
 			};
 		}
 		/// <summary>
@@ -402,14 +432,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				new DomainMemberInfo(typeof(ObjectType), "ValueTypeValueRangeText", ObjectType.ValueTypeValueRangeTextDomainPropertyId, typeof(ObjectType.ValueTypeValueRangeTextPropertyHandler)),
 				new DomainMemberInfo(typeof(ObjectType), "IsPersonal", ObjectType.IsPersonalDomainPropertyId, typeof(ObjectType.IsPersonalPropertyHandler)),
 				new DomainMemberInfo(typeof(ObjectType), "IsImplicitBooleanValue", ObjectType.IsImplicitBooleanValueDomainPropertyId, typeof(ObjectType.IsImplicitBooleanValuePropertyHandler)),
-				new DomainMemberInfo(typeof(ObjectType), "DerivationRuleDisplay", ObjectType.DerivationRuleDisplayDomainPropertyId, typeof(ObjectType.DerivationRuleDisplayPropertyHandler)),
+				new DomainMemberInfo(typeof(ObjectType), "DerivationExpressionDisplay", ObjectType.DerivationExpressionDisplayDomainPropertyId, typeof(ObjectType.DerivationExpressionDisplayPropertyHandler)),
 				new DomainMemberInfo(typeof(FactType), "IsExternal", FactType.IsExternalDomainPropertyId, typeof(FactType.IsExternalPropertyHandler)),
 				new DomainMemberInfo(typeof(FactType), "DefinitionText", FactType.DefinitionTextDomainPropertyId, typeof(FactType.DefinitionTextPropertyHandler)),
 				new DomainMemberInfo(typeof(FactType), "NoteText", FactType.NoteTextDomainPropertyId, typeof(FactType.NoteTextPropertyHandler)),
 				new DomainMemberInfo(typeof(FactType), "Name", FactType.NameDomainPropertyId, typeof(FactType.NamePropertyHandler)),
 				new DomainMemberInfo(typeof(FactType), "GeneratedName", FactType.GeneratedNameDomainPropertyId, typeof(FactType.GeneratedNamePropertyHandler)),
 				new DomainMemberInfo(typeof(FactType), "NameChanged", FactType.NameChangedDomainPropertyId, typeof(FactType.NameChangedPropertyHandler)),
-				new DomainMemberInfo(typeof(FactType), "DerivationRuleDisplay", FactType.DerivationRuleDisplayDomainPropertyId, typeof(FactType.DerivationRuleDisplayPropertyHandler)),
+				new DomainMemberInfo(typeof(FactType), "DerivationExpressionDisplay", FactType.DerivationExpressionDisplayDomainPropertyId, typeof(FactType.DerivationExpressionDisplayPropertyHandler)),
 				new DomainMemberInfo(typeof(FactType), "DerivationStorageDisplay", FactType.DerivationStorageDisplayDomainPropertyId, typeof(FactType.DerivationStorageDisplayPropertyHandler)),
 				new DomainMemberInfo(typeof(SubtypeFact), "IsPrimary", SubtypeFact.IsPrimaryDomainPropertyId, typeof(SubtypeFact.IsPrimaryPropertyHandler)),
 				new DomainMemberInfo(typeof(SubtypeFact), "ProvidesPreferredIdentifier", SubtypeFact.ProvidesPreferredIdentifierDomainPropertyId, typeof(SubtypeFact.ProvidesPreferredIdentifierPropertyHandler)),
@@ -439,6 +469,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				new DomainMemberInfo(typeof(SetConstraint), "DefinitionText", SetConstraint.DefinitionTextDomainPropertyId, typeof(SetConstraint.DefinitionTextPropertyHandler)),
 				new DomainMemberInfo(typeof(SetConstraint), "NoteText", SetConstraint.NoteTextDomainPropertyId, typeof(SetConstraint.NoteTextPropertyHandler)),
 				new DomainMemberInfo(typeof(Join), "JoinType", Join.JoinTypeDomainPropertyId, typeof(Join.JoinTypePropertyHandler)),
+				new DomainMemberInfo(typeof(RolePath), "SplitIsNegated", RolePath.SplitIsNegatedDomainPropertyId, typeof(RolePath.SplitIsNegatedPropertyHandler)),
+				new DomainMemberInfo(typeof(RolePath), "SplitCombinationOperator", RolePath.SplitCombinationOperatorDomainPropertyId, typeof(RolePath.SplitCombinationOperatorPropertyHandler)),
+				new DomainMemberInfo(typeof(PathConstant), "LexicalValue", PathConstant.LexicalValueDomainPropertyId, typeof(PathConstant.LexicalValuePropertyHandler)),
+				new DomainMemberInfo(typeof(Function), "IsBoolean", Function.IsBooleanDomainPropertyId, typeof(Function.IsBooleanPropertyHandler)),
+				new DomainMemberInfo(typeof(Function), "OperatorSymbol", Function.OperatorSymbolDomainPropertyId, typeof(Function.OperatorSymbolPropertyHandler)),
+				new DomainMemberInfo(typeof(FunctionParameter), "BagInput", FunctionParameter.BagInputDomainPropertyId, typeof(FunctionParameter.BagInputPropertyHandler)),
 				new DomainMemberInfo(typeof(CompatibleRolePlayerTypeError), "Column", CompatibleRolePlayerTypeError.ColumnDomainPropertyId, typeof(CompatibleRolePlayerTypeError.ColumnPropertyHandler)),
 				new DomainMemberInfo(typeof(ModelError), "ErrorText", ModelError.ErrorTextDomainPropertyId, typeof(ModelError.ErrorTextPropertyHandler)),
 				new DomainMemberInfo(typeof(ReferenceModeKind), "FormatString", ReferenceModeKind.FormatStringDomainPropertyId, typeof(ReferenceModeKind.FormatStringPropertyHandler)),
@@ -471,6 +507,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				new DomainMemberInfo(typeof(ValueTypeHasDataType), "Scale", ValueTypeHasDataType.ScaleDomainPropertyId, typeof(ValueTypeHasDataType.ScalePropertyHandler)),
 				new DomainMemberInfo(typeof(ValueTypeHasDataType), "Length", ValueTypeHasDataType.LengthDomainPropertyId, typeof(ValueTypeHasDataType.LengthPropertyHandler)),
 				new DomainMemberInfo(typeof(Objectification), "IsImplied", Objectification.IsImpliedDomainPropertyId, typeof(Objectification.IsImpliedPropertyHandler)),
+				new DomainMemberInfo(typeof(PathedRole), "IsNegated", PathedRole.IsNegatedDomainPropertyId, typeof(PathedRole.IsNegatedPropertyHandler)),
+				new DomainMemberInfo(typeof(PathedRole), "PathedRolePurpose", PathedRole.PathedRolePurposeDomainPropertyId, typeof(PathedRole.PathedRolePurposePropertyHandler)),
 			};
 		}
 		/// <summary>
@@ -771,6 +809,46 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				new DomainRolePlayerInfo(typeof(ElementGroupingHasMembershipContradictionError), "MembershipContradictionError", ElementGroupingHasMembershipContradictionError.MembershipContradictionErrorDomainRoleId),
 				new DomainRolePlayerInfo(typeof(GroupingMembershipContradictionErrorIsForElement), "GroupingMembershipContradictionErrorRelationship", GroupingMembershipContradictionErrorIsForElement.GroupingMembershipContradictionErrorRelationshipDomainRoleId),
 				new DomainRolePlayerInfo(typeof(GroupingMembershipContradictionErrorIsForElement), "Element", GroupingMembershipContradictionErrorIsForElement.ElementDomainRoleId),
+				new DomainRolePlayerInfo(typeof(PrimaryRolePathHasRootObjectType), "PrimaryRolePath", PrimaryRolePathHasRootObjectType.PrimaryRolePathDomainRoleId),
+				new DomainRolePlayerInfo(typeof(PrimaryRolePathHasRootObjectType), "RootObjectType", PrimaryRolePathHasRootObjectType.RootObjectTypeDomainRoleId),
+				new DomainRolePlayerInfo(typeof(PathedRole), "RolePath", PathedRole.RolePathDomainRoleId),
+				new DomainRolePlayerInfo(typeof(PathedRole), "Role", PathedRole.RoleDomainRoleId),
+				new DomainRolePlayerInfo(typeof(PathedRoleIsRemotelyCorrelatedWithPathedRole), "CorrelatedChild", PathedRoleIsRemotelyCorrelatedWithPathedRole.CorrelatedChildDomainRoleId),
+				new DomainRolePlayerInfo(typeof(PathedRoleIsRemotelyCorrelatedWithPathedRole), "CorrelatingParent", PathedRoleIsRemotelyCorrelatedWithPathedRole.CorrelatingParentDomainRoleId),
+				new DomainRolePlayerInfo(typeof(RoleSubPathPathIsContinuationOfRolePath), "ParentRolePath", RoleSubPathPathIsContinuationOfRolePath.ParentRolePathDomainRoleId),
+				new DomainRolePlayerInfo(typeof(RoleSubPathPathIsContinuationOfRolePath), "SubPath", RoleSubPathPathIsContinuationOfRolePath.SubPathDomainRoleId),
+				new DomainRolePlayerInfo(typeof(ModelDefinesFunction), "Model", ModelDefinesFunction.ModelDomainRoleId),
+				new DomainRolePlayerInfo(typeof(ModelDefinesFunction), "Function", ModelDefinesFunction.FunctionDomainRoleId),
+				new DomainRolePlayerInfo(typeof(FunctionOperatesOnParameter), "Function", FunctionOperatesOnParameter.FunctionDomainRoleId),
+				new DomainRolePlayerInfo(typeof(FunctionOperatesOnParameter), "Parameter", FunctionOperatesOnParameter.ParameterDomainRoleId),
+				new DomainRolePlayerInfo(typeof(PrimaryRolePathCalculatesCalculatedPathValue), "PrimaryRolePath", PrimaryRolePathCalculatesCalculatedPathValue.PrimaryRolePathDomainRoleId),
+				new DomainRolePlayerInfo(typeof(PrimaryRolePathCalculatesCalculatedPathValue), "CalculatedValue", PrimaryRolePathCalculatesCalculatedPathValue.CalculatedValueDomainRoleId),
+				new DomainRolePlayerInfo(typeof(PrimaryRolePathSatisfiesCalculatedCondition), "PrimaryRolePath", PrimaryRolePathSatisfiesCalculatedCondition.PrimaryRolePathDomainRoleId),
+				new DomainRolePlayerInfo(typeof(PrimaryRolePathSatisfiesCalculatedCondition), "CalculatedCondition", PrimaryRolePathSatisfiesCalculatedCondition.CalculatedConditionDomainRoleId),
+				new DomainRolePlayerInfo(typeof(CalculatedPathValueHasInput), "CalculatedValue", CalculatedPathValueHasInput.CalculatedValueDomainRoleId),
+				new DomainRolePlayerInfo(typeof(CalculatedPathValueHasInput), "Input", CalculatedPathValueHasInput.InputDomainRoleId),
+				new DomainRolePlayerInfo(typeof(CalculatedPathValueScopedWithPathedRole), "CalculatedValue", CalculatedPathValueScopedWithPathedRole.CalculatedValueDomainRoleId),
+				new DomainRolePlayerInfo(typeof(CalculatedPathValueScopedWithPathedRole), "Scope", CalculatedPathValueScopedWithPathedRole.ScopeDomainRoleId),
+				new DomainRolePlayerInfo(typeof(CalculatedPathValueIsCalculatedWithFunction), "CalculatedValue", CalculatedPathValueIsCalculatedWithFunction.CalculatedValueDomainRoleId),
+				new DomainRolePlayerInfo(typeof(CalculatedPathValueIsCalculatedWithFunction), "Function", CalculatedPathValueIsCalculatedWithFunction.FunctionDomainRoleId),
+				new DomainRolePlayerInfo(typeof(CalculatedPathValueInputCorrespondsToFunctionParameter), "Input", CalculatedPathValueInputCorrespondsToFunctionParameter.InputDomainRoleId),
+				new DomainRolePlayerInfo(typeof(CalculatedPathValueInputCorrespondsToFunctionParameter), "Parameter", CalculatedPathValueInputCorrespondsToFunctionParameter.ParameterDomainRoleId),
+				new DomainRolePlayerInfo(typeof(CalculatedPathValueInputBindsToPathedRole), "Input", CalculatedPathValueInputBindsToPathedRole.InputDomainRoleId),
+				new DomainRolePlayerInfo(typeof(CalculatedPathValueInputBindsToPathedRole), "Source", CalculatedPathValueInputBindsToPathedRole.SourceDomainRoleId),
+				new DomainRolePlayerInfo(typeof(CalculatedPathValueInputBindsToCalculatedPathValue), "Input", CalculatedPathValueInputBindsToCalculatedPathValue.InputDomainRoleId),
+				new DomainRolePlayerInfo(typeof(CalculatedPathValueInputBindsToCalculatedPathValue), "Source", CalculatedPathValueInputBindsToCalculatedPathValue.SourceDomainRoleId),
+				new DomainRolePlayerInfo(typeof(CalculatedPathValueInputBindsToPathConstant), "Input", CalculatedPathValueInputBindsToPathConstant.InputDomainRoleId),
+				new DomainRolePlayerInfo(typeof(CalculatedPathValueInputBindsToPathConstant), "Source", CalculatedPathValueInputBindsToPathConstant.SourceDomainRoleId),
+				new DomainRolePlayerInfo(typeof(FactTypeHasDerivationRule), "FactType", FactTypeHasDerivationRule.FactTypeDomainRoleId),
+				new DomainRolePlayerInfo(typeof(FactTypeHasDerivationRule), "DerivationRule", FactTypeHasDerivationRule.DerivationRuleDomainRoleId),
+				new DomainRolePlayerInfo(typeof(RoleDerivesFromPathedRole), "Role", RoleDerivesFromPathedRole.RoleDomainRoleId),
+				new DomainRolePlayerInfo(typeof(RoleDerivesFromPathedRole), "Source", RoleDerivesFromPathedRole.SourceDomainRoleId),
+				new DomainRolePlayerInfo(typeof(RoleDerivesFromCalculatedPathValue), "Role", RoleDerivesFromCalculatedPathValue.RoleDomainRoleId),
+				new DomainRolePlayerInfo(typeof(RoleDerivesFromCalculatedPathValue), "Source", RoleDerivesFromCalculatedPathValue.SourceDomainRoleId),
+				new DomainRolePlayerInfo(typeof(RoleDerivesFromPathConstant), "Role", RoleDerivesFromPathConstant.RoleDomainRoleId),
+				new DomainRolePlayerInfo(typeof(RoleDerivesFromPathConstant), "Source", RoleDerivesFromPathConstant.SourceDomainRoleId),
+				new DomainRolePlayerInfo(typeof(SubtypeHasDerivationRule), "Subtype", SubtypeHasDerivationRule.SubtypeDomainRoleId),
+				new DomainRolePlayerInfo(typeof(SubtypeHasDerivationRule), "DerivationRule", SubtypeHasDerivationRule.DerivationRuleDomainRoleId),
 			};
 		}
 		#endregion
@@ -791,7 +869,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	
 			if (createElementMap == null)
 			{
-				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(148);
+				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(158);
 				createElementMap.Add(typeof(NameConsumer), 0);
 				createElementMap.Add(typeof(RecognizedPhrase), 1);
 				createElementMap.Add(typeof(NameGenerator), 2);
@@ -818,95 +896,103 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				createElementMap.Add(typeof(UniquenessConstraint), 23);
 				createElementMap.Add(typeof(MandatoryConstraint), 24);
 				createElementMap.Add(typeof(Join), 25);
-				createElementMap.Add(typeof(TooFewRoleSequencesError), 26);
-				createElementMap.Add(typeof(TooManyRoleSequencesError), 27);
-				createElementMap.Add(typeof(ObjectTypeDuplicateNameError), 28);
-				createElementMap.Add(typeof(RecognizedPhraseDuplicateNameError), 29);
-				createElementMap.Add(typeof(PopulationUniquenessError), 30);
-				createElementMap.Add(typeof(ExclusionContradictsMandatoryError), 31);
-				createElementMap.Add(typeof(ExclusionContradictsEqualityError), 32);
-				createElementMap.Add(typeof(ExclusionContradictsSubsetError), 33);
-				createElementMap.Add(typeof(NotWellModeledSubsetAndMandatoryError), 34);
-				createElementMap.Add(typeof(PopulationMandatoryError), 35);
-				createElementMap.Add(typeof(ObjectifiedInstanceRequiredError), 36);
-				createElementMap.Add(typeof(ObjectifyingInstanceRequiredError), 37);
-				createElementMap.Add(typeof(ConstraintDuplicateNameError), 38);
-				createElementMap.Add(typeof(TooFewReadingRolesError), 39);
-				createElementMap.Add(typeof(TooManyReadingRolesError), 40);
-				createElementMap.Add(typeof(ExternalConstraintRoleSequenceArityMismatchError), 41);
-				createElementMap.Add(typeof(FactTypeRequiresReadingError), 42);
-				createElementMap.Add(typeof(FactTypeRequiresInternalUniquenessConstraintError), 43);
-				createElementMap.Add(typeof(DataTypeNotSpecifiedError), 44);
-				createElementMap.Add(typeof(NMinusOneError), 45);
-				createElementMap.Add(typeof(CompatibleRolePlayerTypeError), 46);
-				createElementMap.Add(typeof(RolePlayerRequiredError), 47);
-				createElementMap.Add(typeof(EntityTypeRequiresReferenceSchemeError), 48);
-				createElementMap.Add(typeof(FrequencyConstraintMinMaxError), 49);
-				createElementMap.Add(typeof(FrequencyConstraintExactlyOneError), 50);
-				createElementMap.Add(typeof(ReadingRequiresUserModificationError), 51);
-				createElementMap.Add(typeof(ReferenceModeKind), 52);
-				createElementMap.Add(typeof(IntrinsicReferenceMode), 53);
-				createElementMap.Add(typeof(CustomReferenceMode), 54);
-				createElementMap.Add(typeof(UnspecifiedDataType), 55);
-				createElementMap.Add(typeof(FixedLengthTextDataType), 56);
-				createElementMap.Add(typeof(VariableLengthTextDataType), 57);
-				createElementMap.Add(typeof(LargeLengthTextDataType), 58);
-				createElementMap.Add(typeof(SignedIntegerNumericDataType), 59);
-				createElementMap.Add(typeof(SignedSmallIntegerNumericDataType), 60);
-				createElementMap.Add(typeof(SignedLargeIntegerNumericDataType), 61);
-				createElementMap.Add(typeof(UnsignedIntegerNumericDataType), 62);
-				createElementMap.Add(typeof(UnsignedTinyIntegerNumericDataType), 63);
-				createElementMap.Add(typeof(UnsignedSmallIntegerNumericDataType), 64);
-				createElementMap.Add(typeof(UnsignedLargeIntegerNumericDataType), 65);
-				createElementMap.Add(typeof(AutoCounterNumericDataType), 66);
-				createElementMap.Add(typeof(FloatingPointNumericDataType), 67);
-				createElementMap.Add(typeof(SinglePrecisionFloatingPointNumericDataType), 68);
-				createElementMap.Add(typeof(DoublePrecisionFloatingPointNumericDataType), 69);
-				createElementMap.Add(typeof(DecimalNumericDataType), 70);
-				createElementMap.Add(typeof(MoneyNumericDataType), 71);
-				createElementMap.Add(typeof(FixedLengthRawDataDataType), 72);
-				createElementMap.Add(typeof(VariableLengthRawDataDataType), 73);
-				createElementMap.Add(typeof(LargeLengthRawDataDataType), 74);
-				createElementMap.Add(typeof(PictureRawDataDataType), 75);
-				createElementMap.Add(typeof(OleObjectRawDataDataType), 76);
-				createElementMap.Add(typeof(AutoTimestampTemporalDataType), 77);
-				createElementMap.Add(typeof(TimeTemporalDataType), 78);
-				createElementMap.Add(typeof(DateTemporalDataType), 79);
-				createElementMap.Add(typeof(DateAndTimeTemporalDataType), 80);
-				createElementMap.Add(typeof(TrueOrFalseLogicalDataType), 81);
-				createElementMap.Add(typeof(YesOrNoLogicalDataType), 82);
-				createElementMap.Add(typeof(RowIdOtherDataType), 83);
-				createElementMap.Add(typeof(ObjectIdOtherDataType), 84);
-				createElementMap.Add(typeof(Reading), 85);
-				createElementMap.Add(typeof(ReadingOrder), 86);
-				createElementMap.Add(typeof(ValueRange), 87);
-				createElementMap.Add(typeof(ValueTypeValueConstraint), 88);
-				createElementMap.Add(typeof(RoleValueConstraint), 89);
-				createElementMap.Add(typeof(MinValueMismatchError), 90);
-				createElementMap.Add(typeof(MaxValueMismatchError), 91);
-				createElementMap.Add(typeof(ImpliedInternalUniquenessConstraintError), 92);
-				createElementMap.Add(typeof(FrequencyConstraintViolatedByUniquenessConstraintError), 93);
-				createElementMap.Add(typeof(RingConstraintTypeNotSpecifiedError), 94);
-				createElementMap.Add(typeof(SubtypeMetaRole), 95);
-				createElementMap.Add(typeof(SupertypeMetaRole), 96);
-				createElementMap.Add(typeof(Definition), 97);
-				createElementMap.Add(typeof(Note), 98);
-				createElementMap.Add(typeof(ModelNote), 99);
-				createElementMap.Add(typeof(CompatibleSupertypesError), 100);
-				createElementMap.Add(typeof(ImplicationError), 101);
-				createElementMap.Add(typeof(EqualityOrSubsetImpliedByMandatoryError), 102);
-				createElementMap.Add(typeof(PreferredIdentifierRequiresMandatoryError), 103);
-				createElementMap.Add(typeof(ValueRangeOverlapError), 104);
-				createElementMap.Add(typeof(ValueConstraintValueTypeDetachedError), 105);
-				createElementMap.Add(typeof(FactTypeDerivationExpression), 106);
-				createElementMap.Add(typeof(SubtypeDerivationExpression), 107);
-				createElementMap.Add(typeof(EntityTypeInstance), 108);
-				createElementMap.Add(typeof(EntityTypeSubtypeInstance), 109);
-				createElementMap.Add(typeof(ValueTypeInstance), 110);
-				createElementMap.Add(typeof(FactTypeInstance), 111);
-				createElementMap.Add(typeof(TooFewEntityTypeRoleInstancesError), 112);
-				createElementMap.Add(typeof(TooFewFactTypeRoleInstancesError), 113);
-				createElementMap.Add(typeof(CompatibleValueTypeInstanceValueError), 114);
+				createElementMap.Add(typeof(RoleSubPath), 26);
+				createElementMap.Add(typeof(CalculatedPathValue), 27);
+				createElementMap.Add(typeof(PathConstant), 28);
+				createElementMap.Add(typeof(Function), 29);
+				createElementMap.Add(typeof(FunctionParameter), 30);
+				createElementMap.Add(typeof(CalculatedPathValueInput), 31);
+				createElementMap.Add(typeof(FactTypeDerivationRule), 32);
+				createElementMap.Add(typeof(SubtypeDerivationRule), 33);
+				createElementMap.Add(typeof(TooFewRoleSequencesError), 34);
+				createElementMap.Add(typeof(TooManyRoleSequencesError), 35);
+				createElementMap.Add(typeof(ObjectTypeDuplicateNameError), 36);
+				createElementMap.Add(typeof(RecognizedPhraseDuplicateNameError), 37);
+				createElementMap.Add(typeof(PopulationUniquenessError), 38);
+				createElementMap.Add(typeof(ExclusionContradictsMandatoryError), 39);
+				createElementMap.Add(typeof(ExclusionContradictsEqualityError), 40);
+				createElementMap.Add(typeof(ExclusionContradictsSubsetError), 41);
+				createElementMap.Add(typeof(NotWellModeledSubsetAndMandatoryError), 42);
+				createElementMap.Add(typeof(PopulationMandatoryError), 43);
+				createElementMap.Add(typeof(ObjectifiedInstanceRequiredError), 44);
+				createElementMap.Add(typeof(ObjectifyingInstanceRequiredError), 45);
+				createElementMap.Add(typeof(ConstraintDuplicateNameError), 46);
+				createElementMap.Add(typeof(TooFewReadingRolesError), 47);
+				createElementMap.Add(typeof(TooManyReadingRolesError), 48);
+				createElementMap.Add(typeof(ExternalConstraintRoleSequenceArityMismatchError), 49);
+				createElementMap.Add(typeof(FactTypeRequiresReadingError), 50);
+				createElementMap.Add(typeof(FactTypeRequiresInternalUniquenessConstraintError), 51);
+				createElementMap.Add(typeof(DataTypeNotSpecifiedError), 52);
+				createElementMap.Add(typeof(NMinusOneError), 53);
+				createElementMap.Add(typeof(CompatibleRolePlayerTypeError), 54);
+				createElementMap.Add(typeof(RolePlayerRequiredError), 55);
+				createElementMap.Add(typeof(EntityTypeRequiresReferenceSchemeError), 56);
+				createElementMap.Add(typeof(FrequencyConstraintMinMaxError), 57);
+				createElementMap.Add(typeof(FrequencyConstraintExactlyOneError), 58);
+				createElementMap.Add(typeof(ReadingRequiresUserModificationError), 59);
+				createElementMap.Add(typeof(ReferenceModeKind), 60);
+				createElementMap.Add(typeof(IntrinsicReferenceMode), 61);
+				createElementMap.Add(typeof(CustomReferenceMode), 62);
+				createElementMap.Add(typeof(UnspecifiedDataType), 63);
+				createElementMap.Add(typeof(FixedLengthTextDataType), 64);
+				createElementMap.Add(typeof(VariableLengthTextDataType), 65);
+				createElementMap.Add(typeof(LargeLengthTextDataType), 66);
+				createElementMap.Add(typeof(SignedIntegerNumericDataType), 67);
+				createElementMap.Add(typeof(SignedSmallIntegerNumericDataType), 68);
+				createElementMap.Add(typeof(SignedLargeIntegerNumericDataType), 69);
+				createElementMap.Add(typeof(UnsignedIntegerNumericDataType), 70);
+				createElementMap.Add(typeof(UnsignedTinyIntegerNumericDataType), 71);
+				createElementMap.Add(typeof(UnsignedSmallIntegerNumericDataType), 72);
+				createElementMap.Add(typeof(UnsignedLargeIntegerNumericDataType), 73);
+				createElementMap.Add(typeof(AutoCounterNumericDataType), 74);
+				createElementMap.Add(typeof(FloatingPointNumericDataType), 75);
+				createElementMap.Add(typeof(SinglePrecisionFloatingPointNumericDataType), 76);
+				createElementMap.Add(typeof(DoublePrecisionFloatingPointNumericDataType), 77);
+				createElementMap.Add(typeof(DecimalNumericDataType), 78);
+				createElementMap.Add(typeof(MoneyNumericDataType), 79);
+				createElementMap.Add(typeof(FixedLengthRawDataDataType), 80);
+				createElementMap.Add(typeof(VariableLengthRawDataDataType), 81);
+				createElementMap.Add(typeof(LargeLengthRawDataDataType), 82);
+				createElementMap.Add(typeof(PictureRawDataDataType), 83);
+				createElementMap.Add(typeof(OleObjectRawDataDataType), 84);
+				createElementMap.Add(typeof(AutoTimestampTemporalDataType), 85);
+				createElementMap.Add(typeof(TimeTemporalDataType), 86);
+				createElementMap.Add(typeof(DateTemporalDataType), 87);
+				createElementMap.Add(typeof(DateAndTimeTemporalDataType), 88);
+				createElementMap.Add(typeof(TrueOrFalseLogicalDataType), 89);
+				createElementMap.Add(typeof(YesOrNoLogicalDataType), 90);
+				createElementMap.Add(typeof(RowIdOtherDataType), 91);
+				createElementMap.Add(typeof(ObjectIdOtherDataType), 92);
+				createElementMap.Add(typeof(Reading), 93);
+				createElementMap.Add(typeof(ReadingOrder), 94);
+				createElementMap.Add(typeof(ValueRange), 95);
+				createElementMap.Add(typeof(ValueTypeValueConstraint), 96);
+				createElementMap.Add(typeof(RoleValueConstraint), 97);
+				createElementMap.Add(typeof(MinValueMismatchError), 98);
+				createElementMap.Add(typeof(MaxValueMismatchError), 99);
+				createElementMap.Add(typeof(ImpliedInternalUniquenessConstraintError), 100);
+				createElementMap.Add(typeof(FrequencyConstraintViolatedByUniquenessConstraintError), 101);
+				createElementMap.Add(typeof(RingConstraintTypeNotSpecifiedError), 102);
+				createElementMap.Add(typeof(SubtypeMetaRole), 103);
+				createElementMap.Add(typeof(SupertypeMetaRole), 104);
+				createElementMap.Add(typeof(Definition), 105);
+				createElementMap.Add(typeof(Note), 106);
+				createElementMap.Add(typeof(ModelNote), 107);
+				createElementMap.Add(typeof(CompatibleSupertypesError), 108);
+				createElementMap.Add(typeof(ImplicationError), 109);
+				createElementMap.Add(typeof(EqualityOrSubsetImpliedByMandatoryError), 110);
+				createElementMap.Add(typeof(PreferredIdentifierRequiresMandatoryError), 111);
+				createElementMap.Add(typeof(ValueRangeOverlapError), 112);
+				createElementMap.Add(typeof(ValueConstraintValueTypeDetachedError), 113);
+				createElementMap.Add(typeof(FactTypeDerivationExpression), 114);
+				createElementMap.Add(typeof(SubtypeDerivationExpression), 115);
+				createElementMap.Add(typeof(EntityTypeInstance), 116);
+				createElementMap.Add(typeof(EntityTypeSubtypeInstance), 117);
+				createElementMap.Add(typeof(ValueTypeInstance), 118);
+				createElementMap.Add(typeof(FactTypeInstance), 119);
+				createElementMap.Add(typeof(TooFewEntityTypeRoleInstancesError), 120);
+				createElementMap.Add(typeof(TooFewFactTypeRoleInstancesError), 121);
+				createElementMap.Add(typeof(CompatibleValueTypeInstanceValueError), 122);
 			}
 			int index;
 			if (!createElementMap.TryGetValue(elementType, out index))
@@ -941,95 +1027,103 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				case 23: return new UniquenessConstraint(partition, propertyAssignments);
 				case 24: return new MandatoryConstraint(partition, propertyAssignments);
 				case 25: return new Join(partition, propertyAssignments);
-				case 26: return new TooFewRoleSequencesError(partition, propertyAssignments);
-				case 27: return new TooManyRoleSequencesError(partition, propertyAssignments);
-				case 28: return new ObjectTypeDuplicateNameError(partition, propertyAssignments);
-				case 29: return new RecognizedPhraseDuplicateNameError(partition, propertyAssignments);
-				case 30: return new PopulationUniquenessError(partition, propertyAssignments);
-				case 31: return new ExclusionContradictsMandatoryError(partition, propertyAssignments);
-				case 32: return new ExclusionContradictsEqualityError(partition, propertyAssignments);
-				case 33: return new ExclusionContradictsSubsetError(partition, propertyAssignments);
-				case 34: return new NotWellModeledSubsetAndMandatoryError(partition, propertyAssignments);
-				case 35: return new PopulationMandatoryError(partition, propertyAssignments);
-				case 36: return new ObjectifiedInstanceRequiredError(partition, propertyAssignments);
-				case 37: return new ObjectifyingInstanceRequiredError(partition, propertyAssignments);
-				case 38: return new ConstraintDuplicateNameError(partition, propertyAssignments);
-				case 39: return new TooFewReadingRolesError(partition, propertyAssignments);
-				case 40: return new TooManyReadingRolesError(partition, propertyAssignments);
-				case 41: return new ExternalConstraintRoleSequenceArityMismatchError(partition, propertyAssignments);
-				case 42: return new FactTypeRequiresReadingError(partition, propertyAssignments);
-				case 43: return new FactTypeRequiresInternalUniquenessConstraintError(partition, propertyAssignments);
-				case 44: return new DataTypeNotSpecifiedError(partition, propertyAssignments);
-				case 45: return new NMinusOneError(partition, propertyAssignments);
-				case 46: return new CompatibleRolePlayerTypeError(partition, propertyAssignments);
-				case 47: return new RolePlayerRequiredError(partition, propertyAssignments);
-				case 48: return new EntityTypeRequiresReferenceSchemeError(partition, propertyAssignments);
-				case 49: return new FrequencyConstraintMinMaxError(partition, propertyAssignments);
-				case 50: return new FrequencyConstraintExactlyOneError(partition, propertyAssignments);
-				case 51: return new ReadingRequiresUserModificationError(partition, propertyAssignments);
-				case 52: return new ReferenceModeKind(partition, propertyAssignments);
-				case 53: return new IntrinsicReferenceMode(partition, propertyAssignments);
-				case 54: return new CustomReferenceMode(partition, propertyAssignments);
-				case 55: return new UnspecifiedDataType(partition, propertyAssignments);
-				case 56: return new FixedLengthTextDataType(partition, propertyAssignments);
-				case 57: return new VariableLengthTextDataType(partition, propertyAssignments);
-				case 58: return new LargeLengthTextDataType(partition, propertyAssignments);
-				case 59: return new SignedIntegerNumericDataType(partition, propertyAssignments);
-				case 60: return new SignedSmallIntegerNumericDataType(partition, propertyAssignments);
-				case 61: return new SignedLargeIntegerNumericDataType(partition, propertyAssignments);
-				case 62: return new UnsignedIntegerNumericDataType(partition, propertyAssignments);
-				case 63: return new UnsignedTinyIntegerNumericDataType(partition, propertyAssignments);
-				case 64: return new UnsignedSmallIntegerNumericDataType(partition, propertyAssignments);
-				case 65: return new UnsignedLargeIntegerNumericDataType(partition, propertyAssignments);
-				case 66: return new AutoCounterNumericDataType(partition, propertyAssignments);
-				case 67: return new FloatingPointNumericDataType(partition, propertyAssignments);
-				case 68: return new SinglePrecisionFloatingPointNumericDataType(partition, propertyAssignments);
-				case 69: return new DoublePrecisionFloatingPointNumericDataType(partition, propertyAssignments);
-				case 70: return new DecimalNumericDataType(partition, propertyAssignments);
-				case 71: return new MoneyNumericDataType(partition, propertyAssignments);
-				case 72: return new FixedLengthRawDataDataType(partition, propertyAssignments);
-				case 73: return new VariableLengthRawDataDataType(partition, propertyAssignments);
-				case 74: return new LargeLengthRawDataDataType(partition, propertyAssignments);
-				case 75: return new PictureRawDataDataType(partition, propertyAssignments);
-				case 76: return new OleObjectRawDataDataType(partition, propertyAssignments);
-				case 77: return new AutoTimestampTemporalDataType(partition, propertyAssignments);
-				case 78: return new TimeTemporalDataType(partition, propertyAssignments);
-				case 79: return new DateTemporalDataType(partition, propertyAssignments);
-				case 80: return new DateAndTimeTemporalDataType(partition, propertyAssignments);
-				case 81: return new TrueOrFalseLogicalDataType(partition, propertyAssignments);
-				case 82: return new YesOrNoLogicalDataType(partition, propertyAssignments);
-				case 83: return new RowIdOtherDataType(partition, propertyAssignments);
-				case 84: return new ObjectIdOtherDataType(partition, propertyAssignments);
-				case 85: return new Reading(partition, propertyAssignments);
-				case 86: return new ReadingOrder(partition, propertyAssignments);
-				case 87: return new ValueRange(partition, propertyAssignments);
-				case 88: return new ValueTypeValueConstraint(partition, propertyAssignments);
-				case 89: return new RoleValueConstraint(partition, propertyAssignments);
-				case 90: return new MinValueMismatchError(partition, propertyAssignments);
-				case 91: return new MaxValueMismatchError(partition, propertyAssignments);
-				case 92: return new ImpliedInternalUniquenessConstraintError(partition, propertyAssignments);
-				case 93: return new FrequencyConstraintViolatedByUniquenessConstraintError(partition, propertyAssignments);
-				case 94: return new RingConstraintTypeNotSpecifiedError(partition, propertyAssignments);
-				case 95: return new SubtypeMetaRole(partition, propertyAssignments);
-				case 96: return new SupertypeMetaRole(partition, propertyAssignments);
-				case 97: return new Definition(partition, propertyAssignments);
-				case 98: return new Note(partition, propertyAssignments);
-				case 99: return new ModelNote(partition, propertyAssignments);
-				case 100: return new CompatibleSupertypesError(partition, propertyAssignments);
-				case 101: return new ImplicationError(partition, propertyAssignments);
-				case 102: return new EqualityOrSubsetImpliedByMandatoryError(partition, propertyAssignments);
-				case 103: return new PreferredIdentifierRequiresMandatoryError(partition, propertyAssignments);
-				case 104: return new ValueRangeOverlapError(partition, propertyAssignments);
-				case 105: return new ValueConstraintValueTypeDetachedError(partition, propertyAssignments);
-				case 106: return new FactTypeDerivationExpression(partition, propertyAssignments);
-				case 107: return new SubtypeDerivationExpression(partition, propertyAssignments);
-				case 108: return new EntityTypeInstance(partition, propertyAssignments);
-				case 109: return new EntityTypeSubtypeInstance(partition, propertyAssignments);
-				case 110: return new ValueTypeInstance(partition, propertyAssignments);
-				case 111: return new FactTypeInstance(partition, propertyAssignments);
-				case 112: return new TooFewEntityTypeRoleInstancesError(partition, propertyAssignments);
-				case 113: return new TooFewFactTypeRoleInstancesError(partition, propertyAssignments);
-				case 114: return new CompatibleValueTypeInstanceValueError(partition, propertyAssignments);
+				case 26: return new RoleSubPath(partition, propertyAssignments);
+				case 27: return new CalculatedPathValue(partition, propertyAssignments);
+				case 28: return new PathConstant(partition, propertyAssignments);
+				case 29: return new Function(partition, propertyAssignments);
+				case 30: return new FunctionParameter(partition, propertyAssignments);
+				case 31: return new CalculatedPathValueInput(partition, propertyAssignments);
+				case 32: return new FactTypeDerivationRule(partition, propertyAssignments);
+				case 33: return new SubtypeDerivationRule(partition, propertyAssignments);
+				case 34: return new TooFewRoleSequencesError(partition, propertyAssignments);
+				case 35: return new TooManyRoleSequencesError(partition, propertyAssignments);
+				case 36: return new ObjectTypeDuplicateNameError(partition, propertyAssignments);
+				case 37: return new RecognizedPhraseDuplicateNameError(partition, propertyAssignments);
+				case 38: return new PopulationUniquenessError(partition, propertyAssignments);
+				case 39: return new ExclusionContradictsMandatoryError(partition, propertyAssignments);
+				case 40: return new ExclusionContradictsEqualityError(partition, propertyAssignments);
+				case 41: return new ExclusionContradictsSubsetError(partition, propertyAssignments);
+				case 42: return new NotWellModeledSubsetAndMandatoryError(partition, propertyAssignments);
+				case 43: return new PopulationMandatoryError(partition, propertyAssignments);
+				case 44: return new ObjectifiedInstanceRequiredError(partition, propertyAssignments);
+				case 45: return new ObjectifyingInstanceRequiredError(partition, propertyAssignments);
+				case 46: return new ConstraintDuplicateNameError(partition, propertyAssignments);
+				case 47: return new TooFewReadingRolesError(partition, propertyAssignments);
+				case 48: return new TooManyReadingRolesError(partition, propertyAssignments);
+				case 49: return new ExternalConstraintRoleSequenceArityMismatchError(partition, propertyAssignments);
+				case 50: return new FactTypeRequiresReadingError(partition, propertyAssignments);
+				case 51: return new FactTypeRequiresInternalUniquenessConstraintError(partition, propertyAssignments);
+				case 52: return new DataTypeNotSpecifiedError(partition, propertyAssignments);
+				case 53: return new NMinusOneError(partition, propertyAssignments);
+				case 54: return new CompatibleRolePlayerTypeError(partition, propertyAssignments);
+				case 55: return new RolePlayerRequiredError(partition, propertyAssignments);
+				case 56: return new EntityTypeRequiresReferenceSchemeError(partition, propertyAssignments);
+				case 57: return new FrequencyConstraintMinMaxError(partition, propertyAssignments);
+				case 58: return new FrequencyConstraintExactlyOneError(partition, propertyAssignments);
+				case 59: return new ReadingRequiresUserModificationError(partition, propertyAssignments);
+				case 60: return new ReferenceModeKind(partition, propertyAssignments);
+				case 61: return new IntrinsicReferenceMode(partition, propertyAssignments);
+				case 62: return new CustomReferenceMode(partition, propertyAssignments);
+				case 63: return new UnspecifiedDataType(partition, propertyAssignments);
+				case 64: return new FixedLengthTextDataType(partition, propertyAssignments);
+				case 65: return new VariableLengthTextDataType(partition, propertyAssignments);
+				case 66: return new LargeLengthTextDataType(partition, propertyAssignments);
+				case 67: return new SignedIntegerNumericDataType(partition, propertyAssignments);
+				case 68: return new SignedSmallIntegerNumericDataType(partition, propertyAssignments);
+				case 69: return new SignedLargeIntegerNumericDataType(partition, propertyAssignments);
+				case 70: return new UnsignedIntegerNumericDataType(partition, propertyAssignments);
+				case 71: return new UnsignedTinyIntegerNumericDataType(partition, propertyAssignments);
+				case 72: return new UnsignedSmallIntegerNumericDataType(partition, propertyAssignments);
+				case 73: return new UnsignedLargeIntegerNumericDataType(partition, propertyAssignments);
+				case 74: return new AutoCounterNumericDataType(partition, propertyAssignments);
+				case 75: return new FloatingPointNumericDataType(partition, propertyAssignments);
+				case 76: return new SinglePrecisionFloatingPointNumericDataType(partition, propertyAssignments);
+				case 77: return new DoublePrecisionFloatingPointNumericDataType(partition, propertyAssignments);
+				case 78: return new DecimalNumericDataType(partition, propertyAssignments);
+				case 79: return new MoneyNumericDataType(partition, propertyAssignments);
+				case 80: return new FixedLengthRawDataDataType(partition, propertyAssignments);
+				case 81: return new VariableLengthRawDataDataType(partition, propertyAssignments);
+				case 82: return new LargeLengthRawDataDataType(partition, propertyAssignments);
+				case 83: return new PictureRawDataDataType(partition, propertyAssignments);
+				case 84: return new OleObjectRawDataDataType(partition, propertyAssignments);
+				case 85: return new AutoTimestampTemporalDataType(partition, propertyAssignments);
+				case 86: return new TimeTemporalDataType(partition, propertyAssignments);
+				case 87: return new DateTemporalDataType(partition, propertyAssignments);
+				case 88: return new DateAndTimeTemporalDataType(partition, propertyAssignments);
+				case 89: return new TrueOrFalseLogicalDataType(partition, propertyAssignments);
+				case 90: return new YesOrNoLogicalDataType(partition, propertyAssignments);
+				case 91: return new RowIdOtherDataType(partition, propertyAssignments);
+				case 92: return new ObjectIdOtherDataType(partition, propertyAssignments);
+				case 93: return new Reading(partition, propertyAssignments);
+				case 94: return new ReadingOrder(partition, propertyAssignments);
+				case 95: return new ValueRange(partition, propertyAssignments);
+				case 96: return new ValueTypeValueConstraint(partition, propertyAssignments);
+				case 97: return new RoleValueConstraint(partition, propertyAssignments);
+				case 98: return new MinValueMismatchError(partition, propertyAssignments);
+				case 99: return new MaxValueMismatchError(partition, propertyAssignments);
+				case 100: return new ImpliedInternalUniquenessConstraintError(partition, propertyAssignments);
+				case 101: return new FrequencyConstraintViolatedByUniquenessConstraintError(partition, propertyAssignments);
+				case 102: return new RingConstraintTypeNotSpecifiedError(partition, propertyAssignments);
+				case 103: return new SubtypeMetaRole(partition, propertyAssignments);
+				case 104: return new SupertypeMetaRole(partition, propertyAssignments);
+				case 105: return new Definition(partition, propertyAssignments);
+				case 106: return new Note(partition, propertyAssignments);
+				case 107: return new ModelNote(partition, propertyAssignments);
+				case 108: return new CompatibleSupertypesError(partition, propertyAssignments);
+				case 109: return new ImplicationError(partition, propertyAssignments);
+				case 110: return new EqualityOrSubsetImpliedByMandatoryError(partition, propertyAssignments);
+				case 111: return new PreferredIdentifierRequiresMandatoryError(partition, propertyAssignments);
+				case 112: return new ValueRangeOverlapError(partition, propertyAssignments);
+				case 113: return new ValueConstraintValueTypeDetachedError(partition, propertyAssignments);
+				case 114: return new FactTypeDerivationExpression(partition, propertyAssignments);
+				case 115: return new SubtypeDerivationExpression(partition, propertyAssignments);
+				case 116: return new EntityTypeInstance(partition, propertyAssignments);
+				case 117: return new EntityTypeSubtypeInstance(partition, propertyAssignments);
+				case 118: return new ValueTypeInstance(partition, propertyAssignments);
+				case 119: return new FactTypeInstance(partition, propertyAssignments);
+				case 120: return new TooFewEntityTypeRoleInstancesError(partition, propertyAssignments);
+				case 121: return new TooFewFactTypeRoleInstancesError(partition, propertyAssignments);
+				case 122: return new CompatibleValueTypeInstanceValueError(partition, propertyAssignments);
 				default: return null;
 			}
 		}
@@ -1052,7 +1146,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	
 			if (createElementLinkMap == null)
 			{
-				createElementLinkMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(145);
+				createElementLinkMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(165);
 				createElementLinkMap.Add(typeof(FactSetComparisonConstraint), 0);
 				createElementLinkMap.Add(typeof(FactSetConstraint), 1);
 				createElementLinkMap.Add(typeof(ORMModelElementHasExtensionElement), 2);
@@ -1188,6 +1282,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				createElementLinkMap.Add(typeof(ElementGroupingHasDuplicateNameError), 132);
 				createElementLinkMap.Add(typeof(ElementGroupingHasMembershipContradictionError), 133);
 				createElementLinkMap.Add(typeof(GroupingMembershipContradictionErrorIsForElement), 134);
+				createElementLinkMap.Add(typeof(PrimaryRolePathHasRootObjectType), 135);
+				createElementLinkMap.Add(typeof(PathedRole), 136);
+				createElementLinkMap.Add(typeof(PathedRoleIsRemotelyCorrelatedWithPathedRole), 137);
+				createElementLinkMap.Add(typeof(RoleSubPathPathIsContinuationOfRolePath), 138);
+				createElementLinkMap.Add(typeof(ModelDefinesFunction), 139);
+				createElementLinkMap.Add(typeof(FunctionOperatesOnParameter), 140);
+				createElementLinkMap.Add(typeof(PrimaryRolePathCalculatesCalculatedPathValue), 141);
+				createElementLinkMap.Add(typeof(PrimaryRolePathSatisfiesCalculatedCondition), 142);
+				createElementLinkMap.Add(typeof(CalculatedPathValueHasInput), 143);
+				createElementLinkMap.Add(typeof(CalculatedPathValueScopedWithPathedRole), 144);
+				createElementLinkMap.Add(typeof(CalculatedPathValueIsCalculatedWithFunction), 145);
+				createElementLinkMap.Add(typeof(CalculatedPathValueInputCorrespondsToFunctionParameter), 146);
+				createElementLinkMap.Add(typeof(CalculatedPathValueInputBindsToPathedRole), 147);
+				createElementLinkMap.Add(typeof(CalculatedPathValueInputBindsToCalculatedPathValue), 148);
+				createElementLinkMap.Add(typeof(CalculatedPathValueInputBindsToPathConstant), 149);
+				createElementLinkMap.Add(typeof(FactTypeHasDerivationRule), 150);
+				createElementLinkMap.Add(typeof(RoleDerivesFromPathedRole), 151);
+				createElementLinkMap.Add(typeof(RoleDerivesFromCalculatedPathValue), 152);
+				createElementLinkMap.Add(typeof(RoleDerivesFromPathConstant), 153);
+				createElementLinkMap.Add(typeof(SubtypeHasDerivationRule), 154);
 			}
 			int index;
 			if (!createElementLinkMap.TryGetValue(elementLinkType, out index))
@@ -1331,6 +1445,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				case 132: return new ElementGroupingHasDuplicateNameError(partition, roleAssignments, propertyAssignments);
 				case 133: return new ElementGroupingHasMembershipContradictionError(partition, roleAssignments, propertyAssignments);
 				case 134: return new GroupingMembershipContradictionErrorIsForElement(partition, roleAssignments, propertyAssignments);
+				case 135: return new PrimaryRolePathHasRootObjectType(partition, roleAssignments, propertyAssignments);
+				case 136: return new PathedRole(partition, roleAssignments, propertyAssignments);
+				case 137: return new PathedRoleIsRemotelyCorrelatedWithPathedRole(partition, roleAssignments, propertyAssignments);
+				case 138: return new RoleSubPathPathIsContinuationOfRolePath(partition, roleAssignments, propertyAssignments);
+				case 139: return new ModelDefinesFunction(partition, roleAssignments, propertyAssignments);
+				case 140: return new FunctionOperatesOnParameter(partition, roleAssignments, propertyAssignments);
+				case 141: return new PrimaryRolePathCalculatesCalculatedPathValue(partition, roleAssignments, propertyAssignments);
+				case 142: return new PrimaryRolePathSatisfiesCalculatedCondition(partition, roleAssignments, propertyAssignments);
+				case 143: return new CalculatedPathValueHasInput(partition, roleAssignments, propertyAssignments);
+				case 144: return new CalculatedPathValueScopedWithPathedRole(partition, roleAssignments, propertyAssignments);
+				case 145: return new CalculatedPathValueIsCalculatedWithFunction(partition, roleAssignments, propertyAssignments);
+				case 146: return new CalculatedPathValueInputCorrespondsToFunctionParameter(partition, roleAssignments, propertyAssignments);
+				case 147: return new CalculatedPathValueInputBindsToPathedRole(partition, roleAssignments, propertyAssignments);
+				case 148: return new CalculatedPathValueInputBindsToCalculatedPathValue(partition, roleAssignments, propertyAssignments);
+				case 149: return new CalculatedPathValueInputBindsToPathConstant(partition, roleAssignments, propertyAssignments);
+				case 150: return new FactTypeHasDerivationRule(partition, roleAssignments, propertyAssignments);
+				case 151: return new RoleDerivesFromPathedRole(partition, roleAssignments, propertyAssignments);
+				case 152: return new RoleDerivesFromCalculatedPathValue(partition, roleAssignments, propertyAssignments);
+				case 153: return new RoleDerivesFromPathConstant(partition, roleAssignments, propertyAssignments);
+				case 154: return new SubtypeHasDerivationRule(partition, roleAssignments, propertyAssignments);
 				default: return null;
 			}
 		}
@@ -1565,6 +1699,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingIsOfElementGroupingType.GroupingTypeDomainRoleId, true);
 			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasMembershipContradictionError.MembershipContradictionErrorDomainRoleId, true);
 			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.GroupingMembershipContradictionErrorIsForElement.GroupingMembershipContradictionErrorRelationshipDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath.SubPathDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesFunction.FunctionDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionOperatesOnParameter.ParameterDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathCalculatesCalculatedPathValue.CalculatedValueDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasInput.InputDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToPathConstant.SourceDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationRule.DerivationRuleDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathConstant.SourceDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationRule.DerivationRuleDomainRoleId, true);
 			#endregion
 		}
 		/// <summary>
@@ -1948,6 +2091,76 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.JoinType/Outer.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		Outer = 1,
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainEnumeration: LogicalCombinationOperator
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.LogicalCombinationOperator
+	/// </summary>
+	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<LogicalCombinationOperator, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel>))]
+	[global::System.CLSCompliant(true)]
+	public enum LogicalCombinationOperator
+	{
+		/// <summary>
+		/// And
+		/// The logical and operator
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LogicalCombinationOperator/And.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		And = 0,
+		/// <summary>
+		/// Or
+		/// The logical inclusive-or operator
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LogicalCombinationOperator/Or.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		Or = 1,
+		/// <summary>
+		/// Xor
+		/// The logical exclusive-or operator
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LogicalCombinationOperator/Xor.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		Xor = 2,
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainEnumeration: PathedRolePurpose
+	/// Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRolePurpose
+	/// </summary>
+	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<PathedRolePurpose, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel>))]
+	[global::System.CLSCompliant(true)]
+	public enum PathedRolePurpose
+	{
+		/// <summary>
+		/// StartRole
+		/// The role is the beginning of a path and directly attached to the root object
+		/// type.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRolePurpose/StartRole.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		StartRole = 0,
+		/// <summary>
+		/// SameFactType
+		/// The role is the same fact type as the previous join or start role.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRolePurpose/SameFactType.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		SameFactType = 1,
+		/// <summary>
+		/// PostInnerJoin
+		/// The role represents an inner over a role player shared with the previous role in
+		/// the path.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRolePurpose/PostInnerJoin.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		PostInnerJoin = 2,
+		/// <summary>
+		/// PostOuterJoin
+		/// The role represents an outer join over a role player shared with the previous
+		/// role in the path.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRolePurpose/PostOuterJoin.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		PostOuterJoin = 3,
 	}
 }
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel

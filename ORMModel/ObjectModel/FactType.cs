@@ -451,7 +451,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			// Handled by FactTypeChangeRule
 		}
-		private void SetDerivationRuleDisplayValue(string newValue)
+		private void SetDerivationExpressionDisplayValue(string newValue)
 		{
 			// Handled by FactTypeChangeRule
 		}
@@ -487,14 +487,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			Objectification objectification = Objectification;
 			return (objectification != null && !objectification.IsImplied) ? objectification.NestingType : null;
 		}
-		private string GetDerivationRuleDisplayValue()
+		private string GetDerivationExpressionDisplayValue()
 		{
-			FactTypeDerivationExpression derivation = DerivationRule;
+			FactTypeDerivationExpression derivation = DerivationExpression;
 			return (derivation == null || derivation.IsDeleted) ? String.Empty : derivation.Body;
 		}
 		private DerivationStorageType GetDerivationStorageDisplayValue()
 		{
-			FactTypeDerivationExpression derivation = DerivationRule;
+			FactTypeDerivationExpression derivation = DerivationExpression;
 			return (derivation == null || derivation.IsDeleted) ? DerivationStorageType.Derived : derivation.DerivationStorage;
 		}
 		private string GetDefinitionTextValue()
@@ -611,11 +611,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static void FactTypeChangeRule(ElementPropertyChangedEventArgs e)
 		{
 			Guid attributeGuid = e.DomainProperty.Id;
-			if (attributeGuid == FactType.DerivationRuleDisplayDomainPropertyId)
+			if (attributeGuid == FactType.DerivationExpressionDisplayDomainPropertyId)
 			{
 				FactType factType = e.ModelElement as FactType;
 				string newVal = e.NewValue as string;
-				FactTypeDerivationExpression currentRule = factType.DerivationRule;
+				FactTypeDerivationExpression currentRule = factType.DerivationExpression;
 				if (string.IsNullOrEmpty(newVal))
 				{
 					if (currentRule != null)
@@ -628,7 +628,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					if (null == currentRule)
 					{
 						currentRule = new FactTypeDerivationExpression(factType.Store);
-						factType.DerivationRule = currentRule;
+						factType.DerivationExpression = currentRule;
 					}
 					currentRule.Body = newVal;
 				}
@@ -636,9 +636,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			else if (attributeGuid == FactType.DerivationStorageDisplayDomainPropertyId)
 			{
 				FactType factType = e.ModelElement as FactType;
-				if (factType.DerivationRule != null)
+				if (factType.DerivationExpression != null)
 				{
-					factType.DerivationRule.DerivationStorage = (DerivationStorageType)e.NewValue;
+					factType.DerivationExpression.DerivationStorage = (DerivationStorageType)e.NewValue;
 				}
 			}
 			else if (attributeGuid == FactType.DefinitionTextDomainPropertyId)
