@@ -359,6 +359,10 @@
 		<value>Model '{0}' contains multiple constraints named '{1}'. Constraint names must be unique in the model.</value>
 		<comment>Model validation error text used when multiple constraints with the same name are loaded into a model. Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
 	</data>
+	<data name="ModelError.Model.DuplicateFunctionNames.Text" xml:space="preserve">
+		<value>Model '{0}' contains multiple functions named '{1}'. Function names must be unique across all functions defined in a model.</value>
+		<comment>Model validation error text used when multiple functions with the same name are loaded into a model.Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
+	</data>
 	<data name="ModelError.Model.DuplicateObjectTypeNames.Text" xml:space="preserve">
 		<value>Model '{0}' contains multiple object types named '{1}'. Type names must be unique across all entity and value types in a model.</value>
 		<comment>Model validation error text used when multiple object types with the same name are loaded into a model.Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
@@ -454,6 +458,14 @@
 	<data name="ModelErrorDisplayFilter.ToStringOverrideText" xml:space="preserve">
 		<value>(Filtered)</value>
 		<comment>Text to display for the property for the ModelErrorDisplayFilter when it is filtered.</comment>
+	</data>
+	<data name="ModelException.CalculatedPathValueInputBindsToPathConstant.PathConstantInconsistentWithBagInput" xml:space="preserve">
+		<value>A PathConstant may not be used as the input for a function parameter with bag semantics.</value>
+		<comment>Exception message when an attempt is made to modify assign a PathConstant as the input for a bag parameter.</comment>
+	</data>
+	<data name="ModelException.CalculatedPathValueIsCalculatedWithFunction.EnforceInitialCalculatedValue" xml:space="preserve">
+		<value>The relationship between a Function and a CalculatedPathValue cannot be detached from the initial calculated value.</value>
+		<comment>Exception message when an attempt is made to modify the CalculatedValue of a CalculatedPathValueIsCalculatedWithFunction relationship.</comment>
 	</data>
 	<data name="ModelException.Constraint.EnforceNoForeignFactTypes" xml:space="preserve">
 		<value>A constraint must be attached to a fact type in the same model as the constraint.</value>

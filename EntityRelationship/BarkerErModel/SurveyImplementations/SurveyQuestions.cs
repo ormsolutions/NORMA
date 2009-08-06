@@ -1776,6 +1776,22 @@ namespace ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker
 		{
 			return GetSurveyNodes(context, expansionKey);
 		}
+		/// <summary>
+		/// Implements <see cref="ISurveyNodeProvider.IsSurveyNodeExpandable"/>
+		/// </summary>
+		protected static bool IsSurveyNodeExpandable(object context, object expansionKey)
+		{
+			return expansionKey == BarkerErModel.SurveyExpansionKey ||
+				expansionKey == EntityType.SurveyExpansionKey ||
+				expansionKey == BinaryAssociation.SurveyExpansionKey ||
+				expansionKey == Attribute.SurveyExpansionKey ||
+				expansionKey == Role.SurveyExpansionKey ||
+				expansionKey == ExclusiveArc.SurveyExpansionKey;
+		}
+		bool ISurveyNodeProvider.IsSurveyNodeExpandable(object context, object expansionKey)
+		{
+			return IsSurveyNodeExpandable(context, expansionKey);
+		}
 		#endregion
 		#region IModelingEventSubscriber Implementation
 		/// <summary>

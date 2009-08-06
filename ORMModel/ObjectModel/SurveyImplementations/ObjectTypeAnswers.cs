@@ -109,6 +109,27 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return SurveyNodeDataObject;
 			}
 		}
+		/// <summary>
+		/// The key used to retrieve <see cref="ObjectType"/> expansion details for the model browser.
+		/// </summary>
+		public static readonly object SurveyExpansionKey = new object();
+		/// <summary>
+		/// Implements <see cref="ISurveyNode.SurveyNodeExpansionKey"/>
+		/// </summary>		
+		protected static new object SurveyNodeExpansionKey
+		{
+			get
+			{
+				return SurveyExpansionKey;
+			}
+		}
+		object ISurveyNode.SurveyNodeExpansionKey
+		{
+			get
+			{
+				return SurveyNodeExpansionKey;
+			}
+		}
 		#endregion // ISurveyNode Implementation
 	}
 

@@ -924,11 +924,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				visibleCommands |= ORMDesignerCommands.SelectInDocumentWindow;
 				enabledCommands |= ORMDesignerCommands.SelectInDocumentWindow;
 			}
-			if (element is IFreeFormCommandProvider<Store>)
-			{
-				visibleCommands |= ORMDesignerCommands.FreeFormCommandList;
-				enabledCommands |= ORMDesignerCommands.FreeFormCommandList;
-			}
 			if (elementReference != null)
 			{
 				// Any element reference has essentially allows the same
@@ -947,6 +942,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					visibleCommands |= ORMDesignerCommands.IncludeInGroup;
 					enabledCommands |= ORMDesignerCommands.IncludeInGroup;
 				}
+				else if (elementReference is IAllowStandardCommands)
+				{
+					enabledCommands |= ORMDesignerCommands.DeleteAny;
+					visibleCommands |= ORMDesignerCommands.DeleteAny;
+				}
 			}
 			else if (!(presentationElement is Diagram))
 			{
@@ -954,8 +954,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				enabledCommands |= ORMDesignerCommands.IncludeInNewGroup | ORMDesignerCommands.IncludeInGroupList | ORMDesignerCommands.DeleteFromGroupList;
 			}
 			// Turn on standard commands for all selections
-			visibleCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.CopyImage | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList | ORMDesignerCommands.ReportGeneratorList;
-			enabledCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.CopyImage | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList | ORMDesignerCommands.ReportGeneratorList;
+			visibleCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.CopyImage | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList | ORMDesignerCommands.ReportGeneratorList | ORMDesignerCommands.FreeFormCommandList;
+			enabledCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.CopyImage | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList | ORMDesignerCommands.ReportGeneratorList | ORMDesignerCommands.FreeFormCommandList;
 		}
 		private static void UpdateMoveRoleCommandStatus(FactTypeShape factShape, Role role, ref ORMDesignerCommands visibleCommands, ref ORMDesignerCommands enabledCommands)
 		{
@@ -1305,14 +1305,46 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						bool haveStatus = false;
 						foreach (object element in designerView.SelectedElements)
 						{
-							IFreeFormCommandProvider<Store> freeFormCommandProvider = element as IFreeFormCommandProvider<Store>;
-							if (freeFormCommandProvider != null)
+							Store store = designerView.Store;
+							IFreeFormCommandProvider<Store> directCommandProvider = element as IFreeFormCommandProvider<Store>;
+							IFreeFormCommandProviderService<Store>[] remoteCommandServices = ((IFrameworkServices)store).GetTypedDomainModelProviders<IFreeFormCommandProviderService<Store>>();
+							if (directCommandProvider != null || remoteCommandServices != null)
 							{
-								int freeFormIndex = ((OleMenuCommand)command).MatchedCommandId;
-								Store store = designerView.Store;
-								if (freeFormIndex < freeFormCommandProvider.GetFreeFormCommandCount(store, freeFormCommandProvider))
+								int freeFormCommandIndex = ((OleMenuCommand)command).MatchedCommandId;
+								IFreeFormCommandProvider<Store> resolvedCommandProvider = null;
+								int commandCount;
+								if (directCommandProvider != null)
 								{
-									freeFormCommandProvider.OnFreeFormCommandStatus(store, freeFormCommandProvider, command, freeFormIndex);
+									commandCount = directCommandProvider.GetFreeFormCommandCount(store, directCommandProvider);
+									if (freeFormCommandIndex < commandCount)
+									{
+										resolvedCommandProvider = directCommandProvider;
+									}
+									else
+									{
+										freeFormCommandIndex -= commandCount;
+									}
+								}
+								if (resolvedCommandProvider == null && remoteCommandServices != null)
+								{
+									for (int i = 0; i < remoteCommandServices.Length; ++i)
+									{
+										IFreeFormCommandProvider<Store> remoteCommandProvider = remoteCommandServices[i].GetFreeFormCommandProvider(store, element);
+										if (remoteCommandProvider != null)
+										{
+											commandCount = remoteCommandProvider.GetFreeFormCommandCount(store, element);
+											if (freeFormCommandIndex < commandCount)
+											{
+												resolvedCommandProvider = remoteCommandProvider;
+												break;
+											}
+											freeFormCommandIndex -= commandCount;
+										}
+									}
+								}
+								if (resolvedCommandProvider != null)
+								{
+									resolvedCommandProvider.OnFreeFormCommandStatus(store, element, command, freeFormCommandIndex);
 									command.Supported = true; // Make sure this is turned on, or the dynamic menus do not work
 									haveStatus = true;
 								}
@@ -1982,11 +2014,45 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			Store store = view.Store;
 			foreach (object element in view.SelectedElements)
 			{
-				IFreeFormCommandProvider<Store> freeFormCommandProvider;
-				if (null != (freeFormCommandProvider = element as IFreeFormCommandProvider<Store>) &&
-					freeFormCommandIndex < freeFormCommandProvider.GetFreeFormCommandCount(store, freeFormCommandProvider))
+				IFreeFormCommandProvider<Store> directCommandProvider = element as IFreeFormCommandProvider<Store>;
+				IFreeFormCommandProviderService<Store>[] remoteCommandServices = ((IFrameworkServices)store).GetTypedDomainModelProviders<IFreeFormCommandProviderService<Store>>();
+				if (directCommandProvider != null || remoteCommandServices != null)
 				{
-					freeFormCommandProvider.OnFreeFormCommandExecute(store, freeFormCommandProvider, freeFormCommandIndex);
+					IFreeFormCommandProvider<Store> resolvedCommandProvider = null;
+					int commandCount;
+					if (directCommandProvider != null)
+					{
+						commandCount = directCommandProvider.GetFreeFormCommandCount(store, directCommandProvider);
+						if (freeFormCommandIndex < commandCount)
+						{
+							resolvedCommandProvider = directCommandProvider;
+						}
+						else
+						{
+							freeFormCommandIndex -= commandCount;
+						}
+					}
+					if (resolvedCommandProvider == null && remoteCommandServices != null)
+					{
+						for (int i = 0; i < remoteCommandServices.Length; ++i)
+						{
+							IFreeFormCommandProvider<Store> remoteCommandProvider = remoteCommandServices[i].GetFreeFormCommandProvider(store, element);
+							if (remoteCommandProvider != null)
+							{
+								commandCount = remoteCommandProvider.GetFreeFormCommandCount(store, element);
+								if (freeFormCommandIndex < commandCount)
+								{
+									resolvedCommandProvider = remoteCommandProvider;
+									break;
+								}
+								freeFormCommandIndex -= commandCount;
+							}
+						}
+					}
+					if (resolvedCommandProvider != null)
+					{
+						resolvedCommandProvider.OnFreeFormCommandExecute(store, element, freeFormCommandIndex);
+					}
 				}
 				break;
 			}

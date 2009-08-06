@@ -605,6 +605,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
+		/// ChangeRule: typeof(ModelNote)
+		/// </summary>
+		private static void ModelNoteTextChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			if (e.DomainProperty.Id == ModelNote.TextDomainPropertyId)
+			{
+				UpdateMembershipContradictionErrorText(e.ModelElement);
+			}
+		}
+		/// <summary>
 		/// Helper function to update membership contradiction errors when an element name changes.
 		/// <see cref="ElementGrouping"/> child relationships attached to a <see cref="ModelElement"/>, which
 		/// does not itself have a Name property, so it is the responsibility of each named element to

@@ -30,6 +30,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstraction
 	/// DomainModel AbstractionDomainModel
 	/// Intermediate Attribute-centric View of ORM Model
 	/// </summary>
+	[DslModeling::ExtendsDomainModel("3EAE649F-E654-4D04-8289-C25D2C0322D8"/*ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel*/)]
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
 	[global::System.CLSCompliant(true)]

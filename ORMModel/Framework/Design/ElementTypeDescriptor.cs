@@ -247,4 +247,45 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		#endregion // GetProperties methods
 	}
 	#endregion // ElementTypeDescriptor class
+	#region BlockRelationshipPropertiesElementTypeDescriptor class
+	/// <summary>
+	/// <see cref="ElementTypeDescriptor"/> for <see cref="T:Microsoft.VisualStudio.Modeling.ModelElement"/>s
+	/// of type <typeparamref name="TModelElement"/> with relationship properties blocked.
+	/// </summary>
+	/// <typeparam name="TModelElement">
+	/// The type of the <see cref="T:Microsoft.VisualStudio.Modeling.ModelElement"/> that this
+	/// <see cref="BlockRelationshipPropertiesElementTypeDescriptor{TModelElement}"/> is for.
+	/// </typeparam>
+	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
+	public class BlockRelationshipPropertiesElementTypeDescriptor<TModelElement> : ElementTypeDescriptor<TModelElement>
+		where TModelElement : ModelElement
+	{
+		#region Constructor
+		/// <summary>
+		/// Initializes a new instance of <see cref="BlockRelationshipPropertiesElementTypeDescriptor{TModelElement}"/> for
+		/// the instance of <typeparamref name="TModelElement"/> specified by <paramref name="selectedElement"/>.
+		/// </summary>
+		public BlockRelationshipPropertiesElementTypeDescriptor(ICustomTypeDescriptor parent, TModelElement selectedElement)
+			: base(parent, selectedElement)
+		{
+		}
+		#endregion // Constructor
+		#region Relationship property overrides
+		/// <summary>
+		/// Block role player property display
+		/// </summary>
+		protected override bool IncludeEmbeddingRelationshipProperties(ModelElement requestor)
+		{
+			return false;
+		}
+		/// <summary>
+		/// Block role player property display
+		/// </summary>
+		protected override bool IncludeOppositeRolePlayerProperties(ModelElement requestor)
+		{
+			return false;
+		}
+		#endregion // Relationship property overrides
+	}
+	#endregion // BlockRelationshipPropertiesElementTypeDescriptor class
 }

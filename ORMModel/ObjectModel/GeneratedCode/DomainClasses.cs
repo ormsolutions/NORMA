@@ -11786,12 +11786,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		
 		#endregion
-		#region PathedRoleCollection opposite domain role accessor
+		#region RoleCollection opposite domain role accessor
 		/// <summary>
-		/// Gets a list of PathedRoleCollection.
+		/// Gets a list of RoleCollection.
 		/// The roles included in this path.
 		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<Role> PathedRoleCollection
+		public virtual DslModeling::LinkedElementCollection<Role> RoleCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
@@ -11810,7 +11810,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::LinkedElementCollection<RoleSubPath>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath.ParentRolePathDomainRoleId);
+				return new DslModeling::LinkedElementCollection<RoleSubPath>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath.ParentRolePathDomainRoleId);
 			}
 		}
 		#endregion
@@ -11943,12 +11943,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath.SubPathDomainRoleId) as RolePath;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath.SubPathDomainRoleId) as RolePath;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath.SubPathDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath.SubPathDomainRoleId, value);
 			}
 		}
 		#endregion
@@ -12514,6 +12514,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		
+		#endregion
+		#region DuplicateNameError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets DuplicateNameError.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError.Function
+		/// </summary>
+		public virtual FunctionDuplicateNameError DuplicateNameError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError.FunctionDomainRoleId) as FunctionDuplicateNameError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError.FunctionDomainRoleId, value);
+			}
+		}
 		#endregion
 		#region Model opposite domain role accessor
 		/// <summary>
@@ -13325,6 +13345,60 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				return new DslModeling::LinkedElementCollection<RecognizedPhrase>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RecognizedPhraseHasDuplicateNameError.DuplicateNameErrorDomainRoleId);
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainClass FunctionDuplicateNameError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionDuplicateNameError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionDuplicateNameError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("b642b6c4-9c15-44c3-92ec-1b39b91619e4")]
+	public partial class FunctionDuplicateNameError : DuplicateNameError
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// FunctionDuplicateNameError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xb642b6c4, 0x9c15, 0x44c3, 0x92, 0xec, 0x1b, 0x39, 0xb9, 0x16, 0x19, 0xe4);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public FunctionDuplicateNameError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public FunctionDuplicateNameError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region FunctionCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of FunctionCollection.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError.DuplicateNameError
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<Function> FunctionCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<Function>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError.DuplicateNameErrorDomainRoleId);
 			}
 		}
 		#endregion

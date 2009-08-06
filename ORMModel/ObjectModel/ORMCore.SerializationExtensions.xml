@@ -643,7 +643,7 @@
 	</se:Element>
 	<se:Element Class="SubtypeDerivationRule" Name="SubtypeDerivationPath" Override="true">
 		<se:ConditionalSerialization>
-			<plx:comment>We leave this in memory so that a user can easily switch subtypes, but do not serialize it.</plx:comment>
+			<plx:comment>We leave this in memory so that a user can easily switch subtypes, but do not serialize it unless we have a current subtype.</plx:comment>
 			<plx:return>
 				<plx:callInstance name="IsSubtype" type="property">
 					<plx:callObject>
@@ -917,6 +917,7 @@
 			<se:Embed RelationshipName="FunctionOperatesOnParameter" RoleName="Parameter"/>
 		</se:Container>
 		<se:Link RelationshipName="CalculatedPathValueIsCalculatedWithFunction" RoleName="CalculatedValue" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="FunctionHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="FunctionParameter" Name="Parameter" Override="true">
 		<se:Attribute ID="BagInput">
@@ -1021,7 +1022,7 @@
 			<se:Link RelationshipName="PathedRole" RoleName="Role"/>
 		</se:Container>
 		<se:Container Name="SubPaths">
-			<se:Embed RelationshipName="RoleSubPathPathIsContinuationOfRolePath" RoleName="SubPath"/>
+			<se:Embed RelationshipName="RoleSubPathIsContinuationOfRolePath" RoleName="SubPath"/>
 		</se:Container>
 		<se:Link RelationshipName="PathedRole" RoleName="Role" Name="PathedRole" WriteStyle="PrimaryLinkElement"/>
 	</se:Element>
@@ -1064,6 +1065,12 @@
 			<se:Link RelationshipName="RecognizedPhraseHasDuplicateNameError" RoleName="RecognizedPhrase"/>
 		</se:Container>
 		<se:Link RelationshipName="RecognizedPhraseHasDuplicateNameError" RoleName="RecognizedPhrase" Name="RecognizedPhrase"/>
+	</se:Element>
+	<se:Element Class="FunctionDuplicateNameError" Override="true">
+		<se:Container Name="Functions">
+			<se:Link RelationshipName="FunctionHasDuplicateNameError" RoleName="Function"/>
+		</se:Container>
+		<se:Link RelationshipName="FunctionHasDuplicateNameError" RoleName="Function" Name="Function"/>
 	</se:Element>
 	<se:Element Class="EntityTypeRequiresReferenceSchemeError" Override="true">
 		<se:Link RelationshipName="ObjectTypeHasEntityTypeRequiresReferenceSchemeError" RoleName="ObjectType" Name="EntityType"/>

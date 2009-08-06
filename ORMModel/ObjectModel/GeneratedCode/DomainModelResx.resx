@@ -1243,8 +1243,16 @@
     <comment>Description for DomainClass &apos;RecognizedPhraseDuplicateNameError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RecognizedPhraseDuplicateNameError.DisplayName" xml:space="preserve">
-    <value>Duplicate Recognized Words</value>
+    <value>Duplicate Recognized Phrases</value>
     <comment>DisplayName for DomainClass &apos;RecognizedPhraseDuplicateNameError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionDuplicateNameError.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;FunctionDuplicateNameError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionDuplicateNameError.DisplayName" xml:space="preserve">
+    <value>Duplicate Function Names</value>
+    <comment>DisplayName for DomainClass &apos;FunctionDuplicateNameError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PopulationUniquenessError.Description" xml:space="preserve">
     <value></value>
@@ -3067,6 +3075,38 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RecognizedPhraseHasDuplicateNameError/DuplicateNameError.PropertyDisplayName" xml:space="preserve">
     <value>Recognized Phrase Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;DuplicateNameError&apos; on DomainRelationship &apos;RecognizedPhraseHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError</value>
+    <comment>Description for DomainClass &apos;FunctionHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError.DisplayName" xml:space="preserve">
+    <value>Function Has Duplicate Name Error</value>
+    <comment>DisplayName for DomainClass &apos;FunctionHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError/Function.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError.Function</value>
+    <comment>Description for DomainRole &apos;Function&apos; on DomainRelationship &apos;FunctionHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError/Function.DisplayName" xml:space="preserve">
+    <value>Function</value>
+    <comment>DisplayName for DomainRole &apos;Function&apos; on DomainRelationship &apos;FunctionHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError/Function.PropertyDisplayName" xml:space="preserve">
+    <value>Duplicate Name Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Function&apos; on DomainRelationship &apos;FunctionHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError/DuplicateNameError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError.DuplicateNameError</value>
+    <comment>Description for DomainRole &apos;DuplicateNameError&apos; on DomainRelationship &apos;FunctionHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError/DuplicateNameError.DisplayName" xml:space="preserve">
+    <value>DuplicateNameError</value>
+    <comment>DisplayName for DomainRole &apos;DuplicateNameError&apos; on DomainRelationship &apos;FunctionHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError/DuplicateNameError.PropertyDisplayName" xml:space="preserve">
+    <value>Function Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DuplicateNameError&apos; on DomainRelationship &apos;FunctionHasDuplicateNameError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ExternalRoleConstraint.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ExternalRoleConstraint</value>
@@ -7005,7 +7045,7 @@
     <comment>DisplayName for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;PathedRole&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole/RolePath.PropertyDisplayName" xml:space="preserve">
-    <value>Pathed Role Collection</value>
+    <value>Role Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;PathedRole&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole/Role.Description" xml:space="preserve">
@@ -7052,37 +7092,37 @@
     <value>Correlated Child Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;CorrelatingParent&apos; on DomainRelationship &apos;PathedRoleIsRemotelyCorrelatedWithPathedRole&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath</value>
-    <comment>Description for DomainClass &apos;RoleSubPathPathIsContinuationOfRolePath&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath</value>
+    <comment>Description for DomainClass &apos;RoleSubPathIsContinuationOfRolePath&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath.DisplayName" xml:space="preserve">
-    <value>Role Sub Path Path Is Continuation Of Role Path</value>
-    <comment>DisplayName for DomainClass &apos;RoleSubPathPathIsContinuationOfRolePath&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath.DisplayName" xml:space="preserve">
+    <value>Role Sub Path Is Continuation Of Role Path</value>
+    <comment>DisplayName for DomainClass &apos;RoleSubPathIsContinuationOfRolePath&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath/ParentRolePath.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath/ParentRolePath.Description" xml:space="preserve">
     <value>Sub paths branched from the end of the current path.</value>
-    <comment>Description for DomainRole &apos;ParentRolePath&apos; on DomainRelationship &apos;RoleSubPathPathIsContinuationOfRolePath&apos;</comment>
+    <comment>Description for DomainRole &apos;ParentRolePath&apos; on DomainRelationship &apos;RoleSubPathIsContinuationOfRolePath&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath/ParentRolePath.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath/ParentRolePath.DisplayName" xml:space="preserve">
     <value>ParentRolePath</value>
-    <comment>DisplayName for DomainRole &apos;ParentRolePath&apos; on DomainRelationship &apos;RoleSubPathPathIsContinuationOfRolePath&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;ParentRolePath&apos; on DomainRelationship &apos;RoleSubPathIsContinuationOfRolePath&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath/ParentRolePath.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath/ParentRolePath.PropertyDisplayName" xml:space="preserve">
     <value>Split Path Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;ParentRolePath&apos; on DomainRelationship &apos;RoleSubPathPathIsContinuationOfRolePath&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;ParentRolePath&apos; on DomainRelationship &apos;RoleSubPathIsContinuationOfRolePath&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath/SubPath.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath/SubPath.Description" xml:space="preserve">
     <value>The containing path this sub path branches off of.</value>
-    <comment>Description for DomainRole &apos;SubPath&apos; on DomainRelationship &apos;RoleSubPathPathIsContinuationOfRolePath&apos;</comment>
+    <comment>Description for DomainRole &apos;SubPath&apos; on DomainRelationship &apos;RoleSubPathIsContinuationOfRolePath&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath/SubPath.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath/SubPath.DisplayName" xml:space="preserve">
     <value>RoleSubPath</value>
-    <comment>DisplayName for DomainRole &apos;SubPath&apos; on DomainRelationship &apos;RoleSubPathPathIsContinuationOfRolePath&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;SubPath&apos; on DomainRelationship &apos;RoleSubPathIsContinuationOfRolePath&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath/SubPath.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath/SubPath.PropertyDisplayName" xml:space="preserve">
     <value>Parent Role Path</value>
-    <comment>PropertyDisplayName for DomainRole &apos;SubPath&apos; on DomainRelationship &apos;RoleSubPathPathIsContinuationOfRolePath&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;SubPath&apos; on DomainRelationship &apos;RoleSubPathIsContinuationOfRolePath&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesFunction.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesFunction</value>

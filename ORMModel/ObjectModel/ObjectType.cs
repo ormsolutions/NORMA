@@ -85,6 +85,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		public static readonly object DeleteReferenceModeValueType = new object();
 		#endregion // Public token values
+		#region Public static fields
+		/// <summary>
+		/// An <see cref="ObjectType"/> array with no elements
+		/// </summary>
+		public static readonly ObjectType[] EmptyArray = new ObjectType[0];
+		#endregion // Public static fields
 		#region CustomStorage handlers
 		private void SetIsValueTypeValue(bool newValue)
 		{
@@ -1333,21 +1339,37 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <returns>ObjectType[]</returns>
 		public static ObjectType[] GetNearestCompatibleTypes(IEnumerable<Role> roleCollection)
 		{
+			return GetNearestCompatibleTypes(GetRolePlayerCollection(roleCollection));
+		}
+		private static IEnumerable<ObjectType> GetRolePlayerCollection(IEnumerable<Role> roleCollection)
+		{
+			foreach (Role role in roleCollection)
+			{
+				yield return role.RolePlayer;
+			}
+		}
+		/// <summary>
+		/// Return an ObjectType array containing the nearest compatible
+		/// types for the given set of object types.
+		/// </summary>
+		/// <param name="objectTypeCollection">Set of object types to test</param>
+		/// <returns>ObjectType[]</returns>
+		public static ObjectType[] GetNearestCompatibleTypes(IEnumerable<ObjectType> objectTypeCollection)
+		{
 			int currentRoleIndex = 0;
 			int expectedVisitCount = 0;
 			ObjectType firstObjectType = null;
 			Dictionary<ObjectType, NearestCompatibleTypeNode> dictionary = null;
-			foreach (Role currentRole in roleCollection)
+			foreach (ObjectType currentObjectType in objectTypeCollection)
 			{
 				// Increment first so we can use with the LastVisitedDuring field. Otherwise,
 				// this is not used
 				++currentRoleIndex;
-				ObjectType currentObjectType = currentRole.RolePlayer;
 				if (firstObjectType == null)
 				{
 					firstObjectType = currentObjectType;
 				}
-				else if (firstObjectType != currentObjectType)
+				else if (firstObjectType != currentObjectType && currentObjectType != null)
 				{
 					if (expectedVisitCount == 0)
 					{
@@ -1415,7 +1437,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			else
 			{
-				retVal = new ObjectType[0];
+				retVal = EmptyArray;
 			}
 			return retVal;
 		}

@@ -509,14 +509,55 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		private string GetNameValue()
 		{
-			return GetGeneratedNameValue();
+			return GetGeneratedNameValue(true);
+		}
+		private static RuntimeMethodHandle myNameSetValueMethodHandle;
+		private static RuntimeMethodHandle NameSetValueMethodHandle
+		{
+			get
+			{
+				RuntimeMethodHandle retVal = myNameSetValueMethodHandle;
+				if (retVal.Value == IntPtr.Zero)
+				{
+					myNameSetValueMethodHandle = retVal = typeof(NamePropertyHandler).GetMethod("SetValue").MethodHandle;
+				}
+				return retVal;
+			}
+		}
+		private static RuntimeMethodHandle myGeneratedNameSetValueMethodHandle;
+		private static RuntimeMethodHandle GeneratedNameSetValueMethodHandle
+		{
+			get
+			{
+				RuntimeMethodHandle retVal = myGeneratedNameSetValueMethodHandle;
+				if (retVal.Value == IntPtr.Zero)
+				{
+					myGeneratedNameSetValueMethodHandle = retVal = typeof(GeneratedNamePropertyHandler).GetMethod("SetValue").MethodHandle;
+				}
+				return retVal;
+			}
 		}
 		private string GetGeneratedNameValue()
+		{
+			return GetGeneratedNameValue(false);
+		}
+		private string GetGeneratedNameValue(bool forGetNameValue)
 		{
 			Objectification objectification;
 			ObjectType nestingType;
 			Store store = Store;
-			if (store.Disposed || store.ShuttingDown || store.InUndoRedoOrRollback)
+			if (store.Disposed ||
+				store.ShuttingDown ||
+				// This is a very tricky operation, resulting in the unconventional
+				// stack frame check. During an Undo/Redo, when 'GetValue' is called
+				// from 'SetValue' then there should be no side effects. All of these
+				// SetValue calls are made during the store-internal Undo and Redo
+				// methods on the ChangeElementCommand class. However, other requests
+				// will also naturally occur during the 'NotifyObservers' phase of the
+				// command playback sequence. SetValue cannot be called during this event
+				// notification phase, which needs to be treated as a normal request
+				// with on-demand generation of the name.
+				(store.InUndoRedoOrRollback && (new StackFrame(3, false).GetMethod().MethodHandle == (forGetNameValue ? NameSetValueMethodHandle : GeneratedNameSetValueMethodHandle))))
 			{
 				return myGeneratedName;
 			}
@@ -1286,10 +1327,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (newGeneratedName == null && !haveNewName)
 				{
 					// Name did not change, but no one cared, add a simple entry to the transaction log
-					if (!string.IsNullOrEmpty(oldGeneratedName))
-					{
-						GeneratedNamePropertyHandler.ClearGeneratedName(factType, oldGeneratedName);
-					}
+					// Note that we add an entry changing a blank to a blank. If we do not do this, then
+					// there is no transaction record, and a name that is generated on demand outside
+					// the transaction is not cleared on undo, so it does not get regenerated with
+					// the original name.
+					GeneratedNamePropertyHandler.ClearGeneratedName(factType, !string.IsNullOrEmpty(oldGeneratedName) ? "" : oldGeneratedName);
 				}
 				factType.OnFactTypeNameChanged();
 			}

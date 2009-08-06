@@ -1214,7 +1214,13 @@
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="RecognizedPhraseDuplicateNameError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="E4F41332-9A69-4CE8-871C-3507326D7CDB" DisplayName="Duplicate Recognized Words" Description="">
+		<DomainClass Name="RecognizedPhraseDuplicateNameError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="E4F41332-9A69-4CE8-871C-3507326D7CDB" DisplayName="Duplicate Recognized Phrases" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="DuplicateNameError"/>
+			</BaseClass>
+		</DomainClass>
+
+		<DomainClass Name="FunctionDuplicateNameError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="B642B6C4-9C15-44C3-92EC-1B39B91619E4" DisplayName="Duplicate Function Names" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="DuplicateNameError"/>
 			</BaseClass>
@@ -2638,8 +2644,6 @@
 			</Target>
 		</DomainRelationship>
 
-
-
 		<DomainRelationship Name="RecognizedPhraseHasDuplicateNameError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="6D1ABE6F-A38B-4981-8124-4DFB48F1AA5A">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
@@ -2655,6 +2659,26 @@
 				<DomainRole Name="DuplicateNameError" PropertyName="RecognizedPhraseCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="DuplicateNameError" Id="DC8DEFE0-274B-42F5-834E-42BFB183FA9E">
 					<RolePlayer>
 						<DomainClassMoniker Name="RecognizedPhraseDuplicateNameError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="FunctionHasDuplicateNameError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="0EC6FED9-6561-43C7-B704-9BC56D7474FE">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="Function" PropertyName="DuplicateNameError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Function" Id="A9A2CADB-325A-416B-AFD6-3215814BF46A">
+					<RolePlayer>
+						<DomainClassMoniker Name="Function"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="DuplicateNameError" PropertyName="FunctionCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="DuplicateNameError" Id="7C4C1204-9BAC-4E3E-BABC-4D849F4CF30A">
+					<RolePlayer>
+						<DomainClassMoniker Name="FunctionDuplicateNameError"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -5076,21 +5100,21 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="PathedRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="8F28981E-E8B5-4205-82BA-2487B9B3EF13" DisplayName="PathedRole" Description="An occurrence of a &lt;see cref=&quot;Role&quot;/&gt; in a &lt;see cref=&quot;RolePath&quot;/&gt;. A single role may occur multiple times in the same path.">
+		<DomainRelationship Name="PathedRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="8F28981E-E8B5-4205-82BA-2487B9B3EF13" DisplayName="PathedRole" AllowsDuplicates="true" Description="An occurrence of a &lt;see cref=&quot;Role&quot;/&gt; in a &lt;see cref=&quot;RolePath&quot;/&gt;. A single role may occur multiple times in the same path.">
 			<Properties>
 				<DomainProperty Name="IsNegated" DefaultValue="False" DisplayName="IsNegated" Id="1260F1F6-15BB-425A-8FF7-B7841E8252AD" Description="Indicates that this step in the path is negated.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="PathedRolePurpose" DisplayName="PathedRolePurpose" Id="FFAF4EF9-CA23-4D14-BB6D-8F5B3C90E680" Description="Specifies how this pathed role relates to the previous pathed role.">
+				<DomainProperty Name="PathedRolePurpose" DefaultValue="SameFactType" DisplayName="PathedRolePurpose" Id="FFAF4EF9-CA23-4D14-BB6D-8F5B3C90E680" Description="Specifies how this pathed role relates to the previous pathed role.">
 					<Type>
 						<DomainEnumerationMoniker Name="PathedRolePurpose"/>
 					</Type>
 				</DomainProperty>
 			</Properties>
 			<Source>
-				<DomainRole Name="RolePath" PropertyName="PathedRoleCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="RolePath" Id="E1A7228B-6F79-42FB-8877-803ADCFBB54A" Description="The roles included in this path.">
+				<DomainRole Name="RolePath" PropertyName="RoleCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="RolePath" Id="E1A7228B-6F79-42FB-8877-803ADCFBB54A" Description="The roles included in this path.">
 					<RolePlayer>
 						<DomainClassMoniker Name="RolePath"/>
 					</RolePlayer>
@@ -5120,7 +5144,7 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="RoleSubPathPathIsContinuationOfRolePath" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="79BE9E2C-9E3F-4EA0-957C-4D4EAD2389B2">
+		<DomainRelationship Name="RoleSubPathIsContinuationOfRolePath" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="79BE9E2C-9E3F-4EA0-957C-4D4EAD2389B2">
 			<Source>
 				<DomainRole Name="ParentRolePath" PropertyName="SplitPathCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="ParentRolePath" Id="97C4E687-6FF4-403A-AA36-376476CBA5D4" Description="Sub paths branched from the end of the current path.">
 					<RolePlayer>

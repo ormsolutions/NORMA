@@ -365,6 +365,21 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 		/// Apply the <see cref="ISurveyNodeReference.UseSurveyNodeReferenceAnswer"/> method if set
 		/// </summary>
 		FilterReferencedAnswers = 0x10,
+		/// <summary>
+		/// Disable navigation jumps to the referenced element
+		/// </summary>
+		BlockTargetNavigation = 0x20,
+		/// <summary>
+		/// Track the instance that implements the reference in addition
+		/// to the instance components. This flag should be set if the
+		/// reference supports expansion by return a key from <see cref="ISurveyNode.SurveyNodeExpansionKey"/>
+		/// or if context for the instance cannot be easily determined for
+		/// a deleted instance. An element with this flag set must not change
+		/// over time and should call <see cref="INotifySurveyElementChanged.ElementDeleted(Object)"/>
+		/// instead of <see cref="INotifySurveyElementChanged.ElementReferenceDeleted"/> to
+		/// remove the element.
+		/// </summary>
+		TrackReferenceInstance = 0x40,
 	}
 	#endregion // SurveyNodeReferenceOptions enum
 	#region ISurveyNodeReference interface
@@ -426,6 +441,32 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 		object FloatingSurveyNodeQuestionKey { get;}
 	}
 	#endregion // ISurveyFloatingNode interface
+	#region ISurveyNodeCustomEditor interface
+	/// <summary>
+	/// Support more advanced edit controls than the
+	/// standard inline text editor. Editing support
+	/// through this interface is checked before
+	/// <see cref="ISurveyNode.IsSurveyNameEditable"/> and
+	/// <see cref="ISurveyNode.EditableSurveyName"/> are
+	/// used to support base text editing.
+	/// </summary>
+	public interface ISurveyNodeCustomEditor
+	{
+		/// <summary>
+		/// Begin a customized label edit.
+		/// </summary>
+		/// <param name="activationStyle">The <see cref="VirtualTreeLabelEditActivationStyles"/> style indicating
+		/// the user action responsible for activating the edit.</param>
+		/// <returns>A populated <see cref="VirtualTreeLabelEditData"/>, or <see cref="VirtualTreeLabelEditData.Invalid"/>
+		/// to attempt text processing.</returns>
+		VirtualTreeLabelEditData BeginLabelEdit(VirtualTreeLabelEditActivationStyles activationStyle);
+		/// <summary>
+		/// Retrieve the editor activation styles supported by this editor. <see cref="BeginLabelEdit"/>
+		/// will only be called for the supported styles.
+		/// </summary>
+		VirtualTreeLabelEditActivationStyles SupportedEditActivationStyles { get;}
+	}
+	#endregion // ISurveyNodeCustomEditor interface
 	#region ISurveyNodeDropTarget interface
 	/// <summary>
 	/// Support dropping elements on a survey node
@@ -542,6 +583,19 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 		/// <see cref="ISurveyNode.SurveyNodeExpansionKey"/> and <see cref="ISurveyQuestionProvider{Object}.GetSurveyQuestions"/></param>
 		/// <returns><see cref="IEnumerable{Object}"/> for all nodes returned by the provider</returns>
 		IEnumerable<object> GetSurveyNodes(object context, object expansionKey);
+		/// <summary>
+		/// Determine if <see cref="GetSurveyNodes"/> should be called for the provided
+		/// <paramref name="context"/> object and <paramref name="expansionKey"/>. Returning
+		/// <see langword="false"/> means that no expansion is offered and GetSurveyNodes will
+		/// not be called with this provider. Returning <see langword="true"/> enables populated
+		/// and empty expansions.
+		/// </summary>
+		/// <param name="context">The parent object.</param>
+		/// <param name="expansionKey">The expansion key indicating the type of expansion
+		/// data to retrieve for the provided context. Expansion keys are also used by
+		/// <see cref="ISurveyNode.SurveyNodeExpansionKey"/> and <see cref="ISurveyQuestionProvider{Object}.GetSurveyQuestions"/></param>
+		/// <returns><see langword="true"/> to enable expansion for this key.</returns>
+		bool IsSurveyNodeExpandable(object context, object expansionKey);
 	}
 	#endregion //ISurveyNodeProvider interface
 	#region INotifySurveyElementChanged interface
@@ -562,18 +616,28 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 		/// <summary>
 		/// Called if the answers provided by a node have been changed.
 		/// </summary>
-		/// <param name="element">the object that has been changed</param>
+		/// <param name="element">The object that has been changed.</param>
 		/// <param name="questionTypes">The question types.</param>
 		void ElementChanged(object element, params Type[] questionTypes);
 		/// <summary>
 		/// Called if the answers provided by a node reference have been changed.
 		/// </summary>
-		/// <param name="element">the object that has been changed</param>
+		/// <param name="element">The object that has been changed.</param>
 		/// <param name="referenceReason">The reference reason. Corresponds to the
 		/// reason provided by <see cref="P:ISurveyNodeReference.SurveyNodeReferenceReason"/></param>
 		/// <param name="contextElement">The context container of the referenced element.</param>
 		/// <param name="questionTypes">The question types.</param>
 		void ElementReferenceChanged(object element, object referenceReason, object contextElement, params Type[] questionTypes);
+		/// <summary>
+		/// Called if the expansion state of a node with no expansion displayed or
+		/// an empty expansion has changed. Used with <see cref="ISurveyNodeProvider.IsSurveyNodeExpandable"/>
+		/// to control expansion display. If the last item is removed from an expansion,
+		/// then an automatic check is made to determine if the empty expansion should
+		/// still be displayed, so this notification is ignored if the expansion list
+		/// associated with this element is not empty.
+		/// </summary>
+		/// <param name="element">The object that has been changed.</param>
+		void ElementExpandabilityChanged(object element);
 		/// <summary>
 		/// Called when an element is removed from the container's node provider
 		/// </summary>
@@ -589,7 +653,12 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 		/// displayed in the alternate locations.</param>
 		void ElementDeleted(object element, bool preserveReferences);
 		/// <summary>
-		/// Called if element is removed from the container's node provider
+		/// Called if element reference is removed from the container's node provider.
+		/// If the element has a custom expansion specified with <see cref="ISurveyNode.SurveyNodeExpansionKey"/>
+		/// instead of the <see cref="SurveyNodeReferenceOptions.InlineExpansion"/> option,
+		/// or cannot easily determine the <paramref name="contextElement"/> during delete
+		/// notifications, then the reference element should set the <see cref="SurveyNodeReferenceOptions.TrackReferenceInstance"/>
+		/// option and notify deletion with the <see cref="ElementDeleted(Object)"/> notification.
 		/// </summary>
 		/// <param name="element">The object that was removed from the node provider</param>
 		/// <param name="referenceReason">The reference reason. Corresponds to the

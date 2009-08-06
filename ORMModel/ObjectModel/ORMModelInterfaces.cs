@@ -136,18 +136,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		bool CanAddTransaction { get; set;}
 		/// <summary>
-		/// Return true if events are being for a visible transaction item.
+		/// Return true if events are being processed for a visible transaction item.
 		/// A <see cref="TransactionItem"/> is visible if it contains changes to the primary
 		/// document <see cref="Store"/>. Visible transaction items can be seen in
 		/// the Undo and Redo lists.
 		/// </summary>
 		/// <remarks>By default, the answer to this question is automatically calculated
-		/// based on the currently processing transaction. However, the answer to this
-		/// question can be accurately calculated based on context information if the
-		/// <see cref="Store"/> is not in an Undo or Redo state. To override the default
-		/// processing, an UndoUnit implementation must explicitly set the property twice.
-		/// The first call sets the expected return value; the second call must be the
-		/// opposite boolean value.</remarks>
+		/// based on the currently processing transaction. However, the answer cannot
+		/// be accurately calculated based on context information if the <see cref="Store"/>
+		/// is not in an Undo or Redo state. To override the default processing, an UndoUnit
+		/// implementation must explicitly set the property twice. The first call sets the
+		/// expected return value; the second call must be the opposite boolean value.</remarks>
 		bool ProcessingVisibleTransactionItemEvents { get; set;}
 		/// <summary>
 		/// Add callbacks to determine the result of <see cref="GetAutomatedElementDirective"/>

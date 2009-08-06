@@ -33,7 +33,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 	/// The type of the <see cref="ORMModelElement"/> that this <see cref="ORMModelElementTypeDescriptor{TModelElement}"/> is for.
 	/// </typeparam>
 	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
-	public class ORMModelElementTypeDescriptor<TModelElement> : ElementTypeDescriptor<TModelElement>
+	public class ORMModelElementTypeDescriptor<TModelElement> : BlockRelationshipPropertiesElementTypeDescriptor<TModelElement>
 		where TModelElement : ORMModelElement
 	{
 		/// <summary>
@@ -55,24 +55,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			PropertyDescriptorCollection properties = base.GetProperties(attributes);
 			ExtendableElementUtility.GetExtensionProperties(ModelElement, properties);
 			return properties;
-		}
-
-		/// <summary>
-		/// Not used, don't look for them.
-		/// </summary>
-		protected override bool IncludeEmbeddingRelationshipProperties(ModelElement requestor)
-		{
-			return false;
-		}
-
-		/// <summary>
-		/// Let our *Display properties handle these.
-		/// </summary>
-		protected override bool IncludeOppositeRolePlayerProperties(ModelElement requestor)
-		{
-			// UNDONE: We may want to lose the *Display properties. Need a way to filter
-			// the contents of a RolePlayerPropertyDescriptor dropdown list
-			return false;
 		}
 	}
 }

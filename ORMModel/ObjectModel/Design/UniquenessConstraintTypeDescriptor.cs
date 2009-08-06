@@ -74,20 +74,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 					// then it will automatically be readded as the preferred identifier if it is
 					// changed to false. Don't allow it to change.
 					if (uniquenessConstraint.IsInternal &&
-						(null != (factType = identifierFor.NestedFactType)) &&
-						// Note there is only one FactType for an internal constraint
-						(factType == uniquenessConstraint.FactTypeCollection[0]))
+						null != (factType = identifierFor.NestedFactType))
 					{
 						UniquenessConstraint candidate = null;
-						Role unaryRole;
-						if (null != (unaryRole = factType.UnaryRole))
+						LinkedElementCollection<Role> constraintRoles = uniquenessConstraint.RoleCollection;
+						if (constraintRoles.Count == 1 && constraintRoles[0] is ObjectifiedUnaryRole) // Note there is only one FactType for an internal constraint
 						{
-							if (null != (unaryRole = unaryRole.ObjectifiedUnaryRole))
-							{
-								candidate = unaryRole.SingleRoleAlethicUniquenessConstraint;
-							}
+							candidate = uniquenessConstraint;
 						}
-						else
+						else if (factType == uniquenessConstraint.FactTypeCollection[0] && null == factType.UnaryRole)
 						{
 							foreach (UniquenessConstraint constraint in factType.GetInternalConstraints<UniquenessConstraint>())
 							{

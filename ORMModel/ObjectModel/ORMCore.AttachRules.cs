@@ -35,6 +35,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					// This would have a slightly negative impact on performance, but the result would still be correct.
 					// Given the low likelihood of this ever happening, the extra overhead of synchronization would outweigh any possible gain from it.
 					retVal = new Type[]{
+						typeof(CalculatedPathValue).GetNestedType("FunctionChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(CalculatedPathValue).GetNestedType("FunctionDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(CalculatedPathValue).GetNestedType("InputBoundToCalculatedValueRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(CalculatedPathValue).GetNestedType("InputBoundToConstantRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(CalculatedPathValue).GetNestedType("InputBoundToPathedRoleRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ConstraintRoleSequence).GetNestedType("BlockRolePlayerChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ConstraintRoleSequence).GetNestedType("ConstraintRoleSequenceHasRoleAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ConstraintRoleSequence).GetNestedType("ConstraintRoleSequenceHasRoleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -80,6 +85,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						typeof(ElementGrouping).GetNestedType("GroupingExclusionDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ElementGrouping).GetNestedType("StandardNamedElementNameChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ElementGrouping).GetNestedType("FactTypeNameChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ElementGrouping).GetNestedType("ModelNoteTextChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ElementGroupingSet).GetNestedType("DuplicateGroupingNameGroupingDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ElementGroupingSet).GetNestedType("GroupingDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ElementGroupingSet).GetNestedType("GroupingSetAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -211,9 +217,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						typeof(ObjectTypeInstance).GetNestedType("RolePlayerDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeInstance).GetNestedType("RolePlayerRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeInstance).GetNestedType("PreferredSupertypeChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ORMModel).GetNestedType("DuplicateConstraintNameConstraintDeleteRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ORMModel).GetNestedType("DuplicateObjectTypeNameObjectTypeDeleteRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ORMModel).GetNestedType("DuplicateRecognizedPhraseDeleteRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ORMModel).GetNestedType("DuplicateConstraintNameConstraintDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ORMModel).GetNestedType("DuplicateObjectTypeNameObjectTypeDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ORMModel).GetNestedType("DuplicateRecognizedPhraseDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ORMModel).GetNestedType("DuplicateFunctionNameDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Reading).GetNestedType("ReadingOrderHasRoleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Reading).GetNestedType("ReadingPropertiesChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RecognizedPhrase).GetNestedType("RecognizedPhraseHasAbbreviationDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -229,9 +236,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						typeof(RingConstraint).GetNestedType("RingConstraintTypeChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Role).GetNestedType("ConstraintRoleSequenceHasRoleAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Role).GetNestedType("ConstraintRoleSequenceHasRoleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(Role).GetNestedType("FactTypeDerivationRuleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Role).GetNestedType("RoleChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Role).GetNestedType("RoleInstanceAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Role).GetNestedType("RoleInstanceDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(Role).GetNestedType("RoleDerivesFromCalculatedValueRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(Role).GetNestedType("RoleDerivesFromConstantRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(Role).GetNestedType("RoleDerivedFromPathedRoleRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Role).GetNestedType("RoleInstanceRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Role).GetNestedType("RolePlayerRequiredAddRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Role).GetNestedType("RolePlayerRequiredDeleteRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -338,7 +349,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMCoreDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 270; ++i)
+			for (int i = 0; i < 281; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -350,6 +361,141 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	}
 	#endregion // Attach rules to ORMCoreDomainModel model
 	#region Auto-rule classes
+	#region Rule classes for CalculatedPathValue
+	partial class CalculatedPathValue
+	{
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(CalculatedPathValueIsCalculatedWithFunction), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class FunctionChangedRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public FunctionChangedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue
+			/// /// <summary>
+			/// /// RolePlayerChangeRule: typeof(CalculatedPathValueIsCalculatedWithFunction)
+			/// /// </summary>
+			/// private static void FunctionChangedRule(RolePlayerChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue.FunctionChangedRule");
+				CalculatedPathValue.FunctionChangedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue.FunctionChangedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(CalculatedPathValueIsCalculatedWithFunction), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class FunctionDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public FunctionDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue
+			/// /// <summary>
+			/// /// DeleteRule: typeof(CalculatedPathValueIsCalculatedWithFunction)
+			/// /// </summary>
+			/// private static void FunctionDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue.FunctionDeletedRule");
+				CalculatedPathValue.FunctionDeletedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue.FunctionDeletedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(CalculatedPathValueInputBindsToCalculatedPathValue), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class InputBoundToCalculatedValueRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public InputBoundToCalculatedValueRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue
+			/// /// <summary>
+			/// /// AddRule: typeof(CalculatedPathValueInputBindsToCalculatedPathValue)
+			/// /// </summary>
+			/// private static void InputBoundToCalculatedValueRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue.InputBoundToCalculatedValueRule");
+				CalculatedPathValue.InputBoundToCalculatedValueRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue.InputBoundToCalculatedValueRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(CalculatedPathValueInputBindsToPathConstant), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class InputBoundToConstantRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public InputBoundToConstantRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue
+			/// /// <summary>
+			/// /// AddRule: typeof(CalculatedPathValueInputBindsToPathConstant)
+			/// /// </summary>
+			/// private static void InputBoundToConstantRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue.InputBoundToConstantRule");
+				CalculatedPathValue.InputBoundToConstantRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue.InputBoundToConstantRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(CalculatedPathValueInputBindsToPathedRole), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class InputBoundToPathedRoleRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public InputBoundToPathedRoleRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue
+			/// /// <summary>
+			/// /// AddRule: typeof(CalculatedPathValueInputBindsToPathedRole)
+			/// /// </summary>
+			/// private static void InputBoundToPathedRoleRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue.InputBoundToPathedRoleRule");
+				CalculatedPathValue.InputBoundToPathedRoleRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue.InputBoundToPathedRoleRule");
+			}
+		}
+	}
+	#endregion // Rule classes for CalculatedPathValue
 	#region Rule classes for ConstraintRoleSequence
 	partial class ConstraintRoleSequence
 	{
@@ -1559,6 +1705,32 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping.FactTypeNameChangedRule");
 				ElementGrouping.FactTypeNameChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping.FactTypeNameChangedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ModelNote), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class ModelNoteTextChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public ModelNoteTextChangedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping
+			/// /// <summary>
+			/// /// ChangeRule: typeof(ModelNote)
+			/// /// </summary>
+			/// private static void ModelNoteTextChangedRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping.ModelNoteTextChangedRule");
+				ElementGrouping.ModelNoteTextChangedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping.ModelNoteTextChangedRule");
 			}
 		}
 	}
@@ -5014,10 +5186,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SetComparisonConstraintHasDuplicateNameError), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SetConstraintHasDuplicateNameError), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ValueConstraintHasDuplicateNameError), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class DuplicateConstraintNameConstraintDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		private sealed class DuplicateConstraintNameConstraintDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
-			public DuplicateConstraintNameConstraintDeleteRuleClass()
+			public DuplicateConstraintNameConstraintDeletedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
@@ -5029,23 +5201,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// /// DeleteRule: typeof(SetConstraintHasDuplicateNameError)
 			/// /// DeleteRule: typeof(ValueConstraintHasDuplicateNameError)
 			/// /// </summary>
-			/// private static void DuplicateConstraintNameConstraintDeleteRule(ElementDeletedEventArgs e)
+			/// private static void DuplicateConstraintNameConstraintDeletedRule(ElementDeletedEventArgs e)
 			/// {
 			/// }
 			/// </summary>
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel.DuplicateConstraintNameConstraintDeleteRule");
-				ORMModel.DuplicateConstraintNameConstraintDeleteRule(e);
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel.DuplicateConstraintNameConstraintDeleteRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel.DuplicateConstraintNameConstraintDeletedRule");
+				ORMModel.DuplicateConstraintNameConstraintDeletedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel.DuplicateConstraintNameConstraintDeletedRule");
 			}
 		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypeHasDuplicateNameError), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class DuplicateObjectTypeNameObjectTypeDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		private sealed class DuplicateObjectTypeNameObjectTypeDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
-			public DuplicateObjectTypeNameObjectTypeDeleteRuleClass()
+			public DuplicateObjectTypeNameObjectTypeDeletedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
@@ -5055,23 +5227,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// /// <summary>
 			/// /// DeleteRule: typeof(ObjectTypeHasDuplicateNameError)
 			/// /// </summary>
-			/// private static void DuplicateObjectTypeNameObjectTypeDeleteRule(ElementDeletedEventArgs e)
+			/// private static void DuplicateObjectTypeNameObjectTypeDeletedRule(ElementDeletedEventArgs e)
 			/// {
 			/// }
 			/// </summary>
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel.DuplicateObjectTypeNameObjectTypeDeleteRule");
-				ORMModel.DuplicateObjectTypeNameObjectTypeDeleteRule(e);
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel.DuplicateObjectTypeNameObjectTypeDeleteRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel.DuplicateObjectTypeNameObjectTypeDeletedRule");
+				ORMModel.DuplicateObjectTypeNameObjectTypeDeletedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel.DuplicateObjectTypeNameObjectTypeDeletedRule");
 			}
 		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RecognizedPhraseHasDuplicateNameError), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class DuplicateRecognizedPhraseDeleteRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		private sealed class DuplicateRecognizedPhraseDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
-			public DuplicateRecognizedPhraseDeleteRuleClass()
+			public DuplicateRecognizedPhraseDeletedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
@@ -5081,16 +5253,42 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// /// <summary>
 			/// /// DeleteRule: typeof(RecognizedPhraseHasDuplicateNameError)
 			/// /// </summary>
-			/// private static void DuplicateRecognizedPhraseDeleteRule(ElementDeletedEventArgs e)
+			/// private static void DuplicateRecognizedPhraseDeletedRule(ElementDeletedEventArgs e)
 			/// {
 			/// }
 			/// </summary>
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel.DuplicateRecognizedPhraseDeleteRule");
-				ORMModel.DuplicateRecognizedPhraseDeleteRule(e);
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel.DuplicateRecognizedPhraseDeleteRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel.DuplicateRecognizedPhraseDeletedRule");
+				ORMModel.DuplicateRecognizedPhraseDeletedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel.DuplicateRecognizedPhraseDeletedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FunctionHasDuplicateNameError), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class DuplicateFunctionNameDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public DuplicateFunctionNameDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel
+			/// /// <summary>
+			/// /// DeleteRule: typeof(FunctionHasDuplicateNameError)
+			/// /// </summary>
+			/// private static void DuplicateFunctionNameDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel.DuplicateFunctionNameDeletedRule");
+				ORMModel.DuplicateFunctionNameDeletedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel.DuplicateFunctionNameDeletedRule");
 			}
 		}
 	}
@@ -5518,6 +5716,32 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.ConstraintRoleSequenceHasRoleDeletedRule");
 			}
 		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeHasDerivationRule), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class FactTypeDerivationRuleDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public FactTypeDerivationRuleDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.Role
+			/// /// <summary>
+			/// /// DeleteRule: typeof(FactTypeHasDerivationRule)
+			/// /// </summary>
+			/// private static void FactTypeDerivationRuleDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.FactTypeDerivationRuleDeletedRule");
+				Role.FactTypeDerivationRuleDeletedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.FactTypeDerivationRuleDeletedRule");
+			}
+		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Role), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class RoleChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
@@ -5594,6 +5818,84 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.RoleInstanceDeletedRule");
 				Role.RoleInstanceDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.RoleInstanceDeletedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RoleDerivesFromCalculatedPathValue), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class RoleDerivesFromCalculatedValueRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public RoleDerivesFromCalculatedValueRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.Role
+			/// /// <summary>
+			/// /// AddRule: typeof(RoleDerivesFromCalculatedPathValue)
+			/// /// </summary>
+			/// private static void RoleDerivesFromCalculatedValueRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.RoleDerivesFromCalculatedValueRule");
+				Role.RoleDerivesFromCalculatedValueRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.RoleDerivesFromCalculatedValueRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RoleDerivesFromPathConstant), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class RoleDerivesFromConstantRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public RoleDerivesFromConstantRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.Role
+			/// /// <summary>
+			/// /// AddRule: typeof(RoleDerivesFromPathConstant)
+			/// /// </summary>
+			/// private static void RoleDerivesFromConstantRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.RoleDerivesFromConstantRule");
+				Role.RoleDerivesFromConstantRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.RoleDerivesFromConstantRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RoleDerivesFromPathedRole), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class RoleDerivedFromPathedRoleRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public RoleDerivedFromPathedRoleRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.Role
+			/// /// <summary>
+			/// /// AddRule: typeof(RoleDerivesFromPathedRole)
+			/// /// </summary>
+			/// private static void RoleDerivedFromPathedRoleRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.RoleDerivedFromPathedRoleRule");
+				Role.RoleDerivedFromPathedRoleRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.RoleDerivedFromPathedRoleRule");
 			}
 		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RoleInstance), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]

@@ -41,6 +41,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 			// 
 			this.myTreeControl.AllowDrop = true;
 			this.myTreeControl.Dock = DockStyle.Fill;
+			this.myTreeControl.LabelEditSupport = VirtualTreeLabelEditActivationStyles.Delayed | VirtualTreeLabelEditActivationStyles.Explicit | VirtualTreeLabelEditActivationStyles.ImmediateMouse | VirtualTreeLabelEditActivationStyles.ImmediateSelection;
 			this.myTreeControl.Name = "myTreeControl";
 			this.myTreeControl.TabIndex = 0;
 #if VISUALSTUDIO_9_0 // MSBUG: Hack workaround crashing bug in VirtualTreeControl.OnToggleExpansion

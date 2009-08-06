@@ -246,7 +246,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					XmlReaderSettings readerSettings = new XmlReaderSettings();
 					readerSettings.CloseInput = false;
-					IDictionary<string, ORMExtensionType> documentExtensions = null;
+					Dictionary<string, ORMExtensionType> documentExtensions = null;
 					using (XmlReader reader = XmlReader.Create(stream, readerSettings))
 					{
 						reader.MoveToContent();
@@ -278,7 +278,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							}
 						}
 					}
-					ORMDesignerPackage.VerifyRequiredExtensions(documentExtensions);
+					ORMDesignerPackage.VerifyRequiredExtensions(ref documentExtensions);
 					myExtensionDomainModels = documentExtensions;
 					stream.Position = 0;
 
@@ -887,7 +887,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 
 					Debug.Assert(stream != null);
 
-					ORMDesignerPackage.VerifyRequiredExtensions(requestedExtensions);
+					ORMDesignerPackage.VerifyRequiredExtensions(ref requestedExtensions);
 					ICollection<ORMExtensionType> allExtensions = requestedExtensions.Values;
 					if (nonRequestedLoadedExtensions != null)
 					{

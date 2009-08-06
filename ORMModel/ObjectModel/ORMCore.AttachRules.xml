@@ -17,6 +17,23 @@
 		<arg:CopyrightLine>\**************************************************************************/</arg:CopyrightLine>
 	</arg:Copyright>
 	<arg:Model class="ORMCoreDomainModel">
+		<arg:RuleContainer class="CalculatedPathValue">
+			<arg:RolePlayerChangeRule methodName="FunctionChangedRule">
+				<arg:RuleOn targetType="CalculatedPathValueIsCalculatedWithFunction"/>
+			</arg:RolePlayerChangeRule>
+			<arg:DeleteRule methodName="FunctionDeletedRule">
+				<arg:RuleOn targetType="CalculatedPathValueIsCalculatedWithFunction"/>
+			</arg:DeleteRule>
+			<arg:AddRule methodName="InputBoundToCalculatedValueRule">
+				<arg:RuleOn targetType="CalculatedPathValueInputBindsToCalculatedPathValue"/>
+			</arg:AddRule>
+			<arg:AddRule methodName="InputBoundToConstantRule">
+				<arg:RuleOn targetType="CalculatedPathValueInputBindsToPathConstant"/>
+			</arg:AddRule>
+			<arg:AddRule methodName="InputBoundToPathedRoleRule">
+				<arg:RuleOn targetType="CalculatedPathValueInputBindsToPathedRole"/>
+			</arg:AddRule>
+		</arg:RuleContainer>
 		<arg:RuleContainer class="ConstraintRoleSequence">
 			<arg:RolePlayerChangeRule methodName="BlockRolePlayerChangeRule">
 				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
@@ -166,6 +183,9 @@
 			</arg:ChangeRule>
 			<arg:ChangeRule methodName="FactTypeNameChangedRule">
 				<arg:RuleOn targetType="FactType"/>
+			</arg:ChangeRule>
+			<arg:ChangeRule methodName="ModelNoteTextChangedRule">
+				<arg:RuleOn targetType="ModelNote"/>
 			</arg:ChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="ElementGroupingSet">
@@ -615,16 +635,19 @@
 			</arg:ChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="ORMModel">
-			<arg:DeleteRule methodName="DuplicateConstraintNameConstraintDeleteRule">
+			<arg:DeleteRule methodName="DuplicateConstraintNameConstraintDeletedRule">
 				<arg:RuleOn targetType="SetComparisonConstraintHasDuplicateNameError"/>
 				<arg:RuleOn targetType="SetConstraintHasDuplicateNameError"/>
 				<arg:RuleOn targetType="ValueConstraintHasDuplicateNameError"/>
 			</arg:DeleteRule>
-			<arg:DeleteRule methodName="DuplicateObjectTypeNameObjectTypeDeleteRule">
+			<arg:DeleteRule methodName="DuplicateObjectTypeNameObjectTypeDeletedRule">
 				<arg:RuleOn targetType="ObjectTypeHasDuplicateNameError"/>
 			</arg:DeleteRule>
-			<arg:DeleteRule methodName="DuplicateRecognizedPhraseDeleteRule">
+			<arg:DeleteRule methodName="DuplicateRecognizedPhraseDeletedRule">
 				<arg:RuleOn targetType="RecognizedPhraseHasDuplicateNameError"/>
+			</arg:DeleteRule>
+			<arg:DeleteRule methodName="DuplicateFunctionNameDeletedRule">
+				<arg:RuleOn targetType="FunctionHasDuplicateNameError"/>
 			</arg:DeleteRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="Reading">
@@ -685,6 +708,9 @@
 			<arg:DeleteRule methodName="ConstraintRoleSequenceHasRoleDeletedRule">
 				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
 			</arg:DeleteRule>
+			<arg:DeleteRule methodName="FactTypeDerivationRuleDeletedRule">
+				<arg:RuleOn targetType="FactTypeHasDerivationRule"/>
+			</arg:DeleteRule>
 			<arg:ChangeRule methodName="RoleChangeRule">
 				<arg:RuleOn targetType="Role"/>
 			</arg:ChangeRule>
@@ -694,6 +720,15 @@
 			<arg:DeleteRule methodName="RoleInstanceDeletedRule">
 				<arg:RuleOn targetType="RoleInstance"/>
 			</arg:DeleteRule>
+			<arg:AddRule methodName="RoleDerivesFromCalculatedValueRule">
+				<arg:RuleOn targetType="RoleDerivesFromCalculatedPathValue"/>
+			</arg:AddRule>
+			<arg:AddRule methodName="RoleDerivesFromConstantRule">
+				<arg:RuleOn targetType="RoleDerivesFromPathConstant"/>
+			</arg:AddRule>
+			<arg:AddRule methodName="RoleDerivedFromPathedRoleRule">
+				<arg:RuleOn targetType="RoleDerivesFromPathedRole"/>
+			</arg:AddRule>
 			<arg:RolePlayerChangeRule methodName="RoleInstanceRolePlayerChangedRule">
 				<arg:RuleOn targetType="RoleInstance"/>
 			</arg:RolePlayerChangeRule>

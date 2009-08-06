@@ -442,6 +442,29 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 			}
 			return retVal;
 		}
+		/// <summary>
+		/// Determine if an element is expandable for a given expansion key
+		/// </summary>
+		private bool GetExpandable(object element, object expansionKey)
+		{
+			if (expansionKey == null)
+			{
+				ISurveyNode surveyNode;
+				if (null == (surveyNode = element as ISurveyNode) ||
+					null == (expansionKey = surveyNode.SurveyNodeExpansionKey))
+				{
+					return false;
+				}
+			}
+			foreach (ISurveyNodeProvider nodeProvider in myNodeProviders)
+			{
+				if (nodeProvider.IsSurveyNodeExpandable(element, expansionKey))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
 		#endregion // Methods
 		#region INotifySurveyElementChanged Implementation
 		/// <summary>
@@ -500,6 +523,74 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 			ElementChanged(element, questionTypes);
 		}
 		/// <summary>
+		/// Implements <see cref="INotifySurveyElementChanged.ElementExpandabilityChanged"/>
+		/// </summary>
+		protected void ElementExpandibilityChanged(object element)
+		{
+			NodeLocation location;
+			MainList existingExpansionList;
+			ISurveyNode surveyNode;
+			object expansionKey;
+			// If we have a list for this node and the list still has elements, then
+			// ignore this notification. We will automatically check the expandability
+			// setting when the last item is removed from the list.
+			if ((!myMainListDictionary.TryGetValue(element, out existingExpansionList) ||
+				((IBranch)existingExpansionList).VisibleItemCount == 0) &&
+				myNodeDictionary.TryGetValue(element, out location) &&
+				null != (surveyNode = element as ISurveyNode) &&
+				null != (expansionKey = surveyNode.SurveyNodeExpansionKey))
+			{
+				bool expandable = false;
+				bool haveExpandable = false;
+
+				MainList notifyList = location.MainList;
+				if (notifyList != null)
+				{
+					if (!haveExpandable)
+					{
+						haveExpandable = true;
+						expandable = GetExpandable(element, expansionKey);
+					}
+					notifyList.NodeExpandabilityChanged(location.ElementNode, existingExpansionList, expandable);
+				}
+				if (existingExpansionList != null)
+				{
+					myMainListDictionary.Remove(element);
+				}
+				else
+				{
+					LinkedNode<SurveyNodeReference> linkNode;
+					if (myReferenceDictionary.TryGetValue(element, out linkNode))
+					{
+						while (linkNode != null)
+						{
+							SurveyNodeReference link = linkNode.Value;
+							if (myMainListDictionary.TryGetValue(link.ContextElement ?? TopLevelExpansionKey, out notifyList))
+							{
+								SampleDataElementNode referenceNode = linkNode.Value.Node;
+								ISurveyNodeReference reference;
+								if (null != (reference = referenceNode.Element as ISurveyNodeReference) &&
+									0 != (reference.SurveyNodeReferenceOptions & SurveyNodeReferenceOptions.InlineExpansion))
+								{
+									if (!haveExpandable)
+									{
+										haveExpandable = true;
+										expandable = GetExpandable(expansionKey, element);
+									}
+									notifyList.NodeExpandabilityChanged(referenceNode, existingExpansionList, expandable);
+								}
+							}
+							linkNode = linkNode.Next;
+						}
+					}
+				}
+			}
+		}
+		void INotifySurveyElementChanged.ElementExpandabilityChanged(object element)
+		{
+			ElementExpandibilityChanged(element);
+		}
+		/// <summary>
 		/// Implements <see cref="INotifySurveyElementChanged.ElementReferenceChanged"/>
 		/// </summary>
 		void ElementReferenceChanged(object element, object referenceReason, object contextElement, params Type[] questionTypes)
@@ -535,10 +626,24 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 			if (myNodeDictionary.TryGetValue(element, out value))
 			{
 				// Remove items from the primary display location
+				ISurveyNodeReference reference = element as ISurveyNodeReference;
+				if (reference != null && 0 == (reference.SurveyNodeReferenceOptions & SurveyNodeReferenceOptions.TrackReferenceInstance))
+				{
+					reference = null;
+				}
 				MainList notifyList;
 				if (null != (notifyList = value.MainList))
 				{
-					notifyList.NodeDeleted(value.ElementNode);
+					if (reference != null)
+					{
+						// Delete the node as a reference
+						ElementReferenceDeleted(reference.ReferencedElement, reference.SurveyNodeReferenceReason, notifyList.ContextElement);
+					}
+					else
+					{
+						// Delete the node directly
+						notifyList.NodeDeleted(value.ElementNode);
+					}
 				}
 
 				if (preserveReferences)
@@ -592,15 +697,15 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 			ElementDeleted(element);
 		}
 		/// <summary>
-		/// Implements <see cref="INotifySurveyElementChanged.ElementReferenceDeleted"/>
+		/// Implements <see cref="INotifySurveyElementChanged.ElementReferenceDeleted(Object,Object,Object)"/>
 		/// </summary>
 		protected void ElementReferenceDeleted(object element, object referenceReason, object contextElement)
 		{
 			LinkedNode<SurveyNodeReference> headLinkNode;
-			MainList notifyList;
-			if (myMainListDictionary.TryGetValue(contextElement ?? TopLevelExpansionKey, out notifyList) &&
-				myReferenceDictionary.TryGetValue(element, out headLinkNode))
+			if (myReferenceDictionary.TryGetValue(element, out headLinkNode))
 			{
+				MainList notifyList;
+				myMainListDictionary.TryGetValue(contextElement ?? TopLevelExpansionKey, out notifyList);
 				LinkedNode<SurveyNodeReference> linkNode = headLinkNode;
 				LinkedNode<SurveyNodeReference> startHeadLinkNode = headLinkNode;
 				while (linkNode != null)
@@ -609,7 +714,10 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 					if (link.ContextElement == contextElement &&
 						referenceReason == link.ReferenceReason)
 					{
-						notifyList.NodeDeleted(link.Node);
+						if (notifyList != null)
+						{
+							notifyList.NodeDeleted(link.Node);
+						}
 						linkNode.Detach(ref headLinkNode);
 						break;
 					}

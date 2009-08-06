@@ -58,7 +58,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				}
 			}
 			#endregion //survey question display struct
-
 			#region Constructor and instance fields
 			private readonly List<SampleDataElementNode> myNodes;
 			private readonly Survey mySurvey;
@@ -83,9 +82,12 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				myNodes = nodes;
 				foreach (ISurveyNodeProvider nodeProvider in surveyTree.myNodeProviders)
 				{
-					foreach (object elementNode in nodeProvider.GetSurveyNodes(contextElement, expansionKey))
+					if (contextElement == null || nodeProvider.IsSurveyNodeExpandable(contextElement, expansionKey))
 					{
-						nodes.Add(SampleDataElementNode.Create(surveyTree, survey, contextElement, elementNode));
+						foreach (object elementNode in nodeProvider.GetSurveyNodes(contextElement, expansionKey))
+						{
+							nodes.Add(SampleDataElementNode.Create(surveyTree, survey, contextElement, elementNode));
+						}
 					}
 				}
 				mySurvey = survey;
@@ -102,14 +104,16 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				{
 					// Use the indexer instead of add in case there is a referenced element that is
 					// current being deleted.
-					if (!(node.Element is ISurveyNodeReference))
+					object element = node.Element;
+					ISurveyNodeReference reference;
+					if (null == (reference = element as ISurveyNodeReference) ||
+						0 != (reference.SurveyNodeReferenceOptions & SurveyNodeReferenceOptions.TrackReferenceInstance))
 					{
-						mySurveyTree.myNodeDictionary[node.Element] = new NodeLocation(this, node);
+						mySurveyTree.myNodeDictionary[element] = new NodeLocation(this, node);
 					}
 				}
 			}
 			#endregion // Constructor and instance fields
-
 			#region root branch and survey properties
 			/// <summary>
 			/// Get the root branch for this list. The root branch may be
@@ -155,8 +159,17 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 					return mySurvey;
 				}
 			}
+			/// <summary>
+			/// Retrieve the context element passed to the constructor
+			/// </summary>
+			public object ContextElement
+			{
+				get
+				{
+					return myContextElement;
+				}
+			}
 			#endregion //root branch and survey properties
-
 			#region sort list methods
 			#region IComparer<SampleDataElementNode> Members
 			private readonly IComparer<SampleDataElementNode> myNodeComparer;
@@ -264,7 +277,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 			}
 			#endregion
 			#endregion //end sort list methods
-
 			#region IBranch Members
 			/// <summary>
 			/// MSBUG: If a branch is displayed multiple times, then an
@@ -283,9 +295,30 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 			protected VirtualTreeLabelEditData BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
 			{
 				SampleDataElementNode editNode = myNodes[row];
-				if (editNode.IsSurveyNameEditable)
+				ISurveyNodeCustomEditor customEditor = editNode.Element as ISurveyNodeCustomEditor;
+				if (customEditor != null)
 				{
-					return new VirtualTreeLabelEditData(editNode.EditableSurveyName);
+					if (0 != (customEditor.SupportedEditActivationStyles & activationStyle))
+					{
+						VirtualTreeLabelEditData customResult = customEditor.BeginLabelEdit(activationStyle);
+						if (customResult.IsValid)
+						{
+							return customResult;
+						}
+					}
+				}
+				switch (activationStyle)
+				{
+					case VirtualTreeLabelEditActivationStyles.Explicit:
+					case VirtualTreeLabelEditActivationStyles.Delayed:
+						if (editNode.IsSurveyNameEditable)
+						{
+							return new VirtualTreeLabelEditData(editNode.EditableSurveyName);
+						}
+						break;
+					case VirtualTreeLabelEditActivationStyles.ImmediateMouse:
+					case VirtualTreeLabelEditActivationStyles.ImmediateSelection:
+						return editNode.IsSurveyNameEditable ? VirtualTreeLabelEditData.DeferActivation : VirtualTreeLabelEditData.Invalid;
 				}
 				return VirtualTreeLabelEditData.Invalid;
 			}
@@ -314,7 +347,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 			{
 				get
 				{
-					return BranchFeatures.PositionTracking | BranchFeatures.InsertsAndDeletes | BranchFeatures.Expansions | BranchFeatures.ExplicitLabelEdits;
+					return BranchFeatures.PositionTracking | BranchFeatures.InsertsAndDeletes | BranchFeatures.Expansions | BranchFeatures.ExplicitLabelEdits | BranchFeatures.DelayedLabelEdits | BranchFeatures.ImmediateMouseLabelEdits | BranchFeatures.ImmediateSelectionLabelEdits;
 				}
 			}
 			BranchFeatures IBranch.Features
@@ -354,7 +387,8 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				SurveyNodeReferenceOptions referenceOptions;
 				Survey referenceSurvey;
 				bool filterTargetQuestions;
-				if (reference != null)
+				if (reference != null &&
+					null != (referencedElement = reference.ReferencedElement))
 				{
 					referenceOptions = reference.SurveyNodeReferenceOptions;
 					filterTargetQuestions = 0 != (referenceOptions & SurveyNodeReferenceOptions.FilterReferencedAnswers);
@@ -515,14 +549,20 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 							if (expandElement != null)
 							{
 								SurveyTree<SurveyContextType> parent = mySurveyTree;
-								Dictionary<object, MainList> expansions = parent.myMainListDictionary;
-								MainList expansion;
-								if (!expansions.TryGetValue(expandElement, out expansion))
+								foreach (ISurveyNodeProvider nodeProvider in parent.myNodeProviders)
 								{
-									expansion = new MainList(parent, expandElement, expansionKey);
-									expansions[expandElement] = expansion;
+									if (nodeProvider.IsSurveyNodeExpandable(expandElement, expansionKey))
+									{
+										Dictionary<object, MainList> expansions = parent.myMainListDictionary;
+										MainList expansion;
+										if (!expansions.TryGetValue(expandElement, out expansion))
+										{
+											expansion = new MainList(parent, expandElement, expansionKey);
+											expansions[expandElement] = expansion;
+										}
+										return expansion.GetRootBranch(false);
+									}
 								}
-								return expansion.GetRootBranch(false);
 							}
 							break;
 						}
@@ -575,11 +615,27 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				SampleDataElementNode node = myNodes[row];
 				ISurveyNodeReference reference;
 				ISurveyNode referencedNode;
-				return null != node.SurveyNodeExpansionKey ||
+				object expansionKey;
+				object element = null;
+				if (null != (expansionKey = node.SurveyNodeExpansionKey) ||
 					(null != (reference = node.Element as ISurveyNodeReference) &&
 					0 != (reference.SurveyNodeReferenceOptions & SurveyNodeReferenceOptions.InlineExpansion) &&
-					null != (referencedNode = reference.ReferencedElement as ISurveyNode) &&
-					null != referencedNode.SurveyNodeExpansionKey);
+					null != (element = referencedNode = reference.ReferencedElement as ISurveyNode) &&
+					null != (expansionKey = referencedNode.SurveyNodeExpansionKey)))
+				{
+					if (element == null)
+					{
+						element = node.Element;
+					}
+					foreach (ISurveyNodeProvider nodeProvider in mySurveyTree.myNodeProviders)
+					{
+						if (nodeProvider.IsSurveyNodeExpandable(element, expansionKey))
+						{
+							return true;
+						}
+					}
+				}
+				return false;
 			}
 			bool IBranch.IsExpandable(int row, int column)
 			{
@@ -785,7 +841,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 			}
 
 			#endregion
-
 			#region Notification methods, correspond to INotifySurveyElementChanged
 			/// <summary>
 			/// Forwarded from <see cref="INotifySurveyElementChanged.ElementAdded"/>
@@ -801,7 +856,9 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				}
 				index = ~index;
 				myNodes.Insert(index, newNode);
-				if (!(element is ISurveyNodeReference))
+				ISurveyNodeReference reference;
+				if (null == (reference = element as ISurveyNodeReference) ||
+					0 != (reference.SurveyNodeReferenceOptions & SurveyNodeReferenceOptions.TrackReferenceInstance))
 				{
 					mySurveyTree.myNodeDictionary[element] = new NodeLocation(this, newNode);
 				}
@@ -847,26 +904,59 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				{
 					node.Update(questionTypes, myContextElement, mySurvey);
 					myNodes[index] = node;
+					object element = node.Element;
+					ISurveyNodeReference reference;
+					if (null == (reference = element as ISurveyNodeReference) ||
+						0 != (reference.SurveyNodeReferenceOptions & SurveyNodeReferenceOptions.TrackReferenceInstance))
+					{
+						mySurveyTree.myNodeDictionary[element] = new NodeLocation(this, node);
+					}
 					if (nodeReference != null)
 					{
 						Debug.Assert(nodeReference.Value.ContextElement == myContextElement);
 						nodeReference.Value = new SurveyNodeReference(node, myContextElement);
 					}
-					else
-					{
-						mySurveyTree.myNodeDictionary[node.Element] = new NodeLocation(this, node);
-					}
 				}
 				BranchModificationEventHandler modificationEvents = myModificationEvents;
 				if (myRootGrouper != null)
 				{
-					myRootGrouper.ElementChangedAt(index, modificationEvents);
+					myRootGrouper.ElementChangedAt(index, VirtualTreeDisplayDataChanges.Image, modificationEvents);
 				}
 				else if (modificationEvents != null)
 				{
 					modificationEvents(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Image, this, index, 0, 1)));
 				}
-
+			}
+			/// <summary>
+			/// Forwarded from <see cref="INotifySurveyElementChanged.ElementExpandabilityChanged"/>
+			/// </summary>
+			public void NodeExpandabilityChanged(SampleDataElementNode node, MainList expandedList, bool expandable)
+			{
+				if (expandedList != null)
+				{
+					if (!expandable)
+					{
+						// Removes the branch at all locations, including inline expansions
+						RaiseBranchEvent(BranchModificationEventArgs.RemoveBranch((IBranch)expandedList.myRootGrouper ?? expandedList));
+					}
+				}
+				else
+				{
+					int index;
+					if (0 > (index = myNodes.BinarySearch(node, myNodeComparer)))
+					{
+						return;
+					}
+					BranchModificationEventHandler modificationEvents = myModificationEvents;
+					if (myRootGrouper != null)
+					{
+						myRootGrouper.ElementChangedAt(index, VirtualTreeDisplayDataChanges.ItemButton, modificationEvents);
+					}
+					else if (modificationEvents != null)
+					{
+						modificationEvents(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.ItemButton, this, index, 0, 1)));
+					}
+				}
 			}
 			/// <summary>
 			/// Forwarded from <see cref="INotifySurveyElementChanged.ElementDeleted(object,bool)"/>
@@ -880,7 +970,14 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				}
 				// Note that the dictionary is cleaned up in the SurveyTree's calling code
 				myNodes.RemoveAt(index);
-				if (myRootGrouper != null)
+				if (myNodes.Count == 0 &&
+					!mySurveyTree.GetExpandable(myContextElement, null))
+				{
+					// Remove this branch instead of showing it as empty
+					RaiseBranchEvent(BranchModificationEventArgs.RemoveBranch((IBranch)myRootGrouper ?? this));
+					mySurveyTree.myMainListDictionary.Remove(myContextElement);
+				}
+				else if (myRootGrouper != null)
 				{
 					BranchModificationEventHandler forwardToHandler = myModificationEvents;
 					LinkedList<BranchModificationEventArgs> forwardEvents = null;
@@ -952,14 +1049,17 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				if (nodeIndex == toIndex || (inverseToIndex >= 0 && (inverseToIndex == nodeIndex || (inverseToIndex - nodeIndex) == 1)))
 				{
 					myNodes[nodeIndex] = replacementNode;
+					object element = replacementNode.Element;
+					ISurveyNodeReference reference;
+					if (null == (reference = element as ISurveyNodeReference) ||
+						0 != (reference.SurveyNodeReferenceOptions & SurveyNodeReferenceOptions.TrackReferenceInstance))
+					{
+						mySurveyTree.myNodeDictionary[element] = new NodeLocation(this, replacementNode);
+					}
 					if (nodeReference != null)
 					{
 						Debug.Assert(nodeReference.Value.ContextElement == myContextElement);
 						nodeReference.Value = new SurveyNodeReference(replacementNode, myContextElement);
-					}
-					else
-					{
-						mySurveyTree.myNodeDictionary[replacementNode.Element] = new NodeLocation(this, replacementNode);
 					}
 					if (myRootGrouper != null)
 					{
@@ -978,14 +1078,17 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 						--inverseToIndex;
 					}
 					myNodes.Insert(inverseToIndex, replacementNode);
+					object element = replacementNode.Element;
+					ISurveyNodeReference reference;
+					if (null == (reference = element as ISurveyNodeReference) ||
+						0 != (reference.SurveyNodeReferenceOptions & SurveyNodeReferenceOptions.TrackReferenceInstance))
+					{
+						mySurveyTree.myNodeDictionary[element] = new NodeLocation(this, replacementNode);
+					}
 					if (nodeReference != null)
 					{
 						Debug.Assert(nodeReference.Value.ContextElement == myContextElement);
 						nodeReference.Value = new SurveyNodeReference(replacementNode, myContextElement);
-					}
-					else
-					{
-						mySurveyTree.myNodeDictionary[replacementNode.Element] = new NodeLocation(this, replacementNode);
 					}
 					if (myRootGrouper != null)
 					{

@@ -200,26 +200,58 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					{
 						bool haveStatus = false;
 						object node = currentWindow.SelectedNode;
-						IFreeFormCommandProvider<Store> freeFormCommandProvider = node as IFreeFormCommandProvider<Store>;
-						if (freeFormCommandProvider != null)
+						Store store = null;
+						ModelElement element;
+						ModelingDocData docData;
+						if (null != (element = node as ModelElement))
 						{
-							Store store = null;
-							ModelElement element;
-							ModelingDocData docData;
-							if (null != (element = node as ModelElement))
+							store = element.Store;
+						}
+						else if (null != (docData = currentWindow.CurrentDocument))
+						{
+							store = docData.Store;
+						}
+						if (store != null)
+						{
+							IFreeFormCommandProvider<Store> directCommandProvider = node as IFreeFormCommandProvider<Store>;
+							IFreeFormCommandProviderService<Store>[] remoteCommandServices = ((IFrameworkServices)store).GetTypedDomainModelProviders<IFreeFormCommandProviderService<Store>>();
+							if (directCommandProvider != null || remoteCommandServices != null)
 							{
-								store = element.Store;
-							}
-							else if (null != (docData = currentWindow.CurrentDocument))
-							{
-								store = docData.Store;
-							}
-							if (store != null)
-							{
-								int freeFormIndex = ((OleMenuCommand)command).MatchedCommandId;
-								if (freeFormIndex < freeFormCommandProvider.GetFreeFormCommandCount(store, freeFormCommandProvider))
+								int freeFormCommandIndex = ((OleMenuCommand)command).MatchedCommandId;
+								IFreeFormCommandProvider<Store> resolvedCommandProvider = null;
+								int commandCount;
+								if (directCommandProvider != null)
 								{
-									freeFormCommandProvider.OnFreeFormCommandStatus(store, freeFormCommandProvider, command, freeFormIndex);
+									commandCount = directCommandProvider.GetFreeFormCommandCount(store, directCommandProvider);
+									if (freeFormCommandIndex < commandCount)
+									{
+										resolvedCommandProvider = directCommandProvider;
+									}
+									else
+									{
+										freeFormCommandIndex -= commandCount;
+									}
+								}
+								if (resolvedCommandProvider == null && remoteCommandServices != null)
+								{
+									for (int i = 0; i < remoteCommandServices.Length; ++i)
+									{
+										IFreeFormCommandProvider<Store> remoteCommandProvider = remoteCommandServices[i].GetFreeFormCommandProvider(store, node);
+										if (remoteCommandProvider != null)
+										{
+											commandCount = remoteCommandProvider.GetFreeFormCommandCount(store, node);
+											if (freeFormCommandIndex < commandCount)
+											{
+												resolvedCommandProvider = remoteCommandProvider;
+												break;
+											}
+											freeFormCommandIndex -= commandCount;
+										}
+									}
+								}
+								if (resolvedCommandProvider != null)
+								{
+									resolvedCommandProvider.OnFreeFormCommandStatus(store, node, command, freeFormCommandIndex);
 									command.Supported = true; // Make sure this is turned on, or the dynamic menus do not work
 									haveStatus = true;
 								}
@@ -636,23 +668,58 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		protected virtual void OnMenuFreeFormCommand(int freeFormCommandIndex)
 		{
 			object node = SelectedNode;
-			IFreeFormCommandProvider<Store> freeFormCommandProvider = node as IFreeFormCommandProvider<Store>;
-			if (freeFormCommandProvider != null)
+			Store store = null;
+			ModelElement element;
+			ModelingDocData docData;
+			if (null != (element = SelectedNode as ModelElement))
 			{
-				Store store = null;
-				ModelElement element;
-				ModelingDocData docData;
-				if (null != (element = SelectedNode as ModelElement))
+				store = element.Store;
+			}
+			else if (null != (docData = CurrentDocument))
+			{
+				store = docData.Store;
+			}
+			if (store != null)
+			{
+				IFreeFormCommandProvider<Store> directCommandProvider = node as IFreeFormCommandProvider<Store>;
+				IFreeFormCommandProviderService<Store>[] remoteCommandServices = ((IFrameworkServices)store).GetTypedDomainModelProviders<IFreeFormCommandProviderService<Store>>();
+				if (directCommandProvider != null || remoteCommandServices != null)
 				{
-					store = element.Store;
-				}
-				else if (null != (docData = CurrentDocument))
-				{
-					store = docData.Store;
-				}
-				if (store != null)
-				{
-					freeFormCommandProvider.OnFreeFormCommandExecute(store, freeFormCommandProvider, freeFormCommandIndex);
+					IFreeFormCommandProvider<Store> resolvedCommandProvider = null;
+					int commandCount;
+					if (directCommandProvider != null)
+					{
+						commandCount = directCommandProvider.GetFreeFormCommandCount(store, directCommandProvider);
+						if (freeFormCommandIndex < commandCount)
+						{
+							resolvedCommandProvider = directCommandProvider;
+						}
+						else
+						{
+							freeFormCommandIndex -= commandCount;
+						}
+					}
+					if (resolvedCommandProvider == null && remoteCommandServices != null)
+					{
+						for (int i = 0; i < remoteCommandServices.Length; ++i)
+						{
+							IFreeFormCommandProvider<Store> remoteCommandProvider = remoteCommandServices[i].GetFreeFormCommandProvider(store, element);
+							if (remoteCommandProvider != null)
+							{
+								commandCount = remoteCommandProvider.GetFreeFormCommandCount(store, element);
+								if (freeFormCommandIndex < commandCount)
+								{
+									resolvedCommandProvider = remoteCommandProvider;
+									break;
+								}
+								freeFormCommandIndex -= commandCount;
+							}
+						}
+					}
+					if (resolvedCommandProvider != null)
+					{
+						resolvedCommandProvider.OnFreeFormCommandExecute(store, node, freeFormCommandIndex);
+					}
 				}
 			}
 		}
@@ -698,7 +765,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						((IORMDesignerView)currentDoc).CommandManager.SetCommandStatus(selectedParts, true, out visibleCommands, out enabledCommands, out checkableCommands, out checkedCommands, out toleratedCommands);
 						// Add in label editing command
 						ISurveyNode surveyNode = selectedElement as ISurveyNode;
-						if (surveyNode != null && surveyNode.IsSurveyNameEditable)
+						if ((surveyNode != null && surveyNode.IsSurveyNameEditable) || selectedElement is ISurveyNodeCustomEditor)
 						{
 							visibleCommands |= ORMDesignerCommands.EditLabel;
 							enabledCommands |= ORMDesignerCommands.EditLabel;
@@ -726,11 +793,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							enabledCommands |= ORMDesignerCommands.IncludeInNewGroup | ORMDesignerCommands.IncludeInGroupList | ORMDesignerCommands.DeleteFromGroupList;
 						}
 					}
-					if (selectedNode is IFreeFormCommandProvider<Store>)
-					{
-						visibleCommands |= ORMDesignerCommands.FreeFormCommandList;
-						enabledCommands |= ORMDesignerCommands.FreeFormCommandList;
-					}
+					visibleCommands |= ORMDesignerCommands.FreeFormCommandList;
+					enabledCommands |= ORMDesignerCommands.FreeFormCommandList;
 				}
 			}
 			myVisibleCommands = visibleCommands;
@@ -822,6 +886,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				ISurveyNodeReference reference = itemInfo.Branch.GetObject(itemInfo.Row, 0, ObjectStyle.TrackingObject, ref options) as ISurveyNodeReference;
 				object referencedElement;
 				if (null != reference &&
+					0 == (reference.SurveyNodeReferenceOptions & SurveyNodeReferenceOptions.BlockTargetNavigation) &&
 					!((referencedElement = reference.ReferencedElement) is ISurveyFloatingNode))
 				{
 					if (((VirtualTreeControl)sender).SelectObject(null, referencedElement, (int)ObjectStyle.TrackingObject, 0))

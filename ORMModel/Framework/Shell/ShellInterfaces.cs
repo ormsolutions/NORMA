@@ -37,28 +37,47 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		/// Get the number of free-form commands support by this object
 		/// </summary>
 		/// <param name="context">The context <typeparamref name="ContextType"/></param>
-		/// <param name="targetProvider">The top-level selected provider. Passing this information allows
-		/// implementors to be easily deferred.</param>
+		/// <param name="targetElement">The target element to retrieve commands form.</param>
 		/// <returns>Total command count</returns>
-		int GetFreeFormCommandCount(ContextType context, IFreeFormCommandProvider<ContextType> targetProvider);
+		int GetFreeFormCommandCount(ContextType context, object targetElement);
 		/// <summary>
 		/// Provide status for a free-form command. If the command is visible, then
 		/// status must include text for the command.
 		/// </summary>
 		/// <param name="context">The context <typeparamref name="ContextType"/></param>
-		/// <param name="targetProvider">The top-level selected provider. Passing this information allows
-		/// implementors to be easily deferred.</param>
+		/// <param name="targetElement">The target element to retrieve commands for.</param>
 		/// <param name="command">The <see cref="MenuCommand"/> instance to provide status settings for.</param>
 		/// <param name="commandIndex">The index of the requested command</param>
-		void OnFreeFormCommandStatus(ContextType context, IFreeFormCommandProvider<ContextType> targetProvider, MenuCommand command, int commandIndex);
+		void OnFreeFormCommandStatus(ContextType context, object targetElement, MenuCommand command, int commandIndex);
 		/// <summary>
 		/// Execute the specified command
 		/// </summary>
 		/// <param name="context">The context <typeparamref name="ContextType"/></param>
-		/// <param name="targetProvider">The top-level selected provider. Passing this information allows
-		/// implementors to be easily deferred.</param>
+		/// <param name="targetElement">The target element to retrieve commands for.</param>
 		/// <param name="commandIndex">The index of the requested command</param>
-		void OnFreeFormCommandExecute(ContextType context, IFreeFormCommandProvider<ContextType> targetProvider, int commandIndex);
+		void OnFreeFormCommandExecute(ContextType context, object targetElement, int commandIndex);
 	}
 	#endregion // IFreeFormCommandProvider interface
+	#region IFreeFormCommandProviderService interface
+	/// <summary>
+	/// An interface implemented on a <see cref="DomainModel"/>
+	/// to enable free-form commands to be added to any selected
+	/// node. Provides a mechanism for retrieving an <see cref="IFreeFormCommandProvider{ContextType}"/>
+	/// implementation to dynamically add basic commands for a
+	/// selected element.
+	/// </summary>
+	public interface IFreeFormCommandProviderService<ContextType>
+		where ContextType : class
+	{
+		/// <summary>
+		/// Retrieve a <see cref="IFreeFormCommandProvider{ContextType}"/> to add commands to
+		/// the specified <paramref name="targetElement"/>
+		/// </summary>
+		/// <param name="context">The context <typeparamref name="ContextType"/></param>
+		/// <param name="targetElement">The target element to retrieve a command provider for.</param>
+		/// <returns><see cref="IFreeFormCommandProvider{ContextType}"/> that provides commands for the
+		/// specified <paramref name="targetElement"/>, or <see langword="null"/></returns>
+		IFreeFormCommandProvider<ContextType> GetFreeFormCommandProvider(ContextType context, object targetElement);
+	}
+	#endregion // IFreeFormCommandProviderService interface
 }

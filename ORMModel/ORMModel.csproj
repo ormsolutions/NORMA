@@ -471,6 +471,7 @@
     <Compile Include="Framework\Shell\DiagramMenuDisplay.cs" />
     <Compile Include="Framework\Shell\SerializationEngine.cs" />
     <Compile Include="Framework\Shell\ToolWindowActivator.cs" />
+    <Compile Include="ObjectModel\RolePath.cs" />
     <Compile Include="ObjectModel\Design\BlockAutomatedElementsPropertyDescriptor.cs" />
     <Compile Include="ObjectModel\Design\ReferenceModeTypeDescriptor.cs" />
     <Compile Include="ObjectModel\Design\ElementGroupingTypeDescriptor.cs" />

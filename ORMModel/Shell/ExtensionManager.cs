@@ -85,7 +85,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 
 				// Make sure all required extensions are turned on. This will turn previously ignored
 				// secondary extensions back on.
-				ORMDesignerPackage.VerifyRequiredExtensions(checkedTypes);
+				ORMDesignerPackage.VerifyRequiredExtensions(ref checkedTypes);
 
 				Stream stream = null;
 				try

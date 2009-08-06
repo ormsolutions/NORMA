@@ -53,7 +53,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			if (instance.ImpliedByObjectification != null)
 			{
 				// Implied FactTypes can't be objectified, so we just return an empty list
-				return new ObjectType[0];
+				return ObjectType.EmptyArray;
 			}
 			ReadOnlyCollection<ObjectType> candidates = instance.Store.ElementDirectory.FindElements<ObjectType>();
 			int count = candidates.Count;

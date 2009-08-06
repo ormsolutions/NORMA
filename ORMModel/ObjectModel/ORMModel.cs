@@ -393,7 +393,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	}
 	#endregion // Indirect merge support
 	#region NamedElementDictionary and DuplicateNameError integration
-	public partial class ORMModel : INamedElementDictionaryParent
+	partial class ORMModel : INamedElementDictionaryParent
 	{
 		#region Public token values
 		/// <summary>
@@ -416,10 +416,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private NamedElementDictionary myConstraintsDictionary;
 		[NonSerialized]
 		private RecognizedPhraseNamedElementDictionary myRecognizedPhrasesDictionary;
+		[NonSerialized]
+		private NamedElementDictionary myFunctionsDictionary;
 		/// <summary>
-		/// Returns the Object Types Dictionary
+		/// A <see cref="INamedElementDictionary"/> for retrieving <see cref="ObjectType"/> instances by name.
 		/// </summary>
-		/// <value>The model ObjectTypesDictionary </value>
 		public INamedElementDictionary ObjectTypesDictionary
 		{
 			get
@@ -433,9 +434,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Returns the Constraints Dictionary
+		/// A <see cref="INamedElementDictionary"/> for retrieving any constraint instance by name.
 		/// </summary>
-		/// <value>The model ConstraintsDictionary.</value>
 		public INamedElementDictionary ConstraintsDictionary
 		{
 			get
@@ -448,11 +448,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return retVal;
 			}
 		}
-
 		/// <summary>
-		/// Returns the Recognized Word Dictionary
+		/// A <see cref="INamedElementDictionary"/> for retrieving <see cref="RecognizedPhrase"/> instances in the model by name.
 		/// </summary>
-		/// <value>The model RecognizedPhraseDictionary</value>
 		public INamedElementDictionary RecognizedPhrasesDictionary
 		{
 			get
@@ -461,6 +459,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (retVal == null)
 				{
 					retVal = myRecognizedPhrasesDictionary = new RecognizedPhraseNamedElementDictionary();
+				}
+				return retVal;
+			}
+		}
+		/// <summary>
+		/// A <see cref="INamedElementDictionary"/> for retrieving <see cref="Function"/> instances in the model by name.
+		/// Function lookup is case insensitive.
+		/// </summary>
+		public INamedElementDictionary FunctionsDictionary
+		{
+			get
+			{
+				INamedElementDictionary retVal = myFunctionsDictionary;
+				if (retVal == null)
+				{
+					retVal = myFunctionsDictionary = new FunctionNamedElementDictionary();
 				}
 				return retVal;
 			}
@@ -553,9 +567,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				return ConstraintsDictionary;
 			}
-			else if (parentDomainRoleId == ModelContainsRecognizedPhrase.RecognizedPhraseDomainRoleId)
+			else if (parentDomainRoleId == ModelContainsRecognizedPhrase.ModelDomainRoleId)
 			{
 				return RecognizedPhrasesDictionary;
+			}
+			else if (parentDomainRoleId == ModelDefinesFunction.ModelDomainRoleId)
+			{
+				return FunctionsDictionary;
 			}
 			return null;
 		}
@@ -583,7 +601,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// DeleteRule: typeof(ObjectTypeHasDuplicateNameError)
 		/// </summary>
-		private static void DuplicateObjectTypeNameObjectTypeDeleteRule(ElementDeletedEventArgs e)
+		private static void DuplicateObjectTypeNameObjectTypeDeletedRule(ElementDeletedEventArgs e)
 		{
 			ObjectTypeHasDuplicateNameError link = e.ModelElement as ObjectTypeHasDuplicateNameError;
 			ObjectTypeDuplicateNameError error = link.DuplicateNameError;
@@ -600,7 +618,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// DeleteRule: typeof(SetConstraintHasDuplicateNameError)
 		/// DeleteRule: typeof(ValueConstraintHasDuplicateNameError)
 		/// </summary>
-		private static void DuplicateConstraintNameConstraintDeleteRule(ElementDeletedEventArgs e)
+		private static void DuplicateConstraintNameConstraintDeletedRule(ElementDeletedEventArgs e)
 		{
 			ModelElement link = e.ModelElement;
 			SetComparisonConstraintHasDuplicateNameError mcLink;
@@ -627,17 +645,31 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 		}
-
 		/// <summary>
 		/// DeleteRule: typeof(RecognizedPhraseHasDuplicateNameError)
 		/// </summary>
-		private static void DuplicateRecognizedPhraseDeleteRule(ElementDeletedEventArgs e)
+		private static void DuplicateRecognizedPhraseDeletedRule(ElementDeletedEventArgs e)
 		{
 			RecognizedPhraseHasDuplicateNameError link = e.ModelElement as RecognizedPhraseHasDuplicateNameError;
 			RecognizedPhraseDuplicateNameError error = link.DuplicateNameError;
 			if (!error.IsDeleted)
 			{
 				if (error.RecognizedPhraseCollection.Count < 2)
+				{
+					error.Delete();
+				}
+			}
+		}
+		/// <summary>
+		/// DeleteRule: typeof(FunctionHasDuplicateNameError)
+		/// </summary>
+		private static void DuplicateFunctionNameDeletedRule(ElementDeletedEventArgs e)
+		{
+			FunctionHasDuplicateNameError link = e.ModelElement as FunctionHasDuplicateNameError;
+			FunctionDuplicateNameError error = link.DuplicateNameError;
+			if (!error.IsDeleted)
+			{
+				if (error.FunctionCollection.Count < 2)
 				{
 					error.Delete();
 				}
@@ -1387,9 +1419,145 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#endregion // INamedElementDictionary Reimplementation
 		}
 		#endregion // RecognizedPhraseNamedElementDictionary class
+		#region FunctionNamedElementDictionary class
+		/// <summary>
+		/// Dictionary used to lookup functions by name and to generate
+		/// model validation errors and exceptions for duplicate function names.
+		/// </summary>
+		protected class FunctionNamedElementDictionary : NamedElementDictionary
+		{
+			private sealed class DuplicateNameManager : IDuplicateNameCollectionManager
+			{
+				#region TrackingList class
+				private sealed class TrackingList : List<Function>
+				{
+					private readonly LinkedElementCollection<Function> myNativeCollection;
+					public TrackingList(FunctionDuplicateNameError error)
+					{
+						myNativeCollection = error.FunctionCollection;
+					}
+					public LinkedElementCollection<Function> NativeCollection
+					{
+						get
+						{
+							return myNativeCollection;
+						}
+					}
+				}
+				#endregion // TrackingList class
+				#region IDuplicateNameCollectionManager Implementation
+				ICollection IDuplicateNameCollectionManager.OnDuplicateElementAdded(ICollection elementCollection, ModelElement element, bool afterTransaction, INotifyElementAdded notifyAdded)
+				{
+					Function function = (Function)element;
+					if (afterTransaction)
+					{
+						if (elementCollection == null)
+						{
+							FunctionDuplicateNameError error = function.DuplicateNameError;
+							if (error != null)
+							{
+								// We're not in a transaction, but the object model will be in
+								// the state we need it because we put it there during a transaction.
+								// Just return the collection from the current state of the object model.
+								TrackingList trackingList = new TrackingList(error);
+								trackingList.Add(function);
+								elementCollection = trackingList;
+							}
+						}
+						else
+						{
+							((TrackingList)elementCollection).Add(function);
+						}
+						return elementCollection;
+					}
+					else
+					{
+						// Modify the object model to add the error.
+						if (elementCollection == null)
+						{
+							FunctionDuplicateNameError error = null;
+							if (notifyAdded != null)
+							{
+								// During deserialization fixup, an error
+								// may already be attached to the object. Track
+								// it down and verify that it is a legitimate error.
+								// If it is not legitimate, then generate a new one.
+								error = function.DuplicateNameError;
+								if (error != null && !error.ValidateDuplicates(function))
+								{
+									error = null;
+								}
+							}
+							if (error == null)
+							{
+								error = new FunctionDuplicateNameError(function.Store);
+								function.DuplicateNameError = error;
+								error.Model = function.Model;
+								error.GenerateErrorText();
+								if (notifyAdded != null)
+								{
+									notifyAdded.ElementAdded(error, true);
+								}
+							}
+							TrackingList trackingList = new TrackingList(error);
+							trackingList.Add(function);
+							elementCollection = trackingList;
+						}
+						else
+						{
+							TrackingList trackingList = (TrackingList)elementCollection;
+							trackingList.Add(function);
+							// During deserialization fixup (notifyAdded != null), we need
+							// to make sure that the element is not already in the collection
+							LinkedElementCollection<Function> typedCollection = trackingList.NativeCollection;
+							if (notifyAdded == null || !typedCollection.Contains(function))
+							{
+								typedCollection.Add(function);
+							}
+						}
+						return elementCollection;
+					}
+				}
+				ICollection IDuplicateNameCollectionManager.OnDuplicateElementRemoved(ICollection elementCollection, ModelElement element, bool afterTransaction)
+				{
+					TrackingList trackingList = (TrackingList)elementCollection;
+					Function function = (Function)element;
+					trackingList.Remove(function);
+					if (!afterTransaction)
+					{
+						// Just clear the error. A rule is used to remove the error
+						// object itself when there is no longer a duplicate.
+						function.DuplicateNameError = null;
+					}
+					return elementCollection;
+				}
+				#endregion // IDuplicateNameCollectionManager Implementation
+			}
+			#region Constructors
+			/// <summary>
+			/// Default constructor for FunctionNamedElementDictionary
+			/// </summary>
+			public FunctionNamedElementDictionary()
+				: base(new DuplicateNameManager(), StringComparer.OrdinalIgnoreCase)
+			{
+			}
+			#endregion // Constructors
+			#region Base overrides
+			/// <summary>
+			/// Raise an exception with text specific to a name in a model
+			/// </summary>
+			/// <param name="element">Element we're attempting to name</param>
+			/// <param name="requestedName">The in-use requested name</param>
+			protected override void ThrowDuplicateNameException(ModelElement element, string requestedName)
+			{
+				throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelExceptionNameAlreadyUsedByModel, requestedName));
+			}
+			#endregion // Base overrides
+		}
+		#endregion // FunctionNamedElementDictionary class
 		#endregion // Relationship-specific NamedElementDictionary implementations
 	}
-	public partial class ModelHasObjectType : INamedElementDictionaryLink
+	partial class ModelHasObjectType : INamedElementDictionaryLink
 	{
 		#region INamedElementDictionaryLink implementation
 		INamedElementDictionaryParent INamedElementDictionaryLink.ParentRolePlayer
@@ -1422,7 +1590,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		/// <summary>
 		/// Implements INamedElementDictionaryLink.RemoteParentRolePlayer
-		/// Returns null.
+		/// Returns ObjectType.
 		/// </summary>
 		protected INamedElementDictionaryRemoteParent RemoteParentRolePlayer
 		{
@@ -1430,7 +1598,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
-	public partial class ModelHasFactType : INamedElementDictionaryLink
+	partial class ModelHasFactType : INamedElementDictionaryLink
 	{
 		#region INamedElementDictionaryLink implementation
 		INamedElementDictionaryParent INamedElementDictionaryLink.ParentRolePlayer
@@ -1471,7 +1639,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
-	public partial class ModelHasSetComparisonConstraint : INamedElementDictionaryLink
+	partial class ModelHasSetComparisonConstraint : INamedElementDictionaryLink
 	{
 		#region INamedElementDictionaryLink implementation
 		INamedElementDictionaryParent INamedElementDictionaryLink.ParentRolePlayer
@@ -1512,7 +1680,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
-	public partial class SetComparisonConstraint : INamedElementDictionaryChild
+	partial class SetComparisonConstraint : INamedElementDictionaryChild
 	{
 		#region INamedElementDictionaryChild implementation
 		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentDomainRoleId, out Guid childDomainRoleId)
@@ -1532,7 +1700,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // INamedElementDictionaryChild implementation
 	}
-	public partial class ModelHasSetConstraint : INamedElementDictionaryLink
+	partial class ModelHasSetConstraint : INamedElementDictionaryLink
 	{
 		#region INamedElementDictionaryLink implementation
 		INamedElementDictionaryParent INamedElementDictionaryLink.ParentRolePlayer
@@ -1573,7 +1741,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
-	public partial class ValueTypeHasValueConstraint : INamedElementDictionaryLink
+	partial class ValueTypeHasValueConstraint : INamedElementDictionaryLink
 	{
 		#region INamedElementDictionaryLink implementation
 		INamedElementDictionaryParent INamedElementDictionaryLink.ParentRolePlayer
@@ -1614,7 +1782,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
-	public partial class RoleHasValueConstraint : INamedElementDictionaryLink
+	partial class RoleHasValueConstraint : INamedElementDictionaryLink
 	{
 		#region INamedElementDictionaryLink implementation
 		INamedElementDictionaryParent INamedElementDictionaryLink.ParentRolePlayer
@@ -1655,7 +1823,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
-	public partial class FactTypeHasRole : INamedElementDictionaryLink
+	partial class FactTypeHasRole : INamedElementDictionaryLink
 	{
 		#region INamedElementDictionaryLink implementation
 		INamedElementDictionaryParent INamedElementDictionaryLink.ParentRolePlayer
@@ -1696,7 +1864,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
-	public partial class ModelContainsRecognizedPhrase : INamedElementDictionaryLink
+	partial class ModelContainsRecognizedPhrase : INamedElementDictionaryLink
 	{
 		#region INamedElementDictionaryLink implementation
 		INamedElementDictionaryParent INamedElementDictionaryLink.ParentRolePlayer
@@ -1737,7 +1905,48 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
-	public partial class RecognizedPhrase : INamedElementDictionaryChild
+	partial class ModelDefinesFunction : INamedElementDictionaryLink
+	{
+		#region INamedElementDictionaryLink implementation
+		INamedElementDictionaryParent INamedElementDictionaryLink.ParentRolePlayer
+		{
+			get { return ParentRolePlayer; }
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryLink.ParentRolePlayer
+		/// Returns Model.
+		/// </summary>
+		protected INamedElementDictionaryParent ParentRolePlayer
+		{
+			get { return Model; }
+		}
+		INamedElementDictionaryChild INamedElementDictionaryLink.ChildRolePlayer
+		{
+			get { return ChildRolePlayer; }
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryLink.ChildRolePlayer
+		/// Returns Function.
+		/// </summary>
+		protected INamedElementDictionaryChild ChildRolePlayer
+		{
+			get { return Function; }
+		}
+		INamedElementDictionaryRemoteParent INamedElementDictionaryLink.RemoteParentRolePlayer
+		{
+			get { return RemoteParentRolePlayer; }
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryLink.RemoteParentRolePlayer
+		/// Returns null.
+		/// </summary>
+		protected INamedElementDictionaryRemoteParent RemoteParentRolePlayer
+		{
+			get { return null; }
+		}
+		#endregion // INamedElementDictionaryLink implementation
+	}
+	partial class RecognizedPhrase : INamedElementDictionaryChild
 	{
 		#region INamedElementDictionaryChild implementation
 		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentDomainRoleId, out Guid childDomainRoleId)
@@ -1750,12 +1959,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		protected static void GetRoleGuids(out Guid parentDomainRoleId, out Guid childDomainRoleId)
 		{
-			parentDomainRoleId = ModelContainsRecognizedPhrase.RecognizedPhraseDomainRoleId;
+			parentDomainRoleId = ModelContainsRecognizedPhrase.ModelDomainRoleId;
 			childDomainRoleId = ModelContainsRecognizedPhrase.RecognizedPhraseDomainRoleId;
 		}
 		#endregion // INamedElementDictionaryChild implementation
 	}
-	public partial class SetConstraint : INamedElementDictionaryChild
+	partial class SetConstraint : INamedElementDictionaryChild
 	{
 		#region INamedElementDictionaryChild implementation
 		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentDomainRoleId, out Guid childDomainRoleId)
@@ -1775,7 +1984,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // INamedElementDictionaryChild implementation
 	}
-	public partial class ValueTypeValueConstraint : INamedElementDictionaryChild
+	partial class ValueTypeValueConstraint : INamedElementDictionaryChild
 	{
 		#region INamedElementDictionaryChild implementation
 		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentDomainRoleId, out Guid childDomainRoleId)
@@ -1795,7 +2004,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // INamedElementDictionaryChild implementation
 	}
-	public partial class RoleValueConstraint : INamedElementDictionaryChild
+	partial class RoleValueConstraint : INamedElementDictionaryChild
 	{
 		#region INamedElementDictionaryChild implementation
 		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentDomainRoleId, out Guid childDomainRoleId)
@@ -1815,7 +2024,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // INamedElementDictionaryChild implementation
 	}
-	public abstract partial class DuplicateNameError : IRepresentModelElements, IModelErrorOwner
+	partial class Function : INamedElementDictionaryChild
+	{
+		#region INamedElementDictionaryChild implementation
+		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentDomainRoleId, out Guid childDomainRoleId)
+		{
+			GetRoleGuids(out parentDomainRoleId, out childDomainRoleId);
+		}
+		/// <summary>
+		/// Implementation of <see cref="INamedElementDictionaryChild.GetRoleGuids"/>. Identifies
+		/// this child as participating in the 'ModelDefinesFunction' naming set.
+		/// </summary>
+		protected static void GetRoleGuids(out Guid parentDomainRoleId, out Guid childDomainRoleId)
+		{
+			parentDomainRoleId = ModelDefinesFunction.ModelDomainRoleId;
+			childDomainRoleId = ModelDefinesFunction.FunctionDomainRoleId;
+		}
+		#endregion // INamedElementDictionaryChild implementation
+	}
+	partial class DuplicateNameError : IRepresentModelElements, IModelErrorOwner
 	{
 		#region DuplicateNameError Specific
 		/// <summary>
@@ -2002,8 +2229,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	}
 	#region Relationship-specific derivations of DuplicateNameError
 	[ModelErrorDisplayFilter(typeof(NameErrorCategory))]
-	public partial class ObjectTypeDuplicateNameError : DuplicateNameError, IHasIndirectModelErrorOwner
+	partial class ObjectTypeDuplicateNameError : DuplicateNameError, IHasIndirectModelErrorOwner
 	{
+		#region Base overrides
 		/// <summary>
 		/// Get the duplicate elements represented by this DuplicateNameError
 		/// </summary>
@@ -2034,6 +2262,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return ResourceStrings.ModelErrorModelHasDuplicateObjectTypeNames;
 			}
 		}
+		#endregion // Base overrides
 		#region IHasIndirectModelErrorOwner Implementation
 		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
 		/// <summary>
@@ -2057,7 +2286,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // IHasIndirectModelErrorOwner Implementation
 	}
 	[ModelErrorDisplayFilter(typeof(NameErrorCategory))]
-	public partial class ConstraintDuplicateNameError : DuplicateNameError, IHasIndirectModelErrorOwner
+	partial class ConstraintDuplicateNameError : DuplicateNameError, IHasIndirectModelErrorOwner
 	{
 		#region Base overrides
 		/// <summary>
@@ -2287,8 +2516,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // IHasIndirectModelErrorOwner Implementation
 	}
 	[ModelErrorDisplayFilter(typeof(NameErrorCategory))]
-	public partial class RecognizedPhraseDuplicateNameError : DuplicateNameError, IHasIndirectModelErrorOwner
+	partial class RecognizedPhraseDuplicateNameError : DuplicateNameError, IHasIndirectModelErrorOwner
 	{
+		#region Base overrides
 		/// <summary>
 		/// Returns the list of DuplicateElements 
 		/// </summary>
@@ -2316,6 +2546,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return ResourceStrings.ModelErrorModelHasDuplicateRecognizedPhraseNames;
 			}
 		}
+		#endregion // Base overrides
 		#region IHasIndirectModelErrorOwner Implementation
 		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
 		/// <summary>
@@ -2337,7 +2568,63 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return GetIndirectModelErrorOwnerLinkRoles();
 		}
 		#endregion // IHasIndirectModelErrorOwner Implementation
-
+	}
+	[ModelErrorDisplayFilter(typeof(NameErrorCategory))]
+	partial class FunctionDuplicateNameError : DuplicateNameError, IHasIndirectModelErrorOwner
+	{
+		#region Base overrides
+		/// <summary>
+		/// Get the duplicate elements represented by this DuplicateNameError
+		/// </summary>
+		/// <returns>ObjectTypeCollection</returns>
+		protected override IList<ModelElement> DuplicateElements
+		{
+			get
+			{
+				return FunctionCollection.ToArray();
+			}
+		}
+		/// <summary>
+		/// Provide an efficient name lookup
+		/// </summary>
+		protected override string GetElementName(ModelElement element)
+		{
+			return ((ORMNamedElement)element).Name;
+		}
+		/// <summary>
+		/// Get the text to display the duplicate error information. Replacement
+		/// field {0} is replaced by the model name, field {1} is replaced by the
+		/// element name.
+		/// </summary>
+		protected override string ErrorFormatText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorModelHasDuplicateFunctionNames;
+			}
+		}
+		#endregion // Base overrides
+		#region IHasIndirectModelErrorOwner Implementation
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
+		/// <summary>
+		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		/// </summary>
+		protected static Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		{
+			// Creating a static readonly guid array is causing static field initialization
+			// ordering issues with the partial classes. Defer initialization.
+			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+			if (linkRoles == null)
+			{
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { FunctionHasDuplicateNameError.DuplicateNameErrorDomainRoleId };
+			}
+			return linkRoles;
+		}
+		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerLinkRoles();
+		}
+		#endregion // IHasIndirectModelErrorOwner Implementation
 	}
 	#endregion // Relationship-specific derivations of DuplicateNameError
 	#endregion // NamedElementDictionary and DuplicateNameError integration

@@ -1907,6 +1907,7 @@
 			<xs:element name="ObjectTypeDuplicateNameError" type="ObjectTypeDuplicateNameErrorType"/>
 			<xs:element name="RecognizedPhraseDuplicateNameError" type="RecognizedPhraseDuplicateNameErrorType"/>
 			<xs:element name="GroupDuplicateNameError" type="GroupDuplicateNameErrorType"/>
+			<xs:element name="FunctionDuplicateNameError" type="FunctionDuplicateNameErrorType"/>
 			<xs:element name="GroupMembershipContradictionError" type="GroupMembershipContradictionErrorType"/>
 			<xs:element name="ExternalConstraintRoleSequenceArityMismatchError" type="ExternalConstraintRoleSequenceArityMismatchErrorType"/>
 			<xs:element name="FactTypeRequiresInternalUniquenessConstraintError" type="FactTypeRequiresInternalUniquenessConstraintErrorType"/>
@@ -2025,6 +2026,27 @@
 						<xs:complexType>
 							<xs:sequence minOccurs="2" maxOccurs="unbounded">
 								<xs:element name="RecognizedPhrase" type="RecognizedPhraseRef"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="FunctionDuplicateNameErrorType">
+		<xs:annotation>
+			<xs:documentation>Multiple functions have the same name.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="Functions">
+						<xs:annotation>
+							<xs:documentation>Like-named functions.</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence minOccurs="2" maxOccurs="unbounded">
+								<xs:element name="Function" type="FunctionRef"/>
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
@@ -2917,7 +2939,7 @@
 		</xs:sequence>
 		<xs:attribute name="Name" type="xs:string" use="required">
 			<xs:annotation>
-				<xs:documentation>A recognized word to map to a different text value during name generation. Generally a common word such as 'has' or 'the'. Allows mapping to an empty alias value.</xs:documentation>
+				<xs:documentation>A recognized word or phrase to map to a different text value during name generation. Generally a common word such as 'has' or 'the'. Allows mapping to an empty alias value.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 		<xs:attributeGroup ref="idAttribute"/>

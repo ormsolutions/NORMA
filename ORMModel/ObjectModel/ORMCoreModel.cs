@@ -252,12 +252,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // IVerbalizationSnippetsProvider Implementation
 		#region ISurveyNodeProvider Implementation
-		IEnumerable<object> ISurveyNodeProvider.GetSurveyNodes(object context, object expansionKey)
-		{
-			return this.GetSurveyNodes(context, expansionKey);
-		}
 		/// <summary>
-		/// Provides an <see cref="IEnumerable{SampleDataElementNode}"/> for the <see cref="SurveyTreeContainer"/>.
+		/// Implements <see cref="ISurveyNodeProvider.GetSurveyNodes"/>
 		/// </summary>
 		protected IEnumerable<object> GetSurveyNodes(object context, object expansionKey)
 		{
@@ -377,6 +373,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					yield return GroupingMembershipContradictionErrorIsForElement.GetLinkToElement(errorLink);
 				}
 			}
+		}
+		IEnumerable<object> ISurveyNodeProvider.GetSurveyNodes(object context, object expansionKey)
+		{
+			return this.GetSurveyNodes(context, expansionKey);
+		}
+		/// <summary>
+		/// Implements <see cref="ISurveyNodeProvider.IsSurveyNodeExpandable"/>
+		/// </summary>
+		protected static bool IsSurveyNodeExpandable(object context, object expansionKey)
+		{
+			return expansionKey == FactType.SurveyExpansionKey ||
+				expansionKey == NameGenerator.SurveyExpansionKey ||
+				expansionKey == FactConstraint.SurveyConstraintExpansionKey ||
+				expansionKey == ElementGrouping.SurveyExpansionKey;
+			// Note that ObjectType expansion is offered for extension models only,
+			// we do not currently show any expansion for it in the core model.
+		}
+		bool ISurveyNodeProvider.IsSurveyNodeExpandable(object context, object expansionKey)
+		{
+			return IsSurveyNodeExpandable(context, expansionKey);
 		}
 		#endregion // ISurveyNodeProvider Implementation
 		#region SurveyEventHandling

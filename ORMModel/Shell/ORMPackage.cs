@@ -1135,27 +1135,37 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// <summary>
 		/// Extend the set of required extensions to include any dependencies
 		/// </summary>
-		/// <param name="extensions">Currently loaded extensions</param>
-		public static void VerifyRequiredExtensions(IDictionary<string, ORMExtensionType> extensions)
+		/// <param name="extensions">Currently loaded extensions. May be created if null to add auto-load extensions.</param>
+		public static void VerifyRequiredExtensions(ref Dictionary<string, ORMExtensionType> extensions)
 		{
-			if (extensions == null || mySingleton == null)
+			if (mySingleton == null)
 			{
 				return;
 			}
 			IDictionary<string, ORMExtensionType> availableExtensions = GetAvailableCustomExtensions();
-			IDictionary<Guid, string> idToExtensionNameMap = GetExtensionIdToExtensionNameMap();
-			IDictionary<Guid, Type> standardModelsMap = GetStandardDomainModelsMap();
 			string[] autoLoadExtensions = GetAutoLoadExtensions();
 
 			// First get all autoload extensions
 			for (int i = 0; i < autoLoadExtensions.Length; ++i)
 			{
 				string extensionNamespace = autoLoadExtensions[i];
-				if (!extensions.ContainsKey(extensionNamespace))
+				if (extensions == null)
+				{
+					extensions = new Dictionary<string, ORMExtensionType>();
+					extensions[extensionNamespace] = availableExtensions[extensionNamespace];
+				}
+				else if (!extensions.ContainsKey(extensionNamespace))
 				{
 					extensions[extensionNamespace] = availableExtensions[extensionNamespace];
 				}
 			}
+			if (extensions == null)
+			{
+				return;
+			}
+
+			IDictionary<Guid, string> idToExtensionNameMap = GetExtensionIdToExtensionNameMap();
+			IDictionary<Guid, Type> standardModelsMap = GetStandardDomainModelsMap();
 
 			// Get a starting keyset we can iterate so the enumerators don't cry foul
 			ICollection<string> startKeysCollection = extensions.Keys;

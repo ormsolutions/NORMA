@@ -172,6 +172,7 @@
 	<ResourceString name="ModelErrorConstraintHasTooManyRoleSequencesText" model="Model" resourceName="ModelError.Constraint.TooManyRoleSequences.Text"/>
 	<ResourceString name="ModelErrorConstraintExternalConstraintArityMismatch" model="Model" resourceName="ModelError.Constraint.ExternalConstraintArityMismatch.Text"/>
 	<ResourceString name="ModelErrorModelHasDuplicateConstraintNames" model="Model" resourceName="ModelError.Model.DuplicateConstraintNames.Text"/>
+	<ResourceString name="ModelErrorModelHasDuplicateFunctionNames" model="Model" resourceName="ModelError.Model.DuplicateFunctionNames.Text"/>
 	<ResourceString name="ModelErrorModelHasDuplicateObjectTypeNames" model="Model" resourceName="ModelError.Model.DuplicateObjectTypeNames.Text"/>
 	<ResourceString name="ModelErrorModelHasDuplicateRecognizedPhraseNames" model="Model" resourceName="ModelError.Model.DuplicateRecognizedPhraseNames.Text"/>
 	<ResourceString name="ModelErrorModelHasPopulationUniquenessErrorWithNamedRole" model="Model" resourceName="ModelError.Model.PopulationUniquenessError.Role.Text"/>
@@ -187,6 +188,8 @@
 	<ResourceString name="ModelErrorRoleValueTypeDetachedError" model="Model" resourceName="ModelError.ValueConstraint.ValueTypeDetachedError.Role.Message"/>
 	<ResourceString name="ModelErrorUncategorized" model="Model" resourceName="ModelError.UncategorizedModelError.CategoryDisplayName"/>
 	<ResourceString name="ModelErrorDisplayFilteredText" model="Model" resourceName="ModelErrorDisplayFilter.ToStringOverrideText"/>
+	<ResourceString name="ModelExceptionPathConstantInconsistentWithBagInput" model="Model" resourceName="ModelException.CalculatedPathValueInputBindsToPathConstant.PathConstantInconsistentWithBagInput"/>
+	<ResourceString name="ModelExceptionEnforceInitialCalculatedValue" model="Model" resourceName="ModelException.CalculatedPathValueIsCalculatedWithFunction.EnforceInitialCalculatedValue"/>
 	<ResourceString name="ModelExceptionNameAlreadyUsedByModel" model="Model" resourceName="ModelException.Model.DuplicateName.Text"/>
 	<ResourceString name="ModelExceptionEnforceValueTypeNotNestingType" model="Model" resourceName="ModelException.ObjectType.EnforceValueTypeNotNestingType"/>
 	<ResourceString name="ModelExceptionEnforceRolePlayerNotNestingType" model="Model" resourceName="ModelException.FactType.EnforceRolePlayerNotNestingType"/>

@@ -981,6 +981,14 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.DuplicateConstraintNames.Text");
 			}
 		}
+		/// <summary>Model validation error text used when multiple functions with the same name are loaded into a model.Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</summary>
+		public static string ModelErrorModelHasDuplicateFunctionNames
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.DuplicateFunctionNames.Text");
+			}
+		}
 		/// <summary>Model validation error text used when multiple object types with the same name are loaded into a model.Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</summary>
 		public static string ModelErrorModelHasDuplicateObjectTypeNames
 		{
@@ -1099,6 +1107,22 @@ namespace ORMSolutions.ORMArchitect.Core
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelErrorDisplayFilter.ToStringOverrideText");
+			}
+		}
+		/// <summary>Exception message when an attempt is made to modify assign a PathConstant as the input for a bag parameter.</summary>
+		public static string ModelExceptionPathConstantInconsistentWithBagInput
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.CalculatedPathValueInputBindsToPathConstant.PathConstantInconsistentWithBagInput");
+			}
+		}
+		/// <summary>Exception message when an attempt is made to modify the CalculatedValue of a CalculatedPathValueIsCalculatedWithFunction relationship.</summary>
+		public static string ModelExceptionEnforceInitialCalculatedValue
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.CalculatedPathValueIsCalculatedWithFunction.EnforceInitialCalculatedValue");
 			}
 		}
 		/// <summary>Exception message when a name change in the editor attempts to introduce a duplicate name into the model.</summary>

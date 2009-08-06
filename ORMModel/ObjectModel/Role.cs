@@ -494,7 +494,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 
 		/// <summary>
-		/// true is a ValueConstraint may be attached to this role. This
+		/// True if a ValueConstraint may be attached to this role. This
 		/// duplicates the work of <see cref="GetValueRoles()"/> without actually
 		/// retrieving the roles, so call GetValueRoles directly and test for
 		/// null if you need the sequence of roles from the value type role back
@@ -1377,6 +1377,58 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // RolePlayer validation rules
+		#region Role derivation validation rules
+		/// <summary>
+		/// AddRule: typeof(RoleDerivesFromCalculatedPathValue)
+		/// </summary>
+		private static void RoleDerivesFromCalculatedValueRule(ElementAddedEventArgs e)
+		{
+			Role role = ((RoleDerivesFromCalculatedPathValue)e.ModelElement).Role;
+			role.DerivedFromConstant = null;
+			role.DerivedFromPathedRole = null;
+		}
+		/// <summary>
+		/// AddRule: typeof(RoleDerivesFromPathConstant)
+		/// </summary>
+		private static void RoleDerivesFromConstantRule(ElementAddedEventArgs e)
+		{
+			Role role = ((RoleDerivesFromPathConstant)e.ModelElement).Role;
+			role.DerivedFromPathedRole = null;
+			role.DerivedFromCalculatedValue = null;
+		}
+		/// <summary>
+		/// AddRule: typeof(RoleDerivesFromPathedRole)
+		/// </summary>
+		private static void RoleDerivedFromPathedRoleRule(ElementAddedEventArgs e)
+		{
+			Role role = ((RoleDerivesFromPathedRole)e.ModelElement).Role;
+			role.DerivedFromConstant = null;
+			role.DerivedFromCalculatedValue = null;
+		}
+		/// <summary>
+		/// DeleteRule: typeof(FactTypeHasDerivationRule)
+		/// Clean up derivation constants on the roles
+		/// </summary>
+		private static void FactTypeDerivationRuleDeletedRule(ElementDeletedEventArgs e)
+		{
+			FactTypeHasDerivationRule link = (FactTypeHasDerivationRule)e.ModelElement;
+			FactType factType = ((FactTypeHasDerivationRule)e.ModelElement).FactType;
+			// Calculated values and pathed roles will be deleted with the derivation path,
+			// but constants are aggregated with the role and will not be cleared with delete
+			// propagation.
+			if (!factType.IsDeleted)
+			{
+				foreach (RoleBase roleBase in factType.RoleCollection)
+				{
+					Role role = roleBase as Role;
+					if (role != null)
+					{
+						role.DerivedFromConstant = null;
+					}
+				}
+			}
+		}
+		#endregion // Role derivation validation rules
 		#region IRedirectVerbalization Implementation
 		/// <summary>
 		/// Implements IRedirectVerbalization.SurrogateVerbalizer by deferring to the parent fact

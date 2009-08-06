@@ -467,7 +467,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 	/// <see cref="ElementTypeDescriptor"/> for <see cref="ElementGroupingType"/>s.
 	/// </summary>
 	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
-	public class ElementGroupingTypeTypeDescriptor<TModelElement> : ElementTypeDescriptor<TModelElement>
+	public class ElementGroupingTypeTypeDescriptor<TModelElement> : BlockRelationshipPropertiesElementTypeDescriptor<TModelElement>
 		where TModelElement : ElementGroupingType
 	{
 		#region Constructor
@@ -481,20 +481,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		}
 		#endregion // Constructor
 		#region Base overrides
-		/// <summary>
-		/// Do not show embedded object properties
-		/// </summary>
-		protected override bool IncludeEmbeddingRelationshipProperties(ModelElement requestor)
-		{
-			return false;
-		}
-		/// <summary>
-		/// Do not show relationship properties
-		/// </summary>
-		protected override bool IncludeOppositeRolePlayerProperties(ModelElement requestor)
-		{
-			return false;
-		}
 		/// <summary>
 		/// Show the class name as the component name
 		/// </summary>

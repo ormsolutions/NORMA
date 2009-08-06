@@ -191,6 +191,17 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		{
 			return GetSurveyNodes(context, expansionKey);
 		}
+		/// <summary>
+		/// Implements <see cref="ISurveyNodeProvider.IsSurveyNodeExpandable"/>
+		/// </summary>
+		protected static bool IsSurveyNodeExpandable(object context, object expansionKey)
+		{
+			return false;
+		}
+		bool ISurveyNodeProvider.IsSurveyNodeExpandable(object context, object expansionKey)
+		{
+			return IsSurveyNodeExpandable(context, expansionKey);
+		}
 		#endregion // ISurveyNodeProvider Implementation
 		#region IModelingEventSubscriber Implementation
 		void IModelingEventSubscriber.ManageModelingEventHandlers(ModelingEventManager eventManager, EventSubscriberReasons reasons, EventHandlerAction action)

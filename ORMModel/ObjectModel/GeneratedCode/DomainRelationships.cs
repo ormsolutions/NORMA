@@ -6218,6 +6218,291 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship FunctionHasDuplicateNameError
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("0ec6fed9-6561-43c7-b704-9bc56d7474fe")]
+	public partial class FunctionHasDuplicateNameError : ElementAssociatedWithModelError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// FunctionHasDuplicateNameError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x0ec6fed9, 0x6561, 0x43c7, 0xb7, 0x04, 0x9b, 0xc5, 0x6d, 0x74, 0x74, 0xfe);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a FunctionHasDuplicateNameError link in the same Partition as the given Function
+		/// </summary>
+		/// <param name="source">Function to use as the source of the relationship.</param>
+		/// <param name="target">FunctionDuplicateNameError to use as the target of the relationship.</param>
+		public FunctionHasDuplicateNameError(Function source, FunctionDuplicateNameError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(FunctionHasDuplicateNameError.FunctionDomainRoleId, source), new DslModeling::RoleAssignment(FunctionHasDuplicateNameError.DuplicateNameErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public FunctionHasDuplicateNameError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public FunctionHasDuplicateNameError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public FunctionHasDuplicateNameError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public FunctionHasDuplicateNameError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Function domain role code
+		
+		/// <summary>
+		/// Function domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid FunctionDomainRoleId = new global::System.Guid(0xa9a2cadb, 0x325a, 0x416b, 0xaf, 0xd6, 0x32, 0x15, 0x81, 0x4b, 0xf4, 0x6a);
+		
+		/// <summary>
+		/// DomainRole Function
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError.Function
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError/Function.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError/Function.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DuplicateNameError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError/Function.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("a9a2cadb-325a-416b-afd6-3215814bf46a")]
+		public virtual Function Function
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (Function)DslModeling::DomainRoleInfo.GetRolePlayer(this, FunctionDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, FunctionDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access FunctionCollection of a FunctionDuplicateNameError
+		/// <summary>
+		/// Gets a list of FunctionCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<Function> GetFunctionCollection(FunctionDuplicateNameError element)
+		{
+			return new DslModeling::LinkedElementCollection<Function>(element, DuplicateNameErrorDomainRoleId);
+		}
+		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing Function domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.Function;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.Function = (Function)value;
+			}
+		}
+		
+		#endregion
+		#region DuplicateNameError domain role code
+		
+		/// <summary>
+		/// DuplicateNameError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DuplicateNameErrorDomainRoleId = new global::System.Guid(0x7c4c1204, 0x9bac, 0x4e3e, 0xba, 0xbc, 0x4d, 0x84, 0x9f, 0x4c, 0xf3, 0x0a);
+		
+		/// <summary>
+		/// DomainRole DuplicateNameError
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError.DuplicateNameError
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError/DuplicateNameError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError/DuplicateNameError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FunctionCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError/DuplicateNameError.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainObjectId("7c4c1204-9bac-4e3e-babc-4d849f4cf30a")]
+		public virtual FunctionDuplicateNameError DuplicateNameError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (FunctionDuplicateNameError)DslModeling::DomainRoleInfo.GetRolePlayer(this, DuplicateNameErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DuplicateNameErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access DuplicateNameError of a Function
+		/// <summary>
+		/// Gets DuplicateNameError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static FunctionDuplicateNameError GetDuplicateNameError(Function element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, FunctionDomainRoleId) as FunctionDuplicateNameError;
+		}
+		
+		/// <summary>
+		/// Sets DuplicateNameError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetDuplicateNameError(Function element, FunctionDuplicateNameError newDuplicateNameError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, FunctionDomainRoleId, newDuplicateNameError);
+		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing DuplicateNameError domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.DuplicateNameError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.DuplicateNameError = (FunctionDuplicateNameError)value;
+			}
+		}
+		
+		#endregion
+		#region Function link accessor
+		/// <summary>
+		/// Get the FunctionHasDuplicateNameError link to a Function.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError GetLinkToDuplicateNameError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.Function functionInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError>(functionInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError.FunctionDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Function not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region DuplicateNameError link accessor
+		/// <summary>
+		/// Get the list of FunctionHasDuplicateNameError links to a FunctionDuplicateNameError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError> GetLinksToFunctionCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionDuplicateNameError duplicateNameErrorInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError>(duplicateNameErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError.DuplicateNameErrorDomainRoleId);
+		}
+		#endregion
+		#region FunctionHasDuplicateNameError instance accessors
+		
+		/// <summary>
+		/// Get any FunctionHasDuplicateNameError links between a given Function and a FunctionDuplicateNameError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.Function source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionDuplicateNameError target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError.FunctionDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError link in links )
+			{
+				if ( target.Equals(link.DuplicateNameError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one FunctionHasDuplicateNameError link between a given Functionand a FunctionDuplicateNameError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.Function source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionDuplicateNameError target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError.FunctionDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError link in links )
+			{
+				if ( target.Equals(link.DuplicateNameError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship ExternalRoleConstraint
 	/// Description for
 	/// ORMSolutions.ORMArchitect.Core.ObjectModel.ExternalRoleConstraint
@@ -38397,7 +38682,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainRelationship(AllowsDuplicates = true)]
 	[DslModeling::DomainObjectId("8f28981e-e8b5-4205-82ba-2487b9b3ef13")]
 	public partial class PathedRole : DslModeling::ElementLink
 	{
@@ -38475,7 +38760,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole/RolePath.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole/RolePath.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "PathedRoleCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole/RolePath.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "RoleCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole/RolePath.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("e1a7228b-6f79-42fb-8877-803adcfbb54a")]
 		public virtual RolePath RolePath
 		{
@@ -38533,13 +38818,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 				
 		#endregion
-		#region Static methods to access PathedRoleCollection of a RolePath
+		#region Static methods to access RoleCollection of a RolePath
 		/// <summary>
-		/// Gets a list of PathedRoleCollection.
+		/// Gets a list of RoleCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<Role> GetPathedRoleCollection(RolePath element)
+		public static DslModeling::LinkedElementCollection<Role> GetRoleCollection(RolePath element)
 		{
 			return new DslModeling::LinkedElementCollection<Role>(element, RolePathDomainRoleId);
 		}
@@ -38641,7 +38926,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Storage for PathedRolePurpose
 		/// </summary>
-		private PathedRolePurpose pathedRolePurposePropertyStorage;
+		private PathedRolePurpose pathedRolePurposePropertyStorage = ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRolePurpose.SameFactType;
 		
 		/// <summary>
 		/// Gets or sets the value of PathedRolePurpose domain property.
@@ -38649,6 +38934,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole/PathedRolePurpose.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole/PathedRolePurpose.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRolePurpose.SameFactType)]
 		[DslModeling::DomainObjectId("ffaf4ef9-ca23-4d14-bb6d-8f5b3c90e680")]
 		public PathedRolePurpose PathedRolePurpose
 		{
@@ -38818,7 +39104,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole> GetLinksToPathedRoleCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePath rolePathInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole> GetLinksToRoleCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePath rolePathInstance )
 		{
 			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole>(rolePathInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole.RolePathDomainRoleId);
 		}
@@ -38854,24 +39140,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			return outLinks.AsReadOnly();
 		}
-		/// <summary>
-		/// Get the one PathedRole link between a given RolePathand a Role.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePath source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.Role target )
-		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole.RolePathDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole link in links )
-			{
-				if ( target.Equals(link.Role) )
-				{
-					return link;
-				}
-			}
-			return null;
-		}
-		
 		#endregion
 	}
 }
@@ -39117,33 +39385,33 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
-	/// DomainRelationship RoleSubPathPathIsContinuationOfRolePath
+	/// DomainRelationship RoleSubPathIsContinuationOfRolePath
 	/// Description for
-	/// ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath
 	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship(IsEmbedding=true)]
 	[DslModeling::DomainObjectId("79be9e2c-9e3f-4ea0-957c-4d4ead2389b2")]
-	public partial class RoleSubPathPathIsContinuationOfRolePath : DslModeling::ElementLink
+	public partial class RoleSubPathIsContinuationOfRolePath : DslModeling::ElementLink
 	{
 		#region Constructors, domain class Id
 		
 		/// <summary>
-		/// RoleSubPathPathIsContinuationOfRolePath domain class Id.
+		/// RoleSubPathIsContinuationOfRolePath domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x79be9e2c, 0x9e3f, 0x4ea0, 0x95, 0x7c, 0x4d, 0x4e, 0xad, 0x23, 0x89, 0xb2);
 	
 				
 		/// <summary>
 		/// Constructor
-		/// Creates a RoleSubPathPathIsContinuationOfRolePath link in the same Partition as the given RolePath
+		/// Creates a RoleSubPathIsContinuationOfRolePath link in the same Partition as the given RolePath
 		/// </summary>
 		/// <param name="source">RolePath to use as the source of the relationship.</param>
 		/// <param name="target">RoleSubPath to use as the target of the relationship.</param>
-		public RoleSubPathPathIsContinuationOfRolePath(RolePath source, RoleSubPath target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(RoleSubPathPathIsContinuationOfRolePath.ParentRolePathDomainRoleId, source), new DslModeling::RoleAssignment(RoleSubPathPathIsContinuationOfRolePath.SubPathDomainRoleId, target)}, null)
+		public RoleSubPathIsContinuationOfRolePath(RolePath source, RoleSubPath target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(RoleSubPathIsContinuationOfRolePath.ParentRolePathDomainRoleId, source), new DslModeling::RoleAssignment(RoleSubPathIsContinuationOfRolePath.SubPathDomainRoleId, target)}, null)
 		{
 		}
 		
@@ -39152,7 +39420,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public RoleSubPathPathIsContinuationOfRolePath(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+		public RoleSubPathIsContinuationOfRolePath(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
 		{
 		}
@@ -39163,7 +39431,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public RoleSubPathPathIsContinuationOfRolePath(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public RoleSubPathIsContinuationOfRolePath(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
 		{
 		}
@@ -39173,7 +39441,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public RoleSubPathPathIsContinuationOfRolePath(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+		public RoleSubPathIsContinuationOfRolePath(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(partition, roleAssignments, null)
 		{
 		}
@@ -39184,7 +39452,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public RoleSubPathPathIsContinuationOfRolePath(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public RoleSubPathIsContinuationOfRolePath(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, roleAssignments, propertyAssignments)
 		{
 		}
@@ -39200,9 +39468,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// DomainRole ParentRolePath
 		/// Sub paths branched from the end of the current path.
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath/ParentRolePath.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath/ParentRolePath.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "SplitPathCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath/ParentRolePath.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath/ParentRolePath.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath/ParentRolePath.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "SplitPathCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath/ParentRolePath.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("97c4e687-6ff4-403a-aa36-376476cba5d4")]
 		public virtual RolePath ParentRolePath
 		{
@@ -39251,9 +39519,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// DomainRole SubPath
 		/// The containing path this sub path branches off of.
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath/SubPath.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath/SubPath.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ParentRolePath", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath/SubPath.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath/SubPath.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath/SubPath.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ParentRolePath", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath/SubPath.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("7ea4f7e9-149f-4db9-8307-2e561adcfc8a")]
 		public virtual RoleSubPath SubPath
 		{
@@ -39283,24 +39551,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion
 		#region ParentRolePath link accessor
 		/// <summary>
-		/// Get the list of RoleSubPathPathIsContinuationOfRolePath links to a RolePath.
+		/// Get the list of RoleSubPathIsContinuationOfRolePath links to a RolePath.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath> GetLinksToSplitPathCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePath parentRolePathInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath> GetLinksToSplitPathCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePath parentRolePathInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath>(parentRolePathInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath.ParentRolePathDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath>(parentRolePathInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath.ParentRolePathDomainRoleId);
 		}
 		#endregion
 		#region SubPath link accessor
 		/// <summary>
-		/// Get the RoleSubPathPathIsContinuationOfRolePath link to a RoleSubPath.
+		/// Get the RoleSubPathIsContinuationOfRolePath link to a RoleSubPath.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath GetLinkToParentRolePath (global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPath subPathInstance)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath GetLinkToParentRolePath (global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPath subPathInstance)
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath>(subPathInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath.SubPathDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath>(subPathInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath.SubPathDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of SubPath not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -39312,18 +39580,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
-		#region RoleSubPathPathIsContinuationOfRolePath instance accessors
+		#region RoleSubPathIsContinuationOfRolePath instance accessors
 		
 		/// <summary>
-		/// Get any RoleSubPathPathIsContinuationOfRolePath links between a given RolePath and a RoleSubPath.
+		/// Get any RoleSubPathIsContinuationOfRolePath links between a given RolePath and a RoleSubPath.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePath source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPath target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePath source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPath target )
 		{
-			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath.ParentRolePathDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath.ParentRolePathDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath link in links )
 			{
 				if ( target.Equals(link.SubPath) )
 				{
@@ -39333,14 +39601,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one RoleSubPathPathIsContinuationOfRolePath link between a given RolePathand a RoleSubPath.
+		/// Get the one RoleSubPathIsContinuationOfRolePath link between a given RolePathand a RoleSubPath.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePath source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPath target )
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePath source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPath target )
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath.ParentRolePathDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathPathIsContinuationOfRolePath link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath.ParentRolePathDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath link in links )
 			{
 				if ( target.Equals(link.SubPath) )
 				{

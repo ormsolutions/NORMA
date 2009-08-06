@@ -1019,7 +1019,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			string retVal = null;
 			if (reading != null)
 			{
-				string[] useReplacements = roleReplacements;
 				int roleCount = defaultOrder.Count;
 				IList<RoleBase> readingRoles = reading.RoleCollection;
 				int readingRoleCount = readingRoles.Count;

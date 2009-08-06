@@ -408,7 +408,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 					}
 					#endregion
 					#region AdjustChange
-					public void AdjustChange(int index, BranchModificationEventHandler modificationEvents)
+					public void AdjustChange(int index, VirtualTreeDisplayDataChanges changes, BranchModificationEventHandler modificationEvents)
 					{
 						if (Start <= index && End >= index)
 						{
@@ -421,11 +421,11 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 								ListGrouper grouper;
 								if (null != (shifter = branch as SimpleListShifter))
 								{
-									modificationEvents(shifter, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.VisibleElements, shifter, index, 0, 1)));
+									modificationEvents(shifter, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(changes, shifter, index, 0, 1)));
 								}
 								else if (null != (grouper = branch as ListGrouper))
 								{
-									grouper.ElementChangedAt(startIndex, modificationEvents, null, 0);
+									grouper.ElementChangedAt(startIndex, changes, modificationEvents, null, 0);
 								}
 							}
 						}
@@ -523,29 +523,29 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 					}
 					#endregion // Equals and GetHashCode
 					#region IFreeFormCommandProvider Implementation
-					int IFreeFormCommandProvider<SurveyContextType>.GetFreeFormCommandCount(SurveyContextType context, IFreeFormCommandProvider<SurveyContextType> targetProvider)
+					int IFreeFormCommandProvider<SurveyContextType>.GetFreeFormCommandCount(SurveyContextType context, object targetElement)
 					{
 						IFreeFormCommandProvider<SurveyContextType> passTo = myQuestionTypeInfo.GetFreeFormCommands(context, myAnswer);
 						if (passTo != null)
 						{
-							return passTo.GetFreeFormCommandCount(context, targetProvider);
+							return passTo.GetFreeFormCommandCount(context, targetElement);
 						}
 						return 0;
 					}
-					void IFreeFormCommandProvider<SurveyContextType>.OnFreeFormCommandStatus(SurveyContextType context, IFreeFormCommandProvider<SurveyContextType> targetProvider, MenuCommand command, int commandIndex)
+					void IFreeFormCommandProvider<SurveyContextType>.OnFreeFormCommandStatus(SurveyContextType context, object targetElement, MenuCommand command, int commandIndex)
 					{
 						IFreeFormCommandProvider<SurveyContextType> passTo = myQuestionTypeInfo.GetFreeFormCommands(context, myAnswer);
 						if (passTo != null)
 						{
-							passTo.OnFreeFormCommandStatus(context, targetProvider, command, commandIndex);
+							passTo.OnFreeFormCommandStatus(context, targetElement, command, commandIndex);
 						}
 					}
-					void IFreeFormCommandProvider<SurveyContextType>.OnFreeFormCommandExecute(SurveyContextType context, IFreeFormCommandProvider<SurveyContextType> targetProvider, int commandIndex)
+					void IFreeFormCommandProvider<SurveyContextType>.OnFreeFormCommandExecute(SurveyContextType context, object targetElement, int commandIndex)
 					{
 						IFreeFormCommandProvider<SurveyContextType> passTo = myQuestionTypeInfo.GetFreeFormCommands(context, myAnswer);
 						if (passTo != null)
 						{
-							passTo.OnFreeFormCommandExecute(context, targetProvider, commandIndex);
+							passTo.OnFreeFormCommandExecute(context, targetElement, commandIndex);
 						}
 					}
 					#endregion // IFreeFormCommandProvider Implementation
@@ -1483,19 +1483,21 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				/// Modifies display of the node at the given index and redraws the tree
 				/// </summary>
 				/// <param name="index">Index of the display change for the item</param>
+				/// <param name="displayChanges">Notify which parts of the item need to be updated</param>
 				/// <param name="modificationEvents">The event handler to notify the tree with</param>
-				public void ElementChangedAt(int index, BranchModificationEventHandler modificationEvents)
+				public void ElementChangedAt(int index, VirtualTreeDisplayDataChanges displayChanges, BranchModificationEventHandler modificationEvents)
 				{
-					ElementChangedAt(index, modificationEvents, null, 0);
+					ElementChangedAt(index, displayChanges, modificationEvents, null, 0);
 				}
 				/// <summary>
 				/// Modifies display of the node at the given index and redraws the tree
 				/// </summary>
 				/// <param name="index">Index of the display change for the item</param>
+				/// <param name="displayChanges">Notify which parts of the item need to be updated</param>
 				/// <param name="modificationEvents">The event handler to notify the tree with</param>
 				/// <param name="notifyThrough">A wrapper branch. Notify the event handler with this branch, not the current branch</param>
 				/// <param name="notifyThroughOffset">Used if notifyThrough is not null. The starting offset of this branch in the outer branch.</param>
-				public void ElementChangedAt(int index, BranchModificationEventHandler modificationEvents, IBranch notifyThrough, int notifyThroughOffset)
+				public void ElementChangedAt(int index, VirtualTreeDisplayDataChanges displayChanges, BranchModificationEventHandler modificationEvents, IBranch notifyThrough, int notifyThroughOffset)
 				{
 					if (modificationEvents != null)
 					{
@@ -1503,7 +1505,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 						SubBranchMetaData[] subBranches = mySubBranches;
 						for (int i = 0; i < subBranches.Length; ++i)
 						{
-							subBranches[i].AdjustChange(index, modificationEvents);
+							subBranches[i].AdjustChange(index, displayChanges, modificationEvents);
 						}
 
 						// Handle any nested neutral branches
@@ -1516,11 +1518,11 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 							SimpleListShifter shifter;
 							if (null == (shifter = (neutralBranch as SimpleListShifter)))
 							{
-								((ListGrouper)neutralBranch).ElementChangedAt(index, modificationEvents, notifyBranch, offsetAdjustment);
+								((ListGrouper)neutralBranch).ElementChangedAt(index, displayChanges, modificationEvents, notifyBranch, offsetAdjustment);
 							}
 							else if (shifter.FirstItem <= index && shifter.LastItem >= index)
 							{
-								modificationEvents(notifyBranch, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.VisibleElements, notifyBranch, index - shifter.FirstItem + offsetAdjustment, 0, 1)));
+								modificationEvents(notifyBranch, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(displayChanges, notifyBranch, index - shifter.FirstItem + offsetAdjustment, 0, 1)));
 							}
 						}
 					}

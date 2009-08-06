@@ -54,6 +54,9 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 			private int myLastSelectedRow = -1;
 			private int myLastSelectedColumn = -1;
 			public event DoubleClickEventHandler AfterDoubleClick;
+			/// <summary>
+			/// Track the escape key before the control closes
+			/// </summary>
 			protected sealed override bool IsInputKey(Keys keyData)
 			{
 				if ((keyData & Keys.KeyCode) == Keys.Escape)
@@ -61,6 +64,29 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 					myEscapePressed = true;
 				}
 				return base.IsInputKey(keyData);
+			}
+			/// <summary>
+			/// Send the enter key to an active in place editor
+			/// if one is active.
+			/// </summary>
+			protected override bool ProcessDialogKey(Keys keyData)
+			{
+				if ((keyData & Keys.KeyCode) == Keys.Enter)
+				{
+					if (InLabelEdit)
+					{
+						// If we don't track this then the control
+						// closes without committing the label edit
+						// state. Return true to require two enters
+						// to close the dropdown, making this consistent
+						// with the Escape key, which must be pressed
+						// twice to escape both the inline and hosting
+						// edit windows.
+						EndLabelEdit(false);
+						return true;
+					}
+				}
+				return base.ProcessDialogKey(keyData);
 			}
 			protected sealed override CreateParams CreateParams
 			{

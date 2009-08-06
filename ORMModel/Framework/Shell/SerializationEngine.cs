@@ -2028,6 +2028,21 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 			return (customElement != null) ? customElement.ShouldSerialize() : true;
 		}
 		/// <summary>
+		/// Determine if an element should be serialized
+		/// </summary>
+		/// <param name="modelElement">Element to test</param>
+		/// <param name="verifyDomainModelSerialization">If true, verify that a serializable element is also in a serializable domain model.</param>
+		/// <returns>true unless the element is custom serialized and ShouldSerialize returns false, or the element is not in a serialized domain model.</returns>
+		private static bool ShouldSerializeElement(ModelElement modelElement, bool verifyDomainModelSerialization)
+		{
+			ICustomSerializedElement customElement = modelElement as ICustomSerializedElement;
+			if (customElement == null || customElement.ShouldSerialize())
+			{
+				return verifyDomainModelSerialization ? typeof(ICustomSerializedDomainModel).IsAssignableFrom(modelElement.GetDomainClass().DomainModel.ImplementationType) : true;
+			}
+			return false;
+		}
+		/// <summary>
 		/// Get the default prefix for an element from the meta model containing the element
 		/// </summary>
 		private static string DefaultElementPrefix(ModelElement element)
@@ -2152,8 +2167,8 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		/// Serializes a link. Helper function for <see cref="SerializeChildElement"/>
 		/// </summary>
 		/// <param name="file">The file to write to.</param>
-		/// <param name="link">The link. Should be verified with <see cref="ShouldSerializeElement"/> before this call.</param>
-		/// <param name="rolePlayer">The role player. Should be verified with <see cref="ShouldSerializeElement"/> before this call.</param>
+		/// <param name="link">The link. Should be verified with <see cref="ShouldSerializeElement(ModelElement)"/> before this call.</param>
+		/// <param name="rolePlayer">The role player. Should be verified with <see cref="ShouldSerializeElement(ModelElement)"/> before this call.</param>
 		/// <param name="oppositeRolePlayer">The opposite role player.</param>
 		/// <param name="rolePlayedInfo">The role being played.</param>
 		private void SerializeLink(XmlWriter file, ElementLink link, ModelElement rolePlayer, ModelElement oppositeRolePlayer, DomainRoleInfo rolePlayedInfo)
@@ -2410,7 +2425,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 							}
 						}
 
-						if (ShouldSerializeElement(child))
+						if (ShouldSerializeElement(child, true))
 						{
 							if (customInfo == null)
 							{

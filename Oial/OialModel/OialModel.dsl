@@ -25,6 +25,14 @@
 	ProductName="Natural Object-Role Modeling Architect for Visual Studio"
 	MajorVersion="1" MinorVersion="0" Build="0" Revision="0">
 
+	<Attributes>
+		<ClrAttribute Name="DslModeling::ExtendsDomainModel">
+			<Parameters>
+				<AttributeParameter Value="&quot;3EAE649F-E654-4D04-8289-C25D2C0322D8&quot;/*ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel*/"/>
+			</Parameters>
+		</ClrAttribute>
+	</Attributes>
+
 	<Classes>
 		<DomainClass Name="AbstractionModel" InheritanceModifier="Sealed" Namespace="ORMSolutions.ORMArchitect.ORMAbstraction" Id="9EF66BE3-C128-4642-9767-063244DE2CEF" DisplayName="AbstractionModel" Description="">
 			<Properties>

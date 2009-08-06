@@ -1696,6 +1696,21 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 				}
 			}
 		}
+		/// <summary>
+		/// Implements <see cref="ISurveyNodeProvider.IsSurveyNodeExpandable"/>
+		/// </summary>
+		protected static bool IsSurveyNodeExpandable(object context, object expansionKey)
+		{
+			return expansionKey == Schema.SurveyExpansionKey ||
+				expansionKey == Table.SurveyExpansionKey ||
+				expansionKey == ReferenceConstraint.SurveyExpansionKey ||
+				expansionKey == ColumnReference.SurveyExpansionKey ||
+				expansionKey == UniquenessConstraint.SurveyExpansionKey;
+		}
+		bool ISurveyNodeProvider.IsSurveyNodeExpandable(object context, object expansionKey)
+		{
+			return IsSurveyNodeExpandable(context, expansionKey);
+		}
 		#region Reference classes for ColumnReference children
 		/// <summary>
 		/// A reference class to provide a survey link between a column reference and the source column

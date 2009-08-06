@@ -843,11 +843,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private sealed class ElementGroupingCommandProvider : IFreeFormCommandProvider<Store>
 		{
 			#region IFreeFormCommandProvider Implementation
-			int IFreeFormCommandProvider<Store>.GetFreeFormCommandCount(Store context, IFreeFormCommandProvider<Store> targetProvider)
+			int IFreeFormCommandProvider<Store>.GetFreeFormCommandCount(Store context, object targetElement)
 			{
 				return 1;
 			}
-			void IFreeFormCommandProvider<Store>.OnFreeFormCommandStatus(Store context, IFreeFormCommandProvider<Store> targetProvider, MenuCommand command, int commandIndex)
+			void IFreeFormCommandProvider<Store>.OnFreeFormCommandStatus(Store context, object targetElement, MenuCommand command, int commandIndex)
 			{
 				switch (commandIndex)
 				{
@@ -858,7 +858,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						break;
 				}
 			}
-			void IFreeFormCommandProvider<Store>.OnFreeFormCommandExecute(Store context, IFreeFormCommandProvider<Store> targetProvider, int commandIndex)
+			void IFreeFormCommandProvider<Store>.OnFreeFormCommandExecute(Store context, object targetElement, int commandIndex)
 			{
 				ElementGrouping grouping;
 				using (Transaction t = context.TransactionManager.BeginTransaction(ResourceStrings.ElementGroupingAddGroupTransactionName))
