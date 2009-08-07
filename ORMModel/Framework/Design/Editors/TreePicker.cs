@@ -321,7 +321,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 			IBranch branch = control.Tree.Root;
 			if (0 != (branch.Features & BranchFeatures.PositionTracking))
 			{
-				control.SelectObject(branch, value, (int)ObjectStyle.TrackingObject, 0);
+				control.SelectObject(null, value, (int)ObjectStyle.TrackingObject, 0);
 			}
 		}
 		/// <summary>

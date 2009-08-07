@@ -844,7 +844,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				&& null != (factType = order.FactType)
 				&& (factType == myFact || factType == mySecondaryFact))
 			{
-				if (TreeControl.SelectObject(myMainBranch, reading, (int)ObjectStyle.TrackingObject, 0))
+				if (TreeControl.SelectObject(null, reading, (int)ObjectStyle.TrackingObject, 0))
 				{
 					TreeControl.BeginLabelEdit();
 				}
