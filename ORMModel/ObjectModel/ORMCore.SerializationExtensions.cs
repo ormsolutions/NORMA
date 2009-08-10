@@ -7842,7 +7842,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
 				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
-				match.InitializeRoles(PathedRole.RoleDomainRoleId);
+				match.InitializeRoles(true, PathedRole.RoleDomainRoleId);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|PathedRoles||PathedRole", match);
 				match.InitializeRoles(RoleSubPathIsContinuationOfRolePath.SubPathDomainRoleId);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|SubPaths||", match);

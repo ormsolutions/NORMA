@@ -1024,7 +1024,7 @@
 		<se:Container Name="SubPaths">
 			<se:Embed RelationshipName="RoleSubPathIsContinuationOfRolePath" RoleName="SubPath"/>
 		</se:Container>
-		<se:Link RelationshipName="PathedRole" RoleName="Role" Name="PathedRole" WriteStyle="PrimaryLinkElement"/>
+		<se:Link RelationshipName="PathedRole" RoleName="Role" Name="PathedRole" WriteStyle="PrimaryLinkElement" AllowDuplicates="true"/>
 	</se:Element>
 	<se:Element Class="RoleSubPath" Name="SubPath" Override="true"/>
 	<se:Element Class="PathedRole">
