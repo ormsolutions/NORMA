@@ -177,7 +177,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// <summary>
 		/// Attaches custom <see cref="EventHandler{TEventArgs}"/>s to the <see cref="Store"/>.  This method must be overridden.
 		/// </summary>
-		/// <param name="store">The <see cref="Store"/> for which the <see cref="EventHandler{TEventArgs}"/>s should be managed.</param>
+		/// <param name="store">The <see cref="Store"/> for which the <see cref="EventHandler{TEventArgs}"/>s should be managed. This method is still called if <paramref name="store"/> is disposed (<see cref="Store.Disposed"/>) or shutting down (<see cref="Store.ShuttingDown"/>).</param>
 		/// <param name="eventManager">The <see cref="ModelingEventManager"/> used to manage the <see cref="EventHandler{TEventArgs}"/>s.</param>
 		/// <param name="action">The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.</param>
 		protected abstract void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action);
@@ -336,7 +336,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		protected void AttachEventHandlers(ORMDesignerDocData docData)
 		{
 			Store store = docData.Store;
-			if (null != store && !store.Disposed)
+			if (null != store)
 			{
 				ManageEventHandlers(store, ModelingEventManager.GetModelingEventManager(store), EventHandlerAction.Add);
 			}
@@ -347,7 +347,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		protected void DetachEventHandlers(ORMDesignerDocData docData)
 		{
 			Store store = docData.Store;
-			if (store != null && !store.Disposed)
+			if (store != null)
 			{
 				ManageEventHandlers(store, ModelingEventManager.GetModelingEventManager(store), EventHandlerAction.Remove);
 			}

@@ -409,6 +409,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		private const bool DisplayDefinitionTooltips_Default = false;
 		private static bool myCurrentDisplayDefinitionTooltips = DisplayDefinitionTooltips_Default;
 		private bool myDisplayDefinitionTooltips = DisplayDefinitionTooltips_Default;
+
+		private const bool DelayActivateModelBrowserLabelEdits_Default = false;
+		private static bool myCurrentDelayActivateModelBrowserLabelEdits = DelayActivateModelBrowserLabelEdits_Default;
+		private bool myDelayActivateModelBrowserLabelEdits = DelayActivateModelBrowserLabelEdits_Default;
 		#endregion // Member variables
 		#region Custom Loading
 		/// <summary>
@@ -453,6 +457,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			myCurrentShowDebugCommands = myShowDebugCommands;
 			myCurrentEntityRelationshipBinaryMultiplicityDisplay = myEntityRelationshipBinaryMultiplicityDisplay;
 			myCurrentDisplayDefinitionTooltips = myDisplayDefinitionTooltips;
+			myCurrentDelayActivateModelBrowserLabelEdits = myDelayActivateModelBrowserLabelEdits;
 		}
 		/// <summary>
 		/// Set local values for the current settings to determine later if the
@@ -479,6 +484,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			myShowDebugCommands = myCurrentShowDebugCommands;
 			myEntityRelationshipBinaryMultiplicityDisplay = myCurrentEntityRelationshipBinaryMultiplicityDisplay;
 			myDisplayDefinitionTooltips = myCurrentDisplayDefinitionTooltips;
+			myDelayActivateModelBrowserLabelEdits = myCurrentDelayActivateModelBrowserLabelEdits;
 		}
 
 		/// <summary>
@@ -513,6 +519,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				myCurrentCustomVerbalizationSnippets = myCustomVerbalizationSnippets;
 				myCurrentShowDebugCommands = myShowDebugCommands;
 				myCurrentDisplayDefinitionTooltips = myDisplayDefinitionTooltips;
+				myCurrentDelayActivateModelBrowserLabelEdits = myDelayActivateModelBrowserLabelEdits;
 				if (updateVerbalizer)
 				{
 					ORMDesignerPackage.VerbalizationWindowGlobalSettingsChanged();
@@ -544,6 +551,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			myCurrentShowDebugCommands = myShowDebugCommands;
 			myCurrentEntityRelationshipBinaryMultiplicityDisplay = myEntityRelationshipBinaryMultiplicityDisplay;
 			myCurrentDisplayDefinitionTooltips = myDisplayDefinitionTooltips;
+			myCurrentDelayActivateModelBrowserLabelEdits = myDelayActivateModelBrowserLabelEdits;
 
 			// Walk all the documents and invalidate ORM diagrams if the options have changed
 			NotifySettingsChange(
@@ -1040,6 +1048,27 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		public static bool CurrentDisplayDefinitionTooltips
 		{
 			get { return myCurrentDisplayDefinitionTooltips; }
+		}
+
+		/// <summary>
+		/// Display Model Browser Delayed Activation option
+		/// </summary>
+		[DefaultValue(DelayActivateModelBrowserLabelEdits_Default)]
+		[LocalizedCategory(ResourceStrings.OptionsPageCategoryModelBrowserBehaviorId)]
+		[LocalizedDescription(ResourceStrings.OptionsPagePropertyDelayActivateModelBrowserLabelEditsDescriptionId)]
+		[LocalizedDisplayName(ResourceStrings.OptionsPagePropertyDelayActivateModelBrowserLabelEditsDisplayNameId)]
+		public bool DelayActivateModelBrowserLabelEdits
+		{
+			get { return myDelayActivateModelBrowserLabelEdits; }
+			set { myDelayActivateModelBrowserLabelEdits = value; }
+		}
+
+		/// <summary>
+		/// Current VS session-wide setting for DelayActivateModelBrowserLabelEdits
+		/// </summary>
+		public static bool CurrentDelayActivateModelBrowserLabelEdits
+		{
+			get { return myCurrentDelayActivateModelBrowserLabelEdits; }
 		}
 		#endregion // Accessor properties
 		#region Custom dropdown for CustomVerbalizationSnippets option

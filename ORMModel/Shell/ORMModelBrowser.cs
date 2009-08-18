@@ -920,6 +920,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// </summary>
 		protected override void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
 		{
+			if (Utility.ValidateStore(store) == null)
+			{
+				return;
+			}
 			// Track Currently Executing Events
 			eventManager.AddOrRemoveHandler(new EventHandler<ElementEventsBegunEventArgs>(ElementEventsBegunEvent), action);
 			eventManager.AddOrRemoveHandler(new EventHandler<ElementEventsEndedEventArgs>(ElementEventsEndedEvent), action);

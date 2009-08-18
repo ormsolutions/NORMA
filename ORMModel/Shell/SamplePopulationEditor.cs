@@ -1011,7 +1011,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		public void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
 		{
 			myTransactionCommittedDuringLabelEdit = false;
-			if (store == null || store.Disposed)
+			if (Utility.ValidateStore(store) == null)
 			{
 				return;
 			}
@@ -2825,7 +2825,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 
 			private void ManageEventHandlers(Store store, EventHandlerAction action)
 			{
-				if (store == null || store.Disposed)
+				if (Utility.ValidateStore(store) == null)
 				{
 					return; // bail out
 				}

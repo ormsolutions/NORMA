@@ -310,15 +310,20 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				switch (activationStyle)
 				{
 					case VirtualTreeLabelEditActivationStyles.Explicit:
-					case VirtualTreeLabelEditActivationStyles.Delayed:
 						if (editNode.IsSurveyNameEditable)
+						{
+							return new VirtualTreeLabelEditData(editNode.EditableSurveyName);
+						}
+						break;
+					case VirtualTreeLabelEditActivationStyles.Delayed:
+						if (mySurveyTree.DelayActivateTextEditors && editNode.IsSurveyNameEditable)
 						{
 							return new VirtualTreeLabelEditData(editNode.EditableSurveyName);
 						}
 						break;
 					case VirtualTreeLabelEditActivationStyles.ImmediateMouse:
 					case VirtualTreeLabelEditActivationStyles.ImmediateSelection:
-						return editNode.IsSurveyNameEditable ? VirtualTreeLabelEditData.DeferActivation : VirtualTreeLabelEditData.Invalid;
+						return (mySurveyTree.DelayActivateTextEditors && editNode.IsSurveyNameEditable) ? VirtualTreeLabelEditData.DeferActivation : VirtualTreeLabelEditData.Invalid;
 				}
 				return VirtualTreeLabelEditData.Invalid;
 			}

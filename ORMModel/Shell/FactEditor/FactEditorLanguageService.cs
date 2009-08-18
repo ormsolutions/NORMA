@@ -630,7 +630,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			private void ManageEvents(Store store, EventHandlerAction action)
 			{
-				if (store == null || store.ShuttingDown)
+				store = Utility.ValidateStore(store);
+				if (store == null)
 				{
 					return;
 				}
@@ -738,8 +739,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				Store store;
 				if (null != (selectionContainer = myActivator.CurrentSelectionContainer) &&
 					null != (docData = myActivator.CurrentDocument) &&
-					null != (store = docData.Store) &&
-					!store.ShuttingDown)
+					null != (store = Utility.ValidateStore(docData.Store)))
 				{
 					ICollection selectedObjects = selectionContainer.GetSelectedComponents();
 					if (selectedObjects != null)

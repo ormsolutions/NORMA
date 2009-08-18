@@ -1779,8 +1779,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					{
 						disposeMe.Dispose();
 					}
-					Store store = Store;
-					if (!(store.Disposed || store.ShuttingDown))
+					Store store = Utility.ValidateStore(Store);
+					if (store != null)
 					{
 						IShapeExtender<ORMDiagram>[] extenders = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IShapeExtender<ORMDiagram>>();
 						if (extenders != null)

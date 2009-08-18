@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
 using Microsoft.VisualStudio;
@@ -287,7 +288,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 			}
 		}
 		#endregion // EnumerateDomainModels method
-		#region GetSupportingDomainModels method
+		#region GetTypedDomainModels method
 		/// <summary>
 		/// Return all domain models that support the provided interface. Use instead of
 		/// <see cref="EnumerateDomainModels"/> to cache the results.
@@ -325,7 +326,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 			}
 			return retVal;
 		}
-		#endregion // GetSupportingDomainModels method
+		#endregion // GetTypedDomainModels method
 		#region GetLocalizedEnumName method
 		/// <summary>
 		/// Retrieve a localized name for a single value of type <typeparamref name="EnumType"/>
@@ -506,6 +507,18 @@ namespace ORMSolutions.ORMArchitect.Framework
 			return false;
 		}
 		#endregion // IsCriticalException methods
+		#region IsValidStore method
+		/// <summary>
+		/// Helper method to determine if a <see cref="Store"/> is current
+		/// valid, or if it is currently in a torn down state.
+		/// </summary>
+		/// <param name="store">The <see cref="Store"/> to validate</param>
+		/// <returns><see cref="Store"/> or <see langword="null"/></returns>
+		public static Store ValidateStore(Store store)
+		{
+			return store != null && !store.Disposed && !store.ShuttingDown ? store : null;
+		}
+		#endregion // IsValidStore method
 		#region GetOwnerWindow method
 		/// <summary>
 		/// Get an appropriate dialog owner window for the specified <see cref="IServiceProvider"/>
@@ -537,4 +550,133 @@ namespace ORMSolutions.ORMArchitect.Framework
 		}
 		#endregion // GetOwnerWindow method
 	}
+	#region LinkedNode class
+	/// <summary>
+	/// A simple class for creating a node in a linked list without
+	/// using a containing LinkedList{} class.
+	/// </summary>
+	/// <remarks>The impetus for creating this class is that LinkedList{} is
+	/// too hard to modify during iteration, and LinkedListNode{} requires a
+	/// containing LinkedList.</remarks>
+	public sealed class LinkedNode<T>
+	{
+		private T myValue;
+		private LinkedNode<T> myNext;
+		private LinkedNode<T> myPrev;
+		/// <summary>
+		/// Create a new LinkedNode. The new node must be attached to the
+		/// list with the <see cref="SetNext"/> or <see cref="Detach"/> methods.
+		/// </summary>
+		/// <param name="value">The element of type <typeparamref name="T"/> to create a node for.</param>
+		public LinkedNode(T value)
+		{
+			myValue = value;
+		}
+		/// <summary>
+		/// Set the next element
+		/// </summary>
+		/// <param name="next">Next element. If next has a previous element, then the head of the next element is inserted.</param>
+		/// <param name="head">Reference to head node</param>
+		public void SetNext(LinkedNode<T> next, ref LinkedNode<T> head)
+		{
+			Debug.Assert(next != null);
+			if (next.myPrev != null)
+			{
+				next.myPrev.SetNext(GetHead(), ref head);
+				return;
+			}
+			if (myNext != null)
+			{
+				myNext.myPrev = next.GetTail();
+			}
+			if (myPrev == null)
+			{
+				head = this;
+			}
+			myNext = next;
+			next.myPrev = this;
+		}
+		/// <summary>
+		/// The value passed to the constructor or set directly
+		/// </summary>
+		public T Value
+		{
+			get
+			{
+				return myValue;
+			}
+			set
+			{
+				myValue = value;
+			}
+		}
+		/// <summary>
+		/// Get the next node
+		/// </summary>
+		public LinkedNode<T> Next
+		{
+			get
+			{
+				return myNext;
+			}
+		}
+		/// <summary>
+		/// Get the previous node
+		/// </summary>
+		public LinkedNode<T> Previous
+		{
+			get
+			{
+				return myPrev;
+			}
+		}
+		/// <summary>
+		/// Get the head element in the linked list
+		/// </summary>
+		public LinkedNode<T> GetHead()
+		{
+			LinkedNode<T> retVal = this;
+			LinkedNode<T> prev;
+			while (null != (prev = retVal.myPrev))
+			{
+				retVal = prev;
+			}
+			return retVal;
+		}
+		/// <summary>
+		/// Get the tail element in the linked list
+		/// </summary>
+		public LinkedNode<T> GetTail()
+		{
+			LinkedNode<T> retVal = this;
+			LinkedNode<T> next;
+			while (null != (next = retVal.myNext))
+			{
+				retVal = next;
+			}
+			return retVal;
+		}
+		/// <summary>
+		/// Detach the current node
+		/// </summary>
+		/// <param name="headNode"></param>
+		public void Detach(ref LinkedNode<T> headNode)
+		{
+			if (myPrev == null)
+			{
+				headNode = myNext;
+			}
+			else
+			{
+				myPrev.myNext = myNext;
+			}
+			if (myNext != null)
+			{
+				myNext.myPrev = myPrev;
+			}
+			myNext = null;
+			myPrev = null;
+		}
+	}
+	#endregion // LinkedNode class
 }

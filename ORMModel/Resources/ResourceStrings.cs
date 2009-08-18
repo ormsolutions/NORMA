@@ -237,6 +237,10 @@ namespace ORMSolutions.ORMArchitect.Core
 		/// </summary>
 		public const string OptionsPageCategoryDeleteBehaviorId = "OptionsPage.Category.DeleteBehavior";
 		/// <summary>
+		/// Category name for options page (model browser behavior)
+		/// </summary>
+		public const string OptionsPageCategoryModelBrowserBehaviorId = "OptionsPage.Category.ModelBrowserBehavior";
+		/// <summary>
 		/// Category name for options page (verbalization)
 		/// </summary>
 		public const string OptionsPageCategoryVerbalizationBehaviorId = "OptionsPage.Category.VerbalizationBehavior";
@@ -272,6 +276,14 @@ namespace ORMSolutions.ORMArchitect.Core
 		/// Display name of the display definition tooltips option
 		/// </summary>
 		public const string OptionsPagePropertyDisplayDefinitionTooltipsDisplayNameId = "OptionsPage.Property.DisplayDefinitionTooltips.DisplayName";
+		/// <summary>
+		/// Description of the display delay activate model browser label edits option
+		/// </summary>
+		public const string OptionsPagePropertyDelayActivateModelBrowserLabelEditsDescriptionId = "OptionsPage.Property.DelayActivateModelBrowserLabelEdits.Description";
+		/// <summary>
+		/// Display name of the delay activate model browser label edits option
+		/// </summary>
+		public const string OptionsPagePropertyDelayActivateModelBrowserLabelEditsDisplayNameId = "OptionsPage.Property.DelayActivateModelBrowserLabelEdits.DisplayName";
 		/// <summary>
 		/// Description of the entity relationship binary multiplicity display option
 		/// </summary>

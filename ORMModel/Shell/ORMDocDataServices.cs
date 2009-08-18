@@ -88,7 +88,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				Store store = Store;
 				ModelingEventManager eventManager = ModelingEventManager.GetModelingEventManager(store);
 				IFrameworkServices frameworkServices = (IFrameworkServices)store;
-				SurveyTree<Store> rootBranch = new SurveyTree<Store>(
+				SurveyTree<Store> rootBranch = new ORMSurveyTree(
 					store,
 					frameworkServices.GetTypedDomainModelProviders<ISurveyNodeProvider>(),
 					frameworkServices.GetTypedDomainModelProviders<ISurveyQuestionProvider<Store>>());
@@ -104,6 +104,23 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				SetFlag(PrivateFlags.AddedSurveyQuestionEvents, true);
 				mySurveyTree = rootBranch;
 				tree.Root = rootBranch.CreateRootBranch();
+			}
+		}
+		private class ORMSurveyTree : SurveyTree<Store>
+		{
+			public ORMSurveyTree(Store surveyContext, ISurveyNodeProvider[] nodeProviders, ISurveyQuestionProvider<Store>[] questionProviders)
+				: base(surveyContext, nodeProviders, questionProviders)
+			{
+			}
+			/// <summary>
+			/// Bind the delayed text editor setting to the ORM options page
+			/// </summary>
+			protected override bool DelayActivateTextEditors
+			{
+				get
+				{
+					return OptionsPage.CurrentDelayActivateModelBrowserLabelEdits;
+				}
 			}
 		}
 		#endregion //SurveyTreeSetup
@@ -1254,7 +1271,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				Store store = Store;
 				if (providers == null || providers.Store != store)
 				{
-					if (store.ShuttingDown || store.Disposed)
+					store = Utility.ValidateStore(store);
+					if (store == null)
 					{
 						myPropertyProviderService = null;
 						return null;
@@ -1282,7 +1300,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			Store store = Store;
 			if (cache == null || cache.Store != store)
 			{
-				if (store.ShuttingDown || store.Disposed)
+				store = Utility.ValidateStore(store);
+				if (store == null)
 				{
 					myTypedDomainModelProviderCache = null;
 					return null;
@@ -1559,8 +1578,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		{
 			get
 			{
-				Store store = Store;
-				return !store.Disposed && !store.ShuttingDown && !store.InUndoRedoOrRollback && myCustomBlockCanAddTransactionCount == 0;
+				Store store = Utility.ValidateStore(Store);
+				return store != null && !store.InUndoRedoOrRollback && myCustomBlockCanAddTransactionCount == 0;
 			}
 			set
 			{

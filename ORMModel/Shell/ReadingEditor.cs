@@ -3,7 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © ORM Solutions, LLC. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -1028,7 +1028,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// <param name="action">The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.</param>
 		public void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
 		{
-			if (store == null || store.Disposed)
+			if (Utility.ValidateStore(store) == null)
 			{
 				return; // Bail out
 			}

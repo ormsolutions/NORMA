@@ -1257,7 +1257,7 @@
 			<xs:documentation>A container for all Function definitions used in the model.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="Function" type="FunctionType"/>
+			<xs:element name="Function" type="FunctionType" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="FunctionType">

@@ -525,8 +525,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// </summary>
 		private void CreateDiagram(ModelElement model)
 		{
-			Store store = model.Store;
-			if (store == null || store.ShuttingDown)
+			Store store = Utility.ValidateStore(model.Store);
+			if (store == null)
 			{
 				return;
 			}
@@ -643,7 +643,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		{
 			if (this.myDiagram != null)
 			{
-				if (myDiagram.Store.ShuttingDown)
+				if (null != Utility.ValidateStore(myDiagram.Store))
 				{
 					this.RemoveDiagram();
 				}

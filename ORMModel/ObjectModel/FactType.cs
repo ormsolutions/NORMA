@@ -545,9 +545,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			Objectification objectification;
 			ObjectType nestingType;
-			Store store = Store;
-			if (store.Disposed ||
-				store.ShuttingDown ||
+			Store store = Utility.ValidateStore(Store);
+			if (store != null &&
 				// This is a very tricky operation, resulting in the unconventional
 				// stack frame check. During an Undo/Redo, when 'GetValue' is called
 				// from 'SetValue' then there should be no side effects. All of these

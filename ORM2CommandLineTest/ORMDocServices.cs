@@ -1,26 +1,27 @@
 ﻿//#define TESTDUMP
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using ORMSolutions.ORMArchitect.Core.ObjectModel;
-using ORMSolutions.ORMArchitect.Core.ShapeModel;
-using ORMSolutions.ORMArchitect.Core;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Reflection;
-using Microsoft.VisualStudio.TextManager.Interop;
-using Microsoft.VisualStudio.Modeling;
-using Microsoft.VisualStudio.Modeling.Diagrams;
 using System.Runtime.Serialization;
-using ORMSolutions.ORMArchitect.Core.Shell;
-using ORMSolutions.ORMArchitect.Framework;
+using System.Text;
 using System.Xml;
 using System.Xml.Xsl;
-using Microsoft.XmlDiffPatch;
-using ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid;
+using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.Modeling.Diagrams;
+using Microsoft.VisualStudio.TextManager.Interop;
+using ORMSolutions.ORMArchitect.Core;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.ShapeModel;
+using ORMSolutions.ORMArchitect.Core.Shell;
+using ORMSolutions.ORMArchitect.Framework;
 using ORMSolutions.ORMArchitect.Framework.Diagrams;
 using ORMSolutions.ORMArchitect.Framework.Design;
+using ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid;
+using Microsoft.XmlDiffPatch;
 
 namespace ORMSolutions.ORMArchitectSDK.TestEngine
 {
@@ -196,13 +197,21 @@ namespace ORMSolutions.ORMArchitectSDK.TestEngine
 			}
 			#endregion // IORMFontAndColorService Implementation
 			#region IPropertyProviderService Implementation
-			void IPropertyProviderService.GetProvidedProperties(object extendableElement, System.ComponentModel.PropertyDescriptorCollection properties)
-			{
-				// This is implemented on a per-store basis, we don't implement it on the testing document
-			}
+			// This interface is implemented on a per-store basis, we don't implement it on the testing document
 			void IPropertyProviderService.AddOrRemovePropertyProvider(Type extendableElementType, PropertyProvider propertyProvider, bool includeSubtypes, EventHandlerAction action)
 			{
-				// This is implemented on a per-store basis, we don't implement it on the testing document
+			}
+			void IPropertyProviderService.AddOrRemovePropertyProvider(Type extendableElementType, IPropertyProvider provider, bool includeSubtypes, EventHandlerAction action)
+			{
+			}
+			void IPropertyProviderService.GetProvidedProperties(object extendableElement, System.ComponentModel.PropertyDescriptorCollection properties)
+			{
+			}
+			void IPropertyProviderService.GetProvidedProperties(Type extendableElementType, PropertyDescriptorCollection properties)
+			{
+			}
+			void IPropertyProviderService.AddOrRemoveChangeListener(Type extendableElementType, ExtensionPropertyChangedEventHandler handler, EventHandlerAction action)
+			{
 			}
 			#endregion // IPropertyProviderService Implementation
 			#region IServiceProvider Implementation

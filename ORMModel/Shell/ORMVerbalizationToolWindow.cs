@@ -386,8 +386,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						{
 							if (snippetsDictionary == null)
 							{
-								Store store = mel.Store;
-								if (store.ShuttingDown || store.Disposed)
+								Store store = Utility.ValidateStore(mel.Store);
+								if (store == null)
 								{
 									break;
 								}
@@ -475,7 +475,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// <param name="action">The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.</param>
 		protected override void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
 		{
-			if (store != null && !store.Disposed)
+			if (Utility.ValidateStore(store) != null)
 			{
 				eventManager.AddOrRemoveHandler(new EventHandler<ElementEventsEndedEventArgs>(ModelStateChangedEvent), action);
 			}

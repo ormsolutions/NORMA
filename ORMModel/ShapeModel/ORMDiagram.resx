@@ -611,6 +611,10 @@
     <value xml:space="preserve">Delete Behavior</value>
     <comment xml:space="preserve">This is the title of the category on the options page (delete behavior).</comment>
   </data>
+  <data name="OptionsPage.Category.ModelBrowserBehavior">
+    <value xml:space="preserve">Model Browser</value>
+    <comment xml:space="preserve">This is the title of the category on the options page (model browser behavior).</comment>
+  </data>
   <data name="OptionsPage.Category.Diagnostics">
     <value xml:space="preserve">Diagnostics</value>
     <comment xml:space="preserve">This is the title of the category on the options page (diagnostics).</comment>
@@ -698,6 +702,14 @@
   <data name="OptionsPage.Property.DisplayDefinitionTooltips.DisplayName">
     <value xml:space="preserve">Show Description Tooltips</value>
     <comment xml:space="preserve">The display name for the display definition tooltips property.</comment>
+  </data>
+  <data name="OptionsPage.Property.DelayActivateModelBrowserLabelEdits.Description">
+    <value xml:space="preserve">Automatically activate inline text editors in the ORM Model Browser after a short delay when selected with the mouse. Text edits can be explicitly activated with the View.EditLabel command (generally associated with the F2 key).</value>
+    <comment xml:space="preserve">The delay activate model browser label edits description.</comment>
+  </data>
+  <data name="OptionsPage.Property.DelayActivateModelBrowserLabelEdits.DisplayName">
+    <value xml:space="preserve">Delay Activate Text Editing</value>
+    <comment xml:space="preserve">The display name for the delay activate model browser label edits property.</comment>
   </data>
   <data name="OptionsPage.Property.EntityRelationshipBinaryMultiplicityDisplay.Description">
     <value xml:space="preserve">The display mode for overlaying Entity Relationship multiplicity display on role connectors attached to binary fact types. The 'Mandatory Dot Placement' option is ignored if this is enabled.</value>

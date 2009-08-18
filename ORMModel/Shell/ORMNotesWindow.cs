@@ -753,7 +753,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// <param name="action">The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.</param>
 		protected override void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
 		{
-			if (store == null || store.Disposed)
+			if (Utility.ValidateStore(store) == null)
 			{
 				return; // Bail out
 			}

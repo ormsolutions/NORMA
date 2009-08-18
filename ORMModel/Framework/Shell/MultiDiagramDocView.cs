@@ -250,11 +250,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 				ModelingDocData docData = DocData;
 				if (docData != null)
 				{
-					Store store = docData.Store;
-					if (store != null && !store.ShuttingDown && !store.Disposed)
-					{
-						return store;
-					}
+					return Utility.ValidateStore(docData.Store);
 				}
 				return null;
 			}

@@ -223,6 +223,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// </summary>
 		protected override void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
 		{
+			store = Utility.ValidateStore(store);
+			if (store == null)
+			{
+				return;
+			}
 			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 			DomainClassInfo classInfo = dataDirectory.FindDomainClass(typeof(Diagram));
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(DiagramAddedEvent), action);
@@ -546,11 +551,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				Store retVal = null;
 				if (diagram != null)
 				{
-					retVal = diagram.Store;
-					if (retVal.ShuttingDown || retVal.Disposed)
-					{
-						retVal = null;
-					}
+					retVal = Utility.ValidateStore(diagram.Store);
 				}
 				return retVal;
 			}
