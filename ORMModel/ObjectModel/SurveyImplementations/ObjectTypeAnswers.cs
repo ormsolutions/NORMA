@@ -82,6 +82,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // IAnswerSurveyQuestion<SurveyQuestionGlyph> Implementation
 		#region ISurveyNode Implementation
 		/// <summary>
+		/// Implements <see cref="ISurveyNode.SurveyName"/>
+		/// </summary>
+		protected new string SurveyName
+		{
+			get
+			{
+				string retVal = Name;
+				return (DerivationRule != null || DerivationExpression != null) ? retVal + " *" : retVal;
+			}
+		}
+		string ISurveyNode.SurveyName
+		{
+			get
+			{
+				return SurveyName;
+			}
+		}
+		/// <summary>
 		/// Implements <see cref="ISurveyNode.SurveyNodeDataObject"/>
 		/// </summary>
 		protected new object SurveyNodeDataObject

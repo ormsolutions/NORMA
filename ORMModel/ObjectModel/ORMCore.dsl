@@ -661,7 +661,7 @@
 				</DomainProperty>
 				<DomainProperty Name="DerivationStorageDisplay" DefaultValue="" DisplayName="DerivationStorage" Id="307C9629-ACE8-43E1-ABF3-33E8BB7146B7" Kind="CustomStorage" Description="Storage options for a derived FactType.">
 					<Type>
-						<DomainEnumerationMoniker Name="DerivationStorageType"/>
+						<DomainEnumerationMoniker Name="DerivationExpressionStorageType"/>
 					</Type>
 				</DomainProperty>
 			</Properties>
@@ -1189,6 +1189,18 @@
 			<BaseClass>
 				<DomainClassMoniker Name="PrimaryRolePath"/>
 			</BaseClass>
+			<Properties>
+				<DomainProperty Name="DerivationCompleteness" DefaultValue="FullyDerived" DisplayName="DerivationCompleteness" IsBrowsable="false" Id="F254F0A7-E37E-4FDA-AC96-DEEEB8828FEC">
+					<Type>
+						<DomainEnumerationMoniker Name="DerivationCompleteness"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="DerivationStorage" DefaultValue="NotStored" DisplayName="DerivationStorage" IsBrowsable="false" Id="5F83F8C7-D15D-4985-9CCC-099B354BD178">
+					<Type>
+						<DomainEnumerationMoniker Name="DerivationStorage"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
 		</DomainClass>
 		<DomainClass Name="SubtypeDerivationRule" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="7B27FBFE-0A5E-447C-89B7-1BA25F9ED880" DisplayName="SubtypeDerivationRule" Description="A role path defining subtype population.">
 			<BaseClass>
@@ -2005,7 +2017,7 @@
 			<Properties>
 				<DomainProperty Name="DerivationStorage" DefaultValue="Derived" DisplayName="DerivationStorage" IsBrowsable="false" Id="6B011B44-9854-436A-ADED-7BBC635A7C1F">
 					<Type>
-						<DomainEnumerationMoniker Name="DerivationStorageType"/>
+						<DomainEnumerationMoniker Name="DerivationExpressionStorageType"/>
 					</Type>
 				</DomainProperty>
 			</Properties>
@@ -5430,16 +5442,43 @@
 		<ExternalType Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="ModelErrorDisplayFilter"/>
 		<ExternalType Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="ObjectType"/>
 		<ExternalType Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="ReferenceModeKind"/>
-		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="DerivationStorageType" Description="Used to specify how/whether the contents of the fact should be stored by generated systems.">
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="DerivationExpressionStorageType" Description="Specify how/whether the contents of the fact should be stored by generated systems.">
 			<Literals>
-				<EnumerationLiteral Name="Derived" Value="0" Description="Fact is derived but should not be stored."/>
-				<EnumerationLiteral Name="DerivedAndStored" Value="1" Description="Fact is derived and should be stored."/>
-				<EnumerationLiteral Name="PartiallyDerived" Value="2" Description="Fact is partially derived and should be stored."/>
+				<EnumerationLiteral Name="Derived" Value="0" Description="The fact instance population is calculated on demand."/>
+				<EnumerationLiteral Name="DerivedAndStored" Value="1" Description="The fact instance population is calculated immediately and stored."/>
+				<EnumerationLiteral Name="PartiallyDerived" Value="2" Description="The fact instance population can be asserted as well as calculated on demand."/>
+				<EnumerationLiteral Name="PartiallyDerivedAndStored" Value="3" Description="The fact instance population can be asserted as well as calculated immediately and stored."/>
 			</Literals>
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;DerivationStorageType, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;DerivationExpressionStorageType, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+		</DomainEnumeration>
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="DerivationCompleteness" Description="Specify if instances of a derived fact can also be directly asserted.">
+			<Literals>
+				<EnumerationLiteral Name="FullyDerived" Value="0" Description="The fact instance population is calculated on demand."/>
+				<EnumerationLiteral Name="PartiallyDerived" Value="1" Description="The fact instance population can be both calculated and asserted."/>
+			</Literals>
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;DerivationCompleteness, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+		</DomainEnumeration>
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="DerivationStorage" Description="Specify if derived fact instances should be recalculated on demand or calculated on change and stored.">
+			<Literals>
+				<EnumerationLiteral Name="NotStored" Value="0" Description="Fact instances are recalculated on demand."/>
+				<EnumerationLiteral Name="Stored" Value="1" Description="Fact instances are calculated on change and stored."/>
+			</Literals>
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;DerivationStorage, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>

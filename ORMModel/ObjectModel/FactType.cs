@@ -455,7 +455,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			// Handled by FactTypeChangeRule
 		}
-		private void SetDerivationStorageDisplayValue(DerivationStorageType newValue)
+		private void SetDerivationStorageDisplayValue(DerivationExpressionStorageType newValue)
 		{
 			// Handled by FactTypeChangeRule
 		}
@@ -492,10 +492,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			FactTypeDerivationExpression derivation = DerivationExpression;
 			return (derivation == null || derivation.IsDeleted) ? String.Empty : derivation.Body;
 		}
-		private DerivationStorageType GetDerivationStorageDisplayValue()
+		private DerivationExpressionStorageType GetDerivationStorageDisplayValue()
 		{
-			FactTypeDerivationExpression derivation = DerivationExpression;
-			return (derivation == null || derivation.IsDeleted) ? DerivationStorageType.Derived : derivation.DerivationStorage;
+			FactTypeDerivationRule rule;
+			FactTypeDerivationExpression expression;
+			if (null != (rule = DerivationRule))
+			{
+				switch (rule.DerivationCompleteness)
+				{
+					case DerivationCompleteness.FullyDerived:
+						return (rule.DerivationStorage == DerivationStorage.Stored) ? DerivationExpressionStorageType.DerivedAndStored : DerivationExpressionStorageType.Derived;
+					case DerivationCompleteness.PartiallyDerived:
+						return (rule.DerivationStorage == DerivationStorage.Stored) ? DerivationExpressionStorageType.PartiallyDerivedAndStored : DerivationExpressionStorageType.PartiallyDerived;
+				}
+			}
+			else if (null != (expression = DerivationExpression))
+			{
+				return expression.DerivationStorage;
+			}
+			return DerivationExpressionStorageType.Derived;
 		}
 		private string GetDefinitionTextValue()
 		{
@@ -675,10 +690,33 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			else if (attributeGuid == FactType.DerivationStorageDisplayDomainPropertyId)
 			{
-				FactType factType = e.ModelElement as FactType;
-				if (factType.DerivationExpression != null)
+				FactType factType = (FactType)e.ModelElement;
+				FactTypeDerivationRule rule;
+				FactTypeDerivationExpression expression;
+				if (null != (rule = factType.DerivationRule))
 				{
-					factType.DerivationExpression.DerivationStorage = (DerivationStorageType)e.NewValue;
+					DerivationCompleteness completeness = DerivationCompleteness.FullyDerived;
+					DerivationStorage storage = DerivationStorage.NotStored;
+					switch ((DerivationExpressionStorageType)e.NewValue)
+					{
+						//case DerivationExpressionStorageType.Derived:
+						case DerivationExpressionStorageType.DerivedAndStored:
+							storage = DerivationStorage.Stored;
+							break;
+						case DerivationExpressionStorageType.PartiallyDerived:
+							completeness = DerivationCompleteness.PartiallyDerived;
+							break;
+						case DerivationExpressionStorageType.PartiallyDerivedAndStored:
+							completeness = DerivationCompleteness.PartiallyDerived;
+							storage = DerivationStorage.Stored;
+							break;
+					}
+					rule.DerivationCompleteness = completeness;
+					rule.DerivationStorage = storage;
+				}
+				else if (null != (expression = factType.DerivationExpression))
+				{
+					expression.DerivationStorage = (DerivationExpressionStorageType)e.NewValue;
 				}
 			}
 			else if (attributeGuid == FactType.DefinitionTextDomainPropertyId)

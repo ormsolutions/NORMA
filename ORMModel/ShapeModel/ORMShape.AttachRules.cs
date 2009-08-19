@@ -69,8 +69,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						typeof(ObjectTypeShape).GetNestedType("RolePlayerAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeShape).GetNestedType("RolePlayerDeleteRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeShape).GetNestedType("RolePlayerRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ObjectTypeShape).GetNestedType("SubtypeDerivationAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ObjectTypeShape).GetNestedType("SubtypeDerivationDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeShape).GetNestedType("SubtypeDerivationExpressionAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeShape).GetNestedType("SubtypeDerivationExpressionDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeShape).GetNestedType("SubtypeDerivationRuleAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeShape).GetNestedType("SubtypeDerivationRuleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ORMBaseBinaryLinkShape).GetNestedType("LinkChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ORMBaseShape).GetNestedType("AbsoluteBoundsChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ORMBaseShape).GetNestedType("ModelErrorAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -99,9 +101,12 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						typeof(SetComparisonConstraintAddedRuleClass),
 						typeof(SetConstraintAddedRuleClass),
 						typeof(ValueTypeValueConstraintAddedRuleClass),
-						typeof(ReadingShape).GetNestedType("DerivationAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ReadingShape).GetNestedType("DerivationChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ReadingShape).GetNestedType("DerivationDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ReadingShape).GetNestedType("DerivationExpressionAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ReadingShape).GetNestedType("DerivationExpressionChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ReadingShape).GetNestedType("DerivationExpressionDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ReadingShape).GetNestedType("DerivationRuleAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ReadingShape).GetNestedType("DerivationRuleChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ReadingShape).GetNestedType("DerivationRuleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ReadingShape).GetNestedType("DisplayOrientationChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ReadingShape).GetNestedType("ReadingAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ReadingShape).GetNestedType("ReadingOrderDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -148,7 +153,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMShapeDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 81; ++i)
+			for (int i = 0; i < 86; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -1099,10 +1104,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationExpression), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AutoLayoutShapesRulePriority)]
-		private sealed class SubtypeDerivationAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		private sealed class SubtypeDerivationExpressionAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
-			public SubtypeDerivationAddedRuleClass()
+			public SubtypeDerivationExpressionAddedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
@@ -1112,23 +1117,23 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// /// <summary>
 			/// /// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
 			/// /// </summary>
-			/// private static void SubtypeDerivationAddedRule(ElementAddedEventArgs e)
+			/// private static void SubtypeDerivationExpressionAddedRule(ElementAddedEventArgs e)
 			/// {
 			/// }
 			/// </summary>
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape.SubtypeDerivationAddedRule");
-				ObjectTypeShape.SubtypeDerivationAddedRule(e);
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape.SubtypeDerivationAddedRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape.SubtypeDerivationExpressionAddedRule");
+				ObjectTypeShape.SubtypeDerivationExpressionAddedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape.SubtypeDerivationExpressionAddedRule");
 			}
 		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationExpression), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AutoLayoutShapesRulePriority)]
-		private sealed class SubtypeDerivationDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		private sealed class SubtypeDerivationExpressionDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
-			public SubtypeDerivationDeletedRuleClass()
+			public SubtypeDerivationExpressionDeletedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
@@ -1138,16 +1143,68 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// /// <summary>
 			/// /// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
 			/// /// </summary>
-			/// private static void SubtypeDerivationDeletedRule(ElementDeletedEventArgs e)
+			/// private static void SubtypeDerivationExpressionDeletedRule(ElementDeletedEventArgs e)
 			/// {
 			/// }
 			/// </summary>
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape.SubtypeDerivationDeletedRule");
-				ObjectTypeShape.SubtypeDerivationDeletedRule(e);
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape.SubtypeDerivationDeletedRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape.SubtypeDerivationExpressionDeletedRule");
+				ObjectTypeShape.SubtypeDerivationExpressionDeletedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape.SubtypeDerivationExpressionDeletedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationRule), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AutoLayoutShapesRulePriority)]
+		private sealed class SubtypeDerivationRuleAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public SubtypeDerivationRuleAddedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape
+			/// /// <summary>
+			/// /// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationRule), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
+			/// /// </summary>
+			/// private static void SubtypeDerivationRuleAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape.SubtypeDerivationRuleAddedRule");
+				ObjectTypeShape.SubtypeDerivationRuleAddedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape.SubtypeDerivationRuleAddedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationRule), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AutoLayoutShapesRulePriority)]
+		private sealed class SubtypeDerivationRuleDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public SubtypeDerivationRuleDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape
+			/// /// <summary>
+			/// /// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationRule), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
+			/// /// </summary>
+			/// private static void SubtypeDerivationRuleDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape.SubtypeDerivationRuleDeletedRule");
+				ObjectTypeShape.SubtypeDerivationRuleDeletedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape.SubtypeDerivationRuleDeletedRule");
 			}
 		}
 	}
@@ -1904,10 +1961,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 	partial class ReadingShape
 	{
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationExpression), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AutoLayoutShapesRulePriority)]
-		private sealed class DerivationAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		private sealed class DerivationExpressionAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
-			public DerivationAddedRuleClass()
+			public DerivationExpressionAddedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
@@ -1917,23 +1974,23 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// /// <summary>
 			/// /// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
 			/// /// </summary>
-			/// private static void DerivationAddedRule(ElementAddedEventArgs e)
+			/// private static void DerivationExpressionAddedRule(ElementAddedEventArgs e)
 			/// {
 			/// }
 			/// </summary>
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape.DerivationAddedRule");
-				ReadingShape.DerivationAddedRule(e);
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape.DerivationAddedRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape.DerivationExpressionAddedRule");
+				ReadingShape.DerivationExpressionAddedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape.DerivationExpressionAddedRule");
 			}
 		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationExpression), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AutoLayoutShapesRulePriority)]
-		private sealed class DerivationChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		private sealed class DerivationExpressionChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
-			public DerivationChangedRuleClass()
+			public DerivationExpressionChangedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
@@ -1943,23 +2000,23 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// /// <summary>
 			/// /// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
 			/// /// </summary>
-			/// private static void DerivationChangedRule(ElementPropertyChangedEventArgs e)
+			/// private static void DerivationExpressionChangedRule(ElementPropertyChangedEventArgs e)
 			/// {
 			/// }
 			/// </summary>
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape.DerivationChangedRule");
-				ReadingShape.DerivationChangedRule(e);
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape.DerivationChangedRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape.DerivationExpressionChangedRule");
+				ReadingShape.DerivationExpressionChangedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape.DerivationExpressionChangedRule");
 			}
 		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationExpression), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AutoLayoutShapesRulePriority)]
-		private sealed class DerivationDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		private sealed class DerivationExpressionDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
-			public DerivationDeletedRuleClass()
+			public DerivationExpressionDeletedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
@@ -1969,16 +2026,94 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// /// <summary>
 			/// /// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
 			/// /// </summary>
-			/// private static void DerivationDeletedRule(ElementDeletedEventArgs e)
+			/// private static void DerivationExpressionDeletedRule(ElementDeletedEventArgs e)
 			/// {
 			/// }
 			/// </summary>
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape.DerivationDeletedRule");
-				ReadingShape.DerivationDeletedRule(e);
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape.DerivationDeletedRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape.DerivationExpressionDeletedRule");
+				ReadingShape.DerivationExpressionDeletedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape.DerivationExpressionDeletedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationRule), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AutoLayoutShapesRulePriority)]
+		private sealed class DerivationRuleAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public DerivationRuleAddedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape
+			/// /// <summary>
+			/// /// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationRule), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
+			/// /// </summary>
+			/// private static void DerivationRuleAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape.DerivationRuleAddedRule");
+				ReadingShape.DerivationRuleAddedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape.DerivationRuleAddedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AutoLayoutShapesRulePriority)]
+		private sealed class DerivationRuleChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public DerivationRuleChangedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape
+			/// /// <summary>
+			/// /// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
+			/// /// </summary>
+			/// private static void DerivationRuleChangedRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape.DerivationRuleChangedRule");
+				ReadingShape.DerivationRuleChangedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape.DerivationRuleChangedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationRule), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AutoLayoutShapesRulePriority)]
+		private sealed class DerivationRuleDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public DerivationRuleDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape
+			/// /// <summary>
+			/// /// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationRule), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
+			/// /// </summary>
+			/// private static void DerivationRuleDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape.DerivationRuleDeletedRule");
+				ReadingShape.DerivationRuleDeletedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape.DerivationRuleDeletedRule");
 			}
 		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeShape), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.ResizeParentRulePriority)]

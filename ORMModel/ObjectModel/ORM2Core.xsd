@@ -1223,11 +1223,11 @@
 	<xs:complexType name="FactTypeDerivationExpressionType">
 		<xs:complexContent>
 			<xs:extension base="DerivationExpressionType">
-				<xs:attribute name="DerivationStorage" type="DerivationStorageValues" use="required"/>
+				<xs:attribute name="DerivationStorage" type="DerivationExpressionStorageValues" use="required"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:simpleType name="DerivationStorageValues">
+	<xs:simpleType name="DerivationExpressionStorageValues">
 		<xs:annotation>
 			<xs:documentation>Specify how instances of derived fact type are stored.</xs:documentation>
 		</xs:annotation>
@@ -1239,12 +1239,17 @@
 			</xs:enumeration>
 			<xs:enumeration value="DerivedAndStored">
 				<xs:annotation>
-					<xs:documentation>The fact instance population is calculated immediated and stored.</xs:documentation>
+					<xs:documentation>The fact instance population is calculated immediately and stored.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="PartiallyDerived">
 				<xs:annotation>
 					<xs:documentation>The fact instance population can be asserted as well as derived.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PartiallyDerivedAndStored">
+				<xs:annotation>
+					<xs:documentation>The fact instance population can be asserted as well as calculated immediately and stored.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 		</xs:restriction>
@@ -1538,9 +1543,45 @@
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="PrimaryRolePathType">
+				<xs:attribute name="DerivationCompleteness" type="DerivationCompletenessValues" default="FullyDerived"/>
+				<xs:attribute name="DerivationStorage" type="DerivationStorageValues" default="NotStored"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+	<xs:simpleType name="DerivationCompletenessValues">
+		<xs:annotation>
+			<xs:documentation>Specify if instances of a derived fact can also be directly asserted.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="FullyDerived">
+				<xs:annotation>
+					<xs:documentation>The fact instance population is calculated on demand.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PartiallyDerived">
+				<xs:annotation>
+					<xs:documentation>The fact instance population can be both calculated and asserted.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DerivationStorageValues">
+		<xs:annotation>
+			<xs:documentation>Specify if derived fact instances should be recalculated on demand, or calculated on change and stored.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NotStored">
+				<xs:annotation>
+					<xs:documentation>Fact instances are recalculated on demand.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Stored">
+				<xs:annotation>
+					<xs:documentation>Fact instances are calculated on change and stored.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:complexType name="SubtypeDerivationPathType">
 		<xs:annotation>
 			<xs:documentation>A role path used to define the population of a derived subtype.</xs:documentation>

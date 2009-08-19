@@ -305,6 +305,21 @@
 				<arg:RuleOn targetType="Role"/>
 			</arg:ChangeRule>
 		</arg:RuleContainer>
+		<arg:RuleContainer class="FactTypeDerivationExpression">
+			<!-- Temporary synchronization methods pending full transition to derivation paths. -->
+			<arg:AddRule methodName="DerivationExpressionAddedRule">
+				<arg:RuleOn targetType="FactTypeHasDerivationExpression"/>
+			</arg:AddRule>
+			<arg:ChangeRule methodName="DerivationExpressionChangedRule">
+				<arg:RuleOn targetType="FactTypeDerivationExpression"/>
+			</arg:ChangeRule>
+			<arg:AddRule methodName="DerivationRuleAddedRule">
+				<arg:RuleOn targetType="FactTypeHasDerivationRule"/>
+			</arg:AddRule>
+			<arg:ChangeRule methodName="DerivationRuleChangedRule">
+				<arg:RuleOn targetType="FactTypeDerivationRule"/>
+			</arg:ChangeRule>
+		</arg:RuleContainer>
 		<arg:RuleContainer class="FactTypeInstance">
 			<arg:AddRule methodName="FactTypeInstanceAddedRule">
 				<arg:RuleOn targetType="FactTypeHasFactTypeInstance"/>

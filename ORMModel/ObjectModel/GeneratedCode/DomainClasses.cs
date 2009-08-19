@@ -6324,7 +6324,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactType/DerivationStorageDisplay.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("307c9629-ace8-43e1-abf3-33e8bb7146b7")]
-		public DerivationStorageType DerivationStorageDisplay
+		public DerivationExpressionStorageType DerivationStorageDisplay
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
@@ -6340,7 +6340,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Value handler for the FactType.DerivationStorageDisplay domain property.
 		/// </summary>
-		internal sealed partial class DerivationStorageDisplayPropertyHandler : DslModeling::DomainPropertyValueHandler<FactType, DerivationStorageType>
+		internal sealed partial class DerivationStorageDisplayPropertyHandler : DslModeling::DomainPropertyValueHandler<FactType, DerivationExpressionStorageType>
 		{
 			private DerivationStorageDisplayPropertyHandler() { }
 		
@@ -6366,7 +6366,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// </summary>
 			/// <param name="element">Element which owns the property.</param>
 			/// <returns>Property value.</returns>
-			public override sealed DerivationStorageType GetValue(FactType element)
+			public override sealed DerivationExpressionStorageType GetValue(FactType element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				// There is no storage for DerivationStorageDisplay because its Kind is
@@ -6380,11 +6380,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// </summary>
 			/// <param name="element">Element which owns the property.</param>
 			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(FactType element, DerivationStorageType newValue)
+			public override sealed void SetValue(FactType element, DerivationExpressionStorageType newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
 		
-				DerivationStorageType oldValue = GetValue(element);
+				DerivationExpressionStorageType oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
 					ValueChanging(element, oldValue, newValue);
@@ -12929,6 +12929,186 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			: base(partition, propertyAssignments)
 		{
 		}
+		#endregion
+		#region DerivationCompleteness domain property code
+		
+		/// <summary>
+		/// DerivationCompleteness domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DerivationCompletenessDomainPropertyId = new global::System.Guid(0xf254f0a7, 0xe37e, 0x4fda, 0xac, 0x96, 0xde, 0xee, 0xb8, 0x82, 0x8f, 0xec);
+		
+		/// <summary>
+		/// Storage for DerivationCompleteness
+		/// </summary>
+		private DerivationCompleteness derivationCompletenessPropertyStorage = ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationCompleteness.FullyDerived;
+		
+		/// <summary>
+		/// Gets or sets the value of DerivationCompleteness domain property.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule.DerivationCompleteness
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/DerivationCompleteness.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/DerivationCompleteness.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationCompleteness.FullyDerived)]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainObjectId("f254f0a7-e37e-4fda-ac96-deeeb8828fec")]
+		public DerivationCompleteness DerivationCompleteness
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return derivationCompletenessPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DerivationCompletenessPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the FactTypeDerivationRule.DerivationCompleteness domain property.
+		/// </summary>
+		internal sealed partial class DerivationCompletenessPropertyHandler : DslModeling::DomainPropertyValueHandler<FactTypeDerivationRule, DerivationCompleteness>
+		{
+			private DerivationCompletenessPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the FactTypeDerivationRule.DerivationCompleteness domain property value handler.
+			/// </summary>
+			public static readonly DerivationCompletenessPropertyHandler Instance = new DerivationCompletenessPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the FactTypeDerivationRule.DerivationCompleteness domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DerivationCompletenessDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed DerivationCompleteness GetValue(FactTypeDerivationRule element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.derivationCompletenessPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(FactTypeDerivationRule element, DerivationCompleteness newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				DerivationCompleteness oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.derivationCompletenessPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region DerivationStorage domain property code
+		
+		/// <summary>
+		/// DerivationStorage domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DerivationStorageDomainPropertyId = new global::System.Guid(0x5f83f8c7, 0xd15d, 0x4985, 0x9c, 0xcc, 0x09, 0x9b, 0x35, 0x4b, 0xd1, 0x78);
+		
+		/// <summary>
+		/// Storage for DerivationStorage
+		/// </summary>
+		private DerivationStorage derivationStoragePropertyStorage = ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationStorage.NotStored;
+		
+		/// <summary>
+		/// Gets or sets the value of DerivationStorage domain property.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule.DerivationStorage
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/DerivationStorage.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/DerivationStorage.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationStorage.NotStored)]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainObjectId("5f83f8c7-d15d-4985-9ccc-099b354bd178")]
+		public DerivationStorage DerivationStorage
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return derivationStoragePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DerivationStoragePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the FactTypeDerivationRule.DerivationStorage domain property.
+		/// </summary>
+		internal sealed partial class DerivationStoragePropertyHandler : DslModeling::DomainPropertyValueHandler<FactTypeDerivationRule, DerivationStorage>
+		{
+			private DerivationStoragePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the FactTypeDerivationRule.DerivationStorage domain property value handler.
+			/// </summary>
+			public static readonly DerivationStoragePropertyHandler Instance = new DerivationStoragePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the FactTypeDerivationRule.DerivationStorage domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DerivationStorageDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed DerivationStorage GetValue(FactTypeDerivationRule element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.derivationStoragePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(FactTypeDerivationRule element, DerivationStorage newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				DerivationStorage oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.derivationStoragePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
 		#endregion
 		#region FactType opposite domain role accessor
 		/// <summary>
@@ -21104,7 +21284,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Storage for DerivationStorage
 		/// </summary>
-		private DerivationStorageType derivationStoragePropertyStorage = ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationStorageType.Derived;
+		private DerivationExpressionStorageType derivationStoragePropertyStorage = ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationExpressionStorageType.Derived;
 		
 		/// <summary>
 		/// Gets or sets the value of DerivationStorage domain property.
@@ -21113,10 +21293,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationExpression/DerivationStorage.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationExpression/DerivationStorage.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationStorageType.Derived)]
+		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationExpressionStorageType.Derived)]
 		[global::System.ComponentModel.Browsable(false)]
 		[DslModeling::DomainObjectId("6b011b44-9854-436a-aded-7bbc635a7c1f")]
-		public DerivationStorageType DerivationStorage
+		public DerivationExpressionStorageType DerivationStorage
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
@@ -21132,7 +21312,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Value handler for the FactTypeDerivationExpression.DerivationStorage domain property.
 		/// </summary>
-		internal sealed partial class DerivationStoragePropertyHandler : DslModeling::DomainPropertyValueHandler<FactTypeDerivationExpression, DerivationStorageType>
+		internal sealed partial class DerivationStoragePropertyHandler : DslModeling::DomainPropertyValueHandler<FactTypeDerivationExpression, DerivationExpressionStorageType>
 		{
 			private DerivationStoragePropertyHandler() { }
 		
@@ -21158,7 +21338,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// </summary>
 			/// <param name="element">Element which owns the property.</param>
 			/// <returns>Property value.</returns>
-			public override sealed DerivationStorageType GetValue(FactTypeDerivationExpression element)
+			public override sealed DerivationExpressionStorageType GetValue(FactTypeDerivationExpression element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.derivationStoragePropertyStorage;
@@ -21169,11 +21349,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// </summary>
 			/// <param name="element">Element which owns the property.</param>
 			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(FactTypeDerivationExpression element, DerivationStorageType newValue)
+			public override sealed void SetValue(FactTypeDerivationExpression element, DerivationExpressionStorageType newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
 		
-				DerivationStorageType oldValue = GetValue(element);
+				DerivationExpressionStorageType oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
 					ValueChanging(element, oldValue, newValue);

@@ -3867,7 +3867,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get
 			{
-				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.ElementInfo;
+				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.ElementInfo | CustomSerializedElementSupportedOperations.PropertyInfo;
 			}
 		}
 		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
@@ -3891,6 +3891,63 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				return this.CustomSerializedElementInfo;
 			}
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
+		protected new CustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		{
+			if (domainPropertyInfo.Id == FactTypeDerivationRule.DerivationCompletenessDomainPropertyId)
+			{
+				if (DerivationCompleteness.FullyDerived == this.DerivationCompleteness)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (domainPropertyInfo.Id == FactTypeDerivationRule.DerivationStorageDomainPropertyId)
+			{
+				if (DerivationStorage.NotStored == this.DerivationStorage)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (0 != (CustomSerializedElementSupportedOperations.PropertyInfo & base.SupportedCustomSerializedOperations))
+			{
+				return base.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
+			}
+			return CustomSerializedPropertyInfo.Default;
+		}
+		CustomSerializedPropertyInfo ICustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		{
+			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
+		}
+		private static Dictionary<string, Guid> myCustomSerializedAttributes;
+		/// <summary>Implements ICustomSerializedElement.MapAttribute</summary>
+		protected new Guid MapAttribute(string xmlNamespace, string attributeName)
+		{
+			Dictionary<string, Guid> customSerializedAttributes = FactTypeDerivationRule.myCustomSerializedAttributes;
+			if (customSerializedAttributes == null)
+			{
+				customSerializedAttributes = new Dictionary<string, Guid>();
+				customSerializedAttributes.Add("DerivationCompleteness", FactTypeDerivationRule.DerivationCompletenessDomainPropertyId);
+				customSerializedAttributes.Add("DerivationStorage", FactTypeDerivationRule.DerivationStorageDomainPropertyId);
+				FactTypeDerivationRule.myCustomSerializedAttributes = customSerializedAttributes;
+			}
+			Guid rVal;
+			string key = attributeName;
+			if (xmlNamespace.Length != 0)
+			{
+				key = string.Concat(xmlNamespace, "|", attributeName);
+			}
+			if (!customSerializedAttributes.TryGetValue(key, out rVal))
+			{
+				rVal = base.MapAttribute(xmlNamespace, attributeName);
+			}
+			return rVal;
+		}
+		Guid ICustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
+		{
+			return this.MapAttribute(xmlNamespace, attributeName);
 		}
 	}
 	#endregion // FactTypeDerivationRule serialization

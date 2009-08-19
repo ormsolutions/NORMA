@@ -416,21 +416,24 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			string retVal = null;
 			if (factType != null)
 			{
-				FactTypeDerivationExpression derivation = factType.DerivationExpression;
-				if (derivation != null && !derivation.IsDeleted)
+				if (null != factType.DerivationRule ||
+					null != factType.DerivationExpression)
 				{
 					// UNDONE: Localize the derived fact marks. This should probably be a format expression, not just an append
-					DerivationStorageType storage = factType.DerivationStorageDisplay;
+					DerivationExpressionStorageType storage = factType.DerivationStorageDisplay;
 					switch (factType.DerivationStorageDisplay)
 					{
-						case DerivationStorageType.Derived:
+						case DerivationExpressionStorageType.Derived:
 							retVal = " *";
 							break;
-						case DerivationStorageType.DerivedAndStored:
+						case DerivationExpressionStorageType.DerivedAndStored:
 							retVal = " **";
 							break;
-						case DerivationStorageType.PartiallyDerived:
+						case DerivationExpressionStorageType.PartiallyDerived:
 							retVal = " +"; // previously " *—";
+							break;
+						case DerivationExpressionStorageType.PartiallyDerivedAndStored:
+							retVal = " +*";
 							break;
 						default:
 							Debug.Fail("Unknown derivation storage type");
@@ -659,28 +662,68 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		#endregion // Reading text display update rules
 		#region Derivation Rules
 		/// <summary>
+		/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
+		/// </summary>
+		private static void DerivationRuleChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			Guid propertyId = e.DomainProperty.Id;
+			if (propertyId == FactTypeDerivationRule.DerivationStorageDomainPropertyId ||
+				propertyId == FactTypeDerivationRule.DerivationCompletenessDomainPropertyId)
+			{
+				InvalidateReadingShape(((FactTypeDerivationRule)e.ModelElement).FactType);
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationRule), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
+		/// </summary>
+		private static void DerivationRuleAddedRule(ElementAddedEventArgs e)
+		{
+			InvalidateReadingShape(((FactTypeHasDerivationRule)e.ModelElement).FactType);
+		}
+		/// <summary>
+		/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationRule), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
+		/// </summary>
+		private static void DerivationRuleDeletedRule(ElementDeletedEventArgs e)
+		{
+			FactType factType = ((FactTypeHasDerivationRule)e.ModelElement).FactType;
+			if (!factType.IsDeleted &&
+				null == factType.DerivationExpression)
+			{
+				InvalidateReadingShape(factType);
+			}
+		}
+		/// <summary>
 		/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
 		/// </summary>
-		private static void DerivationChangedRule(ElementPropertyChangedEventArgs e)
+		private static void DerivationExpressionChangedRule(ElementPropertyChangedEventArgs e)
 		{
 			if (e.DomainProperty.Id == FactTypeDerivationExpression.DerivationStorageDomainPropertyId)
 			{
-				InvalidateReadingShape(((FactTypeDerivationExpression)e.ModelElement).FactType);
+				FactType factType = ((FactTypeDerivationExpression)e.ModelElement).FactType;
+				if (factType.DerivationRule == null) // We'll get corresponding changes on the derivation rule
+				{
+					InvalidateReadingShape(factType);
+				}
 			}
 		}
 		/// <summary>
 		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
 		/// </summary>
-		private static void DerivationAddedRule(ElementAddedEventArgs e)
+		private static void DerivationExpressionAddedRule(ElementAddedEventArgs e)
 		{
 			InvalidateReadingShape(((FactTypeHasDerivationExpression)e.ModelElement).FactType);
 		}
 		/// <summary>
 		/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
 		/// </summary>
-		private static void DerivationDeletedRule(ElementDeletedEventArgs e)
+		private static void DerivationExpressionDeletedRule(ElementDeletedEventArgs e)
 		{
-			InvalidateReadingShape(((FactTypeHasDerivationExpression)e.ModelElement).FactType);
+			FactType factType = ((FactTypeHasDerivationExpression)e.ModelElement).FactType;
+			if (!factType.IsDeleted &&
+				null == factType.DerivationRule)
+			{
+				InvalidateReadingShape(factType);
+			}
 		}
 		#endregion // Derivation Rules
 		#region nested class ReadingAutoSizeTextField

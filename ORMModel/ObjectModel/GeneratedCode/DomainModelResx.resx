@@ -1206,6 +1206,22 @@
     <value>SubtypeDerivationRule</value>
     <comment>DisplayName for DomainClass &apos;FactTypeDerivationRule&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/DerivationCompleteness.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule.DerivationCompleteness</value>
+    <comment>Description for DomainProperty &apos;DerivationCompleteness&apos; on DomainClass &apos;FactTypeDerivationRule&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/DerivationCompleteness.DisplayName" xml:space="preserve">
+    <value>DerivationCompleteness</value>
+    <comment>DisplayName for DomainProperty &apos;DerivationCompleteness&apos; on DomainClass &apos;FactTypeDerivationRule&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/DerivationStorage.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule.DerivationStorage</value>
+    <comment>Description for DomainProperty &apos;DerivationStorage&apos; on DomainClass &apos;FactTypeDerivationRule&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/DerivationStorage.DisplayName" xml:space="preserve">
+    <value>DerivationStorage</value>
+    <comment>DisplayName for DomainProperty &apos;DerivationStorage&apos; on DomainClass &apos;FactTypeDerivationRule&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule.Description" xml:space="preserve">
     <value>A role path defining subtype population.</value>
     <comment>Description for DomainClass &apos;SubtypeDerivationRule&apos;</comment>
@@ -7636,29 +7652,69 @@
     <value>Subtype</value>
     <comment>PropertyDisplayName for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;SubtypeHasDerivationRule&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationStorageType/Derived.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationExpressionStorageType/Derived.DisplayName" xml:space="preserve">
     <value>Derived</value>
-    <comment>Display name for EnumerationLiteral &apos;Derived&apos; on DomainEnumeration &apos;DerivationStorageType&apos;</comment>
+    <comment>Display name for EnumerationLiteral &apos;Derived&apos; on DomainEnumeration &apos;DerivationExpressionStorageType&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationStorageType/Derived.Description" xml:space="preserve">
-    <value>Fact is derived but should not be stored.</value>
-    <comment>Description for EnumerationLiteral &apos;Derived&apos; on DomainEnumeration &apos;DerivationStorageType&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationExpressionStorageType/Derived.Description" xml:space="preserve">
+    <value>The fact instance population is calculated on demand.</value>
+    <comment>Description for EnumerationLiteral &apos;Derived&apos; on DomainEnumeration &apos;DerivationExpressionStorageType&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationStorageType/DerivedAndStored.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationExpressionStorageType/DerivedAndStored.DisplayName" xml:space="preserve">
     <value>DerivedAndStored</value>
-    <comment>Display name for EnumerationLiteral &apos;DerivedAndStored&apos; on DomainEnumeration &apos;DerivationStorageType&apos;</comment>
+    <comment>Display name for EnumerationLiteral &apos;DerivedAndStored&apos; on DomainEnumeration &apos;DerivationExpressionStorageType&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationStorageType/DerivedAndStored.Description" xml:space="preserve">
-    <value>Fact is derived and should be stored.</value>
-    <comment>Description for EnumerationLiteral &apos;DerivedAndStored&apos; on DomainEnumeration &apos;DerivationStorageType&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationExpressionStorageType/DerivedAndStored.Description" xml:space="preserve">
+    <value>The fact instance population is calculated immediately and stored.</value>
+    <comment>Description for EnumerationLiteral &apos;DerivedAndStored&apos; on DomainEnumeration &apos;DerivationExpressionStorageType&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationStorageType/PartiallyDerived.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationExpressionStorageType/PartiallyDerived.DisplayName" xml:space="preserve">
     <value>PartiallyDerived</value>
-    <comment>Display name for EnumerationLiteral &apos;PartiallyDerived&apos; on DomainEnumeration &apos;DerivationStorageType&apos;</comment>
+    <comment>Display name for EnumerationLiteral &apos;PartiallyDerived&apos; on DomainEnumeration &apos;DerivationExpressionStorageType&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationStorageType/PartiallyDerived.Description" xml:space="preserve">
-    <value>Fact is partially derived and should be stored.</value>
-    <comment>Description for EnumerationLiteral &apos;PartiallyDerived&apos; on DomainEnumeration &apos;DerivationStorageType&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationExpressionStorageType/PartiallyDerived.Description" xml:space="preserve">
+    <value>The fact instance population can be asserted as well as calculated on demand.</value>
+    <comment>Description for EnumerationLiteral &apos;PartiallyDerived&apos; on DomainEnumeration &apos;DerivationExpressionStorageType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationExpressionStorageType/PartiallyDerivedAndStored.DisplayName" xml:space="preserve">
+    <value>PartiallyDerivedAndStored</value>
+    <comment>Display name for EnumerationLiteral &apos;PartiallyDerivedAndStored&apos; on DomainEnumeration &apos;DerivationExpressionStorageType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationExpressionStorageType/PartiallyDerivedAndStored.Description" xml:space="preserve">
+    <value>The fact instance population can be asserted as well as calculated immediately and stored.</value>
+    <comment>Description for EnumerationLiteral &apos;PartiallyDerivedAndStored&apos; on DomainEnumeration &apos;DerivationExpressionStorageType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationCompleteness/FullyDerived.DisplayName" xml:space="preserve">
+    <value>FullyDerived</value>
+    <comment>Display name for EnumerationLiteral &apos;FullyDerived&apos; on DomainEnumeration &apos;DerivationCompleteness&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationCompleteness/FullyDerived.Description" xml:space="preserve">
+    <value>The fact instance population is calculated on demand.</value>
+    <comment>Description for EnumerationLiteral &apos;FullyDerived&apos; on DomainEnumeration &apos;DerivationCompleteness&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationCompleteness/PartiallyDerived.DisplayName" xml:space="preserve">
+    <value>PartiallyDerived</value>
+    <comment>Display name for EnumerationLiteral &apos;PartiallyDerived&apos; on DomainEnumeration &apos;DerivationCompleteness&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationCompleteness/PartiallyDerived.Description" xml:space="preserve">
+    <value>The fact instance population can be both calculated and asserted.</value>
+    <comment>Description for EnumerationLiteral &apos;PartiallyDerived&apos; on DomainEnumeration &apos;DerivationCompleteness&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationStorage/NotStored.DisplayName" xml:space="preserve">
+    <value>NotStored</value>
+    <comment>Display name for EnumerationLiteral &apos;NotStored&apos; on DomainEnumeration &apos;DerivationStorage&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationStorage/NotStored.Description" xml:space="preserve">
+    <value>Fact instances are recalculated on demand.</value>
+    <comment>Description for EnumerationLiteral &apos;NotStored&apos; on DomainEnumeration &apos;DerivationStorage&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationStorage/Stored.DisplayName" xml:space="preserve">
+    <value>Stored</value>
+    <comment>Display name for EnumerationLiteral &apos;Stored&apos; on DomainEnumeration &apos;DerivationStorage&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationStorage/Stored.Description" xml:space="preserve">
+    <value>Fact instances are calculated on change and stored.</value>
+    <comment>Description for EnumerationLiteral &apos;Stored&apos; on DomainEnumeration &apos;DerivationStorage&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintModality/Alethic.DisplayName" xml:space="preserve">
     <value>Alethic</value>

@@ -477,6 +477,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				new DomainMemberInfo(typeof(Function), "IsBoolean", Function.IsBooleanDomainPropertyId, typeof(Function.IsBooleanPropertyHandler)),
 				new DomainMemberInfo(typeof(Function), "OperatorSymbol", Function.OperatorSymbolDomainPropertyId, typeof(Function.OperatorSymbolPropertyHandler)),
 				new DomainMemberInfo(typeof(FunctionParameter), "BagInput", FunctionParameter.BagInputDomainPropertyId, typeof(FunctionParameter.BagInputPropertyHandler)),
+				new DomainMemberInfo(typeof(FactTypeDerivationRule), "DerivationCompleteness", FactTypeDerivationRule.DerivationCompletenessDomainPropertyId, typeof(FactTypeDerivationRule.DerivationCompletenessPropertyHandler)),
+				new DomainMemberInfo(typeof(FactTypeDerivationRule), "DerivationStorage", FactTypeDerivationRule.DerivationStorageDomainPropertyId, typeof(FactTypeDerivationRule.DerivationStoragePropertyHandler)),
 				new DomainMemberInfo(typeof(CompatibleRolePlayerTypeError), "Column", CompatibleRolePlayerTypeError.ColumnDomainPropertyId, typeof(CompatibleRolePlayerTypeError.ColumnPropertyHandler)),
 				new DomainMemberInfo(typeof(ModelError), "ErrorText", ModelError.ErrorTextDomainPropertyId, typeof(ModelError.ErrorTextPropertyHandler)),
 				new DomainMemberInfo(typeof(ReferenceModeKind), "FormatString", ReferenceModeKind.FormatStringDomainPropertyId, typeof(ReferenceModeKind.FormatStringPropertyHandler)),
@@ -1838,32 +1840,88 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
-	/// DomainEnumeration: DerivationStorageType
-	/// Used to specify how/whether the contents of the fact should be stored by
-	/// generated systems.
+	/// DomainEnumeration: DerivationExpressionStorageType
+	/// Specify how/whether the contents of the fact should be stored by generated
+	/// systems.
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<DerivationStorageType, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<DerivationExpressionStorageType, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel>))]
 	[global::System.CLSCompliant(true)]
-	public enum DerivationStorageType
+	public enum DerivationExpressionStorageType
 	{
 		/// <summary>
 		/// Derived
-		/// Fact is derived but should not be stored.
+		/// The fact instance population is calculated on demand.
 		/// </summary>
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationStorageType/Derived.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationExpressionStorageType/Derived.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		Derived = 0,
 		/// <summary>
 		/// DerivedAndStored
-		/// Fact is derived and should be stored.
+		/// The fact instance population is calculated immediately and stored.
 		/// </summary>
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationStorageType/DerivedAndStored.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationExpressionStorageType/DerivedAndStored.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		DerivedAndStored = 1,
 		/// <summary>
 		/// PartiallyDerived
-		/// Fact is partially derived and should be stored.
+		/// The fact instance population can be asserted as well as calculated on demand.
 		/// </summary>
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationStorageType/PartiallyDerived.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationExpressionStorageType/PartiallyDerived.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		PartiallyDerived = 2,
+		/// <summary>
+		/// PartiallyDerivedAndStored
+		/// The fact instance population can be asserted as well as calculated immediately
+		/// and stored.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationExpressionStorageType/PartiallyDerivedAndStored.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		PartiallyDerivedAndStored = 3,
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainEnumeration: DerivationCompleteness
+	/// Specify if instances of a derived fact can also be directly asserted.
+	/// </summary>
+	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<DerivationCompleteness, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel>))]
+	[global::System.CLSCompliant(true)]
+	public enum DerivationCompleteness
+	{
+		/// <summary>
+		/// FullyDerived
+		/// The fact instance population is calculated on demand.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationCompleteness/FullyDerived.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		FullyDerived = 0,
+		/// <summary>
+		/// PartiallyDerived
+		/// The fact instance population can be both calculated and asserted.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationCompleteness/PartiallyDerived.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		PartiallyDerived = 1,
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainEnumeration: DerivationStorage
+	/// Specify if derived fact instances should be recalculated on demand or calculated
+	/// on change and stored.
+	/// </summary>
+	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<DerivationStorage, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel>))]
+	[global::System.CLSCompliant(true)]
+	public enum DerivationStorage
+	{
+		/// <summary>
+		/// NotStored
+		/// Fact instances are recalculated on demand.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationStorage/NotStored.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		NotStored = 0,
+		/// <summary>
+		/// Stored
+		/// Fact instances are calculated on change and stored.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationStorage/Stored.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		Stored = 1,
 	}
 }
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel

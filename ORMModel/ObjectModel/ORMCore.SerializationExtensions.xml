@@ -628,7 +628,32 @@
 		<se:Attribute ID="Body" WriteStyle="Element"/>
 	</se:Element>
 	<se:Element Class="FactTypeDerivationExpression" Name="DerivationExpression" Override="true"/>
-	<se:Element Class="FactTypeDerivationRule" Name="FactTypeDerivationPath" Override="true"/>
+	<se:Element Class="FactTypeDerivationRule" Name="FactTypeDerivationPath" Override="true">
+		<se:Attribute ID="DerivationCompleteness">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callStatic name="FullyDerived" type="field" dataTypeName="DerivationCompleteness"/>
+					</plx:left>
+					<plx:right>
+						<plx:callThis name="DerivationCompleteness" type="property"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="DerivationStorage">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callStatic name="NotStored" type="field" dataTypeName="DerivationStorage"/>
+					</plx:left>
+					<plx:right>
+						<plx:callThis name="DerivationStorage" type="property"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+	</se:Element>
 	<se:Element Class="SubtypeDerivationExpression" Override="true">
 		<se:ConditionalSerialization>
 			<plx:comment>We leave this in memory so that a user can easily switch subtypes, but do not serialize it.</plx:comment>

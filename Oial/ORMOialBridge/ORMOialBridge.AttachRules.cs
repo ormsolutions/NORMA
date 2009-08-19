@@ -37,9 +37,12 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 					retVal = new Type[]{
 						typeof(AbstractionModelIsForORMModel).GetNestedType("ORMElementGateway", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ElementExclusionAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(AbstractionModelIsForORMModel).GetNestedType("ORMElementGateway", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("FactTypeAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(AbstractionModelIsForORMModel).GetNestedType("ORMElementGateway", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("FactTypeDerivationAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(AbstractionModelIsForORMModel).GetNestedType("ORMElementGateway", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("FactTypeDerivationChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(AbstractionModelIsForORMModel).GetNestedType("ORMElementGateway", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("FactTypeDerivationDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(AbstractionModelIsForORMModel).GetNestedType("ORMElementGateway", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("FactTypeDerivationExpressionAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(AbstractionModelIsForORMModel).GetNestedType("ORMElementGateway", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("FactTypeDerivationExpressionChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(AbstractionModelIsForORMModel).GetNestedType("ORMElementGateway", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("FactTypeDerivationExpressionDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(AbstractionModelIsForORMModel).GetNestedType("ORMElementGateway", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("FactTypeDerivationRuleAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(AbstractionModelIsForORMModel).GetNestedType("ORMElementGateway", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("FactTypeDerivationRuleChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(AbstractionModelIsForORMModel).GetNestedType("ORMElementGateway", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("FactTypeDerivationRuleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(AbstractionModelIsForORMModel).GetNestedType("ORMElementGateway", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("FactTypeErrorAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(AbstractionModelIsForORMModel).GetNestedType("ORMElementGateway", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("FactTypeErrorDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(AbstractionModelIsForORMModel).GetNestedType("ORMElementGateway", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ObjectTypeAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -100,7 +103,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMToORMAbstractionBridgeDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 32; ++i)
+			for (int i = 0; i < 35; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -170,10 +173,10 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				}
 			}
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationExpression), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
-			private sealed class FactTypeDerivationAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+			private sealed class FactTypeDerivationExpressionAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 			{
 				[System.Diagnostics.DebuggerStepThrough()]
-				public FactTypeDerivationAddedRuleClass()
+				public FactTypeDerivationExpressionAddedRuleClass()
 				{
 					base.IsEnabled = false;
 				}
@@ -183,23 +186,23 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				/// /// <summary>
 				/// /// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationExpression)
 				/// /// </summary>
-				/// private static void FactTypeDerivationAddedRule(ElementAddedEventArgs e)
+				/// private static void FactTypeDerivationExpressionAddedRule(ElementAddedEventArgs e)
 				/// {
 				/// }
 				/// </summary>
 				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 				{
-					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.FactTypeDerivationAddedRule");
-					ORMElementGateway.FactTypeDerivationAddedRule(e);
-					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.FactTypeDerivationAddedRule");
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.FactTypeDerivationExpressionAddedRule");
+					ORMElementGateway.FactTypeDerivationExpressionAddedRule(e);
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.FactTypeDerivationExpressionAddedRule");
 				}
 			}
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationExpression), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
-			private sealed class FactTypeDerivationChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+			private sealed class FactTypeDerivationExpressionChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 			{
 				[System.Diagnostics.DebuggerStepThrough()]
-				public FactTypeDerivationChangedRuleClass()
+				public FactTypeDerivationExpressionChangedRuleClass()
 				{
 					base.IsEnabled = false;
 				}
@@ -209,23 +212,23 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				/// /// <summary>
 				/// /// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationExpression)
 				/// /// </summary>
-				/// private static void FactTypeDerivationChangedRule(ElementPropertyChangedEventArgs e)
+				/// private static void FactTypeDerivationExpressionChangedRule(ElementPropertyChangedEventArgs e)
 				/// {
 				/// }
 				/// </summary>
 				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 				{
-					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.FactTypeDerivationChangedRule");
-					ORMElementGateway.FactTypeDerivationChangedRule(e);
-					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.FactTypeDerivationChangedRule");
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.FactTypeDerivationExpressionChangedRule");
+					ORMElementGateway.FactTypeDerivationExpressionChangedRule(e);
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.FactTypeDerivationExpressionChangedRule");
 				}
 			}
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationExpression), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
-			private sealed class FactTypeDerivationDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+			private sealed class FactTypeDerivationExpressionDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 			{
 				[System.Diagnostics.DebuggerStepThrough()]
-				public FactTypeDerivationDeletedRuleClass()
+				public FactTypeDerivationExpressionDeletedRuleClass()
 				{
 					base.IsEnabled = false;
 				}
@@ -235,16 +238,94 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				/// /// <summary>
 				/// /// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationExpression)
 				/// /// </summary>
-				/// private static void FactTypeDerivationDeletedRule(ElementDeletedEventArgs e)
+				/// private static void FactTypeDerivationExpressionDeletedRule(ElementDeletedEventArgs e)
 				/// {
 				/// }
 				/// </summary>
 				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 				{
-					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.FactTypeDerivationDeletedRule");
-					ORMElementGateway.FactTypeDerivationDeletedRule(e);
-					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.FactTypeDerivationDeletedRule");
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.FactTypeDerivationExpressionDeletedRule");
+					ORMElementGateway.FactTypeDerivationExpressionDeletedRule(e);
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.FactTypeDerivationExpressionDeletedRule");
+				}
+			}
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationRule), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+			private sealed class FactTypeDerivationRuleAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+			{
+				[System.Diagnostics.DebuggerStepThrough()]
+				public FactTypeDerivationRuleAddedRuleClass()
+				{
+					base.IsEnabled = false;
+				}
+				/// <summary>
+				/// Provide the following method in class: 
+				/// ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway
+				/// /// <summary>
+				/// /// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationRule)
+				/// /// </summary>
+				/// private static void FactTypeDerivationRuleAddedRule(ElementAddedEventArgs e)
+				/// {
+				/// }
+				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
+				public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+				{
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.FactTypeDerivationRuleAddedRule");
+					ORMElementGateway.FactTypeDerivationRuleAddedRule(e);
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.FactTypeDerivationRuleAddedRule");
+				}
+			}
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+			private sealed class FactTypeDerivationRuleChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+			{
+				[System.Diagnostics.DebuggerStepThrough()]
+				public FactTypeDerivationRuleChangedRuleClass()
+				{
+					base.IsEnabled = false;
+				}
+				/// <summary>
+				/// Provide the following method in class: 
+				/// ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway
+				/// /// <summary>
+				/// /// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule)
+				/// /// </summary>
+				/// private static void FactTypeDerivationRuleChangedRule(ElementPropertyChangedEventArgs e)
+				/// {
+				/// }
+				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
+				public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+				{
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.FactTypeDerivationRuleChangedRule");
+					ORMElementGateway.FactTypeDerivationRuleChangedRule(e);
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.FactTypeDerivationRuleChangedRule");
+				}
+			}
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationRule), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+			private sealed class FactTypeDerivationRuleDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+			{
+				[System.Diagnostics.DebuggerStepThrough()]
+				public FactTypeDerivationRuleDeletedRuleClass()
+				{
+					base.IsEnabled = false;
+				}
+				/// <summary>
+				/// Provide the following method in class: 
+				/// ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway
+				/// /// <summary>
+				/// /// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationRule)
+				/// /// </summary>
+				/// private static void FactTypeDerivationRuleDeletedRule(ElementDeletedEventArgs e)
+				/// {
+				/// }
+				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
+				public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+				{
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.FactTypeDerivationRuleDeletedRule");
+					ORMElementGateway.FactTypeDerivationRuleDeletedRule(e);
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ORMElementGateway.FactTypeDerivationRuleDeletedRule");
 				}
 			}
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasImpliedInternalUniquenessConstraintError), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]

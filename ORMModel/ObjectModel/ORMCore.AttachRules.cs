@@ -123,6 +123,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						typeof(FactType).GetNestedType("UnaryBinarizationUtility", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ObjectTypePlaysRoleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactType).GetNestedType("UnaryBinarizationUtility", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ObjectTypePlaysRoleRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactType).GetNestedType("UnaryBinarizationUtility", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("RoleNameChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactTypeDerivationExpression).GetNestedType("DerivationExpressionAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactTypeDerivationExpression).GetNestedType("DerivationExpressionChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactTypeDerivationExpression).GetNestedType("DerivationRuleAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactTypeDerivationExpression).GetNestedType("DerivationRuleChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeInstance).GetNestedType("FactTypeInstanceAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeInstance).GetNestedType("FactTypeRoleAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeInstance).GetNestedType("FactTypeRoleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -349,7 +353,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMCoreDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 281; ++i)
+			for (int i = 0; i < 285; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -2715,6 +2719,115 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // Rule classes for FactType.UnaryBinarizationUtility
+	#region Rule classes for FactTypeDerivationExpression
+	partial class FactTypeDerivationExpression
+	{
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeHasDerivationExpression), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class DerivationExpressionAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public DerivationExpressionAddedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationExpression
+			/// /// <summary>
+			/// /// AddRule: typeof(FactTypeHasDerivationExpression)
+			/// /// </summary>
+			/// private static void DerivationExpressionAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationExpression.DerivationExpressionAddedRule");
+				FactTypeDerivationExpression.DerivationExpressionAddedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationExpression.DerivationExpressionAddedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeDerivationExpression), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class DerivationExpressionChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public DerivationExpressionChangedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationExpression
+			/// /// <summary>
+			/// /// ChangeRule: typeof(FactTypeDerivationExpression)
+			/// /// </summary>
+			/// private static void DerivationExpressionChangedRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationExpression.DerivationExpressionChangedRule");
+				FactTypeDerivationExpression.DerivationExpressionChangedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationExpression.DerivationExpressionChangedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeHasDerivationRule), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class DerivationRuleAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public DerivationRuleAddedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationExpression
+			/// /// <summary>
+			/// /// AddRule: typeof(FactTypeHasDerivationRule)
+			/// /// </summary>
+			/// private static void DerivationRuleAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationExpression.DerivationRuleAddedRule");
+				FactTypeDerivationExpression.DerivationRuleAddedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationExpression.DerivationRuleAddedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeDerivationRule), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class DerivationRuleChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public DerivationRuleChangedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationExpression
+			/// /// <summary>
+			/// /// ChangeRule: typeof(FactTypeDerivationRule)
+			/// /// </summary>
+			/// private static void DerivationRuleChangedRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationExpression.DerivationRuleChangedRule");
+				FactTypeDerivationExpression.DerivationRuleChangedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationExpression.DerivationRuleChangedRule");
+			}
+		}
+	}
+	#endregion // Rule classes for FactTypeDerivationExpression
 	#region Rule classes for FactTypeInstance
 	partial class FactTypeInstance
 	{

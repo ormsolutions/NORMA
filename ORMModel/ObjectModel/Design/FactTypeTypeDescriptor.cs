@@ -65,7 +65,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			Guid propertyId = domainProperty.Id;
 			if (propertyId.Equals(FactType.DerivationStorageDisplayDomainPropertyId))
 			{
-				return ModelElement.DerivationExpression != null;
+				FactType factType = ModelElement;
+				return factType.DerivationExpression != null || factType.DerivationRule != null;
 			}
 			else if (propertyId.Equals(FactType.IsExternalDomainPropertyId))
 			{

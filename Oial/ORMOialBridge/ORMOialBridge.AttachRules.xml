@@ -24,14 +24,23 @@
 			<arg:AddRule methodName="FactTypeAddedRule">
 				<arg:RuleOn targetType="ModelHasFactType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:AddRule>
-			<arg:AddRule methodName="FactTypeDerivationAddedRule">
+			<arg:AddRule methodName="FactTypeDerivationExpressionAddedRule">
 				<arg:RuleOn targetType="FactTypeHasDerivationExpression" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:AddRule>
-			<arg:ChangeRule methodName="FactTypeDerivationChangedRule">
+			<arg:ChangeRule methodName="FactTypeDerivationExpressionChangedRule">
 				<arg:RuleOn targetType="FactTypeDerivationExpression" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:ChangeRule>
-			<arg:DeleteRule methodName="FactTypeDerivationDeletedRule">
+			<arg:DeleteRule methodName="FactTypeDerivationExpressionDeletedRule">
 				<arg:RuleOn targetType="FactTypeHasDerivationExpression" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:DeleteRule>
+			<arg:AddRule methodName="FactTypeDerivationRuleAddedRule">
+				<arg:RuleOn targetType="FactTypeHasDerivationRule" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:AddRule>
+			<arg:ChangeRule methodName="FactTypeDerivationRuleChangedRule">
+				<arg:RuleOn targetType="FactTypeDerivationRule" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:ChangeRule>
+			<arg:DeleteRule methodName="FactTypeDerivationRuleDeletedRule">
+				<arg:RuleOn targetType="FactTypeHasDerivationRule" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:DeleteRule>
 			<arg:AddRule methodName="FactTypeErrorAddedRule">
 				<arg:RuleOn targetType="FactTypeHasImpliedInternalUniquenessConstraintError" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>

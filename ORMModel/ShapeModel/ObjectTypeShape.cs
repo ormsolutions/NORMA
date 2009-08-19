@@ -820,7 +820,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				}
 			}
 			if (link.PlayedRole is SubtypeMetaRole &&
-				null != rolePlayer.DerivationExpression)
+				(null != rolePlayer.DerivationExpression || null != rolePlayer.DerivationRule))
 			{
 				int subtypeCount = 0;
 				ObjectType.WalkSupertypeRelationships(
@@ -861,7 +861,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			ObjectType rolePlayer = link.RolePlayer;
 			if (!rolePlayer.IsDeleted &&
 				role is SubtypeMetaRole &&
-				rolePlayer.DerivationExpression != null &&
+				(rolePlayer.DerivationExpression != null || rolePlayer.DerivationRule != null) &&
 				!rolePlayer.IsSubtype)
 			{
 				ResizeAssociatedShapes(rolePlayer);
@@ -941,16 +941,39 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
 		/// Resize associated shapes when a derivation rule is added
 		/// </summary>
-		private static void SubtypeDerivationAddedRule(ElementAddedEventArgs e)
+		private static void SubtypeDerivationExpressionAddedRule(ElementAddedEventArgs e)
 		{
 			ResizeAssociatedShapes(((SubtypeHasDerivationExpression)e.ModelElement).Subtype);
 		}
 		/// <summary>
 		/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
 		/// </summary>
-		private static void SubtypeDerivationDeletedRule(ElementDeletedEventArgs e)
+		private static void SubtypeDerivationExpressionDeletedRule(ElementDeletedEventArgs e)
 		{
-			ResizeAssociatedShapes(((SubtypeHasDerivationExpression)e.ModelElement).Subtype);
+			ObjectType subtype = ((SubtypeHasDerivationExpression)e.ModelElement).Subtype;
+			if (!subtype.IsDeleted && subtype.DerivationRule == null)
+			{
+				ResizeAssociatedShapes(subtype);
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationRule), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
+		/// Resize associated shapes when a derivation rule is added
+		/// </summary>
+		private static void SubtypeDerivationRuleAddedRule(ElementAddedEventArgs e)
+		{
+			ResizeAssociatedShapes(((SubtypeHasDerivationRule)e.ModelElement).Subtype);
+		}
+		/// <summary>
+		/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationRule), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
+		/// </summary>
+		private static void SubtypeDerivationRuleDeletedRule(ElementDeletedEventArgs e)
+		{
+			ObjectType subtype = ((SubtypeHasDerivationRule)e.ModelElement).Subtype;
+			if (!subtype.IsDeleted && subtype.DerivationExpression == null)
+			{
+				ResizeAssociatedShapes(subtype);
+			}
 		}
 		/// <summary>
 		/// ChangeRule: typeof(Microsoft.VisualStudio.Modeling.Diagrams.ObjectTypeShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
@@ -1121,7 +1144,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					{
 						retVal = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ObjectTypeShapeIndependentFormatString, retVal);
 					}
-					else if (objectType.DerivationExpression != null && objectType.IsSubtype) // Note that subtypes are never independent
+					else if ((objectType.DerivationExpression != null || objectType.DerivationRule != null) && objectType.IsSubtype) // Note that subtypes are never independent
 					{
 						retVal = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ObjectTypeShapeDerivedSubtypeFormatString, retVal);
 					}
@@ -1167,7 +1190,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				if (!element.IsDeleted &&
 					null != (objectType = element.AssociatedObjectType) &&
 					(objectType.IsIndependent ||
-					(objectType.DerivationExpression != null && objectType.IsSubtype)))
+					((objectType.DerivationExpression != null || objectType.DerivationRule != null) && objectType.IsSubtype)))
 				{
 					// Note that technically the size may be wrong if a derivation rule or an independent
 					// setting has been removed. However, in this case, the length will be a little too long,

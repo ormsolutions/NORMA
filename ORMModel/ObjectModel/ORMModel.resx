@@ -139,14 +139,29 @@
 	<data name="ConstraintModality.Deontic" xml:space="preserve">
 		<value>Deontic</value>
 	</data>
-	<data name="DerivationStorageType.Derived" xml:space="preserve">
+	<data name="DerivationCompleteness.FullyDerived" xml:space="preserve">
+		<value>Fully Derived</value>
+	</data>
+	<data name="DerivationCompleteness.PartiallyDerived" xml:space="preserve">
+		<value>Partially Derived</value>
+	</data>
+	<data name="DerivationStorage.NotStored" xml:space="preserve">
+		<value>Not Stored</value>
+	</data>
+	<data name="DerivationStorage.Stored" xml:space="preserve">
+		<value>Stored</value>
+	</data>
+	<data name="DerivationExpressionStorageType.Derived" xml:space="preserve">
 		<value>Derived</value>
 	</data>
-	<data name="DerivationStorageType.DerivedAndStored" xml:space="preserve">
-		<value>Derived And Stored</value>
+	<data name="DerivationExpressionStorageType.DerivedAndStored" xml:space="preserve">
+		<value>Derived and Stored</value>
 	</data>
-	<data name="DerivationStorageType.PartiallyDerived" xml:space="preserve">
-		<value>SemiDerived</value>
+	<data name="DerivationExpressionStorageType.PartiallyDerived" xml:space="preserve">
+		<value>Asserted or Derived</value>
+	</data>
+	<data name="DerivationExpressionStorageType.PartiallyDerivedAndStored" xml:space="preserve">
+		<value>Asserted, or Derived and Stored</value>
 	</data>
 	<data name="ElementGrouping.AddElement.TransactionName" xml:space="preserve">
 		<value>Add Element to Group</value>

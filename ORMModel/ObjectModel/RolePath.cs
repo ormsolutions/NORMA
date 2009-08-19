@@ -388,4 +388,144 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // Rule Methods
 	}
 	#endregion // CalculatedPathValue class
+	#region FactTypeDerivationExpression class (transitional)
+	// Transitional code to synchronize derivation storage settings on
+	// the old (expression) and new (path) derivation mechanisms.
+	partial class FactTypeDerivationExpression
+	{
+		#region Helper Methods
+		private static void SynchronizeExpression(FactTypeDerivationExpression expression, DerivationCompleteness completeness, DerivationStorage storage)
+		{
+			switch (completeness)
+			{
+				case DerivationCompleteness.FullyDerived:
+					expression.DerivationStorage = (storage == ObjectModel.DerivationStorage.Stored) ? DerivationExpressionStorageType.DerivedAndStored : DerivationExpressionStorageType.Derived;
+					break;
+				case DerivationCompleteness.PartiallyDerived:
+					expression.DerivationStorage = (storage == ObjectModel.DerivationStorage.Stored) ? DerivationExpressionStorageType.PartiallyDerivedAndStored : DerivationExpressionStorageType.PartiallyDerived;
+					break;
+			}
+		}
+		private static void SynchronizeRule(FactTypeDerivationRule rule, DerivationExpressionStorageType storageType)
+		{
+			switch (storageType)
+			{
+				case DerivationExpressionStorageType.Derived:
+					rule.DerivationCompleteness = DerivationCompleteness.FullyDerived;
+					rule.DerivationStorage = ObjectModel.DerivationStorage.NotStored;
+					break;
+				case DerivationExpressionStorageType.DerivedAndStored:
+					rule.DerivationCompleteness = DerivationCompleteness.FullyDerived;
+					rule.DerivationStorage = ObjectModel.DerivationStorage.Stored;
+					break;
+				case DerivationExpressionStorageType.PartiallyDerived:
+					rule.DerivationCompleteness = DerivationCompleteness.PartiallyDerived;
+					rule.DerivationStorage = ObjectModel.DerivationStorage.NotStored;
+					break;
+				case DerivationExpressionStorageType.PartiallyDerivedAndStored:
+					rule.DerivationCompleteness = DerivationCompleteness.PartiallyDerived;
+					rule.DerivationStorage = ObjectModel.DerivationStorage.Stored;
+					break;
+			}
+		}
+		#endregion // Helper Methods
+		#region Deserialization Fixup
+		/// <summary>
+		/// Return a deserialization fixup listener. The listener
+		/// verifies that the two derivation storage types are in sync.
+		/// </summary>
+		public static IDeserializationFixupListener FixupListener
+		{
+			get
+			{
+				return new DerivationRuleFixupListener();
+			}
+		}
+		/// <summary>
+		/// Fixup listener implementation.
+		/// </summary>
+		private sealed class DerivationRuleFixupListener : DeserializationFixupListener<FactTypeHasDerivationExpression>
+		{
+			/// <summary>
+			/// DerivationRuleFixupListener constructor
+			/// </summary>
+			public DerivationRuleFixupListener()
+				: base((int)ORMDeserializationFixupPhase.ValidateImplicitStoredElements)
+			{
+			}
+			/// <summary>
+			/// Process FactTypeHasDerivationExpression elements
+			/// </summary>
+			/// <param name="element">An FactTypeHasDerivationExpression element</param>
+			/// <param name="store">The context store</param>
+			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
+			protected sealed override void ProcessElement(FactTypeHasDerivationExpression element, Store store, INotifyElementAdded notifyAdded)
+			{
+				FactTypeDerivationRule rule;
+				if (!element.IsDeleted &&
+					null != (rule = element.FactType.DerivationRule))
+				{
+					// Expressions were around before rules, synchronize rules with
+					// the expression storage.
+					SynchronizeRule(rule, element.DerivationRule.DerivationStorage);
+				}
+			}
+		}
+		#endregion // Deserialization Fixup
+		#region Rule Methods
+		/// <summary>
+		/// AddRule: typeof(FactTypeHasDerivationExpression)
+		/// </summary>
+		private static void DerivationExpressionAddedRule(ElementAddedEventArgs e)
+		{
+			FactTypeHasDerivationExpression link = (FactTypeHasDerivationExpression)e.ModelElement;
+			FactTypeDerivationRule rule;
+			if (null != (rule = link.FactType.DerivationRule))
+			{
+				SynchronizeExpression(link.DerivationRule, rule.DerivationCompleteness, rule.DerivationStorage);
+			}
+		}
+		/// <summary>
+		/// ChangeRule: typeof(FactTypeDerivationExpression)
+		/// </summary>
+		private static void DerivationExpressionChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			FactTypeDerivationExpression expression = (FactTypeDerivationExpression)e.ModelElement;
+			FactType factType;
+			FactTypeDerivationRule rule;
+			if (null != (factType = expression.FactType) &&
+				null != (rule = factType.DerivationRule))
+			{
+				SynchronizeRule(rule, expression.DerivationStorage);
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(FactTypeHasDerivationRule)
+		/// </summary>
+		private static void DerivationRuleAddedRule(ElementAddedEventArgs e)
+		{
+			FactTypeHasDerivationRule link = (FactTypeHasDerivationRule)e.ModelElement;
+			FactTypeDerivationExpression expression;
+			if (null != (expression = link.FactType.DerivationExpression))
+			{
+				SynchronizeRule(link.DerivationRule, expression.DerivationStorage);
+			}
+		}
+		/// <summary>
+		/// ChangeRule: typeof(FactTypeDerivationRule)
+		/// </summary>
+		private static void DerivationRuleChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			FactTypeDerivationRule rule = (FactTypeDerivationRule)e.ModelElement;
+			FactType factType;
+			FactTypeDerivationExpression expression;
+			if (null != (factType = rule.FactType) &&
+				null != (expression = factType.DerivationExpression))
+			{
+				SynchronizeExpression(expression, rule.DerivationCompleteness, rule.DerivationStorage);
+			}
+		}
+		#endregion // Rule Methods
+	}
+	#endregion // FactTypeDerivationExpression class
 }
