@@ -48,6 +48,7 @@ using VirtualTreeInPlaceControlFlags = Microsoft.VisualStudio.VirtualTreeGrid.Vi
 
 namespace ORMSolutions.ORMArchitect.Core.Shell
 {
+	#region ReadingEditorCommands enum
 	/// <summary>
 	/// Valid Commands for context menu
 	/// </summary>
@@ -87,7 +88,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// </summary>
 		DemoteReadingOrder = 0x40
 	}
-
+	#endregion // ReadingEditorCommands enum
 	#region ActiveFactType structure
 	/// <summary>
 	/// A structure to represent the currently active fact. Allows for
@@ -96,23 +97,18 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 	/// </summary>
 	public struct ActiveFactType : IEquatable<ActiveFactType>
 	{
+		#region Static Fields
 		/// <summary>
 		/// Represents an empty ActiveFactType
 		/// </summary>
 		public static readonly ActiveFactType Empty = new ActiveFactType();
-		/// <summary>
-		/// Is the structure equivalent to ActiveFactType.Empty?
-		/// </summary>
-		public bool IsEmpty
-		{
-			get
-			{
-				return myFactType == null;
-			}
-		}
+		#endregion // Static Fields
+		#region Instance Fields
 		private readonly FactType myFactType;
 		private readonly FactType myImpliedFactType;
 		private readonly IList<RoleBase> myDisplayOrder;
+		#endregion // Instance Fields
+		#region Constructors
 		/// <summary>
 		/// Set the active fact type to just use the native role order for its display order
 		/// </summary>
@@ -152,6 +148,18 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				myDisplayOrder = null;
 			}
 		}
+		#endregion // Constructors
+		#region Accessor Properties
+		/// <summary>
+		/// Is the structure equivalent to ActiveFactType.Empty?
+		/// </summary>
+		public bool IsEmpty
+		{
+			get
+			{
+				return myFactType == null;
+			}
+		}
 		/// <summary>
 		/// Get the current FactType
 		/// </summary>
@@ -182,19 +190,21 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				return myDisplayOrder;
 			}
 		}
+		#endregion // Accessor Properties
+		#region Equality Methods
 		/// <summary>
 		/// Equals operator override
 		/// </summary>
-		public static bool operator ==(ActiveFactType fact1, ActiveFactType fact2)
+		public static bool operator ==(ActiveFactType factType1, ActiveFactType factType2)
 		{
-			return fact1.Equals(fact2);
+			return factType1.Equals(factType2);
 		}
 		/// <summary>
 		/// Not equals operator override
 		/// </summary>
-		public static bool operator !=(ActiveFactType fact1, ActiveFactType fact2)
+		public static bool operator !=(ActiveFactType factType1, ActiveFactType factType2)
 		{
-			return !(fact1.Equals(fact2));
+			return !(factType1.Equals(factType2));
 		}
 		/// <summary>
 		/// Standard Equals override
@@ -240,25 +250,26 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// </summary>
 		public override int GetHashCode()
 		{
-			FactType fact = myFactType;
+			FactType factType = myFactType;
 			int hashCode = 0;
-			if (fact != null)
+			if (factType != null)
 			{
-				hashCode = fact.GetHashCode();
+				hashCode = factType.GetHashCode();
 				IList<RoleBase> order = myDisplayOrder;
 				int count = order.Count;
 				for (int i = 0; i < count; ++i)
 				{
 					hashCode ^= Utility.RotateRight(order[i].GetHashCode(), i);
 				}
-				fact = myImpliedFactType;
-				if (fact != null)
+				factType = myImpliedFactType;
+				if (factType != null)
 				{
-					hashCode ^= Utility.RotateRight(fact.GetHashCode(), (count == 0) ? 1 : count);
+					hashCode ^= Utility.RotateRight(factType.GetHashCode(), (count == 0) ? 1 : count);
 				}
 			}
 			return hashCode;
 		}
+		#endregion // Equality Methods
 		#region Reading role order collection helper
 		private static IList<RoleBase> GetReadingRoleCollection(FactType factType)
 		{
@@ -278,10 +289,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			return factType.RoleCollection;
 		}
-		#endregion
+		#endregion // Reading role order collection helper
 	}
 	#endregion // ActiveFactType structure
-
 	public partial class ReadingEditor : UserControl
 	{
 		#region InplaceReadingEditor control
@@ -549,43 +559,253 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			#endregion // IVirtualTreeInPlaceControl Implementation
 		}
 		#endregion // Inplace reading editor control
-		#region OrderBranch Interface
-		private interface IReadingEditorBranch : IBranch, IMultiColumnBranch
+		#region BaseBranch class
+		/// <summary>
+		/// An empty IBranch implementation
+		/// </summary>
+		private abstract class BaseBranch : IBranch
 		{
-			void AddNewReading(int itemLocation);
-			void AddNewReadingOrder();
-			void DemoteSelectedReading(int readingItemLocation, int orderItemLocation);
-			void DemoteSelectedReadingOrder(int itemLocation);
-			void EditReadingOrder(IList<RoleBase> collection);
-			bool IsAdding { get; }
-			void PromoteSelectedReading(int readingItemLocation, int orderItemLocation);
-			void PromoteSelectedReadingOrder(int itemLocation);
-			void ReadingAdded(Reading reading);
-			void ReadingLocationUpdate(Reading reading);
-			void ReadingOrderLocationUpdate(ReadingOrder order);
-			void ReadingOrderRemoved(ReadingOrder order, FactType fact);
-			void ReadingRemoved(Reading reading, ReadingOrder order);
-			void RemoveSelectedItem();
-			ReadingEditorCommands SupportedSelectionCommands(int itemLocation);
-			void UpdateReading(Reading reading);
+			#region IBranch Implementation
+			VirtualTreeLabelEditData IBranch.BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
+			{
+				return VirtualTreeLabelEditData.Invalid;
+			}
+			LabelEditResult IBranch.CommitLabelEdit(int row, int column, string newText)
+			{
+				return LabelEditResult.CancelEdit;
+			}
+			BranchFeatures IBranch.Features
+			{
+				get
+				{
+					return BranchFeatures.None;
+				}
+			}
+			VirtualTreeAccessibilityData IBranch.GetAccessibilityData(int row, int column)
+			{
+				return VirtualTreeAccessibilityData.Empty;
+			}
+			VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
+			{
+				return VirtualTreeDisplayData.Empty;
+			}
+			object IBranch.GetObject(int row, int column, ObjectStyle style, ref int options)
+			{
+				return null;
+			}
+			string IBranch.GetText(int row, int column)
+			{
+				Debug.Fail("Should override");
+				return null;
+			}
+			string IBranch.GetTipText(int row, int column, ToolTipType tipType)
+			{
+				return null;
+			}
+			bool IBranch.IsExpandable(int row, int column)
+			{
+				return false;
+			}
+			LocateObjectData IBranch.LocateObject(object obj, ObjectStyle style, int locateOptions)
+			{
+				return default(LocateObjectData);
+			}
+			event BranchModificationEventHandler IBranch.OnBranchModification
+			{
+				add
+				{
+				}
+				remove
+				{
+				}
+			}
+			void IBranch.OnDragEvent(object sender, int row, int column, DragEventType eventType, DragEventArgs args)
+			{
+			}
+			void IBranch.OnGiveFeedback(GiveFeedbackEventArgs args, int row, int column)
+			{
+			}
+			void IBranch.OnQueryContinueDrag(QueryContinueDragEventArgs args, int row, int column)
+			{
+			}
+			VirtualTreeStartDragData IBranch.OnStartDrag(object sender, int row, int column, DragReason reason)
+			{
+				return VirtualTreeStartDragData.Empty;
+			}
+			StateRefreshChanges IBranch.ToggleState(int row, int column)
+			{
+				return StateRefreshChanges.None;
+			}
+			StateRefreshChanges IBranch.SynchronizeState(int row, int column, IBranch matchBranch, int matchRow, int matchColumn)
+			{
+				return StateRefreshChanges.None;
+			}
+			int IBranch.UpdateCounter
+			{
+				get
+				{
+					return 0;
+				}
+			}
+			int IBranch.VisibleItemCount
+			{
+				get
+				{
+					Debug.Fail("Should override");
+					return 0;
+				}
+			}
+			#endregion // IBranch Implementation
 		}
-		#endregion //OrderBranch Interface
-
+		#endregion // BaseBranch class
+		#region RootBranch class
+		/// <summary>
+		/// A branch that can be a root branch in a the tree
+		/// </summary>
+		private abstract class RootBranch : BaseBranch
+		{
+			#region Virtual and Abstract Methods
+			public abstract bool IsAdding { get; }
+			public virtual ReadingEditorCommands SupportedSelectionCommands(int itemLocation)
+			{
+				return ReadingEditorCommands.None;
+			}
+			/// <summary>
+			/// Initiates a New Reading within the selected Reading Order
+			/// </summary>
+			/// <param name="itemLocation">Reading Order Row</param>
+			public virtual void AddNewReading(int itemLocation)
+			{
+			}
+			/// <summary>
+			/// Initiates the Drop Down to select a new reading order for the reading to add
+			/// </summary>
+			public virtual void AddNewReadingOrder()
+			{
+			}
+			/// <summary>
+			/// Moves the selected Reading Down
+			/// </summary>
+			public virtual void DemoteSelectedReading(int readingItemLocation, int orderItemLocation)
+			{
+			}
+			/// <summary>
+			/// Moves the selected ReadingOrder Down
+			/// </summary>
+			/// <param name="itemLocation">location</param>
+			public virtual void DemoteSelectedReadingOrder(int itemLocation)
+			{
+			}
+			/// <summary>
+			/// Initiate edit for first reading within the <see cref="LinkedElementCollection{RoleBase}"/> (will create a new item if needed)
+			/// </summary>
+			/// <param name="collection">The <see cref="LinkedElementCollection{RoleBase}"/> to use</param>
+			public virtual void EditReadingOrder(IList<RoleBase> collection)
+			{
+			}
+			/// <summary>
+			/// Moves the selected Reading Up
+			/// </summary>
+			public virtual void PromoteSelectedReading(int readingItemLocation, int orderItemLocation)
+			{
+			}
+			/// <summary>
+			/// Moves the selected ReadingOrder up
+			/// </summary>
+			/// <param name="itemLocation">location</param>
+			public virtual void PromoteSelectedReadingOrder(int itemLocation)
+			{
+			}
+			/// <summary>
+			/// Removes the item selected when called by the context menu
+			/// </summary>
+			public virtual void RemoveSelectedItem()
+			{
+			}
+			/// <summary>
+			/// Instruct the readingbranch that a reading has been added to the collection
+			/// </summary>
+			/// <param name="reading">the reading to add</param>
+			public virtual void OnReadingAdded(Reading reading)
+			{
+			}
+			/// <summary>
+			/// Event callback from Changing the Order of  and item in the ReadingOrder LinkedElementCollection: 
+			/// will update the branch to reflect the changed order
+			/// </summary>
+			/// <param name="reading">The Reading moved</param>
+			public virtual void OnReadingLocationUpdated(Reading reading)
+			{
+			}
+			/// <summary>
+			/// Event callback from Changing the Order of  and item in the ReadingOrdersMovableCollectoin: 
+			/// will update the branch to reflect the changed order
+			/// </summary>
+			/// <param name="order">The ReadingOrder affected</param>
+			public virtual void OnReadingOrderLocationUpdated(ReadingOrder order)
+			{
+			}
+			/// <summary>
+			/// Handles removing a ReadingOrder which has been deleted
+			/// </summary>
+			/// <param name="order">The ReadingOrder which has been removed</param>
+			/// <param name="factType">The Fact for the ReadingOrder</param>
+			public virtual void OnReadingOrderRemoved(ReadingOrder order, FactType factType)
+			{
+			}
+			/// <summary>
+			/// Triggers notification that a Reading has been removed from the branch.
+			/// </summary>
+			/// <param name="reading">The Reading which has been removed</param>
+			/// <param name="order">The order of the link</param>
+			public virtual void OnReadingRemoved(Reading reading, ReadingOrder order)
+			{
+			}
+			/// <summary>
+			/// Triggers the events notifying the tree that a Reading in the Readingbranch has been updated. 
+			/// </summary>
+			/// <param name="reading">The Reading affected</param>
+			public virtual void OnReadingUpdated(Reading reading)
+			{
+			}
+			/// <summary>
+			/// An extension property on a reading has changed. Notify the branches.
+			/// </summary>
+			/// <param name="reading">The Reading affected</param>
+			/// <param name="descriptor">The static <see cref="PropertyDescriptor"/> that describes the change.</param>
+			public virtual void OnExtensionPropertyChanged(Reading reading, PropertyDescriptor descriptor)
+			{
+			}
+			#endregion // Virtual Methods
+		}
+		#endregion // RootBranch class
 		#region Enums
 		private enum ColumnIndex
 		{
 			ReadingOrder = 0,
 			ReadingBranch = 1,
+			FirstPropertyBranch = 2,
 		}
 		private enum RowType
 		{
+			/// <summary>
+			/// The reading order is in the model
+			/// </summary>
 			Committed = 0,
+			/// <summary>
+			/// The reading order is not in the model
+			/// </summary>
 			Uncommitted = 1,
-			TypeEditorHost = 3,
+			/// <summary>
+			/// The New reading row
+			/// </summary>
+			New = 3,
+			/// <summary>
+			/// Unknown row type
+			/// </summary>
 			None = 4
 		}
 		#endregion // Enums
-
 		#region Static Properties
 		/// <summary>
 		/// Returns the latest instance of the editor
@@ -597,32 +817,46 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				return ReadingEditor.myInstance;
 			}
 		}
-		#endregion // Static Methods
-
+		#endregion // Static Properties
 		#region Static Variables
 		/// <summary>
 		/// Provides a ref to the ReadingOrderBranch from nested objects
 		/// </summary>
-		private IReadingEditorBranch myMainBranch;
+		private RootBranch myMainBranch;
 		/// <summary>
 		/// Provides a ref to the Reading Editorl from nested objects
 		/// </summary>
 		private static ReadingEditor myInstance;
+		/// <summary>
+		/// Cache the extension property descriptors in the Store.PropertyBag
+		/// </summary>
+		private const string StorePropertyDescriptorsKey = "ORMReadingEditor.PropertyDescriptors";
+		/// <summary>
+		/// Cache column header settings in the Store.PropertyBag
+		/// </summary>
+		private const string StoreColumnHeadersKey = "ORMReadingEditor.ColumnHeaders";
+		/// <summary>
+		/// Cache column permutations in the Store.PropertyBag
+		/// </summary>
+		private const string StoreColumnPermutationKey = "ORMReadingEditor.ColumnPermutation";
+		/// <summary>
+		/// The number of non-extended columns
+		/// </summary>
+		private const int BASE_COLUMN_COUNT = 2;
 		#endregion // Static Variables
 		#region Member Variables
 		private ORMReadingEditorToolWindow myToolWindow;
-		#endregion // Member Variables
-
-		#region Member Variables
-		private FactType myFact;
-		private FactType mySecondaryFact;
+		private FactType myFactType;
+		private FactType mySecondaryFactType;
 		private IList<RoleBase> myDisplayRoleOrder;
 		private ImageList myImageList;
 		private ReadingEditorCommands myVisibleCommands;
 		private bool myInEvents;
+		private bool myWideHeader; // The 'wideHeader' parameter was set in the last call to SetHeaders
+		private bool myExpandImpliedBranch; // True if the implied fact types branch should be expanded automatically
+		private PropertyDescriptorCollection myExtensionProperties;
 		#endregion // Member Variables
-
-		#region Construction
+		#region Constructor
 		/// <summary>
 		/// Default constructor.
 		/// </summary>
@@ -635,25 +869,82 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			InitializeComponent();
 			vtrReadings.LabelEditControlChanged += Tree_LabelEditControlChanged;
 		}
-		private void SetHeaders(bool wideHeader)
+		private void SetHeaders(bool storeChanged, bool wideHeader)
 		{
-			CustomVirtualTreeControl treeControl = this.vtrReadings;
-			int indent = treeControl.IndentWidth + 3;
-
-			if (wideHeader)
+			if (storeChanged || (wideHeader != myWideHeader))
 			{
-				indent += indent;
+				CustomVirtualTreeControl treeControl = this.vtrReadings;
+
+				VirtualTreeColumnHeader[] headers;
+				ColumnPermutation permutation = null;
+				object headersObject;
+				bool computePercentages = false;
+				if (storeChanged)
+				{
+					Dictionary<object, object> bag = myFactType.Store.PropertyBag;
+					if (!bag.TryGetValue(StoreColumnHeadersKey, out headersObject) ||
+						null == (headers = headersObject as VirtualTreeColumnHeader[]))
+					{
+						PropertyDescriptorCollection extensionProperties = myExtensionProperties;
+						int propertyCount = extensionProperties != null ? extensionProperties.Count : 0;
+						headers = new VirtualTreeColumnHeader[BASE_COLUMN_COUNT + propertyCount];
+						headers[1] = new VirtualTreeColumnHeader(ResourceStrings.ModelReadingEditorColumnHeaderReadings, 1f, 100, VirtualTreeColumnHeaderStyles.ColumnPositionLocked);
+						for (int i = 0; i < propertyCount; ++i)
+						{
+							headers[i + 2] = new VirtualTreeColumnHeader(extensionProperties[i].DisplayName, 1f, VirtualTreeColumnHeaderStyles.Default);
+						}
+						computePercentages = true;
+					}
+					object permutationObject;
+					if (bag.TryGetValue(StoreColumnPermutationKey, out permutationObject))
+					{
+						permutation = permutationObject as ColumnPermutation;
+					}
+					myWideHeader = wideHeader;
+				}
+				else
+				{
+					headers = treeControl.GetColumnHeaders();
+					permutation = treeControl.ColumnPermutation;
+					myWideHeader = wideHeader;
+				}
+				int indent = treeControl.IndentWidth + 3;
+				if (wideHeader)
+				{
+					indent += indent;
+				}
+
+				headers[0] = new VirtualTreeColumnHeader(" ", indent + treeControl.ImageList.ImageSize.Width, true, VirtualTreeColumnHeaderStyles.ColumnPositionLocked);
+				ColumnPermutation currentPermutation = treeControl.ColumnPermutation;
+				if (currentPermutation != null)
+				{
+					if (currentPermutation == permutation)
+					{
+						permutation = null;
+					}
+					else
+					{
+						// Clear before setting headers so that we don't have to worry about a count mismatch
+						treeControl.ColumnPermutation = null;
+					}
+				}
+				treeControl.SetColumnHeaders(headers, computePercentages);
+				if (permutation != null)
+				{
+					treeControl.ColumnPermutation = permutation;
+				}
+				bool extraColumns = headers.Length > 2;
+				treeControl.HasVerticalGridLines = extraColumns;
+				treeControl.HeaderDragDrop = extraColumns;
+				if (treeControl.HeaderControl.HeaderHeight == 0 ? extraColumns : !extraColumns)
+				{
+					// Force a recreate of the header control
+					treeControl.DisplayColumnHeaders = false;
+					treeControl.DisplayColumnHeaders = true;
+				}
 			}
-
-			VirtualTreeColumnHeader[] headers = new VirtualTreeColumnHeader[ReadingOrderBranch.COLUMN_COUNT]
-			  {
-				  new VirtualTreeColumnHeader(" ", indent + treeControl.ImageList.ImageSize.Width, false, VirtualTreeColumnHeaderStyles.Default), 	
-				  new VirtualTreeColumnHeader(" ", 1f, 100, VirtualTreeColumnHeaderStyles.Default)
-			  };
-			treeControl.SetColumnHeaders(headers, false);
 		}
-		#endregion //construction
-
+		#endregion // Constructor
 		#region Properties
 		/// <summary>
 		/// The fact that is being edited in the control, or that needs to be edited.
@@ -662,17 +953,74 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		{
 			get
 			{
-				return new ActiveFactType(myFact, mySecondaryFact, myDisplayRoleOrder);
+				return new ActiveFactType(myFactType, mySecondaryFactType, myDisplayRoleOrder);
 			}
 			set
 			{
-				myFact = value.FactType;
-				mySecondaryFact = value.ImpliedFactType;
-				myDisplayRoleOrder = value.DisplayOrder;
-				if (myFact != null)
+				// Get the current store settings
+				FactType factType = myFactType;
+				Store previousStore = factType != null ? Utility.ValidateStore(factType.Store) : null;
+
+				// Check if the implied fact type branch is expanded so we can restore
+				// the current expansion settings for a new branch.
+				factType = mySecondaryFactType;
+				ITree tree;
+				VirtualTreeCoordinate coordinate;
+				if (null != factType &&
+					null != (tree = vtrReadings.Tree) &&
+					(coordinate = tree.LocateObject(null, factType, (int)ObjectStyle.TrackingObject, 1 /* Special flag to change behavior */)).IsValid)
 				{
-					PopulateControl();
+					myExpandImpliedBranch = tree.IsExpanded(coordinate.Row, coordinate.Column);
 				}
+
+				// Get the new infomration
+				myFactType = factType = value.FactType;
+				mySecondaryFactType = value.ImpliedFactType;
+				myDisplayRoleOrder = value.DisplayOrder;
+				if (factType != null)
+				{
+					Store currentStore = factType.Store;
+					if (currentStore != previousStore)
+					{
+						RememberDisplaySettings(previousStore);
+						object extensionPropertiesObject;
+						PropertyDescriptorCollection extensionProperties;
+						if (!currentStore.PropertyBag.TryGetValue(StorePropertyDescriptorsKey, out extensionPropertiesObject) ||
+							null == (extensionProperties = extensionPropertiesObject as PropertyDescriptorCollection))
+						{
+							extensionProperties = new PropertyDescriptorCollection(new PropertyDescriptor[0]);
+							((IFrameworkServices)currentStore).PropertyProviderService.GetProvidedProperties(typeof(Reading), extensionProperties);
+							currentStore.PropertyBag[StorePropertyDescriptorsKey] = extensionProperties;
+						}
+						myExtensionProperties = extensionProperties;
+						PopulateControl(true);
+					}
+					else
+					{
+						PopulateControl(false);
+					}
+				}
+				else
+				{
+					if (previousStore != null)
+					{
+						RememberDisplaySettings(previousStore);
+					}
+					myExtensionProperties = null;
+				}
+			}
+		}
+		/// <summary>
+		/// Write all control display settings to the <see cref="Store.PropertyBag"/>
+		/// </summary>
+		private void RememberDisplaySettings(Store store)
+		{
+			if (null != store)
+			{
+				VirtualTreeControl treeControl = vtrReadings;
+				Dictionary<object, object> bag = store.PropertyBag;
+				bag[StoreColumnHeadersKey] = treeControl.GetColumnHeaders();
+				bag[StoreColumnPermutationKey] = treeControl.ColumnPermutation;
 			}
 		}
 		/// <summary>
@@ -693,11 +1041,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			get
 			{
 				object retVal = null;
-				ITree tree = vtrReadings.Tree;
-				int currentIndex = vtrReadings.CurrentIndex;
+				VirtualTreeControl treeControl = vtrReadings;
+				ITree tree = treeControl.Tree;
+				int currentIndex = treeControl.CurrentIndex;
 				if (currentIndex >= 0)
 				{
-					VirtualTreeItemInfo itemInfo = vtrReadings.Tree.GetItemInfo(currentIndex, vtrReadings.CurrentColumn, false);
+					VirtualTreeItemInfo itemInfo = tree.GetItemInfo(currentIndex, treeControl.CurrentColumn, false);
 					int input = 0;
 					retVal = itemInfo.Branch.GetObject(itemInfo.Row, itemInfo.Column, ObjectStyle.TrackingObject, ref input);
 					return (retVal == null) ? null : retVal;
@@ -743,64 +1092,98 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				return false;
 			}
 		}
-
-		#endregion //Properties
+		#endregion // Properties
 		#region Tree Events
 		private void Tree_LabelEditControlChanged(object sender, EventArgs e)
 		{
 			myToolWindow.ActiveInPlaceEditWindow = vtrReadings.LabelEditControl;
 		}
 		#endregion // Tree Events
-
 		#region PopulateControl and helpers
-		private void PopulateControl()
+		/// <summary>
+		/// Populate the control for the current FactType
+		/// </summary>
+		/// <param name="storeChanged">Set if the <see cref="Store"/> has changed since the
+		/// previous calculation.</param>
+		private void PopulateControl(bool storeChanged)
 		{
-			Debug.Assert(myFact != null);
+			Debug.Assert(myFactType != null);
 			if (myDisplayRoleOrder != null)
 			{
-				LinkedElementCollection<RoleBase> roles = myFact.RoleCollection;
+				LinkedElementCollection<RoleBase> roles = myFactType.RoleCollection;
 				if ((FactType.GetUnaryRoleIndex(roles).HasValue ? 1 : roles.Count) != myDisplayRoleOrder.Count)
 				{
 					myDisplayRoleOrder = null;
 				}
 			}
 
-			ReadingVirtualTree rvt = null;
+			VirtualTreeControl treeControl = vtrReadings;
 
-			if (mySecondaryFact != null)
-			{
-				this.SetHeaders(true);
-				rvt = new ReadingVirtualTree(myMainBranch = new FactTypeBranch(myFact, mySecondaryFact));
-			}
-			else
-			{
-				this.SetHeaders(false);
-				rvt = new ReadingVirtualTree(myMainBranch = new ReadingOrderBranch(myFact, myDisplayRoleOrder));
-			}
-
-			VirtualTreeControl control = this.vtrReadings;
-
-			ITree oldTree = vtrReadings.MultiColumnTree as ITree;
+			PropertyDescriptorCollection extensionProperties = myExtensionProperties;
+			int extensionPropertyCount = extensionProperties != null ? extensionProperties.Count : 0;
+			bool recreateTree = true;
+			ITree oldTree = treeControl.MultiColumnTree as ITree;
 			// Turn off all event handlers for old branches whenever we repopulate
 			bool turnedDelayRedrawOff = false;
 			if (oldTree != null)
 			{
 				oldTree.Root = null;
-				if (myInEvents)
+				if (((IMultiColumnTree)oldTree).ColumnCount == (BASE_COLUMN_COUNT + extensionPropertyCount))
 				{
-					turnedDelayRedrawOff = true;
-					this.vtrReadings.Tree.DelayRedraw = false;
+					if (myInEvents)
+					{
+						turnedDelayRedrawOff = true;
+						oldTree.DelayRedraw = false;
+					}
+				}
+				else
+				{
+					// The tree and header count have to match, or the tree must be null
+					treeControl.Tree = null;
+					recreateTree = true;
 				}
 			}
-			this.vtrReadings.MultiColumnTree = rvt;
+
+			object expandToObject = null;
+			if (mySecondaryFactType != null)
+			{
+				this.SetHeaders(storeChanged, true);
+				myMainBranch = new FactTypeBranch(this);
+				if (myExpandImpliedBranch)
+				{
+					expandToObject = mySecondaryFactType;
+				}
+			}
+			else
+			{
+				this.SetHeaders(storeChanged, false);
+				myMainBranch = new ReadingOrderBranch(this, myFactType, myDisplayRoleOrder);
+			}
+			ITree tree;
+			if (recreateTree)
+			{
+				treeControl.MultiColumnTree = new ReadingVirtualTree(myMainBranch, extensionPropertyCount);
+				tree = treeControl.Tree;
+			}
+			else
+			{
+				tree = treeControl.Tree;
+				tree.Root = myMainBranch;
+			}
 			if (turnedDelayRedrawOff)
 			{
-				this.vtrReadings.Tree.DelayRedraw = true;
+				tree.DelayRedraw = true;
 			}
 
-			if (this.vtrReadings.Tree.IsExpandable(0, 0))
+			VirtualTreeCoordinate coordinate;
+			if (expandToObject != null &&
+				(coordinate = tree.LocateObject(null, expandToObject, (int)ObjectStyle.TrackingObject, 1 /* Special flag to change behavior */)).IsValid)
 			{
-				this.vtrReadings.Tree.ToggleExpansion(0, 0); //expand ReadingOrderBranch by default
+				tree.ToggleExpansion(coordinate.Row, coordinate.Column);
+			}
+			if (tree.IsExpandable(0, 0))
+			{
+				tree.ToggleExpansion(0, 0); //expand ReadingOrderBranch by default
 			}
 
 		}
@@ -814,19 +1197,19 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				return vtrReadings;
 			}
 		}
-		#endregion //PopulateControl and helpers
+		#endregion // PopulateControl and helpers
 		#region Reading role order collection helper
-		private static IList<RoleBase> GetReadingRoleCollection(FactType fact)
+		private static IList<RoleBase> GetReadingRoleCollection(FactType factType)
 		{
 			// Return a single-element collection for binarized unaries
-			Role unaryRole = fact.UnaryRole;
+			Role unaryRole = factType.UnaryRole;
 			if (unaryRole != null)
 			{
 				return new RoleBase[] { unaryRole };
 			}
 			else
 			{
-				return fact.RoleCollection;
+				return factType.RoleCollection;
 			}
 		}
 		#endregion // Reading role order collection helper
@@ -842,7 +1225,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			FactType factType;
 			if (null != (order = reading.ReadingOrder)
 				&& null != (factType = order.FactType)
-				&& (factType == myFact || factType == mySecondaryFact))
+				&& (factType == myFactType || factType == mySecondaryFactType))
 			{
 				if (TreeControl.SelectObject(null, reading, (int)ObjectStyle.TrackingObject, 0))
 				{
@@ -857,12 +1240,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// if not selects the new entry for the role
 		/// sequence matching the facts role display order.
 		/// </summary>
-		/// <param name="fact">FactType</param>
-		public void ActivateReading(FactType fact)
+		/// <param name="factType">FactType</param>
+		public void ActivateReading(FactType factType)
 		{
-			if (fact == myFact || fact == mySecondaryFact)
+			if (factType == myFactType || factType == mySecondaryFactType)
 			{
-				myMainBranch.EditReadingOrder(GetReadingRoleCollection(fact));
+				myMainBranch.EditReadingOrder(GetReadingRoleCollection(factType));
 			}
 		}
 		/// <summary>
@@ -870,14 +1253,13 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// </summary>
 		public void EditSelectedReading()
 		{
-			using (Transaction t = myFact.Store.TransactionManager.BeginTransaction(ResourceStrings.CommandEditReadingText))
+			using (Transaction t = myFactType.Store.TransactionManager.BeginTransaction(ResourceStrings.CommandEditReadingText))
 			{
 				vtrReadings.BeginLabelEdit();
 			}
 		}
 
 		#endregion // Reading activation helper
-
 		#region Tree Context Menu Methods
 		private void OnMenuInvoked(object sender, ContextMenuEventArgs e)
 		{
@@ -890,7 +1272,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				VirtualTreeItemInfo itemInfo;
 				if (this.GetItemInfo(out itemInfo, ColumnIndex.ReadingOrder))
 				{
-					myVisibleCommands = (itemInfo.Branch as IReadingEditorBranch).SupportedSelectionCommands(itemInfo.Row);
+					myVisibleCommands = ((RootBranch)itemInfo.Branch).SupportedSelectionCommands(itemInfo.Row);
 				}
 			}
 			else
@@ -926,7 +1308,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			VirtualTreeItemInfo itemInfo;
 			if (this.GetItemInfo(out itemInfo, ColumnIndex.ReadingOrder))
 			{
-				(itemInfo.Branch as IReadingEditorBranch).AddNewReading(itemInfo.Row);
+				((RootBranch)itemInfo.Branch).AddNewReading(itemInfo.Row);
 			}
 		}
 		/// <summary>
@@ -937,7 +1319,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			VirtualTreeItemInfo itemInfo;
 			if (this.GetItemInfo(out itemInfo, ColumnIndex.ReadingOrder))
 			{
-				(itemInfo.Branch as IReadingEditorBranch).AddNewReadingOrder();
+				((RootBranch)itemInfo.Branch).AddNewReadingOrder();
 			}
 		}
 		/// <summary>
@@ -950,7 +1332,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			int readingItemRow = itemInfo.Row;
 			if (readingItemRow != -1 && this.GetItemInfo(out itemInfo, ColumnIndex.ReadingOrder)) //Get the ReadingOrder and pass it the Reading to Promote
 			{
-				(itemInfo.Branch as IReadingEditorBranch).PromoteSelectedReading(readingItemRow, itemInfo.Row);
+				((RootBranch)itemInfo.Branch).PromoteSelectedReading(readingItemRow, itemInfo.Row);
 			}
 		}
 		/// <summary>
@@ -963,7 +1345,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			int readingItemRow = itemInfo.Row;
 			if (readingItemRow != -1 && this.GetItemInfo(out itemInfo, ColumnIndex.ReadingOrder)) //Get the ReadingOrder and pass it the Reading to Promote
 			{
-				(itemInfo.Branch as IReadingEditorBranch).DemoteSelectedReading(readingItemRow, itemInfo.Row);
+				((RootBranch)itemInfo.Branch).DemoteSelectedReading(readingItemRow, itemInfo.Row);
 			}
 		}
 		/// <summary>
@@ -974,7 +1356,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			VirtualTreeItemInfo itemInfo;
 			if (this.GetItemInfo(out itemInfo, ColumnIndex.ReadingOrder))
 			{
-				(itemInfo.Branch as IReadingEditorBranch).PromoteSelectedReadingOrder(itemInfo.Row);
+				((RootBranch)itemInfo.Branch).PromoteSelectedReadingOrder(itemInfo.Row);
 			}
 		}
 		/// <summary>
@@ -985,7 +1367,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			VirtualTreeItemInfo itemInfo;
 			if (this.GetItemInfo(out itemInfo, ColumnIndex.ReadingOrder))
 			{
-				(itemInfo.Branch as IReadingEditorBranch).DemoteSelectedReadingOrder(itemInfo.Row);
+				((RootBranch)itemInfo.Branch).DemoteSelectedReadingOrder(itemInfo.Row);
 			}
 		}
 		/// <summary>
@@ -996,7 +1378,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			VirtualTreeItemInfo itemInfo;
 			if (this.GetItemInfo(out itemInfo, ColumnIndex.ReadingOrder))
 			{
-				(itemInfo.Branch as IReadingEditorBranch).RemoveSelectedItem();
+				((RootBranch)itemInfo.Branch).RemoveSelectedItem();
 			}
 		}
 
@@ -1015,10 +1397,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			return false;
 		}
-		#endregion  //Tree Context Menu Methods
-
-		#region model events and handlers
-		#region Nested event handler attach/detach methods
+		#endregion  // Tree Context Menu Methods
+		#region Model Event Handlers
+		#region Attach/detach events
 		/// <summary>
 		/// Manages <see cref="EventHandler{TEventArgs}"/>s in the <see cref="Store"/> so that the <see cref="ORMReadingEditorToolWindow"/>
 		/// contents can be updated to reflect any model changes.
@@ -1028,10 +1409,15 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// <param name="action">The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.</param>
 		public void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
 		{
+			// Remove extension listeners regardless of store state. These listeners are statically implemented and
+			// will continue to notify the reading editor on changes in other stores if they are not removed.
+			((IFrameworkServices)store).PropertyProviderService.AddOrRemoveChangeListener(typeof(Reading), ExtensionPropertyChangedEvent, action);
+
 			if (Utility.ValidateStore(store) == null)
 			{
 				return; // Bail out
 			}
+
 			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(ReadingOrderHasReading.DomainClassId);
 
@@ -1065,14 +1451,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			eventManager.AddOrRemoveHandler(new EventHandler<ElementEventsBegunEventArgs>(ElementEventsBegunEvent), action);
 			eventManager.AddOrRemoveHandler(new EventHandler<ElementEventsEndedEventArgs>(ElementEventsEndedEvent), action);
 		}
-
-		#endregion //Nested event handler attach/detach methods
-
-		#region Pre/Post Event routines
+		#endregion // Attach/detach events
+		#region Pre/Post Event Handlers
 		private void ElementEventsBegunEvent(object sender, ElementEventsBegunEventArgs e)
 		{
 			myInEvents = false; // Sanity, should not be needed
-			if (myFact != null)
+			if (myFactType != null)
 			{
 				myInEvents = true;
 				ITree currentTree = this.vtrReadings.Tree;
@@ -1082,7 +1466,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 		}
-
 		private void ElementEventsEndedEvent(object sender, ElementEventsEndedEventArgs e)
 		{
 			if (myInEvents)
@@ -1095,14 +1478,13 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 		}
-		#endregion //Pre/Post Event routines
-
+		#endregion // Pre/Post Event Handlers
 		#region Reading Event Handlers
 		//handling model events Related to changes in Readings and their
 		//connections so the reading editor can accurately reflect the model
 		private void ReadingLinkAddedEvent(object sender, ElementAddedEventArgs e)
 		{
-			if (myFact == null)
+			if (myFactType == null)
 			{
 				return;
 			}
@@ -1110,17 +1492,17 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			if (!link.IsDeleted)
 			{
 				ReadingOrder readingOrder = link.ReadingOrder;
-				FactType fact = readingOrder.FactType;
-				if (fact == myFact || fact == mySecondaryFact)
+				FactType factType = readingOrder.FactType;
+				if (factType == myFactType || factType == mySecondaryFactType)
 				{
-					myMainBranch.ReadingAdded(link.Reading);
+					myMainBranch.OnReadingAdded(link.Reading);
 				}
 				this.UpdateMenuItems();
 			}
 		}
 		private void ReadingLinkRemovedEvent(object sender, ElementDeletedEventArgs e)
 		{
-			if (myFact == null)
+			if (myFactType == null)
 			{
 				return;
 			}
@@ -1129,15 +1511,15 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			// Handled all at once by ReadingOrderLinkRemovedEvent if all are gone.
 			if (!order.IsDeleted)
 			{
-				if (order.FactType == myFact || order.FactType == mySecondaryFact)
+				if (order.FactType == myFactType || order.FactType == mySecondaryFactType)
 				{
-					myMainBranch.ReadingRemoved(link.Reading, order); //UNDONE: use interface and locate object
+					myMainBranch.OnReadingRemoved(link.Reading, order); //UNDONE: use interface and locate object
 				}
 			}
 		}
 		private void ReadingAttributeChangedEvent(object sender, ElementPropertyChangedEventArgs e)
 		{
-			if (myFact == null)
+			if (myFactType == null)
 			{
 				return;
 			}
@@ -1147,22 +1529,21 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			if (attributeId == Reading.TextDomainPropertyId
 				&& !reading.IsDeleted
 				&& null != (order = reading.ReadingOrder)
-				&& (order.FactType == myFact || order.FactType == mySecondaryFact))
+				&& (order.FactType == myFactType || order.FactType == mySecondaryFactType))
 			{
-				myMainBranch.UpdateReading(reading);
+				myMainBranch.OnReadingUpdated(reading);
 			}
 		}
 		private void ReadingPositionChangedHandler(object sender, RolePlayerOrderChangedEventArgs e)
 		{
-			if (myFact == null)
+			if (myFactType == null)
 			{
 				return;
 			}
-			myMainBranch.ReadingLocationUpdate(e.CounterpartRolePlayer as Reading);
+			myMainBranch.OnReadingLocationUpdated(e.CounterpartRolePlayer as Reading);
 			this.UpdateMenuItems();
 		}
-		#endregion //Reading Event Handlers
-
+		#endregion // Reading Event Handlers
 		#region ReadingOrder Event Handlers
 		//handle model events related to the ReadingOrder or its Roles being removed in order to
 		//keep the editor window in sync with what is in the model.
@@ -1171,48 +1552,42 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			FactTypeHasReadingOrder link = e.ModelElement as FactTypeHasReadingOrder;
 			FactType factType = link.FactType;
 
-			if ((factType == myFact || factType == mySecondaryFact) && !factType.IsDeleting && !factType.IsDeleted)
+			if ((factType == myFactType || factType == mySecondaryFactType) && !factType.IsDeleting && !factType.IsDeleted)
 			{
-				//test to implelement thru the interface
-				//VirtualTreeCoordinate coords = ReadingEditor.TreeControl.Tree.LocateObject(myMainBranch, factType, (int)ObjectStyle.TrackingObject, 0);
-				//VirtualTreeItemInfo info = ReadingEditor.TreeControl.Tree.GetItemInfo(coords.Row, coords.Column, false);
-				//(info.Branch as IReadingEditorBranch).ReadingOrderRemoved(link.ReadingOrder, factType);
-				myMainBranch.ReadingOrderRemoved(link.ReadingOrder, factType);
+				myMainBranch.OnReadingOrderRemoved(link.ReadingOrder, factType);
 			}
 		}
-
 		private void ReadingOrderPositionChangedHandler(object sender, RolePlayerOrderChangedEventArgs e)
 		{
-			if (myFact == null)
+			if (myFactType == null)
 			{
 				return;
 			}
-			myMainBranch.ReadingOrderLocationUpdate(e.CounterpartRolePlayer as ReadingOrder);
+			myMainBranch.OnReadingOrderLocationUpdated(e.CounterpartRolePlayer as ReadingOrder);
 			this.UpdateMenuItems();
 		}
-		#endregion
-
+		#endregion // ReadingOrder Event Handlers
 		#region FactType Event Handlers
 		private void FactTypeHasRoleAddedOrDeletedEvent(object sender, ElementEventArgs e)
 		{
-			if (myFact != null && myFact == ((FactTypeHasRole)e.ModelElement).FactType && !myFact.IsDeleted && !myFact.IsDeleting)
+			if (myFactType != null && myFactType == ((FactTypeHasRole)e.ModelElement).FactType && !myFactType.IsDeleted && !myFactType.IsDeleting)
 			{
-				this.PopulateControl();
+				this.PopulateControl(false);
 			}
 		}
 		private void FactTypeRemovedEvent(object sender, ElementDeletedEventArgs e)
 		{
 			ModelHasFactType link = e.ModelElement as ModelHasFactType;
-			if (link.FactType == myFact)
+			if (link.FactType == myFactType)
 			{
 				ORMDesignerPackage.ReadingEditorWindow.EditingFactType = ActiveFactType.Empty;
 			}
 
-			if (myFact != null && myFact == link.FactType && !myFact.IsDeleted && !myFact.IsDeleting)
+			if (myFactType != null && myFactType == link.FactType && !myFactType.IsDeleted && !myFactType.IsDeleting)
 			{
-				this.PopulateControl();
+				this.PopulateControl(false);
 			}
-			else if (myFact != null && myFact == link.FactType)
+			else if (myFactType != null && myFactType == link.FactType)
 			{
 				ITree currentTree = this.vtrReadings.Tree;
 				if (currentTree != null)
@@ -1221,56 +1596,74 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 		}
-
 		#endregion // FactType Event Handlers
-		#endregion //model events and handlers
-
-		#region nested class FactTypeBranch
-		private sealed class FactTypeBranch : IReadingEditorBranch
+		#region Extension Property Handlers
+		/// <summary>
+		/// A reading extension property has changed.
+		/// </summary>
+		private void ExtensionPropertyChangedEvent(object sender, ExtensionPropertyChangedEventArgs e)
 		{
+			if (myFactType == null)
+			{
+				return;
+			}
+			Reading reading = e.Instance as Reading;
+			if (reading != null)
+			{
+				myMainBranch.OnExtensionPropertyChanged(reading, e.Descriptor);
+			}
+		}
+		#endregion // Extension Property Handlers
+		#endregion // Model Event Handlers
+		#region FactTypeBranch class
+		private sealed class FactTypeBranch : RootBranch, IBranch
+		{
+			#region Constants
 			private const int OrderBranchRow = 0;
 			private const int ImpliedBranchRow = 1;
-
-			private readonly FactType myFact;
-			private readonly FactType mySecondaryFact;
+			#endregion // Constants
+			#region Member Variables
 			private ReadingOrderBranch myReadingOrderBranch;
 			private ReadingOrderBranch myImpliedFactTypeBranch;
-
-			#region Construction
-			public FactTypeBranch(FactType fact, FactType secondaryFact)
+			private ReadingEditor myEditor;
+			#endregion // Member Variables
+			#region Constructor
+			public FactTypeBranch(ReadingEditor editor)
 			{
-				myFact = fact;
-				mySecondaryFact = secondaryFact;
+				myEditor = editor;
 			}
-			#endregion //Construction
-
-			#region IBranch Interface Members
-			public VirtualTreeLabelEditData BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
+			#endregion // Constructor
+			#region Accessor Properties
+			private FactType FactType
 			{
-				return VirtualTreeLabelEditData.Default;
+				get
+				{
+					return myEditor.myFactType;
+				}
 			}
-			public LabelEditResult CommitLabelEdit(int row, int column, string newText)
+			private FactType SecondaryFactType
 			{
-				return LabelEditResult.CancelEdit;
+				get
+				{
+					return myEditor.mySecondaryFactType;
+				}
 			}
-			public BranchFeatures Features
+			#endregion // Accessor Properties
+			#region IBranch Implementation
+			BranchFeatures IBranch.Features
 			{
 				get
 				{
 					return BranchFeatures.Expansions;
 				}
 			}
-			public VirtualTreeAccessibilityData GetAccessibilityData(int row, int column)
-			{
-				return VirtualTreeAccessibilityData.Empty;
-			}
-			public VirtualTreeDisplayData GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
+			VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
 			{
 				VirtualTreeDisplayData retval = VirtualTreeDisplayData.Empty;
-				retval.ForeColor = Color.Gray;
+				retval.GrayText = true;
 				return retval;
 			}
-			public object GetObject(int row, int column, ObjectStyle style, ref int options)
+			object IBranch.GetObject(int row, int column, ObjectStyle style, ref int options)
 			{
 				if (row == OrderBranchRow)
 				{
@@ -1281,41 +1674,50 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					return ImpliedBranch;
 				}
 			}
-			public string GetText(int row, int column)
+			string IBranch.GetText(int row, int column)
 			{
 				return (row == OrderBranchRow) ? ResourceStrings.ModelReadingEditorPrimaryFactTypeReadingsText : ResourceStrings.ModelReadingEditorImpliedFactTypeReadingsText;
 			}
-			public string GetTipText(int row, int column, ToolTipType tipType)
+			bool IBranch.IsExpandable(int row, int column)
 			{
-				return null;
+				return true;
 			}
-			public bool IsExpandable(int row, int column)
-			{
-				return true; // mySecondaryFact != null;
-			}
-			public LocateObjectData LocateObject(object obj, ObjectStyle style, int locateOptions)
+			LocateObjectData IBranch.LocateObject(object obj, ObjectStyle style, int locateOptions)
 			{
 				switch (style)
 				{
 					case ObjectStyle.TrackingObject:
 						Reading reading;
 						ReadingOrder order;
-						FactType fact = null;
+						FactType factType = null;
 						if (null != (reading = (obj as Reading)))
 						{
 							order = reading.ReadingOrder;
-							fact = order.FactType;
+							factType = order.FactType;
 						}
 						else
 						{
-							fact = (obj as FactType);
+							factType = (obj as FactType);
+							if (locateOptions != 0)
+							{
+								// Special request to get the fact type branch itself, not the first reading
+								if (factType == FactType)
+								{
+									return new LocateObjectData(OrderBranchRow, 0, (int)TrackingObjectAction.ThisLevel);
+								}
+								else if (factType == SecondaryFactType)
+								{
+									return new LocateObjectData(ImpliedBranchRow, 0, (int)TrackingObjectAction.ThisLevel);
+								}
+								break;
+							}
 						}
 
-						if (fact == myFact)
+						if (factType == FactType)
 						{
 							return new LocateObjectData(OrderBranchRow, 1, (int)TrackingObjectAction.NextLevel);
 						}
-						else if (fact == mySecondaryFact)
+						else if (factType == SecondaryFactType)
 						{
 							return new LocateObjectData(ImpliedBranchRow, 1, (int)TrackingObjectAction.NextLevel);
 						}
@@ -1323,53 +1725,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 				return new LocateObjectData();
 			}
-			event BranchModificationEventHandler IBranch.OnBranchModification
-			{
-				// Do nothing. We never raise this event, so we don't need to keep track of who is subscribed to it.
-				add
-				{
-				}
-				remove
-				{
-				}
-			}
-			public void OnDragEvent(object sender, int row, int column, DragEventType eventType, DragEventArgs args)
-			{
-			}
-			public void OnGiveFeedback(GiveFeedbackEventArgs args, int row, int column)
-			{
-			}
-			public void OnQueryContinueDrag(QueryContinueDragEventArgs args, int row, int column)
-			{
-			}
-			public VirtualTreeStartDragData OnStartDrag(object sender, int row, int column, DragReason reason)
-			{
-				return VirtualTreeStartDragData.Empty;
-			}
-			public StateRefreshChanges ToggleState(int row, int column)
-			{
-				return StateRefreshChanges.None;
-			}
-			public StateRefreshChanges SynchronizeState(int row, int column, IBranch matchBranch, int matchRow, int matchColumn)
-			{
-				return StateRefreshChanges.None;
-			}
-			public int UpdateCounter
-			{
-				get
-				{
-					return 0;
-				}
-			}
-			public int VisibleItemCount
+			int IBranch.VisibleItemCount
 			{
 				get
 				{
 					return 2;
 				}
 			}
-			#endregion
-
+			#endregion // IBranch Implementation
 			#region Properties
 			private ReadingOrderBranch OrderBranch
 			{
@@ -1378,12 +1741,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					ReadingOrderBranch retVal = myReadingOrderBranch;
 					if (retVal == null)
 					{
-						return myReadingOrderBranch = new ReadingOrderBranch(myFact, ReadingEditor.myInstance.myDisplayRoleOrder);
+						myReadingOrderBranch = retVal = new ReadingOrderBranch(myEditor, FactType, myEditor.myDisplayRoleOrder);
 					}
 					return retVal;
 				}
 			}
-
 			private ReadingOrderBranch ImpliedBranch
 			{
 				get
@@ -1391,240 +1753,162 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					ReadingOrderBranch retVal = myImpliedFactTypeBranch;
 					if (retVal == null)
 					{
-						return myImpliedFactTypeBranch = new ReadingOrderBranch(mySecondaryFact, null);
+						myImpliedFactTypeBranch = retVal = new ReadingOrderBranch(myEditor, SecondaryFactType, null);
 					}
 					return retVal;
 				}
 			}
-			#endregion //Properties
-
-			#region IReadingEditorBranch Interface Members
+			#endregion // Properties
+			#region Base overrides
 			#region Reading Methods
 			/// <summary>
-			/// Initiates a New Reading within the selected Reading Order
+			/// Get the existing child branch for the specified Reading, or null
 			/// </summary>
-			public void AddNewReading(int itemLocaiton)
-			{
-			}
-			/// <summary>
-			/// Instruct the readingbranch that a reading has been added to the collection
-			/// </summary>
-			/// <param name="reading">the reading to add</param>
-			public void ReadingAdded(Reading reading)
+			private ReadingOrderBranch GetChildBranch(Reading reading)
 			{
 				ReadingOrder order;
-				FactType orderFactType;
+				if (null != (order = reading.ReadingOrder))
+				{
+					return GetChildBranch(order);
+				}
+				return null;
+			}
+			/// <summary>
+			/// Get the existing child branch for the specified ReadingOrder, or null
+			/// </summary>
+			private ReadingOrderBranch GetChildBranch(ReadingOrder order)
+			{
+				FactType factType;
+				if (null != (factType = order.FactType))
+				{
+					return GetChildBranch(factType);
+				}
+				return null;
+			}
+			/// <summary>
+			/// Get the existing child branch for the specified FactType, or null
+			/// </summary>
+			private ReadingOrderBranch GetChildBranch(FactType factType)
+			{
+				if (factType == FactType)
+				{
+					return myReadingOrderBranch;
+				}
+				else if (factType == SecondaryFactType)
+				{
+					return myImpliedFactTypeBranch;
+				}
+				return null;
+			}
+			public override void OnReadingAdded(Reading reading)
+			{
+				ReadingOrderBranch notifyBranch;
 				if (!reading.IsDeleted &&
-					null != (order = reading.ReadingOrder) &&
-					null != (orderFactType = order.FactType))
+					null != (notifyBranch = GetChildBranch(reading)))
 				{
-					if (orderFactType == myFact)
-					{
-						this.OrderBranch.ReadingAdded(reading);
-					}
-					else
-					{
-						this.ImpliedBranch.ReadingAdded(reading);
-					}
+					notifyBranch.OnReadingAdded(reading);
 				}
 			}
-			/// <summary>
-			/// Triggers the events notifying the tree that a Reading in the Readingbranch has been updated. 
-			/// </summary>
-			/// <param name="reading">The Reading affected</param>
-			public void UpdateReading(Reading reading)
+			public override void OnReadingUpdated(Reading reading)
 			{
-				ReadingOrder order = reading.ReadingOrder;
-				if (order.FactType == myFact)
+				ReadingOrderBranch notifyBranch;
+				if (!reading.IsDeleted &&
+					null != (notifyBranch = GetChildBranch(reading)))
 				{
-					this.OrderBranch.UpdateReading(reading);
-				}
-				else
-				{
-					this.ImpliedBranch.UpdateReading(reading);
+					notifyBranch.OnReadingUpdated(reading);
 				}
 			}
-			/// <summary>
-			/// Event callback from Changing the Order of  and item in the ReadingOrdersMovableCollectoin: 
-			/// will update the branch to reflect the changed order
-			/// </summary>
-			/// <param name="reading">The Reading moved</param>
-			public void ReadingLocationUpdate(Reading reading)
+			public override void OnReadingLocationUpdated(Reading reading)
 			{
-				ReadingOrder order = reading.ReadingOrder;
-				if (order.FactType == myFact)
+				ReadingOrderBranch notifyBranch;
+				if (!reading.IsDeleted &&
+					null != (notifyBranch = GetChildBranch(reading)))
 				{
-					this.OrderBranch.ReadingLocationUpdate(reading);
-				}
-				else
-				{
-					this.ImpliedBranch.ReadingLocationUpdate(reading);
+					notifyBranch.OnReadingLocationUpdated(reading);
 				}
 			}
-			/// <summary>
-			/// Triggers notification that a Reading has been removed from the branch.
-			/// </summary>
-			/// <param name="reading">The Reading which has been removed</param>
-			/// <param name="order">The order of the link</param>
-			public void ReadingRemoved(Reading reading, ReadingOrder order)
+			public override void OnReadingRemoved(Reading reading, ReadingOrder order)
 			{
-				if (order.FactType == myFact)
+				ReadingOrderBranch notifyBranch;
+				if (!order.IsDeleted &&
+					null != (notifyBranch = GetChildBranch(order)))
 				{
-					this.OrderBranch.ReadingRemoved(reading, order);
-				}
-				else
-				{
-					this.ImpliedBranch.ReadingRemoved(reading, order);
+					notifyBranch.OnReadingRemoved(reading, order);
 				}
 			}
-			/// <summary>
-			/// Moves the selected Reading Up
-			/// </summary>
-			public void PromoteSelectedReading(int readingItemLocation, int orderItemLocation)
+			public override void OnExtensionPropertyChanged(Reading reading, PropertyDescriptor descriptor)
 			{
-				//not implemented
+				ReadingOrderBranch notifyBranch;
+				if (!reading.IsDeleted &&
+					null != (notifyBranch = GetChildBranch(reading)))
+				{
+					notifyBranch.OnExtensionPropertyChanged(reading, descriptor);
+				}
 			}
-			/// <summary>
-			/// Moves the selected Reading Down
-			/// </summary>
-			public void DemoteSelectedReading(int readingItemLocation, int orderItemLocation)
-			{
-				//not implemented
-			}
-			#endregion //Reading Methods
-
+			#endregion // Reading Methods
 			#region ReadingOrder Methods
-			/// <summary>
-			/// Used to find out if the branch is in the process of adding a new entry from input into the branch.
-			/// </summary>
-			public bool IsAdding
+			public override bool IsAdding
 			{
 				get
 				{
-					return (OrderBranch.IsAdding || ImpliedBranch.IsAdding);
+					ReadingOrderBranch testBranch;
+					return (null != (testBranch = myReadingOrderBranch) && testBranch.IsAdding) ||
+						(null != (testBranch = myImpliedFactTypeBranch) && testBranch.IsAdding);
 				}
 			}
-			/// <summary>
-			/// Initiates the Drop Down to select a new reading order for the reading to add
-			/// </summary>
-			public void AddNewReadingOrder()
+			public override void EditReadingOrder(IList<RoleBase> collection)
 			{
-				//not implemented
+				FactType matchFactType = collection[0].FactType;
+				if (matchFactType == FactType)
+				{
+					OrderBranch.EditReadingOrder(collection);
+				}
+				else if (matchFactType == SecondaryFactType)
+				{
+					ImpliedBranch.EditReadingOrder(collection);
+				}
 			}
-			/// <summary>
-			/// Initiate edit for first reading within the <see cref="LinkedElementCollection{RoleBase}"/> (will create a new item if needed)
-			/// </summary>
-			/// <param name="collection"><see cref="LinkedElementCollection{RoleBase}"/> collection</param>
-			public void EditReadingOrder(IList<RoleBase> collection)
-			{
-				this.OrderBranch.EditReadingOrder(collection); //only need to call on order branch as you cannot create a new order (as they already exist) for  an implied fact 
-			}
-			/// <summary>
-			/// Moves the selected ReadingOrder up
-			/// </summary>
-			/// <param name="itemLocation">location</param>
-			public void PromoteSelectedReadingOrder(int itemLocation)
-			{
-				//not implemented			
-			}
-			/// <summary>
-			/// Moves the selected ReadingOrder Down
-			/// </summary>
-			/// <param name="itemLocation">location</param>
-			public void DemoteSelectedReadingOrder(int itemLocation)
-			{
-				//not implemented
-			}
-			/// <summary>
-			/// Removes the item selected when called by the context menu
-			/// </summary>
-			public void RemoveSelectedItem()
-			{
-				//not implemented
-			}
-			/// <summary>
-			/// Event callback from Changing the Order of  and item in the ReadingOrdersMovableCollectoin: 
-			/// will update the branch to reflect the changed order
-			/// </summary>
-			/// <param name="order">The ReadingOrder affected</param>
-			public void ReadingOrderLocationUpdate(ReadingOrder order)
+			public override void OnReadingOrderLocationUpdated(ReadingOrder order)
 			{
 				VirtualTreeControl control = ReadingEditor.Instance.TreeControl;
-				((IReadingEditorBranch)control.Tree.GetItemInfo(control.CurrentIndex, 0, true).Branch).ReadingOrderLocationUpdate(order);
+				((RootBranch)control.Tree.GetItemInfo(control.CurrentIndex, 0, true).Branch).OnReadingOrderLocationUpdated(order);
 			}
-			/// <summary>
-			/// CallBack notification that a ReadingOrder has been removed from the branch.
-			/// </summary>
-			/// <param name="order">The Reading Order which has been removed</param>
-			/// <param name="fact">The Fact to which the Reading Order belongs</param>
-			public void ReadingOrderRemoved(ReadingOrder order, FactType fact)
+			public override void OnReadingOrderRemoved(ReadingOrder order, FactType factType)
 			{
-				if (fact == myFact)
+				ReadingOrderBranch notifyBranch;
+				if (!factType.IsDeleted &&
+					null != (notifyBranch = GetChildBranch(factType)))
 				{
-					this.OrderBranch.ReadingOrderRemoved(order, fact);
-				}
-				else
-				{
-					this.ImpliedBranch.ReadingOrderRemoved(order, fact);
+					notifyBranch.OnReadingOrderRemoved(order, factType);
 				}
 			}
-			/// <summary>
-			///  Get context menu commands supported for current selection
-			/// </summary>
-			/// <returns>ReadingEditorCommands bit field</returns>
-			public ReadingEditorCommands SupportedSelectionCommands(int itemLocation)
-			{
-				//not implemented
-				return ReadingEditorCommands.None;
-			}
-			#endregion //ReadingOrder Methods
-			#endregion //IReadingEditorBranch Interface Members
-
-			#region IMultiColumnBranch Interface Members
-
-			public int ColumnCount
-			{
-				get
-				{
-					return 0;
-				}
-			}
-
-			public SubItemCellStyles ColumnStyles(int column)
-			{
-				return SubItemCellStyles.Complex;
-			}
-
-			public int GetJaggedColumnCount(int row)
-			{
-				return 0;
-			}
-
-			#endregion
+			#endregion // ReadingOrder Methods
+			#endregion // Base overrides
 		}
-		#endregion //nested class FactTypeBranch
-
-		#region nested class ReadingOrderBranch
-		private sealed class ReadingOrderBranch : IReadingEditorBranch
+		#endregion // FactTypeBranch class
+		#region ReadingOrderBranch class
+		private sealed class ReadingOrderBranch : RootBranch, IBranch, IMultiColumnBranch
 		{
-			public const int COLUMN_COUNT = 2;
-			private readonly FactType myFact;
-			private readonly ReadingOrderKeyedCollection myReadingOrderKeyedCollection;
-			private ReadingOrderKeyedCollection myReadingOrderPermutations;
+			#region Member Variables
+			private readonly FactType myFactType;
+			private readonly ReadingOrderInformationCollection myReadingOrderKeyedCollection;
+			private ReadingOrderInformationCollection myReadingOrderPermutations;
 			private readonly IList<RoleBase> myRoleDisplayOrder;
 			private string[] myRoleNames;
 			private int myInsertedRow = -1;
-
-			#region Construction
-			public ReadingOrderBranch(FactType fact, IList<RoleBase> roleDisplayOrder)
+			private BranchModificationEventHandler myModify;
+			private ReadingEditor myEditor;
+			#endregion // Member Variables
+			#region Constructor
+			public ReadingOrderBranch(ReadingEditor editor, FactType factType, IList<RoleBase> roleDisplayOrder)
 			{
-				myFact = fact; //impliedbyobjectification
-				myReadingOrderKeyedCollection = new ReadingOrderKeyedCollection();
-				myRoleDisplayOrder = roleDisplayOrder != null && roleDisplayOrder.Count > 0 ? roleDisplayOrder : GetReadingRoleCollection(fact);
+				myEditor = editor;
+				myFactType = factType;
+				myReadingOrderKeyedCollection = new ReadingOrderInformationCollection();
+				myRoleDisplayOrder = roleDisplayOrder != null && roleDisplayOrder.Count > 0 ? roleDisplayOrder : GetReadingRoleCollection(factType);
 				this.PopulateReadingOrderInfo(-1); //Populate for all readings
 			}
-			#endregion
-
+			#endregion // Constructor
 			#region Branch Properties
 			private IList<RoleBase> DisplayOrder
 			{
@@ -1633,20 +1917,27 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					return myRoleDisplayOrder;
 				}
 			}
-			private FactType Fact
+			private FactType FactType
 			{
 				get
 				{
-					return myFact;
+					return myFactType;
 				}
 			}
-			#endregion //Branch Properties
-
-			#region IBranch Interface Members
-			public VirtualTreeLabelEditData BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
+			private int ExtensionPropertyCount
+			{
+				get
+				{
+					PropertyDescriptorCollection properties = myEditor.myExtensionProperties;
+					return properties != null ? properties.Count : 0;
+				}
+			}
+			#endregion // Branch Properties
+			#region IBranch Implementation
+			VirtualTreeLabelEditData IBranch.BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
 			{
 				RowType rowType = myReadingOrderKeyedCollection.GetRowType(row);
-				if (column == (int)ColumnIndex.ReadingBranch && rowType == RowType.TypeEditorHost)
+				if (column == (int)ColumnIndex.ReadingBranch && rowType == RowType.New)
 				{
 					if (myReadingOrderPermutations == null)
 					{
@@ -1658,7 +1949,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						//        {   number *= Factorial(number - 1);  }
 						//        return number; }
 						List<RoleBase> tempRoleList = new List<RoleBase>(arity);
-						myReadingOrderPermutations = new ReadingOrderKeyedCollection();
+						myReadingOrderPermutations = new ReadingOrderInformationCollection();
 						for (int i = 0; i < arity; ++i)
 						{
 							tempRoleList.Add(myRoleDisplayOrder[i]);
@@ -1671,7 +1962,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							myReadingOrderPermutations.Add(roi);
 						}
 					}
-					TypeEditorHost host = OnScreenTypeEditorHost.Create(new ReadingOrderDescriptor(myFact, this, ResourceStrings.ModelReadingEditorNewItemText), myReadingOrderPermutations, TypeEditorHostEditControlStyle.TransparentEditRegion);
+					TypeEditorHost host = OnScreenTypeEditorHost.Create(new ReadingOrderDescriptor(myFactType, this, ResourceStrings.ModelReadingEditorNewItemText), myReadingOrderPermutations, TypeEditorHostEditControlStyle.TransparentEditRegion);
 					host.Flags = VirtualTreeInPlaceControlFlags.DrawItemText | VirtualTreeInPlaceControlFlags.ForwardKeyEvents | VirtualTreeInPlaceControlFlags.SizeToText;
 
 					return new VirtualTreeLabelEditData(
@@ -1689,7 +1980,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						editor,
 						delegate(VirtualTreeItemInfo itemInfo, Control editControl)
 						{
-							Store store = myFact.Store;
+							Store store = myFactType.Store;
 							if (editor.EscapePressed || !(store as IORMToolServices).CanAddTransaction)
 							{
 								return LabelEditResult.CancelEdit;
@@ -1703,7 +1994,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 									myInsertedRow = row;
 									using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.ModelReadingEditorNewReadingTransactionText))
 									{
-										ReadingOrder theOrder = myFact.EnsureReadingOrder(myReadingOrderKeyedCollection[row].RoleOrder);
+										ReadingOrder theOrder = myFactType.EnsureReadingOrder(myReadingOrderKeyedCollection[row].RoleOrder);
 										Debug.Assert(theOrder != null, "A ReadingOrder should have been found or created.");
 										theNewReading = new Reading(store);
 										LinkedElementCollection<Reading> readings = theOrder.ReadingCollection;
@@ -1726,53 +2017,50 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					return VirtualTreeLabelEditData.Invalid;
 				}
 			}
-			public LabelEditResult CommitLabelEdit(int row, int column, string newText)
-			{
-				return LabelEditResult.CancelEdit;
-			}
-			public BranchFeatures Features
+			BranchFeatures IBranch.Features
 			{
 				get
 				{
 					return BranchFeatures.ExplicitLabelEdits | BranchFeatures.ImmediateSelectionLabelEdits | BranchFeatures.PositionTracking | BranchFeatures.DelayedLabelEdits | BranchFeatures.InsertsAndDeletes | BranchFeatures.ComplexColumns;
 				}
 			}
-			public VirtualTreeAccessibilityData GetAccessibilityData(int row, int column)
-			{
-				return VirtualTreeAccessibilityData.Empty;
-			}
-			public VirtualTreeDisplayData GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
+			VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
 			{
 				RowType rowType = myReadingOrderKeyedCollection.GetRowType(row);
 				VirtualTreeDisplayData retval = VirtualTreeDisplayData.Empty;
-				if (column == (int)ColumnIndex.ReadingBranch)
+				switch ((ColumnIndex)column)
 				{
-					retval.ForeColor = (rowType == RowType.Uncommitted) ? Color.Gray : retval.ForeColor;
-				}
-				else
-				{
-					if (rowType != RowType.TypeEditorHost)
-					{
-						retval.Image = 0;
-						retval.SelectedImage = 0;   //you must set both .Image and .SelectedImage or an exception will be thrown
-					}
+					case ColumnIndex.ReadingBranch:
+						if (rowType == RowType.Uncommitted)
+						{
+							retval.GrayText = true;
+						}
+						break;
+					case ColumnIndex.ReadingOrder:
+						if (rowType != RowType.New)
+						{
+							retval.Image = 0;
+							retval.SelectedImage = 0;   //you must set both .Image and .SelectedImage or an exception will be thrown
+						}
+						break;
 				}
 				return retval;
 			}
-			public object GetObject(int row, int column, ObjectStyle style, ref int options)
+			object IBranch.GetObject(int row, int column, ObjectStyle style, ref int options)
 			{
 				switch (style)
 				{
 					case ObjectStyle.SubItemRootBranch:
 						if (myReadingOrderKeyedCollection.GetRowType(row) == RowType.Committed)
 						{
-							return myReadingOrderKeyedCollection[row].EnsureBranch();
+							ReadingBranch readingBranch = myReadingOrderKeyedCollection[row].EnsureBranch();
+							return (column == 1) ? readingBranch : readingBranch.EnsureExtensionPropertyBranch(column - BASE_COLUMN_COUNT);
 						}
 						break;
 					case ObjectStyle.TrackingObject:
-						if (row == this.VisibleItemCount - 1)
+						if (row == myReadingOrderKeyedCollection.Count)
 						{
-							return new object(); //just need somthing which is not null
+							return new object(); //just need something which is not null
 						}
 						break;
 					default:
@@ -1780,13 +2068,13 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 				return null;
 			}
-			public string GetText(int row, int column)
+			string IBranch.GetText(int row, int column)
 			{
 				if (column == (int)ColumnIndex.ReadingBranch)
 				{
 					switch (myReadingOrderKeyedCollection.GetRowType(row))
 					{
-						case RowType.TypeEditorHost:
+						case RowType.New:
 							return ResourceStrings.ModelReadingEditorNewItemText;
 						case RowType.Uncommitted:
 							return myReadingOrderKeyedCollection[row].Text;
@@ -1794,7 +2082,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 				return null;
 			}
-			public string GetTipText(int row, int column, ToolTipType tipType)
+			string IBranch.GetTipText(int row, int column, ToolTipType tipType)
 			{
 				if (column == (int)ColumnIndex.ReadingOrder)
 				{
@@ -1811,18 +2099,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 				return null;
 			}
-			public bool IsExpandable(int row, int column)
-			{
-				return false;
-			}
-			public LocateObjectData LocateObject(object obj, ObjectStyle style, int locateOptions)
+			LocateObjectData IBranch.LocateObject(object obj, ObjectStyle style, int locateOptions)
 			{
 				if (style == ObjectStyle.TrackingObject)
 				{
 					ReadingOrderInformation info;
 					LinkedElementCollection<RoleBase> roles;
 					Reading reading;
-					FactType fact;
+					FactType factType;
 					int location = -1;
 
 					if (null != (info = obj as ReadingOrderInformation))
@@ -1838,13 +2122,13 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						ReadingOrder order = reading.ReadingOrder;
 						location = myReadingOrderKeyedCollection.IndexOf(myReadingOrderKeyedCollection[order.RoleCollection]);
 					}
-					else if (null != (fact = (obj as FactType)))
+					else if (null != (factType = (obj as FactType)))
 					{
 						return new LocateObjectData(0, (int)ColumnIndex.ReadingOrder, (int)TrackingObjectAction.ThisLevel);
 					}
-					else if (RowType.TypeEditorHost.Equals(obj))
+					else if (RowType.New.Equals(obj))
 					{
-						return new LocateObjectData(this.VisibleItemCount - 1, (int)ColumnIndex.ReadingBranch, (int)TrackingObjectAction.ThisLevel);
+						return new LocateObjectData(myReadingOrderKeyedCollection.Count, (int)ColumnIndex.ReadingBranch, (int)TrackingObjectAction.ThisLevel);
 					}
 
 					if (-1 != location && myReadingOrderKeyedCollection.GetRowType(location) == RowType.Uncommitted)
@@ -1858,69 +2142,38 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 				return new LocateObjectData();
 			}
-			public event BranchModificationEventHandler OnBranchModification;
-			public void OnDragEvent(object sender, int row, int column, DragEventType eventType, DragEventArgs args)
+			event BranchModificationEventHandler IBranch.OnBranchModification
 			{
+				add { myModify += value; }
+				remove { myModify -= value; }
 			}
-			public void OnGiveFeedback(GiveFeedbackEventArgs args, int row, int column)
-			{
-			}
-			public void OnQueryContinueDrag(QueryContinueDragEventArgs args, int row, int column)
-			{
-			}
-			public VirtualTreeStartDragData OnStartDrag(object sender, int row, int column, DragReason reason)
-			{
-				return VirtualTreeStartDragData.Empty;
-			}
-			public StateRefreshChanges ToggleState(int row, int column)
-			{
-				return StateRefreshChanges.None;
-			}
-			public StateRefreshChanges SynchronizeState(int row, int column, IBranch matchBranch, int matchRow, int matchColumn)
-			{
-				return StateRefreshChanges.None;
-			}
-			public int UpdateCounter
-			{
-				get
-				{
-					return 0;
-				}
-			}
-			public int VisibleItemCount
+			int IBranch.VisibleItemCount
 			{
 				get
 				{
 					return myReadingOrderKeyedCollection.Count + 1;
 				}
 			}
-			#endregion
-
-			#region IMultiColumnBranch Interface Members
-			public int ColumnCount
+			#endregion // IBranch Implementation
+			#region IMultiColumnBranch Implementation
+			int IMultiColumnBranch.ColumnCount
 			{
 				get
 				{
-					return COLUMN_COUNT;
+					return BASE_COLUMN_COUNT + ExtensionPropertyCount;
 				}
 			}
-			public SubItemCellStyles ColumnStyles(int column)
+			SubItemCellStyles IMultiColumnBranch.ColumnStyles(int column)
 			{
 				return SubItemCellStyles.Complex;
 			}
-			public int GetJaggedColumnCount(int row)
+			int IMultiColumnBranch.GetJaggedColumnCount(int row)
 			{
-				return COLUMN_COUNT;
+				return 0; // Not called unless features call for jagged columns
 			}
-			#endregion
-
-			#region IReadingEditorBranch Interface Members
+			#endregion // IMultiColumnBranch Implementation
 			#region Reading Branch Methods
-			/// <summary>
-			/// Initiates a New Reading within the selected Reading Order
-			/// </summary>
-			/// <param name="itemLocation">Reading Order Row</param>
-			public void AddNewReading(int itemLocation)
+			public override void AddNewReading(int itemLocation)
 			{
 				ReadingOrderInformation orderInfo = myReadingOrderKeyedCollection[itemLocation];
 				orderInfo.EnsureBranch().ShowNewRow(true);
@@ -1928,57 +2181,64 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				control.SelectObject(this, orderInfo, (int)ObjectStyle.TrackingObject, 0);
 				control.BeginLabelEdit();
 			}
-			/// <summary>
-			/// Instruct the readingbranch that a reading has been added to the collection
-			/// </summary>
-			/// <param name="reading">the reading to add</param>
-			public void ReadingAdded(Reading reading)
+			public override void OnReadingAdded(Reading reading)
 			{
 				ReadingOrder order = reading.ReadingOrder;
 				if (order != null)
 				{
 					int location = this.LocateCollectionItem(order);
+					BranchModificationEventHandler modify = myModify;
 
 					if (location < 0)
 					{
 						this.PopulateReadingOrderInfo(order);
-						if (OnBranchModification != null)
+						if (modify != null)
 						{
 							int newLoc = this.LocateCollectionItem(order);
-							OnBranchModification(this, BranchModificationEventArgs.InsertItems(this, newLoc - 1, 1));
-							OnBranchModification(this, BranchModificationEventArgs.UpdateCellStyle(this, newLoc, (int)ColumnIndex.ReadingBranch, true)); //may not be needed due to callback on update
+							modify(this, BranchModificationEventArgs.InsertItems(this, newLoc - 1, 1));
+							modify(this, BranchModificationEventArgs.UpdateCellStyle(this, newLoc, (int)ColumnIndex.ReadingBranch, true)); //may not be needed due to callback on update
+							int propertyCount = ExtensionPropertyCount;
+							for (int i = 0; i < propertyCount; ++i)
+							{
+								modify(this, BranchModificationEventArgs.UpdateCellStyle(this, newLoc, (int)ColumnIndex.FirstPropertyBranch + i, true));
+							}
 							//redraw off and back on in the branch if it has no more than 1 reading
 						}
 					}
 					else
 					{
-						myReadingOrderKeyedCollection[location].EnsureBranch().AddReading(reading);
-						if (OnBranchModification != null)
+						myReadingOrderKeyedCollection[location].EnsureBranch().OnReadingAdded(reading);
+						int actualIndex = myFactType.ReadingOrderCollection.IndexOf(order);
+						if (modify != null)
 						{
-							OnBranchModification(this, BranchModificationEventArgs.UpdateCellStyle(this, location, (int)ColumnIndex.ReadingBranch, true));
+							modify(this, BranchModificationEventArgs.UpdateCellStyle(this, location, (int)ColumnIndex.ReadingBranch, true));
+							int propertyCount = ExtensionPropertyCount;
+							for (int i = 0; i < propertyCount; ++i)
+							{
+								modify(this, BranchModificationEventArgs.UpdateCellStyle(this, location, (int)ColumnIndex.FirstPropertyBranch + i, true));
+							}
 
-							int actualIndex = myFact.ReadingOrderCollection.IndexOf(order);
 							if (actualIndex != location)
 							{
-								this.ReadingOrderLocationUpdate(order);
+								OnReadingOrderLocationUpdated(order);
 							}
 							else
 							{
-								OnBranchModification(this, BranchModificationEventArgs.Redraw(false));
-								OnBranchModification(this, BranchModificationEventArgs.Redraw(true));
+								modify(this, BranchModificationEventArgs.Redraw(false));
+								modify(this, BranchModificationEventArgs.Redraw(true));
 							}
+						}
+						else if (actualIndex != location)
+						{
+							OnReadingOrderLocationUpdated(order);
 						}
 					}
 				}
 			}
-			/// <summary>
-			/// Triggers the events notifying the tree that a Reading in the Readingbranch has been updated. 
-			/// </summary>
-			/// <param name="reading">The Reading affected</param>
-			public void UpdateReading(Reading reading)
+			public override void OnReadingUpdated(Reading reading)
 			{
 				ReadingOrderInformation info = new ReadingOrderInformation(this, reading.ReadingOrder);
-				ReadingOrderKeyedCollection orderCollection = myReadingOrderKeyedCollection;
+				ReadingOrderInformationCollection orderCollection = myReadingOrderKeyedCollection;
 				if (!orderCollection.Contains(info.RoleOrder))
 				{
 					orderCollection.Add(info);
@@ -1988,55 +2248,36 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				ReadingBranch branch = orderCollection[row].Branch;
 				if (branch != null)
 				{
-					branch.UpdateReading(reading);
+					branch.OnReadingUpdated(reading);
 				}
 			}
-			/// <summary>
-			/// Event callback from Changing the Order of  and item in the ReadingOrdersMovableCollectoin: 
-			/// will update the branch to reflect the changed order
-			/// </summary>
-			/// <param name="reading">The Reading moved</param>
-			public void ReadingLocationUpdate(Reading reading)
+			public override void OnReadingLocationUpdated(Reading reading)
 			{
-				if (OnBranchModification != null)
+				ReadingOrder order = reading.ReadingOrder;
+				int currentLocation = this.LocateCollectionItem(order);
+				Debug.Assert(currentLocation >= 0, "Cannot Locate Reading");
+				if (currentLocation >= 0)
 				{
-					ReadingOrder order = reading.ReadingOrder;
-					int currentLocation = this.LocateCollectionItem(order);
-					Debug.Assert(currentLocation >= 0, "Cannot Locate Reading");
-					if (currentLocation >= 0)
+					ReadingBranch branch = myReadingOrderKeyedCollection[currentLocation].Branch;
+					if (branch != null)
 					{
-						ReadingBranch branch = myReadingOrderKeyedCollection[currentLocation].Branch;
-						if (branch != null)
-						{
-							branch.ReadingItemOrderChanged(reading);
-						}
+						branch.OnReadingItemOrderChanged(reading);
 					}
 				}
 			}
-			/// <summary>
-			/// Triggers notification that a Reading has been removed from the branch.
-			/// </summary>
-			/// <param name="reading">The Reading which has been removed</param>
-			/// <param name="order">The order of the link</param>
-			public void ReadingRemoved(Reading reading, ReadingOrder order)
+			public override void OnReadingRemoved(Reading reading, ReadingOrder order)
 			{
-				if (OnBranchModification != null)
+				int location = this.LocateCollectionItem(order);
+				if (location >= 0)
 				{
-					int location = this.LocateCollectionItem(order);
-					if (location >= 0)
+					ReadingBranch branch = myReadingOrderKeyedCollection[location].Branch;
+					if (branch != null)
 					{
-						ReadingBranch branch = myReadingOrderKeyedCollection[location].Branch;
-						if (branch != null)
-						{
-							branch.ItemRemoved(reading);
-						}
+						branch.OnItemRemoved(reading);
 					}
 				}
 			}
-			/// <summary>
-			/// Moves the selected Reading Up
-			/// </summary>
-			public void PromoteSelectedReading(int readingItemLocation, int orderItemLocation)
+			public override void PromoteSelectedReading(int readingItemLocation, int orderItemLocation)
 			{
 				ReadingBranch branch = myReadingOrderKeyedCollection[orderItemLocation].Branch;
 				if (branch != null)
@@ -2044,10 +2285,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					branch.PromoteItem(readingItemLocation);
 				}
 			}
-			/// <summary>
-			/// Moves the selected Reading Down
-			/// </summary>
-			public void DemoteSelectedReading(int readingItemLocation, int orderItemLocation)
+			public override void DemoteSelectedReading(int readingItemLocation, int orderItemLocation)
 			{
 				ReadingBranch branch = myReadingOrderKeyedCollection[orderItemLocation].Branch;
 				if (branch != null)
@@ -2055,36 +2293,38 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					branch.DemoteItem(readingItemLocation);
 				}
 			}
-			#endregion //Reading Branch Methods
-
+			public override void OnExtensionPropertyChanged(Reading reading, PropertyDescriptor descriptor)
+			{
+				ReadingOrder order;
+				int orderIndex;
+				ReadingBranch readingBranch;
+				if (null != (order = reading.ReadingOrder) &&
+					0 <= (orderIndex = LocateCollectionItem(order)) &&
+					null != (readingBranch = myReadingOrderKeyedCollection[orderIndex].Branch))
+				{
+					readingBranch.OnExtensionPropertyChanged(reading, descriptor);
+				}
+			}
+			#endregion // Reading Branch Methods
 			#region ReadingOrder Branch Methods
 			/// <summary>
 			/// Used to find out if the branch is in the process of adding a new entry from input into the branch.
 			/// </summary>
-			public bool IsAdding
+			public override bool IsAdding
 			{
 				get
 				{
 					return myInsertedRow != -1;
 				}
 			}
-			/// <summary>
-			/// Initiates the Drop Down to select a new reading order for the reading to add
-			/// </summary>
-			public void AddNewReadingOrder()
+			public override void AddNewReadingOrder()
 			{
 				VirtualTreeControl control = ReadingEditor.Instance.TreeControl;
-				control.SelectObject(this, RowType.TypeEditorHost, (int)ObjectStyle.TrackingObject, 0);
+				control.SelectObject(this, RowType.New, (int)ObjectStyle.TrackingObject, 0);
 				control.BeginLabelEdit();
 			}
-			/// <summary>
-			/// Initiate edit for first reading within the <see cref="LinkedElementCollection{RoleBase}"/> (will create a new item if needed)
-			/// </summary>
-			/// <param name="collection">The <see cref="LinkedElementCollection{RoleBase}"/> to use</param>
-			public void EditReadingOrder(IList<RoleBase> collection)
+			public override void EditReadingOrder(IList<RoleBase> collection)
 			{
-				Debug.Assert(collection != null, "LinkedElementCollection<RoleBase> is null");
-
 				RoleBase[] roles = new RoleBase[collection.Count];
 				for (int i = 0; i < collection.Count; ++i)
 				{
@@ -2103,26 +2343,15 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					control.BeginLabelEdit();
 				}
 			}
-			/// <summary>
-			/// Moves the selected ReadingOrder up
-			/// </summary>
-			/// <param name="itemLocation">location</param>
-			public void PromoteSelectedReadingOrder(int itemLocation)
+			public override void PromoteSelectedReadingOrder(int itemLocation)
 			{
 				this.MoveItem(true, itemLocation);
 			}
-			/// <summary>
-			/// Moves the selected ReadingOrder Down
-			/// </summary>
-			/// <param name="itemLocation">location</param>
-			public void DemoteSelectedReadingOrder(int itemLocation)
+			public override void DemoteSelectedReadingOrder(int itemLocation)
 			{
 				this.MoveItem(false, itemLocation);
 			}
-			/// <summary>
-			/// Removes the item selected when called by the context menu
-			/// </summary>
-			public void RemoveSelectedItem()
+			public override void RemoveSelectedItem()
 			{
 				VirtualTreeItemInfo orderItem = this.CurrentSelectionInfoReadingOrderBranch();
 				RowType rowType = myReadingOrderKeyedCollection.GetRowType(orderItem.Row);
@@ -2138,49 +2367,46 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 				else if (rowType == RowType.Uncommitted) //remove the row from the readingOrderBranch
 				{
-					OnBranchModification(this, BranchModificationEventArgs.DeleteItems(this, orderItem.Row, 1));
-					myReadingOrderKeyedCollection.RemoveAt(orderItem.Row);
-				}
-			}
-			/// <summary>
-			/// Event callback from Changing the Order of  and item in the ReadingOrdersMovableCollectoin: 
-			/// will update the branch to reflect the changed order
-			/// </summary>
-			/// <param name="order">The ReadingOrder affected</param>
-			public void ReadingOrderLocationUpdate(ReadingOrder order)
-			{
-				if (OnBranchModification != null)
-				{
-					int currentLocation = this.LocateCollectionItem(order);
-					if (currentLocation >= 0) //make sure it was found
+					int row = orderItem.Row;
+					myReadingOrderKeyedCollection.RemoveAt(row);
+					BranchModificationEventHandler modify = myModify;
+					if (modify != null)
 					{
-						ReadingOrderInformation readingOrderInfo = myReadingOrderKeyedCollection[currentLocation];
-						int newLocation = myFact.ReadingOrderCollection.IndexOf(order);
-						myReadingOrderKeyedCollection.RemoveAt(currentLocation);
-						myReadingOrderKeyedCollection.Insert(newLocation, readingOrderInfo);
-						OnBranchModification(this, BranchModificationEventArgs.MoveItem(this, currentLocation, newLocation));
+						modify(this, BranchModificationEventArgs.DeleteItems(this, row, 1));
 					}
 				}
 			}
-			/// <summary>
-			/// Handles removing a ReadingOrder which has been deleted
-			/// </summary>
-			/// <param name="order">The ReadingOrder which has been removed</param>
-			/// <param name="fact">The Fact for the ReadingOrder</param>
-			public void ReadingOrderRemoved(ReadingOrder order, FactType fact)
+			public override void OnReadingOrderLocationUpdated(ReadingOrder order)
 			{
-				if (OnBranchModification != null)
+				int currentLocation = this.LocateCollectionItem(order);
+				if (currentLocation >= 0) //make sure it was found
 				{
-					int location = this.LocateCollectionItem(order);
-					if (location >= 0) //make sure it was found
+					ReadingOrderInformation readingOrderInfo = myReadingOrderKeyedCollection[currentLocation];
+					int newLocation = myFactType.ReadingOrderCollection.IndexOf(order);
+					myReadingOrderKeyedCollection.RemoveAt(currentLocation);
+					myReadingOrderKeyedCollection.Insert(newLocation, readingOrderInfo);
+					BranchModificationEventHandler modify = myModify;
+					if (modify != null)
 					{
-						ReadingBranch branch = myReadingOrderKeyedCollection[location].Branch;
-						if (branch != null && branch.HasNewRow) //handle bug (m.s. introduced) in Virtual Tree which does not return the correct count when removing a branch
-						{
-							branch.ShowNewRow(false);
-						}
-						myReadingOrderKeyedCollection.RemoveAt(location);
-						OnBranchModification(this, BranchModificationEventArgs.DeleteItems(this, location, 1));
+						modify(this, BranchModificationEventArgs.MoveItem(this, currentLocation, newLocation));
+					}
+				}
+			}
+			public override void OnReadingOrderRemoved(ReadingOrder order, FactType factType)
+			{
+				int location = this.LocateCollectionItem(order);
+				if (location >= 0) //make sure it was found
+				{
+					ReadingBranch branch = myReadingOrderKeyedCollection[location].Branch;
+					if (branch != null && branch.HasNewRow) //handle bug (m.s. introduced) in Virtual Tree which does not return the correct count when removing a branch
+					{
+						branch.ShowNewRow(false);
+					}
+					myReadingOrderKeyedCollection.RemoveAt(location);
+					BranchModificationEventHandler modify = myModify;
+					if (modify != null)
+					{
+						modify(this, BranchModificationEventArgs.DeleteItems(this, location, 1));
 					}
 				}
 			}
@@ -2189,10 +2415,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// </summary>
 			/// <returns>ReadingEditorCommands bit field</returns>
 			/// <param name="itemLocation">Reading Order Row</param>
-			public ReadingEditorCommands SupportedSelectionCommands(int itemLocation)
+			public override ReadingEditorCommands SupportedSelectionCommands(int itemLocation)
 			{
 				ReadingEditorCommands retval = ReadingEditorCommands.AddReadingOrder;
-				if (itemLocation < this.VisibleItemCount - 1)
+				int itemCount = myReadingOrderKeyedCollection.Count;
+				if (itemLocation < itemCount)
 				{
 					//ReadingOrder Context Menu Options
 					if (myReadingOrderKeyedCollection.Count > 0)
@@ -2207,7 +2434,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							retval |= ReadingEditorCommands.PromoteReadingOrder;
 						}
 
-						if (itemLocation < this.VisibleItemCount - 2
+						if (itemLocation < itemCount - 1
 							&& myReadingOrderKeyedCollection[itemLocation].ReadingOrder != null
 							&& myReadingOrderKeyedCollection[itemLocation + 1].ReadingOrder != null)
 						{
@@ -2241,15 +2468,13 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				return retval;
 			}
 			#endregion //ReadingOrder Branch Methods
-			#endregion //IReadingEditorBranch Interface Members
-
 			#region Branch Helper Functions
 			private string[] GetRoleNames()
 			{
 				string[] retVal = myRoleNames;
 				if (retVal == null)
 				{
-					IList<RoleBase> factRoles = GetReadingRoleCollection(myFact);
+					IList<RoleBase> factRoles = GetReadingRoleCollection(myFactType);
 					ObjectType rolePlayer;
 					int factArity = factRoles.Count;
 					if (factArity == 1)
@@ -2308,9 +2533,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				if (!myReadingOrderKeyedCollection.Contains(order))
 				{
 					myReadingOrderKeyedCollection.Add(info);
-					if (OnBranchModification != null)
+					BranchModificationEventHandler modify = myModify;
+					if (modify != null)
 					{
-						OnBranchModification(this, BranchModificationEventArgs.InsertItems(this, this.VisibleItemCount - 2, 1));
+						modify(this, BranchModificationEventArgs.InsertItems(this, myReadingOrderKeyedCollection.Count - 1, 1));
 					}
 				}
 				return myReadingOrderKeyedCollection.IndexOf(myReadingOrderKeyedCollection[info.RoleOrder]);
@@ -2321,7 +2547,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// <param name="readingOrderIndex">Use -1 for all, or the index of a specific ReadingOrder within the collection </param>
 			private void PopulateReadingOrderInfo(int readingOrderIndex)
 			{
-				LinkedElementCollection<ReadingOrder> readingOrders = myFact.ReadingOrderCollection;
+				LinkedElementCollection<ReadingOrder> readingOrders = myFactType.ReadingOrderCollection;
 				if (readingOrderIndex == -1)
 				{
 					myReadingOrderKeyedCollection.Clear();
@@ -2351,9 +2577,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				Debug.Assert(orderRow >= 0, "Attempt to move item which does not exist in the collection");
 				currentLocation = orderRow; // orderItemInfo.Row;
 				newLocation = currentLocation + (promote ? -1 : 1);
-				using (Transaction t = myFact.Store.TransactionManager.BeginTransaction(ResourceStrings.ModelReadingEditorMoveReadingOrder))
+				using (Transaction t = myFactType.Store.TransactionManager.BeginTransaction(ResourceStrings.ModelReadingEditorMoveReadingOrder))
 				{
-					myFact.ReadingOrderCollection.Move(currentLocation, newLocation);
+					myFactType.ReadingOrderCollection.Move(currentLocation, newLocation);
 					t.Commit();
 				}
 			}
@@ -2366,7 +2592,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				if (order != null)
 				{
-					ReadingOrderKeyedCollection orders = myReadingOrderKeyedCollection;
+					ReadingOrderInformationCollection orders = myReadingOrderKeyedCollection;
 					if (order.IsDeleted)
 					{
 						// The role collection on a removed order will always be empty, just search the list
@@ -2444,75 +2670,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				return retval;
 			}
 			#endregion //Branch Helper Functions
-
-			#region Nested KeyedCollection class
-			// UNDONE: Using an IList (or any other mutable object) as the key into a Dictionary is potentially error-prone. This needs to be reviewed.
-			private sealed class ReadingOrderKeyedCollection : KeyedCollection<IList<RoleBase>, ReadingOrderInformation>
-			{
-				public ReadingOrderKeyedCollection() : base(ListEqualityComparer.Comparer, 16) { }
-				protected sealed override IList<RoleBase> GetKeyForItem(ReadingOrderInformation item)
-				{
-					return item.RoleOrder;
-				}
-
-				/// <summary>
-				/// Returns a RowType for the row requested, defaults to RowType.Committed
-				/// </summary>
-				/// <param name="row">zero based Row index</param>
-				/// <returns>RowType</returns>
-				public RowType GetRowType(int row)
-				{
-					if (row >= Count)
-					{
-						return RowType.TypeEditorHost;
-					}
-					return (this[row].ReadingOrder != null) ? RowType.Committed : RowType.Uncommitted;
-				}
-
-				#region Nested Class to implement IEqualityComparer for an IList
-				private sealed class ListEqualityComparer : IEqualityComparer<IList<RoleBase>>
-				{
-					private ListEqualityComparer() { }
-					public static readonly ListEqualityComparer Comparer = new ListEqualityComparer();
-
-					public bool Equals(IList<RoleBase> x, IList<RoleBase> y)
-					{
-						int xCount = x.Count;
-						if (xCount != y.Count)
-						{
-							return false;
-						}
-						for (int i = 0; i < xCount; ++i)
-						{
-							if (x[i] != y[i])
-							{
-								return false;
-							}
-						}
-						return true;
-					}
-
-					public int GetHashCode(IList<RoleBase> obj)
-					{
-						int objCount = obj.Count;
-						if (objCount == 0)
-						{
-							return 0;
-						}
-
-						int hashCode = obj[0].GetHashCode();
-						for (int i = 1; i < objCount; ++i)
-						{
-							hashCode ^= Utility.RotateRight(obj[i].GetHashCode(), i);
-						}
-						return hashCode;
-					}
-				}
-				#endregion // Nested Class to implement IEqualityComparer for an IList
-			}
-			#endregion nested KeyedCollection class
-
-			#region Nested ReadingInformation class used with the KeyedCollection class
+			#region ReadingOrderInformation class
 			private sealed class ReadingOrderInformation
 			{
 				private readonly ReadingOrderBranch myParentBranch;
@@ -2534,7 +2692,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 
 				/// <summary>
-				/// Used for a an order that does exist in the model (committed)
+				/// Used for an order that does exist in the model (committed)
 				/// </summary>
 				/// <param name="parentBranch">branch this exists in</param>
 				/// <param name="readingOrder">ReadingOrder to add</param>
@@ -2568,11 +2726,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					ReadingBranch retval = myReadingBranch;
 					if (retval == null)
 					{
-						if (myReadingOrder == null) //obtain new readingOrder to commit a new reading (in readingOrder is non-existent)
+						FactType factType = myParentBranch.FactType;
+						if (myReadingOrder == null) //obtain new readingOrder to commit a new reading (if readingOrder is non-existent)
 						{
-							myReadingOrder = myParentBranch.Fact.EnsureReadingOrder(this.myRoleOrder);
+							myReadingOrder = factType.EnsureReadingOrder(this.myRoleOrder);
 						}
-						myReadingBranch = new ReadingBranch(myParentBranch.Fact, myReadingOrder, this);
+						myReadingBranch = new ReadingBranch(myParentBranch.myEditor, factType, myReadingOrder, this);
 						return myReadingBranch;
 					}
 					return retval;
@@ -2674,12 +2833,103 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					return Text;
 				}
 			}
-			#endregion //Nested ReadingInformation class used with the KeyedCollection class
+			#endregion // ReadingOrderInformation class
+			#region ReadingOrderInformationCollection class
+			private sealed class ReadingOrderInformationCollection : KeyedCollection<IList<RoleBase>, ReadingOrderInformation>
+			{
+				#region Constructor
+				public ReadingOrderInformationCollection()
+					: base(ListEqualityComparer.Comparer, 16)
+				{
+				}
+				#endregion // Constructor
+				#region Base overrides
+				protected sealed override IList<RoleBase> GetKeyForItem(ReadingOrderInformation item)
+				{
+					return item.RoleOrder;
+				}
+				#endregion // Base overrides
+				#region Public Accessors
+				/// <summary>
+				/// Returns a RowType for the row requested, defaults to RowType.Committed
+				/// </summary>
+				/// <param name="row">zero based Row index</param>
+				/// <returns>RowType</returns>
+				public RowType GetRowType(int row)
+				{
+					if (row >= Count)
+					{
+						return RowType.New;
+					}
+					return (this[row].ReadingOrder != null) ? RowType.Committed : RowType.Uncommitted;
+				}
+				#endregion // Public Accessors
+				protected override void InsertItem(int index, ReadingOrderInformation item)
+				{
+					// This is expensive, but there are generally only
+					// a handful of reading orders. Verify that the insertion
+					// point is accurate for existing reading orders.
+					ReadingOrder order = item.ReadingOrder;
+					if (order != null)
+					{
+						LinkedElementCollection<ReadingOrder> orders = order.FactType.ReadingOrderCollection;
+						int orderIndex = orders.IndexOf(order);
+						for (int i = index - 1; i >= 0; --i)
+						{
+							ReadingOrder testOrder = this[i].ReadingOrder;
+							if (testOrder != null && orders.IndexOf(testOrder) > orderIndex)
+							{
+								index = i;
+							}
+						}
+					}
+					
+					base.InsertItem(index, item);
+				}
+				#region ListEqualityComparer class
+				private sealed class ListEqualityComparer : IEqualityComparer<IList<RoleBase>>
+				{
+					private ListEqualityComparer() { }
+					public static readonly ListEqualityComparer Comparer = new ListEqualityComparer();
+					public bool Equals(IList<RoleBase> x, IList<RoleBase> y)
+					{
+						int xCount = x.Count;
+						if (xCount != y.Count)
+						{
+							return false;
+						}
+						for (int i = 0; i < xCount; ++i)
+						{
+							if (x[i] != y[i])
+							{
+								return false;
+							}
+						}
+						return true;
+					}
+					public int GetHashCode(IList<RoleBase> obj)
+					{
+						int objCount = obj.Count;
+						if (objCount == 0)
+						{
+							return 0;
+						}
 
-			#region  Nested Class Branch Property Descriptor for New Reading Drop Down
+						int hashCode = obj[0].GetHashCode();
+						for (int i = 1; i < objCount; ++i)
+						{
+							hashCode ^= Utility.RotateRight(obj[i].GetHashCode(), i);
+						}
+						return hashCode;
+					}
+				}
+				#endregion // ListEqualityComparer class
+			}
+			#endregion // ReadingOrderInformationCollection class
+			#region ReadingOrderDescriptor class (New Reading DropDown)
 			private sealed class ReadingOrderDescriptor : PropertyDescriptor
 			{
-				private readonly FactType myFact;
+				private readonly FactType myFactType;
 				private readonly ReadingOrderBranch myBranch;
 
 				private sealed class ReadingOrderEditor : ElementPicker<ReadingOrderEditor>
@@ -2691,7 +2941,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 					protected sealed override object TranslateToDisplayObject(object initialObject, IList contentList)
 					{
-						Debug.Assert(contentList is ReadingOrderKeyedCollection);
+						Debug.Assert(contentList is ReadingOrderInformationCollection);
 						return contentList.ToString();
 					}
 					protected sealed override System.Collections.IList GetContentList(ITypeDescriptorContext context, object value)
@@ -2703,10 +2953,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						return null;
 					}
 				}
-				public ReadingOrderDescriptor(FactType fact, ReadingOrderBranch branch, string name)
+				public ReadingOrderDescriptor(FactType factType, ReadingOrderBranch branch, string name)
 					: base(name, null)
 				{
-					myFact = fact;
+					myFactType = factType;
 					myBranch = branch;
 				}
 				public sealed override object GetEditor(Type editorBaseType)
@@ -2743,7 +2993,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 				public sealed override void SetValue(object component, object value)
 				{
-					ReadingOrderKeyedCollection collection = myBranch.myReadingOrderKeyedCollection;
+					ReadingOrderInformationCollection collection = myBranch.myReadingOrderKeyedCollection;
 					ReadingOrderInformation info = value as ReadingOrderInformation;
 					int branchLocation = -1;
 					if (info != null && collection.Contains(info.RoleOrder))
@@ -2764,31 +3014,36 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					control.BeginLabelEdit();
 				}
 			}
-			#endregion
-
-			#region Nested class ReadingBranch
-			private sealed class ReadingBranch : IBranch
+			#endregion // ReadingOrderDescriptor class (New Reading DropDown)
+			#region ReadingBranch class
+			private sealed class ReadingBranch : BaseBranch, IBranch
 			{
-				public const int COLUMN_COUNT = 1;
-				private readonly FactType myFact;
-				private readonly LinkedElementCollection<Reading> myReadingMC;
+				#region Constants
+				private const int COLUMN_COUNT = 1;
+				#endregion // Constants
+				#region Member Variables
+				private readonly FactType myFactType;
+				private readonly LinkedElementCollection<Reading> myLiveReadings;
 				private readonly List<ReadingData> myReadings = new List<ReadingData>();
 				private readonly ReadingOrder myReadingOrder;
 				private readonly ReadingOrderInformation myReadingInformation;
+				private readonly ReadingEditor myEditor;
+				private ExtensionPropertyBranch[] myPropertyBranches;
 				private bool myShowNewRow;
 				private int myInsertedRow = -1;
-
-				#region Construction
-				public ReadingBranch(FactType fact, ReadingOrder order, ReadingOrderInformation orderInformation)
+				private BranchModificationEventHandler myModify;
+				#endregion // Member Variables
+				#region Constructor
+				public ReadingBranch(ReadingEditor editor, FactType factType, ReadingOrder order, ReadingOrderInformation orderInformation)
 				{
+					myEditor = editor;
 					myReadingOrder = order;
-					myReadingMC = myReadingOrder.ReadingCollection;
-					myFact = fact;
+					myLiveReadings = order.ReadingCollection;
+					myFactType = factType;
 					myReadingInformation = orderInformation;
 					this.PopulateBranchData();
 				}
-				#endregion
-
+				#endregion // Constructor
 				#region Branch Properties
 				/// <summary>
 				/// Returns number of reading orders currently in the branch including new uncommitted readings
@@ -2797,7 +3052,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					get
 					{
-						return this.VisibleItemCount;
+						return myReadings.Count; //get actual count for number of readings as a reading may not exist which is in the myLiveReadings List
 					}
 				}
 				/// <summary>
@@ -2811,10 +3066,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 				}
 				#endregion //Branch Properties
-
-				#region IBranch Interface Methods
-
-				public VirtualTreeLabelEditData BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
+				#region IBranch Implementation
+				VirtualTreeLabelEditData IBranch.BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
 				{
 					if (row == myReadings.Count - 1 && myShowNewRow)
 					{
@@ -2824,7 +3077,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							editor,
 							delegate(VirtualTreeItemInfo itemInfo, Control editControl)
 							{
-								Store store = myFact.Store;
+								Store store = myFactType.Store;
 								if (editor.EscapePressed || !(store as IORMToolServices).CanAddTransaction)
 								{
 									return LabelEditResult.CancelEdit;
@@ -2888,78 +3141,46 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							});
 					}
 				}
-
-				public LabelEditResult CommitLabelEdit(int row, int column, string newText)
-				{
-					return LabelEditResult.CancelEdit;
-				}
-
-				public BranchFeatures Features
+				BranchFeatures IBranch.Features
 				{
 					get
 					{
 						return BranchFeatures.DelayedLabelEdits | BranchFeatures.ExplicitLabelEdits | BranchFeatures.PositionTracking | BranchFeatures.InsertsAndDeletes;
 					}
 				}
-
-				public VirtualTreeAccessibilityData GetAccessibilityData(int row, int column)
-				{
-					return VirtualTreeAccessibilityData.Empty;
-				}
-
-				public VirtualTreeDisplayData GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
+				VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
 				{
 					VirtualTreeDisplayData retVal = VirtualTreeDisplayData.Empty;
-					if (row == this.VisibleItemCount - 1 && myShowNewRow)
+					if (row == RowCount - 1 && myShowNewRow)
 					{
-						retVal.ForeColor = Color.Gray;
+						retVal.GrayText = true;
 					}
 					return retVal;
 				}
-
-				public object GetObject(int row, int column, ObjectStyle style, ref int options)
+				object IBranch.GetObject(int row, int column, ObjectStyle style, ref int options)
 				{
 					if (style == ObjectStyle.TrackingObject)
 					{
-						return myReadingMC[row] as Object;
+						return myLiveReadings[row] as Object;
 					}
 					return null;
 				}
-
-				public string GetText(int row, int column)
+				string IBranch.GetText(int row, int column)
 				{
-					if (row < this.VisibleItemCount)
-					{
-						return myReadings[row].Text;
-					}
-					else
-					{
-						return null;
-					}
+					return myReadings[row].Text;
 				}
-
-				public string GetTipText(int row, int column, ToolTipType tipType)
-				{
-					return null;
-				}
-
-				public bool IsExpandable(int row, int column)
-				{
-					return false;
-				}
-
-				public LocateObjectData LocateObject(object obj, ObjectStyle style, int locateOptions)
+				LocateObjectData IBranch.LocateObject(object obj, ObjectStyle style, int locateOptions)
 				{
 					Reading reading;
 					if (style == ObjectStyle.TrackingObject)
 					{
 						if (obj == myReadingInformation.RoleOrder || myShowNewRow)
 						{
-							return new LocateObjectData(this.VisibleItemCount - 1, 0, (int)TrackingObjectAction.ThisLevel);
+							return new LocateObjectData(RowCount - 1, 0, (int)TrackingObjectAction.ThisLevel);
 						}
 						else if (null != (reading = (obj as Reading)))
 						{
-							int row = myReadingMC.IndexOf(reading);
+							int row = myLiveReadings.IndexOf(reading);
 							if (row >= 0)
 							{
 								return new LocateObjectData(row, 0, (int)TrackingObjectAction.ThisLevel);
@@ -2968,87 +3189,30 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 					return new LocateObjectData();
 				}
-
-				public event BranchModificationEventHandler OnBranchModification;
-
-				public void OnDragEvent(object sender, int row, int column, DragEventType eventType, DragEventArgs args)
+				event BranchModificationEventHandler IBranch.OnBranchModification
 				{
+					add { myModify += value; }
+					remove { myModify -= value; }
 				}
-
-				public void OnGiveFeedback(GiveFeedbackEventArgs args, int row, int column)
-				{
-				}
-
-				public void OnQueryContinueDrag(QueryContinueDragEventArgs args, int row, int column)
-				{
-				}
-
-				public VirtualTreeStartDragData OnStartDrag(object sender, int row, int column, DragReason reason)
-				{
-					return VirtualTreeStartDragData.Empty;
-				}
-
-				public StateRefreshChanges ToggleState(int row, int column)
-				{
-					return StateRefreshChanges.None;
-				}
-
-				public StateRefreshChanges SynchronizeState(int row, int column, IBranch matchBranch, int matchRow, int matchColumn)
-				{
-					return StateRefreshChanges.None;
-				}
-
-				public int UpdateCounter
+				int IBranch.VisibleItemCount
 				{
 					get
 					{
-						return 0;
+						return RowCount;
 					}
 				}
-
-				public int VisibleItemCount
-				{
-					get
-					{
-						return myReadings.Count; //get actual count for number of readings as a reading may not exist which is in the myReadings List
-					}
-				}
-
-				#endregion
-
-				#region Branch update methods
-				/// <summary>
-				/// Addition of a New Reading into the ReadingBranch
-				/// </summary>
-				/// <param name="reading">The reading changed or added</param>
-				public void AddReading(Reading reading)
-				{
-					if (!myReadings.Contains(new ReadingData(null, reading)))
-					{
-						int index = myReadingMC.IndexOf(reading);
-						myReadings.Insert(index, new ReadingData(FactType.PopulatePredicateText(reading, null, null, myReadingOrder.RoleCollection, myReadingInformation.OrderedReplacementFields), reading));
-						if (OnBranchModification != null)
-						{
-							OnBranchModification(this, BranchModificationEventArgs.InsertItems(this, -1, 1));
-						}
-					}
-					else
-					{
-						this.UpdateReading(reading);
-					}
-				}
-
+				#endregion // IBranch Implementation
+				#region Command Response Methods
 				/// <summary>
 				/// Initiates a Begin Label Edit for the specified Reading
 				/// </summary>
 				/// <param name="reading">the Reading to edit</param>
 				public void EditReading(Reading reading)
 				{
-					int count = myReadingMC.Count;
-					int location = myReadingMC.IndexOf(reading);
+					int location = myLiveReadings.IndexOf(reading);
 					if (location >= 0)
 					{
-						this.BeginLabelEdit(location, 0, VirtualTreeLabelEditActivationStyles.ImmediateSelection);
+						((IBranch)this).BeginLabelEdit(location, 0, VirtualTreeLabelEditActivationStyles.ImmediateSelection);
 					}
 				}
 				/// <summary>
@@ -3071,59 +3235,29 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					{
 						myShowNewRow = true;
 						myReadings.Add(new ReadingData(myReadingInformation.Text, null));
-						if (OnBranchModification != null)
+						BranchModificationEventHandler modify = myModify;
+						if (modify != null)
 						{
-							OnBranchModification(this, BranchModificationEventArgs.InsertItems(this, -1, 1));
+							// Notify addition at the end
+							int insertPosition = myReadings.Count - 2;
+							modify(this, BranchModificationEventArgs.InsertItems(this, insertPosition, 1));
+							foreach (ExtensionPropertyBranch propertyBranch in ExtensionPropertyBranches)
+							{
+								modify(propertyBranch, BranchModificationEventArgs.InsertItems(propertyBranch, insertPosition, 1));
+							}
 						}
 					}
 					else if (myShowNewRow && !show)
 					{
 						myShowNewRow = false;
-						if (OnBranchModification != null)
+						int deleteIndex = myReadings.IndexOf(new ReadingData(myReadingInformation.Text, null));
+						if (deleteIndex >= 0)
 						{
-							OnBranchModification(this, BranchModificationEventArgs.DeleteItems(this, this.VisibleItemCount - 1, 1));
-						}
-						myReadings.Remove(new ReadingData(myReadingInformation.Text, null));
-					}
-				}
-				/// <summary>
-				/// Initiates an Update of an existing Reading
-				/// </summary>
-				/// <param name="reading">The reading changed</param>
-				public void UpdateReading(Reading reading)
-				{
-					int location = myReadings.IndexOf(new ReadingData(null, reading));
-					if (location >= 0)
-					{
-						LinkedElementCollection<RoleBase> roles = reading.ReadingOrder.RoleCollection;
-						string[] replacements = myReadingInformation.OrderedReplacementFields;
-						if (roles.Count == replacements.Length)
-						{
-							myReadings[location] = new ReadingData(FactType.PopulatePredicateText(reading, null, null, roles, replacements), reading);
-
-							if (OnBranchModification != null)
+							myReadings.RemoveAt(deleteIndex);
+							BranchModificationEventHandler modify = myModify;
+							if (modify != null)
 							{
-								OnBranchModification(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, this, location, 0, 1)));
-								OnBranchModification(this, BranchModificationEventArgs.Redraw(false));
-								OnBranchModification(this, BranchModificationEventArgs.Redraw(true));
-							}
-						}
-					}
-				}
-				/// <summary>
-				/// Removes a reading from the brach based upon the reference of the reading object sent
-				/// </summary>
-				/// <param name="reading">The reading object which has been removed</param>
-				public void ItemRemoved(Reading reading)
-				{
-					for (int i = myReadings.Count - 1; i >= 0; --i) // run counter backwards so we can modify the set
-					{
-						if (myReadings[i].Reading == reading)
-						{
-							myReadings.RemoveAt(i);
-							if (OnBranchModification != null)
-							{
-								OnBranchModification(this, BranchModificationEventArgs.DeleteItems(this, i, 1));
+								modify(this, BranchModificationEventArgs.DeleteItems(this, deleteIndex, 1));
 							}
 						}
 					}
@@ -3134,13 +3268,17 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				/// <param name="row">Row to remove</param>
 				public void RemoveItem(int row)
 				{
-					if (myShowNewRow && row == this.VisibleItemCount - 1)
+					if (myShowNewRow && row == RowCount - 1)
 					{
 						this.ShowNewRow(false);
 					}
 					else
 					{
-						this.CommitLabelEdit(row, 0, string.Empty);
+						using (Transaction t = myFactType.Store.TransactionManager.BeginTransaction(ResourceStrings.ModelReadingEditorDeleteReadingTransactionText))
+						{
+							myReadings[row].Reading.Delete();
+							t.Commit();
+						}
 					}
 				}
 				/// <summary>
@@ -3159,13 +3297,88 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					this.MoveItem(row, row + 1);
 				}
+				#endregion // Command Response Methods
+				#region Event Methods
+				/// <summary>
+				/// Addition of a New Reading into the ReadingBranch
+				/// </summary>
+				/// <param name="reading">The reading changed or added</param>
+				public void OnReadingAdded(Reading reading)
+				{
+					if (!myReadings.Contains(new ReadingData(null, reading)))
+					{
+						int index = myLiveReadings.IndexOf(reading);
+						myReadings.Insert(index, new ReadingData(FactType.PopulatePredicateText(reading, null, null, myReadingOrder.RoleCollection, myReadingInformation.OrderedReplacementFields), reading));
+						BranchModificationEventHandler modify = myModify;
+						if (modify != null)
+						{
+							modify(this, BranchModificationEventArgs.InsertItems(this, index - 1, 1));
+							foreach (ExtensionPropertyBranch propertyBranch in ExtensionPropertyBranches)
+							{
+								modify(propertyBranch, BranchModificationEventArgs.InsertItems(propertyBranch, index - 1, 1));
+							}
+						}
+					}
+					else
+					{
+						this.OnReadingUpdated(reading);
+					}
+				}
+				/// <summary>
+				/// Initiates an Update of an existing Reading
+				/// </summary>
+				/// <param name="reading">The reading changed</param>
+				public void OnReadingUpdated(Reading reading)
+				{
+					int location = myReadings.IndexOf(new ReadingData(null, reading));
+					if (location >= 0)
+					{
+						LinkedElementCollection<RoleBase> roles = reading.ReadingOrder.RoleCollection;
+						string[] replacements = myReadingInformation.OrderedReplacementFields;
+						if (roles.Count == replacements.Length)
+						{
+							myReadings[location] = new ReadingData(FactType.PopulatePredicateText(reading, null, null, roles, replacements), reading);
+
+							BranchModificationEventHandler modify = myModify;
+							if (modify != null)
+							{
+								modify(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, this, location, 0, 1)));
+								modify(this, BranchModificationEventArgs.Redraw(false));
+								modify(this, BranchModificationEventArgs.Redraw(true));
+							}
+						}
+					}
+				}
+				/// <summary>
+				/// Removes a reading from the brach based upon the reference of the reading object sent
+				/// </summary>
+				/// <param name="reading">The reading object which has been removed</param>
+				public void OnItemRemoved(Reading reading)
+				{
+					for (int i = myReadings.Count - 1; i >= 0; --i) // run counter backwards so we can modify the set
+					{
+						if (myReadings[i].Reading == reading)
+						{
+							myReadings.RemoveAt(i);
+							BranchModificationEventHandler modify = myModify;
+							if (modify != null)
+							{
+								modify(this, BranchModificationEventArgs.DeleteItems(this, i, 1));
+								foreach (ExtensionPropertyBranch propertyBranch in ExtensionPropertyBranches)
+								{
+									modify(propertyBranch, BranchModificationEventArgs.DeleteItems(propertyBranch, i, 1));
+								}
+							}
+						}
+					}
+				}
 				/// <summary>
 				/// Updates the Display Text and notifies the tree that the display data has changed
 				/// </summary>
-				public void ReadingItemOrderChanged(Reading reading)
+				public void OnReadingItemOrderChanged(Reading reading)
 				{
 					int oldRow = myReadings.IndexOf(new ReadingData(null, reading));
-					int currentRow = myReadingMC.IndexOf(reading);
+					int currentRow = myLiveReadings.IndexOf(reading);
 
 					if (oldRow != currentRow)
 					{
@@ -3173,15 +3386,41 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						myReadings.RemoveAt(oldRow);
 						myReadings.Insert(currentRow, readingData);
 
-						if (OnBranchModification != null)
+						BranchModificationEventHandler modify = myModify;
+						if (modify != null)
 						{
-							OnBranchModification(this, BranchModificationEventArgs.MoveItem(this, oldRow, currentRow));
+							modify(this, BranchModificationEventArgs.MoveItem(this, oldRow, currentRow));
+							foreach (ExtensionPropertyBranch propertyBranch in ExtensionPropertyBranches)
+							{
+								modify(propertyBranch, BranchModificationEventArgs.MoveItem(propertyBranch, oldRow, currentRow));
+							}
 						}
 					}
 				}
-				#endregion
-
-				#region Branch Helper Methods, Structs
+				/// <summary>
+				/// Updates the display for an extension property
+				/// </summary>
+				public void OnExtensionPropertyChanged(Reading reading, PropertyDescriptor descriptor)
+				{
+					BranchModificationEventHandler modify;
+					int location;
+					if (null != (modify = myModify) &&
+						0 <= (location = myReadings.IndexOf(new ReadingData(null, reading))))
+					{
+						foreach (ExtensionPropertyBranch propertyBranch in ExtensionPropertyBranches)
+						{
+							if (propertyBranch.Descriptor == descriptor)
+							{
+								modify(propertyBranch, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.VisibleElements, propertyBranch, location, 0, 1)));
+								modify(propertyBranch, BranchModificationEventArgs.Redraw(false));
+								modify(propertyBranch, BranchModificationEventArgs.Redraw(true));
+								break;
+							}
+						}
+					}
+				}
+				#endregion // Event Methods
+				#region Branch Helper Methods and Structs
 				/// <summary>
 				/// Iinitiates a transaction for moving a Reading within this Reading Order
 				/// </summary>
@@ -3189,9 +3428,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				/// <param name="newLocation">New Location in the collection</param>
 				private void MoveItem(int currentRow, int newLocation)
 				{
-					using (Transaction t = myFact.Store.TransactionManager.BeginTransaction(ResourceStrings.ModelReadingEditorMoveReading))
+					using (Transaction t = myFactType.Store.TransactionManager.BeginTransaction(ResourceStrings.ModelReadingEditorMoveReading))
 					{
-						myReadingMC.Move(currentRow, newLocation);
+						myLiveReadings.Move(currentRow, newLocation);
 						t.Commit();
 					}
 				}
@@ -3259,38 +3498,208 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					myReadings.Clear();
 					LinkedElementCollection<RoleBase> roleCollection = myReadingOrder.RoleCollection;
-					int numReadings = myReadingMC.Count;
+					int numReadings = myLiveReadings.Count;
 					for (int i = 0; i < numReadings; ++i)
 					{
-						myReadings.Add(new ReadingData(FactType.PopulatePredicateText(myReadingMC[i], null, null, roleCollection, myReadingInformation.OrderedReplacementFields), myReadingMC[i]));
+						myReadings.Add(new ReadingData(FactType.PopulatePredicateText(myLiveReadings[i], null, null, roleCollection, myReadingInformation.OrderedReplacementFields), myLiveReadings[i]));
 					}
 				}
-				#endregion //Branch Helper Methods
-			}
-			#endregion
-		}
-		#endregion Nested ReadingOrderBranch class
+				#endregion //Branch Helper Methods and Structs
+				#region Extension Property Methods
+				/// <summary>
+				/// Create a subitem branch for the given property
+				/// </summary>
+				public IBranch EnsureExtensionPropertyBranch(int propertyIndex)
+				{
+					PropertyDescriptorCollection descriptors = myEditor.myExtensionProperties;
+					ExtensionPropertyBranch[] propertyBranches = myPropertyBranches;
+					ExtensionPropertyBranch retVal;
+					if (propertyBranches == null)
+					{
+						myPropertyBranches = propertyBranches = new ExtensionPropertyBranch[descriptors.Count];
+						retVal = null;
+					}
+					else
+					{
+						retVal = propertyBranches[propertyIndex];
+					}
+					if (retVal == null)
+					{
+						propertyBranches[propertyIndex] = retVal = new ExtensionPropertyBranch(this, descriptors[propertyIndex]);
+					}
+					return retVal;
+				}
+				private IEnumerable<ExtensionPropertyBranch> ExtensionPropertyBranches
+				{
+					get
+					{
+						ExtensionPropertyBranch[] propertyBranches = myPropertyBranches;
+						if (propertyBranches != null)
+						{
+							for (int i = 0; i < propertyBranches.Length; ++i)
+							{
+								ExtensionPropertyBranch branch = propertyBranches[i];
+								if (branch != null)
+								{
+									yield return branch;
+								}
+							}
+						}
+					}
+				}
+				#endregion // Extension Property Methods
+				#region ExtensionPropertyBranch class
+				/// <summary>
+				/// A subitem expansion branch to show extension properties.
+				/// These are displayed as subitem expansion of the parent
+				/// branch, but have most in common with the reading branch.
+				/// </summary>
+				private sealed class ExtensionPropertyBranch : BaseBranch, IBranch
+				{
+					#region Member Variables
+					private ReadingBranch myReadingBranch;
+					private PropertyDescriptor myDescriptor;
+					#endregion // Member Variables
+					#region // Constructor
+					#endregion // Constructor
+					public ExtensionPropertyBranch(ReadingBranch readingBranch, PropertyDescriptor descriptor)
+					{
+						myReadingBranch = readingBranch;
+						myDescriptor = descriptor;
+					}
+					#region Accessor Properties
+					public PropertyDescriptor Descriptor
+					{
+						get
+						{
+							return myDescriptor;
+						}
+					}
+					#endregion // Accessor Properties
+					#region IBranch Implementation
+					string IBranch.GetText(int row, int column)
+					{
+						string retVal = null;
+						Reading reading;
+						object value;
+						PropertyDescriptor descriptor;
+						if (null != (reading = myReadingBranch.myReadings[row].Reading) &&
+							null != (value = (descriptor = myDescriptor).GetValue(reading)))
+						{
+							TypeConverter converter;
+							if (!((null != (converter = descriptor.Converter) &&
+								null != (retVal = converter.ConvertToString(value))) ||
+								null != (retVal = value as string)))
+							{
+								retVal = value.ToString();
+							}
+						}
+						return retVal;
+					}
+					VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
+					{
+						VirtualTreeDisplayData retVal = VirtualTreeDisplayData.Empty;
+						Reading reading;
+						if (null != (reading = myReadingBranch.myReadings[row].Reading))
+						{
+							PropertyDescriptor descriptor = myDescriptor;
+							if (descriptor.ShouldSerializeValue(reading))
+							{
+								retVal.Bold = true;
+							}
+							if (descriptor.IsReadOnly)
+							{
+								retVal.GrayText = true;
+							}
+						}
+						return retVal;
+					}
+					VirtualTreeLabelEditData IBranch.BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
+					{
+						VirtualTreeDisplayData retVal = VirtualTreeDisplayData.Empty;
+						Reading reading;
+						if (null != (reading = myReadingBranch.myReadings[row].Reading))
+						{
+							PropertyDescriptor descriptor = myDescriptor;
+							TypeEditorHost host;
+							TypeConverter converter;
+							if (null != (host = OnScreenTypeEditorHost.Create(descriptor, reading)))
+							{
+								host.Flags = VirtualTreeInPlaceControlFlags.SizeToText;
 
-		#region nested class ReadingVirtualTree
-		private sealed class ReadingVirtualTree : StandardMultiColumnTree, IMultiColumnTree
+								return new VirtualTreeLabelEditData(
+									host,
+									delegate(VirtualTreeItemInfo itemInfo, Control editControl)
+									{
+										return LabelEditResult.AcceptEdit;
+									});
+							}
+							else if ((null != (converter = descriptor.Converter) ||
+								null != (converter = TypeDescriptor.GetConverter(descriptor.PropertyType))) &&
+								converter.CanConvertFrom(typeof(string)))
+							{
+								return new VirtualTreeLabelEditData(
+									null,
+									delegate(VirtualTreeItemInfo itemInfo, Control editControl)
+									{
+										descriptor.SetValue(reading, converter.ConvertFrom(editControl.Text));
+										return LabelEditResult.AcceptEdit;
+									});
+							}
+							else if (descriptor.PropertyType == typeof(string))
+							{
+								return new VirtualTreeLabelEditData(
+									null,
+									delegate(VirtualTreeItemInfo itemInfo, Control editControl)
+									{
+										descriptor.SetValue(reading, editControl.Text);
+										return LabelEditResult.AcceptEdit;
+									});
+							}
+						}
+						return VirtualTreeLabelEditData.Invalid;
+					}
+					BranchFeatures IBranch.Features
+					{
+						get
+						{
+							return BranchFeatures.InsertsAndDeletes | BranchFeatures.ExplicitLabelEdits | BranchFeatures.DelayedLabelEdits;
+						}
+					}
+					int IBranch.VisibleItemCount
+					{
+						get
+						{
+							ReadingBranch readingBranch = myReadingBranch;
+							return readingBranch.HasNewRow ? readingBranch.RowCount - 1 : readingBranch.RowCount;
+						}
+					}
+					#endregion // IBranch Implementation
+				}
+				#endregion // ExtensionPropertyBranch class
+			}
+			#endregion // ReadingBranch class
+		}
+		#endregion // ReadingOrderBranch class
+		#region ReadingVirtualTree class
+		private sealed class ReadingVirtualTree : StandardMultiColumnTree
 		{
-			public ReadingVirtualTree(IBranch root)
-				: base(ReadingOrderBranch.COLUMN_COUNT)
+			public ReadingVirtualTree(IBranch root, int extensionPropertyCount)
+				: base(BASE_COLUMN_COUNT + extensionPropertyCount)
 			{
 				Debug.Assert(root != null);
 				this.Root = root;
 			}
 		}
-		#endregion
-
-		#region nested class CustomVirtualTreeControl
+		#endregion // ReadingVirtualTree class
+		#region CustomVirtualTreeControl class
 		/// <summary>
 		/// This custom class is needed to override the height of column headers to provide 
 		/// the Appearance of NO Headers when column permutation is used. 
 		/// If column headers are not used when column permutation is used an "index out of range exception" 
 		/// is fired when the mouse travels over the region occupied by the scrollbar if no scrollbar exists.
 		/// </summary>
-		public class CustomVirtualTreeControl : StandardVirtualTreeControl
+		private class CustomVirtualTreeControl : StandardVirtualTreeControl
 		{
 			/// <summary>
 			/// Needed for creating a header to prevent the vertical scrollbar from thowing an exception
@@ -3298,6 +3707,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// <returns></returns>
 			protected override VirtualTreeHeaderControl CreateHeaderControl()
 			{
+				VirtualTreeColumnHeader[] headers = GetColumnHeaders();
+				if (headers != null && headers.Length > 2)
+				{
+					return base.CreateHeaderControl();
+				}
 				return new ZeroHeightHeader(this);
 			}
 			private sealed class ZeroHeightHeader : VirtualTreeHeaderControl
@@ -3312,6 +3726,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 		}
-		#endregion
+		#endregion // CustomVirtualTreeControl class
 	}
 }

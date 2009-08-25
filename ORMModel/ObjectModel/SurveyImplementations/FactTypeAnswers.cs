@@ -26,7 +26,7 @@ using System.Diagnostics;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
-	public partial class FactType : IAnswerSurveyQuestion<SurveyElementType>, IAnswerSurveyQuestion<SurveyErrorState>, IAnswerSurveyQuestion<SurveyQuestionGlyph>, IAnswerSurveyQuestion<SurveyFactTypeDetailType>, ISurveyNode, ISurveyNodeContext
+	public partial class FactType : IAnswerSurveyQuestion<SurveyElementType>, IAnswerSurveyQuestion<SurveyErrorState>, IAnswerSurveyQuestion<SurveyQuestionGlyph>, IAnswerSurveyQuestion<SurveyFactTypeDetailType>, IAnswerSurveyQuestion<SurveyDerivationType>, ISurveyNode, ISurveyNodeContext
 	{
 		#region IAnswerSurveyQuestion<SurveyErrorState> Implementation
 		int IAnswerSurveyQuestion<SurveyErrorState>.AskQuestion(object contextElement)
@@ -89,8 +89,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get
 			{
-				string retVal = Objectification != null ? GenerateName() : Name;
-				return (DerivationRule != null || DerivationExpression != null) ? retVal + " *" : retVal;
+				return Objectification != null ? GenerateName() : Name;
 			}
 		}
 		string ISurveyNode.EditableSurveyName
@@ -235,5 +234,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return (int)SurveyFactTypeDetailType.ImpliedFactType;
 		}
 		#endregion // IAnswerSurveyQuestion<SurveyFactTypeDetailType> Implementation
+		#region IAnswerSurveyQuestion<SurveyDerivationType> Implementation
+		int IAnswerSurveyQuestion<SurveyDerivationType>.AskQuestion(object contextElement)
+		{
+			return AnswerDerivationTypeQuestion(contextElement);
+		}
+		/// <summary>
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyDerivationType}.AskQuestion"/>
+		/// </summary>
+		protected int AnswerDerivationTypeQuestion(object contextElement)
+		{
+			return (DerivationRule != null || DerivationExpression != null) ? (int)SurveyDerivationType.Derived : -1;
+		}
+		#endregion // IAnswerSurveyQuestion<SurveyDerivationType> Implementation
 	}
 }

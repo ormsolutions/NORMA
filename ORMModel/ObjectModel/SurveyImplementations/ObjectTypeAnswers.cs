@@ -23,7 +23,7 @@ using System.Windows.Forms;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
-	public partial class ObjectType : IAnswerSurveyQuestion<SurveyErrorState>, IAnswerSurveyQuestion<SurveyElementType>, IAnswerSurveyQuestion<SurveyQuestionGlyph>, ISurveyNode
+	public partial class ObjectType : IAnswerSurveyQuestion<SurveyErrorState>, IAnswerSurveyQuestion<SurveyElementType>, IAnswerSurveyQuestion<SurveyQuestionGlyph>, IAnswerSurveyQuestion<SurveyDerivationType>, ISurveyNode
 	{
 		#region IAnswerSurveyQuestion<SurveyErrorState> Implementation
 		int IAnswerSurveyQuestion<SurveyErrorState>.AskQuestion(object contextElement)
@@ -80,25 +80,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // IAnswerSurveyQuestion<SurveyQuestionGlyph> Implementation
-		#region ISurveyNode Implementation
+		#region IAnswerSurveyQuestion<SurveyDerivationType> Implementation
+		int IAnswerSurveyQuestion<SurveyDerivationType>.AskQuestion(object contextElement)
+		{
+			return AnswerDerivationTypeQuestion(contextElement);
+		}
 		/// <summary>
-		/// Implements <see cref="ISurveyNode.SurveyName"/>
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyDerivationType}.AskQuestion"/>
 		/// </summary>
-		protected new string SurveyName
+		protected int AnswerDerivationTypeQuestion(object contextElement)
 		{
-			get
-			{
-				string retVal = Name;
-				return (DerivationRule != null || DerivationExpression != null) ? retVal + " *" : retVal;
-			}
+			return (DerivationRule != null || DerivationExpression != null) ? (int)SurveyDerivationType.Derived : -1;
 		}
-		string ISurveyNode.SurveyName
-		{
-			get
-			{
-				return SurveyName;
-			}
-		}
+		#endregion // IAnswerSurveyQuestion<SurveyDerivationType> Implementation
+		#region ISurveyNode Implementation
 		/// <summary>
 		/// Implements <see cref="ISurveyNode.SurveyNodeDataObject"/>
 		/// </summary>

@@ -411,4 +411,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		Contradiction,
 	}
 	#endregion // SurveyGroupingReferenceType question
+	#region SurveyDerivationType question
+	/// <summary>
+	/// Specify if an <see cref="ObjectType"/> or a <see cref="FactType"/>
+	/// is derived.
+	/// </summary>
+	public enum SurveyDerivationType
+	{
+		/// <summary>
+		/// The element has an associated derivation rule
+		/// </summary>
+		Derived,
+	}
+	#endregion // SurveyDerivationType question
 }

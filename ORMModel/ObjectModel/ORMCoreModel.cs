@@ -36,6 +36,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	{
 		private static Type[] SurveyErrorQuestionTypes = new Type[] { typeof(SurveyErrorState) };
 		private static Type[] SurveyGlyphQuestionTypes = new Type[] { typeof(SurveyQuestionGlyph) };
+		private static Type[] SurveyDerivationQuestionTypes = new Type[] { typeof(SurveyDerivationType) };
 		/// <summary>
 		/// The unique name the VerbalizationBrowser target. Used in the Xml files and in code to identify the core target provider.
 		/// </summary>
@@ -671,7 +672,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged) &&
 				!(factType = ((FactTypeHasDerivationExpression)element).FactType).IsDeleted)
 			{
-				eventNotify.ElementRenamed(factType);
+				eventNotify.ElementChanged(factType, SurveyDerivationQuestionTypes);
 			}
 		}
 		/// <summary>
@@ -685,7 +686,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged) &&
 				!(factType = ((FactTypeHasDerivationExpression)element).FactType).IsDeleted)
 			{
-				eventNotify.ElementRenamed(factType);
+				eventNotify.ElementChanged(factType, SurveyDerivationQuestionTypes);
 			}
 		}
 		/// <summary>
@@ -699,7 +700,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged) &&
 				!(factType = ((FactTypeHasDerivationRule)element).FactType).IsDeleted)
 			{
-				eventNotify.ElementRenamed(factType);
+				eventNotify.ElementChanged(factType, SurveyDerivationQuestionTypes);
 			}
 		}
 		/// <summary>
@@ -713,7 +714,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged) &&
 				!(factType = ((FactTypeHasDerivationRule)element).FactType).IsDeleted)
 			{
-				eventNotify.ElementRenamed(factType);
+				eventNotify.ElementChanged(factType, SurveyDerivationQuestionTypes);
 			}
 		}
 		/// <summary>
@@ -723,11 +724,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			INotifySurveyElementChanged eventNotify;
 			ModelElement element = e.ModelElement;
-			ObjectType subType;
+			ObjectType subtype;
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged) &&
-				!(subType = ((SubtypeHasDerivationExpression)element).Subtype).IsDeleted)
+				!(subtype = ((SubtypeHasDerivationExpression)element).Subtype).IsDeleted)
 			{
-				eventNotify.ElementRenamed(subType);
+				eventNotify.ElementChanged(subtype, SurveyDerivationQuestionTypes);
 			}
 		}
 		/// <summary>
@@ -737,11 +738,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			INotifySurveyElementChanged eventNotify;
 			ModelElement element = e.ModelElement;
-			ObjectType subType;
+			ObjectType subtype;
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged) &&
-				!(subType = ((SubtypeHasDerivationExpression)element).Subtype).IsDeleted)
+				!(subtype = ((SubtypeHasDerivationExpression)element).Subtype).IsDeleted)
 			{
-				eventNotify.ElementRenamed(subType);
+				eventNotify.ElementChanged(subtype, SurveyDerivationQuestionTypes);
 			}
 		}
 		/// <summary>
@@ -755,7 +756,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged) &&
 				!(subtype = ((SubtypeHasDerivationRule)element).Subtype).IsDeleted)
 			{
-				eventNotify.ElementRenamed(subtype);
+				eventNotify.ElementChanged(subtype, SurveyDerivationQuestionTypes);
 			}
 		}
 		/// <summary>
@@ -769,7 +770,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged) &&
 				!(subtype = ((SubtypeHasDerivationRule)element).Subtype).IsDeleted)
 			{
-				eventNotify.ElementRenamed(subtype);
+				eventNotify.ElementChanged(subtype, SurveyDerivationQuestionTypes);
 			}
 		}
 		/// <summary>

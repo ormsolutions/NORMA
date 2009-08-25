@@ -46,7 +46,7 @@
 		<qp:surveyQuestion questionType="SurveyGroupingTypeGlyph" dynamicValues="true">
 			<qp:displaySupport displayCategory="Glyph"/>
 			<qp:sequentialImageMap>
-				<qp:offset afterSurveyQuestion="SurveyGroupingReferenceType"/>
+				<qp:offset afterSurveyQuestion="SurveyDerivationType"/>
 			</qp:sequentialImageMap>
 		</qp:surveyQuestion>
 		<qp:surveyQuestion questionType="SurveyGroupingReferenceType">
@@ -62,12 +62,19 @@
 				<qp:displayDataSameAs enumValue="Contradiction" targetEnumValue="Exclusion"/>
 			</qp:displayDataMap>
 		</qp:surveyQuestion>
+		<qp:surveyQuestion questionType="SurveyDerivationType">
+			<qp:displaySupport displayCategory="Overlay"/>
+			<qp:sequentialImageMap lastAnswer="Derived">
+				<qp:offset afterSurveyQuestion="SurveyGroupingReferenceType"/>
+			</qp:sequentialImageMap>
+		</qp:surveyQuestion>
 	</qp:surveyQuestions>
 	<qp:groupings>
 		<qp:grouping>
 			<qp:surveyQuestion ref="SurveyElementType"/>
 			<qp:surveyQuestion ref="SurveyErrorState"/>
 			<qp:surveyQuestion ref="SurveyQuestionGlyph"/>
+			<qp:surveyQuestion ref="SurveyDerivationType"/>
 		</qp:grouping>
 		<qp:grouping>
 			<qp:expansionKey>

@@ -5,7 +5,7 @@
 		<CopyrightLine>* Natural Object-Role Modeling Architect for Visual Studio                 *</CopyrightLine>
 		<CopyrightLine>*                                                                          *</CopyrightLine>
 		<CopyrightLine>* Copyright © Neumont University. All rights reserved.                     *</CopyrightLine>
-		<CopyrightLine>* Copyright © ORM Solutions, LLC. All rights reserved.                        *</CopyrightLine>
+		<CopyrightLine>* Copyright © ORM Solutions, LLC. All rights reserved.                     *</CopyrightLine>
 		<CopyrightLine>*                                                                          *</CopyrightLine>
 		<CopyrightLine>* The use and distribution terms for this software are covered by the      *</CopyrightLine>
 		<CopyrightLine>* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *</CopyrightLine>
@@ -243,16 +243,13 @@
 	<ResourceString name="DiagramSpyWindowTitle" model="Diagram" resourceName="DiagramSpy.WindowTitle"/>
 	<ResourceString name="DiagramSpyDiagramListStart" model="Diagram" resourceName="DiagramSpy.DiagramListStart"/>
 	<ResourceString name="DiagramSpyNoSelection" model="Diagram" resourceName="DiagramSpy.NoSelection"/>
-	<ResourceString name="ModelReadingEditorListColumnHeaderReadingText" model="Model" resourceName="ModelReadingEditor.ListColumnHeader.ReadingText"/>
-	<ResourceString name="ModelReadingEditorListColumnHeaderIsPrimary" model="Model" resourceName="ModelReadingEditor.ListColumnHeader.IsPrimary"/>
-	<ResourceString name="ModelReadingEditorAllReadingsNodeName" model="Model" resourceName="ModelReadingEditor.AllReadingsNodeName"/>
+	<ResourceString name="ModelReadingEditorColumnHeaderReadings" model="Model" resourceName="ModelReadingEditor.ColumnHeader.Readings"/>
+	<ResourceString name="ModelReadingEditorDeleteReadingTransactionText" model="Model" resourceName="ModelReadingEditor.DeleteReadingTransactionText"/>
 	<ResourceString name="ModelReadingEditorMissingRolePlayerText" model="Model" resourceName="ModelReadingEditor.MissingRolePlayerText"/>
 	<ResourceString name="ModelReadingEditorNewItemText" model="Model" resourceName="ModelReadingEditor.NewItemText"/>
 	<ResourceString name="ModelReadingEditorNewReadingTransactionText" model="Model" resourceName="ModelReadingEditor.NewReadingTransactionText"/>
-	<ResourceString name="ModelReadingEditorChangeReadingText" model="Model" resourceName="ModelReadingEditor.ChangeReadingText"/>
 	<ResourceString name="ModelReadingEditorMoveReadingOrder" model="Model" resourceName="ModelReadingEditor.MoveReadingOrder"/>
 	<ResourceString name="ModelReadingEditorMoveReading" model="Model" resourceName="ModelReadingEditor.MoveReading"/>
-	<ResourceString name="ModelReadingEditorIsPrimaryToolTip" model="Model" resourceName="ModelReadingEditor.IsPrimaryToolTip"/>
 	<ResourceString name="ModelReadingEditorChangePrimaryReadingText" model="Model" resourceName="ModelReadingEditor.ChangePrimaryReadingText"/>
 	<ResourceString name="ModelReadingEditorWindowTitle" model="Model" resourceName="ModelReadingEditor.WindowTitle"/>
 	<ResourceString name="ModelReadingEditorImpliedFactTypeReadingsText" model="Model" resourceName="ModelReadingEditor.ImpliedFactTypeReadingsText"/>

@@ -303,6 +303,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 						{
 							treeControl.InitialSelectionIndex = initialIndex;
 						}
+						SetTreeControlDisplayOptions(treeControl);
 
 						// Make sure keystrokes are forwarded while the modal dropdown is open
 						IVirtualTreeInPlaceControl virtualTreeInPlaceControl = editor as IVirtualTreeInPlaceControl;
@@ -408,6 +409,16 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		protected virtual object TranslateToDisplayObject(object initialObject, IList contentList)
 		{
 			return initialObject;
+		}
+		/// <summary>
+		/// Set display options on the tree control. The list is implemented as
+		/// a tree control with tree-style display settings turned off, so changes
+		/// should be limited in most cases to setting tree headers
+		/// </summary>
+		/// <param name="treeControl">A <see cref="VirtualTreeControl"/></param>
+		protected virtual void SetTreeControlDisplayOptions(VirtualTreeControl treeControl)
+		{
+			// Empty default implementation
 		}
 		#endregion // ElementPicker Specifics
 	}

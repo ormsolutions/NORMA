@@ -11,7 +11,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[] mySurveyQuestionTypeInfo1 = new ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[]{
 			ProvideSurveyQuestionForSurveyElementType.Instance,
 			ProvideSurveyQuestionForSurveyErrorState.Instance,
-			ProvideSurveyQuestionForSurveyQuestionGlyph.Instance};
+			ProvideSurveyQuestionForSurveyQuestionGlyph.Instance,
+			ProvideSurveyQuestionForSurveyDerivationType.Instance};
 		private static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[] mySurveyQuestionTypeInfo2 = new ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[]{
 			ProvideSurveyQuestionForSurveyFactTypeDetailType.Instance,
 			ProvideSurveyQuestionForSurveyErrorState.Instance,
@@ -603,7 +604,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			public int MapAnswerToImageIndex(int answer)
 			{
-				return (int)SurveyQuestionGlyph.Last + 1 + 1 + (int)SurveyRoleType.Supertype + 1 + 2 + answer;
+				return (int)SurveyQuestionGlyph.Last + 1 + 1 + (int)SurveyRoleType.Supertype + 1 + 2 + (int)SurveyDerivationType.Derived + 1 + answer;
 			}
 			public IFreeFormCommandProvider<Microsoft.VisualStudio.Modeling.Store> GetFreeFormCommands(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
 			{
@@ -708,6 +709,73 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				get
 				{
 					return SurveyQuestionUISupport.Overlay | SurveyQuestionUISupport.DisplayData;
+				}
+			}
+			public static int QuestionPriority
+			{
+				get
+				{
+					return 0;
+				}
+			}
+			int ISurveyQuestionTypeInfo.QuestionPriority
+			{
+				get
+				{
+					return QuestionPriority;
+				}
+			}
+		}
+		private sealed class ProvideSurveyQuestionForSurveyDerivationType : ISurveyQuestionTypeInfo, ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>
+		{
+			private ProvideSurveyQuestionForSurveyDerivationType()
+			{
+			}
+			public static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store> Instance = new ProvideSurveyQuestionForSurveyDerivationType();
+			public Type QuestionType
+			{
+				get
+				{
+					return typeof(SurveyDerivationType);
+				}
+			}
+			public ISurveyDynamicValues DynamicQuestionValues
+			{
+				get
+				{
+					return null;
+				}
+			}
+			public int AskQuestion(object data, object contextElement)
+			{
+				IAnswerSurveyQuestion<SurveyDerivationType> typedData = data as IAnswerSurveyQuestion<SurveyDerivationType>;
+				if (typedData != null)
+				{
+					return typedData.AskQuestion(contextElement);
+				}
+				return -1;
+			}
+			public int MapAnswerToImageIndex(int answer)
+			{
+				return (int)SurveyQuestionGlyph.Last + 1 + 1 + (int)SurveyRoleType.Supertype + 1 + 2 + answer;
+			}
+			public IFreeFormCommandProvider<Microsoft.VisualStudio.Modeling.Store> GetFreeFormCommands(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return null;
+			}
+			public bool ShowEmptyGroup(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return false;
+			}
+			public SurveyQuestionDisplayData GetDisplayData(int answer)
+			{
+				return SurveyQuestionDisplayData.Default;
+			}
+			public SurveyQuestionUISupport UISupport
+			{
+				get
+				{
+					return SurveyQuestionUISupport.Overlay;
 				}
 			}
 			public static int QuestionPriority

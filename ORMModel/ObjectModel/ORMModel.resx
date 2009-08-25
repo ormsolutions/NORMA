@@ -730,33 +730,21 @@
 		<value>ORM Notes Editor</value>
 		<comment>Text to place in the title bar of the notes editor tool window.</comment>
 	</data>
-	<data name="ModelReadingEditor.AllReadingsNodeName" xml:space="preserve">
-		<value>All</value>
-		<comment>Text to use for the display All readings node in the readings editor tool window.</comment>
-	</data>
 	<data name="ModelReadingEditor.ChangePrimaryReadingText" xml:space="preserve">
 		<value>Change Primary Reading</value>
 		<comment>Text used to label the transaction created when the primary reading is changed through the reading editor.</comment>
 	</data>
-	<data name="ModelReadingEditor.ChangeReadingText" xml:space="preserve">
-		<value>Change Reading Text</value>
-		<comment>Text used to describe the transaction created when the text of a reading is changed through the editor.</comment>
+	<data name="ModelReadingEditor.ColumnHeader.Readings" xml:space="preserve">
+		<value>Readings</value>
+		<comment>Text used to label the readings header. Visible when extension property descriptors are defined for variables.</comment>
+	</data>
+	<data name="ModelReadingEditor.DeleteReadingTransactionText" xml:space="preserve">
+		<value>Delete Reading</value>
+		<comment>Text used to describe the transaction created when deleting an existing reading.</comment>
 	</data>
 	<data name="ModelReadingEditor.ImpliedFactTypeReadingsText" xml:space="preserve">
 		<value>Implied Fact Type Readings</value>
 		<comment>Text used as the header row for the implied readings in the reading editor for a role selection on an objectified fact type.</comment>
-	</data>
-	<data name="ModelReadingEditor.IsPrimaryToolTip" xml:space="preserve">
-		<value>Indicates if the Reading is the primary one for the ReadingOrder that it belongs to.</value>
-		<comment>Text used for the ToolTip on the IsPrimary column of the reading list.</comment>
-	</data>
-	<data name="ModelReadingEditor.ListColumnHeader.IsPrimary" xml:space="preserve">
-		<value>IsPrimary</value>
-		<comment>Text used for IsPrimary column header in the reading editor tool window.</comment>
-	</data>
-	<data name="ModelReadingEditor.ListColumnHeader.ReadingText" xml:space="preserve">
-		<value>Reading Text</value>
-		<comment>The text that will be displayed in the column header of the reading list in the reading editor tool window.</comment>
 	</data>
 	<data name="ModelReadingEditor.MissingRolePlayerText" xml:space="preserve">
 		<value>[Missing]</value>

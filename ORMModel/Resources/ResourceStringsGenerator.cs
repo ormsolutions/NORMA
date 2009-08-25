@@ -4,7 +4,7 @@
 // * Natural Object-Role Modeling Architect for Visual Studio                 *
 // *                                                                          *
 // * Copyright © Neumont University. All rights reserved.                     *
-// * Copyright © ORM Solutions, LLC. All rights reserved.                        *
+// * Copyright © ORM Solutions, LLC. All rights reserved.                     *
 // *                                                                          *
 // * The use and distribution terms for this software are covered by the      *
 // * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -1549,28 +1549,20 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "DiagramSpy.NoSelection");
 			}
 		}
-		/// <summary>The text that will be displayed in the column header of the reading list in the reading editor tool window.</summary>
-		public static string ModelReadingEditorListColumnHeaderReadingText
+		/// <summary>Text used to label the readings header. Visible when extension property descriptors are defined for variables.</summary>
+		public static string ModelReadingEditorColumnHeaderReadings
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.ListColumnHeader.ReadingText");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.ColumnHeader.Readings");
 			}
 		}
-		/// <summary>Text used for IsPrimary column header in the reading editor tool window.</summary>
-		public static string ModelReadingEditorListColumnHeaderIsPrimary
+		/// <summary>Text used to describe the transaction created when deleting an existing reading.</summary>
+		public static string ModelReadingEditorDeleteReadingTransactionText
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.ListColumnHeader.IsPrimary");
-			}
-		}
-		/// <summary>Text to use for the display All readings node in the readings editor tool window.</summary>
-		public static string ModelReadingEditorAllReadingsNodeName
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.AllReadingsNodeName");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.DeleteReadingTransactionText");
 			}
 		}
 		/// <summary>Text to display in the reading editor when the role has no roleplayer to substitute into the text.</summary>
@@ -1597,14 +1589,6 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.NewReadingTransactionText");
 			}
 		}
-		/// <summary>Text used to describe the transaction created when the text of a reading is changed through the editor.</summary>
-		public static string ModelReadingEditorChangeReadingText
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.ChangeReadingText");
-			}
-		}
 		/// <summary>Text used to label the transaction created when a reading order is moved through the reading editor.</summary>
 		public static string ModelReadingEditorMoveReadingOrder
 		{
@@ -1619,14 +1603,6 @@ namespace ORMSolutions.ORMArchitect.Core
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.MoveReading");
-			}
-		}
-		/// <summary>Text used for the ToolTip on the IsPrimary column of the reading list.</summary>
-		public static string ModelReadingEditorIsPrimaryToolTip
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.IsPrimaryToolTip");
 			}
 		}
 		/// <summary>Text used to label the transaction created when the primary reading is changed through the reading editor.</summary>
