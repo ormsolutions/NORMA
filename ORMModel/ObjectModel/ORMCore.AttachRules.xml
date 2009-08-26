@@ -763,6 +763,20 @@
 				<arg:RuleOn targetType="UniquenessConstraint"/>
 			</arg:ChangeRule>
 		</arg:RuleContainer>
+		<arg:RuleContainer class="RolePath">
+			<arg:DeleteRule methodName="PathedRoleDeletedRule">
+				<arg:RuleOn targetType="PathedRole" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
+			</arg:DeleteRule>
+			<arg:RolePlayerChangeRule methodName="PathedRoleRolePlayerChangedRule">
+				<arg:RuleOn targetType="PathedRole" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
+			</arg:RolePlayerChangeRule>
+			<arg:DeleteRule methodName="SubPathDeletedRule">
+				<arg:RuleOn targetType="RoleSubPathIsContinuationOfRolePath" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
+			</arg:DeleteRule>
+			<arg:RolePlayerChangeRule methodName="SubPathRolePlayerChangedRule">
+				<arg:RuleOn targetType="RoleSubPathIsContinuationOfRolePath" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
+			</arg:RolePlayerChangeRule>
+		</arg:RuleContainer>
 		<arg:RuleContainer class="SetComparisonConstraint">
 			<arg:AddRule methodName="ConstraintHasRoleSequenceAddedRule" fireBefore="true">
 				<!-- Fire before so the SetComparisonConstraint.FactTypeCollection is populated for other rules-->

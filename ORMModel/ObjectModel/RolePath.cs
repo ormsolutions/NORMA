@@ -120,6 +120,125 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return null;
 		}
 		#endregion // Accessors Properties
+		#region Delayed Validation
+		/// <summary>
+		/// Called when a subbranch is removed. If there is one remaining subbranch,
+		/// then move the remaining elements in a single branch to the end of the current branch.
+		/// </summary>
+		/// <param name="element">A <see cref="RoleSubPath"/></param>
+		private static void DelayValidatePathCollapse(ModelElement element)
+		{
+			if (element.IsDeleted)
+			{
+				return;
+			}
+			RolePath parentPath = (RolePath)element;
+			LinkedElementCollection<RoleSubPath> subPaths = parentPath.SplitPathCollection;
+			if (subPaths.Count == 1)
+			{
+				// Remove the tail split by moving all elements up one level
+				RolePath collapsePath = subPaths[0];
+
+				// Move pathed roles
+				foreach (PathedRole pathedRole in collapsePath.PathedRoleCollection)
+				{
+					pathedRole.RolePath = parentPath;
+				}
+
+				// Move sub paths
+				foreach (RoleSubPathIsContinuationOfRolePath subPathLink in RoleSubPathIsContinuationOfRolePath.GetLinksToSplitPathCollection(collapsePath))
+				{
+					subPathLink.ParentRolePath = parentPath;
+				}
+
+				// Change the parent split settings to the path we just collapsed
+				parentPath.SplitIsNegated = collapsePath.SplitIsNegated;
+				parentPath.SplitCombinationOperator = collapsePath.SplitCombinationOperator;
+
+				// We're done with it. Note that this can trigger other rules which will
+				// reenter this routine for the grandparent branch
+				collapsePath.Delete();
+			}
+		}
+		#endregion // Delayed Validation
+		#region Rule Methods
+		/// <summary>
+		/// DeleteRule: typeof(PathedRole), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// Eliminate empty branches.
+		/// </summary>
+		private static void PathedRoleDeletedRule(ElementDeletedEventArgs e)
+		{
+			RolePath rolePath = ((PathedRole)e.ModelElement).RolePath;
+			if (!rolePath.IsDeleted &&
+				rolePath.PathedRoleCollection.Count == 0 &&
+				rolePath.SplitPathCollection.Count == 0)
+			{
+				rolePath.Delete();
+			}
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(PathedRole), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// Eliminate empty branches.
+		/// </summary>
+		private static void PathedRoleRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			if (e.DomainRole.Id == PathedRole.RolePathDomainRoleId)
+			{
+				RolePath rolePath = (RolePath)e.OldRolePlayer;
+				if (!rolePath.IsDeleted &&
+					rolePath.PathedRoleCollection.Count == 0 &&
+					rolePath.SplitPathCollection.Count == 0)
+				{
+					rolePath.Delete();
+				}
+			}
+		}
+		/// <summary>
+		/// DeleteRule: typeof(RoleSubPathIsContinuationOfRolePath), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// If a subbranch is deleted, then delay validate if the parent branch should
+		/// attempt to collapse a remaining branch.
+		/// </summary>
+		private static void SubPathDeletedRule(ElementDeletedEventArgs e)
+		{
+			RolePath parentRolePath = ((RoleSubPathIsContinuationOfRolePath)e.ModelElement).ParentRolePath;
+			if (!parentRolePath.IsDeleted)
+			{
+				if (parentRolePath.PathedRoleCollection.Count == 0 &&
+					parentRolePath.SplitPathCollection.Count == 0)
+				{
+					parentRolePath.Delete();
+				}
+				else
+				{
+					FrameworkDomainModel.DelayValidateElement(parentRolePath, DelayValidatePathCollapse);
+				}
+			}
+		}
+		 /// <summary>
+		 /// RolePlayerChangeRule: typeof(RoleSubPathIsContinuationOfRolePath), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		 /// Check branch collapsing for role player changes.
+		 /// </summary>
+		 private static void SubPathRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		 {
+			 if (e.DomainRole.Id == RoleSubPathIsContinuationOfRolePath.ParentRolePathDomainRoleId)
+			 {
+				 // The parent has lost a branch, validate if needed
+				 RolePath parentRolePath = (RolePath)e.OldRolePlayer;
+				 if (!parentRolePath.IsDeleted)
+				 {
+					 if (parentRolePath.PathedRoleCollection.Count == 0 &&
+						 parentRolePath.SplitPathCollection.Count == 0)
+					 {
+						 parentRolePath.Delete();
+					 }
+					 else
+					 {
+						 FrameworkDomainModel.DelayValidateElement(parentRolePath, DelayValidatePathCollapse);
+					 }
+				 }
+			 }
+		 }
+		#endregion // Rule Methods
 	}
 	#endregion // RolePath class
 	#region PrimaryRolePath class
