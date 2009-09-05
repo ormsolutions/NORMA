@@ -237,7 +237,6 @@
 	<ResourceString name="CommandDeleteMultipleShapeText" model="Diagram" resourceName="Command.DeleteMultipleShape.Text"/>
 	<ResourceString name="CommandDeleteRoleText" model="Diagram" resourceName="Command.DeleteRole.Text"/>
 	<ResourceString name="CommandDeleteReadingText" model="Diagram" resourceName="Command.DeleteReading.Text"/>
-	<ResourceString name="CommandEditReadingText" model="Diagram" resourceName="Command.EditReading.Text"/>
 	<ResourceString name="CommandSwapRoleOrderText" model="Diagram" resourceName="Command.SwapRoleOrder.Text"/>
 	<ResourceString name="CommandNextOnThisDiagramText" model="Diagram" resourceName="Command.NextOnThisDiagram.Text"/>
 	<ResourceString name="DiagramSpyWindowTitle" model="Diagram" resourceName="DiagramSpy.WindowTitle"/>

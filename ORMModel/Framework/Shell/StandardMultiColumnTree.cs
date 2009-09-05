@@ -68,10 +68,11 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 			// UNDONE: MSBUG GetNavigationTarget calls the internal method to get its blank expansion, not
 			// the interface, so we have no way to override it. Duplicate the GetNavigationTarget fix here for
 			// the 'Down' navigation target.
+			BlankExpansionData blankExpansion;
 			switch (direction)
 			{
 				case TreeNavigation.Down:
-					BlankExpansionData blankExpansion = GetBlankExpansion(sourceRow, sourceColumn, columnPermutation);
+					blankExpansion = GetBlankExpansion(sourceRow, sourceColumn, columnPermutation);
 					if (blankExpansion.Anchor.IsValid)
 					{
 						int lastRow = ((ITree)this).VisibleItemCount - 1;
@@ -87,11 +88,30 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 							int topRow = blankExpansion.TopRow;
 							if (sourceColumn == blankExpansion.AnchorColumn && topRow >= testRow)
 							{
-								return new VirtualTreeCoordinate(topRow, (columnPermutation != null) ? columnPermutation.GetPermutedColumn(sourceColumn) : sourceColumn);
+								return new VirtualTreeCoordinate(topRow, sourceColumn);
 							}
 						}
 					}
 					return VirtualTreeCoordinate.Invalid;
+				case TreeNavigation.Right:
+					// If no column permutation is specified and we're on the first row in a complex
+					// subitem expansion, then the provided implementation does not go right.
+					// MSBUG: VirtualTree.GetNavigationTarget is looking at the column count of the
+					// ParentNode of a complex subitem. The column count in this case is always 1.
+					if (columnPermutation == null)
+					{
+						VirtualTreeCoordinate retVal = base.GetNavigationTarget(TreeNavigation.Right, sourceRow, sourceColumn, null);
+						int lastAllowedSourceColumn;
+						if (!retVal.IsValid &&
+							sourceColumn < (lastAllowedSourceColumn = (ColumnCount - 1)) &&
+							(blankExpansion = GetBlankExpansion(sourceRow, sourceColumn, null)).Anchor.IsValid &&
+							blankExpansion.RightColumn < lastAllowedSourceColumn)
+						{
+							retVal = GetBlankExpansion(sourceRow, blankExpansion.RightColumn + 1, null).Anchor;
+						}
+						return retVal;
+					}
+					break;
 				case TreeNavigation.LeftColumn:
 					if (sourceColumn == 0)
 					{

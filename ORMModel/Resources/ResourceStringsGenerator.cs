@@ -1501,14 +1501,6 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.DeleteReading.Text");
 			}
 		}
-		/// <summary>This text appears on the undo/redo menu when a reading is edited.</summary>
-		public static string CommandEditReadingText
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.EditReading.Text");
-			}
-		}
 		/// <summary>This text appears on the move role left/right when the fact type is binary.</summary>
 		public static string CommandSwapRoleOrderText
 		{

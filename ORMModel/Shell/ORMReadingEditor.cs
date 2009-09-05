@@ -383,16 +383,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				myReadingEditor.ActivateReading(fact);
 			}
-
-			public void DeleteSelectedReading()
-			{
-				myReadingEditor.OnMenuDeleteSelectedReading();
-			}
-
-			public void EditSelectedReading()
-			{
-				myReadingEditor.EditSelectedReading();
-			}
 			#endregion // Reading activation helper
 		}
 		#endregion
@@ -575,7 +565,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			return QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
 		}
 		[DllImport("user32.dll", CharSet = CharSet.Auto)]
-		private static extern IntPtr SendMessage(IntPtr hWnd, int msg, int wParam, int lParam);
+		private static extern IntPtr SendMessage(HandleRef hWnd, int msg, int wParam, int lParam);
 		/// <summary>
 		/// Provides a first chance to handle any command that MSOLE.IOleCommandTarget.QueryStatus
 		/// informed the shell to pass to this window. Implements IOleCommandTarget.Exec
@@ -657,7 +647,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							{
 								if (editor.IsReadingPaneActive && editor.CurrentReading != null)
 								{
-									form.DeleteSelectedReading();
+									editor.OnMenuDeleteSelectedReading();
 								}
 							}
 							else
@@ -665,7 +655,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								Control editControl = editor.LabelEditControl;
 								if (editControl != null)
 								{
-									IntPtr editHandle = editControl.Handle;
+									HandleRef editHandle = new HandleRef(editControl, editControl.Handle);
 									// WM_KEYDOWN == 0x100
 									SendMessage(editHandle, 0x100, (int)Keys.Delete, 1);
 									// WM_KEYUP == 0x101
@@ -686,11 +676,23 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						// VirtualTreeView control), handle the edit command and set the hresult to a handled status.
 						if (!editor.EditingFactType.IsEmpty)
 						{
-							if (editor.CurrentReading != null)
+							if (!editor.InLabelEdit)
 							{
 								if (editor.IsReadingPaneActive)
 								{
-									form.EditSelectedReading();
+									editor.EditSelection();
+								}
+							}
+							else
+							{
+								Control editControl = editor.LabelEditControl;
+								if (editControl != null)
+								{
+									HandleRef editHandle = new HandleRef(editControl, editControl.Handle);
+									// WM_KEYDOWN == 0x100
+									SendMessage(editHandle, 0x100, (int)Keys.F2, 1);
+									// WM_KEYUP == 0x101
+									SendMessage(editHandle, 0x101, (int)Keys.F2, 0x40000001);
 								}
 							}
 						}

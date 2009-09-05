@@ -665,7 +665,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		private abstract class RootBranch : BaseBranch
 		{
 			#region Virtual and Abstract Methods
-			public abstract bool IsAdding { get; }
 			public virtual ReadingEditorCommands SupportedSelectionCommands(int itemLocation)
 			{
 				return ReadingEditorCommands.None;
@@ -1249,14 +1248,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 		}
 		/// <summary>
-		/// Puts the reading that is currently selected in the reading order into edit mode.
+		/// Puts the currently selected item into edit mode.
 		/// </summary>
-		public void EditSelectedReading()
+		public void EditSelection()
 		{
-			using (Transaction t = myFactType.Store.TransactionManager.BeginTransaction(ResourceStrings.CommandEditReadingText))
-			{
-				vtrReadings.BeginLabelEdit();
-			}
+			vtrReadings.BeginLabelEdit();
 		}
 
 		#endregion // Reading activation helper
@@ -1847,15 +1843,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			#endregion // Reading Methods
 			#region ReadingOrder Methods
-			public override bool IsAdding
-			{
-				get
-				{
-					ReadingOrderBranch testBranch;
-					return (null != (testBranch = myReadingOrderBranch) && testBranch.IsAdding) ||
-						(null != (testBranch = myImpliedFactTypeBranch) && testBranch.IsAdding);
-				}
-			}
 			public override void EditReadingOrder(IList<RoleBase> collection)
 			{
 				FactType matchFactType = collection[0].FactType;
@@ -1895,7 +1882,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			private ReadingOrderInformationCollection myReadingOrderPermutations;
 			private readonly IList<RoleBase> myRoleDisplayOrder;
 			private string[] myRoleNames;
-			private int myInsertedRow = -1;
 			private BranchModificationEventHandler myModify;
 			private ReadingEditor myEditor;
 			#endregion // Member Variables
@@ -1988,24 +1974,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							string newReadingText = editor.BuildReadingText();
 							if (newReadingText.Length != 0)
 							{
-								Reading theNewReading;
-								try
+								using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.ModelReadingEditorNewReadingTransactionText))
 								{
-									myInsertedRow = row;
-									using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.ModelReadingEditorNewReadingTransactionText))
-									{
-										ReadingOrder theOrder = myFactType.EnsureReadingOrder(myReadingOrderKeyedCollection[row].RoleOrder);
-										Debug.Assert(theOrder != null, "A ReadingOrder should have been found or created.");
-										theNewReading = new Reading(store);
-										LinkedElementCollection<Reading> readings = theOrder.ReadingCollection;
-										readings.Add(theNewReading);
-										theNewReading.Text = newReadingText;
-										t.Commit();
-									}
-								}
-								finally
-								{
-									myInsertedRow = -1;
+									ReadingOrder readingOrder = myFactType.EnsureReadingOrder(myReadingOrderKeyedCollection[row].RoleOrder);
+									Debug.Assert(readingOrder != null, "A ReadingOrder should have been found or created.");
+									Reading newReading = new Reading(store);
+									newReading.ReadingOrder = readingOrder;
+									newReading.Text = newReadingText;
+									t.Commit();
 								}
 								return LabelEditResult.AcceptEdit;
 							}
@@ -2307,16 +2283,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			#endregion // Reading Branch Methods
 			#region ReadingOrder Branch Methods
-			/// <summary>
-			/// Used to find out if the branch is in the process of adding a new entry from input into the branch.
-			/// </summary>
-			public override bool IsAdding
-			{
-				get
-				{
-					return myInsertedRow != -1;
-				}
-			}
 			public override void AddNewReadingOrder()
 			{
 				VirtualTreeControl control = ReadingEditor.Instance.TreeControl;
@@ -3030,7 +2996,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				private readonly ReadingEditor myEditor;
 				private ExtensionPropertyBranch[] myPropertyBranches;
 				private bool myShowNewRow;
-				private int myInsertedRow = -1;
 				private BranchModificationEventHandler myModify;
 				#endregion // Member Variables
 				#region Constructor
@@ -3085,23 +3050,23 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								string newReadingText = editor.BuildReadingText();
 								if (newReadingText.Length != 0)
 								{
-									try
+									Reading newReading = null;
+									using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.ModelReadingEditorNewReadingTransactionText))
 									{
-										myInsertedRow = row;
-										using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.ModelReadingEditorNewReadingTransactionText))
-										{
-											Debug.Assert(myReadingOrder != null, "A ReadingOrder should have been found or created.");
-											this.ShowNewRow(false);
-											Reading theNewReading = new Reading(store);
-											LinkedElementCollection<Reading> readings = myReadingOrder.ReadingCollection;
-											readings.Add(theNewReading);
-											theNewReading.Text = newReadingText;
-											t.Commit();
-										}
+										Debug.Assert(myReadingOrder != null, "A ReadingOrder should have been found or created.");
+										this.ShowNewRow(false);
+										newReading = new Reading(store);
+										newReading.ReadingOrder = myReadingOrder;
+										newReading.Text = newReadingText;
+										t.Commit();
 									}
-									finally
+									if (newReading != null)
 									{
-										myInsertedRow = -1;
+										// Reselect the new reading. The option to this approach is to
+										// replace the new row with the reading before the transaction
+										// commits so that the row is not inserted/readded. For the same
+										// user experience, this isn't worth the additional complication.
+										myEditor.TreeControl.SelectObject(null, newReading, (int)ObjectStyle.TrackingObject, 0);
 									}
 									return LabelEditResult.AcceptEdit;
 								}
@@ -3216,17 +3181,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 				}
 				/// <summary>
-				/// Used to find out if the branch is in the process of adding a new entry from
-				/// input into the branch.
-				/// </summary>
-				public bool IsAdding
-				{
-					get
-					{
-						return myInsertedRow != -1;
-					}
-				}
-				/// <summary>
 				/// Displays the new row for adding a reading to the reading order
 				/// </summary>
 				public void ShowNewRow(bool show)
@@ -3241,10 +3195,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							// Notify addition at the end
 							int insertPosition = myReadings.Count - 2;
 							modify(this, BranchModificationEventArgs.InsertItems(this, insertPosition, 1));
-							foreach (ExtensionPropertyBranch propertyBranch in ExtensionPropertyBranches)
-							{
-								modify(propertyBranch, BranchModificationEventArgs.InsertItems(propertyBranch, insertPosition, 1));
-							}
 						}
 					}
 					else if (myShowNewRow && !show)
