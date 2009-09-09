@@ -305,7 +305,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					switch (role.GetReferenceSchemePattern(out identifiedType))
 					{
 						case ReferenceSchemeRolePattern.OptionalSimpleIdentifierRole:
-						case ReferenceSchemeRolePattern.OptionalCompositeIdentifierRole:
 							retVal[i] = identifiedType;
 							break;
 						default:
@@ -410,7 +409,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion
 	}
 	#endregion
-
+	#region FactTypeInstance class
 	public partial class FactTypeInstance : IModelErrorOwner, IHasIndirectModelErrorOwner
 	{
 		#region Helper Methods
@@ -1306,7 +1305,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion
 	}
-
+	#endregion // FactTypeInstance class
+	#region EntityTypeInstance class
 	public partial class EntityTypeInstance : IModelErrorOwner, IHasIndirectModelErrorOwner
 	{
 		#region Base overrides
@@ -2090,65 +2090,55 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							}
 							else if (identifyingObjectType != null)
 							{
-								LinkedElementCollection<ConstraintRoleSequence> identifierConstraintSequences = null;
-								foreach (ObjectTypeInstance identifyingInstance in identifyingObjectType.ObjectTypeInstanceCollection)
+								LinkedElementCollection<ObjectTypeInstance> identifyingInstances = identifiedObjectType.ObjectTypeInstanceCollection;
+								if (identifyingInstances.Count != 0)
 								{
-									bool requireError = true;
-									bool haveMandatoryConstraints = false;
-
-									if (identifierConstraintSequences == null)
-									{
-										identifierConstraintSequences = identifierRole.ConstraintRoleSequenceCollection;
-									}
-
 									// Find disjunctive mandatory roles
-									foreach (ConstraintRoleSequence sequence in identifierConstraintSequences)
+									foreach (ConstraintRoleSequence sequence in identifierRole.ConstraintRoleSequenceCollection)
 									{
 										MandatoryConstraint constraint = sequence as MandatoryConstraint;
 										if (constraint != null && constraint.Modality == ConstraintModality.Alethic)
 										{
-											if (!haveMandatoryConstraints)
+											LinkedElementCollection<Role> constraintRoles = null;
+											foreach (ObjectTypeInstance identifyingInstance in identifyingInstances)
 											{
-												haveMandatoryConstraints = true;
+												bool requireError = true;
 												foreach (EntityTypeRoleInstance roleInstance in EntityTypeRoleInstance.GetLinksToRoleCollection(identifyingInstance))
 												{
-													if (roleInstance.Role == identifierRole)
+													// Check all constraint roles, not just the identifier role, to handle
+													// disjunctive mandatory constraints correctly.
+													if ((constraintRoles ?? (constraintRoles = constraint.RoleCollection)).Contains(roleInstance.Role))
 													{
 														requireError = false;
 														break;
 													}
 												}
-											}
-											LinkedElementCollection<PopulationMandatoryError> errors = constraint.PopulationMandatoryErrorCollection;
-											PopulationMandatoryError error = null;
-											foreach (PopulationMandatoryError testError in errors)
-											{
-												if (testError.ObjectTypeInstance == identifyingInstance)
+												PopulationMandatoryError error = null;
+												foreach (PopulationMandatoryError testError in constraint.PopulationMandatoryErrorCollection)
 												{
-													error = testError;
-													break;
+													if (testError.ObjectTypeInstance == identifyingInstance)
+													{
+														error = testError;
+														break;
+													}
 												}
-											}
-											if (requireError)
-											{
-												if (error == null)
+												if (requireError)
 												{
-													error = new PopulationMandatoryError(element.Store);
-													error.ObjectTypeInstance = identifyingInstance;
-													error.MandatoryConstraint = constraint;
-													error.Model = constraint.Model;
+													if (error == null)
+													{
+														error = new PopulationMandatoryError(element.Store);
+														error.ObjectTypeInstance = identifyingInstance;
+														error.MandatoryConstraint = constraint;
+														error.Model = constraint.Model;
+													}
+													error.GenerateErrorText();
 												}
-												error.GenerateErrorText();
-											}
-											else if (error != null)
-											{
-												error.Delete();
+												else if (error != null)
+												{
+													error.Delete();
+												}
 											}
 										}
-									}
-									if (!haveMandatoryConstraints)
-									{
-										break;
 									}
 								}
 							}
@@ -2497,6 +2487,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion
 	}
+	#endregion // EntityTypeInstance class
+	#region ValueTypeInstance class
 	public partial class ValueTypeInstance : IModelErrorOwner
 	{
 		#region Base overrides
@@ -2752,7 +2744,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // ValueTypeInstance Rules
 	}
-
+	#endregion // ValueTypeInstance class
+	#region Role class
 	public partial class Role : IModelErrorOwner
 	{
 		#region PopulationUniquenessError Validation
@@ -3008,7 +3001,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // Role Rules
 	}
-
+	#endregion // Role class
+	#region ObjectTypeInstance class
 	partial class ObjectTypeInstance : IModelErrorOwner
 	{
 		#region IModelErrorOwner Implementation
@@ -3838,36 +3832,39 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									// intersecting the opposite role.
 									// Note that we always have an opposite role. Otherwise, the reference scheme
 									// pattern would not hold.
-									foreach (ConstraintRoleSequence sequence in currentRole.OppositeRole.Role.ConstraintRoleSequenceCollection)
+									if (notifyAdded == null) // The opposite instance will be validated during load, no need to repeat
 									{
-										MandatoryConstraint constraint = sequence as MandatoryConstraint;
-										if (constraint != null && constraint.Modality == ConstraintModality.Alethic)
+										foreach (ConstraintRoleSequence sequence in currentRole.OppositeRole.Role.ConstraintRoleSequenceCollection)
 										{
-											if (!retrievedIdentifyingInstance)
+											MandatoryConstraint constraint = sequence as MandatoryConstraint;
+											if (constraint != null && constraint.Modality == ConstraintModality.Alethic)
 											{
-												retrievedIdentifyingInstance = true;
-												EntityTypeInstance entityInstance;
-												if (null != (entityInstance = this as EntityTypeInstance))
+												if (!retrievedIdentifyingInstance)
 												{
-													LinkedElementCollection<EntityTypeRoleInstance> identifyingInstances = entityInstance.RoleInstanceCollection;
-													if (identifyingInstances.Count == 1)
+													retrievedIdentifyingInstance = true;
+													EntityTypeInstance entityInstance;
+													if (null != (entityInstance = this as EntityTypeInstance))
 													{
-														identifyingInstance = identifyingInstances[0].ObjectTypeInstance;
+														LinkedElementCollection<EntityTypeRoleInstance> identifyingInstances = entityInstance.RoleInstanceCollection;
+														if (identifyingInstances.Count == 1)
+														{
+															identifyingInstance = identifyingInstances[0].ObjectTypeInstance;
+														}
 													}
 												}
-											}
-											if (identifyingInstance == null)
-											{
-												break;
-											}
-											LinkedElementCollection<PopulationMandatoryError> oppositeErrors = constraint.PopulationMandatoryErrorCollection;
-											int errorCount = oppositeErrors.Count;
-											for (int j = errorCount - 1; j >= 0; --j)
-											{
-												PopulationMandatoryError error = oppositeErrors[j];
-												if (error.ObjectTypeInstance == identifyingInstance)
+												if (identifyingInstance == null)
 												{
-													error.Delete();
+													break;
+												}
+												LinkedElementCollection<PopulationMandatoryError> oppositeErrors = constraint.PopulationMandatoryErrorCollection;
+												int errorCount = oppositeErrors.Count;
+												for (int j = errorCount - 1; j >= 0; --j)
+												{
+													PopulationMandatoryError error = oppositeErrors[j];
+													if (error.ObjectTypeInstance == identifyingInstance)
+													{
+														error.Delete();
+													}
 												}
 											}
 										}
@@ -3891,12 +3888,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								case ReferenceSchemeRolePattern.MandatorySimpleIdentifiedRole:
 									// Nothing to do here. These are populated automatically when instances
 									// are added to the opposite role.
-								case ReferenceSchemeRolePattern.OptionalSimpleIdentifierRole:
-								case ReferenceSchemeRolePattern.OptionalCompositeIdentifierRole:
-									// There is nothing to do here. The implied FactTypeInstance
-									// population for this FactType is controlled by the opposite EntityTypeInstance
-									// population.
 									continue;
+								//case ReferenceSchemeRolePattern.OptionalSimpleIdentifierRole:
+								//case ReferenceSchemeRolePattern.OptionalCompositeIdentifierRole:
+								//    // Evaluate these. Although the population of the FactTypeInstance
+								//    // is implied, the role should set get a population mandatory error
+								//    // if an instance is not used by another entity instance.
+								//    break;
 								case ReferenceSchemeRolePattern.ImpliedObjectificationRole:
 									impliedObjectificationRole = true;
 									break;
@@ -4094,6 +4092,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						case ReferenceSchemeRolePattern.None:
 						case ReferenceSchemeRolePattern.MandatoryCompositeIdentifierRole:
+						case ReferenceSchemeRolePattern.OptionalSimpleIdentifierRole:
+						case ReferenceSchemeRolePattern.OptionalCompositeIdentifierRole:
 							{
 								int instanceCount = 0;
 								ObjectTypeInstance[] instances = null;
@@ -4299,23 +4299,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						case ReferenceSchemeRolePattern.MandatorySimpleIdentifiedRole:
 							// Nothing to do here. These are populated automatically when instances
 							// are added to the opposite role.
-							break;
-						case ReferenceSchemeRolePattern.OptionalSimpleIdentifierRole:
-						case ReferenceSchemeRolePattern.OptionalCompositeIdentifierRole:
-							// There is nothing to do here. The implied FactTypeInstance
-							// population for this FactType is controlled by the opposite EntityTypeInstance
-							// population. However, we need to regenerate text for existing mandatory errors.
-							foreach (ConstraintRoleSequence sequence in role.ConstraintRoleSequenceCollection)
-							{
-								MandatoryConstraint constraint = sequence as MandatoryConstraint;
-								if (constraint != null)
-								{
-									foreach (PopulationMandatoryError error in constraint.PopulationMandatoryErrorCollection)
-									{
-										error.GenerateErrorText();
-									}
-								}
-							}
 							break;
 					}
 				}
@@ -5301,6 +5284,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // Handle objectified FactType inclusion in generated name
 		#endregion // ObjectTypeInstance Rules
 	}
+	#endregion // ObjectTypeInstance class
+	#region EntityTypeSubtypeInstance class
 	partial class EntityTypeSubtypeInstance : IHasIndirectModelErrorOwner
 	{
 		#region Base overrides
@@ -5434,6 +5419,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // Helper Methods
 	}
+	#endregion // EntityTypeSubtypeInstance class
+	#region ObjectificationInstance class
 	partial class ObjectificationInstance
 	{
 		#region Rule methods
@@ -5683,6 +5670,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // Rule methods
 	}
+	#endregion // ObjectificationInstance class
+	#region EntityTypeRoleInstance class
 	partial class EntityTypeRoleInstance : IHasIndirectModelErrorOwner
 	{
 		#region IHasIndirectModelErrorOwner Implementation
@@ -5707,4 +5696,154 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // IHasIndirectModelErrorOwner Implementation
 	}
+	#endregion // EntityTypeRoleInstance class
+	#region ImpliedFactInstancePopulation struct
+	/// <summary>
+	/// Helper structure to determine when the set of <see cref="FactTypeInstance"/>
+	/// elements associated with a <see cref="FactType"/> is implied by the population
+	/// of another <see cref="ObjectType"/>. Implied population occurs if the <see cref="FactType"/>
+	/// is used as part of the identification scheme for the implying entity type or subtype.
+	/// </summary>
+	public struct FactTypeInstanceImplication
+	{
+		#region Fields
+		/// <summary>
+		/// The entity type with the population that implies
+		/// the population of this <see cref="FactType"/>
+		/// </summary>
+		public readonly ObjectType ImpliedByEntityType;
+		/// <summary>
+		/// The supertype of of the <see cref="ImpliedByEntityType"/> that
+		/// provides its identification scheme. If the ProxyEntityType
+		/// is self-identifying, then this is set to the same value as <see cref="ImpliedByEntityType"/>.
+		/// If an identification scheme has not been specified then this
+		/// is <see langword="null"/>.
+		/// </summary>
+		public readonly ObjectType IdentifyingSupertype;
+		/// <summary>
+		/// If the <see cref="FactType"/> is a link fact type implied by
+		/// objectification, then specifiy the associated <see cref="RoleProxy"/>
+		/// or <see cref="ObjectifiedUnaryRole"/>.
+		/// </summary>
+		public readonly RoleBase ImpliedProxyRole;
+		#endregion // Fields
+		#region Constructor
+		/// <summary>
+		/// Get information about the <see cref="ObjectType">EntityType</see>
+		/// that provides an implied population for this <paramref name="factType"/>
+		/// </summary>
+		/// <param name="factType">The <see cref="FactType"/> to retrieve implied
+		/// information for.</param>
+		public FactTypeInstanceImplication(FactType factType)
+		{
+			ObjectType impliedByEntityType = null;
+			ObjectType identifyingSuperType = null;
+			RoleBase impliedProxyRole = null;
+			IList<RoleBase> factRoles;
+			SubtypeFact subtypeFact;
+			Objectification objectification;
+			RoleBase testRole;
+			UniquenessConstraint pid;
+			if (factType != null && !factType.IsDeleted)
+			{
+				if (null != (subtypeFact = factType as SubtypeFact))
+				{
+					if (subtypeFact.ProvidesPreferredIdentifier)
+					{
+						// The population is implied for FactType
+						impliedByEntityType = subtypeFact.Subtype;
+						pid = impliedByEntityType.ResolvedPreferredIdentifier;
+						identifyingSuperType = (pid != null) ? pid.PreferredIdentifierFor : null;
+					}
+				}
+				else if (null != (objectification = factType.ImpliedByObjectification) &&
+					2 == (factRoles = factType.OrderedRoleCollection).Count &&
+					null != (impliedProxyRole = (RoleBase)((testRole = factRoles[0]) as RoleProxy) ?? testRole as ObjectifiedUnaryRole ?? (RoleBase)((testRole = factRoles[1]) as RoleProxy) ?? testRole as ObjectifiedUnaryRole))
+				{
+					impliedByEntityType = objectification.NestingType;
+					pid = impliedByEntityType.ResolvedPreferredIdentifier;
+					identifyingSuperType = (pid != null) ? pid.PreferredIdentifierFor : null;
+				}
+				else
+				{
+					foreach (SetConstraint setConstraint in factType.SetConstraintCollection)
+					{
+						UniquenessConstraint uc;
+						ObjectType preferredFor;
+						if (null != (uc = setConstraint as UniquenessConstraint) &&
+							null != (preferredFor = uc.PreferredIdentifierFor) &&
+							preferredFor.NestedFactType != factType)
+						{
+							identifyingSuperType = impliedByEntityType = preferredFor;
+							break;
+						}
+					}
+				}
+			}
+			ImpliedByEntityType = impliedByEntityType;
+			IdentifyingSupertype = identifyingSuperType;
+			ImpliedProxyRole = impliedProxyRole;
+		}
+		#endregion // Constructor
+		#region Accessor Properties
+		/// <summary>
+		/// <see langword="true"/> if the <see cref="FactType"/> specified
+		/// in the constructor has an implied population.
+		/// </summary>
+		public bool IsImplied
+		{
+			get
+			{
+				return ImpliedByEntityType != null;
+			}
+		}
+		#endregion // Accessor Properties
+		#region Equality
+		/// <summary>
+		/// Standard Equals override
+		/// </summary>
+		public override bool Equals(object obj)
+		{
+			if (obj is FactTypeInstanceImplication)
+			{
+				return Equals((FactTypeInstanceImplication)obj);
+			}
+			return false;
+		}
+		/// <summary>
+		/// Standard GetHashCode override
+		/// </summary>
+		public override int GetHashCode()
+		{
+			ObjectType objectType;
+			RoleBase role;
+			return Utility.GetCombinedHashCode(
+				(objectType = ImpliedByEntityType) != null ? objectType.GetHashCode() : 0,
+				(objectType = IdentifyingSupertype) != null ? objectType.GetHashCode() : 0,
+				(role = ImpliedProxyRole) != null ? role.GetHashCode() : 0);
+		}
+		/// <summary>
+		/// Typed Equals method
+		/// </summary>
+		public bool Equals(FactTypeInstanceImplication other)
+		{
+			return ImpliedByEntityType == other.ImpliedByEntityType && IdentifyingSupertype == other.IdentifyingSupertype && ImpliedProxyRole == other.ImpliedProxyRole;
+		}
+		/// <summary>
+		/// Equality operator
+		/// </summary>
+		public static bool operator ==(FactTypeInstanceImplication left, FactTypeInstanceImplication right)
+		{
+			return left.Equals(right);
+		}
+		/// <summary>
+		/// Inequality operator
+		/// </summary>
+		public static bool operator !=(FactTypeInstanceImplication left, FactTypeInstanceImplication right)
+		{
+			return !left.Equals(right);
+		}
+		#endregion // Equality
+	}
+	#endregion // ImpliedFactInstancePopulation struct
 }

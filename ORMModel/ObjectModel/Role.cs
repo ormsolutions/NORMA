@@ -1731,7 +1731,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Get the opposite role of any role. All roles are involved either
 		/// in a binary fact or have a proxy role in a binary fact. If a role
 		/// has two opposite roles, then this method will choose the role
-		/// on the non-implied binar fact. Use <see cref="OppositeRoleAlwaysResolveProxy"/>
+		/// on the non-implied binary fact. Use <see cref="OppositeRoleAlwaysResolveProxy"/>
 		/// to choose the opposite role on the implied binary fact.
 		/// </summary>
 		public RoleBase OppositeRoleResolveProxy

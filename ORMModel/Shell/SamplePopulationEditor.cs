@@ -852,13 +852,18 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				FactType factType = autoCorrectRole.FactType;
 				SubtypeFact subtypeFact = factType as SubtypeFact;
 				ObjectType subtype = null;
+				ObjectType impliedEntityType;
+				ObjectType impliedSupertype;
 				if ((Array.IndexOf<ModelElement>(representedElements, (ModelElement)subtypeFact ?? autoCorrectRole) != -1 ||
-					subtypeFact != null && subtypeFact.ProvidesPreferredIdentifier && autoCorrectRole is SupertypeMetaRole && Array.IndexOf<ModelElement>(representedElements, subtype = subtypeFact.Subtype) != -1))
+					subtypeFact != null && subtypeFact.ProvidesPreferredIdentifier && autoCorrectRole is SupertypeMetaRole && Array.IndexOf<ModelElement>(representedElements, subtype = subtypeFact.Subtype) != -1) ||
+					(autoCorrectRole.GetReferenceSchemePattern() == ReferenceSchemeRolePattern.OptionalSimpleIdentifierRole && Array.IndexOf<ModelElement>(representedElements, autoCorrectRole.OppositeRole.Role.RolePlayer) != -1))
 				{
 					ObjectTypeInstance instance = error.ObjectTypeInstance;
 					MandatoryConstraint constraint = error.MandatoryConstraint;
 					EntityTypeSubtypeInstance subtypeInstance = null;
 					FactTypeInstance factInstance = null;
+					EntityTypeInstance entityInstance = null;
+					FactTypeInstanceImplication implication;
 					Store store = instance.Store;
 					using (Transaction t = store.TransactionManager.BeginTransaction(string.Format(ResourceStrings.ModelSamplePopulationEditorNewInstanceTransactionText, (subtype != null) ? subtype.Name : factType.Name)))
 					{
@@ -866,28 +871,68 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						{
 							subtypeInstance = EntityTypeSubtypeInstance.GetSubtypeInstance((EntityTypeInstance)instance, subtype, false, true);
 						}
+						else if ((implication = new FactTypeInstanceImplication(factType)).IsImplied && implication.ImpliedProxyRole == null && (impliedSupertype = implication.IdentifyingSupertype) != null)
+						{
+							FactType selectedFactType = mySelectedFactType;
+							impliedEntityType = implication.ImpliedByEntityType;
+							EntityTypeBranch.ConnectInstance(impliedSupertype, impliedSupertype != impliedEntityType ? impliedEntityType : null, ref entityInstance, ref subtypeInstance, instance, autoCorrectRole);
+							if (selectedFactType != null && entityInstance != null)
+							{
+								factInstance = new FactTypeInstance(store);
+								factInstance.FactType = selectedFactType;
+								new ObjectificationInstance(factInstance, (ObjectTypeInstance)subtypeInstance ?? entityInstance);
+							}
+						}
 						else
 						{
 							FactTypeBranch.ConnectInstance(ref factInstance, instance, autoCorrectRole, null);
 						}
-						t.Commit();
+						if (t.HasPendingChanges)
+						{
+							t.Commit();
+						}
 					}
 					ObjectifiedInstanceRequiredError objectifiedInstanceRequired;
 					TooFewFactTypeRoleInstancesError partialFactInstanceError;
+					TooFewEntityTypeRoleInstancesError partialEntityInstanceError;
 					object selectErrorObject = null;
-					if (null != subtypeInstance &&
-						null != (objectifiedInstanceRequired = subtypeInstance.ObjectifiedInstanceRequiredError))
+					object selectInstance = null;
+					if (null != subtypeInstance)
 					{
-						// We need to create the subtypeinstance and attach it to a FactType, but we don't know
-						// which one, so we defer to the branches to get a good selection.
-						selectErrorObject = objectifiedInstanceRequired;
+						if (null != (objectifiedInstanceRequired = subtypeInstance.ObjectifiedInstanceRequiredError))
+						{
+							// We need to create the subtypeinstance and attach it to a FactType, but we don't know
+							// which one, so we defer to the branches to get a good selection.
+							selectErrorObject = objectifiedInstanceRequired;
+						}
+						else
+						{
+							selectInstance = subtypeInstance;
+						}
 					}
-					else if (null != factInstance &&
-						null != (partialFactInstanceError = factInstance.TooFewFactTypeRoleInstancesError))
+					else if (null != entityInstance)
 					{
-						// The new fact instance is likely to have a partial
-						// population. Activate the row if this is the case.
-						selectErrorObject = partialFactInstanceError;
+						if (null != (partialEntityInstanceError = entityInstance.TooFewEntityTypeRoleInstancesError))
+						{
+							selectErrorObject = partialEntityInstanceError;
+						}
+						else
+						{
+							selectInstance = entityInstance;
+						}
+					}
+					else if (null != factInstance)
+					{
+						if (null != (partialFactInstanceError = factInstance.TooFewFactTypeRoleInstancesError))
+						{
+							// The new fact instance is likely to have a partial
+							// population. Activate the row if this is the case.
+							selectErrorObject = partialFactInstanceError;
+						}
+						else
+						{
+							selectInstance = factInstance;
+						}
 					}
 					if (selectErrorObject != null)
 					{
@@ -895,6 +940,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						{
 							vtrSamplePopulation.BeginLabelEdit();
 						}
+					}
+					else if (selectInstance != null)
+					{
+						vtrSamplePopulation.SelectObject(null, selectInstance, (int)ObjectStyle.TrackingObject, 0);
 					}
 					return true;
 				}
@@ -2278,7 +2327,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 										entityEditorBranch.ConnectInstance(typedValue, role, null, context.myFactInstance);
 										if (context.myIsEntityTypeEditor)
 										{
-											context.UpdateInstanceFields(typedValue);
+											context.UpdateInstanceFields((ObjectTypeInstance)context.mySubtypeInstance ?? context.myEntityInstance);
 										}
 										else
 										{
@@ -4235,6 +4284,19 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						return new LocateObjectData(row, column, (int)TrackingObjectAction.ThisLevel);
 					}
 				}
+				else if (style == ObjectStyle.TrackingObject)
+				{
+					int row;
+					EntityTypeInstance entityInstance;
+					ObjectType entityType;
+					if (null != (entityInstance = obj as EntityTypeInstance) &&
+						(entityType = entityInstance.EntityType) == myEntityType &&
+						-1 != (row = myCachedInstances.IndexOf(entityInstance)) &&
+						row < myNonEmptyInstanceCount)
+					{
+						return new LocateObjectData(row, 0, (int)TrackingObjectAction.ThisLevel);
+					}
+				}
 				return new LocateObjectData();
 			}
 			#endregion // IBranch Interface Members
@@ -4687,18 +4749,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			private readonly FactType myFactType;
 			private List<FactTypeInstance> myCachedFactInstances;
 			private List<ObjectTypeInstance> myCachedObjectInstances;
-			/// <summary>
-			/// An entity type to provide a non-editable set of data
-			/// for this FactType
-			/// </summary>
-			private ObjectType myProxyEntityType;
-			/// <summary>
-			/// Same as the proxy entity type unless this is a suptype
-			/// situation, where the proxy is the subtype and this is the
-			/// supertype.
-			/// </summary>
-			private ObjectType myProxySupertype;
-			private RoleBase myImpliedProxyRole;
+			private FactTypeInstanceImplication myImplicationProxy;
 			private ObjectType myObjectifyingType;
 			/// <summary>
 			/// Expansion branches from the 'new' row that need to
@@ -4716,7 +4767,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				myFactType = selectedFactType;
 				ValidateReadOnlyProxyObject();
-				ObjectType proxyObjectType = myProxyEntityType;
+				ObjectType proxyObjectType = myImplicationProxy.ImpliedByEntityType;
 				if (proxyObjectType != null)
 				{
 					myCachedObjectInstances = GetNonEmptyObjectInstances(proxyObjectType);
@@ -4984,7 +5035,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						ObjectTypeInstance instance = myCachedObjectInstances[row];
 						if (instance != null)
 						{
-							RoleBase impliedRole = myImpliedProxyRole;
+							RoleBase impliedRole = myImplicationProxy.ImpliedProxyRole;
 							if (impliedRole != null &&
 								myFactType.OrderedRoleCollection.IndexOf(impliedRole) == column - 1)
 							{
@@ -5077,7 +5128,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					if (IsReadOnly)
 					{
-						if (myProxyEntityType != null)
+						if (myImplicationProxy.ImpliedByEntityType != null)
 						{
 							return myCachedObjectInstances.Count;
 						}
@@ -5099,6 +5150,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			LocateObjectData IBranch.LocateObject(object obj, ObjectStyle style, int locateOptions)
 			{
 				List<FactTypeInstance> instances;
+				TrackingObjectAction trackingAction = TrackingObjectAction.ThisLevel;
+				int row = -1;
+				int column = 0;
 				if (style == ErrorObject &&
 					null != (instances = myCachedFactInstances))
 				{
@@ -5106,9 +5160,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					TooFewEntityTypeRoleInstancesError partialEntityInstancePopulationError;
 					ObjectifyingInstanceRequiredError objectifyingInstanceError;
 					FactTypeInstance factInstance;
-					TrackingObjectAction trackingAction = TrackingObjectAction.ThisLevel;
-					int row = -1;
-					int column = 0;
 					if (null != (partialFactInstancePopulationError = obj as TooFewFactTypeRoleInstancesError))
 					{
 						factInstance = partialFactInstancePopulationError.FactTypeInstance;
@@ -5189,10 +5240,34 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						}
 						column = 1;
 					}
-					if (row != -1)
+				}
+				else if (style == ObjectStyle.TrackingObject)
+				{
+					FactTypeInstance factInstance;
+					EntityTypeInstance entityInstance;
+					if (null != (factInstance = obj as FactTypeInstance))
 					{
-						return new LocateObjectData(row, column, (int)trackingAction);
+						if (!IsReadOnly)
+						{
+							row = myCachedFactInstances.IndexOf(factInstance);
+						}
 					}
+					else if (null != (entityInstance = obj as EntityTypeInstance))
+					{
+						if (IsReadOnly)
+						{
+							row = myCachedObjectInstances.IndexOf(entityInstance);
+						}
+						else if (null != (factInstance = entityInstance.ObjectifiedInstance))
+						{
+							row = myCachedFactInstances.IndexOf(factInstance);
+							column = 1;
+						}
+					}
+				}
+				if (row != -1)
+				{
+					return new LocateObjectData(row, column, (int)trackingAction);
 				}
 				return new LocateObjectData();
 			}
@@ -5267,34 +5342,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				ObjectType objectifyingType;
 				if (IsReadOnly)
 				{
-					if (myProxyEntityType == objectTypeInstance.ObjectType)
+					int index;
+					if (myImplicationProxy.ImpliedByEntityType == objectTypeInstance.ObjectType &&
+						-1 != (index = myCachedObjectInstances.IndexOf(objectTypeInstance)))
 					{
-						if (myFactType is SubtypeFact)
-						{
-							int index = myCachedObjectInstances.IndexOf(objectTypeInstance);
-							if (index != -1)
-							{
-								EditInstanceDisplay(index);
-							}
-						}
-						else
-						{
-							List<ObjectTypeInstance> instances = myCachedObjectInstances;
-							int instanceCount = instances.Count;
-							for (int i = 0; i < instanceCount; ++i)
-							{
-								LinkedElementCollection<EntityTypeRoleInstance> entityTypeRoleInstances = ((EntityTypeInstance)instances[i]).RoleInstanceCollection;
-								int entityTypeRoleInstanceCount = entityTypeRoleInstances.Count;
-								for (int j = 0; j < entityTypeRoleInstanceCount; ++j)
-								{
-									if (entityTypeRoleInstances[j].ObjectTypeInstance == objectTypeInstance)
-									{
-										EditInstanceDisplay(i);
-										break;
-									}
-								}
-							}
-						}
+						EditInstanceDisplay(index);
 					}
 				}
 				else if (null != (objectifyingType = myObjectifyingType) &&
@@ -5326,7 +5378,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				EntityTypeHasEntityTypeInstance link = e.ModelElement as EntityTypeHasEntityTypeInstance;
 				ObjectType entityType = link.EntityType;
-				if (entityType != null && !entityType.IsDeleted && entityType == myProxyEntityType)
+				if (entityType != null && !entityType.IsDeleted && entityType == myImplicationProxy.ImpliedByEntityType)
 				{
 					List<ObjectTypeInstance> instances = myCachedObjectInstances;
 					ObjectTypeInstance addedInstance = link.EntityTypeInstance;
@@ -5342,7 +5394,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				EntityTypeHasEntityTypeInstance link = e.ModelElement as EntityTypeHasEntityTypeInstance;
 				ObjectType entityType = link.EntityType;
-				if (entityType != null && !entityType.IsDeleted && entityType == myProxyEntityType)
+				if (entityType != null && !entityType.IsDeleted && entityType == myImplicationProxy.ImpliedByEntityType)
 				{
 					List<ObjectTypeInstance> instances = myCachedObjectInstances;
 					int instanceLocation = instances.IndexOf(link.EntityTypeInstance);
@@ -5437,63 +5489,16 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// </summary>
 			private void ValidateReadOnlyProxyObject()
 			{
-				ObjectType proxyEntityType = null;
-				ObjectType proxySupertype = null;
-				RoleBase impliedProxyRole = null;
-				IList<RoleBase> factRoles;
 				FactType factType = myFactType;
-				SubtypeFact subtypeFact;
-				Objectification objectification;
-				RoleBase testRole;
-				UniquenessConstraint pid;
-				if (factType != null && !factType.IsDeleted)
-				{
-					if (null != (subtypeFact = factType as SubtypeFact))
-					{
-						if (subtypeFact.ProvidesPreferredIdentifier)
-						{
-							// The population is implied for FactType
-							proxyEntityType = subtypeFact.Subtype;
-							pid = proxyEntityType.ResolvedPreferredIdentifier;
-							proxySupertype = (pid != null) ? pid.PreferredIdentifierFor : null;
-						}
-					}
-					else if (null != (objectification = factType.ImpliedByObjectification) &&
-						2 == (factRoles = factType.OrderedRoleCollection).Count &&
-						null != (impliedProxyRole = (RoleBase)((testRole = factRoles[0]) as RoleProxy) ?? testRole as ObjectifiedUnaryRole ?? (RoleBase)((testRole = factRoles[1]) as RoleProxy) ?? testRole as ObjectifiedUnaryRole))
-					{
-						proxyEntityType = objectification.NestingType;
-						pid = proxyEntityType.ResolvedPreferredIdentifier;
-						proxySupertype = (pid != null) ? pid.PreferredIdentifierFor : null;
-					}
-					else
-					{
-						foreach (SetConstraint setConstraint in factType.SetConstraintCollection)
-						{
-							UniquenessConstraint uc;
-							ObjectType preferredFor;
-							if (null != (uc = setConstraint as UniquenessConstraint) &&
-								null != (preferredFor = uc.PreferredIdentifierFor) &&
-								preferredFor.NestedFactType != factType)
-							{
-								proxyEntityType = proxyEntityType = preferredFor;
-								break;
-							}
-						}
-					}
-				}
+				FactTypeInstanceImplication newProxy = new FactTypeInstanceImplication(factType);
+				FactTypeInstanceImplication oldProxy = myImplicationProxy;
 				int oldItemCount = -1;
-				ObjectType oldProxyEntityType = myProxyEntityType;
-				ObjectType oldProxySupertype = myProxySupertype;
-				RoleBase oldImpliedProxyRole = myImpliedProxyRole;
-				if (oldProxyEntityType != null)
+				if (oldProxy.IsImplied)
 				{
-					if (oldProxyEntityType != proxyEntityType ||
-						oldProxySupertype != proxySupertype ||
-						oldImpliedProxyRole != impliedProxyRole)
+					if (oldProxy != newProxy)
 					{
 						oldItemCount = VisibleItemCount;
-						if (proxyEntityType == null)
+						if (!newProxy.IsImplied)
 						{
 							myCachedObjectInstances = null;
 							myCachedFactInstances = new List<FactTypeInstance>(factType.FactTypeInstanceCollection);
@@ -5501,20 +5506,18 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						else
 						{
 							myCachedFactInstances = null;
-							myCachedObjectInstances = GetNonEmptyObjectInstances(proxyEntityType);
+							myCachedObjectInstances = GetNonEmptyObjectInstances(newProxy.ImpliedByEntityType);
 						}
 					}
 				}
-				else if (myCachedFactInstances != null && proxyEntityType != null)
+				else if (myCachedFactInstances != null && newProxy.IsImplied)
 				{
 					oldItemCount = VisibleItemCount;
 					myCachedFactInstances = null;
-					myCachedObjectInstances = GetNonEmptyObjectInstances(proxyEntityType);
+					myCachedObjectInstances = GetNonEmptyObjectInstances(newProxy.ImpliedByEntityType);
 				}
-				myProxyEntityType = proxyEntityType;
-				myProxySupertype = proxySupertype;
-				myImpliedProxyRole = impliedProxyRole;
-				IsReadOnly = proxyEntityType != null;
+				myImplicationProxy = newProxy;
+				IsReadOnly = newProxy.IsImplied;
 				if (oldItemCount != -1)
 				{
 					base.Repopulate(oldItemCount);
@@ -5549,7 +5552,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			private void EntityTypeRoleInstanceAddedEvent(object sender, ElementAddedEventArgs e)
 			{
-				ObjectType proxyObjectType = myProxySupertype;
+				ObjectType proxyObjectType = myImplicationProxy.IdentifyingSupertype;
 				if (proxyObjectType != null)
 				{
 					EntityTypeInstance entityInstance;
@@ -5558,7 +5561,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						!(entityInstance = link.EntityTypeInstance).IsDeleted &&
 						entityInstance.EntityType == proxyObjectType)
 					{
-						ObjectType subtype = myProxyEntityType;
+						ObjectType subtype = myImplicationProxy.ImpliedByEntityType;
 						ObjectTypeInstance verifyInstance = (subtype == proxyObjectType) ? (ObjectTypeInstance)entityInstance : EntityTypeSubtypeInstance.GetSubtypeInstance(entityInstance, subtype, true, false);
 						if (verifyInstance != null)
 						{
@@ -5575,7 +5578,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			private void EntityTypeRoleInstanceRemovedEvent(object sender, ElementDeletedEventArgs e)
 			{
-				ObjectType proxyObjectType = myProxySupertype;
+				ObjectType proxyObjectType = myImplicationProxy.IdentifyingSupertype;
 				if (proxyObjectType != null)
 				{
 					EntityTypeInstance entityInstance;
@@ -5584,7 +5587,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						entityInstance.EntityType == proxyObjectType &&
 						entityInstance.RoleInstanceCollection.Count == 0)
 					{
-						ObjectType subtype = myProxyEntityType;
+						ObjectType subtype = myImplicationProxy.ImpliedByEntityType;
 						ObjectTypeInstance verifyInstance = (subtype == proxyObjectType) ? (ObjectTypeInstance)entityInstance : EntityTypeSubtypeInstance.GetSubtypeInstance(entityInstance, subtype, true, false);
 						if (verifyInstance != null)
 						{
@@ -5601,10 +5604,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			private void SubtypeInstanceSupertypeRolePlayerChangedEvent(object sender, RolePlayerChangedEventArgs e)
 			{
-				ObjectType proxySubType = myProxyEntityType;
+				ObjectType proxySubType = myImplicationProxy.ImpliedByEntityType;
 				ObjectType proxySupertype;
 				if (proxySubType != null &&
-					null != (proxySupertype = myProxySupertype) &&
+					null != (proxySupertype = myImplicationProxy.IdentifyingSupertype) &&
 					proxySubType != proxySupertype)
 				{
 					EntityTypeSubtypeInstanceHasSupertypeInstance link = (EntityTypeSubtypeInstanceHasSupertypeInstance)e.ElementLink;
@@ -5844,7 +5847,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			public sealed override void DeleteInstance(int row, int column)
 			{
-				if (base.IsFullRowSelectColumn(column) && myProxyEntityType == null)
+				if (base.IsFullRowSelectColumn(column) && myImplicationProxy.ImpliedByEntityType == null)
 				{
 					IList<FactTypeInstance> instances = myCachedFactInstances;
 					if (instances != null && row < instances.Count)

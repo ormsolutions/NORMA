@@ -182,7 +182,23 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 					else if (null != (testFactType = ORMEditorUtility.ResolveContextFactType(selectedObject) as FactType))
 					{
-						SelectedFactType = testFactType;
+						// For a role selection on non-link fact type with an implied population,
+						// show the proxy object type instead of the readonly proxied fact type view.
+						// This allows us to directly edit the implied population, including repair
+						// of population mandatory errors that display on the role of a fact type
+						// with an implied population.
+						FactTypeInstanceImplication implication;
+						if (selectedObject is Role &&
+							(implication = new FactTypeInstanceImplication(testFactType)).IsImplied &&
+							implication.ImpliedProxyRole == null &&
+							implication.IdentifyingSupertype != null)
+						{
+							SelectedEntityType = implication.ImpliedByEntityType;
+						}
+						else
+						{
+							SelectedFactType = testFactType;
+						}
 					}
 					else
 					{
@@ -342,9 +358,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					correctSelection = (null != (selectedEntityType = SelectedEntityType) && selectedEntityType == subtype) ||
 						(null != (objectifiedFactType = subtype.NestedFactType) && objectifiedFactType == SelectedFactType);
 				}
-				else
+				else if (!(correctSelection = SelectedFactType == autoCorrectFactType))
 				{
-					correctSelection = SelectedFactType == autoCorrectFactType;
+					FactTypeInstanceImplication implication = new FactTypeInstanceImplication(autoCorrectFactType);
+					correctSelection = implication.IsImplied && implication.ImpliedProxyRole == null && implication.IdentifyingSupertype != null && implication.ImpliedByEntityType == SelectedEntityType;
 				}
 				if (correctSelection)
 				{
@@ -368,6 +385,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			// Find a role in the mandatory constraint that corresponds to
 			// the object type
 			Role matchingRole = null;
+			UniquenessConstraint pid = autoCorrectObjectType.PreferredIdentifier;
+			LinkedElementCollection<Role> pidRoles = pid != null ? pid.RoleCollection : null;
 			foreach (Role role in error.MandatoryConstraint.RoleCollection)
 			{
 				SubtypeFact subtypeFact;
@@ -375,7 +394,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				if (role.RolePlayer == autoCorrectObjectType ||
 					(null != (supertypeRole = role as SupertypeMetaRole) &&
 					(subtypeFact = (SubtypeFact)supertypeRole.FactType).ProvidesPreferredIdentifier &&
-					subtypeFact.Subtype == autoCorrectObjectType))
+					subtypeFact.Subtype == autoCorrectObjectType) ||
+					(null != pidRoles && pidRoles.Contains(role)))
 				{
 					if (matchingRole != null)
 					{
