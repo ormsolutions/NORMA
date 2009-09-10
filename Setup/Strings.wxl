@@ -44,6 +44,7 @@
 	<String Id="Windows2000OrHigherRequired">This setup requires Microsoft Windows 2000 or later.</String>
 	<String Id="NetFrameworkRequired">This setup requires the Microsoft .NET Framework 2.0. Please install the .NET Framework and run this setup again.</String>
 	<String Id="VisualStudio2005Required">This setup requires Microsoft Visual Studio 2005. Please install Microsoft Visual Studio 2005 and run this setup again.</String>
+	<String Id="VisualStudio2008Required">This setup requires Microsoft Visual Studio 2008. Please install Microsoft Visual Studio 2008 and run this setup again.</String>
 	<String Id="DSLToolsRequired">This setup requires Microsoft Domain Specific Language Tools. Please install Microsoft Domain Specific Language Tools and run this setup again.</String>
 	<String Id="PLiXRequired">This setup requires Programming Language in XML for Visual Studio. Please install Programming Language in XML for Visual Studio (available from https://sourceforge.net/projects/plix) and run this setup again.</String>
 	<String Id="ExistingVersionInstalled">Unable to install because an existing version of this product is already installed. You must uninstall this version before installing the product.</String>

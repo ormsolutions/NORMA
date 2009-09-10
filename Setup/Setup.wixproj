@@ -77,7 +77,7 @@
     <CompileAndLinkDependsOn>LocateVisualStudioSDKRedistributablesDir;$(CompileAndLinkDependsOn)</CompileAndLinkDependsOn>
   </PropertyGroup>
   <Target Name="LocateVisualStudioSDKRedistributablesDir" DependsOnTargets="LocateVisualStudioSDK">
-    <CreateProperty Value="$(DefineConstants);VsSDKRedistributablesDir=$(VsSDKRedistributablesDir);VSExt=.$(TargetVisualStudioShortProductName);VSShortName=$(TargetVisualStudioShortProductName);VSLongName=$(TargetVisualStudioLongProductName);VSShortProductYear=$(TargetVisualStudioShortProductYear);VSVer=$(TargetVisualStudioVersion)">
+    <CreateProperty Value="$(DefineConstants);VsSDKRedistributablesDir=$(VsSDKRedistributablesDir);VSExt=.$(TargetVisualStudioShortProductName);VSShortName=$(TargetVisualStudioShortProductName);VSLongName=$(TargetVisualStudioLongProductName);VSShortProductYear=$(TargetVisualStudioShortProductYear);VSLongProductYear=$(TargetVisualStudioLongProductYear);VSVer=$(TargetVisualStudioVersion)">
       <Output TaskParameter="Value" PropertyName="DefineConstants" />
     </CreateProperty>
   </Target>
