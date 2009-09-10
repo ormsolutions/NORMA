@@ -11,6 +11,7 @@
 			Natural Object-Role Modeling Architect for Visual Studio
 
 			Copyright © Neumont University. All rights reserved.
+			Copyright © ORM Solutions, LLC. All rights reserved.
 
 			The use and distribution terms for this software are covered by the
 			Common Public License 1.0 (http://opensource.org/licenses/cpl) which
@@ -201,17 +202,17 @@
 				</xs:enumeration>
 				<xs:enumeration value="ObjectTypeValueLink">
 					<xs:annotation>
-						<xs:documentation>Description: Snippet used to create a hyperlink from an ObjectType on any Object Type Verbalization Report Page</xs:documentation>
+						<xs:documentation>Description: Snippet used to create a hyperlink from an ObjectType on any Object Type Verbalization Report Page. Replacement fields: {0}=object type name, {1}=valid file name for object type name.</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="ObjectTypeListObjectTypeValueLink">
 					<xs:annotation>
-						<xs:documentation>Description: Snippet used to create a hyperlink from an ObjectType on any top-level Verbalization Report Page</xs:documentation>
+						<xs:documentation>Description: Snippet used to create a hyperlink from an ObjectType on any top-level Verbalization Report Page. Replacement fields: {0}=object type name, {1}=valid file name for object type name.</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="ObjectTypeRelationshipValueLink">
 					<xs:annotation>
-						<xs:documentation>Description: Snippet used to create a hyperlink from an ObjectType on any bottom-level Verbalization Report Page</xs:documentation>
+						<xs:documentation>Description: Snippet used to create a hyperlink from an ObjectType on any bottom-level Verbalization Report Page. Replacement fields: {0}=object type name, {1}=valid file name for object type name.</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="FactTypeRelationshipLinkOpen">

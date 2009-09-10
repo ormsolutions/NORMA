@@ -217,7 +217,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 					bool firstCall = true;
 
 					IVerbalizeCustomChildren objectTypeListReport = new ObjectTypeListReport(model, objectTypeList, snippets, ReportVerbalizationSnippetType.ObjectTypeListHeader, ReportVerbalizationSnippetType.ObjectTypeListFooter, reportContent);
-					VerbalizationHelper.VerbalizeElement(
+					VerbalizationHelper.VerbalizeChildren(
 						objectTypeListReport.GetCustomChildVerbalizations(null, sign),
 						null,
 						snippetsDictionary,
@@ -250,12 +250,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 						locallyVerbalized.Clear();
 						ObjectType objectType = objectTypeList[i];
 
-						fileStream = new FileStream(Path.Combine(objectTypeDir, objectType.Name + ".html"), FileMode.Create, FileAccess.ReadWrite);
+						fileStream = new FileStream(Path.Combine(objectTypeDir, AsFileName(objectType.Name) + ".html"), FileMode.Create, FileAccess.ReadWrite);
 						textWriter = new StreamWriter(fileStream);
 						writer = new VerbalizationReportCallbackWriter(snippetsDictionary, textWriter);
 
 						ObjectTypePageReport objectTypePageReport = new ObjectTypePageReport(objectType, reportContent, snippets);
-						VerbalizationHelper.VerbalizeElement(
+						VerbalizationHelper.VerbalizeChildren(
 							((IVerbalizeCustomChildren)objectTypePageReport).GetCustomChildVerbalizations(objectTypePageReport, sign),
 							null,
 							snippetsDictionary,
@@ -301,13 +301,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 						bool firstCallPending = true;
 						alreadyVerbalized.Clear();
 						locallyVerbalized.Clear();
-						fileStream = new FileStream(Path.Combine(factTypeDir, factTypeList[i].Name + ".html"), FileMode.Create, FileAccess.ReadWrite);
+						fileStream = new FileStream(Path.Combine(factTypeDir, AsFileName(factTypeList[i].Name) + ".html"), FileMode.Create, FileAccess.ReadWrite);
 						textWriter = new StreamWriter(fileStream);
 						writer = new VerbalizationReportCallbackWriter(snippetsDictionary, textWriter);
 
 						FactTypePageReport factTypePageReport = new FactTypePageReport(factTypeList[i], reportContent, snippets);
-						VerbalizationHelper.VerbalizeElement(
+						VerbalizationHelper.VerbalizeChildren(
 							((IVerbalizeCustomChildren)factTypePageReport).GetCustomChildVerbalizations(factTypePageReport, sign),
+							null,
 							snippetsDictionary,
 							extensionVerbalizer,
 							HtmlReport.HtmlReportTargetName,
@@ -346,7 +347,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 					writer = new VerbalizationReportCallbackWriter(snippetsDictionary, textWriter);
 
 					FactTypeConstraintValidationListReport factTypeConstraintValidationReport = new FactTypeConstraintValidationListReport(model, factTypeList, reportContent, snippets);
-					VerbalizationHelper.VerbalizeElement(
+					VerbalizationHelper.VerbalizeChildren(
 						((IVerbalizeCustomChildren)factTypeConstraintValidationReport).GetCustomChildVerbalizations(factTypeConstraintValidationReport, sign),
 						null,
 						snippetsDictionary,
@@ -372,6 +373,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 		}
 		#endregion // Public Methods
 		#region Helper methods
+		private static readonly char[] InvalidFileChars = Path.GetInvalidFileNameChars();
+		/// <summary>
+		/// Normalize the name as a valid file name.
+		/// </summary>
+		/// <param name="name">Any string</param>
+		/// <returns>The name with invalid file characters stripped out.</returns>
+		/// <remarks>This is far from perfect (you can get an empty name) but
+		/// is better than nothing.</remarks>
+		protected static string AsFileName(string name)
+		{
+			string[] validNameParts = name.Split(InvalidFileChars, StringSplitOptions.RemoveEmptyEntries);
+			if (validNameParts.Length > 1)
+			{
+				return string.Join(null, validNameParts);
+			}
+			return name;
+		}
 		/// <summary>
 		/// Gets the Fact Types for which the specified Object Type plays a role
 		/// </summary>
@@ -895,17 +913,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 		/// </summary>
 		protected class ObjectTypeVerbalizationWrapper : IVerbalize
 		{
-			#region Memeber Variables
+			#region Member Variables
 			private ReportVerbalizationSnippetType myObjectTypeSnippet;
-			private IVerbalize myVerbalizationObject;
-			#endregion // Memeber Variables
+			private ObjectType myVerbalizationObject;
+			#endregion // Member Variables
 			#region Constructor
 			/// <summary>
 			/// Initializes a new instance of the <see cref="ObjectTypeVerbalizationWrapper"/> class.
 			/// </summary>
 			/// <param name="objectTypeSnippet">The object type snippet.</param>
 			/// <param name="verbalizationObject">The verbalization object.</param>
-			public ObjectTypeVerbalizationWrapper(ReportVerbalizationSnippetType objectTypeSnippet, IVerbalize verbalizationObject)
+			public ObjectTypeVerbalizationWrapper(ReportVerbalizationSnippetType objectTypeSnippet, ObjectType verbalizationObject)
 			{
 				myObjectTypeSnippet = objectTypeSnippet;
 				myVerbalizationObject = verbalizationObject;
@@ -915,7 +933,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			/// <summary>
 			/// Access the verbalization object
 			/// </summary>
-			public IVerbalize VerbalizationObject
+			public ObjectType VerbalizationObject
 			{
 				get
 				{
@@ -940,7 +958,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				IVerbalizationSets<ReportVerbalizationSnippetType> snippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
 				writer.Write(snippets.GetSnippet(ReportVerbalizationSnippetType.GenericListItemOpen));
-				writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(myObjectTypeSnippet), (myVerbalizationObject as ObjectType).Name));
+				string objectTypeName = myVerbalizationObject.Name;
+				writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(myObjectTypeSnippet), objectTypeName, AsFileName(objectTypeName)));
 				writer.Write(snippets.GetSnippet(ReportVerbalizationSnippetType.GenericListItemClose));
 				return false; // No children to verbalize
 			}
@@ -1206,14 +1225,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 		protected class FactTypeVerbalizationWrapper : IVerbalize
 		{
 			#region Member Variables
-			private IVerbalize myVerbalizationObject;
+			private FactType myVerbalizationObject;
 			#endregion // Member Variables
 			#region Constructor
 			/// <summary>
 			/// Initializes a new instance of the <see cref="FactTypeVerbalizationWrapper"/> class.
 			/// </summary>
 			/// <param name="verbalizationObject">The verbalization object.</param>
-			public FactTypeVerbalizationWrapper(IVerbalize verbalizationObject)
+			public FactTypeVerbalizationWrapper(FactType verbalizationObject)
 			{
 				myVerbalizationObject = verbalizationObject;
 			}
@@ -1222,7 +1241,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			/// <summary>
 			/// Access the verbalization object
 			/// </summary>
-			public IVerbalize VerbalizationObject
+			public FactType VerbalizationObject
 			{
 				get
 				{
@@ -1247,8 +1266,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				IVerbalizationSets<ReportVerbalizationSnippetType> snippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
 				writer.Write(snippets.GetSnippet(ReportVerbalizationSnippetType.GenericListItemOpen));
-				writer.Write(string.Format(snippets.GetSnippet(ReportVerbalizationSnippetType.FactTypeRelationshipLinkOpen), (myVerbalizationObject as FactType).Name));
-				myVerbalizationObject.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
+				writer.Write(string.Format(snippets.GetSnippet(ReportVerbalizationSnippetType.FactTypeRelationshipLinkOpen), AsFileName(myVerbalizationObject.Name)));
+				((IVerbalize)myVerbalizationObject).GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 				writer.Write(snippets.GetSnippet(ReportVerbalizationSnippetType.FactTypeRelationshipLinkClose));
 				writer.Write(snippets.GetSnippet(ReportVerbalizationSnippetType.GenericListItemClose));
 				return false; // No children to verbalize

@@ -1941,7 +1941,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="writer">The VerbalizationCallbackWriter for verbalization output</param>
 		/// <param name="writeSecondaryLines">True to automatically add a line between callbacks. Set to <see langword="true"/> for multi-select scenarios.</param>
 		/// <param name="firstCallPending"></param>
-		public static void VerbalizeElement(IEnumerable<CustomChildVerbalizer> customChildren, IEnumerable<CustomChildVerbalizer> extensionChildren, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IExtensionVerbalizerService extensionVerbalizer, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IDictionary<object, object> locallyVerbalized, VerbalizationSign sign, VerbalizationCallbackWriter writer, bool writeSecondaryLines, ref bool firstCallPending)
+		public static void VerbalizeChildren(IEnumerable<CustomChildVerbalizer> customChildren, IEnumerable<CustomChildVerbalizer> extensionChildren, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IExtensionVerbalizerService extensionVerbalizer, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IDictionary<object, object> locallyVerbalized, VerbalizationSign sign, VerbalizationCallbackWriter writer, bool writeSecondaryLines, ref bool firstCallPending)
 		{
 			if (customChildren == null && extensionChildren == null)
 			{

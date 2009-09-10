@@ -68,8 +68,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		GenericConstraintListOpen,
 		/// <summary>The 'GenericListItemClose' simple snippet value.</summary>
 		GenericListItemClose,
-		/// <summary>The 'GenericListItemLink' format string snippet. Contains 2 replacement fields.</summary>
-		GenericListItemLink,
 		/// <summary>The 'GenericListItemOpen' simple snippet value.</summary>
 		GenericListItemOpen,
 		/// <summary>The 'GenericRelationshipsListClose' simple snippet value.</summary>
@@ -92,7 +90,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		ObjectTypeListFooter,
 		/// <summary>The 'ObjectTypeListHeader' simple snippet value.</summary>
 		ObjectTypeListHeader,
-		/// <summary>The 'ObjectTypeListObjectTypeValueLink' format string snippet. Contains 1 replacement field.</summary>
+		/// <summary>The 'ObjectTypeListObjectTypeValueLink' format string snippet. Contains 2 replacement fields.</summary>
 		ObjectTypeListObjectTypeValueLink,
 		/// <summary>The 'ObjectTypePageFactTypeListClose' simple snippet value.</summary>
 		ObjectTypePageFactTypeListClose,
@@ -100,9 +98,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		ObjectTypePageFactTypeListOpen,
 		/// <summary>The 'ObjectTypePageHeader' format string snippet. Contains 1 replacement field.</summary>
 		ObjectTypePageHeader,
-		/// <summary>The 'ObjectTypeRelationshipValueLink' format string snippet. Contains 1 replacement field.</summary>
+		/// <summary>The 'ObjectTypeRelationshipValueLink' format string snippet. Contains 2 replacement fields.</summary>
 		ObjectTypeRelationshipValueLink,
-		/// <summary>The 'ObjectTypeValueLink' format string snippet. Contains 1 replacement field.</summary>
+		/// <summary>The 'ObjectTypeValueLink' format string snippet. Contains 2 replacement fields.</summary>
 		ObjectTypeValueLink,
 		/// <summary>The 'ReportDocumentContents' format string snippet. Contains 1 replacement field.</summary>
 		ReportDocumentContents,
@@ -241,11 +239,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				
 			",
 				"</li>",
-				@"
-				
-					<li><a href=""{0}/{1}.html"">{1}</a></li>
-				
-			",
 				@"<li class=""ListLink"">",
 				@"
 				
@@ -309,7 +302,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					<ul>
 				
 			",
-				@"<span class=""objectType""><a href=""ObjectTypes/{0}.html"">{0}</a></span>",
+				@"<span class=""objectType""><a href=""ObjectTypes/{1}.html"">{0}</a></span>",
 				@"
 				
 					</ul>
@@ -331,8 +324,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				</div>
 				
 			",
-				@"<span class=""objectType""><a href=""../ObjectTypes/{0}.html"">{0}</a></span>",
-				@"<span class=""objectType""><a href=""{0}.html"">{0}</a></span>",
+				@"<span class=""objectType""><a href=""../ObjectTypes/{1}.html"">{0}</a></span>",
+				@"<span class=""objectType""><a href=""{1}.html"">{0}</a></span>",
 				@"
 				
 				<div id=""navBar"">

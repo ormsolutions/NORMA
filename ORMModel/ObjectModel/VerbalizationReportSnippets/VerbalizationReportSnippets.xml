@@ -3,6 +3,7 @@
 Natural Object-Role Modeling Architect for Visual Studio
 
 Copyright © Neumont University. All rights reserved.
+Copyright © ORM Solutions, LLC. All rights reserved.
 
 The use and distribution terms for this software are covered by the
 Common Public License 1.0 (http://opensource.org/licenses/cpl) which
@@ -216,17 +217,12 @@ You must not remove this notice, or any other, from this software.
 				</div>
 				]]>
 			</Snippet>
-			<Snippet type="GenericListItemLink">
-				<![CDATA[
-					<li><a href="{0}/{1}.html">{1}</a></li>
-				]]>
-			</Snippet>
 			<Snippet type="GenericListItemOpen"><![CDATA[<li class="ListLink">]]></Snippet>
 			<Snippet type="GenericListItemClose"><![CDATA[</li>]]></Snippet>
 			<Snippet type="EmptyContentListItemSnippet"><![CDATA[<li class="ListLink">There are no items for this section.</li>]]></Snippet>
-			<Snippet type="ObjectTypeValueLink"><![CDATA[<span class="objectType"><a href="{0}.html">{0}</a></span>]]></Snippet>
-			<Snippet type="ObjectTypeListObjectTypeValueLink"><![CDATA[<span class="objectType"><a href="ObjectTypes/{0}.html">{0}</a></span>]]></Snippet>
-			<Snippet type="ObjectTypeRelationshipValueLink"><![CDATA[<span class="objectType"><a href="../ObjectTypes/{0}.html">{0}</a></span>]]></Snippet>
+			<Snippet type="ObjectTypeValueLink"><![CDATA[<span class="objectType"><a href="{1}.html">{0}</a></span>]]></Snippet>
+			<Snippet type="ObjectTypeListObjectTypeValueLink"><![CDATA[<span class="objectType"><a href="ObjectTypes/{1}.html">{0}</a></span>]]></Snippet>
+			<Snippet type="ObjectTypeRelationshipValueLink"><![CDATA[<span class="objectType"><a href="../ObjectTypes/{1}.html">{0}</a></span>]]></Snippet>
 			<Snippet type="FactTypeRelationshipLinkOpen"><![CDATA[<a href="../FactTypes/{0}.html">]]></Snippet>
 			<Snippet type="FactTypeRelationshipLinkClose"><![CDATA[</a>]]></Snippet>
 			<Snippet type="VerbalizerNewLine"><![CDATA[<br/>]]></Snippet>
