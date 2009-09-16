@@ -581,6 +581,13 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "DropShape.TransactionName");
 			}
 		}
+		public static string ElementGroupingPropertyCategory
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping/TypeCompliance.Category");
+			}
+		}
 		/// <summary>The base name used to create a name for a new ElementGrouping. This is a format string with {0} being the placeholder for the number placement.</summary>
 		public static string ElementGroupingDefaultNamePattern
 		{

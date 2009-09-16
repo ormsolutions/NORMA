@@ -2,7 +2,7 @@
 /**************************************************************************\
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
-* Copyright © ORM Solutions, LLC. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -521,6 +521,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					modifiedGroupingType.Grouping.ValidateSupportLevelChange(element, notifyAdded);
 				}
 			}
+		}
+		/// <summary>
+		/// Get the <see cref="ElementGroupingType"/> instance associated with this <see cref="ElementGrouping"/>
+		/// </summary>
+		/// <typeparam name="T">The <see cref="ElementGroupingType"/> to retrieve.</typeparam>
+		/// <returns>The <see cref="ElementGroupingType"/> instance, or <see langword="null"/></returns>
+		public T GetGroupingType<T>() where T : ElementGroupingType
+		{
+			foreach (ElementGroupingType groupingType in GroupingTypeCollection)
+			{
+				T testGroupingType = groupingType as T;
+				if (testGroupingType != null)
+				{
+					return testGroupingType;
+				}
+			}
+			return null;
 		}
 		#endregion // Public Helper Methods
 		#region Rule methods

@@ -189,7 +189,7 @@
 				<DomainClassMoniker Name="ORMNamedElement"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="DefinitionText" DefaultValue="" DisplayName="InformalDescription" Description="An informal description of this group.&#xd;&#xa;    To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Informal Description Editor' tool window." Id="D1539042-2A67-413B-8B3B-12D00775BB8D" Kind="CustomStorage">
+				<DomainProperty Name="DefinitionText" DefaultValue="" DisplayName="InformalDescription" Category="Group" Description="An informal description of this group.&#xd;&#xa;    To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Informal Description Editor' tool window." Id="D1539042-2A67-413B-8B3B-12D00775BB8D" Kind="CustomStorage">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -207,7 +207,7 @@
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="NoteText" DefaultValue="" DisplayName="Note" Description="A note to associate with this group.&#xd;&#xa;    To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Notes Editor' tool window." Id="39B0228B-8884-4E4E-B595-4F058F192B50" Kind="CustomStorage">
+				<DomainProperty Name="NoteText" DefaultValue="" DisplayName="Note" Category="Group" Description="A note to associate with this group.&#xd;&#xa;    To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Notes Editor' tool window." Id="39B0228B-8884-4E4E-B595-4F058F192B50" Kind="CustomStorage">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -225,12 +225,12 @@
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="TypeCompliance" DefaultValue="NotExcluded" DisplayName="GroupTypeCompliance" Id="16E7B546-46CE-4A46-AED5-1437EDB5FA6C" Description="Specify the level of GroupType compliance for elements in this group.&#xd;&#xa;    Not Excluded: Allow elements not explicitly excluded by a selected GroupType.&#xd;&#xa;    Approved by Some Type: Allow elements explicitly approved by at least one GroupType.&#xd;&#xa;    Approved by All Types: Allow elements explicitly approved by all selected GroupTypes.">
+				<DomainProperty Name="TypeCompliance" DefaultValue="NotExcluded" DisplayName="GroupTypeCompliance" Category="Group" Id="16E7B546-46CE-4A46-AED5-1437EDB5FA6C" Description="Specify the level of GroupType compliance for elements in this group.&#xd;&#xa;    Not Excluded: Allow elements not explicitly excluded by a selected GroupType.&#xd;&#xa;    Approved by Some Type: Allow elements explicitly approved by at least one GroupType.&#xd;&#xa;    Approved by All Types: Allow elements explicitly approved by all selected GroupTypes.">
 					<Type>
 						<DomainEnumerationMoniker Name="GroupingMembershipTypeCompliance"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="Priority" DefaultValue="0" DisplayName="GroupPriority" Id="C290CB24-0F2C-4E67-A561-FCD25DDA53E8" Description="Specify a priority relative to other Groups. If an element is included in two groups of the same type, the settings for the Group with the highest GroupPriority are given precedence.">
+				<DomainProperty Name="Priority" DefaultValue="0" DisplayName="GroupPriority" Category="Group" Id="C290CB24-0F2C-4E67-A561-FCD25DDA53E8" Description="Specify a priority relative to other Groups. If an element is included in two groups of the same type, the settings for the Group with the highest GroupPriority are given precedence.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Int32"/>
 					</Type>

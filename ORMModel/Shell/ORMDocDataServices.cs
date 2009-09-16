@@ -3,7 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © ORM Solutions, LLC. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -2140,7 +2140,13 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 										if (null != modelError &&
 											null != (activator = shape as IModelErrorActivation))
 										{
-											activator.ActivateModelError(modelError);
+											if (!activator.ActivateModelError(modelError))
+											{
+												// The shape itself could not activate this error.
+												// Attempt to activate using an activator that is tied to the
+												// backing element for the current shape.
+												ModelErrorActivationService.ActivateError(shape.ModelElement, modelError);
+											}
 										}
 										return true;
 									}

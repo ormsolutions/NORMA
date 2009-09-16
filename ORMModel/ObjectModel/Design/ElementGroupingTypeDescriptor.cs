@@ -2,7 +2,7 @@
 /**************************************************************************\
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
-* Copyright © ORM Solutions, LLC. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -16,20 +16,21 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Drawing;
+using System.Drawing.Design;
 using System.Globalization;
 using System.Security.Permissions;
+using System.Text;
+using System.Windows.Forms;
+using System.Windows.Forms.Design;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Design;
-using ORMSolutions.ORMArchitect.Framework.Design;
-using ORMSolutions.ORMArchitect.Core.ObjectModel;
-using System.Drawing.Design;
-using System.Windows.Forms.Design;
-using ORMSolutions.ORMArchitect.Core.Shell;
-using System.Windows.Forms;
 using Microsoft.VisualStudio.VirtualTreeGrid;
-using System.Collections.ObjectModel;
-using System.Drawing;
+using ORMSolutions.ORMArchitect.Core.Shell;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Framework.Design;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 {
@@ -57,7 +58,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		public override PropertyDescriptorCollection GetProperties(Attribute[] attributes)
 		{
 			PropertyDescriptorCollection retVal = base.GetProperties(attributes);
+			EditorUtility.ModifyPropertyDescriptorDisplay(retVal, "Name", null, null, ResourceStrings.ElementGroupingPropertyCategory);
 			retVal.Add(GroupingTypesPropertyDescriptor.Instance);
+			foreach (ElementGroupingType groupingType in ModelElement.GroupingTypeCollection)
+			{
+				foreach (PropertyDescriptor groupTypeDescriptor in TypeDescriptor.GetProperties(groupingType, attributes))
+				{
+					retVal.Add(groupTypeDescriptor);
+				}
+			}
 			return retVal;
 		}
 		#endregion // Base overrides
@@ -111,7 +120,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			}
 			public override bool ShouldSerializeValue(object component)
 			{
-				return false;
+				return true;
 			}
 			public override string Description
 			{
@@ -127,6 +136,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 					return ResourceStrings.ElementGroupingTypesPropertyDescriptorDisplayName;
 				}
 			}
+			public override string Category
+			{
+				get
+				{
+					return ResourceStrings.ElementGroupingPropertyCategory;
+				}
+			}
 			public override object GetEditor(Type editorBaseType)
 			{
 				if (editorBaseType == typeof(UITypeEditor))
@@ -134,6 +150,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 					return new GroupingTypesEditor();
 				}
 				return base.GetEditor(editorBaseType);
+			}
+			public override TypeConverter Converter
+			{
+				get
+				{
+					return GroupingTypesTypeConverter.Instance;
+				}
 			}
 			#endregion // Base overrides
 			#region GroupingTypesEditor class
@@ -460,6 +483,58 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 				#endregion // GroupingTypesBranch class
 			}
 			#endregion // GroupingTypesEditor class
+			#region GroupingTypesTypeConverter class
+			/// <summary>
+			/// Provide display text for grouping types
+			/// </summary>
+			private class GroupingTypesTypeConverter : TypeConverter
+			{
+				#region Constructor and Instance
+				public static readonly TypeConverter Instance = new GroupingTypesTypeConverter();
+				private GroupingTypesTypeConverter()
+				{
+				}
+				#endregion // Constructor and Instance
+				#region Base overrides
+				public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+				{
+					ElementGrouping grouping;
+					LinkedElementCollection<ElementGroupingType> groupingTypes;
+					int groupingTypeCount;
+					if (destinationType == typeof(string) &&
+						null != context &&
+						null != (grouping = context.Instance as ElementGrouping) &&
+						0 != (groupingTypeCount = (groupingTypes = grouping.GroupingTypeCollection).Count))
+					{
+						if (groupingTypeCount == 1)
+						{
+							return DomainTypeDescriptor.GetDisplayName(groupingTypes[0].GetType());
+						}
+						else
+						{
+							StringBuilder builder = new StringBuilder();
+							TextInfo textInfo = culture.TextInfo;
+							string separator = textInfo.ListSeparator;
+							if (!char.IsWhiteSpace(separator, separator.Length - 1))
+							{
+								separator += " ";
+							}
+							for (int i = 0; i < groupingTypeCount; ++i)
+							{
+								if (i != 0)
+								{
+									builder.Append(separator);
+								}
+								builder.Append(DomainTypeDescriptor.GetDisplayName(groupingTypes[i].GetType()));
+							}
+							return builder.ToString();
+						}
+					}
+					return base.ConvertTo(context, culture, value, destinationType);
+				}
+				#endregion // Base overrides
+			}
+			#endregion // GroupingTypesTypeConverter class
 		}
 		#endregion // GroupingTypesPropertyDescriptor class
 	}

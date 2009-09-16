@@ -1709,6 +1709,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		[global::System.ComponentModel.Editor(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.MultilineTextEditor<global::ORMSolutions.ORMArchitect.Core.ObjectModel.Definition>), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[global::System.ComponentModel.MergableProperty(false)]
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping/DefinitionText.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::CategoryResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping/DefinitionText.Category", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping/DefinitionText.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("d1539042-2a67-413b-8b3b-12d00775bb8d")]
@@ -1803,6 +1804,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		[global::System.ComponentModel.Editor(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.MultilineTextEditor<global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note>), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[global::System.ComponentModel.MergableProperty(false)]
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping/NoteText.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::CategoryResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping/NoteText.Category", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping/NoteText.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("39b0228b-8884-4e4e-b595-4f058f192b50")]
@@ -1904,6 +1906,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// GroupTypes.
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping/TypeCompliance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::CategoryResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping/TypeCompliance.Category", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping/TypeCompliance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.Core.ObjectModel.GroupingMembershipTypeCompliance.NotExcluded)]
 		[DslModeling::DomainObjectId("16e7b546-46ce-4a46-aed5-1437edb5fa6c")]
@@ -1994,6 +1997,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// GroupPriority are given precedence.
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping/Priority.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::CategoryResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping/Priority.Category", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping/Priority.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslModeling::DomainObjectId("c290cb24-0f2c-4e67-a561-fcd25dda53e8")]
 		public global::System.Int32 Priority

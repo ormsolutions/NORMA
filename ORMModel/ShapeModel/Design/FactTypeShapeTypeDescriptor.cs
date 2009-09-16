@@ -28,6 +28,7 @@ using ORMSolutions.ORMArchitect.Framework.Diagrams.Design;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using ORMSolutions.ORMArchitect.Core.ObjectModel.Design;
 using ORMSolutions.ORMArchitect.Core.ShapeModel;
+using ORMSolutions.ORMArchitect.Framework;
 
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 {
@@ -134,7 +135,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 			if (FactTypeShape.ShouldDrawObjectification(factType))
 			{
 				FactTypeShape factTypeShape = PresentationElement;
-				ObjectType nestingType = factType.NestingType;
+				Objectification objectification = factType.Objectification;
+				ObjectType nestingType = objectification.NestingType;
 				bool nestingTypeHasRelatedTypes = nestingType.IsSubtypeOrSupertype;
 				DomainDataDirectory domainDataDirectory = factType.Store.DomainDataDirectory;
 				EnsureDomainAttributesInitialized(domainDataDirectory);
@@ -152,7 +154,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 					descriptors[7] = CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayRelatedTypesDomainPropertyId), DisplayRelatedTypesDomainPropertyAttributes);
 				}
 
-				return new PropertyDescriptorCollection(descriptors);
+				PropertyDescriptorCollection retVal = new PropertyDescriptorCollection(descriptors);
+
+				// This mockup of important properties means that extension providers cannot add properties
+				// here by adding to the objecttype or facttype. Use an extension on the Objectification type
+				// itself to add extension properties.
+				((IFrameworkServices)factType.Store).PropertyProviderService.GetProvidedProperties(objectification, retVal); 
+				return retVal;
 			}
 			return base.GetProperties(attributes);
 		}

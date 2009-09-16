@@ -350,6 +350,10 @@
     <value>InformalDescription</value>
     <comment>DisplayName for DomainProperty &apos;DefinitionText&apos; on DomainClass &apos;ElementGrouping&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping/DefinitionText.Category" xml:space="preserve">
+    <value>Group</value>
+    <comment>Category for DomainProperty &apos;DefinitionText&apos; on DomainClass &apos;ElementGrouping&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping/NoteText.Description" xml:space="preserve">
     <value>A note to associate with this group.
     To insert new lines, use Control-Enter in the dropdown editor, or open the &apos;ORM Notes Editor&apos; tool window.</value>
@@ -358,6 +362,10 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping/NoteText.DisplayName" xml:space="preserve">
     <value>Note</value>
     <comment>DisplayName for DomainProperty &apos;NoteText&apos; on DomainClass &apos;ElementGrouping&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping/NoteText.Category" xml:space="preserve">
+    <value>Group</value>
+    <comment>Category for DomainProperty &apos;NoteText&apos; on DomainClass &apos;ElementGrouping&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping/TypeCompliance.Description" xml:space="preserve">
     <value>Specify the level of GroupType compliance for elements in this group.
@@ -370,6 +378,10 @@
     <value>GroupTypeCompliance</value>
     <comment>DisplayName for DomainProperty &apos;TypeCompliance&apos; on DomainClass &apos;ElementGrouping&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping/TypeCompliance.Category" xml:space="preserve">
+    <value>Group</value>
+    <comment>Category for DomainProperty &apos;TypeCompliance&apos; on DomainClass &apos;ElementGrouping&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping/Priority.Description" xml:space="preserve">
     <value>Specify a priority relative to other Groups. If an element is included in two groups of the same type, the settings for the Group with the highest GroupPriority are given precedence.</value>
     <comment>Description for DomainProperty &apos;Priority&apos; on DomainClass &apos;ElementGrouping&apos;</comment>
@@ -377,6 +389,10 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping/Priority.DisplayName" xml:space="preserve">
     <value>GroupPriority</value>
     <comment>DisplayName for DomainProperty &apos;Priority&apos; on DomainClass &apos;ElementGrouping&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping/Priority.Category" xml:space="preserve">
+    <value>Group</value>
+    <comment>Category for DomainProperty &apos;Priority&apos; on DomainClass &apos;ElementGrouping&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingType.Description" xml:space="preserve">
     <value>A type for a group. Each Group is associated with a new instance of each of its GroupTypes, allowing individual settings per group.</value>

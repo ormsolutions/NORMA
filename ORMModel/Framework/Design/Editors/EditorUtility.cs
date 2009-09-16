@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -131,6 +132,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 	/// </summary>
 	public static class EditorUtility
 	{
+		#region ResolveContextInstance
 		/// <summary>
 		/// Selection context is often based on a wrapper shape, such
 		/// as a NodeShape or a tree node in a model browser. Use this
@@ -166,6 +168,8 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 			}
 			return instance;
 		}
+		#endregion // ResolveContextInstance
+		#region ActivatePropertyEditor
 		/// <summary>
 		/// Helper method to recursively find a control of a given type
 		/// </summary>
@@ -333,5 +337,182 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 				}
 			}
 		}
+		#endregion // ActivatePropertyEditor
+		#region ModifyPropertyDescriptorDisplay
+		/// <summary>
+		/// Modify the display settings for a <see cref="PropertyDescriptor"/> by
+		/// wrapping the base descriptor with another property descriptor instance.
+		/// </summary>
+		/// <param name="basedOnDescriptor">The original descriptor.</param>
+		/// <param name="displayName">The modified display name. If this is <see langword="null"/>, then the original display name is used.</param>
+		/// <param name="description">The modified description. If this is <see langword="null"/>, then the original description is used.</param>
+		/// <param name="category">The modified category. If this is <see langword="null"/>, then the original category is used.</param>
+		/// <returns>A wrapper <see cref="PropertyDescriptor"/></returns>
+		public static PropertyDescriptor ModifyPropertyDescriptorDisplay(PropertyDescriptor basedOnDescriptor, string displayName, string description, string category)
+		{
+			return new DisplayModifiedPropertyDescriptor(basedOnDescriptor, displayName, description, category);
+		}
+		/// <summary>
+		/// Modify the display settings for a <see cref="PropertyDescriptor"/> by
+		/// wrapping the base descriptor with another property descriptor instance.
+		/// </summary>
+		/// <param name="descriptorCollection">A collection of descriptors.</param>
+		/// <param name="propertyName">The non-localized name of the property to modify.</param>
+		/// <param name="displayName">The modified display name. If this is <see langword="null"/>, then the original display name is used.</param>
+		/// <param name="description">The modified description. If this is <see langword="null"/>, then the original description is used.</param>
+		/// <param name="category">The modified category. If this is <see langword="null"/>, then the original category is used.</param>
+		/// <returns>A wrapper <see cref="PropertyDescriptor"/></returns>
+		public static void ModifyPropertyDescriptorDisplay(PropertyDescriptorCollection descriptorCollection, string propertyName, string displayName, string description, string category)
+		{
+			PropertyDescriptor descriptor;
+			if (descriptorCollection != null &&
+				null != (descriptor = descriptorCollection[propertyName]))
+			{
+				descriptorCollection.Remove(descriptor);
+				descriptorCollection.Add(ModifyPropertyDescriptorDisplay(descriptor, displayName, description, category));
+			}
+		}
+		/// <summary>
+		/// Wrapper <see cref="PropertyDescriptor"/> class to support display modification
+		/// </summary>
+		private sealed class DisplayModifiedPropertyDescriptor : PropertyDescriptor
+		{
+			#region Member Variables
+			private PropertyDescriptor myInner;
+			private string myDisplayName;
+			private string myDescription;
+			private string myCategory;
+			#endregion // Member Variables
+			#region Constructor
+			/// <summary>
+			/// Create a wrapped descriptor
+			/// </summary>
+			/// <param name="modifyDescriptor"></param>
+			/// <param name="displayName">The modified display name. If this is <see langword="null"/>, then the original display name is used.</param>
+			/// <param name="description">The modified description. If this is <see langword="null"/>, then the original description is used.</param>
+			/// <param name="category">The modified category. If this is <see langword="null"/>, then the original category is used.</param>
+			public DisplayModifiedPropertyDescriptor(PropertyDescriptor modifyDescriptor, string displayName, string description, string category)
+				: base(modifyDescriptor.Name, GetAttributeArray(modifyDescriptor.Attributes))
+			{
+				myInner = modifyDescriptor;
+				myDisplayName = displayName;
+				myDescription = description;
+				myCategory = category;
+			}
+			private static Attribute[] GetAttributeArray(AttributeCollection attributes)
+			{
+				int attributeCount;
+				if (attributes == null || 0 == (attributeCount = attributes.Count))
+				{
+					return null;
+				}
+				Attribute[] retVal = new Attribute[attributeCount];
+				attributes.CopyTo(retVal, 0);
+				return retVal;
+			}
+			#endregion // Constructor
+			#region Display overrides
+			public override string Category
+			{
+				get
+				{
+					return myCategory ?? myInner.Category;
+				}
+			}
+			public override string DisplayName
+			{
+				get
+				{
+					return myDisplayName ?? myInner.DisplayName;
+				}
+			}
+			public override string Description
+			{
+				get
+				{
+					return myDescription ?? myInner.Description;
+				}
+			}
+			#endregion // Display overrides
+			#region Other overrides
+			public override bool CanResetValue(object component)
+			{
+				return myInner.CanResetValue(component);
+			}
+			public override Type ComponentType
+			{
+				get { return myInner.ComponentType; }
+			}
+			public override object GetValue(object component)
+			{
+				return myInner.GetValue(component);
+			}
+			public override bool IsReadOnly
+			{
+				get { return myInner.IsReadOnly; }
+			}
+			public override Type PropertyType
+			{
+				get { return myInner.PropertyType; }
+			}
+			public override void ResetValue(object component)
+			{
+				myInner.ResetValue(component);
+			}
+			public override void SetValue(object component, object value)
+			{
+				myInner.SetValue(component, value);
+			}
+			public override bool ShouldSerializeValue(object component)
+			{
+				return myInner.ShouldSerializeValue(component);
+			}
+			public override void AddValueChanged(object component, EventHandler handler)
+			{
+				myInner.AddValueChanged(component, handler);
+			}
+			public override AttributeCollection Attributes
+			{
+				get { return myInner.Attributes; }
+			}
+			public override TypeConverter Converter
+			{
+				get { return myInner.Converter; }
+			}
+			public override bool DesignTimeOnly
+			{
+				get { return myInner.DesignTimeOnly; }
+			}
+			public override PropertyDescriptorCollection GetChildProperties(object instance, Attribute[] filter)
+			{
+				return myInner.GetChildProperties(instance, filter);
+			}
+			public override object GetEditor(Type editorBaseType)
+			{
+				return myInner.GetEditor(editorBaseType);
+			}
+			public override bool IsBrowsable
+			{
+				get { return myInner.IsBrowsable; }
+			}
+			public override bool IsLocalizable
+			{
+				get { return myInner.IsLocalizable; }
+			}
+			public override void RemoveValueChanged(object component, EventHandler handler)
+			{
+				myInner.RemoveValueChanged(component, handler);
+			}
+			public override bool SupportsChangeEvents
+			{
+				get { return myInner.SupportsChangeEvents; }
+			}
+			public override string ToString()
+			{
+				return myInner.ToString();
+			}
+			#endregion // Other overrides
+		}
+		#endregion // ModifyPropertyDescriptorDisplay
 	}
 }

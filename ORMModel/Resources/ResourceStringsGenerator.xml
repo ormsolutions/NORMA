@@ -122,6 +122,7 @@
 	<ResourceString name="ExclusiveOrCouplerTransactionName" model="Diagram" resourceName="ExclusiveOrCoupler.TransactionName"/>
 	<ResourceString name="ExclusiveOrDecouplerTransactionName" model="Diagram" resourceName="ExclusiveOrDecoupler.TransactionName"/>
 	<ResourceString name="DropShapeTransactionName" model="Diagram" resourceName="DropShape.TransactionName"/>
+	<ResourceString name="ElementGroupingPropertyCategory" model="ObjectModel" resourceName="ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping/TypeCompliance.Category"/>
 	<ResourceString name="ElementGroupingDefaultNamePattern" model="Model" resourceName="ElementGrouping.DefaultNamePattern"/>
 	<ResourceString name="ElementGroupingAddElementTransactionName" model="Model" resourceName="ElementGrouping.AddElement.TransactionName"/>
 	<ResourceString name="ElementGroupingAddGroupTransactionName" model="Model" resourceName="ElementGrouping.AddGroup.TransactionName"/>

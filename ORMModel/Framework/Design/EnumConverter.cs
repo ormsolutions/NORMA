@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -360,7 +361,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 
 		#region ConvertFrom method
 		/// <summary>See <see cref="EnumConverter.ConvertFrom"/>.</summary>
-		public sealed override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
 		{
 			string stringValue = value as string;
 			if ((object)stringValue != null && culture != null && !culture.Equals(CultureInfo.InvariantCulture))
@@ -377,7 +378,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 
 		#region ConvertTo method
 		/// <summary>See <see cref="EnumConverter.ConvertTo"/>.</summary>
-		public sealed override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+		public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
 		{
 			if (destinationType == typeof(string) && culture != null && !culture.Equals(CultureInfo.InvariantCulture) &&
 				(value is TEnum ||
