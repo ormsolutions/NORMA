@@ -3,7 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © ORM Solutions, LLC. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -18,27 +18,28 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Windows.Forms;
 using System.Xml;
+using System.Xml.Schema;
+using EnvDTE;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Modeling.Diagrams;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using ORMSolutions.ORMArchitect.Framework.Shell;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using ORMSolutions.ORMArchitect.Core.ShapeModel;
 using ORMSolutions.ORMArchitect.Framework;
-using EnvDTE;
-using System.Xml.Schema;
-using System.Collections.ObjectModel;
+using ORMSolutions.ORMArchitect.Framework.Shell;
 using ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid;
-using System.Runtime.InteropServices;
-using Microsoft.VisualStudio.Shell;
-using System.Windows.Forms;
 
 namespace ORMSolutions.ORMArchitect.Core.Shell
 {
@@ -60,6 +61,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			SaveDisabled = 8,
 			ErrorDisplayModified = 0x10,
 			UndoStackRemoved = 0x20,
+			RethrowLoadDocDataException = 0x40,
+			IgnoreDocumentReloading = 0x80,
 			// Other flags here, add instead of lots of bool variables
 		}
 		private PrivateFlags myFlags;
@@ -160,16 +163,66 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// <summary>
 		/// Reload this document from a <see cref="Stream"/> instead of from a file.
 		/// </summary>
-		/// <param name="stream">The <see cref="Stream"/> to load</param>
-		public void ReloadFromStream(Stream stream)
+		/// <param name="newStream">The <see cref="Stream"/> to load</param>
+		/// <param name="fallbackStream">If <paramref name="newStream"/> fails to load, then
+		/// reload this stream instead.</param>
+		public void ReloadFromStream(Stream newStream, Stream fallbackStream)
 		{
-			myFileStream = stream;
+			myFileStream = newStream;
 			// This calls into LoadDocData(string, bool) after doing necessary cleanup
-			ReloadDocData((uint)_VSRELOADDOCDATA.RDD_RemoveUndoStack);
-
-			// The document now has no undo stack, but we need it to display as dirty
-			SetFlag(PrivateFlags.UndoStackRemoved, true);
 			IServiceProvider serviceProvider;
+			if (fallbackStream == null)
+			{
+				ReloadDocData((uint)_VSRELOADDOCDATA.RDD_RemoveUndoStack);
+			}
+			else
+			{
+				SetFlag(PrivateFlags.RethrowLoadDocDataException, true);
+				try
+				{
+					ReloadDocData((uint)_VSRELOADDOCDATA.RDD_RemoveUndoStack);
+				}
+				catch (Exception ex)
+				{
+					SetFlag(PrivateFlags.RethrowLoadDocDataException, false);
+					SetFlag(PrivateFlags.IgnoreDocumentReloading, true);
+					fallbackStream.Position = 0;
+					myFileStream = fallbackStream;
+					ReloadDocData((uint)_VSRELOADDOCDATA.RDD_RemoveUndoStack);
+					if (null != (serviceProvider = ServiceProvider))
+					{
+						StringBuilder builder = new StringBuilder(ResourceStrings.RevertExtensionsMessage);
+						const string offset = "\r\n";
+						Exception messageException = ex;
+						while (messageException != null)
+						{
+							string message = messageException.Message;
+							if (!string.IsNullOrEmpty(message))
+							{
+								builder.Append(offset);
+								builder.Append(message);
+							}
+							messageException = messageException.InnerException;
+						}
+
+						VsShellUtilities.ShowMessageBox(
+							serviceProvider,
+							builder.ToString(),
+							ResourceStrings.PackageOfficialName,
+							OLEMSGICON.OLEMSGICON_INFO,
+							OLEMSGBUTTON.OLEMSGBUTTON_OK,
+							OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+					}
+				}
+				finally
+				{
+					SetFlag(PrivateFlags.RethrowLoadDocDataException, false);
+					SetFlag(PrivateFlags.IgnoreDocumentReloading, false);
+				}
+			}
+
+			// The document now has no undo stack, but we need it to display it as dirty
+			SetFlag(PrivateFlags.UndoStackRemoved, true);
 			uint cookie;
 			IVsUIShell shell;
 			if (null != (serviceProvider = base.ServiceProvider) &&
@@ -178,6 +231,29 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				shell.UpdateDocDataIsDirtyFeedback(cookie, 1);
 			}
+		}
+		/// <summary>
+		/// Enable reloading of the original stream during a failed attempt
+		/// to modify extensions.
+		/// </summary>
+		protected override void OnDocumentReloading(EventArgs e)
+		{
+			if (!GetFlag(PrivateFlags.IgnoreDocumentReloading))
+			{
+				base.OnDocumentReloading(e);
+			}
+		}
+		/// <summary>
+		/// Enable reloading of the original stream during a failed attempt
+		/// to modify extensions.
+		/// </summary>
+		protected override void HandleLoadDocDataException(string fileName, Exception exception, bool isReload)
+		{
+			if (GetFlag(PrivateFlags.RethrowLoadDocDataException))
+			{
+				throw exception;
+			}
+			base.HandleLoadDocDataException(fileName, exception, isReload);
 		}
 		/// <summary>
 		/// See the <see cref="LoadDocData"/> method.
@@ -236,12 +312,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			// Convert early so we can accurately check extension elements
 			int retVal = 0;
 			bool dontSave = false;
+			List<string> unrecognizedNamespaces = null;
 			ORMDesignerSettings settings = ORMDesignerPackage.DesignerSettings;
 			using (Stream convertedStream = settings.ConvertStream(inputStream, ServiceProvider))
 			{
 				dontSave = convertedStream != null;
 				Stream stream = dontSave ? convertedStream : inputStream;
 				myFileStream = stream;
+				Stream namespaceStrippedStream = null;
 				try
 				{
 					XmlReaderSettings readerSettings = new XmlReaderSettings();
@@ -272,6 +350,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 												}
 												documentExtensions[URI] = extensionType.Value;
 											}
+											else
+											{
+												(unrecognizedNamespaces ?? (unrecognizedNamespaces = new List<string>())).Add(URI);
+											}
 										}
 									}
 								} while (reader.MoveToNextAttribute());
@@ -279,11 +361,74 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						}
 					}
 					ORMDesignerPackage.VerifyRequiredExtensions(ref documentExtensions);
+					Stream unstrippedNamespaceStream = stream;
+					if (unrecognizedNamespaces != null)
+					{
+						stream.Position = 0;
+						namespaceStrippedStream = ExtensionManager.CleanupStream(stream, ORMDesignerPackage.StandardDomainModels, documentExtensions.Values, unrecognizedNamespaces);
+						if (namespaceStrippedStream != null)
+						{
+							dontSave = true;
+							stream = namespaceStrippedStream;
+							myFileStream = namespaceStrippedStream;
+						}
+						else
+						{
+							unrecognizedNamespaces = null;
+						}
+					}
 					myExtensionDomainModels = documentExtensions;
 					stream.Position = 0;
 
-					
-					retVal = base.LoadDocData(fileName, isReload);
+					try
+					{
+						 retVal = base.LoadDocData(fileName, isReload);
+					}
+					catch (TypeInitializationException ex)
+					{
+						// If the type that failed to load is an extensions, then remove it from
+						// the list of available extensions and try again.
+						if (documentExtensions != null)
+						{
+							string typeName = ex.TypeName;
+							foreach (KeyValuePair<string, ORMExtensionType> pair in documentExtensions)
+							{
+								Type testType = pair.Value.Type;
+								if (testType.FullName == typeName)
+								{
+									if (ORMDesignerPackage.CustomExtensionUnavailable(testType))
+									{
+										// If the unloadable type is a registered extensions, then
+										// we now have an additional namespace element that will not
+										// load correctly. Recurse on this function with the stream
+										// before any extensions namespace were stripped so that we can
+										// see all stripped namespaces in the final message. Obviously,
+										// this repeats some processing we've already done, but this is
+										// very much an exception case, and the additional minor performance
+										// hit is minimal compared with the user annoyance at potentially
+										// seeing multiple error displays.
+										Exception innerException = ex.InnerException;
+										string message;
+										if (innerException != null &&
+											!string.IsNullOrEmpty(message = innerException.Message))
+										{
+											VsShellUtilities.ShowMessageBox(
+												ServiceProvider,
+												message,
+												ResourceStrings.PackageOfficialName,
+												OLEMSGICON.OLEMSGICON_INFO,
+												OLEMSGBUTTON.OLEMSGBUTTON_OK,
+												OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+										}
+										unstrippedNamespaceStream.Position = 0;
+										return LoadDocDataFromStream(fileName, true, unstrippedNamespaceStream);
+									}
+									break;
+								}
+							}
+						}
+						throw;
+					}
 
 					// HACK: After the file is loaded and the load transaction has committed, commit a new transaction.
 					// For some reason this seems to fix various line routing issues (including the lines not showing up).
@@ -300,6 +445,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				finally
 				{
 					myFileStream = null;
+					if (namespaceStrippedStream != null)
+					{
+						namespaceStrippedStream.Dispose();
+					}
 				}
 			}
 			if (dontSave)
@@ -317,10 +466,35 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 				if (dontSave)
 				{
+					string message;
+					CultureInfo culture = CultureInfo.CurrentCulture;
+					int unrecognizedCount;
+					if (unrecognizedNamespaces != null &&
+						0 != (unrecognizedCount = unrecognizedNamespaces.Count))
+					{
+						string namespaceReplacement = unrecognizedNamespaces[0];
+						if (unrecognizedCount > 1)
+						{
+							string separator = culture.TextInfo.ListSeparator;
+							if (!char.IsWhiteSpace(separator, separator.Length - 1))
+							{
+								separator += " ";
+							}
+							for (int i = 1; i < unrecognizedCount; ++i)
+							{
+								namespaceReplacement += separator + unrecognizedNamespaces[i];
+							}
+						}
+						message = string.Format(culture, ResourceStrings.UnrecognizedExtensionsStrippedMessage, fileName, namespaceReplacement);
+					}
+					else
+					{
+						message = string.Format(culture, ResourceStrings.FileFormatUpgradeMessage, fileName);
+					}
 					// The disabled save is leading to data loss, prompt the user
 					dontSave = (int)DialogResult.Yes == VsShellUtilities.ShowMessageBox(
 						ServiceProvider,
-						string.Format(CultureInfo.CurrentCulture, ResourceStrings.FileFormatUpgradeMessage, fileName),
+						message,
 						ResourceStrings.PackageOfficialName,
 						OLEMSGICON.OLEMSGICON_QUERY,
 						OLEMSGBUTTON.OLEMSGBUTTON_YESNO,
@@ -883,19 +1057,34 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 					Object streamObj;
 					(myDocData as EnvDTE.IExtensibleObject).GetAutomationObject("ORMXmlStream", null, out streamObj);
-					Stream stream = streamObj as Stream;
+					Stream currentStream = streamObj as Stream;
+					Stream newStream = null;
 
-					Debug.Assert(stream != null);
+					Debug.Assert(currentStream != null);
 
-					ORMDesignerPackage.VerifyRequiredExtensions(ref requestedExtensions);
-					ICollection<ORMExtensionType> allExtensions = requestedExtensions.Values;
-					if (nonRequestedLoadedExtensions != null)
+					try
 					{
-						nonRequestedLoadedExtensions.AddRange(allExtensions);
-						allExtensions = nonRequestedLoadedExtensions;
+						ORMDesignerPackage.VerifyRequiredExtensions(ref requestedExtensions);
+						ICollection<ORMExtensionType> allExtensions = requestedExtensions.Values;
+						if (nonRequestedLoadedExtensions != null)
+						{
+							nonRequestedLoadedExtensions.AddRange(allExtensions);
+							allExtensions = nonRequestedLoadedExtensions;
+						}
+						newStream = ExtensionManager.CleanupStream(currentStream, ORMDesignerPackage.StandardDomainModels, allExtensions, null);
+						myDocData.ReloadFromStream(newStream, currentStream);
 					}
-					stream = ExtensionManager.CleanupStream(stream, ORMDesignerPackage.StandardDomainModels, allExtensions);
-					myDocData.ReloadFromStream(stream);
+					finally
+					{
+						if (currentStream != null)
+						{
+							currentStream.Dispose();
+						}
+						if (newStream != null)
+						{
+							newStream.Dispose();
+						}
+					}
 				}
 			}
 		}

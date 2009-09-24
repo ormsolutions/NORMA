@@ -515,6 +515,10 @@
     <value xml:space="preserve">Interpret Fact Editor Line</value>
     <comment xml:space="preserve">The transaction name used for changes made in response to committing a modified line in the fact editor. The text appears in the undo dropdown in the VS IDE.</comment>
   </data>
+  <data name="MessageBox.RevertExtensions.Message">
+    <value xml:space="preserve">Restoring previous model state, loading new extensions faileds with exception:&#xd;&#xa;</value>
+    <comment xml:space="preserve">The header for the message displayed if a set of extensions fails to correctly reload.</comment>
+  </data>
   <data name="MessageBox.ImpliedInternalUniquenessConstraint.Message">
     <value xml:space="preserve">One or more of the internal uniqueness constraints are implied by other internal uniqueness constraints. Do you wish to remove the implied constraints?</value>
     <comment xml:space="preserve">The message for the auto-fix implied internal uniqueness constraint message box.</comment>
@@ -527,7 +531,11 @@
     <value xml:space="preserve">The final shape corresponding to this element is being deleted. Delete the underlying '{0}' element '{1}' as well?</value>
     <comment xml:space="preserve">The message for the prompt to delete an element from the model when the final shape representing it is delete. Replacement field 0 gets the class name and 1 the component name.</comment>
   </data>
-  <data name="ModelErrorDisplayFilterChange.TransactionName">
+	<data name="MessageBox.UnrecognizedExtensionsStripped.Message">
+		<value xml:space="preserve">The file format of '{0}' contains unsupported extensions.&#xd;&#xa;Data associated with extension(s) '{1}' has been removed.&#xd;&#xa;Should the 'Save' command be disabled to preserve the original file contents? The 'Save As' command will remain enabled.</value>
+		<comment xml:space="preserve">The message shown when extensions are automatically removed from a file. Replacements: {0}=file name, {1}=list of unrecognized extensions.</comment>
+	</data>
+	<data name="ModelErrorDisplayFilterChange.TransactionName">
     <value xml:space="preserve">Change Error Display</value>
     <comment xml:space="preserve">The transaction name used by the model error display filter dialog when a filter is changed. The text appears in the undo dropdown in the VS IDE.</comment>
   </data>

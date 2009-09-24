@@ -2660,6 +2660,22 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "MessageBox.FileFormatUpgrade.Message");
 			}
 		}
+		/// <summary>The message shown when extensions are automatically removed from a file. Replacements: {0}=file name, {1}=list of unrecognized extensions.</summary>
+		public static string UnrecognizedExtensionsStrippedMessage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "MessageBox.UnrecognizedExtensionsStripped.Message");
+			}
+		}
+		/// <summary>The header for the message displayed if a set of extensions fails to correctly reload.</summary>
+		public static string RevertExtensionsMessage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "MessageBox.RevertExtensions.Message");
+			}
+		}
 		/// <summary>The name of the transaction that auto-fixes implied and duplicate internal constraints.</summary>
 		public static string RemoveImpliedInternalUniquenessConstraintsTransactionName
 		{

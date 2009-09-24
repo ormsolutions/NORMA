@@ -1670,7 +1670,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			Role unaryRole = null;
 			ObjectifiedUnaryRole objectifiedUnaryRole = null;
 			if (!deletedLink &&
-				null != (pid = entityType.PreferredIdentifier) &&
+				null != (pid = entityType.ResolvedPreferredIdentifier) &&
+				pid.PreferredIdentifierFor == entityType &&
 				pid.IsInternal &&
 				1 == (pidFactTypes = pid.FactTypeCollection).Count &&
 				((identifierFactType = pidFactTypes[0]) == factType ||

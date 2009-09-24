@@ -1074,6 +1074,57 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			return retVal;
 		}
 		/// <summary>
+		/// A custom extension has failed to load. Remove the extension from the list
+		/// of available extensions.
+		/// </summary>
+		/// <param name="unvailableExtensionType">The extension <see cref="Type"/>The
+		/// extension that has failed to load.</param>
+		/// <returns><see langword="true"/> if the extension was successfully removed.</returns>
+		public static bool CustomExtensionUnavailable(Type unvailableExtensionType)
+		{
+			IDictionary<string, ORMExtensionType> customExtensions = GetAvailableCustomExtensions();
+			if (customExtensions != null)
+			{
+				foreach (KeyValuePair<string, ORMExtensionType> pair in customExtensions)
+				{
+					ORMExtensionType extensionType = pair.Value;
+					if (extensionType.Type == unvailableExtensionType)
+					{
+						customExtensions.Remove(pair.Key);
+						ORMDesignerPackage package = mySingleton; // Note that we must have a singleton, or we would have no custom extensions
+						IDictionary<Guid, string> extensionIdMap = package.myExtensionIdToExtensionNameMap;
+						if (extensionIdMap != null && extensionIdMap.ContainsKey(extensionType.DomainModelId))
+						{
+							extensionIdMap.Remove(extensionType.DomainModelId);
+						}
+						string[] autoloadExtensions = package.myAutoLoadExtensions;
+						int autoloadExtensionLength;
+						int removeExtensionIndex;
+						if (autoloadExtensions != null &&
+							0 != (autoloadExtensionLength = autoloadExtensions.Length) &&
+							-1 != (removeExtensionIndex = Array.IndexOf<string>(autoloadExtensions, extensionType.NamespaceUri)))
+						{
+							string[] newExtensions = new string[autoloadExtensionLength - 1];
+							if (autoloadExtensionLength > 1)
+							{
+								for (int i = 0; i < removeExtensionIndex; ++i)
+								{
+									newExtensions[i] = autoloadExtensions[i];
+								}
+								for (int i = removeExtensionIndex + 1; i < autoloadExtensionLength; ++i)
+								{
+									newExtensions[i - 1] = autoloadExtensions[i];
+								}
+							}
+							package.myAutoLoadExtensions = newExtensions;
+						}
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+		/// <summary>
 		/// Helper method for <see cref="GetAvailableCustomExtensions"/>
 		/// </summary>
 		private static void LoadAvailableCustomExtensions(RegistryKey rootKey, IDictionary<string, ORMExtensionType> extensionMap)

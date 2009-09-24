@@ -3,7 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © ORM Solutions, LLC. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -70,7 +70,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		public static void ShowDialog(IServiceProvider serviceProvider, ORMDesignerDocData docData)
 		{
 			ExtensionManager extensionManager = new ExtensionManager(docData.Store);
-			if (extensionManager.ShowDialog(Utility.GetDialogOwnerWindow(serviceProvider)) == DialogResult.OK)
+			IWin32Window dialogOwner = Utility.GetDialogOwnerWindow(serviceProvider);
+			if (extensionManager.ShowDialog(dialogOwner) == DialogResult.OK)
 			{
 				// TODO: Prompt the user to make sure they really want us to start deleting stuff...
 
@@ -87,23 +88,28 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				// secondary extensions back on.
 				ORMDesignerPackage.VerifyRequiredExtensions(ref checkedTypes);
 
-				Stream stream = null;
+				Stream currentStream = null;
+				Stream newStream = null;
 				try
 				{
 					Object streamObj;
 					(docData as EnvDTE.IExtensibleObject).GetAutomationObject("ORMXmlStream", null, out streamObj);
-					stream = streamObj as Stream;
+					currentStream = streamObj as Stream;
 
-					Debug.Assert(stream != null);
+					Debug.Assert(currentStream != null);
 
-					stream = CleanupStream(stream, ORMDesignerPackage.StandardDomainModels, checkedTypes.Values);
-					docData.ReloadFromStream(stream);
+					newStream = CleanupStream(currentStream, ORMDesignerPackage.StandardDomainModels, checkedTypes.Values, null);
+					docData.ReloadFromStream(newStream, currentStream);
 				}
 				finally
 				{
-					if (stream != null)
+					if (currentStream != null)
 					{
-						stream.Dispose();
+						currentStream.Dispose();
+					}
+					if (newStream != null)
+					{
+						newStream.Dispose();
 					}
 				}
 			}
@@ -124,11 +130,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// <summary>
 			/// Default Constructor for the <see cref="ExtensionManagerUtility"/>.
 			/// </summary>
-			/// <param name="namespaces">An array of available namespaces.</param>
-			public ExtensionManagerUtility(string[] namespaces)
+			/// <param name="sortedNamespaces">An array of available namespaces. The array should be sorted with the
+			/// default string sort.</param>
+			public ExtensionManagerUtility(string[] sortedNamespaces)
 			{
-				myNamespaces = namespaces;
-				Array.Sort<string>(namespaces);
+				myNamespaces = sortedNamespaces;
 				myLastIdRemovalPhase = -1;
 			}
 			/// <summary>
@@ -243,8 +249,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// <param name="stream">The file stream that contains the ORM file.</param>
 		/// <param name="standardTypes">The standard models that are not loaded as extensions</param>
 		/// <param name="extensionTypes">A collection of extension types.</param>
+		/// <param name="unrecognizedNamespaces">An editable list of unrecognized namespaces. If this is set,
+		/// the namespaces will be verified after secondary namespaces from the extension types are validated.
+		/// If no remaining unrecognized namespaces are left after validation, then the method will return null.
+		/// Recognized namespaces will be removed from the list.</param>
 		/// <returns>The cleaned stream.</returns>
-		public static Stream CleanupStream(Stream stream, ICollection<Type> standardTypes, ICollection<ORMExtensionType> extensionTypes)
+		public static Stream CleanupStream(Stream stream, ICollection<Type> standardTypes, ICollection<ORMExtensionType> extensionTypes, IList<string> unrecognizedNamespaces)
 		{
 			MemoryStream outputStream = new MemoryStream((int)stream.Length);
 			XsltArgumentList argList = new XsltArgumentList();
@@ -293,6 +303,21 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				for (int j = 0; j < attributeCount; ++j)
 				{
 					namespaces[++namespaceIndex] = currentAttribute[j];
+				}
+			}
+			Array.Sort<string>(namespaces);
+			if (unrecognizedNamespaces != null)
+			{
+				for (int i = unrecognizedNamespaces.Count - 1; i >= 0; --i)
+				{
+					if (Array.BinarySearch<string>(namespaces, unrecognizedNamespaces[i]) >= 0)
+					{
+						unrecognizedNamespaces.RemoveAt(i);
+					}
+				}
+				if (unrecognizedNamespaces.Count == 0)
+				{
+					return null;
 				}
 			}
 			argList.AddExtensionObject("urn:schemas-neumont-edu:ORM:ExtensionManagerUtility", new ExtensionManagerUtility(namespaces));
