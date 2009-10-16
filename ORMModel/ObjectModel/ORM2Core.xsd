@@ -1387,7 +1387,7 @@
 	</xs:complexType>
 	<xs:complexType name="PathedRoleRef">
 		<xs:annotation>
-			<xs:documentation>A reference to an pathed role.</xs:documentation>
+			<xs:documentation>A reference to a pathed role.</xs:documentation>
 		</xs:annotation>
 		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
@@ -1440,21 +1440,89 @@
 			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:complexType name="PrimaryRolePathType" abstract="true">
+	<xs:simpleType name="SetCombinationOperatorType">
+		<xs:annotation>
+			<xs:documentation>Specifies the set operator used to combine 2 or more path components.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="Union">
+				<xs:annotation>
+					<xs:documentation>Combine all elements from both sets (default).</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Intersection">
+				<xs:annotation>
+					<xs:documentation>Overlapping values are included.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="RolePathOwnerType" abstract="true">
+		<xs:sequence>
+			<xs:element name="PathComponent" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A container for the single or composite path defined by this owner.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice minOccurs="0">
+						<xs:element name="RolePath" type="LeadRolePathType"/>
+						<xs:element name="Compositor" type="RolePathCompositorType"/>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="CalculatedValues" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A container for calculated values applied to any roles in contained paths.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="CalculatedValue" type="CalculatedValueType" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attributeGroup ref="idAttribute"/>
+	</xs:complexType>
+	<xs:attributeGroup name="RolePathComponentIsComplementedAttribute">
+		<xs:attribute name="IsComplemented" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>True if we should take the inverse of this set. Used only inside a parent compositor.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:complexType name="RolePathCompositorType">
+		<xs:annotation>
+			<xs:documentation>Combination of multiple role paths.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PathComponents" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A container for single or composite paths combined by this compositor.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="RolePath" type="LeadRolePathType"/>
+						<xs:element name="Compositor" type="RolePathCompositorType"/>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attributeGroup ref="idAttribute"/>
+		<xs:attributeGroup ref="RolePathComponentIsComplementedAttribute"/>
+		<xs:attribute name="SetCombinationOperator" type="SetCombinationOperatorType" default="Union">
+			<xs:annotation>
+				<xs:documentation>Specify the operator used to combine path components.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="LeadRolePathType">
+		<xs:annotation>
+			<xs:documentation>A role path starting from a root object type.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="RolePathType">
 				<xs:sequence>
 					<xs:element name="RootObjectType" minOccurs="0" type="ObjectTypeRef"/>
-					<xs:element name="CalculatedValues" minOccurs="0">
-						<xs:annotation>
-							<xs:documentation>A container for calculated values applied to any roles in the primary role path.</xs:documentation>
-						</xs:annotation>
-						<xs:complexType>
-							<xs:sequence>
-								<xs:element name="CalculatedValue" type="CalculatedValueType" minOccurs="0" maxOccurs="unbounded"/>
-							</xs:sequence>
-						</xs:complexType>
-					</xs:element>
 					<xs:element name="Conditions" minOccurs="0">
 						<xs:annotation>
 							<xs:documentation>A list of calculated boolean results that are necessary conditions for this role path.</xs:documentation>
@@ -1466,6 +1534,7 @@
 						</xs:complexType>
 					</xs:element>
 				</xs:sequence>
+				<xs:attributeGroup ref="RolePathComponentIsComplementedAttribute"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -1542,7 +1611,7 @@
 			<xs:documentation>A role path with projected nodes used to define the population of a derived fact type.</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
-			<xs:extension base="PrimaryRolePathType">
+			<xs:extension base="RolePathOwnerType">
 				<xs:attribute name="DerivationCompleteness" type="DerivationCompletenessValues" default="FullyDerived"/>
 				<xs:attribute name="DerivationStorage" type="DerivationStorageValues" default="NotStored"/>
 			</xs:extension>
@@ -1555,7 +1624,7 @@
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="FullyDerived">
 				<xs:annotation>
-					<xs:documentation>The fact instance population is calculated on demand.</xs:documentation>
+					<xs:documentation>The fact instance population is calculated on demand (default).</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="PartiallyDerived">
@@ -1572,7 +1641,7 @@
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="NotStored">
 				<xs:annotation>
-					<xs:documentation>Fact instances are recalculated on demand.</xs:documentation>
+					<xs:documentation>Fact instances are recalculated on demand (default).</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="Stored">
@@ -1587,7 +1656,7 @@
 			<xs:documentation>A role path used to define the population of a derived subtype.</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
-			<xs:extension base="PrimaryRolePathType">
+			<xs:extension base="RolePathOwnerType">
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>

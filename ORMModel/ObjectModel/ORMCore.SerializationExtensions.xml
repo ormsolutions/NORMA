@@ -7,7 +7,7 @@
 		<se:CopyrightLine>* Natural Object-Role Modeling Architect for Visual Studio                 *</se:CopyrightLine>
 		<se:CopyrightLine>*                                                                          *</se:CopyrightLine>
 		<se:CopyrightLine>* Copyright © Neumont University. All rights reserved.                     *</se:CopyrightLine>
-		<se:CopyrightLine>* Copyright © ORM Solutions, LLC. All rights reserved.                        *</se:CopyrightLine>
+		<se:CopyrightLine>* Copyright © ORM Solutions, LLC. All rights reserved.                     *</se:CopyrightLine>
 		<se:CopyrightLine>*                                                                          *</se:CopyrightLine>
 		<se:CopyrightLine>* The use and distribution terms for this software are covered by the      *</se:CopyrightLine>
 		<se:CopyrightLine>* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *</se:CopyrightLine>
@@ -361,7 +361,7 @@
 		<se:Link RelationshipName="ObjectTypeHasPreferredIdentifierRequiresMandatoryError" RoleName="PreferredIdentifierRequiresMandatoryError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ObjectTypeHasCompatibleSupertypesError" RoleName="CompatibleSupertypesError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ModelNoteReferencesObjectType" RoleName="Note" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="PrimaryRolePathHasRootObjectType" RoleName="PrimaryRolePath" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="LeadRolePathHasRootObjectType" RoleName="LeadRolePath" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="RecognizedPhrase" Override="true">
 		<se:Container Name="Abbreviations">
@@ -954,15 +954,60 @@
 		</se:Attribute>
 		<se:Link RelationshipName="CalculatedPathValueInputCorrespondsToFunctionParameter" RoleName="Input" WriteStyle="NotWritten"/>
 	</se:Element>
-	<se:Element Class="PrimaryRolePath" Override="true" SortChildElements="true">
-		<se:Link RelationshipName="PrimaryRolePathHasRootObjectType" RoleName="RootObjectType" Name="RootObjectType"/>
+	<se:Element Class="RolePathOwner" Override="true" SortChildElements="true">
+		<se:Container Name="PathComponent">
+			<se:Embed RelationshipName="RolePathOwnerHasPathComponent" RoleName="PathComponent"/>
+		</se:Container>
 		<se:Container Name="CalculatedValues">
-			<se:Embed RelationshipName="PrimaryRolePathCalculatesCalculatedPathValue" RoleName="CalculatedValue"/>
+			<se:Embed RelationshipName="RolePathOwnerCalculatesCalculatedPathValue" RoleName="CalculatedValue"/>
 		</se:Container>
+	</se:Element>
+	<se:Element Class="RolePathCompositor" Override="true" Name="Compositor">
+		<se:Attribute ID="SetCombinationOperator">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callThis name="SetCombinationOperator" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic dataTypeName="SetCombinationOperator" name="Union" type="field"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Container Name="PathComponents">
+			<se:Embed RelationshipName="RolePathCompositorHasPathComponent" RoleName="PathComponent"/>
+		</se:Container>
+	</se:Element>
+	<se:Element Class="RolePathComponent" Override="true">
+		<se:Attribute ID="IsComplemented">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="booleanOr">
+					<plx:left>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callThis name="IsComplemented" type="property"/>
+						</plx:unaryOperator>
+					</plx:left>
+					<plx:right>
+						<plx:binaryOperator type="identityEquality">
+							<plx:left>
+								<plx:callThis name="ParentCompositor" type="property"/>
+							</plx:left>
+							<plx:right>
+								<plx:nullKeyword/>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+	</se:Element>
+	<se:Element Class="LeadRolePath" Override="true" SortChildElements="true" Name="RolePath">
+		<se:Link RelationshipName="LeadRolePathHasRootObjectType" RoleName="RootObjectType" Name="RootObjectType"/>
 		<se:Container Name="Conditions">
-			<se:Link RelationshipName="PrimaryRolePathSatisfiesCalculatedCondition" RoleName="CalculatedCondition"/>
+			<se:Link RelationshipName="LeadRolePathSatisfiesCalculatedCondition" RoleName="CalculatedCondition"/>
 		</se:Container>
-		<se:Link RelationshipName="PrimaryRolePathSatisfiesCalculatedCondition" RoleName="CalculatedCondition" Name="CalculatedCondition"/>
+		<se:Link RelationshipName="LeadRolePathSatisfiesCalculatedCondition" RoleName="CalculatedCondition" Name="CalculatedCondition"/>
 	</se:Element>
 	<se:Element Class="CalculatedPathValue" Name="CalculatedValue" SortChildElements="true" Override="true">
 		<se:Link RelationshipName="CalculatedPathValueIsCalculatedWithFunction" RoleName="Function" Name="Function"/>
@@ -970,7 +1015,7 @@
 		<se:Container Name="Inputs">
 			<se:Embed RelationshipName="CalculatedPathValueHasInput" RoleName="Input"/>
 		</se:Container>
-		<se:Link RelationshipName="PrimaryRolePathSatisfiesCalculatedCondition" RoleName="PrimaryRolePath" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="LeadRolePathSatisfiesCalculatedCondition" RoleName="LeadRolePath" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="CalculatedPathValueInputBindsToCalculatedPathValue" RoleName="Input" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="RoleDerivesFromCalculatedPathValue" RoleName="Role" WriteStyle="NotWritten"/>
 	</se:Element>
@@ -987,7 +1032,7 @@
 	<se:Element Class="PathConstant" Name="Constant" Override="true">
 		<se:Attribute ID="LexicalValue" Name="Value" WriteStyle="Element"/>
 	</se:Element>
-	<se:Element Class="RolePath" SortChildElements="true" Override="true">
+	<se:Element Class="RolePath" SortChildElements="true" Override="true" LinkOnly="true">
 		<se:Attribute ID="SplitIsNegated">
 			<se:Condition WriteStyle="NotWritten">
 				<plx:binaryOperator type="booleanOr">

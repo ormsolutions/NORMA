@@ -1102,6 +1102,46 @@
     <value>JoinType</value>
     <comment>DisplayName for DomainProperty &apos;JoinType&apos; on DomainClass &apos;Join&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.Description" xml:space="preserve">
+    <value>An abstract owner for one or more path objects.</value>
+    <comment>Description for DomainClass &apos;RolePathOwner&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.DisplayName" xml:space="preserve">
+    <value>RolePathOwner</value>
+    <comment>DisplayName for DomainClass &apos;RolePathOwner&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent.Description" xml:space="preserve">
+    <value>Represents an abstract path component that can be recursively combined.</value>
+    <comment>Description for DomainClass &apos;RolePathComponent&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent.DisplayName" xml:space="preserve">
+    <value>RolePathComponent</value>
+    <comment>DisplayName for DomainClass &apos;RolePathComponent&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent/IsComplemented.Description" xml:space="preserve">
+    <value>Specify if the inverse of the returned set is used. Used for components owned directly by a compositor.</value>
+    <comment>Description for DomainProperty &apos;IsComplemented&apos; on DomainClass &apos;RolePathComponent&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent/IsComplemented.DisplayName" xml:space="preserve">
+    <value>IsComplemented</value>
+    <comment>DisplayName for DomainProperty &apos;IsComplemented&apos; on DomainClass &apos;RolePathComponent&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositor.Description" xml:space="preserve">
+    <value>Represents multiple role paths with combined results.</value>
+    <comment>Description for DomainClass &apos;RolePathCompositor&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositor.DisplayName" xml:space="preserve">
+    <value>RolePathCompositor</value>
+    <comment>DisplayName for DomainClass &apos;RolePathCompositor&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositor/SetCombinationOperator.Description" xml:space="preserve">
+    <value>Specify how the sets should be combined.</value>
+    <comment>Description for DomainProperty &apos;SetCombinationOperator&apos; on DomainClass &apos;RolePathCompositor&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositor/SetCombinationOperator.DisplayName" xml:space="preserve">
+    <value>SetCombinationOperator</value>
+    <comment>DisplayName for DomainProperty &apos;SetCombinationOperator&apos; on DomainClass &apos;RolePathCompositor&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePath.Description" xml:space="preserve">
     <value>An ordered sequence of roles through ORM space with a tail split branching into other subpaths</value>
     <comment>Description for DomainClass &apos;RolePath&apos;</comment>
@@ -1126,13 +1166,13 @@
     <value>SplitCombinationOperator</value>
     <comment>DisplayName for DomainProperty &apos;SplitCombinationOperator&apos; on DomainClass &apos;RolePath&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePath.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath.Description" xml:space="preserve">
     <value>A top level role path starting at a root object type. Provides a context for subpaths, functions, and constraints specific to this path.</value>
-    <comment>Description for DomainClass &apos;PrimaryRolePath&apos;</comment>
+    <comment>Description for DomainClass &apos;LeadRolePath&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePath.DisplayName" xml:space="preserve">
-    <value>PrimaryRolePath</value>
-    <comment>DisplayName for DomainClass &apos;PrimaryRolePath&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath.DisplayName" xml:space="preserve">
+    <value>LeadRolePath</value>
+    <comment>DisplayName for DomainClass &apos;LeadRolePath&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPath.Description" xml:space="preserve">
     <value>A branched path split from the end of another path.</value>
@@ -7012,37 +7052,101 @@
     <value>Membership Contradiction Error Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;Element&apos; on DomainRelationship &apos;GroupingMembershipContradictionErrorIsForElement&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathHasRootObjectType.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathHasRootObjectType</value>
-    <comment>Description for DomainClass &apos;PrimaryRolePathHasRootObjectType&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent</value>
+    <comment>Description for DomainClass &apos;RolePathOwnerHasPathComponent&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathHasRootObjectType.DisplayName" xml:space="preserve">
-    <value>Primary Role Path Has Root Object Type</value>
-    <comment>DisplayName for DomainClass &apos;PrimaryRolePathHasRootObjectType&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent.DisplayName" xml:space="preserve">
+    <value>Role Path Owner Has Path Component</value>
+    <comment>DisplayName for DomainClass &apos;RolePathOwnerHasPathComponent&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathHasRootObjectType/PrimaryRolePath.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathHasRootObjectType.PrimaryRolePath</value>
-    <comment>Description for DomainRole &apos;PrimaryRolePath&apos; on DomainRelationship &apos;PrimaryRolePathHasRootObjectType&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent/PathOwner.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent.PathOwner</value>
+    <comment>Description for DomainRole &apos;PathOwner&apos; on DomainRelationship &apos;RolePathOwnerHasPathComponent&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathHasRootObjectType/PrimaryRolePath.DisplayName" xml:space="preserve">
-    <value>PrimaryRolePath</value>
-    <comment>DisplayName for DomainRole &apos;PrimaryRolePath&apos; on DomainRelationship &apos;PrimaryRolePathHasRootObjectType&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent/PathOwner.DisplayName" xml:space="preserve">
+    <value>PathOwner</value>
+    <comment>DisplayName for DomainRole &apos;PathOwner&apos; on DomainRelationship &apos;RolePathOwnerHasPathComponent&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathHasRootObjectType/PrimaryRolePath.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent/PathOwner.PropertyDisplayName" xml:space="preserve">
+    <value>Path Component</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PathOwner&apos; on DomainRelationship &apos;RolePathOwnerHasPathComponent&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent/PathComponent.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent.PathComponent</value>
+    <comment>Description for DomainRole &apos;PathComponent&apos; on DomainRelationship &apos;RolePathOwnerHasPathComponent&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent/PathComponent.DisplayName" xml:space="preserve">
+    <value>PathComponent</value>
+    <comment>DisplayName for DomainRole &apos;PathComponent&apos; on DomainRelationship &apos;RolePathOwnerHasPathComponent&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent/PathComponent.PropertyDisplayName" xml:space="preserve">
+    <value>Parent Owner</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PathComponent&apos; on DomainRelationship &apos;RolePathOwnerHasPathComponent&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent</value>
+    <comment>Description for DomainClass &apos;RolePathCompositorHasPathComponent&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent.DisplayName" xml:space="preserve">
+    <value>Role Path Compositor Has Path Component</value>
+    <comment>DisplayName for DomainClass &apos;RolePathCompositorHasPathComponent&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent/Compositor.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent.Compositor</value>
+    <comment>Description for DomainRole &apos;Compositor&apos; on DomainRelationship &apos;RolePathCompositorHasPathComponent&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent/Compositor.DisplayName" xml:space="preserve">
+    <value>Compositor</value>
+    <comment>DisplayName for DomainRole &apos;Compositor&apos; on DomainRelationship &apos;RolePathCompositorHasPathComponent&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent/Compositor.PropertyDisplayName" xml:space="preserve">
+    <value>Path Component Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Compositor&apos; on DomainRelationship &apos;RolePathCompositorHasPathComponent&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent/PathComponent.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent.PathComponent</value>
+    <comment>Description for DomainRole &apos;PathComponent&apos; on DomainRelationship &apos;RolePathCompositorHasPathComponent&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent/PathComponent.DisplayName" xml:space="preserve">
+    <value>PathComponent</value>
+    <comment>DisplayName for DomainRole &apos;PathComponent&apos; on DomainRelationship &apos;RolePathCompositorHasPathComponent&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent/PathComponent.PropertyDisplayName" xml:space="preserve">
+    <value>Parent Compositor</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PathComponent&apos; on DomainRelationship &apos;RolePathCompositorHasPathComponent&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType</value>
+    <comment>Description for DomainClass &apos;LeadRolePathHasRootObjectType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType.DisplayName" xml:space="preserve">
+    <value>Lead Role Path Has Root Object Type</value>
+    <comment>DisplayName for DomainClass &apos;LeadRolePathHasRootObjectType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType/LeadRolePath.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType.LeadRolePath</value>
+    <comment>Description for DomainRole &apos;LeadRolePath&apos; on DomainRelationship &apos;LeadRolePathHasRootObjectType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType/LeadRolePath.DisplayName" xml:space="preserve">
+    <value>LeadRolePath</value>
+    <comment>DisplayName for DomainRole &apos;LeadRolePath&apos; on DomainRelationship &apos;LeadRolePathHasRootObjectType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType/LeadRolePath.PropertyDisplayName" xml:space="preserve">
     <value>Root Object Type</value>
-    <comment>PropertyDisplayName for DomainRole &apos;PrimaryRolePath&apos; on DomainRelationship &apos;PrimaryRolePathHasRootObjectType&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;LeadRolePath&apos; on DomainRelationship &apos;LeadRolePathHasRootObjectType&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathHasRootObjectType/RootObjectType.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathHasRootObjectType.RootObjectType</value>
-    <comment>Description for DomainRole &apos;RootObjectType&apos; on DomainRelationship &apos;PrimaryRolePathHasRootObjectType&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType/RootObjectType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType.RootObjectType</value>
+    <comment>Description for DomainRole &apos;RootObjectType&apos; on DomainRelationship &apos;LeadRolePathHasRootObjectType&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathHasRootObjectType/RootObjectType.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType/RootObjectType.DisplayName" xml:space="preserve">
     <value>RootObjectType</value>
-    <comment>DisplayName for DomainRole &apos;RootObjectType&apos; on DomainRelationship &apos;PrimaryRolePathHasRootObjectType&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;RootObjectType&apos; on DomainRelationship &apos;LeadRolePathHasRootObjectType&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathHasRootObjectType/RootObjectType.PropertyDisplayName" xml:space="preserve">
-    <value>Primary Role Path Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;RootObjectType&apos; on DomainRelationship &apos;PrimaryRolePathHasRootObjectType&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType/RootObjectType.PropertyDisplayName" xml:space="preserve">
+    <value>Lead Role Path Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;RootObjectType&apos; on DomainRelationship &apos;LeadRolePathHasRootObjectType&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole.Description" xml:space="preserve">
     <value>An occurrence of a &lt;see cref=&quot;Role&quot;/&gt; in a &lt;see cref=&quot;RolePath&quot;/&gt;. A single role may occur multiple times in the same path.</value>
@@ -7220,69 +7324,69 @@
     <value>Function</value>
     <comment>PropertyDisplayName for DomainRole &apos;Parameter&apos; on DomainRelationship &apos;FunctionOperatesOnParameter&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathCalculatesCalculatedPathValue.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathCalculatesCalculatedPathValue</value>
-    <comment>Description for DomainClass &apos;PrimaryRolePathCalculatesCalculatedPathValue&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerCalculatesCalculatedPathValue.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerCalculatesCalculatedPathValue</value>
+    <comment>Description for DomainClass &apos;RolePathOwnerCalculatesCalculatedPathValue&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathCalculatesCalculatedPathValue.DisplayName" xml:space="preserve">
-    <value>Primary Role Path Calculates Calculated Path Value</value>
-    <comment>DisplayName for DomainClass &apos;PrimaryRolePathCalculatesCalculatedPathValue&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerCalculatesCalculatedPathValue.DisplayName" xml:space="preserve">
+    <value>Role Path Owner Calculates Calculated Path Value</value>
+    <comment>DisplayName for DomainClass &apos;RolePathOwnerCalculatesCalculatedPathValue&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathCalculatesCalculatedPathValue/PrimaryRolePath.Description" xml:space="preserve">
-    <value>The values calculated for all branches of this path.</value>
-    <comment>Description for DomainRole &apos;PrimaryRolePath&apos; on DomainRelationship &apos;PrimaryRolePathCalculatesCalculatedPathValue&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerCalculatesCalculatedPathValue/PathOwner.Description" xml:space="preserve">
+    <value>The values calculated for all paths in this owner.</value>
+    <comment>Description for DomainRole &apos;PathOwner&apos; on DomainRelationship &apos;RolePathOwnerCalculatesCalculatedPathValue&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathCalculatesCalculatedPathValue/PrimaryRolePath.DisplayName" xml:space="preserve">
-    <value>PrimaryRolePath</value>
-    <comment>DisplayName for DomainRole &apos;PrimaryRolePath&apos; on DomainRelationship &apos;PrimaryRolePathCalculatesCalculatedPathValue&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerCalculatesCalculatedPathValue/PathOwner.DisplayName" xml:space="preserve">
+    <value>PathOwner</value>
+    <comment>DisplayName for DomainRole &apos;PathOwner&apos; on DomainRelationship &apos;RolePathOwnerCalculatesCalculatedPathValue&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathCalculatesCalculatedPathValue/PrimaryRolePath.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerCalculatesCalculatedPathValue/PathOwner.PropertyDisplayName" xml:space="preserve">
     <value>Calculated Value Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;PrimaryRolePath&apos; on DomainRelationship &apos;PrimaryRolePathCalculatesCalculatedPathValue&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;PathOwner&apos; on DomainRelationship &apos;RolePathOwnerCalculatesCalculatedPathValue&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathCalculatesCalculatedPathValue/CalculatedValue.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerCalculatesCalculatedPathValue/CalculatedValue.Description" xml:space="preserve">
     <value>The primary role path this value is calculated for.</value>
-    <comment>Description for DomainRole &apos;CalculatedValue&apos; on DomainRelationship &apos;PrimaryRolePathCalculatesCalculatedPathValue&apos;</comment>
+    <comment>Description for DomainRole &apos;CalculatedValue&apos; on DomainRelationship &apos;RolePathOwnerCalculatesCalculatedPathValue&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathCalculatesCalculatedPathValue/CalculatedValue.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerCalculatesCalculatedPathValue/CalculatedValue.DisplayName" xml:space="preserve">
     <value>CalculatedValue</value>
-    <comment>DisplayName for DomainRole &apos;CalculatedValue&apos; on DomainRelationship &apos;PrimaryRolePathCalculatesCalculatedPathValue&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;CalculatedValue&apos; on DomainRelationship &apos;RolePathOwnerCalculatesCalculatedPathValue&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathCalculatesCalculatedPathValue/CalculatedValue.PropertyDisplayName" xml:space="preserve">
-    <value>Primary Role Path</value>
-    <comment>PropertyDisplayName for DomainRole &apos;CalculatedValue&apos; on DomainRelationship &apos;PrimaryRolePathCalculatesCalculatedPathValue&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerCalculatesCalculatedPathValue/CalculatedValue.PropertyDisplayName" xml:space="preserve">
+    <value>Path Owner</value>
+    <comment>PropertyDisplayName for DomainRole &apos;CalculatedValue&apos; on DomainRelationship &apos;RolePathOwnerCalculatesCalculatedPathValue&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathSatisfiesCalculatedCondition.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathSatisfiesCalculatedCondition</value>
-    <comment>Description for DomainClass &apos;PrimaryRolePathSatisfiesCalculatedCondition&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition</value>
+    <comment>Description for DomainClass &apos;LeadRolePathSatisfiesCalculatedCondition&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathSatisfiesCalculatedCondition.DisplayName" xml:space="preserve">
-    <value>Primary Role Path Satisfies Calculated Condition</value>
-    <comment>DisplayName for DomainClass &apos;PrimaryRolePathSatisfiesCalculatedCondition&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition.DisplayName" xml:space="preserve">
+    <value>Lead Role Path Satisfies Calculated Condition</value>
+    <comment>DisplayName for DomainClass &apos;LeadRolePathSatisfiesCalculatedCondition&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathSatisfiesCalculatedCondition/PrimaryRolePath.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition/LeadRolePath.Description" xml:space="preserve">
     <value>The calculated values that must be satisfied by the path.</value>
-    <comment>Description for DomainRole &apos;PrimaryRolePath&apos; on DomainRelationship &apos;PrimaryRolePathSatisfiesCalculatedCondition&apos;</comment>
+    <comment>Description for DomainRole &apos;LeadRolePath&apos; on DomainRelationship &apos;LeadRolePathSatisfiesCalculatedCondition&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathSatisfiesCalculatedCondition/PrimaryRolePath.DisplayName" xml:space="preserve">
-    <value>PrimaryRolePath</value>
-    <comment>DisplayName for DomainRole &apos;PrimaryRolePath&apos; on DomainRelationship &apos;PrimaryRolePathSatisfiesCalculatedCondition&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition/LeadRolePath.DisplayName" xml:space="preserve">
+    <value>LeadRolePath</value>
+    <comment>DisplayName for DomainRole &apos;LeadRolePath&apos; on DomainRelationship &apos;LeadRolePathSatisfiesCalculatedCondition&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathSatisfiesCalculatedCondition/PrimaryRolePath.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition/LeadRolePath.PropertyDisplayName" xml:space="preserve">
     <value>Calculated Condition Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;PrimaryRolePath&apos; on DomainRelationship &apos;PrimaryRolePathSatisfiesCalculatedCondition&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;LeadRolePath&apos; on DomainRelationship &apos;LeadRolePathSatisfiesCalculatedCondition&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathSatisfiesCalculatedCondition/CalculatedCondition.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition/CalculatedCondition.Description" xml:space="preserve">
     <value>The primary role path that requires this condition to be true.</value>
-    <comment>Description for DomainRole &apos;CalculatedCondition&apos; on DomainRelationship &apos;PrimaryRolePathSatisfiesCalculatedCondition&apos;</comment>
+    <comment>Description for DomainRole &apos;CalculatedCondition&apos; on DomainRelationship &apos;LeadRolePathSatisfiesCalculatedCondition&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathSatisfiesCalculatedCondition/CalculatedCondition.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition/CalculatedCondition.DisplayName" xml:space="preserve">
     <value>CalculatedCondition</value>
-    <comment>DisplayName for DomainRole &apos;CalculatedCondition&apos; on DomainRelationship &apos;PrimaryRolePathSatisfiesCalculatedCondition&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;CalculatedCondition&apos; on DomainRelationship &apos;LeadRolePathSatisfiesCalculatedCondition&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PrimaryRolePathSatisfiesCalculatedCondition/CalculatedCondition.PropertyDisplayName" xml:space="preserve">
-    <value>Primary Role Path</value>
-    <comment>PropertyDisplayName for DomainRole &apos;CalculatedCondition&apos; on DomainRelationship &apos;PrimaryRolePathSatisfiesCalculatedCondition&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition/CalculatedCondition.PropertyDisplayName" xml:space="preserve">
+    <value>Required For Path Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;CalculatedCondition&apos; on DomainRelationship &apos;LeadRolePathSatisfiesCalculatedCondition&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasInput.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasInput</value>
@@ -7979,6 +8083,22 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.LogicalCombinationOperator/Xor.Description" xml:space="preserve">
     <value>The logical exclusive-or operator</value>
     <comment>Description for EnumerationLiteral &apos;Xor&apos; on DomainEnumeration &apos;LogicalCombinationOperator&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SetCombinationOperator/Union.DisplayName" xml:space="preserve">
+    <value>Union</value>
+    <comment>Display name for EnumerationLiteral &apos;Union&apos; on DomainEnumeration &apos;SetCombinationOperator&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SetCombinationOperator/Union.Description" xml:space="preserve">
+    <value>Combine sets with a union operator</value>
+    <comment>Description for EnumerationLiteral &apos;Union&apos; on DomainEnumeration &apos;SetCombinationOperator&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SetCombinationOperator/Intersection.DisplayName" xml:space="preserve">
+    <value>Intersection</value>
+    <comment>Display name for EnumerationLiteral &apos;Intersection&apos; on DomainEnumeration &apos;SetCombinationOperator&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SetCombinationOperator/Intersection.Description" xml:space="preserve">
+    <value>Combine sets with an intersection operator</value>
+    <comment>Description for EnumerationLiteral &apos;Intersection&apos; on DomainEnumeration &apos;SetCombinationOperator&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRolePurpose/StartRole.DisplayName" xml:space="preserve">
     <value>StartRole</value>

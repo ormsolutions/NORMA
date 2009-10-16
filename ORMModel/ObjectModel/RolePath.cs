@@ -30,10 +30,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	{
 		#region Abstract Properties
 		/// <summary>
-		/// Return the root <see cref="PrimaryRolePath"/> associated
+		/// Return the root <see cref="LeadRolePath"/> associated
 		/// with this path.
 		/// </summary>
-		public abstract PrimaryRolePath RootRolePath { get;}
+		public abstract LeadRolePath RootRolePath { get;}
 		#endregion // Abstract Properties
 		#region Accessors Properties
 		/// <summary>
@@ -65,7 +65,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Get the <see cref="ObjectType"/> that provides the starting
 		/// point for this <see cref="RolePath"/>. The starting object type
 		/// will be the role player of last role in a containing path,
-		/// of the <see cref="PrimaryRolePath.RootObjectType"/> if there
+		/// of the <see cref="LeadRolePath.RootObjectType"/> if there
 		/// is no containing path. Use <see cref="ContextObjectType"/> to
 		/// ignore the root object type.
 		/// </summary>
@@ -113,7 +113,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				else
 				{
 					contextPathedRole = null;
-					return returnRootObjectType ? ((PrimaryRolePath)currentPath).RootObjectType : null;
+					return returnRootObjectType ? ((LeadRolePath)currentPath).RootObjectType : null;
 				}
 			}
 			contextPathedRole = null;
@@ -214,52 +214,248 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 		}
-		 /// <summary>
-		 /// RolePlayerChangeRule: typeof(RoleSubPathIsContinuationOfRolePath), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
-		 /// Check branch collapsing for role player changes.
-		 /// </summary>
-		 private static void SubPathRolePlayerChangedRule(RolePlayerChangedEventArgs e)
-		 {
-			 if (e.DomainRole.Id == RoleSubPathIsContinuationOfRolePath.ParentRolePathDomainRoleId)
-			 {
-				 // The parent has lost a branch, validate if needed
-				 RolePath parentRolePath = (RolePath)e.OldRolePlayer;
-				 if (!parentRolePath.IsDeleted)
-				 {
-					 if (parentRolePath.PathedRoleCollection.Count == 0 &&
-						 parentRolePath.SplitPathCollection.Count == 0)
-					 {
-						 parentRolePath.Delete();
-					 }
-					 else
-					 {
-						 FrameworkDomainModel.DelayValidateElement(parentRolePath, DelayValidatePathCollapse);
-					 }
-				 }
-			 }
-		 }
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(RoleSubPathIsContinuationOfRolePath), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// Check branch collapsing for role player changes.
+		/// </summary>
+		private static void SubPathRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			if (e.DomainRole.Id == RoleSubPathIsContinuationOfRolePath.ParentRolePathDomainRoleId)
+			{
+				// The parent has lost a branch, validate if needed
+				RolePath parentRolePath = (RolePath)e.OldRolePlayer;
+				if (!parentRolePath.IsDeleted)
+				{
+					if (parentRolePath.PathedRoleCollection.Count == 0 &&
+						parentRolePath.SplitPathCollection.Count == 0)
+					{
+						parentRolePath.Delete();
+					}
+					else
+					{
+						FrameworkDomainModel.DelayValidateElement(parentRolePath, DelayValidatePathCollapse);
+					}
+				}
+			}
+		}
 		#endregion // Rule Methods
 	}
 	#endregion // RolePath class
-	#region PrimaryRolePath class
-	partial class PrimaryRolePath
+	#region LeadRolePath class
+	partial class LeadRolePath
 	{
+		#region Base overrides
 		/// <summary>
 		/// This path is the root of the path
 		/// </summary>
-		public override PrimaryRolePath RootRolePath
+		public override LeadRolePath RootRolePath
 		{
 			get
 			{
 				return this;
 			}
 		}
+		#endregion // Base overrides
+	}
+	#endregion // LeadRolePath class
+	#region RolePathComponent class
+	partial class RolePathComponent
+	{
+		#region Accessor Properties
 		/// <summary>
-		/// Get the containing <see cref="ORMModel"/> for this path.
+		/// Get the containing <see cref="ORMModel"/> for this path component.
+		/// </summary>
+		public ORMModel Model
+		{
+			get
+			{
+				RolePathOwner owner = RootOwner;
+				return (owner != null) ? owner.Model : null;
+			}
+		}
+		/// <summary>
+		/// Get the resolved <see cref="RolePathOwner"/> for this <see cref="RolePathComponent"/>
+		/// </summary>
+		public RolePathOwner RootOwner
+		{
+			get
+			{
+				RolePathComponent component = this;
+				RolePathOwner retVal = null;
+				while (component != null)
+				{
+					if (null != (retVal = component.ParentOwner))
+					{
+						break;
+					}
+					component = component.ParentCompositor;
+				}
+				return retVal;
+			}
+		}
+		#endregion // Accessor Properties
+		#region Rule Methods
+		/// <summary>
+		/// Delay validator to remove detached path components from the model. Since
+		/// top-level path components (LeadRolePath, RolePathCompositor) may naturally
+		/// change ownership during model editing, we do not specify PropagateDelete
+		/// in the model, so we need to explicitly delete a component if it has not
+		/// been reattached.
+		/// </summary>
+		private static void DelayValidateDetachedComponent(ModelElement element)
+		{
+			if (element.IsDeleted)
+			{
+				return;
+			}
+			RolePathComponent pathComponent = (RolePathComponent)element;
+			if (pathComponent.ParentCompositor == null && pathComponent.ParentOwner == null)
+			{
+				pathComponent.Delete();
+			}
+		}
+		/// <summary>
+		/// Automatically collapse a compositor that no longer contains at
+		/// least two components by moving the remaining component into the
+		/// compositors container (either the path owner or another compositor).
+		/// </summary>
+		private static void DelayValidateCompositorCollapse(ModelElement element)
+		{
+			if (element.IsDeleted)
+			{
+				return;
+			}
+			RolePathCompositor compositor = (RolePathCompositor)element;
+			LinkedElementCollection<RolePathComponent> components = compositor.PathComponentCollection;
+			switch (components.Count)
+			{
+				case 0:
+					compositor.Delete();
+					break;
+				case 1:
+					RolePathOwner parentOwner;
+					RolePathCompositor parentCompositor;
+					if (null != (parentOwner = compositor.ParentOwner))
+					{
+						components[0].ParentOwner = parentOwner;
+					}
+					else if (null != (parentCompositor = compositor.ParentCompositor))
+					{
+						components[0].ParentCompositor = parentCompositor;
+					}
+					// Note that this will happen delayed through this validation rule,
+					// but it doesn't hurt to skip the short circuiting and do it now.
+					compositor.Delete();
+					break;
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(RolePathCompositorHasPathComponent)
+		/// A <see cref="RolePathComponent"/> has two possible aggregating relationships,
+		/// make sure that only one exists at a given time.
+		/// </summary>
+		private static void RolePathCompositorHasPathComponentAddedRule(ElementAddedEventArgs e)
+		{
+			RolePathOwnerHasPathComponent ownerLink = RolePathOwnerHasPathComponent.GetLinkToParentOwner(((RolePathCompositorHasPathComponent)e.ModelElement).PathComponent);
+			if (ownerLink != null)
+			{
+				ownerLink.Delete();
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(RolePathOwnerHasPathComponent)
+		/// A <see cref="RolePathComponent"/> has two possible aggregating relationships,
+		/// make sure that only one exists at a given time.
+		/// </summary>
+		private static void RolePathOwnerHasPathComponentAddedRule(ElementAddedEventArgs e)
+		{
+			// Make sure a top-level component is not marked as a complement
+			// UNDONE: Add exception to block complementing of a top-level component.
+			RolePathComponent component = ((RolePathOwnerHasPathComponent)e.ModelElement).PathComponent;
+			component.IsComplemented = false;
+			RolePathCompositorHasPathComponent compositorLink = RolePathCompositorHasPathComponent.GetLinkToParentCompositor(component);
+			if (compositorLink != null)
+			{
+				compositorLink.Delete();
+			}
+		}
+		/// <summary>
+		/// DeleteRule: typeof(RolePathCompositorHasPathComponent)
+		/// </summary>
+		private static void RolePathCompositorHasPathComponentDeletedRule(ElementDeletedEventArgs e)
+		{
+			RolePathCompositorHasPathComponent link = (RolePathCompositorHasPathComponent)e.ModelElement;
+			RolePathComponent component = link.PathComponent;
+			if (!component.IsDeleted)
+			{
+				FrameworkDomainModel.DelayValidateElement(component, DelayValidateDetachedComponent);
+			}
+			RolePathCompositor compositor = link.Compositor;
+			if (!compositor.IsDeleted)
+			{
+				FrameworkDomainModel.DelayValidateElement(compositor, DelayValidateCompositorCollapse);
+			}
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(RolePathCompositorHasPathComponent)
+		/// </summary>
+		private static void RolePathCompositorHasPathComponentRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			if (e.DomainRole.Id == RolePathCompositorHasPathComponent.PathComponentDomainRoleId)
+			{
+				RolePathOwnerHasPathComponent ownerLink = RolePathOwnerHasPathComponent.GetLinkToParentOwner((RolePathComponent)e.NewRolePlayer);
+				if (ownerLink != null)
+				{
+					ownerLink.Delete();
+				}
+				FrameworkDomainModel.DelayValidateElement(e.OldRolePlayer, DelayValidateDetachedComponent);
+			}
+			else
+			{
+				FrameworkDomainModel.DelayValidateElement(e.OldRolePlayer, DelayValidateCompositorCollapse);
+			}
+		}
+		/// <summary>
+		/// DeleteRule: typeof(RolePathOwnerHasPathComponent)
+		/// </summary>
+		private static void RolePathOwnerHasPathComponentDeletedRule(ElementDeletedEventArgs e)
+		{
+			RolePathComponent component = ((RolePathOwnerHasPathComponent)e.ModelElement).PathComponent;
+			if (!component.IsDeleted)
+			{
+				FrameworkDomainModel.DelayValidateElement(component, DelayValidateDetachedComponent);
+			}
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(RolePathOwnerHasPathComponent)
+		/// </summary>
+		private static void RolePathOwnerHasPathComponentRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			if (e.DomainRole.Id == RolePathOwnerHasPathComponent.PathComponentDomainRoleId)
+			{
+				// Make sure a top-level component is not marked as a complement
+				RolePathComponent component = (RolePathComponent)e.NewRolePlayer;
+				component.IsComplemented = false;
+				RolePathCompositorHasPathComponent compositorLink = RolePathCompositorHasPathComponent.GetLinkToParentCompositor(component);
+				if (compositorLink != null)
+				{
+					compositorLink.Delete();
+				}
+				FrameworkDomainModel.DelayValidateElement(e.OldRolePlayer, DelayValidateDetachedComponent);
+			}
+		}
+		#endregion // Rule Methods
+	}
+	#endregion // RolePathComponent class
+	#region RolePathOwner class
+	partial class RolePathOwner
+	{
+		/// <summary>
+		/// Get the containing <see cref="ORMModel"/> for this path owner.
 		/// </summary>
 		public abstract ORMModel Model { get;}
 	}
-	#endregion // PrimaryRolePath class
+	#endregion // RolePathOwner class
 	#region FactTypeDerivationRule class
 	partial class FactTypeDerivationRule
 	{
@@ -298,7 +494,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Recursive find the path root
 		/// </summary>
-		public override PrimaryRolePath RootRolePath
+		public override LeadRolePath RootRolePath
 		{
 			get
 			{
@@ -309,7 +505,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					parentPath = subPath.ParentRolePath;
 					subPath = parentPath as RoleSubPath;
 				}
-				return parentPath as PrimaryRolePath;
+				return parentPath as LeadRolePath;
 			}
 		}
 	}
@@ -436,12 +632,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						input.Delete();
 					}
 				}
-				PrimaryRolePathSatisfiesCalculatedCondition conditionLink;
-				if (!newFunction.IsBoolean &&
-					null != (conditionLink = PrimaryRolePathSatisfiesCalculatedCondition.GetLinkToPrimaryRolePath(calculatedValue)))
+				if (!newFunction.IsBoolean)
 				{
-					// A non-boolean function cannot be path condition
-					conditionLink.Delete();
+					foreach (LeadRolePathSatisfiesCalculatedCondition conditionLink in LeadRolePathSatisfiesCalculatedCondition.GetLinksToRequiredForPathCollection(calculatedValue))
+					{
+						// A non-boolean function cannot be path condition
+						conditionLink.Delete();
+					}
 				}
 			}
 			else
@@ -461,8 +658,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 				// If there is no function, then we cannot assume that it is a boolean function
 				// that is eligible to satisfy a condition
-				PrimaryRolePathSatisfiesCalculatedCondition conditionLink = PrimaryRolePathSatisfiesCalculatedCondition.GetLinkToPrimaryRolePath(calculatedValue);
-				if (conditionLink != null)
+				foreach (LeadRolePathSatisfiesCalculatedCondition conditionLink in LeadRolePathSatisfiesCalculatedCondition.GetLinksToRequiredForPathCollection(calculatedValue))
 				{
 					conditionLink.Delete();
 				}

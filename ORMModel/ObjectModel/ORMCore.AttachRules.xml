@@ -777,6 +777,26 @@
 				<arg:RuleOn targetType="RoleSubPathIsContinuationOfRolePath" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
 			</arg:RolePlayerChangeRule>
 		</arg:RuleContainer>
+		<arg:RuleContainer class="RolePathComponent">
+			<arg:AddRule methodName="RolePathCompositorHasPathComponentAddedRule">
+				<arg:RuleOn targetType="RolePathCompositorHasPathComponent"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="RolePathCompositorHasPathComponentDeletedRule">
+				<arg:RuleOn targetType="RolePathCompositorHasPathComponent"/>
+			</arg:DeleteRule>
+			<arg:RolePlayerChangeRule methodName="RolePathCompositorHasPathComponentRolePlayerChangedRule">
+				<arg:RuleOn targetType="RolePathCompositorHasPathComponent"/>
+			</arg:RolePlayerChangeRule>
+			<arg:AddRule methodName="RolePathOwnerHasPathComponentAddedRule">
+				<arg:RuleOn targetType="RolePathOwnerHasPathComponent"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="RolePathOwnerHasPathComponentDeletedRule">
+				<arg:RuleOn targetType="RolePathOwnerHasPathComponent"/>
+			</arg:DeleteRule>
+			<arg:RolePlayerChangeRule methodName="RolePathOwnerHasPathComponentRolePlayerChangedRule">
+				<arg:RuleOn targetType="RolePathOwnerHasPathComponent"/>
+			</arg:RolePlayerChangeRule>
+		</arg:RuleContainer>
 		<arg:RuleContainer class="SetComparisonConstraint">
 			<arg:AddRule methodName="ConstraintHasRoleSequenceAddedRule" fireBefore="true">
 				<!-- Fire before so the SetComparisonConstraint.FactTypeCollection is populated for other rules-->

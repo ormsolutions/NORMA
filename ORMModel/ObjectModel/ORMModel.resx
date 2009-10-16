@@ -1286,6 +1286,12 @@
 		<value>{0}_RefMode{1}</value>
 		<comment>Used to automatically turn a value type into an entity type with a reference mode when IsValueType is set to false and the ValueType has downstream value roles. Replacement field {0} is the name of the exisiting type and field {1} is used to insert a number to ensure that the name is unique. {0}Values{1} is the default format.</comment>
 	</data>
+	<data name="SetCombinationOperator.Intersection" xml:space="preserve">
+		<value>Intersection</value>
+	</data>
+	<data name="SetCombinationOperator.Union" xml:space="preserve">
+		<value>Union</value>
+	</data>
 	<data name="SubtypeFact.ComponentNameFormat" xml:space="preserve">
 		<value>{0}-&gt;{1}</value>
 		<comment>String for generating a component name for a subtype. The {0} replacement field is used for the subtype component name; {1} for the supertype.</comment>
