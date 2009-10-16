@@ -2157,6 +2157,185 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 		}
 		#endregion
+		#region MaximumDisplayedValues domain property code
+		
+		/// <summary>
+		/// MaximumDisplayedValues domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid MaximumDisplayedValuesDomainPropertyId = new global::System.Guid(0xac5518d3, 0x91dc, 0x4a5d, 0x87, 0x34, 0x46, 0x5c, 0xa5, 0x63, 0x22, 0x06);
+		
+		/// <summary>
+		/// Storage for MaximumDisplayedValues
+		/// </summary>
+		private global::System.Int16 maximumDisplayedValuesPropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of MaximumDisplayedValues domain property.
+		/// The maximum total number of values and ranges to be displayed with this shape.
+		/// </summary>
+		[global::System.ComponentModel.Editor(typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.Design.ValueConstraintShapeDisplayBoundPicker), typeof(global::System.Drawing.Design.UITypeEditor))]
+		[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.Design.ValueConstraintShapeDisplayBoundConverter))]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ValueConstraintShape/MaximumDisplayedValues.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ValueConstraintShape/MaximumDisplayedValues.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslModeling::DomainObjectId("ac5518d3-91dc-4a5d-8734-465ca5632206")]
+		public global::System.Int16 MaximumDisplayedValues
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return maximumDisplayedValuesPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				MaximumDisplayedValuesPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ValueConstraintShape.MaximumDisplayedValues domain property.
+		/// </summary>
+		internal sealed partial class MaximumDisplayedValuesPropertyHandler : DslModeling::DomainPropertyValueHandler<ValueConstraintShape, global::System.Int16>
+		{
+			private MaximumDisplayedValuesPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ValueConstraintShape.MaximumDisplayedValues domain property value handler.
+			/// </summary>
+			public static readonly MaximumDisplayedValuesPropertyHandler Instance = new MaximumDisplayedValuesPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ValueConstraintShape.MaximumDisplayedValues domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return MaximumDisplayedValuesDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Int16 GetValue(ValueConstraintShape element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.maximumDisplayedValuesPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ValueConstraintShape element, global::System.Int16 newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Int16 oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.maximumDisplayedValuesPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region MaximumDisplayedColumns domain property code
+		
+		/// <summary>
+		/// MaximumDisplayedColumns domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid MaximumDisplayedColumnsDomainPropertyId = new global::System.Guid(0x88c5cc21, 0xf449, 0x4b46, 0xa7, 0x43, 0x12, 0xc3, 0x39, 0x44, 0x69, 0x05);
+		
+		/// <summary>
+		/// Storage for MaximumDisplayedColumns
+		/// </summary>
+		private global::System.Int16 maximumDisplayedColumnsPropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of MaximumDisplayedColumns domain property.
+		/// The maximum number of columns to be used to display the values and ranges in
+		/// this shape.
+		/// </summary>
+		[global::System.ComponentModel.Editor(typeof(ORMSolutions.ORMArchitect.Core.ShapeModel.Design.ValueConstraintShapeDisplayBoundPicker), typeof(global::System.Drawing.Design.UITypeEditor))]
+		[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.Design.ValueConstraintShapeDisplayBoundConverter))]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ValueConstraintShape/MaximumDisplayedColumns.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ValueConstraintShape/MaximumDisplayedColumns.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslModeling::DomainObjectId("88c5cc21-f449-4b46-a743-12c339446905")]
+		public global::System.Int16 MaximumDisplayedColumns
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return maximumDisplayedColumnsPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				MaximumDisplayedColumnsPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ValueConstraintShape.MaximumDisplayedColumns domain property.
+		/// </summary>
+		internal sealed partial class MaximumDisplayedColumnsPropertyHandler : DslModeling::DomainPropertyValueHandler<ValueConstraintShape, global::System.Int16>
+		{
+			private MaximumDisplayedColumnsPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ValueConstraintShape.MaximumDisplayedColumns domain property value handler.
+			/// </summary>
+			public static readonly MaximumDisplayedColumnsPropertyHandler Instance = new MaximumDisplayedColumnsPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ValueConstraintShape.MaximumDisplayedColumns domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return MaximumDisplayedColumnsDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Int16 GetValue(ValueConstraintShape element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.maximumDisplayedColumnsPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ValueConstraintShape element, global::System.Int16 newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Int16 oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.maximumDisplayedColumnsPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 	}
 }
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel

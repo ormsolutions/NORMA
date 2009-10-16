@@ -59,7 +59,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				using (Font font = GetFont(parentShape))
 				{
-					return base.MeasureDisplayText(text, font, null, parentShape.MaximumSize);
+					return base.MeasureDisplayText(text, font, GetStringFormat(parentShape), parentShape.MaximumSize);
 				}
 			}
 			return SizeD.Empty;

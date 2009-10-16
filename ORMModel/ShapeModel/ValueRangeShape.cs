@@ -156,7 +156,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		}
 		/// <summary>
 		/// Get the ValueConstraint associated with this shape
-		/// </summary>s
+		/// </summary>
 		public ValueConstraint AssociatedValueConstraint
 		{
 			get
@@ -185,12 +185,43 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			Location = new PointD(parentBounds.Width + .06, -1 * size.Height);
 		}
 		/// <summary>
-		/// Overrides default implemenation to instantiate an Reading specific one.
+		/// Overrides default implemenation to instantiate an value constraint specific one.
 		/// </summary>
 		/// <param name="fieldName">Non-localized name for the field</param>
 		protected override AutoSizeTextField CreateAutoSizeTextField(string fieldName)
 		{
 			return new ValueRangeAutoSizeTextField(fieldName);
+		}
+		/// <summary>
+		/// Indicate that tooltips are supported if the displayed values are truncated.
+		/// </summary>
+		public override bool HasToolTip
+		{
+			get
+			{
+				ValueConstraint constraint;
+				int displayedValues;
+				return (displayedValues = MaximumDisplayedValues) > 0 &&
+					null != (constraint = AssociatedValueConstraint) &&
+					constraint.ValueRangeCollection.Count > displayedValues;
+			}
+		}
+		/// <summary>
+		/// Show a tooltip containing the text for all values.
+		/// </summary>
+		public override string GetToolTipText(DiagramItem item)
+		{
+			string retVal = null;
+			ValueConstraint constraint;
+			if (null != (constraint = AssociatedValueConstraint))
+			{
+				retVal = constraint.GetDisplayText(MaximumDisplayedColumns, 0);
+				if (string.IsNullOrEmpty(retVal))
+				{
+					retVal = null;
+				}
+			}
+			return retVal;
 		}
 		#endregion
 		#region Helper methods
@@ -217,23 +248,19 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <summary>
 		/// Constructs how the value range text should be displayed.
 		/// </summary>
-		public String DisplayText
+		public string DisplayText
 		{
 			get
 			{
-				String retval = null;
-				if (myDisplayText == null)
+				string retVal = myDisplayText;
+				if (retVal == null)
 				{
 					ValueConstraint defn = this.ModelElement as ValueConstraint;
 					Debug.Assert(defn != null);
-					retval = defn.Text;
-					myDisplayText = retval;
+					retVal = defn.GetDisplayText(MaximumDisplayedColumns, MaximumDisplayedValues);
+					myDisplayText = retVal;
 				}
-				else
-				{
-					retval = myDisplayText;
-				}
-				return retval;
+				return retVal;
 			}
 		}
 		#endregion // properties
@@ -249,7 +276,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			if (e.DomainProperty.Id == ValueConstraint.TextChangedDomainPropertyId)
 			{
-				ValueConstraint constraint = e.ModelElement as ValueConstraint;
+				ValueConstraint constraint = (ValueConstraint)e.ModelElement;
 				if (!constraint.IsDeleted)
 				{
 					foreach (ShapeElement pel in PresentationViewsSubject.GetPresentation(constraint))
@@ -264,6 +291,23 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 		}
 		#endregion // ValueConstraintTextChangedRule
+		#region ValueConstraintShapeDisplayChangedRule
+		/// <summary>
+		/// ChangeRule: typeof(ValueConstraintShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// </summary>
+		private static void ValueConstraintShapeDisplayChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			Guid propertyId = e.DomainProperty.Id;
+			if (propertyId == ValueConstraintShape.MaximumDisplayedValuesDomainPropertyId || propertyId == ValueConstraintShape.MaximumDisplayedColumnsDomainPropertyId)
+			{
+				ValueConstraintShape valueConstraintShape = (ValueConstraintShape)e.ModelElement;
+				if (!valueConstraintShape.IsDeleted)
+				{
+					valueConstraintShape.InvalidateDisplayText();
+				}
+			}
+		}
+		#endregion // ValueConstraintShapeDisplayChangedRule
 		#endregion // Shape fixup rules
 		#region IModelErrorActivation Implementation
 		/// <summary>
@@ -299,6 +343,43 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 		}
 		#endregion // ISelectionContainerFilter Implementation
+		#region Deserialization Fixup
+		/// <summary>
+		/// Return a deserialization fixup listener. The listener ensures
+		/// the correct size for value constraint shapes.
+		/// </summary>
+		public static IDeserializationFixupListener FixupListener
+		{
+			get
+			{
+				return new ValueConstraintShapeFixupListener();
+			}
+		}
+		/// <summary>
+		/// A listener to reset the size of a multi-line value constraint shape.
+		/// </summary>
+		private sealed class ValueConstraintShapeFixupListener : DeserializationFixupListener<ValueConstraintShape>
+		{
+			/// <summary>
+			/// Create a new ValueConstraintShapeFixupListener
+			/// </summary>
+			public ValueConstraintShapeFixupListener()
+				: base((int)ORMDeserializationFixupPhase.ValidateStoredPresentationElements)
+			{
+			}
+			/// <summary>
+			/// Update the shape size if there are multiple lines set for the shape.
+			/// </summary>
+			protected sealed override void ProcessElement(ValueConstraintShape element, Store store, INotifyElementAdded notifyAdded)
+			{
+				if (!element.IsDeleted &&
+					element.MaximumDisplayedColumns > 0)
+				{
+					element.AutoResize();
+				}
+			}
+		}
+		#endregion // Deserialization Fixup
 		#region Mouse handling
 		/// <summary>
 		/// Attempt model error activation
@@ -322,6 +403,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			public ValueRangeAutoSizeTextField(string fieldName)
 				: base(fieldName)
 			{
+				DefaultMultipleLine = true;
+				StringFormat fieldFormat = new StringFormat(StringFormatFlags.NoClip);
+				fieldFormat.Alignment = StringAlignment.Near;
+				DefaultStringFormat = fieldFormat;
 			}
 			/// <summary>
 			/// Code that handles retrieval of the text to display in ValueConstraintShape.
@@ -339,6 +424,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						if (valueConstraintShape != null)
 						{
 							parentValueConstraintShape = valueConstraintShape;
+							break;
 						}
 					}
 				}
@@ -351,13 +437,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					retval = parentValueConstraintShape.DisplayText;
 				}
 				return retval;
-			}
-			/// <summary>
-			/// Changed to return true to get multiple line support.
-			/// </summary>
-			public sealed override bool GetMultipleLine(ShapeElement parentShape)
-			{
-				return true;
 			}
 		}
 		#endregion // ValueRangeAutoSizeTextField class

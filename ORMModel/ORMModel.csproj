@@ -506,6 +506,8 @@
     <Compile Include="ObjectModel\Design\Editors\AliasManagerForm.Designer.cs">
       <DependentUpon>AliasManagerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ShapeModel\Design\Editors\ValueConstraintShapeDisplayBoundPicker.cs" />
+    <Compile Include="ShapeModel\Design\ValueConstraintShapeDisplayBoundConverter.cs" />
     <Compile Include="ShapeModel\Design\ObjectTypeShapeTypeDescriptor.cs" />
     <Compile Include="ShapeModel\DynamicColorTextField.cs" />
     <Compile Include="Shell\ORMDesignerCommandManager.cs" />

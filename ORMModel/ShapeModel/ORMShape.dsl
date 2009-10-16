@@ -255,6 +255,44 @@
 			<BaseGeometryShape>
 				<GeometryShapeMoniker Name="FloatingTextShape"/>
 			</BaseGeometryShape>
+			<Properties>
+				<DomainProperty Name="MaximumDisplayedValues" DisplayName="MaxValues" Id="AC5518D3-91DC-4A5D-8734-465CA5632206" DefaultValue="0" Description="The maximum total number of values and ranges to be displayed with this shape.">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.Editor">
+							<Parameters>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.Design.ValueConstraintShapeDisplayBoundPicker)"/>
+								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
+							</Parameters>
+						</ClrAttribute>
+						<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
+							<Parameters>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.Design.ValueConstraintShapeDisplayBoundConverter)"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
+					<Type>
+						<ExternalTypeMoniker Name="/System/Int16"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="MaximumDisplayedColumns" DisplayName="MaxColumns" Id="88C5CC21-F449-4B46-A743-12C339446905" DefaultValue="0" Description="The maximum number of columns to be used to display the values and ranges in this shape.">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.Editor">
+							<Parameters>
+								<AttributeParameter Value="typeof(ORMSolutions.ORMArchitect.Core.ShapeModel.Design.ValueConstraintShapeDisplayBoundPicker)"/>
+								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
+							</Parameters>
+						</ClrAttribute>
+						<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
+							<Parameters>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.Design.ValueConstraintShapeDisplayBoundConverter)"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
+					<Type>
+						<ExternalTypeMoniker Name="/System/Int16"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
 		</GeometryShape>
 		<GeometryShape Name="RoleNameShape" Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel" Id="2CB7393C-4502-4C59-979D-94D6C89B4080" FillGradientMode="None">
 			<BaseGeometryShape>

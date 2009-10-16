@@ -1204,7 +1204,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // VerifyValueRangeOverlapError
 		#region CustomStorage handlers
-		private string GetTextValue()
+		/// <summary>
+		/// Helper method to get a multi-line representation of the <see cref="Text"/> property.
+		/// </summary>
+		/// <param name="maxColumns">The maximum number of value to display on a single row, or 0 for unlimited.</param>
+		/// <param name="maxDisplayed">The maximum total number of items to display, or 0 for unlimited.</param>
+		/// <returns>A multiline string, if requested.</returns>
+		public string GetDisplayText(int maxColumns, int maxDisplayed)
 		{
 			LinkedElementCollection<ValueRange> ranges = ValueRangeCollection;
 			int rangeCount = ranges.Count;
@@ -1216,21 +1222,62 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				return string.Concat(leftContainerMark, ranges[0].Text, rightContainerMark);
 			}
+			int totalValues = rangeCount;
+			int totalSlots = rangeCount; // Possibly treat a trailing ellipsis in the total
+			if (maxDisplayed > 0)
+			{
+				if (maxDisplayed < rangeCount)
+				{
+					totalValues = maxDisplayed;
+					totalSlots = maxDisplayed + 1;
+				}
+			}
+			if (maxColumns > 0)
+			{
+				// Adjust to balance the number of displayed items across rows. For example, if we have
+				// 13 slots and 6 max columns, instead of {abcdef,ghijkl,m} we should show {abcde,fghij,klm}
+				int itemsOnLastRow = totalSlots % maxColumns;
+				if (itemsOnLastRow != 0)
+				{
+					maxColumns -= (maxColumns - itemsOnLastRow) / ((totalSlots + maxColumns - 1) / maxColumns);
+				}
+			}
 			else
 			{
-				StringBuilder valueRangeText = new StringBuilder();
-				valueRangeText.Append(leftContainerMark);
-				for (int i = 0; i < rangeCount; ++i)
-				{
-					if (i != 0)
-					{
-						valueRangeText.Append(rangeDelim);
-					}
-					valueRangeText.Append(ranges[i].Text);
-				}
-				valueRangeText.Append(rightContainerMark);
-				return valueRangeText.ToString();
+				maxColumns = -1; // Standardize for loop
 			}
+			StringBuilder valueRangeText = new StringBuilder();
+			valueRangeText.Append(leftContainerMark);
+			int currentColumn = 0;
+			for (int i = 0; i < totalValues; ++i)
+			{
+				if (i != 0)
+				{
+					valueRangeText.Append(rangeDelim);
+					if (currentColumn == maxColumns)
+					{
+						valueRangeText.AppendLine();
+						currentColumn = 0;
+					}
+				}
+				++currentColumn;
+				valueRangeText.Append(ranges[i].Text);
+			}
+			if (totalSlots > totalValues)
+			{
+				valueRangeText.Append(rangeDelim);
+				if (currentColumn == maxColumns)
+				{
+					valueRangeText.AppendLine();
+				}
+				valueRangeText.Append(ResourceStrings.ReadingShapeEllipsis);
+			}
+			valueRangeText.Append(rightContainerMark);
+			return valueRangeText.ToString();
+		}
+		private string GetTextValue()
+		{
+			return GetDisplayText(0, 0);
 		}
 		private void SetTextValue(string newValue)
 		{

@@ -30,13 +30,60 @@ using Microsoft.VisualStudio.Modeling.Shell;
 using ORMSolutions.ORMArchitect.Framework;
 using ORMSolutions.ORMArchitect.Core.Shell;
 using System.Drawing.Drawing2D;
+using ORMSolutions.ORMArchitect.Framework.Diagrams;
 
 #endregion
 
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
-	public partial class ReadingShape : IModelErrorActivation, ISelectionContainerFilter
+	public partial class ReadingShape : IModelErrorActivation, ISelectionContainerFilter, IDynamicColorGeometryHost
 	{
+		#region IDynamicColorGeometryHost Implementation
+		/// <summary>
+		/// Implements <see cref="IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId,Pen)"/>
+		/// </summary>
+		protected static Color UpdateDynamicColor(StyleSetResourceId penId, Pen pen)
+		{
+			return Color.Empty;
+		}
+		Color IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId penId, Pen pen)
+		{
+			return UpdateDynamicColor(penId, pen);
+		}
+		/// <summary>
+		/// Implements <see cref="IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId,Brush)"/>
+		/// </summary>
+		protected Color UpdateDynamicColor(StyleSetResourceId brushId, Brush brush)
+		{
+			Color retVal = Color.Empty;
+			SolidBrush solidBrush;
+			IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, FactType>[] providers;
+			FactTypeShape factTypeShape;
+			FactType factType;
+			if (brushId == DiagramBrushes.ShapeText &&
+				null != (solidBrush = brush as SolidBrush) &&
+				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, FactType>>()) &&
+				null != (factTypeShape = ParentShape as FactTypeShape) &&
+				null != (factType = factTypeShape.AssociatedFactType))
+			{
+				for (int i = 0; i < providers.Length; ++i)
+				{
+					Color alternateColor = providers[i].GetDynamicColor(ORMDiagramDynamicColor.ForegroundText, factTypeShape, factType);
+					if (alternateColor != Color.Empty)
+					{
+						retVal = solidBrush.Color;
+						solidBrush.Color = alternateColor;
+						break;
+					}
+				}
+			}
+			return retVal;
+		}
+		Color IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId brushId, Brush brush)
+		{
+			return UpdateDynamicColor(brushId, brush);
+		}
+		#endregion // IDynamicColorGeometryHost Implementation
 		#region Size Constants
 		/// <summary>
 		/// The height of reading indicator with the arrow pointing up
@@ -974,7 +1021,21 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							PointD.ToPointF(startPoint),
 							PointD.ToPointF(midPoint),
 							PointD.ToPointF(endPoint)});
-					e.Graphics.FillPath(SystemBrushes.WindowText, path);
+					StyleSetResourceId brushId = DiagramBrushes.ShapeText;
+					Brush brush = parentShape.StyleSet.GetBrush(brushId);
+					Color restoreColor = Color.Empty;
+					IDynamicColorGeometryHost dynamicColors = parentShape as IDynamicColorGeometryHost;
+					if (dynamicColors != null)
+					{
+						restoreColor = dynamicColors.UpdateDynamicColor(brushId, brush);
+					}
+					e.Graphics.FillPath(brush, path);
+					SolidBrush solidBrush;
+					if (!restoreColor.IsEmpty &&
+						null != (solidBrush = brush as SolidBrush))
+					{
+						solidBrush.Color = restoreColor;
+					}
 				}
 			}
 		}

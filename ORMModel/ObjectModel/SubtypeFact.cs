@@ -43,6 +43,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			retVal.Model = subtype.Model;
 			retVal.Subtype = subtype;
 			retVal.Supertype = supertype;
+			if (subtype.IsValueType)
+			{
+				retVal.ProvidesPreferredIdentifier = true;
+			}
 			return retVal;
 		}
 
@@ -705,12 +709,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				Role subTypeMetaRole;
 				ObjectType superType;
 				ObjectType subType;
+				bool valueTypeSubtype;
 				if (null == (superTypeMetaRole = element.SupertypeRole) ||
 					null == (subTypeMetaRole = element.SubtypeRole) ||
 					null == (superType = superTypeMetaRole.RolePlayer) ||
 					null == (subType = subTypeMetaRole.RolePlayer) ||
 					// They must both be value types or object types, but can't switch
-					((superType.DataType == null) != (subType.DataType == null)))
+					((valueTypeSubtype = (superType.DataType == null)) != (subType.DataType == null)))
 				{
 					RemoveFactType(element);
 				}
@@ -739,6 +744,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						// check in the format upgrade transform
 						element.ProvidesPreferredIdentifier = true;
 						element.IsPrimary = false;
+					}
+
+					if (valueTypeSubtype)
+					{
+						element.ProvidesPreferredIdentifier = true;
 					}
 					
 					// Move any derivation rules to the subtype

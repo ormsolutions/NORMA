@@ -123,7 +123,32 @@
 		</se:Attribute>
 	</se:Element>
 	<se:Element Class="ReadingShape" Override="true"/>
-	<se:Element Class="ValueConstraintShape" Override="true"/>
+	<se:Element Class="ValueConstraintShape" Override="true">
+		<se:Attribute ID="MaximumDisplayedValues">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="lessThanOrEqual">
+					<plx:left>
+						<plx:callThis name="MaximumDisplayedValues" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:value data="0" type="i2"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="MaximumDisplayedColumns">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="lessThanOrEqual">
+					<plx:left>
+						<plx:callThis name="MaximumDisplayedColumns" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:value data="0" type="i2"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+	</se:Element>
 	<se:Element Class="RoleNameShape" Override="true"/>
 	<se:Element Class="FactTypeShape" Override="true" SortChildElements="true">
 		<se:Attribute ID="DisplayRoleNames" WriteStyle="Attribute" WriteCustomStorage="true">

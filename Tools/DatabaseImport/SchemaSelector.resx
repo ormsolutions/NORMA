@@ -240,4 +240,7 @@
   <data name="SchemaNotSelectedMessage" xml:space="preserve">
     <value>You must select a schema to import an ORM file from a database.</value>
   </data>
+  <data name="SchemaNotAvailableMessage" xml:space="preserve">
+    <value>Import aborted. The selected database must contain a schema.</value>
+  </data>
 </root>

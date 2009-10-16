@@ -169,7 +169,16 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			LinkedElementCollection<FactType> verifyFactTypeList = null;
 			if (null != (objectType = (dataObject == null) ? elementToPlace as ObjectType : dataObject.GetData(typeof(ObjectType)) as ObjectType))
 			{
-				element = objectType;
+				factType = objectType.NestedFactType;
+				if (factType != null)
+				{
+					objectType = null;
+					element = factType;
+				}
+				else
+				{
+					element = objectType;
+				}
 			}
 			else if (null != (factType = (dataObject == null) ? elementToPlace as FactType : dataObject.GetData(typeof(FactType)) as FactType))
 			{

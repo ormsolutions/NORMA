@@ -125,11 +125,6 @@ namespace ORMSolutions.ORMArchitect.DatabaseImport
 				DataProviderManager manager = GetService<DataProviderManager>(serviceProvider);
 				if (manager != null)
 				{
-					//string schemaName = dbConn.Database;
-					//if (dbConn is System.Data.SqlClient.SqlConnection)
-					//{
-						
-					//}
 					DataProvider provider = manager.GetDataProvider(dataConn.Provider);
 					string invariantName = provider.GetProperty("InvariantName") as string;
 
@@ -137,15 +132,12 @@ namespace ORMSolutions.ORMArchitect.DatabaseImport
 					string selectedSchema = null;
 					switch (schemaList.Count)
 					{
-						case 0:
-							break;
 						case 1:
 							selectedSchema = schemaList[0];
 							break;
 						default:
-							{
-								selectedSchema = SchemaSelector.SelectSchema(serviceProvider, schemaList);
-							}
+                            // Allow this for an empty list
+							selectedSchema = SchemaSelector.SelectSchema(serviceProvider, schemaList);
 							break;
 					}
 
@@ -165,9 +157,9 @@ namespace ORMSolutions.ORMArchitect.DatabaseImport
 
 
 						replacementsDictionary.Add("$DcilFile$", replacementString);
-					}
+                        myAddToProject = true;
+                    }
 				}
-				myAddToProject = true;
 			}
 		}
 		void IWizard.RunStarted(object automationObject, Dictionary<string, string> replacementsDictionary, WizardRunKind runKind, object[] customParams)

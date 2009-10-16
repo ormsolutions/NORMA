@@ -3354,12 +3354,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					case IntersectingConstraintPattern.SubsetImpliedByMandatory:
 						if (shouldExecuteValidationCode)
 						{
+							hasError = false;
 							//For this pattern: there can be an error only if there are more than one sequences on
 							//the constraint and the constraint is only on one column
 							if (sequences.Count == 2 && CheckIfHasOneColumn(sequences))
 							{
 								// The error occurs when simple mandatory is on the top role
-								hasError = false;
 								CheckIfAnyRolesInCollectionCanConflict(
 									sequences[1].RoleCollection,
 									constraintTypesInPotentialConflict,

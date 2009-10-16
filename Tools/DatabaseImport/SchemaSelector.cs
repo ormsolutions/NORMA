@@ -41,22 +41,31 @@ namespace ORMSolutions.ORMArchitect.DatabaseImport
 		public static string SelectSchema(IServiceProvider provider, IList<string> schemaList)
 		{
 			string retVal = null;
-			if (null != schemaList && schemaList.Count != 0)
+            string messageResourceId = null;
+			IUIService uiService = ORMDatabaseImportWizard.GetService<IUIService>(provider);
+			if (uiService != null)
 			{
-				IUIService uiService = ORMDatabaseImportWizard.GetService<IUIService>(provider);
-				if (uiService != null)
-				{
-					SchemaSelector fss = new SchemaSelector(schemaList);
-					if (uiService.ShowDialog(fss) == DialogResult.OK)
-					{
-						retVal = fss.mySelectedSchema;
-					}
-					else
-					{
-						uiService.ShowMessage(new System.ComponentModel.ComponentResourceManager(typeof(SchemaSelector)).GetString("SchemaNotSelectedMessage"));
-					}
-				}
-			}
+                if (null != schemaList && schemaList.Count != 0)
+                {
+                    SchemaSelector fss = new SchemaSelector(schemaList);
+                    if (uiService.ShowDialog(fss) == DialogResult.OK)
+                    {
+                        retVal = fss.mySelectedSchema;
+                    }
+                    else
+                    {
+                        messageResourceId = "SchemaNotSelectedMessage";
+                    }
+                }
+                else
+                {
+                    messageResourceId = "SchemaNotAvailableMessage";
+                }
+                if (messageResourceId != null)
+                {
+                    uiService.ShowMessage(new System.ComponentModel.ComponentResourceManager(typeof(SchemaSelector)).GetString(messageResourceId));
+                }
+            }
 			return retVal;
 		}
 

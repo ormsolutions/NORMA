@@ -2796,6 +2796,14 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "ValueRangeLink.Accessible.Name");
 			}
 		}
+		/// <summary>Returned as the text for an unlimited display bound on the MaximumDisplayedValues and MaximumDisplayedColumns properties.</summary>
+		public static string ValueConstraintShapeUnlimitedDisplayBoundText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ValueConstraintShape.UnlimitedDisplayBound.Text");
+			}
+		}
 		/// <summary>The title of the message shown when a registered extension fails to load.</summary>
 		public static string ExtensionLoadFailureTitle
 		{

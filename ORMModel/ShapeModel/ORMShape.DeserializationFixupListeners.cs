@@ -43,6 +43,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				yield return ObjectTypeShape.FixupListener;
 				yield return ObjectifiedFactTypeNameShape.FixupListener;
 				yield return ModelNoteShape.FixupListener;
+				yield return ValueConstraintShape.FixupListener;
 			}
 		}
 		IEnumerable<IDeserializationFixupListener> IDeserializationFixupListenerProvider.DeserializationFixupListenerCollection

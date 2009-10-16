@@ -77,6 +77,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// </summary>
 			private class NewElementTracker : IEnumerable<KeyValuePair<ModelElement, bool>>
 			{
+				private bool myBlockAllElements;
 				#region Constructor
 				private Dictionary<ModelElement, bool> myElements;
 				/// <summary>
@@ -85,6 +86,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				public NewElementTracker()
 				{
 					myElements = new Dictionary<ModelElement, bool>(HashCodeComparer<ModelElement>.Instance);
+					myBlockAllElements = true;
 				}
 				#endregion // Constructor
 				#region Tracking Methods
@@ -93,7 +95,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				/// </summary>
 				public AutomatedElementDirective BlockElement(ModelElement element)
 				{
-					return !myElements.ContainsKey(element) ? AutomatedElementDirective.Ignore : AutomatedElementDirective.None;
+					return myBlockAllElements || !myElements.ContainsKey(element) ? AutomatedElementDirective.Ignore : AutomatedElementDirective.None;
 				}
 				/// <summary>
 				/// Were any elements tracked?
@@ -122,6 +124,23 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					else
 					{
 						elements.Add(element, forceShapeCreation);
+					}
+				}
+				/// <summary>
+				/// Set to true to disable all element creation. This lets us
+				/// create only the elements we want to when we want to, and not
+				/// before or after. Short circuits lots of unnecessary processing.
+				/// Defaults to true.
+				/// </summary>
+				public bool BlockAllElements
+				{
+					get
+					{
+						return myBlockAllElements;
+					}
+					set
+					{
+						myBlockAllElements = value;
 					}
 				}
 				#endregion // Tracking Methods
@@ -639,6 +658,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 
 							if (t.HasPendingChanges)
 							{
+								tracker.BlockAllElements = false;
+								if (diagram != null && tracker.HasElements)
+								{
+									AutoLayout(diagram, layoutManager, tracker, rightOfShape);
+								}
+								tracker.BlockAllElements = true;
 								t.Commit();
 							}
 						} // end transaction
@@ -647,15 +672,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					{
 						toolServices.AutomatedElementFilter -= tracker.BlockElement;
 					}
-
-					#region Autolayout
-					// Only perform autlayout if new objects have been created AND there are objects
-					// in the modelElements collection.
-					if (diagram != null && tracker.HasElements)
-					{
-						AutoLayout(store, diagram, layoutManager, tracker, rightOfShape);
-					}
-					#endregion // Autolayout
 				}
 				return retVal;
 			}
@@ -671,29 +687,35 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				currentOrder.ReadingText = readingText;
 				return currentOrder;
 			}
-			private static void AutoLayout(Store store, ORMDiagram diagram, LayoutManager layoutManager, IEnumerable<KeyValuePair<ModelElement, bool>> newlyCreatedElements, NodeShape rightOfShape)
+			private static void AutoLayout(ORMDiagram diagram, LayoutManager layoutManager, IEnumerable<KeyValuePair<ModelElement, bool>> newlyCreatedElements, NodeShape rightOfShape)
 			{
-				// Create a new transaction to perform autolayout (You cannot do this inside the same transaction)
-				using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.InterpretFactEditorLineTransactionName))
+				// New stuff for autolayout
+				foreach (KeyValuePair<ModelElement, bool> keyPair in newlyCreatedElements)
 				{
-					// New stuff for autolayout
-					foreach (KeyValuePair<ModelElement, bool> keyPair in newlyCreatedElements)
+					ModelElement modelElement = keyPair.Key;
+					ShapeElement shapeElement;
+					if (null != (shapeElement = diagram.FindShapeForElement(modelElement)))
 					{
-						ModelElement modelElement = keyPair.Key;
-						ShapeElement shapeElement = diagram.FindShapeForElement(modelElement);
-						if (null != (shapeElement = diagram.FindShapeForElement(modelElement)) ||
-							(keyPair.Value && null != (shapeElement = diagram.FixUpLocalDiagram(modelElement))))
-						{
-							layoutManager.AddShape(shapeElement, false);
-						}
+						layoutManager.AddShape(shapeElement, true);
 					}
-					layoutManager.Layout(false, rightOfShape);
-
-					if (t.HasPendingChanges)
+					else if (keyPair.Value)
 					{
-						t.Commit();
+						diagram.PlaceORMElementOnDiagram(
+							null,
+							modelElement,
+							PointD.Empty,
+							ORMPlacementOption.None,
+							delegate(ModelElement shapeForElement, ShapeElement newShape)
+							{
+								if (shapeForElement == modelElement)
+								{
+									layoutManager.AddShape(newShape, false);
+								}
+							},
+							null);
 					}
 				}
+				layoutManager.Layout(false, rightOfShape);
 			}
 
 			private FactType ObjectificationCheck(FactType startingFact)

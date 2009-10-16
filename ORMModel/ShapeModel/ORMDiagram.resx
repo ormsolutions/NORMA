@@ -951,6 +951,10 @@
     <value xml:space="preserve">Unobjectify Fact Type</value>
     <comment xml:space="preserve">The name given to the transaction used when unobjectifying a fact type.</comment>
   </data>
+  <data name="ValueConstraintShape.UnlimitedDisplayBound.Text">
+    <value xml:space="preserve">Unlimited</value>
+    <comment xml:space="preserve">Returned as the text for an unlimited display bound on the MaximumDisplayedValues and MaximumDisplayedColumns properties.</comment>
+  </data>
   <data name="ValueRangeLink.Accessible.Description">
     <value xml:space="preserve">Connects a ValueType or Role with an element displaying its valid range of values.</value>
     <comment xml:space="preserve">Returned as the accessible description for a value range link</comment>

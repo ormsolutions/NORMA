@@ -42,7 +42,7 @@ using ORMSolutions.ORMArchitect.Framework.Diagrams;
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	#region FactTypeShape class
-	public partial class FactTypeShape : ICustomShapeFolding, IModelErrorActivation, IProvideConnectorShape, IProxyDisplayProvider, IConfigureAsChildShape, IDynamicColorGeometryHost, IConfigureableLinkEndpoint
+	public partial class FactTypeShape : ICustomShapeFolding, IModelErrorActivation, IProvideConnectorShape, IProxyDisplayProvider, IConfigureAsChildShape, IDynamicColorGeometryHost, IDynamicColorAlsoUsedBy, IConfigureableLinkEndpoint
 	{
 		#region ConstraintBoxRoleActivity enum
 		/// <summary>
@@ -2348,10 +2348,38 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					DiagramItem testSelect = new DiagramItem(parentShape, this, testSubField);
 					DiagramClientView clientView = e.View;
 					SelectedShapesCollection selection = null;
+					UniquenessConstraint internalIndexedUniqueness = null;
+					LinkedElementCollection<Role> internalIndexedRoles = null;
 					bool factShapeHighlighted = false;
 					if (clientView != null)
 					{
 						selection = clientView.Selection;
+						if (selection.Count == 1)
+						{
+							DiagramItem selectedItem = selection.PrimaryItem;
+							if (selectedItem.Shape == parentShape &&
+								selectedItem.SubField is ConstraintSubField)
+							{
+								UniquenessConstraint internalUniqueness;
+								foreach (object selectedElement in selectedItem.RepresentedElements)
+								{
+									internalUniqueness = selectedElement as UniquenessConstraint;
+									if (internalUniqueness != null && internalUniqueness.IsInternal)
+									{
+										internalIndexedRoles = internalUniqueness.RoleCollection;
+										if (internalIndexedRoles.Count < 1)
+										{
+											internalIndexedRoles = null;
+										}
+										else
+										{
+											internalIndexedUniqueness = internalUniqueness;
+										}
+									}
+									break;
+								}
+							}
+						}
 						foreach (DiagramItem item in clientView.HighlightedShapes)
 						{
 							if (parentFactShape == item.Shape)
@@ -2441,15 +2469,19 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							RoleBase currentRoleBase = roles[iRole];
 							Role currentRole = currentRoleBase.Role;
 							highlightThisRole = factShapeHighlighted || iRole == highlightRoleBox;
+							bool internalIndex = false;
 
 							// There is an active ExternalConstraintConnectAction, and this role is currently in the action's role set.
 							if ((activeExternalAction != null &&
 								-1 != (activeRoleIndex = activeExternalAction.GetActiveRoleIndex(currentRole))) ||
 								(activeInternalAction != null &&
-								-1 != (activeRoleIndex = activeInternalAction.GetActiveRoleIndex(currentRole))))
+								-1 != (activeRoleIndex = activeInternalAction.GetActiveRoleIndex(currentRole))) ||
+								((internalIndex = internalIndexedUniqueness != null && (activeInternalAction == null || activeInternalAction.ActiveConstraint != internalIndexedUniqueness)) &&
+								-1 != (activeRoleIndex = internalIndexedRoles.IndexOf(currentRole))))
 							{
-								// There is an active ExternalConstraintConnectAction, and this role is currently in the action's role set.
-								DrawHighlight(g, styleSet, roleBounds, highlightThisRole);
+								// There is an active ExternalConstraintConnectAction, and this role is currently in the action's role set,
+								// or an internal uniqueness is currently highlighted.
+								parentFactShape.DrawHighlight(g, roleBounds, internalIndex ? null : RoleBoxResource, currentRole, false, highlightThisRole);
 								fillBackground = false;
 								if (stringFormat == null)
 								{
@@ -2676,33 +2708,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							roleBoxPen.Color = restoreRoleBoxPenColor;
 						}
 					}
-				}
-			}
-			/// <summary>
-			/// Draws a role highlight.
-			/// </summary>
-			/// <param name="g">The Graphics object to draw to.</param>
-			/// <param name="styleSet">The StyleSet of the shape we are drawing to.</param>
-			/// <param name="bounds">The bounds to draw as the highlight.</param>
-			/// <param name="active">Boolean indicating whether or not to draw highlight as active (ex: the mouse is currently over this highlight).</param>
-			private static void DrawHighlight(Graphics g, StyleSet styleSet, RectangleF bounds, bool active)
-			{
-				Brush brush = styleSet.GetBrush(RoleBoxResource);
-				Color startColor = default(Color);
-				SolidBrush coloredBrush = null;
-				if (!SystemInformation.HighContrast && active)
-				{
-					coloredBrush = brush as SolidBrush;
-					if (coloredBrush != null)
-					{
-						startColor = coloredBrush.Color;
-						coloredBrush.Color = ORMDiagram.ModifyLuminosity(coloredBrush.Color);
-					}
-				}
-				g.FillRectangle(brush, bounds);
-				if (coloredBrush != null)
-				{
-					coloredBrush.Color = startColor;
 				}
 			}
 		}
@@ -4577,6 +4582,31 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			return UpdateDynamicColor(brushId, brush);
 		}
 		#endregion // IDynamicColorGeometryHost Implementation
+		#region IDynamicColorAlsoUsedBy Implementation
+		/// <summary>
+		/// Implements <see cref="IDynamicColorAlsoUsedBy.RelatedDynamicallyColoredShapes"/>
+		/// </summary>
+		protected IEnumerable<ShapeElement> RelatedDynamicallyColoredShapes
+		{
+			get
+			{
+				foreach (ShapeElement childShape in RelativeChildShapes)
+				{
+					if (childShape is ReadingShape)
+					{
+						yield return childShape;
+					}
+				}
+			}
+		}
+		IEnumerable<ShapeElement> IDynamicColorAlsoUsedBy.RelatedDynamicallyColoredShapes
+		{
+			get
+			{
+				return RelatedDynamicallyColoredShapes;
+			}
+		}
+		#endregion // IDynamicColorAlsoUsedBy Implementation
 		#region IConfigureableLinkEndpoint Implementation
 		/// <summary>
 		/// Implements <see cref="IConfigureableLinkEndpoint.CanAttachLink"/>

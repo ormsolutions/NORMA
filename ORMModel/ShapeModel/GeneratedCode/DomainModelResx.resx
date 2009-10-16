@@ -413,6 +413,22 @@
     <value>Value Constraint Shape</value>
     <comment>DisplayName for DomainClass &apos;ValueConstraintShape&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ValueConstraintShape/MaximumDisplayedValues.Description" xml:space="preserve">
+    <value>The maximum total number of values and ranges to be displayed with this shape.</value>
+    <comment>Description for DomainProperty &apos;MaximumDisplayedValues&apos; on DomainClass &apos;ValueConstraintShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ValueConstraintShape/MaximumDisplayedValues.DisplayName" xml:space="preserve">
+    <value>MaxValues</value>
+    <comment>DisplayName for DomainProperty &apos;MaximumDisplayedValues&apos; on DomainClass &apos;ValueConstraintShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ValueConstraintShape/MaximumDisplayedColumns.Description" xml:space="preserve">
+    <value>The maximum number of columns to be used to display the values and ranges in this shape.</value>
+    <comment>Description for DomainProperty &apos;MaximumDisplayedColumns&apos; on DomainClass &apos;ValueConstraintShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ValueConstraintShape/MaximumDisplayedColumns.DisplayName" xml:space="preserve">
+    <value>MaxColumns</value>
+    <comment>DisplayName for DomainProperty &apos;MaximumDisplayedColumns&apos; on DomainClass &apos;ValueConstraintShape&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RoleNameShape.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.RoleNameShape</value>
     <comment>Description for DomainClass &apos;RoleNameShape&apos;</comment>

@@ -306,6 +306,9 @@
 			<arg:ChangeRule methodName="ValueConstraintTextChangedRule">
 				<arg:RuleOn targetType="ValueConstraint" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:ChangeRule>
+			<arg:ChangeRule methodName="ValueConstraintShapeDisplayChangedRule">
+				<arg:RuleOn targetType="ValueConstraintShape" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
+			</arg:ChangeRule>
 		</arg:RuleContainer>
 	</arg:Model>
 </arg:Rules>

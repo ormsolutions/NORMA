@@ -399,6 +399,7 @@
 	<ResourceString name="ModelNoteLinkAccessibleName" model="Diagram" resourceName="ModelNoteLink.Accessible.Name"/>
 	<ResourceString name="ValueRangeLinkAccessibleDescription" model="Diagram" resourceName="ValueRangeLink.Accessible.Description"/>
 	<ResourceString name="ValueRangeLinkAccessibleName" model="Diagram" resourceName="ValueRangeLink.Accessible.Name"/>
+	<ResourceString name="ValueConstraintShapeUnlimitedDisplayBoundText" model="Diagram" resourceName="ValueConstraintShape.UnlimitedDisplayBound.Text"/>
 	<ResourceString name="ExtensionLoadFailureTitle" model="Diagram" resourceName="ExtensionLoadFailure.Title"/>
 	<ResourceString name="ExtensionLoadFailureMessage" model="Diagram" resourceName="ExtensionLoadFailure.Message"/>
 	<ResourceString name="DiagramCommandNewPage" model="Diagram" resourceName="Diagram.Command.NewPage"/>

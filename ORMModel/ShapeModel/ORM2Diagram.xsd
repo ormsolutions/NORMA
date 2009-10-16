@@ -172,6 +172,26 @@
 				<xs:sequence>
 					<xs:element ref="Subject"/>
 				</xs:sequence>
+				<xs:attribute name="MaximumDisplayedValues" use="optional">
+					<xs:annotation>
+						<xs:documentation>The maximum total number of values and ranges to be displayed with this shape.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:short">
+							<xs:minExclusive value="0"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+				<xs:attribute name="MaximumDisplayedColumns" use="optional">
+					<xs:annotation>
+						<xs:documentation>The maximum number of columns to be used to display the values and ranges in this shape.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:short">
+							<xs:minExclusive value="0"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
