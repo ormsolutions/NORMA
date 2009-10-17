@@ -430,7 +430,10 @@
                 <a href="#FrequencyRangeMinUnbounded">FrequencyRangeMinUnbounded</a>
               </li>
               <li>
-                <a href="#FrequencyRangeMinUnboundedOptimized">FrequencyRangeMinUnboundedOptimized</a>
+                <a href="#FrequencyTypedOccurrences">FrequencyTypedOccurrences</a>
+              </li>
+              <li>
+                <a href="#FrequencyUntypedOccurrences">FrequencyUntypedOccurrences</a>
               </li>
               <li>
                 <a href="#GroupEquality">GroupEquality</a>
@@ -936,6 +939,21 @@
           <div class="snippetContains">
             <p>The <strong>CombinationAssociation</strong> snippet contains the following snippets: <ul class="contains">
                 <li>
+                  <a href="#FrequencyRangeExact">FrequencyRangeExact</a>
+                </li>
+                <li>
+                  <a href="#FrequencyRangeMaxUnbounded">FrequencyRangeMaxUnbounded</a>
+                </li>
+                <li>
+                  <a href="#FrequencyRangeMinAndMax">FrequencyRangeMinAndMax</a>
+                </li>
+                <li>
+                  <a href="#FrequencyRangeMinUnbounded">FrequencyRangeMinUnbounded</a>
+                </li>
+                <li>
+                  <a href="#FrequencyTypedOccurrences">FrequencyTypedOccurrences</a>
+                </li>
+                <li>
                   <a href="#IdentityReferenceQuantifier">IdentityReferenceQuantifier</a>
                 </li>
                 <li>
@@ -966,6 +984,7 @@
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>CombinationAssociation</strong> snippet is used by the following Constraints: <ul class="usedBy">
+                <li>FrequencyConstraint</li>
                 <li>UniquenessConstraint</li>
               </ul>
             </p>
@@ -1217,6 +1236,7 @@
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>CompoundListClose</strong> snippet is used by the following Constraints: <ul class="usedBy">
+                <li>FrequencyConstraint</li>
                 <li>SubsetConstraint</li>
                 <li>UniquenessConstraint</li>
               </ul>
@@ -1241,6 +1261,7 @@
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>CompoundListFinalSeparator</strong> snippet is used by the following Constraints: <ul class="usedBy">
+                <li>FrequencyConstraint</li>
                 <li>SubsetConstraint</li>
                 <li>UniquenessConstraint</li>
               </ul>
@@ -1265,6 +1286,7 @@
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>CompoundListOpen</strong> snippet is used by the following Constraints: <ul class="usedBy">
+                <li>FrequencyConstraint</li>
                 <li>SubsetConstraint</li>
                 <li>UniquenessConstraint</li>
               </ul>
@@ -1289,6 +1311,7 @@
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>CompoundListPairSeparator</strong> snippet is used by the following Constraints: <ul class="usedBy">
+                <li>FrequencyConstraint</li>
                 <li>SubsetConstraint</li>
                 <li>UniquenessConstraint</li>
               </ul>
@@ -1313,6 +1336,7 @@
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>CompoundListSeparator</strong> snippet is used by the following Constraints: <ul class="usedBy">
+                <li>FrequencyConstraint</li>
                 <li>SubsetConstraint</li>
                 <li>UniquenessConstraint</li>
               </ul>
@@ -1475,6 +1499,7 @@
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>ContextScope</strong> snippet is used by the following Constraints: <ul class="usedBy">
+                <li>FrequencyConstraint</li>
                 <li>UniquenessConstraint</li>
               </ul>
             </p>
@@ -1502,6 +1527,21 @@
                   <a href="#CombinationAssociation">CombinationAssociation</a>
                 </li>
                 <li>
+                  <a href="#FrequencyRangeExact">FrequencyRangeExact</a>
+                </li>
+                <li>
+                  <a href="#FrequencyRangeMaxUnbounded">FrequencyRangeMaxUnbounded</a>
+                </li>
+                <li>
+                  <a href="#FrequencyRangeMinAndMax">FrequencyRangeMinAndMax</a>
+                </li>
+                <li>
+                  <a href="#FrequencyRangeMinUnbounded">FrequencyRangeMinUnbounded</a>
+                </li>
+                <li>
+                  <a href="#FrequencyTypedOccurrences">FrequencyTypedOccurrences</a>
+                </li>
+                <li>
                   <a href="#IdentityReferenceQuantifier">IdentityReferenceQuantifier</a>
                 </li>
                 <li>
@@ -1524,6 +1564,7 @@
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>ContextScopeReference</strong> snippet is used by the following Constraints: <ul class="usedBy">
+                <li>FrequencyConstraint</li>
                 <li>UniquenessConstraint</li>
               </ul>
             </p>
@@ -2255,7 +2296,7 @@
             <a name="FrequencyPopulation" id="FrequencyPopulation">FrequencyPopulation</a>
           </span>
           <div class="snippetStatement">
-            <strong>Description: </strong> Used as for the main body text of a frequency constraint.
+            <strong>Description: </strong> Used as for the main body text of a frequency constraint on one FactType.
 							<br />
             <strong>Format: </strong> each {0} in the population of {1} occurs there {2} times
 						</div>
@@ -2284,6 +2325,9 @@
                 <li>
                   <a href="#FrequencyRangeMinUnbounded">FrequencyRangeMinUnbounded</a>
                 </li>
+                <li>
+                  <a href="#FrequencyUntypedOccurrences">FrequencyUntypedOccurrences</a>
+                </li>
               </ul>
             </p>
           </div>
@@ -2309,23 +2353,38 @@
           <div class="snippetStatement">
             <strong>Description: </strong> Used for a frequency range where both the min and max values the same
 							<br />
-            <strong>Format: </strong> exactly {0} times
+            <strong>Format: </strong> exactly {0}
 						</div>
           <div class="snippetReplacementFieldCount">
             <span class="reportItem">Number of replacement fields: </span>1</div>
           <div class="snippetUnformattedText">
             <span class="reportItem">Unformatted version: </span>
             <div class="unformattedSnippet">
-              <pre class="unformattedSnippetDecorator">exactly {0} times</pre>
+              <pre class="unformattedSnippetDecorator">exactly {0}</pre>
             </div>
           </div>
           <div classs="snippetContainedIn">
             <p>The <strong>FrequencyRangeExact</strong> snippet is contained in the following snippets: <ul class="containedIn">
                 <li>
+                  <a href="#CombinationAssociation">CombinationAssociation</a>
+                </li>
+                <li>
+                  <a href="#ContextScopeReference">ContextScopeReference</a>
+                </li>
+                <li>
                   <a href="#FrequencyPopulation">FrequencyPopulation</a>
                 </li>
                 <li>
+                  <a href="#FrequencyTypedOccurrences">FrequencyTypedOccurrences</a>
+                </li>
+                <li>
+                  <a href="#FrequencyUntypedOccurrences">FrequencyUntypedOccurrences</a>
+                </li>
+                <li>
                   <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                </li>
+                <li>
+                  <a href="#UniversalQuantifier">UniversalQuantifier</a>
                 </li>
               </ul>
             </p>
@@ -2344,23 +2403,38 @@
           <div class="snippetStatement">
             <strong>Description: </strong> Used for a frequency range where both the max value is unbounded.
 							<br />
-            <strong>Format: </strong> at least {0} times
+            <strong>Format: </strong> at least {0}
 						</div>
           <div class="snippetReplacementFieldCount">
             <span class="reportItem">Number of replacement fields: </span>1</div>
           <div class="snippetUnformattedText">
             <span class="reportItem">Unformatted version: </span>
             <div class="unformattedSnippet">
-              <pre class="unformattedSnippetDecorator">at least {0} times</pre>
+              <pre class="unformattedSnippetDecorator">at least {0}</pre>
             </div>
           </div>
           <div classs="snippetContainedIn">
             <p>The <strong>FrequencyRangeMaxUnbounded</strong> snippet is contained in the following snippets: <ul class="containedIn">
                 <li>
+                  <a href="#CombinationAssociation">CombinationAssociation</a>
+                </li>
+                <li>
+                  <a href="#ContextScopeReference">ContextScopeReference</a>
+                </li>
+                <li>
                   <a href="#FrequencyPopulation">FrequencyPopulation</a>
                 </li>
                 <li>
+                  <a href="#FrequencyTypedOccurrences">FrequencyTypedOccurrences</a>
+                </li>
+                <li>
+                  <a href="#FrequencyUntypedOccurrences">FrequencyUntypedOccurrences</a>
+                </li>
+                <li>
                   <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                </li>
+                <li>
+                  <a href="#UniversalQuantifier">UniversalQuantifier</a>
                 </li>
               </ul>
             </p>
@@ -2379,23 +2453,38 @@
           <div class="snippetStatement">
             <strong>Description: </strong> Used for a frequency range where both the min and max values are specified and different.
 							<br />
-            <strong>Format: </strong> at least {0} and at most {1} times
+            <strong>Format: </strong> at least {0} and at most {1}
 						</div>
           <div class="snippetReplacementFieldCount">
             <span class="reportItem">Number of replacement fields: </span>2</div>
           <div class="snippetUnformattedText">
             <span class="reportItem">Unformatted version: </span>
             <div class="unformattedSnippet">
-              <pre class="unformattedSnippetDecorator">at least {0} and at most {1} times</pre>
+              <pre class="unformattedSnippetDecorator">at least {0} and at most {1}</pre>
             </div>
           </div>
           <div classs="snippetContainedIn">
             <p>The <strong>FrequencyRangeMinAndMax</strong> snippet is contained in the following snippets: <ul class="containedIn">
                 <li>
+                  <a href="#CombinationAssociation">CombinationAssociation</a>
+                </li>
+                <li>
+                  <a href="#ContextScopeReference">ContextScopeReference</a>
+                </li>
+                <li>
                   <a href="#FrequencyPopulation">FrequencyPopulation</a>
                 </li>
                 <li>
+                  <a href="#FrequencyTypedOccurrences">FrequencyTypedOccurrences</a>
+                </li>
+                <li>
+                  <a href="#FrequencyUntypedOccurrences">FrequencyUntypedOccurrences</a>
+                </li>
+                <li>
                   <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                </li>
+                <li>
+                  <a href="#UniversalQuantifier">UniversalQuantifier</a>
                 </li>
               </ul>
             </p>
@@ -2414,23 +2503,38 @@
           <div class="snippetStatement">
             <strong>Description: </strong> Used for a frequency range where the min value is &lt; 2.
 							<br />
-            <strong>Format: </strong> at most {1} times
+            <strong>Format: </strong> at most {1}
 						</div>
           <div class="snippetReplacementFieldCount">
             <span class="reportItem">Number of replacement fields: </span>1</div>
           <div class="snippetUnformattedText">
             <span class="reportItem">Unformatted version: </span>
             <div class="unformattedSnippet">
-              <pre class="unformattedSnippetDecorator">at most {1} times</pre>
+              <pre class="unformattedSnippetDecorator">at most {1}</pre>
             </div>
           </div>
           <div classs="snippetContainedIn">
             <p>The <strong>FrequencyRangeMinUnbounded</strong> snippet is contained in the following snippets: <ul class="containedIn">
                 <li>
+                  <a href="#CombinationAssociation">CombinationAssociation</a>
+                </li>
+                <li>
+                  <a href="#ContextScopeReference">ContextScopeReference</a>
+                </li>
+                <li>
                   <a href="#FrequencyPopulation">FrequencyPopulation</a>
                 </li>
                 <li>
+                  <a href="#FrequencyTypedOccurrences">FrequencyTypedOccurrences</a>
+                </li>
+                <li>
+                  <a href="#FrequencyUntypedOccurrences">FrequencyUntypedOccurrences</a>
+                </li>
+                <li>
                   <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                </li>
+                <li>
+                  <a href="#UniversalQuantifier">UniversalQuantifier</a>
                 </li>
               </ul>
             </p>
@@ -2442,25 +2546,103 @@
             </p>
           </div>
         </div>
-        <div id="FrequencyRangeMinUnboundedOptimized" class="snippet">
+        <div id="FrequencyTypedOccurrences" class="snippet">
           <span class="snippetHeader">
-            <a name="FrequencyRangeMinUnboundedOptimized" id="FrequencyRangeMinUnboundedOptimized">FrequencyRangeMinUnboundedOptimized</a>
+            <a name="FrequencyTypedOccurrences" id="FrequencyTypedOccurrences">FrequencyTypedOccurrences</a>
           </span>
           <div class="snippetStatement">
-            <strong>Description: </strong> Used for single-role frequency range where the min value is &lt; 2 and a forward reading is available on a binary fact type.
+            <strong>Description: </strong> Used to specify an instance count or range for a specific object type
 							<br />
-            <strong>Format: </strong> at most {1} {0} instances 
+            <strong>Format: </strong> {1} instances of {0}
 						</div>
           <div class="snippetReplacementFieldCount">
             <span class="reportItem">Number of replacement fields: </span>2</div>
           <div class="snippetUnformattedText">
             <span class="reportItem">Unformatted version: </span>
             <div class="unformattedSnippet">
-              <pre class="unformattedSnippetDecorator">at most {1} {0} instances</pre>
+              <pre class="unformattedSnippetDecorator">{1} instances of {0}</pre>
             </div>
           </div>
+          <div class="snippetContains">
+            <p>The <strong>FrequencyTypedOccurrences</strong> snippet contains the following snippets: <ul class="contains">
+                <li>
+                  <a href="#FrequencyRangeExact">FrequencyRangeExact</a>
+                </li>
+                <li>
+                  <a href="#FrequencyRangeMaxUnbounded">FrequencyRangeMaxUnbounded</a>
+                </li>
+                <li>
+                  <a href="#FrequencyRangeMinAndMax">FrequencyRangeMinAndMax</a>
+                </li>
+                <li>
+                  <a href="#FrequencyRangeMinUnbounded">FrequencyRangeMinUnbounded</a>
+                </li>
+              </ul>
+            </p>
+          </div>
           <div classs="snippetContainedIn">
-            <p>The <strong>FrequencyRangeMinUnboundedOptimized</strong> snippet is contained in the following snippets: <ul class="containedIn">
+            <p>The <strong>FrequencyTypedOccurrences</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#CombinationAssociation">CombinationAssociation</a>
+                </li>
+                <li>
+                  <a href="#ContextScopeReference">ContextScopeReference</a>
+                </li>
+                <li>
+                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                </li>
+                <li>
+                  <a href="#UniversalQuantifier">UniversalQuantifier</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+          <div class="snippetUsedBy">
+            <p>The <strong>FrequencyTypedOccurrences</strong> snippet is used by the following Constraints: <ul class="usedBy">
+                <li>FrequencyConstraint</li>
+              </ul>
+            </p>
+          </div>
+        </div>
+        <div id="FrequencyUntypedOccurrences" class="snippet">
+          <span class="snippetHeader">
+            <a name="FrequencyUntypedOccurrences" id="FrequencyUntypedOccurrences">FrequencyUntypedOccurrences</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Used to specify an instance count or range using an untyped occurrence phrase
+							<br />
+            <strong>Format: </strong> {0} times
+						</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>1</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">{0} times</pre>
+            </div>
+          </div>
+          <div class="snippetContains">
+            <p>The <strong>FrequencyUntypedOccurrences</strong> snippet contains the following snippets: <ul class="contains">
+                <li>
+                  <a href="#FrequencyRangeExact">FrequencyRangeExact</a>
+                </li>
+                <li>
+                  <a href="#FrequencyRangeMaxUnbounded">FrequencyRangeMaxUnbounded</a>
+                </li>
+                <li>
+                  <a href="#FrequencyRangeMinAndMax">FrequencyRangeMinAndMax</a>
+                </li>
+                <li>
+                  <a href="#FrequencyRangeMinUnbounded">FrequencyRangeMinUnbounded</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>FrequencyUntypedOccurrences</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#FrequencyPopulation">FrequencyPopulation</a>
+                </li>
                 <li>
                   <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
                 </li>
@@ -2468,7 +2650,7 @@
             </p>
           </div>
           <div class="snippetUsedBy">
-            <p>The <strong>FrequencyRangeMinUnboundedOptimized</strong> snippet is used by the following Constraints: <ul class="usedBy">
+            <p>The <strong>FrequencyUntypedOccurrences</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>FrequencyConstraint</li>
               </ul>
             </p>
@@ -2883,7 +3065,10 @@
                   <a href="#FrequencyRangeMinUnbounded">FrequencyRangeMinUnbounded</a>
                 </li>
                 <li>
-                  <a href="#FrequencyRangeMinUnboundedOptimized">FrequencyRangeMinUnboundedOptimized</a>
+                  <a href="#FrequencyTypedOccurrences">FrequencyTypedOccurrences</a>
+                </li>
+                <li>
+                  <a href="#FrequencyUntypedOccurrences">FrequencyUntypedOccurrences</a>
                 </li>
                 <li>
                   <a href="#GroupEquality">GroupEquality</a>
@@ -4567,6 +4752,7 @@
           <div class="snippetUsedBy">
             <p>The <strong>SimpleListClose</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>CombinedMandatoryUniqueVerbalizer</li>
+                <li>FrequencyConstraint</li>
                 <li>ImpliedMandatoryVerbalizer</li>
                 <li>ImpliedUniqueVerbalizer</li>
                 <li>MandatoryConstraint</li>
@@ -4594,6 +4780,7 @@
           <div class="snippetUsedBy">
             <p>The <strong>SimpleListFinalSeparator</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>CombinedMandatoryUniqueVerbalizer</li>
+                <li>FrequencyConstraint</li>
                 <li>ImpliedMandatoryVerbalizer</li>
                 <li>ImpliedUniqueVerbalizer</li>
                 <li>MandatoryConstraint</li>
@@ -4621,6 +4808,7 @@
           <div class="snippetUsedBy">
             <p>The <strong>SimpleListOpen</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>CombinedMandatoryUniqueVerbalizer</li>
+                <li>FrequencyConstraint</li>
                 <li>ImpliedMandatoryVerbalizer</li>
                 <li>ImpliedUniqueVerbalizer</li>
                 <li>MandatoryConstraint</li>
@@ -4648,6 +4836,7 @@
           <div class="snippetUsedBy">
             <p>The <strong>SimpleListPairSeparator</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>CombinedMandatoryUniqueVerbalizer</li>
+                <li>FrequencyConstraint</li>
                 <li>ImpliedMandatoryVerbalizer</li>
                 <li>ImpliedUniqueVerbalizer</li>
                 <li>MandatoryConstraint</li>
@@ -4675,6 +4864,7 @@
           <div class="snippetUsedBy">
             <p>The <strong>SimpleListSeparator</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>CombinedMandatoryUniqueVerbalizer</li>
+                <li>FrequencyConstraint</li>
                 <li>ImpliedMandatoryVerbalizer</li>
                 <li>ImpliedUniqueVerbalizer</li>
                 <li>MandatoryConstraint</li>
@@ -5254,6 +5444,21 @@
             <p>The <strong>UniversalQuantifier</strong> snippet contains the following snippets: <ul class="contains">
                 <li>
                   <a href="#CombinationAssociation">CombinationAssociation</a>
+                </li>
+                <li>
+                  <a href="#FrequencyRangeExact">FrequencyRangeExact</a>
+                </li>
+                <li>
+                  <a href="#FrequencyRangeMaxUnbounded">FrequencyRangeMaxUnbounded</a>
+                </li>
+                <li>
+                  <a href="#FrequencyRangeMinAndMax">FrequencyRangeMinAndMax</a>
+                </li>
+                <li>
+                  <a href="#FrequencyRangeMinUnbounded">FrequencyRangeMinUnbounded</a>
+                </li>
+                <li>
+                  <a href="#FrequencyTypedOccurrences">FrequencyTypedOccurrences</a>
                 </li>
                 <li>
                   <a href="#OneQuantifier">OneQuantifier</a>

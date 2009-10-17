@@ -1371,7 +1371,7 @@
 									</plx:callNew>
 								</plx:initialize>
 							</plx:local>
-							<xsl:if test="not(@type='RingConstraint' or @childHelperFor='RingConstraint' or @type='FrequencyConstraint')">
+							<xsl:if test="not(@type='RingConstraint' or @childHelperFor='RingConstraint')">
 								<!-- UNDONE: Temporary workaround for RingConstraint and FrequencyConstraint compile errors. Use StripUnusedLocals to test demand. -->
 								<plx:local name="contextBasicReplacementIndex" dataTypeName=".i4"/>
 							</xsl:if>

@@ -237,11 +237,12 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="ExclusionBinaryLeadReading"><![CDATA[<span class="quantifier">no</span> {0}<span class="quantifier"> the same </span>{1}]]></Snippet>
 			<Snippet type="ExclusionCombined"><![CDATA[{0} {1}]]></Snippet>
 			<Snippet type="FrequencyPopulation"><![CDATA[<span class="quantifier">each {0} in the population of “{1}” occurs there {2}</span>]]></Snippet>
-			<Snippet type="FrequencyRangeExact"><![CDATA[<span class="quantifier">exactly <span class="instance">{0}</span> times</span>]]></Snippet>
-			<Snippet type="FrequencyRangeMinAndMax"><![CDATA[<span class="quantifier">at least <span class="instance">{0}</span> and at most <span class="instance">{1}</span> times</span>]]></Snippet>
-			<Snippet type="FrequencyRangeMaxUnbounded"><![CDATA[<span class="quantifier">at least <span class="instance">{0}</span> times</span>]]></Snippet>
-			<Snippet type="FrequencyRangeMinUnbounded"><![CDATA[<span class="quantifier">at most <span class="instance">{1}</span> times</span>]]></Snippet>
-			<Snippet type="FrequencyRangeMinUnboundedOptimized"><![CDATA[<span class="quantifier">at most <span class="instance">{1}</span> {0} instances</span>]]></Snippet>
+			<Snippet type="FrequencyTypedOccurrences"><![CDATA[<span class="quantifier">{1} instances of</span> {0}]]></Snippet>
+			<Snippet type="FrequencyUntypedOccurrences"><![CDATA[<span class="quantifier">{0} times</span>]]></Snippet>
+			<Snippet type="FrequencyRangeExact"><![CDATA[exactly <span class="instance">{0}</span>]]></Snippet>
+			<Snippet type="FrequencyRangeMinAndMax"><![CDATA[at least <span class="instance">{0}</span> and at most <span class="instance">{1}</span>]]></Snippet>
+			<Snippet type="FrequencyRangeMaxUnbounded"><![CDATA[at least <span class="instance">{0}</span>]]></Snippet>
+			<Snippet type="FrequencyRangeMinUnbounded"><![CDATA[at most <span class="instance">{1}</span>]]></Snippet>
 			<Snippet type="LogicalAndOperator"><![CDATA[{0}<span class="logicalOperator"> and </span>{1}]]></Snippet>
 			<Snippet type="IdentityInequalityOperator"><![CDATA[{0}<span class="logicalOperator"> is not </span>{1}]]></Snippet>
 			<Snippet type="Acyclicity"><![CDATA[<span class="quantifier">no {0} may cycle back to itself via one or more traversals through </span>{1}]]></Snippet>

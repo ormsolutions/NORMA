@@ -1172,8 +1172,24 @@
 				<xs:enumeration value="FrequencyPopulation">
 					<xs:annotation>
 						<xs:documentation>
-							Description: Used as for the main body text of a frequency constraint.
+							Description: Used as for the main body text of a frequency constraint on one FactType.
 							Format: each {0} in the population of {1} occurs there {2} times
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="FrequencyTypedOccurrences">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to specify an instance count or range for a specific object type
+							Format: {1} instances of {0}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="FrequencyUntypedOccurrences">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to specify an instance count or range using an untyped occurrence phrase
+							Format: {0} times
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
@@ -1181,7 +1197,7 @@
 					<xs:annotation>
 						<xs:documentation>
 							Description: Used for a frequency range where both the min and max values the same
-							Format: exactly {0} times
+							Format: exactly {0}
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
@@ -1189,7 +1205,7 @@
 					<xs:annotation>
 						<xs:documentation>
 							Description: Used for a frequency range where both the min and max values are specified and different.
-							Format: at least {0} and at most {1} times
+							Format: at least {0} and at most {1}
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
@@ -1197,7 +1213,7 @@
 					<xs:annotation>
 						<xs:documentation>
 							Description: Used for a frequency range where both the max value is unbounded.
-							Format: at least {0} times
+							Format: at least {0}
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
@@ -1205,15 +1221,7 @@
 					<xs:annotation>
 						<xs:documentation>
 							Description: Used for a frequency range where the min value is &lt; 2.
-							Format: at most {1} times
-						</xs:documentation>
-					</xs:annotation>
-				</xs:enumeration>
-				<xs:enumeration value="FrequencyRangeMinUnboundedOptimized">
-					<xs:annotation>
-						<xs:documentation>
-							Description: Used for single-role frequency range where the min value is &lt; 2 and a forward reading is available on a binary fact type.
-							Format: at most {1} {0} instances 
+							Format: at most {1}
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>

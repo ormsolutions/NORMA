@@ -933,8 +933,11 @@
 										<Snippet ref="UniversalQuantifier"/>
 									</PredicateReplacement>
 									<PredicateReplacement>
-										<Snippet ref="FrequencyRangeMinUnboundedOptimized">
-											<MaxFrequencyValue/>
+										<Snippet ref="FrequencyTypedOccurrences">
+											<Snippet ref="FrequencyRangeMinUnbounded">
+												<MinFrequencyValue/>
+												<MaxFrequencyValue/>
+											</Snippet>
 										</Snippet>
 									</PredicateReplacement>
 								</Fact>
@@ -945,16 +948,18 @@
 								<Snippet ref="FrequencyPopulation">
 									<IterateRoles match="constraintRoles" listStyle="null"/>
 									<Fact/>
-									<ConditionalSnippet>
-										<Snippet ref="FrequencyRangeExact" conditionalMatch="FrequencyRangeExact"/>
-										<Snippet ref="FrequencyRangeMaxUnbounded" conditionalMatch="FrequencyRangeMaxUnbounded"/>
-										<Snippet ref="FrequencyRangeMinUnbounded" conditionalMatch="FrequencyRangeMinUnbounded"/>
-										<Snippet ref="FrequencyRangeMinAndMax"/>
-										<SnippetReplacements>
-											<MinFrequencyValue/>
-											<MaxFrequencyValue/>
-										</SnippetReplacements>
-									</ConditionalSnippet>
+									<Snippet ref="FrequencyUntypedOccurrences">
+										<ConditionalSnippet>
+											<Snippet ref="FrequencyRangeExact" conditionalMatch="FrequencyRangeExact"/>
+											<Snippet ref="FrequencyRangeMaxUnbounded" conditionalMatch="FrequencyRangeMaxUnbounded"/>
+											<Snippet ref="FrequencyRangeMinUnbounded" conditionalMatch="FrequencyRangeMinUnbounded"/>
+											<Snippet ref="FrequencyRangeMinAndMax"/>
+											<SnippetReplacements>
+												<MinFrequencyValue/>
+												<MaxFrequencyValue/>
+											</SnippetReplacements>
+										</ConditionalSnippet>
+									</Snippet>
 								</Snippet>
 							</Snippet>
 						</ReadingChoice>
@@ -970,16 +975,48 @@
 								</Snippet>
 							</ConditionalReplacement>
 							<Fact/>
-							<ConditionalSnippet>
-								<Snippet ref="FrequencyRangeExact" conditionalMatch="FrequencyRangeExact"/>
-								<Snippet ref="FrequencyRangeMaxUnbounded" conditionalMatch="FrequencyRangeMaxUnbounded"/>
-								<Snippet ref="FrequencyRangeMinUnbounded" conditionalMatch="FrequencyRangeMinUnbounded"/>
-								<Snippet ref="FrequencyRangeMinAndMax"/>
-								<SnippetReplacements>
-									<MinFrequencyValue/>
-									<MaxFrequencyValue/>
-								</SnippetReplacements>
-							</ConditionalSnippet>
+							<Snippet ref="FrequencyUntypedOccurrences">
+								<ConditionalSnippet>
+									<Snippet ref="FrequencyRangeExact" conditionalMatch="FrequencyRangeExact"/>
+									<Snippet ref="FrequencyRangeMaxUnbounded" conditionalMatch="FrequencyRangeMaxUnbounded"/>
+									<Snippet ref="FrequencyRangeMinUnbounded" conditionalMatch="FrequencyRangeMinUnbounded"/>
+									<Snippet ref="FrequencyRangeMinAndMax"/>
+									<SnippetReplacements>
+										<MinFrequencyValue/>
+										<MaxFrequencyValue/>
+									</SnippetReplacements>
+								</ConditionalSnippet>
+							</Snippet>
+						</Snippet>
+					</Snippet>
+				</ConstrainedRoles>
+				<ConstrainedRoles sign="positive" minFactArity="2" maxFactArity="2">
+					<Snippet ref="ContextScope">
+						<!--Need to add the fact reading in "" after Context: "Room is in Building; Room has RoomNr"-->
+						<IterateFacts listStyle="CompoundList"/>
+					</Snippet>
+					<Snippet ref="ContextScopeReference">
+						<Snippet ref="ImpliedModalNecessityOperator">
+							<Snippet ref="UniversalQuantifier">
+								<Snippet ref="CombinationAssociation">
+									<IterateRoles match="constraintRoles" listStyle="CompactSimpleList"/>
+									<Snippet ref="FrequencyTypedOccurrences">
+										<IterateRoles match="constraintRoles" pass="first" listStyle="null">
+											<IterateContextRoles match="excluded" listStyle="SimpleList"/>
+										</IterateRoles>
+										<ConditionalSnippet>
+											<Snippet ref="FrequencyRangeExact" conditionalMatch="FrequencyRangeExact"/>
+											<Snippet ref="FrequencyRangeMaxUnbounded" conditionalMatch="FrequencyRangeMaxUnbounded"/>
+											<Snippet ref="FrequencyRangeMinUnbounded" conditionalMatch="FrequencyRangeMinUnbounded"/>
+											<Snippet ref="FrequencyRangeMinAndMax"/>
+											<SnippetReplacements>
+												<MinFrequencyValue/>
+												<MaxFrequencyValue/>
+											</SnippetReplacements>
+										</ConditionalSnippet>
+									</Snippet>
+								</Snippet>
+							</Snippet>
 						</Snippet>
 					</Snippet>
 				</ConstrainedRoles>
