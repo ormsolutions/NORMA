@@ -3,7 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © ORM Solutions, LLC. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -954,8 +954,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				enabledCommands |= ORMDesignerCommands.IncludeInNewGroup | ORMDesignerCommands.IncludeInGroupList | ORMDesignerCommands.DeleteFromGroupList;
 			}
 			// Turn on standard commands for all selections
-			visibleCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.CopyImage | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList | ORMDesignerCommands.ReportGeneratorList | ORMDesignerCommands.FreeFormCommandList;
-			enabledCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.CopyImage | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList | ORMDesignerCommands.ReportGeneratorList | ORMDesignerCommands.FreeFormCommandList;
+			visibleCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.CopyImage | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList | ORMDesignerCommands.ReportGeneratorList | ORMDesignerCommands.FreeFormCommandList | ORMDesignerCommands.SelectInModelBrowser;
+			enabledCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.CopyImage | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList | ORMDesignerCommands.ReportGeneratorList | ORMDesignerCommands.FreeFormCommandList | ORMDesignerCommands.SelectInModelBrowser;
 		}
 		private static void UpdateMoveRoleCommandStatus(FactTypeShape factShape, Role role, ref ORMDesignerCommands visibleCommands, ref ORMDesignerCommands enabledCommands)
 		{
@@ -2579,6 +2579,41 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			if (designer != null)
 			{
 				ORMDesignerPackage.DiagramSpyWindow.ActivateDiagramItem(designer.DiagramClientView.Selection.PrimaryItem);
+			}
+		}
+		/// <summary>
+		/// Select the current item in the model browser window
+		/// </summary>
+		public virtual void OnMenuSelectInModelBrowser()
+		{
+			IORMToolServices toolServices;
+			DiagramView designer;
+			DiagramItem diagramItem;
+			if (null != (designer = myDesignerView.CurrentDesigner) &&
+				null != (diagramItem = designer.DiagramClientView.Selection.PrimaryItem) &&
+				null != (toolServices = myDesignerView.Store as IORMToolServices))
+			{
+				object targetElement = null;
+				foreach (object element in diagramItem.RepresentedElements)
+				{
+					targetElement = element;
+					break;
+				}
+				if (targetElement != null)
+				{
+					if (!(targetElement is Diagram))
+					{
+						targetElement = EditorUtility.ResolveContextInstance(targetElement, false);
+					}
+					if (!toolServices.NavigateTo(targetElement, NavigateToWindow.ModelBrowser))
+					{
+						IServiceProvider provider;
+						if (null != (provider = toolServices.ServiceProvider))
+						{
+							VsShellUtilities.ShowMessageBox(provider, ResourceStrings.ElementNotInModelBrowserMessage, ResourceStrings.PackageOfficialName, OLEMSGICON.OLEMSGICON_INFO, OLEMSGBUTTON.OLEMSGBUTTON_OK, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+						}
+					}
+				}
 			}
 		}
 		/// <summary>

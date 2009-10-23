@@ -2186,51 +2186,47 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				VirtualTreeControl treeControl = null;
 				while (element != null)
 				{
-					if (element is ISurveyNode)
+					if (treeControl == null)
 					{
-						// Assume if we're a SurveyNode that it is possible to select the item in the survey tree
-						if (treeControl == null)
+						// Make sure a docview associated with the current model is
+						// active. Otherwise, the model browser will not contain the
+						// correct tree.
+						if (!haveCurrentDesigner)
 						{
-							// Make sure a docview associated with the current model is
-							// active. Otherwise, the model browser will not contain the
-							// correct tree.
-							if (!haveCurrentDesigner)
-							{
-								haveCurrentDesigner = true;
-								GetCurrentDesigner(ref currentDocView, ref currentDesigner);
-							}
-							if (currentDocView == null || currentDocView.DocData != this)
-							{
-								if (null == ActivateView(null))
-								{
-									return false;
-								}
-							}
-							// UNDONE: See if we can get the tree control without forcing the window to show
-							// This is safe, but gives weird results if the initial item cannot be found.
-							ORMModelBrowserToolWindow browserWindow;
-							SurveyTreeContainer treeContainer;
-							if (null != (browserWindow = ORMDesignerPackage.ORMModelBrowserWindow))
-							{
-								browserWindow.Show();
-								if (null != (treeContainer = browserWindow.Window as SurveyTreeContainer))
-								{
-									treeControl = treeContainer.TreeControl;
-								}
-							}
-							if (null == treeControl)
+							haveCurrentDesigner = true;
+							GetCurrentDesigner(ref currentDocView, ref currentDesigner);
+						}
+						if (currentDocView == null || currentDocView.DocData != this)
+						{
+							if (null == ActivateView(null))
 							{
 								return false;
 							}
 						}
-						if (treeControl.SelectObject(null, element, (int)ObjectStyle.TrackingObject, 0))
+						// UNDONE: See if we can get the tree control without forcing the window to show
+						// This is safe, but gives weird results if the initial item cannot be found.
+						ORMModelBrowserToolWindow browserWindow;
+						SurveyTreeContainer treeContainer;
+						if (null != (browserWindow = ORMDesignerPackage.ORMModelBrowserWindow))
 						{
-							if (modelError != null)
+							browserWindow.Show();
+							if (null != (treeContainer = browserWindow.Window as SurveyTreeContainer))
 							{
-								ModelErrorActivationService.ActivateError(element, modelError);
+								treeControl = treeContainer.TreeControl;
 							}
-							return true;
 						}
+						if (null == treeControl)
+						{
+							return false;
+						}
+					}
+					if (treeControl.SelectObject(null, element, (int)ObjectStyle.TrackingObject, 0))
+					{
+						if (modelError != null)
+						{
+							ModelErrorActivationService.ActivateError(element, modelError);
+						}
+						return true;
 					}
 					ModelElement currentElement = element;
 					element = null;

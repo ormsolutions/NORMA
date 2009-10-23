@@ -2636,6 +2636,14 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactType.ImpliedInternalUniquenessConstraintError.Text");
 			}
 		}
+		/// <summary>The message displayed if a selected item cannot be located in the model browser.</summary>
+		public static string ElementNotInModelBrowserMessage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "MessageBox.ElementNotInModelBrowser.Message");
+			}
+		}
 		/// <summary>The message for the auto-fix implied internal uniqueness constraint message box.</summary>
 		public static string ImpliedInternalConstraintFixMessage
 		{

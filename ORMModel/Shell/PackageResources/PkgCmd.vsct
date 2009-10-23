@@ -590,6 +590,16 @@
 				</Strings>
 			</Button>
 
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdSelectInModelBrowser" priority="0x0500" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdSelectCommands"/>
+				<Icon guid="guidORMToolWindowIcons" id="bmpIdToolWindowModelBrowser"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Select in M&amp;odel Browser</ButtonText>
+				</Strings>
+			</Button>
+
 			<Button guid="guidORMDesignerCommandSet" id="cmdIdCopyImage" priority="0x0200" type="Button">
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdModelCommands"/>
 				<Icon guid="guidOfficeIcon" id="msotcidCamera"/>
@@ -1013,6 +1023,7 @@
 			<IDSymbol value="0x292F" name="cmdIdSelectInDocumentWindow"/>
 			<IDSymbol value="0x2930" name="cmdIdIncludeInGroup"/>
 			<IDSymbol value="0x2931" name="cmdIdIncludeInNewGroup"/>
+			<IDSymbol value="0x2932" name="cmdIdSelectInModelBrowser"/>
 
 			<!-- Large ranges for dynamic commands, keep single commands in the 0x29__ range -->
 			<IDSymbol value="0x2A00" name="cmdIdErrorList"/>

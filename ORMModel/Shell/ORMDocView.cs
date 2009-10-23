@@ -268,6 +268,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// </summary>
 		DeleteFromGroupList = 1L << 52,
 		/// <summary>
+		/// Activate the current selection in the model browser window
+		/// </summary>
+		SelectInModelBrowser = 1L << 53,
+		/// <summary>
 		/// Mask field representing individual delete commands
 		/// </summary>
 		Delete = DeleteObjectType | DeleteFactType | DeleteConstraint | DeleteRole | DeleteModelNote | DeleteModelNoteReference | DeleteGroup | RemoveFromGroup,

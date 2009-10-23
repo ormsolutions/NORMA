@@ -2,7 +2,7 @@
 /**************************************************************************\
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
-* Copyright © ORM Solutions, LLC. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -43,9 +43,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		/// </summary>
 		public static readonly global::System.Guid DomainModelId = new global::System.Guid(0x52222B4A, 0x8155, 0x43E9, 0x8e, 0xc9, 0x66, 0xeb, 0x05, 0x60, 0x09, 0xf3);
 		#endregion // Public constants
-		#region Member Variables
-		private Dictionary<Diagram, DiagramNode> myDiagramToNodeMap;
-		#endregion // Member Variables
 		#region Constructor
 		/// <summary>
 		/// Required constructor for a domain model
@@ -75,7 +72,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		/// knowing about it, so we cannot implement anything directly on diagram. Use
 		/// a thin wrapper class to put the diagram in the tree.
 		/// </summary>
-		private sealed class DiagramNode : ISurveyNode, IAnswerSurveyQuestion<DiagramSurveyType>, IAnswerSurveyDynamicQuestion<DiagramGlyphSurveyType>, IRepresentModelElements
+		private sealed class DiagramNode : ISurveyNode, IAnswerSurveyQuestion<DiagramSurveyType>, IAnswerSurveyDynamicQuestion<DiagramGlyphSurveyType>, ISurveyNodeReference
 		{
 			#region Member variables and constructors
 			private readonly Diagram myDiagram;
@@ -156,12 +153,33 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 				}
 			}
 			#endregion // ISurveyNode Implementation
-			#region IRepresentModelElements Implementation
-			ModelElement[] IRepresentModelElements.GetRepresentedElements()
+			#region ISurveyNodeReference Implementation
+			object ISurveyNodeReference.SurveyNodeReferenceReason
 			{
-				return new ModelElement[] { myDiagram };
+				get
+				{
+					return typeof(DiagramNode);
+				}
 			}
-			#endregion // IRepresentModelElements Implementation
+			SurveyNodeReferenceOptions ISurveyNodeReference.SurveyNodeReferenceOptions
+			{
+				get
+				{
+					return SurveyNodeReferenceOptions.BlockLinkDisplay | SurveyNodeReferenceOptions.BlockTargetNavigation;
+				}
+			}
+			bool ISurveyNodeReference.UseSurveyNodeReferenceAnswer(Type questionType, ISurveyDynamicValues dynamicValues, int answer)
+			{
+				return false;
+			}
+			object IElementReference.ReferencedElement
+			{
+				get
+				{
+					return myDiagram;
+				}
+			}
+			#endregion // ISurveyNodeReference implementation
 		}
 		#endregion // DiagramNode class
 		#region ISurveyNodeProvider Implementation
@@ -173,16 +191,13 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		{
 			if (expansionKey == null)
 			{
-				Dictionary<Diagram, DiagramNode> diagramToNodeMap = myDiagramToNodeMap ?? (myDiagramToNodeMap = new Dictionary<Diagram, DiagramNode>());
 				Store store = Store;
 				Partition defaultPartition = store.DefaultPartition;
 				foreach (Diagram diagram in Store.ElementDirectory.FindElements<Diagram>(true))
 				{
 					if (diagram.Partition == defaultPartition)
 					{
-						DiagramNode node = new DiagramNode(diagram);
-						diagramToNodeMap.Add(diagram, node);
-						yield return node;
+						yield return new DiagramNode(diagram);
 					}
 				}
 			}
@@ -215,10 +230,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(DiagramRemovedEvent), action);
 				DomainPropertyInfo propertyInfo = dataDirectory.FindDomainProperty(Diagram.NameDomainPropertyId);
 				eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(DiagramRenamedEvent), action);
-				if (action == EventHandlerAction.Remove)
-				{
-					myDiagramToNodeMap = null;
-				}
 			}
 		}
 		#endregion // IModelingEventSubscriber Implementation
@@ -232,43 +243,30 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 				(store = element.Store).DefaultPartition == element.Partition &&
 				null != (eventNotify = (store as IFrameworkServices).NotifySurveyElementChanged))
 			{
-				Diagram diagram = (Diagram)element;
-				DiagramNode node = new DiagramNode(diagram);
-				(myDiagramToNodeMap ?? (myDiagramToNodeMap = new Dictionary<Diagram, DiagramNode>())).Add(diagram, node);
-				eventNotify.ElementAdded(node, null);
+				eventNotify.ElementAdded(new DiagramNode((Diagram)element), null);
 			}
 		}
 		private void DiagramRemovedEvent(object sender, ElementDeletedEventArgs e)
 		{
 			INotifySurveyElementChanged eventNotify;
 			ModelElement element = e.ModelElement;
-			Dictionary<Diagram, DiagramNode> nodeMap;
-			DiagramNode node;
-			Diagram diagram;
 			Store store;
-			if (null != (nodeMap = myDiagramToNodeMap) &&
-				(store = element.Store).DefaultPartition == element.Partition &&
-				null != (eventNotify = (store as IFrameworkServices).NotifySurveyElementChanged) &&
-				nodeMap.TryGetValue(diagram = (Diagram)element, out node))
+			if ((store = element.Store).DefaultPartition == element.Partition &&
+				null != (eventNotify = (store as IFrameworkServices).NotifySurveyElementChanged))
 			{
-				nodeMap.Remove(diagram);
-				eventNotify.ElementDeleted(node);
+				eventNotify.ElementReferenceDeleted(element, typeof(DiagramNode), null);
 			}
 		}
 		private void DiagramRenamedEvent(object sender, ElementPropertyChangedEventArgs e)
 		{
 			INotifySurveyElementChanged eventNotify;
 			ModelElement element = e.ModelElement;
-			Dictionary<Diagram, DiagramNode> nodeMap;
-			DiagramNode node;
 			Store store;
 			if (!element.IsDeleted &&
-				null != (nodeMap = myDiagramToNodeMap) &&
 				(store = element.Store).DefaultPartition == element.Partition &&
-				null != (eventNotify = (store as IFrameworkServices).NotifySurveyElementChanged) &&
-				nodeMap.TryGetValue((Diagram)element, out node))
+				null != (eventNotify = (store as IFrameworkServices).NotifySurveyElementChanged))
 			{
-				eventNotify.ElementRenamed(node);
+				eventNotify.ElementReferenceRenamed(element, typeof(DiagramNode), null);
 			}
 		}
 		#endregion // Event handlers

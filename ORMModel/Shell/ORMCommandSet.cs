@@ -285,6 +285,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						new EventHandler(OnMenuSelectInDiagramSpy),
 						ORMDesignerCommandIds.SelectInDiagramSpy)
 						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusSelectInModelBrowser),
+						new EventHandler(OnMenuSelectInModelBrowser),
+						ORMDesignerCommandIds.SelectInModelBrowser)
+						,new DynamicStatusMenuCommand(
 						new EventHandler(OnStatusSelectInDocumentWindow),
 						new EventHandler(OnMenuSelectInDocumentWindow),
 						ORMDesignerCommandIds.SelectInDocumentWindow)
@@ -1109,6 +1113,24 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// <summary>
 			/// Status callback
 			/// </summary>
+			protected void OnStatusSelectInModelBrowser(object sender, EventArgs e)
+			{
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.SelectInModelBrowser);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuSelectInModelBrowser(object sender, EventArgs e)
+			{
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
+				{
+					designerView.CommandManager.OnMenuSelectInModelBrowser();
+				}
+			}
+			/// <summary>
+			/// Status callback
+			/// </summary>
 			protected void OnStatusSelectInDocumentWindow(object sender, EventArgs e)
 			{
 				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.SelectInDocumentWindow);
@@ -1771,6 +1793,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// </summary>
 			public static readonly CommandID SelectInDocumentWindow = new CommandID(guidORMDesignerCommandSet, cmdIdSelectInDocumentWindow);
 			/// <summary>
+			/// Activate the selected display element in the model browser.
+			/// </summary>
+			public static readonly CommandID SelectInModelBrowser = new CommandID(guidORMDesignerCommandSet, cmdIdSelectInModelBrowser);
+			/// <summary>
 			/// Available if free form context commands are supported for the current selection
 			/// </summary>
 			public static readonly CommandID FreeFormCommandList = new CommandID(guidORMDesignerCommandSet, cmdIdFreeFormCommandList);
@@ -2057,6 +2083,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// Add selected elements to a new group and select the group.
 			/// </summary>
 			private const int cmdIdIncludeInNewGroup = 0x2931;
+			/// <summary>
+			/// Activate the selected display element in the model browser.
+			/// </summary>
+			private const int cmdIdSelectInModelBrowser = 0x2932;
 			/// <summary>
 			/// The context menu item for related diagrams, targeted to the diagram spy
 			/// </summary>

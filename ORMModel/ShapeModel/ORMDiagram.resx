@@ -386,17 +386,17 @@
         AYABAQYAAYABAQYAAYABAQIAAYABAwIAAYABAQYAAYABAQoAAYABAw0AAQEBAAEBAQABAQGAAQEBgAED
         AcQBRwGAAQMBwAEDBv8B/AF/Cw==
 </value>
-	</data>
-	<data name="FactEditor.MissingRolePlayerFormatString">
-		<value xml:space="preserve">[Missing_{0}]</value>
-		<comment xml:space="preserve">The format string for a missing role player in the FactEditor. The format string should not use parentheses, which are parsed by the FactEditor as reference modes.</comment>
-	</data>
-	<data name="FactEditor.UnqualifiedRolePlayerFormatString">
-		<value xml:space="preserve">{0}</value>
-		<comment xml:space="preserve">The format string for a role player with no () qualifier in the FactEditor. Languages which should not rely on capitalization to delimit ObjectType names should put square braces around this format string.</comment>
-	</data>
-	<data name="FactEditor.QualifiedRolePlayerFormatString">
-		<value xml:space="preserve">{0}({1})</value>
+  </data>
+  <data name="FactEditor.MissingRolePlayerFormatString">
+    <value xml:space="preserve">[Missing_{0}]</value>
+    <comment xml:space="preserve">The format string for a missing role player in the FactEditor. The format string should not use parentheses, which are parsed by the FactEditor as reference modes.</comment>
+  </data>
+  <data name="FactEditor.UnqualifiedRolePlayerFormatString">
+    <value xml:space="preserve">{0}</value>
+    <comment xml:space="preserve">The format string for a role player with no () qualifier in the FactEditor. Languages which should not rely on capitalization to delimit ObjectType names should put square braces around this format string.</comment>
+  </data>
+  <data name="FactEditor.QualifiedRolePlayerFormatString">
+    <value xml:space="preserve">{0}({1})</value>
     <comment xml:space="preserve">The format string for a role player with a () qualifier in the FactEditor. The qualifier represents either a value type or a reference mode. Languages which should not rely on capitalization to delimit ObjectType names should put square braces around this format string.</comment>
   </data>
   <data name="FactEditorColors.Delimiter">
@@ -515,6 +515,10 @@
     <value xml:space="preserve">Interpret Fact Editor Line</value>
     <comment xml:space="preserve">The transaction name used for changes made in response to committing a modified line in the fact editor. The text appears in the undo dropdown in the VS IDE.</comment>
   </data>
+  <data name="MessageBox.ElementNotInModelBrowser.Message">
+    <value xml:space="preserve">The selected item is not represented in the ORM Model Browser.</value>
+    <comment xml:space="preserve">The message displayed if a selected item cannot be located in the model browser.</comment>
+  </data>
   <data name="MessageBox.RevertExtensions.Message">
     <value xml:space="preserve">Restoring previous model state, loading new extensions faileds with exception:&#xd;&#xa;</value>
     <comment xml:space="preserve">The header for the message displayed if a set of extensions fails to correctly reload.</comment>
@@ -531,11 +535,11 @@
     <value xml:space="preserve">The final shape corresponding to this element is being deleted. Delete the underlying '{0}' element '{1}' as well?</value>
     <comment xml:space="preserve">The message for the prompt to delete an element from the model when the final shape representing it is delete. Replacement field 0 gets the class name and 1 the component name.</comment>
   </data>
-	<data name="MessageBox.UnrecognizedExtensionsStripped.Message">
-		<value xml:space="preserve">The file format of '{0}' contains unsupported extensions.&#xd;&#xa;Data associated with extension(s) '{1}' has been removed.&#xd;&#xa;Should the 'Save' command be disabled to preserve the original file contents? The 'Save As' command will remain enabled.</value>
-		<comment xml:space="preserve">The message shown when extensions are automatically removed from a file. Replacements: {0}=file name, {1}=list of unrecognized extensions.</comment>
-	</data>
-	<data name="ModelErrorDisplayFilterChange.TransactionName">
+  <data name="MessageBox.UnrecognizedExtensionsStripped.Message">
+    <value xml:space="preserve">The file format of '{0}' contains unsupported extensions.&#xd;&#xa;Data associated with extension(s) '{1}' has been removed.&#xd;&#xa;Should the 'Save' command be disabled to preserve the original file contents? The 'Save As' command will remain enabled.</value>
+    <comment xml:space="preserve">The message shown when extensions are automatically removed from a file. Replacements: {0}=file name, {1}=list of unrecognized extensions.</comment>
+  </data>
+  <data name="ModelErrorDisplayFilterChange.TransactionName">
     <value xml:space="preserve">Change Error Display</value>
     <comment xml:space="preserve">The transaction name used by the model error display filter dialog when a filter is changed. The text appears in the undo dropdown in the VS IDE.</comment>
   </data>

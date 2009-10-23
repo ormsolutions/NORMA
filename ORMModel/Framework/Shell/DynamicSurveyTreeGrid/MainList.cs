@@ -3,7 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © ORM Solutions, LLC. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -658,8 +658,9 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 					ISurveyNodeContext nodeContext;
 					object contextElement = null;
 					MainList locatedList;
-					if (mySurveyTree.myNodeDictionary.TryGetValue(obj, out location) &&
-						null != (locatedList = location.MainList))
+					SurveyTree<SurveyContextType> surveyTree = mySurveyTree;
+					bool haveLocation = surveyTree.myNodeDictionary.TryGetValue(obj, out location);
+					if (haveLocation &&	null != (locatedList = location.MainList))
 					{
 						if (locatedList == this)
 						{
@@ -676,6 +677,27 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 					else if (null != (nodeContext = obj as ISurveyNodeContext))
 					{
 						contextElement = nodeContext.SurveyNodeContext;
+					}
+					else if (haveLocation)
+					{
+						// A reference to the element has been recorded, jump to it instead
+						LinkedNode<SurveyNodeReference> referenceNodeLink;
+						if (surveyTree.myReferenceDictionary.TryGetValue(obj, out referenceNodeLink))
+						{
+							SurveyNodeReference referenceNode = referenceNodeLink.Value;
+							object referenceContext = referenceNode.ContextElement;
+							if (referenceContext == myContextElement)
+							{
+								if (0 <= (nodeIndex = myNodes.BinarySearch(referenceNode.Node, myNodeComparer)))
+								{
+									return new LocateObjectData(nodeIndex, 0, (int)TrackingObjectAction.ThisLevel);
+								}
+							}
+							else
+							{
+								contextElement = referenceContext;
+							}
+						}
 					}
 					if (contextElement != null)
 					{
