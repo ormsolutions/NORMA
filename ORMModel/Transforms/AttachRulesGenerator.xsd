@@ -72,6 +72,11 @@
 				<xs:documentation>(default: false) Generate code for a sealed DomainModel-derived class.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute name="afterRulesEnabled" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>A custom static callback function implemented as a static method in the domain model that takes a Store parameter. Designed to enable custom rule-sharing patterns to be established.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:element name="ReflectedType" type="ReflectedTypeType"/>
 	<xs:element name="Rule" type="RuleType" substitutionGroup="ReflectedType"/>

@@ -49,9 +49,9 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		where T : ElementPicker<T>
 	{
 		#region DropDownTreeControl class. Handles the Escape key for the dropdown
-		private class DropDownTreeControl : StandardVirtualTreeControl
+		private sealed class DropDownTreeControl : StandardVirtualTreeControl, INotifyEscapeKeyPressed
 		{
-			private bool myEscapePressed;
+			private EventHandler myEscapePressed;
 			private int myInitialIndex = -1;
 			public event DoubleClickEventHandler AfterDoubleClick;
 			public DropDownTreeControl()
@@ -94,20 +94,25 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 					AfterDoubleClick(this, e);
 				}
 			}
+			/// <summary>
+			/// Track the escape key before the control closes
+			/// </summary>
 			protected sealed override bool IsInputKey(Keys keyData)
 			{
 				if ((keyData & Keys.KeyCode) == Keys.Escape)
 				{
-					myEscapePressed = true;
+					EventHandler escapePressed;
+					if (null != (escapePressed = myEscapePressed))
+					{
+						escapePressed(this, EventArgs.Empty);
+					}
 				}
 				return base.IsInputKey(keyData);
 			}
-			public bool EscapePressed
+			event EventHandler INotifyEscapeKeyPressed.EscapePressed
 			{
-				get
-				{
-					return myEscapePressed;
-				}
+				add { myEscapePressed += value; }
+				remove { myEscapePressed -= value; }
 			}
 		}
 		#endregion DropDownTreeControl class. Handles the Escape key for the dropdown
@@ -303,9 +308,16 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 						{
 							treeControl.InitialSelectionIndex = initialIndex;
 						}
-						SetTreeControlDisplayOptions(treeControl);
+						Control adornedControl = SetTreeControlDisplayOptions(treeControl) ?? treeControl;
+						bool escapePressed = false;
+						EditorUtility.AttachEscapeKeyPressedEventHandler(
+							adornedControl,
+							delegate(object sender, EventArgs e)
+							{
+								escapePressed = true;
+							});
 
-						// Make sure keystrokes are forwarded while the modal dropdown is open
+						// Make sure keystrokes are not forwarded while the modal dropdown is open
 						IVirtualTreeInPlaceControl virtualTreeInPlaceControl = editor as IVirtualTreeInPlaceControl;
 						VirtualTreeInPlaceControlFlags flags = virtualTreeInPlaceControl != null ? virtualTreeInPlaceControl.Flags : 0;
 						if (0 != (flags & VirtualTreeInPlaceControlFlags.ForwardKeyEvents))
@@ -314,7 +326,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 						}
 
 						// Show the dropdown. This is modal.
-						editor.DropDownControl(treeControl);
+						editor.DropDownControl(adornedControl);
 
 						// Restore keystroke forwarding
 						if (0 != (flags & VirtualTreeInPlaceControlFlags.ForwardKeyEvents))
@@ -327,7 +339,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 
 						// Make sure the user didn't cancel, and translate the null placeholder
 						// back to null if necessary
-						if (!treeControl.EscapePressed)
+						if (!escapePressed)
 						{
 							int lastIndex = treeControl.AnchorIndex;
 							if (lastIndex != -1)
@@ -416,9 +428,12 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		/// should be limited in most cases to setting tree headers
 		/// </summary>
 		/// <param name="treeControl">A <see cref="VirtualTreeControl"/></param>
-		protected virtual void SetTreeControlDisplayOptions(VirtualTreeControl treeControl)
+		/// <returns>Optionally return an alternate control with adornments that contains the <paramref name="treeControl"/>.
+		/// The size of the tree control should be maintained during this request.</returns>
+		protected virtual Control SetTreeControlDisplayOptions(VirtualTreeControl treeControl)
 		{
 			// Empty default implementation
+			return null;
 		}
 		#endregion // ElementPicker Specifics
 	}

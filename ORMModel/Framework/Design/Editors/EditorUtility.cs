@@ -35,6 +35,7 @@ using System.ComponentModel.Design;
 
 namespace ORMSolutions.ORMArchitect.Framework.Design
 {
+	#region ContextElementParts struct
 	/// <summary>
 	/// Selected context instances are often represented by a wrapper
 	/// element representing a shape or an element reference. Use
@@ -126,6 +127,27 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 			}
 		}
 	}
+	#endregion // ContextElementParts struct
+	#region INotifyEscapeKeyPressed interface
+	/// <summary>
+	/// Callback interface to determine if an escape key was pressed
+	/// while a <see cref="UITypeEditor"/> dropdown was open. A control
+	/// implementing this interface should override the <see cref="Control.IsInputKey"/>
+	/// method and notify an attached event if the escape key was pressed.
+	/// To simplify implementation with composite controls, the <see cref="EditorUtility.AttachEscapeKeyPressedEventHandler"/>
+	/// method can be used to recursively attach the event listener to any
+	/// contained control implementing this interface.
+	/// </summary>
+	public interface INotifyEscapeKeyPressed
+	{
+		/// <summary>
+		/// Attach an event handler for notification of the escape
+		/// key being pressed.
+		/// </summary>
+		event EventHandler EscapePressed;
+	}
+	#endregion // INotifyEscapeKeyPressed interface
+	#region EditorUtility class
 	/// <summary>
 	/// Static helper functions to use with <see cref="UITypeEditor"/>
 	/// implementations.
@@ -514,5 +536,25 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 			#endregion // Other overrides
 		}
 		#endregion // ModifyPropertyDescriptorDisplay
+		#region AttachEscapeKeyPressedEventHandler
+		/// <summary>
+		/// Recursively test if a <paramref name="control"/> or its contained
+		/// controls implement <see cref="INotifyEscapeKeyPressed"/> and attach
+		/// the provided <paramref name="escapeKeyPressedHandler"/>.
+		/// </summary>
+		public static void AttachEscapeKeyPressedEventHandler(Control control, EventHandler escapeKeyPressedHandler)
+		{
+			INotifyEscapeKeyPressed escapeKeyPressed = control as INotifyEscapeKeyPressed;
+			if (escapeKeyPressed != null)
+			{
+				escapeKeyPressed.EscapePressed += escapeKeyPressedHandler;
+			}
+			foreach (Control nestedControl in control.Controls)
+			{
+				AttachEscapeKeyPressedEventHandler(nestedControl, escapeKeyPressedHandler);
+			}
+		}
+		#endregion // AttachEscapeKeyPressedEventHandler
 	}
+	#endregion // EditorUtility class
 }

@@ -48,9 +48,9 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		where T : TreePicker<T>
 	{
 		#region DropDownTreeControl class. Handles Escape key for ListBox
-		private sealed class DropDownTreeControl : StandardVirtualTreeControl
+		private sealed class DropDownTreeControl : StandardVirtualTreeControl, INotifyEscapeKeyPressed
 		{
-			private bool myEscapePressed;
+			private EventHandler myEscapePressed;
 			private int myLastSelectedRow = -1;
 			private int myLastSelectedColumn = -1;
 			public event DoubleClickEventHandler AfterDoubleClick;
@@ -61,7 +61,11 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 			{
 				if ((keyData & Keys.KeyCode) == Keys.Escape)
 				{
-					myEscapePressed = true;
+					EventHandler escapePressed;
+					if (null != (escapePressed = myEscapePressed))
+					{
+						escapePressed(this, EventArgs.Empty);
+					}
 				}
 				return base.IsInputKey(keyData);
 			}
@@ -117,13 +121,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 					AfterDoubleClick(this, e);
 				}
 			}
-			public bool EscapePressed
-			{
-				get
-				{
-					return myEscapePressed;
-				}
-			}
 			public int LastSelectedRow
 			{
 				get
@@ -143,6 +140,11 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 				myLastSelectedColumn = CurrentColumn;
 				myLastSelectedRow = CurrentIndex;
 				base.OnSelectionChanged(e);
+			}
+			event EventHandler INotifyEscapeKeyPressed.EscapePressed
+			{
+				add { myEscapePressed += value; }
+				remove { myEscapePressed -= value; }
 			}
 		}
 		#endregion // DropDownTreeControl class. Handles Escape key for VirtualTreeControl
@@ -210,9 +212,16 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 #endif
 							treeControl.Tree = tree;
 						}
-						SetTreeControlDisplayOptions(treeControl);
+						Control adornedControl = SetTreeControlDisplayOptions(treeControl) ?? treeControl;
+						bool escapePressed = false;
+						EditorUtility.AttachEscapeKeyPressedEventHandler(
+							adornedControl,
+							delegate(object sender, EventArgs e)
+							{
+								escapePressed = true;
+							});
 
-						// Make sure keystrokes are forwarded while the modal dropdown is open
+						// Make sure keystrokes are not forwarded while the modal dropdown is open
 						IVirtualTreeInPlaceControl virtualTreeInPlaceControl = editor as IVirtualTreeInPlaceControl;
 						VirtualTreeInPlaceControlFlags flags = virtualTreeInPlaceControl != null ? virtualTreeInPlaceControl.Flags : 0;
 						if (0 != (flags & VirtualTreeInPlaceControlFlags.ForwardKeyEvents))
@@ -220,7 +229,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 							virtualTreeInPlaceControl.Flags = flags & ~VirtualTreeInPlaceControlFlags.ForwardKeyEvents;
 						}
 
-						editor.DropDownControl(treeControl);
+						editor.DropDownControl(adornedControl);
 
 						// Restore keystroke forwarding
 						if (0 != (flags & VirtualTreeInPlaceControlFlags.ForwardKeyEvents))
@@ -234,7 +243,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 						// Make sure the user didn't cancel, and give derived classes a chance
 						// to translate the value displayed in the tree to an appropriately
 						// typed value for the associated property.
-						if (!treeControl.EscapePressed)
+						if (!escapePressed)
 						{
 							int lastRow = treeControl.LastSelectedRow;
 							int lastColumn = treeControl.LastSelectedColumn;
@@ -339,9 +348,10 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		/// such as root line display.
 		/// </summary>
 		/// <param name="treeControl">A <see cref="VirtualTreeControl"/></param>
-		protected virtual void SetTreeControlDisplayOptions(VirtualTreeControl treeControl)
+		protected virtual Control SetTreeControlDisplayOptions(VirtualTreeControl treeControl)
 		{
 			// Empty default implementation
+			return null;
 		}
 		#endregion // TreePicker Specifics
 	}

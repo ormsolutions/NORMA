@@ -295,7 +295,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 	public partial class ReadingEditor : UserControl
 	{
 		#region InplaceReadingEditor control
-		private sealed class InplaceReadingEditor : ReadingRichTextBox, IVirtualTreeInPlaceControl
+		private sealed class InplaceReadingEditor : ReadingRichTextBox, IVirtualTreeInPlaceControl, INotifyEscapeKeyPressed
 		{
 			#region NativeMethods class
 			[System.Security.SuppressUnmanagedCodeSecurity]
@@ -335,7 +335,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			#region Member variables
 			private readonly VirtualTreeInPlaceControlHelper myInPlaceHelper;
 			private bool myIgnoreNextSetText;
-			private bool myEscapePressed;
+			private EventHandler myEscapePressed;
 			#endregion // Member variables
 			#region Constructors
 			/// <summary>
@@ -376,23 +376,17 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					base.Text = value;
 				}
 			}
-			/// <summary>
-			/// Was the escape key pressed?
-			/// </summary>
-			public bool EscapePressed
-			{
-				get
-				{
-					return myEscapePressed;
-				}
-			}
 			#endregion // InplaceReadingEditor Specific
 			#region Event Forwarding, etc (Copied from VirtualTreeGrid.VirtualTreeInPlaceEditControl)
 			protected override bool IsInputKey(Keys keyData)
 			{
 				if ((keyData & Keys.KeyCode) == Keys.Escape)
 				{
-					myEscapePressed = true;
+					EventHandler escapePressed;
+					if (null != (escapePressed = myEscapePressed))
+					{
+						escapePressed(this, EventArgs.Empty);
+					}
 				}
 				return base.IsInputKey(keyData);
 			}
@@ -557,6 +551,13 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 			#endregion // IVirtualTreeInPlaceControl Implementation
+			#region INotifyEscapeKeyPressed Implementation
+			event EventHandler INotifyEscapeKeyPressed.EscapePressed
+			{
+				add { myEscapePressed += value; }
+				remove { myEscapePressed -= value; }
+			}
+			#endregion // INotifyEscapeKeyPressed Implementation
 		}
 		#endregion // Inplace reading editor control
 		#region BaseBranch class
@@ -1962,12 +1963,19 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					InplaceReadingEditor editor = new InplaceReadingEditor();
 					editor.Initialize(myReadingOrderKeyedCollection[row].OrderedReplacementFields, SystemColors.WindowText, SystemColors.GrayText);
+					bool escapePressed = false;
+					EditorUtility.AttachEscapeKeyPressedEventHandler(
+						editor,
+						delegate(object sender, EventArgs e)
+						{
+							escapePressed = true;
+						});
 					return new VirtualTreeLabelEditData(
 						editor,
 						delegate(VirtualTreeItemInfo itemInfo, Control editControl)
 						{
 							Store store = myFactType.Store;
-							if (editor.EscapePressed || !(store as IORMToolServices).CanAddTransaction)
+							if (escapePressed || !(store as IORMToolServices).CanAddTransaction)
 							{
 								return LabelEditResult.CancelEdit;
 							}
@@ -3038,12 +3046,19 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					{
 						InplaceReadingEditor editor = new InplaceReadingEditor();
 						editor.Initialize(myReadingInformation.OrderedReplacementFields, SystemColors.WindowText, SystemColors.GrayText);
+						bool escapePressed = false;
+						EditorUtility.AttachEscapeKeyPressedEventHandler(
+							editor,
+							delegate(object sender, EventArgs e)
+							{
+								escapePressed = true;
+							});
 						return new VirtualTreeLabelEditData(
 							editor,
 							delegate(VirtualTreeItemInfo itemInfo, Control editControl)
 							{
 								Store store = myFactType.Store;
-								if (editor.EscapePressed || !(store as IORMToolServices).CanAddTransaction)
+								if (escapePressed || !(store as IORMToolServices).CanAddTransaction)
 								{
 									return LabelEditResult.CancelEdit;
 								}
@@ -3083,12 +3098,19 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						string startReadingText = currentReading.Text;
 						InplaceReadingEditor editor = new InplaceReadingEditor();
 						editor.Initialize(startReadingText, myReadingInformation.OrderedReplacementFields, SystemColors.WindowText, SystemColors.GrayText);
+						bool escapePressed = false;
+						EditorUtility.AttachEscapeKeyPressedEventHandler(
+							editor,
+							delegate(object sender, EventArgs e)
+							{
+								escapePressed = true;
+							});
 						return new VirtualTreeLabelEditData(
 							editor,
 							delegate(VirtualTreeItemInfo itemInfo, Control editControl)
 							{
 								Store store = currentReading.Store;
-								if (editor.EscapePressed || !(store as IORMToolServices).CanAddTransaction)
+								if (escapePressed || !(store as IORMToolServices).CanAddTransaction)
 								{
 									return LabelEditResult.CancelEdit;
 								}

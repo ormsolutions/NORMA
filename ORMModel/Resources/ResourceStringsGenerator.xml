@@ -205,6 +205,7 @@
 	<ResourceString name="ModelExceptionInvalidPreferredIdentifierPreConditions" model="Model" resourceName="ModelException.UniquenessConstraint.InvalidPreferredIdentifierPreConditions"/>
 	<ResourceString name="ModelExceptionConstraintEnforceNoForeignFactTypes" model="Model" resourceName="ModelException.Constraint.EnforceNoForeignFactTypes"/>
 	<ResourceString name="ModelExceptionConstraintEnforceSingleFactTypeForInternalConstraint" model="Model" resourceName="ModelException.Constraint.EnforceSingleFactTypeForInternalConstraint"/>
+	<ResourceString name="ModelExceptionConstraintRoleSequenceAutomaticJoinPathNotAvailable" model="Model" resourceName="ModelException.ConstraintRoleSequence.AutomaticJoinPathNotAvailable"/>
 	<ResourceString name="ModelExceptionConstraintRoleSequenceHasRoleEnforceNoRolePlayerChange" model="Model" resourceName="ModelException.ConstraintRoleSequenceHasRole.EnforceNoRolePlayerChange"/>
 	<ResourceString name="ModelExceptionExclusiveOrConstraintCouplerInconsistentConstraints" model="Model" resourceName="ModelException.ExclusiveOrConstraintCoupler.InconsistentConstraintRolesOrModality"/>
 	<ResourceString name="CoreVerbalizationSnippetsDefaultDescription" model="Model" resourceName="Verbalization.SnippetsDefaultDescription"/>
@@ -370,6 +371,8 @@
 	<ResourceString name="NMinusOneRuleInternalSpan" model="Model" resourceName="ModelError.FactType.NMinusOneRule.Text"/>
 	<ResourceString name="ModelErrorSetConstraintCompatibleRolePlayerTypeError" model="Model" resourceName="ModelError.Constraint.CompatibleRolePlayerTypeError.Set.Text"/>
 	<ResourceString name="ModelErrorSetComparisonConstraintCompatibleRolePlayerTypeError" model="Model" resourceName="ModelError.Constraint.CompatibleRolePlayerTypeError.SetComparison.Text"/>
+	<ResourceString name="ModelErrorSetConstraintJoinPathRequiredError" model="Model" resourceName="ModelError.Constraint.JoinPathRequiredError.Set.Text"/>
+	<ResourceString name="ModelErrorSetComparisonConstraintJoinPathRequiredError" model="Model" resourceName="ModelError.Constraint.JoinPathRequiredError.SetComparison.Text"/>
 	<ResourceString name="ModelErrorRolePlayerRequiredError" model="Model" resourceName="ModelError.Role.RolePlayerRequired.Message"/>
 	<ResourceString name="ModelErrorObjectTypeCompatibleSupertypesError" model="Model" resourceName="ModelError.ObjectType.CompatibleSupertypesError.Message"/>
 	<ResourceString name="ModelErrorObjectTypePreferredIdentifierRequiresMandatoryError" model="Model" resourceName="ModelError.ObjectType.PreferredIdentifierRequiresMandatoryError.Message"/>

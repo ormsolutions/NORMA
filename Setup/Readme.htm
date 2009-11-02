@@ -3,7 +3,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
-<title>NORMA June 2009 CTP Readme</title>
+<title>NORMA October 2009 CTP Readme</title>
 <style type="text/css">
 	.new {font-size:x-small; background-color:Gold; color:Blue; }
 	li {padding-bottom: 3px;}
@@ -12,9 +12,9 @@
 
 <body>
 
-<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA June 2009 CTP Readme</a>&nbsp;</b></p>
+<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA October 2009 CTP Readme</a>&nbsp;</b></p>
 <p>This file supersedes the previous readme.txt and older readme.htm files. This readme has parallel indexing mechanisms: by topic, and by release date (starting with the October 2008 (2008-10) release). The file will be extended for future product releases.<br/><br/>
-The June 2009 release is a stabilization release with minor feature changes. See detailed change notes below for specifics. 
+The October 2009 release is a stabilization release with minor feature changes. See detailed change notes below for specifics. 
 <br/><br/></p>
 <h2>Contents</h2>
 <ul>
@@ -39,9 +39,39 @@ The June 2009 release is a stabilization release with minor feature changes. See
 <ul>
 <li><a href="#TOPIC DAILY">TOPIC DESCRIPTION</a>&nbsp;(Build ####)</li>
 </ul>-->
+
+<hr/>
+<h2>October 2009 CTP Changes</h2>
+<div>The October 2009 CTP release includes all modifications through changeset 1416. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<ul>
+<li><a href="#Multiline Value Constraint Shapes 2009-10">Multiline value constraint shapes</a>&nbsp;</li>
+<li><a href="#Sample population identifying fact type role selection 2009-10">Sample population identifying fact type role selection</a>&nbsp;</li>
+<li><a href="#Inplace Edit Option 2009-10">Inplace edits in Model Browser</a>&nbsp;</li>
+<li><a href="#Verbalization Double Hyphens 2009-10">Hyphen display with hyphen-bound readings</a>&nbsp;</li>
+<li>Other Features:
+<ol>
+<li>The expansion state of the 'Implied Fact Types' branch in the 'ORM Reading Editor' tool window is remembered across selection changes.</li>
+<li>Added verbalization of external frequency constraints for binary fact type patterns.</li>
+<li>Added the 'Select in Model Browser' command to complement the 'Select in Diagram Spy' and 'Select in Document Window' commands.</li>
+<li>Improve error handling loading files with unrecognized extensions. Opening a file with unsupported extensions strips the extensions and offers the user the same options as a file import, namely a warning that the file has been modified and the option to disable the Save command. Also, failure to load an extension with the Extension Manager will revert to the previous in-memory state instead of failing outright.</li>
+</ol>
+</li>
+<li>Bug Fixes:
+<ol>
+<li>The delete command now works as expected in the reading editor.</li>
+<li>Setup dependency checks for the Visual Studio 2008 product were incorrectly reporting a dependency on Visual Studio 2005.</li>
+<li>HTML Reports were generating 0-length files for fact types. Also improved handling of illegal file name characters in fact type and object type names.</li>
+<li>Some population manadatory errors would appear on reload of a file, but not during live editing.</li>
+<li>Using an existing object type in the Fact Editor with a current diagram with no shape for that object type could create a partial shape, missing elements such as the value constraint.</li>
+<li>Committing a line the Fact Editor will now generate a single Undo item. Previously, one undo unit would stack all shapes on the diagram and the second would arrange them.</li>
+</ol>
+</li>
+</ul>
+
+
 <hr/>
 <h2>June 2009 CTP Changes</h2>
-<div>The June 2009 CTP release includes all modifications through changeset 1397. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<div>The June 2009 CTP release includes all modifications through changeset 1397.</div>
 <ul>
 <li><a href="#Sample population mandatory error activation 2009-06">Sample population mandatory error activation</a>&nbsp;</li>
 <li><a href="#Relational compound name interpretation 2009-06">Relational compound name interpretation</a>&nbsp;</li>
@@ -225,6 +255,8 @@ The <em>Diagram Management</em> extension model can be selected to enable diagra
 <li>Diagram position and activation changes do not support undo/redo. Activating a diagram or change the scroll/zoom state also does not cause the document to be marked as dirty, so you must explicitly save the file if other changes have not been made.</li>
 </ul>
 </li>
+<li><a id="Inplace Edit Option 2009-10" class="new" title="October 2009 CTP: Inplace edits in Model Browser">2009-10</a>&nbsp;
+Delayed activation of text fields in the Model Browser can now be enabled in the 'Tools/Options' dialog. To enable this option, select the 'Delay Activate Text Editing' in the 'Model Browser' category of the 'ORM Designer' page. If this option is enabled, then selecting the text of an item with an editable name will place it in edit mode. Select the item's icon instead of the text to avoid activation. Regardless of this option, inplace editing can also be activated with the <i>View.EditLabel</i> command, which is generally associated with the F2 key.</li>
 </ul>
 
 <a href="#The Top">Return to top</a>
@@ -267,6 +299,9 @@ All FactTypes associated with an ObjectType are now shown with the verbalization
 <li>
 <a id="Verbalization Relational 2008-10" class="new" title="October 2008 CTP: Relational table and column verbalization">2008-10</a>&nbsp;
 Table elements now verbalize all of the top-level ObjectTypes that correspond to the table. The full FactType path is also verbalized for each column selection. These verbalizations, along with the new Diagram Spy window, allow the user to navigation through and edit ORM space while the Relational View remains the primary selected document.</li>
+<li>
+<a id="Verbalization Double Hyphens 2009-10" class="new" title="October 2009 CTP: Hyphen display with hyphen-bound readings">2009-10</a>&nbsp;
+If hyphen-binding is used in reading text and a hyphen directly precedes the hyphen/space character pair the triggers the hyphen-binding interpretation, then the additional hyphen will be verbalized with no trailing space. So (here, an underscore (_) indicates a space), <i>ADJECTIVE--_ROLEPLAYER</i> will verbalize as <i>ADJECTIVE-ROLEPLAYER</i>. If <i>ADJECTIVE-_ROLEPLAYER</i> is the desired output, then the user can add an extra space to the reading text. Symmetric rules apply to reverse hyphen-binding.</li>
 </ol>
 <a href="#The Top">Return to top</a>
 <hr />
@@ -298,8 +333,8 @@ In previous builds, indirect editing of a ValueType used as an identifier would 
 Most models have a number of FactType populations that are fully implied by one of the role players. The most common of these cases is the standard reference mode pattern, where the population of a one-to-one FactType is implied by the identified EntityType. Other FactType patterns that are implied are SubtypeFacts where the subtype uses a supertype identifier and the binary FactTypes implied by an objectification pattern. Implied FactTypes appear read-only in the sample population editor.</li>
 <li><a id="Sample population deletion 2009-05" class="new" title="May 2009 CTP: Sample population deletion">2009-05</a>&nbsp;
 The delete key can be used at any time to delete a cell with a value in it. Deleting the last value-containing cell deletes the instance for that row. To delete a row instance directly without deleting its parts, place the selection in the first column (with the numbers) before pressing delete.</li>
-<li><a id="Sample population mandatory error activation 2009-06" class="new" title="June 2009 CTP: Sample population mandatory error activation">2009-06</a>&nbsp;
-Automatic activation of sample population errors has been extended to support disjunctive mandatory constraints. Activating a 'population mandatory' error through a specific role by selecting the item in the 'Validation Errors' context submenu or double-clicking the role adds a new fact instance for the context FactType with that role prepopulated. If you want to add the other value to another fact instance, simply escape any active editors and undo the last action. Activating a disjunctive mandatory error through the error list will populate the first role player mentioned in the error text.</li>
+<li><a id="Sample population identifying fact type role selection 2009-10" class="new" title="October 2009 CTP: Sample population identifying fact type role selection">2009-10</a>&nbsp;
+Selecting a fact type that is part of the identification scheme for an entity type shows a read-only implied population in the Sample Population Editor. However, selecting a role in an implicitly populated fact type displays the editable population of the identified entity type.</li>
 </ol>
 <a href="#The Top">Return to top</a>
 <hr />
@@ -323,6 +358,9 @@ so changing the subtype relationship in the same session will not lose your deri
 Subtype lines are automatically displayed between a subtype shape and the nearest supertype shape on the diagram. However, it is not uncommon to use both a subtype and its supertype on a secondary diagram that does not need to display the subtyping relationship between the two types. This can often lead to an awkward subtype line being drawn across the diagram that can (previously) only be fixed by adding a second shape for the subtype or supertype nearer to the other endpoint. The <em>DisplayRelatedTypes</em> property will now display on all object type shapes (and all objectified fact type shapes) where the associated object type participates in either end of at least one subtyping relationship. You can choose to display lines to supertypes, lines to subtypes, lines to neither, or lines to both (the default) for each object shape.</li>
 <li><a id="Role name highlighting 2009-05" class="new" title="May 2009 CTP: Role name highlighting">2009-05</a>&nbsp;
 ORM2 specifies freeform placement of role name shapes. The modeler is responsible for placing the role names in such a way that the clutter of connector lines back to the associated roles are not needed. Additional highlighting has been added to the NORMA designer, so that moving the mouse over a role will highlight the corresponding role name shape, and vice versa. The highlighting is subtle (the background darkens in the role box and on the role name shape), but is sufficient to indicate that the role name/role box pairs without selecting the role box and examining its properties.
+</li>
+<li><a id="Multiline Value Constraint Shapes 2009-10" class="new" title="October 2009 CTP: Multiline value constraint shapes">2009-10</a>&nbsp;
+Individual shapes for value constraints have two additional display properties, <i>MaxColumns</i> and <i>MaxValues</i>, that enable value constraints with multiple items to be displayed on more than one line. MaxColumns controls the maximum number of columns that should be displayed, and MaxValues allows truncation of the total number of values. If the full list of values is truncated, hover over the value constraint shape will display a tooltip with the full list of values.
 </li>
 </ol>
 <a href="#The Top">Return to top</a>

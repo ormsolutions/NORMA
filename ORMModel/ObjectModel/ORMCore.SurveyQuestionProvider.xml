@@ -16,6 +16,9 @@
 				<qp:map enumValue="Grouping"/>
 			</qp:emptyHeaderMap>
 		</qp:surveyQuestion>
+		<qp:surveyQuestion questionType="SurveyConstraintDetailType" questionPriority="1000">
+			<qp:displaySupport displayCategory="Sorting"/>
+		</qp:surveyQuestion>
 		<qp:surveyQuestion questionType="SurveyErrorState" isErrorDisplay="true">
 			<qp:displaySupport displayCategory="Overlay"/>
 			<qp:explicitImageMap lastAnswer="0">
@@ -104,6 +107,18 @@
 				<plx:callStatic dataTypeName="ORMCoreDomainModel" name="SurveyFloatingExpansionKey" type="field"/>
 			</qp:expansionKey>
 			<qp:surveyQuestion ref="SurveyQuestionGlyph"/>
+		</qp:grouping>
+		<qp:grouping>
+			<qp:expansionKey>
+				<plx:callStatic dataTypeName="SetConstraint" name="SurveyExpansionKey" type="field"/>
+			</qp:expansionKey>
+			<qp:surveyQuestion ref="SurveyConstraintDetailType"/>
+		</qp:grouping>
+		<qp:grouping>
+			<qp:expansionKey>
+				<plx:callStatic dataTypeName="SetComparisonConstraint" name="SurveyExpansionKey" type="field"/>
+			</qp:expansionKey>
+			<qp:surveyQuestion ref="SurveyConstraintDetailType"/>
 		</qp:grouping>
 	</qp:groupings>
 	<qp:imageInformation>

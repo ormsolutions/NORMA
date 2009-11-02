@@ -424,4 +424,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		Derived,
 	}
 	#endregion // SurveyDerivationType question
+	#region Constraint Detail Question
+	/// <summary>
+	/// Constraint detail survey answers
+	/// </summary>
+	public enum SurveyConstraintDetailType
+	{
+		/// <summary>
+		/// A reference to a <see cref="FactType"/> restricted
+		/// by this constraint.
+		/// </summary>
+		ConsistuentFactType,
+	}
+	#endregion // Constraint Detail Question
 }

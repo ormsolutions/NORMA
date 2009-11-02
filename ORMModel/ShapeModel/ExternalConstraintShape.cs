@@ -555,7 +555,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				rVal = true;
 			}
-			else if (null != (r = mel as Role))
+			else if (constraint != null && null != (r = mel as Role))
 			{
 				switch (constraint.ConstraintStorageStyle)
 				{

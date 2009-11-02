@@ -3,7 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © ORM Solutions, LLC. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -34,9 +34,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	[VerbalizationSnippetsProvider("VerbalizationSnippets")]
 	public partial class ORMCoreDomainModel : IModelingEventSubscriber, ISurveyNodeProvider
 	{
-		private static Type[] SurveyErrorQuestionTypes = new Type[] { typeof(SurveyErrorState) };
-		private static Type[] SurveyGlyphQuestionTypes = new Type[] { typeof(SurveyQuestionGlyph) };
-		private static Type[] SurveyDerivationQuestionTypes = new Type[] { typeof(SurveyDerivationType) };
+		#region Static Survey Data
+		private static readonly Type[] SurveyErrorQuestionTypes = new Type[] { typeof(SurveyErrorState) };
+		private static readonly Type[] SurveyGlyphQuestionTypes = new Type[] { typeof(SurveyQuestionGlyph) };
+		private static readonly Type[] SurveyDerivationQuestionTypes = new Type[] { typeof(SurveyDerivationType) };
 		/// <summary>
 		/// The unique name the VerbalizationBrowser target. Used in the Xml files and in code to identify the core target provider.
 		/// </summary>
@@ -46,6 +47,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// to provide a glyph answer.
 		/// </summary>
 		public static readonly object SurveyFloatingExpansionKey = new object();
+		#endregion // Static Survey Data
+		#region Custom Rule Notifications
+		/// <summary>
+		/// Callback for custom attachment of rule callbacks
+		/// </summary>
+		private static void EnableCustomRuleNotifications(Store store)
+		{
+			ConstraintRoleSequence.EnableRuleNotifications(store);
+		}
+		#endregion // Custom Rule Notifications
 		#region IModelingEventSubscriber Implementation
 		/// <summary>
 		/// Implements <see cref="IModelingEventSubscriber.ManageModelingEventHandlers"/>.
@@ -361,7 +372,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					yield return refinement;
 				}
 			}
-			else if (expansionKey == FactConstraint.SurveyConstraintExpansionKey)
+			else if (expansionKey == SetConstraint.SurveyExpansionKey ||
+				expansionKey == SetComparisonConstraint.SurveyExpansionKey)
 			{
 				foreach (FactConstraint constraint in FactConstraint.GetLinksToFactTypeCollection((ORMNamedElement)context))
 				{
@@ -398,10 +410,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		protected static bool IsSurveyNodeExpandable(object context, object expansionKey)
 		{
-			return expansionKey == FactType.SurveyExpansionKey ||
+			if (expansionKey == FactType.SurveyExpansionKey ||
 				expansionKey == NameGenerator.SurveyExpansionKey ||
-				expansionKey == FactConstraint.SurveyConstraintExpansionKey ||
-				expansionKey == ElementGrouping.SurveyExpansionKey;
+				expansionKey == ElementGrouping.SurveyExpansionKey ||
+				expansionKey == SetComparisonConstraint.SurveyExpansionKey)
+			{
+				return true;
+			}
+			else if (expansionKey == SetConstraint.SurveyExpansionKey)
+			{
+				IConstraint constraint = (IConstraint)context;
+				if (!constraint.ConstraintIsInternal && constraint.ConstraintType != ConstraintType.ImpliedMandatory)
+				{
+					return true;
+				}
+			}
+			return false;
 			// Note that ObjectType expansion is offered for extension models only,
 			// we do not currently show any expansion for it in the core model.
 		}

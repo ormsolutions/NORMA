@@ -44,9 +44,9 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 	public class MultilineTextEditor<T> : SizePreservingEditor<T>
 	{
 		#region TextBoxControl class. Handles Escape key for TextBox
-		private sealed class TextBoxControl : TextBox
+		private sealed class TextBoxControl : TextBox, INotifyEscapeKeyPressed
 		{
-			private bool myEscapePressed;
+			private EventHandler myEscapePressed;
 			/// <summary>
 			/// Set the appropriate TextBox styles
 			/// </summary>
@@ -61,16 +61,18 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 			{
 				if ((keyData & Keys.KeyCode) == Keys.Escape)
 				{
-					myEscapePressed = true;
+					EventHandler escapePressed;
+					if (null != (escapePressed = myEscapePressed))
+					{
+						escapePressed(this, EventArgs.Empty);
+					}
 				}
 				return base.IsInputKey(keyData);
 			}
-			public bool EscapePressed
+			event EventHandler INotifyEscapeKeyPressed.EscapePressed
 			{
-				get
-				{
-					return myEscapePressed;
-				}
+				add { myEscapePressed += value; }
+				remove { myEscapePressed -= value; }
 			}
 		}
 		#endregion // TextBoxControl class. Handles Escape key for TextBox
@@ -122,13 +124,21 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 
 					textControl.Text = newText;
 					textControl.Select(0, 0);
+
+					bool escapePressed = false;
+					EditorUtility.AttachEscapeKeyPressedEventHandler(
+						textControl,
+						delegate(object sender, EventArgs e)
+						{
+							escapePressed = true;
+						});
 					editor.DropDownControl(textControl);
 
 					// Record the final size, we'll use it next time for this type of control
 					LastControlSize = textControl.Size;
 
 					// Make sure the user didn't cancel
-					if (!textControl.EscapePressed)
+					if (!escapePressed)
 					{
 						newText = textControl.Text;
 					}

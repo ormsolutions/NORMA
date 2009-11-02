@@ -488,6 +488,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // SubtypeDerivationRule class
+	#region ConstraintRoleSequenceJoinPath class
+	partial class ConstraintRoleSequenceJoinPath
+	{
+		/// <summary>
+		/// Get the <see cref="ORMModel"/> from the associated <see cref="ConstraintRoleSequence"/>
+		/// </summary>
+		public override ORMModel Model
+		{
+			get
+			{
+				ConstraintRoleSequence roleSequence;
+				IConstraint constraint;
+				return (null != (roleSequence = RoleSequence) && null != (constraint = roleSequence.Constraint)) ? constraint.Model : null;
+			}
+		}
+	}
+	#endregion // ConstraintRoleSequenceJoinPath class
 	#region RoleSubPath class
 	partial class RoleSubPath
 	{

@@ -806,6 +806,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			// Calls added here need corresponding delayed calls in DelayValidateErrors
+			base.ValidateErrors(notifyAdded);
 			VerifyCompatibleRolePlayerTypeForRule(notifyAdded);
 			VerifyRoleSequenceCountForRule(notifyAdded);
 			ValidateSetConstraintSubsetPattern(notifyAdded);
@@ -819,6 +820,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		protected new void DelayValidateErrors()
 		{
+			base.DelayValidateErrors();
 			FrameworkDomainModel.DelayValidateElement(this, DelayValidateCompatibleRolePlayerTypeError);
 			FrameworkDomainModel.DelayValidateElement(this, DelayValidateRoleSequenceCountErrors);
 			DelayValidateConstraintPatternError(this);
@@ -2433,6 +2435,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		protected new IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
 		{
+			ModelErrorUses startFilter = filter;
 			if (filter == 0)
 			{
 				filter = (ModelErrorUses)(-1);
@@ -2542,8 +2545,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					yield return exclusionSubsetError;
 				}
 			}
+			// Display individual sequence errors
+			foreach (SetComparisonConstraintRoleSequence roleSequence in RoleSequenceCollection)
+			{
+				foreach (ModelErrorUsage sequenceError in ((IModelErrorOwner)roleSequence).GetErrorCollection(startFilter))
+				{
+					yield return sequenceError;
+				}
+			}
 			// Get errors off the base
-			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
+			foreach (ModelErrorUsage baseError in base.GetErrorCollection(startFilter))
 			{
 				yield return baseError;
 			}
@@ -2826,9 +2837,48 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	}
 	#endregion // FactConstraint classes
 	#region ConstraintRoleSequence classes
-	public partial class ConstraintRoleSequence
+	public partial class ConstraintRoleSequence : IModelErrorOwner
 	{
 		#region Rules
+		/// <summary>
+		/// Attach rule notifications for subtype hierarchy changes
+		/// </summary>
+		/// <param name="store">The context <see cref="Store"/></param>
+		public static void EnableRuleNotifications(Store store)
+		{
+			ObjectType.AddSubtypeHierarchyChangeRuleNotification(store, ValidateAttachedConstraintColumnCompatibility);
+		}
+		/// <summary>
+		/// Walk constraint attached to roles associated with a subtype change.
+		/// </summary>
+		private static void ValidateAttachedConstraintColumnCompatibility(ObjectType type)
+		{
+			LinkedElementCollection<Role> playedRoles = type.PlayedRoleCollection;
+			int playedRoleCount = playedRoles.Count;
+			for (int i = 0; i < playedRoleCount; ++i)
+			{
+				Role playedRole = playedRoles[i];
+				if (!playedRole.IsDeleting)
+				{
+					DelayValidateFactTypeJoinPaths(playedRole.FactType);
+					LinkedElementCollection<ConstraintRoleSequence> sequences = playedRole.ConstraintRoleSequenceCollection;
+					int sequenceCount = sequences.Count;
+					for (int j = 0; j < sequenceCount; ++j)
+					{
+						ConstraintRoleSequence sequence = sequences[j];
+						if (!sequence.IsDeleting)
+						{
+							IConstraint constraint = sequence.Constraint;
+							if (constraint != null &&
+								0 != (constraint.RoleSequenceStyles & RoleSequenceStyles.CompatibleColumns))
+							{
+								constraint.ValidateColumnCompatibility();
+							}
+						}
+					}
+				}
+			}
+		}
 		/// <summary>
 		/// RolePlayerChangeRule: typeof(ConstraintRoleSequenceHasRole)
 		/// Other rules are not set up to handle role player changes on ConstraintRoleSequence.
@@ -2845,12 +2895,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void ConstraintRoleSequenceHasRoleAddedRule(ElementAddedEventArgs e)
 		{
-			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+			ConstraintRoleSequenceHasRole link = (ConstraintRoleSequenceHasRole)e.ModelElement;
 			ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
-			if (!sequence.IsDeleted)
-			{
-				sequence.DelayValidatePatternError();
-			}
+			sequence.DelayValidatePatternError();
+			sequence.DelayValidateJoinPath();
 			SetComparisonConstraintRoleSequence setComparisonSequence = link.ConstraintRoleSequence as SetComparisonConstraintRoleSequence;
 			if (setComparisonSequence != null)
 			{
@@ -2871,8 +2919,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void SetComparisonConstraintHasRoleDeletingRule(ElementDeletingEventArgs e)
 		{
-			ConstraintRoleSequence theElement = e.ModelElement as ConstraintRoleSequence;
-			SetComparisonConstraint curSetComparisonConstraint = theElement.Constraint as SetComparisonConstraint;
+			ConstraintRoleSequence sequence = (ConstraintRoleSequence)e.ModelElement;
+			SetComparisonConstraint curSetComparisonConstraint = sequence.Constraint as SetComparisonConstraint;
 
 			if (curSetComparisonConstraint != null)
 			{
@@ -3002,10 +3050,128 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (!sequence.IsDeleted)
 			{
 				sequence.DelayValidatePatternError();
+				sequence.DelayValidateJoinPath();
 			}
 		}
+		#region Join path validation rules
+		/// <summary>
+		/// AddRule: typeof(ConstraintRoleProjectedFromCalculatedPathValue)
+		/// </summary>
+		private static void ConstraintRoleProjectedFromCalculatedValueRule(ElementAddedEventArgs e)
+		{
+			ConstraintRoleSequenceHasRole constraintRole = ((ConstraintRoleProjectedFromCalculatedPathValue)e.ModelElement).ConstraintRole;
+			constraintRole.ProjectedFromConstant = null;
+			constraintRole.ProjectedFromPathedRole = null;
+		}
+		/// <summary>
+		/// AddRule: typeof(ConstraintRoleProjectedFromPathConstant)
+		/// </summary>
+		private static void ConstraintRoleProjectedFromConstantRule(ElementAddedEventArgs e)
+		{
+			ConstraintRoleSequenceHasRole constraintRole = ((ConstraintRoleProjectedFromPathConstant)e.ModelElement).ConstraintRole;
+			constraintRole.ProjectedFromPathedRole = null;
+			constraintRole.ProjectedFromCalculatedValue = null;
+		}
+		/// <summary>
+		/// AddRule: typeof(ConstraintRoleProjectedFromPathedRole)
+		/// </summary>
+		private static void ConstraintRoleProjectedFromPathedRoleRule(ElementAddedEventArgs e)
+		{
+			ConstraintRoleSequenceHasRole constraintRole = ((ConstraintRoleProjectedFromPathedRole)e.ModelElement).ConstraintRole;
+			constraintRole.ProjectedFromConstant = null;
+			constraintRole.ProjectedFromCalculatedValue = null;
+		}
+		/// <summary>
+		/// AddRule: typeof(ConstraintRoleSequenceHasJoinPath)
+		/// Verify error state when a join path is added
+		/// </summary>
+		private static void JoinPathAddedRule(ElementAddedEventArgs e)
+		{
+			FrameworkDomainModel.DelayValidateElement(((ConstraintRoleSequenceHasJoinPath)e.ModelElement).RoleSequence, DelayValidateJoinPath);
+		}
+		/// <summary>
+		/// DeleteRule: typeof(ConstraintRoleSequenceHasJoinPath)
+		/// Clean up derivation constants on the roles, validate join path error
+		/// </summary>
+		private static void JoinPathDeletedRule(ElementDeletedEventArgs e)
+		{
+			ConstraintRoleSequence roleSequence = ((ConstraintRoleSequenceHasJoinPath)e.ModelElement).RoleSequence;
+			// Calculated values and pathed roles will be deleted with the derivation path,
+			// but constants are aggregated with the role and will not be cleared with delete
+			// propagation.
+			if (!roleSequence.IsDeleted)
+			{
+				foreach (ConstraintRoleSequenceHasRole constraintRole in ConstraintRoleSequenceHasRole.GetLinksToRoleCollection(roleSequence))
+				{
+					constraintRole.ProjectedFromConstant = null;
+				}
+				FrameworkDomainModel.DelayValidateElement(roleSequence, DelayValidateJoinPath);
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(ObjectTypePlaysRole)
+		/// </summary>
+		private static void RolePlayerAddedRule(ElementAddedEventArgs e)
+		{
+			DelayValidateFactTypeJoinPaths(((ObjectTypePlaysRole)e.ModelElement).PlayedRole.FactType);
+		}
+		/// <summary>
+		/// DeleteRule: typeof(ObjectTypePlaysRole)
+		/// </summary>
+		private static void RolePlayerDeletedRule(ElementDeletedEventArgs e)
+		{
+			Role role = ((ObjectTypePlaysRole)e.ModelElement).PlayedRole;
+			if (!role.IsDeleted)
+			{
+				DelayValidateFactTypeJoinPaths(role.FactType);
+			}
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(ObjectTypePlaysRole)
+		/// </summary>
+		private static void RolePlayerRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			if (e.DomainRole.Id == ObjectTypePlaysRole.RolePlayerDomainRoleId)
+			{
+				Role role = ((ObjectTypePlaysRole)e.ElementLink).PlayedRole;
+				if (!role.IsDeleted)
+				{
+					DelayValidateFactTypeJoinPaths(role.FactType);
+				}
+			}
+			else
+			{
+				DelayValidateFactTypeJoinPaths(((Role)e.OldRolePlayer).FactType);
+				DelayValidateFactTypeJoinPaths(((Role)e.NewRolePlayer).FactType);
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(FactTypeHasRole)
+		/// </summary>
+		private static void RoleAddedRule(ElementAddedEventArgs e)
+		{
+			DelayValidateFactTypeJoinPaths(((FactTypeHasRole)e.ModelElement).FactType);
+		}
+		/// <summary>
+		/// DeleteRule: typeof(FactTypeHasRole)
+		/// </summary>
+		private static void RoleDeletedRule(ElementDeletedEventArgs e)
+		{
+			DelayValidateFactTypeJoinPaths(((FactTypeHasRole)e.ModelElement).FactType);
+		}
+		/// <summary>
+		/// RolePlayerPositionChangeRule: typeof(ConstraintRoleSequenceHasRole)
+		/// </summary>
+		private static void ConstraintRolePositionChangedRule(RolePlayerOrderChangedEventArgs e)
+		{
+			if (e.SourceDomainRole.Id == ConstraintRoleSequenceHasRole.ConstraintRoleSequenceDomainRoleId)
+			{
+				((ConstraintRoleSequence)e.SourceElement).DelayValidateJoinPath();
+			}
+		}
+		#endregion // Join path validation rules
 		#endregion // Rules
-		#region Validation
+		#region Constraint Overlap Validation
 		/// <summary>
 		/// Register pattern validation for this sequencye
 		/// </summary>
@@ -4085,7 +4251,979 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 		}
-		#endregion
+		#endregion // Constraint Overlap Validation
+		#region JoinPath Validation
+		#region Deserialization Fixup
+		/// <summary>
+		/// Return a deserialization fixup listener. The listener
+		/// adds the implicit FactConstraint elements.
+		/// </summary>
+		public static IDeserializationFixupListener JoinPathFixupListener
+		{
+			get
+			{
+				return new AutomaticJoinPathFixupListener();
+			}
+		}
+		/// <summary>
+		/// Fixup listener implementation. Adds implicit FactConstraint relationships
+		/// </summary>
+		private sealed class AutomaticJoinPathFixupListener : DeserializationFixupListener<ConstraintRoleSequence>
+		{
+			/// <summary>
+			/// ExternalConstraintFixupListener constructor
+			/// </summary>
+			public AutomaticJoinPathFixupListener()
+				: base((int)ORMDeserializationFixupPhase.ValidateImplicitStoredElements)
+			{
+			}
+			/// <summary>
+			/// Ignore constraint types that never have join
+			/// </summary>
+			protected override bool VerifyElementType(ModelElement element)
+			{
+				SetConstraint constraint = element as SetConstraint;
+				if (constraint != null)
+				{
+					switch (((IConstraint)constraint).ConstraintType)
+					{
+						// These are based on properties, can't be checked in VerifyElementType
+						// case ConstraintType.InternalUniqueness:
+						// case ConstraintType.SimpleMandatory:
+						// case ConstraintType.ImpliedMandatory:
+						case ConstraintType.DisjunctiveMandatory:
+						case ConstraintType.Ring:
+							return false;
+					}
+				}
+				return true;
+			}
+			/// <summary>
+			/// Generate and verify automatic join paths
+			/// </summary>
+			protected sealed override void ProcessElement(ConstraintRoleSequence element, Store store, INotifyElementAdded notifyAdded)
+			{
+				if (!element.IsDeleted)
+				{
+					element.ValidateJoinPath(notifyAdded, false, true);
+				}
+			}
+		}
+		#endregion // Deserialization Fixup
+		/// <summary>
+		/// ChangeRule: typeof(ConstraintRoleSequenceJoinPath)
+		/// </summary>
+		private static void AutomaticJoinPathChangeRule(ElementPropertyChangedEventArgs e)
+		{
+			if (e.DomainProperty.Id == ConstraintRoleSequenceJoinPath.IsAutomaticDomainPropertyId)
+			{
+				if ((bool)e.NewValue)
+				{
+					ConstraintRoleSequenceJoinPath joinPath = (ConstraintRoleSequenceJoinPath)e.ModelElement;
+					ConstraintRoleSequence roleSequence;
+					if (null != (roleSequence = joinPath.RoleSequence))
+					{
+						// Force a nested transaction to run the join path validation
+						// in an isolated block so we can roll back.
+						using (Transaction t = roleSequence.Store.TransactionManager.BeginTransaction("Force automatic validation"))
+						{
+							FrameworkDomainModel.DelayValidateElement(roleSequence, DelayValidateJoinPath);
+							t.Commit();
+						}
+						if (joinPath.IsDeleted)
+						{
+							throw new InvalidOperationException(ResourceStrings.ModelExceptionConstraintRoleSequenceAutomaticJoinPathNotAvailable);
+						}
+					}
+				}
+			}
+		}
+		private static void DelayValidateFactTypeJoinPaths(FactType factType)
+		{
+			if (factType != null && !factType.IsDeleted && factType.ImpliedByObjectification == null && !(factType is SubtypeFact))
+			{
+				FrameworkDomainModel.DelayValidateElement(factType, DelayValidateAutomaticJoinPaths);
+			}
+		}
+		/// <summary>
+		/// Determine any intersection constraint that have possible join paths
+		/// and register them for validation.
+		/// </summary>
+		/// <param name="element"><see cref="FactType"/></param>
+		[DelayValidatePriority(-1)] // Do this early
+		private static void DelayValidateAutomaticJoinPaths(ModelElement element)
+		{
+			if (element.IsDeleted)
+			{
+				return;
+			}
+			foreach (RoleBase roleBase in ((FactType)element).RoleCollection)
+			{
+				Role role = roleBase as Role;
+				if (role != null)
+				{
+					foreach (ConstraintRoleSequence roleSequence in role.ConstraintRoleSequenceCollection)
+					{
+						roleSequence.DelayValidateJoinPath();
+					}
+				}
+			}
+		}
+		private void DelayValidateJoinPath()
+		{
+			SetConstraint setConstraint = this as SetConstraint;
+			if (setConstraint != null)
+			{
+				switch (((IConstraint)setConstraint).ConstraintType)
+				{
+					case ConstraintType.InternalUniqueness:
+					case ConstraintType.ImpliedMandatory:
+					case ConstraintType.SimpleMandatory:
+					case ConstraintType.DisjunctiveMandatory:
+					case ConstraintType.Ring:
+						// These never have join paths, do not bother tracking them
+						return;
+				}
+			}
+			FrameworkDomainModel.DelayValidateElement(this, DelayValidateJoinPath);
+		}
+		private static void DelayValidateJoinPath(ModelElement element)
+		{
+			if (element.IsDeleted)
+			{
+				return;
+			}
+			((ConstraintRoleSequence)element).ValidateJoinPath(null, true, true);
+		}
+		/// <summary>
+		/// Verify if a join path is required or can be implicitly created.
+		/// </summary>
+		private void ValidateJoinPath(INotifyElementAdded notifyAdded, bool verifyError, bool verifyAutomaticPath)
+		{
+			bool checkBinaryOppositeRolePlayerPattern = false;
+			bool joinNotNeeded = false;
+			IConstraint constraint = Constraint;
+			// Check the constraint patterns to shortcircuit requirements
+			if (constraint != null)
+			{
+				switch (constraint.ConstraintType)
+				{
+					case ConstraintType.ImpliedMandatory:
+					case ConstraintType.SimpleMandatory:
+					case ConstraintType.DisjunctiveMandatory:
+					case ConstraintType.Ring:
+						// These types never have a join path, and this is enforced
+						// by the XML schema so they cannot be present on load.
+						return;
+					case ConstraintType.InternalUniqueness:
+						// This should not have a join path, but is not blocked by the schema.
+						if (notifyAdded != null)
+						{
+							joinNotNeeded = true;
+							break;
+						}
+						return;
+					case ConstraintType.Frequency:
+					case ConstraintType.ExternalUniqueness:
+						checkBinaryOppositeRolePlayerPattern = true;
+						break;
+				}
+			}
+			ConstraintRoleSequenceJoinPath joinPath = JoinPath;
+			JoinPathRequiredError pathRequiredError = verifyError ? JoinPathRequiredError : null;
+			if (!joinNotNeeded)
+			{
+				ReadOnlyCollection<ConstraintRoleSequenceHasRole> constraintRoles = ConstraintRoleSequenceHasRole.GetLinksToRoleCollection(this);
+				int constraintRoleCount = constraintRoles.Count;
+				joinNotNeeded = true;
+				if (constraintRoleCount > 1)
+				{
+					Role firstRole = constraintRoles[0].Role;
+					FactType firstFactType = firstRole.FactType;
+					ObjectType resolvedOppositeRolePlayer = null;
+					bool checkedFirstOppositeRolePlayer = false;
+					bool multipleCompatibleOppositeRolePlayers = false;
+					for (int i = 1; i < constraintRoleCount; ++i)
+					{
+						Role currentRole = constraintRoles[i].Role;
+						FactType currentFactType = currentRole.FactType;
+						if (currentFactType != firstFactType)
+						{
+							if (checkBinaryOppositeRolePlayerPattern)
+							{
+								Role oppositeRole;
+								ObjectType oppositeRolePlayer;
+								if (!checkedFirstOppositeRolePlayer)
+								{
+									checkedFirstOppositeRolePlayer = true;
+									oppositeRole = firstRole.OppositeRole as Role;
+									if (oppositeRole != null)
+									{
+										resolvedOppositeRolePlayer = oppositeRole.RolePlayer;
+									}
+								}
+								if (null != resolvedOppositeRolePlayer &&
+									null != (oppositeRole = currentRole.OppositeRole as Role) &&
+									null != (oppositeRolePlayer = oppositeRole.RolePlayer))
+								{
+									if (oppositeRolePlayer == resolvedOppositeRolePlayer)
+									{
+										continue;
+									}
+									// See if the types are compatible, and resolve to a single supertype
+									ObjectType[] compatibleTypes = ObjectType.GetNearestCompatibleTypes(new ObjectType[]{resolvedOppositeRolePlayer, oppositeRolePlayer});
+									while (compatibleTypes.Length > 1)
+									{
+										compatibleTypes = ObjectType.GetNearestCompatibleTypes(compatibleTypes);
+									}
+									if (compatibleTypes.Length != 0)
+									{
+										resolvedOppositeRolePlayer = compatibleTypes[0];
+										multipleCompatibleOppositeRolePlayers = true;
+										// Note that we'll create an automatic join path for this case,
+										// but we leave joinNotNeeded as true to distinguish a subsequent
+										// break from the pattern.
+										continue;
+									}
+								}
+							}
+							joinNotNeeded = false;
+							break;
+						}
+					}
+					if (joinNotNeeded)
+					{
+						if (multipleCompatibleOppositeRolePlayers)
+						{
+							// Build and/or verify an automatic join path centered
+							// on resolved object type.
+							joinNotNeeded = false;
+							if (verifyAutomaticPath)
+							{
+								if (joinPath != null)
+								{
+									if (joinPath.IsAutomatic)
+									{
+										VerifyAutomaticJoinPath(joinPath, resolvedOppositeRolePlayer, constraintRoles, notifyAdded);
+									}
+								}
+								else
+								{
+									joinPath = new ConstraintRoleSequenceJoinPath(
+										Store,
+										new PropertyAssignment(ConstraintRoleSequenceJoinPath.IsAutomaticDomainPropertyId, true));
+									joinPath.RoleSequence = this;
+									if (notifyAdded != null)
+									{
+										notifyAdded.ElementAdded(joinPath, true);
+									}
+									VerifyAutomaticJoinPath(joinPath, resolvedOppositeRolePlayer, constraintRoles, notifyAdded);
+								}
+							}
+						}
+					}
+					else if (verifyAutomaticPath && (joinPath == null || joinPath.IsAutomatic))
+					{
+						joinPath = VerifyAutomaticJoinPath(joinPath, constraintRoles, notifyAdded);
+					}
+				}
+			}
+			if (joinNotNeeded)
+			{
+				if (joinPath != null)
+				{
+					joinPath.Delete();
+				}
+				if (verifyError && pathRequiredError != null)
+				{
+					pathRequiredError.Delete();
+				}
+			}
+			else if (verifyError)
+			{
+				if (joinPath != null)
+				{
+					if (pathRequiredError != null)
+					{
+						pathRequiredError.Delete();
+					}
+				}
+				else if (pathRequiredError == null)
+				{
+					ORMModel model;
+					if (null != constraint &&
+						null != (model = constraint.Model))
+					{
+						pathRequiredError = new JoinPathRequiredError(Store);
+						pathRequiredError.RoleSequence = this;
+						pathRequiredError.Model = model;
+						pathRequiredError.GenerateErrorText();
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(pathRequiredError, true);
+						}
+					}
+				}
+				else if (notifyAdded == null && constraint != null && constraint.ConstraintStorageStyle == ConstraintStorageStyle.SetComparisonConstraint) // All error text is regenerated on load, set comparison sequence number may have changed
+				{
+					pathRequiredError.GenerateErrorText();
+				}
+			}
+		}
+		/// <summary>
+		/// Preliminary data for populating an automatic role path without
+		/// populating the actual model.
+		/// </summary>
+		private struct AutomaticJoinPathData
+		{
+			public ConstraintRoleSequenceHasRole ProjectedOnConstraintRole;
+			public Role Role;
+			public PathedRolePurpose Purpose;
+			public AutomaticJoinPathData(ConstraintRoleSequenceHasRole constraintRole, Role role, PathedRolePurpose purpose)
+			{
+				ProjectedOnConstraintRole = constraintRole;
+				Role = role;
+				Purpose = purpose;
+			}
+		}
+		/// <summary>
+		/// Helper method for ValidateJoinPath.
+		/// If possible, use the existing model automatically choose fact types to create a
+		/// join path based on a sequence of constraint roles.
+		/// </summary>
+		/// <param name="existingJoinPath">An existing automatic join path to verify.</param>
+		/// <param name="constraintRoles">The constraint roles to bind to.</param>
+		/// <param name="notifyAdded">Initial load notification callback.</param>
+		private ConstraintRoleSequenceJoinPath VerifyAutomaticJoinPath(ConstraintRoleSequenceJoinPath existingJoinPath, ReadOnlyCollection<ConstraintRoleSequenceHasRole> constraintRoles, INotifyElementAdded notifyAdded)
+		{
+			// Get current information
+			int constraintRoleCount = constraintRoles.Count;
+			ConstraintRoleSequenceHasRole constraintRole = constraintRoles[0];
+			Role previousRole = constraintRole.Role;
+			if (previousRole.RolePlayer == null)
+			{
+				if (existingJoinPath != null)
+				{
+					existingJoinPath.Delete();
+				}
+				return null;
+			}
+			List<AutomaticJoinPathData> pathData = new List<AutomaticJoinPathData>(3 * constraintRoleCount); // Plenty of space
+			FactType previousFactType = previousRole.FactType;
+			LinkedElementCollection<RoleBase> previousFactTypeRoles = null;
+			int previousFactTypeRoleCount = 0;
+			int? previousFactTypeUnaryRoleIndex = null;
+			pathData.Add(new AutomaticJoinPathData(constraintRole, previousRole, PathedRolePurpose.StartRole));
+			int lastFactTypeEntryIndex = 0;
+			bool incompleteOrAmbiguousPath = false;
+			for (int i = 1; i < constraintRoleCount; ++i)
+			{
+				constraintRole = constraintRoles[i];
+				Role currentRole = constraintRole.Role;
+				FactType currentFactType = currentRole.FactType;
+				if (currentFactType == previousFactType)
+				{
+					if (currentRole.RolePlayer == null)
+					{
+						incompleteOrAmbiguousPath = true;
+						break;
+					}
+					pathData.Add(new AutomaticJoinPathData(constraintRole, currentRole, PathedRolePurpose.SameFactType));
+					previousRole = currentRole;
+				}
+				else
+				{
+					LinkedElementCollection<RoleBase> currentFactTypeRoles = null;
+					int currentFactTypeRoleCount = 0;
+					int? currentFactTypeUnaryRoleIndex = null;
+
+					// Peek ahead to see the pattern (one or many constrained roles) for the next fact type
+					int constrainedRoleCountInCurrentFactType = 1;
+					for (int j = i + 1; j < constraintRoleCount; ++j)
+					{
+						if (currentFactType != constraintRoles[j].Role.FactType)
+						{
+							break;
+						}
+						++constrainedRoleCountInCurrentFactType;
+					}
+					int constrainedInPreviousFactTypeCount = i - lastFactTypeEntryIndex;
+					if (constrainedInPreviousFactTypeCount > 1)
+					{
+						// We've already stepped at least one role within this fact type.
+						// The preferred approach is to join through the role player of
+						// the last step. See if we can find exactly one fact type that
+						// will get us there.
+						ObjectType previousRolePlayer = previousRole.RolePlayer;
+						if (previousRolePlayer == null)
+						{
+							incompleteOrAmbiguousPath = true;
+							break;
+						}
+						if (constrainedRoleCountInCurrentFactType > 1)
+						{
+							ObjectType currentRolePlayer = currentRole.RolePlayer;
+							if (currentRolePlayer == null)
+							{
+								incompleteOrAmbiguousPath = true;
+								break;
+							}
+							if (currentRolePlayer == previousRolePlayer)
+							{
+								// Shared role player from a SameFactTypeRole to a target. Note that a projection from a
+								// PostInnerJoin will back up later to project from the start or entry role this is joined to.
+								pathData.Add(new AutomaticJoinPathData(constraintRole, currentRole, PathedRolePurpose.PostInnerJoin));
+								previousFactType = currentFactType;
+								previousFactTypeRoles = null; // Also invalidates unary and count fields
+								previousRole = currentRole;
+								lastFactTypeEntryIndex = i;
+								continue;
+							}
+						}
+						// Match unconstrained roles in the target fact type to the current object type
+						Role matchedRole = null;
+						if (currentFactTypeRoles == null)
+						{
+							currentFactTypeRoles = currentFactType.RoleCollection;
+							currentFactTypeRoleCount = currentFactTypeRoles.Count;
+							currentFactTypeUnaryRoleIndex = FactType.GetUnaryRoleIndex(currentFactTypeRoles);
+						}
+						for (int currentFactTypeRoleIndex = 0; currentFactTypeRoleIndex < currentFactTypeRoleCount; ++currentFactTypeRoleIndex)
+						{
+							Role testRole;
+							if (currentFactTypeUnaryRoleIndex.HasValue)
+							{
+								if (currentFactTypeRoleIndex != currentFactTypeUnaryRoleIndex.Value)
+								{
+									continue;
+								}
+								// Use the unary role to proceed, even though it is constrained. Join directly off it.
+								testRole = currentFactTypeRoles[currentFactTypeRoleIndex].Role;
+							}
+							else
+							{
+								// Look for an unconstrained role
+								testRole = currentFactTypeRoles[currentFactTypeRoleIndex].Role;
+								int j = 0;
+								for (; j < constrainedRoleCountInCurrentFactType; ++j)
+								{
+									if (constraintRoles[i + j].Role == testRole)
+									{
+										break;
+									}
+								}
+								if (j != constrainedRoleCountInCurrentFactType)
+								{
+									continue;
+								}
+							}
+							ObjectType testRolePlayer = testRole.RolePlayer;
+							if (testRolePlayer == null)
+							{
+								incompleteOrAmbiguousPath = true;
+								break;
+							}
+							if (testRolePlayer == previousRolePlayer)
+							{
+								if (matchedRole == null)
+								{
+									matchedRole = testRole;
+								}
+								else
+								{
+									incompleteOrAmbiguousPath = true;
+									break;
+								}
+							}
+
+						}
+						if (incompleteOrAmbiguousPath)
+						{
+							break;
+						}
+						else if (matchedRole != null)
+						{
+							if (matchedRole == currentRole) // Unary case
+							{
+								pathData.Add(new AutomaticJoinPathData(constraintRole, currentRole, PathedRolePurpose.PostInnerJoin));
+							}
+							else
+							{
+								pathData.Add(new AutomaticJoinPathData(null, matchedRole, PathedRolePurpose.PostInnerJoin));
+								pathData.Add(new AutomaticJoinPathData(constraintRole, currentRole, PathedRolePurpose.SameFactType));
+							}
+							previousFactType = currentFactType;
+							previousFactTypeRoles = currentFactTypeRoles;
+							previousFactTypeRoleCount = currentFactTypeRoleCount;
+							previousFactTypeUnaryRoleIndex = currentFactTypeUnaryRoleIndex;
+							previousRole = currentRole;
+							lastFactTypeEntryIndex = i;
+							continue;
+						}
+					}
+
+					// Attempt to match the role player for an unconstrained role on the left and an unconstrained role on the right
+					Role matchedLeftRole = null;
+					Role matchedRightRole = null;
+					if (previousFactTypeRoles == null)
+					{
+						previousFactTypeRoles = previousFactType.RoleCollection;
+						previousFactTypeRoleCount = previousFactTypeRoles.Count;
+						previousFactTypeUnaryRoleIndex = FactType.GetUnaryRoleIndex(previousFactTypeRoles);
+					}
+					for (int leftRoleIndex = 0; leftRoleIndex < previousFactTypeRoleCount; ++leftRoleIndex)
+					{
+						Role testLeftRole;
+						if (previousFactTypeUnaryRoleIndex.HasValue)
+						{
+							if (leftRoleIndex != previousFactTypeUnaryRoleIndex.Value)
+							{
+								continue;
+							}
+							// Use the unary role to proceed, even though it is constrained. Join directly off it.
+							testLeftRole = previousFactTypeRoles[leftRoleIndex].Role;
+						}
+						else
+						{
+							// Test an unconstrained role
+							testLeftRole = previousFactTypeRoles[leftRoleIndex].Role;
+							int j = 0;
+							for (; j < constrainedInPreviousFactTypeCount; ++j)
+							{
+								if (constraintRoles[lastFactTypeEntryIndex + j].Role == testLeftRole)
+								{
+									break;
+								}
+							}
+							if (j != constrainedInPreviousFactTypeCount)
+							{
+								continue;
+							}
+						}
+						ObjectType testLeftRolePlayer = testLeftRole.RolePlayer;
+						if (testLeftRolePlayer == null)
+						{
+							incompleteOrAmbiguousPath = true;
+							break;
+						}
+						if (currentFactTypeRoles == null)
+						{
+							currentFactTypeRoles = currentFactType.RoleCollection;
+							currentFactTypeRoleCount = currentFactTypeRoles.Count;
+							currentFactTypeUnaryRoleIndex = FactType.GetUnaryRoleIndex(currentFactTypeRoles);
+						}
+						for (int rightRoleIndex = 0; rightRoleIndex < currentFactTypeRoleCount; ++rightRoleIndex)
+						{
+							Role testRightRole;
+							if (currentFactTypeUnaryRoleIndex.HasValue)
+							{
+								if (currentFactTypeUnaryRoleIndex.Value != rightRoleIndex)
+								{
+									continue;
+								}
+								testRightRole = currentFactTypeRoles[rightRoleIndex].Role;
+							}
+							else
+							{
+								testRightRole = currentFactTypeRoles[rightRoleIndex].Role;
+								int j = 0;
+								for (; j < constrainedRoleCountInCurrentFactType; ++j)
+								{
+									if (constraintRoles[i + j].Role == testRightRole)
+									{
+										break;
+									}
+								}
+								if (j != constrainedRoleCountInCurrentFactType)
+								{
+									continue;
+								}
+							}
+							ObjectType testRightRolePlayer = testRightRole.RolePlayer;
+							if (testRightRolePlayer == null)
+							{
+								incompleteOrAmbiguousPath = true;
+								break;
+							}
+							if (testRightRolePlayer == testLeftRolePlayer)
+							{
+								if (matchedLeftRole == null)
+								{
+									matchedLeftRole = testLeftRole;
+									matchedRightRole = testRightRole;
+								}
+								else
+								{
+									incompleteOrAmbiguousPath = true;
+									break;
+								}
+							}
+						}
+						if (incompleteOrAmbiguousPath)
+						{
+							break;
+						}
+					}
+					if (matchedLeftRole == null)
+					{
+						incompleteOrAmbiguousPath = true;
+					}
+					if (incompleteOrAmbiguousPath)
+					{
+						break;
+					}
+					if (!previousFactTypeUnaryRoleIndex.HasValue)
+					{
+						pathData.Add(new AutomaticJoinPathData(null, matchedLeftRole, PathedRolePurpose.SameFactType));
+					}
+					if (matchedRightRole == currentRole)
+					{
+						pathData.Add(new AutomaticJoinPathData(constraintRole, currentRole, PathedRolePurpose.PostInnerJoin));
+					}
+					else
+					{
+						pathData.Add(new AutomaticJoinPathData(null, matchedRightRole, PathedRolePurpose.PostInnerJoin));
+						pathData.Add(new AutomaticJoinPathData(constraintRole, currentRole, PathedRolePurpose.SameFactType));
+					}
+					previousFactType = currentFactType;
+					previousFactTypeRoles = currentFactTypeRoles;
+					previousFactTypeRoleCount = currentFactTypeRoleCount;
+					previousFactTypeUnaryRoleIndex = currentFactTypeUnaryRoleIndex;
+					previousRole = currentRole;
+					lastFactTypeEntryIndex = i;
+				}
+			}
+			if (incompleteOrAmbiguousPath)
+			{
+				if (existingJoinPath != null)
+				{
+					existingJoinPath.Delete();
+				}
+				return null;
+			}
+
+			// Fix up the permanent model based on the calculated path
+			ConstraintRoleSequenceJoinPath retVal = existingJoinPath;
+			LeadRolePath leadRolePath = null;
+			ObjectType rootObjectType = constraintRoles[0].Role.RolePlayer;
+			ReadOnlyCollection<PathedRole> pathedRoles = null;
+			int pathedRoleCount = 0;
+			Store store = Store;
+			if (retVal != null)
+			{
+				// The only thing we want in the join path is a lead path with the initial
+				// object type as the root. This is a straight join path: there are no splits
+				// or conditions.
+				RolePathComponent pathComponent = retVal.PathComponent;
+				if (pathComponent != null)
+				{
+					leadRolePath = pathComponent as LeadRolePath;
+					if (leadRolePath == null)
+					{
+						pathComponent.Delete();
+					}
+					else
+					{
+						LeadRolePathHasRootObjectType rootLink = LeadRolePathHasRootObjectType.GetLinkToRootObjectType(leadRolePath);
+						if (rootLink == null)
+						{
+							rootLink = new LeadRolePathHasRootObjectType(leadRolePath, rootObjectType);
+							if (notifyAdded != null)
+							{
+								notifyAdded.ElementAdded(rootLink, false);
+							}
+						}
+						else if (rootLink.RootObjectType != rootObjectType)
+						{
+							rootLink.RootObjectType = rootObjectType;
+						}
+						leadRolePath.SplitPathCollection.Clear();
+						leadRolePath.SplitCombinationOperator = LogicalCombinationOperator.And;
+						leadRolePath.SplitIsNegated = false;
+						pathedRoles = leadRolePath.PathedRoleCollection;
+						pathedRoleCount = pathedRoles.Count;
+					}
+				}
+				retVal.CalculatedValueCollection.Clear();
+			}
+			else
+			{
+				retVal = new ConstraintRoleSequenceJoinPath(
+					store,
+					new PropertyAssignment(ConstraintRoleSequenceJoinPath.IsAutomaticDomainPropertyId, true));
+				retVal.RoleSequence = this;
+				if (notifyAdded != null)
+				{
+					notifyAdded.ElementAdded(retVal, true);
+				}
+			}
+			if (leadRolePath == null)
+			{
+				leadRolePath = new LeadRolePath(store);
+				retVal.PathComponent = leadRolePath;
+				leadRolePath.RootObjectType = rootObjectType;
+				if (notifyAdded != null)
+				{
+					notifyAdded.ElementAdded(leadRolePath, true);
+				}
+			}
+			int stepCount = pathData.Count;
+			PathedRole lastBindablePathedRole = null;
+			for (int i = 0; i < stepCount; ++i)
+			{
+				AutomaticJoinPathData stepData = pathData[i];
+				PathedRolePurpose stepPurpose = stepData.Purpose;
+				Role stepRole = stepData.Role;
+				PathedRole pathedRole = null;
+				if (i < pathedRoleCount)
+				{
+					PathedRole existingPathedRole = pathedRoles[i];
+					if (existingPathedRole.Role == stepRole)
+					{
+						PathedRolePurpose existingPurpose = existingPathedRole.PathedRolePurpose;
+						switch (existingPurpose)
+						{
+							case PathedRolePurpose.StartRole:
+							case PathedRolePurpose.SameFactType:
+							case PathedRolePurpose.PostInnerJoin:
+								if (existingPurpose == stepPurpose)
+								{
+									pathedRole = existingPathedRole;
+									pathedRole.IsNegated = false;
+								}
+								break;
+							case PathedRolePurpose.PostOuterJoin:
+								if (stepPurpose == PathedRolePurpose.PostInnerJoin)
+								{
+									// Just switch an inner to an outer. Note that stepPurpose will never ask for an outer join.
+									pathedRole = existingPathedRole;
+									pathedRole.PathedRolePurpose = PathedRolePurpose.PostInnerJoin;
+									pathedRole.IsNegated = false;
+								}
+								break;
+						}
+					}
+					if (pathedRole == null)
+					{
+						for (int j = pathedRoleCount - 1; j >= i; --j)
+						{
+							pathedRoles[j].Delete();
+						}
+						pathedRoleCount = i;
+					}
+				}
+				if (pathedRole == null)
+				{
+					pathedRole = stepPurpose == PathedRolePurpose.SameFactType ?
+						new PathedRole(leadRolePath, stepRole) :
+						new PathedRole(
+							store,
+							new RoleAssignment[]{
+								new RoleAssignment(PathedRole.RolePathDomainRoleId, leadRolePath),
+								new RoleAssignment(PathedRole.RoleDomainRoleId, stepRole)},
+							new PropertyAssignment[]{
+								new PropertyAssignment(PathedRole.PathedRolePurposeDomainPropertyId, stepPurpose)});
+					if (notifyAdded != null)
+					{
+						notifyAdded.ElementAdded(pathedRole, false);
+					}
+				}
+				switch (stepPurpose)
+				{
+					case PathedRolePurpose.StartRole:
+					case PathedRolePurpose.SameFactType:
+						lastBindablePathedRole = pathedRole;
+						break;
+				}
+				// UNDONE: For a unary role in the path, we need a 'when true' condition on the opposite
+				// implied unary role.
+				ConstraintRoleSequenceHasRole projectOnConstraintRole = stepData.ProjectedOnConstraintRole;
+				if (projectOnConstraintRole != null)
+				{
+					ConstraintRoleProjectedFromPathedRole projectionLink = ConstraintRoleProjectedFromPathedRole.GetLinkToProjectedFromPathedRole(projectOnConstraintRole);
+					if (projectionLink == null)
+					{
+						projectionLink = new ConstraintRoleProjectedFromPathedRole(projectOnConstraintRole, lastBindablePathedRole);
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(projectionLink);
+							// Rules aren't turned on, so the other projection options won't clear automatically
+							projectOnConstraintRole.ProjectedFromCalculatedValue = null;
+							projectOnConstraintRole.ProjectedFromConstant = null;
+						}
+					}
+					else if (projectionLink.Source != lastBindablePathedRole)
+					{
+						projectionLink.Source = lastBindablePathedRole;
+					}
+				}
+			}
+			for (int i = pathedRoleCount - 1; i >= stepCount; --i)
+			{
+				pathedRoles[i].Delete();
+			}
+			return retVal;
+		}
+		/// <summary>
+		/// Helper method for ValidateJoinPath.
+		/// Verify that a join path based on a single shared role player
+		/// has the correct structure.
+		/// </summary>
+		/// <param name="joinPath">An automatic <see cref="ConstraintRoleSequenceJoinPath"/></param>
+		/// <param name="resolvedObjectType">The shared object type, already established as the role player
+		/// or a supertype of the role player for all roles opposite the far roles.</param>
+		/// <param name="constraintRoles">The constraint roles to bind to.</param>
+		/// <param name="notifyAdded">Initial load notification callback.</param>
+		private static void VerifyAutomaticJoinPath(ConstraintRoleSequenceJoinPath joinPath, ObjectType resolvedObjectType, ReadOnlyCollection<ConstraintRoleSequenceHasRole> constraintRoles, INotifyElementAdded notifyAdded)
+		{
+			// The only thing we want in the join path is a lead path with the resolved object type as the root
+			// and an 'and' tail split.
+			Store store = joinPath.Store;
+			LeadRolePath leadRolePath = null;
+			RolePathComponent pathComponent = joinPath.PathComponent;
+			if (pathComponent != null)
+			{
+				leadRolePath = pathComponent as LeadRolePath;
+				if (leadRolePath == null)
+				{
+					pathComponent.Delete();
+				}
+			}
+			joinPath.CalculatedValueCollection.Clear();
+			LinkedElementCollection<RoleSubPath> subPaths;
+			if (leadRolePath == null)
+			{
+				leadRolePath = new LeadRolePath(store);
+				leadRolePath.ParentOwner = joinPath;
+				leadRolePath.RootObjectType = resolvedObjectType;
+				if (notifyAdded != null)
+				{
+					notifyAdded.ElementAdded(leadRolePath, true);
+				}
+				subPaths = leadRolePath.SplitPathCollection;
+			}
+			else
+			{
+				LinkedElementCollection<Role> leadRoles = leadRolePath.RoleCollection;
+				subPaths = leadRolePath.SplitPathCollection;
+				if (leadRoles.Count != 0)
+				{
+					// Wrong pattern, clear all
+					leadRoles.Clear();
+					subPaths.Clear();
+				}
+				leadRolePath.SplitCombinationOperator = LogicalCombinationOperator.And;
+				leadRolePath.SplitIsNegated = false;
+			}
+			// We need one subpath per role with an entry on the near role and the far
+			// role projected on the constraint role.
+			int roleCount = constraintRoles.Count;
+			int subPathCount = subPaths.Count;
+			int firstUnverifiedSubpathIndex = 0;
+			for (int i = 0; i < roleCount; ++i)
+			{
+				ConstraintRoleSequenceHasRole roleLink = constraintRoles[i];
+				Role farRole = roleLink.Role;
+				Role nearRole = (Role)farRole.OppositeRole;
+				if (firstUnverifiedSubpathIndex < subPathCount)
+				{
+					// See if we can find an existing subpath that begins with the correct role
+					int j = firstUnverifiedSubpathIndex;
+					for (; j < subPathCount; ++j)
+					{
+						RoleSubPath matchSubPath = subPaths[j];
+						LinkedElementCollection<Role> testRoles = matchSubPath.RoleCollection;
+						int testRoleCount = testRoles.Count;
+						if (testRoleCount != 0)
+						{
+							if (testRoles[0] == nearRole)
+							{
+								// Use this subpath, fixup and position correctly
+								if (j > firstUnverifiedSubpathIndex)
+								{
+									subPaths.Move(j, firstUnverifiedSubpathIndex);
+								}
+								++firstUnverifiedSubpathIndex;
+								PathedRole farPathedRole;
+								if (testRoleCount == 1)
+								{
+									farPathedRole = new PathedRole(matchSubPath, farRole);
+									if (notifyAdded != null)
+									{
+										notifyAdded.ElementAdded(farPathedRole, false);
+									}
+								}
+								else if (!(farRole == testRoles[1] &&
+									(farPathedRole = matchSubPath.PathedRoleCollection[1]).PathedRolePurpose == PathedRolePurpose.SameFactType))
+								{
+									for (int k = testRoleCount; k >= 1; --k)
+									{
+										testRoles.RemoveAt(k);
+									}
+									farPathedRole = new PathedRole(matchSubPath, farRole);
+									if (notifyAdded != null)
+									{
+										notifyAdded.ElementAdded(farPathedRole, false);
+									}
+								}
+								ConstraintRoleProjectedFromPathedRole projectionLink = ConstraintRoleProjectedFromPathedRole.GetLinkToProjectedFromPathedRole(roleLink);
+								if (projectionLink == null)
+								{
+									projectionLink = new ConstraintRoleProjectedFromPathedRole(roleLink, farPathedRole);
+									if (notifyAdded != null)
+									{
+										notifyAdded.ElementAdded(projectionLink);
+										// Rules aren't necessarily turned on, so the other projection options won't clear automatically
+										roleLink.ProjectedFromCalculatedValue = null;
+										roleLink.ProjectedFromConstant = null;
+									}
+								}
+								else if (projectionLink.Source != farPathedRole)
+								{
+									projectionLink.Source = farPathedRole;
+								}
+								matchSubPath.SplitPathCollection.Clear();
+								break;
+							}
+						}
+					}
+					if (j < firstUnverifiedSubpathIndex)
+					{
+						continue;
+					}
+				}
+				RoleSubPath subPath = new RoleSubPath(store);
+				if (firstUnverifiedSubpathIndex < subPathCount)
+				{
+					subPaths.Insert(i, subPath);
+				}
+				else
+				{
+					subPaths.Add(subPath);
+				}
+				++firstUnverifiedSubpathIndex;
+				++subPathCount;
+				new PathedRole(
+					store,
+					new RoleAssignment[]{
+						new RoleAssignment(PathedRole.RolePathDomainRoleId, subPath),
+						new RoleAssignment(PathedRole.RoleDomainRoleId, nearRole)},
+					new PropertyAssignment[]{
+						new PropertyAssignment(PathedRole.PathedRolePurposeDomainPropertyId, PathedRolePurpose.StartRole)});
+				roleLink.ProjectedFromPathedRole = new PathedRole(subPath, farRole);
+				if (notifyAdded != null)
+				{
+					notifyAdded.ElementAdded(subPath, true);
+				}
+			}
+
+			// Clean up any unused subpaths
+			for (int i = subPathCount - 1; i >= firstUnverifiedSubpathIndex; --i)
+			{
+				subPaths[i].Delete();
+			}
+		}
+		#endregion // JoinPath Validation
 		#region ConstraintRoleSequence Specific
 		/// <summary>
 		/// Get the constraint that owns this role sequence
@@ -4095,8 +5233,63 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get;
 		}
 		#endregion // ConstraintRoleSequence Specific
+		#region IModelErrorOwner Implementation
+		/// <summary>
+		/// Returns the error associated with the constraint.
+		/// </summary>
+		protected new IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
+		{
+			if (filter == 0)
+			{
+				filter = (ModelErrorUses)(-1);
+			}
+			// UNDONE: This should eventually be ModelErrorUses.BlockVerbalization, but we
+			// need verbalization with the join path before we refuse to verbalize at all.
+			if (0 != (filter & (ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary)))
+			{
+				JoinPathRequiredError joinPathRequiredError = JoinPathRequiredError;
+				if (joinPathRequiredError != null)
+				{
+					yield return joinPathRequiredError;
+				}
+			}
+			// Get errors off the base
+			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
+			{
+				yield return baseError;
+			}
+		}
+
+		IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)
+		{
+			return GetErrorCollection(filter);
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.ValidateErrors
+		/// </summary>
+		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			// Calls added here need corresponding delayed calls in DelayValidateErrors
+			ValidateJoinPath(notifyAdded, true, false);
+		}
+		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			ValidateErrors(notifyAdded);
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.DelayValidateErrors
+		/// </summary>
+		protected new void DelayValidateErrors()
+		{
+			FrameworkDomainModel.DelayValidateElement(this, DelayValidateJoinPath);
+		}
+		void IModelErrorOwner.DelayValidateErrors()
+		{
+			DelayValidateErrors();
+		}
+		#endregion // IModelErrorOwner Implementation
 	}
-	public partial class SetComparisonConstraintRoleSequence
+	public partial class SetComparisonConstraintRoleSequence : IHasIndirectModelErrorOwner
 	{
 		#region ConstraintRoleSequence overrides
 		/// <summary>
@@ -4120,6 +5313,27 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ValidateConstraintPatternError(constraint, notifyAdded);
 		}
 		#endregion // Error validation
+		#region IHasIndirectModelErrorOwner Implementation
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
+		/// <summary>
+		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		/// </summary>
+		protected Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		{
+			// Creating a static readonly guid array is causing static field initialization
+			// ordering issues with the partial classes. Defer initialization.
+			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+			if (linkRoles == null)
+			{
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { SetComparisonConstraintHasRoleSequence.RoleSequenceDomainRoleId };
+			}
+			return linkRoles;
+		}
+		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerLinkRoles();
+		}
+		#endregion // IHasIndirectModelErrorOwner Implementation
 	}
 	public partial class SetConstraint
 	{
@@ -6766,6 +7980,58 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // Accessor Properties
 	}
 	#endregion // CompatibleRolePlayerTypeError class
+	#region JoinPathRequiredError class
+	[ModelErrorDisplayFilter(typeof(ConstraintStructureErrorCategory))]
+	public partial class JoinPathRequiredError
+	{
+		#region Base overrides
+		/// <summary>
+		/// Generate text for the error
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			ORMNamedElement namedParent;
+			ConstraintRoleSequence roleSequence = RoleSequence;
+			SetComparisonConstraintRoleSequence multiSequence;
+			int sequenceNumber = -1;
+			if (null != (multiSequence = roleSequence as SetComparisonConstraintRoleSequence))
+			{
+				SetComparisonConstraint constraint = multiSequence.ExternalConstraint;
+				namedParent = constraint;
+				if (constraint != null)
+				{
+					sequenceNumber = constraint.RoleSequenceCollection.IndexOf(multiSequence);
+				}
+			}
+			else
+			{
+				namedParent = roleSequence;
+			}
+			string parentName = (namedParent != null) ? namedParent.Name : "";
+			ORMModel model = Model;
+			string modelName = (model != null) ? model.Name : "";
+			string currentText = ErrorText;
+			string newText = sequenceNumber != -1 ?
+				string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorSetComparisonConstraintJoinPathRequiredError, parentName, modelName, (sequenceNumber + 1).ToString(CultureInfo.InvariantCulture)) :
+				string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorSetConstraintJoinPathRequiredError, parentName, modelName);
+			if (currentText != newText)
+			{
+				ErrorText = newText;
+			}
+		}
+		/// <summary>
+		/// Regenerate the error text when the constraint name changes
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange;
+			}
+		}
+		#endregion // Base overrides
+	}
+	#endregion // JoinPathRequiredError class
 	#region FrequencyConstraintMinMaxError class
 	[ModelErrorDisplayFilter(typeof(ConstraintStructureErrorCategory))]
 	public partial class FrequencyConstraintMinMaxError

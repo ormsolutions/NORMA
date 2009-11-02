@@ -715,7 +715,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					null == (superType = superTypeMetaRole.RolePlayer) ||
 					null == (subType = subTypeMetaRole.RolePlayer) ||
 					// They must both be value types or object types, but can't switch
-					((valueTypeSubtype = (superType.DataType == null)) != (subType.DataType == null)))
+					((valueTypeSubtype = (superType.DataType != null)) == (subType.DataType == null)))
 				{
 					RemoveFactType(element);
 				}

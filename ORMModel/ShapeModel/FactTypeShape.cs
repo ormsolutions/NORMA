@@ -3,7 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © ORM Solutions, LLC. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -1625,7 +1625,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// <param name="parentShape">ConstraintShapeField to draw to.</param>
 			public sealed override void DoPaint(DiagramPaintEventArgs e, ShapeElement parentShape)
 			{
-				FactTypeShape factShape = parentShape as FactTypeShape;
+				if (null == Utility.ValidateStore(parentShape.Store))
+				{
+					return;
+				}
+				FactTypeShape factShape = (FactTypeShape)parentShape;
 				DisplayOrientation orientation = factShape.DisplayOrientation;
 				bool isVertical = IsVertical;
 				if ((orientation == DisplayOrientation.Horizontal) ^ !isVertical)
@@ -2334,7 +2338,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// <param name="parentShape">FactTypeShape to draw to.</param>
 			public sealed override void DoPaint(DiagramPaintEventArgs e, ShapeElement parentShape)
 			{
-				FactTypeShape parentFactShape = parentShape as FactTypeShape;
+				if (null == Utility.ValidateStore(parentShape.Store))
+				{
+					return;
+				}
+				FactTypeShape parentFactShape = (FactTypeShape)parentShape;
 				FactType factType = parentFactShape.AssociatedFactType;
 				LinkedElementCollection<RoleBase> roles = parentFactShape.DisplayedRoleOrder;
 				int roleCount = roles.Count;

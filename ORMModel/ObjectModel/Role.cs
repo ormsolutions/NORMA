@@ -3,7 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © ORM Solutions, LLC. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -1411,7 +1411,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void FactTypeDerivationRuleDeletedRule(ElementDeletedEventArgs e)
 		{
-			FactTypeHasDerivationRule link = (FactTypeHasDerivationRule)e.ModelElement;
 			FactType factType = ((FactTypeHasDerivationRule)e.ModelElement).FactType;
 			// Calculated values and pathed roles will be deleted with the derivation path,
 			// but constants are aggregated with the role and will not be cleared with delete

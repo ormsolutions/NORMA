@@ -180,11 +180,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 				/// <summary>
 				/// Turn off the line display in the tree control
 				/// </summary>
-				/// <param name="treeControl"></param>
-				protected override void SetTreeControlDisplayOptions(VirtualTreeControl treeControl)
+				protected override Control SetTreeControlDisplayOptions(VirtualTreeControl treeControl)
 				{
 					treeControl.HasLines = false;
 					treeControl.HasRootButtons = false;
+					return null;
 				}
 				/// <summary>
 				/// Our state is checkbox based, not selection based

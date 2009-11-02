@@ -8078,20 +8078,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
-		#region JoinCollection opposite domain role accessor
-		/// <summary>
-		/// Gets a list of JoinCollection.
-		/// Description for ORMSolutions.ORMArchitect.Core.ObjectModel.JoinHasRole.Role
-		/// </summary>
-		public virtual DslModeling::ReadOnlyLinkedElementCollection<Join> JoinCollection
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return new DslModeling::ReadOnlyLinkedElementCollection<Join>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.JoinHasRole.RoleDomainRoleId);
-			}
-		}
-		#endregion
 		#region RolePathCollection opposite domain role accessor
 		/// <summary>
 		/// Gets a list of RolePathCollection.
@@ -8121,19 +8107,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::ModelElement existingSource;
-				if (null != value &&
-					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathedRole.SourceDomainRoleId)))
-				{
-					if (existingSource != value)
-					{
-						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathedRole.SourceDomainRoleId, this);
-					}
-				}
-				else
-				{
-					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathedRole.RoleDomainRoleId, value);
-				}
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathedRole.RoleDomainRoleId, value);
 			}
 		}
 		#endregion
@@ -8152,19 +8126,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::ModelElement existingSource;
-				if (null != value &&
-					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromCalculatedPathValue.SourceDomainRoleId)))
-				{
-					if (existingSource != value)
-					{
-						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromCalculatedPathValue.SourceDomainRoleId, this);
-					}
-				}
-				else
-				{
-					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromCalculatedPathValue.RoleDomainRoleId, value);
-				}
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromCalculatedPathValue.RoleDomainRoleId, value);
 			}
 		}
 		#endregion
@@ -11387,200 +11349,67 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
+		#region JoinPathRequiredError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets JoinPathRequiredError.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasJoinPathRequiredError.RoleSequence
+		/// </summary>
+		public virtual JoinPathRequiredError JoinPathRequiredError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasJoinPathRequiredError.RoleSequenceDomainRoleId) as JoinPathRequiredError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasJoinPathRequiredError.JoinPathRequiredErrorDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasJoinPathRequiredError.JoinPathRequiredErrorDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasJoinPathRequiredError.RoleSequenceDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
 		#region JoinPath opposite domain role accessor
 		/// <summary>
-		/// Gets a list of JoinPath.
+		/// Gets or sets JoinPath.
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasJoinPath.JoinPathOwner
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasJoinPath.RoleSequence
 		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<Join> JoinPath
+		public virtual ConstraintRoleSequenceJoinPath JoinPath
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::LinkedElementCollection<Join>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasJoinPath.JoinPathOwnerDomainRoleId);
-			}
-		}
-		#endregion
-	}
-}
-namespace ORMSolutions.ORMArchitect.Core.ObjectModel
-{
-	/// <summary>
-	/// DomainClass Join
-	/// </summary>
-	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider<Join, Design.JoinTypeDescriptor<Join>>))]
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.Join.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.Join.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainObjectId("efde476d-c440-4524-97da-42697fa92ce9")]
-	public partial class Join : ORMModelElement
-	{
-		#region Constructors, domain class Id
-	
-		/// <summary>
-		/// Join domain class Id.
-		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xefde476d, 0xc440, 0x4524, 0x97, 0xda, 0x42, 0x69, 0x7f, 0xa9, 0x2c, 0xe9);
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new element is to be created.</param>
-		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public Join(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
-			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new element is to be created.</param>
-		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public Join(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(partition, propertyAssignments)
-		{
-		}
-		#endregion
-		#region JoinType domain property code
-		
-		/// <summary>
-		/// JoinType domain property Id.
-		/// </summary>
-		public static readonly global::System.Guid JoinTypeDomainPropertyId = new global::System.Guid(0x59049038, 0xa13e, 0x4ad1, 0xa8, 0x6b, 0x8e, 0xc3, 0x49, 0x3d, 0xfd, 0xc9);
-		
-		/// <summary>
-		/// Storage for JoinType
-		/// </summary>
-		private JoinType joinTypePropertyStorage = ORMSolutions.ORMArchitect.Core.ObjectModel.JoinType.Inner;
-		
-		/// <summary>
-		/// Gets or sets the value of JoinType domain property.
-		/// Is this an inner or an outer Join?
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.Join/JoinType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.Join/JoinType.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.Core.ObjectModel.JoinType.Inner)]
-		[DslModeling::DomainObjectId("59049038-a13e-4ad1-a86b-8ec3493dfdc9")]
-		public JoinType JoinType
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return joinTypePropertyStorage;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasJoinPath.RoleSequenceDomainRoleId) as ConstraintRoleSequenceJoinPath;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				JoinTypePropertyHandler.Instance.SetValue(this, value);
-			}
-		}
-		/// <summary>
-		/// Value handler for the Join.JoinType domain property.
-		/// </summary>
-		internal sealed partial class JoinTypePropertyHandler : DslModeling::DomainPropertyValueHandler<Join, JoinType>
-		{
-			private JoinTypePropertyHandler() { }
-		
-			/// <summary>
-			/// Gets the singleton instance of the Join.JoinType domain property value handler.
-			/// </summary>
-			public static readonly JoinTypePropertyHandler Instance = new JoinTypePropertyHandler();
-		
-			/// <summary>
-			/// Gets the Id of the Join.JoinType domain property.
-			/// </summary>
-			public sealed override global::System.Guid DomainPropertyId
-			{
-				[global::System.Diagnostics.DebuggerStepThrough]
-				get
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasJoinPath.JoinPathDomainRoleId)))
 				{
-					return JoinTypeDomainPropertyId;
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasJoinPath.JoinPathDomainRoleId, this);
+					}
 				}
-			}
-			
-			/// <summary>
-			/// Gets a strongly-typed value of the property on specified element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <returns>Property value.</returns>
-			public override sealed JoinType GetValue(Join element)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.joinTypePropertyStorage;
-			}
-		
-			/// <summary>
-			/// Sets property value on an element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(Join element, JoinType newValue)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-		
-				JoinType oldValue = GetValue(element);
-				if (newValue != oldValue)
+				else
 				{
-					ValueChanging(element, oldValue, newValue);
-					element.joinTypePropertyStorage = newValue;
-					ValueChanged(element, oldValue, newValue);
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasJoinPath.RoleSequenceDomainRoleId, value);
 				}
-			}
-		}
-		
-		#endregion
-		#region InputRole opposite domain role accessor
-		/// <summary>
-		/// Gets or sets InputRole.
-		/// Description for ORMSolutions.ORMArchitect.Core.ObjectModel.JoinHasInputRole.Join
-		/// </summary>
-		public virtual Role InputRole
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.JoinHasInputRole.JoinDomainRoleId) as Role;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.JoinHasInputRole.JoinDomainRoleId, value);
-			}
-		}
-		#endregion
-		#region OutputRole opposite domain role accessor
-		/// <summary>
-		/// Gets or sets OutputRole.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.JoinHasOutputRole.Join
-		/// </summary>
-		public virtual Role OutputRole
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.JoinHasOutputRole.JoinDomainRoleId) as Role;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.JoinHasOutputRole.JoinDomainRoleId, value);
-			}
-		}
-		#endregion
-		#region JoinPathOwner opposite domain role accessor
-		/// <summary>
-		/// Gets or sets JoinPathOwner.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModelElementHasJoinPath.Join
-		/// </summary>
-		public virtual ORMModelElement JoinPathOwner
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModelElementHasJoinPath.JoinDomainRoleId) as ORMModelElement;
 			}
 		}
 		#endregion
@@ -12381,6 +12210,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 		}
 		#endregion
+		#region ConstraintRoleProjections opposite domain role accessor
+		/// <summary>
+		/// Gets a list of ConstraintRoleProjections.
+		/// The projected constraint role associated with this calculated value.
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<ConstraintRoleSequenceHasRole> ConstraintRoleProjections
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<ConstraintRoleSequenceHasRole>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromCalculatedPathValue.SourceDomainRoleId);
+			}
+		}
+		#endregion
 		#region PathOwner opposite domain role accessor
 		/// <summary>
 		/// Gets or sets PathOwner.
@@ -12481,34 +12324,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
-		#region DerivedRole opposite domain role accessor
+		#region DerivedRoles opposite domain role accessor
 		/// <summary>
-		/// Gets or sets DerivedRole.
+		/// Gets a list of DerivedRoles.
 		/// The derived role associated with this calculated value.
 		/// </summary>
-		public virtual Role DerivedRole
+		public virtual DslModeling::LinkedElementCollection<Role> DerivedRoles
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromCalculatedPathValue.SourceDomainRoleId) as Role;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::ModelElement existingSource;
-				if (null != value &&
-					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromCalculatedPathValue.RoleDomainRoleId)))
-				{
-					if (existingSource != value)
-					{
-						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromCalculatedPathValue.RoleDomainRoleId, this);
-					}
-				}
-				else
-				{
-					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromCalculatedPathValue.SourceDomainRoleId, value);
-				}
+				return new DslModeling::LinkedElementCollection<Role>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromCalculatedPathValue.SourceDomainRoleId);
 			}
 		}
 		#endregion
@@ -12638,6 +12464,37 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		
+		#endregion
+		#region ConstraintRoleProjection opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ConstraintRoleProjection.
+		/// The constraint role that uses this path constant.
+		/// </summary>
+		public virtual ConstraintRoleSequenceHasRole ConstraintRoleProjection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromPathConstant.SourceDomainRoleId) as ConstraintRoleSequenceHasRole;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromPathConstant.ConstraintRoleDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromPathConstant.ConstraintRoleDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromPathConstant.SourceDomainRoleId, value);
+				}
+			}
+		}
 		#endregion
 		#region BoundInput opposite domain role accessor
 		/// <summary>
@@ -13613,6 +13470,166 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				else
 				{
 					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationRule.DerivationRuleDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainClass ConstraintRoleSequenceJoinPath
+	/// A role path defining cross fact type relationships within a constraint role
+	/// sequence.
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("56690364-4793-49f3-94c2-2984ed932d84")]
+	public partial class ConstraintRoleSequenceJoinPath : RolePathOwner
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// ConstraintRoleSequenceJoinPath domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x56690364, 0x4793, 0x49f3, 0x94, 0xc2, 0x29, 0x84, 0xed, 0x93, 0x2d, 0x84);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ConstraintRoleSequenceJoinPath(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ConstraintRoleSequenceJoinPath(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region IsAutomatic domain property code
+		
+		/// <summary>
+		/// IsAutomatic domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid IsAutomaticDomainPropertyId = new global::System.Guid(0xe6d3dfad, 0xf849, 0x4d4e, 0xaa, 0x81, 0x46, 0xfa, 0xbe, 0xba, 0x74, 0x09);
+		
+		/// <summary>
+		/// Storage for IsAutomatic
+		/// </summary>
+		private global::System.Boolean isAutomaticPropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of IsAutomatic domain property.
+		/// The join path is automatically created from the constraint sequence.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath/IsAutomatic.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath/IsAutomatic.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainObjectId("e6d3dfad-f849-4d4e-aa81-46fabeba7409")]
+		public global::System.Boolean IsAutomatic
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return isAutomaticPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				IsAutomaticPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ConstraintRoleSequenceJoinPath.IsAutomatic domain property.
+		/// </summary>
+		internal sealed partial class IsAutomaticPropertyHandler : DslModeling::DomainPropertyValueHandler<ConstraintRoleSequenceJoinPath, global::System.Boolean>
+		{
+			private IsAutomaticPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ConstraintRoleSequenceJoinPath.IsAutomatic domain property value handler.
+			/// </summary>
+			public static readonly IsAutomaticPropertyHandler Instance = new IsAutomaticPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ConstraintRoleSequenceJoinPath.IsAutomatic domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return IsAutomaticDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(ConstraintRoleSequenceJoinPath element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.isAutomaticPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ConstraintRoleSequenceJoinPath element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.isAutomaticPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region RoleSequence opposite domain role accessor
+		/// <summary>
+		/// Gets or sets RoleSequence.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasJoinPath.JoinPath
+		/// </summary>
+		public virtual ConstraintRoleSequence RoleSequence
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasJoinPath.JoinPathDomainRoleId) as ConstraintRoleSequence;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasJoinPath.RoleSequenceDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasJoinPath.RoleSequenceDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasJoinPath.JoinPathDomainRoleId, value);
 				}
 			}
 		}
@@ -15400,6 +15417,77 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				else
 				{
 					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainClass JoinPathRequiredError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.JoinPathRequiredError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.JoinPathRequiredError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("153c3ff6-a7f9-4d82-8b6b-8a61d3f40889")]
+	public partial class JoinPathRequiredError : ModelError
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// JoinPathRequiredError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x153c3ff6, 0xa7f9, 0x4d82, 0x8b, 0x6b, 0x8a, 0x61, 0xd3, 0xf4, 0x08, 0x89);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public JoinPathRequiredError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public JoinPathRequiredError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region RoleSequence opposite domain role accessor
+		/// <summary>
+		/// Gets or sets RoleSequence.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasJoinPathRequiredError.JoinPathRequiredError
+		/// </summary>
+		public virtual ConstraintRoleSequence RoleSequence
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasJoinPathRequiredError.JoinPathRequiredErrorDomainRoleId) as ConstraintRoleSequence;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasJoinPathRequiredError.RoleSequenceDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasJoinPathRequiredError.RoleSequenceDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasJoinPathRequiredError.JoinPathRequiredErrorDomainRoleId, value);
 				}
 			}
 		}

@@ -791,7 +791,7 @@
 			<xs:documentation>Container for constraint role sequences.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="RoleSequence" type="ConstraintRoleSequenceWithIdType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="RoleSequence" type="ConstraintRoleSequenceWithJoinAndIdType" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="PlayedRolesType">
@@ -818,15 +818,23 @@
 		</xs:annotation>
 		<xs:sequence>
 			<xs:element name="Role" type="RoleSequenceRoleRef" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="JoinPath" type="JoinPathType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="ConstraintRoleSequenceWithIdType">
+	<xs:complexType name="ConstraintRoleSequenceWithJoinType">
+		<xs:annotation>
+			<xs:documentation>A sequence of constraint roles and possible join path.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Role" type="RoleSequenceWithProjectionRoleRef" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="JoinRule" type="JoinRuleType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ConstraintRoleSequenceWithJoinAndIdType">
 		<xs:annotation>
 			<xs:documentation>A sequence of constraint roles with an identifier.</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
-			<xs:extension base="ConstraintRoleSequenceType">
+			<xs:extension base="ConstraintRoleSequenceWithJoinType">
 				<xs:attributeGroup ref="idAttribute"/>
 			</xs:extension>
 		</xs:complexContent>
@@ -834,10 +842,27 @@
 	<xs:complexType name="RoleSequenceRoleRef">
 		<xs:complexContent>
 			<xs:extension base="RoleRef">
-				<xs:sequence>
-					<xs:element name="ProjectionJoin" type="JoinRef" minOccurs="0"/>
-				</xs:sequence>
 				<xs:attributeGroup ref="idAttributeOptional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="RoleSequenceWithProjectionRoleRef">
+		<xs:complexContent>
+			<xs:extension base="RoleSequenceRoleRef">
+				<xs:sequence>
+					<xs:element name="ProjectedFrom" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The node in the join path used to populate this role in a derived fact type.</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:choice minOccurs="0">
+								<xs:element name="PathedRole" type="PathedRoleRef"/>
+								<xs:element name="CalculatedValue" type="CalculatedValueRef"/>
+								<xs:element name="Constant" type="PathConstantType"/>
+							</xs:choice>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -848,55 +873,13 @@
 		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
 	<!--end RoleRef, RoleSequence and  RoleSequences-->
-	<xs:complexType name="JoinPathType">
+	<xs:complexType name="JoinRuleType">
 		<xs:annotation>
-			<xs:documentation>A path linking roles from different fact types in the same constraint role sequence. (preliminary)</xs:documentation>
+			<xs:documentation>A rule indicating how roles from different fact types in the same constraint role sequence are connected.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="Join" type="JoinType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="JoinPath" type="ConstraintRoleSequenceJoinPathType" minOccurs="0"/>
 		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="JoinType">
-		<xs:annotation>
-			<xs:documentation>A between two roles with the same role player.</xs:documentation>
-		</xs:annotation>
-		<xs:sequence>
-			<xs:element name="InputRole" type="RoleRef" minOccurs="0">
-				<xs:annotation>
-					<xs:documentation>A reference to the input role of the join operation.</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-			<xs:element name="OutputRole" type="RoleRef" minOccurs="0">
-				<xs:annotation>
-					<xs:documentation>A reference to the output role of the join operation.</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-		</xs:sequence>
-		<xs:attributeGroup ref="idAttribute"/>
-		<xs:attribute name="JoinType" type="JoinCombinationValues" default="Inner"/>
-	</xs:complexType>
-	<xs:simpleType name="JoinCombinationValues">
-		<xs:annotation>
-			<xs:documentation>Specify whether instances used by the input role but not the output role are included in the join.</xs:documentation>
-		</xs:annotation>
-		<xs:restriction base="xs:token">
-			<xs:enumeration value="Inner">
-				<xs:annotation>
-					<xs:documentation>Use inner join semantics. An instance must be used by both the input and output roles.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="Outer">
-				<xs:annotation>
-					<xs:documentation>Use outer join semantics. An instance used by the input role must not be used by the output role.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-		</xs:restriction>
-	</xs:simpleType>
-	<xs:complexType name="JoinRef">
-		<xs:annotation>
-			<xs:documentation>A reference to a join.</xs:documentation>
-		</xs:annotation>
-		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
 	<xs:complexType name="FactRolesType">
 		<xs:annotation>
@@ -1660,6 +1643,20 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+	<xs:complexType name="ConstraintRoleSequenceJoinPathType">
+		<xs:annotation>
+			<xs:documentation>A role path used to define the path between roles in different fact types in the same join path.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="RolePathOwnerType">
+				<xs:attribute name="IsAutomatic" default="false" type="xs:boolean">
+					<xs:annotation>
+						<xs:documentation>The join path is automatically created from the constraint sequence.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 	<!-- End Role Paths -->
 	<!--Constraints-->
 	<xs:complexType name="EqualityConstraintRef">
@@ -1766,6 +1763,12 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+	<xs:complexType name="ConstraintRoleSequenceRef">
+		<xs:annotation>
+			<xs:documentation>A reference to a set constraint or a role sequence in a set comparison constraint.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
+	</xs:complexType>
 	<xs:complexType name="SetComparisonConstraintRef">
 		<xs:annotation>
 			<xs:documentation>A reference to a subset, equality, or exclusion constraint.</xs:documentation>
@@ -1795,12 +1798,21 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+	<xs:complexType name="SetConstraintWithJoinType" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="ConstraintType">
+				<xs:sequence>
+					<xs:element name="RoleSequence" type="ConstraintRoleSequenceWithJoinType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 	<xs:complexType name="FrequencyConstraintType">
 		<xs:annotation>
 			<xs:documentation>A constraint specifying the number of times an instance must occur in a set population. Applies only if the instance appears at all.</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
-			<xs:extension base="SetConstraintType">
+			<xs:extension base="SetConstraintWithJoinType">
 				<xs:sequence>
 					<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
 				</xs:sequence>
@@ -1846,7 +1858,7 @@
 			<xs:documentation>A constraint specifying that the population of a set must be unique.</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
-			<xs:extension base="SetConstraintType">
+			<xs:extension base="SetConstraintWithJoinType">
 				<xs:sequence>
 					<xs:element name="PreferredIdentifierFor" type="ObjectTypeRef" minOccurs="0"/>
 					<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
@@ -2032,6 +2044,7 @@
 			<xs:element name="DataTypeNotSpecifiedError" type="DataTypeNotSpecifiedErrorType"/>
 			<xs:element name="NMinusOneError" type="NMinusOneErrorType"/>
 			<xs:element name="CompatibleRolePlayerTypeError" type="CompatibleRolePlayerTypeErrorType"/>
+			<xs:element name="JoinPathRequiredError" type="JoinPathRequiredErrorType"/>
 			<xs:element name="RolePlayerRequiredError" type="RolePlayerRequiredErrorType"/>
 			<!-- UNDONE: Remove EqualityImpliedByMandatoryError when file format is officially updated -->
 			<xs:element name="EqualityImpliedByMandatoryError" type="EqualityImpliedByMandatoryErrorType"/>
@@ -2625,6 +2638,18 @@
 						<xs:documentation>The zero-based column with incompatible types (specified with a SetComparisonConstraint).</xs:documentation>
 					</xs:annotation>
 				</xs:attribute>
+			</xs:extension >
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="JoinPathRequiredErrorType">
+		<xs:annotation>
+			<xs:documentation>The roles in a constraint role sequence span multiple fact types that are not implicitly joined.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:choice>
+					<xs:element name="ConstraintRoleSequence" type="ConstraintRoleSequenceRef"/>
+				</xs:choice>
 			</xs:extension >
 		</xs:complexContent>
 	</xs:complexType>

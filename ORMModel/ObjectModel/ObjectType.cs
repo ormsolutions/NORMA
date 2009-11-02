@@ -3,7 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © ORM Solutions, LLC. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -73,6 +73,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		SkipFollowingSiblings,
 	}
 	#endregion // ObjectTypeVisitor delegate definition
+	#region SubtypeHierarchyChange delegate definition
+	/// <summary>
+	/// Callback delegate used as an extension point for notifications
+	/// when the subtype graph of a given <paramref name="objectType"/>
+	/// has changed. Notification delegates can be added with the
+	/// <see cref="ObjectType.AddSubtypeHierarchyChangeRuleNotification"/> method.
+	/// </summary>
+	public delegate void SubtypeHierarchyChange(ObjectType objectType);
+	#endregion // SubtypeHierarchyChange delegate definition
 	public partial class ObjectType : INamedElementDictionaryChild, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent, IModelErrorOwner, IHasIndirectModelErrorOwner, IVerbalizeCustomChildren, IHierarchyContextEnabled
 	{
 		#region Public token values
@@ -1466,6 +1475,42 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					WalkSupertypesForNearestCompatibleTypes(dictionary, childType, currentVisitIndex);
 				}
 			}
+		}
+		/// <summary>
+		/// Retrieve the delegates registered with <see cref="AddSubtypeHierarchyChangeRuleNotification"/>
+		/// </summary>
+		private static SubtypeHierarchyChange GetSubtypeHierarchyChangeRuleNotifications(Store store)
+		{
+			object callback;
+			return store.PropertyBag.TryGetValue(typeof(SubtypeHierarchyChange), out callback) ? callback as SubtypeHierarchyChange : null;
+		}
+		/// <summary>
+		/// Add a callback delegate that should be notified when a change is
+		/// made to any part of the subtype hierarchy related to any <see cref="ObjectType"/>.
+		/// This is meant to avoid rewriting costly rules to walk supertype and
+		/// subtype hierarchies when changes are made. Callbacks should be added
+		/// in the <see cref="Framework.Shell.IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization"/> method.
+		/// </summary>
+		/// <param name="store">The context <see cref="Store"/></param>
+		/// <param name="hierarchyChangeCallback">A validation method that should run when the store changes.
+		/// This method will generally use <see cref="FrameworkDomainModel.DelayValidateElement"/> to
+		/// perform delayed validation of a modified subtyping hierarchy.</param>
+		public static void AddSubtypeHierarchyChangeRuleNotification(Store store, SubtypeHierarchyChange hierarchyChangeCallback)
+		{
+			object key = typeof(SubtypeHierarchyChange);
+			Dictionary<object, object> bag = store.PropertyBag;
+			SubtypeHierarchyChange newHierarchyChange;
+			object value;
+			if (bag.TryGetValue(key, out value) &&
+				null != (newHierarchyChange = value as SubtypeHierarchyChange))
+			{
+				newHierarchyChange += hierarchyChangeCallback;
+			}
+			else
+			{
+				newHierarchyChange = hierarchyChangeCallback;
+			}
+			bag[key] = newHierarchyChange;
 		}
 		#endregion // Subtype and Supertype routines
 		#region Derivation Rules
@@ -3444,20 +3489,27 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			FrameworkDomainModel.DelayValidateElement(rolePlayer, DelayValidateIsIndependent);
 			if (role is SubtypeMetaRole)
 			{
+				SubtypeHierarchyChange hierarchyChangeCallback = GetSubtypeHierarchyChangeRuleNotifications(link.Store);
 				WalkSubtypes(rolePlayer, delegate(ObjectType subtype, int depth, bool isPrimary)
 				{
 					if (depth == 0 || subtype.PreferredIdentifier == null)
 					{
 						FrameworkDomainModel.DelayValidateElement(subtype, DelayValidateEntityTypeRequiresReferenceSchemeError);
 						FrameworkDomainModel.DelayValidateElement(subtype, DelayValidateCompatibleSupertypesError);
-						ValidateAttachedConstraintColumnCompatibility(subtype);
+						if (hierarchyChangeCallback != null)
+						{
+							hierarchyChangeCallback(subtype);
+						}
 						return ObjectTypeVisitorResult.Continue;
 					}
 					// We want to keep going on the last two errors, but not the reference scheme error
 					WalkSubtypes(subtype, delegate(ObjectType subtype2, int depth2, bool isPrimary2)
 					{
 						FrameworkDomainModel.DelayValidateElement(subtype2, DelayValidateCompatibleSupertypesError);
-						ValidateAttachedConstraintColumnCompatibility(subtype2);
+						if (hierarchyChangeCallback != null)
+						{
+							hierarchyChangeCallback(subtype2);
+						}
 						return ObjectTypeVisitorResult.Continue;
 					});
 					return ObjectTypeVisitorResult.SkipChildren;
@@ -3465,14 +3517,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			else if (role is SupertypeMetaRole)
 			{
-				WalkSupertypes(rolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
+				SubtypeHierarchyChange hierarchyChangeCallback = GetSubtypeHierarchyChangeRuleNotifications(link.Store);
+				if (hierarchyChangeCallback != null)
 				{
-					if (depth != 0)
+					WalkSupertypes(rolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
 					{
-						ValidateAttachedConstraintColumnCompatibility(type);
-					}
-					return ObjectTypeVisitorResult.Continue;
-				});
+						if (depth != 0)
+						{
+							hierarchyChangeCallback(type);
+						}
+						return ObjectTypeVisitorResult.Continue;
+					});
+				}
 			}
 		}
 		/// <summary>
@@ -3534,53 +3590,30 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			Role role = link.PlayedRole;
 			if (role is SubtypeMetaRole)
 			{
+				SubtypeHierarchyChange hierarchyChangeCallback = GetSubtypeHierarchyChangeRuleNotifications(link.Store);
 				WalkSubtypes(role.RolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
 				{
 					FrameworkDomainModel.DelayValidateElement(type, DelayValidateCompatibleSupertypesError);
-					// Keep going while we're here to see if we need to validate compatible role
-					ValidateAttachedConstraintColumnCompatibility(type);
+					if (hierarchyChangeCallback != null)
+					{
+						hierarchyChangeCallback(type);
+					}
 					return ObjectTypeVisitorResult.Continue;
 				});
 			}
 			else if (role is SupertypeMetaRole)
 			{
-				WalkSupertypes(role.RolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
+				SubtypeHierarchyChange hierarchyChangeCallback = GetSubtypeHierarchyChangeRuleNotifications(link.Store);
+				if (hierarchyChangeCallback != null)
 				{
-					if (depth != 0) // The node itself will be picked up as a subtype, no need to do it twice
+					WalkSupertypes(role.RolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
 					{
-						ValidateAttachedConstraintColumnCompatibility(type);
-					}
-					return ObjectTypeVisitorResult.Continue;
-				});
-			}
-		}
-		/// <summary>
-		/// Helper function for SupertypeDeletingRule
-		/// </summary>
-		private static void ValidateAttachedConstraintColumnCompatibility(ObjectType type)
-		{
-			LinkedElementCollection<Role> playedRoles = type.PlayedRoleCollection;
-			int playedRoleCount = playedRoles.Count;
-			for (int i = 0; i < playedRoleCount; ++i)
-			{
-				Role playedRole = playedRoles[i];
-				if (!playedRole.IsDeleting)
-				{
-					LinkedElementCollection<ConstraintRoleSequence> sequences = playedRole.ConstraintRoleSequenceCollection;
-					int sequenceCount = sequences.Count;
-					for (int j = 0; j < sequenceCount; ++j)
-					{
-						ConstraintRoleSequence sequence = sequences[j];
-						if (!sequence.IsDeleting)
+						if (depth != 0) // The node itself will be picked up as a subtype, no need to do it twice
 						{
-							IConstraint constraint = sequence.Constraint;
-							if (constraint != null &&
-								0 != (constraint.RoleSequenceStyles & RoleSequenceStyles.CompatibleColumns))
-							{
-								constraint.ValidateColumnCompatibility();
-							}
+							hierarchyChangeCallback(type);
 						}
-					}
+						return ObjectTypeVisitorResult.Continue;
+					});
 				}
 			}
 		}

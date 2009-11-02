@@ -73,6 +73,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // IAnswerSurveyQuestion<SurveyFactTypeDetailType> Implementation
 		#region ISurveyNode Implementation
 		/// <summary>
+		/// The key used to an expansion details for a <see cref="SetConstraint"/>
+		/// </summary>
+		public static readonly object SurveyExpansionKey = new object();
+		/// <summary>
 		/// Implements <see cref="ISurveyNode.SurveyNodeDataObject"/>
 		/// </summary>
 		protected new object SurveyNodeDataObject
@@ -106,12 +110,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get
 			{
-				IConstraint constraint = Constraint;
-				if (!constraint.ConstraintIsInternal && constraint.ConstraintType != ConstraintType.ImpliedMandatory)
-				{
-					return FactConstraint.SurveyConstraintExpansionKey;
-				}
-				return null;
+				return SurveyExpansionKey;
 			}
 		}
 			object ISurveyNode.SurveyNodeExpansionKey
@@ -370,6 +369,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // IAnswerSurveyQuestion<SurveyQuestionGlyph> Implementation
 		#region ISurveyNode Implementation
 		/// <summary>
+		/// The key used to an expansion details for a <see cref="SetConstraint"/>
+		/// </summary>
+		public static readonly object SurveyExpansionKey = new object();
+		/// <summary>
 		/// Implements <see cref="ISurveyNode.SurveyNodeDataObject"/>
 		/// </summary>
 		protected new object SurveyNodeDataObject
@@ -395,7 +398,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get
 			{
-				return FactConstraint.SurveyConstraintExpansionKey;
+				return SurveyExpansionKey;
 			}
 		}
 		object ISurveyNode.SurveyNodeExpansionKey
@@ -500,12 +503,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // ISurveyNode Implementation
 	}
-	partial class FactConstraint : ISurveyNodeReference
+	partial class FactConstraint : ISurveyNodeReference, IAnswerSurveyQuestion<SurveyConstraintDetailType>
 	{
-		/// <summary>
-		/// The key used to retrieve external constraint expansion details
-		/// </summary>
-		public static readonly object SurveyConstraintExpansionKey = new object();
 		#region ISurveyNodeReference Implementation
 		/// <summary>
 		/// Implements <see cref="IElementReference.ReferencedElement"/>
@@ -570,5 +569,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return UseSurveyNodeReferenceAnswer(questionType, dynamicValues, answer);
 		}
 		#endregion // ISurveyNodeReference Implementation
+		#region IAnswerSurveyQuestion<SurveyConstraintDetailType> Implementation
+		int IAnswerSurveyQuestion<SurveyConstraintDetailType>.AskQuestion(object contextElement)
+		{
+			return AskErrorQuestion(contextElement);
+		}
+		/// <summary>
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyConstraintDetailType}.AskQuestion"/>
+		/// </summary>
+		protected int AskErrorQuestion(object contextElement)
+		{
+			return (int)SurveyConstraintDetailType.ConsistuentFactType;
+		}
+		#endregion // IAnswerSurveyQuestion<SurveyConstraintDetailType> Implementation
 	}
 }

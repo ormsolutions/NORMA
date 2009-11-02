@@ -1087,26 +1087,6 @@
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="Join" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="EFDE476D-C440-4524-97DA-42697FA92CE9" DisplayName="Join" Description="">
-			<Attributes>
-				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
-					<Parameters>
-						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;Join, Design.JoinTypeDescriptor&lt;Join&gt;&gt;)"/>
-					</Parameters>
-				</ClrAttribute>
-			</Attributes>
-			<BaseClass>
-				<DomainClassMoniker Name="ORMModelElement"/>
-			</BaseClass>
-			<Properties>
-				<DomainProperty Name="JoinType" DefaultValue="Inner" DisplayName="JoinType" Id="59049038-A13E-4AD1-A86B-8EC3493DFDC9" Description="Is this an inner or an outer Join?">
-					<Type>
-						<DomainEnumerationMoniker Name="JoinType"/>
-					</Type>
-				</DomainProperty>
-			</Properties>
-		</DomainClass>
-
 		<DomainClass Name="RolePathOwner" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="444D962D-BAE2-4278-A8A2-40A4605CF5AB" DisplayName="RolePathOwner" InheritanceModifier="Abstract" Description="An abstract owner for one or more path objects.">
 			<BaseClass>
 				<DomainClassMoniker Name="ORMModelElement"/>
@@ -1237,6 +1217,18 @@
 			<BaseClass>
 				<DomainClassMoniker Name="RolePathOwner"/>
 			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="ConstraintRoleSequenceJoinPath" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="56690364-4793-49F3-94C2-2984ED932D84" DisplayName="ConstraintRoleSequenceJoinPath" Description="A role path defining cross fact type relationships within a constraint role sequence.">
+			<BaseClass>
+				<DomainClassMoniker Name="RolePathOwner"/>
+			</BaseClass>
+			<Properties>
+				<DomainProperty Name="IsAutomatic" Id="E6D3DFAD-F849-4D4E-AA81-46FABEBA7409" DisplayName="AutomaticJoinPath" Description="The join path is automatically created from the constraint sequence.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
 		</DomainClass>
 
 		<DomainClass Name="TooFewRoleSequencesError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="686A4B07-0ED9-4143-8225-5524C4D6C001" DisplayName="Too Few Role Sequences" Description="">
@@ -1388,9 +1380,13 @@
 					</Type>
 				</DomainProperty>
 			</Properties>
-
 		</DomainClass>
 
+		<DomainClass Name="JoinPathRequiredError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="153C3FF6-A7F9-4D82-8B6B-8A61D3F40889" DisplayName="Join Required for Multiple Fact Types" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
 		<DomainClass Name="RolePlayerRequiredError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="59A21FDE-D979-4B18-9088-707B79FCE19E" DisplayName="Role Player Required" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
@@ -3484,6 +3480,26 @@
 			</Target>
 		</DomainRelationship>
 
+		<DomainRelationship Name="ConstraintRoleSequenceHasJoinPathRequiredError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="91C09C68-C29D-42F5-B0BC-6BDDC7BBC745">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="RoleSequence" PropertyName="JoinPathRequiredError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="RoleSequence" Id="0D1381DB-9CA6-465F-8166-0285674EDE13">
+					<RolePlayer>
+						<DomainClassMoniker Name="ConstraintRoleSequence"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="JoinPathRequiredError" PropertyName="RoleSequence" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="JoinPathRequiredError" Id="D1DD16C2-97CE-4615-B741-47DA5E06D077">
+					<RolePlayer>
+						<DomainClassMoniker Name="JoinPathRequiredError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
 		<DomainRelationship Name="UniquenessConstraintHasNMinusOneError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="429F7144-1227-4D0E-B4F8-59AD6FFC7EB3">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
@@ -4773,121 +4789,68 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="JoinHasRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" InheritanceModifier="Abstract" Id="100DCE21-D23A-4ED5-8919-A6FA9DAA4F8B">
-			<!--<BaseRelationship>
-				<DomainRelationshipMoniker Name="ORMElementLink"/>
-			</BaseRelationship>-->
-			<Source>
-				<DomainRole Name="Join" PropertyName="Role" Multiplicity="OneMany" PropagatesDelete="true" IsPropertyGenerator="false" DisplayName="Join" Id="0D213B9C-DC79-4AE9-8E50-69AB7BB0095F">
-					<RolePlayer>
-						<DomainClassMoniker Name="Join"/>
-					</RolePlayer>
-				</DomainRole>
-			</Source>
-			<Target>
-				<DomainRole Name="Role" PropertyName="JoinCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Role" Id="2B0EEA3A-5901-48D8-A327-AE3DE2E0E42F">
-					<RolePlayer>
-						<DomainClassMoniker Name="Role"/>
-					</RolePlayer>
-				</DomainRole>
-			</Target>
-		</DomainRelationship>
-
-		<DomainRelationship Name="JoinHasInputRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="7F393586-4D6C-43F6-97D0-53E23B0A569C">
-			<BaseRelationship>
-				<DomainRelationshipMoniker Name="JoinHasRole"/>
-			</BaseRelationship>
-			<Source>
-				<DomainRole Name="Join" PropertyName="InputRole" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Join" Id="38D76A89-DDE7-4F93-9D0B-00E862DAE9C6">
-					<RolePlayer>
-						<DomainClassMoniker Name="Join"/>
-					</RolePlayer>
-				</DomainRole>
-			</Source>
-			<Target>
-				<DomainRole Name="Role" PropertyName="JoinCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="InputRole" Id="170F3E22-5670-4D4F-80B7-77F2532F9289">
-					<RolePlayer>
-						<DomainClassMoniker Name="Role"/>
-					</RolePlayer>
-				</DomainRole>
-			</Target>
-		</DomainRelationship>
-
-		<DomainRelationship Name="JoinHasOutputRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="78519CFE-11F8-45B2-89A0-7B1DCD4ABA30">
-			<BaseRelationship>
-				<DomainRelationshipMoniker Name="JoinHasRole"/>
-			</BaseRelationship>
-			<Source>
-				<DomainRole Name="Join" PropertyName="OutputRole" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Join" Id="E39A57EC-8F97-4D1A-A6E2-4AE613FECC41">
-					<RolePlayer>
-						<DomainClassMoniker Name="Join"/>
-					</RolePlayer>
-				</DomainRole>
-			</Source>
-			<Target>
-				<DomainRole Name="Role" PropertyName="JoinCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="OutputRole" Id="2E0CC7EF-2937-4236-B5D5-CC61167F4AE7">
-					<RolePlayer>
-						<DomainClassMoniker Name="Role"/>
-					</RolePlayer>
-				</DomainRole>
-			</Target>
-		</DomainRelationship>
-
-		<DomainRelationship Name="ORMModelElementHasJoinPath" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" InheritanceModifier="Abstract" IsEmbedding="true" Id="744C121F-CB6C-4B1F-9AC0-867EBC2F3AD7">
-			<!--<BaseRelationship>
-				<DomainRelationshipMoniker Name="ORMElementLink"/>
-			</BaseRelationship>-->
-			<Source>
-				<DomainRole Name="JoinPathOwner" PropertyName="JoinPath" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="JoinPathOwner" Id="E8BED1B1-F17A-471E-811D-E6A9D5916CDA">
-					<RolePlayer>
-						<DomainClassMoniker Name="ORMModelElement"/>
-					</RolePlayer>
-				</DomainRole>
-			</Source>
-			<Target>
-				<DomainRole Name="Join" PropertyName="JoinPathOwner" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Join" Id="B5F5B7C2-C5A1-46BB-8969-264F8DC50BB7">
-					<RolePlayer>
-						<DomainClassMoniker Name="Join"/>
-					</RolePlayer>
-				</DomainRole>
-			</Target>
-		</DomainRelationship>
-
 		<DomainRelationship Name="ConstraintRoleSequenceHasJoinPath" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="62FC7AC1-EB51-4887-81D4-15007D5FACBD">
-			<BaseRelationship>
-				<DomainRelationshipMoniker Name="ORMModelElementHasJoinPath"/>
-			</BaseRelationship>
 			<Source>
-				<DomainRole Name="JoinPathOwner" PropertyName="JoinPath" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="JoinPathOwner" Id="D204614A-A424-426B-9216-FAB21CD3BA9C">
+				<DomainRole Name="RoleSequence" PropertyName="JoinPath" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="RoleSequence" Id="D204614A-A424-426B-9216-FAB21CD3BA9C">
 					<RolePlayer>
 						<DomainClassMoniker Name="ConstraintRoleSequence"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="Join" PropertyName="JoinPathOwner" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="false" DisplayName="Join" Id="B8D5101B-7904-41B6-B14C-5BE667B2A6BA">
+				<DomainRole Name="JoinPath" PropertyName="RoleSequence" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="JoinPath" Id="B8D5101B-7904-41B6-B14C-5BE667B2A6BA">
 					<RolePlayer>
-						<DomainClassMoniker Name="Join"/>
+						<DomainClassMoniker Name="ConstraintRoleSequenceJoinPath"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-
-		<DomainRelationship Name="ConstraintRoleSequenceHasRoleHasProjectionJoin" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="314434D1-1E15-4E2F-A2A7-2D1D72343B06">
-			<!--<BaseRelationship>
-				<DomainRelationshipMoniker Name="ORMElementLink"/>
-			</BaseRelationship>-->
+		<DomainRelationship Name="ConstraintRoleProjectedFromPathedRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="AAF520DF-F858-4837-B070-CE6734BD154B">
 			<Source>
-				<DomainRole Name="ConstraintRoleSequenceHasRole" PropertyName="ProjectionJoin" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ConstraintRoleSequenceHasRole" Id="20E93902-F83A-4273-BFFF-945E44D172AE">
+				<DomainRole Name="ConstraintRole" PropertyName="ProjectedFromPathedRole" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="ConstraintRole" Id="3C7C5B31-C245-4656-8BFF-7BF8961D5A33" Description="The pathed role in the join path associated with this constraint sequence.">
 					<RolePlayer>
 						<DomainRelationshipMoniker Name="ConstraintRoleSequenceHasRole"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="ProjectionJoin" PropertyName="ConstraintRoleSequenceHasRole" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="ProjectionJoin" Id="98D276DB-7213-46F9-BBEE-2DC6D326C5CA">
+				<!-- Although it is unusual to project the same data twice, it should not illegal. -->
+				<DomainRole Name="Source" PropertyName="ConstraintRoleProjections" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="Source" Id="1420953D-B972-40B7-984D-3E97743421B3" Description="The projected constraint role associated with this pathed role.">
 					<RolePlayer>
-						<DomainClassMoniker Name="Join"/>
+						<DomainRelationshipMoniker Name="PathedRole"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="ConstraintRoleProjectedFromCalculatedPathValue" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="06B5F374-2C58-498B-BEA9-B5BDF5861661">
+			<Source>
+				<DomainRole Name="ConstraintRole" PropertyName="ProjectedFromCalculatedValue" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="ConstraintRole" Id="A847BBCD-0FAA-47F7-979C-0547613C398E" Description="The calculated value in the join path associated with this constraint sequence.">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="ConstraintRoleSequenceHasRole"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<!-- Although it is unusual to project the same data twice, it should not illegal. -->
+				<DomainRole Name="Source" PropertyName="ConstraintRoleProjections" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="Source" Id="56A95CD0-AA18-40B1-8D52-AB02A54D6E4B" Description="The projected constraint role associated with this calculated value.">
+					<RolePlayer>
+						<DomainClassMoniker Name="CalculatedPathValue"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="ConstraintRoleProjectedFromPathConstant" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="FD92B616-8995-4A10-949F-7E9F8B0E30CD">
+			<Source>
+				<DomainRole Name="ConstraintRole" PropertyName="ProjectedFromConstant" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="ConstraintRole" Id="2DE9BCFE-120C-4C60-88DC-65574EFB82A7" Description="The constant value associated with this constraint role.">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="ConstraintRoleSequenceHasRole"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Source" PropertyName="ConstraintRoleProjection" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Source" Id="BFC9BEFB-BE9A-4770-9CCC-165FB412DF17" Description="The constraint role that uses this path constant.">
+					<RolePlayer>
+						<DomainClassMoniker Name="PathConstant"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -5433,8 +5396,6 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-
-
 		<DomainRelationship Name="RoleDerivesFromPathedRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="C57BC0E8-04B7-4A3A-B021-3A6437969762">
 			<Source>
 				<DomainRole Name="Role" PropertyName="DerivedFromPathedRole" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="Role" Id="FA366136-A169-4509-BB6A-6028E7886A13" Description="The pathed role used to populate the derived fact type for this role.">
@@ -5444,7 +5405,8 @@
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="Source" PropertyName="DerivedRole" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="Source" Id="E71D53D7-C4A2-4367-A2F3-5A27CE70DCE0" Description="The derived role associated with this pathed role.">
+				<!-- Although it is unusual to derive two columns from the same source, it should not illegal. -->
+				<DomainRole Name="Source" PropertyName="DerivedRoles" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="Source" Id="E71D53D7-C4A2-4367-A2F3-5A27CE70DCE0" Description="The derived role associated with this pathed role.">
 					<RolePlayer>
 						<DomainRelationshipMoniker Name="PathedRole"/>
 					</RolePlayer>
@@ -5460,7 +5422,8 @@
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="Source" PropertyName="DerivedRole" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="Source" Id="0C4A9FEC-D093-43B9-89E5-08B892FC443B" Description="The derived role associated with this calculated value.">
+				<!-- Although it is unusual to derive two columns from the same source, it should not illegal. -->
+				<DomainRole Name="Source" PropertyName="DerivedRoles" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="Source" Id="0C4A9FEC-D093-43B9-89E5-08B892FC443B" Description="The derived role associated with this calculated value.">
 					<RolePlayer>
 						<DomainClassMoniker Name="CalculatedPathValue"/>
 					</RolePlayer>
@@ -5483,9 +5446,6 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-
-
-
 		<DomainRelationship Name="SubtypeHasDerivationRule" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="54240547-EBF8-4235-8C09-BB3E0876511A">
 			<Source>
 				<DomainRole Name="Subtype" PropertyName="DerivationRule" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Subtype" Id="EEBCAF86-7B3C-4E5B-A4AB-DACE7547947F">
@@ -5661,19 +5621,6 @@
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
 						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;RangeInclusion, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel&gt;)"/>
-					</Parameters>
-				</ClrAttribute>
-			</Attributes>
-		</DomainEnumeration>
-		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="JoinType">
-			<Literals>
-				<EnumerationLiteral Name="Inner" Value="0" Description="Inner join."/>
-				<EnumerationLiteral Name="Outer" Value="1" Description="Outer join."/>
-			</Literals>
-			<Attributes>
-				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
-					<Parameters>
-						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;JoinType, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>

@@ -1244,6 +1244,14 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Constraint.EnforceSingleFactTypeForInternalConstraint");
 			}
 		}
+		/// <summary>Exception message when an attempt is made to set the IsAutomatic property to true for a ConstraintRoleSequenceJoinPath when no automatic join path can be determined.</summary>
+		public static string ModelExceptionConstraintRoleSequenceAutomaticJoinPathNotAvailable
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ConstraintRoleSequence.AutomaticJoinPathNotAvailable");
+			}
+		}
 		/// <summary>Exception message when an attempt is made to directly modify role players on the ConstraintRoleSequenceHasRole relationship.</summary>
 		public static string ModelExceptionConstraintRoleSequenceHasRoleEnforceNoRolePlayerChange
 		{
@@ -2562,6 +2570,22 @@ namespace ORMSolutions.ORMArchitect.Core
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.CompatibleRolePlayerTypeError.SetComparison.Text");
+			}
+		}
+		/// <summary>The roles in a set constraint are in different fact types and a join path has not been provided. Replacement field {0} is the constraint name and {1} is the model name.</summary>
+		public static string ModelErrorSetConstraintJoinPathRequiredError
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.JoinPathRequiredError.Set.Text");
+			}
+		}
+		/// <summary>The roles in a sequence of a set comparision constraint are in different fact types and a join path has not been provided. Replacement field {0} is the constraint name, {1} is the model name, and {2} is the (1-based) sequence number.</summary>
+		public static string ModelErrorSetComparisonConstraintJoinPathRequiredError
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.JoinPathRequiredError.SetComparison.Text");
 			}
 		}
 		/// <summary>Text displayed in the text of the RoleRequiresRolePlayerError. {0} is the (1-based) role number, {1} is the name of the fact, and {2} is the name of the model.</summary>

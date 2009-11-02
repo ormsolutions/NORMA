@@ -74,6 +74,7 @@
 		<xsl:variable name="disabledRules" select="$allReflectedRuleTypes[not(@alwaysOn='true' or @alwaysOn='1')]"/>
 		<xsl:variable name="allReflectedOtherTypes" select="arg:*[not(self::arg:Rule | self::arg:RuleContainer)]"/>
 		<xsl:variable name="enableDiagramRules" select="@enableDiagramRules='true' or @enabledDiagramRules='1'"/>
+		<xsl:variable name="afterRulesEnabled" select="string(@afterRulesEnabled)"/>
 		<plx:namespace name="{$namespaceName}">
 			<xsl:variable name="copyright" select="parent::arg:Rules/arg:Copyright"/>
 			<xsl:if test="$copyright">
@@ -97,7 +98,7 @@
 				<plx:trailingInfo>
 					<plx:pragma type="closeRegion" data="Attach rules to {@class} model"/>
 				</plx:trailingInfo>
-				<xsl:if test="$disabledRules or $enableDiagramRules">
+				<xsl:if test="$disabledRules or $enableDiagramRules or $afterRulesEnabled">
 					<plx:implementsInterface dataTypeName="IDomainModelEnablesRulesAfterDeserialization" dataTypeQualifier="ORMSolutions.ORMArchitect.Framework.Shell"/>
 				</xsl:if>
 				<plx:field visibility="private" static="true" name="myCustomDomainModelTypes" dataTypeName="Type" dataTypeIsSimpleArray="true"/>
@@ -344,7 +345,7 @@
 						</plx:return>
 					</plx:fallbackBranch>
 				</plx:function>
-				<xsl:if test="$disabledRules or $enableDiagramRules">
+				<xsl:if test="$disabledRules or $enableDiagramRules or $afterRulesEnabled">
 					<plx:function name="EnableRulesAfterDeserialization" visibility="protected">
 						<xsl:if test="@sealed='true' or @sealed=1">
 							<xsl:attribute name="visibility">
@@ -426,6 +427,13 @@
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:loop>
+						</xsl:if>
+						<xsl:if test="$afterRulesEnabled">
+							<plx:callStatic name="{$afterRulesEnabled}" dataTypeName="{@class}">
+								<plx:passParam>
+									<plx:nameRef name="store" type="parameter"/>
+								</plx:passParam>
+							</plx:callStatic>
 						</xsl:if>
 					</plx:function>
 				</xsl:if>

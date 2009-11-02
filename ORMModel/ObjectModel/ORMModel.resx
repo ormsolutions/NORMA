@@ -247,12 +247,6 @@
 		<value>{0} is involved in {1}</value>
 		<comment>The reading for the predicate created implicitly via objectification.There is no attempt made to keep the predicate readings unique in ring situations.We allow the model error to populate instead of generating an articial unique reading.</comment>
 	</data>
-	<data name="JoinType.Inner" xml:space="preserve">
-		<value>Inner</value>
-	</data>
-	<data name="JoinType.Outer" xml:space="preserve">
-		<value>Outer</value>
-	</data>
 	<data name="LogicalCombinationOperator.And" xml:space="preserve">
 		<value>And</value>
 	</data>
@@ -305,6 +299,14 @@
 	<data name="ModelError.Constraint.ImplicationError.Text" xml:space="preserve">
 		<value>Constraint '{0}' in model '{1}' is implied by at least one constraint of the same type attached to a subset of the same roles.</value>
 		<comment>Model validation error text when a constraint intersects a second constraint where the second constraints roles are a subset of the constraint roles.</comment>
+	</data>
+	<data name="ModelError.Constraint.JoinPathRequiredError.Set.Text" xml:space="preserve">
+		<value>Constraint '{0}' in model '{1}' requires a join path.</value>
+		<comment>The roles in a set constraint are in different fact types and a join path has not been provided. Replacement field {0} is the constraint name and {1} is the model name.</comment>
+	</data>
+	<data name="ModelError.Constraint.JoinPathRequiredError.SetComparison.Text" xml:space="preserve">
+		<value>Sequence '{2}' of constraint '{0}' in model '{1}' requires a join path.</value>
+		<comment>The roles in a sequence of a set comparision constraint are in different fact types and a join path has not been provided. Replacement field {0} is the constraint name, {1} is the model name, and {2} is the (1-based) sequence number.</comment>
 	</data>
 	<data name="ModelError.Constraint.NotWellModeledSubsetAndMandatoryError.Text" xml:space="preserve">
 		<value>Subset constraint '{0}' and mandatory constraint '{1}' in model '{2}' are not well-modeled. Suggested ways to fix: (1) Delete the mandatory constraint. (2) Add another mandatory constraint on the superset role. (3) Delete the subset constraint.</value>
@@ -489,6 +491,10 @@
 	<data name="ModelException.Constraint.EnforceSingleFactTypeForInternalConstraint" xml:space="preserve">
 		<value>Internal constraint can only have one associated fact. The IsInternal property must be cleared before adding roles from a second fact type to the constraint.</value>
 		<comment>Exception message when an attempt is made to attached more than one fact type to an internal constraint.</comment>
+	</data>
+	<data name="ModelException.ConstraintRoleSequence.AutomaticJoinPathNotAvailable" xml:space="preserve">
+		<value>Automatic join path not available for this constraint role sequence.</value>
+		<comment>Exception message when an attempt is made to set the IsAutomatic property to true for a ConstraintRoleSequenceJoinPath when no automatic join path can be determined.</comment>
 	</data>
 	<data name="ModelException.ConstraintRoleSequenceHasRole.EnforceNoRolePlayerChange" xml:space="preserve">
 		<value>Direct modification of role players on a ConstraintRoleSequenceHasRole relationship is not supported. As an alternative, first delete the link then add a new one.</value>

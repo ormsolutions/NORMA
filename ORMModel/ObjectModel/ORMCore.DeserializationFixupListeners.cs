@@ -34,6 +34,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				DomainModelInfo contextDomainModel = DomainModelInfo;
 				yield return SetComparisonConstraint.FixupListener;
 				yield return SetConstraint.FixupListener;
+				yield return ConstraintRoleSequence.JoinPathFixupListener;
 				yield return NamedElementDictionary.GetFixupListener((int)ORMDeserializationFixupPhase.ValidateElementNames, contextDomainModel);
 				yield return SubtypeFact.FixupListener;
 				yield return FactType.NameFixupListener;

@@ -79,8 +79,6 @@
 			<se:OmitRelationship Class="ExternalRoleConstraint"/>
 			<se:OmitRelationship Class="RoleInstance"/>
 			<se:OmitRelationship Class="ModelNoteReferencesModelElement"/>
-			<se:OmitRelationship Class="JoinHasRole"/>
-			<se:OmitRelationship Class="ORMModelElementHasJoinPath"/>
 			<se:OmitRelationship Class="ModelHasModelErrorDisplayFilter"/>
 			<se:OmitRelationship Class="ElementAssociatedWithModelError"/>
 			<se:OmitRelationship Class="ElementHasAlias"/>
@@ -742,8 +740,6 @@
 		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="ConstraintRoleSequence" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ReadingOrderHasRole" RoleName="ReadingOrder" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="RoleHasRolePlayerRequiredError" RoleName="RolePlayerRequiredError" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="JoinHasInputRole" RoleName="Join" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="JoinHasOutputRole" RoleName="Join" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="PathedRole" RoleName="RolePath" WriteStyle="NotWritten"/>
 	</se:Element>
 	<!--RoleProxy-->
@@ -788,11 +784,14 @@
 		<se:Link RelationshipName="SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError" RoleName="EqualityOrSubsetImpliedByMandatoryError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ModelNoteReferencesSetComparisonConstraint" RoleName="Note" WriteStyle="NotWritten"/>
 	</se:Element>
+	<se:Element Class="ConstraintRoleSequence" LinkOnly="true" Override="true">
+		<se:Link RelationshipName="ConstraintRoleSequenceHasJoinPathRequiredError" RoleName="JoinPathRequiredError" WriteStyle="NotWritten"/>
+	</se:Element>
 	<se:Element Class="SetComparisonConstraintRoleSequence" Name="RoleSequence" SortChildElements="true" Override="true">
 		<se:Attribute ID="Name" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="Role" Name="Role" WriteStyle="PrimaryLinkElement"/>
-		<se:Container Name="JoinPath">
-			<se:Embed RelationshipName="ConstraintRoleSequenceHasJoinPath" RoleName="Join"/>
+		<se:Container Name="JoinRule">
+			<se:Embed RelationshipName="ConstraintRoleSequenceHasJoinPath" RoleName="JoinPath"/>
 		</se:Container>
 	</se:Element>
 	<se:Element Class="SetConstraint" SortChildElements="true" Override="true">
@@ -816,8 +815,8 @@
 		</se:Container>
 		<se:Container Name="RoleSequence">
 			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="Role"/>
-			<se:Container Name="JoinPath">
-				<se:Embed RelationshipName="ConstraintRoleSequenceHasJoinPath" RoleName="Join"/>
+			<se:Container Name="JoinRule">
+				<se:Embed RelationshipName="ConstraintRoleSequenceHasJoinPath" RoleName="JoinPath"/>
 			</se:Container>
 		</se:Container>
 		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="Role" Name="Role" WriteStyle="PrimaryLinkElement"/>
@@ -830,7 +829,22 @@
 		<se:Link RelationshipName="ModelNoteReferencesSetConstraint" RoleName="Note" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="ConstraintRoleSequenceHasRole" Name="Role" LinkOnly="true">
-		<se:Link RelationshipName="ConstraintRoleSequenceHasRoleHasProjectionJoin" RoleName="ProjectionJoin" Name="ProjectionJoin"/>
+		<se:Container Name="ProjectedFrom">
+			<se:Link RelationshipName="ConstraintRoleProjectedFromPathedRole" RoleName="Source"/>
+			<se:Link RelationshipName="ConstraintRoleProjectedFromCalculatedPathValue" RoleName="Source"/>
+			<se:Embed RelationshipName="ConstraintRoleProjectedFromPathConstant" RoleName="Source"/>
+		</se:Container>
+		<se:Link RelationshipName="ConstraintRoleProjectedFromPathedRole" RoleName="Source" Name="PathedRole"/>
+		<se:Link RelationshipName="ConstraintRoleProjectedFromCalculatedPathValue" RoleName="Source" Name="CalculatedValue"/>
+	</se:Element>
+	<se:Element Class="ConstraintRoleSequenceJoinPath" Name="JoinPath" Override="true">
+		<se:Attribute ID="IsAutomatic">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="IsAutomatic" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
 	</se:Element>
 	<se:Element Class="MandatoryConstraint" SortChildElements="true" Override="true">
 		<se:Attribute ID="IsSimple">
@@ -888,23 +902,6 @@
 		<se:Link RelationshipName="RingConstraintHasRingConstraintTypeNotSpecifiedError" RoleName="RingConstraintTypeNotSpecifiedError" WriteStyle="NotWritten"/>
 	</se:Element>
 
-	<se:Element Class="Join" SortChildElements="true" Override="true">
-		<se:Attribute ID="JoinType" Name="Type">
-			<se:Condition WriteStyle="NotWritten">
-				<plx:binaryOperator type="equality">
-					<plx:left>
-						<plx:callThis name="JoinType" type="property"/>
-					</plx:left>
-					<plx:right>
-						<plx:callStatic name="Inner" dataTypeName="JoinType" type="field"/>
-					</plx:right>
-				</plx:binaryOperator>
-			</se:Condition>
-		</se:Attribute>
-		<se:Link RelationshipName="JoinHasInputRole" RoleName="Role" Name="InputRole"/>
-		<se:Link RelationshipName="JoinHasOutputRole" RoleName="Role" Name="OutputRole"/>
-		<se:Link RelationshipName="ConstraintRoleSequenceHasRoleHasProjectionJoin" RoleName="ConstraintRoleSequenceHasRole" WriteStyle="NotWritten"/>
-	</se:Element>
 	<se:Element Class="Function" Override="true">
 		<se:ConditionalSerialization>
 			<plx:return>
@@ -1018,6 +1015,7 @@
 		<se:Link RelationshipName="LeadRolePathSatisfiesCalculatedCondition" RoleName="LeadRolePath" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="CalculatedPathValueInputBindsToCalculatedPathValue" RoleName="Input" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="RoleDerivesFromCalculatedPathValue" RoleName="Role" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ConstraintRoleProjectedFromCalculatedPathValue" RoleName="ConstraintRole" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="CalculatedPathValueInput" SortChildElements="true" Name="Input" Override="true">
 		<se:Link RelationshipName="CalculatedPathValueInputCorrespondsToFunctionParameter" RoleName="Parameter" Name="Parameter"/>
@@ -1111,6 +1109,7 @@
 		<se:Link RelationshipName="CalculatedPathValueScopedWithPathedRole" RoleName="CalculatedValue" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="CalculatedPathValueInputBindsToPathedRole" RoleName="Input" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="RoleDerivesFromPathedRole" RoleName="Role" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ConstraintRoleProjectedFromPathedRole" RoleName="ConstraintRole" WriteStyle="NotWritten"/>
 	</se:Element>
 
 	<!--Errors-->
@@ -1368,6 +1367,9 @@
 		</se:Attribute>
 		<se:Link RelationshipName="SetComparisonConstraintHasCompatibleRolePlayerTypeError" RoleName="SetComparisonConstraint" Name="SetComparisonConstraint"/>
 		<se:Link RelationshipName="SetConstraintHasCompatibleRolePlayerTypeError" RoleName="SetConstraint" Name="SetConstraint"/>
+	</se:Element>
+	<se:Element Class="JoinPathRequiredError" Override="true">
+		<se:Link RelationshipName="ConstraintRoleSequenceHasJoinPathRequiredError" RoleName="RoleSequence" Name="ConstraintRoleSequence"/>
 	</se:Element>
 	<se:Element Class="RolePlayerRequiredError" Override="true">
 		<se:Link RelationshipName="RoleHasRolePlayerRequiredError" RoleName="Role" Name="Role"/>

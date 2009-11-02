@@ -101,7 +101,6 @@
     <Compile Include="Framework\Diagrams\Design\PresentationElementTypeDescriptionProvider.cs" />
     <Compile Include="Framework\HashSet.cs" />
     <Compile Include="ObjectModel\Design\FactTypeTypeDescriptor.cs" />
-    <Compile Include="ObjectModel\Design\JoinTypeDescriptor.cs" />
     <Compile Include="ObjectModel\Design\RoleTypeDescriptor.cs" />
     <Compile Include="ObjectModel\Design\DataTypeTypeDescriptor.cs" />
     <Compile Include="ObjectModel\Design\ObjectTypeTypeDescriptor.cs" />

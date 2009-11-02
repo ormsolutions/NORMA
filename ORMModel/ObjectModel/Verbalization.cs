@@ -3,7 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © ORM Solutions, LLC. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -1300,7 +1300,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			else
 			{
-
 				// Now see the reading has the same order as the fact. If not,
 				// create an indexMap array that maps the reading role order to
 				// the fact role order.
@@ -1364,8 +1363,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						bool validIndex = replaceIndex < roleCount;
 						if (validIndex)
 						{
-							leftWord = leftWord + groups["AfterLeftHyphen"];
-							rightWord = groups["BeforeRightHyphen"].Value + rightWord;
+							leftWord = NormalizeLeftHyphen(leftWord, groups["AfterLeftHyphen"].Value);
+							rightWord = NormalizeRightHyphen(groups["BeforeRightHyphen"].Value, rightWord);
 							if (decoratePredicateText)
 							{
 								leftWord = string.Format(formatProvider, predicatePartDecorator, leftWord);
@@ -1535,12 +1534,52 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					if ((isUnary && replaceIndex == 0) ||
 						(replaceIndex < roleCount && roles[replaceIndex] == role))
 					{
-						return leftWord + groups["AfterLeftHyphen"].Value + "{0}" + groups["BeforeRightHyphen"].Value + rightWord;
+						return NormalizeLeftHyphen(leftWord, groups["AfterLeftHyphen"].Value) + "{0}" + NormalizeRightHyphen(groups["BeforeRightHyphen"].Value, rightWord);
 					}
 				}
 				match = match.NextMatch();
 			}
 			return null;
+		}
+		/// <summary>
+		/// Combine the left hyphen bound word and the following text, collapsing the first trailing
+		/// space if a hyphen remains at the end of the left word. This enables a hyphen to be specified
+		/// in the reading without a space after it. 'FORE-- WORD' will produce FORE-WORD.
+		/// </summary>
+		/// <param name="leftWord">The left word, verified for a trailing hyphen.</param>
+		/// <param name="afterHyphenBind">The text after the hyphen-space pair (including the space).</param>
+		/// <returns>A combined string.</returns>
+		private static string NormalizeLeftHyphen(string leftWord, string afterHyphenBind)
+		{
+			if (afterHyphenBind.Length != 0)
+			{
+				if (leftWord.EndsWith("-") && afterHyphenBind.Length != 0 && char.IsWhiteSpace(afterHyphenBind, 0))
+				{
+					return leftWord + afterHyphenBind.Substring(1);
+				}
+				return leftWord + afterHyphenBind;
+			}
+			return leftWord;
+		}
+		/// <summary>
+		/// Combine the right hyphen word and the preceding text, collapsing the last preceding
+		/// space if a hyphen remains part of the right word.
+		/// </summary>
+		/// <param name="beforeHyphenBind">The text before the space-hyphen pair (including the space).</param>
+		/// <param name="rightWord">The right word, verified for a lead hyphen.</param>
+		/// <returns>A combined string.</returns>
+		private static string NormalizeRightHyphen(string beforeHyphenBind, string rightWord)
+		{
+			if (beforeHyphenBind.Length != 0)
+			{
+				int beforeHyphenBindLength;
+				if (rightWord.StartsWith("-") && (beforeHyphenBindLength = beforeHyphenBind.Length) != 0 && char.IsWhiteSpace(beforeHyphenBind, beforeHyphenBindLength - 1))
+				{
+					return beforeHyphenBind.Substring(0, beforeHyphenBindLength - 1) + rightWord;
+				}
+				return beforeHyphenBind + rightWord;
+			}
+			return rightWord;
 		}
 		#endregion // Static Functions
 	}

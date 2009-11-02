@@ -30,6 +30,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		private static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[] mySurveyQuestionTypeInfo5 = new ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[]{
 			ProvideSurveyQuestionForSurveyQuestionGlyph.Instance};
+		private static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[] mySurveyQuestionTypeInfo6 = new ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[]{
+			ProvideSurveyQuestionForSurveyConstraintDetailType.Instance};
+		private static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[] mySurveyQuestionTypeInfo7 = new ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[]{
+			ProvideSurveyQuestionForSurveyConstraintDetailType.Instance};
 		/// <summary>Implements <see cref="ISurveyQuestionProvider{Object}.GetSurveyQuestions"/></summary>
 		protected IEnumerable<ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>> GetSurveyQuestions(Microsoft.VisualStudio.Modeling.Store surveyContext, object expansionKey)
 		{
@@ -52,6 +56,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			else if (expansionKey == ORMCoreDomainModel.SurveyFloatingExpansionKey)
 			{
 				return mySurveyQuestionTypeInfo5;
+			}
+			else if (expansionKey == SetConstraint.SurveyExpansionKey)
+			{
+				return mySurveyQuestionTypeInfo6;
+			}
+			else if (expansionKey == SetComparisonConstraint.SurveyExpansionKey)
+			{
+				return mySurveyQuestionTypeInfo7;
 			}
 			return null;
 		}
@@ -150,6 +162,73 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				get
 				{
 					return -500;
+				}
+			}
+			int ISurveyQuestionTypeInfo.QuestionPriority
+			{
+				get
+				{
+					return QuestionPriority;
+				}
+			}
+		}
+		private sealed class ProvideSurveyQuestionForSurveyConstraintDetailType : ISurveyQuestionTypeInfo, ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>
+		{
+			private ProvideSurveyQuestionForSurveyConstraintDetailType()
+			{
+			}
+			public static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store> Instance = new ProvideSurveyQuestionForSurveyConstraintDetailType();
+			public Type QuestionType
+			{
+				get
+				{
+					return typeof(SurveyConstraintDetailType);
+				}
+			}
+			public ISurveyDynamicValues DynamicQuestionValues
+			{
+				get
+				{
+					return null;
+				}
+			}
+			public int AskQuestion(object data, object contextElement)
+			{
+				IAnswerSurveyQuestion<SurveyConstraintDetailType> typedData = data as IAnswerSurveyQuestion<SurveyConstraintDetailType>;
+				if (typedData != null)
+				{
+					return typedData.AskQuestion(contextElement);
+				}
+				return -1;
+			}
+			public int MapAnswerToImageIndex(int answer)
+			{
+				return -1;
+			}
+			public IFreeFormCommandProvider<Microsoft.VisualStudio.Modeling.Store> GetFreeFormCommands(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return null;
+			}
+			public bool ShowEmptyGroup(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return false;
+			}
+			public SurveyQuestionDisplayData GetDisplayData(int answer)
+			{
+				return SurveyQuestionDisplayData.Default;
+			}
+			public SurveyQuestionUISupport UISupport
+			{
+				get
+				{
+					return SurveyQuestionUISupport.Sorting;
+				}
+			}
+			public static int QuestionPriority
+			{
+				get
+				{
+					return 1000;
 				}
 			}
 			int ISurveyQuestionTypeInfo.QuestionPriority
