@@ -54,7 +54,7 @@
     <Compile Include="CustomPropertiesManager.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CustomPropertiesManager.designer.cs">
+    <Compile Include="CustomPropertiesManager.Designer.cs">
       <DependentUpon>CustomPropertiesManager.cs</DependentUpon>
     </Compile>
     <Compile Include="CustomProperty.SerializationExtensions.cs">
@@ -66,13 +66,13 @@
     <Compile Include="DefinitionEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="DefinitionEditor.designer.cs">
+    <Compile Include="DefinitionEditor.Designer.cs">
       <DependentUpon>DefinitionEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="EditCustomEnumOrDescription.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="EditCustomEnumOrDescription.designer.cs">
+    <Compile Include="EditCustomEnumOrDescription.Designer.cs">
       <DependentUpon>EditCustomEnumOrDescription.cs</DependentUpon>
     </Compile>
     <Compile Include="GeneratedCode\DomainClasses.cs">
@@ -93,7 +93,7 @@
     <Compile Include="GroupEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="GroupEditor.designer.cs">
+    <Compile Include="GroupEditor.Designer.cs">
       <DependentUpon>GroupEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="NameChangedEventArgs.cs" />

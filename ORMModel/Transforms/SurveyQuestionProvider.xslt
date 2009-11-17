@@ -900,13 +900,15 @@
 			<xsl:when test="$offset">
 				<xsl:variable name="afterQuestion" select="string($offset/@afterSurveyQuestion)"/>
 				<xsl:choose>
-					<xsl:when test="$afterQuestion">
+					<xsl:when test="$afterQuestion or ($lastAnswer and $ApplyLastAnswer)">
 						<xsl:variable name="referencedOffsetFragment">
-							<xsl:call-template name="ResolveOffset">
-								<xsl:with-param name="ImageMap" select="$AllQuestions[@questionType=$afterQuestion]/qp:*[self::qp:sequentialImageMap | self::qp:explicitImageMap]"/>
-								<xsl:with-param name="AllQuestions" select="$AllQuestions"/>
-								<xsl:with-param name="ApplyLastAnswer" select="true()"/>
-							</xsl:call-template>
+							<xsl:if test="$afterQuestion">
+								<xsl:call-template name="ResolveOffset">
+									<xsl:with-param name="ImageMap" select="$AllQuestions[@questionType=$afterQuestion]/qp:*[self::qp:sequentialImageMap | self::qp:explicitImageMap]"/>
+									<xsl:with-param name="AllQuestions" select="$AllQuestions"/>
+									<xsl:with-param name="ApplyLastAnswer" select="true()"/>
+								</xsl:call-template>
+							</xsl:if>
 						</xsl:variable>
 						<xsl:variable name="referencedOffset" select="exsl:node-set($referencedOffsetFragment)/child::*"/>
 						<xsl:variable name="localOffsetFragment">

@@ -816,8 +816,13 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// </param>
 		private static void GenerateReferenceConstraint(Table sourceTable, ConceptType targetConceptType, string referenceConstraintName, PathStack<ConceptTypeChild> sourceTableStartingPath)
 		{
-			Table targetTable = GetTargetTableForReferenceConstraint(targetConceptType);
-			if (targetTable == null)
+			Table targetTable;
+			List<Column> sourceColumns;
+			if (null == (targetTable = GetTargetTableForReferenceConstraint(targetConceptType)) ||
+				// Find the columns in the source table that start with the correct path. These will already be in the correct
+				// order, since we create them based off the order in the preferred identifier of the target concept type. This
+				// can be empty for secondary assimilation paths.
+				null == (sourceColumns = GetColumnsForStartingPath(sourceTable, sourceTableStartingPath)))
 			{
 				return;
 			}
@@ -828,10 +833,6 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			referenceConstraint.SourceTable = sourceTable;
 			referenceConstraint.TargetTable = targetTable;
 
-			// Find the columns in the source table that start with the correct path. These will already be in the correct
-			// order, since we create them based off the order in the preferred identifier of the target concept type.
-			List<Column> sourceColumns = GetColumnsForStartingPath(sourceTable, sourceTableStartingPath);
-			Debug.Assert(sourceColumns.Count > 0);
 			Column[] targetColumns = new Column[sourceColumns.Count];
 
 			// Find the target column for each source column.
@@ -1032,12 +1033,12 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// </summary>
 		private static List<Column> GetColumnsForStartingPath(Table table, PathStack<ConceptTypeChild> startingPath)
 		{
-			List<Column> columns = new List<Column>();
+			List<Column> columns = null;
 			foreach (Column column in table.ColumnCollection)
 			{
 				if (ColumnConceptTypeChildPathStartsWith(column, startingPath))
 				{
-					columns.Add(column);
+					(columns ?? (columns = new List<Column>())).Add(column);
 				}
 			}
 			return columns;

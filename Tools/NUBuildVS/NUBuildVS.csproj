@@ -50,7 +50,7 @@
     <None Include="Neumont.Build.VisualStudio.Multitargeting.targets" />
     <None Include="Install.bat" />
     <None Include="Neumont.Build.VisualStudio.targets" />
-    <Compile Include="Tasks\VsSdkLocator.cs" />
+    <Compile Include="Tasks\VsSDKLocator.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Neumont\Neumont.Build.targets" />
