@@ -124,7 +124,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 								DomainTypeDescriptor.CreatePropertyDescriptor(selectedElement, Role.RolePlayerDisplayDomainPropertyId),
 								true);
 						}
-						else if (error is ValueMismatchError || error is ValueRangeOverlapError || error is ValueConstraintValueTypeDetachedError)
+						else if (error is ValueConstraintError)
 						{
 							EditorUtility.ActivatePropertyEditor(
 								services.ServiceProvider,
@@ -145,7 +145,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 					delegate(IORMToolServices services, ModelElement selectedElement, ModelError error)
 					{
 						bool retVal = true;
-						if (error is ValueMismatchError || error is ValueRangeOverlapError || error is ValueConstraintValueTypeDetachedError)
+						if (error is ValueConstraintError)
 						{
 							EditorUtility.ActivatePropertyEditor(
 								services.ServiceProvider,
@@ -261,7 +261,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 								DomainTypeDescriptor.CreatePropertyDescriptor(selectedElement, ObjectType.ReferenceModeDisplayDomainPropertyId),
 								true);
 						}
-						else if (error is ValueMismatchError || error is ValueRangeOverlapError || error is ValueConstraintValueTypeDetachedError)
+						else if (error is ValueConstraintError)
 						{
 							EditorUtility.ActivatePropertyEditor(
 								services.ServiceProvider,
@@ -298,6 +298,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 						TooManyReadingRolesError tooMany;
 						ReadingRequiresUserModificationError userModification;
 						FactTypeRequiresReadingError noReading;
+						ValueConstraintError valueError;
 						FactType factType;
 						ImpliedInternalUniquenessConstraintError implConstraint;
 						Reading reading = null;
@@ -345,12 +346,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 								}
 							}
 						}
-						else if (error is ValueMismatchError || error is ValueRangeOverlapError || error is ValueConstraintValueTypeDetachedError)
+						else if (null != (valueError = error as ValueConstraintError))
 						{
-							EditorUtility.ActivatePropertyEditor(
-								services.ServiceProvider,
-								DomainTypeDescriptor.CreatePropertyDescriptor(selectedElement, ObjectType.ValueRangeTextDomainPropertyId),
-								false);
+							if (valueError.ContextValueConstraint is RoleValueConstraint)
+							{
+								EditorUtility.ActivatePropertyEditor(
+									services.ServiceProvider,
+									DomainTypeDescriptor.CreatePropertyDescriptor(selectedElement, ObjectType.ValueRangeTextDomainPropertyId),
+									false);
+							}
+							else
+							{
+								retVal = false;
+							}
 						}
 						else if (error is TooFewFactTypeRoleInstancesError || error is ObjectifyingInstanceRequiredError)
 						{

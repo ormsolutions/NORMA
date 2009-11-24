@@ -32,9 +32,9 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 		{
 			#region Member Variables
 			private readonly object myElement;
+			private readonly object myCustomSortData; // Cache this so we can do a custom sort based on a snapshot, not current state
+			private readonly string myDisplayText; // Cache this so it is fast and stable over time
 			private int myNodeData;
-			private object myCustomSortData; // Cache this so we can do a custom sort based on a snapshot, not current state
-			private string myDisplayText; // Cache this so it is fast and stable over time
 			#endregion // Member Variables
 			#region Public Create and Update Methods
 			/// <summary>
@@ -44,10 +44,11 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 			/// <param name="survey">The <see cref="Survey"/> this node is associated with</param>
 			/// <param name="contextElement">The parent element, or null for a root expansion context</param>
 			/// <param name="element">The element to create a node for</param>
+			/// <param name="verifyReferences">Set to <see langword="true"/> to verify link information.</param>
 			/// <returns>A fully initialized <see cref="SampleDataElementNode"/>.</returns>
-			public static SampleDataElementNode Create(SurveyTree<SurveyContextType> surveyTree, Survey survey, object contextElement, object element)
+			public static SampleDataElementNode Create(SurveyTree<SurveyContextType> surveyTree, Survey survey, object contextElement, object element, bool verifyReferences)
 			{
-				return new SampleDataElementNode(surveyTree, contextElement, element, InitializeNodeData(element, contextElement, survey), null, null, true);
+				return new SampleDataElementNode(surveyTree, contextElement, element, InitializeNodeData(element, contextElement, survey), null, null, verifyReferences);
 			}
 			/// <summary>
 			/// Refetch the current settings of the <see cref="SurveyName"/> property
@@ -85,36 +86,9 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				myNodeData = nodeData;
 				ISurveyNodeReference reference = element as ISurveyNodeReference;
 				object referencedElement = (reference == null) ? null : reference.ReferencedElement;
-				if (verifyReferences)
+				if (verifyReferences && referencedElement != null)
 				{
-					if (referencedElement != null)
-					{
-						// Make sure that we have constructed information for the target element. If not, get its survey
-						// information and create the reference.
-						Dictionary<object, NodeLocation> nodes = surveyTree.myNodeDictionary;
-						if (!nodes.ContainsKey(referencedElement))
-						{
-							object expansionKey = null;
-							object targetContextElement = null;
-							ISurveyNodeContext targetContext;
-							ISurveyNode targetOwner;
-							ISurveyFloatingNode floatingNode;
-							if (null != (targetContext = referencedElement as ISurveyNodeContext))
-							{
-								if (null != (targetOwner = (targetContextElement = targetContext.SurveyNodeContext) as ISurveyNode))
-								{
-									expansionKey = targetOwner.SurveyNodeExpansionKey;
-								}
-							}
-							else if (null != (floatingNode = referencedElement as ISurveyFloatingNode))
-							{
-								expansionKey = floatingNode.FloatingSurveyNodeQuestionKey;
-							}
-							Survey targetSurvey = surveyTree.GetSurvey(expansionKey);
-							SampleDataElementNode targetNode = new SampleDataElementNode(surveyTree, targetContextElement, referencedElement, InitializeNodeData(referencedElement, targetContextElement, targetSurvey), null, null, false);
-							nodes.Add(referencedElement, new NodeLocation(targetSurvey, targetNode));
-						}
-					}
+					surveyTree.VerifyReferenceTarget(referencedElement);
 				}
 				if (displayText == null)
 				{

@@ -1912,6 +1912,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// </summary>
 		protected bool NavigateTo(object target, NavigateToWindow window)
 		{
+			if (target == null)
+			{
+				return false;
+			}
 			ModelElement element = null;
 			IRepresentModelElements elementRep = target as IRepresentModelElements;
 			if (elementRep != null)
@@ -1957,7 +1961,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				element = target as ModelElement;
 				if (element == null)
 				{
-					return false;
+					// All elements on the design surface have corresponding model elements,
+					// but this does not need to be true for the model browser. Attempt a model
+					// browser activation directly against the supplied target.
+					window = NavigateToWindow.ModelBrowser;
 				}
 			}
 			ModelElement startElement = element;
@@ -2158,96 +2165,134 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							continue;
 						}
 					}
-					ModelElement nextElement = element;
-					element = null;
-
-					// If we could not select the current element, then go up the aggregation chain
-					foreach (DomainRoleInfo role in nextElement.GetDomainClass().AllDomainRolesPlayed)
-					{
-						DomainRoleInfo oppositeRole = role.OppositeDomainRole;
-						if (oppositeRole.IsEmbedding)
-						{
-							LinkedElementCollection<ModelElement> parents = role.GetLinkedElements(nextElement);
-							if (parents.Count > 0)
-							{
-								Debug.Assert(parents.Count == 1); // The aggregating side of a relationship should have multiplicity==1
-								element = parents[0];
-								break;
-							}
-						}
-					}
+					element = GetContainingElement(element);
 				}
 			}
 
 			// We couldn't find this on the shapes, attempt to find the item in the model browser
-			if (startElement != null)
+			element = startElement;
+			VirtualTreeControl treeControl = null;
+			while (element != null || target != null)
 			{
-				element = startElement;
-				VirtualTreeControl treeControl = null;
-				while (element != null)
+				if (treeControl == null)
 				{
-					if (treeControl == null)
+					// Make sure a docview associated with the current model is
+					// active. Otherwise, the model browser will not contain the
+					// correct tree.
+					if (!haveCurrentDesigner)
 					{
-						// Make sure a docview associated with the current model is
-						// active. Otherwise, the model browser will not contain the
-						// correct tree.
-						if (!haveCurrentDesigner)
-						{
-							haveCurrentDesigner = true;
-							GetCurrentDesigner(ref currentDocView, ref currentDesigner);
-						}
-						if (currentDocView == null || currentDocView.DocData != this)
-						{
-							if (null == ActivateView(null))
-							{
-								return false;
-							}
-						}
-						// UNDONE: See if we can get the tree control without forcing the window to show
-						// This is safe, but gives weird results if the initial item cannot be found.
-						ORMModelBrowserToolWindow browserWindow;
-						SurveyTreeContainer treeContainer;
-						if (null != (browserWindow = ORMDesignerPackage.ORMModelBrowserWindow))
-						{
-							browserWindow.Show();
-							if (null != (treeContainer = browserWindow.Window as SurveyTreeContainer))
-							{
-								treeControl = treeContainer.TreeControl;
-							}
-						}
-						if (null == treeControl)
+						haveCurrentDesigner = true;
+						GetCurrentDesigner(ref currentDocView, ref currentDesigner);
+					}
+					if (currentDocView == null || currentDocView.DocData != this)
+					{
+						if (null == ActivateView(null))
 						{
 							return false;
 						}
 					}
-					if (treeControl.SelectObject(null, element, (int)ObjectStyle.TrackingObject, 0))
+					// UNDONE: See if we can get the tree control without forcing the window to show
+					// This is safe, but gives weird results if the initial item cannot be found.
+					ORMModelBrowserToolWindow browserWindow;
+					SurveyTreeContainer treeContainer;
+					if (null != (browserWindow = ORMDesignerPackage.ORMModelBrowserWindow))
 					{
-						if (modelError != null)
+						browserWindow.Show();
+						if (null != (treeContainer = browserWindow.Window as SurveyTreeContainer))
 						{
-							ModelErrorActivationService.ActivateError(element, modelError);
+							treeControl = treeContainer.TreeControl;
 						}
-						return true;
 					}
-					ModelElement currentElement = element;
-					element = null;
-					// If we could not select the current element, then go up the aggregation chain
-					foreach (DomainRoleInfo role in currentElement.GetDomainClass().AllDomainRolesPlayed)
+					if (null == treeControl)
 					{
-						DomainRoleInfo oppositeRole = role.OppositeDomainRole;
-						if (oppositeRole.IsEmbedding)
+						return false;
+					}
+				}
+				if (treeControl.SelectObject(null, element ?? target, (int)ObjectStyle.TrackingObject, 0))
+				{
+					if (modelError != null)
+					{
+						ModelErrorActivationService.ActivateError(element, modelError);
+					}
+					return true;
+				}
+				if (element != null)
+				{
+					element = GetContainingElement(element);
+				}
+				else
+				{
+					// Out of options, break the loop
+					target = null;
+				}
+			}
+			return false;
+		}
+		/// <summary>
+		/// Get the containing embedding element
+		/// </summary>
+		/// <param name="element"></param>
+		/// <returns></returns>
+		private static ModelElement GetContainingElement(ModelElement element)
+		{
+			DomainClassInfo classInfo = element.GetDomainClass();
+			DomainRelationshipInfo relationshipInfo = classInfo as DomainRelationshipInfo;
+			if (relationshipInfo != null)
+			{
+				if (!relationshipInfo.IsEmbedding)
+				{
+					// Jump straight to the source element
+					return DomainRoleInfo.GetSourceRolePlayer((ElementLink)element);
+				}
+				else
+				{
+					// Find the role opposite a 'one' role, preferring the source role
+					// if there are multiple 'one' roles.
+					DomainRoleInfo singleRoleInfo = null;
+					DomainRoleInfo sourceRoleInfo = null;
+					foreach (DomainRoleInfo roleInfo in relationshipInfo.DomainRoles)
+					{
+						bool isSource = roleInfo.IsSource;
+						if (isSource)
 						{
-							LinkedElementCollection<ModelElement> parents = role.GetLinkedElements(currentElement);
-							if (parents.Count > 0)
+							sourceRoleInfo = roleInfo;
+						}
+						if (roleInfo.IsOne)
+						{
+							if (singleRoleInfo == null || !isSource)
 							{
-								Debug.Assert(parents.Count == 1); // The aggregating side of a relationship should have multiplicity==1
-								element = parents[0];
-								break;
+								singleRoleInfo = roleInfo;
 							}
+						}
+					}
+					if (singleRoleInfo != null)
+					{
+						return singleRoleInfo.OppositeDomainRole.GetRolePlayer((ElementLink)element);
+					}
+					else if (sourceRoleInfo != null)
+					{
+						return sourceRoleInfo.GetRolePlayer((ElementLink)element);
+					}
+				}
+			}
+			else
+			{
+				// If we could not select the current element, then go up the aggregation chain
+				foreach (DomainRoleInfo role in classInfo.AllDomainRolesPlayed)
+				{
+					DomainRoleInfo oppositeRole = role.OppositeDomainRole;
+					if (oppositeRole.IsEmbedding)
+					{
+						LinkedElementCollection<ModelElement> parents = role.GetLinkedElements(element);
+						if (parents.Count > 0)
+						{
+							Debug.Assert(parents.Count == 1); // The aggregating side of a relationship should have multiplicity==1
+							return parents[0];
 						}
 					}
 				}
 			}
-			return false;
+			return null;
 		}
 		bool IORMToolServices.NavigateTo(object target, NavigateToWindow window)
 		{

@@ -86,7 +86,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 					{
 						foreach (object elementNode in nodeProvider.GetSurveyNodes(contextElement, expansionKey))
 						{
-							nodes.Add(SampleDataElementNode.Create(surveyTree, survey, contextElement, elementNode));
+							nodes.Add(SampleDataElementNode.Create(surveyTree, survey, contextElement, elementNode, true));
 						}
 					}
 				}
@@ -660,7 +660,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 					MainList locatedList;
 					SurveyTree<SurveyContextType> surveyTree = mySurveyTree;
 					bool haveLocation = surveyTree.myNodeDictionary.TryGetValue(obj, out location);
-					if (haveLocation &&	null != (locatedList = location.MainList))
+					if (haveLocation && null != (locatedList = location.MainList))
 					{
 						if (locatedList == this)
 						{
@@ -674,28 +674,53 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 							contextElement = locatedList.myContextElement;
 						}
 					}
-					else if (null != (nodeContext = obj as ISurveyNodeContext))
+					else
 					{
-						contextElement = nodeContext.SurveyNodeContext;
-					}
-					else if (haveLocation)
-					{
-						// A reference to the element has been recorded, jump to it instead
+						ISurveyNodeReference selectReference;
 						LinkedNode<SurveyNodeReference> referenceNodeLink;
-						if (surveyTree.myReferenceDictionary.TryGetValue(obj, out referenceNodeLink))
+						SurveyNodeReference referenceNode;
+						object referenceContext;
+						if (!haveLocation &&
+							null != (selectReference = obj as ISurveyNodeReference) &&
+							0 == (selectReference.SurveyNodeReferenceOptions & SurveyNodeReferenceOptions.TrackReferenceInstance) &&
+							surveyTree.myReferenceDictionary.TryGetValue(selectReference.ReferencedElement, out referenceNodeLink))
 						{
-							SurveyNodeReference referenceNode = referenceNodeLink.Value;
-							object referenceContext = referenceNode.ContextElement;
-							if (referenceContext == myContextElement)
+							object matchContext = myContextElement;
+							while (referenceNodeLink != null)
 							{
-								if (0 <= (nodeIndex = myNodes.BinarySearch(referenceNode.Node, myNodeComparer)))
+								referenceNode = referenceNodeLink.Value;
+								if (matchContext == referenceNode.ContextElement)
 								{
-									return new LocateObjectData(nodeIndex, 0, (int)TrackingObjectAction.ThisLevel);
+									if (0 <= (nodeIndex = myNodes.BinarySearch(referenceNode.Node, myNodeComparer)))
+									{
+										return new LocateObjectData(nodeIndex, 0, (int)TrackingObjectAction.ThisLevel);
+									}
 								}
+								referenceNodeLink = referenceNodeLink.Next;
 							}
-							else
+						}
+						if (null != (nodeContext = obj as ISurveyNodeContext))
+						{
+							contextElement = nodeContext.SurveyNodeContext;
+						}
+						else if (haveLocation)
+						{
+							// A reference to the element has been recorded, jump to it instead
+							if (surveyTree.myReferenceDictionary.TryGetValue(obj, out referenceNodeLink))
 							{
-								contextElement = referenceContext;
+								referenceNode = referenceNodeLink.Value;
+								referenceContext = referenceNode.ContextElement;
+								if (referenceContext == myContextElement)
+								{
+									if (0 <= (nodeIndex = myNodes.BinarySearch(referenceNode.Node, myNodeComparer)))
+									{
+										return new LocateObjectData(nodeIndex, 0, (int)TrackingObjectAction.ThisLevel);
+									}
+								}
+								else
+								{
+									contextElement = referenceContext;
+								}
 							}
 						}
 					}
@@ -874,7 +899,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 			/// </summary>
 			public void ElementAdded(object element)
 			{
-				SampleDataElementNode newNode = SampleDataElementNode.Create(mySurveyTree, mySurvey, myContextElement, element);
+				SampleDataElementNode newNode = SampleDataElementNode.Create(mySurveyTree, mySurvey, myContextElement, element, true);
 				int index;
 				if (0 <= (index = myNodes.BinarySearch(newNode, myNodeComparer)))
 				{
@@ -991,18 +1016,27 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 			public void NodeDeleted(SampleDataElementNode node)
 			{
 				int index;
-				if (0 > (index = myNodes.BinarySearch(node, myNodeComparer)))
+				if (0 <= (index = myNodes.BinarySearch(node, myNodeComparer)))
 				{
-					return;
+					DeleteAt(index);
 				}
+			}
+			/// <summary>
+			/// Helper function to delete at a location
+			/// </summary>
+			/// <param name="index">The preverified deletion index</param>
+			private void DeleteAt(int index)
+			{
 				// Note that the dictionary is cleaned up in the SurveyTree's calling code
-				myNodes.RemoveAt(index);
-				if (myNodes.Count == 0 &&
-					!mySurveyTree.GetExpandable(myContextElement, null))
+				List<SampleDataElementNode> nodes = myNodes;
+				object context;
+				nodes.RemoveAt(index);
+				if (nodes.Count == 0 &&
+					!mySurveyTree.GetExpandable(context = myContextElement, null))
 				{
 					// Remove this branch instead of showing it as empty
 					RaiseBranchEvent(BranchModificationEventArgs.RemoveBranch((IBranch)myRootGrouper ?? this));
-					mySurveyTree.myMainListDictionary.Remove(myContextElement);
+					mySurveyTree.myMainListDictionary.Remove(context);
 				}
 				else if (myRootGrouper != null)
 				{
@@ -1067,6 +1101,42 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				}
 				Debug.Assert(!object.ReferenceEquals(customSortData, node.CustomSortData), "ICustomComparableSurveyNode.ResetCustomSortData should return a new instance, or false");
 				UpdateNode(fromIndex, nodeReference, node.UpdateCustomSortData(mySurveyTree, myContextElement, customSortData), false);
+			}
+			/// <summary>
+			/// The target of a reference element has changed. Reset all information about the node.
+			/// </summary>
+			/// <param name="elementReference">The element reference to retarget.</param>
+			/// <param name="nodeReference">An existing reference tracker associated with the node.</param>
+			/// <param name="removeOnly">Remove the element, but do not update or add it.</param>
+			public void NodeRetargeted(ISurveyNodeReference elementReference, LinkedNode<SurveyNodeReference> nodeReference, bool removeOnly)
+			{
+				// Because the binary search mechanism always references the referenced element directly,
+				// there is nothing we can do here except to do a linear walk of the list and find the
+				// referenced element.
+				List<SampleDataElementNode> nodes = myNodes;
+				int nodeCount = nodes.Count;
+				int fromIndex = 0;
+				for (; fromIndex < nodeCount; ++fromIndex)
+				{
+					if (nodes[fromIndex].Element == elementReference)
+					{
+						break;
+					}
+				}
+				if (fromIndex == nodeCount)
+				{
+					if (!removeOnly)
+					{
+						ElementAdded(elementReference);
+					}
+					return;
+				}
+				else if (removeOnly)
+				{
+					DeleteAt(fromIndex);
+					return;
+				}
+				UpdateNode(fromIndex, nodeReference, SampleDataElementNode.Create(mySurveyTree, mySurvey, myContextElement, elementReference, true), true);
 			}
 			private void UpdateNode(int nodeIndex, LinkedNode<SurveyNodeReference> nodeReference, SampleDataElementNode replacementNode, bool displayChanged)
 			{

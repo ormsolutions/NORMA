@@ -956,6 +956,70 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooFewRoleSequences.Text");
 			}
 		}
+		/// <summary>Dynamic text replacement for an error associated with the derivation rule of a FactType. Automatically capitalized on replacement. {0}=FactType {1}=Model.</summary>
+		public static string ModelErrorDisplayContextFactTypeDerivationRule
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DisplayContext.FactTypeDerivationRule");
+			}
+		}
+		/// <summary>Dynamic text replacement for an error associated with a Role in a FactType. Automatically capitalized on replacement. {0}=model {1}=facttype {2}=role number.</summary>
+		public static string ModelErrorDisplayContextFactTypeRole
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DisplayContext.FactTypeRole");
+			}
+		}
+		/// <summary>Dynamic text replacement for an error associated with an ObjectType. Automatically capitalized on replacement. {0}=ObjectType {1}=Model.</summary>
+		public static string ModelErrorDisplayContextObjectType
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DisplayContext.ObjectType");
+			}
+		}
+		/// <summary>Dynamic text replacement for an error associated with a sequence in a set comparison constraint. Automatically capitalized on replacement. {0}=Constraint {1}=Model {2}=sequence number.</summary>
+		public static string ModelErrorDisplayContextSetComparisonConstraintSequence
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DisplayContext.SetComparisonConstraintSequence");
+			}
+		}
+		/// <summary>Dynamic text replacement for an error associated with a sequence in a set comparison constraint join path. Automatically capitalized on replacement. {0}=Constraint {1}=Model {2}=sequence number.</summary>
+		public static string ModelErrorDisplayContextSetComparisonConstraintSequenceJoinPath
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DisplayContext.SetComparisonConstraintSequenceJoinPath");
+			}
+		}
+		/// <summary>Dynamic text replacement for an error associated with a SetConstraint. Automatically capitalized on replacement. {0}=SetConstraint {1}=Model.</summary>
+		public static string ModelErrorDisplayContextSetConstraint
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DisplayContext.SetConstraint");
+			}
+		}
+		/// <summary>Dynamic text replacement for an error associated with a SetConstraint join path. Automatically capitalized on replacement. {0}=SetConstraint {1}=Model.</summary>
+		public static string ModelErrorDisplayContextSetConstraintJoinPath
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DisplayContext.SetConstraintJoinPath");
+			}
+		}
+		/// <summary>Dynamic text replacement for an error associated with the derivation rule of a subtype. Automatically capitalized on replacement. {0}=ObjectType {1}=Model.</summary>
+		public static string ModelErrorDisplayContextSubtypeDerivationRule
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DisplayContext.SubtypeDerivationRule");
+			}
+		}
 		/// <summary>Model validation error text used when a frequency constraint is places on the same roles as a uniqueness constraint. {0}=constraint name {1}=model name</summary>
 		public static string ModelErrorFrequencyConstraintViolatedByUniquenessConstraintText
 		{
@@ -1044,60 +1108,36 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.PopulationMandatoryError.AdditionalFactTypeText");
 			}
 		}
-		/// <summary>Role data type does not match max inclusion. {0}=model {1}=facttype {2}=role number.</summary>
-		public static string ModelErrorRoleValueRangeMaxValueMismatchError
+		/// <summary>ValueConstraintValueTypeDetachedError text with owner place holder. The resulting sentence will be capitalized automatically. {0}=owner information</summary>
+		public static string ModelErrorValueConstraintValueTypeDetachedError
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueRange.MaxValueMismatchError.Role.Message");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueConstraint.ValueTypeDetachedError.Message");
 			}
 		}
-		/// <summary>Role data type does not match min inclusion. {0}=model {1}=facttype {2}=role number.</summary>
-		public static string ModelErrorRoleValueRangeMinValueMismatchError
+		/// <summary>ValueRangeOverlapError text with owner place holder. The resulting sentence will be capitablized automatically. {0}=owner information</summary>
+		public static string ModelErrorValueConstraintValueRangeOverlapError
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueRange.MinValueMismatchError.Role.Message");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueConstraint.ValueRangeOverlapError.Message");
 			}
 		}
-		/// <summary>data type does not match max inclusion. {0}=valuetype {1}=model.</summary>
+		/// <summary>MaxValueMismatchError text with owner place holder. The resulting sentence will be capitalized automatically. {0}=owner information</summary>
 		public static string ModelErrorValueRangeMaxValueMismatchError
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueRange.MaxValueMismatchError.ValueType.Message");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueRange.MaxValueMismatchError.Message");
 			}
 		}
-		/// <summary>data type does not match min inclusion. {0}=valuetype {1}=model.</summary>
+		/// <summary>MinValueMismatchError text with owner place holder. The resulting sentence will be capitalized automatically. {0}=owner information</summary>
 		public static string ModelErrorValueRangeMinValueMismatchError
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueRange.MinValueMismatchError.ValueType.Message");
-			}
-		}
-		/// <summary>ValueRangeOverlapError text for a ValueTypeConstraint. {0}=valuetype {1}=model.</summary>
-		public static string ModelErrorValueTypeValueRangeOverlapError
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueConstraint.ValueRangeOverlapError.ValueType.Message");
-			}
-		}
-		/// <summary>ValueRangeOverlapError text for a RoleValueConstraint. {0}=model {1}=facttype {2}=role number.</summary>
-		public static string ModelErrorRoleValueRangeOverlapError
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueConstraint.ValueRangeOverlapError.Role.Message");
-			}
-		}
-		/// <summary>ValueConstraintValueTypeDetachedError text for a RoleValueConstraint. {0}=model {1}=facttype {2}=role number.</summary>
-		public static string ModelErrorRoleValueTypeDetachedError
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueConstraint.ValueTypeDetachedError.Role.Message");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueRange.MinValueMismatchError.Message");
 			}
 		}
 		/// <summary>Category name to display for uncategorized model errors.</summary>
@@ -2556,6 +2596,14 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactType.NMinusOneRule.Text");
 			}
 		}
+		/// <summary>The roles in a set constraint are in different fact types and a join path has not been provided. Replacement field {0} is context owner name.</summary>
+		public static string ModelErrorConstraintRoleSequenceJoinPathRequiredError
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ConstraintRoleSequence.JoinPathRequiredError.Text");
+			}
+		}
 		/// <summary>The role players in an external constraint must have compatible types. Replacement field {0} is the constraint name and {1} is the model name.</summary>
 		public static string ModelErrorSetConstraintCompatibleRolePlayerTypeError
 		{
@@ -2570,22 +2618,6 @@ namespace ORMSolutions.ORMArchitect.Core
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.CompatibleRolePlayerTypeError.SetComparison.Text");
-			}
-		}
-		/// <summary>The roles in a set constraint are in different fact types and a join path has not been provided. Replacement field {0} is the constraint name and {1} is the model name.</summary>
-		public static string ModelErrorSetConstraintJoinPathRequiredError
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.JoinPathRequiredError.Set.Text");
-			}
-		}
-		/// <summary>The roles in a sequence of a set comparision constraint are in different fact types and a join path has not been provided. Replacement field {0} is the constraint name, {1} is the model name, and {2} is the (1-based) sequence number.</summary>
-		public static string ModelErrorSetComparisonConstraintJoinPathRequiredError
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.JoinPathRequiredError.SetComparison.Text");
 			}
 		}
 		/// <summary>Text displayed in the text of the RoleRequiresRolePlayerError. {0} is the (1-based) role number, {1} is the name of the fact, and {2} is the name of the model.</summary>

@@ -169,6 +169,14 @@
 	<ResourceString name="ModelErrorNotWellModeledSubsetAndMandatoryError" model="Model" resourceName="ModelError.Constraint.NotWellModeledSubsetAndMandatoryError.Text"/>
 	<ResourceString name="ModelErrorConstraintContradiction" model="Model" resourceName="ModelError.Constraint.ContradictionError.Text"/>
 	<ResourceString name="ModelErrorConstraintHasTooFewRoleSequencesText" model="Model" resourceName="ModelError.Constraint.TooFewRoleSequences.Text"/>
+	<ResourceString name="ModelErrorDisplayContextFactTypeDerivationRule" model="Model" resourceName="ModelError.DisplayContext.FactTypeDerivationRule"/>
+	<ResourceString name="ModelErrorDisplayContextFactTypeRole" model="Model" resourceName="ModelError.DisplayContext.FactTypeRole"/>
+	<ResourceString name="ModelErrorDisplayContextObjectType" model="Model" resourceName="ModelError.DisplayContext.ObjectType"/>
+	<ResourceString name="ModelErrorDisplayContextSetComparisonConstraintSequence" model="Model" resourceName="ModelError.DisplayContext.SetComparisonConstraintSequence"/>
+	<ResourceString name="ModelErrorDisplayContextSetComparisonConstraintSequenceJoinPath" model="Model" resourceName="ModelError.DisplayContext.SetComparisonConstraintSequenceJoinPath"/>
+	<ResourceString name="ModelErrorDisplayContextSetConstraint" model="Model" resourceName="ModelError.DisplayContext.SetConstraint"/>
+	<ResourceString name="ModelErrorDisplayContextSetConstraintJoinPath" model="Model" resourceName="ModelError.DisplayContext.SetConstraintJoinPath"/>
+	<ResourceString name="ModelErrorDisplayContextSubtypeDerivationRule" model="Model" resourceName="ModelError.DisplayContext.SubtypeDerivationRule"/>
 	<ResourceString name="ModelErrorFrequencyConstraintViolatedByUniquenessConstraintText" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintViolatedByUniquenessConstraintError.Text"/>
 	<ResourceString name="ModelErrorConstraintHasTooManyRoleSequencesText" model="Model" resourceName="ModelError.Constraint.TooManyRoleSequences.Text"/>
 	<ResourceString name="ModelErrorConstraintExternalConstraintArityMismatch" model="Model" resourceName="ModelError.Constraint.ExternalConstraintArityMismatch.Text"/>
@@ -180,13 +188,10 @@
 	<ResourceString name="ModelErrorModelHasPopulationUniquenessErrorWithUnnamedRole" model="Model" resourceName="ModelError.Model.PopulationUniquenessError.FactType.Text"/>
 	<ResourceString name="ModelErrorModelHasPopulationMandatoryError" model="Model" resourceName="ModelError.Model.PopulationMandatoryError.Text"/>
 	<ResourceString name="ModelErrorModelHasPopulationMandatoryErrorAdditionalFactType" model="Model" resourceName="ModelError.Model.PopulationMandatoryError.AdditionalFactTypeText"/>
-	<ResourceString name="ModelErrorRoleValueRangeMaxValueMismatchError" model="Model" resourceName="ModelError.ValueRange.MaxValueMismatchError.Role.Message"/>
-	<ResourceString name="ModelErrorRoleValueRangeMinValueMismatchError" model="Model" resourceName="ModelError.ValueRange.MinValueMismatchError.Role.Message"/>
-	<ResourceString name="ModelErrorValueRangeMaxValueMismatchError" model="Model" resourceName="ModelError.ValueRange.MaxValueMismatchError.ValueType.Message"/>
-	<ResourceString name="ModelErrorValueRangeMinValueMismatchError" model="Model" resourceName="ModelError.ValueRange.MinValueMismatchError.ValueType.Message"/>
-	<ResourceString name="ModelErrorValueTypeValueRangeOverlapError" model="Model" resourceName="ModelError.ValueConstraint.ValueRangeOverlapError.ValueType.Message"/>
-	<ResourceString name="ModelErrorRoleValueRangeOverlapError" model="Model" resourceName="ModelError.ValueConstraint.ValueRangeOverlapError.Role.Message"/>
-	<ResourceString name="ModelErrorRoleValueTypeDetachedError" model="Model" resourceName="ModelError.ValueConstraint.ValueTypeDetachedError.Role.Message"/>
+	<ResourceString name="ModelErrorValueConstraintValueTypeDetachedError" model="Model" resourceName="ModelError.ValueConstraint.ValueTypeDetachedError.Message"/>
+	<ResourceString name="ModelErrorValueConstraintValueRangeOverlapError" model="Model" resourceName="ModelError.ValueConstraint.ValueRangeOverlapError.Message"/>
+	<ResourceString name="ModelErrorValueRangeMaxValueMismatchError" model="Model" resourceName="ModelError.ValueRange.MaxValueMismatchError.Message"/>
+	<ResourceString name="ModelErrorValueRangeMinValueMismatchError" model="Model" resourceName="ModelError.ValueRange.MinValueMismatchError.Message"/>
 	<ResourceString name="ModelErrorUncategorized" model="Model" resourceName="ModelError.UncategorizedModelError.CategoryDisplayName"/>
 	<ResourceString name="ModelErrorDisplayFilteredText" model="Model" resourceName="ModelErrorDisplayFilter.ToStringOverrideText"/>
 	<ResourceString name="ModelExceptionPathConstantInconsistentWithBagInput" model="Model" resourceName="ModelException.CalculatedPathValueInputBindsToPathConstant.PathConstantInconsistentWithBagInput"/>
@@ -369,10 +374,9 @@
 	<ResourceString name="ReadingShapeAttachedRoleDisplay" model="Diagram" resourceName="ReadingShape.AttachedRoleDisplay"/>
 	<ResourceString name="ReadingShapeUnattachedRoleDisplay" model="Diagram" resourceName="ReadingShape.UnattachedRoleDisplay"/>
 	<ResourceString name="NMinusOneRuleInternalSpan" model="Model" resourceName="ModelError.FactType.NMinusOneRule.Text"/>
+	<ResourceString name="ModelErrorConstraintRoleSequenceJoinPathRequiredError" model="Model" resourceName="ModelError.ConstraintRoleSequence.JoinPathRequiredError.Text"/>
 	<ResourceString name="ModelErrorSetConstraintCompatibleRolePlayerTypeError" model="Model" resourceName="ModelError.Constraint.CompatibleRolePlayerTypeError.Set.Text"/>
 	<ResourceString name="ModelErrorSetComparisonConstraintCompatibleRolePlayerTypeError" model="Model" resourceName="ModelError.Constraint.CompatibleRolePlayerTypeError.SetComparison.Text"/>
-	<ResourceString name="ModelErrorSetConstraintJoinPathRequiredError" model="Model" resourceName="ModelError.Constraint.JoinPathRequiredError.Set.Text"/>
-	<ResourceString name="ModelErrorSetComparisonConstraintJoinPathRequiredError" model="Model" resourceName="ModelError.Constraint.JoinPathRequiredError.SetComparison.Text"/>
 	<ResourceString name="ModelErrorRolePlayerRequiredError" model="Model" resourceName="ModelError.Role.RolePlayerRequired.Message"/>
 	<ResourceString name="ModelErrorObjectTypeCompatibleSupertypesError" model="Model" resourceName="ModelError.ObjectType.CompatibleSupertypesError.Message"/>
 	<ResourceString name="ModelErrorObjectTypePreferredIdentifierRequiresMandatoryError" model="Model" resourceName="ModelError.ObjectType.PreferredIdentifierRequiresMandatoryError.Message"/>

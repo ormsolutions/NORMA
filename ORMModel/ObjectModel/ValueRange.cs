@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -26,7 +27,7 @@ using ORMSolutions.ORMArchitect.Framework;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
-	public partial class ValueRange : IModelErrorOwner, IHasIndirectModelErrorOwner
+	partial class ValueRange : IModelErrorOwner, IHasIndirectModelErrorOwner
 	{
 		#region variables
 		private static readonly string valueDelim = ResourceStrings.ValueConstraintValueDelimiter;
@@ -110,7 +111,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#region IHasIndirectModelErrorOwner Implementation
 		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
 		/// <summary>
-		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		/// Implements <see cref="IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles"/>
 		/// </summary>
 		protected static Guid[] GetIndirectModelErrorOwnerLinkRoles()
 		{
@@ -295,7 +296,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // CustomStorage handlers
 	}
-	public partial class ValueConstraint : IModelErrorOwner
+	partial class ValueConstraint : IModelErrorOwner
 	{
 		#region variables
 		private static readonly string defnContainerString = ResourceStrings.ValueConstraintDefinitionContainerPattern;
@@ -541,7 +542,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Helper function to validate value type constraints
 		/// </summary>
-		/// <param name="valueType"></param>
 		private static void DelayValidateAssociatedValueConstraints(ObjectType valueType)
 		{
 			if (valueType.IsDeleted)
@@ -549,7 +549,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return;
 			}
 			DelayValidateValueConstraint(valueType.ValueConstraint);
-			Role.WalkDescendedValueRoles(valueType, null, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+			Role.WalkDescendedValueRoles(valueType, null, delegate(Role role, PathedRole pathedRole, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
 			{
 				DelayValidateValueConstraint(currentValueConstraint);
 				return true;
@@ -579,7 +579,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="unattachedRole">The alternate role</param>
 		private static void DelayValidateDescendedValueConstraints(ObjectType anchorType, Role unattachedRole)
 		{
-			Role.WalkDescendedValueRoles(anchorType, unattachedRole, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+			Role.WalkDescendedValueRoles(anchorType, unattachedRole, delegate(Role role, PathedRole pathedRole, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
 			{
 				DelayValidateValueConstraint(currentValueConstraint);
 				return true; // Continue walking
@@ -616,7 +616,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				bool hasValueConstraint = valueTypeConstraintLink != null;
 				if (!hasValueConstraint)
 				{
-					Role.WalkDescendedValueRoles(oldValueType, null, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+					Role.WalkDescendedValueRoles(oldValueType, null, delegate(Role role, PathedRole pathedRole, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
 					{
 						if (currentValueConstraint != null && !currentValueConstraint.IsDeleting)
 						{
@@ -739,7 +739,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void ValueConstraintAddRule(ElementAddedEventArgs e)
 		{
-			DelayValidateValueConstraint((e.ModelElement as ValueTypeHasValueConstraint).ValueConstraint);
+			DelayValidateValueConstraint(((ValueTypeHasValueConstraint)e.ModelElement).ValueConstraint);
 		}
 		#endregion // ValueConstraintAddRule
 		#region RoleValueConstraintAddedRule
@@ -749,9 +749,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void RoleValueConstraintAddedRule(ElementAddedEventArgs e)
 		{
-			DelayValidateValueConstraint((e.ModelElement as RoleHasValueConstraint).ValueConstraint);
+			DelayValidateValueConstraint(((RoleHasValueConstraint)e.ModelElement).ValueConstraint);
 		}
 		#endregion // RoleValueConstraintAddedRule
+		#region  PathConditionRoleValueConstraintAddedRule
+		/// <summary>
+		/// AddRule: typeof(PathedRoleHasValueConstraint)
+		/// Checks if the the value range matches the specified date type
+		/// </summary>
+		private static void PathConditionRoleValueConstraintAddedRule(ElementAddedEventArgs e)
+		{
+			DelayValidateValueConstraint(((PathedRoleHasValueConstraint)e.ModelElement).ValueConstraint);
+		}
+		#endregion // PathConditionRoleValueConstraintAddedRule
 		#region ObjectTypeRoleAdded
 		/// <summary>
 		/// AddRule: typeof(ObjectTypePlaysRole)
@@ -933,16 +943,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					// If the old configuration did not have the changed role as a value
 					// role then there will be no value roles descended from it.
 					bool visited = false;
-					Role.WalkDescendedValueRoles((ObjectType)e.NewRolePlayer, changedRole, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+					Role.WalkDescendedValueRoles((ObjectType)e.NewRolePlayer, changedRole, delegate(Role role, PathedRole pathedRole, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
 					{
 						// If we get any callback here, then the role can still be a value role
 						visited = true;
-						if (currentValueConstraint != null && !currentValueConstraint.IsDeleting)
-						{
-							// Make sure that this value constraint is compatible with
-							// other constraints above it.
-							DelayValidateValueConstraint(currentValueConstraint);
-						}
+						// Make sure that this value constraint is compatible with
+						// other constraints above it.
+						DelayValidateValueConstraint(currentValueConstraint);
 						return true;
 					});
 					if (!visited)
@@ -1315,6 +1322,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		public abstract DataType DataType { get;}
 		/// <summary>
+		/// Get the <see cref="IModelErrorDisplayContext"/> for this <see cref="ValueConstraint"/>
+		/// </summary>
+		public abstract IModelErrorDisplayContext ErrorDisplayContext { get;}
+		/// <summary>
 		/// Tests if the associated data type is a text type.
 		/// </summary>
 		public bool IsText
@@ -1371,7 +1382,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion //ValueConstraint specific
 	}
 	#region ValueTypeValueConstraint class
-	public partial class ValueTypeValueConstraint : IHasIndirectModelErrorOwner
+	partial class ValueTypeValueConstraint : IHasIndirectModelErrorOwner
 	{
 		#region Base overrides
 		/// <summary>
@@ -1384,11 +1395,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return ValueType.DataType;
 			}
 		}
+		/// <summary>
+		/// Get the error display context of the <see cref="P:ValueType"/>
+		/// </summary>
+		public override IModelErrorDisplayContext ErrorDisplayContext
+		{
+			get
+			{
+				return ValueType;
+			}
+		}
 		#endregion // Base overrides
 		#region IHasIndirectModelErrorOwner Implementation
 		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
 		/// <summary>
-		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		/// Implements <see cref="IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles"/>
 		/// </summary>
 		protected static Guid[] GetIndirectModelErrorOwnerLinkRoles()
 		{
@@ -1409,7 +1430,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	}
 	#endregion // ValueTypeValueConstraint class
 	#region RoleValueConstraint class
-	public partial class RoleValueConstraint : IHasIndirectModelErrorOwner
+	partial class RoleValueConstraint : IHasIndirectModelErrorOwner
 	{
 		#region Base overrides
 		/// <summary>
@@ -1430,11 +1451,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return retVal;
 			}
 		}
+		/// <summary>
+		/// Get the error display context of the <see cref="P:Role"/>
+		/// </summary>
+		public override IModelErrorDisplayContext ErrorDisplayContext
+		{
+			get
+			{
+				return Role;
+			}
+		}
 		#endregion // Base overrides
 		#region IHasIndirectModelErrorOwner Implementation
 		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
 		/// <summary>
-		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		/// Implements <see cref="IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles"/>
 		/// </summary>
 		protected static Guid[] GetIndirectModelErrorOwnerLinkRoles()
 		{
@@ -1454,14 +1485,72 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // IHasIndirectModelErrorOwner Implementation
 	}
 	#endregion // RoleValueConstraint class
-	#region ValueMismatchError class
+	#region PathConditionRoleValueConstraint class
+	partial class PathConditionRoleValueConstraint : IHasIndirectModelErrorOwner
+	{
+		#region Base overrides
+		/// <summary>
+		/// Retrieve the <see cref="DataType"/> from the <see cref="PathedRole"/>
+		/// </summary>
+		public override DataType DataType
+		{
+			get
+			{
+				DataType retVal = null;
+				PathedRole pathedRole;
+				Role[] valueRoles;
+				if (null != (pathedRole = PathedRole) &&
+					null != (valueRoles = pathedRole.Role.GetValueRoles()))
+				{
+					retVal = valueRoles[0].RolePlayer.DataType;
+				}
+				return retVal;
+			}
+		}
+		/// <summary>
+		/// Get the error display context of the containing <see cref="RolePathOwner"/>
+		/// </summary>
+		public override IModelErrorDisplayContext ErrorDisplayContext
+		{
+			get
+			{
+				PathedRole pathedRole = PathedRole;
+				LeadRolePath leadRolePath = pathedRole.RolePath.RootRolePath;
+				return leadRolePath != null ? leadRolePath.RootOwner as IModelErrorDisplayContext : null;
+			}
+		}
+		#endregion // Base overrides
+		#region IHasIndirectModelErrorOwner Implementation
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
+		/// <summary>
+		/// Implements <see cref="IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles"/>
+		/// </summary>
+		protected static Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		{
+			// Creating a static readonly guid array is causing static field initialization
+			// ordering issues with the partial classes. Defer initialization.
+			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+			if (linkRoles == null)
+			{
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { PathedRoleHasValueConstraint.ValueConstraintDomainRoleId };
+			}
+			return linkRoles;
+		}
+		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerLinkRoles();
+		}
+		#endregion // IHasIndirectModelErrorOwner Implementation
+	}
+	#endregion // PathConditionRoleValueConstraint class
+	#region ValueConstraintError class
 	/// <summary>
-	/// ValueMismatch error abstract class
+	/// ValueConstraintError error abstract class
 	/// </summary>
-	public abstract partial class ValueMismatchError
+	public abstract partial class ValueConstraintError
 	{
 		/// <summary>
-		/// 
+		/// Regenerate error text on owner and model name changes
 		/// </summary>
 		public override RegenerateErrorTextEvents RegenerateEvents
 		{
@@ -1470,46 +1559,41 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange;
 			}
 		}
+		/// <summary>
+		/// Get the <see cref="ValueConstraint"/> associated with this error.
+		/// </summary>
+		public abstract ValueConstraint ContextValueConstraint { get;}
 	}
-	#endregion // ValueMismatchError class
+	#endregion // ValueConstraintError class
 	#region MinValueMismatchError class
 	/// <summary>
 	/// MinValueMismatchError class
 	/// </summary>
 	[ModelErrorDisplayFilter(typeof(DataTypeAndValueErrorCategory))]
-	public partial class MinValueMismatchError : IRepresentModelElements
+	partial class MinValueMismatchError : IRepresentModelElements
 	{
+		#region Base overrides
 		/// <summary>
 		/// Standard override
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			ValueConstraint defn = ValueRange.ValueConstraint;
-			RoleValueConstraint roleDefn;
-			ValueTypeValueConstraint valueDefn;
-			string value = null;
-			string newText = null;
-			string currentText = ErrorText;
-			if (null != (roleDefn = defn as RoleValueConstraint))
+			ValueConstraint valueConstraint = ValueRange.ValueConstraint;
+			IModelErrorDisplayContext displayContext = valueConstraint != null ? valueConstraint.ErrorDisplayContext : null;
+			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorValueRangeMinValueMismatchError, displayContext != null ? displayContext.ErrorDisplayContext : ""));
+		}
+		/// <summary>
+		/// Get the associated <see cref="ValueConstraint"/>
+		/// </summary>
+		public override ValueConstraint ContextValueConstraint
+		{
+			get
 			{
-				Role attachedRole = roleDefn.Role;
-				FactType roleFact = attachedRole.FactType;
-				int index = roleFact.RoleCollection.IndexOf(attachedRole) + 1;
-				string name = roleFact.Name;
-				string model = this.Model.Name;
-				newText = string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorRoleValueRangeMinValueMismatchError, model, name, index);
-			}
-			else if (null != (valueDefn = defn as ValueTypeValueConstraint))
-			{
-				value = valueDefn.ValueType.Name;
-				string model = this.Model.Name;
-				newText = string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorValueRangeMinValueMismatchError, value, model);
-			}
-			if (currentText != newText)
-			{
-				ErrorText = newText;
+				return ValueRange.ValueConstraint;
 			}
 		}
+		#endregion // Base overrides
+		#region IRepresentModelElements Implementation
 		/// <summary>
 		/// Implements <see cref="IRepresentModelElements.GetRepresentedElements"/>
 		/// </summary>
@@ -1522,6 +1606,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			return GetRepresentedElements();
 		}
+		#endregion // IRepresentModelElements Implementation
 	}
 	#endregion // MinValueMismatchError class
 	#region MaxValueMismatchError class
@@ -1529,39 +1614,30 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	/// MaxValueMismatchError class
 	/// </summary>
 	[ModelErrorDisplayFilter(typeof(DataTypeAndValueErrorCategory))]
-	public partial class MaxValueMismatchError : IRepresentModelElements
+	partial class MaxValueMismatchError : IRepresentModelElements
 	{
+		#region Base overrides
 		/// <summary>
 		/// Standard override
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			ValueConstraint defn = ValueRange.ValueConstraint;
-			RoleValueConstraint roleDefn;
-			ValueTypeValueConstraint valueDefn;
-			string value = null;
-			string newText = null;
-			string currentText = ErrorText;
-			if (null != (roleDefn = defn as RoleValueConstraint))
+			ValueConstraint valueConstraint = ValueRange.ValueConstraint;
+			IModelErrorDisplayContext displayContext = valueConstraint != null ? valueConstraint.ErrorDisplayContext : null;
+			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorValueRangeMaxValueMismatchError, displayContext != null ? displayContext.ErrorDisplayContext : ""));
+		}
+		/// <summary>
+		/// Get the associated <see cref="ValueConstraint"/>
+		/// </summary>
+		public override ValueConstraint ContextValueConstraint
+		{
+			get
 			{
-				Role attachedRole = roleDefn.Role;
-				FactType roleFact = attachedRole.FactType;
-				int index = roleFact.RoleCollection.IndexOf(attachedRole) + 1;
-				string name = roleFact.Name;
-				string model = this.Model.Name;
-				newText = string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorRoleValueRangeMaxValueMismatchError, model, name, index);
-			}
-			else if (null != (valueDefn = defn as ValueTypeValueConstraint))
-			{
-				value = valueDefn.ValueType.Name;
-				string model = this.Model.Name;
-				newText = string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorValueRangeMaxValueMismatchError, value, model);
-			}
-			if (currentText != newText)
-			{
-				ErrorText = newText;
+				return ValueRange.ValueConstraint;
 			}
 		}
+		#endregion // Base overrides
+		#region IRepresentModelElements Implementation
 		/// <summary>
 		/// Implements <see cref="IRepresentModelElements.GetRepresentedElements"/>
 		/// </summary>
@@ -1574,6 +1650,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			return GetRepresentedElements();
 		}
+		#endregion // IRepresentModelElements Implementation
 	}
 	#endregion // MaxValueMismatchError class
 	#region ValueConstraintValueTypeDetachedError class
@@ -1581,7 +1658,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	/// This is the model error message for value ranges that overlap
 	/// </summary>
 	[ModelErrorDisplayFilter(typeof(DataTypeAndValueErrorCategory))]
-	public partial class ValueConstraintValueTypeDetachedError
+	partial class ValueConstraintValueTypeDetachedError
 	{
 		#region Base overrides
 		/// <summary>
@@ -1589,32 +1666,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			ValueConstraint defn = ValueConstraint;
-			RoleValueConstraint roleDefn;
-			string newText = "";
-			string currentText = ErrorText;
-			if (null != (roleDefn = defn as RoleValueConstraint))
-			{
-				Role attachedRole = roleDefn.Role;
-				FactType roleFact = attachedRole.FactType;
-				int index = roleFact.RoleCollection.IndexOf(attachedRole) + 1;
-				string name = roleFact.Name;
-				string model = this.Model.Name;
-				newText = string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorRoleValueTypeDetachedError, model, name, index);
-			}
-			if (currentText != newText)
-			{
-				ErrorText = newText;
-			}
+			IModelErrorDisplayContext displayContext = ValueConstraint.ErrorDisplayContext;
+			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorValueConstraintValueTypeDetachedError, displayContext != null ? displayContext.ErrorDisplayContext : ""));
 		}
 		/// <summary>
-		/// RegenerateEvents
+		/// Get the associated <see cref="ValueConstraint"/>
 		/// </summary>
-		public override RegenerateErrorTextEvents RegenerateEvents
+		public override ValueConstraint ContextValueConstraint
 		{
 			get
 			{
-				return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange;
+				return ValueConstraint;
 			}
 		}
 		#endregion // Base overrides
@@ -1625,7 +1687,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	/// This is the model error message for value ranges that overlap
 	/// </summary>
 	[ModelErrorDisplayFilter(typeof(DataTypeAndValueErrorCategory))]
-	public partial class ValueRangeOverlapError
+	partial class ValueRangeOverlapError
 	{
 		#region Base overrides
 		/// <summary>
@@ -1633,40 +1695,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			ValueConstraint defn = ValueConstraint;
-			RoleValueConstraint roleDefn;
-			ValueTypeValueConstraint valueDefn;
-			string value = null;
-			string newText = null;
-			string currentText = ErrorText;
-			if (null != (roleDefn = defn as RoleValueConstraint))
-			{
-				Role attachedRole = roleDefn.Role;
-				FactType roleFact = attachedRole.FactType;
-				int index = roleFact.RoleCollection.IndexOf(attachedRole) + 1;
-				string name = roleFact.Name;
-				string model = this.Model.Name;
-				newText = string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorRoleValueRangeOverlapError, model, name, index);
-			}
-			else if (null != (valueDefn = defn as ValueTypeValueConstraint))
-			{
-				value = valueDefn.ValueType.Name;
-				string model = this.Model.Name;
-				newText = string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorValueTypeValueRangeOverlapError, value, model);
-			}
-			if (currentText != newText)
-			{
-				ErrorText = newText;
-			}
+			IModelErrorDisplayContext displayContext = ValueConstraint.ErrorDisplayContext;
+			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorValueConstraintValueRangeOverlapError, displayContext != null ? displayContext.ErrorDisplayContext : ""));
 		}
 		/// <summary>
-		/// RegenerateEvents
+		/// Get the associated <see cref="ValueConstraint"/>
 		/// </summary>
-		public override RegenerateErrorTextEvents RegenerateEvents
+		public override ValueConstraint ContextValueConstraint
 		{
 			get
 			{
-				return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange;
+				return ValueConstraint;
 			}
 		}
 		#endregion // Base overrides

@@ -35,12 +35,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	/// role change is made that could affect the constraint's existence.
 	/// Used with the <see cref="Role.WalkDescendedValueRoles(ObjectType, Role, ValueRoleVisitor)"/> method.
 	/// </summary>
-	/// <param name="role">A role that is allowed to have values associated with it</param>
+	/// <param name="role">A <see cref="Role"/> that is allowed to have a value constraint associated with it</param>
+	/// <param name="pathedRole">A <see cref="PathedRole"/> that is allowed to have a value constraint associated with it</param>
 	/// <param name="dataTypeLink">The link to the data type</param>
-	/// <param name="currentValueConstraint">The value constraint for the current role.</param>
+	/// <param name="currentValueConstraint">The value constraint for the current role or pathed role.</param>
 	/// <param name="previousValueConstraint">The last value constraint encountered during the walk</param>
 	/// <returns>true to continue walking</returns>
-	public delegate bool ValueRoleVisitor(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint);
+	public delegate bool ValueRoleVisitor(Role role, PathedRole pathedRole, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint);
 	#endregion // ValueRoleVisitor delegate definition
 	#region ReferenceSchemePattern enum
 	/// <summary>
@@ -111,7 +112,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		ImpliedObjectificationRole,
 	}
 	#endregion // ReferenceSchemePattern enum
-	public partial class Role : IModelErrorOwner, IRedirectVerbalization, IVerbalizeChildren, IVerbalizeCustomChildren, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent, IHasIndirectModelErrorOwner, IHierarchyContextEnabled
+	partial class Role : IModelErrorOwner, IRedirectVerbalization, IVerbalizeChildren, IVerbalizeCustomChildren, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent, IHasIndirectModelErrorOwner, IHierarchyContextEnabled
 	{
 		#region Helper methods
 		#region IndexOf helper method for LinkedElementCollection<RoleBase>
@@ -580,7 +581,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="anchorType">The <see cref="ObjectType"/> to walk descended roles for</param>
 		/// <param name="unattachedRole">A role to test that is not currently attached to the anchorType.
-		/// If unattachedRole is null, then only this role will be tested. Otherwise, all current played
+		/// If unattachedRole is not null, then only this role will be tested. Otherwise, all current played
 		/// roles will be walked.</param>
 		/// <param name="visitor">A <see cref="ValueRoleVisitor"/> callback delegate.</param>
 		public static void WalkDescendedValueRoles(ObjectType anchorType, Role unattachedRole, ValueRoleVisitor visitor)
@@ -685,13 +686,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				else if (!(role is SubtypeMetaRole))
 				{
 					RoleValueConstraint currentValueConstraint = role.ValueConstraint;
-					if (!visitor(role, dataTypeLink, currentValueConstraint, previousValueConstraint))
+					if (!visitor(role, null, dataTypeLink, currentValueConstraint, previousValueConstraint))
 					{
 						return false;
 					}
 					if (currentValueConstraint != null && !currentValueConstraint.IsDeleted)
 					{
 						previousValueConstraint = currentValueConstraint;
+					}
+					foreach (PathedRole pathedRole in PathedRole.GetLinksToRolePathCollection(role))
+					{
+						if (!visitor(role, pathedRole, dataTypeLink, pathedRole.ValueConstraint, previousValueConstraint))
+						{
+							return false;
+						}
 					}
 
 					// Walk sequences to find a single-role preferred identifier so
@@ -1191,7 +1199,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#region IHasIndirectModelErrorOwner Implementation
 		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
 		/// <summary>
-		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		/// Implements <see cref="IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles"/>
 		/// </summary>
 		protected static Guid[] GetIndirectModelErrorOwnerLinkRoles()
 		{
@@ -1630,7 +1638,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion
 	}
-	public partial class RoleBase
+	partial class RoleBase : IModelErrorDisplayContext
 	{
 		#region Accessor properties
 		/// <summary>
@@ -1749,9 +1757,42 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // Accessor properties
+		#region IModelErrorDisplayContext Implementation
+		/// <summary>
+		/// Implements <see cref="IModelErrorDisplayContext.ErrorDisplayContext"/>
+		/// </summary>
+		protected string ErrorDisplayContext
+		{
+			get
+			{
+				int roleNumber = 0;
+				string factTypeName = null;
+				string modelName = null;
+				FactType factType = FactType;
+				if (factType != null)
+				{
+					roleNumber = factType.RoleCollection.IndexOf(this) + 1;
+					factTypeName = factType.Name;
+					ORMModel model = factType.Model;
+					if (model != null)
+					{
+						modelName = model.Name;
+					}
+				}
+				return string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorDisplayContextFactTypeRole, modelName ?? "", factTypeName ?? "", roleNumber);
+			}
+		}
+		string IModelErrorDisplayContext.ErrorDisplayContext
+		{
+			get
+			{
+				return ErrorDisplayContext;
+			}
+		}
+		#endregion // IModelErrorDisplayContext Implementation
 	}
 	[ModelErrorDisplayFilter(typeof(FactTypeDefinitionErrorCategory))]
-	public partial class RolePlayerRequiredError
+	partial class RolePlayerRequiredError
 	{
 		#region Base overrides
 		/// <summary>

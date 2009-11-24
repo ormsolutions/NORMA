@@ -13043,6 +13043,94 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 		}
 		#endregion
+		#region DistinctValues domain property code
+		
+		/// <summary>
+		/// DistinctValues domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DistinctValuesDomainPropertyId = new global::System.Guid(0x8f1b2264, 0xb859, 0x48c2, 0xbc, 0xdc, 0x3e, 0xe9, 0x64, 0x72, 0x9c, 0x77);
+		
+		/// <summary>
+		/// Storage for DistinctValues
+		/// </summary>
+		private global::System.Boolean distinctValuesPropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of DistinctValues domain property.
+		/// Should the bag be limited to distinct values, resulting in a set of values
+		/// instead of a bag of values?
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInput/DistinctValues.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInput/DistinctValues.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainObjectId("8f1b2264-b859-48c2-bcdc-3ee964729c77")]
+		public global::System.Boolean DistinctValues
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return distinctValuesPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DistinctValuesPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the CalculatedPathValueInput.DistinctValues domain property.
+		/// </summary>
+		internal sealed partial class DistinctValuesPropertyHandler : DslModeling::DomainPropertyValueHandler<CalculatedPathValueInput, global::System.Boolean>
+		{
+			private DistinctValuesPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the CalculatedPathValueInput.DistinctValues domain property value handler.
+			/// </summary>
+			public static readonly DistinctValuesPropertyHandler Instance = new DistinctValuesPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the CalculatedPathValueInput.DistinctValues domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DistinctValuesDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(CalculatedPathValueInput element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.distinctValuesPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(CalculatedPathValueInput element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.distinctValuesPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region CalculatedValue opposite domain role accessor
 		/// <summary>
 		/// Gets or sets CalculatedValue.
@@ -13364,6 +13452,94 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					ValueChanging(element, oldValue, newValue);
 					element.derivationStoragePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region SetProjection domain property code
+		
+		/// <summary>
+		/// SetProjection domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid SetProjectionDomainPropertyId = new global::System.Guid(0xcb6a01d4, 0x8e6c, 0x4320, 0xaf, 0xd3, 0x49, 0x2a, 0x9d, 0x47, 0x3b, 0x17);
+		
+		/// <summary>
+		/// Storage for SetProjection
+		/// </summary>
+		private global::System.Boolean setProjectionPropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of SetProjection domain property.
+		/// The derivation rule results in a set of distinct facts instead of a bag that
+		/// might contain duplicates.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/SetProjection.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/SetProjection.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainObjectId("cb6a01d4-8e6c-4320-afd3-492a9d473b17")]
+		public global::System.Boolean SetProjection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return setProjectionPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				SetProjectionPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the FactTypeDerivationRule.SetProjection domain property.
+		/// </summary>
+		internal sealed partial class SetProjectionPropertyHandler : DslModeling::DomainPropertyValueHandler<FactTypeDerivationRule, global::System.Boolean>
+		{
+			private SetProjectionPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the FactTypeDerivationRule.SetProjection domain property value handler.
+			/// </summary>
+			public static readonly SetProjectionPropertyHandler Instance = new SetProjectionPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the FactTypeDerivationRule.SetProjection domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return SetProjectionDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(FactTypeDerivationRule element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.setProjectionPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(FactTypeDerivationRule element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.setProjectionPropertyStorage = newValue;
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
@@ -19402,6 +19578,78 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
+	/// DomainClass PathConditionRoleValueConstraint
+	/// Value constraint applied to a role in a join path.
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("9b47edfc-4267-446d-b3f1-6c79982ad89d")]
+	public partial class PathConditionRoleValueConstraint : ValueConstraint
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// PathConditionRoleValueConstraint domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x9b47edfc, 0x4267, 0x446d, 0xb3, 0xf1, 0x6c, 0x79, 0x98, 0x2a, 0xd8, 0x9d);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public PathConditionRoleValueConstraint(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public PathConditionRoleValueConstraint(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region PathedRole opposite domain role accessor
+		/// <summary>
+		/// Gets or sets PathedRole.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint.ValueConstraint
+		/// </summary>
+		public virtual PathedRole PathedRole
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint.ValueConstraintDomainRoleId) as PathedRole;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint.PathedRoleDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint.PathedRoleDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint.ValueConstraintDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
 	/// DomainClass ValueConstraint
 	/// </summary>
 	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider<ValueConstraint, Design.ValueConstraintTypeDescriptor<ValueConstraint>>))]
@@ -19970,18 +20218,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
-	/// DomainClass ValueMismatchError
+	/// DomainClass ValueConstraintError
 	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueMismatchError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueMismatchError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("a18fa855-e7ca-4716-8e8d-1606c09b090a")]
-	public abstract partial class ValueMismatchError : ModelError
+	public abstract partial class ValueConstraintError : ModelError
 	{
 		#region Constructors, domain class Id
 	
 		/// <summary>
-		/// ValueMismatchError domain class Id.
+		/// ValueConstraintError domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xa18fa855, 0xe7ca, 0x4716, 0x8e, 0x8d, 0x16, 0x06, 0xc0, 0x9b, 0x09, 0x0a);
 		/// <summary>
@@ -19989,7 +20237,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="partition">Partition where new element is to be created.</param>
 		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		protected ValueMismatchError(DslModeling::Partition partition, DslModeling::PropertyAssignment[] propertyAssignments)
+		protected ValueConstraintError(DslModeling::Partition partition, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, propertyAssignments)
 		{
 		}
@@ -20005,7 +20253,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.MinValueMismatchError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("7e0d53cf-d374-4eda-b6a6-04d381aa0dc5")]
-	public partial class MinValueMismatchError : ValueMismatchError
+	public partial class MinValueMismatchError : ValueConstraintError
 	{
 		#region Constructors, domain class Id
 	
@@ -20076,7 +20324,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.MaxValueMismatchError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("cce42465-23a0-4726-8881-3adb48e2cc67")]
-	public partial class MaxValueMismatchError : ValueMismatchError
+	public partial class MaxValueMismatchError : ValueConstraintError
 	{
 		#region Constructors, domain class Id
 	
@@ -21595,7 +21843,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRangeOverlapError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("2cf1ee1a-1737-4868-9b5c-95b2c0f9488b")]
-	public partial class ValueRangeOverlapError : ModelError
+	public partial class ValueRangeOverlapError : ValueConstraintError
 	{
 		#region Constructors, domain class Id
 	
@@ -21666,7 +21914,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintValueTypeDetachedError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("92c7060e-a912-4986-984e-e9915b1321ad")]
-	public partial class ValueConstraintValueTypeDetachedError : ModelError
+	public partial class ValueConstraintValueTypeDetachedError : ValueConstraintError
 	{
 		#region Constructors, domain class Id
 	

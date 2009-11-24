@@ -242,7 +242,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	}
 	#endregion // RolePath class
 	#region LeadRolePath class
-	partial class LeadRolePath
+	partial class LeadRolePath : IHasIndirectModelErrorOwner
 	{
 		#region Base overrides
 		/// <summary>
@@ -256,6 +256,27 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // Base overrides
+		#region IHasIndirectModelErrorOwner Implementation
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
+		/// <summary>
+		/// Implements <see cref="IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles"/>
+		/// </summary>
+		protected Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		{
+			// Creating a static readonly guid array is causing static field initialization
+			// ordering issues with the partial classes. Defer initialization.
+			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+			if (linkRoles == null)
+			{
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { RolePathOwnerHasPathComponent.PathComponentDomainRoleId, RolePathCompositorHasPathComponent.PathComponentDomainRoleId };
+			}
+			return linkRoles;
+		}
+		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerLinkRoles();
+		}
+		#endregion // IHasIndirectModelErrorOwner Implementation
 	}
 	#endregion // LeadRolePath class
 	#region RolePathComponent class
@@ -447,18 +468,119 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // Rule Methods
 	}
 	#endregion // RolePathComponent class
-	#region RolePathOwner class
-	partial class RolePathOwner
+	#region RolePathCompositor class
+	partial class RolePathCompositor : IHasIndirectModelErrorOwner
 	{
+		#region IHasIndirectModelErrorOwner Implementation
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
+		/// <summary>
+		/// Implements <see cref="IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles"/>
+		/// </summary>
+		protected Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		{
+			// Creating a static readonly guid array is causing static field initialization
+			// ordering issues with the partial classes. Defer initialization.
+			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+			if (linkRoles == null)
+			{
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { RolePathOwnerHasPathComponent.PathComponentDomainRoleId, RolePathCompositorHasPathComponent.PathComponentDomainRoleId };
+			}
+			return linkRoles;
+		}
+		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerLinkRoles();
+		}
+		#endregion // IHasIndirectModelErrorOwner Implementation
+	}
+	#endregion // RolePathCompositor class
+	#region RolePathOwner class
+	partial class RolePathOwner : IModelErrorOwner
+	{
+		#region Abstract members
 		/// <summary>
 		/// Get the containing <see cref="ORMModel"/> for this path owner.
 		/// </summary>
 		public abstract ORMModel Model { get;}
+		#endregion // Abstract members
+		#region Helper Methods
+		private delegate void PathedRoleVisitor(PathedRole pathedRole);
+		private static void VisitPathedRoles(RolePathComponent pathComponent, PathedRoleVisitor visitor)
+		{
+			LeadRolePath rolePath;
+			RolePathCompositor compositor;
+			if (null != (rolePath = pathComponent as LeadRolePath))
+			{
+				VisitPathedRoles(rolePath, visitor);
+			}
+			else if (null != (compositor = pathComponent as RolePathCompositor))
+			{
+				foreach (RolePathComponent childComponent in compositor.PathComponentCollection)
+				{
+					VisitPathedRoles(childComponent, visitor);
+				}
+			}
+		}
+		private static void VisitPathedRoles(RolePath rolePath, PathedRoleVisitor visitor)
+		{
+			foreach (PathedRole pathedRole in rolePath.PathedRoleCollection)
+			{
+				visitor(pathedRole);
+			}
+			foreach (RoleSubPath subPath in rolePath.SplitPathCollection)
+			{
+				VisitPathedRoles(subPath, visitor);
+			}
+		}
+		#endregion // Helper Methods
+		#region IModelErrorOwner Implementation
+		/// <summary>
+		/// Implements <see cref="IModelErrorOwner.GetErrorCollection"/>
+		/// </summary>
+		protected new IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
+		{
+			ModelErrorUses startFilter = filter;
+			if (filter == ModelErrorUses.None)
+			{
+				filter = (ModelErrorUses)(-1);
+			}
+			List<ModelErrorUsage> errors = null;
+			VisitPathedRoles(
+				PathComponent,
+				delegate(PathedRole pathedRole)
+				{
+					ValueConstraint valueConstraint = pathedRole.ValueConstraint;
+					if (valueConstraint != null)
+					{
+						foreach (ModelErrorUsage valueConstraintErrorUsage in ((IModelErrorOwner)valueConstraint).GetErrorCollection(startFilter))
+						{
+							(errors ?? (errors = new List<ModelErrorUsage>())).Add(valueConstraintErrorUsage);
+						}
+					}
+				});
+			if (errors != null)
+			{
+				foreach (ModelErrorUsage errorUsage in errors)
+				{
+					yield return errorUsage;
+				}
+			}
+			foreach (ModelErrorUsage errorUsage in base.GetErrorCollection(startFilter))
+			{
+				yield return errorUsage;
+			}
+		}
+		IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)
+		{
+			return GetErrorCollection(filter);
+		}
+		#endregion // IModelErrorOwner Implementation
 	}
 	#endregion // RolePathOwner class
 	#region FactTypeDerivationRule class
-	partial class FactTypeDerivationRule
+	partial class FactTypeDerivationRule : IModelErrorDisplayContext, IHasIndirectModelErrorOwner
 	{
+		#region Base overrides
 		/// <summary>
 		/// Get the <see cref="ORMModel"/> from the associated <see cref="FactType"/>
 		/// </summary>
@@ -470,11 +592,65 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return factType != null ? factType.Model : null;
 			}
 		}
+		#endregion // Base overrides
+		#region IModelErrorDisplayContext Implementation
+		/// <summary>
+		/// Implements <see cref="IModelErrorDisplayContext.ErrorDisplayContext"/>
+		/// </summary>
+		protected string ErrorDisplayContext
+		{
+			get
+			{
+				string factTypeName = null;
+				string modelName = null;
+				FactType factType = FactType;
+				if (factType != null)
+				{
+					factTypeName = factType.Name;
+					ORMModel model = factType.Model;
+					if (model != null)
+					{
+						modelName = model.Name;
+					}
+				}
+				return string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorDisplayContextFactTypeDerivationRule, factTypeName ?? "", modelName ?? "");
+			}
+		}
+		string IModelErrorDisplayContext.ErrorDisplayContext
+		{
+			get
+			{
+				return ErrorDisplayContext;
+			}
+		}
+		#endregion // IModelErrorDisplayContext Implementation
+		#region IHasIndirectModelErrorOwner Implementation
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
+		/// <summary>
+		/// Implements <see cref="IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles"/>
+		/// </summary>
+		protected Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		{
+			// Creating a static readonly guid array is causing static field initialization
+			// ordering issues with the partial classes. Defer initialization.
+			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+			if (linkRoles == null)
+			{
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { FactTypeHasDerivationRule.DerivationRuleDomainRoleId };
+			}
+			return linkRoles;
+		}
+		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerLinkRoles();
+		}
+		#endregion // IHasIndirectModelErrorOwner Implementation
 	}
 	#endregion // FactTypeDerivationRule class
 	#region SubtypeDerivationRule class
-	partial class SubtypeDerivationRule
+	partial class SubtypeDerivationRule : IModelErrorDisplayContext, IHasIndirectModelErrorOwner
 	{
+		#region Base overrides
 		/// <summary>
 		/// Get the <see cref="ORMModel"/> from the associated <see cref="ObjectType"/>
 		/// </summary>
@@ -486,11 +662,65 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return objectType != null ? objectType.Model : null;
 			}
 		}
+		#endregion // Base overrides
+		#region IModelErrorDisplayContext Implementation
+		/// <summary>
+		/// Implements <see cref="IModelErrorDisplayContext.ErrorDisplayContext"/>
+		/// </summary>
+		protected string ErrorDisplayContext
+		{
+			get
+			{
+				string subTypeName = null;
+				string modelName = null;
+				ObjectType subType = Subtype;
+				if (subType != null)
+				{
+					subTypeName = subType.Name;
+					ORMModel model = subType.Model;
+					if (model != null)
+					{
+						modelName = model.Name;
+					}
+				}
+				return string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorDisplayContextSubtypeDerivationRule, subTypeName ?? "", modelName ?? "");
+			}
+		}
+		string IModelErrorDisplayContext.ErrorDisplayContext
+		{
+			get
+			{
+				return ErrorDisplayContext;
+			}
+		}
+		#endregion // IModelErrorDisplayContext Implementation
+		#region IHasIndirectModelErrorOwner Implementation
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
+		/// <summary>
+		/// Implements <see cref="IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles"/>
+		/// </summary>
+		protected Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		{
+			// Creating a static readonly guid array is causing static field initialization
+			// ordering issues with the partial classes. Defer initialization.
+			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+			if (linkRoles == null)
+			{
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { SubtypeHasDerivationRule.DerivationRuleDomainRoleId };
+			}
+			return linkRoles;
+		}
+		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerLinkRoles();
+		}
+		#endregion // IHasIndirectModelErrorOwner Implementation
 	}
 	#endregion // SubtypeDerivationRule class
 	#region ConstraintRoleSequenceJoinPath class
-	partial class ConstraintRoleSequenceJoinPath
+	partial class ConstraintRoleSequenceJoinPath : IModelErrorDisplayContext, IHasIndirectModelErrorOwner
 	{
+		#region Base overrides
 		/// <summary>
 		/// Get the <see cref="ORMModel"/> from the associated <see cref="ConstraintRoleSequence"/>
 		/// </summary>
@@ -503,11 +733,79 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return (null != (roleSequence = RoleSequence) && null != (constraint = roleSequence.Constraint)) ? constraint.Model : null;
 			}
 		}
+		#endregion // Base overrides
+		#region IModelErrorDisplayContext Implementation
+		/// <summary>
+		/// Implements <see cref="IModelErrorDisplayContext.ErrorDisplayContext"/>
+		/// </summary>
+		protected string ErrorDisplayContext
+		{
+			get
+			{
+				ConstraintRoleSequence roleSequence = RoleSequence;
+				SetConstraint setConstraint;
+				SetComparisonConstraintRoleSequence setComparisonSequence;
+				if (null != (setConstraint = roleSequence as SetConstraint))
+				{
+					ORMModel model = Model;
+					return string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorDisplayContextSetConstraintJoinPath, setConstraint.Name, model != null ? model.Name : "");
+				}
+				else if (null != (setComparisonSequence = roleSequence as SetComparisonConstraintRoleSequence))
+				{
+					string modelName = null;
+					int sequenceNumber = 0;
+					string constraintName = null;
+					SetComparisonConstraint constraint = setComparisonSequence.ExternalConstraint;
+					if (constraint != null)
+					{
+						constraintName = constraint.Name;
+						ORMModel model = constraint.Model;
+						if (model != null)
+						{
+							modelName = model.Name;
+						}
+						sequenceNumber = constraint.RoleSequenceCollection.IndexOf(setComparisonSequence) + 1;
+					}
+					return string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorDisplayContextSetComparisonConstraintSequenceJoinPath, constraintName ?? "", modelName ?? "", sequenceNumber);
+				}
+				return "";
+			}
+		}
+		string IModelErrorDisplayContext.ErrorDisplayContext
+		{
+			get
+			{
+				return ErrorDisplayContext;
+			}
+		}
+		#endregion // IModelErrorDisplayContext Implementation
+		#region IHasIndirectModelErrorOwner Implementation
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
+		/// <summary>
+		/// Implements <see cref="IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles"/>
+		/// </summary>
+		protected Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		{
+			// Creating a static readonly guid array is causing static field initialization
+			// ordering issues with the partial classes. Defer initialization.
+			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+			if (linkRoles == null)
+			{
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { ConstraintRoleSequenceHasJoinPath.JoinPathDomainRoleId };
+			}
+			return linkRoles;
+		}
+		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerLinkRoles();
+		}
+		#endregion // IHasIndirectModelErrorOwner Implementation
 	}
 	#endregion // ConstraintRoleSequenceJoinPath class
 	#region RoleSubPath class
-	partial class RoleSubPath
+	partial class RoleSubPath : IHasIndirectModelErrorOwner
 	{
+		#region Base overrides
 		/// <summary>
 		/// Recursive find the path root
 		/// </summary>
@@ -525,10 +823,32 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return parentPath as LeadRolePath;
 			}
 		}
+		#endregion // Base overrides
+		#region IHasIndirectModelErrorOwner Implementation
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
+		/// <summary>
+		/// Implements <see cref="IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles"/>
+		/// </summary>
+		protected static Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		{
+			// Creating a static readonly guid array is causing static field initialization
+			// ordering issues with the partial classes. Defer initialization.
+			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+			if (linkRoles == null)
+			{
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { RoleSubPathIsContinuationOfRolePath.SubPathDomainRoleId };
+			}
+			return linkRoles;
+		}
+		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerLinkRoles();
+		}
+		#endregion // IHasIndirectModelErrorOwner Implementation
 	}
 	#endregion // RoleSubPath class
 	#region PathedRole class
-	partial class PathedRole
+	partial class PathedRole : IElementLinkRoleHasIndirectModelErrorOwner
 	{
 		#region Accessor Properties
 		/// <summary>
@@ -566,6 +886,27 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // Accessor Properties
+		#region IElementLinkRoleHasIndirectModelErrorOwner Implementation
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
+		/// <summary>
+		/// Implements <see cref="IElementLinkRoleHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerElementLinkRoles"/>
+		/// </summary>
+		protected static Guid[] GetIndirectModelErrorOwnerElementLinkRoles()
+		{
+			// Creating a static readonly guid array is causing static field initialization
+			// ordering issues with the partial classes. Defer initialization.
+			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+			if (linkRoles == null)
+			{
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { PathedRole.RolePathDomainRoleId };
+			}
+			return linkRoles;
+		}
+		Guid[] IElementLinkRoleHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerElementLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerElementLinkRoles();
+		}
+		#endregion // IElementLinkRoleHasIndirectModelErrorOwner Implementation
 	}
 	#endregion // PathedRole class
 	#region Function class

@@ -1238,6 +1238,14 @@
     <value>CalculatedPathValueInput</value>
     <comment>DisplayName for DomainClass &apos;CalculatedPathValueInput&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInput/DistinctValues.Description" xml:space="preserve">
+    <value>Should the bag be limited to distinct values, resulting in a set of values instead of a bag of values?</value>
+    <comment>Description for DomainProperty &apos;DistinctValues&apos; on DomainClass &apos;CalculatedPathValueInput&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInput/DistinctValues.DisplayName" xml:space="preserve">
+    <value>DistinctValues</value>
+    <comment>DisplayName for DomainProperty &apos;DistinctValues&apos; on DomainClass &apos;CalculatedPathValueInput&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule.Description" xml:space="preserve">
     <value>A role path defining a fact type derivation.</value>
     <comment>Description for DomainClass &apos;FactTypeDerivationRule&apos;</comment>
@@ -1261,6 +1269,14 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/DerivationStorage.DisplayName" xml:space="preserve">
     <value>DerivationStorage</value>
     <comment>DisplayName for DomainProperty &apos;DerivationStorage&apos; on DomainClass &apos;FactTypeDerivationRule&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/SetProjection.Description" xml:space="preserve">
+    <value>The derivation rule results in a set of distinct facts instead of a bag that might contain duplicates.</value>
+    <comment>Description for DomainProperty &apos;SetProjection&apos; on DomainClass &apos;FactTypeDerivationRule&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/SetProjection.DisplayName" xml:space="preserve">
+    <value>DistinctFacts</value>
+    <comment>DisplayName for DomainProperty &apos;SetProjection&apos; on DomainClass &apos;FactTypeDerivationRule&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule.Description" xml:space="preserve">
     <value>A role path defining subtype population.</value>
@@ -2030,6 +2046,14 @@
     <value>RoleValueConstraint</value>
     <comment>DisplayName for DomainClass &apos;RoleValueConstraint&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraint.Description" xml:space="preserve">
+    <value>Value constraint applied to a role in a join path.</value>
+    <comment>Description for DomainClass &apos;PathConditionRoleValueConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraint.DisplayName" xml:space="preserve">
+    <value>PathConditionRoleValueConstraint</value>
+    <comment>DisplayName for DomainClass &apos;PathConditionRoleValueConstraint&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;ValueConstraint&apos;</comment>
@@ -2074,13 +2098,13 @@
     <value>TextChanged</value>
     <comment>DisplayName for DomainProperty &apos;TextChanged&apos; on DomainClass &apos;ValueConstraint&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueMismatchError.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintError.Description" xml:space="preserve">
     <value></value>
-    <comment>Description for DomainClass &apos;ValueMismatchError&apos;</comment>
+    <comment>Description for DomainClass &apos;ValueConstraintError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueMismatchError.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintError.DisplayName" xml:space="preserve">
     <value>Value Constraint Value Invalid for DataType</value>
-    <comment>DisplayName for DomainClass &apos;ValueMismatchError&apos;</comment>
+    <comment>DisplayName for DomainClass &apos;ValueConstraintError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.MinValueMismatchError.Description" xml:space="preserve">
     <value></value>
@@ -4275,6 +4299,38 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasValueConstraint/ValueConstraint.PropertyDisplayName" xml:space="preserve">
     <value>Role</value>
     <comment>PropertyDisplayName for DomainRole &apos;ValueConstraint&apos; on DomainRelationship &apos;RoleHasValueConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint</value>
+    <comment>Description for DomainClass &apos;PathedRoleHasValueConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint.DisplayName" xml:space="preserve">
+    <value>Pathed Role Has Value Constraint</value>
+    <comment>DisplayName for DomainClass &apos;PathedRoleHasValueConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint/PathedRole.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint.PathedRole</value>
+    <comment>Description for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasValueConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint/PathedRole.DisplayName" xml:space="preserve">
+    <value>PathedRole</value>
+    <comment>DisplayName for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasValueConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint/PathedRole.PropertyDisplayName" xml:space="preserve">
+    <value>Value Constraint</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasValueConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint/ValueConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint.ValueConstraint</value>
+    <comment>Description for DomainRole &apos;ValueConstraint&apos; on DomainRelationship &apos;PathedRoleHasValueConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint/ValueConstraint.DisplayName" xml:space="preserve">
+    <value>ValueConstraint</value>
+    <comment>DisplayName for DomainRole &apos;ValueConstraint&apos; on DomainRelationship &apos;PathedRoleHasValueConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint/ValueConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Pathed Role</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ValueConstraint&apos; on DomainRelationship &apos;PathedRoleHasValueConstraint&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasValueRange.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasValueRange</value>

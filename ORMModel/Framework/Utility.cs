@@ -21,6 +21,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Modeling;
@@ -549,6 +550,32 @@ namespace ORMSolutions.ORMArchitect.Framework
 			}
 		}
 		#endregion // GetOwnerWindow method
+		#region UpperCaseFirstLetter method
+		private static Regex myUpperFirstRegex;
+		/// <summary>
+		/// Upper case the first character of a string if it is lower case
+		/// </summary>
+		public static string UpperCaseFirstLetter(string value)
+		{
+			Regex upperFirst = myUpperFirstRegex;
+			if (upperFirst == null)
+			{
+				System.Threading.Interlocked.CompareExchange<Regex>(
+					ref myUpperFirstRegex,
+					new Regex(
+						@"^\p{Ll}",
+						RegexOptions.Compiled),
+					null);
+				upperFirst = myUpperFirstRegex;
+			}
+			return upperFirst.Replace(
+				value,
+				delegate(Match m)
+				{
+					return m.Value.ToUpper();
+				});
+		}
+		#endregion // UpperCaseFirstLetter method
 	}
 	#region LinkedNode class
 	/// <summary>

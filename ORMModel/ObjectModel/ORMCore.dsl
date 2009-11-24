@@ -1195,6 +1195,13 @@
 			<BaseClass>
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
+			<Properties>
+				<DomainProperty Name="DistinctValues" DefaultValue="false" DisplayName="DistinctValues" IsBrowsable="true" Id="8F1B2264-B859-48C2-BCDC-3EE964729C77" Description="Should the bag be limited to distinct values, resulting in a set of values instead of a bag of values?">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
 		</DomainClass>
 		<DomainClass Name="FactTypeDerivationRule" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="DEDADFCE-C351-4FCB-A455-B19FB91875B8" DisplayName="FactTypeDerivationRule" Description="A role path defining a fact type derivation.">
 			<BaseClass>
@@ -1209,6 +1216,11 @@
 				<DomainProperty Name="DerivationStorage" DefaultValue="NotStored" DisplayName="DerivationStorage" IsBrowsable="false" Id="5F83F8C7-D15D-4985-9CCC-099B354BD178">
 					<Type>
 						<DomainEnumerationMoniker Name="DerivationStorage"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="SetProjection" DefaultValue="false" DisplayName="DistinctFacts" Id="CB6A01D4-8E6C-4320-AFD3-492A9D473B17" Description="The derivation rule results in a set of distinct facts instead of a bag that might contain duplicates.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
 			</Properties>
@@ -1834,6 +1846,12 @@
 			</BaseClass>
 		</DomainClass>
 
+		<DomainClass Name="PathConditionRoleValueConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="9B47EDFC-4267-446D-B3F1-6C79982AD89D" DisplayName="PathConditionRoleValueConstraint" Description="Value constraint applied to a role in a join path.">
+			<BaseClass>
+				<DomainClassMoniker Name="ValueConstraint"/>
+			</BaseClass>
+		</DomainClass>
+
 		<DomainClass Name="ValueConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="EF2EFEAD-A124-413C-8F86-C95E2B47160C" DisplayName="ValueConstraint" InheritanceModifier="Abstract" Description="">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
@@ -1895,7 +1913,7 @@
 			</Properties>
 		</DomainClass>
 
-		<DomainClass Name="ValueMismatchError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="A18FA855-E7CA-4716-8E8D-1606C09B090A" DisplayName="Value Constraint Value Invalid for DataType" InheritanceModifier="Abstract" Description="">
+		<DomainClass Name="ValueConstraintError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="A18FA855-E7CA-4716-8E8D-1606C09B090A" DisplayName="Value Constraint Value Invalid for DataType" InheritanceModifier="Abstract" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
@@ -1903,13 +1921,13 @@
 
 		<DomainClass Name="MinValueMismatchError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="7E0D53CF-D374-4EDA-B6A6-04D381AA0DC5" DisplayName="Minimum Bound of Value Range Invalid for DataType" Description="">
 			<BaseClass>
-				<DomainClassMoniker Name="ValueMismatchError"/>
+				<DomainClassMoniker Name="ValueConstraintError"/>
 			</BaseClass>
 		</DomainClass>
 
 		<DomainClass Name="MaxValueMismatchError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="CCE42465-23A0-4726-8881-3ADB48E2CC67" DisplayName="Maximum Bound of Value Range Invalid for DataType" Description="">
 			<BaseClass>
-				<DomainClassMoniker Name="ValueMismatchError"/>
+				<DomainClassMoniker Name="ValueConstraintError"/>
 			</BaseClass>
 		</DomainClass>
 
@@ -2027,13 +2045,13 @@
 
 		<DomainClass Name="ValueRangeOverlapError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="2CF1EE1A-1737-4868-9B5C-95B2C0F9488B" DisplayName="Value Ranges Overlap" Description="">
 			<BaseClass>
-				<DomainClassMoniker Name="ModelError"/>
+				<DomainClassMoniker Name="ValueConstraintError"/>
 			</BaseClass>
 		</DomainClass>
 
 		<DomainClass Name="ValueConstraintValueTypeDetachedError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="92C7060E-A912-4986-984E-E9915B1321AD" DisplayName="Path to Identifying ValueType Detached" Description="">
 			<BaseClass>
-				<DomainClassMoniker Name="ModelError"/>
+				<DomainClassMoniker Name="ValueConstraintError"/>
 			</BaseClass>
 		</DomainClass>
 
@@ -3395,6 +3413,23 @@
 				<DomainRole Name="ValueConstraint" PropertyName="Role" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ValueConstraint" Id="464DFFCF-6633-45CD-8671-2C5E92AE89D2">
 					<RolePlayer>
 						<DomainClassMoniker Name="RoleValueConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="PathedRoleHasValueConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="C77DB9EF-B86F-4B08-BBAA-B2BA2DAD64D9">
+			<Source>
+				<DomainRole Name="PathedRole" PropertyName="ValueConstraint" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="PathedRole" Id="046A095E-696D-4899-8051-58A70ACED299">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="PathedRole"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="ValueConstraint" PropertyName="PathedRole" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ValueConstraint" Id="D3438173-2268-4F8B-8237-FD563D69A3C6">
+					<RolePlayer>
+						<DomainClassMoniker Name="PathConditionRoleValueConstraint"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>

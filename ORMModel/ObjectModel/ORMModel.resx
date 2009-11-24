@@ -300,14 +300,6 @@
 		<value>Constraint '{0}' in model '{1}' is implied by at least one constraint of the same type attached to a subset of the same roles.</value>
 		<comment>Model validation error text when a constraint intersects a second constraint where the second constraints roles are a subset of the constraint roles.</comment>
 	</data>
-	<data name="ModelError.Constraint.JoinPathRequiredError.Set.Text" xml:space="preserve">
-		<value>Constraint '{0}' in model '{1}' requires a join path.</value>
-		<comment>The roles in a set constraint are in different fact types and a join path has not been provided. Replacement field {0} is the constraint name and {1} is the model name.</comment>
-	</data>
-	<data name="ModelError.Constraint.JoinPathRequiredError.SetComparison.Text" xml:space="preserve">
-		<value>Sequence '{2}' of constraint '{0}' in model '{1}' requires a join path.</value>
-		<comment>The roles in a sequence of a set comparision constraint are in different fact types and a join path has not been provided. Replacement field {0} is the constraint name, {1} is the model name, and {2} is the (1-based) sequence number.</comment>
-	</data>
 	<data name="ModelError.Constraint.NotWellModeledSubsetAndMandatoryError.Text" xml:space="preserve">
 		<value>Subset constraint '{0}' and mandatory constraint '{1}' in model '{2}' are not well-modeled. Suggested ways to fix: (1) Delete the mandatory constraint. (2) Add another mandatory constraint on the superset role. (3) Delete the subset constraint.</value>
 		<comment>Model validation error text when a mandatory constraint is put on the subset role of a subset constraint relationship.</comment>
@@ -424,6 +416,10 @@
 		<value>FactType '{0}' in model '{1}' has too many roles for the reading with text '{2}'.</value>
 		<comment>Text displayed in the text of the TooManyRolesError. {0}=fact name,{1}=model name,{2}=reading text</comment>
 	</data>
+	<data name="ModelError.RecognizedPhrase.DuplicateNameError.Message" xml:space="preserve">
+		<value>Model '{0}' contains multiple recognized phrases named '{1}'.</value>
+		<comment>Model validation error text used when multiple recognized phrases with the same name are loaded into a model.Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
+	</data>
 	<data name="ModelError.Role.RolePlayerRequired.Message" xml:space="preserve">
 		<value>Role '{0}' in FactType '{1}' in model '{2}' requires a role player.</value>
 		<comment>Text displayed in the text of the RoleRequiresRolePlayerError. {0} is the (1-based) role number, {1} is the name of the fact, and {2} is the name of the model.</comment>
@@ -432,37 +428,54 @@
 		<value>Uncategorized Model Validation Errors</value>
 		<comment>Category name to display for uncategorized model errors.</comment>
 	</data>
-	<data name="ModelError.ValueConstraint.ValueRangeOverlapError.Role.Message" xml:space="preserve">
-		<value>Role '{2}' of FactType '{1}' in model '{0}' has a value constraint with overlapping values.</value>
-		<comment>ValueRangeOverlapError text for a RoleValueConstraint. {0}=model {1}=facttype {2}=role number.</comment>
+
+	<data name="ModelError.DisplayContext.FactTypeDerivationRule" xml:space="preserve">
+		<value>derivation rule for FactType '{0}' in model '{1}'</value>
+		<comment>Dynamic text replacement for an error associated with the derivation rule of a FactType. Automatically capitalized on replacement. {0}=FactType {1}=Model.</comment>
 	</data>
-	<data name="ModelError.RecognizedPhrase.DuplicateNameError.Message" xml:space="preserve">
-		<value>Model '{0}' contains multiple recognized phrases named '{1}'.</value>
-		<comment>Model validation error text used when multiple recognized phrases with the same name are loaded into a model.Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
+	<data name="ModelError.DisplayContext.FactTypeRole" xml:space="preserve">
+		<value>role '{2}' of FactType '{1}' in model '{0}'</value>
+		<comment>Dynamic text replacement for an error associated with a Role in a FactType. Automatically capitalized on replacement. {0}=model {1}=facttype {2}=role number.</comment>
 	</data>
-	<data name="ModelError.ValueConstraint.ValueRangeOverlapError.ValueType.Message" xml:space="preserve">
-		<value>The value constraint for '{0}' in model '{1}' has overlapping values.</value>
-		<comment>ValueRangeOverlapError text for a ValueTypeConstraint. {0}=valuetype {1}=model.</comment>
+	<data name="ModelError.DisplayContext.ObjectType" xml:space="preserve">
+		<value>'{0}' in model '{1}'</value>
+		<comment>Dynamic text replacement for an error associated with an ObjectType. Automatically capitalized on replacement. {0}=ObjectType {1}=Model.</comment>
 	</data>
-	<data name="ModelError.ValueConstraint.ValueTypeDetachedError.Role.Message" xml:space="preserve">
-		<value>Role '{2}' of FactType '{1}' in model '{0}' has a value constraint with no associated ValueType.</value>
-		<comment>ValueConstraintValueTypeDetachedError text for a RoleValueConstraint. {0}=model {1}=facttype {2}=role number.</comment>
+	<data name="ModelError.DisplayContext.SetComparisonConstraintSequence" xml:space="preserve">
+		<value>sequence '{2}' of constraint '{0}' in model '{1}'</value>
+		<comment>Dynamic text replacement for an error associated with a sequence in a set comparison constraint. Automatically capitalized on replacement. {0}=Constraint {1}=Model {2}=sequence number.</comment>
 	</data>
-	<data name="ModelError.ValueRange.MaxValueMismatchError.Role.Message" xml:space="preserve">
-		<value>Role '{2}' of FactType '{1}' in model '{0}' has a max value that does not match the specified data type.</value>
-		<comment>Role data type does not match max inclusion. {0}=model {1}=facttype {2}=role number.</comment>
+	<data name="ModelError.DisplayContext.SetComparisonConstraintSequenceJoinPath" xml:space="preserve">
+		<value>join path for sequence '{2}' of constraint '{0}' in model '{1}'</value>
+		<comment>Dynamic text replacement for an error associated with a sequence in a set comparison constraint join path. Automatically capitalized on replacement. {0}=Constraint {1}=Model {2}=sequence number.</comment>
 	</data>
-	<data name="ModelError.ValueRange.MaxValueMismatchError.ValueType.Message" xml:space="preserve">
-		<value>The max value for '{0}' in model '{1}' must match the specified data type.</value>
-		<comment>data type does not match max inclusion. {0}=valuetype {1}=model.</comment>
+	<data name="ModelError.DisplayContext.SetConstraint" xml:space="preserve">
+		<value>constraint '{0}' in model '{1}'</value>
+		<comment>Dynamic text replacement for an error associated with a SetConstraint. Automatically capitalized on replacement. {0}=SetConstraint {1}=Model.</comment>
 	</data>
-	<data name="ModelError.ValueRange.MinValueMismatchError.Role.Message" xml:space="preserve">
-		<value>Role '{2}' of FactType '{1}' in model '{0}' has a min value that does not match the specified data type.</value>
-		<comment>Role data type does not match min inclusion. {0}=model {1}=facttype {2}=role number.</comment>
+	<data name="ModelError.DisplayContext.SetConstraintJoinPath" xml:space="preserve">
+		<value>join path for constraint '{0}' in model '{1}'</value>
+		<comment>Dynamic text replacement for an error associated with a SetConstraint join path. Automatically capitalized on replacement. {0}=SetConstraint {1}=Model.</comment>
 	</data>
-	<data name="ModelError.ValueRange.MinValueMismatchError.ValueType.Message" xml:space="preserve">
-		<value>The min value for '{0}' in model '{1}' must match the specified data type.</value>
-		<comment>data type does not match min inclusion. {0}=valuetype {1}=model.</comment>
+	<data name="ModelError.DisplayContext.SubtypeDerivationRule" xml:space="preserve">
+		<value>subtype derivation rule for '{0}' in model '{1}'</value>
+		<comment>Dynamic text replacement for an error associated with the derivation rule of a subtype. Automatically capitalized on replacement. {0}=ObjectType {1}=Model.</comment>
+	</data>
+	<data name="ModelError.ValueConstraint.ValueRangeOverlapError.Message" xml:space="preserve">
+		<value>{0} has a value constraint with overlapping values.</value>
+		<comment>ValueRangeOverlapError text with owner place holder. The resulting sentence will be capitablized automatically. {0}=owner information</comment>
+	</data>
+	<data name="ModelError.ValueConstraint.ValueTypeDetachedError.Message" xml:space="preserve">
+		<value>{0} has a value constraint with no associated ValueType.</value>
+		<comment>ValueConstraintValueTypeDetachedError text with owner place holder. The resulting sentence will be capitalized automatically. {0}=owner information</comment>
+	</data>
+	<data name="ModelError.ValueRange.MaxValueMismatchError.Message" xml:space="preserve">
+		<value>{0} has a maximum value that does not match the specified data type.</value>
+		<comment>MaxValueMismatchError text with owner place holder. The resulting sentence will be capitalized automatically. {0}=owner information</comment>
+	</data>
+	<data name="ModelError.ValueRange.MinValueMismatchError.Message" xml:space="preserve">
+		<value>{0} has a minimum value that does not match the specified data type.</value>
+		<comment>MinValueMismatchError text with owner place holder. The resulting sentence will be capitalized automatically. {0}=owner information</comment>
 	</data>
 	<data name="ModelError.ValueType.DataTypeNotSpecified.Message" xml:space="preserve">
 		<value>A data type must be specified for value type '{0}' in model '{1}'.</value>
@@ -499,6 +512,10 @@
 	<data name="ModelException.ConstraintRoleSequenceHasRole.EnforceNoRolePlayerChange" xml:space="preserve">
 		<value>Direct modification of role players on a ConstraintRoleSequenceHasRole relationship is not supported. As an alternative, first delete the link then add a new one.</value>
 		<comment>Exception message when an attempt is made to directly modify role players on the ConstraintRoleSequenceHasRole relationship.</comment>
+	</data>
+	<data name="ModelError.ConstraintRoleSequence.JoinPathRequiredError.Text" xml:space="preserve">
+		<value>{0} requires a join path.</value>
+		<comment>The roles in a set constraint are in different fact types and a join path has not been provided. Replacement field {0} is context owner name.</comment>
 	</data>
 	<data name="ModelException.EntityTypeInstance.EnforceFixedRoleInstance" xml:space="preserve">
 		<value>The role players of an EntityTypeInstanceHasRoleInstance relationship cannot be changed.</value>

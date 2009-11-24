@@ -89,6 +89,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				EventHandler<ElementDeletedEventArgs> standardDeleteHandler = new EventHandler<ElementDeletedEventArgs>(ModelElementRemovedEvent);
 				EventHandler<ElementPropertyChangedEventArgs> standardGlyphChangeHandler = new EventHandler<ElementPropertyChangedEventArgs>(SurveyGlyphChangedEvent);
 				EventHandler<ElementDeletedEventArgs> standardErrorPathDeletedHandler = new EventHandler<ElementDeletedEventArgs>(ModelElementErrorStateChangedEvent);
+				EventHandler<RolePlayerChangedEventArgs> standardErrorPathRolePlayedChangedHandler = new EventHandler<RolePlayerChangedEventArgs>(ModelElementErrorStateOwnerPathChangedEvent);
 				//Object Type
 				DomainClassInfo classInfo = directory.FindDomainClass(ObjectType.DomainClassId);
 				DomainPropertyInfo propertyInfo = directory.FindDomainProperty(ObjectType.NameDomainPropertyId);
@@ -171,11 +172,32 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				classInfo = directory.FindDomainRelationship(ElementAssociatedWithModelError.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ModelElementErrorStateChangedEvent), action);
 				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
-
 				classInfo = directory.FindDomainRelationship(FactTypeHasFactTypeInstance.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
-
 				classInfo = directory.FindDomainRelationship(ObjectTypeHasObjectTypeInstance.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
+				classInfo = directory.FindDomainRelationship(ValueConstraintHasValueRange.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
+				classInfo = directory.FindDomainRelationship(RolePathOwnerHasPathComponent.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
+				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathRolePlayedChangedHandler, action);
+				classInfo = directory.FindDomainRelationship(RolePathCompositorHasPathComponent.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
+				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathRolePlayedChangedHandler, action);
+				classInfo = directory.FindDomainRelationship(RoleSubPathIsContinuationOfRolePath.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
+				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathRolePlayedChangedHandler, action);
+				classInfo = directory.FindDomainRelationship(PathedRole.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
+				classInfo = directory.FindDomainRelationship(PathedRoleHasValueConstraint.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
+				classInfo = directory.FindDomainRelationship(FactTypeHasDerivationRule.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
+				classInfo = directory.FindDomainRelationship(SubtypeHasDerivationRule.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
+				classInfo = directory.FindDomainRelationship(ConstraintRoleSequenceHasJoinPath.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
+				classInfo = directory.FindDomainRelationship(SetComparisonConstraintHasRoleSequence.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
 
 				//ModalityChanged
@@ -1258,6 +1280,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				NotifyErrorStateChanged(eventNotify, element as IModelErrorOwnerPath);
 			}
 		}
+		/// <summary>
+		/// Survey event handler for changes to a <see cref="ModelElement">ModelElement</see>'s error state
+		/// that occurs due to a role player change.
+		/// </summary>
+		private static void ModelElementErrorStateOwnerPathChangedEvent(object sender, RolePlayerChangedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element;
+			if (null != (eventNotify = ((element = e.ElementLink).Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				NotifyErrorStateChanged(eventNotify, element as IModelErrorOwnerPath);
+			}
+		}
 		private static void NotifyErrorStateChanged(INotifySurveyElementChanged eventNotify, IModelErrorOwnerPath errorPath)
 		{
 			if (errorPath != null)
@@ -1327,6 +1362,226 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				return PreferredIdentifierFor;
+			}
+		}
+		ModelElement IModelErrorOwnerPath.ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return ErrorOwnerRolePlayer;
+			}
+		}
+		#endregion // IModelErrorOwnerPath Implementation
+	}
+	partial class ValueConstraintHasValueRange : IModelErrorOwnerPath
+	{
+		#region IModelErrorOwnerPath Implementation
+		/// <summary>
+		/// Implements <see cref="IModelErrorOwnerPath.ErrorOwnerRolePlayer"/>
+		/// </summary>
+		protected ModelElement ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return ValueConstraint;
+			}
+		}
+		ModelElement IModelErrorOwnerPath.ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return ErrorOwnerRolePlayer;
+			}
+		}
+		#endregion // IModelErrorOwnerPath Implementation
+	}
+	partial class FactTypeHasDerivationRule : IModelErrorOwnerPath
+	{
+		#region IModelErrorOwnerPath Implementation
+		/// <summary>
+		/// Implements <see cref="IModelErrorOwnerPath.ErrorOwnerRolePlayer"/>
+		/// </summary>
+		protected ModelElement ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return FactType;
+			}
+		}
+		ModelElement IModelErrorOwnerPath.ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return ErrorOwnerRolePlayer;
+			}
+		}
+		#endregion // IModelErrorOwnerPath Implementation
+	}
+	partial class SubtypeHasDerivationRule : IModelErrorOwnerPath
+	{
+		#region IModelErrorOwnerPath Implementation
+		/// <summary>
+		/// Implements <see cref="IModelErrorOwnerPath.ErrorOwnerRolePlayer"/>
+		/// </summary>
+		protected ModelElement ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return Subtype;
+			}
+		}
+		ModelElement IModelErrorOwnerPath.ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return ErrorOwnerRolePlayer;
+			}
+		}
+		#endregion // IModelErrorOwnerPath Implementation
+	}
+	partial class ConstraintRoleSequenceHasJoinPath : IModelErrorOwnerPath
+	{
+		#region IModelErrorOwnerPath Implementation
+		/// <summary>
+		/// Implements <see cref="IModelErrorOwnerPath.ErrorOwnerRolePlayer"/>
+		/// </summary>
+		protected ModelElement ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return RoleSequence;
+			}
+		}
+		ModelElement IModelErrorOwnerPath.ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return ErrorOwnerRolePlayer;
+			}
+		}
+		#endregion // IModelErrorOwnerPath Implementation
+	}
+	partial class SetComparisonConstraintHasRoleSequence : IModelErrorOwnerPath
+	{
+		#region IModelErrorOwnerPath Implementation
+		/// <summary>
+		/// Implements <see cref="IModelErrorOwnerPath.ErrorOwnerRolePlayer"/>
+		/// </summary>
+		protected ModelElement ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return ExternalConstraint;
+			}
+		}
+		ModelElement IModelErrorOwnerPath.ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return ErrorOwnerRolePlayer;
+			}
+		}
+		#endregion // IModelErrorOwnerPath Implementation
+	}
+	partial class RolePathOwnerHasPathComponent : IModelErrorOwnerPath
+	{
+		#region IModelErrorOwnerPath Implementation
+		/// <summary>
+		/// Implements <see cref="IModelErrorOwnerPath.ErrorOwnerRolePlayer"/>
+		/// </summary>
+		protected ModelElement ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return PathOwner;
+			}
+		}
+		ModelElement IModelErrorOwnerPath.ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return ErrorOwnerRolePlayer;
+			}
+		}
+		#endregion // IModelErrorOwnerPath Implementation
+	}
+	partial class RolePathCompositorHasPathComponent : IModelErrorOwnerPath
+	{
+		#region IModelErrorOwnerPath Implementation
+		/// <summary>
+		/// Implements <see cref="IModelErrorOwnerPath.ErrorOwnerRolePlayer"/>
+		/// </summary>
+		protected ModelElement ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return Compositor;
+			}
+		}
+		ModelElement IModelErrorOwnerPath.ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return ErrorOwnerRolePlayer;
+			}
+		}
+		#endregion // IModelErrorOwnerPath Implementation
+	}
+	partial class RoleSubPathIsContinuationOfRolePath : IModelErrorOwnerPath
+	{
+		#region IModelErrorOwnerPath Implementation
+		/// <summary>
+		/// Implements <see cref="IModelErrorOwnerPath.ErrorOwnerRolePlayer"/>
+		/// </summary>
+		protected ModelElement ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return ParentRolePath;
+			}
+		}
+		ModelElement IModelErrorOwnerPath.ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return ErrorOwnerRolePlayer;
+			}
+		}
+		#endregion // IModelErrorOwnerPath Implementation
+	}
+	partial class PathedRole : IModelErrorOwnerPath
+	{
+		#region IModelErrorOwnerPath Implementation
+		/// <summary>
+		/// Implements <see cref="IModelErrorOwnerPath.ErrorOwnerRolePlayer"/>
+		/// </summary>
+		protected ModelElement ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return RolePath;
+			}
+		}
+		ModelElement IModelErrorOwnerPath.ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return ErrorOwnerRolePlayer;
+			}
+		}
+		#endregion // IModelErrorOwnerPath Implementation
+	}
+	partial class PathedRoleHasValueConstraint : IModelErrorOwnerPath
+	{
+		#region IModelErrorOwnerPath Implementation
+		/// <summary>
+		/// Implements <see cref="IModelErrorOwnerPath.ErrorOwnerRolePlayer"/>
+		/// </summary>
+		protected ModelElement ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return PathedRole;
 			}
 		}
 		ModelElement IModelErrorOwnerPath.ErrorOwnerRolePlayer

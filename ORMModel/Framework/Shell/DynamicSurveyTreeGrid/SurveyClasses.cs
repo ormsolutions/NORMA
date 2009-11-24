@@ -344,6 +344,40 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 			}
 			return false;
 		}
+		/// <summary>
+		/// Make sure that we have a tracked node established for the target
+		/// of a reference. If the referenced element does not yet exist in
+		/// an expansion context, then the survey is extracted from the element
+		/// itself and node information is calculated based on that data.
+		/// </summary>
+		/// <param name="referencedElement">A referenced element.</param>
+		private void VerifyReferenceTarget(object referencedElement)
+		{
+			// Make sure that we have constructed information for the target element. If not, get its survey
+			// information and create the reference.
+			Dictionary<object, NodeLocation> nodes = myNodeDictionary;
+			if (!nodes.ContainsKey(referencedElement))
+			{
+				object expansionKey = null;
+				object targetContextElement = null;
+				ISurveyNodeContext targetContext;
+				ISurveyNode targetOwner;
+				ISurveyFloatingNode floatingNode;
+				if (null != (targetContext = referencedElement as ISurveyNodeContext))
+				{
+					if (null != (targetOwner = (targetContextElement = targetContext.SurveyNodeContext) as ISurveyNode))
+					{
+						expansionKey = targetOwner.SurveyNodeExpansionKey;
+					}
+				}
+				else if (null != (floatingNode = referencedElement as ISurveyFloatingNode))
+				{
+					expansionKey = floatingNode.FloatingSurveyNodeQuestionKey;
+				}
+				Survey targetSurvey = GetSurvey(expansionKey);
+				nodes.Add(referencedElement, new NodeLocation(targetSurvey, SampleDataElementNode.Create(this, targetSurvey, targetContextElement, referencedElement, false)));
+			}
+		}
 		#endregion // Helper Methods
 		#region Virtual Members
 		/// <summary>
@@ -639,6 +673,84 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 		void INotifySurveyElementChanged.ElementReferenceDeleted(object element, object referenceReason, object contextElement)
 		{
 			ElementReferenceDeleted(element, referenceReason, contextElement);
+		}
+		/// <summary>
+		/// Implements <see cref="INotifySurveyElementChanged.ElementReferenceTargetChanged"/>
+		/// </summary>
+		protected void ElementReferenceTargetChanged(ISurveyNodeReference elementReference, object previousReferencedElement, object newReferencedElement, object contextElement)
+		{
+			LinkedNode<SurveyNodeReference> headLinkNode;
+			Dictionary<object, LinkedNode<SurveyNodeReference>> referenceDictionary = myReferenceDictionary;
+			MainList notifyList;
+			object currentReferencedElement = elementReference.ReferencedElement;
+			myMainListDictionary.TryGetValue(contextElement ?? TopLevelExpansionKey, out notifyList);
+			bool addAsNewElement = true;
+			if (referenceDictionary.TryGetValue(previousReferencedElement, out headLinkNode))
+			{
+				LinkedNode<SurveyNodeReference> linkNode = headLinkNode;
+				LinkedNode<SurveyNodeReference> startHeadLinkNode = headLinkNode;
+				while (linkNode != null)
+				{
+					SurveyNodeReference link = linkNode.Value;
+					if (link.ContextElement == contextElement &&
+						link.Node.Element == elementReference)
+					{
+						// Detach the node from the old reference list
+						linkNode.Detach(ref headLinkNode);
+						if (currentReferencedElement == newReferencedElement)
+						{
+							if (notifyList != null)
+							{
+								notifyList.NodeRetargeted(elementReference, linkNode, false);
+								// Reattach the node to the new reference list
+								LinkedNode<SurveyNodeReference> existingLink;
+								if (referenceDictionary.TryGetValue(currentReferencedElement, out existingLink))
+								{
+									linkNode.SetNext(existingLink, ref existingLink);
+								}
+								referenceDictionary[currentReferencedElement] = linkNode;
+							}
+						}
+						else if (notifyList != null)
+						{
+							// The current state of the reference is not in sync with the expected new
+							// reference. It is currently impossible to accurately reconstruct this node,
+							// so we simply delete it. It is expected that an additional target change request
+							// will eventually be received that allows us to readd this node.
+							notifyList.NodeRetargeted(elementReference, null, true);
+						}
+						addAsNewElement = false;
+						break;
+					}
+					linkNode = linkNode.Next;
+				}
+				if (headLinkNode == null)
+				{
+					referenceDictionary.Remove(previousReferencedElement);
+					if (previousReferencedElement is ISurveyFloatingNode)
+					{
+						// Verify that no one actually included this in a list, then remove it
+						NodeLocation location;
+						if (myNodeDictionary.TryGetValue(previousReferencedElement, out location) &&
+							location.MainList == null)
+						{
+							myNodeDictionary.Remove(previousReferencedElement);
+						}
+					}
+				}
+				else if (startHeadLinkNode != headLinkNode)
+				{
+					referenceDictionary[previousReferencedElement] = headLinkNode;
+				}
+			}
+			if (addAsNewElement && notifyList != null && currentReferencedElement == newReferencedElement)
+			{
+				notifyList.ElementAdded(elementReference);
+			}
+		}
+		void INotifySurveyElementChanged.ElementReferenceTargetChanged(ISurveyNodeReference elementReference, object previousReferencedElement, object newReferencedElement, object contextElement)
+		{
+			ElementReferenceTargetChanged(elementReference, previousReferencedElement, newReferencedElement, contextElement);
 		}
 		/// <summary>
 		/// Implements <see cref="INotifySurveyElementChanged.ElementRenamed"/>

@@ -15691,6 +15691,266 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship PathedRoleHasValueConstraint
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("c77db9ef-b86f-4b08-bbaa-b2ba2dad64d9")]
+	public partial class PathedRoleHasValueConstraint : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// PathedRoleHasValueConstraint domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xc77db9ef, 0xb86f, 0x4b08, 0xbb, 0xaa, 0xb2, 0xba, 0x2d, 0xad, 0x64, 0xd9);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a PathedRoleHasValueConstraint link in the same Partition as the given PathedRole
+		/// </summary>
+		/// <param name="source">PathedRole to use as the source of the relationship.</param>
+		/// <param name="target">PathConditionRoleValueConstraint to use as the target of the relationship.</param>
+		public PathedRoleHasValueConstraint(PathedRole source, PathConditionRoleValueConstraint target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(PathedRoleHasValueConstraint.PathedRoleDomainRoleId, source), new DslModeling::RoleAssignment(PathedRoleHasValueConstraint.ValueConstraintDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public PathedRoleHasValueConstraint(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public PathedRoleHasValueConstraint(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public PathedRoleHasValueConstraint(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public PathedRoleHasValueConstraint(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region PathedRole domain role code
+		
+		/// <summary>
+		/// PathedRole domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid PathedRoleDomainRoleId = new global::System.Guid(0x046a095e, 0x696d, 0x4899, 0x80, 0x51, 0x58, 0xa7, 0x0a, 0xce, 0xd2, 0x99);
+		
+		/// <summary>
+		/// DomainRole PathedRole
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint.PathedRole
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint/PathedRole.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint/PathedRole.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ValueConstraint", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint/PathedRole.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("046a095e-696d-4899-8051-58a70aced299")]
+		public virtual PathedRole PathedRole
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (PathedRole)DslModeling::DomainRoleInfo.GetRolePlayer(this, PathedRoleDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, PathedRoleDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access PathedRole of a PathConditionRoleValueConstraint
+		/// <summary>
+		/// Gets PathedRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static PathedRole GetPathedRole(PathConditionRoleValueConstraint element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ValueConstraintDomainRoleId) as PathedRole;
+		}
+		
+		/// <summary>
+		/// Sets PathedRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetPathedRole(PathConditionRoleValueConstraint element, PathedRole newPathedRole)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ValueConstraintDomainRoleId, newPathedRole);
+		}
+		#endregion
+		#region ValueConstraint domain role code
+		
+		/// <summary>
+		/// ValueConstraint domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ValueConstraintDomainRoleId = new global::System.Guid(0xd3438173, 0x2268, 0x4f8b, 0x82, 0x37, 0xfd, 0x56, 0x3d, 0x69, 0xa3, 0xc6);
+		
+		/// <summary>
+		/// DomainRole ValueConstraint
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint.ValueConstraint
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint/ValueConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint/ValueConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "PathedRole", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint/ValueConstraint.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("d3438173-2268-4f8b-8237-fd563d69a3c6")]
+		public virtual PathConditionRoleValueConstraint ValueConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (PathConditionRoleValueConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, ValueConstraintDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ValueConstraintDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ValueConstraint of a PathedRole
+		/// <summary>
+		/// Gets ValueConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static PathConditionRoleValueConstraint GetValueConstraint(PathedRole element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, PathedRoleDomainRoleId) as PathConditionRoleValueConstraint;
+		}
+		
+		/// <summary>
+		/// Sets ValueConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetValueConstraint(PathedRole element, PathConditionRoleValueConstraint newValueConstraint)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, PathedRoleDomainRoleId, newValueConstraint);
+		}
+		#endregion
+		#region PathedRole link accessor
+		/// <summary>
+		/// Get the PathedRoleHasValueConstraint link to a PathedRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint GetLinkToValueConstraint (global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole pathedRoleInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint>(pathedRoleInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint.PathedRoleDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of PathedRole not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ValueConstraint link accessor
+		/// <summary>
+		/// Get the PathedRoleHasValueConstraint link to a PathConditionRoleValueConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint GetLinkToPathedRole (global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraint valueConstraintInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint>(valueConstraintInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint.ValueConstraintDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ValueConstraint not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region PathedRoleHasValueConstraint instance accessors
+		
+		/// <summary>
+		/// Get any PathedRoleHasValueConstraint links between a given PathedRole and a PathConditionRoleValueConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraint target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint.PathedRoleDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint link in links )
+			{
+				if ( target.Equals(link.ValueConstraint) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one PathedRoleHasValueConstraint link between a given PathedRoleand a PathConditionRoleValueConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraint target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint.PathedRoleDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint link in links )
+			{
+				if ( target.Equals(link.ValueConstraint) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship ValueConstraintHasValueRange
 	/// Description for
 	/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasValueRange
@@ -39553,6 +39813,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		
 		#endregion
 		#region Accessors for roles that this REL plays in other RELs
+		#region ValueConstraint opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ValueConstraint.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint.PathedRole
+		/// </summary>
+		public virtual PathConditionRoleValueConstraint ValueConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint.PathedRoleDomainRoleId) as PathConditionRoleValueConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint.ValueConstraintDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint.ValueConstraintDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint.PathedRoleDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
 		#region ConstraintRoleProjections opposite domain role accessor
 		/// <summary>
 		/// Gets a list of ConstraintRoleProjections.

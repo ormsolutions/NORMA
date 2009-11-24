@@ -489,6 +489,9 @@
 	</se:Element>
 	<se:Element Class="ValueTypeValueConstraint" Name="ValueConstraint" Override="true"/>
 	<se:Element Class="RoleValueConstraint" Name="RoleValueConstraint" Override="true"/>
+	<se:Element Class="PathConditionRoleValueConstraint" Name="PathedRoleConditionValueConstraint" Override="true">
+		<se:Attribute ID="Name" WriteStyle="NotWritten"/>
+	</se:Element>
 	<se:Element Class="ValueRange" Override="true">
 		<se:Link RelationshipName="ValueRangeHasMinValueMismatchError" RoleName="MinValueMismatchError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ValueRangeHasMaxValueMismatchError" RoleName="MaxValueMismatchError" WriteStyle="NotWritten"/>
@@ -649,6 +652,13 @@
 						<plx:callThis name="DerivationStorage" type="property"/>
 					</plx:right>
 				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="SetProjection">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="SetProjection" type="property"/>
+				</plx:unaryOperator>
 			</se:Condition>
 		</se:Attribute>
 	</se:Element>
@@ -1018,6 +1028,50 @@
 		<se:Link RelationshipName="ConstraintRoleProjectedFromCalculatedPathValue" RoleName="ConstraintRole" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="CalculatedPathValueInput" SortChildElements="true" Name="Input" Override="true">
+		<se:Attribute ID="DistinctValues">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:local name="parameter" dataTypeName="FunctionParameter"/>
+				<plx:binaryOperator type="booleanOr">
+					<plx:left>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callThis name="DistinctValues" type="property"/>
+						</plx:unaryOperator>
+					</plx:left>
+					<plx:right>
+						<plx:binaryOperator type="booleanOr">
+							<plx:left>
+								<plx:binaryOperator type="identityEquality">
+									<plx:left>
+										<plx:nullKeyword/>
+									</plx:left>
+									<plx:right>
+										<plx:inlineStatement dataTypeName="FunctionParameter">
+											<plx:assign>
+												<plx:left>
+													<plx:nameRef name="parameter"/>
+												</plx:left>
+												<plx:right>
+													<plx:callThis name="Parameter" type="property"/>
+												</plx:right>
+											</plx:assign>
+										</plx:inlineStatement>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:left>
+							<plx:right>
+								<plx:unaryOperator type="booleanNot">
+									<plx:callInstance name="BagInput" type="property">
+										<plx:callObject>
+											<plx:nameRef name="parameter"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:unaryOperator>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
 		<se:Link RelationshipName="CalculatedPathValueInputCorrespondsToFunctionParameter" RoleName="Parameter" Name="Parameter"/>
 		<se:Container Name="Source">
 			<se:Link RelationshipName="CalculatedPathValueInputBindsToPathedRole" RoleName="Source"/>
@@ -1095,7 +1149,7 @@
 		<se:Link RelationshipName="PathedRole" RoleName="Role" Name="PathedRole" WriteStyle="PrimaryLinkElement" AllowDuplicates="true"/>
 	</se:Element>
 	<se:Element Class="RoleSubPath" Name="SubPath" Override="true"/>
-	<se:Element Class="PathedRole">
+	<se:Element Class="PathedRole" SortChildElements="true">
 		<se:Attribute ID="IsNegated">
 			<se:Condition WriteStyle="NotWritten">
 				<plx:unaryOperator type="booleanNot">
@@ -1104,6 +1158,9 @@
 			</se:Condition>
 		</se:Attribute>
 		<se:Attribute ID="PathedRolePurpose" Name="Purpose"/>
+		<se:Container Name="ValueRestriction">
+			<se:Embed RelationshipName="PathedRoleHasValueConstraint" RoleName="ValueConstraint"/>
+		</se:Container>
 		<se:Link RelationshipName="PathedRoleIsRemotelyCorrelatedWithPathedRole" RoleName="CorrelatingParent" Name="CorrelatedWith"/>
 		<se:Link RelationshipName="PathedRoleIsRemotelyCorrelatedWithPathedRole" RoleName="CorrelatedChild" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="CalculatedPathValueScopedWithPathedRole" RoleName="CalculatedValue" WriteStyle="NotWritten"/>

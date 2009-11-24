@@ -457,7 +457,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	}
 	#endregion // Constraint class
 	#region SetConstraint class
-	public partial class SetConstraint : IModelErrorOwner
+	public partial class SetConstraint : IModelErrorOwner, IModelErrorDisplayContext
 	{
 		#region SetConstraint Specific
 		/// <summary>
@@ -713,6 +713,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		protected new IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
 		{
+			ModelErrorUses startFilter = filter;
 			if (filter == 0)
 			{
 				filter = (ModelErrorUses)(-1);
@@ -786,7 +787,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 
 			// Get errors off the base
-			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
+			foreach (ModelErrorUsage baseError in base.GetErrorCollection(startFilter))
 			{
 				yield return baseError;
 			}
@@ -1194,6 +1195,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // Error synchronization rules
+		#region IModelErrorDisplayContext Implementation
+		/// <summary>
+		/// Implements <see cref="IModelErrorDisplayContext.ErrorDisplayContext"/>
+		/// </summary>
+		protected string ErrorDisplayContext
+		{
+			get
+			{
+				ORMModel model = Model;
+				return string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorDisplayContextSetConstraint, Name, model != null ? model.Name : "");
+			}
+		}
+		string IModelErrorDisplayContext.ErrorDisplayContext
+		{
+			get
+			{
+				return ErrorDisplayContext;
+			}
+		}
+		#endregion // IModelErrorDisplayContext Implementation
 	}
 	public partial class SetConstraint : IConstraint
 	{
@@ -1754,7 +1775,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void ConstraintHasRoleSequenceAddedRule(ElementAddedEventArgs e)
 		{
-			EnsureFactConstraintForRoleSequence(e.ModelElement as SetComparisonConstraintHasRoleSequence);
+			SetComparisonConstraintHasRoleSequence link = (SetComparisonConstraintHasRoleSequence)e.ModelElement;
+			EnsureFactConstraintForRoleSequence(link);
+			SetComparisonConstraintRoleSequence newSequence = link.RoleSequence;
+			SetComparisonConstraint constraint = link.ExternalConstraint;
+			foreach (SetComparisonConstraintRoleSequence sequence in constraint.RoleSequenceCollection)
+			{
+				if (newSequence == null)
+				{
+					// We have sequences after the new one, reset any numbered errors on them
+					FrameworkDomainModel.DelayValidateElement(constraint, DelayRenumberErrorsWithSequenceNumbers);
+					break;
+				}
+				else if (newSequence == sequence)
+				{
+					newSequence = null;
+				}
+			}
 		}
 		/// <summary>
 		/// Helper function to support the same fact constraint fixup
@@ -1820,6 +1857,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (constraint.RoleSequenceCollection.Count == 0)
 				{
 					constraint.Delete();
+				}
+				else
+				{
+					FrameworkDomainModel.DelayValidateElement(constraint, DelayRenumberErrorsWithSequenceNumbers);
+				}
+			}
+		}
+		/// <summary>
+		/// RolePlayerPositionChangeRule: typeof(SetComparisonConstraintHasRoleSequence)
+		/// Renumber validation errors when sequences are reordered.
+		/// </summary>
+		private static void SetComparisonConstraintRoleSequencePositionChangeRule(RolePlayerOrderChangedEventArgs e)
+		{
+			if (e.SourceDomainRole.Id == SetComparisonConstraintHasRoleSequence.ExternalConstraintDomainRoleId)
+			{
+				FrameworkDomainModel.DelayValidateElement(e.SourceElement, DelayRenumberErrorsWithSequenceNumbers);
+			}
+		}
+		/// <summary>
+		/// Reset numbers on errors associated with contained role sequences
+		/// </summary>
+		private static void DelayRenumberErrorsWithSequenceNumbers(ModelElement element)
+		{
+			if (element.IsDeleted)
+			{
+				return;
+			}
+			foreach (ConstraintRoleSequence roleSequence in ((SetComparisonConstraint)element).RoleSequenceCollection)
+			{
+				foreach (ModelError error in ((IModelErrorOwner)roleSequence).GetErrorCollection(ModelErrorUses.None))
+				{
+					error.GenerateErrorText();
 				}
 			}
 		}
@@ -4441,8 +4510,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					Role firstRole = constraintRoles[0].Role;
 					FactType firstFactType = firstRole.FactType;
 					ObjectType resolvedOppositeRolePlayer = null;
+					ObjectType resolvedOppositeRolePlayerAlternate = null; // Note that the alternate will not be set if the first choice is not
 					bool checkedFirstOppositeRolePlayer = false;
 					bool multipleCompatibleOppositeRolePlayers = false;
+					bool usesOppositeObjectification = false;
+					BitTracker usedObjectifyingRole = new BitTracker(constraintRoleCount);
 					for (int i = 1; i < constraintRoleCount; ++i)
 					{
 						Role currentRole = constraintRoles[i].Role;
@@ -4452,7 +4524,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							if (checkBinaryOppositeRolePlayerPattern)
 							{
 								Role oppositeRole;
+								RoleProxy proxy;
 								ObjectType oppositeRolePlayer;
+								ObjectType objectifyingRolePlayer;
+								ObjectType compatibleSupertype;
 								if (!checkedFirstOppositeRolePlayer)
 								{
 									checkedFirstOppositeRolePlayer = true;
@@ -4461,29 +4536,107 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									{
 										resolvedOppositeRolePlayer = oppositeRole.RolePlayer;
 									}
+									if (null != (proxy = firstRole.Proxy) &&
+										null != (oppositeRole = proxy.OppositeRole as Role))
+									{
+										if (resolvedOppositeRolePlayer == null)
+										{
+											resolvedOppositeRolePlayer = oppositeRole.RolePlayer;
+											usesOppositeObjectification = true;
+											usedObjectifyingRole[0] = true;
+										}
+										else
+										{
+											resolvedOppositeRolePlayerAlternate = oppositeRole.RolePlayer;
+										}
+									}
 								}
-								if (null != resolvedOppositeRolePlayer &&
-									null != (oppositeRole = currentRole.OppositeRole as Role) &&
-									null != (oppositeRolePlayer = oppositeRole.RolePlayer))
+								if (null != resolvedOppositeRolePlayer)
 								{
-									if (oppositeRolePlayer == resolvedOppositeRolePlayer)
+									oppositeRolePlayer = null != (oppositeRole = currentRole.OppositeRole as Role) ? oppositeRole.RolePlayer : null;
+									// Check for an exact match
+									if (oppositeRolePlayer != null)
 									{
-										continue;
+										if (oppositeRolePlayer == resolvedOppositeRolePlayer)
+										{
+											resolvedOppositeRolePlayerAlternate = null;
+											continue;
+										}
+										else if (oppositeRolePlayer == resolvedOppositeRolePlayerAlternate)
+										{
+											resolvedOppositeRolePlayer = resolvedOppositeRolePlayerAlternate;
+											resolvedOppositeRolePlayerAlternate = null;
+											usesOppositeObjectification = true;
+											usedObjectifyingRole[0] = true;
+											continue;
+										}
 									}
-									// See if the types are compatible, and resolve to a single supertype
-									ObjectType[] compatibleTypes = ObjectType.GetNearestCompatibleTypes(new ObjectType[]{resolvedOppositeRolePlayer, oppositeRolePlayer});
-									while (compatibleTypes.Length > 1)
+									objectifyingRolePlayer = (null != (proxy = currentRole.Proxy) && null != (oppositeRole = proxy.OppositeRole as Role)) ? oppositeRole.RolePlayer : null;
+									if (objectifyingRolePlayer != null)
 									{
-										compatibleTypes = ObjectType.GetNearestCompatibleTypes(compatibleTypes);
+										if (objectifyingRolePlayer == resolvedOppositeRolePlayer)
+										{
+											resolvedOppositeRolePlayerAlternate = null;
+											usesOppositeObjectification = true;
+											usedObjectifyingRole[i] = true;
+											continue;
+										}
+										else if (objectifyingRolePlayer == resolvedOppositeRolePlayerAlternate)
+										{
+											resolvedOppositeRolePlayer = resolvedOppositeRolePlayerAlternate;
+											resolvedOppositeRolePlayerAlternate = null;
+											usesOppositeObjectification = true;
+											usedObjectifyingRole[i] = true;
+											continue;
+										}
 									}
-									if (compatibleTypes.Length != 0)
+
+									// We didn't get an exact type match. Repeat the exact match logic with
+									// the more expensive tests for compatibility.
+									if (oppositeRolePlayer != null)
 									{
-										resolvedOppositeRolePlayer = compatibleTypes[0];
-										multipleCompatibleOppositeRolePlayers = true;
-										// Note that we'll create an automatic join path for this case,
-										// but we leave joinNotNeeded as true to distinguish a subsequent
-										// break from the pattern.
-										continue;
+										if (null != (compatibleSupertype = ResolveCompatibleSupertype(resolvedOppositeRolePlayer, oppositeRolePlayer)))
+										{
+											resolvedOppositeRolePlayer = compatibleSupertype;
+											resolvedOppositeRolePlayerAlternate = null;
+											multipleCompatibleOppositeRolePlayers = true;
+											// Note that we'll create an automatic join path for this case,
+											// but we leave joinNotNeeded as true to distinguish a subsequent
+											// break from the pattern. (Reapply comment applies to remaining three cases).
+											continue;
+										}
+										else if (null != resolvedOppositeRolePlayerAlternate &&
+											null != (compatibleSupertype = ResolveCompatibleSupertype(resolvedOppositeRolePlayerAlternate, oppositeRolePlayer)))
+										{
+											resolvedOppositeRolePlayer = compatibleSupertype;
+											resolvedOppositeRolePlayerAlternate = null;
+											usesOppositeObjectification = true;
+											usedObjectifyingRole[0] = true;
+											multipleCompatibleOppositeRolePlayers = true;
+											continue;
+										}
+									}
+									if (objectifyingRolePlayer != null)
+									{
+										if (null != (compatibleSupertype = ResolveCompatibleSupertype(resolvedOppositeRolePlayer, objectifyingRolePlayer)))
+										{
+											resolvedOppositeRolePlayer = compatibleSupertype;
+											resolvedOppositeRolePlayerAlternate = null;
+											usesOppositeObjectification = true;
+											usedObjectifyingRole[i] = true;
+											multipleCompatibleOppositeRolePlayers = true;
+											continue;
+										}
+										else if (null != resolvedOppositeRolePlayerAlternate &&
+											null != (compatibleSupertype = ResolveCompatibleSupertype(resolvedOppositeRolePlayerAlternate, objectifyingRolePlayer)))
+										{
+											resolvedOppositeRolePlayer = compatibleSupertype;
+											resolvedOppositeRolePlayerAlternate = null;
+											usesOppositeObjectification = true;
+											usedObjectifyingRole[i] = true;
+											multipleCompatibleOppositeRolePlayers = true;
+											continue;
+										}
 									}
 								}
 							}
@@ -4493,7 +4646,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					if (joinNotNeeded)
 					{
-						if (multipleCompatibleOppositeRolePlayers)
+						if (multipleCompatibleOppositeRolePlayers || usesOppositeObjectification)
 						{
 							// Build and/or verify an automatic join path centered
 							// on resolved object type.
@@ -4504,7 +4657,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								{
 									if (joinPath.IsAutomatic)
 									{
-										VerifyAutomaticJoinPath(joinPath, resolvedOppositeRolePlayer, constraintRoles, notifyAdded);
+										VerifyAutomaticJoinPath(joinPath, resolvedOppositeRolePlayer, constraintRoles, usedObjectifyingRole, notifyAdded);
 									}
 								}
 								else
@@ -4517,7 +4670,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									{
 										notifyAdded.ElementAdded(joinPath, true);
 									}
-									VerifyAutomaticJoinPath(joinPath, resolvedOppositeRolePlayer, constraintRoles, notifyAdded);
+									VerifyAutomaticJoinPath(joinPath, resolvedOppositeRolePlayer, constraintRoles, usedObjectifyingRole, notifyAdded);
 								}
 							}
 						}
@@ -4569,6 +4722,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					pathRequiredError.GenerateErrorText();
 				}
 			}
+		}
+		/// <summary>
+		/// Helper method to find a compatible supertype for two object types. Returns null
+		/// if the types are not compatible.
+		/// </summary>
+		private static ObjectType ResolveCompatibleSupertype(ObjectType objectType1, ObjectType objectType2)
+		{
+			ObjectType[] compatibleTypes = ObjectType.GetNearestCompatibleTypes(new ObjectType[] { objectType1, objectType2 });
+			while (compatibleTypes.Length > 1)
+			{
+				compatibleTypes = ObjectType.GetNearestCompatibleTypes(compatibleTypes);
+			}
+			if (compatibleTypes.Length != 0)
+			{
+				return compatibleTypes[0];
+			}
+			return null;
 		}
 		/// <summary>
 		/// Preliminary data for populating an automatic role path without
@@ -5065,6 +5235,63 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return retVal;
 		}
 		/// <summary>
+		/// Simple helper class for tracking a variable number of bit values
+		/// </summary>
+		private struct BitTracker
+		{
+			private int myLeadBits;
+			private int[] myMoreBits;
+			/// <summary>
+			/// Create a bit tracker
+			/// </summary>
+			/// <param name="bitCount">The number of bits to tracker</param>
+			public BitTracker(int bitCount)
+			{
+				myLeadBits = 0;
+				int requiresMoreInts = (bitCount - 1) / 32;
+				myMoreBits = requiresMoreInts > 0 ? new int[requiresMoreInts] : null;
+			}
+			/// <summary>
+			/// Get a bit value
+			/// </summary>
+			/// <param name="index">The index of the bit to set. Must be less than the bitCount specified in the constructor.</param>
+			public bool this[int index]
+			{
+				get
+				{
+					return index < 32 ? (0 != (myLeadBits & (1 << index))) : (0 != (myMoreBits[index / 32 - 1] & (1 << (index % 32))));
+				}
+				set
+				{
+					if (index < 32)
+					{
+						index = 1 << index;
+						if (value)
+						{
+							myLeadBits |= index;
+						}
+						else
+						{
+							myLeadBits &= ~index;
+						}
+					}
+					else
+					{
+						int moreBitsIndex = index / 32 - 1;
+						index = 1 << (index % 32);
+						if (value)
+						{
+							myMoreBits[moreBitsIndex] |= index;
+						}
+						else
+						{
+							myMoreBits[moreBitsIndex] &= ~index;
+						}
+					}
+				}
+			}
+		}
+		/// <summary>
 		/// Helper method for ValidateJoinPath.
 		/// Verify that a join path based on a single shared role player
 		/// has the correct structure.
@@ -5073,8 +5300,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="resolvedObjectType">The shared object type, already established as the role player
 		/// or a supertype of the role player for all roles opposite the far roles.</param>
 		/// <param name="constraintRoles">The constraint roles to bind to.</param>
+		/// <param name="useObjectifyingRole">Precalculated bit tracker with values set to true if the
+		/// opposite role should be resolved as the objectifying role.</param>
 		/// <param name="notifyAdded">Initial load notification callback.</param>
-		private static void VerifyAutomaticJoinPath(ConstraintRoleSequenceJoinPath joinPath, ObjectType resolvedObjectType, ReadOnlyCollection<ConstraintRoleSequenceHasRole> constraintRoles, INotifyElementAdded notifyAdded)
+		private static void VerifyAutomaticJoinPath(ConstraintRoleSequenceJoinPath joinPath, ObjectType resolvedObjectType, ReadOnlyCollection<ConstraintRoleSequenceHasRole> constraintRoles, BitTracker useObjectifyingRole, INotifyElementAdded notifyAdded)
 		{
 			// The only thing we want in the join path is a lead path with the resolved object type as the root
 			// and an 'and' tail split.
@@ -5124,7 +5353,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				ConstraintRoleSequenceHasRole roleLink = constraintRoles[i];
 				Role farRole = roleLink.Role;
-				Role nearRole = (Role)farRole.OppositeRole;
+				Role nearRole = (Role)(useObjectifyingRole[i] ? farRole.OppositeRoleAlwaysResolveProxy : farRole.OppositeRole);
 				if (firstUnverifiedSubpathIndex < subPathCount)
 				{
 					// See if we can find an existing subpath that begins with the correct role
@@ -5187,7 +5416,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							}
 						}
 					}
-					if (j < firstUnverifiedSubpathIndex)
+					if (j < subPathCount)
 					{
 						continue;
 					}
@@ -5239,12 +5468,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		protected new IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
 		{
+			ModelErrorUses startFilter = filter;
 			if (filter == 0)
 			{
 				filter = (ModelErrorUses)(-1);
 			}
-			// UNDONE: This should eventually be ModelErrorUses.BlockVerbalization, but we
-			// need verbalization with the join path before we refuse to verbalize at all.
+			// UNDONE: This should eventually be ModelErrorUses.BlockVerbalization for the
+			// JoinPathRequiredError, but we need verbalization with the join path before
+			// we refuse to verbalize at all.
 			if (0 != (filter & (ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary)))
 			{
 				JoinPathRequiredError joinPathRequiredError = JoinPathRequiredError;
@@ -5252,9 +5483,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					yield return joinPathRequiredError;
 				}
+
+				ConstraintRoleSequenceJoinPath joinPath = JoinPath;
+				if (joinPath != null)
+				{
+					foreach (ModelErrorUsage derivationError in ((IModelErrorOwner)joinPath).GetErrorCollection(startFilter))
+					{
+						yield return derivationError;
+					}
+				}
 			}
 			// Get errors off the base
-			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
+			foreach (ModelErrorUsage baseError in base.GetErrorCollection(startFilter))
 			{
 				yield return baseError;
 			}
@@ -5289,7 +5529,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // IModelErrorOwner Implementation
 	}
-	public partial class SetComparisonConstraintRoleSequence : IHasIndirectModelErrorOwner
+	public partial class SetComparisonConstraintRoleSequence : IHasIndirectModelErrorOwner, IModelErrorDisplayContext
 	{
 		#region ConstraintRoleSequence overrides
 		/// <summary>
@@ -5316,7 +5556,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#region IHasIndirectModelErrorOwner Implementation
 		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
 		/// <summary>
-		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		/// Implements <see cref="IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles"/>
 		/// </summary>
 		protected Guid[] GetIndirectModelErrorOwnerLinkRoles()
 		{
@@ -5334,6 +5574,32 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return GetIndirectModelErrorOwnerLinkRoles();
 		}
 		#endregion // IHasIndirectModelErrorOwner Implementation
+		#region IModelErrorDisplayContext Implementation
+		/// <summary>
+		/// Implements <see cref="IModelErrorDisplayContext.ErrorDisplayContext"/>
+		/// </summary>
+		string IModelErrorDisplayContext.ErrorDisplayContext
+		{
+			get
+			{
+				string modelName = null;
+				int sequenceNumber = 0;
+				string constraintName = null;
+				SetComparisonConstraint constraint = ExternalConstraint;
+				if (constraint != null)
+				{
+					constraintName = constraint.Name;
+					ORMModel model = constraint.Model;
+					if (model != null)
+					{
+						modelName = model.Name;
+					}
+					sequenceNumber = constraint.RoleSequenceCollection.IndexOf(this) + 1;
+				}
+				return string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorDisplayContextSetComparisonConstraintSequence, constraintName ?? "", modelName ?? "", sequenceNumber);
+			}
+		}
+		#endregion // IModelErrorDisplayContext Implementation
 	}
 	public partial class SetConstraint
 	{
@@ -6456,7 +6722,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#region IHasIndirectModelErrorOwner Implementation
 		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
 		/// <summary>
-		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		/// Implements <see cref="IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles"/>
 		/// </summary>
 		protected Guid[] GetIndirectModelErrorOwnerLinkRoles()
 		{
@@ -7830,12 +8096,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				Debug.Assert(parent != null);
 			}
 			string parentName = (parent != null) ? parent.Name : string.Empty;
-			string currentText = ErrorText;
-			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintHasTooManyRoleSequencesText, parentName);
-			if (currentText != newText)
-			{
-				ErrorText = newText;
-			}
+			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintHasTooManyRoleSequencesText, parentName);
 		}
 		/// <summary>
 		/// Regenerate the error text when the constraint name changes
@@ -7867,12 +8128,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				Debug.Assert(parent != null);
 			}
 			string parentName = (parent != null) ? parent.Name : "";
-			string currentText = ErrorText;
-			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintHasTooFewRoleSequencesText, parentName);
-			if (currentText != newText)
-			{
-				ErrorText = newText;
-			}
+			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintHasTooFewRoleSequencesText, parentName);
 		}
 		/// <summary>
 		/// Regenerate the error text when the constraint name changes
@@ -7899,12 +8155,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			SetComparisonConstraint parent = this.Constraint;
 			string parentName = (parent != null) ? parent.Name : "";
-			string currentText = ErrorText;
-			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintExternalConstraintArityMismatch, parentName);
-			if (currentText != newText)
-			{
-				ErrorText = newText;
-			}
+			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintExternalConstraintArityMismatch, parentName);
 		}
 		/// <summary>
 		/// Regenerate the error text when the constraint name changes
@@ -7945,14 +8196,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			Debug.Assert(namedParent != null, "Parent must be single column or multi column");
 			string parentName = (namedParent != null) ? namedParent.Name : "";
 			string modelName = this.Model.Name;
-			string currentText = ErrorText;
-			string newText = useColumn ?
+			ErrorText = useColumn ?
 				string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorSetComparisonConstraintCompatibleRolePlayerTypeError, parentName, modelName, (Column + 1).ToString(CultureInfo.InvariantCulture)) :
 				string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorSetConstraintCompatibleRolePlayerTypeError, parentName, modelName);
-			if (currentText != newText)
-			{
-				ErrorText = newText;
-			}
 		}
 		/// <summary>
 		/// Regenerate the error text when the constraint name changes
@@ -7990,34 +8236,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			ORMNamedElement namedParent;
-			ConstraintRoleSequence roleSequence = RoleSequence;
-			SetComparisonConstraintRoleSequence multiSequence;
-			int sequenceNumber = -1;
-			if (null != (multiSequence = roleSequence as SetComparisonConstraintRoleSequence))
-			{
-				SetComparisonConstraint constraint = multiSequence.ExternalConstraint;
-				namedParent = constraint;
-				if (constraint != null)
-				{
-					sequenceNumber = constraint.RoleSequenceCollection.IndexOf(multiSequence);
-				}
-			}
-			else
-			{
-				namedParent = roleSequence;
-			}
-			string parentName = (namedParent != null) ? namedParent.Name : "";
-			ORMModel model = Model;
-			string modelName = (model != null) ? model.Name : "";
-			string currentText = ErrorText;
-			string newText = sequenceNumber != -1 ?
-				string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorSetComparisonConstraintJoinPathRequiredError, parentName, modelName, (sequenceNumber + 1).ToString(CultureInfo.InvariantCulture)) :
-				string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorSetConstraintJoinPathRequiredError, parentName, modelName);
-			if (currentText != newText)
-			{
-				ErrorText = newText;
-			}
+			IModelErrorDisplayContext displayContext = (IModelErrorDisplayContext)RoleSequence;
+			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintRoleSequenceJoinPathRequiredError, displayContext.ErrorDisplayContext));
 		}
 		/// <summary>
 		/// Regenerate the error text when the constraint name changes
@@ -8043,13 +8263,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public override void GenerateErrorText()
 		{
 			FrequencyConstraint parent = this.FrequencyConstraint;
-			string parentName = (parent != null) ? parent.Name : "";
-			string currentText = ErrorText;
-			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorFrequencyConstraintMinMaxError, parentName, Model.Name);
-			if (currentText != newText)
-			{
-				ErrorText = newText;
-			}
+			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorFrequencyConstraintMinMaxError, (parent != null) ? parent.Name : "", Model.Name);
 		}
 		/// <summary>
 		/// Regenerate the error text when the constraint name changes
@@ -8075,13 +8289,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public override void GenerateErrorText()
 		{
 			FrequencyConstraint parent = this.FrequencyConstraint;
-			string parentName = (parent != null) ? parent.Name : "";
-			string currentText = ErrorText;
-			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorFrequencyConstraintExactlyOneError, parentName, Model.Name);
-			if (currentText != newText)
-			{
-				ErrorText = newText;
-			}
+			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorFrequencyConstraintExactlyOneError, (parent != null) ? parent.Name : "", Model.Name);
 		}
 		/// <summary>
 		/// Regenerate the error text when the constraint name changes
@@ -8163,13 +8371,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					modelName = model.Name;
 				}
 			}
-			string currentText = ErrorText;
-			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorImpliedInternalUniquenessConstraintError, parentName, modelName);
-			if (newText != currentText)
-			{
-				ErrorText = newText;
-			}
-
+			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorImpliedInternalUniquenessConstraintError, parentName, modelName);
 		}
 		/// <summary>
 		/// Regenerates the error text when the Fact type changes
@@ -8197,12 +8399,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			RingConstraint parent = this.RingConstraint;
 			string parentName = (parent != null) ? parent.Name : "";
 			string modelName = this.Model.Name;
-			string currentText = this.ErrorText;
-			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.RingConstraintTypeNotSpecifiedError, parentName, modelName);
-			if (currentText != newText)
-			{
-				this.ErrorText = newText;
-			}
+			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.RingConstraintTypeNotSpecifiedError, parentName, modelName);
 		}
 		/// <summary>
 		/// Regenerate the error text when the constraint name changes
@@ -8240,12 +8437,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				errorName = SetConstraint.Name;
 			}
 
-			string newText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintImplication, errorName, Model.Name);
-
-			if (newText != ErrorText)
-			{
-				ErrorText = newText;
-			}
+			ErrorText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintImplication, errorName, Model.Name);
 		}
 		/// <summary>
 		/// Regenerate error text when the constraint name or model name changes
@@ -8271,12 +8463,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			SetComparisonConstraint constraint = EqualityOrSubsetConstraint;
 			string errorName = constraint.Name;
 
-			string newText = String.Format(CultureInfo.InvariantCulture, ((IConstraint)constraint).ConstraintType == ConstraintType.Subset ? ResourceStrings.ModelErrorConstraintImplicationSubsetMandatory : ResourceStrings.ModelErrorConstraintImplicationEqualityMandatory, errorName, Model.Name);
-
-			if (newText != ErrorText)
-			{
-				ErrorText = newText;
-			}
+			ErrorText = String.Format(CultureInfo.InvariantCulture, ((IConstraint)constraint).ConstraintType == ConstraintType.Subset ? ResourceStrings.ModelErrorConstraintImplicationSubsetMandatory : ResourceStrings.ModelErrorConstraintImplicationEqualityMandatory, errorName, Model.Name);
 		}
 		/// <summary>
 		/// Regenerate error text when the constraint name or model name changes
@@ -8337,12 +8524,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			string errorConstraints = sb.ToString();
 
-			string newText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintContradiction, errorConstraints, Model.Name);
-
-			if (newText != ErrorText)
-			{
-				ErrorText = newText;
-			}
+			ErrorText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintContradiction, errorConstraints, Model.Name);
 		}
 		/// <summary>
 		/// Regenerate the error text when the model name changes
@@ -8402,12 +8584,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 			string errorConstraints = sb.ToString();
-			string newText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintContradiction, errorConstraints, Model.Name);
-
-			if (newText != ErrorText)
-			{
-				ErrorText = newText;
-			}
+			ErrorText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintContradiction, errorConstraints, Model.Name);
 		}
 		/// <summary>
 		/// Regenerate the error text when the model name changes
@@ -8459,15 +8636,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			string newText = String.Format(CultureInfo.InvariantCulture,
+			ErrorText = String.Format(CultureInfo.InvariantCulture,
 				ResourceStrings.ModelErrorNotWellModeledSubsetAndMandatoryError,
 				SubsetConstraint.Name, MandatoryConstraint.Name,
 				Model.Name);
-
-			if (newText != ErrorText)
-			{
-				ErrorText = newText;
-			}
 		}
 		/// <summary>
 		/// Regenerate the error text when the model name changes

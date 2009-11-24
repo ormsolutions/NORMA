@@ -693,6 +693,20 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 		/// reason provided by <see cref="P:ISurveyNodeReference.SurveyNodeReferenceReason"/></param>
 		/// <param name="contextElement">The context container of the referenced element.</param>
 		void ElementReferenceCustomSortChanged(object element, object referenceReason, object contextElement);
+		/// <summary>
+		/// Called if the target of an element reference has been modified. This callback automatically
+		/// resets display information for strings, glyphs, and custom sort data.
+		/// </summary>
+		/// <remarks>This method should be used with discretion and preferably with relatively short expansions
+		/// because the location of an existing element cannot be determined without a linear walk through the list.</remarks>
+		/// <param name="elementReference">The <see cref="ISurveyNodeReference"/> that is being modified.
+		/// This element must maintain its identify over time for this method to be used.</param>
+		/// <param name="previousReferencedElement">The old referenced element.</param>
+		/// <param name="newReferencedElement">The new referenced element. If this element is not the
+		/// same as the current referenced element retrieved from <paramref name="elementReference"/>,
+		/// then this is removes the old reference and relies on a subsequent event to reattach it.</param>
+		/// <param name="contextElement">The context container of the referenced element.</param>
+		void ElementReferenceTargetChanged(ISurveyNodeReference elementReference, object previousReferencedElement, object newReferencedElement, object contextElement);
 	}
 	#endregion // INotifySurveyElementChanged interface
 }

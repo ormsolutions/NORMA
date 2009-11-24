@@ -41,6 +41,9 @@
 			<arg:RolePlayerChangeRule methodName="BlockRolePlayerChangeRule">
 				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
 			</arg:RolePlayerChangeRule>
+			<arg:RolePlayerPositionChangeRule methodName="ConstraintRolePositionChangedRule">
+				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
+			</arg:RolePlayerPositionChangeRule>
 			<arg:AddRule methodName="ConstraintRoleProjectedFromCalculatedValueRule">
 				<arg:RuleOn targetType="ConstraintRoleProjectedFromCalculatedPathValue"/>
 			</arg:AddRule>
@@ -65,13 +68,12 @@
 			<arg:ChangeRule methodName="ModalityChangeRule">
 				<arg:RuleOn targetType="SetComparisonConstraint"/>
 			</arg:ChangeRule>
-			<arg:DeletingRule methodName="SetComparisonConstraintHasRoleDeletingRule">
-				<arg:RuleOn targetType="ConstraintRoleSequence"/>
-			</arg:DeletingRule>
-			<arg:DeletingRule methodName="SetConstraintDeletingRule">
-				<arg:RuleOn targetType="SetConstraint"/>
-			</arg:DeletingRule>
-
+			<arg:AddRule methodName="RoleAddedRule">
+				<arg:RuleOn targetType="FactTypeHasRole"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="RoleDeletedRule">
+				<arg:RuleOn targetType="FactTypeHasRole"/>
+			</arg:DeleteRule>
 			<arg:AddRule methodName="RolePlayerAddedRule">
 				<arg:RuleOn targetType="ObjectTypePlaysRole"/>
 			</arg:AddRule>
@@ -81,16 +83,12 @@
 			<arg:RolePlayerChangeRule methodName="RolePlayerRolePlayerChangedRule">
 				<arg:RuleOn targetType="ObjectTypePlaysRole"/>
 			</arg:RolePlayerChangeRule>
-			<arg:AddRule methodName="RoleAddedRule">
-				<arg:RuleOn targetType="FactTypeHasRole"/>
-			</arg:AddRule>
-			<arg:DeleteRule methodName="RoleDeletedRule">
-				<arg:RuleOn targetType="FactTypeHasRole"/>
-			</arg:DeleteRule>
-			<arg:RolePlayerPositionChangeRule methodName="ConstraintRolePositionChangedRule">
-				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
-			</arg:RolePlayerPositionChangeRule>
-
+			<arg:DeletingRule methodName="SetComparisonConstraintHasRoleDeletingRule">
+				<arg:RuleOn targetType="ConstraintRoleSequence"/>
+			</arg:DeletingRule>
+			<arg:DeletingRule methodName="SetConstraintDeletingRule">
+				<arg:RuleOn targetType="SetConstraint"/>
+			</arg:DeletingRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="ConstraintUtility">
 			<arg:DeleteRule methodName="ConstraintRoleSequenceHasRoleDeletedRule">
@@ -883,6 +881,9 @@
 			<arg:DeleteRule methodName="SetComparisonConstraintRoleSequenceDeletedRule">
 				<arg:RuleOn targetType="SetComparisonConstraintHasRoleSequence" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
 			</arg:DeleteRule>
+			<arg:RolePlayerPositionChangeRule methodName="SetComparisonConstraintRoleSequencePositionChangeRule">
+				<arg:RuleOn targetType="SetComparisonConstraintHasRoleSequence"/>
+			</arg:RolePlayerPositionChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="SetConstraint">
 			<arg:AddRule methodName="ConstraintAddedRule">
@@ -999,6 +1000,9 @@
 			</arg:RolePlayerChangeRule>
 			<arg:AddRule methodName="ObjectTypeRoleAdded">
 				<arg:RuleOn targetType="ObjectTypePlaysRole"/>
+			</arg:AddRule>
+			<arg:AddRule methodName="PathConditionRoleValueConstraintAddedRule">
+				<arg:RuleOn targetType="PathedRoleHasValueConstraint"/>
 			</arg:AddRule>
 			<arg:DeletingRule methodName="PreferredIdentifierDeletingRule">
 				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier"/>

@@ -82,7 +82,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	/// </summary>
 	public delegate void SubtypeHierarchyChange(ObjectType objectType);
 	#endregion // SubtypeHierarchyChange delegate definition
-	public partial class ObjectType : INamedElementDictionaryChild, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent, IModelErrorOwner, IHasIndirectModelErrorOwner, IVerbalizeCustomChildren, IHierarchyContextEnabled
+	partial class ObjectType : INamedElementDictionaryChild, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent, IModelErrorOwner, IHasIndirectModelErrorOwner, IModelErrorDisplayContext, IVerbalizeCustomChildren, IHierarchyContextEnabled
 	{
 		#region Public token values
 		/// <summary>
@@ -2776,12 +2776,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 											ObjectType currentSupertype = currentSupertypeRole.RolePlayer;
 											if (currentSupertype != null)
 											{
-												Role.WalkDescendedValueRoles(currentSupertype, currentSupertypeRole, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+												Role.WalkDescendedValueRoles(currentSupertype, currentSupertypeRole, delegate(Role role, PathedRole pathedRole, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
 												{
-													if (currentValueConstraint != null && !currentValueConstraint.IsDeleting)
-													{
-														ObjectModel.ValueConstraint.DelayValidateValueConstraint(currentValueConstraint);
-													}
+													ObjectModel.ValueConstraint.DelayValidateValueConstraint(currentValueConstraint);
 													return true;
 												});
 											}
@@ -2874,12 +2871,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (verifyDownstream)
 				{
 					// This can only runs if notifyAdded is null
-					Role.WalkDescendedValueRoles(this, null, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+					Role.WalkDescendedValueRoles(this, null, delegate(Role role, PathedRole pathedRole, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
 					{
-						if (currentValueConstraint != null && !currentValueConstraint.IsDeleting)
-						{
-							ObjectModel.ValueConstraint.DelayValidateValueConstraint(currentValueConstraint);
-						}
+						ObjectModel.ValueConstraint.DelayValidateValueConstraint(currentValueConstraint);
 						return true;
 					});
 					WalkSubtypes(
@@ -3608,10 +3602,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					WalkSupertypes(role.RolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
 					{
-						if (depth != 0) // The node itself will be picked up as a subtype, no need to do it twice
-						{
-							hierarchyChangeCallback(type);
-						}
+						hierarchyChangeCallback(type);
 						return ObjectTypeVisitorResult.Continue;
 					});
 				}
@@ -3932,16 +3923,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										{
 											// The old primary identification allowed value roles. Revalidate any downstream value roles.
 											bool visited = false;
-											Role.WalkDescendedValueRoles(changedSubtypeLink.Supertype, null, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+											Role.WalkDescendedValueRoles(changedSubtypeLink.Supertype, null, delegate(Role role, PathedRole pathedRole, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
 											{
 												// If we get any callback here, then the role can still be a value role
 												visited = true;
-												if (currentValueConstraint != null && !currentValueConstraint.IsDeleting)
-												{
-													// Make sure that this value constraint is compatible with
-													// other constraints above it.
-													ObjectModel.ValueConstraint.DelayValidateValueConstraint(currentValueConstraint);
-												}
+												// Make sure that this value constraint is compatible with
+												// other constraints above it.
+												ObjectModel.ValueConstraint.DelayValidateValueConstraint(currentValueConstraint);
 												return true;
 											});
 											if (!visited)
@@ -3950,12 +3938,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 												// Mark any downstream value constraints for validation. Skip from the entity
 												// type attached to the preferred identifier directly to the old
 												// supertype role.
-												Role.WalkDescendedValueRoles(oldIdentifier.PreferredIdentifierFor, oldSupertypeRole, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+												Role.WalkDescendedValueRoles(oldIdentifier.PreferredIdentifierFor, oldSupertypeRole, delegate(Role role, PathedRole pathedRole, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
 												{
-													if (currentValueConstraint != null && !currentValueConstraint.IsDeleting)
-													{
-														ObjectModel.ValueConstraint.DelayValidateValueConstraint(currentValueConstraint);
-													}
+													ObjectModel.ValueConstraint.DelayValidateValueConstraint(currentValueConstraint);
 													return true;
 												});
 											}
@@ -3963,12 +3948,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									}
 									return ObjectTypeVisitorResult.SkipChildren;
 								});
-							Role.WalkDescendedValueRoles(changedSubtypeLink.Subtype, null, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+							Role.WalkDescendedValueRoles(changedSubtypeLink.Subtype, null, delegate(Role role, PathedRole pathedRole, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
 							{
-								if (currentValueConstraint != null && !currentValueConstraint.IsDeleting)
-								{
-									ObjectModel.ValueConstraint.DelayValidateValueConstraint(currentValueConstraint);
-								}
+								ObjectModel.ValueConstraint.DelayValidateValueConstraint(currentValueConstraint);
 								return true;
 							});
 
@@ -4008,6 +3990,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		protected new IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
 		{
+			ModelErrorUses startFilter = filter;
 			if (filter == 0)
 			{
 				filter = (ModelErrorUses)(-1);
@@ -4047,9 +4030,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				//UNDONE: Eventually this shouldn't be verbalizing
 				foreach (IModelErrorOwner objectTypeInstance in this.ObjectTypeInstanceCollection)
 				{
-					foreach (ModelErrorUsage objectTypeInstanceError in objectTypeInstance.GetErrorCollection(filter))
+					foreach (ModelErrorUsage objectTypeInstanceError in objectTypeInstance.GetErrorCollection(startFilter))
 					{
 						yield return objectTypeInstanceError;
+					}
+				}
+
+				SubtypeDerivationRule derivationRule = DerivationRule;
+				if (derivationRule != null)
+				{
+					foreach (ModelErrorUsage derivationError in ((IModelErrorOwner)derivationRule).GetErrorCollection(startFilter))
+					{
+						yield return derivationError;
 					}
 				}
 			}
@@ -4098,7 +4090,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 
 			// Get errors off the base
-			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
+			foreach (ModelErrorUsage baseError in base.GetErrorCollection(startFilter))
 			{
 				yield return baseError;
 			}
@@ -4143,7 +4135,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static Guid[] myIndirectModelErrorOwnerLinkRoles1;
 		private static Guid[] myIndirectModelErrorOwnerLinkRoles2;
 		/// <summary>
-		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		/// Implements <see cref="IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles"/>
 		/// </summary>
 		protected Guid[] GetIndirectModelErrorOwnerLinkRoles()
 		{
@@ -4176,6 +4168,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return GetIndirectModelErrorOwnerLinkRoles();
 		}
 		#endregion // IHasIndirectModelErrorOwner Implementation
+		#region IModelErrorDisplayContext Implementation
+		/// <summary>
+		/// Implements <see cref="IModelErrorDisplayContext.ErrorDisplayContext"/>
+		/// </summary>
+		protected string ErrorDisplayContext
+		{
+			get
+			{
+				ORMModel model = Model;
+				return string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorDisplayContextObjectType, Name, model != null ? model.Name : "");
+			}
+		}
+		string IModelErrorDisplayContext.ErrorDisplayContext
+		{
+			get
+			{
+				return ErrorDisplayContext;
+			}
+		}
+		#endregion // IModelErrorDisplayContext Implementation
 		#region CheckForIncompatibleRelationshipAddRule
 		/// <summary>
 		/// AddRule: typeof(Objectification)
@@ -4464,12 +4476,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // NearestValueConstraintVerbalizer class
 	}
 	#region ValueTypeHasDataType class
-	public partial class ValueTypeHasDataType : IElementLinkRoleHasIndirectModelErrorOwner
+	partial class ValueTypeHasDataType : IElementLinkRoleHasIndirectModelErrorOwner
 	{
 		#region IElementLinkRoleHasIndirectModelErrorOwner Implementation
 		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
 		/// <summary>
-		/// Implements IElementLinkRoleHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerElementLinkRoles()
+		/// Implements <see cref="IElementLinkRoleHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerElementLinkRoles"/>
 		/// </summary>
 		protected static Guid[] GetIndirectModelErrorOwnerElementLinkRoles()
 		{
@@ -4499,11 +4511,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			string newText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorEntityTypeRequiresReferenceSchemeMessage, ObjectType.Name, Model.Name);
-			if (ErrorText != newText)
-			{
-				ErrorText = newText;
-			}
+			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorEntityTypeRequiresReferenceSchemeMessage, ObjectType.Name, Model.Name);
 		}
 
 		/// <summary>
@@ -4521,7 +4529,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	#endregion // EntityTypeRequiresReferenceSchemeError class
 	#region PreferredIdentifierRequiresMandatoryError class
 	[ModelErrorDisplayFilter(typeof(ReferenceSchemeErrorCategory))]
-	public partial class PreferredIdentifierRequiresMandatoryError
+	partial class PreferredIdentifierRequiresMandatoryError
 	{
 		#region Base Overrides
 		/// <summary>
@@ -4529,7 +4537,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			ErrorText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorObjectTypePreferredIdentifierRequiresMandatoryError, ObjectType.Name, Model.Name);
+			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorObjectTypePreferredIdentifierRequiresMandatoryError, ObjectType.Name, Model.Name);
 		}
 		/// <summary>
 		/// Regenerate error text when the object name changes or model name changes
@@ -4543,7 +4551,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	#endregion // PreferredIdentifierRequiresMandatoryError class
 	#region CompatibleSupertypesError class
 	[ModelErrorDisplayFilter(typeof(ReferenceSchemeErrorCategory))]
-	public partial class CompatibleSupertypesError
+	partial class CompatibleSupertypesError
 	{
 		#region Base Overrides
 		/// <summary>
@@ -4551,7 +4559,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			ErrorText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorObjectTypeCompatibleSupertypesError, ObjectType.Name, Model.Name);
+			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorObjectTypeCompatibleSupertypesError, ObjectType.Name, Model.Name);
 		}
 		/// <summary>
 		/// Regenerate error text when the object name changes or model name changes

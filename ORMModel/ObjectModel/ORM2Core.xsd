@@ -1356,9 +1356,10 @@
 		<xs:annotation>
 			<xs:documentation>A role in connected path.</xs:documentation>
 		</xs:annotation>
-		<xs:sequence>
+		<xs:all>
+			<xs:element name="ValueRestriction" type="PathConditionValueRestrictionType" minOccurs="0"/>
 			<xs:element name="CorrelatedWith" type="PathedRoleRef" minOccurs="0"/>
-		</xs:sequence>
+		</xs:all>
 		<xs:attributeGroup ref="idAttribute"/>
 		<xs:attributeGroup ref="refAttribute"/>
 		<xs:attribute name="Purpose" type="PathedRolePurposeType" use="required"/>
@@ -1569,6 +1570,11 @@
 			</xs:element>
 		</xs:sequence>
 		<xs:attributeGroup ref="idAttribute"/>
+		<xs:attribute name="DistinctValues" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>Should the bag input be analyzed to return only distinct values? Can only be applied an input associated with a bag parameter.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="PathConstantType">
 		<xs:annotation>
@@ -1597,6 +1603,11 @@
 			<xs:extension base="RolePathOwnerType">
 				<xs:attribute name="DerivationCompleteness" type="DerivationCompletenessValues" default="FullyDerived"/>
 				<xs:attribute name="DerivationStorage" type="DerivationStorageValues" default="NotStored"/>
+				<xs:attribute name="SetProjection" type="xs:boolean" default="false">
+					<xs:annotation>
+						<xs:documentation>The derivation rule results in a set of distinct facts instead of a bag that might contain duplicates.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -2853,7 +2864,7 @@
 			<xs:documentation>Restrict the values allowed for any instance of the containing value type.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="ValueConstraint" type="ValueConstraintType"/>
+			<xs:element name="ValueConstraint" type="ValueConstraintWithNameType"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="ValueConstraintType">
@@ -2866,19 +2877,36 @@
 			<xs:element name="ValueRanges" type="ValueRangesType"/>
 			<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
 		</xs:sequence>
-		<xs:attribute name="Name" type="xs:string" use="required">
-			<xs:annotation>
-				<xs:documentation>The constraint name. Validation errors will be present for any constraint name that is not unique within the model.</xs:documentation>
-			</xs:annotation>
-		</xs:attribute>
 		<xs:attributeGroup ref="idAttribute"/>
+	</xs:complexType>
+	<xs:complexType name="ValueConstraintWithNameType">
+		<xs:annotation>
+			<xs:documentation>A named constraint limiting the set of allowed values.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ValueConstraintType">
+				<xs:attribute name="Name" type="xs:string" use="required">
+					<xs:annotation>
+						<xs:documentation>The constraint name. Validation errors will be present for any constraint name that is not unique within the model.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="RoleValueRestrictionType">
 		<xs:annotation>
 			<xs:documentation>Restrict the values allowed for role players associated with this role.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="RoleValueConstraint" type="ValueConstraintType"/>
+			<xs:element name="RoleValueConstraint" type="ValueConstraintWithNameType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PathConditionValueRestrictionType">
+		<xs:annotation>
+			<xs:documentation>Restrict the values required to satisfy the role path.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PathedRoleConditionValueConstraint" type="ValueConstraintType"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="ValueRangesType">

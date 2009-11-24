@@ -219,6 +219,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		void DelayValidateErrors();
 	}
 	#endregion // IModelErrorOwner interface
+	#region IModelErrorDisplayContext interface
+	/// <summary>
+	/// Provides a flexible mechanism for using the same
+	/// error information with multiple display contexts.
+	/// The error using this context is responsible for
+	/// determining the appropriate element for retrieving
+	/// context from.
+	/// </summary>
+	public interface IModelErrorDisplayContext
+	{
+		/// <summary>
+		/// Provide the owner information to use as the context in
+		/// an error report.
+		/// </summary>
+		/// <remarks>The returned string should not be capitalized so
+		/// that it can be used anywhere in the context error message.</remarks>
+		string ErrorDisplayContext { get;}
+	}
+	#endregion // IModelErrorDisplayContext interface
 	#region IHasIndirectModelErrorOwner interface
 	/// <summary>
 	/// The IHasIndirectModelErrorOwner interface is used to indicate
@@ -247,7 +266,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	/// The IElementLinkRoleHasIndirectModelErrorOwner interface is used to
 	/// indicate that model errors directly attached to the link
 	/// object have an indirect model error owner. This is very
-	/// similar to IHasIndirectModelErrorOwner, but this assumes
+	/// similar to <see cref="IHasIndirectModelErrorOwner"/>, but this assumes
 	/// the element coming in is an ElementLink, and the retrieved
 	/// roles are roles on that link.
 	/// </summary>
@@ -558,6 +577,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				callback(element);
 			}
 			IHasIndirectModelErrorOwner indirectOwner;
+			DomainDataDirectory domainDataDirectory = null;
 			if (null != (indirectOwner = element as IHasIndirectModelErrorOwner))
 			{
 				Guid[] indirectRoles;
@@ -565,9 +585,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (null != (indirectRoles = indirectOwner.GetIndirectModelErrorOwnerLinkRoles()) &&
 					0 != (indirectRoleCount = indirectRoles.Length))
 				{
+					domainDataDirectory = element.Store.DomainDataDirectory;
 					for (int i = 0; i < indirectRoleCount; ++i)
 					{
-						foreach (ModelElement linkedElement in element.Store.DomainDataDirectory.FindDomainRole(indirectRoles[i]).GetLinkedElements(element))
+						foreach (ModelElement linkedElement in domainDataDirectory.FindDomainRole(indirectRoles[i]).GetLinkedElements(element))
 						{
 							if (filter != null && filter(linkedElement))
 							{
@@ -575,6 +596,42 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							}
 							WalkAssociatedElementsHelper(
 								linkedElement,
+								callback,
+								delegate(ModelElement testElement)
+								{
+									return testElement == element ||
+										(filter != null && filter(testElement));
+								});
+						}
+					}
+				}
+			}
+			ElementLink elementLink;
+			IElementLinkRoleHasIndirectModelErrorOwner indirectLinkRoleOwner;
+			if (null != (indirectLinkRoleOwner = element as IElementLinkRoleHasIndirectModelErrorOwner) &&
+				null != (elementLink = element as ElementLink))
+			{
+				Guid[] metaRoles = indirectLinkRoleOwner.GetIndirectModelErrorOwnerElementLinkRoles();
+				int roleCount;
+				if (metaRoles != null &&
+					0 != (roleCount = metaRoles.Length))
+				{
+					if (domainDataDirectory == null)
+					{
+						domainDataDirectory = element.Store.DomainDataDirectory;
+					}
+					for (int i = 0; i < roleCount; ++i)
+					{
+						DomainRoleInfo metaRole = domainDataDirectory.FindDomainRole(metaRoles[i]);
+						if (metaRole != null)
+						{
+							ModelElement rolePlayer = metaRole.GetRolePlayer(elementLink);
+							if (filter != null && filter(rolePlayer))
+							{
+								continue;
+							}
+							WalkAssociatedElementsHelper(
+								rolePlayer,
 								callback,
 								delegate(ModelElement testElement)
 								{

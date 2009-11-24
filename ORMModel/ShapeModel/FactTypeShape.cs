@@ -4260,10 +4260,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			ImpliedInternalUniquenessConstraintError implConstraint;
 			Reading reading = null;
 			UniquenessConstraint activateConstraint = null;
-			MaxValueMismatchError maxValueMismatchError;
-			MinValueMismatchError minValueMismatchError;
-			ValueRangeOverlapError overlapError;
-			ValueConstraintValueTypeDetachedError valueTypeDetachedError;
+			ValueConstraintError valueConstraintError;
 			RoleValueConstraint errorValueConstraint = null;
 			bool addActiveRoles = false;
 			bool retVal = true;
@@ -4387,21 +4384,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					}
 				}
 			}
-			else if (null != (maxValueMismatchError = error as MaxValueMismatchError))
+			else if (null != (valueConstraintError = error as ValueConstraintError))
 			{
-				retVal = null != (errorValueConstraint = maxValueMismatchError.ValueRange.ValueConstraint as RoleValueConstraint);
-			}
-			else if (null != (minValueMismatchError = error as MinValueMismatchError))
-			{
-				retVal = null != (errorValueConstraint = minValueMismatchError.ValueRange.ValueConstraint as RoleValueConstraint);
-			}
-			else if (null != (overlapError = error as ValueRangeOverlapError))
-			{
-				retVal = null != (errorValueConstraint = overlapError.ValueConstraint as RoleValueConstraint);
-			}
-			else if (null != (valueTypeDetachedError = error as ValueConstraintValueTypeDetachedError))
-			{
-				retVal = null != (errorValueConstraint = valueTypeDetachedError.ValueConstraint as RoleValueConstraint);
+				retVal = null != (errorValueConstraint = valueConstraintError.ContextValueConstraint as RoleValueConstraint);
 			}
 			else if (error is TooFewFactTypeRoleInstancesError || error is ObjectifyingInstanceRequiredError)
 			{

@@ -784,6 +784,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		protected new IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
 		{
+			ModelErrorUses startFilter = filter;
 			if (filter == 0)
 			{
 				filter = (ModelErrorUses)(-1);
@@ -837,14 +838,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					Role role = roleBase as Role;
 					if (role != null)
 					{
-						foreach (ModelErrorUsage roleError in (role as IModelErrorOwner).GetErrorCollection(filter))
+						foreach (ModelErrorUsage roleError in (role as IModelErrorOwner).GetErrorCollection(startFilter))
 						{
 							yield return new ModelErrorUsage(roleError, ModelErrorUses.None);
 						}
 						IModelErrorOwner valueErrors = role.ValueConstraint as IModelErrorOwner;
 						if (valueErrors != null)
 						{
-							foreach (ModelErrorUsage valueError in valueErrors.GetErrorCollection(filter))
+							foreach (ModelErrorUsage valueError in valueErrors.GetErrorCollection(startFilter))
 							{
 								yield return new ModelErrorUsage(valueError, ModelErrorUses.None);
 							}
@@ -858,7 +859,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					foreach (Reading reading in readingOrder.ReadingCollection)
 					{
-						foreach (ModelErrorUsage readingErrorUsage in (reading as IModelErrorOwner).GetErrorCollection(filter))
+						foreach (ModelErrorUsage readingErrorUsage in (reading as IModelErrorOwner).GetErrorCollection(startFilter))
 						{
 							if (0 != (readingErrorUsage.UseFor & filter))
 							{
@@ -892,15 +893,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				for (int i = 0; i < factTypeInstanceCount; ++i)
 				{
 					FactTypeInstance factTypeInstance = factTypeInstances[i];
-					foreach (ModelErrorUsage usage in (factTypeInstance as IModelErrorOwner).GetErrorCollection(filter))
+					foreach (ModelErrorUsage usage in (factTypeInstance as IModelErrorOwner).GetErrorCollection(startFilter))
 					{
 						yield return usage;
+					}
+				}
+
+				FactTypeDerivationRule derivationRule = DerivationRule;
+				if (derivationRule != null)
+				{
+					foreach (ModelErrorUsage derivationError in ((IModelErrorOwner)derivationRule).GetErrorCollection(startFilter))
+					{
+						yield return derivationError;
 					}
 				}
 			}
 
 			// Get errors off the base
-			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
+			foreach (ModelErrorUsage baseError in base.GetErrorCollection(startFilter))
 			{
 				yield return baseError;
 			}
