@@ -302,6 +302,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				RolePathComponent component = this;
+				// The inheritance hierarchy is artificial here so
+				// that a LeadRolePath can be both a RolePath and
+				// a RolePathComponent. This means that RoleSubPath,
+				// which is never directly parented by an owner or
+				// compositor, is also a component. Treat this as
+				// a special case with a supertype accessing a subtype.
+				RoleSubPath subPath = component as RoleSubPath;
+				if (subPath != null)
+				{
+					component = subPath.RootRolePath;
+				}
 				RolePathOwner retVal = null;
 				while (component != null)
 				{

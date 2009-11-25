@@ -497,7 +497,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return;
 			}
 			DataType dataType = this.DataType;
-			RoleValueConstraint roleConstraint = null;
 			bool hasError = true;
 			if (dataType != null)
 			{
@@ -509,7 +508,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					VerifyValueMatch(ranges[i], dataType, notifyAdded);
 				}
 			}
-			else if (null == (roleConstraint = (this as RoleValueConstraint)))
+			else if (this is ValueTypeValueConstraint)
 			{
 				// UNDONE: When we allow ValueConstraints directly on entity types then
 				// this will change
@@ -522,7 +521,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					error = new ValueConstraintValueTypeDetachedError(Store);
 					error.ValueConstraint = this;
-					error.Model = roleConstraint.Role.FactType.Model;
+					error.Model = Model;
 					error.GenerateErrorText();
 					if (notifyAdded != null)
 					{
@@ -1326,6 +1325,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		public abstract IModelErrorDisplayContext ErrorDisplayContext { get;}
 		/// <summary>
+		/// Get the <see cref="ORMModel"/> for this <see cref="ValueConstraint"/>
+		/// </summary>
+		public abstract ORMModel Model { get;}
+		/// <summary>
 		/// Tests if the associated data type is a text type.
 		/// </summary>
 		public bool IsText
@@ -1405,6 +1408,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return ValueType;
 			}
 		}
+		/// <summary>
+		/// Get the associated <see cref="ORMModel"/>
+		/// </summary>
+		public override ORMModel Model
+		{
+			get
+			{
+				ObjectType valueType = ValueType;
+				return valueType != null ? valueType.Model : null;
+			}
+		}
 		#endregion // Base overrides
 		#region IHasIndirectModelErrorOwner Implementation
 		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
@@ -1459,6 +1473,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				return Role;
+			}
+		}
+		/// <summary>
+		/// Get the associated <see cref="ORMModel"/>
+		/// </summary>
+		public override ORMModel Model
+		{
+			get
+			{
+				Role role;
+				FactType factType;
+				if (null != (role = Role) &&
+					null != (factType = role.FactType))
+				{
+					return factType.Model;
+				}
+				return null;
 			}
 		}
 		#endregion // Base overrides
@@ -1517,6 +1548,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				PathedRole pathedRole = PathedRole;
 				LeadRolePath leadRolePath = pathedRole.RolePath.RootRolePath;
 				return leadRolePath != null ? leadRolePath.RootOwner as IModelErrorDisplayContext : null;
+			}
+		}
+		/// <summary>
+		/// Get the associated <see cref="ORMModel"/>
+		/// </summary>
+		public override ORMModel Model
+		{
+			get
+			{
+				PathedRole pathedRole;
+				RolePathOwner owner;
+				if (null != (pathedRole = PathedRole) &&
+					null != (owner = pathedRole.RolePath.RootOwner))
+				{
+					return owner.Model;
+				}
+				return null;
 			}
 		}
 		#endregion // Base overrides
