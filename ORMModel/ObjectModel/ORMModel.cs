@@ -238,7 +238,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#region IVerbalizeCustomChildren Implementation
 		/// <summary>
 		/// Implements <see cref="IVerbalizeCustomChildren.GetCustomChildVerbalizations"/>.
-		/// Explicitly verbalizes the definitions and notes fields
+		/// Explicitly verbalizes the definitions, notes, and extension elements
 		/// </summary>
 		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)
 		{
@@ -253,6 +253,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				(filter == null || !filter.FilterChildVerbalizer(note, sign).IsBlocked))
 			{
 				yield return CustomChildVerbalizer.VerbalizeInstance(note);
+			}
+			foreach (ModelElement extensionElement in ExtensionCollection)
+			{
+				IVerbalize verbalizeExtension = extensionElement as IVerbalize;
+				if (verbalizeExtension != null)
+				{
+					yield return CustomChildVerbalizer.VerbalizeInstance(verbalizeExtension);
+				}
 			}
 		}
 		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)

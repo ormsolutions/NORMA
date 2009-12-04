@@ -538,7 +538,13 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 		/// ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.AllConstraints
 		/// </summary>
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/AllConstraints.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
-		AllConstraints = 7904,
+		AllConstraints = 8160,
+		/// <summary>
+		/// Model
+		/// Description for ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.Model
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/Model.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
+		Model = 8192,
 	}
 }
 namespace ORMSolutions.ORMArchitect.CustomProperties

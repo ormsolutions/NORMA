@@ -429,6 +429,14 @@
     <value>Description for ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.AllConstraints</value>
     <comment>Description for EnumerationLiteral &apos;AllConstraints&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/Model.DisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>Display name for EnumerationLiteral &apos;Model&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/Model.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.Model</value>
+    <comment>Description for EnumerationLiteral &apos;Model&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDataType/String.DisplayName" xml:space="preserve">
     <value>String</value>
     <comment>Display name for EnumerationLiteral &apos;String&apos; on DomainEnumeration &apos;CustomPropertyDataType&apos;</comment>

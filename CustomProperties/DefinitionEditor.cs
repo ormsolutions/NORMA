@@ -297,6 +297,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 				chkVerbalizeDefaultValue.Checked = _definitionObject.VerbalizeDefaultValue;
 				chkVerbalizeDefaultValue.Enabled = defaultText.Length != 0;
 				ClearCheckedItems(tvModelElements.Nodes);
+				CheckTypeIfNeeded(ORMTypes.Model);
 				CheckTypeIfNeeded(ORMTypes.EntityType);
 				CheckTypeIfNeeded(ORMTypes.FactType);
 				CheckTypeIfNeeded(ORMTypes.Role);
@@ -319,6 +320,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 		{
 			tvModelElements.Nodes.Clear();
 
+			tvModelElements.Nodes.Add(CreateTreeNode("ORM Model", "Model"));
 			tvModelElements.Nodes.Add(CreateTreeNode("Entity Type", "EntityType"));
 			tvModelElements.Nodes.Add(CreateTreeNode("Value Type", "ValueType"));
 			tvModelElements.Nodes.Add(CreateTreeNode("Fact Type", "FactType"));

@@ -417,6 +417,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 				//Probably a better way to do this but since the newDef.ORMTypes property is a bit field
 				//we need to find out each enumeration that has been specified for the object and add it to the xml.
 				AddORMTypeToGroupIfNeeded(newDef.ORMTypes, ORMTypes.AllConstraints, newOrmTypes);
+				AddORMTypeToGroupIfNeeded(newDef.ORMTypes, ORMTypes.Model, newOrmTypes);
 				AddORMTypeToGroupIfNeeded(newDef.ORMTypes, ORMTypes.EntityType, newOrmTypes);
 				AddORMTypeToGroupIfNeeded(newDef.ORMTypes, ORMTypes.EqualityConstraint, newOrmTypes);
 				AddORMTypeToGroupIfNeeded(newDef.ORMTypes, ORMTypes.ExclusionConstraint, newOrmTypes);

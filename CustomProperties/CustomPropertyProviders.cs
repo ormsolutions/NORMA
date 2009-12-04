@@ -48,6 +48,10 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 				}
 			}
 
+			public static readonly PropertyProvider Model = delegate(object extendableElement, PropertyDescriptorCollection properties)
+			{
+				GetProvidedProperties(ORMTypes.Model, extendableElement, properties);
+			};
 			public static readonly PropertyProvider ObjectType = delegate(object extendableElement, PropertyDescriptorCollection properties)
 			{
 				GetProvidedProperties(((ObjectType)extendableElement).IsValueType ? ORMTypes.ValueType : ORMTypes.EntityType, extendableElement, properties);
@@ -236,6 +240,10 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			}
 			#endregion // DefaultCustomPropertyVerbalizer class
 			#region Specific verbalizers for each element type
+			public static readonly IVerbalizeExtensionChildren Model = new DefaultCustomPropertyVerbalizer(delegate(IORMExtendableElement propertyOwner, CustomPropertyDefinition propertyDefinition)
+			{
+				return 0 != (propertyDefinition.ORMTypes & ORMTypes.Model);
+			});
 			public static readonly IVerbalizeExtensionChildren ObjectType = new DefaultCustomPropertyVerbalizer(delegate(IORMExtendableElement propertyOwner, CustomPropertyDefinition propertyDefinition)
 			{
 				return 0 != (propertyDefinition.ORMTypes & (((ObjectType)propertyOwner).IsValueType ? ORMTypes.ValueType : ORMTypes.EntityType));
@@ -296,6 +304,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 				IPropertyProviderService propertyService = ((IFrameworkServices)store).PropertyProviderService;
 				IExtensionVerbalizerService verbalizerService = ((IORMToolServices)store).ExtensionVerbalizerService;
 				propertyService.AddOrRemovePropertyProvider(typeof(ORMModel), CustomPropertyProviders.CustomPropertiesEditor, true, action);
+				propertyService.AddOrRemovePropertyProvider(typeof(ORMModel), CustomPropertyProviders.Model, false, action);
 				propertyService.AddOrRemovePropertyProvider(typeof(ObjectType), CustomPropertyProviders.ObjectType, true, action);
 				propertyService.AddOrRemovePropertyProvider(typeof(SubtypeFact), CustomPropertyProviders.SubtypeFact, true, action);
 				propertyService.AddOrRemovePropertyProvider(typeof(FactType), CustomPropertyProviders.FactType, false, action);
@@ -308,18 +317,22 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 				propertyService.AddOrRemovePropertyProvider(typeof(ExclusionConstraint), CustomPropertyProviders.ExclusionConstraint, true, action);
 				propertyService.AddOrRemovePropertyProvider(typeof(SubsetConstraint), CustomPropertyProviders.SubsetConstraint, true, action);
 				propertyService.AddOrRemovePropertyProvider(typeof(ValueConstraint), CustomPropertyProviders.ValueConstraint, true, action);
-				verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(ObjectType), DefaultVerbalizationProviders.ObjectType, true, action);
-				verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(SubtypeFact), DefaultVerbalizationProviders.SubtypeFact, true, action);
-				verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(FactType), DefaultVerbalizationProviders.FactType, false, action);
-				verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(Role), DefaultVerbalizationProviders.Role, true, action);
-				verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(FrequencyConstraint), DefaultVerbalizationProviders.FrequencyConstraint, true, action);
-				verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(MandatoryConstraint), DefaultVerbalizationProviders.MandatoryConstraint, true, action);
-				verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(RingConstraint), DefaultVerbalizationProviders.RingConstraint, true, action);
-				verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(UniquenessConstraint), DefaultVerbalizationProviders.UniquenessConstraint, true, action);
-				verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(EqualityConstraint), DefaultVerbalizationProviders.EqualityConstraint, true, action);
-				verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(ExclusionConstraint), DefaultVerbalizationProviders.ExclusionConstraint, true, action);
-				verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(SubsetConstraint), DefaultVerbalizationProviders.SubsetConstraint, true, action);
-				verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(ValueConstraint), DefaultVerbalizationProviders.ValueConstraint, true, action);
+				if (verbalizerService != null)
+				{
+					verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(ORMModel), DefaultVerbalizationProviders.Model, true, action);
+					verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(ObjectType), DefaultVerbalizationProviders.ObjectType, true, action);
+					verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(SubtypeFact), DefaultVerbalizationProviders.SubtypeFact, true, action);
+					verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(FactType), DefaultVerbalizationProviders.FactType, false, action);
+					verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(Role), DefaultVerbalizationProviders.Role, true, action);
+					verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(FrequencyConstraint), DefaultVerbalizationProviders.FrequencyConstraint, true, action);
+					verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(MandatoryConstraint), DefaultVerbalizationProviders.MandatoryConstraint, true, action);
+					verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(RingConstraint), DefaultVerbalizationProviders.RingConstraint, true, action);
+					verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(UniquenessConstraint), DefaultVerbalizationProviders.UniquenessConstraint, true, action);
+					verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(EqualityConstraint), DefaultVerbalizationProviders.EqualityConstraint, true, action);
+					verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(ExclusionConstraint), DefaultVerbalizationProviders.ExclusionConstraint, true, action);
+					verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(SubsetConstraint), DefaultVerbalizationProviders.SubsetConstraint, true, action);
+					verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(ValueConstraint), DefaultVerbalizationProviders.ValueConstraint, true, action);
+				}
 			}
 		}
 		#endregion // IModelingEventSubscriber Implementation

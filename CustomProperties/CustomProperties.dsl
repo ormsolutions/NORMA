@@ -183,7 +183,9 @@
 				<EnumerationLiteral Name="ExclusionConstraint" Value="1024"/>
 				<EnumerationLiteral Name="SubsetConstraint" Value="2048"/>
 				<EnumerationLiteral Name="ValueConstraint" Value="4096"/>
-				<EnumerationLiteral Name="AllConstraints" Value="7904"/>
+				<EnumerationLiteral Name="AllConstraints" Value="8160"/>
+
+				<EnumerationLiteral Name="Model" Value="8192"/>
 			</Literals>
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">

@@ -190,6 +190,7 @@
 						<xs:documentation>An enumeration of ORM model types that supports custom properties</xs:documentation>
 					</xs:annotation>
 					<xs:restriction base="xs:token">
+						<xs:enumeration value="Model"/>
 						<xs:enumeration value="EntityType"/>
 						<xs:enumeration value="ValueType"/>
 						<xs:enumeration value="FactType"/>
