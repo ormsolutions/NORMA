@@ -3,7 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © ORM Solutions, LLC. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -38,6 +38,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.Win32;
 using ORMSolutions.ORMArchitect.Framework;
 using ORMSolutions.ORMArchitect.Framework.Diagrams.Design;
+using ORMSolutions.ORMArchitect.Core.Load;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using ORMSolutions.ORMArchitect.Core.ShapeModel;
 
@@ -123,11 +124,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		private ORMDesignerFontsAndColors myFontAndColorService;
 		private ORMDesignerSettings myDesignerSettings;
 		private string myVerbalizationDirectory;
-		private IDictionary<string, ORMExtensionType> myAvailableExtensions;
-		private IDictionary<Guid, string> myExtensionIdToExtensionNameMap;
-		private IDictionary<Guid, Type> myStandardDomainModelsMap;
 		private IDictionary<string, ToolboxProviderInfo> myToolboxProviderInfoMap;
-		private string[] myAutoLoadExtensions;
+		private ExtensionLoader myExtensionLoader;
 		private static ORMDesignerPackage mySingleton;
 		#endregion
 		#region Construction/destruction
@@ -140,26 +138,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			mySingleton = this;
 		}
 		#endregion
-		#region Assembly Resolve Handler
-		private static readonly Dictionary<string, Assembly> KnownAssemblies = GetKnownAssemblies();
-		private static Dictionary<string, Assembly> GetKnownAssemblies()
-		{
-			Dictionary<string, Assembly> knownAssemblies = new Dictionary<string, Assembly>(1, StringComparer.Ordinal);
-			Assembly packageAssembly = typeof(ORMDesignerPackage).Assembly;
-			knownAssemblies[packageAssembly.FullName] = packageAssembly;
-			// SECURITY: APTCA: If we ever allow partially-trusted callers, this will need to be altered so that
-			// they are not added to the assembly probing path.
-			AppDomain.CurrentDomain.AssemblyResolve += delegate(object sender, ResolveEventArgs e)
-			{
-				// This supports retrieving types from our assembly and our extension assemblies,
-				// even if they aren't in the normal assembly probing path.
-				Assembly knownAssembly;
-				ORMDesignerPackage.KnownAssemblies.TryGetValue(e.Name, out knownAssembly);
-				return knownAssembly;
-			};
-			return knownAssemblies;
-		}
-		#endregion // Assembly Resolve Handler
 		#region Properties
 		/// <summary>
 		/// Gets the singleton command set create for this package.
@@ -739,167 +717,29 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		#endregion // IVsToolWindowFactory Implementation
 		#region Extension DomainModels
 		/// <summary>
-		/// Generate a collection of autoload extension namespaces
+		/// Get the <see cref="ExtensionLoader"/> for this package
 		/// </summary>
-		private static string[] GetAutoLoadExtensions()
-		{
-			string[] retVal = null;
-			ORMDesignerPackage package = mySingleton;
-			if (package != null)
-			{
-				retVal = package.myAutoLoadExtensions;
-				if (retVal == null)
-				{
-					ICollection<ORMExtensionType> availableExtensions = GetAvailableCustomExtensions().Values;
-					int autoLoadNamespacesCount = 0;
-					foreach (ORMExtensionType testType in availableExtensions)
-					{
-						if (testType.IsAutoLoad)
-						{
-							++autoLoadNamespacesCount;
-						}
-					}
-					if (autoLoadNamespacesCount != 0)
-					{
-						retVal = new string[autoLoadNamespacesCount];
-						int currentIndex = 0;
-						foreach (ORMExtensionType testType in availableExtensions)
-						{
-							if (testType.IsAutoLoad)
-							{
-								retVal[currentIndex] = testType.NamespaceUri;
-								if (++currentIndex == autoLoadNamespacesCount)
-								{
-									break;
-								}
-							}
-						}
-					}
-					else
-					{
-						retVal = new string[0];
-					}
-					package.myAutoLoadExtensions = retVal;
-				}
-			}
-			return retVal;
-		}
-		/// <summary>
-		/// Retrieves the <see cref="DomainModel"/> for a specific extension namespace.
-		/// </summary>
-		/// <remarks>If a <see cref="DomainModel"/> cannot be found for a namespace, <see langword="null"/> is returned.</remarks>
-		public static ORMExtensionType? GetExtensionDomainModel(string extensionNamespace)
-		{
-			ORMExtensionType extensionType;
-			return GetAvailableCustomExtensions().TryGetValue(extensionNamespace, out extensionType) ? new ORMExtensionType?(extensionType) : null;
-		}
-		/// <summary>
-		/// Loads and returns the extension <see cref="DomainModel"/> <see cref="Type"/> for <paramref name="extensionNamespace"/>.
-		/// </summary>
-		private static Type LoadExtension(string extensionNamespace, RegistryKey hkeyExtensions, out bool isSecondary, out bool isAutoLoad)
-		{
-			isSecondary = false;
-			isAutoLoad = false;
-			using (RegistryKey hkeyExtension = hkeyExtensions.OpenSubKey(extensionNamespace, RegistryKeyPermissionCheck.ReadSubTree))
-			{
-				if (hkeyExtension != null)
-				{
-				// Execution is returned to this point if the user elects to retry a failed extension load
-				L_Retry:
-					try
-					{
-						string extensionTypeString = hkeyExtension.GetValue("Class") as string;
-						if (string.IsNullOrEmpty(extensionTypeString))
-						{
-							// If we don't have an extension type name, just return null
-							return null;
-						}
-
-						object valueObject = hkeyExtension.GetValue("SecondaryNamespace");
-						isSecondary = valueObject != null && ((int)valueObject) == 1;
-						valueObject = hkeyExtension.GetValue("AutoLoadNamespace");
-						isAutoLoad = valueObject != null && ((int)valueObject) == 1;
-
-						string assemblyValue = hkeyExtension.GetValue("Assembly") as string;
-						string codeBaseValue = hkeyExtension.GetValue("CodeBase") as string;
-						if (string.IsNullOrEmpty(assemblyValue) && string.IsNullOrEmpty(codeBaseValue))
-						{
-							// Extension is registered in this assembly
-							return typeof(ORMDesignerPackage).Assembly.GetType(extensionTypeString, true, false);
-						}
-						else
-						{
-
-							AssemblyName extensionAssemblyName;
-							string extensionAssemblyNameString = hkeyExtension.GetValue("Assembly") as string;
-							if (!string.IsNullOrEmpty(extensionAssemblyNameString))
-							{
-								extensionAssemblyName = new AssemblyName(extensionAssemblyNameString);
-							}
-							else
-							{
-								extensionAssemblyName = new AssemblyName();
-							}
-							extensionAssemblyName.CodeBase = hkeyExtension.GetValue("CodeBase") as string;
-
-							Assembly extensionAssembly = Assembly.Load(extensionAssemblyName);
-							Type extensionType = extensionAssembly.GetType(extensionTypeString, true, false);
-
-							if (extensionType.IsSubclassOf(typeof(DomainModel)))
-							{
-								// SECURITY: APTCA: See the comment near our AssemblyResolve handler for information regarding
-								// changes that would be needed here in order to securely support partially-trusted callers.
-								ORMDesignerPackage.KnownAssemblies[extensionAssembly.FullName] = extensionAssembly;
-								return extensionType;
-							}
-						}
-					}
-					catch (Exception ex)
-					{
-						// An Exception can occur for a number of reasons, such as the user not having the correct
-						// registry or file permissions, or the referenced assmebly or file not existing or being corrupt
-
-						string message = string.Format(System.Globalization.CultureInfo.CurrentCulture, ResourceStrings.ExtensionLoadFailureMessage, Environment.NewLine, extensionNamespace, ex);
-						int result = VsShellUtilities.ShowMessageBox(Singleton, message, ResourceStrings.ExtensionLoadFailureTitle, OLEMSGICON.OLEMSGICON_WARNING, OLEMSGBUTTON.OLEMSGBUTTON_ABORTRETRYIGNORE, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_THIRD);
-						if (result == (int)DialogResult.Retry)
-						{
-							goto L_Retry;
-						}
-						else if (result != (int)DialogResult.Ignore)
-						{
-							// If a debugger is already attached, Launch() has no effect, so we can always safely call it
-							Debugger.Launch();
-							Debugger.Break();
-							throw;
-						}
-					}
-				}
-				return null;
-			}
-		}
-		/// <summary>
-		/// Enumerate all models available to the ORM designer
-		/// </summary>
-		/// <returns>See <see cref="IEnumerable{Type}"/></returns>
-		public static IEnumerable<Type> GetAvailableDomainModels()
-		{
-			foreach (Type standardType in GetStandardDomainModelsMap().Values)
-			{
-				yield return standardType;
-			}
-			foreach (ORMExtensionType extension in GetAvailableCustomExtensions().Values)
-			{
-				yield return extension.Type;
-			}
-		}
-		/// <summary>
-		/// Get the standard models that are always loaded with the tool
-		/// </summary>
-		public static ICollection<Type> StandardDomainModels
+		public static ExtensionLoader ExtensionLoader
 		{
 			get
 			{
-				return GetStandardDomainModelsMap().Values;
+				ORMDesignerPackage package = mySingleton;
+				if (package == null)
+				{
+					return null;
+				}
+				ExtensionLoader retVal = package.myExtensionLoader;
+				if (retVal == null)
+				{
+					using (RegistryKey applicationRegistryRoot = package.ApplicationRegistryRoot)
+					{
+						using (RegistryKey userRegistryRoot = package.UserRegistryRoot)
+						{
+							package.myExtensionLoader = retVal = new ExtensionLoader(ExtensionModelData.LoadFromRegistry(REGISTRYROOT_EXTENSIONS, applicationRegistryRoot, userRegistryRoot));
+						}
+					}
+				}
+				return retVal;
 			}
 		}
 		private class ToolboxProviderInfo
@@ -950,7 +790,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				Type retVal = myResolvedType;
 				if (retVal == null)
 				{
-					ORMExtensionType? extensionType = GetExtensionDomainModel(myExtensionNamespaceUri);
+					ExtensionModelBinding? extensionType = ExtensionLoader.GetExtensionDomainModel(myExtensionNamespaceUri);
 					if (extensionType.HasValue)
 					{
 						myResolvedType = retVal = extensionType.Value.Type;
@@ -1012,246 +852,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								providerMap[extensionClass] = new ToolboxProviderInfo(extensionNamespace, revisionNumber.Value);
 							}
 						}
-					}
-				}
-			}
-		}
-		/// <summary>
-		/// Get a dictionary containing all standard domain models
-		/// keyed of the domain model identifier.
-		/// </summary>
-		private static IDictionary<Guid, Type> GetStandardDomainModelsMap()
-		{
-			IDictionary<Guid, Type> retVal = null;
-			ORMDesignerPackage package = mySingleton;
-			if (package != null)
-			{
-				retVal = package.myStandardDomainModelsMap;
-				if (retVal == null)
-				{
-					// Any model change here that has toolbox information requires a corresponding change in GetToolboxProviderInfoMap
-					retVal = new Dictionary<Guid, Type>(6);
-					retVal.Add(FrameworkDomainModel.DomainModelId, typeof(FrameworkDomainModel));
-					retVal.Add(ORMCoreDomainModel.DomainModelId, typeof(ORMCoreDomainModel));
-					retVal.Add(CoreDesignSurfaceDomainModel.DomainModelId, typeof(CoreDesignSurfaceDomainModel));
-					retVal.Add(ORMShapeDomainModel.DomainModelId, typeof(ORMShapeDomainModel));
-					// UNDONE: Temporary until the report validation is moved into a separate dll. See https://projects.neumont.edu/orm2/ticket/315
-					retVal.Add(ObjectModel.Verbalization.HtmlReport.DomainModelId, typeof(ObjectModel.Verbalization.HtmlReport));
-					retVal.Add(ORMSolutions.ORMArchitect.Framework.Shell.DiagramSurvey.DomainModelId, typeof(ORMSolutions.ORMArchitect.Framework.Shell.DiagramSurvey));
-					package.myStandardDomainModelsMap = retVal;
-				}
-			}
-			return retVal;
-		}
-		/// <summary>
-		/// This method cycles through the registered Custom Extensions.
-		/// It then returns an IList of ORMExtensionType. containing all the Types of the Custom Extensions.
-		/// </summary>
-		/// <returns>An IList of registered ORMExtensionTypes.</returns>
-		public static IDictionary<string, ORMExtensionType> GetAvailableCustomExtensions()
-		{
-			IDictionary<string, ORMExtensionType> retVal = null;
-			ORMDesignerPackage package = mySingleton;
-			if (package != null)
-			{
-				retVal = package.myAvailableExtensions;
-				if (retVal == null)
-				{
-					retVal = new Dictionary<string, ORMExtensionType>();
-
-					// Check for CustomExtensions in the ApplicationRegistryRoot and the UserRegistryRoot keys
-					using (RegistryKey applicationRegistryRoot = package.ApplicationRegistryRoot)
-					{
-						LoadAvailableCustomExtensions(applicationRegistryRoot, retVal);
-					}
-					using (RegistryKey userRegistryRoot = package.UserRegistryRoot)
-					{
-						LoadAvailableCustomExtensions(userRegistryRoot, retVal);
-					}
-					package.myAvailableExtensions = retVal;
-				}
-			}
-			return retVal;
-		}
-		/// <summary>
-		/// A custom extension has failed to load. Remove the extension from the list
-		/// of available extensions.
-		/// </summary>
-		/// <param name="unvailableExtensionType">The extension <see cref="Type"/>The
-		/// extension that has failed to load.</param>
-		/// <returns><see langword="true"/> if the extension was successfully removed.</returns>
-		public static bool CustomExtensionUnavailable(Type unvailableExtensionType)
-		{
-			IDictionary<string, ORMExtensionType> customExtensions = GetAvailableCustomExtensions();
-			if (customExtensions != null)
-			{
-				foreach (KeyValuePair<string, ORMExtensionType> pair in customExtensions)
-				{
-					ORMExtensionType extensionType = pair.Value;
-					if (extensionType.Type == unvailableExtensionType)
-					{
-						customExtensions.Remove(pair.Key);
-						ORMDesignerPackage package = mySingleton; // Note that we must have a singleton, or we would have no custom extensions
-						IDictionary<Guid, string> extensionIdMap = package.myExtensionIdToExtensionNameMap;
-						if (extensionIdMap != null && extensionIdMap.ContainsKey(extensionType.DomainModelId))
-						{
-							extensionIdMap.Remove(extensionType.DomainModelId);
-						}
-						string[] autoloadExtensions = package.myAutoLoadExtensions;
-						int autoloadExtensionLength;
-						int removeExtensionIndex;
-						if (autoloadExtensions != null &&
-							0 != (autoloadExtensionLength = autoloadExtensions.Length) &&
-							-1 != (removeExtensionIndex = Array.IndexOf<string>(autoloadExtensions, extensionType.NamespaceUri)))
-						{
-							string[] newExtensions = new string[autoloadExtensionLength - 1];
-							if (autoloadExtensionLength > 1)
-							{
-								for (int i = 0; i < removeExtensionIndex; ++i)
-								{
-									newExtensions[i] = autoloadExtensions[i];
-								}
-								for (int i = removeExtensionIndex + 1; i < autoloadExtensionLength; ++i)
-								{
-									newExtensions[i - 1] = autoloadExtensions[i];
-								}
-							}
-							package.myAutoLoadExtensions = newExtensions;
-						}
-						return true;
-					}
-				}
-			}
-			return false;
-		}
-		/// <summary>
-		/// Helper method for <see cref="GetAvailableCustomExtensions"/>
-		/// </summary>
-		private static void LoadAvailableCustomExtensions(RegistryKey rootKey, IDictionary<string, ORMExtensionType> extensionMap)
-		{
-			using (RegistryKey hkeyExtensions = rootKey.OpenSubKey(REGISTRYROOT_EXTENSIONS, RegistryKeyPermissionCheck.ReadSubTree))
-			{
-				if (hkeyExtensions != null)
-				{
-					string[] extensionNamespaces = hkeyExtensions.GetSubKeyNames();
-					foreach (string extensionNamespace in extensionNamespaces)
-					{
-						Type t;
-						ORMExtensionType extensionType;
-						bool isSecondary;
-						bool isAutoLoad;
-						if (null != (t = LoadExtension(extensionNamespace, hkeyExtensions, out isSecondary, out isAutoLoad)) &&
-							(extensionType = new ORMExtensionType(extensionNamespace, t, isSecondary, isAutoLoad)).IsValidExtension)
-						{
-							// If there is a duplicate, let the user settings win
-							extensionMap[extensionNamespace] = extensionType;
-						}
-					}
-				}
-			}
-		}
-		/// <summary>
-		/// Get the domain model name corresponding to an extension domain model identifier.
-		/// Returns <see langword="null"/> if the domain model is not an available extension.
-		/// </summary>
-		public static string MapExtensionDomainModelToName(Guid domainModelId)
-		{
-			string retVal = null;
-			GetExtensionIdToExtensionNameMap().TryGetValue(domainModelId, out retVal);
-			return retVal;
-		}
-		/// <summary>
-		/// Generate a map from an extension domain model id to the identifying extension name
-		/// </summary>
-		private static IDictionary<Guid, string> GetExtensionIdToExtensionNameMap()
-		{
-			IDictionary<Guid, string> retVal = null;
-			ORMDesignerPackage package = mySingleton;
-			if (package != null)
-			{
-				retVal = package.myExtensionIdToExtensionNameMap;
-				if (retVal == null)
-				{
-					IDictionary<string, ORMExtensionType> availableExtensions = GetAvailableCustomExtensions();
-					retVal = new Dictionary<Guid, string>(availableExtensions.Count);
-					foreach (KeyValuePair<string, ORMExtensionType> pair in availableExtensions)
-					{
-						retVal.Add(pair.Value.DomainModelId, pair.Key);
-					}
-					package.myExtensionIdToExtensionNameMap = retVal;
-				}
-			}
-			return retVal;
-		}
-		/// <summary>
-		/// Extend the set of required extensions to include any dependencies
-		/// </summary>
-		/// <param name="extensions">Currently loaded extensions. May be created if null to add auto-load extensions.</param>
-		public static void VerifyRequiredExtensions(ref Dictionary<string, ORMExtensionType> extensions)
-		{
-			if (mySingleton == null)
-			{
-				return;
-			}
-			IDictionary<string, ORMExtensionType> availableExtensions = GetAvailableCustomExtensions();
-			string[] autoLoadExtensions = GetAutoLoadExtensions();
-
-			// First get all autoload extensions
-			for (int i = 0; i < autoLoadExtensions.Length; ++i)
-			{
-				string extensionNamespace = autoLoadExtensions[i];
-				if (extensions == null)
-				{
-					extensions = new Dictionary<string, ORMExtensionType>();
-					extensions[extensionNamespace] = availableExtensions[extensionNamespace];
-				}
-				else if (!extensions.ContainsKey(extensionNamespace))
-				{
-					extensions[extensionNamespace] = availableExtensions[extensionNamespace];
-				}
-			}
-			if (extensions == null)
-			{
-				return;
-			}
-
-			IDictionary<Guid, string> idToExtensionNameMap = GetExtensionIdToExtensionNameMap();
-			IDictionary<Guid, Type> standardModelsMap = GetStandardDomainModelsMap();
-
-			// Get a starting keyset we can iterate so the enumerators don't cry foul
-			ICollection<string> startKeysCollection = extensions.Keys;
-			int startKeysCount = startKeysCollection.Count;
-			if (startKeysCount == 0)
-			{
-				return;
-			}
-			string[] startKeys = new string[startKeysCount];
-			startKeysCollection.CopyTo(startKeys, 0);
-
-			// Recursively verify dependencies for each starting element
-			for (int i = 0; i < startKeys.Length; ++i)
-			{
-				VerifyExtensions(startKeys[i], extensions, availableExtensions, idToExtensionNameMap, standardModelsMap);
-			}
-		}
-		/// <summary>
-		/// Recursively add additional extension models. Helper function for <see cref="VerifyRequiredExtensions"/>
-		/// </summary>
-		private static void VerifyExtensions(string extensionNamespace, IDictionary<string, ORMExtensionType> targetExtensions, IDictionary<string, ORMExtensionType> availableExtensions, IDictionary<Guid, string> extensionModelMap, IDictionary<Guid, Type> standardModelMap)
-		{
-			ORMExtensionType extension = availableExtensions[extensionNamespace];
-			ICollection<Guid> recurseExtensions = extension.ExtendsDomainModelIds;
-			if (recurseExtensions.Count != 0)
-			{
-				foreach (Guid recurseExtensionId in recurseExtensions)
-				{
-					string recurseExtensionNamespace;
-					if (extensionModelMap.TryGetValue(recurseExtensionId, out recurseExtensionNamespace) &&
-						!standardModelMap.ContainsKey(recurseExtensionId) &&
-						!targetExtensions.ContainsKey(recurseExtensionNamespace))
-					{
-						targetExtensions.Add(recurseExtensionNamespace, availableExtensions[recurseExtensionNamespace]);
-						VerifyExtensions(recurseExtensionNamespace, targetExtensions, availableExtensions, extensionModelMap, standardModelMap);
 					}
 				}
 			}

@@ -510,7 +510,7 @@
 									DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 								<File Id="ORM2Diagram.xsd" ShortName="ORM2Diag.xsd" Name="ORM2Diagram.xsd" Source="..\ORMModel\ShapeModel\ORM2Diagram.xsd"
 									DefaultLanguage="0" CompanionFile="ORM2Core.xsd"/>
-								<File Id="ORM2Root.xsd" Name="ORM2Root.xsd" Source="..\ORMModel\Shell\ORM2Root.xsd"
+								<File Id="ORM2Root.xsd" Name="ORM2Root.xsd" Source="..\ORMModel\Load\ORM2Root.xsd"
 									DefaultLanguage="0" CompanionFile="ORM2Core.xsd"/>
 							</Component>
 							<Component Id="OIALSchemasComponent" Guid="D5543428-F53D-42D3-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">

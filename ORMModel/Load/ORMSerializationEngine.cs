@@ -18,7 +18,7 @@ using System;
 using Microsoft.VisualStudio.Modeling;
 using ORMSolutions.ORMArchitect.Framework.Shell;
 
-namespace ORMSolutions.ORMArchitect.Core.Shell
+namespace ORMSolutions.ORMArchitect.Core.Load
 {
 	#region ORMSerializationEngine class
 	/// <summary>

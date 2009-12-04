@@ -399,17 +399,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				return;
 			}
-
-			ModelErrorDisplayFilter filter = error.Model.ModelErrorDisplayFilter;
-			if (filter == null || filter.ShouldDisplay(error))
+			IORMToolTaskProvider taskProvider;
+			ModelErrorDisplayFilter filter;
+			if (null != (taskProvider = ((IORMToolServices)error.Store).TaskProvider) &&
+				(null == (filter = error.Model.ModelErrorDisplayFilter) || filter.ShouldDisplay(error)))
 			{
-				IORMToolTaskProvider provider = (error.Store as IORMToolServices).TaskProvider;
-				IORMToolTaskItem newTask = provider.CreateTask();
+				taskProvider = (error.Store as IORMToolServices).TaskProvider;
+				IORMToolTaskItem newTask = taskProvider.CreateTask();
 				newTask.ElementLocator = error as IRepresentModelElements;
 				newTask.Text = error.ErrorText;
 				Debug.Assert(error.TaskData == null);
 				error.TaskData = newTask;
-				provider.AddTask(newTask);
+				taskProvider.AddTask(newTask);
 			}
 		}
 		/// <summary>

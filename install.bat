@@ -45,7 +45,7 @@ if EXIST "%VSItemTemplatesDir%" (
 
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\ObjectModel\ORM2Core.xsd" "%ORMDir%\Schemas\"
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\ShapeModel\ORM2Diagram.xsd" "%ORMDir%\Schemas\"
-XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\ORM2Root.xsd" "%ORMDir%\Schemas\"
+XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Load\ORM2Root.xsd" "%ORMDir%\Schemas\"
 XCOPY /Y /D /V /Q "%RootDir%\XML\OIAL\OIAL.xsd" "%ORMDir%\Schemas\"
 XCOPY /Y /D /V /Q "%RootDir%\XML\OIAL\ORMDataTypes.xsd" "%ORMDir%\Schemas\"
 XCOPY /Y /D /V /Q "%RootDir%\XML\OIAL\ORMDataTypes-Temporal.xsd" "%ORMDir%\Schemas\"

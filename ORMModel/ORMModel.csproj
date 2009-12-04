@@ -321,7 +321,6 @@
     <Compile Include="Shell\OptionsPage.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Shell\ORMExtensionType.cs" />
     <Compile Include="Shell\ORMFontsAndColors.cs" />
     <Compile Include="Shell\ORMCommandSet.cs" />
     <Compile Include="Shell\ORMDocData.cs" />
@@ -470,6 +469,9 @@
     <Compile Include="Framework\Shell\DiagramMenuDisplay.cs" />
     <Compile Include="Framework\Shell\SerializationEngine.cs" />
     <Compile Include="Framework\Shell\ToolWindowActivator.cs" />
+    <Compile Include="Load\ExtensionLoader.cs" />
+    <Compile Include="Load\ModelLoader.cs" />
+    <Compile Include="Load\ORMSerializationEngine.cs" />
     <Compile Include="ObjectModel\RolePath.cs" />
     <Compile Include="ObjectModel\Design\BlockAutomatedElementsPropertyDescriptor.cs" />
     <Compile Include="ObjectModel\Design\ReferenceModeTypeDescriptor.cs" />
@@ -518,7 +520,6 @@
     <Compile Include="Shell\ImportStepOptions.Designer.cs">
       <DependentUpon>ImportStepOptions.cs</DependentUpon>
     </Compile>
-    <Compile Include="Shell\ORMSerializationEngine.cs" />
     <Compile Include="Shell\FactEditor\FactEditorTokenHelper.cs" />
     <Compile Include="Shell\FactEditor\FactEditorTokenInfo.cs" />
     <Compile Include="Shell\FactEditor\FactEditorAuthoringScope.cs" />
@@ -575,6 +576,7 @@
     <EmbeddedResource Include="Framework\Shell\DynamicSurveyTreeGrid\LinkOverlay.png">
       <LogicalName>ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid.LinkOverlay.png</LogicalName>
     </EmbeddedResource>
+    <EmbeddedResource Include="Load\ExtensionStripper.xslt" />
     <Content Include="ObjectModel\ORMCore.SurveyQuestionProvider.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ORMCore.SurveyQuestionProvider.cs</LastGenOutput>
@@ -611,9 +613,6 @@
     <EmbeddedResource Include="ShapeModel\ORM2Diagram.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Shell\ORM2Root.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <Content Include="ObjectModel\ORMCore.AttachRules.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ORMCore.AttachRules.cs</LastGenOutput>
@@ -646,7 +645,6 @@
     <None Include="Shell\Converters\CoreUpgradeTo2006-01.xslt" />
     <None Include="Shell\Converters\RootUpgradeTo2006-01.xslt" />
     <None Include="Shell\Converters\VisioToCoreModelImport.xslt" />
-    <EmbeddedResource Include="Shell\ExtensionStripper.xslt" />
     <None Include="Shell\Converters\CustomPropertiesPreviewTo2007-11.xslt" />
     <Content Include="Resources\SamplePopulationEditor.ImageStrip.png" />
     <None Include="Resources\ToolWindowIcons.png" />
@@ -757,6 +755,9 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Framework\SystemCore.dsl" />
+    <EmbeddedResource Include="Load\ORM2Root.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <None Include="ObjectModel\VerbalizationReportSnippets\VerbalizationReportSnippets.xsd">
       <SubType>Designer</SubType>
     </None>

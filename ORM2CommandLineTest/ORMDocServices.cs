@@ -14,6 +14,7 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.TextManager.Interop;
 using ORMSolutions.ORMArchitect.Core;
+using ORMSolutions.ORMArchitect.Core.Load;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using ORMSolutions.ORMArchitect.Core.ShapeModel;
 using ORMSolutions.ORMArchitect.Core.Shell;

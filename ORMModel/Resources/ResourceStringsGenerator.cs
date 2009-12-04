@@ -2868,22 +2868,6 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "ValueConstraintShape.UnlimitedDisplayBound.Text");
 			}
 		}
-		/// <summary>The title of the message shown when a registered extension fails to load.</summary>
-		public static string ExtensionLoadFailureTitle
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Diagram, "ExtensionLoadFailure.Title");
-			}
-		}
-		/// <summary>The format string for the content of the message shown when a registered extension fails to load. {0} will be System.Environment.NewLine. {1} will be the registered name of the extension that failed to load. {2} will be the result of calling ToString() on the Exception that caused the load failure.</summary>
-		public static string ExtensionLoadFailureMessage
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Diagram, "ExtensionLoadFailure.Message");
-			}
-		}
 		/// <summary>The default name for new diagrams and the context menu command text and transaction name for creating a new diagram.</summary>
 		public static string DiagramCommandNewPage
 		{

@@ -1095,7 +1095,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				get
 				{
-					foreach (Type metaModelType in ORMDesignerPackage.GetAvailableDomainModels())
+					foreach (Type metaModelType in ORMDesignerPackage.ExtensionLoader.AvailableDomainModels)
 					{
 						object[] providers = metaModelType.GetCustomAttributes(typeof(VerbalizationSnippetsProviderAttribute), false);
 						if (providers.Length != 0) // Single use non-inheritable attribute, there will only be one
@@ -1116,7 +1116,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				get
 				{
-					foreach (Type metaModelType in ORMDesignerPackage.GetAvailableDomainModels())
+					foreach (Type metaModelType in ORMDesignerPackage.ExtensionLoader.AvailableDomainModels)
 					{
 						object[] providers = metaModelType.GetCustomAttributes(typeof(VerbalizationTargetProviderAttribute), false);
 						if (providers.Length != 0) // Single use non-inheritable attribute, there will only be one

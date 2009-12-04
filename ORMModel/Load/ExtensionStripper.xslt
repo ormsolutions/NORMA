@@ -2,7 +2,7 @@
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:exsl="http://exslt.org/common"
-	xmlns:esu="urn:schemas-neumont-edu:ORM:ExtensionManagerUtility"
+	xmlns:esu="urn:schemas-neumont-edu:ORM:ExtensionStripperUtility"
 	xmlns:dummy="urn:dummy" 
 	extension-element-prefixes="exsl esu"
 	exclude-result-prefixes="dummy">
@@ -43,7 +43,7 @@
 			<xsl:variable name="currentNamespaces" select="namespace::node()[not(local-name()='xml') and not(.=$rootNamespace)]"/>
 			<xsl:variable name="testNamespaceRemovalFragment">
 				<xsl:for-each select="$currentNamespaces">
-					<xsl:if test="not(esu:isNamespaceSelected(.))">
+					<xsl:if test="not(esu:IsNamespaceActive(.))">
 						<xsl:text>1</xsl:text>
 					</xsl:if>
 				</xsl:for-each>
@@ -54,18 +54,18 @@
 					<xsl:variable name="namespaceAdjustedDocumentFragment">
 						<xsl:element name="{name()}" namespace="{$rootNamespace}">
 							<xsl:for-each select="$currentNamespaces">
-								<xsl:if test="esu:isNamespaceSelected(.)">
+								<xsl:if test="esu:IsNamespaceActive(.)">
 									<xsl:copy-of select="."/>
-									<xsl:if test="esu:addNamespace(.)"/>
+									<xsl:if test="esu:AddNamespace(.)"/>
 								</xsl:if>
 							</xsl:for-each>
 							<xsl:for-each select="$selectedNamespaces">
-								<xsl:if test="not(esu:wasNamespaceAdded(.))">
+								<xsl:if test="not(esu:WasNamespaceAdded(.))">
 									<xsl:call-template name="AddNamespacePrefix">
-										<xsl:with-param name="Prefix" select="esu:getRandomPrefix()"/>
+										<xsl:with-param name="Prefix" select="esu:GetRandomPrefix()"/>
 										<xsl:with-param name="Namespace" select="."/>
 									</xsl:call-template>
-									<xsl:if test="esu:addNamespace(.)"/>
+									<xsl:if test="esu:AddNamespace(.)"/>
 								</xsl:if>
 							</xsl:for-each>
 							<xsl:apply-templates select="@*|*|text()|comment()" mode="StripRemovedNamespaceElements"/>
@@ -81,18 +81,18 @@
 					<!-- Add new namespaces to the root element. The rest does not change -->
 					<xsl:element name="{name()}" namespace="{$rootNamespace}">
 						<xsl:for-each select="$currentNamespaces">
-							<xsl:if test="esu:isNamespaceSelected(.)">
+							<xsl:if test="esu:IsNamespaceActive(.)">
 								<xsl:copy-of select="."/>
-								<xsl:if test="esu:addNamespace(.)"/>
+								<xsl:if test="esu:AddNamespace(.)"/>
 							</xsl:if>
 						</xsl:for-each>
 						<xsl:for-each select="$selectedNamespaces">
-							<xsl:if test="not(esu:wasNamespaceAdded(.))">
+							<xsl:if test="not(esu:WasNamespaceAdded(.))">
 								<xsl:call-template name="AddNamespacePrefix">
-									<xsl:with-param name="Prefix" select="esu:getRandomPrefix()"/>
+									<xsl:with-param name="Prefix" select="esu:GetRandomPrefix()"/>
 									<xsl:with-param name="Namespace" select="."/>
 								</xsl:call-template>
-								<xsl:if test="esu:addNamespace(.)"/>
+								<xsl:if test="esu:AddNamespace(.)"/>
 							</xsl:if>
 						</xsl:for-each>
 						<xsl:copy-of select="@*|*|text()|comment()"/>
@@ -103,7 +103,7 @@
 	</xsl:template>
 
 	<xsl:template name="GetNextSelectedNamespace">
-		<xsl:variable name="nextSelectedNamespace" select="esu:getNextSelectedNamespace()"/>
+		<xsl:variable name="nextSelectedNamespace" select="esu:GetNextSelectedNamespace()"/>
 		<xsl:if test="$nextSelectedNamespace">
 			<dummy:whatever namespaceUri="{$nextSelectedNamespace}"/>
 			<xsl:call-template name="GetNextSelectedNamespace"/>
@@ -113,7 +113,7 @@
 	<xsl:template match="*" mode="StripRemovedNamespaceElements">
 		<xsl:variable name="namespace" select="namespace-uri()"/>
 		<xsl:choose>
-			<xsl:when test="esu:isNamespaceSelected($namespace)">
+			<xsl:when test="esu:IsNamespaceActive($namespace)">
 				<xsl:copy>
 					<xsl:apply-templates select="@*|*|text()|comment()" mode="StripRemovedNamespaceElements"/>
 				</xsl:copy>
@@ -131,7 +131,7 @@
 
 	<xsl:template match="*" mode="TrackRemovedIds">
 		<xsl:for-each select="@id">
-			<xsl:if test="esu:removeId(string(.))"/>
+			<xsl:if test="esu:RemoveId(string(.))"/>
 		</xsl:for-each>
 		<xsl:apply-templates select="*" mode="TrackRemovedIds"/>
 	</xsl:template>
@@ -139,7 +139,7 @@
 	<xsl:template name="StripDanglingReferences">
 		<xsl:param name="VerifyFragment"/>
 		<xsl:choose>
-			<xsl:when test="esu:beginIdRemovalPhase()">
+			<xsl:when test="esu:BeginIdRemovalPhase()">
 				<xsl:variable name="removalPhaseFragment">
 					<xsl:apply-templates select="exsl:node-set($VerifyFragment)/child::*" mode="VerifyIdReferences"/>
 				</xsl:variable>
@@ -155,7 +155,7 @@
 	<xsl:template match="*" mode="VerifyIdReferences">
 		<xsl:variable name="testAttributesFragment">
 			<xsl:for-each select="@*[not(name()='id')]">
-				<xsl:if test="esu:isRemovedId(string(.))">
+				<xsl:if test="esu:IsRemovedId(string(.))">
 					<xsl:text>1</xsl:text>
 				</xsl:if>
 			</xsl:for-each>

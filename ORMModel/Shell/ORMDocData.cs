@@ -35,6 +35,7 @@ using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using ORMSolutions.ORMArchitect.Core.Load;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using ORMSolutions.ORMArchitect.Core.ShapeModel;
 using ORMSolutions.ORMArchitect.Framework;
@@ -85,7 +86,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		#endregion // Private flags
 		#region Member variables
 		private Stream myFileStream;
-		private IDictionary<string, ORMExtensionType> myExtensionDomainModels;
+		private IDictionary<string, ExtensionModelBinding> myExtensionDomainModels;
 		private delegate void StoreDiagramMappingDataClearChangesDelegate();
 		private static readonly StoreDiagramMappingDataClearChangesDelegate myStoreDiagramMappingDataClearChanges = InitializeStoreDiagramMappingDataClearChanges();
 		#endregion // Member variables
@@ -129,10 +130,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// </summary>
 		protected override IList<Type> GetDomainModels()
 		{
-			ICollection<Type> standardDomainModels = ORMDesignerPackage.StandardDomainModels;
+			ICollection<Type> standardDomainModels = ORMDesignerPackage.ExtensionLoader.StandardDomainModels;
 			int standardCount = standardDomainModels.Count;
 			int count = standardCount;
-			IDictionary<string, ORMExtensionType> extensionDomainModels = myExtensionDomainModels;
+			IDictionary<string, ExtensionModelBinding> extensionDomainModels = myExtensionDomainModels;
 			if (extensionDomainModels != null)
 			{
 				count += extensionDomainModels.Count;
@@ -142,7 +143,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			if (extensionDomainModels != null)
 			{
 				int i = standardCount - 1;
-				foreach (ORMExtensionType extensionType in extensionDomainModels.Values)
+				foreach (ExtensionModelBinding extensionType in extensionDomainModels.Values)
 				{
 					retVal[++i] = extensionType.Type;
 				}
@@ -323,8 +324,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				try
 				{
 					XmlReaderSettings readerSettings = new XmlReaderSettings();
+					ExtensionLoader extensionLoader = ORMDesignerPackage.ExtensionLoader;
 					readerSettings.CloseInput = false;
-					Dictionary<string, ORMExtensionType> documentExtensions = null;
+					Dictionary<string, ExtensionModelBinding> documentExtensions = null;
 					using (XmlReader reader = XmlReader.Create(stream, readerSettings))
 					{
 						reader.MoveToContent();
@@ -341,12 +343,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 											!string.Equals(URI, ORMShapeDomainModel.XmlNamespace, StringComparison.Ordinal) &&
 											!string.Equals(URI, ORMSerializationEngine.RootXmlNamespace, StringComparison.Ordinal))
 										{
-											ORMExtensionType? extensionType = ORMDesignerPackage.GetExtensionDomainModel(URI);
+											ExtensionModelBinding? extensionType = extensionLoader.GetExtensionDomainModel(URI);
 											if (extensionType.HasValue)
 											{
 												if (documentExtensions == null)
 												{
-													documentExtensions = new Dictionary<string, ORMExtensionType>();
+													documentExtensions = new Dictionary<string, ExtensionModelBinding>();
 												}
 												documentExtensions[URI] = extensionType.Value;
 											}
@@ -360,12 +362,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							}
 						}
 					}
-					ORMDesignerPackage.VerifyRequiredExtensions(ref documentExtensions);
+					extensionLoader.VerifyRequiredExtensions(ref documentExtensions);
 					Stream unstrippedNamespaceStream = stream;
 					if (unrecognizedNamespaces != null)
 					{
 						stream.Position = 0;
-						namespaceStrippedStream = ExtensionManager.CleanupStream(stream, ORMDesignerPackage.StandardDomainModels, documentExtensions.Values, unrecognizedNamespaces);
+						namespaceStrippedStream = ExtensionLoader.CleanupStream(stream, extensionLoader.StandardDomainModels, documentExtensions.Values, unrecognizedNamespaces);
 						if (namespaceStrippedStream != null)
 						{
 							dontSave = true;
@@ -391,12 +393,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						if (documentExtensions != null)
 						{
 							string typeName = ex.TypeName;
-							foreach (KeyValuePair<string, ORMExtensionType> pair in documentExtensions)
+							foreach (KeyValuePair<string, ExtensionModelBinding> pair in documentExtensions)
 							{
 								Type testType = pair.Value.Type;
 								if (testType.FullName == typeName)
 								{
-									if (ORMDesignerPackage.CustomExtensionUnavailable(testType))
+									if (extensionLoader.CustomExtensionUnavailable(testType))
 									{
 										// If the unloadable type is a registered extensions, then
 										// we now have an additional namespace element that will not
@@ -982,12 +984,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// </summary>
 			public string[] GetLoadedExtensions()
 			{
-				ICollection<ORMExtensionType> availableExtensions = ORMDesignerPackage.GetAvailableCustomExtensions().Values;
+				ICollection<ExtensionModelBinding> availableExtensions = ORMDesignerPackage.ExtensionLoader.AvailableCustomExtensions.Values;
 				List<string> extensionNames = new List<string>();
 				foreach (DomainModel domainModel in myDocData.Store.DomainModels)
 				{
 					Type domainModelType = domainModel.GetType();
-					foreach (ORMExtensionType extensionInfo in availableExtensions)
+					foreach (ExtensionModelBinding extensionInfo in availableExtensions)
 					{
 						if (extensionInfo.Type == domainModelType)
 						{
@@ -1007,14 +1009,15 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				if (extensions != null && (ensureCount = extensions.Length) != 0)
 				{
 					string[] clonedExtensions = (string[])extensions.Clone();
-					IDictionary<string, ORMExtensionType> availableExtensions = ORMDesignerPackage.GetAvailableCustomExtensions();
-					ICollection<ORMExtensionType> availableExtensionsCollection = availableExtensions.Values;
-					Dictionary<string, ORMExtensionType> requestedExtensions = null;
-					List<ORMExtensionType> nonRequestedLoadedExtensions = null;
+					ExtensionLoader extensionLoader = ORMDesignerPackage.ExtensionLoader;
+					IDictionary<string, ExtensionModelBinding> availableExtensions = extensionLoader.AvailableCustomExtensions;
+					ICollection<ExtensionModelBinding> availableExtensionsCollection = availableExtensions.Values;
+					Dictionary<string, ExtensionModelBinding> requestedExtensions = null;
+					List<ExtensionModelBinding> nonRequestedLoadedExtensions = null;
 					foreach (DomainModel domainModel in myDocData.Store.DomainModels)
 					{
 						Type domainModelType = domainModel.GetType();
-						foreach (ORMExtensionType extensionInfo in availableExtensionsCollection)
+						foreach (ExtensionModelBinding extensionInfo in availableExtensionsCollection)
 						{
 							if (extensionInfo.Type == domainModelType)
 							{
@@ -1022,7 +1025,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								int clonedIndex = Array.IndexOf<string>(clonedExtensions, namespaceUri);
 								if (clonedIndex == -1)
 								{
-									(nonRequestedLoadedExtensions ?? (nonRequestedLoadedExtensions = new List<ORMExtensionType>())).Add(extensionInfo);
+									(nonRequestedLoadedExtensions ?? (nonRequestedLoadedExtensions = new List<ExtensionModelBinding>())).Add(extensionInfo);
 								}
 								else
 								{
@@ -1031,7 +1034,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 									{
 										return; // Nothing to do, everything we need is already loaded
 									}
-									(requestedExtensions ?? (requestedExtensions = new Dictionary<string,ORMExtensionType>())).Add(namespaceUri, extensionInfo);
+									(requestedExtensions ?? (requestedExtensions = new Dictionary<string,ExtensionModelBinding>())).Add(namespaceUri, extensionInfo);
 									clonedExtensions[clonedIndex] = null;
 								}
 								break;
@@ -1044,10 +1047,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						if (newExtension != null)
 						{
 							--ensureCount;
-							ORMExtensionType extensionInfo;
+							ExtensionModelBinding extensionInfo;
 							if (availableExtensions.TryGetValue(newExtension, out extensionInfo))
 							{
-								(requestedExtensions ?? (requestedExtensions = new Dictionary<string,ORMExtensionType>())).Add(extensionInfo.NamespaceUri, extensionInfo);
+								(requestedExtensions ?? (requestedExtensions = new Dictionary<string,ExtensionModelBinding>())).Add(extensionInfo.NamespaceUri, extensionInfo);
 							}
 							if (ensureCount == 0)
 							{
@@ -1064,14 +1067,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 
 					try
 					{
-						ORMDesignerPackage.VerifyRequiredExtensions(ref requestedExtensions);
-						ICollection<ORMExtensionType> allExtensions = requestedExtensions.Values;
+						extensionLoader.VerifyRequiredExtensions(ref requestedExtensions);
+						ICollection<ExtensionModelBinding> allExtensions = requestedExtensions.Values;
 						if (nonRequestedLoadedExtensions != null)
 						{
 							nonRequestedLoadedExtensions.AddRange(allExtensions);
 							allExtensions = nonRequestedLoadedExtensions;
 						}
-						newStream = ExtensionManager.CleanupStream(currentStream, ORMDesignerPackage.StandardDomainModels, allExtensions, null);
+						newStream = ExtensionLoader.CleanupStream(currentStream, extensionLoader.StandardDomainModels, allExtensions, null);
 						myDocData.ReloadFromStream(newStream, currentStream);
 					}
 					finally
