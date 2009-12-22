@@ -59,10 +59,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// Deletion of one or more constraints is enabled
 		/// </summary>
 		DeleteConstraint = 1L << 2,
-		/// <summary>
-		/// Display the readings toolwindow
-		/// </summary>
-		DisplayReadingsWindow = 1L << 3,
+
+		// 1L << 3 is available
+
 		/// <summary>
 		/// Check the selected object for the <see cref="IFreeFormCommandProvider{Store}"/> interface
 		/// </summary>
@@ -76,7 +75,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// </summary>
 		DeleteRole = 1L << 6,
 
-		// IL << 7 is available
+		// 1L << 7 is available
 
 		/// <summary>
 		/// Activate editing for the RoleSequence

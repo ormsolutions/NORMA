@@ -3126,29 +3126,73 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// AddRule: typeof(ConstraintRoleProjectedFromCalculatedPathValue)
 		/// </summary>
-		private static void ConstraintRoleProjectedFromCalculatedValueRule(ElementAddedEventArgs e)
+		private static void ConstraintRoleProjectedFromCalculatedValueAddedRule(ElementAddedEventArgs e)
 		{
-			ConstraintRoleSequenceHasRole constraintRole = ((ConstraintRoleProjectedFromCalculatedPathValue)e.ModelElement).ConstraintRole;
-			constraintRole.ProjectedFromConstant = null;
-			constraintRole.ProjectedFromPathedRole = null;
+			ConstraintRoleProjection constraintRoleProjection = ((ConstraintRoleProjectedFromCalculatedPathValue)e.ModelElement).ConstraintRoleProjection;
+			constraintRoleProjection.ProjectedFromConstant = null;
+			constraintRoleProjection.ProjectedFromPathedRole = null;
+		}
+		/// <summary>
+		/// DeleteRule: typeof(ConstraintRoleProjectedFromCalculatedPathValue), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// </summary>
+		private static void ConstraintRoleProjectedFromCalculatedValueDeletedRule(ElementDeletedEventArgs e)
+		{
+			DeleteIfEmpty(((ConstraintRoleProjectedFromCalculatedPathValue)e.ModelElement).ConstraintRoleProjection);
+		}
+		private static void DeleteIfEmpty(ConstraintRoleProjection constraintRoleProjection)
+		{
+			if (!constraintRoleProjection.IsDeleted &&
+				null == constraintRoleProjection.ProjectedFromPathedRole &&
+				null == constraintRoleProjection.ProjectedFromCalculatedValue &&
+				null == constraintRoleProjection.ProjectedFromConstant)
+			{
+				constraintRoleProjection.Delete();
+			}
 		}
 		/// <summary>
 		/// AddRule: typeof(ConstraintRoleProjectedFromPathConstant)
 		/// </summary>
-		private static void ConstraintRoleProjectedFromConstantRule(ElementAddedEventArgs e)
+		private static void ConstraintRoleProjectedFromConstantAddedRule(ElementAddedEventArgs e)
 		{
-			ConstraintRoleSequenceHasRole constraintRole = ((ConstraintRoleProjectedFromPathConstant)e.ModelElement).ConstraintRole;
-			constraintRole.ProjectedFromPathedRole = null;
-			constraintRole.ProjectedFromCalculatedValue = null;
+			ConstraintRoleProjection constraintRoleProjection = ((ConstraintRoleProjectedFromPathConstant)e.ModelElement).ConstraintRoleProjection;
+			constraintRoleProjection.ProjectedFromPathedRole = null;
+			constraintRoleProjection.ProjectedFromCalculatedValue = null;
+		}
+		/// <summary>
+		/// DeleteRule: typeof(ConstraintRoleProjectedFromPathConstant), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// </summary>
+		private static void ConstraintRoleProjectedFromConstantDeletedRule(ElementDeletedEventArgs e)
+		{
+			DeleteIfEmpty(((ConstraintRoleProjectedFromPathConstant)e.ModelElement).ConstraintRoleProjection);
 		}
 		/// <summary>
 		/// AddRule: typeof(ConstraintRoleProjectedFromPathedRole)
 		/// </summary>
-		private static void ConstraintRoleProjectedFromPathedRoleRule(ElementAddedEventArgs e)
+		private static void ConstraintRoleProjectedFromPathedRoleAddedRule(ElementAddedEventArgs e)
 		{
-			ConstraintRoleSequenceHasRole constraintRole = ((ConstraintRoleProjectedFromPathedRole)e.ModelElement).ConstraintRole;
-			constraintRole.ProjectedFromConstant = null;
-			constraintRole.ProjectedFromCalculatedValue = null;
+			ConstraintRoleProjection constraintRoleProjection = ((ConstraintRoleProjectedFromPathedRole)e.ModelElement).ConstraintRoleProjection;
+			constraintRoleProjection.ProjectedFromConstant = null;
+			constraintRoleProjection.ProjectedFromCalculatedValue = null;
+		}
+		/// <summary>
+		/// DeleteRule: typeof(ConstraintRoleProjectedFromPathedRole), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// </summary>
+		private static void ConstraintRoleProjectedFromPathedRoleDeletedRule(ElementDeletedEventArgs e)
+		{
+			DeleteIfEmpty(((ConstraintRoleProjectedFromPathedRole)e.ModelElement).ConstraintRoleProjection);
+		}
+		/// <summary>
+		/// DeleteRule: typeof(ConstraintRoleProjection), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// Delete a join path projection if there are no more contained role projections.
+		/// </summary>
+		private static void ConstraintRoleProjectionDeletedRule(ElementDeletedEventArgs e)
+		{
+			ConstraintRoleSequenceJoinPathProjection projection = ((ConstraintRoleProjection)e.ModelElement).JoinPathProjection;
+			if (!projection.IsDeleted &&
+				projection.ProjectedRoleCollection.Count == 0)
+			{
+				projection.Delete();
+			}
 		}
 		/// <summary>
 		/// AddRule: typeof(ConstraintRoleSequenceHasJoinPath)
@@ -3160,20 +3204,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		/// <summary>
 		/// DeleteRule: typeof(ConstraintRoleSequenceHasJoinPath)
-		/// Clean up derivation constants on the roles, validate join path error
+		/// Validate join path error
 		/// </summary>
 		private static void JoinPathDeletedRule(ElementDeletedEventArgs e)
 		{
 			ConstraintRoleSequence roleSequence = ((ConstraintRoleSequenceHasJoinPath)e.ModelElement).RoleSequence;
-			// Calculated values and pathed roles will be deleted with the derivation path,
-			// but constants are aggregated with the role and will not be cleared with delete
-			// propagation.
 			if (!roleSequence.IsDeleted)
 			{
-				foreach (ConstraintRoleSequenceHasRole constraintRole in ConstraintRoleSequenceHasRole.GetLinksToRoleCollection(roleSequence))
-				{
-					constraintRole.ProjectedFromConstant = null;
-				}
 				FrameworkDomainModel.DelayValidateElement(roleSequence, DelayValidateJoinPath);
 			}
 		}
@@ -5084,7 +5121,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				// The only thing we want in the join path is a lead path with the initial
 				// object type as the root. This is a straight join path: there are no splits
 				// or conditions.
-				RolePathComponent pathComponent = retVal.PathComponent;
+				LinkedElementCollection<RolePathComponent> pathComponents = retVal.PathComponentCollection;
+				int pathComponentCount = pathComponents.Count;
+				RolePathComponent pathComponent = pathComponentCount != 0 ? pathComponents[0] : null;
+				if (pathComponentCount > 1)
+				{
+					pathComponents.RemoveRange(1, pathComponentCount - 1);
+				}
 				if (pathComponent != null)
 				{
 					leadRolePath = pathComponent as LeadRolePath;
@@ -5107,6 +5150,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							rootLink.RootObjectType = rootObjectType;
 						}
+						pathComponent.CalculatedValueCollection.Clear();
 						leadRolePath.SplitPathCollection.Clear();
 						leadRolePath.SplitCombinationOperator = LogicalCombinationOperator.And;
 						leadRolePath.SplitIsNegated = false;
@@ -5114,7 +5158,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						pathedRoleCount = pathedRoles.Count;
 					}
 				}
-				retVal.CalculatedValueCollection.Clear();
 			}
 			else
 			{
@@ -5130,13 +5173,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (leadRolePath == null)
 			{
 				leadRolePath = new LeadRolePath(store);
-				retVal.PathComponent = leadRolePath;
+				leadRolePath.PathOwner = retVal;
 				leadRolePath.RootObjectType = rootObjectType;
 				if (notifyAdded != null)
 				{
 					notifyAdded.ElementAdded(leadRolePath, true);
 				}
 			}
+			ConstraintRoleSequenceJoinPathProjection pathProjection = null;
 			int stepCount = pathData.Count;
 			PathedRole lastBindablePathedRole = null;
 			for (int i = 0; i < stepCount; ++i)
@@ -5210,16 +5254,42 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				ConstraintRoleSequenceHasRole projectOnConstraintRole = stepData.ProjectedOnConstraintRole;
 				if (projectOnConstraintRole != null)
 				{
-					ConstraintRoleProjectedFromPathedRole projectionLink = ConstraintRoleProjectedFromPathedRole.GetLinkToProjectedFromPathedRole(projectOnConstraintRole);
+					ConstraintRoleProjection roleProjection = null;
+					ConstraintRoleProjectedFromPathedRole projectionLink = null;
+					if (null == pathProjection &&
+						null == (pathProjection = ConstraintRoleSequenceJoinPathProjection.GetLinkToConstraintRoleSequenceJoinPathProjection(leadRolePath)))
+					{
+						pathProjection = new ConstraintRoleSequenceJoinPathProjection(retVal, leadRolePath);
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(pathProjection);
+						}
+					}
+					else
+					{
+						roleProjection = ConstraintRoleProjection.GetLink(pathProjection, projectOnConstraintRole);
+						if (roleProjection != null)
+						{
+							projectionLink = ConstraintRoleProjectedFromPathedRole.GetLinkToProjectedFromPathedRole(roleProjection);
+						}
+					}
+					if (roleProjection == null)
+					{
+						roleProjection = new ConstraintRoleProjection(pathProjection, projectOnConstraintRole);
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(roleProjection);
+						}
+					}
 					if (projectionLink == null)
 					{
-						projectionLink = new ConstraintRoleProjectedFromPathedRole(projectOnConstraintRole, lastBindablePathedRole);
+						projectionLink = new ConstraintRoleProjectedFromPathedRole(roleProjection, lastBindablePathedRole);
 						if (notifyAdded != null)
 						{
 							notifyAdded.ElementAdded(projectionLink);
 							// Rules aren't turned on, so the other projection options won't clear automatically
-							projectOnConstraintRole.ProjectedFromCalculatedValue = null;
-							projectOnConstraintRole.ProjectedFromConstant = null;
+							roleProjection.ProjectedFromCalculatedValue = null;
+							roleProjection.ProjectedFromConstant = null;
 						}
 					}
 					else if (projectionLink.Source != lastBindablePathedRole)
@@ -5309,7 +5379,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			// and an 'and' tail split.
 			Store store = joinPath.Store;
 			LeadRolePath leadRolePath = null;
-			RolePathComponent pathComponent = joinPath.PathComponent;
+			LinkedElementCollection<RolePathComponent> pathComponents = joinPath.PathComponentCollection;
+			int pathComponentCount = pathComponents.Count;
+			RolePathComponent pathComponent = pathComponentCount != 0 ? pathComponents[0] : null;
+			if (pathComponentCount > 1)
+			{
+				pathComponents.RemoveRange(1, pathComponentCount - 1);
+			}
 			if (pathComponent != null)
 			{
 				leadRolePath = pathComponent as LeadRolePath;
@@ -5318,12 +5394,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					pathComponent.Delete();
 				}
 			}
-			joinPath.CalculatedValueCollection.Clear();
 			LinkedElementCollection<RoleSubPath> subPaths;
 			if (leadRolePath == null)
 			{
 				leadRolePath = new LeadRolePath(store);
-				leadRolePath.ParentOwner = joinPath;
+				leadRolePath.PathOwner = joinPath;
 				leadRolePath.RootObjectType = resolvedObjectType;
 				if (notifyAdded != null)
 				{
@@ -5333,6 +5408,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			else
 			{
+				leadRolePath.CalculatedValueCollection.Clear();
 				LinkedElementCollection<Role> leadRoles = leadRolePath.RoleCollection;
 				subPaths = leadRolePath.SplitPathCollection;
 				if (leadRoles.Count != 0)
@@ -5346,6 +5422,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			// We need one subpath per role with an entry on the near role and the far
 			// role projected on the constraint role.
+			ConstraintRoleSequenceJoinPathProjection pathProjection = null;
+			ConstraintRoleProjection roleProjection;
+			ConstraintRoleProjectedFromPathedRole projectionLink;
 			int roleCount = constraintRoles.Count;
 			int subPathCount = subPaths.Count;
 			int firstUnverifiedSubpathIndex = 0;
@@ -5395,16 +5474,43 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										notifyAdded.ElementAdded(farPathedRole, false);
 									}
 								}
-								ConstraintRoleProjectedFromPathedRole projectionLink = ConstraintRoleProjectedFromPathedRole.GetLinkToProjectedFromPathedRole(roleLink);
+
+								roleProjection = null;
+								projectionLink = null;
+								if (null == pathProjection &&
+									null == (pathProjection = ConstraintRoleSequenceJoinPathProjection.GetLinkToConstraintRoleSequenceJoinPathProjection(leadRolePath)))
+								{
+									pathProjection = new ConstraintRoleSequenceJoinPathProjection(joinPath, leadRolePath);
+									if (notifyAdded != null)
+									{
+										notifyAdded.ElementAdded(pathProjection);
+									}
+								}
+								else
+								{
+									roleProjection = ConstraintRoleProjection.GetLink(pathProjection, roleLink);
+									if (roleProjection != null)
+									{
+										projectionLink = ConstraintRoleProjectedFromPathedRole.GetLinkToProjectedFromPathedRole(roleProjection);
+									}
+								}
+								if (roleProjection == null)
+								{
+									roleProjection = new ConstraintRoleProjection(pathProjection, roleLink);
+									if (notifyAdded != null)
+									{
+										notifyAdded.ElementAdded(roleProjection);
+									}
+								}
 								if (projectionLink == null)
 								{
-									projectionLink = new ConstraintRoleProjectedFromPathedRole(roleLink, farPathedRole);
+									projectionLink = new ConstraintRoleProjectedFromPathedRole(roleProjection, farPathedRole);
 									if (notifyAdded != null)
 									{
 										notifyAdded.ElementAdded(projectionLink);
 										// Rules aren't necessarily turned on, so the other projection options won't clear automatically
-										roleLink.ProjectedFromCalculatedValue = null;
-										roleLink.ProjectedFromConstant = null;
+										roleProjection.ProjectedFromCalculatedValue = null;
+										roleProjection.ProjectedFromConstant = null;
 									}
 								}
 								else if (projectionLink.Source != farPathedRole)
@@ -5439,10 +5545,53 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						new RoleAssignment(PathedRole.RoleDomainRoleId, nearRole)},
 					new PropertyAssignment[]{
 						new PropertyAssignment(PathedRole.PathedRolePurposeDomainPropertyId, PathedRolePurpose.StartRole)});
-				roleLink.ProjectedFromPathedRole = new PathedRole(subPath, farRole);
+				PathedRole newFarPathedRole = new PathedRole(subPath, farRole);
 				if (notifyAdded != null)
 				{
 					notifyAdded.ElementAdded(subPath, true);
+				}
+
+				// Project the far role on the constraint role sequence role
+				roleProjection = null;
+				projectionLink = null;
+				if (null == pathProjection &&
+					null == (pathProjection = ConstraintRoleSequenceJoinPathProjection.GetLinkToConstraintRoleSequenceJoinPathProjection(leadRolePath)))
+				{
+					pathProjection = new ConstraintRoleSequenceJoinPathProjection(joinPath, leadRolePath);
+					if (notifyAdded != null)
+					{
+						notifyAdded.ElementAdded(pathProjection);
+					}
+				}
+				else
+				{
+					roleProjection = ConstraintRoleProjection.GetLink(pathProjection, roleLink);
+					if (roleProjection != null)
+					{
+						projectionLink = ConstraintRoleProjectedFromPathedRole.GetLinkToProjectedFromPathedRole(roleProjection);
+					}
+				}
+				if (roleProjection == null)
+				{
+					roleProjection = new ConstraintRoleProjection(pathProjection, roleLink);
+					if (notifyAdded != null)
+					{
+						notifyAdded.ElementAdded(roleProjection);
+					}
+				}
+				if (projectionLink == null)
+				{
+					projectionLink = new ConstraintRoleProjectedFromPathedRole(roleProjection, newFarPathedRole);
+					if (notifyAdded != null)
+					{
+						notifyAdded.ElementAdded(projectionLink);
+						roleProjection.ProjectedFromConstant = null;
+						roleProjection.ProjectedFromCalculatedValue = null;
+					}
+				}
+				else if (projectionLink.Source != newFarPathedRole)
+				{
+					projectionLink.Source = newFarPathedRole;
 				}
 			}
 

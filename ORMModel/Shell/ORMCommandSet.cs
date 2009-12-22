@@ -513,7 +513,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// </summary>
 			private void OnStatusReadingsWindow(object sender, EventArgs e)
 			{
-				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayReadingsWindow);
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayStandardWindows);
 			}
 			/// <summary>
 			/// Menu handler

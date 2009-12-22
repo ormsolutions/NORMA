@@ -696,9 +696,40 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					foreach (PathedRole pathedRole in PathedRole.GetLinksToRolePathCollection(role))
 					{
-						if (!visitor(role, pathedRole, dataTypeLink, pathedRole.ValueConstraint, previousValueConstraint))
+						LinkedElementCollection<PathConditionRoleValueConstraint> valueConstraints = pathedRole.ValueConstraintCollection;
+						if (valueConstraints.Count == 0)
 						{
-							return false;
+							if (!visitor(role, pathedRole, dataTypeLink, null, previousValueConstraint))
+							{
+								return false;
+							}
+						}
+						else
+						{
+							PathConditionRoleValueConstraint directValueConstraint = null;
+							foreach (PathConditionRoleValueConstraint pathConditionValueConstraint in valueConstraints)
+							{
+								if (pathConditionValueConstraint.AppliesToPathCombination == null)
+								{
+									directValueConstraint = pathConditionValueConstraint;
+									break;
+								}
+							}
+							if (!visitor(role, pathedRole, dataTypeLink, directValueConstraint, previousValueConstraint))
+							{
+								return false;
+							}
+							LeadRolePath resolvedRolePath = null;
+							foreach (PathConditionRoleValueConstraint pathConditionValueConstraint in valueConstraints)
+							{
+								if (pathConditionValueConstraint != directValueConstraint)
+								{
+									if (!visitor(role, pathedRole, dataTypeLink, pathConditionValueConstraint, FindCombinationValueConstraint(pathedRole, pathConditionValueConstraint.AppliesToPathCombination, resolvedRolePath ?? (resolvedRolePath =  pathedRole.RolePath.RootRolePath), true) ??	directValueConstraint ?? previousValueConstraint))
+									{
+										return false;
+									}
+								}
+							}
 						}
 					}
 
@@ -728,6 +759,47 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 			return true;
+		}
+		/// <summary>
+		/// Helper for finding the closed context value constraint for pathed roles.
+		/// Used by WalkDescendedValueRoles.
+		/// </summary>
+		private static ValueConstraint FindCombinationValueConstraint(PathedRole pathedRole, RolePathCombination combination, LeadRolePath stopAtRolePath, bool initialCombination)
+		{
+			if (combination == null)
+			{
+				return null;
+			}
+			if (!initialCombination)
+			{
+				foreach (PathConditionRoleValueConstraint combinationScopedValueConstraint in combination.ValueConstraintCollection)
+				{
+					if (combinationScopedValueConstraint.PathedRole == pathedRole)
+					{
+						return combinationScopedValueConstraint;
+					}
+				}
+			}
+			LinkedElementCollection<RolePathComponent> containedComponents = combination.PathComponentCollection;
+			foreach (RolePathComponent containedComponent in containedComponents)
+			{
+				if (containedComponent == stopAtRolePath)
+				{
+					return null;
+				}
+			}
+			foreach (RolePathComponent containedComponent in containedComponents)
+			{
+				if (null != (combination = containedComponent as RolePathCombination))
+				{
+					ValueConstraint testValueConstraint = FindCombinationValueConstraint(pathedRole, combination, stopAtRolePath, false);
+					if (testValueConstraint != null)
+					{
+						return testValueConstraint;
+					}
+				}
+			}
+			return null;
 		}
 		#endregion // ValueRole methods
 		#region RoleChangeRule
@@ -1385,57 +1457,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // RolePlayer validation rules
-		#region Role derivation validation rules
-		/// <summary>
-		/// AddRule: typeof(RoleDerivesFromCalculatedPathValue)
-		/// </summary>
-		private static void RoleDerivesFromCalculatedValueRule(ElementAddedEventArgs e)
-		{
-			Role role = ((RoleDerivesFromCalculatedPathValue)e.ModelElement).Role;
-			role.DerivedFromConstant = null;
-			role.DerivedFromPathedRole = null;
-		}
-		/// <summary>
-		/// AddRule: typeof(RoleDerivesFromPathConstant)
-		/// </summary>
-		private static void RoleDerivesFromConstantRule(ElementAddedEventArgs e)
-		{
-			Role role = ((RoleDerivesFromPathConstant)e.ModelElement).Role;
-			role.DerivedFromPathedRole = null;
-			role.DerivedFromCalculatedValue = null;
-		}
-		/// <summary>
-		/// AddRule: typeof(RoleDerivesFromPathedRole)
-		/// </summary>
-		private static void RoleDerivedFromPathedRoleRule(ElementAddedEventArgs e)
-		{
-			Role role = ((RoleDerivesFromPathedRole)e.ModelElement).Role;
-			role.DerivedFromConstant = null;
-			role.DerivedFromCalculatedValue = null;
-		}
-		/// <summary>
-		/// DeleteRule: typeof(FactTypeHasDerivationRule)
-		/// Clean up derivation constants on the roles
-		/// </summary>
-		private static void FactTypeDerivationRuleDeletedRule(ElementDeletedEventArgs e)
-		{
-			FactType factType = ((FactTypeHasDerivationRule)e.ModelElement).FactType;
-			// Calculated values and pathed roles will be deleted with the derivation path,
-			// but constants are aggregated with the role and will not be cleared with delete
-			// propagation.
-			if (!factType.IsDeleted)
-			{
-				foreach (RoleBase roleBase in factType.RoleCollection)
-				{
-					Role role = roleBase as Role;
-					if (role != null)
-					{
-						role.DerivedFromConstant = null;
-					}
-				}
-			}
-		}
-		#endregion // Role derivation validation rules
 		#region IRedirectVerbalization Implementation
 		/// <summary>
 		/// Implements IRedirectVerbalization.SurrogateVerbalizer by deferring to the parent fact

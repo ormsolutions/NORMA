@@ -622,7 +622,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			if (null != (factType = element as FactType) ||
 				(null != (readingOrder = element as ReadingOrder) && null != (factType = readingOrder.FactType)))
 			{
-				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteFactType | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.DisplayReadingsWindow;
+				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteFactType | ORMDesignerCommands.DeleteAny;
 				Objectification objectification = factType.Objectification;
 				if (objectification == null || objectification.IsImplied)
 				{
@@ -756,7 +756,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 				Role unaryRole = fact.UnaryRole;
 
-				visibleCommands = enabledCommands = ORMDesignerCommands.DisplayReadingsWindow | ORMDesignerCommands.InsertRole | ORMDesignerCommands.DeleteRole | ORMDesignerCommands.ToggleSimpleMandatory | ORMDesignerCommands.AddInternalUniqueness;
+				visibleCommands = enabledCommands = ORMDesignerCommands.InsertRole | ORMDesignerCommands.DeleteRole | ORMDesignerCommands.ToggleSimpleMandatory | ORMDesignerCommands.AddInternalUniqueness;
 				checkableCommands = ORMDesignerCommands.ToggleSimpleMandatory;
 				toleratedCommands |= ORMDesignerCommands.DeleteShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AutoLayout;
 				if (role.IsMandatory)

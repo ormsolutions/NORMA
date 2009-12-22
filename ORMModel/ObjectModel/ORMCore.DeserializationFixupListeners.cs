@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -35,6 +36,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				yield return SetComparisonConstraint.FixupListener;
 				yield return SetConstraint.FixupListener;
 				yield return ConstraintRoleSequence.JoinPathFixupListener;
+				yield return RolePathOwner.UpdateRolePathFixupListener;
+				yield return RolePathOwner.FixupListener;
 				yield return NamedElementDictionary.GetFixupListener((int)ORMDeserializationFixupPhase.ValidateElementNames, contextDomainModel);
 				yield return SubtypeFact.FixupListener;
 				yield return FactType.NameFixupListener;

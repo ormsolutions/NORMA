@@ -44,15 +44,27 @@
 			<arg:RolePlayerPositionChangeRule methodName="ConstraintRolePositionChangedRule">
 				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
 			</arg:RolePlayerPositionChangeRule>
-			<arg:AddRule methodName="ConstraintRoleProjectedFromCalculatedValueRule">
+			<arg:AddRule methodName="ConstraintRoleProjectedFromCalculatedValueAddedRule">
 				<arg:RuleOn targetType="ConstraintRoleProjectedFromCalculatedPathValue"/>
 			</arg:AddRule>
-			<arg:AddRule methodName="ConstraintRoleProjectedFromConstantRule">
+			<arg:DeleteRule methodName="ConstraintRoleProjectedFromCalculatedValueDeletedRule">
+				<arg:RuleOn targetType="ConstraintRoleProjectedFromCalculatedPathValue" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
+			</arg:DeleteRule>
+			<arg:AddRule methodName="ConstraintRoleProjectedFromConstantAddedRule">
 				<arg:RuleOn targetType="ConstraintRoleProjectedFromPathConstant"/>
 			</arg:AddRule>
-			<arg:AddRule methodName="ConstraintRoleProjectedFromPathedRoleRule">
+			<arg:DeleteRule methodName="ConstraintRoleProjectedFromConstantDeletedRule">
+				<arg:RuleOn targetType="ConstraintRoleProjectedFromPathConstant" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
+			</arg:DeleteRule>
+			<arg:AddRule methodName="ConstraintRoleProjectedFromPathedRoleAddedRule">
 				<arg:RuleOn targetType="ConstraintRoleProjectedFromPathedRole"/>
 			</arg:AddRule>
+			<arg:DeleteRule methodName="ConstraintRoleProjectedFromPathedRoleDeletedRule">
+				<arg:RuleOn targetType="ConstraintRoleProjectedFromPathedRole" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
+			</arg:DeleteRule>
+			<arg:DeleteRule methodName="ConstraintRoleProjectionDeletedRule">
+				<arg:RuleOn targetType="ConstraintRoleProjection" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
+			</arg:DeleteRule>
 			<arg:AddRule methodName="ConstraintRoleSequenceHasRoleAddedRule">
 				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
 			</arg:AddRule>
@@ -387,6 +399,29 @@
 			<arg:ChangeRule methodName="ObjectTypeInstanceNameChangedRule">
 				<arg:RuleOn targetType="ObjectTypeInstance"/>
 			</arg:ChangeRule>
+		</arg:RuleContainer>
+		<arg:RuleContainer class="FactTypeRoleProjection">
+			<arg:DeleteRule methodName="FactTypeRoleProjectionDeletedRule">
+				<arg:RuleOn targetType="FactTypeRoleProjection" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
+			</arg:DeleteRule>
+			<arg:AddRule methodName="ProjectedFromCalculatedValueAddedRule">
+				<arg:RuleOn targetType="FactTypeRoleProjectedFromCalculatedPathValue"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="ProjectedFromCalculatedValueDeletedRule">
+				<arg:RuleOn targetType="FactTypeRoleProjectedFromCalculatedPathValue" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
+			</arg:DeleteRule>
+			<arg:AddRule methodName="ProjectedFromConstantAddedRule">
+				<arg:RuleOn targetType="FactTypeRoleProjectedFromPathConstant"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="ProjectedFromConstantDeletedRule">
+				<arg:RuleOn targetType="FactTypeRoleProjectedFromPathConstant" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
+			</arg:DeleteRule>
+			<arg:AddRule methodName="ProjectedFromPathedRoleAddedRule">
+				<arg:RuleOn targetType="FactTypeRoleProjectedFromPathedRole"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="ProjectedFromPathedRoleDeletedRule">
+				<arg:RuleOn targetType="FactTypeRoleProjectedFromPathedRole" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
+			</arg:DeleteRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="FrequencyConstraint">
 			<arg:ChangeRule methodName="FrequencyConstraintMinMaxRule">
@@ -759,9 +794,6 @@
 			<arg:DeleteRule methodName="ConstraintRoleSequenceHasRoleDeletedRule">
 				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
 			</arg:DeleteRule>
-			<arg:DeleteRule methodName="FactTypeDerivationRuleDeletedRule">
-				<arg:RuleOn targetType="FactTypeHasDerivationRule"/>
-			</arg:DeleteRule>
 			<arg:ChangeRule methodName="RoleChangeRule">
 				<arg:RuleOn targetType="Role"/>
 			</arg:ChangeRule>
@@ -771,15 +803,6 @@
 			<arg:DeleteRule methodName="RoleInstanceDeletedRule">
 				<arg:RuleOn targetType="RoleInstance"/>
 			</arg:DeleteRule>
-			<arg:AddRule methodName="RoleDerivesFromCalculatedValueRule">
-				<arg:RuleOn targetType="RoleDerivesFromCalculatedPathValue"/>
-			</arg:AddRule>
-			<arg:AddRule methodName="RoleDerivesFromConstantRule">
-				<arg:RuleOn targetType="RoleDerivesFromPathConstant"/>
-			</arg:AddRule>
-			<arg:AddRule methodName="RoleDerivedFromPathedRoleRule">
-				<arg:RuleOn targetType="RoleDerivesFromPathedRole"/>
-			</arg:AddRule>
 			<arg:RolePlayerChangeRule methodName="RoleInstanceRolePlayerChangedRule">
 				<arg:RuleOn targetType="RoleInstance"/>
 			</arg:RolePlayerChangeRule>
@@ -813,25 +836,21 @@
 				<arg:RuleOn targetType="RoleSubPathIsContinuationOfRolePath" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
 			</arg:RolePlayerChangeRule>
 		</arg:RuleContainer>
-		<arg:RuleContainer class="RolePathComponent">
-			<arg:AddRule methodName="RolePathCompositorHasPathComponentAddedRule">
-				<arg:RuleOn targetType="RolePathCompositorHasPathComponent"/>
-			</arg:AddRule>
-			<arg:DeleteRule methodName="RolePathCompositorHasPathComponentDeletedRule">
-				<arg:RuleOn targetType="RolePathCompositorHasPathComponent"/>
+		<arg:RuleContainer class="RolePathCombination">
+			<arg:DeleteRule methodName="RolePathCombinationHasPathComponentDeletedRule">
+				<arg:RuleOn targetType="RolePathCombinationHasPathComponent" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
 			</arg:DeleteRule>
-			<arg:RolePlayerChangeRule methodName="RolePathCompositorHasPathComponentRolePlayerChangedRule">
-				<arg:RuleOn targetType="RolePathCompositorHasPathComponent"/>
-			</arg:RolePlayerChangeRule>
-			<arg:AddRule methodName="RolePathOwnerHasPathComponentAddedRule">
+			<arg:DeleteRule methodName="CombininedCorrelatedRoleDeletedRule">
+				<arg:RuleOn targetType="RolePathCombinationCorrelationCorrelatesPathedRole" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
+			</arg:DeleteRule>
+		</arg:RuleContainer>
+		<arg:RuleContainer class="RolePathOwner">
+			<arg:AddRule methodName="RolePathComponentAddedRule">
 				<arg:RuleOn targetType="RolePathOwnerHasPathComponent"/>
 			</arg:AddRule>
-			<arg:DeleteRule methodName="RolePathOwnerHasPathComponentDeletedRule">
+			<arg:DeleteRule methodName="RolePathComponentDeletedRule">
 				<arg:RuleOn targetType="RolePathOwnerHasPathComponent"/>
 			</arg:DeleteRule>
-			<arg:RolePlayerChangeRule methodName="RolePathOwnerHasPathComponentRolePlayerChangedRule">
-				<arg:RuleOn targetType="RolePathOwnerHasPathComponent"/>
-			</arg:RolePlayerChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="SetComparisonConstraint">
 			<arg:AddRule methodName="ConstraintHasRoleSequenceAddedRule" fireBefore="true">

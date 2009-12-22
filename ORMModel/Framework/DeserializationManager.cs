@@ -301,17 +301,23 @@ namespace ORMSolutions.ORMArchitect.Framework
 		/// </summary>
 		AddIntrinsicElements = 100,
 		/// <summary>
+		/// Replace any deprecated elements with replacement patterns
+		/// and remove the deprecated elements.
+		/// This stage may both add and remove events.
+		/// </summary>
+		ReplaceDeprecatedStoredElements = 200,
+		/// <summary>
 		/// Verify any implied elements that are serialized with the model
 		/// but must follow a proscribed pattern based on another serialized element.
 		/// This stage may both add and remove elements.
 		/// </summary>
-		ValidateImplicitStoredElements = 200,
+		ValidateImplicitStoredElements = 300,
 		/// <summary>
 		/// Add implicit elements at this stage. An implicit element is
 		/// not serialized and is generally created by a rule once the model
 		/// is loaded.
 		/// </summary>
-		AddImplicitElements = 300,
+		AddImplicitElements = 400,
 		/// <summary>
 		/// The last standard fixup phase for loading model elements. Presentation
 		/// elements have a separate set of phases

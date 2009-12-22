@@ -43,9 +43,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						typeof(ConstraintRoleSequence).GetNestedType("AutomaticJoinPathChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ConstraintRoleSequence).GetNestedType("BlockRolePlayerChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ConstraintRoleSequence).GetNestedType("ConstraintRolePositionChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ConstraintRoleSequence).GetNestedType("ConstraintRoleProjectedFromCalculatedValueRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ConstraintRoleSequence).GetNestedType("ConstraintRoleProjectedFromConstantRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ConstraintRoleSequence).GetNestedType("ConstraintRoleProjectedFromPathedRoleRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ConstraintRoleSequence).GetNestedType("ConstraintRoleProjectedFromCalculatedValueAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ConstraintRoleSequence).GetNestedType("ConstraintRoleProjectedFromCalculatedValueDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ConstraintRoleSequence).GetNestedType("ConstraintRoleProjectedFromConstantAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ConstraintRoleSequence).GetNestedType("ConstraintRoleProjectedFromConstantDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ConstraintRoleSequence).GetNestedType("ConstraintRoleProjectedFromPathedRoleAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ConstraintRoleSequence).GetNestedType("ConstraintRoleProjectedFromPathedRoleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ConstraintRoleSequence).GetNestedType("ConstraintRoleProjectionDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ConstraintRoleSequence).GetNestedType("ConstraintRoleSequenceHasRoleAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ConstraintRoleSequence).GetNestedType("ConstraintRoleSequenceHasRoleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ConstraintRoleSequence).GetNestedType("JoinPathAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -149,6 +153,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						typeof(FactTypeInstance).GetNestedType("FactTypeRoleInstanceRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeInstance).GetNestedType("ImpliedBooleanRolePlayerDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeInstance).GetNestedType("ObjectTypeInstanceNameChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactTypeRoleProjection).GetNestedType("FactTypeRoleProjectionDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactTypeRoleProjection).GetNestedType("ProjectedFromCalculatedValueAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactTypeRoleProjection).GetNestedType("ProjectedFromCalculatedValueDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactTypeRoleProjection).GetNestedType("ProjectedFromConstantAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactTypeRoleProjection).GetNestedType("ProjectedFromConstantDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactTypeRoleProjection).GetNestedType("ProjectedFromPathedRoleAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactTypeRoleProjection).GetNestedType("ProjectedFromPathedRoleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FrequencyConstraint).GetNestedType("FrequencyConstraintMinMaxRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(MandatoryConstraint).GetNestedType("MandatoryConstraintChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ModelError).GetNestedType("SynchronizeErrorTextForModelRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -252,13 +263,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						typeof(RingConstraint).GetNestedType("RingConstraintTypeChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Role).GetNestedType("ConstraintRoleSequenceHasRoleAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Role).GetNestedType("ConstraintRoleSequenceHasRoleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(Role).GetNestedType("FactTypeDerivationRuleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Role).GetNestedType("RoleChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Role).GetNestedType("RoleInstanceAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Role).GetNestedType("RoleInstanceDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(Role).GetNestedType("RoleDerivesFromCalculatedValueRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(Role).GetNestedType("RoleDerivesFromConstantRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(Role).GetNestedType("RoleDerivedFromPathedRoleRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Role).GetNestedType("RoleInstanceRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Role).GetNestedType("RolePlayerRequiredAddRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Role).GetNestedType("RolePlayerRequiredDeleteRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -269,12 +276,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						typeof(RolePath).GetNestedType("PathedRoleRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RolePath).GetNestedType("SubPathDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RolePath).GetNestedType("SubPathRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(RolePathComponent).GetNestedType("RolePathCompositorHasPathComponentAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(RolePathComponent).GetNestedType("RolePathCompositorHasPathComponentDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(RolePathComponent).GetNestedType("RolePathCompositorHasPathComponentRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(RolePathComponent).GetNestedType("RolePathOwnerHasPathComponentAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(RolePathComponent).GetNestedType("RolePathOwnerHasPathComponentDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(RolePathComponent).GetNestedType("RolePathOwnerHasPathComponentRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(RolePathCombination).GetNestedType("RolePathCombinationHasPathComponentDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(RolePathCombination).GetNestedType("CombininedCorrelatedRoleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(RolePathOwner).GetNestedType("RolePathComponentAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(RolePathOwner).GetNestedType("RolePathComponentDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SetComparisonConstraint).GetNestedType("ConstraintHasRoleSequenceAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SetComparisonConstraint).GetNestedType("ConstraintRoleSequenceHasRoleAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SetComparisonConstraint).GetNestedType("EnforceRoleSequenceCardinalityForConstraintAddRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -377,7 +382,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMCoreDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 309; ++i)
+			for (int i = 0; i < 314; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -607,10 +612,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleProjectedFromCalculatedPathValue), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class ConstraintRoleProjectedFromCalculatedValueRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		private sealed class ConstraintRoleProjectedFromCalculatedValueAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
-			public ConstraintRoleProjectedFromCalculatedValueRuleClass()
+			public ConstraintRoleProjectedFromCalculatedValueAddedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
@@ -620,23 +625,49 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// /// <summary>
 			/// /// AddRule: typeof(ConstraintRoleProjectedFromCalculatedPathValue)
 			/// /// </summary>
-			/// private static void ConstraintRoleProjectedFromCalculatedValueRule(ElementAddedEventArgs e)
+			/// private static void ConstraintRoleProjectedFromCalculatedValueAddedRule(ElementAddedEventArgs e)
 			/// {
 			/// }
 			/// </summary>
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromCalculatedValueRule");
-				ConstraintRoleSequence.ConstraintRoleProjectedFromCalculatedValueRule(e);
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromCalculatedValueRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromCalculatedValueAddedRule");
+				ConstraintRoleSequence.ConstraintRoleProjectedFromCalculatedValueAddedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromCalculatedValueAddedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleProjectedFromCalculatedPathValue), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
+		private sealed class ConstraintRoleProjectedFromCalculatedValueDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public ConstraintRoleProjectedFromCalculatedValueDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence
+			/// /// <summary>
+			/// /// DeleteRule: typeof(ConstraintRoleProjectedFromCalculatedPathValue), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+			/// /// </summary>
+			/// private static void ConstraintRoleProjectedFromCalculatedValueDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromCalculatedValueDeletedRule");
+				ConstraintRoleSequence.ConstraintRoleProjectedFromCalculatedValueDeletedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromCalculatedValueDeletedRule");
 			}
 		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleProjectedFromPathConstant), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class ConstraintRoleProjectedFromConstantRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		private sealed class ConstraintRoleProjectedFromConstantAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
-			public ConstraintRoleProjectedFromConstantRuleClass()
+			public ConstraintRoleProjectedFromConstantAddedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
@@ -646,23 +677,49 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// /// <summary>
 			/// /// AddRule: typeof(ConstraintRoleProjectedFromPathConstant)
 			/// /// </summary>
-			/// private static void ConstraintRoleProjectedFromConstantRule(ElementAddedEventArgs e)
+			/// private static void ConstraintRoleProjectedFromConstantAddedRule(ElementAddedEventArgs e)
 			/// {
 			/// }
 			/// </summary>
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromConstantRule");
-				ConstraintRoleSequence.ConstraintRoleProjectedFromConstantRule(e);
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromConstantRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromConstantAddedRule");
+				ConstraintRoleSequence.ConstraintRoleProjectedFromConstantAddedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromConstantAddedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleProjectedFromPathConstant), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
+		private sealed class ConstraintRoleProjectedFromConstantDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public ConstraintRoleProjectedFromConstantDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence
+			/// /// <summary>
+			/// /// DeleteRule: typeof(ConstraintRoleProjectedFromPathConstant), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+			/// /// </summary>
+			/// private static void ConstraintRoleProjectedFromConstantDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromConstantDeletedRule");
+				ConstraintRoleSequence.ConstraintRoleProjectedFromConstantDeletedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromConstantDeletedRule");
 			}
 		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleProjectedFromPathedRole), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class ConstraintRoleProjectedFromPathedRoleRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		private sealed class ConstraintRoleProjectedFromPathedRoleAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
-			public ConstraintRoleProjectedFromPathedRoleRuleClass()
+			public ConstraintRoleProjectedFromPathedRoleAddedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
@@ -672,16 +729,68 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// /// <summary>
 			/// /// AddRule: typeof(ConstraintRoleProjectedFromPathedRole)
 			/// /// </summary>
-			/// private static void ConstraintRoleProjectedFromPathedRoleRule(ElementAddedEventArgs e)
+			/// private static void ConstraintRoleProjectedFromPathedRoleAddedRule(ElementAddedEventArgs e)
 			/// {
 			/// }
 			/// </summary>
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromPathedRoleRule");
-				ConstraintRoleSequence.ConstraintRoleProjectedFromPathedRoleRule(e);
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromPathedRoleRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromPathedRoleAddedRule");
+				ConstraintRoleSequence.ConstraintRoleProjectedFromPathedRoleAddedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromPathedRoleAddedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleProjectedFromPathedRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
+		private sealed class ConstraintRoleProjectedFromPathedRoleDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public ConstraintRoleProjectedFromPathedRoleDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence
+			/// /// <summary>
+			/// /// DeleteRule: typeof(ConstraintRoleProjectedFromPathedRole), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+			/// /// </summary>
+			/// private static void ConstraintRoleProjectedFromPathedRoleDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromPathedRoleDeletedRule");
+				ConstraintRoleSequence.ConstraintRoleProjectedFromPathedRoleDeletedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromPathedRoleDeletedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleProjection), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
+		private sealed class ConstraintRoleProjectionDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public ConstraintRoleProjectionDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence
+			/// /// <summary>
+			/// /// DeleteRule: typeof(ConstraintRoleProjection), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+			/// /// </summary>
+			/// private static void ConstraintRoleProjectionDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectionDeletedRule");
+				ConstraintRoleSequence.ConstraintRoleProjectionDeletedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectionDeletedRule");
 			}
 		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequenceHasRole), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
@@ -3430,6 +3539,193 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // Rule classes for FactTypeInstance
+	#region Rule classes for FactTypeRoleProjection
+	partial class FactTypeRoleProjection
+	{
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeRoleProjection), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
+		private sealed class FactTypeRoleProjectionDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public FactTypeRoleProjectionDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection
+			/// /// <summary>
+			/// /// DeleteRule: typeof(FactTypeRoleProjection), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+			/// /// </summary>
+			/// private static void FactTypeRoleProjectionDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection.FactTypeRoleProjectionDeletedRule");
+				FactTypeRoleProjection.FactTypeRoleProjectionDeletedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection.FactTypeRoleProjectionDeletedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeRoleProjectedFromCalculatedPathValue), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class ProjectedFromCalculatedValueAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public ProjectedFromCalculatedValueAddedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection
+			/// /// <summary>
+			/// /// AddRule: typeof(FactTypeRoleProjectedFromCalculatedPathValue)
+			/// /// </summary>
+			/// private static void ProjectedFromCalculatedValueAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection.ProjectedFromCalculatedValueAddedRule");
+				FactTypeRoleProjection.ProjectedFromCalculatedValueAddedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection.ProjectedFromCalculatedValueAddedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeRoleProjectedFromCalculatedPathValue), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
+		private sealed class ProjectedFromCalculatedValueDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public ProjectedFromCalculatedValueDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection
+			/// /// <summary>
+			/// /// DeleteRule: typeof(FactTypeRoleProjectedFromCalculatedPathValue), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+			/// /// </summary>
+			/// private static void ProjectedFromCalculatedValueDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection.ProjectedFromCalculatedValueDeletedRule");
+				FactTypeRoleProjection.ProjectedFromCalculatedValueDeletedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection.ProjectedFromCalculatedValueDeletedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeRoleProjectedFromPathConstant), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class ProjectedFromConstantAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public ProjectedFromConstantAddedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection
+			/// /// <summary>
+			/// /// AddRule: typeof(FactTypeRoleProjectedFromPathConstant)
+			/// /// </summary>
+			/// private static void ProjectedFromConstantAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection.ProjectedFromConstantAddedRule");
+				FactTypeRoleProjection.ProjectedFromConstantAddedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection.ProjectedFromConstantAddedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeRoleProjectedFromPathConstant), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
+		private sealed class ProjectedFromConstantDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public ProjectedFromConstantDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection
+			/// /// <summary>
+			/// /// DeleteRule: typeof(FactTypeRoleProjectedFromPathConstant), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+			/// /// </summary>
+			/// private static void ProjectedFromConstantDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection.ProjectedFromConstantDeletedRule");
+				FactTypeRoleProjection.ProjectedFromConstantDeletedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection.ProjectedFromConstantDeletedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeRoleProjectedFromPathedRole), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class ProjectedFromPathedRoleAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public ProjectedFromPathedRoleAddedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection
+			/// /// <summary>
+			/// /// AddRule: typeof(FactTypeRoleProjectedFromPathedRole)
+			/// /// </summary>
+			/// private static void ProjectedFromPathedRoleAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection.ProjectedFromPathedRoleAddedRule");
+				FactTypeRoleProjection.ProjectedFromPathedRoleAddedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection.ProjectedFromPathedRoleAddedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeRoleProjectedFromPathedRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
+		private sealed class ProjectedFromPathedRoleDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public ProjectedFromPathedRoleDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection
+			/// /// <summary>
+			/// /// DeleteRule: typeof(FactTypeRoleProjectedFromPathedRole), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+			/// /// </summary>
+			/// private static void ProjectedFromPathedRoleDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection.ProjectedFromPathedRoleDeletedRule");
+				FactTypeRoleProjection.ProjectedFromPathedRoleDeletedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection.ProjectedFromPathedRoleDeletedRule");
+			}
+		}
+	}
+	#endregion // Rule classes for FactTypeRoleProjection
 	#region Rule classes for FrequencyConstraint
 	partial class FrequencyConstraint
 	{
@@ -6166,32 +6462,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.ConstraintRoleSequenceHasRoleDeletedRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeHasDerivationRule), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class FactTypeDerivationRuleDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
-		{
-			[System.Diagnostics.DebuggerStepThrough()]
-			public FactTypeDerivationRuleDeletedRuleClass()
-			{
-				base.IsEnabled = false;
-			}
-			/// <summary>
-			/// Provide the following method in class: 
-			/// ORMSolutions.ORMArchitect.Core.ObjectModel.Role
-			/// /// <summary>
-			/// /// DeleteRule: typeof(FactTypeHasDerivationRule)
-			/// /// </summary>
-			/// private static void FactTypeDerivationRuleDeletedRule(ElementDeletedEventArgs e)
-			/// {
-			/// }
-			/// </summary>
-			[System.Diagnostics.DebuggerStepThrough()]
-			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
-			{
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.FactTypeDerivationRuleDeletedRule");
-				Role.FactTypeDerivationRuleDeletedRule(e);
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.FactTypeDerivationRuleDeletedRule");
-			}
-		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Role), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class RoleChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
@@ -6268,84 +6538,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.RoleInstanceDeletedRule");
 				Role.RoleInstanceDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.RoleInstanceDeletedRule");
-			}
-		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RoleDerivesFromCalculatedPathValue), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class RoleDerivesFromCalculatedValueRuleClass : Microsoft.VisualStudio.Modeling.AddRule
-		{
-			[System.Diagnostics.DebuggerStepThrough()]
-			public RoleDerivesFromCalculatedValueRuleClass()
-			{
-				base.IsEnabled = false;
-			}
-			/// <summary>
-			/// Provide the following method in class: 
-			/// ORMSolutions.ORMArchitect.Core.ObjectModel.Role
-			/// /// <summary>
-			/// /// AddRule: typeof(RoleDerivesFromCalculatedPathValue)
-			/// /// </summary>
-			/// private static void RoleDerivesFromCalculatedValueRule(ElementAddedEventArgs e)
-			/// {
-			/// }
-			/// </summary>
-			[System.Diagnostics.DebuggerStepThrough()]
-			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
-			{
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.RoleDerivesFromCalculatedValueRule");
-				Role.RoleDerivesFromCalculatedValueRule(e);
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.RoleDerivesFromCalculatedValueRule");
-			}
-		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RoleDerivesFromPathConstant), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class RoleDerivesFromConstantRuleClass : Microsoft.VisualStudio.Modeling.AddRule
-		{
-			[System.Diagnostics.DebuggerStepThrough()]
-			public RoleDerivesFromConstantRuleClass()
-			{
-				base.IsEnabled = false;
-			}
-			/// <summary>
-			/// Provide the following method in class: 
-			/// ORMSolutions.ORMArchitect.Core.ObjectModel.Role
-			/// /// <summary>
-			/// /// AddRule: typeof(RoleDerivesFromPathConstant)
-			/// /// </summary>
-			/// private static void RoleDerivesFromConstantRule(ElementAddedEventArgs e)
-			/// {
-			/// }
-			/// </summary>
-			[System.Diagnostics.DebuggerStepThrough()]
-			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
-			{
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.RoleDerivesFromConstantRule");
-				Role.RoleDerivesFromConstantRule(e);
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.RoleDerivesFromConstantRule");
-			}
-		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RoleDerivesFromPathedRole), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class RoleDerivedFromPathedRoleRuleClass : Microsoft.VisualStudio.Modeling.AddRule
-		{
-			[System.Diagnostics.DebuggerStepThrough()]
-			public RoleDerivedFromPathedRoleRuleClass()
-			{
-				base.IsEnabled = false;
-			}
-			/// <summary>
-			/// Provide the following method in class: 
-			/// ORMSolutions.ORMArchitect.Core.ObjectModel.Role
-			/// /// <summary>
-			/// /// AddRule: typeof(RoleDerivesFromPathedRole)
-			/// /// </summary>
-			/// private static void RoleDerivedFromPathedRoleRule(ElementAddedEventArgs e)
-			/// {
-			/// }
-			/// </summary>
-			[System.Diagnostics.DebuggerStepThrough()]
-			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
-			{
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.RoleDerivedFromPathedRoleRule");
-				Role.RoleDerivedFromPathedRoleRule(e);
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.RoleDerivedFromPathedRoleRule");
 			}
 		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RoleInstance), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
@@ -6615,167 +6807,120 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // Rule classes for RolePath
-	#region Rule classes for RolePathComponent
-	partial class RolePathComponent
+	#region Rule classes for RolePathCombination
+	partial class RolePathCombination
 	{
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RolePathCompositorHasPathComponent), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class RolePathCompositorHasPathComponentAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RolePathCombinationHasPathComponent), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
+		private sealed class RolePathCombinationHasPathComponentDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
-			public RolePathCompositorHasPathComponentAddedRuleClass()
+			public RolePathCombinationHasPathComponentDeletedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
 			/// <summary>
 			/// Provide the following method in class: 
-			/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombination
 			/// /// <summary>
-			/// /// AddRule: typeof(RolePathCompositorHasPathComponent)
+			/// /// DeleteRule: typeof(RolePathCombinationHasPathComponent), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
 			/// /// </summary>
-			/// private static void RolePathCompositorHasPathComponentAddedRule(ElementAddedEventArgs e)
-			/// {
-			/// }
-			/// </summary>
-			[System.Diagnostics.DebuggerStepThrough()]
-			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
-			{
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent.RolePathCompositorHasPathComponentAddedRule");
-				RolePathComponent.RolePathCompositorHasPathComponentAddedRule(e);
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent.RolePathCompositorHasPathComponentAddedRule");
-			}
-		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RolePathCompositorHasPathComponent), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class RolePathCompositorHasPathComponentDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
-		{
-			[System.Diagnostics.DebuggerStepThrough()]
-			public RolePathCompositorHasPathComponentDeletedRuleClass()
-			{
-				base.IsEnabled = false;
-			}
-			/// <summary>
-			/// Provide the following method in class: 
-			/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent
-			/// /// <summary>
-			/// /// DeleteRule: typeof(RolePathCompositorHasPathComponent)
-			/// /// </summary>
-			/// private static void RolePathCompositorHasPathComponentDeletedRule(ElementDeletedEventArgs e)
+			/// private static void RolePathCombinationHasPathComponentDeletedRule(ElementDeletedEventArgs e)
 			/// {
 			/// }
 			/// </summary>
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent.RolePathCompositorHasPathComponentDeletedRule");
-				RolePathComponent.RolePathCompositorHasPathComponentDeletedRule(e);
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent.RolePathCompositorHasPathComponentDeletedRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombination.RolePathCombinationHasPathComponentDeletedRule");
+				RolePathCombination.RolePathCombinationHasPathComponentDeletedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombination.RolePathCombinationHasPathComponentDeletedRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RolePathCompositorHasPathComponent), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class RolePathCompositorHasPathComponentRolePlayerChangedRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RolePathCombinationCorrelationCorrelatesPathedRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.BeforeDelayValidateRulePriority)]
+		private sealed class CombininedCorrelatedRoleDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
-			public RolePathCompositorHasPathComponentRolePlayerChangedRuleClass()
+			public CombininedCorrelatedRoleDeletedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
 			/// <summary>
 			/// Provide the following method in class: 
-			/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombination
 			/// /// <summary>
-			/// /// RolePlayerChangeRule: typeof(RolePathCompositorHasPathComponent)
+			/// /// DeleteRule: typeof(RolePathCombinationCorrelationCorrelatesPathedRole), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
 			/// /// </summary>
-			/// private static void RolePathCompositorHasPathComponentRolePlayerChangedRule(RolePlayerChangedEventArgs e)
-			/// {
-			/// }
-			/// </summary>
-			[System.Diagnostics.DebuggerStepThrough()]
-			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
-			{
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent.RolePathCompositorHasPathComponentRolePlayerChangedRule");
-				RolePathComponent.RolePathCompositorHasPathComponentRolePlayerChangedRule(e);
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent.RolePathCompositorHasPathComponentRolePlayerChangedRule");
-			}
-		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RolePathOwnerHasPathComponent), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class RolePathOwnerHasPathComponentAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
-		{
-			[System.Diagnostics.DebuggerStepThrough()]
-			public RolePathOwnerHasPathComponentAddedRuleClass()
-			{
-				base.IsEnabled = false;
-			}
-			/// <summary>
-			/// Provide the following method in class: 
-			/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent
-			/// /// <summary>
-			/// /// AddRule: typeof(RolePathOwnerHasPathComponent)
-			/// /// </summary>
-			/// private static void RolePathOwnerHasPathComponentAddedRule(ElementAddedEventArgs e)
-			/// {
-			/// }
-			/// </summary>
-			[System.Diagnostics.DebuggerStepThrough()]
-			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
-			{
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent.RolePathOwnerHasPathComponentAddedRule");
-				RolePathComponent.RolePathOwnerHasPathComponentAddedRule(e);
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent.RolePathOwnerHasPathComponentAddedRule");
-			}
-		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RolePathOwnerHasPathComponent), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class RolePathOwnerHasPathComponentDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
-		{
-			[System.Diagnostics.DebuggerStepThrough()]
-			public RolePathOwnerHasPathComponentDeletedRuleClass()
-			{
-				base.IsEnabled = false;
-			}
-			/// <summary>
-			/// Provide the following method in class: 
-			/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent
-			/// /// <summary>
-			/// /// DeleteRule: typeof(RolePathOwnerHasPathComponent)
-			/// /// </summary>
-			/// private static void RolePathOwnerHasPathComponentDeletedRule(ElementDeletedEventArgs e)
+			/// private static void CombininedCorrelatedRoleDeletedRule(ElementDeletedEventArgs e)
 			/// {
 			/// }
 			/// </summary>
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent.RolePathOwnerHasPathComponentDeletedRule");
-				RolePathComponent.RolePathOwnerHasPathComponentDeletedRule(e);
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent.RolePathOwnerHasPathComponentDeletedRule");
-			}
-		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RolePathOwnerHasPathComponent), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class RolePathOwnerHasPathComponentRolePlayerChangedRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
-		{
-			[System.Diagnostics.DebuggerStepThrough()]
-			public RolePathOwnerHasPathComponentRolePlayerChangedRuleClass()
-			{
-				base.IsEnabled = false;
-			}
-			/// <summary>
-			/// Provide the following method in class: 
-			/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent
-			/// /// <summary>
-			/// /// RolePlayerChangeRule: typeof(RolePathOwnerHasPathComponent)
-			/// /// </summary>
-			/// private static void RolePathOwnerHasPathComponentRolePlayerChangedRule(RolePlayerChangedEventArgs e)
-			/// {
-			/// }
-			/// </summary>
-			[System.Diagnostics.DebuggerStepThrough()]
-			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
-			{
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent.RolePathOwnerHasPathComponentRolePlayerChangedRule");
-				RolePathComponent.RolePathOwnerHasPathComponentRolePlayerChangedRule(e);
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent.RolePathOwnerHasPathComponentRolePlayerChangedRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombination.CombininedCorrelatedRoleDeletedRule");
+				RolePathCombination.CombininedCorrelatedRoleDeletedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombination.CombininedCorrelatedRoleDeletedRule");
 			}
 		}
 	}
-	#endregion // Rule classes for RolePathComponent
+	#endregion // Rule classes for RolePathCombination
+	#region Rule classes for RolePathOwner
+	partial class RolePathOwner
+	{
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RolePathOwnerHasPathComponent), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class RolePathComponentAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public RolePathComponentAddedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner
+			/// /// <summary>
+			/// /// AddRule: typeof(RolePathOwnerHasPathComponent)
+			/// /// </summary>
+			/// private static void RolePathComponentAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.RolePathComponentAddedRule");
+				RolePathOwner.RolePathComponentAddedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.RolePathComponentAddedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RolePathOwnerHasPathComponent), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class RolePathComponentDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public RolePathComponentDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner
+			/// /// <summary>
+			/// /// DeleteRule: typeof(RolePathOwnerHasPathComponent)
+			/// /// </summary>
+			/// private static void RolePathComponentDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.RolePathComponentDeletedRule");
+				RolePathOwner.RolePathComponentDeletedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.RolePathComponentDeletedRule");
+			}
+		}
+	}
+	#endregion // Rule classes for RolePathOwner
 	#region Rule classes for SetComparisonConstraint
 	partial class SetComparisonConstraint
 	{

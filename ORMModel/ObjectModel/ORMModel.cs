@@ -39,6 +39,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		AddIntrinsicElements = StandardFixupPhase.AddIntrinsicElements,
 		/// <summary>
+		/// Replace any deprecated elements with replacement patterns
+		/// and remove the deprecated elements.
+		/// This stage may both add and remove events.
+		/// </summary>
+		ReplaceDeprecatedStoredElements = StandardFixupPhase.ReplaceDeprecatedStoredElements,
+		/// <summary>
 		/// Verify any implied elements that are serialized with the model
 		/// but must follow a proscribed pattern based on another serialized element.
 		/// This stage may both add and remove elements.

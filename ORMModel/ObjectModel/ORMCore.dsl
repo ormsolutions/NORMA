@@ -1096,25 +1096,16 @@
 			<BaseClass>
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
-			<Properties>
-				<DomainProperty Name="IsComplemented" DisplayName="IsComplemented" DefaultValue="false" Id="70300933-CE6E-4532-8A3F-5FF3D75FE54D" Description="Specify if the inverse of the returned set is used. Used for components owned directly by a compositor.">
-					<Type>
-						<ExternalTypeMoniker Name="/System/Boolean"/>
-					</Type>
-				</DomainProperty>
-			</Properties>
 		</DomainClass>
-		<DomainClass Name="RolePathCompositor" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="EC942EB6-27BF-4ACF-9237-793E46BC31F6" DisplayName="RolePathCompositor" Description="Represents multiple role paths with combined results.">
+		<DomainClass Name="RolePathCombination" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="EC942EB6-27BF-4ACF-9237-793E46BC31F6" DisplayName="RolePathCombination" Description="Represents one or more role paths with combined results and additional restrictions.">
 			<BaseClass>
 				<DomainClassMoniker Name="RolePathComponent"/>
 			</BaseClass>
-			<Properties>
-				<DomainProperty Name="SetCombinationOperator" DefaultValue="Union" DisplayName="SetCombinationOperator" Id="42F42405-6C28-4599-8907-DF45F20D77B4" Description="Specify how the sets should be combined.">
-					<Type>
-						<DomainEnumerationMoniker Name="SetCombinationOperator"/>
-					</Type>
-				</DomainProperty>
-			</Properties>
+		</DomainClass>
+		<DomainClass Name="RolePathCombinationCorrelation" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="CECB3722-9EF9-4B7A-B5FD-A63C0F34070A" Description="Represents two or more correlated pathed roles from different combined role paths.">
+			<BaseClass>
+				<DomainClassMoniker Name="ORMModelElement"/>
+			</BaseClass>
 		</DomainClass>
 		<DomainClass Name="RolePath" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="37599E0F-212C-4290-88A6-7406B8EF7E57" DisplayName="RolePath" InheritanceModifier="Abstract" Description="An ordered sequence of roles through ORM space with a tail split branching into other subpaths">
 			<BaseClass>
@@ -3420,7 +3411,7 @@
 
 		<DomainRelationship Name="PathedRoleHasValueConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="C77DB9EF-B86F-4B08-BBAA-B2BA2DAD64D9">
 			<Source>
-				<DomainRole Name="PathedRole" PropertyName="ValueConstraint" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="PathedRole" Id="046A095E-696D-4899-8051-58A70ACED299">
+				<DomainRole Name="PathedRole" PropertyName="ValueConstraintCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="PathedRole" Id="046A095E-696D-4899-8051-58A70ACED299">
 					<RolePlayer>
 						<DomainRelationshipMoniker Name="PathedRole"/>
 					</RolePlayer>
@@ -3430,6 +3421,22 @@
 				<DomainRole Name="ValueConstraint" PropertyName="PathedRole" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ValueConstraint" Id="D3438173-2268-4F8B-8237-FD563D69A3C6">
 					<RolePlayer>
 						<DomainClassMoniker Name="PathConditionRoleValueConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="PathConditionRoleValueConstraintAppliesToRolePathCombination" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="EED3B60C-2688-43A7-8E2B-DF14A8B5DFC4">
+			<Source>
+				<DomainRole Name="ValueConstraint" PropertyName="AppliesToPathCombination" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="AppliesToPathCombination" Id="E3A0CE35-4238-45B5-917F-35107A66A698">
+					<RolePlayer>
+						<DomainClassMoniker Name="PathConditionRoleValueConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Combination" PropertyName="ValueConstraintCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Combination" Id="B86177CD-20A5-4D1E-977F-C3811D92E302">
+					<RolePlayer>
+						<DomainClassMoniker Name="RolePathCombination"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -4840,26 +4847,92 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="ConstraintRoleProjectedFromPathedRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="AAF520DF-F858-4837-B070-CE6734BD154B">
+		
+		<DomainRelationship Name="ConstraintRoleSequenceJoinPathProjection" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="9B90E59C-590B-4CBC-B7CF-604062E28A77">
 			<Source>
-				<DomainRole Name="ConstraintRole" PropertyName="ProjectedFromPathedRole" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="ConstraintRole" Id="3C7C5B31-C245-4656-8BFF-7BF8961D5A33" Description="The pathed role in the join path associated with this constraint sequence.">
+				<DomainRole Name="JoinPath" PropertyName="ProjectedPathComponentCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="JoinPath" Id="8771F7B6-2544-46A6-BB63-A1C136B0F529">
+					<RolePlayer>
+						<DomainClassMoniker Name="ConstraintRoleSequenceJoinPath"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="PathComponent" PropertyName="ConstraintRoleSequenceJoinPathProjection" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="PathComponent" Id="0A6AD07C-880B-460E-AD75-136E3AB612AC">
+					<RolePlayer>
+						<DomainClassMoniker Name="RolePathComponent"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="ConstraintRoleProjection" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="B4DF8B28-6C80-4FAA-B081-A1F26C2B3BC0">
+			<Source>
+				<DomainRole Name="JoinPathProjection" PropertyName="ProjectedRoleCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="JoinPathProjection" Id="CAD5C4D6-E038-4EC9-BF02-26C07B918FD6">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="ConstraintRoleSequenceJoinPathProjection"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="ProjectedConstraintRole" PropertyName="JoinPathProjectionCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ProjectedConstraintRole" Id="D943C94B-4A1F-4219-A33D-BC1DFE0B6AA4">
 					<RolePlayer>
 						<DomainRelationshipMoniker Name="ConstraintRoleSequenceHasRole"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="ConstraintRoleProjectedFromPathedRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="00D571D2-D924-4D40-8D69-299C5E18FC60">
+			<Source>
+				<DomainRole Name="ConstraintRoleProjection" PropertyName="ProjectedFromPathedRole" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="ConstraintRoleProjection" Id="AA56EBC2-5647-44A7-8D1F-1CD454B6E6E4" Description="The pathed role in the join path associated with this constraint sequence.">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="ConstraintRoleProjection"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
 				<!-- Although it is unusual to project the same data twice, it should not illegal. -->
-				<DomainRole Name="Source" PropertyName="ConstraintRoleProjections" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="Source" Id="1420953D-B972-40B7-984D-3E97743421B3" Description="The projected constraint role associated with this pathed role.">
+				<DomainRole Name="Source" PropertyName="ConstraintRoleProjections" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="Source" Id="688AF0D6-47BF-4049-A9D5-B31988E690D0" Description="The projected constraint role associated with this pathed role.">
 					<RolePlayer>
 						<DomainRelationshipMoniker Name="PathedRole"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="ConstraintRoleProjectedFromCalculatedPathValue" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="06B5F374-2C58-498B-BEA9-B5BDF5861661">
+		<DomainRelationship Name="ConstraintRoleProjectedFromCalculatedPathValue" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="6228FFA8-9F2C-4A09-8938-1C07159C4953">
 			<Source>
-				<DomainRole Name="ConstraintRole" PropertyName="ProjectedFromCalculatedValue" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="ConstraintRole" Id="A847BBCD-0FAA-47F7-979C-0547613C398E" Description="The calculated value in the join path associated with this constraint sequence.">
+				<DomainRole Name="ConstraintRoleProjection" PropertyName="ProjectedFromCalculatedValue" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="ConstraintRoleProjection" Id="4DE79423-24E0-4B1B-A76F-7D37FA39027D" Description="The calculated value in the join path associated with this constraint sequence.">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="ConstraintRoleProjection"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<!-- Although it is unusual to project the same data twice, it should not illegal. -->
+				<DomainRole Name="Source" PropertyName="ConstraintRoleProjections" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="Source" Id="D8A1DE32-1473-4DB7-8124-A5CE82FA8E69" Description="The projected constraint role associated with this calculated value.">
+					<RolePlayer>
+						<DomainClassMoniker Name="CalculatedPathValue"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="ConstraintRoleProjectedFromPathConstant" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="8AA8B309-4AE6-4B78-B38E-B0D9B27FA829">
+			<Source>
+				<DomainRole Name="ConstraintRoleProjection" PropertyName="ProjectedFromConstant" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="ConstraintRoleProjection" Id="93FB3FBA-1F2A-4509-8B56-A109F02961E4" Description="The constant value associated with this constraint role.">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="ConstraintRoleProjection"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Source" PropertyName="ConstraintRoleProjection" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Source" Id="7B505588-0570-4AED-BBCF-4A8A79AD3ED7" Description="The constraint role that uses this path constant.">
+					<RolePlayer>
+						<DomainClassMoniker Name="PathConstant"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="ConstraintRoleProjectedFromPathedRole_Deprecated" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="AAF520DF-F858-4837-B070-CE6734BD154B">
+			<Source>
+				<DomainRole Name="ConstraintRole" PropertyName="ProjectedFromPathedRole" Multiplicity="ZeroOne" IsPropertyGenerator="false" DisplayName="ConstraintRole" Id="3C7C5B31-C245-4656-8BFF-7BF8961D5A33" Description="The pathed role in the join path associated with this constraint sequence.">
 					<RolePlayer>
 						<DomainRelationshipMoniker Name="ConstraintRoleSequenceHasRole"/>
 					</RolePlayer>
@@ -4867,23 +4940,40 @@
 			</Source>
 			<Target>
 				<!-- Although it is unusual to project the same data twice, it should not illegal. -->
-				<DomainRole Name="Source" PropertyName="ConstraintRoleProjections" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="Source" Id="56A95CD0-AA18-40B1-8D52-AB02A54D6E4B" Description="The projected constraint role associated with this calculated value.">
+				<DomainRole Name="Source" PropertyName="ConstraintRoleProjections" Multiplicity="ZeroMany" IsPropertyGenerator="false" DisplayName="Source" Id="1420953D-B972-40B7-984D-3E97743421B3" Description="The projected constraint role associated with this pathed role.">
 					<RolePlayer>
-						<DomainClassMoniker Name="CalculatedPathValue"/>
+						<DomainRelationshipMoniker Name="PathedRole"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="ConstraintRoleProjectedFromPathConstant" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="FD92B616-8995-4A10-949F-7E9F8B0E30CD">
+		<DomainRelationship Name="ConstraintRoleProjectedFromCalculatedPathValue_Deprecated" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="06B5F374-2C58-498B-BEA9-B5BDF5861661">
 			<Source>
-				<DomainRole Name="ConstraintRole" PropertyName="ProjectedFromConstant" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="ConstraintRole" Id="2DE9BCFE-120C-4C60-88DC-65574EFB82A7" Description="The constant value associated with this constraint role.">
+				<DomainRole Name="ConstraintRole" PropertyName="ProjectedFromCalculatedValue" Multiplicity="ZeroOne" IsPropertyGenerator="false" DisplayName="ConstraintRole" Id="A847BBCD-0FAA-47F7-979C-0547613C398E" Description="The calculated value in the join path associated with this constraint sequence.">
 					<RolePlayer>
 						<DomainRelationshipMoniker Name="ConstraintRoleSequenceHasRole"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="Source" PropertyName="ConstraintRoleProjection" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Source" Id="BFC9BEFB-BE9A-4770-9CCC-165FB412DF17" Description="The constraint role that uses this path constant.">
+				<!-- Although it is unusual to project the same data twice, it should not illegal. -->
+				<DomainRole Name="Source" PropertyName="ConstraintRoleProjections" Multiplicity="ZeroMany" IsPropertyGenerator="false" DisplayName="Source" Id="56A95CD0-AA18-40B1-8D52-AB02A54D6E4B" Description="The projected constraint role associated with this calculated value.">
+					<RolePlayer>
+						<DomainClassMoniker Name="CalculatedPathValue"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="ConstraintRoleProjectedFromPathConstant_Deprecated" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="FD92B616-8995-4A10-949F-7E9F8B0E30CD">
+			<Source>
+				<DomainRole Name="ConstraintRole" PropertyName="ProjectedFromConstant" Multiplicity="ZeroOne" IsPropertyGenerator="false" DisplayName="ConstraintRole" Id="2DE9BCFE-120C-4C60-88DC-65574EFB82A7" Description="The constant value associated with this constraint role.">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="ConstraintRoleSequenceHasRole"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Source" PropertyName="ConstraintRoleProjection" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="Source" Id="BFC9BEFB-BE9A-4770-9CCC-165FB412DF17" Description="The constraint role that uses this path constant.">
 					<RolePlayer>
 						<DomainClassMoniker Name="PathConstant"/>
 					</RolePlayer>
@@ -5125,40 +5215,127 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="RolePathOwnerHasPathComponent" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="E915E71A-B11C-4732-86D7-35C7C1B132A4">
+		<!-- UNDONE: Format change, remove old role path constructs. -->
+		<DomainRelationship Name="RolePathOwnerHasPathComponent_Deprecated" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="E915E71A-B11C-4732-86D7-35C7C1B132A4">
 			<Source>
-				<DomainRole Name="PathOwner" PropertyName="PathComponent" Multiplicity="One" IsPropertyGenerator="true" DisplayName="PathOwner" Id="0A64FD0A-53C9-4E10-9CFE-003ED101107C">
+				<DomainRole Name="PathOwner" PropertyName="PathComponent" Multiplicity="ZeroOne" IsPropertyGenerator="false" DisplayName="PathOwner" Id="0A64FD0A-53C9-4E10-9CFE-003ED101107C">
 					<RolePlayer>
 						<DomainClassMoniker Name="RolePathOwner"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<!-- Note that there is no delete propagation here, allowing us to detach a component from the owner and
-				attach it lower in the hierarchy (or vice versa). Rules are used to ensure that a component with no owner
-				is deleted on	transaction completion if the component has not been reattached. -->
-				<DomainRole Name="PathComponent" PropertyName="ParentOwner" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="PathComponent" Id="3F31CFCC-88DA-44F8-ADB3-B4019283AD4A">
+				<!-- Leave this without a delete propagation so that we can easily change the component to a non-deprecated relationship -->
+				<DomainRole Name="PathComponent" PropertyName="ParentOwner" Multiplicity="ZeroOne" IsPropertyGenerator="false" DisplayName="PathComponent" Id="3F31CFCC-88DA-44F8-ADB3-B4019283AD4A">
 					<RolePlayer>
 						<DomainClassMoniker Name="RolePathComponent"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="RolePathCompositorHasPathComponent" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="7DC33C12-2B06-4C93-AF58-7BE89A8F66FA">
+		<DomainRelationship Name="RolePathOwnerHasPathComponent" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="C4D6E714-1489-4BD0-B92B-061D494AB66C">
 			<Source>
-				<DomainRole Name="Compositor" PropertyName="PathComponentCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="Compositor" Id="E9444032-C71F-4CC8-83B1-3C5874FB5006">
+				<DomainRole Name="PathOwner" PropertyName="PathComponentCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="PathOwner" Id="7B7881DA-9325-4882-950A-FEC9A9CBA048">
 					<RolePlayer>
-						<DomainClassMoniker Name="RolePathCompositor"/>
+						<DomainClassMoniker Name="RolePathOwner"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<!-- Note that there is no delete propagation here, allowing us to detach a component from the owner and
-				attach it lower in the hierarchy (or vice versa). Rules are used to ensure that a component with no owner
-				is deleted on	transaction completion if the component has not been reattached. -->
-				<DomainRole Name="PathComponent" PropertyName="ParentCompositor" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="PathComponent" Id="46D07B50-1979-4801-AFDC-A3675656B28C">
+				<!-- UNDONE: Format change, remove old role path constructs. Multiplicity here should be one when the deprecated embedding is removed. -->
+				<DomainRole Name="PathComponent" PropertyName="PathOwner" Multiplicity="ZeroOne" IsPropertyGenerator="true" PropagatesDelete="true" DisplayName="PathComponent" Id="50D66006-E047-4C5E-B5AE-F1AD19C1BBB8">
 					<RolePlayer>
 						<DomainClassMoniker Name="RolePathComponent"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="RolePathOwnerHasSingleLeadRolePath" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="C77BEA97-713A-45C2-9EE3-AF6939C06A13" Description="Derived relationship based on RolePathOwnerHasPathComponent to determine path owners with a single root.">
+			<Source>
+				<DomainRole Name="PathOwner" PropertyName="SingleLeadRolePath" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="PathOwner" Id="B79117D1-DEE0-4EBD-9D2A-D51A1CAB54D7">
+					<RolePlayer>
+						<DomainClassMoniker Name="RolePathOwner"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<!-- Leave this without a delete propagation so that we can easily change the component to a non-deprecated relationship -->
+				<DomainRole Name="RolePath" PropertyName="PathOwner" Multiplicity="ZeroOne" IsPropertyGenerator="false" DisplayName="RolePath" Id="38B54CE8-5CFD-4CEC-9227-F09B07312C5A">
+					<RolePlayer>
+						<DomainClassMoniker Name="LeadRolePath"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<!-- UNDONE: Format change, remove old role path constructs. -->
+		<DomainRelationship Name="RolePathCompositorHasPathComponent_Deprecated" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="7DC33C12-2B06-4C93-AF58-7BE89A8F66FA">
+			<Source>
+				<DomainRole Name="Compositor" PropertyName="PathComponentCollection" Multiplicity="ZeroMany" IsPropertyGenerator="false" DisplayName="Compositor" Id="E9444032-C71F-4CC8-83B1-3C5874FB5006">
+					<RolePlayer>
+						<DomainClassMoniker Name="RolePathCombination"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<!-- Leave this without a delete propagation so that we can easily change the component to a non-deprecated relationship -->
+				<DomainRole Name="PathComponent" PropertyName="ParentCompositor" Multiplicity="ZeroOne" IsPropertyGenerator="false" DisplayName="PathComponent" Id="46D07B50-1979-4801-AFDC-A3675656B28C">
+					<RolePlayer>
+						<DomainClassMoniker Name="RolePathComponent"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="RolePathCombinationHasPathComponent" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="0FFBA6C3-82E6-462F-8569-211213B17235">
+			<Properties>
+				<DomainProperty Name="SetProjection" DefaultValue="false" DisplayName="DistinctRelations" Id="0F869575-7239-413B-929A-D36949974121" Description="The combination uses distinct results from the combined path.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
+			<Source>
+				<DomainRole Name="Combination" PropertyName="PathComponentCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="Combination" Id="E43E6554-D1AB-480D-9B95-50D33079D43F">
+					<RolePlayer>
+						<DomainClassMoniker Name="RolePathCombination"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="PathComponent" PropertyName="RolePathCombinationCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="PathComponent" Id="619CF0C8-C13C-4859-BEAB-A36E67CDDC36">
+					<RolePlayer>
+						<DomainClassMoniker Name="RolePathComponent"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="RolePathCombinationHasCorrelation" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="D52BED9F-2867-49F2-A6E6-A79415C837C6">
+			<Source>
+				<DomainRole Name="Combination" PropertyName="CorrelationCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="Combination" Id="CCF622D2-2CEA-46EE-9EAB-9D11531F48E6">
+					<RolePlayer>
+						<DomainClassMoniker Name="RolePathCombination"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Correlation" PropertyName="Combination" Multiplicity="One" IsPropertyGenerator="true" DisplayName="Correlation" Id="A850C632-C1F6-4930-9C2E-7D8BFABB3C93">
+					<RolePlayer>
+						<DomainClassMoniker Name="RolePathCombinationCorrelation"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="RolePathCombinationCorrelationCorrelatesPathedRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="AD8CF1CB-5981-490E-A2BD-9EEF31EE0F39">
+			<Source>
+				<DomainRole Name="Correlation" PropertyName="CorrelatedRoleCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="Correlation" Id="B8D4EF53-2733-444D-BF4F-8783DD2EDBA4">
+					<RolePlayer>
+						<DomainClassMoniker Name="RolePathCombinationCorrelation"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="PathedRole" PropertyName="CombinationCorrelationCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="PathedRole" Id="F03FFA1C-B024-4874-B9F0-81F33B40AC6D">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="PathedRole"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -5271,27 +5448,45 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="RolePathOwnerCalculatesCalculatedPathValue" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="CC8D4B04-3F04-4C0C-995B-E9B24E3134FB">
+		<DomainRelationship Name="RolePathOwnerCalculatesCalculatedPathValue_Deprecated" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="CC8D4B04-3F04-4C0C-995B-E9B24E3134FB">
 			<Source>
-				<DomainRole Name="PathOwner" PropertyName="CalculatedValueCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="PathOwner" Id="60542704-5E9E-4F7C-B0EB-29ECB9C3DF46" Description="The values calculated for all paths in this owner.">
+				<DomainRole Name="PathOwner" PropertyName="CalculatedValueCollection" Multiplicity="ZeroMany" IsPropertyGenerator="false" DisplayName="PathOwner" Id="60542704-5E9E-4F7C-B0EB-29ECB9C3DF46" Description="The values calculated for all paths in this owner.">
 					<RolePlayer>
 						<DomainClassMoniker Name="RolePathOwner"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="CalculatedValue" PropertyName="PathOwner" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="CalculatedValue" Id="455B7520-EED3-489B-95A6-7EA07B7FAA0A" Description="The primary role path this value is calculated for.">
+				<!-- Eliminate delete propagation so this can easily be moved to another container. -->
+				<DomainRole Name="CalculatedValue" PropertyName="PathOwner" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="CalculatedValue" Id="455B7520-EED3-489B-95A6-7EA07B7FAA0A" Description="The primary role path this value is calculated for.">
 					<RolePlayer>
 						<DomainClassMoniker Name="CalculatedPathValue"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="LeadRolePathSatisfiesCalculatedCondition" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="34F4B6C3-1575-4A4C-838E-261B981DEE83">
+		<DomainRelationship Name="RolePathComponentCalculatesCalculatedPathValue" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="315ED779-4607-44CB-AC37-A173FA106232">
 			<Source>
-				<DomainRole Name="LeadRolePath" PropertyName="CalculatedConditionCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="LeadRolePath" Id="2F17D947-3334-4729-BAF1-CE5EFAE039EE" Description="The calculated values that must be satisfied by the path.">
+				<DomainRole Name="PathComponent" PropertyName="CalculatedValueCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="PathOwner" Id="058C0609-8B18-4C05-86DB-7ABA5D7C42DA" Description="The values calculated using roles in this component.">
 					<RolePlayer>
-						<DomainClassMoniker Name="LeadRolePath"/>
+						<DomainClassMoniker Name="RolePathComponent"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<!-- UNDONE: Format change, remove old role path constructs. Multiplicity here should be one when the deprecated embedding is removed. -->
+				<DomainRole Name="CalculatedValue" PropertyName="PathComponent" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="CalculatedValue" Id="9C87C629-060B-4C80-BEAE-DCA38A4F4E2C" Description="The path component this value is calculated for.">
+					<RolePlayer>
+						<DomainClassMoniker Name="CalculatedPathValue"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="RolePathComponentSatisfiesCalculatedCondition" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="34F4B6C3-1575-4A4C-838E-261B981DEE83">
+			<Source>
+				<DomainRole Name="PathComponent" PropertyName="CalculatedConditionCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="PathComponent" Id="2F17D947-3334-4729-BAF1-CE5EFAE039EE" Description="The calculated values that must be satisfied by the path.">
+					<RolePlayer>
+						<DomainClassMoniker Name="RolePathComponent"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
@@ -5431,26 +5626,91 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="RoleDerivesFromPathedRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="C57BC0E8-04B7-4A3A-B021-3A6437969762">
+		<DomainRelationship Name="FactTypeDerivationProjection" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="029B0F47-FA95-4ED3-848B-239FDBCEBAF8">
 			<Source>
-				<DomainRole Name="Role" PropertyName="DerivedFromPathedRole" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="Role" Id="FA366136-A169-4509-BB6A-6028E7886A13" Description="The pathed role used to populate the derived fact type for this role.">
+				<DomainRole Name="DerivationRule" PropertyName="ProjectedPathComponentCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="DerivationRule" Id="93BC60F8-A436-406A-B7F3-1200360C34D9">
+					<RolePlayer>
+						<DomainClassMoniker Name="FactTypeDerivationRule"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="PathComponent" PropertyName="FactTypeDerivationRuleProjection" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="PathComponent" Id="B92067D1-2DD4-4E80-A667-FCF437C84EF8">
+					<RolePlayer>
+						<DomainClassMoniker Name="RolePathComponent"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="FactTypeRoleProjection" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="E4E47551-0637-443F-ADB0-4BE9CAD921F0">
+			<Source>
+				<DomainRole Name="DerivationProjection" PropertyName="ProjectedRoleCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="DerivationProjection" Id="F0996660-410E-4147-AD3C-EA5C6629DBB5">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="FactTypeDerivationProjection"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="ProjectedRole" PropertyName="DerivationProjectionCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ProjectedRole" Id="671F08BD-3497-4B45-98D2-D412750EBBBE">
 					<RolePlayer>
 						<DomainClassMoniker Name="Role"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="FactTypeRoleProjectedFromPathedRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="16C19D21-B699-45E7-BCB3-62649747F94B">
+			<Source>
+				<DomainRole Name="RoleProjection" PropertyName="ProjectedFromPathedRole" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="RoleProjection" Id="4025B3A1-84D7-4D17-B1EC-D34FDAAC5E51" Description="The pathed role used to populate the derived fact type for this role in this projection.">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="FactTypeRoleProjection"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
 				<!-- Although it is unusual to derive two columns from the same source, it should not illegal. -->
-				<DomainRole Name="Source" PropertyName="DerivedRoles" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="Source" Id="E71D53D7-C4A2-4367-A2F3-5A27CE70DCE0" Description="The derived role associated with this pathed role.">
+				<DomainRole Name="Source" PropertyName="FactTypeRoleProjections" Multiplicity="ZeroMany" IsPropertyGenerator="false" DisplayName="Source" Id="A13B7D15-8EC9-4775-B9CB-FF041B8652AC" Description="The derived role associated with this pathed role.">
 					<RolePlayer>
 						<DomainRelationshipMoniker Name="PathedRole"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="RoleDerivesFromCalculatedPathValue" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="A9FEB04A-4C32-4576-95C9-500B6B77CA03">
+		<DomainRelationship Name="FactTypeRoleProjectedFromCalculatedPathValue" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="37216599-11AA-4D3A-90EB-010D21B7E3AB">
 			<Source>
-				<DomainRole Name="Role" PropertyName="DerivedFromCalculatedValue" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="Role" Id="BAA7CAA2-A8C0-49E0-8965-C3B8F1CA8C8A" Description="The calculated value used to populate the derived fact type for this role.">
+				<DomainRole Name="RoleProjection" PropertyName="ProjectedFromCalculatedValue" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="RoleProjection" Id="DC6C1E96-1D32-4600-8745-85493C7C2088" Description="The calculated value used to populate the derived fact type for this role in this projection.">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="FactTypeRoleProjection"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<!-- Although it is unusual to derive two columns from the same source, it should not illegal. -->
+				<DomainRole Name="Source" PropertyName="FactTypeRoleProjections" Multiplicity="ZeroMany" IsPropertyGenerator="false" DisplayName="Source" Id="AE9C159E-6909-46CF-8635-059DE2B9E7F3" Description="The derived role associated with this calculated value.">
+					<RolePlayer>
+						<DomainClassMoniker Name="CalculatedPathValue"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="FactTypeRoleProjectedFromPathConstant" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="205ED2D0-43CE-4141-9A3F-5C33138AD048">
+			<Source>
+				<DomainRole Name="RoleProjection" PropertyName="ProjectedFromConstant" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="RoleProjection" Id="AD816A27-E687-46EC-9240-F1C69EDCF9DB" Description="The constant value used to populate this role in the derived fact type.">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="FactTypeRoleProjection"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Source" PropertyName="FactTypeRoleProjection" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Source" Id="F798AF86-1E64-4789-A840-05B615404544" Description="The derived role that uses this path constant.">
+					<RolePlayer>
+						<DomainClassMoniker Name="PathConstant"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="RoleDerivesFromPathedRole_Deprecated" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="C57BC0E8-04B7-4A3A-B021-3A6437969762">
+			<Source>
+				<DomainRole Name="Role" PropertyName="DerivedFromPathedRole" Multiplicity="ZeroOne" IsPropertyGenerator="false" DisplayName="Role" Id="FA366136-A169-4509-BB6A-6028E7886A13" Description="The pathed role used to populate the derived fact type for this role.">
 					<RolePlayer>
 						<DomainClassMoniker Name="Role"/>
 					</RolePlayer>
@@ -5458,23 +5718,41 @@
 			</Source>
 			<Target>
 				<!-- Although it is unusual to derive two columns from the same source, it should not illegal. -->
-				<DomainRole Name="Source" PropertyName="DerivedRoles" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="Source" Id="0C4A9FEC-D093-43B9-89E5-08B892FC443B" Description="The derived role associated with this calculated value.">
+				<DomainRole Name="Source" PropertyName="DerivedRoles" Multiplicity="ZeroMany" IsPropertyGenerator="false" DisplayName="Source" Id="E71D53D7-C4A2-4367-A2F3-5A27CE70DCE0" Description="The derived role associated with this pathed role.">
 					<RolePlayer>
-						<DomainClassMoniker Name="CalculatedPathValue"/>
+						<DomainRelationshipMoniker Name="PathedRole"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="RoleDerivesFromPathConstant" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="1DC37758-2350-4476-883C-5F971AE32B34">
+		<DomainRelationship Name="RoleDerivesFromCalculatedPathValue_Deprecated" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="A9FEB04A-4C32-4576-95C9-500B6B77CA03">
 			<Source>
-				<DomainRole Name="Role" PropertyName="DerivedFromConstant" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="Role" Id="B4D23A52-418B-429A-B425-91222DA61D9B" Description="The constant value used to populate this role in the derived fact type.">
+				<DomainRole Name="Role" PropertyName="DerivedFromCalculatedValue" Multiplicity="ZeroOne" IsPropertyGenerator="false" DisplayName="Role" Id="BAA7CAA2-A8C0-49E0-8965-C3B8F1CA8C8A" Description="The calculated value used to populate the derived fact type for this role.">
 					<RolePlayer>
 						<DomainClassMoniker Name="Role"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="Source" PropertyName="DerivedRole" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Source" Id="06D66903-36CD-427B-9473-03FF462B4650" Description="The derived role that uses this path constant.">
+				<!-- Although it is unusual to derive two columns from the same source, it should not illegal. -->
+				<DomainRole Name="Source" PropertyName="DerivedRoles" Multiplicity="ZeroMany" IsPropertyGenerator="false" DisplayName="Source" Id="0C4A9FEC-D093-43B9-89E5-08B892FC443B" Description="The derived role associated with this calculated value.">
+					<RolePlayer>
+						<DomainClassMoniker Name="CalculatedPathValue"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="RoleDerivesFromPathConstant_Deprecated" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="1DC37758-2350-4476-883C-5F971AE32B34">
+			<Source>
+				<DomainRole Name="Role" PropertyName="DerivedFromConstant" Multiplicity="ZeroOne" IsPropertyGenerator="false" DisplayName="Role" Id="B4D23A52-418B-429A-B425-91222DA61D9B" Description="The constant value used to populate this role in the derived fact type.">
+					<RolePlayer>
+						<DomainClassMoniker Name="Role"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<!-- Omit delete propagation to enable easily moving this constant to another owning relationship. -->
+				<DomainRole Name="Source" PropertyName="DerivedRole" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="Source" Id="06D66903-36CD-427B-9473-03FF462B4650" Description="The derived role that uses this path constant.">
 					<RolePlayer>
 						<DomainClassMoniker Name="PathConstant"/>
 					</RolePlayer>
@@ -5671,20 +5949,6 @@
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
 						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;LogicalCombinationOperator, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel&gt;)"/>
-					</Parameters>
-				</ClrAttribute>
-			</Attributes>
-		</DomainEnumeration>
-
-		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="SetCombinationOperator">
-			<Literals>
-				<EnumerationLiteral Name="Union" Value="0" Description="Combine sets with a union operator"/>
-				<EnumerationLiteral Name="Intersection" Value="1" Description="Combine sets with an intersection operator"/>
-			</Literals>
-			<Attributes>
-				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
-					<Parameters>
-						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;SetCombinationOperator, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>

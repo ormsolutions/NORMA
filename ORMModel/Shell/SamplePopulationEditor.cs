@@ -1595,7 +1595,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			FactType selectedFactType;
 			Objectification link = (Objectification)e.ModelElement;
 			if (null != (selectedFactType = mySelectedFactType) &&
-				selectedFactType == link.NestedFactType)
+				selectedFactType == link.NestedFactType &&
+				!selectedFactType.IsDeleted)
 			{
 				if (mySelectedEntityType != null)
 				{

@@ -181,9 +181,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				classInfo = directory.FindDomainRelationship(RolePathOwnerHasPathComponent.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
 				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathRolePlayedChangedHandler, action);
-				classInfo = directory.FindDomainRelationship(RolePathCompositorHasPathComponent.DomainClassId);
-				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
-				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathRolePlayedChangedHandler, action);
 				classInfo = directory.FindDomainRelationship(RoleSubPathIsContinuationOfRolePath.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
 				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathRolePlayedChangedHandler, action);
@@ -1494,28 +1491,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				return PathOwner;
-			}
-		}
-		ModelElement IModelErrorOwnerPath.ErrorOwnerRolePlayer
-		{
-			get
-			{
-				return ErrorOwnerRolePlayer;
-			}
-		}
-		#endregion // IModelErrorOwnerPath Implementation
-	}
-	partial class RolePathCompositorHasPathComponent : IModelErrorOwnerPath
-	{
-		#region IModelErrorOwnerPath Implementation
-		/// <summary>
-		/// Implements <see cref="IModelErrorOwnerPath.ErrorOwnerRolePlayer"/>
-		/// </summary>
-		protected ModelElement ErrorOwnerRolePlayer
-		{
-			get
-			{
-				return Compositor;
 			}
 		}
 		ModelElement IModelErrorOwnerPath.ErrorOwnerRolePlayer
