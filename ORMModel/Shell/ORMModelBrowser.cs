@@ -164,9 +164,13 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					else if (0 != (commandFlags & (ORMDesignerCommands.DiagramList)))
 					{
 						OleMenuCommand cmd = command as OleMenuCommand;
+						object selectedNode = currentWindow.SelectedNode;
+						IElementReference elementReference;
 						ModelElement element;
 						string diagramName = null;
-						if (null != (element = currentWindow.SelectedNode as ModelElement))
+						if (null != (elementReference = selectedNode as IElementReference) ?
+								null != (element = elementReference.ReferencedElement as ModelElement) :
+								null != (element = selectedNode as ModelElement))
 						{
 							int diagramIndex = cmd.MatchedCommandId;
 							ORMBaseShape.VisitAssociatedShapes(
@@ -643,7 +647,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		protected virtual void OnMenuDiagramList(int diagramIndex, NavigateToWindow targetWindow)
 		{
 			ModelElement element;
-			if (null != (element = SelectedNode as ModelElement))
+			IElementReference elementReference;
+			object selectedNode = SelectedNode;
+			if (null != (elementReference = selectedNode as IElementReference) ?
+					null != (element = elementReference.ReferencedElement as ModelElement) :
+					null != (element = selectedNode as ModelElement))
 			{
 				ORMBaseShape.VisitAssociatedShapes(
 					element,

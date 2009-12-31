@@ -111,9 +111,9 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="IndentedCompoundListFinalSeparator"><![CDATA[<span class="listSeparator">; </span>]]></Snippet>
 			<Snippet type="IndentedCompoundListClose"><![CDATA[</span>]]></Snippet>
 			<Snippet type="IndentedListOpen"><![CDATA[<br/><span class="smallIndent">]]></Snippet>
-			<Snippet type="IndentedListPairSeparator"><![CDATA[<span class="listSeparator"> and </span><br/>]]></Snippet>
-			<Snippet type="IndentedListSeparator"><![CDATA[<span class="listSeparator"> and </span><br/>]]></Snippet>
-			<Snippet type="IndentedListFinalSeparator"><![CDATA[<span class="listSeparator"> and </span><br/>]]></Snippet>
+			<Snippet type="IndentedListPairSeparator"><![CDATA[<span class="logicalOperator"> and </span><br/>]]></Snippet>
+			<Snippet type="IndentedListSeparator"><![CDATA[<span class="logicalOperator"> and </span><br/>]]></Snippet>
+			<Snippet type="IndentedListFinalSeparator"><![CDATA[<span class="logicalOperator"> and </span><br/>]]></Snippet>
 			<Snippet type="IndentedListClose"><![CDATA[</span>]]></Snippet>
 			<Snippet type="IndentedLogicalOrListOpen"><![CDATA[<br/><span class="smallIndent">]]></Snippet>
 			<Snippet type="IndentedLogicalOrListPairSeparator"><![CDATA[<br/><span class="logicalOperator">or </span>]]></Snippet>
@@ -155,9 +155,9 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="CompoundListClose"><![CDATA[]]></Snippet>
 			
 			<Snippet type="SimpleListOpen"><![CDATA[]]></Snippet>
-			<Snippet type="SimpleListPairSeparator"><![CDATA[<span class="listSeparator"> and </span>]]></Snippet>
+			<Snippet type="SimpleListPairSeparator"><![CDATA[<span class="logicalOperator"> and </span>]]></Snippet>
 			<Snippet type="SimpleListSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
-			<Snippet type="SimpleListFinalSeparator"><![CDATA[<span class="listSeparator">, and </span>]]></Snippet>
+			<Snippet type="SimpleListFinalSeparator"><![CDATA[<span class="listSeparator">,</span><span class="logicalOperator"> and </span>]]></Snippet>
 			<Snippet type="SimpleListClose"><![CDATA[]]></Snippet>
 			<Snippet type="CompactSimpleListOpen"><![CDATA[]]></Snippet>
 			<Snippet type="CompactSimpleListPairSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>

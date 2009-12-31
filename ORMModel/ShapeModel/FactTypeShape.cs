@@ -5100,11 +5100,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 
 			// Part 1: Resize the existing fact shapes
 			bool missingNameShapes = false;
+			bool hasShape = false;
 			foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(nestedFactType))
 			{
 				FactTypeShape factShape = pel as FactTypeShape;
 				if (factShape != null)
 				{
+					hasShape = true;
 					factShape.AutoResize();
 					if (!missingNameShapes)
 					{
@@ -5135,6 +5137,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				ObjectTypeShape objectShape = pels[i] as ObjectTypeShape;
 				if (objectShape != null)
 				{
+					hasShape = true;
 					ORMDiagram currentDiagram = (ORMDiagram)objectShape.Diagram;
 
 					// Search the current diagram and see if we have a shape for the FactType
@@ -5226,6 +5229,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 #endif // TRACKNEWSHAPES
 
 			// Make sure we have name shapes for all fact type shapes
+			if (!hasShape)
+			{
+				Diagram.FixUpDiagram(nestedFactType.Model, nestedFactType);
+				missingNameShapes = true;
+			}
 			if (missingNameShapes)
 			{
 				Diagram.FixUpDiagram(nestedFactType, nestingType);
@@ -5958,7 +5966,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			AutoResize();
 			SizeD size = Size;
-			Location = new PointD(0, -1.5 * size.Height);
+			if (createdDuringViewFixup)
+			{
+				Location = new PointD(0, -1.5 * size.Height);
+			}
 			foreach (ShapeElement childShape in RelativeChildShapes)
 			{
 				ORMBaseShape shape = childShape as ORMBaseShape;

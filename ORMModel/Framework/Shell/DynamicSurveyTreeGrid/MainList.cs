@@ -395,9 +395,15 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				if (reference != null &&
 					null != (referencedElement = reference.ReferencedElement))
 				{
+					NodeLocation targetLocation;
+					if (!surveyTree.myNodeDictionary.TryGetValue(referencedElement, out targetLocation))
+					{
+						// Defensive code to handle callbacks on partially removed references
+						// resulting from event side effects.
+						return retVal;
+					}
 					referenceOptions = reference.SurveyNodeReferenceOptions;
 					filterTargetQuestions = 0 != (referenceOptions & SurveyNodeReferenceOptions.FilterReferencedAnswers);
-					NodeLocation targetLocation = surveyTree.myNodeDictionary[referencedElement = reference.ReferencedElement];
 					referenceNode = targetLocation.ElementNode;
 					referenceSurvey = targetLocation.Survey;
 				}

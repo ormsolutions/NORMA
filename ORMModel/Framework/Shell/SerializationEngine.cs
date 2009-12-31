@@ -4318,6 +4318,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 										if (element == oppositeRolePlayers[i])
 										{
 											createLink = false;
+											PassEndElement(reader);
 											break;
 										}
 									}
