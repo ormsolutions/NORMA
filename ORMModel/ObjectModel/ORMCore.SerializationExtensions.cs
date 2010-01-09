@@ -4054,6 +4054,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
 			}
+			if (domainPropertyInfo.Id == FactTypeDerivationRule.NameDomainPropertyId)
+			{
+				if (this.DerivationCompleteness != DerivationCompleteness.FullyDerived)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, "Name", null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
 			if (0 != (CustomSerializedElementSupportedOperations.PropertyInfo & base.SupportedCustomSerializedOperations))
 			{
 				return base.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
@@ -4117,6 +4125,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				customSerializedAttributes.Add("DerivationCompleteness", FactTypeDerivationRule.DerivationCompletenessDomainPropertyId);
 				customSerializedAttributes.Add("DerivationStorage", FactTypeDerivationRule.DerivationStorageDomainPropertyId);
 				customSerializedAttributes.Add("SetProjection", FactTypeDerivationRule.SetProjectionDomainPropertyId);
+				customSerializedAttributes.Add("Name", FactTypeDerivationRule.NameDomainPropertyId);
 				FactTypeDerivationRule.myCustomSerializedAttributes = customSerializedAttributes;
 			}
 			Guid rVal;

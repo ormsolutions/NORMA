@@ -447,50 +447,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // MergeContext functions
 		#region CustomStorage handlers
-		private void SetNestingTypeDisplayValue(ObjectType newValue)
-		{
-			// Handled by FactTypeChangeRule
-		}
-		private void SetDerivationExpressionDisplayValue(string newValue)
-		{
-			// Handled by FactTypeChangeRule
-		}
-		private void SetDerivationStorageDisplayValue(DerivationExpressionStorageType newValue)
-		{
-			// Handled by FactTypeChangeRule
-		}
-		private void SetDefinitionTextValue(string newValue)
-		{
-			// Handled by FactTypeChangeRule
-		}
-		private void SetNoteTextValue(string newValue)
-		{
-			// Handled by FactTypeChangeRule
-		}
-		private void SetNameValue(string newValue)
-		{
-			// Handled by FactTypeChangeRule
-		}
-		private void SetGeneratedNameValue(string newValue)
-		{
-			Debug.Assert(Store.InUndoRedoOrRollback || (Store.TransactionActive && Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.ContainsKey(ElementGroupPrototype.CreatingKey)), "Call GeneratedNamePropertyHandler.SetGeneratedName directly to modify myGeneratedName field.");
-			if (Store.InUndoRedoOrRollback)
-			{
-				// We only set this in undo/redo scenarios so that the initial
-				// change on a writable property comes indirectly from the objectifying
-				// type changing its name.
-				myGeneratedName = newValue;
-			}
-		}
-		private ObjectType GetNestingTypeDisplayValue()
-		{
-			Objectification objectification = Objectification;
-			return (objectification != null && !objectification.IsImplied) ? objectification.NestingType : null;
-		}
 		private string GetDerivationExpressionDisplayValue()
 		{
 			FactTypeDerivationExpression derivation = DerivationExpression;
 			return (derivation == null || derivation.IsDeleted) ? String.Empty : derivation.Body;
+		}
+		private void SetDerivationExpressionDisplayValue(string newValue)
+		{
+			Store store;
+			if (!(store = Store).InUndoRedoOrRollback)
+			{
+				FactTypeDerivationExpression currentExpression = DerivationExpression;
+				if (string.IsNullOrEmpty(newValue))
+				{
+					if (currentExpression != null)
+					{
+						currentExpression.Body = string.Empty;
+					}
+				}
+				else
+				{
+					if (null == currentExpression)
+					{
+						currentExpression = new FactTypeDerivationExpression(store);
+						DerivationExpression = currentExpression;
+					}
+					currentExpression.Body = newValue;
+				}
+			}
 		}
 		private DerivationExpressionStorageType GetDerivationStorageDisplayValue()
 		{
@@ -512,19 +496,89 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			return DerivationExpressionStorageType.Derived;
 		}
+		private void SetDerivationStorageDisplayValue(DerivationExpressionStorageType newValue)
+		{
+			if (!Store.InUndoRedoOrRollback)
+			{
+				FactTypeDerivationRule rule;
+				FactTypeDerivationExpression expression;
+				if (null != (rule = DerivationRule))
+				{
+					DerivationCompleteness completeness = DerivationCompleteness.FullyDerived;
+					DerivationStorage storage = DerivationStorage.NotStored;
+					switch (newValue)
+					{
+						//case DerivationExpressionStorageType.Derived:
+						case DerivationExpressionStorageType.DerivedAndStored:
+							storage = DerivationStorage.Stored;
+							break;
+						case DerivationExpressionStorageType.PartiallyDerived:
+							completeness = DerivationCompleteness.PartiallyDerived;
+							break;
+						case DerivationExpressionStorageType.PartiallyDerivedAndStored:
+							completeness = DerivationCompleteness.PartiallyDerived;
+							storage = DerivationStorage.Stored;
+							break;
+					}
+					rule.DerivationCompleteness = completeness;
+					rule.DerivationStorage = storage;
+				}
+				else if (null != (expression = DerivationExpression))
+				{
+					expression.DerivationStorage = newValue;
+				}
+			}
+		}
 		private string GetDefinitionTextValue()
 		{
 			Definition currentDefinition = Definition;
 			return (currentDefinition != null) ? currentDefinition.Text : String.Empty;
+		}
+		private void SetDefinitionTextValue(string newValue)
+		{
+			Store store;
+			if (!(store = Store).InUndoRedoOrRollback)
+			{
+				Definition definition = Definition;
+				if (definition != null)
+				{
+					definition.Text = newValue;
+				}
+				else if (!string.IsNullOrEmpty(newValue))
+				{
+					Definition = new Definition(store, new PropertyAssignment(Definition.TextDomainPropertyId, newValue));
+				}
+			}
 		}
 		private string GetNoteTextValue()
 		{
 			Note currentNote = Note;
 			return (currentNote != null) ? currentNote.Text : String.Empty;
 		}
+		private void SetNoteTextValue(string newValue)
+		{
+			Store store;
+			if (!(store = Store).InUndoRedoOrRollback)
+			{
+				Note note = Note;
+				if (note != null)
+				{
+					note.Text = newValue;
+				}
+				else if (!string.IsNullOrEmpty(newValue))
+				{
+					Note = new Note(store, new PropertyAssignment(Note.TextDomainPropertyId, newValue));
+				}
+			}
+		}
 		private string GetNameValue()
 		{
 			return GetGeneratedNameValue(true);
+		}
+		private void SetNameValue(string newValue)
+		{
+			// Handled by FactTypeNameChangeRule to verify that this
+			// is set directly instead instead of by a rule.
 		}
 		private static RuntimeMethodHandle myNameSetValueMethodHandle;
 		private static RuntimeMethodHandle NameSetValueMethodHandle
@@ -556,10 +610,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			return GetGeneratedNameValue(false);
 		}
+		private void SetGeneratedNameValue(string newValue)
+		{
+			Debug.Assert(Store.InUndoRedoOrRollback || (Store.TransactionActive && Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.ContainsKey(ElementGroupPrototype.CreatingKey)), "Call GeneratedNamePropertyHandler.SetGeneratedName directly to modify myGeneratedName field.");
+			if (Store.InUndoRedoOrRollback)
+			{
+				// We only set this in undo/redo scenarios so that the initial
+				// change on a writable property comes indirectly from the objectifying
+				// type changing its name.
+				myGeneratedName = newValue;
+			}
+		}
 		private string GetGeneratedNameValue(bool forGetNameValue)
 		{
-			Objectification objectification;
 			ObjectType nestingType;
+			FactTypeDerivationRule derivationRule;
 			Store store = Utility.ValidateStore(Store);
 			if (store != null &&
 				// This is a very tricky operation, resulting in the unconventional
@@ -575,9 +640,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				return myGeneratedName;
 			}
-			else if ((objectification = Objectification) != null && (nestingType = objectification.NestingType) != null)
+			else if (null != (nestingType = NestingType))
 			{
 				return nestingType.Name;
+			}
+			else if (null != (derivationRule = DerivationRule) && derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived)
+			{
+				return derivationRule.Name;
 			}
 			else if (!store.TransactionManager.InTransaction)
 			{
@@ -657,127 +726,33 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return GetNamedElementDictionaryLinkRoles();
 		}
 		#endregion // INamedElementDictionaryRemoteParent implementation
-		#region FactTypeChangeRule
+		#region FactTypeNameChangeRule
 		/// <summary>
 		/// ChangeRule: typeof(FactType)
-		/// Forward through the property grid property to the underlying
-		/// nesting type property
 		/// </summary>
-		private static void FactTypeChangeRule(ElementPropertyChangedEventArgs e)
+		private static void FactTypeNameChangeRule(ElementPropertyChangedEventArgs e)
 		{
-			Guid attributeGuid = e.DomainProperty.Id;
-			if (attributeGuid == FactType.DerivationExpressionDisplayDomainPropertyId)
-			{
-				FactType factType = e.ModelElement as FactType;
-				string newVal = e.NewValue as string;
-				FactTypeDerivationExpression currentRule = factType.DerivationExpression;
-				if (string.IsNullOrEmpty(newVal))
-				{
-					if (currentRule != null)
-					{
-						currentRule.Body = string.Empty;
-					}
-				}
-				else
-				{
-					if (null == currentRule)
-					{
-						currentRule = new FactTypeDerivationExpression(factType.Store);
-						factType.DerivationExpression = currentRule;
-					}
-					currentRule.Body = newVal;
-				}
-			}
-			else if (attributeGuid == FactType.DerivationStorageDisplayDomainPropertyId)
-			{
-				FactType factType = (FactType)e.ModelElement;
-				FactTypeDerivationRule rule;
-				FactTypeDerivationExpression expression;
-				if (null != (rule = factType.DerivationRule))
-				{
-					DerivationCompleteness completeness = DerivationCompleteness.FullyDerived;
-					DerivationStorage storage = DerivationStorage.NotStored;
-					switch ((DerivationExpressionStorageType)e.NewValue)
-					{
-						//case DerivationExpressionStorageType.Derived:
-						case DerivationExpressionStorageType.DerivedAndStored:
-							storage = DerivationStorage.Stored;
-							break;
-						case DerivationExpressionStorageType.PartiallyDerived:
-							completeness = DerivationCompleteness.PartiallyDerived;
-							break;
-						case DerivationExpressionStorageType.PartiallyDerivedAndStored:
-							completeness = DerivationCompleteness.PartiallyDerived;
-							storage = DerivationStorage.Stored;
-							break;
-					}
-					rule.DerivationCompleteness = completeness;
-					rule.DerivationStorage = storage;
-				}
-				else if (null != (expression = factType.DerivationExpression))
-				{
-					expression.DerivationStorage = (DerivationExpressionStorageType)e.NewValue;
-				}
-			}
-			else if (attributeGuid == FactType.DefinitionTextDomainPropertyId)
-			{
-				// cache the text.
-				string newText = (string)e.NewValue;
-				FactType factType = e.ModelElement as FactType;
-				// Get the definition if it exists
-				Definition definition = factType.Definition;
-				if (definition != null)
-				{
-					// and try to set the text to the cached value.
-					definition.Text = newText;
-				}
-				else if (!string.IsNullOrEmpty(newText))
-				{
-					// Otherwise, create the definition and set the text,
-					definition = new Definition(factType.Store);
-					definition.Text = newText;
-					// then attach the definition to the FactType
-					factType.Definition = definition;
-				}
-			}
-			else if (attributeGuid == FactType.NoteTextDomainPropertyId)
-			{
-				// cache the text.
-				string newText = (string)e.NewValue;
-				FactType factType = e.ModelElement as FactType;
-				// Get the note if it exists
-				Note note = factType.Note;
-				if (note != null)
-				{
-					// and try to set the text to the cached value.
-					note.Text = newText;
-				}
-				else if (!string.IsNullOrEmpty(newText))
-				{
-					// Otherwise, create the note and set the text,
-					note = new Note(factType.Store);
-					note.Text = newText;
-					// then attach the note to the FactType.
-					factType.Note = note;
-				}
-			}
-			else if (attributeGuid == FactType.NameDomainPropertyId)
+			if (e.DomainProperty.Id == FactType.NameDomainPropertyId)
 			{
 				Debug.Assert(e.ChangeSource == ChangeSource.Normal, "The FactType.Name property should not be set directly from a rule. FactType and its nested class should set the GeneratedName property instead.");
 				if (e.ChangeSource == ChangeSource.Normal) // Ignore changes from rules and other sources
 				{
-					FactType factType = e.ModelElement as FactType;
-					Objectification objectificationLink;
-					ObjectType nestingType;
-					if (null != (objectificationLink = factType.Objectification) &&
-						null != (nestingType = objectificationLink.NestingType))
+					FactType factType = (FactType)e.ModelElement;
+					ObjectType objectifyingType;
+					FactTypeDerivationRule derivationRule;
+					if (null != (objectifyingType = factType.NestingType))
 					{
-						nestingType.Name = (string)e.NewValue;
+						objectifyingType.Name = (string)e.NewValue;
+					}
+					else if (null != (derivationRule = factType.DerivationRule) &&
+						derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived)
+					{
+						derivationRule.Name = (string)e.NewValue;
 					}
 				}
 			}
 		}
-		#endregion // FactTypeChangeRule
+		#endregion // FactTypeNameChangeRule
 		#region IModelErrorOwner Implementation
 		/// <summary>
 		/// Returns the error associated with the fact.
@@ -1116,7 +1091,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ORMModel theModel;
 			if (!IsDeleted && (null != (theModel = Model)))
 			{
-				bool hasError = RoleCollection.Count > 1;
+				FactTypeDerivationRule derivationRule;
+				bool hasError = RoleCollection.Count > 1 &&
+					(null == (derivationRule = DerivationRule) || derivationRule.DerivationCompleteness != DerivationCompleteness.FullyDerived);
 				Store theStore = Store;
 
 				if (hasError)
@@ -1252,22 +1229,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Return a deserialization fixup listener. The listener
 		/// synchronizes the initial name settings with any objectifying fact.
 		/// </summary>
-		public static IDeserializationFixupListener NameFixupListener
+		public static IDeserializationFixupListener ObjectifyingNameFixupListener
 		{
 			get
 			{
-				return new GeneratedNameFixupListener();
+				return new GeneratedNameObjectificationFixupListener();
 			}
 		}
 		/// <summary>
 		/// Fixup listener implementation. Properly initializes the myGeneratedName field
 		/// </summary>
-		private sealed class GeneratedNameFixupListener : DeserializationFixupListener<Objectification>
+		private sealed class GeneratedNameObjectificationFixupListener : DeserializationFixupListener<Objectification>
 		{
 			/// <summary>
-			/// ExternalConstraintFixupListener constructor
+			/// GeneratedNameObjectificationFixupListener constructor
 			/// </summary>
-			public GeneratedNameFixupListener()
+			public GeneratedNameObjectificationFixupListener()
 				: base((int)ORMDeserializationFixupPhase.ValidateElementNames)
 			{
 			}
@@ -1290,6 +1267,72 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 		}
+		/// <summary>
+		/// Return a deserialization fixup listener. The listener
+		/// synchronizes the initial name settings a fully derived
+		/// derivation rule on a non-objectified fact type.
+		/// </summary>
+		public static IDeserializationFixupListener DerivationNameFixupListener
+		{
+			get
+			{
+				return new GeneratedNameDerivationFixupListener();
+			}
+		}
+		/// <summary>
+		/// Fixup listener implementation. Properly initializes the myGeneratedName field
+		/// </summary>
+		private sealed class GeneratedNameDerivationFixupListener : DeserializationFixupListener<FactTypeDerivationRule>
+		{
+			/// <summary>
+			/// GeneratedNameDerivationFixupListener constructor
+			/// </summary>
+			public GeneratedNameDerivationFixupListener()
+				: base((int)ORMDeserializationFixupPhase.ValidateElementNames)
+			{
+			}
+			/// <summary>
+			/// Process derivation elements
+			/// </summary>
+			/// <param name="element">A <see cref="FactTypeDerivationRule"/> element</param>
+			/// <param name="store">The context store</param>
+			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
+			protected sealed override void ProcessElement(FactTypeDerivationRule element, Store store, INotifyElementAdded notifyAdded)
+			{
+				if (!element.IsDeleted)
+				{
+					if (element.DerivationCompleteness == DerivationCompleteness.FullyDerived)
+					{
+						FactType factType = element.FactType;
+						ObjectType objectifyingType = factType.NestingType;
+						if (objectifyingType != null)
+						{
+							// If an objectification is present, then let the other
+							// fixup listener do the name generation.
+							element.Name = objectifyingType.Name;
+						}
+						else
+						{
+							string generatedName = factType.GenerateName();
+							string currentName = element.Name;
+							if (string.IsNullOrEmpty(currentName))
+							{
+								factType.myGeneratedName = generatedName;
+								element.Name = generatedName;
+							}
+							else if (generatedName == currentName)
+							{
+								factType.myGeneratedName = generatedName;
+							}
+						}
+					}
+					else
+					{
+						element.Name = "";
+					}
+				}
+			}
+		}
 		#endregion // Deserialization Fixup
 		private static void DelayValidateFactTypeNamePartChanged(ModelElement element)
 		{
@@ -1302,19 +1345,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				string newGeneratedName = null;
 				bool renameValidationErrors = true;
 
-				// See if the nestedType uses the old automatic name. If it does, then
+				// See if the objectifying type or derivation rule
+				// uses the old automatic name. If it does, then
 				// update the automatic name to the the new name.
-				ObjectType nestingType = null;
-				Objectification objectificationLink;
-				if (null != (objectificationLink = factType.Objectification) &&
-					null != (nestingType = objectificationLink.NestingType) &&
-					!nestingType.IsDeleted)
+				ObjectType objectifyingType;
+				FactTypeDerivationRule derivationRule = null;
+				if (null != (objectifyingType = factType.NestingType) ||
+					null != (derivationRule = factType.DerivationRule) && derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived)
 				{
 					newGeneratedName = factType.GenerateName();
 					haveNewName = true;
 					if (newGeneratedName != oldGeneratedName)
 					{
-						if (nestingType.Name == oldGeneratedName)
+						string storedName = objectifyingType != null ? objectifyingType.Name : derivationRule.Name;
+						if (storedName == oldGeneratedName)
 						{
 							Dictionary<object, object> contextInfo = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
 							try
@@ -1323,7 +1367,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								// update the generated name as needed
 								GeneratedNamePropertyHandler.SetGeneratedName(factType, oldGeneratedName, newGeneratedName);
 								contextInfo[ORMModel.AllowDuplicateNamesKey] = null;
-								nestingType.Name = newGeneratedName;
+								if (objectifyingType != null)
+								{
+									objectifyingType.Name = newGeneratedName;
+								}
+								else
+								{
+									derivationRule.Name = newGeneratedName;
+								}
 							}
 							finally
 							{
@@ -1332,7 +1383,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 						else
 						{
-							// Rule updates for this case are handled in ValidateFactNameForObjectTypeNameChange
+							// Rule updates for this case are handled in ValidateFactTypeNameForObjectTypeNameChangeRule
+							// and DerivationRuleChangedRule
 							haveNewName = false;
 							newGeneratedName = null;
 							renameValidationErrors = false;
@@ -1923,43 +1975,206 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			Guid attributeId = e.DomainProperty.Id;
 			if (attributeId == ObjectType.NameDomainPropertyId)
 			{
-				ObjectType objectType = e.ModelElement as ObjectType;
-				if (!objectType.IsDeleted)
+				ObjectType objectType = (ObjectType)e.ModelElement;
+				LinkedElementCollection<Role> playedRoles = objectType.PlayedRoleCollection;
+				int playedRolesCount = playedRoles.Count;
+				for (int i = 0; i < playedRolesCount; ++i)
 				{
-					LinkedElementCollection<Role> playedRoles = objectType.PlayedRoleCollection;
-					int playedRolesCount = playedRoles.Count;
-					for (int i = 0; i < playedRolesCount; ++i)
+					Role role = playedRoles[i];
+					FactType factType = role.FactType;
+					if (factType != null)
 					{
-						Role role = playedRoles[i];
-						FactType factType = role.FactType;
-						if (factType != null)
+						FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+					}
+					RoleProxy proxy;
+					if (null != (proxy = role.Proxy) &&
+						null != (factType = proxy.FactType))
+					{
+						FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+					}
+				}
+				FactType nestedFact = objectType.NestedFactType;
+				if (nestedFact != null)
+				{
+					string newName = (string)e.NewValue;
+					if (newName.Length != 0)
+					{
+						string generatedName = nestedFact.myGeneratedName;
+						if (!string.IsNullOrEmpty(generatedName) &&
+							(object)newName != (object)generatedName)
 						{
-							FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+							GeneratedNamePropertyHandler.ClearGeneratedName(nestedFact, generatedName);
 						}
-						RoleProxy proxy;
-						if (null != (proxy = role.Proxy) &&
-							null != (factType = proxy.FactType))
+						nestedFact.RegenerateErrorText();
+						nestedFact.OnFactTypeNameChanged();
+					}
+					FactTypeDerivationRule derivationRule = nestedFact.DerivationRule;
+					if (derivationRule != null && derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived)
+					{
+						derivationRule.Name = newName;
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// ChangeRule: typeof(FactTypeDerivationRule)
+		/// Verify fact type name and generated constraint pattenrs
+		/// </summary>
+		private static void DerivationRuleChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			Guid attributeId = e.DomainProperty.Id;
+			FactTypeDerivationRule derivationRule;
+			FactType factType;
+			string generatedName;
+			if (attributeId == FactTypeDerivationRule.NameDomainPropertyId)
+			{
+				derivationRule = (FactTypeDerivationRule)e.ModelElement;
+				if (derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+					null != (factType = derivationRule.FactType) &&
+					null == factType.NestingType)
+				{
+					string newName = (string)e.NewValue;
+					if (newName.Length != 0)
+					{
+						generatedName = factType.myGeneratedName;
+						if (!string.IsNullOrEmpty(generatedName) &&
+							(object)newName != (object)generatedName)
 						{
-							FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+							GeneratedNamePropertyHandler.ClearGeneratedName(factType, generatedName);
 						}
 					}
-					FactType nestedFact = objectType.NestedFactType;
-					if (nestedFact != null)
+					else
 					{
-						string newName = (string)e.NewValue;
-						if (newName.Length != 0)
+						derivationRule.Name = factType.DefaultName;
+					}
+					factType.RegenerateErrorText();
+					factType.OnFactTypeNameChanged();
+				}
+			}
+			else if (attributeId == FactTypeDerivationRule.DerivationCompletenessDomainPropertyId)
+			{
+				derivationRule = (FactTypeDerivationRule)e.ModelElement;
+				if (null != (factType = derivationRule.FactType))
+				{
+					FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
+					ObjectType objectifyingType = factType.NestingType;
+					if ((DerivationCompleteness)e.NewValue == DerivationCompleteness.FullyDerived)
+					{
+						if (objectifyingType != null)
 						{
-							string generatedName = nestedFact.myGeneratedName;
-							if (!string.IsNullOrEmpty(generatedName) &&
-								(object)newName != (object)generatedName)
+							derivationRule.Name = objectifyingType.Name;
+						}
+						else
+						{
+							generatedName = factType.myGeneratedName;
+							if (generatedName == null)
 							{
-								GeneratedNamePropertyHandler.ClearGeneratedName(nestedFact, generatedName);
+								// Note that there is no notification here, we just
+								// need the generated name set so that we can track
+								// future changes with the stored value.
+								generatedName = factType.GenerateName();
+								factType.myGeneratedName = generatedName;
 							}
-							nestedFact.RegenerateErrorText();
-							nestedFact.OnFactTypeNameChanged();
+							derivationRule.Name = generatedName;
+						}
+					}
+					else
+					{
+						if (objectifyingType == null)
+						{
+							// The derivation rule has been controlling the name, revert
+							// to the generated name shown for an unobjectified, asserted
+							// fact type.
+							string currentName = derivationRule.Name;
+							generatedName = factType.myGeneratedName;
+							bool nameChanged = false;
+							if (string.IsNullOrEmpty(generatedName))
+							{
+								nameChanged = true;
+							}
+							else if ((object)derivationRule.Name != (object)generatedName)
+							{
+								GeneratedNamePropertyHandler.ClearGeneratedName(factType, generatedName);
+								nameChanged = true;
+							}
+							if (nameChanged)
+							{
+								factType.RegenerateErrorText();
+								factType.OnFactTypeNameChanged();
+							}
+						}
+						if (!string.IsNullOrEmpty(derivationRule.Name))
+						{
+							// Prepare to eliminate the old value, but don't toss it yet because
+							// the explicit name may be needed to set the name for an implicit
+							// objectification created in response to switching to a partially
+							// derived fact type.
+							FrameworkDomainModel.DelayValidateElement(derivationRule, DelayClearDerivationRuleName);
 						}
 					}
 				}
+			}
+		}
+		[DelayValidatePriority(1)] // Run after Objectification.DelayProcessFactTypeForImpliedObjectification
+		private static void DelayClearDerivationRuleName(ModelElement element)
+		{
+			FactTypeDerivationRule derivationRule;
+			if (!element.IsDeleted &&
+				(derivationRule = (FactTypeDerivationRule)element).DerivationCompleteness != DerivationCompleteness.FullyDerived &&
+				!string.IsNullOrEmpty(derivationRule.Name))
+			{
+				derivationRule.Name = "";
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(FactTypeHasDerivationRule)
+		/// Set the initial derivation rule name for a fully derived derivation rule and
+		/// verify constraint patterns.
+		/// </summary>
+		private static void DerivationRuleAddedRule(ElementAddedEventArgs e)
+		{
+			FactTypeHasDerivationRule link = (FactTypeHasDerivationRule)e.ModelElement;
+			FactTypeDerivationRule derivationRule = link.DerivationRule;
+			if (derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived)
+			{
+				FactType factType = link.FactType;
+				ObjectType nestingType;
+				if (null != (nestingType = factType.NestingType))
+				{
+					derivationRule.Name = nestingType.Name;
+				}
+				else if (string.IsNullOrEmpty(derivationRule.Name))
+				{
+					derivationRule.Name = factType.DefaultName;
+				}
+				FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
+			}
+			else if (!string.IsNullOrEmpty(derivationRule.Name))
+			{
+				derivationRule.Name = "";
+			}
+		}
+		/// <summary>
+		/// DeleteRule: typeof(FactTypeHasDerivationRule)
+		/// Verify naming and constraint patterns for derivation rule deletion
+		/// </summary>
+		private static void DerivationRuleDeletedRule(ElementDeletedEventArgs e)
+		{
+			FactTypeHasDerivationRule link = (FactTypeHasDerivationRule)e.ModelElement;
+			FactType factType;
+			FactTypeDerivationRule derivationRule;
+			string explicitName;
+			if (!(factType = link.FactType).IsDeleted &&
+				(derivationRule = link.DerivationRule).DerivationCompleteness == DerivationCompleteness.FullyDerived)
+			{
+				if (factType.NestingType == null &&
+					!string.IsNullOrEmpty(explicitName = derivationRule.Name) &&
+					(object)explicitName != (object)factType.myGeneratedName)
+				{
+					factType.RegenerateErrorText();
+					factType.OnFactTypeNameChanged();
+				}
+				FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
 			}
 		}
 		/// <summary>

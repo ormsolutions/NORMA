@@ -505,6 +505,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				new DomainMemberInfo(typeof(FactTypeDerivationRule), "DerivationCompleteness", FactTypeDerivationRule.DerivationCompletenessDomainPropertyId, typeof(FactTypeDerivationRule.DerivationCompletenessPropertyHandler)),
 				new DomainMemberInfo(typeof(FactTypeDerivationRule), "DerivationStorage", FactTypeDerivationRule.DerivationStorageDomainPropertyId, typeof(FactTypeDerivationRule.DerivationStoragePropertyHandler)),
 				new DomainMemberInfo(typeof(FactTypeDerivationRule), "SetProjection", FactTypeDerivationRule.SetProjectionDomainPropertyId, typeof(FactTypeDerivationRule.SetProjectionPropertyHandler)),
+				new DomainMemberInfo(typeof(FactTypeDerivationRule), "Name", FactTypeDerivationRule.NameDomainPropertyId, typeof(FactTypeDerivationRule.NamePropertyHandler)),
 				new DomainMemberInfo(typeof(ConstraintRoleSequenceJoinPath), "IsAutomatic", ConstraintRoleSequenceJoinPath.IsAutomaticDomainPropertyId, typeof(ConstraintRoleSequenceJoinPath.IsAutomaticPropertyHandler)),
 				new DomainMemberInfo(typeof(CompatibleRolePlayerTypeError), "Column", CompatibleRolePlayerTypeError.ColumnDomainPropertyId, typeof(CompatibleRolePlayerTypeError.ColumnPropertyHandler)),
 				new DomainMemberInfo(typeof(ModelError), "ErrorText", ModelError.ErrorTextDomainPropertyId, typeof(ModelError.ErrorTextPropertyHandler)),

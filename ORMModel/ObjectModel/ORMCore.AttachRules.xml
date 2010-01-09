@@ -251,12 +251,18 @@
 			<arg:RolePlayerChangeRule methodName="BlockRoleMigrationRule">
 				<arg:RuleOn targetType="FactTypeHasRole"/>
 			</arg:RolePlayerChangeRule>
+			<arg:AddRule methodName="DerivationRuleAddedRule">
+				<arg:RuleOn targetType="FactTypeHasDerivationRule"/>
+			</arg:AddRule>
+			<arg:ChangeRule methodName="DerivationRuleChangedRule">
+				<arg:RuleOn targetType="FactTypeDerivationRule"/>
+			</arg:ChangeRule>
+			<arg:DeleteRule methodName="DerivationRuleDeletedRule">
+				<arg:RuleOn targetType="FactTypeHasDerivationRule"/>
+			</arg:DeleteRule>
 			<arg:AddRule methodName="FactTypeAddedRule">
 				<arg:RuleOn targetType="ModelHasFactType"/>
 			</arg:AddRule>
-			<arg:ChangeRule methodName="FactTypeChangeRule">
-				<arg:RuleOn targetType="FactType"/>
-			</arg:ChangeRule>
 			<arg:ChangeRule methodName="FactTypeDerivationExpressionChangeRule">
 				<arg:RuleOn targetType="FactTypeDerivationExpression"/>
 			</arg:ChangeRule>
@@ -272,6 +278,9 @@
 			<arg:DeleteRule methodName="FactTypeHasRoleDeleteRule">
 				<arg:RuleOn targetType="FactTypeHasRole"/>
 			</arg:DeleteRule>
+			<arg:ChangeRule methodName="FactTypeNameChangeRule">
+				<arg:RuleOn targetType="FactType"/>
+			</arg:ChangeRule>
 			<arg:AddRule methodName="InternalConstraintAddRule">
 				<arg:RuleOn targetType="FactSetConstraint"/>
 			</arg:AddRule>
@@ -475,6 +484,15 @@
 			</arg:ChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="Objectification">
+			<arg:AddRule methodName="FactTypeDerivationRuleAddedRule">
+				<arg:RuleOn targetType="FactTypeHasDerivationRule"/>
+			</arg:AddRule>
+			<arg:ChangeRule methodName="FactTypeDerivationRuleChangedRule">
+				<arg:RuleOn targetType="FactTypeDerivationRule"/>
+			</arg:ChangeRule>
+			<arg:DeleteRule methodName="FactTypeDerivationRuleDeletedRule">
+				<arg:RuleOn targetType="FactTypeHasDerivationRule"/>
+			</arg:DeleteRule>
 			<arg:AddRule methodName="ImpliedFactTypeAddRule">
 				<arg:RuleOn targetType="ObjectificationImpliesFactType"/>
 			</arg:AddRule>
@@ -996,6 +1014,15 @@
 			</arg:AddRule>
 			<arg:DeleteRule methodName="NMinusOneConstraintRoleDeleteRule">
 				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
+			</arg:DeleteRule>
+			<arg:AddRule methodName="NMinusOneFactTypeDerivationRuleAddedRule">
+				<arg:RuleOn targetType="FactTypeHasDerivationRule"/>
+			</arg:AddRule>
+			<arg:ChangeRule methodName="NMinusOneFactTypeDerivationRuleChangedRule">
+				<arg:RuleOn targetType="FactTypeDerivationRule"/>
+			</arg:ChangeRule>
+			<arg:DeleteRule methodName="NMinusOneFactTypeDerivationRuleDeletedRule">
+				<arg:RuleOn targetType="FactTypeHasDerivationRule"/>
 			</arg:DeleteRule>
 			<arg:AddRule methodName="NMinusOneFactTypeRoleAddRule">
 				<arg:RuleOn targetType="FactTypeHasRole"/>

@@ -171,10 +171,22 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				ORMDiagram diagram = (ORMDiagram)sourceShapeElement.Diagram;
 				RoleConnectAction action = diagram.RoleConnectAction;
+				action.myRoleReorderConnector = false;
 				ObjectType objectType;
+				Role sourceRole = action.mySourceRole;
 				Role role;
+				Role targetRole;
 				Objectification objectification;
-				if ((null != (role = action.mySourceRole) && null != (objectType = ObjectTypeFromShape(targetShapeElement)) &&
+				// Reorder roles in the same shape
+				if (sourceRole != null &&
+					sourceShapeElement == targetShapeElement &&
+					null != (targetRole = action.myLastMouseMoveRole) &&
+					targetRole != sourceRole)
+				{
+					action.myRoleReorderConnector = true;
+					return true;
+				}
+				else if ((null != (role = sourceRole) && null != (objectType = ObjectTypeFromShape(targetShapeElement)) &&
 					(null == (objectification = objectType.Objectification) || !objectification.IsImplied)) ||
 					(null != (objectType = action.mySourceObjectType) && null != (role = action.myLastMouseMoveRole)))
 				{
@@ -218,8 +230,20 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				ORMDiagram diagram = (ORMDiagram)sourceShapeElement.Diagram;
 				RoleConnectAction action = diagram.RoleConnectAction;
 				ObjectType objectType;
+				Role sourceRole = action.mySourceRole;
 				Role role;
-				if ((null != (role = action.mySourceRole) && null != (objectType = ObjectTypeFromShape(targetShapeElement))) ||
+				Role targetRole;
+				FactTypeShape factTypeShape;
+				if (sourceRole != null &&
+					sourceShapeElement == targetShapeElement &&
+					null != (targetRole = action.myLastMouseMoveRole) &&
+					targetRole != sourceRole &&
+					null != (factTypeShape = sourceShapeElement as FactTypeShape))
+				{
+					LinkedElementCollection<RoleBase> displayedRoles = factTypeShape.GetEditableDisplayRoleOrder();
+					displayedRoles.Move(displayedRoles.IndexOf(sourceRole), displayedRoles.IndexOf(targetRole));
+				}
+				else if ((null != (role = sourceRole) && null != (objectType = ObjectTypeFromShape(targetShapeElement))) ||
 					(null != (objectType = action.mySourceObjectType) && null != (role = action.myLastMouseMoveRole)))
 				{
 					// Don't trigger a change if none is indicated. Turn this into a noop
@@ -246,12 +270,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		#region Member variables
 		// The following cursors are built as embedded resources. Pick them up by their file name.
 		private static Cursor myAllowedCursor = new Cursor(typeof(RoleConnectAction), "ConnectRoleAllowed.cur");
+		private static Cursor myAllowedReorderCursor = new Cursor(typeof(RoleConnectAction), "ConnectRoleReorderAllowed.cur");
 		private static Cursor mySearchingCursor = new Cursor(typeof(RoleConnectAction), "ConnectRoleSearching.cur");
 		private static readonly ConnectionType[] EmptyConnectionTypes = {};
 		private Role myLastMouseDownRole;
 		private Role myLastMouseMoveRole;
 		private Role mySourceRole;
 		private bool mySourceRoleMissingConnector;
+		private bool myRoleReorderConnector;
 		private ObjectType mySourceObjectType;
 		private bool myEmulateDrag;
 		#endregion // Member variables
@@ -385,7 +411,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			switch (connectActionCursor)
 			{
 				case ConnectActionCursor.Allowed:
-					cursor = myAllowedCursor;
+					cursor = myRoleReorderConnector ? myAllowedReorderCursor : myAllowedCursor;
 					break;
 				//case ConnectActionCursor.Searching:
 				//case ConnectActionCursor.Disallowed:
@@ -402,6 +428,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			mySourceRole = null;
 			mySourceRoleMissingConnector = false;
+			myRoleReorderConnector = false;
 			mySourceObjectType = null;
 			myLastMouseDownRole = null;
 			myLastMouseMoveRole = null;

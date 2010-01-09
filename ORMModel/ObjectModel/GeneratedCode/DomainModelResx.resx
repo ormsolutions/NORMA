@@ -1247,19 +1247,19 @@
     <comment>DisplayName for DomainClass &apos;FactTypeDerivationRule&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/DerivationCompleteness.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule.DerivationCompleteness</value>
+    <value>Specify if a fact can be populated without satisfying the derivation path.</value>
     <comment>Description for DomainProperty &apos;DerivationCompleteness&apos; on DomainClass &apos;FactTypeDerivationRule&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/DerivationCompleteness.DisplayName" xml:space="preserve">
-    <value>DerivationCompleteness</value>
+    <value>Completeness</value>
     <comment>DisplayName for DomainProperty &apos;DerivationCompleteness&apos; on DomainClass &apos;FactTypeDerivationRule&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/DerivationStorage.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule.DerivationStorage</value>
+    <value>Specify if the derivation results are determined on demand or stored when derivation path components are changed.</value>
     <comment>Description for DomainProperty &apos;DerivationStorage&apos; on DomainClass &apos;FactTypeDerivationRule&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/DerivationStorage.DisplayName" xml:space="preserve">
-    <value>DerivationStorage</value>
+    <value>Storage</value>
     <comment>DisplayName for DomainProperty &apos;DerivationStorage&apos; on DomainClass &apos;FactTypeDerivationRule&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/SetProjection.Description" xml:space="preserve">
@@ -1269,6 +1269,14 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/SetProjection.DisplayName" xml:space="preserve">
     <value>DistinctFacts</value>
     <comment>DisplayName for DomainProperty &apos;SetProjection&apos; on DomainClass &apos;FactTypeDerivationRule&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/Name.Description" xml:space="preserve">
+    <value>The name for a fully derived fact type.</value>
+    <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;FactTypeDerivationRule&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/Name.DisplayName" xml:space="preserve">
+    <value>Name</value>
+    <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;FactTypeDerivationRule&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule.Description" xml:space="preserve">
     <value>A role path defining subtype population.</value>

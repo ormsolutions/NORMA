@@ -1199,12 +1199,12 @@
 				<DomainClassMoniker Name="RolePathOwner"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="DerivationCompleteness" DefaultValue="FullyDerived" DisplayName="DerivationCompleteness" IsBrowsable="false" Id="F254F0A7-E37E-4FDA-AC96-DEEEB8828FEC">
+				<DomainProperty Name="DerivationCompleteness" DefaultValue="FullyDerived" DisplayName="Completeness" Id="F254F0A7-E37E-4FDA-AC96-DEEEB8828FEC" Description="Specify if a fact can be populated without satisfying the derivation path.">
 					<Type>
 						<DomainEnumerationMoniker Name="DerivationCompleteness"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="DerivationStorage" DefaultValue="NotStored" DisplayName="DerivationStorage" IsBrowsable="false" Id="5F83F8C7-D15D-4985-9CCC-099B354BD178">
+				<DomainProperty Name="DerivationStorage" DefaultValue="NotStored" DisplayName="Storage" Id="5F83F8C7-D15D-4985-9CCC-099B354BD178" Description="Specify if the derivation results are determined on demand or stored when derivation path components are changed.">
 					<Type>
 						<DomainEnumerationMoniker Name="DerivationStorage"/>
 					</Type>
@@ -1212,6 +1212,11 @@
 				<DomainProperty Name="SetProjection" DefaultValue="false" DisplayName="DistinctFacts" Id="CB6A01D4-8E6C-4320-AFD3-492A9D473B17" Description="The derivation rule results in a set of distinct facts instead of a bag that might contain duplicates.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="Name" IsBrowsable="false" Id="A630ABD7-9B57-44D1-A63B-8B923D91379F" Description="The name for a fully derived fact type.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
 			</Properties>

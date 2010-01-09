@@ -49,9 +49,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		/// </summary>
 		protected override bool IsPropertyDescriptorReadOnly(ElementPropertyDescriptor propertyDescriptor)
 		{
-			if (propertyDescriptor.DomainPropertyInfo.Id.Equals(FactType.NameDomainPropertyId))
+			if (propertyDescriptor.DomainPropertyInfo.Id == FactType.NameDomainPropertyId)
 			{
-				return ModelElement.Objectification == null;
+				FactType factType = ModelElement;
+				FactTypeDerivationRule derivationRule;
+				return factType.Objectification == null &&
+					(null == (derivationRule = factType.DerivationRule) || derivationRule.DerivationCompleteness != DerivationCompleteness.FullyDerived);
 			}
 			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
 		}

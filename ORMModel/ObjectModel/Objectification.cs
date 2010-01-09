@@ -28,8 +28,45 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	public partial class Objectification
 	{
-		// UNDONE: Handle unary objectifications (both implied and explicit)
 		#region Implied Objectification creation, removal, and pattern enforcement
+		#region FactTypeDerivationRule rule methods
+		/// <summary>
+		/// AddRule: typeof(FactTypeHasDerivationRule)
+		/// </summary>
+		private static void FactTypeDerivationRuleAddedRule(ElementAddedEventArgs e)
+		{
+			FactTypeHasDerivationRule link = (FactTypeHasDerivationRule)e.ModelElement;
+			if (link.DerivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived)
+			{
+				FrameworkDomainModel.DelayValidateElement(link.FactType, DelayProcessFactTypeForImpliedObjectification);
+			}
+		}
+		/// <summary>
+		/// ChangeRule: typeof(FactTypeDerivationRule)
+		/// </summary>
+		private static void FactTypeDerivationRuleChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			FactType factType;
+			if (e.DomainProperty.Id == FactTypeDerivationRule.DerivationCompletenessDomainPropertyId &&
+				null != (factType = ((FactTypeDerivationRule)e.ModelElement).FactType))
+			{
+				FrameworkDomainModel.DelayValidateElement(factType, DelayProcessFactTypeForImpliedObjectification);
+			}
+		}
+		/// <summary>
+		/// DeleteRule: typeof(FactTypeHasDerivationRule)
+		/// </summary>
+		private static void FactTypeDerivationRuleDeletedRule(ElementDeletedEventArgs e)
+		{
+			FactTypeHasDerivationRule link = (FactTypeHasDerivationRule)e.ModelElement;
+			FactType factType;
+			if (link.DerivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+				!(factType = link.FactType).IsDeleted)
+			{
+				FrameworkDomainModel.DelayValidateElement(factType, DelayProcessFactTypeForImpliedObjectification);
+			}
+		}
+		#endregion // FactTypeDerivationRule rule methods
 		#region ImpliedObjectificationConstraintRoleSequenceHasRoleAddRule
 		/// <summary>
 		/// AddRule: typeof(ConstraintRoleSequenceHasRole)
@@ -922,6 +959,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </remarks>
 		private static bool IsImpliedObjectificationRequired(FactType factType)
 		{
+			// Fully derived fact types are not implicitly objectified
+			FactTypeDerivationRule derivationRule;
+			if (null != (derivationRule = factType.DerivationRule) &&
+				derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived)
+			{
+				return false;
+			}
+
 			// See if we have more than two roles
 			if (factType.RoleCollection.Count > 2)
 			{
@@ -1069,6 +1114,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void DelayProcessFactTypeForImpliedObjectification(ModelElement element)
 		{
+			// Note this runs before FactType.DelayClearDerivationRuleName, adjust priorities if the
+			// DelayValidatePriority changes on this method.
 			ProcessFactTypeForImpliedObjectification(element as FactType, false);
 		}
 		/// <summary>
@@ -1205,8 +1252,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				isIndependent = isImplied && preferredConstraint != null && preferredConstraint.RoleCollection.Count == factRoleCount;
 			}
 			Store store = factType.Store;
+			FactTypeDerivationRule derivationRule = factType.DerivationRule;
+			string objectTypeName;
+			if (null == (derivationRule = factType.DerivationRule) ||
+				// Ignore derivationRule.DerivationCompleteness here, which will not happen with
+				// the factType.Name property. If the objectification is implicitly created
+				// as a result of the DerivationCompleteness being switched to PartiallyDerived,
+				// then this name is preserved by FactType.DerivationRuleChangedRule so that
+				// it can be picked up and used here.
+				string.IsNullOrEmpty(objectTypeName = derivationRule.Name))
+			{
+				objectTypeName = factType.Name;
+			}
 			ObjectType objectifyingType = new ObjectType(store,
-				new PropertyAssignment(ObjectType.NameDomainPropertyId, factType.Name),
+				new PropertyAssignment(ObjectType.NameDomainPropertyId, objectTypeName),
 				new PropertyAssignment(ObjectType.IsIndependentDomainPropertyId, isIndependent));
 			new Objectification(store,
 				new RoleAssignment[]
@@ -1734,6 +1793,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
 			protected sealed override void ProcessElement(Objectification element, Store store, INotifyElementAdded notifyAdded)
 			{
+				if (element.IsDeleted)
+				{
+					return;
+				}
 				// Note that this assumes xsd validation has occurred (RoleProxy is only on an ImpliedFact, there
 				// is 1 Role and 1 RoleProxy or two Roles for a unary objectification, and implied facts must be
 				// attached to an Objectification relationship).
@@ -2005,9 +2068,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							}
 						}
 					}
+					FactTypeDerivationRule derivationRule;
 					if (!canBeImplied)
 					{
 						element.IsImplied = false;
+					}
+					else if (null != (derivationRule = nestedFact.DerivationRule) &&
+						derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived)
+					{
+						// Do not support implied objectification for fully derived fact types.
+						for (int i = impliedFacts.Count - 1; i >= 0; --i)
+						{
+							RemoveFactType(impliedFacts[i]);
+						}
+						// Note that delete propagation clears up everything else (sample population,
+						// objectification instances, and the objectification itself).
+						nestingType.Delete();
+						return;
 					}
 				}
 
@@ -2465,9 +2542,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
 			protected sealed override void ProcessElement(FactType element, Store store, INotifyElementAdded notifyAdded)
 			{
+				FactTypeDerivationRule derivationRule;
 				if (!element.IsDeleted &&
 					null == element.Objectification &&
-					null == element.ImpliedByObjectification)
+					null == element.ImpliedByObjectification &&
+					(null == (derivationRule = element.DerivationRule) ||
+					derivationRule.DerivationCompleteness != DerivationCompleteness.FullyDerived))
 				{
 					bool impliedRequired = false;
 					LinkedElementCollection<RoleBase> roles = element.RoleCollection;

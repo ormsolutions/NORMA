@@ -1229,12 +1229,12 @@
 									<PredicateReplacement match="included">
 										<Snippet ref="SelfReference"/>
 									</PredicateReplacement>
-									<PredicateReplacement>
+									<PredicateReplacement subscript="false">
 										<Snippet ref="ExistentialQuantifier"/>
 									</PredicateReplacement>
 								</Fact>
 							</IterateRoles>
-							<Snippet ref="IdentityInequalityOperator">
+							<Snippet ref="SameTypeIdentityInequalityOperator">
 								<IterateRoles match="constraintRoles" listStyle="null" pass="first"/>
 								<IterateRoles match="constraintRoles" listStyle="null" pass="notFirst"/>
 							</Snippet>
@@ -1248,7 +1248,7 @@
 									<PredicateReplacement match="secondary" alternateRolePlayer="primary">
 										<Snippet ref="SelfReference"/>
 									</PredicateReplacement>
-									<PredicateReplacement>
+									<PredicateReplacement subscript="false">
 										<Snippet ref="ExistentialQuantifier"/>
 									</PredicateReplacement>
 								</Fact>
@@ -1261,12 +1261,15 @@
 						<Snippet ref="LogicalAndOperator">
 							<IterateRoles match="included" listStyle="null" conditionalReading="PreferPrimaryLeadReading" pass="first" subscript="true">
 								<Fact readingChoice="ConditionalContext">
-									<PredicateReplacement>
+									<PredicateReplacement match="included">
+										<Snippet ref="ExistentialQuantifier"/>
+									</PredicateReplacement>
+									<PredicateReplacement subscript="false">
 										<Snippet ref="ExistentialQuantifier"/>
 									</PredicateReplacement>
 								</Fact>
 							</IterateRoles>
-							<Snippet ref="IdentityInequalityOperator">
+							<Snippet ref="CompatibleTypesIdentityInequalityOperator">
 								<IterateRoles match="constraintRoles" listStyle="null" pass="first" subscript="true"/>
 								<IterateRoles match="constraintRoles" listStyle="null" pass="notFirst" subscript="true"/>
 							</Snippet>
@@ -1280,7 +1283,7 @@
 									<PredicateReplacement match="secondary" alternateRolePlayer="primary">
 										<Snippet ref="DefiniteArticle"/>
 									</PredicateReplacement>
-									<PredicateReplacement>
+									<PredicateReplacement subscript="false">
 										<Snippet ref="ExistentialQuantifier"/>
 									</PredicateReplacement>
 								</Fact>
@@ -1298,7 +1301,7 @@
 								<PredicateReplacement match="included">
 									<Snippet ref="SelfReference"/>
 								</PredicateReplacement>
-								<PredicateReplacement>
+								<PredicateReplacement subscript="false">
 									<Snippet ref="ExistentialQuantifier"/>
 								</PredicateReplacement>
 							</Fact>
@@ -1312,7 +1315,7 @@
 									<PredicateReplacement match="secondary" alternateRolePlayer="primary">
 										<Snippet ref="SelfReference"/>
 									</PredicateReplacement>
-									<PredicateReplacement>
+									<PredicateReplacement subscript="false">
 										<Snippet ref="ExistentialQuantifier"/>
 									</PredicateReplacement>
 								</Fact>
@@ -1324,7 +1327,10 @@
 					<Snippet ref="ConditionalMultiLine">
 						<IterateRoles match="included" listStyle="null" conditionalReading="PreferPrimaryLeadReading" pass="first">
 							<Fact readingChoice="ConditionalContext">
-								<PredicateReplacement>
+								<PredicateReplacement match="included">
+									<Snippet ref="ExistentialQuantifier"/>
+								</PredicateReplacement>
+								<PredicateReplacement subscript="false">
 									<Snippet ref="ExistentialQuantifier"/>
 								</PredicateReplacement>
 							</Fact>
@@ -1338,7 +1344,7 @@
 									<PredicateReplacement match="secondary" alternateRolePlayer="primary">
 										<Snippet ref="DefiniteArticle"/>
 									</PredicateReplacement>
-									<PredicateReplacement>
+									<PredicateReplacement subscript="false">
 										<Snippet ref="ExistentialQuantifier"/>
 									</PredicateReplacement>
 								</Fact>
@@ -1551,7 +1557,7 @@
 									<PredicateReplacement match="included">
 										<Snippet ref="SelfReference"/>
 									</PredicateReplacement>
-									<PredicateReplacement>
+									<PredicateReplacement subscript="false">
 										<Snippet ref="ExistentialQuantifier"/>
 									</PredicateReplacement>
 								</Fact>
@@ -1564,7 +1570,7 @@
 									<PredicateReplacement match="secondary" alternateRolePlayer="primary">
 										<Snippet ref="SelfReference"/>
 									</PredicateReplacement>
-									<PredicateReplacement>
+									<PredicateReplacement subscript="false">
 										<Snippet ref="ExistentialQuantifier"/>
 									</PredicateReplacement>
 								</Fact>
@@ -1577,7 +1583,10 @@
 						<Snippet ref="ConditionalMultiLine">
 							<IterateRoles match="included" listStyle="null" conditionalReading="PreferPrimaryLeadReading" pass="first">
 								<Fact readingChoice="ConditionalContext">
-									<PredicateReplacement>
+									<PredicateReplacement match="included">
+										<Snippet ref="ExistentialQuantifier"/>
+									</PredicateReplacement>
+									<PredicateReplacement subscript="false">
 										<Snippet ref="ExistentialQuantifier"/>
 									</PredicateReplacement>
 								</Fact>
@@ -1590,7 +1599,7 @@
 									<PredicateReplacement match="secondary" alternateRolePlayer="primary">
 										<Snippet ref="DefiniteArticle"/>
 									</PredicateReplacement>
-									<PredicateReplacement>
+									<PredicateReplacement subscript="false">
 										<Snippet ref="ExistentialQuantifier"/>
 									</PredicateReplacement>
 								</Fact>

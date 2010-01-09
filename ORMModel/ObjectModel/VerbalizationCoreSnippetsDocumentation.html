@@ -307,6 +307,9 @@
                 <a href="#CompactSimpleListSeparator">CompactSimpleListSeparator</a>
               </li>
               <li>
+                <a href="#CompatibleTypesIdentityInequalityOperator">CompatibleTypesIdentityInequalityOperator</a>
+              </li>
+              <li>
                 <a href="#CompoundListClose">CompoundListClose</a>
               </li>
               <li>
@@ -461,9 +464,6 @@
               </li>
               <li>
                 <a href="#IdentityEqualityListSeparator">IdentityEqualityListSeparator</a>
-              </li>
-              <li>
-                <a href="#IdentityInequalityOperator">IdentityInequalityOperator</a>
               </li>
               <li>
                 <a href="#IdentityReferenceQuantifier">IdentityReferenceQuantifier</a>
@@ -659,6 +659,9 @@
               </li>
               <li>
                 <a href="#ReferenceSchemeVerbalization">ReferenceSchemeVerbalization</a>
+              </li>
+              <li>
+                <a href="#SameTypeIdentityInequalityOperator">SameTypeIdentityInequalityOperator</a>
               </li>
               <li>
                 <a href="#SelfReference">SelfReference</a>
@@ -1218,6 +1221,41 @@
             </p>
           </div>
         </div>
+        <div id="CompatibleTypesIdentityInequalityOperator" class="snippet">
+          <span class="snippetHeader">
+            <a name="CompatibleTypesIdentityInequalityOperator" id="CompatibleTypesIdentityInequalityOperator">CompatibleTypesIdentityInequalityOperator</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Used to specify that two instances of compatible types are not the same instance.
+							<br />
+            <strong>Format: </strong> that {0} is not that {1}
+						</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>2</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">that {0} is not that {1}</pre>
+            </div>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>CompatibleTypesIdentityInequalityOperator</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
+                </li>
+                <li>
+                  <a href="#LogicalAndOperator">LogicalAndOperator</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+          <div class="snippetUsedBy">
+            <p>The <strong>CompatibleTypesIdentityInequalityOperator</strong> snippet is used by the following Constraints: <ul class="usedBy">
+                <li>AntisymmetricRingVerbalizer</li>
+              </ul>
+            </p>
+          </div>
+        </div>
         <div id="CompoundListClose" class="snippet">
           <span class="snippetHeader">
             <a name="CompoundListClose" id="CompoundListClose">CompoundListClose</a>
@@ -1410,19 +1448,22 @@
           <div class="snippetContains">
             <p>The <strong>ConditionalMultiLine</strong> snippet contains the following snippets: <ul class="contains">
                 <li>
+                  <a href="#CompatibleTypesIdentityInequalityOperator">CompatibleTypesIdentityInequalityOperator</a>
+                </li>
+                <li>
                   <a href="#DefiniteArticle">DefiniteArticle</a>
                 </li>
                 <li>
                   <a href="#ExistentialQuantifier">ExistentialQuantifier</a>
                 </li>
                 <li>
-                  <a href="#IdentityInequalityOperator">IdentityInequalityOperator</a>
-                </li>
-                <li>
                   <a href="#LogicalAndOperator">LogicalAndOperator</a>
                 </li>
                 <li>
                   <a href="#ModalPossibilityOperator">ModalPossibilityOperator</a>
+                </li>
+                <li>
+                  <a href="#SameTypeIdentityInequalityOperator">SameTypeIdentityInequalityOperator</a>
                 </li>
                 <li>
                   <a href="#SelfReference">SelfReference</a>
@@ -2884,41 +2925,6 @@
             </div>
           </div>
         </div>
-        <div id="IdentityInequalityOperator" class="snippet">
-          <span class="snippetHeader">
-            <a name="IdentityInequalityOperator" id="IdentityInequalityOperator">IdentityInequalityOperator</a>
-          </span>
-          <div class="snippetStatement">
-            <strong>Description: </strong> Used to specify that two instances are not the same.
-							<br />
-            <strong>Format: </strong> {0} is not {1}
-						</div>
-          <div class="snippetReplacementFieldCount">
-            <span class="reportItem">Number of replacement fields: </span>2</div>
-          <div class="snippetUnformattedText">
-            <span class="reportItem">Unformatted version: </span>
-            <div class="unformattedSnippet">
-              <pre class="unformattedSnippetDecorator">{0} is not {1}</pre>
-            </div>
-          </div>
-          <div classs="snippetContainedIn">
-            <p>The <strong>IdentityInequalityOperator</strong> snippet is contained in the following snippets: <ul class="containedIn">
-                <li>
-                  <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
-                </li>
-                <li>
-                  <a href="#LogicalAndOperator">LogicalAndOperator</a>
-                </li>
-              </ul>
-            </p>
-          </div>
-          <div class="snippetUsedBy">
-            <p>The <strong>IdentityInequalityOperator</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>AntisymmetricRingVerbalizer</li>
-              </ul>
-            </p>
-          </div>
-        </div>
         <div id="IdentityReferenceQuantifier" class="snippet">
           <span class="snippetHeader">
             <a name="IdentityReferenceQuantifier" id="IdentityReferenceQuantifier">IdentityReferenceQuantifier</a>
@@ -3633,13 +3639,16 @@
           <div class="snippetContains">
             <p>The <strong>LogicalAndOperator</strong> snippet contains the following snippets: <ul class="contains">
                 <li>
+                  <a href="#CompatibleTypesIdentityInequalityOperator">CompatibleTypesIdentityInequalityOperator</a>
+                </li>
+                <li>
                   <a href="#DefiniteArticle">DefiniteArticle</a>
                 </li>
                 <li>
                   <a href="#ExistentialQuantifier">ExistentialQuantifier</a>
                 </li>
                 <li>
-                  <a href="#IdentityInequalityOperator">IdentityInequalityOperator</a>
+                  <a href="#SameTypeIdentityInequalityOperator">SameTypeIdentityInequalityOperator</a>
                 </li>
                 <li>
                   <a href="#SelfReference">SelfReference</a>
@@ -4677,6 +4686,41 @@
             <div class="unformattedSnippet">
               <pre class="unformattedSnippetDecorator">Reference Scheme: {0}</pre>
             </div>
+          </div>
+        </div>
+        <div id="SameTypeIdentityInequalityOperator" class="snippet">
+          <span class="snippetHeader">
+            <a name="SameTypeIdentityInequalityOperator" id="SameTypeIdentityInequalityOperator">SameTypeIdentityInequalityOperator</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Used to specify that two instances of the same type are not the same instance.
+							<br />
+            <strong>Format: </strong> {0} is not {1}
+						</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>2</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">{0} is not {1}</pre>
+            </div>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>SameTypeIdentityInequalityOperator</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
+                </li>
+                <li>
+                  <a href="#LogicalAndOperator">LogicalAndOperator</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+          <div class="snippetUsedBy">
+            <p>The <strong>SameTypeIdentityInequalityOperator</strong> snippet is used by the following Constraints: <ul class="usedBy">
+                <li>AntisymmetricRingVerbalizer</li>
+              </ul>
+            </p>
           </div>
         </div>
         <div id="SelfReference" class="snippet">

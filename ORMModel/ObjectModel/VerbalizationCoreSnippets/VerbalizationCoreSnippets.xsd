@@ -1233,11 +1233,19 @@
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="IdentityInequalityOperator">
+				<xs:enumeration value="SameTypeIdentityInequalityOperator">
 					<xs:annotation>
 						<xs:documentation>
-							Description: Used to specify that two instances are not the same.
+							Description: Used to specify that two instances of the same type are not the same instance.
 							Format: {0} is not {1}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="CompatibleTypesIdentityInequalityOperator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to specify that two instances of compatible types are not the same instance.
+							Format: that {0} is not that {1}
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>

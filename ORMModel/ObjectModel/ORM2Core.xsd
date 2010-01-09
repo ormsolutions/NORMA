@@ -1714,6 +1714,11 @@
 						<xs:documentation>The derivation rule results in a set of distinct facts instead of a bag that might contain duplicates.</xs:documentation>
 					</xs:annotation>
 				</xs:attribute>
+				<xs:attribute name="Name" type="xs:string" use="optional">
+					<xs:annotation>
+						<xs:documentation>The name of a fully derived fact type.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>

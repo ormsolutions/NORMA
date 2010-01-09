@@ -13153,13 +13153,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of DerivationCompleteness domain property.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule.DerivationCompleteness
+		/// Specify if a fact can be populated without satisfying the derivation path.
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/DerivationCompleteness.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/DerivationCompleteness.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationCompleteness.FullyDerived)]
-		[global::System.ComponentModel.Browsable(false)]
 		[DslModeling::DomainObjectId("f254f0a7-e37e-4fda-ac96-deeeb8828fec")]
 		public DerivationCompleteness DerivationCompleteness
 		{
@@ -13243,13 +13241,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of DerivationStorage domain property.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule.DerivationStorage
+		/// Specify if the derivation results are determined on demand or stored when
+		/// derivation path components are changed.
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/DerivationStorage.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/DerivationStorage.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationStorage.NotStored)]
-		[global::System.ComponentModel.Browsable(false)]
 		[DslModeling::DomainObjectId("5f83f8c7-d15d-4985-9ccc-099b354bd178")]
 		public DerivationStorage DerivationStorage
 		{
@@ -13401,6 +13398,94 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					ValueChanging(element, oldValue, newValue);
 					element.setProjectionPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region Name domain property code
+		
+		/// <summary>
+		/// Name domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid NameDomainPropertyId = new global::System.Guid(0xa630abd7, 0x9b57, 0x44d1, 0xa6, 0x3b, 0x8b, 0x92, 0x3d, 0x91, 0x37, 0x9f);
+		
+		/// <summary>
+		/// Storage for Name
+		/// </summary>
+		private global::System.String namePropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// Gets or sets the value of Name domain property.
+		/// The name for a fully derived fact type.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/Name.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/Name.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainObjectId("a630abd7-9b57-44d1-a63b-8b923d91379f")]
+		public global::System.String Name
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return namePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				NamePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the FactTypeDerivationRule.Name domain property.
+		/// </summary>
+		internal sealed partial class NamePropertyHandler : DslModeling::DomainPropertyValueHandler<FactTypeDerivationRule, global::System.String>
+		{
+			private NamePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the FactTypeDerivationRule.Name domain property value handler.
+			/// </summary>
+			public static readonly NamePropertyHandler Instance = new NamePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the FactTypeDerivationRule.Name domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return NameDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(FactTypeDerivationRule element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.namePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(FactTypeDerivationRule element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.namePropertyStorage = newValue;
 					ValueChanged(element, oldValue, newValue);
 				}
 			}

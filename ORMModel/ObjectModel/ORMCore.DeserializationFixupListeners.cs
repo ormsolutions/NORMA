@@ -40,7 +40,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				yield return RolePathOwner.FixupListener;
 				yield return NamedElementDictionary.GetFixupListener((int)ORMDeserializationFixupPhase.ValidateElementNames, contextDomainModel);
 				yield return SubtypeFact.FixupListener;
-				yield return FactType.NameFixupListener;
+				yield return FactType.ObjectifyingNameFixupListener;
+				yield return FactType.DerivationNameFixupListener;
 				yield return FactType.UnaryFixupListener;
 				yield return FactTypeDerivationExpression.FixupListener;
 				yield return ExclusiveOrConstraintCoupler.FixupListener;

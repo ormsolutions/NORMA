@@ -6913,18 +6913,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				LinkedElementCollection<FactType> facts;
 				NMinusOneError error = NMinusOneError;
-				FactType fact;
+				FactType factType;
+				FactTypeDerivationRule derivationRule;
 				if (IsInternal &&
 					Modality == ConstraintModality.Alethic &&
 					1 == (facts = FactTypeCollection).Count &&
-					RoleCollection.Count < (fact = facts[0]).RoleCollection.Count - 1)
+					(null == (derivationRule = (factType = facts[0]).DerivationRule) ||
+					derivationRule.DerivationCompleteness != DerivationCompleteness.FullyDerived) &&
+					RoleCollection.Count < factType.RoleCollection.Count - 1)
 				{
 					//Adding the Error to the model
 					if (error == null)
 					{
 						error = new NMinusOneError(Store);
 						error.Constraint = this;
-						error.Model = fact.Model;
+						error.Model = factType.Model;
 						error.GenerateErrorText();
 						if (notifyAdded != null)
 						{
@@ -6986,18 +6989,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				FrameworkDomainModel.DelayValidateElement(constraint, DelayValidateNMinusOneError);
 			}
 		}
-		/// <summary>
-		/// AddRule: typeof(FactTypeHasRole)
-		/// Only validates NMinusOneError
-		/// Used for Adding roles to the role sequence check
-		/// </summary>
-		private static void NMinusOneFactTypeRoleAddRule(ElementAddedEventArgs e)
+		private static void DelayValidateInternalUniquenessConstraintsForNMinusOneRule(FactType factType)
 		{
-			FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
-			FactType fact = link.FactType;
-			if (fact != null)
+			if (factType != null && !factType.IsDeleted)
 			{
-				foreach (UniquenessConstraint constraint in fact.GetInternalConstraints<UniquenessConstraint>())
+				foreach (UniquenessConstraint constraint in factType.GetInternalConstraints<UniquenessConstraint>())
 				{
 					if (constraint.Modality == ConstraintModality.Alethic)
 					{
@@ -7007,23 +7003,55 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
+		/// AddRule: typeof(FactTypeHasRole)
+		/// Only validates NMinusOneError
+		/// Used for Adding roles to the role sequence check
+		/// </summary>
+		private static void NMinusOneFactTypeRoleAddRule(ElementAddedEventArgs e)
+		{
+			DelayValidateInternalUniquenessConstraintsForNMinusOneRule(((FactTypeHasRole)e.ModelElement).FactType);
+		}
+		/// <summary>
 		/// DeleteRule: typeof(FactTypeHasRole)
 		/// Only validates NMinusOneError
 		/// Used for Removing roles to the role sequence check
 		/// </summary>
 		private static void NMinusOneFactTypeRoleDeleteRule(ElementDeletedEventArgs e)
 		{
-			FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
-			FactType fact = link.FactType;
-			if (fact != null && !fact.IsDeleted)
+			DelayValidateInternalUniquenessConstraintsForNMinusOneRule(((FactTypeHasRole)e.ModelElement).FactType);
+		}
+		/// <summary>
+		/// AddRule: typeof(FactTypeHasDerivationRule)
+		/// </summary>
+		private static void NMinusOneFactTypeDerivationRuleAddedRule(ElementAddedEventArgs e)
+		{
+			FactTypeHasDerivationRule link = (FactTypeHasDerivationRule)e.ModelElement;
+			if (link.DerivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived)
 			{
-				foreach (UniquenessConstraint constraint in fact.GetInternalConstraints<UniquenessConstraint>())
-				{
-					if (!constraint.IsDeleted && constraint.Modality == ConstraintModality.Alethic)
-					{
-						FrameworkDomainModel.DelayValidateElement(constraint, DelayValidateNMinusOneError);
-					}
-				}
+				DelayValidateInternalUniquenessConstraintsForNMinusOneRule(link.FactType);
+			}
+		}
+		/// <summary>
+		/// ChangeRule: typeof(FactTypeDerivationRule)
+		/// </summary>
+		private static void NMinusOneFactTypeDerivationRuleChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			FactType factType;
+			if (e.DomainProperty.Id == FactTypeDerivationRule.DerivationCompletenessDomainPropertyId &&
+				null != (factType = ((FactTypeDerivationRule)e.ModelElement).FactType))
+			{
+				DelayValidateInternalUniquenessConstraintsForNMinusOneRule(factType);
+			}
+		}
+		/// <summary>
+		/// DeleteRule: typeof(FactTypeHasDerivationRule)
+		/// </summary>
+		private static void NMinusOneFactTypeDerivationRuleDeletedRule(ElementDeletedEventArgs e)
+		{
+			FactTypeHasDerivationRule link = (FactTypeHasDerivationRule)e.ModelElement;
+			if (link.DerivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived)
+			{
+				DelayValidateInternalUniquenessConstraintsForNMinusOneRule(link.FactType);
 			}
 		}
 		#endregion // NMinusOneError Validation

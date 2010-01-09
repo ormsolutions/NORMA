@@ -663,6 +663,18 @@
 				</plx:unaryOperator>
 			</se:Condition>
 		</se:Attribute>
+		<se:Attribute ID="Name" Name="Name">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="inequality">
+					<plx:left>
+						<plx:callThis name="DerivationCompleteness" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic dataTypeName="DerivationCompleteness"  name="FullyDerived" type="field"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
 		<se:Container Name="DerivationProjections">
 			<se:Link RelationshipName="FactTypeDerivationProjection" RoleName="PathComponent"/>
 		</se:Container>

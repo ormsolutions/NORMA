@@ -53,6 +53,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		CompactSimpleListPairSeparator,
 		/// <summary>The 'CompactSimpleListSeparator' simple snippet value.</summary>
 		CompactSimpleListSeparator,
+		/// <summary>The 'CompatibleTypesIdentityInequalityOperator' format string snippet. Contains 2 replacement fields.</summary>
+		CompatibleTypesIdentityInequalityOperator,
 		/// <summary>The 'CompoundListClose' simple snippet value.</summary>
 		CompoundListClose,
 		/// <summary>The 'CompoundListFinalSeparator' simple snippet value.</summary>
@@ -157,8 +159,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		IdentityEqualityListPairSeparator,
 		/// <summary>The 'IdentityEqualityListSeparator' simple snippet value.</summary>
 		IdentityEqualityListSeparator,
-		/// <summary>The 'IdentityInequalityOperator' format string snippet. Contains 2 replacement fields.</summary>
-		IdentityInequalityOperator,
 		/// <summary>The 'IdentityReferenceQuantifier' format string snippet. Contains 1 replacement field.</summary>
 		IdentityReferenceQuantifier,
 		/// <summary>The 'ImpersonalPronoun' format string snippet. Contains 1 replacement field.</summary>
@@ -289,6 +289,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		ReferenceScheme,
 		/// <summary>The 'ReferenceSchemeVerbalization' format string snippet. Contains 1 replacement field.</summary>
 		ReferenceSchemeVerbalization,
+		/// <summary>The 'SameTypeIdentityInequalityOperator' format string snippet. Contains 2 replacement fields.</summary>
+		SameTypeIdentityInequalityOperator,
 		/// <summary>The 'SelfReference' format string snippet. Contains 1 replacement field.</summary>
 		SelfReference,
 		/// <summary>The 'SimpleListClose' simple snippet value.</summary>
@@ -396,6 +398,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"",
 				@"<span class=""listSeparator"">, </span>",
 				@"<span class=""listSeparator"">, </span>",
+				@"<span class=""logicalOperator"">that </span>{0}<span class=""logicalOperator""> is not that </span>{1}",
 				"",
 				"; ",
 				"",
@@ -448,7 +451,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"",
 				@"<span class=""logicalOperator""> that is a </span>",
 				@"<span class=""logicalOperator""> that is a </span>",
-				@"{0}<span class=""logicalOperator""> is not </span>{1}",
 				@"<span class=""quantifier"">the same</span> {0}",
 				@"<span class=""quantifier"">that</span> {0}",
 				"{0}",
@@ -514,6 +516,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Mode:</span> <span class=""referenceMode"">{0}</span></span>",
 				@"{0}<span class=""listSeparator"">(</span><span class=""referenceMode"">{1}</span><span class=""listSeparator"">)</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Scheme:</span> {0}</span>",
+				@"{0}<span class=""logicalOperator""> is not </span>{1}",
 				"{0}",
 				"",
 				@"<span class=""listSeparator"">,</span><span class=""logicalOperator""> and </span>",
@@ -594,6 +597,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"",
 				@"<span class=""listSeparator"">, </span>",
 				@"<span class=""listSeparator"">, </span>",
+				@"<span class=""logicalOperator"">that </span>{0}<span class=""logicalOperator""> is not that </span>{1}",
 				"",
 				"; ",
 				"",
@@ -646,7 +650,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"",
 				@"<span class=""logicalOperator""> that is a </span>",
 				@"<span class=""logicalOperator""> that is a </span>",
-				@"{0}<span class=""logicalOperator""> is not </span>{1}",
 				@"<span class=""quantifier"">the same</span> {0}",
 				@"<span class=""quantifier"">that</span> {0}",
 				@"<span class=""quantifier"">it is obligatory that</span> {0}",
@@ -712,6 +715,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Mode:</span> <span class=""referenceMode"">{0}</span></span>",
 				@"{0}<span class=""listSeparator"">(</span><span class=""referenceMode"">{1}</span><span class=""listSeparator"">)</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Scheme:</span> {0}</span>",
+				@"{0}<span class=""logicalOperator""> is not </span>{1}",
 				"{0}",
 				"",
 				@"<span class=""listSeparator"">,</span><span class=""logicalOperator""> and </span>",
@@ -792,6 +796,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"",
 				@"<span class=""listSeparator"">, </span>",
 				@"<span class=""listSeparator"">, </span>",
+				@"<span class=""logicalOperator"">that </span>{0}<span class=""logicalOperator""> is not that </span>{1}",
 				"",
 				"; ",
 				"",
@@ -844,7 +849,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"",
 				@"<span class=""logicalOperator""> that is a </span>",
 				@"<span class=""logicalOperator""> that is a </span>",
-				@"{0}<span class=""logicalOperator""> is not </span>{1}",
 				@"<span class=""quantifier"">the same</span> {0}",
 				@"<span class=""quantifier"">that</span> {0}",
 				@"<span class=""quantifier"">it is impossible that</span> {0}",
@@ -910,6 +914,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Mode:</span> <span class=""referenceMode"">{0}</span></span>",
 				@"{0}<span class=""listSeparator"">(</span><span class=""referenceMode"">{1}</span><span class=""listSeparator"">)</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Scheme:</span> {0}</span>",
+				@"{0}<span class=""logicalOperator""> is not </span>{1}",
 				"{0}",
 				"",
 				@"<span class=""listSeparator"">,</span><span class=""logicalOperator""> and </span>",
@@ -990,6 +995,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"",
 				@"<span class=""listSeparator"">, </span>",
 				@"<span class=""listSeparator"">, </span>",
+				@"<span class=""logicalOperator"">that </span>{0}<span class=""logicalOperator""> is not that </span>{1}",
 				"",
 				"; ",
 				"",
@@ -1042,7 +1048,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"",
 				@"<span class=""logicalOperator""> that is a </span>",
 				@"<span class=""logicalOperator""> that is a </span>",
-				@"{0}<span class=""logicalOperator""> is not </span>{1}",
 				@"<span class=""quantifier"">the same</span> {0}",
 				@"<span class=""quantifier"">that</span> {0}",
 				@"<span class=""quantifier"">it is forbidden that</span> {0}",
@@ -1108,6 +1113,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Mode:</span> <span class=""referenceMode"">{0}</span></span>",
 				@"{0}<span class=""listSeparator"">(</span><span class=""referenceMode"">{1}</span><span class=""listSeparator"">)</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Scheme:</span> {0}</span>",
+				@"{0}<span class=""logicalOperator""> is not </span>{1}",
 				"{0}",
 				"",
 				@"<span class=""listSeparator"">,</span><span class=""logicalOperator""> and </span>",
@@ -9461,18 +9467,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							{
 								RoleBase currentRole = factRoles[snippet1Replace1ReplaceFactRoleIter1];
 								string roleReplacement = null;
-								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1Replace1ReplaceFactRoleIter1, 1], snippet1Replace1ReplaceFactRoleIter1);
 								if (allConstraintRoles.Contains(currentRole.Role))
 								{
-									roleReplacement = basicReplacement;
+									roleReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1Replace1ReplaceFactRoleIter1, 1], snippet1Replace1ReplaceFactRoleIter1);
 								}
 								else
 								{
-									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
+									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1Replace1ReplaceFactRoleIter1, 0], snippet1Replace1ReplaceFactRoleIter1));
 								}
 								if (roleReplacement == null)
 								{
-									roleReplacement = basicReplacement;
+									roleReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1Replace1ReplaceFactRoleIter1, 1], snippet1Replace1ReplaceFactRoleIter1);
 								}
 								roleReplacements[snippet1Replace1ReplaceFactRoleIter1] = roleReplacement;
 							}
@@ -9483,7 +9488,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					snippet1Replace1Replace1 = sbTemp.ToString();
 					string snippet1Replace1Replace2 = null;
-					string snippet1Replace1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.IdentityInequalityOperator, isDeontic, isNegative);
+					string snippet1Replace1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.SameTypeIdentityInequalityOperator, isDeontic, isNegative);
 					string snippet1Replace1Replace2Replace1 = null;
 					if (sbTemp == null)
 					{
@@ -9554,7 +9559,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								}
 								else
 								{
-									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1Replace2ReplaceFactRoleIter1, 1], snippet1Replace2ReplaceFactRoleIter1));
+									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1Replace2ReplaceFactRoleIter1, 0], snippet1Replace2ReplaceFactRoleIter1));
 								}
 								if (roleReplacement == null)
 								{
@@ -9600,11 +9605,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							{
 								RoleBase currentRole = factRoles[snippet1Replace1ReplaceFactRoleIter1];
 								string roleReplacement = null;
-								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1Replace1ReplaceFactRoleIter1, 1], snippet1Replace1ReplaceFactRoleIter1);
-								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
+								if (allConstraintRoles.Contains(currentRole.Role))
+								{
+									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1Replace1ReplaceFactRoleIter1, 1], snippet1Replace1ReplaceFactRoleIter1));
+								}
+								else
+								{
+									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1Replace1ReplaceFactRoleIter1, 0], snippet1Replace1ReplaceFactRoleIter1));
+								}
 								if (roleReplacement == null)
 								{
-									roleReplacement = basicReplacement;
+									roleReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1Replace1ReplaceFactRoleIter1, 1], snippet1Replace1ReplaceFactRoleIter1);
 								}
 								roleReplacements[snippet1Replace1ReplaceFactRoleIter1] = roleReplacement;
 							}
@@ -9615,7 +9626,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					snippet1Replace1Replace1 = sbTemp.ToString();
 					string snippet1Replace1Replace2 = null;
-					string snippet1Replace1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.IdentityInequalityOperator, isDeontic, isNegative);
+					string snippet1Replace1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.CompatibleTypesIdentityInequalityOperator, isDeontic, isNegative);
 					string snippet1Replace1Replace2Replace1 = null;
 					if (sbTemp == null)
 					{
@@ -9686,7 +9697,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								}
 								else
 								{
-									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1Replace2ReplaceFactRoleIter1, 1], snippet1Replace2ReplaceFactRoleIter1));
+									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1Replace2ReplaceFactRoleIter1, 0], snippet1Replace2ReplaceFactRoleIter1));
 								}
 								if (roleReplacement == null)
 								{
@@ -9874,18 +9885,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							{
 								RoleBase currentRole = factRoles[snippet1ReplaceFactRoleIter1];
 								string roleReplacement = null;
-								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1ReplaceFactRoleIter1, 1], snippet1ReplaceFactRoleIter1);
 								if (allConstraintRoles.Contains(currentRole.Role))
 								{
-									roleReplacement = basicReplacement;
+									roleReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1ReplaceFactRoleIter1, 1], snippet1ReplaceFactRoleIter1);
 								}
 								else
 								{
-									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
+									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1ReplaceFactRoleIter1, 0], snippet1ReplaceFactRoleIter1));
 								}
 								if (roleReplacement == null)
 								{
-									roleReplacement = basicReplacement;
+									roleReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1ReplaceFactRoleIter1, 1], snippet1ReplaceFactRoleIter1);
 								}
 								roleReplacements[snippet1ReplaceFactRoleIter1] = roleReplacement;
 							}
@@ -9927,7 +9937,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								}
 								else
 								{
-									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1Replace2ReplaceFactRoleIter1, 1], snippet1Replace2ReplaceFactRoleIter1));
+									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1Replace2ReplaceFactRoleIter1, 0], snippet1Replace2ReplaceFactRoleIter1));
 								}
 								if (roleReplacement == null)
 								{
@@ -9971,11 +9981,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							{
 								RoleBase currentRole = factRoles[snippet1ReplaceFactRoleIter1];
 								string roleReplacement = null;
-								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1ReplaceFactRoleIter1, 1], snippet1ReplaceFactRoleIter1);
-								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
+								if (allConstraintRoles.Contains(currentRole.Role))
+								{
+									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1ReplaceFactRoleIter1, 1], snippet1ReplaceFactRoleIter1));
+								}
+								else
+								{
+									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1ReplaceFactRoleIter1, 0], snippet1ReplaceFactRoleIter1));
+								}
 								if (roleReplacement == null)
 								{
-									roleReplacement = basicReplacement;
+									roleReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1ReplaceFactRoleIter1, 1], snippet1ReplaceFactRoleIter1);
 								}
 								roleReplacements[snippet1ReplaceFactRoleIter1] = roleReplacement;
 							}
@@ -10017,7 +10033,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								}
 								else
 								{
-									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1Replace2ReplaceFactRoleIter1, 1], snippet1Replace2ReplaceFactRoleIter1));
+									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1Replace2ReplaceFactRoleIter1, 0], snippet1Replace2ReplaceFactRoleIter1));
 								}
 								if (roleReplacement == null)
 								{
@@ -11121,18 +11137,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							{
 								RoleBase currentRole = factRoles[snippet1Replace1ReplaceFactRoleIter1];
 								string roleReplacement = null;
-								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1Replace1ReplaceFactRoleIter1, 1], snippet1Replace1ReplaceFactRoleIter1);
 								if (allConstraintRoles.Contains(currentRole.Role))
 								{
-									roleReplacement = basicReplacement;
+									roleReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1Replace1ReplaceFactRoleIter1, 1], snippet1Replace1ReplaceFactRoleIter1);
 								}
 								else
 								{
-									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
+									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1Replace1ReplaceFactRoleIter1, 0], snippet1Replace1ReplaceFactRoleIter1));
 								}
 								if (roleReplacement == null)
 								{
-									roleReplacement = basicReplacement;
+									roleReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1Replace1ReplaceFactRoleIter1, 1], snippet1Replace1ReplaceFactRoleIter1);
 								}
 								roleReplacements[snippet1Replace1ReplaceFactRoleIter1] = roleReplacement;
 							}
@@ -11172,7 +11187,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								}
 								else
 								{
-									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1Replace1ReplaceFactRoleIter2, 1], snippet1Replace1ReplaceFactRoleIter2));
+									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1Replace1ReplaceFactRoleIter2, 0], snippet1Replace1ReplaceFactRoleIter2));
 								}
 								if (roleReplacement == null)
 								{
@@ -11218,11 +11233,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							{
 								RoleBase currentRole = factRoles[snippet1Replace1ReplaceFactRoleIter1];
 								string roleReplacement = null;
-								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1Replace1ReplaceFactRoleIter1, 1], snippet1Replace1ReplaceFactRoleIter1);
-								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
+								if (allConstraintRoles.Contains(currentRole.Role))
+								{
+									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1Replace1ReplaceFactRoleIter1, 1], snippet1Replace1ReplaceFactRoleIter1));
+								}
+								else
+								{
+									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1Replace1ReplaceFactRoleIter1, 0], snippet1Replace1ReplaceFactRoleIter1));
+								}
 								if (roleReplacement == null)
 								{
-									roleReplacement = basicReplacement;
+									roleReplacement = hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1Replace1ReplaceFactRoleIter1, 1], snippet1Replace1ReplaceFactRoleIter1);
 								}
 								roleReplacements[snippet1Replace1ReplaceFactRoleIter1] = roleReplacement;
 							}
@@ -11262,7 +11283,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								}
 								else
 								{
-									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1Replace1ReplaceFactRoleIter2, 1], snippet1Replace1ReplaceFactRoleIter2));
+									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), hyphenBinder.HyphenBindRoleReplacement(allBasicRoleReplacements[0][snippet1Replace1ReplaceFactRoleIter2, 0], snippet1Replace1ReplaceFactRoleIter2));
 								}
 								if (roleReplacement == null)
 								{
