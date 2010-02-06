@@ -17,7 +17,7 @@ You must not remove this notice, or any other, from this software.
 	<Language xml:lang="en-US">
 		<Snippets name="NoHyperlinks" description="Default, No Hyperlinks" target="VerbalizationBrowser">
 			<Snippet type="ObjectType"><![CDATA[<span class="objectType">{0}</span>]]></Snippet>
-			<Snippet type="ObjectTypeWithSubscript"><![CDATA[<span class="objectType">{0}<sub>{2}</sub></span>]]></Snippet>
+			<Snippet type="ObjectTypeWithSubscript"><![CDATA[<span class="objectType">{0}<sub style="font-size:smaller;">{2}</sub></span>]]></Snippet>
 			<Snippet type="PredicatePart"><![CDATA[<span class="predicateText">{{0}}</span>]]></Snippet>
 			<Snippet type="SubtypeMetaReading" sign="positive"><![CDATA[<span class="quantifier">each </span>{0} <span class="predicateText">is an instance of</span> {1}]]></Snippet>
 			<Snippet type="SubtypeMetaReading" sign="negative"><![CDATA[<span class="quantifier">some </span>{0} <span class="predicateText">is not an instance of</span> {1}]]></Snippet>

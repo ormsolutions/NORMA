@@ -162,7 +162,7 @@
 	</xs:simpleType>
 	<xs:simpleType name="ReadingChoicePreferSingleMatchWithContextEnum">
 		<xs:restriction base="xs:string">
-			<!-- Allowable options are {Context|Prefer[Non][Primary]LeadReading[NoFrontText][NotHyphenBound]} -->
+			<!-- Allowable options are {Context|Prefer[Non][Primary]LeadReading[NoFrontText][[Lead]NotHyphenBound]} -->
 			<xs:enumeration value="Context">
 				<xs:annotation>
 					<xs:documentation>Use the reading from the current ReadingChoice or ReadingContext elements</xs:documentation>
@@ -174,77 +174,109 @@
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="PreferLeadReading"/>
+			<xs:enumeration value="PreferLeadReadingLeadNotHyphenBound"/>
 			<xs:enumeration value="PreferLeadReadingNoFrontText"/>
+			<xs:enumeration value="PreferLeadReadingNoFrontTextLeadNotHyphenBound"/>
 			<xs:enumeration value="PreferLeadReadingNoFrontTextNotHyphenBound"/>
 			<xs:enumeration value="PreferLeadReadingNotHyphenBound"/>
 			<xs:enumeration value="PreferNonLeadReading"/>
+			<xs:enumeration value="PreferNonLeadReadingLeadNotHyphenBound"/>
 			<xs:enumeration value="PreferNonLeadReadingNoFrontText"/>
+			<xs:enumeration value="PreferNonLeadReadingNoFrontTextLeadNotHyphenBound"/>
 			<xs:enumeration value="PreferNonLeadReadingNoFrontTextNotHyphenBound"/>
 			<xs:enumeration value="PreferNonLeadReadingNotHyphenBound"/>
 			<xs:enumeration value="PreferNonPrimaryLeadReading"/>
+			<xs:enumeration value="PreferNonPrimaryLeadReadingLeadNotHyphenBound"/>
 			<xs:enumeration value="PreferNonPrimaryLeadReadingNoFrontText"/>
+			<xs:enumeration value="PreferNonPrimaryLeadReadingNoFrontTextLeadNotHyphenBound"/>
 			<xs:enumeration value="PreferNonPrimaryLeadReadingNoFrontTextNotHyphenBound"/>
 			<xs:enumeration value="PreferNonPrimaryLeadReadingNotHyphenBound"/>
 			<xs:enumeration value="PreferPrimaryLeadReading"/>
+			<xs:enumeration value="PreferPrimaryLeadReadingLeadNotHyphenBound"/>
 			<xs:enumeration value="PreferPrimaryLeadReadingNoFrontText"/>
+			<xs:enumeration value="PreferPrimaryLeadReadingNoFrontTextLeadNotHyphenBound"/>
 			<xs:enumeration value="PreferPrimaryLeadReadingNoFrontTextNotHyphenBound"/>
 			<xs:enumeration value="PreferPrimaryLeadReadingNotHyphenBound"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="ReadingChoicePreferSingleMatchEnum">
 		<xs:restriction base="xs:string">
-			<!-- Allowable options are {Prefer[Non][Primary]LeadReading[NoFrontText][NotHyphenBound]} -->
+			<!-- Allowable options are {Prefer[Non][Primary]LeadReading[NoFrontText][[Lead]NotHyphenBound]} -->
 			<xs:enumeration value="PreferLeadReading"/>
+			<xs:enumeration value="PreferLeadReadingLeadNotHyphenBound"/>
 			<xs:enumeration value="PreferLeadReadingNoFrontText"/>
+			<xs:enumeration value="PreferLeadReadingNoFrontTextLeadNotHyphenBound"/>
 			<xs:enumeration value="PreferLeadReadingNoFrontTextNotHyphenBound"/>
 			<xs:enumeration value="PreferLeadReadingNotHyphenBound"/>
 			<xs:enumeration value="PreferNonLeadReading"/>
+			<xs:enumeration value="PreferNonLeadReadingLeadNotHyphenBound"/>
 			<xs:enumeration value="PreferNonLeadReadingNoFrontText"/>
+			<xs:enumeration value="PreferNonLeadReadingNoFrontTextLeadNotHyphenBound"/>
 			<xs:enumeration value="PreferNonLeadReadingNoFrontTextNotHyphenBound"/>
 			<xs:enumeration value="PreferNonLeadReadingNotHyphenBound"/>
 			<xs:enumeration value="PreferNonPrimaryLeadReading"/>
+			<xs:enumeration value="PreferNonPrimaryLeadReadingLeadNotHyphenBound"/>
 			<xs:enumeration value="PreferNonPrimaryLeadReadingNoFrontText"/>
+			<xs:enumeration value="PreferNonPrimaryLeadReadingNoFrontTextLeadNotHyphenBound"/>
 			<xs:enumeration value="PreferNonPrimaryLeadReadingNoFrontTextNotHyphenBound"/>
 			<xs:enumeration value="PreferNonPrimaryLeadReadingNotHyphenBound"/>
 			<xs:enumeration value="PreferPrimaryLeadReading"/>
+			<xs:enumeration value="PreferPrimaryLeadReadingLeadNotHyphenBound"/>
 			<xs:enumeration value="PreferPrimaryLeadReadingNoFrontText"/>
+			<xs:enumeration value="PreferPrimaryLeadReadingNoFrontTextLeadNotHyphenBound"/>
 			<xs:enumeration value="PreferPrimaryLeadReadingNoFrontTextNotHyphenBound"/>
 			<xs:enumeration value="PreferPrimaryLeadReadingNotHyphenBound"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="ReadingChoiceFullRequiredMatchEnum">
 		<xs:restriction base="xs:string">
-			<!-- Allowable options are {Require[All][Non][Primary]LeadReading[NoFrontText][NotHyphenBound]} -->
+			<!-- Allowable options are {Require[All][Non][Primary]LeadReading[NoFrontText][[Lead]NotHyphenBound]} -->
 			<xs:enumeration value="RequireLeadReading"/>
+			<xs:enumeration value="RequireLeadReadingLeadNotHyphenBound"/>
 			<xs:enumeration value="RequireLeadReadingNoFrontText"/>
+			<xs:enumeration value="RequireLeadReadingNoFrontTextLeadNotHyphenBound"/>
 			<xs:enumeration value="RequireLeadReadingNoFrontTextNotHyphenBound"/>
 			<xs:enumeration value="RequireLeadReadingNotHyphenBound"/>
 			<xs:enumeration value="RequireNonLeadReading"/>
+			<xs:enumeration value="RequireNonLeadReadingLeadNotHyphenBound"/>
 			<xs:enumeration value="RequireNonLeadReadingNoFrontText"/>
+			<xs:enumeration value="RequireNonLeadReadingNoFrontTextLeadNotHyphenBound"/>
 			<xs:enumeration value="RequireNonLeadReadingNoFrontTextNotHyphenBound"/>
 			<xs:enumeration value="RequireNonLeadReadingNotHyphenBound"/>
 			<xs:enumeration value="RequirePrimaryLeadReading"/>
+			<xs:enumeration value="RequirePrimaryLeadReadingLeadNotHyphenBound"/>
 			<xs:enumeration value="RequirePrimaryLeadReadingNoFrontText"/>
+			<xs:enumeration value="RequirePrimaryLeadReadingNoFrontTextLeadNotHyphenBound"/>
 			<xs:enumeration value="RequirePrimaryLeadReadingNoFrontTextNotHyphenBound"/>
 			<xs:enumeration value="RequirePrimaryLeadReadingNotHyphenBound"/>
 			<xs:enumeration value="RequireNonPrimaryLeadReading"/>
+			<xs:enumeration value="RequireNonPrimaryLeadReadingLeadNotHyphenBound"/>
 			<xs:enumeration value="RequireNonPrimaryLeadReadingNoFrontText"/>
+			<xs:enumeration value="RequireNonPrimaryLeadReadingNoFrontTextLeadNotHyphenBound"/>
 			<xs:enumeration value="RequireNonPrimaryLeadReadingNoFrontTextNotHyphenBound"/>
 			<xs:enumeration value="RequireNonPrimaryLeadReadingNotHyphenBound"/>
 			<xs:enumeration value="RequireAllLeadReading"/>
+			<xs:enumeration value="RequireAllLeadReadingLeadNotHyphenBound"/>
 			<xs:enumeration value="RequireAllLeadReadingNoFrontText"/>
+			<xs:enumeration value="RequireAllLeadReadingNoFrontTextLeadNotHyphenBound"/>
 			<xs:enumeration value="RequireAllLeadReadingNoFrontTextNotHyphenBound"/>
 			<xs:enumeration value="RequireAllLeadReadingNotHyphenBound"/>
 			<xs:enumeration value="RequireAllNonLeadReading"/>
+			<xs:enumeration value="RequireAllNonLeadReadingLeadNotHyphenBound"/>
 			<xs:enumeration value="RequireAllNonLeadReadingNoFrontText"/>
+			<xs:enumeration value="RequireAllNonLeadReadingNoFrontTextLeadNotHyphenBound"/>
 			<xs:enumeration value="RequireAllNonLeadReadingNoFrontTextNotHyphenBound"/>
 			<xs:enumeration value="RequireAllNonLeadReadingNotHyphenBound"/>
 			<xs:enumeration value="RequireAllNonPrimaryLeadReading"/>
+			<xs:enumeration value="RequireAllNonPrimaryLeadReadingLeadNotHyphenBound"/>
 			<xs:enumeration value="RequireAllNonPrimaryLeadReadingNoFrontText"/>
+			<xs:enumeration value="RequireAllNonPrimaryLeadReadingNoFrontTextLeadNotHyphenBound"/>
 			<xs:enumeration value="RequireAllNonPrimaryLeadReadingNoFrontTextNotHyphenBound"/>
 			<xs:enumeration value="RequireAllNonPrimaryLeadReadingNotHyphenBound"/>
 			<xs:enumeration value="RequireAllPrimaryLeadReading"/>
+			<xs:enumeration value="RequireAllPrimaryLeadReadingLeadNotHyphenBound"/>
 			<xs:enumeration value="RequireAllPrimaryLeadReadingNoFrontText"/>
+			<xs:enumeration value="RequireAllPrimaryLeadReadingNoFrontTextLeadNotHyphenBound"/>
 			<xs:enumeration value="RequireAllPrimaryLeadReadingNoFrontTextNotHyphenBound"/>
 			<xs:enumeration value="RequireAllPrimaryLeadReadingNotHyphenBound"/>
 		</xs:restriction>

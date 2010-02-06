@@ -372,7 +372,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					if (remainingOrders.Count != 0)
 					{
 						LinkedElementCollection<RoleBase> roles = factType.RoleCollection;
-						Reading newReading = factType.GetMatchingReading(remainingOrders, oldOrder, roles[0], null, false, false, false, roles, true) as Reading;
+						Reading newReading = factType.GetMatchingReading(remainingOrders, oldOrder, roles[0], null, roles, MatchingReadingOptions.AllowAnyOrder) as Reading;
 						if (newReading != null)
 						{
 							ReadingOrder newOrder = newReading.ReadingOrder;

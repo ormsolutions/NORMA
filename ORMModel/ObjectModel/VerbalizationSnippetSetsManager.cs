@@ -137,7 +137,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		public static bool operator ==(VerbalizationTargetData data1, VerbalizationTargetData data2)
 		{
-			return data2.Equals(data2);
+			return data1.Equals(data2);
 		}
 		/// <summary>
 		/// Not equals operator override

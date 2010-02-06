@@ -439,6 +439,9 @@
                 <a href="#FrequencyUntypedOccurrences">FrequencyUntypedOccurrences</a>
               </li>
               <li>
+                <a href="#FullFactTypeDerivation">FullFactTypeDerivation</a>
+              </li>
+              <li>
                 <a href="#GroupEquality">GroupEquality</a>
               </li>
               <li>
@@ -638,6 +641,9 @@
               </li>
               <li>
                 <a href="#OneQuantifier">OneQuantifier</a>
+              </li>
+              <li>
+                <a href="#PartialFactTypeDerivation">PartialFactTypeDerivation</a>
               </li>
               <li>
                 <a href="#PeriodSeparator">PeriodSeparator</a>
@@ -1616,10 +1622,8 @@
             <a name="DefiniteArticle" id="DefiniteArticle">DefiniteArticle</a>
           </span>
           <div class="snippetStatement">
-            <strong>Description: </strong> Used for 'that' before an object name to signify the context in which the object is being referred to. 
-							Different than ImpersonalPronoun which is used to refer back to an object and is frequently used conditionally with PersonalPronoun.  <br />
-            <strong>Format: </strong> that
-						</div>
+            <strong>Description: </strong> Used for 'that' before an object name to signify a back reference to a uniquely qualified object type.<br />
+          </div>
           <div class="snippetReplacementFieldCount">
             <span class="reportItem">Number of replacement fields: </span>1</div>
           <div class="snippetUnformattedText">
@@ -2697,6 +2701,24 @@
             </p>
           </div>
         </div>
+        <div id="FullFactTypeDerivation" class="snippet">
+          <span class="snippetHeader">
+            <a name="FullFactTypeDerivation" id="FullFactTypeDerivation">FullFactTypeDerivation</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Used to specify a fully derived fact type with its derivation rule.
+							<br />
+            <strong>Format: </strong> *{0} if and only if {1}
+						</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>2</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">*{0} if and only if{1}</pre>
+            </div>
+          </div>
+        </div>
         <div id="GroupEquality" class="snippet">
           <span class="snippetHeader">
             <a name="GroupEquality" id="GroupEquality">GroupEquality</a>
@@ -2978,15 +3000,14 @@
             <a name="ImpersonalPronoun" id="ImpersonalPronoun">ImpersonalPronoun</a>
           </span>
           <div class="snippetStatement">
-            <strong>Description: </strong>
-            <br />
+            <strong>Description: </strong> Use in place of a role player name to reference an impersonal object type with a clear antecedent.<br />
           </div>
           <div class="snippetReplacementFieldCount">
-            <span class="reportItem">Number of replacement fields: </span>1</div>
+            <span class="reportItem">Number of replacement fields: </span>0</div>
           <div class="snippetUnformattedText">
             <span class="reportItem">Unformatted version: </span>
             <div class="unformattedSnippet">
-              <pre class="unformattedSnippetDecorator">that {0}</pre>
+              <pre class="unformattedSnippetDecorator">that</pre>
             </div>
           </div>
         </div>
@@ -4543,6 +4564,24 @@
             </p>
           </div>
         </div>
+        <div id="PartialFactTypeDerivation" class="snippet">
+          <span class="snippetHeader">
+            <a name="PartialFactTypeDerivation" id="PartialFactTypeDerivation">PartialFactTypeDerivation</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Used to specify a partially derived fact type with its derivation rule.
+							<br />
+            <strong>Format: </strong> +{0} if {1}
+						</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>2</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">+{0} if{1}</pre>
+            </div>
+          </div>
+        </div>
         <div id="PeriodSeparator" class="snippet">
           <span class="snippetHeader">
             <a name="PeriodSeparator" id="PeriodSeparator">PeriodSeparator</a>
@@ -4580,15 +4619,14 @@
             <a name="PersonalPronoun" id="PersonalPronoun">PersonalPronoun</a>
           </span>
           <div class="snippetStatement">
-            <strong>Description: </strong>
-            <br />
+            <strong>Description: </strong> Use in place of a role player name to reference a personal object type with a clear antecedent.<br />
           </div>
           <div class="snippetReplacementFieldCount">
-            <span class="reportItem">Number of replacement fields: </span>1</div>
+            <span class="reportItem">Number of replacement fields: </span>0</div>
           <div class="snippetUnformattedText">
             <span class="reportItem">Unformatted version: </span>
             <div class="unformattedSnippet">
-              <pre class="unformattedSnippetDecorator">who {0}</pre>
+              <pre class="unformattedSnippetDecorator">who</pre>
             </div>
           </div>
         </div>

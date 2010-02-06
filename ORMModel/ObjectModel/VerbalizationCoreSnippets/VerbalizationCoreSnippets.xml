@@ -33,14 +33,14 @@ You must not remove this notice, or any other, from this software.
 					 The objectType class should not be used in other quantifiers because
 					 it will interfere with hyphen-binding and possible other features. -->
 			<Snippet type="ObjectType"><![CDATA[<a class="objectType" href="elementid:{1}">{0}</a>]]></Snippet>
-			<Snippet type="ObjectTypeWithSubscript"><![CDATA[<a class="objectType" href="elementid:{1}">{0}<sub>{2}</sub></a>]]></Snippet>
-			<Snippet type="ObjectTypeMissing"><![CDATA[<span class="objectTypeMissing">Missing<sub>{0}</sub></span>]]></Snippet>
+			<Snippet type="ObjectTypeWithSubscript"><![CDATA[<a class="objectType" href="elementid:{1}">{0}<sub style="font-size:smaller;">{2}</sub></a>]]></Snippet>
+			<Snippet type="ObjectTypeMissing"><![CDATA[<span class="objectTypeMissing">Missing<sub style="font-size:smaller;">{0}</sub></span>]]></Snippet>
 			<Snippet type="HyphenBoundPredicatePart"><![CDATA[{0}{{0}}{1}]]></Snippet>
 			<Snippet type="PredicatePart"><![CDATA[<a class="predicateText" href="elementid:{1}">{{0}}</a>]]></Snippet>
 			<Snippet type="DefiniteArticle"><![CDATA[<span class="quantifier">that</span> {0}]]></Snippet>
 
-			<Snippet type="ImpersonalPronoun"><![CDATA[<span class="quantifier">that</span> {0}]]></Snippet>
-			<Snippet type="PersonalPronoun"><![CDATA[<span class="quantifier">who</span> {0}]]></Snippet>
+			<Snippet type="ImpersonalPronoun"><![CDATA[<span class="quantifier">that</span>]]></Snippet>
+			<Snippet type="PersonalPronoun"><![CDATA[<span class="quantifier">who</span>]]></Snippet>
 
 			<Snippet type="UniversalQuantifier" sign="positive"><![CDATA[<span class="quantifier">each</span> {0}]]></Snippet>
 			<Snippet type="UniversalQuantifier" sign="negative"><![CDATA[<span class="quantifier">any</span> {0}]]></Snippet>
@@ -81,6 +81,10 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="ContextScope"><![CDATA[<span class="quantifier">context: </span>{0}]]></Snippet>
 			<Snippet type="ContextScopeReference"><![CDATA[<span class="quantifier">in this context,</span> {0}]]></Snippet>
 			<Snippet type="CombinationAssociation"><![CDATA[{0} <span class="quantifier">combination is associated with</span> {1}]]></Snippet>
+			
+			<!-- Snippets related to derivation rules and join paths -->
+			<Snippet type="FullFactTypeDerivation"><![CDATA[<span class="quantifier">*</span>{0} <span class="quantifier">if and only if</span></br>{1}<br/>]]></Snippet>
+			<Snippet type="PartialFactTypeDerivation"><![CDATA[<span class="quantifier">+</span>{0} <span class="quantifier">if</span><br/>{1}<br/>]]></Snippet>
 
 			<!-- Used inside a ModalOperator -->
 			<Snippet type="NegativeReadingForUnaryOnlyDisjunctiveMandatory" sign="negative"><![CDATA[<span class="quantifier">some</span> {0} <span class="quantifier">participates in none of the following:</span>{1}]]></Snippet>

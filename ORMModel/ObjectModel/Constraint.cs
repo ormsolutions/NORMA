@@ -5305,63 +5305,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return retVal;
 		}
 		/// <summary>
-		/// Simple helper class for tracking a variable number of bit values
-		/// </summary>
-		private struct BitTracker
-		{
-			private int myLeadBits;
-			private int[] myMoreBits;
-			/// <summary>
-			/// Create a bit tracker
-			/// </summary>
-			/// <param name="bitCount">The number of bits to tracker</param>
-			public BitTracker(int bitCount)
-			{
-				myLeadBits = 0;
-				int requiresMoreInts = (bitCount - 1) / 32;
-				myMoreBits = requiresMoreInts > 0 ? new int[requiresMoreInts] : null;
-			}
-			/// <summary>
-			/// Get a bit value
-			/// </summary>
-			/// <param name="index">The index of the bit to set. Must be less than the bitCount specified in the constructor.</param>
-			public bool this[int index]
-			{
-				get
-				{
-					return index < 32 ? (0 != (myLeadBits & (1 << index))) : (0 != (myMoreBits[index / 32 - 1] & (1 << (index % 32))));
-				}
-				set
-				{
-					if (index < 32)
-					{
-						index = 1 << index;
-						if (value)
-						{
-							myLeadBits |= index;
-						}
-						else
-						{
-							myLeadBits &= ~index;
-						}
-					}
-					else
-					{
-						int moreBitsIndex = index / 32 - 1;
-						index = 1 << (index % 32);
-						if (value)
-						{
-							myMoreBits[moreBitsIndex] |= index;
-						}
-						else
-						{
-							myMoreBits[moreBitsIndex] &= ~index;
-						}
-					}
-				}
-			}
-		}
-		/// <summary>
 		/// Helper method for ValidateJoinPath.
 		/// Verify that a join path based on a single shared role player
 		/// has the correct structure.

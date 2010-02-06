@@ -706,4 +706,233 @@ namespace ORMSolutions.ORMArchitect.Framework
 		}
 	}
 	#endregion // LinkedNode class
+	#region BitTracker struct
+	/// <summary>
+	/// Simple helper structure for tracking a variable number of bits.
+	/// Can be used in place of a boolean array.
+	/// </summary>
+	public struct BitTracker
+	{
+		private int myLeadBits;
+		private int[] myMoreBits;
+		private int myBitCount;
+		/// <summary>
+		/// Create a bit tracker
+		/// </summary>
+		/// <param name="bitCount">The number of bits to tracker</param>
+		public BitTracker(int bitCount)
+		{
+			myLeadBits = 0;
+			int requiresMoreInts = (bitCount - 1) / 32;
+			myMoreBits = requiresMoreInts > 0 ? new int[requiresMoreInts] : null;
+			myBitCount = bitCount; // Keep so that we can resize and reset
+		}
+		/// <summary>
+		/// Extend the the number of bits available to the bit tracker.
+		/// </summary>
+		public void Resize(int bitCount)
+		{
+			int oldBitCount = myBitCount;
+			myBitCount = bitCount;
+			if (bitCount > oldBitCount) // Don't bother to shrink capacity or reset memory for fewer bits
+			{
+				int requiresMoreInts = (bitCount - 1) / 32;
+				if (requiresMoreInts > 0)
+				{
+					int[] currentBits = myMoreBits;
+					if (currentBits == null)
+					{
+						myMoreBits = new int[requiresMoreInts];
+					}
+					else if (currentBits.Length < requiresMoreInts)
+					{
+						// Zero out the remainder of the current and following blocks
+						if (oldBitCount == 0)
+						{
+							myLeadBits = 0;
+						}
+						else if (oldBitCount < 32)
+						{
+							myLeadBits = MaskBits(myLeadBits, oldBitCount);
+						}
+						int oldOverflowBlock = (oldBitCount - 1) / 32 - 1;
+						int oldBitIndex = oldBitCount % 32;
+						if (oldBitIndex != 0)
+						{
+							currentBits[oldOverflowBlock] = MaskBits(currentBits[oldOverflowBlock], oldBitIndex);
+						}
+						for (int i = oldOverflowBlock + 1; i < currentBits.Length; ++i)
+						{
+							currentBits[i] = 0;
+						}
+						Array.Resize<int>(ref myMoreBits, requiresMoreInts);
+					}
+					else
+					{
+						// Zero out remaining bits
+						int oldOverflowBlock = -1;
+						if (oldBitCount > 32)
+						{
+							oldOverflowBlock = (oldBitCount - 1) / 32 - 1;
+							int oldBitIndex = oldBitCount % 32;
+							if (oldBitIndex != 0)
+							{
+								currentBits[oldOverflowBlock] = MaskBits(currentBits[oldOverflowBlock], oldBitIndex);
+							}
+						}
+						else
+						{
+							myLeadBits = MaskBits(myLeadBits, oldBitCount);
+						}
+						for (int i = oldOverflowBlock + 1; i < requiresMoreInts; ++i)
+						{
+							currentBits[i] = 0;
+						}
+					}
+				}
+				else if (oldBitCount == 0)
+				{
+					myLeadBits = 0;
+				}
+				else if (oldBitCount < 32)
+				{
+					myLeadBits = MaskBits(myLeadBits, oldBitCount);
+				}
+			}
+		}
+		/// <summary>
+		/// Get the first <paramref name="bitCount"/> bits from the
+		/// <paramref name="bits"/> value.
+		/// </summary>
+		private static int MaskBits(int bits, int bitCount)
+		{
+			if (bitCount == 32)
+			{
+				return bits;
+			}
+			else if (bitCount == 0)
+			{
+				return 0;
+			}
+			int killBits = 0;
+			int killBit = 1 << bitCount;
+			for (int i = bitCount; i < 32; ++i)
+			{
+				killBits |= killBit;
+				killBit <<= 1;
+			}
+			return bits & ~killBits;
+		}
+		/// <summary>
+		/// Reset all bits to false without changing the bit count
+		/// </summary>
+		public void Reset()
+		{
+			myLeadBits = 0;
+			int[] otherBits = myMoreBits;
+			if (otherBits != null)
+			{
+				int blockCount = (myBitCount - 1) / 32 - 1;
+				for (int i = 0; i < blockCount; ++i)
+				{
+					otherBits[i] = 0;
+				}
+			}
+		}
+		/// <summary>
+		/// Reset all values to false with a new number of bits.
+		/// </summary>
+		/// <param name="bitCount">The new number of bits to support.</param>
+		public void Reset(int bitCount)
+		{
+			int oldBitCount = myBitCount;
+			myBitCount = bitCount;
+			if (bitCount > 32)
+			{
+				if (bitCount > oldBitCount)
+				{
+					myLeadBits = 0;
+					int requiresMoreInts = (bitCount - 1) / 32;
+					int[] currentBits = myMoreBits;
+					if (currentBits == null || currentBits.Length < requiresMoreInts)
+					{
+						myMoreBits = new int[requiresMoreInts];
+					}
+					else
+					{
+						for (int i = 0; i < requiresMoreInts; ++i)
+						{
+							currentBits[i] = 0;
+						}
+					}
+				}
+				else
+				{
+					Reset();
+				}
+			}
+			else
+			{
+				myLeadBits = 0;
+			}
+		}
+		/// <summary>
+		/// Get the current number of supported bits.
+		/// </summary>
+		public int Count
+		{
+			get
+			{
+				return myBitCount;
+			}
+		}
+		/// <summary>
+		/// Get a bit value
+		/// </summary>
+		/// <param name="index">The index of the bit to set. Must be less than the bitCount specified in the constructor.</param>
+		public bool this[int index]
+		{
+			get
+			{
+				if (index < 0 || index >= myBitCount)
+				{
+					throw new ArgumentOutOfRangeException("index");
+				}
+				return index < 32 ? (0 != (myLeadBits & (1 << index))) : (0 != (myMoreBits[index / 32 - 1] & (1 << (index % 32))));
+			}
+			set
+			{
+				if (index < 0 || index >= myBitCount)
+				{
+					throw new ArgumentOutOfRangeException("index");
+				}
+				if (index < 32)
+				{
+					index = 1 << index;
+					if (value)
+					{
+						myLeadBits |= index;
+					}
+					else
+					{
+						myLeadBits &= ~index;
+					}
+				}
+				else
+				{
+					int moreBitsIndex = index / 32 - 1;
+					index = 1 << (index % 32);
+					if (value)
+					{
+						myMoreBits[moreBitsIndex] |= index;
+					}
+					else
+					{
+						myMoreBits[moreBitsIndex] &= ~index;
+					}
+				}
+			}
+		}
+	}
+	#endregion // BitTracker struct
 }

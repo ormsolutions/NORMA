@@ -765,7 +765,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 								if ((decorate && decorateWithPredicateText) || (isUnary && string.IsNullOrEmpty(explicitFarRoleName)))
 								{
 									readingOrders = factType.ReadingOrderCollection;
-									reading = factType.GetMatchingReading(readingOrders, null, nearRole, null, false, true, false, factTypeRoles, isUnary);
+									reading = factType.GetMatchingReading(readingOrders, null, nearRole, null, factTypeRoles, MatchingReadingOptions.NoFrontText | (isUnary ? MatchingReadingOptions.AllowAnyOrder : MatchingReadingOptions.None));
 								}
 								lastStepConsumedNextNode = false;
 								lastStepUsedExplicitRoleName = false;

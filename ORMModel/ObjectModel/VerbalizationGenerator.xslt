@@ -571,13 +571,304 @@
 				<plx:local name="hyphenBinder" dataTypeName="VerbalizationHyphenBinder"/>
 				<plx:pragma type="closeRegion" data="Preliminary"/>
 				<plx:pragma type="region" data="Pattern Matches"/>
-				<xsl:call-template name="PopulateBasicRoleReplacements"/>
-				<xsl:variable name="factMockup">
-					<cvg:Fact/>
-				</xsl:variable>
-				<xsl:apply-templates select="exsl:node-set($factMockup)/child::*" mode="ConstraintVerbalization">
-					<xsl:with-param name="TopLevel" select="true()"/>
-				</xsl:apply-templates>
+				<plx:comment>UNDONE: RolePathVerbalizerPending Introduce snippet-integrated role path helper patterns</plx:comment>
+				<plx:comment>to the verbalization generator instead of hand-coding derivation rules</plx:comment>
+				<plx:local name="derivationRule" dataTypeName="FactTypeDerivationRule"/>
+				<plx:local name="pathVerbalizer" dataTypeName="RolePathVerbalizer"/>
+				<plx:branch>
+					<plx:condition>
+						<plx:binaryOperator type="booleanAnd">
+							<plx:left>
+								<plx:binaryOperator type="identityInequality">
+									<plx:left>
+										<plx:inlineStatement dataTypeName="FactTypeDerivationRule">
+											<plx:assign>
+												<plx:left>
+													<plx:nameRef name="derivationRule"/>
+												</plx:left>
+												<plx:right>
+													<plx:callThis name="DerivationRule" type="property"/>
+												</plx:right>
+											</plx:assign>
+										</plx:inlineStatement>
+									</plx:left>
+									<plx:right>
+										<plx:nullKeyword/>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:left>
+							<plx:right>
+								<plx:callInstance name="HasPathVerbalization">
+									<plx:callObject>
+										<plx:inlineStatement dataTypeName="RolePathVerbalizer">
+											<plx:assign>
+												<plx:left>
+													<plx:nameRef name="pathVerbalizer"/>
+												</plx:left>
+												<plx:right>
+													<plx:callStatic name="Create" dataTypeName="RolePathVerbalizer">
+														<plx:passParam>
+															<plx:nameRef name="derivationRule"/>
+														</plx:passParam>
+														<plx:passParam>
+															<plx:callNew dataTypeName="StandardRolePathRenderer">
+																<plx:passParam>
+																	<plx:nameRef name="snippets"/>
+																</plx:passParam>
+																<plx:passParam>
+																	<plx:callInstance name="FormatProvider" type="property">
+																		<plx:callObject>
+																			<plx:nameRef name="writer" type="parameter"/>
+																		</plx:callObject>
+																	</plx:callInstance>
+																</plx:passParam>
+															</plx:callNew>
+														</plx:passParam>
+													</plx:callStatic>
+												</plx:right>
+											</plx:assign>
+										</plx:inlineStatement>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:nameRef name="derivationRule"/>
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:assign>
+						<plx:left>
+							<plx:nameRef name="reading"/>
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="GetMatchingReading">
+								<plx:callObject>
+									<plx:nameRef name="parentFact"/>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:nameRef name="allReadingOrders"/>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nullKeyword/>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:callInstance name=".implied" type="indexerCall">
+										<plx:callObject>
+											<plx:nameRef name="factRoles"/>
+										</plx:callObject>
+										<plx:passParam>
+											<plx:value data="0" type="i4"/>
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nullKeyword/>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef name="factRoles"/>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:callStatic name="AllowAnyOrder" type="field" dataTypeName="MatchingReadingOptions"/>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:nameRef name="hyphenBinder"/>
+						</plx:left>
+						<plx:right>
+							<plx:callNew dataTypeName="VerbalizationHyphenBinder">
+								<plx:passParam>
+									<plx:nameRef name="reading"/>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:callInstance name="FormatProvider" type="property">
+										<plx:callObject>
+											<plx:nameRef name="writer" type="parameter"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef name="factRoles"/>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef name="unaryRoleIndex"/>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:callInstance name="GetSnippet">
+										<plx:callObject>
+											<plx:nameRef name="snippets"/>
+										</plx:callObject>
+										<plx:passParam>
+											<plx:callStatic name="HyphenBoundPredicatePart" type="field" dataTypeName="CoreVerbalizationSnippetType"/>
+										</plx:passParam>
+										<plx:passParam>
+											<plx:falseKeyword/>
+										</plx:passParam>
+										<plx:passParam>
+											<plx:nameRef name="isNegative"/>
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef name="predicatePartFormatString"/>
+								</plx:passParam>
+							</plx:callNew>
+						</plx:right>
+					</plx:assign>
+					<plx:callInstance name="BeginVerbalization">
+						<plx:callObject>
+							<plx:nameRef name="verbalizationContext" type="parameter"/>
+						</plx:callObject>
+						<plx:passParam>
+							<plx:callStatic name="Normal" type="field" dataTypeName="VerbalizationContent"/>
+						</plx:passParam>
+					</plx:callInstance>
+					<plx:callInstance name="BeginVerbalization">
+						<plx:callObject>
+							<plx:nameRef name="pathVerbalizer"/>
+						</plx:callObject>
+					</plx:callInstance>
+					<plx:callStatic name="WriteVerbalizerSentence" dataTypeName="FactType">
+						<plx:passParam>
+							<plx:nameRef name="writer" type="parameter"/>
+						</plx:passParam>
+						<plx:passParam>
+							<plx:callStatic name="Format" dataTypeName=".string">
+								<plx:passParam>
+									<plx:callInstance name="FormatProvider" type="property">
+										<plx:callObject>
+											<plx:nameRef name="writer" type="parameter"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:callInstance name="GetSnippet">
+										<plx:callObject>
+											<plx:nameRef name="snippets"/>
+										</plx:callObject>
+										<plx:passParam>
+											<plx:inlineStatement dataTypeName="CoreVerbalizationSnippetType">
+												<plx:conditionalOperator>
+													<plx:condition>
+														<plx:binaryOperator type="equality">
+															<plx:left>
+																<plx:callInstance name="DerivationCompleteness" type="property">
+																	<plx:callObject>
+																		<plx:nameRef name="derivationRule"/>
+																	</plx:callObject>
+																</plx:callInstance>
+															</plx:left>
+															<plx:right>
+																<plx:callStatic name="FullyDerived" type="field" dataTypeName="DerivationCompleteness"/>
+															</plx:right>
+														</plx:binaryOperator>
+													</plx:condition>
+													<plx:left>
+														<plx:callStatic name="FullFactTypeDerivation" type="field" dataTypeName="CoreVerbalizationSnippetType"/>
+													</plx:left>
+													<plx:right>
+														<plx:callStatic name="PartialFactTypeDerivation" type="field" dataTypeName="CoreVerbalizationSnippetType"/>
+													</plx:right>
+												</plx:conditionalOperator>
+											</plx:inlineStatement>
+										</plx:passParam>
+										<plx:passParam>
+											<plx:falseKeyword/>
+										</plx:passParam>
+										<plx:passParam>
+											<plx:falseKeyword/>
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:passParam>
+								<plx:passParamArray dataTypeName=".object" dataTypeIsSimpleArray="true">
+									<plx:passParam>
+										<plx:callInstance name="PopulatePredicateText">
+											<plx:callObject>
+												<plx:nameRef name="hyphenBinder"/>
+											</plx:callObject>
+											<plx:passParam>
+												<plx:nameRef name="reading"/>
+											</plx:passParam>
+											<plx:passParam>
+												<plx:callInstance name="FormatProvider" type="property">
+													<plx:callObject>
+														<plx:nameRef name="writer" type="parameter"/>
+													</plx:callObject>
+												</plx:callInstance>
+											</plx:passParam>
+											<plx:passParam>
+												<plx:nameRef name="predicatePartFormatString"/>
+											</plx:passParam>
+											<plx:passParam>
+												<plx:nameRef name="factRoles"/>
+											</plx:passParam>
+											<plx:passParam>
+												<plx:anonymousFunction>
+													<plx:param name="replaceRole" dataTypeName="RoleBase"/>
+													<plx:returns dataTypeName=".string"/>
+													<!-- return pathVerbalizer.RenderAssociatedRolePlayer(replaceRole, false); -->
+													<plx:return>
+														<plx:callInstance name="RenderAssociatedRolePlayer">
+															<plx:callObject>
+																<plx:nameRef name="pathVerbalizer"/>
+															</plx:callObject>
+															<plx:passParam>
+																<plx:nameRef name="replaceRole" type="parameter"/>
+															</plx:passParam>
+															<plx:passParam>
+																<plx:falseKeyword/>
+															</plx:passParam>
+														</plx:callInstance>
+													</plx:return>
+												</plx:anonymousFunction>
+											</plx:passParam>
+										</plx:callInstance>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:callInstance name="RenderPathVerbalization">
+											<plx:callObject>
+												<plx:nameRef name="pathVerbalizer"/>
+											</plx:callObject>
+											<plx:passParam>
+												<plx:nullKeyword/>
+											</plx:passParam>
+											<plx:passParam>
+												<plx:nameRef name="derivationRule"/>
+											</plx:passParam>
+										</plx:callInstance>
+									</plx:passParam>
+								</plx:passParamArray>
+							</plx:callStatic>
+						</plx:passParam>
+						<plx:passParam>
+							<plx:callInstance name="GetSnippet">
+								<plx:callObject>
+									<plx:nameRef name="snippets"/>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callStatic name="CloseVerbalizationSentence" type="field" dataTypeName="CoreVerbalizationSnippetType"/>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:falseKeyword/>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef name="isNegative"/>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:passParam>
+					</plx:callStatic>
+				</plx:branch>
+				<plx:fallbackBranch>
+					<xsl:call-template name="PopulateBasicRoleReplacements"/>
+					<xsl:variable name="factMockup">
+						<cvg:Fact/>
+					</xsl:variable>
+					<xsl:apply-templates select="exsl:node-set($factMockup)/child::*" mode="ConstraintVerbalization">
+						<xsl:with-param name="TopLevel" select="true()"/>
+					</xsl:apply-templates>
+				</plx:fallbackBranch>
 				<plx:pragma type="closeRegion" data="Pattern Matches"/>
 				<xsl:call-template name="CheckErrorConditions">
 					<xsl:with-param name="Primary" select="false()"/>
@@ -7150,19 +7441,17 @@
 												<plx:nullKeyword/>
 											</plx:passParam>
 											<plx:passParam>
-												<plx:falseKeyword/>
-											</plx:passParam>
-											<plx:passParam>
-												<plx:trueKeyword/>
-											</plx:passParam>
-											<plx:passParam>
-												<plx:trueKeyword/>
-											</plx:passParam>
-											<plx:passParam>
 												<plx:nullKeyword/>
 											</plx:passParam>
 											<plx:passParam>
-												<plx:falseKeyword/>
+												<plx:binaryOperator type="bitwiseOr">
+													<plx:left>
+														<plx:callStatic dataTypeName="MatchingReadingOptions" name="NoFrontText" type="field"/>
+													</plx:left>
+													<plx:right>
+														<plx:callStatic dataTypeName="MatchingReadingOptions" name="NotHyphenBound" type="field"/>
+													</plx:right>
+												</plx:binaryOperator>
 											</plx:passParam>
 										</plx:callInstance>
 									</plx:left>
@@ -7238,19 +7527,17 @@
 													<plx:nullKeyword/>
 												</plx:passParam>
 												<plx:passParam>
-													<plx:falseKeyword/>
-												</plx:passParam>
-												<plx:passParam>
-													<plx:trueKeyword/>
-												</plx:passParam>
-												<plx:passParam>
-													<plx:trueKeyword/>
-												</plx:passParam>
-												<plx:passParam>
 													<plx:nullKeyword/>
 												</plx:passParam>
 												<plx:passParam>
-													<plx:falseKeyword/>
+													<plx:binaryOperator type="bitwiseOr">
+														<plx:left>
+															<plx:callStatic dataTypeName="MatchingReadingOptions" name="NoFrontText" type="field"/>
+														</plx:left>
+														<plx:right>
+															<plx:callStatic dataTypeName="MatchingReadingOptions" name="NotHyphenBound" type="field"/>
+														</plx:right>
+													</plx:binaryOperator>
 												</plx:passParam>
 											</plx:callInstance>
 										</plx:left>
@@ -10201,50 +10488,49 @@
 									</xsl:choose>
 								</plx:passParam>
 								<plx:passParam>
-									<!-- The invertLeadRoles param -->
-									<xsl:choose>
-										<xsl:when test="contains($ReadingChoice,'Non')">
-											<plx:trueKeyword/>
-										</xsl:when>
-										<xsl:otherwise>
-											<plx:falseKeyword/>
-										</xsl:otherwise>
-									</xsl:choose>
-								</plx:passParam>
-								<plx:passParam>
-									<!-- The noFrontText param -->
-									<xsl:choose>
-										<xsl:when test="contains($ReadingChoice,'NoFrontText')">
-											<plx:trueKeyword/>
-										</xsl:when>
-										<xsl:otherwise>
-											<plx:falseKeyword/>
-										</xsl:otherwise>
-									</xsl:choose>
-								</plx:passParam>
-								<plx:passParam>
-									<!-- The notHyphenBound param -->
-									<xsl:choose>
-										<xsl:when test="contains($ReadingChoice,'NotHyphenBound')">
-											<plx:trueKeyword/>
-										</xsl:when>
-										<xsl:otherwise>
-											<plx:falseKeyword/>
-										</xsl:otherwise>
-									</xsl:choose>
-								</plx:passParam>
-								<plx:passParam>
 									<!-- The defaultRoleOrder param -->
 									<plx:nameRef name="factRoles"/>
 								</plx:passParam>
 								<plx:passParam>
-									<!-- The allowAnyOrder param -->
+									<!-- The options parameter -->
+									<xsl:variable name="matchedOptionsFragment">
+										<xsl:if test="contains($ReadingChoice,'Non')">
+											<!-- The InvertLeadRoles option -->
+											<plx:callStatic dataTypeName="MatchingReadingOptions" name="InvertLeadRoles" type="field"/>
+										</xsl:if>
+										<xsl:if test="contains($ReadingChoice,'NoFrontText')">
+											<!-- The NoFrontText option -->
+											<plx:callStatic dataTypeName="MatchingReadingOptions" name="NoFrontText" type="field"/>
+										</xsl:if>
+										<xsl:choose>
+											<!-- The NotHyphenBound option. Process before the less general LeadRolesNotHyphenBound option -->
+											<xsl:when test="contains($ReadingChoice,'NotHyphenBound')">
+												<plx:callStatic dataTypeName="MatchingReadingOptions" name="NotHyphenBound" type="field"/>
+											</xsl:when>
+											<xsl:when test="contains($ReadingChoice,'LeadNotHyphenBound')">
+												<!-- The LeadRolesNotHyphenBound option -->
+												<plx:callStatic dataTypeName="MatchingReadingOptions" name="LeadRolesNotHyphenBound" type="field"/>
+											</xsl:when>
+										</xsl:choose>
+										<!-- The allowAnyOrder param -->
+										<xsl:if test="not(starts-with($ReadingChoice,'Require'))">
+											<!-- The AllowAnyOrder option -->
+											<plx:callStatic dataTypeName="MatchingReadingOptions" name="AllowAnyOrder" type="field"/>
+										</xsl:if>
+									</xsl:variable>
+									<xsl:variable name="matchedOptions" select="exsl:node-set($matchedOptionsFragment)/child::*"/>
 									<xsl:choose>
-										<xsl:when test="not(starts-with($ReadingChoice,'Require'))">
-											<plx:trueKeyword/>
+										<xsl:when test="$matchedOptions">
+											<xsl:for-each select="$matchedOptions">
+												<xsl:if test="position()=1">
+													<xsl:call-template name="CombineElements">
+														<xsl:with-param name="OperatorType" select="'bitwiseOr'"/>
+													</xsl:call-template>
+												</xsl:if>
+											</xsl:for-each>
 										</xsl:when>
 										<xsl:otherwise>
-											<plx:falseKeyword/>
+											<plx:callStatic dataTypeName="MatchingReadingOptions" name="None" type="field"/>
 										</xsl:otherwise>
 									</xsl:choose>
 								</plx:passParam>

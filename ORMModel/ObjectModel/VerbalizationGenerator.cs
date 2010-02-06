@@ -141,6 +141,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		FrequencyTypedOccurrences,
 		/// <summary>The 'FrequencyUntypedOccurrences' format string snippet. Contains 1 replacement field.</summary>
 		FrequencyUntypedOccurrences,
+		/// <summary>The 'FullFactTypeDerivation' format string snippet. Contains 2 replacement fields.</summary>
+		FullFactTypeDerivation,
 		/// <summary>The 'GroupEquality' format string snippet. Contains 1 replacement field.</summary>
 		GroupEquality,
 		/// <summary>The 'GroupExclusion' format string snippet. Contains 1 replacement field.</summary>
@@ -161,7 +163,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		IdentityEqualityListSeparator,
 		/// <summary>The 'IdentityReferenceQuantifier' format string snippet. Contains 1 replacement field.</summary>
 		IdentityReferenceQuantifier,
-		/// <summary>The 'ImpersonalPronoun' format string snippet. Contains 1 replacement field.</summary>
+		/// <summary>The 'ImpersonalPronoun' simple snippet value.</summary>
 		ImpersonalPronoun,
 		/// <summary>The 'ImpliedModalNecessityOperator' format string snippet. Contains 1 replacement field.</summary>
 		ImpliedModalNecessityOperator,
@@ -275,9 +277,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		OccursInPopulation,
 		/// <summary>The 'OneQuantifier' format string snippet. Contains 1 replacement field.</summary>
 		OneQuantifier,
+		/// <summary>The 'PartialFactTypeDerivation' format string snippet. Contains 2 replacement fields.</summary>
+		PartialFactTypeDerivation,
 		/// <summary>The 'PeriodSeparator' format string snippet. Contains 2 replacement fields.</summary>
 		PeriodSeparator,
-		/// <summary>The 'PersonalPronoun' format string snippet. Contains 1 replacement field.</summary>
+		/// <summary>The 'PersonalPronoun' simple snippet value.</summary>
 		PersonalPronoun,
 		/// <summary>The 'PortableDataTypeVerbalization' format string snippet. Contains 1 replacement field.</summary>
 		PortableDataTypeVerbalization,
@@ -442,6 +446,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"at most <span class=""instance"">{1}</span>",
 				@"<span class=""quantifier"">{1} instances of</span> {0}",
 				@"<span class=""quantifier"">{0} times</span>",
+				@"<span class=""quantifier"">*</span>{0} <span class=""quantifier"">if and only if</span></br>{1}<br/>",
 				@"<span class=""quantifier"">all or none of the following hold:</span> {0}",
 				@"<span class=""quantifier"">at most one of the following holds:</span> {0}",
 				@"<span class=""quantifier"">exactly one of the following holds:</span> {0}",
@@ -452,7 +457,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""logicalOperator""> that is a </span>",
 				@"<span class=""logicalOperator""> that is a </span>",
 				@"<span class=""quantifier"">the same</span> {0}",
-				@"<span class=""quantifier"">that</span> {0}",
+				@"<span class=""quantifier"">that</span>",
 				"{0}",
 				"</span>",
 				@"<span class=""listSeparator"">; </span>",
@@ -505,12 +510,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<br/><span class=""quantifier"">Examples:</span> ",
 				@"<span class=""listSeparator"">, </span>",
 				@"<span class=""listSeparator"">, </span>",
-				@"<span class=""objectTypeMissing"">Missing<sub>{0}</sub></span>",
-				@"<a class=""objectType"" href=""elementid:{1}"">{0}<sub>{2}</sub></a>",
+				@"<span class=""objectTypeMissing"">Missing<sub style=""font-size:smaller;"">{0}</sub></span>",
+				@"<a class=""objectType"" href=""elementid:{1}"">{0}<sub style=""font-size:smaller;"">{2}</sub></a>",
 				@"<span class=""quantifier"">in each population of</span> {1}<span class=""quantifier"">, </span>{0} <span class=""quantifier"">occurs at most once</span>",
 				@"<span class=""quantifier"">at most one</span> {0}",
+				@"<span class=""quantifier"">+</span>{0} <span class=""quantifier"">if</span><br/>{1}<br/>",
 				@"{0}<span class=""listSeparator"">.</span>{1}",
-				@"<span class=""quantifier"">who</span> {0}",
+				@"<span class=""quantifier"">who</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Portable data type:</span> {0}</span>",
 				@"<a class=""predicateText"" href=""elementid:{1}"">{{0}}</a>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Mode:</span> <span class=""referenceMode"">{0}</span></span>",
@@ -641,6 +647,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"at most <span class=""instance"">{1}</span>",
 				@"<span class=""quantifier"">{1} instances of</span> {0}",
 				@"<span class=""quantifier"">{0} times</span>",
+				@"<span class=""quantifier"">*</span>{0} <span class=""quantifier"">if and only if</span></br>{1}<br/>",
 				@"<span class=""quantifier"">all or none of the following hold:</span> {0}",
 				@"<span class=""quantifier"">at most one of the following holds:</span> {0}",
 				@"<span class=""quantifier"">exactly one of the following holds:</span> {0}",
@@ -651,7 +658,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""logicalOperator""> that is a </span>",
 				@"<span class=""logicalOperator""> that is a </span>",
 				@"<span class=""quantifier"">the same</span> {0}",
-				@"<span class=""quantifier"">that</span> {0}",
+				@"<span class=""quantifier"">that</span>",
 				@"<span class=""quantifier"">it is obligatory that</span> {0}",
 				"</span>",
 				@"<span class=""listSeparator"">; </span>",
@@ -704,12 +711,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<br/><span class=""quantifier"">Examples:</span> ",
 				@"<span class=""listSeparator"">, </span>",
 				@"<span class=""listSeparator"">, </span>",
-				@"<span class=""objectTypeMissing"">Missing<sub>{0}</sub></span>",
-				@"<a class=""objectType"" href=""elementid:{1}"">{0}<sub>{2}</sub></a>",
+				@"<span class=""objectTypeMissing"">Missing<sub style=""font-size:smaller;"">{0}</sub></span>",
+				@"<a class=""objectType"" href=""elementid:{1}"">{0}<sub style=""font-size:smaller;"">{2}</sub></a>",
 				@"<span class=""quantifier"">in each population of</span> {1}<span class=""quantifier"">, </span>{0} <span class=""quantifier"">occurs at most once</span>",
 				@"<span class=""quantifier"">at most one</span> {0}",
+				@"<span class=""quantifier"">+</span>{0} <span class=""quantifier"">if</span><br/>{1}<br/>",
 				@"{0}<span class=""listSeparator"">.</span>{1}",
-				@"<span class=""quantifier"">who</span> {0}",
+				@"<span class=""quantifier"">who</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Portable data type:</span> {0}</span>",
 				@"<a class=""predicateText"" href=""elementid:{1}"">{{0}}</a>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Mode:</span> <span class=""referenceMode"">{0}</span></span>",
@@ -840,6 +848,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"at most <span class=""instance"">{1}</span>",
 				@"<span class=""quantifier"">{1} instances of</span> {0}",
 				@"<span class=""quantifier"">{0} times</span>",
+				@"<span class=""quantifier"">*</span>{0} <span class=""quantifier"">if and only if</span></br>{1}<br/>",
 				@"<span class=""quantifier"">all or none of the following hold:</span> {0}",
 				@"<span class=""quantifier"">at most one of the following holds:</span> {0}",
 				@"<span class=""quantifier"">exactly one of the following holds:</span> {0}",
@@ -850,7 +859,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""logicalOperator""> that is a </span>",
 				@"<span class=""logicalOperator""> that is a </span>",
 				@"<span class=""quantifier"">the same</span> {0}",
-				@"<span class=""quantifier"">that</span> {0}",
+				@"<span class=""quantifier"">that</span>",
 				@"<span class=""quantifier"">it is impossible that</span> {0}",
 				"</span>",
 				@"<span class=""listSeparator"">; </span>",
@@ -903,12 +912,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<br/><span class=""quantifier"">Examples:</span> ",
 				@"<span class=""listSeparator"">, </span>",
 				@"<span class=""listSeparator"">, </span>",
-				@"<span class=""objectTypeMissing"">Missing<sub>{0}</sub></span>",
-				@"<a class=""objectType"" href=""elementid:{1}"">{0}<sub>{2}</sub></a>",
+				@"<span class=""objectTypeMissing"">Missing<sub style=""font-size:smaller;"">{0}</sub></span>",
+				@"<a class=""objectType"" href=""elementid:{1}"">{0}<sub style=""font-size:smaller;"">{2}</sub></a>",
 				@"{0} <span class=""quantifier"">occurs more than once in the same population of</span> {1}",
 				@"<span class=""quantifier"">more than one</span> {0}",
+				@"<span class=""quantifier"">+</span>{0} <span class=""quantifier"">if</span><br/>{1}<br/>",
 				@"{0}<span class=""listSeparator"">.</span>{1}",
-				@"<span class=""quantifier"">who</span> {0}",
+				@"<span class=""quantifier"">who</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Portable data type:</span> {0}</span>",
 				@"<a class=""predicateText"" href=""elementid:{1}"">{{0}}</a>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Mode:</span> <span class=""referenceMode"">{0}</span></span>",
@@ -1039,6 +1049,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"at most <span class=""instance"">{1}</span>",
 				@"<span class=""quantifier"">{1} instances of</span> {0}",
 				@"<span class=""quantifier"">{0} times</span>",
+				@"<span class=""quantifier"">*</span>{0} <span class=""quantifier"">if and only if</span></br>{1}<br/>",
 				@"<span class=""quantifier"">all or none of the following hold:</span> {0}",
 				@"<span class=""quantifier"">at most one of the following holds:</span> {0}",
 				@"<span class=""quantifier"">exactly one of the following holds:</span> {0}",
@@ -1049,7 +1060,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""logicalOperator""> that is a </span>",
 				@"<span class=""logicalOperator""> that is a </span>",
 				@"<span class=""quantifier"">the same</span> {0}",
-				@"<span class=""quantifier"">that</span> {0}",
+				@"<span class=""quantifier"">that</span>",
 				@"<span class=""quantifier"">it is forbidden that</span> {0}",
 				"</span>",
 				@"<span class=""listSeparator"">; </span>",
@@ -1102,12 +1113,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<br/><span class=""quantifier"">Examples:</span> ",
 				@"<span class=""listSeparator"">, </span>",
 				@"<span class=""listSeparator"">, </span>",
-				@"<span class=""objectTypeMissing"">Missing<sub>{0}</sub></span>",
-				@"<a class=""objectType"" href=""elementid:{1}"">{0}<sub>{2}</sub></a>",
+				@"<span class=""objectTypeMissing"">Missing<sub style=""font-size:smaller;"">{0}</sub></span>",
+				@"<a class=""objectType"" href=""elementid:{1}"">{0}<sub style=""font-size:smaller;"">{2}</sub></a>",
 				@"{0} <span class=""quantifier"">occurs more than once in the same population of</span> {1}",
 				@"<span class=""quantifier"">more than one</span> {0}",
+				@"<span class=""quantifier"">+</span>{0} <span class=""quantifier"">if</span><br/>{1}<br/>",
 				@"{0}<span class=""listSeparator"">.</span>{1}",
-				@"<span class=""quantifier"">who</span> {0}",
+				@"<span class=""quantifier"">who</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Portable data type:</span> {0}</span>",
 				@"<a class=""predicateText"" href=""elementid:{1}"">{{0}}</a>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Mode:</span> <span class=""referenceMode"">{0}</span></span>",
@@ -1386,26 +1398,44 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			VerbalizationHyphenBinder hyphenBinder;
 			#endregion // Preliminary
 			#region Pattern Matches
-			string[] basicRoleReplacements = new string[factArity];
-			for (int i = 0; i < factArity; ++i)
+			// UNDONE: RolePathVerbalizerPending Introduce snippet-integrated role path helper patterns
+			// to the verbalization generator instead of hand-coding derivation rules
+			FactTypeDerivationRule derivationRule;
+			RolePathVerbalizer pathVerbalizer;
+			if ((derivationRule = this.DerivationRule) != null && (pathVerbalizer = RolePathVerbalizer.Create(derivationRule, new StandardRolePathRenderer(snippets, writer.FormatProvider))).HasPathVerbalization(derivationRule))
 			{
-				Role factRole = factRoles[i + unaryRoleOffset].Role;
-				ObjectType rolePlayer = factRole.RolePlayer;
-				string basicReplacement;
-				if (rolePlayer != null)
-				{
-					basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name, rolePlayer.Id.ToString("D"));
-				}
-				else
-				{
-					basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeMissing, isDeontic, isNegative), i + 1);
-				}
-				basicRoleReplacements[i] = basicReplacement;
+				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
+				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, false, isNegative), predicatePartFormatString);
+				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
+				pathVerbalizer.BeginVerbalization();
+				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippets.GetSnippet(derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived ? CoreVerbalizationSnippetType.FullFactTypeDerivation : CoreVerbalizationSnippetType.PartialFactTypeDerivation, false, false), hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, delegate(RoleBase replaceRole)
+					{
+						return pathVerbalizer.RenderAssociatedRolePlayer(replaceRole, false);
+					}), pathVerbalizer.RenderPathVerbalization(null, derivationRule)), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, false, isNegative));
 			}
-			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
-			reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
-			hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
-			FactType.WriteVerbalizerSentence(writer, hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, basicRoleReplacements, true), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+			else
+			{
+				string[] basicRoleReplacements = new string[factArity];
+				for (int i = 0; i < factArity; ++i)
+				{
+					Role factRole = factRoles[i + unaryRoleOffset].Role;
+					ObjectType rolePlayer = factRole.RolePlayer;
+					string basicReplacement;
+					if (rolePlayer != null)
+					{
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name, rolePlayer.Id.ToString("D"));
+					}
+					else
+					{
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeMissing, isDeontic, isNegative), i + 1);
+					}
+					basicRoleReplacements[i] = basicReplacement;
+				}
+				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
+				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
+				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
+				FactType.WriteVerbalizerSentence(writer, hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, basicRoleReplacements, true), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+			}
 			#endregion // Pattern Matches
 			#region Error report
 			if (errorOwner != null)
@@ -1744,7 +1774,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				snippet3Replace1Replace2 = this.Id.ToString("D");
 				snippet3Replace1 = string.Format(writer.FormatProvider, snippet3ReplaceFormat1, snippet3Replace1Replace1, snippet3Replace1Replace2);
 				string snippet3Replace2 = null;
-				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 				snippet3Replace2 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, basicRoleReplacements, true);
 				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat3, snippet3Replace1, snippet3Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
@@ -1813,7 +1843,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						listSnippet = CoreVerbalizationSnippetType.CompoundListSeparator;
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-					reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+					reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 					hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 					snippet4Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, basicRoleReplacements, true);
 					sbTemp.Append(snippet4Replace1);
@@ -1945,7 +1975,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 						else
 						{
-							reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+							reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							snippet8Replace1 = FactType.CreateVerbalizerSentence(hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, basicRoleReplacements, true), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 						}
@@ -2750,7 +2780,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 					allReadingOrders = parentFact.ReadingOrderCollection;
 					factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
-					reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, false);
+					reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.None);
 					if (reading == null)
 					{
 						missingReading1 = true;
@@ -2787,7 +2817,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							allReadingOrders = parentFact.ReadingOrderCollection;
 							factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 							factArity = factRoles.Count;
-							reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true);
+							reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace1ReplaceFactRoleIter1 = 0; snippet1Replace1ReplaceFactRoleIter1 < factArity; ++snippet1Replace1ReplaceFactRoleIter1)
 							{
@@ -2827,7 +2857,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							allReadingOrders = parentFact.ReadingOrderCollection;
 							factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 							factArity = factRoles.Count;
-							reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true);
+							reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace1ReplaceFactRoleIter2 = 0; snippet1Replace1ReplaceFactRoleIter2 < factArity; ++snippet1Replace1ReplaceFactRoleIter2)
 							{
@@ -2909,7 +2939,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							allReadingOrders = parentFact.ReadingOrderCollection;
 							factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 							factArity = factRoles.Count;
-							reading = parentFact.GetMatchingReading(allReadingOrders, null, null, (System.Collections.IList)factRoles, false, false, false, factRoles, true);
+							reading = parentFact.GetMatchingReading(allReadingOrders, null, null, (System.Collections.IList)factRoles, factRoles, MatchingReadingOptions.AllowAnyOrder);
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace1Replace2ReplaceFactRoleIter1 = 0; snippet1Replace1Replace2ReplaceFactRoleIter1 < factArity; ++snippet1Replace1Replace2ReplaceFactRoleIter1)
 							{
@@ -2956,7 +2986,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							allReadingOrders = parentFact.ReadingOrderCollection;
 							factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 							factArity = factRoles.Count;
-							reading = parentFact.GetMatchingReading(allReadingOrders, null, null, (System.Collections.IList)factRoles, false, false, false, factRoles, true);
+							reading = parentFact.GetMatchingReading(allReadingOrders, null, null, (System.Collections.IList)factRoles, factRoles, MatchingReadingOptions.AllowAnyOrder);
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace1Replace2ReplaceFactRoleIter2 = 0; snippet1Replace1Replace2ReplaceFactRoleIter2 < factArity; ++snippet1Replace1Replace2ReplaceFactRoleIter2)
 							{
@@ -2997,7 +3027,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 					allReadingOrders = parentFact.ReadingOrderCollection;
 					factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
-					reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, false);
+					reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.None);
 					if (reading == null)
 					{
 						missingReading1 = true;
@@ -3073,7 +3103,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									listSnippet = CoreVerbalizationSnippetType.CompoundListSeparator;
 								}
 								sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-								reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true);
+								reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 								hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 								for (int snippet1Replace1ReplaceFactRoleIter1 = 0; snippet1Replace1ReplaceFactRoleIter1 < factArity; ++snippet1Replace1ReplaceFactRoleIter1)
 								{
@@ -3158,7 +3188,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									listSnippet = CoreVerbalizationSnippetType.CompoundListSeparator;
 								}
 								sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-								reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true);
+								reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 								hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 								for (int snippet1Replace1ReplaceFactRoleIter2 = 0; snippet1Replace1ReplaceFactRoleIter2 < factArity; ++snippet1Replace1ReplaceFactRoleIter2)
 								{
@@ -3259,7 +3289,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									listSnippet = CoreVerbalizationSnippetType.CompoundListSeparator;
 								}
 								sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-								reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true);
+								reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 								hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 								for (int snippet1Replace1ReplaceFactRoleIter1 = 0; snippet1Replace1ReplaceFactRoleIter1 < factArity; ++snippet1Replace1ReplaceFactRoleIter1)
 								{
@@ -3344,7 +3374,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									listSnippet = CoreVerbalizationSnippetType.CompoundListSeparator;
 								}
 								sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-								reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true);
+								reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 								hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 								for (int snippet1Replace1ReplaceFactRoleIter2 = 0; snippet1Replace1ReplaceFactRoleIter2 < factArity; ++snippet1Replace1ReplaceFactRoleIter2)
 								{
@@ -3496,7 +3526,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				#region Pattern Matches
 				if (includedArity == 1 && factArity == 2 && !isNegative)
 				{
-					reading = parentFact.GetMatchingReading(allReadingOrders, null, null, includedRoles, false, false, false, factRoles, false);
+					reading = parentFact.GetMatchingReading(allReadingOrders, null, null, includedRoles, factRoles, MatchingReadingOptions.None);
 					hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 					if (reading != null)
 					{
@@ -3527,7 +3557,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					else
 					{
-						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 						if (reading != null)
 						{
@@ -3576,7 +3606,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							string snippet1Replace2 = null;
 							string snippet1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 							string snippet1Replace2Replace1 = null;
-							reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+							reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace2ReplaceFactRoleIter1 = 0; snippet1Replace2ReplaceFactRoleIter1 < factArity; ++snippet1Replace2ReplaceFactRoleIter1)
 							{
@@ -3642,7 +3672,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				else if (includedArity == 1 && factArity == 2)
 				{
-					reading = parentFact.GetMatchingReading(allReadingOrders, null, null, includedRoles, false, false, false, factRoles, true);
+					reading = parentFact.GetMatchingReading(allReadingOrders, null, null, includedRoles, factRoles, MatchingReadingOptions.AllowAnyOrder);
 					hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 					verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 					string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ForEachCompactQuantifier, isDeontic, isNegative);
@@ -3800,7 +3830,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				#region Pattern Matches
 				if (factArity == 2)
 				{
-					reading = parentFact.GetMatchingReading(allReadingOrders, null, null, includedRoles, false, false, false, factRoles, false);
+					reading = parentFact.GetMatchingReading(allReadingOrders, null, null, includedRoles, factRoles, MatchingReadingOptions.None);
 					hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 					if (reading != null)
 					{
@@ -3831,7 +3861,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					else
 					{
-						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 						if (reading != null)
 						{
@@ -3880,7 +3910,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							string snippet1Replace2 = null;
 							string snippet1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 							string snippet1Replace2Replace1 = null;
-							reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+							reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace2ReplaceFactRoleIter1 = 0; snippet1Replace2ReplaceFactRoleIter1 < factArity; ++snippet1Replace2ReplaceFactRoleIter1)
 							{
@@ -3993,7 +4023,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 					string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
 					string snippet1Replace1 = null;
-					reading = parentFact.GetMatchingReading(allReadingOrders, null, null, includedRoles, true, false, false, factRoles, true);
+					reading = parentFact.GetMatchingReading(allReadingOrders, null, null, includedRoles, factRoles, MatchingReadingOptions.InvertLeadRoles | MatchingReadingOptions.AllowAnyOrder);
 					hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 					for (int snippet1ReplaceFactRoleIter1 = 0; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
 					{
@@ -4194,7 +4224,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				#region Pattern Matches
 				if (factArity == 2 && !isNegative)
 				{
-					reading = parentFact.GetMatchingReading(allReadingOrders, null, null, includedRoles, false, false, false, factRoles, false);
+					reading = parentFact.GetMatchingReading(allReadingOrders, null, null, includedRoles, factRoles, MatchingReadingOptions.None);
 					hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 					if (reading != null)
 					{
@@ -4225,7 +4255,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					else
 					{
-						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 						if (reading != null)
 						{
@@ -4274,7 +4304,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							string snippet1Replace2 = null;
 							string snippet1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 							string snippet1Replace2Replace1 = null;
-							reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+							reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace2ReplaceFactRoleIter1 = 0; snippet1Replace2ReplaceFactRoleIter1 < factArity; ++snippet1Replace2ReplaceFactRoleIter1)
 							{
@@ -4601,7 +4631,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				string snippet1Replace1 = null;
 				string snippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.UniversalQuantifier, isDeontic, isNegative);
 				string snippet1Replace1Replace1 = null;
-				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 				snippet1Replace1Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, allBasicRoleReplacements[0], true);
 				snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1);
@@ -4612,7 +4642,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				parentFact = allFacts[0];
 				predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 				allReadingOrders = parentFact.ReadingOrderCollection;
-				reading = parentFact.GetMatchingReading(allReadingOrders, null, null, allConstraintRoles, false, false, false, factRoles, false);
+				reading = parentFact.GetMatchingReading(allReadingOrders, null, null, allConstraintRoles, factRoles, MatchingReadingOptions.None);
 				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 				if (reading != null)
 				{
@@ -4643,7 +4673,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				else
 				{
-					reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+					reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 					hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 					if (reading != null)
 					{
@@ -4692,7 +4722,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						string snippet1Replace2 = null;
 						string snippet1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 						string snippet1Replace2Replace1 = null;
-						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 						for (int snippet1Replace2ReplaceFactRoleIter1 = 0; snippet1Replace2ReplaceFactRoleIter1 < factArity; ++snippet1Replace2ReplaceFactRoleIter1)
 						{
@@ -4724,7 +4754,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				parentFact = allFacts[0];
 				predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 				allReadingOrders = parentFact.ReadingOrderCollection;
-				reading = parentFact.GetMatchingReading(allReadingOrders, null, null, allConstraintRoles, false, false, false, factRoles, false);
+				reading = parentFact.GetMatchingReading(allReadingOrders, null, null, allConstraintRoles, factRoles, MatchingReadingOptions.None);
 				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 				if (reading != null)
 				{
@@ -4755,7 +4785,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				else
 				{
-					reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+					reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 					hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 					if (reading != null)
 					{
@@ -4804,7 +4834,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						string snippet1Replace2 = null;
 						string snippet1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 						string snippet1Replace2Replace1 = null;
-						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 						for (int snippet1Replace2ReplaceFactRoleIter1 = 0; snippet1Replace2ReplaceFactRoleIter1 < factArity; ++snippet1Replace2ReplaceFactRoleIter1)
 						{
@@ -4895,7 +4925,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 					snippet1Replace1Replace2 = null;
-					reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+					reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 					hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 					snippet1Replace1Replace2 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, basicRoleReplacements, true);
 					sbTemp.Append(snippet1Replace1Replace2);
@@ -4918,7 +4948,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 					allReadingOrders = parentFact.ReadingOrderCollection;
 					factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
-					reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, true, false, factRoles, false);
+					reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.NoFrontText);
 					if (reading == null)
 					{
 						missingReading1 = true;
@@ -5070,7 +5100,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							listSnippet = CoreVerbalizationSnippetType.SimpleLogicalOrListSeparator;
 						}
 						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-						reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, true, false, factRoles, true);
+						reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.NoFrontText | MatchingReadingOptions.AllowAnyOrder);
 						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 						for (int snippet1Replace2ReplaceFactRoleIter1 = 0; snippet1Replace2ReplaceFactRoleIter1 < factArity; ++snippet1Replace2ReplaceFactRoleIter1)
 						{
@@ -5109,7 +5139,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 					allReadingOrders = parentFact.ReadingOrderCollection;
 					factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
-					reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, true, false, factRoles, false);
+					reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.NoFrontText);
 					if (reading == null)
 					{
 						missingReading1 = true;
@@ -5383,7 +5413,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								listSnippet = CoreVerbalizationSnippetType.IndentedLogicalOrListSeparator;
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-							reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, true, false, factRoles, true);
+							reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.NoFrontText | MatchingReadingOptions.AllowAnyOrder);
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace2Replace1ItemFactRoleIter1 = 0; snippet1Replace2Replace1ItemFactRoleIter1 < factArity; ++snippet1Replace2Replace1ItemFactRoleIter1)
 							{
@@ -5447,7 +5477,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								listSnippet = CoreVerbalizationSnippetType.IndentedLogicalOrListSeparator;
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-							reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+							reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace2Replace1ItemFactRoleIter2 = 0; snippet1Replace2Replace1ItemFactRoleIter2 < factArity; ++snippet1Replace2Replace1ItemFactRoleIter2)
 							{
@@ -5792,7 +5822,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				snippet1Replace1Replace1Replace1 = sbTemp.ToString();
 				snippet1Replace1Replace1 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat1, snippet1Replace1Replace1Replace1);
 				string snippet1Replace1Replace2 = null;
-				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 				snippet1Replace1Replace2 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, allBasicRoleReplacements[0], true);
 				snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1, snippet1Replace1Replace2);
@@ -5831,7 +5861,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				parentFact = allFacts[0];
 				predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 				allReadingOrders = parentFact.ReadingOrderCollection;
-				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
@@ -5953,7 +5983,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						listSnippet = CoreVerbalizationSnippetType.TopLevelIndentedLogicalAndListSeparator;
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-					reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true);
+					reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 					hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 					for (int snippet1ReplaceFactRoleIter1 = 0; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
 					{
@@ -6033,7 +6063,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				snippet2Replace1Replace1Replace1 = string.Format(writer.FormatProvider, snippet2Replace1Replace1ReplaceFormat1, snippet2Replace1Replace1Replace1Replace1);
 				snippet2Replace1Replace1 = string.Format(writer.FormatProvider, snippet2Replace1ReplaceFormat1, snippet2Replace1Replace1Replace1);
 				string snippet2Replace1Replace2 = null;
-				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 				snippet2Replace1Replace2 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, allBasicRoleReplacements[0], true);
 				snippet2Replace1 = string.Format(writer.FormatProvider, snippet2ReplaceFormat1, snippet2Replace1Replace1, snippet2Replace1Replace2);
@@ -6132,7 +6162,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						listSnippet = CoreVerbalizationSnippetType.TopLevelIndentedLogicalAndListSeparator;
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-					reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true);
+					reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 					hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 					for (int snippet1ReplaceFactRoleIter1 = 0; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
 					{
@@ -6162,7 +6192,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				snippet1Replace1 = sbTemp.ToString();
 				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, false));
-				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
@@ -6277,7 +6307,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				parentFact = allFacts[0];
 				predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 				allReadingOrders = parentFact.ReadingOrderCollection;
-				reading = parentFact.GetMatchingReading(allReadingOrders, null, null, allConstraintRoles, false, false, false, factRoles, false);
+				reading = parentFact.GetMatchingReading(allReadingOrders, null, null, allConstraintRoles, factRoles, MatchingReadingOptions.None);
 				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 				if (reading != null)
 				{
@@ -6308,7 +6338,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				else
 				{
-					reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+					reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 					hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 					if (reading != null)
 					{
@@ -6357,7 +6387,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						string snippet1Replace2 = null;
 						string snippet1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 						string snippet1Replace2Replace1 = null;
-						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 						for (int snippet1Replace2ReplaceFactRoleIter1 = 0; snippet1Replace2ReplaceFactRoleIter1 < factArity; ++snippet1Replace2ReplaceFactRoleIter1)
 						{
@@ -6442,7 +6472,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				parentFact = allFacts[0];
 				predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 				allReadingOrders = parentFact.ReadingOrderCollection;
-				reading = parentFact.GetMatchingReading(allReadingOrders, null, null, allConstraintRoles, false, false, false, factRoles, true);
+				reading = parentFact.GetMatchingReading(allReadingOrders, null, null, allConstraintRoles, factRoles, MatchingReadingOptions.AllowAnyOrder);
 				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ForEachCompactQuantifier, isDeontic, isNegative);
@@ -6573,7 +6603,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
 				string snippet1Replace1 = null;
-				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 				for (int snippet1ReplaceFactRoleIter1 = 0; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
 				{
@@ -6655,7 +6685,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				parentFact = allFacts[0];
 				predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 				allReadingOrders = parentFact.ReadingOrderCollection;
-				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ForEachIndentedQuantifier, isDeontic, isNegative);
@@ -6788,7 +6818,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 					allReadingOrders = parentFact.ReadingOrderCollection;
 					factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
-					reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, true, true, false, factRoles, false);
+					reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.InvertLeadRoles | MatchingReadingOptions.NoFrontText);
 					if (reading == null)
 					{
 						missingReading1 = true;
@@ -6841,7 +6871,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							listSnippet = CoreVerbalizationSnippetType.SimpleListSeparator;
 						}
 						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 						int ResolvedRoleIndex1 = unaryReplacements[contextBasicReplacementIndex] ? 0 : FactType.IndexOfRole(factRoles, primaryRole);
 						sbTemp.Append(hyphenBinder.HyphenBindRoleReplacement(basicRoleReplacements[ResolvedRoleIndex1], ResolvedRoleIndex1));
@@ -6971,7 +7001,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 						snippet1Replace1 = null;
-						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 						snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, basicRoleReplacements, true);
 						sbTemp.Append(snippet1Replace1);
@@ -7145,7 +7175,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 					allReadingOrders = parentFact.ReadingOrderCollection;
 					factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
-					reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, true, true, false, factRoles, false);
+					reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.InvertLeadRoles | MatchingReadingOptions.NoFrontText);
 					if (reading == null)
 					{
 						missingReading1 = true;
@@ -7279,7 +7309,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 						snippet1Replace1 = null;
-						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 						snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, basicRoleReplacements, true);
 						sbTemp.Append(snippet1Replace1);
@@ -7714,7 +7744,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				parentFact = allFacts[0];
 				predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 				allReadingOrders = parentFact.ReadingOrderCollection;
-				reading = parentFact.GetMatchingReading(allReadingOrders, null, null, allConstraintRoles, false, false, false, factRoles, false);
+				reading = parentFact.GetMatchingReading(allReadingOrders, null, null, allConstraintRoles, factRoles, MatchingReadingOptions.None);
 				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 				if (reading != null)
 				{
@@ -7752,7 +7782,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				else
 				{
-					reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+					reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 					hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 					if (reading != null)
 					{
@@ -7779,7 +7809,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 						snippet1Replace1Replace1 = sbTemp.ToString();
 						string snippet1Replace1Replace2 = null;
-						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 						snippet1Replace1Replace2 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, allBasicRoleReplacements[0], true);
 						string snippet1Replace1Replace3 = null;
@@ -7893,7 +7923,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					snippet1Replace1Replace1 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat1, snippet1Replace1Replace1Replace1);
 				}
 				string snippet1Replace1Replace2 = null;
-				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 				snippet1Replace1Replace2 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, allBasicRoleReplacements[0], true);
 				string snippet1Replace1Replace3 = null;
@@ -7969,7 +7999,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 					snippet1Replace1 = null;
-					reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+					reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 					hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 					snippet1Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, basicRoleReplacements, true);
 					sbTemp.Append(snippet1Replace1);
@@ -8340,7 +8370,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			else
 			{
-				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 				string variableSnippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.InQuantifier, isDeontic, isNegative);
 				string variableSnippet1Replace1Replace1 = null;
@@ -9187,7 +9217,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					parentFact = allFacts[0];
 					predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 					allReadingOrders = parentFact.ReadingOrderCollection;
-					reading = parentFact.GetMatchingReading(allReadingOrders, null, null, allConstraintRoles, false, false, false, factRoles, true);
+					reading = parentFact.GetMatchingReading(allReadingOrders, null, null, allConstraintRoles, factRoles, MatchingReadingOptions.AllowAnyOrder);
 					hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 					verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 					string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
@@ -9228,7 +9258,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					parentFact = allFacts[0];
 					predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 					allReadingOrders = parentFact.ReadingOrderCollection;
-					reading = parentFact.GetMatchingReading(allReadingOrders, null, null, allConstraintRoles, false, false, false, factRoles, true);
+					reading = parentFact.GetMatchingReading(allReadingOrders, null, null, allConstraintRoles, factRoles, MatchingReadingOptions.AllowAnyOrder);
 					hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 					verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 					string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
@@ -9460,7 +9490,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity && snippet1Replace1ReplaceIsFirstPass1; ++RoleIter1)
 					{
 						RoleBase primaryRole = allConstraintRoles[RoleIter1];
-						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true)) != null)
+						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.AllowAnyOrder)) != null)
 						{
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace1ReplaceFactRoleIter1 = 0; snippet1Replace1ReplaceFactRoleIter1 < factArity; ++snippet1Replace1ReplaceFactRoleIter1)
@@ -9542,7 +9572,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity && snippet1Replace2ReplaceIsFirstPass1; ++RoleIter1)
 					{
 						RoleBase primaryRole = allConstraintRoles[RoleIter1];
-						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true)) != null)
+						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.AllowAnyOrder)) != null)
 						{
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace2ReplaceFactRoleIter1 = 0; snippet1Replace2ReplaceFactRoleIter1 < factArity; ++snippet1Replace2ReplaceFactRoleIter1)
@@ -9598,7 +9628,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity && snippet1Replace1ReplaceIsFirstPass1; ++RoleIter1)
 					{
 						RoleBase primaryRole = allConstraintRoles[RoleIter1];
-						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true)) != null)
+						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.AllowAnyOrder)) != null)
 						{
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace1ReplaceFactRoleIter1 = 0; snippet1Replace1ReplaceFactRoleIter1 < factArity; ++snippet1Replace1ReplaceFactRoleIter1)
@@ -9680,7 +9710,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity && snippet1Replace2ReplaceIsFirstPass1; ++RoleIter1)
 					{
 						RoleBase primaryRole = allConstraintRoles[RoleIter1];
-						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true)) != null)
+						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.AllowAnyOrder)) != null)
 						{
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace2ReplaceFactRoleIter1 = 0; snippet1Replace2ReplaceFactRoleIter1 < factArity; ++snippet1Replace2ReplaceFactRoleIter1)
@@ -9878,7 +9908,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity && snippet1ReplaceIsFirstPass1; ++RoleIter1)
 					{
 						RoleBase primaryRole = allConstraintRoles[RoleIter1];
-						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true)) != null)
+						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.AllowAnyOrder)) != null)
 						{
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1ReplaceFactRoleIter1 = 0; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
@@ -9920,7 +9950,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity && snippet1Replace2ReplaceIsFirstPass1; ++RoleIter1)
 					{
 						RoleBase primaryRole = allConstraintRoles[RoleIter1];
-						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true)) != null)
+						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.AllowAnyOrder)) != null)
 						{
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace2ReplaceFactRoleIter1 = 0; snippet1Replace2ReplaceFactRoleIter1 < factArity; ++snippet1Replace2ReplaceFactRoleIter1)
@@ -9974,7 +10004,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity && snippet1ReplaceIsFirstPass1; ++RoleIter1)
 					{
 						RoleBase primaryRole = allConstraintRoles[RoleIter1];
-						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true)) != null)
+						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.AllowAnyOrder)) != null)
 						{
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1ReplaceFactRoleIter1 = 0; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
@@ -10016,7 +10046,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity && snippet1Replace2ReplaceIsFirstPass1; ++RoleIter1)
 					{
 						RoleBase primaryRole = allConstraintRoles[RoleIter1];
-						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true)) != null)
+						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.AllowAnyOrder)) != null)
 						{
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace2ReplaceFactRoleIter1 = 0; snippet1Replace2ReplaceFactRoleIter1 < factArity; ++snippet1Replace2ReplaceFactRoleIter1)
@@ -10199,7 +10229,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					parentFact = allFacts[0];
 					predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 					allReadingOrders = parentFact.ReadingOrderCollection;
-					reading = parentFact.GetMatchingReading(allReadingOrders, null, null, allConstraintRoles, false, true, false, factRoles, false);
+					reading = parentFact.GetMatchingReading(allReadingOrders, null, null, allConstraintRoles, factRoles, MatchingReadingOptions.NoFrontText);
 					hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 					if (reading != null)
 					{
@@ -10218,7 +10248,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity && snippet1ReplaceIsFirstPass1; ++RoleIter1)
 						{
 							RoleBase primaryRole = allConstraintRoles[RoleIter1];
-							if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, true, false, factRoles, false)) != null)
+							if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.NoFrontText)) != null)
 							{
 								hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 								for (int snippet1ReplaceFactRoleIter1 = 0; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
@@ -10261,7 +10291,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					parentFact = allFacts[0];
 					predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 					allReadingOrders = parentFact.ReadingOrderCollection;
-					reading = parentFact.GetMatchingReading(allReadingOrders, null, null, allConstraintRoles, false, true, false, factRoles, false);
+					reading = parentFact.GetMatchingReading(allReadingOrders, null, null, allConstraintRoles, factRoles, MatchingReadingOptions.NoFrontText);
 					hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 					if (reading != null)
 					{
@@ -10280,7 +10310,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity && snippet1ReplaceIsFirstPass1; ++RoleIter1)
 						{
 							RoleBase primaryRole = allConstraintRoles[RoleIter1];
-							if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, true, false, factRoles, false)) != null)
+							if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.NoFrontText)) != null)
 							{
 								hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 								for (int snippet1ReplaceFactRoleIter1 = 0; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
@@ -10315,7 +10345,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					else
 					{
-						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 						if (reading != null)
 						{
@@ -10334,7 +10364,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity && snippet1ReplaceIsFirstPass1; ++RoleIter1)
 							{
 								RoleBase primaryRole = allConstraintRoles[RoleIter1];
-								if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true)) != null)
+								if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.AllowAnyOrder)) != null)
 								{
 									hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 									for (int snippet1ReplaceFactRoleIter1 = 0; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
@@ -10538,7 +10568,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity && snippet1Replace1ReplaceIsFirstPass1; ++RoleIter1)
 					{
 						RoleBase primaryRole = allConstraintRoles[RoleIter1];
-						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true)) != null)
+						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.AllowAnyOrder)) != null)
 						{
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace1ReplaceFactRoleIter1 = 0; snippet1Replace1ReplaceFactRoleIter1 < factArity; ++snippet1Replace1ReplaceFactRoleIter1)
@@ -10579,7 +10609,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					for (int RoleIter2 = 0; RoleIter2 < constraintRoleArity && snippet1Replace1ReplaceIsFirstPass2; ++RoleIter2)
 					{
 						RoleBase primaryRole = allConstraintRoles[RoleIter2];
-						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true)) != null)
+						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.AllowAnyOrder)) != null)
 						{
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace1ReplaceFactRoleIter2 = 0; snippet1Replace1ReplaceFactRoleIter2 < factArity; ++snippet1Replace1ReplaceFactRoleIter2)
@@ -10630,7 +10660,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity && snippet1Replace2ReplaceIsFirstPass1; ++RoleIter1)
 					{
 						RoleBase primaryRole = allConstraintRoles[RoleIter1];
-						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true)) != null)
+						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.AllowAnyOrder)) != null)
 						{
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace2ReplaceFactRoleIter1 = 0; snippet1Replace2ReplaceFactRoleIter1 < factArity; ++snippet1Replace2ReplaceFactRoleIter1)
@@ -10690,7 +10720,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity && snippet1Replace1ReplaceIsFirstPass1; ++RoleIter1)
 					{
 						RoleBase primaryRole = allConstraintRoles[RoleIter1];
-						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, false)) != null)
+						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.None)) != null)
 						{
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace1ReplaceFactRoleIter1 = 0; snippet1Replace1ReplaceFactRoleIter1 < factArity; ++snippet1Replace1ReplaceFactRoleIter1)
@@ -10734,7 +10764,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					for (int RoleIter2 = 0; RoleIter2 < constraintRoleArity && snippet1Replace1ReplaceIsFirstPass2; ++RoleIter2)
 					{
 						RoleBase primaryRole = allConstraintRoles[RoleIter2];
-						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, false)) != null)
+						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.None)) != null)
 						{
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace1ReplaceFactRoleIter2 = 0; snippet1Replace1ReplaceFactRoleIter2 < factArity; ++snippet1Replace1ReplaceFactRoleIter2)
@@ -10785,7 +10815,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity && snippet1Replace2ReplaceIsFirstPass1; ++RoleIter1)
 					{
 						RoleBase primaryRole = allConstraintRoles[RoleIter1];
-						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, false)) != null)
+						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.None)) != null)
 						{
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace2ReplaceFactRoleIter1 = 0; snippet1Replace2ReplaceFactRoleIter1 < factArity; ++snippet1Replace2ReplaceFactRoleIter1)
@@ -10841,7 +10871,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity && snippet1Replace1ReplaceIsFirstPass1; ++RoleIter1)
 					{
 						RoleBase primaryRole = allConstraintRoles[RoleIter1];
-						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true)) != null)
+						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.AllowAnyOrder)) != null)
 						{
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace1ReplaceFactRoleIter1 = 0; snippet1Replace1ReplaceFactRoleIter1 < factArity; ++snippet1Replace1ReplaceFactRoleIter1)
@@ -10875,7 +10905,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					for (int RoleIter2 = 0; RoleIter2 < constraintRoleArity && snippet1Replace1ReplaceIsFirstPass2; ++RoleIter2)
 					{
 						RoleBase primaryRole = allConstraintRoles[RoleIter2];
-						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true)) != null)
+						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.AllowAnyOrder)) != null)
 						{
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace1ReplaceFactRoleIter2 = 0; snippet1Replace1ReplaceFactRoleIter2 < factArity; ++snippet1Replace1ReplaceFactRoleIter2)
@@ -10926,7 +10956,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity && snippet1Replace2ReplaceIsFirstPass1; ++RoleIter1)
 					{
 						RoleBase primaryRole = allConstraintRoles[RoleIter1];
-						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true)) != null)
+						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.AllowAnyOrder)) != null)
 						{
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace2ReplaceFactRoleIter1 = 0; snippet1Replace2ReplaceFactRoleIter1 < factArity; ++snippet1Replace2ReplaceFactRoleIter1)
@@ -11130,7 +11160,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity && snippet1Replace1ReplaceIsFirstPass1; ++RoleIter1)
 					{
 						RoleBase primaryRole = allConstraintRoles[RoleIter1];
-						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true)) != null)
+						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.AllowAnyOrder)) != null)
 						{
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace1ReplaceFactRoleIter1 = 0; snippet1Replace1ReplaceFactRoleIter1 < factArity; ++snippet1Replace1ReplaceFactRoleIter1)
@@ -11170,7 +11200,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					for (int RoleIter2 = 0; RoleIter2 < constraintRoleArity && snippet1Replace1ReplaceIsFirstPass2; ++RoleIter2)
 					{
 						RoleBase primaryRole = allConstraintRoles[RoleIter2];
-						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true)) != null)
+						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.AllowAnyOrder)) != null)
 						{
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace1ReplaceFactRoleIter2 = 0; snippet1Replace1ReplaceFactRoleIter2 < factArity; ++snippet1Replace1ReplaceFactRoleIter2)
@@ -11226,7 +11256,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity && snippet1Replace1ReplaceIsFirstPass1; ++RoleIter1)
 					{
 						RoleBase primaryRole = allConstraintRoles[RoleIter1];
-						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true)) != null)
+						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.AllowAnyOrder)) != null)
 						{
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace1ReplaceFactRoleIter1 = 0; snippet1Replace1ReplaceFactRoleIter1 < factArity; ++snippet1Replace1ReplaceFactRoleIter1)
@@ -11266,7 +11296,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					for (int RoleIter2 = 0; RoleIter2 < constraintRoleArity && snippet1Replace1ReplaceIsFirstPass2; ++RoleIter2)
 					{
 						RoleBase primaryRole = allConstraintRoles[RoleIter2];
-						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true)) != null)
+						if ((reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.AllowAnyOrder)) != null)
 						{
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace1ReplaceFactRoleIter2 = 0; snippet1Replace1ReplaceFactRoleIter2 < factArity; ++snippet1Replace1ReplaceFactRoleIter2)
@@ -11567,7 +11597,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						allReadingOrders = parentFact.ReadingOrderCollection;
 						factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 						factArity = factRoles.Count;
-						reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true);
+						reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 						for (int snippet1Replace1Replace2ReplaceFactRoleIter1 = 0; snippet1Replace1Replace2ReplaceFactRoleIter1 < factArity; ++snippet1Replace1Replace2ReplaceFactRoleIter1)
 						{
@@ -11614,7 +11644,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						allReadingOrders = parentFact.ReadingOrderCollection;
 						factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 						factArity = factRoles.Count;
-						reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true);
+						reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 						for (int snippet1Replace1Replace2ReplaceFactRoleIter2 = 0; snippet1Replace1Replace2ReplaceFactRoleIter2 < factArity; ++snippet1Replace1Replace2ReplaceFactRoleIter2)
 						{
@@ -11722,7 +11752,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						allReadingOrders = parentFact.ReadingOrderCollection;
 						factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 						factArity = factRoles.Count;
-						reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true);
+						reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 						for (int snippet1Replace1Replace2ReplaceFactRoleIter1 = 0; snippet1Replace1Replace2ReplaceFactRoleIter1 < factArity; ++snippet1Replace1Replace2ReplaceFactRoleIter1)
 						{
@@ -11769,7 +11799,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						allReadingOrders = parentFact.ReadingOrderCollection;
 						factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 						factArity = factRoles.Count;
-						reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true);
+						reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 						for (int snippet1Replace1Replace2ReplaceFactRoleIter2 = 0; snippet1Replace1Replace2ReplaceFactRoleIter2 < factArity; ++snippet1Replace1Replace2ReplaceFactRoleIter2)
 						{
@@ -11921,7 +11951,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								listSnippet = CoreVerbalizationSnippetType.MultilineIndentedCompoundListSeparator;
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-							reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true);
+							reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace1Replace2Replace1ItemFactRoleIter1 = 0; snippet1Replace1Replace2Replace1ItemFactRoleIter1 < factArity; ++snippet1Replace1Replace2Replace1ItemFactRoleIter1)
 							{
@@ -12330,7 +12360,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								listSnippet = CoreVerbalizationSnippetType.MultilineIndentedCompoundListSeparator;
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-							reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true);
+							reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace1Replace2Replace1ItemFactRoleIter1 = 0; snippet1Replace1Replace2Replace1ItemFactRoleIter1 < factArity; ++snippet1Replace1Replace2Replace1ItemFactRoleIter1)
 							{
@@ -12374,12 +12404,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					Role testLeadRole = allConstraintSequences[0][testColumnIndex];
 					parentFact = testLeadRole.FactType;
 					predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
-					if (parentFact.GetMatchingReading(parentFact.ReadingOrderCollection, null, testLeadRole, null, false, true, true, null, false) != null)
+					if (parentFact.GetMatchingReading(parentFact.ReadingOrderCollection, null, testLeadRole, null, null, MatchingReadingOptions.NoFrontText | MatchingReadingOptions.NotHyphenBound) != null)
 					{
 						testLeadRole = allConstraintSequences[1][testColumnIndex];
 						parentFact = testLeadRole.FactType;
 						predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
-						if (parentFact.GetMatchingReading(parentFact.ReadingOrderCollection, null, testLeadRole, null, false, true, true, null, false) != null)
+						if (parentFact.GetMatchingReading(parentFact.ReadingOrderCollection, null, testLeadRole, null, null, MatchingReadingOptions.NoFrontText | MatchingReadingOptions.NotHyphenBound) != null)
 						{
 							binaryLeadReadingColumnIndex = testColumnIndex;
 							break;
@@ -12481,7 +12511,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListSeparator;
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-							reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, true, true, factRoles, true);
+							reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.NoFrontText | MatchingReadingOptions.NotHyphenBound | MatchingReadingOptions.AllowAnyOrder);
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace1Replace1Replace2ItemFactRoleIter1 = 0; snippet1Replace1Replace1Replace2ItemFactRoleIter1 < factArity; ++snippet1Replace1Replace1Replace2ItemFactRoleIter1)
 							{
@@ -12576,7 +12606,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListSeparator;
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-							reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, true, true, factRoles, true);
+							reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.NoFrontText | MatchingReadingOptions.NotHyphenBound | MatchingReadingOptions.AllowAnyOrder);
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace1Replace1Replace2ItemFactRoleIter1 = 0; snippet1Replace1Replace1Replace2ItemFactRoleIter1 < factArity; ++snippet1Replace1Replace1Replace2ItemFactRoleIter1)
 							{
@@ -12766,7 +12796,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									listSnippet = CoreVerbalizationSnippetType.MultilineIndentedCompoundListSeparator;
 								}
 								sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-								reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+								reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 								hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 								for (int snippet1Replace1Replace2Replace1ItemFactRoleIter1 = 0; snippet1Replace1Replace2Replace1ItemFactRoleIter1 < factArity; ++snippet1Replace1Replace2Replace1ItemFactRoleIter1)
 								{
@@ -12925,7 +12955,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								listSnippet = CoreVerbalizationSnippetType.MultilineIndentedCompoundListSeparator;
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-							reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, false, factRoles, true);
+							reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 							for (int snippet1Replace1Replace2Replace1ItemFactRoleIter1 = 0; snippet1Replace1Replace2Replace1ItemFactRoleIter1 < factArity; ++snippet1Replace1Replace2Replace1ItemFactRoleIter1)
 							{
@@ -13249,7 +13279,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				#endregion // Preliminary
 				#region Pattern Matches
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
-				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, false, factRoles, true);
+				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 				FactType.WriteVerbalizerSentence(writer, hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, basicRoleReplacements, true), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 				if (objectifyingInstance != null)
