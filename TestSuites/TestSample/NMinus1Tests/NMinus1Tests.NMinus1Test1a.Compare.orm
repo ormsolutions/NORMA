@@ -467,7 +467,7 @@
 			</ormDiagram:ObjectTypeShape>
 			<ormDiagram:FactTypeShape id="_CE23A438-DDA2-4D12-9523-06C5060C599E" IsExpanded="true" AbsoluteBounds="2.1875, 1.7875, 0.5438888889923692, 0.24388888899236916">
 				<ormDiagram:RelativeShapes>
-					<ormDiagram:ReadingShape id="_D7FE3C29-C834-4E34-9AFD-9D0DA9070D99" IsExpanded="true" AbsoluteBounds="2.1875, 2.0500000000000003, 0.8125, 0.125">
+					<ormDiagram:ReadingShape id="_D7FE3C29-C834-4E34-9AFD-9D0DA9070D99" IsExpanded="true" AbsoluteBounds="2.1875, 2.0500000000000003, 0.81412529945373535, 0.12950302660465241">
 						<ormDiagram:Subject ref="_F950097E-AE89-41FB-A35F-290CA84963B8" />
 					</ormDiagram:ReadingShape>
 				</ormDiagram:RelativeShapes>

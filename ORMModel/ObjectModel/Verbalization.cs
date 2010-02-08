@@ -1597,15 +1597,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					formatText,
 					formatProvider,
 					predicatePartDecorator,
-					delegate(int fieldIndex)
-					{
-						// The default order passed in here is assumed to be the same one
-						// passed to the constructor. If the format is modified, then the
-						// replacement fields have been reordered in the format string to
-						// correspond to this order, so there is no translation needed here.
-						string useFormat = formatFields[fieldIndex];
-						return (useFormat == null) ? replacementProvider(defaultOrder[fieldIndex]) : string.Format(formatProvider, useFormat, replacementProvider(defaultOrder[fieldIndex]));
-					});
+					(formatFields == null) ?
+						(ReadingTextFieldReplace)delegate(int fieldIndex)
+						{
+							return replacementProvider(defaultOrder[fieldIndex]);
+						} :
+						delegate(int fieldIndex)
+						{
+							// The default order passed in here is assumed to be the same one
+							// passed to the constructor. If the format is modified, then the
+							// replacement fields have been reordered in the format string to
+							// correspond to this order, so there is no translation needed here.
+							string useFormat = formatFields[fieldIndex];
+							return (useFormat == null) ? replacementProvider(defaultOrder[fieldIndex]) : string.Format(formatProvider, useFormat, replacementProvider(defaultOrder[fieldIndex]));
+						});
 			}
 		}
 		#endregion // Member Functions
@@ -3705,7 +3710,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			public RelatedRolePlayerVariables(RolePlayerVariable rolePlayerVariable, bool usedFullyExistentially)
 			{
 				myHeadNode = rolePlayerVariable != null ? new LinkedNode<RolePlayerVariable>(rolePlayerVariable) : null;
-				myUsedFullyExistentially = false;
+				myUsedFullyExistentially = usedFullyExistentially;
 			}
 			/// <summary>
 			/// The head <see cref="ObjectType"/> node. This
@@ -5044,12 +5049,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					// UNDONE: RolePathCombination verbalization
 				}
 			}
-			RolePlayerVariable contextLeadVariable = null;
-			RolePlayerVariable contextTrailingVariable = null;
-			ResolveReadings(myRootPlanNode, null, false, ref contextLeadVariable, ref contextTrailingVariable);
 			VerbalizationPlanNode newRootNode = myRootPlanNode;
 			if (newRootNode != null)
 			{
+				RolePlayerVariable contextLeadVariable = null;
+				RolePlayerVariable contextTrailingVariable = null;
+				ResolveReadings(newRootNode, null, false, ref contextLeadVariable, ref contextTrailingVariable);
+
 				Dictionary<RolePathOwner, VerbalizationPlanNode> planMap = myPathOwnerToVerbalizationPlanMap;
 				if (planMap != null)
 				{

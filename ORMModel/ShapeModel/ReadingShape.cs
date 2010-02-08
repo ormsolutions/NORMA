@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -595,7 +596,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					}
 					else
 					{
-						// UNDONE: Unary binarization is likely to hit this assert
 						Debug.Assert(roleCount == 2, "A unary fact should not have more than one reading order.");
 						ReadingOrder firstOrder;
 						ReadingOrder secondOrder;
@@ -620,23 +620,54 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					{
 						LinkedElementCollection<RoleBase> factRoles = factShape.DisplayedRoleOrder;
 						string[] roleTranslator = new string[roleCount];
-						for (int readRoleNum = 0; readRoleNum < roleCount; ++readRoleNum)
+						bool reverseNumbering = factShape.DisplayOrientation == DisplayOrientation.VerticalRotatedLeft; // Number top down, not bottom up
+						BitTracker fullyProcessed = new BitTracker(roleCount);
+						for (int readingRoleIndex = 0; readingRoleIndex < roleCount; ++readingRoleIndex)
 						{
-							RoleBase currentRole = orderedRoles[readRoleNum];
+							RoleBase currentRole = orderedRoles[readingRoleIndex];
 							ObjectType rolePlayer = currentRole.Role.RolePlayer;
-							string formatString;
-							string replacementField;
 							if (rolePlayer == null)
 							{
-								replacementField = (factRoles.IndexOf(currentRole) + 1).ToString(CultureInfo.InvariantCulture);
-								formatString = ResourceStrings.ReadingShapeUnattachedRoleDisplay;
+								roleTranslator[readingRoleIndex] = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ReadingShapeUnattachedRoleDisplay, reverseNumbering ? roleCount - factRoles.IndexOf(currentRole) : factRoles.IndexOf(currentRole) + 1);
+								fullyProcessed[readingRoleIndex] = true;
 							}
 							else
 							{
-								replacementField = rolePlayer.Name;
-								formatString = ResourceStrings.ReadingShapeAttachedRoleDisplay;
+								roleTranslator[readingRoleIndex] = rolePlayer.Name;
+								// Decorate later when we can look for duplicated names and
+								// add additional diplayed role index information.
 							}
-							roleTranslator[readRoleNum] = string.Format(CultureInfo.InvariantCulture, formatString, replacementField);
+						}
+
+						// Second pass, look for duplicates
+						for (int readingRoleIndex = 0; readingRoleIndex < roleCount; ++readingRoleIndex)
+						{
+							if (!fullyProcessed[readingRoleIndex])
+							{
+								string rolePlayerName = roleTranslator[readingRoleIndex];
+								bool haveDuplicate = false;
+								for (int duplicateIndex = readingRoleIndex + 1; duplicateIndex < roleCount; ++duplicateIndex)
+								{
+									if (!fullyProcessed[duplicateIndex])
+									{
+										if (roleTranslator[duplicateIndex] == rolePlayerName)
+										{
+											roleTranslator[duplicateIndex] = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ReadingShapeAttachedDuplicateRoleDisplay, rolePlayerName, reverseNumbering ? roleCount - factRoles.IndexOf(orderedRoles[duplicateIndex]) : factRoles.IndexOf(orderedRoles[duplicateIndex]) + 1);
+											fullyProcessed[duplicateIndex] = true;
+											haveDuplicate = true;
+										}
+									}
+								}
+								if (haveDuplicate)
+								{
+									roleTranslator[readingRoleIndex] = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ReadingShapeAttachedDuplicateRoleDisplay, rolePlayerName, reverseNumbering ? roleCount - factRoles.IndexOf(orderedRoles[readingRoleIndex]) : factRoles.IndexOf(orderedRoles[readingRoleIndex]) + 1);
+								}
+								else
+								{
+									roleTranslator[readingRoleIndex] = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ReadingShapeAttachedRoleDisplay, rolePlayerName);
+								}
+								fullyProcessed[readingRoleIndex] = true;
+							}
 						}
 						retVal = string.Format(CultureInfo.InvariantCulture, (readingFormatString == null) ? defaultOrder.ReadingText : readingFormatString, roleTranslator);
 					}
@@ -1328,19 +1359,24 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 			}
 			/// <summary>
-			/// Update the shape size if the derivation status is set. Fixes an earlier
-			/// problem where the shape was not correctly sized, and accounts for decorator
-			/// markings being modified over time and/or localized.
+			/// Update the shape size to correspond to current drawing standards and
+			/// to account for modified and/or localized derivation decorator display.
 			/// </summary>
 			protected sealed override void ProcessElement(ReadingShape element, Store store, INotifyElementAdded notifyAdded)
 			{
 				ReadingOrder order;
 				FactType factType;
-				FactTypeDerivationExpression derivationExpression;
 				if (!element.IsDeleted &&
 					null != (order = (ReadingOrder)element.ModelElement) &&
 					null != (factType = order.FactType) &&
-					null != (derivationExpression = factType.DerivationExpression))
+					(null != factType.DerivationRule ||
+					null != factType.DerivationExpression ||
+					// We did not used to index duplicate role player names,
+					// now we do, making the shape require more space. It isn't
+					// worth the search for duplicates here, but the role count
+					// should narrow this down quite a bit as most models use
+					// predominantly binary fact types.
+					2 < factType.RoleCollection.Count))
 				{
 					element.AutoResize();
 				}

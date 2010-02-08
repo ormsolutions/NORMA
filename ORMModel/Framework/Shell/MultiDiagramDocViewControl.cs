@@ -333,8 +333,10 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 				if (contextMenuMessage = (m.Msg == WM_CONTEXTMENU))
 				{
 					uint lParam = (uint)m.LParam;
-					int x = (int)(lParam & 0xFFFF);
-					int y = (int)((lParam >> 16) & 0xFFFF);
+					// Convert to short instead of int to get the sign correct
+					// for multi-monitor systems with negative mouse positions.
+					int x = (short)(lParam & 0xFFFF);
+					int y = (short)((lParam >> 16) & 0xFFFF);
 					DiagramTabPage diagramTabPage = (x == -1 && y == -1) ? SelectedDiagramTab : GetTabAtPoint(base.PointToClient(new Point(x, y)));
 					myTrustDesignerForContextMenu = true;
 					myDesignerForContextMenu = (diagramTabPage != null) ? diagramTabPage.Designer : null;

@@ -867,7 +867,11 @@
     <value xml:space="preserve">[{0}]</value>
     <comment xml:space="preserve">The string used to display a reading with a non-primary order when the role is attached.</comment>
   </data>
-  <data name="ReadingShape.Ellipsis">
+	<data name="ReadingShape.AttachedDuplicateRoleDisplay">
+		<value xml:space="preserve">[{0}{1:d}]</value>
+		<comment xml:space="preserve">The string used to display a reading with a non-primary order when the role is attached and the role player is duplicated in the reading. Replacement fields: {0}=role player name, {1}=displayed role index.</comment>
+	</data>
+	<data name="ReadingShape.Ellipsis">
     <value xml:space="preserve">…</value>
     <comment xml:space="preserve">The character to use as the object placeholder in a ReadingShape.</comment>
   </data>
@@ -876,8 +880,8 @@
     <comment xml:space="preserve">The string used to divide multiple readings shown in a ReadingShape.</comment>
   </data>
   <data name="ReadingShape.UnattachedRoleDisplay">
-    <value xml:space="preserve">[Missing{0}]</value>
-    <comment xml:space="preserve">The string used to display a reading with a non-primary order when the role is not attached.</comment>
+    <value xml:space="preserve">[Missing{0:d}]</value>
+    <comment xml:space="preserve">The string used to display a reading with a non-primary order when the role is not attached. Replement fields: {0}=displayed role index</comment>
   </data>
   <data name="RelatedTypesDisplay.AttachAllTypes">
     <value xml:space="preserve">Subtypes and Supertypes</value>

@@ -2580,6 +2580,14 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "ReadingShape.AttachedRoleDisplay");
 			}
 		}
+		/// <summary>The string used to display a reading with a non-primary order when the role is attached and the role player is duplicated in the reading. Replacement fields: {0}=role player name, {1}=displayed role index.</summary>
+		public static string ReadingShapeAttachedDuplicateRoleDisplay
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ReadingShape.AttachedDuplicateRoleDisplay");
+			}
+		}
 		/// <summary>The string used to display a reading with a non-primary order when the role is not attached.</summary>
 		public static string ReadingShapeUnattachedRoleDisplay
 		{
