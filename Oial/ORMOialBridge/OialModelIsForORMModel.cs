@@ -35,7 +35,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 		/// <summary>
 		/// The algorithm version written to the file
 		/// </summary>
-		public const string CurrentAlgorithmVersion = "1.005";
+		public const string CurrentAlgorithmVersion = "1.006";
 		#endregion // CurrentAlgorithmVersion constant
 		#region ValidationPriority enum
 		/// <summary>
@@ -408,7 +408,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 								if (!secondRoleIsUniqueAndPreferred)
 								{
 									// Shallow map toward secondRolePlayer.
-									possibilityBits = FIRST_SECOND_SHALLOW;
+									possibilityBits |= FIRST_SECOND_SHALLOW;
 								}
 							}
 							else if (firstRoleIsMandatory && !secondRoleIsMandatory) // ...only firstRole is mandatory...

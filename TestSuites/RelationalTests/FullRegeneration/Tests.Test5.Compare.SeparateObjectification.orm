@@ -883,7 +883,7 @@
 	</orm:NameGenerator>
 	<orm:GenerationState id="_131855A5-E2F4-4B93-859A-3BF1DCE156A4">
 		<orm:GenerationSettings>
-			<ormtooial:AbstractionModelGenerationSetting id="_077B1376-3174-4CAC-9C4A-B8245485F67E" AlgorithmVersion="1.005">
+			<ormtooial:AbstractionModelGenerationSetting id="_077B1376-3174-4CAC-9C4A-B8245485F67E" AlgorithmVersion="1.006">
 				<ormtooial:AbstractionModel ref="_C50661E8-E857-43F3-A1D2-9EF787A84EFE" />
 			</ormtooial:AbstractionModelGenerationSetting>
 			<oialtocdb:SchemaGenerationSetting id="_CC0244D5-F67A-4DE3-8E18-4B16640FB1F1" CoreAlgorithmVersion="1.004" NameAlgorithmVersion="1.011">
