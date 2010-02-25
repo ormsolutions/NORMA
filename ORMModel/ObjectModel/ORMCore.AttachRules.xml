@@ -80,6 +80,12 @@
 			<arg:ChangeRule methodName="ModalityChangeRule">
 				<arg:RuleOn targetType="SetComparisonConstraint"/>
 			</arg:ChangeRule>
+			<arg:AddRule methodName="ObjectificationAddedRule">
+				<arg:RuleOn targetType="Objectification"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="ObjectificationDeletedRule">
+				<arg:RuleOn targetType="Objectification"/>
+			</arg:DeleteRule>
 			<arg:AddRule methodName="RoleAddedRule">
 				<arg:RuleOn targetType="FactTypeHasRole"/>
 			</arg:AddRule>

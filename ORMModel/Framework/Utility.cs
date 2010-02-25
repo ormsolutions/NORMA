@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -585,11 +586,14 @@ namespace ORMSolutions.ORMArchitect.Framework
 	/// <remarks>The impetus for creating this class is that LinkedList{} is
 	/// too hard to modify during iteration, and LinkedListNode{} requires a
 	/// containing LinkedList.</remarks>
-	public sealed class LinkedNode<T>
+	public sealed class LinkedNode<T> : IEnumerable<T>
 	{
+		#region Member Variables
 		private T myValue;
 		private LinkedNode<T> myNext;
 		private LinkedNode<T> myPrev;
+		#endregion // Member Variables
+		#region Constructor
 		/// <summary>
 		/// Create a new LinkedNode. The new node must be attached to the
 		/// list with the <see cref="SetNext"/> or <see cref="Detach"/> methods.
@@ -599,6 +603,8 @@ namespace ORMSolutions.ORMArchitect.Framework
 		{
 			myValue = value;
 		}
+		#endregion // Constructor
+		#region Linked List Integration
 		/// <summary>
 		/// Set the next element
 		/// </summary>
@@ -704,6 +710,25 @@ namespace ORMSolutions.ORMArchitect.Framework
 			myNext = null;
 			myPrev = null;
 		}
+		#endregion // Linked List Integration
+		#region IEnumerable<T> Implementation
+		/// <summary>
+		/// Iterate all values from this node on down, including this node
+		/// </summary>
+		IEnumerator<T> IEnumerable<T>.GetEnumerator()
+		{
+			LinkedNode<T> node = this;
+			while (node != null)
+			{
+				yield return node.Value;
+				node = node.Next;
+			}
+		}
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return (this as IEnumerable<T>).GetEnumerator();
+		}
+		#endregion // IEnumerable<T> Implementation
 	}
 	#endregion // LinkedNode class
 	#region BitTracker struct

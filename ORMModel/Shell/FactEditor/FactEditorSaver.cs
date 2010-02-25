@@ -362,8 +362,36 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							if (string.IsNullOrEmpty(readingText) &&
 								!(string.IsNullOrEmpty(reverseReadingText)))
 							{
+								// Get an explicit reading order for reversing a reading so
+								// where the role players are not changed. Without the explicit
+								// order, ring fact types will not reverse correctly.
 								readingText = reverseReadingText;
 								reverseReadingText = null;
+								ReadingOrder selectedReadingOrder;
+								if (mySelectedRoleOrder == null &&
+									null != (selectedReadingOrder = mySelectedReadingOrder))
+								{
+									IList<RoleBase> originalRoles = selectedReadingOrder.RoleCollection;
+									if (originalRoles.Count == newFactArity)
+									{
+										int i = 0;
+										for (; i < newFactArity; ++i)
+										{
+											if (originalRoles[i].Role.RolePlayer != objectTypes[i])
+											{
+												break;
+											}
+										}
+										if (i == newFactArity)
+										{
+											RoleBase[] reversedRoles = new RoleBase[newFactArity];
+											originalRoles.CopyTo(reversedRoles, 0);
+											Array.Reverse(reversedRoles);
+											mySelectedRoleOrder = reversedRoles;
+											mySelectedReadingOrder = null;
+										}
+									}
+								}
 								Array.Reverse(objectTypes);
 								deleteReverseReading = true;
 							}

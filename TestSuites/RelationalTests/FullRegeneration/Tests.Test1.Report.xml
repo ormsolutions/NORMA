@@ -4,6 +4,5 @@
 	<ValidationErrors>
 		<ValidationError>Sequence '1' of constraint 'SubsetConstraint1' in model 'Zee_New' requires a join path.</ValidationError>
 		<ValidationError>Sequence '1' of constraint 'SubsetConstraint2' in model 'Zee_New' requires a join path.</ValidationError>
-		<ValidationError>Sequence '1' of constraint 'SubsetConstraint5' in model 'Zee_New' requires a join path.</ValidationError>
 	</ValidationErrors>
 </TestReport>

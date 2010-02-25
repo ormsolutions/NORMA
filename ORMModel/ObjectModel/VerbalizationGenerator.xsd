@@ -162,7 +162,7 @@
 	</xs:simpleType>
 	<xs:simpleType name="ReadingChoicePreferSingleMatchWithContextEnum">
 		<xs:restriction base="xs:string">
-			<!-- Allowable options are {Context|Prefer[Non][Primary]LeadReading[NoFrontText][[Lead]NotHyphenBound]} -->
+			<!-- Allowable options are {Context|Prefer[Non][Primary]LeadReading[InfixTextOnly|[NoFrontText|NoTrailingText]][[Lead]NotHyphenBound]} -->
 			<xs:enumeration value="Context">
 				<xs:annotation>
 					<xs:documentation>Use the reading from the current ReadingChoice or ReadingContext elements</xs:documentation>
@@ -174,110 +174,206 @@
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="PreferLeadReading"/>
+			<xs:enumeration value="PreferLeadReadingInfixTextOnly"/>
+			<xs:enumeration value="PreferLeadReadingInfixTextOnlyLeadNotHyphenBound"/>
+			<xs:enumeration value="PreferLeadReadingInfixTextOnlyNotHyphenBound"/>
 			<xs:enumeration value="PreferLeadReadingLeadNotHyphenBound"/>
 			<xs:enumeration value="PreferLeadReadingNoFrontText"/>
 			<xs:enumeration value="PreferLeadReadingNoFrontTextLeadNotHyphenBound"/>
 			<xs:enumeration value="PreferLeadReadingNoFrontTextNotHyphenBound"/>
+			<xs:enumeration value="PreferLeadReadingNoTrailingText"/>
+			<xs:enumeration value="PreferLeadReadingNoTrailingTextLeadNotHyphenBound"/>
+			<xs:enumeration value="PreferLeadReadingNoTrailingTextNotHyphenBound"/>
 			<xs:enumeration value="PreferLeadReadingNotHyphenBound"/>
 			<xs:enumeration value="PreferNonLeadReading"/>
+			<xs:enumeration value="PreferNonLeadReadingInfixTextOnly"/>
+			<xs:enumeration value="PreferNonLeadReadingInfixTextOnlyLeadNotHyphenBound"/>
+			<xs:enumeration value="PreferNonLeadReadingInfixTextOnlyNotHyphenBound"/>
 			<xs:enumeration value="PreferNonLeadReadingLeadNotHyphenBound"/>
 			<xs:enumeration value="PreferNonLeadReadingNoFrontText"/>
 			<xs:enumeration value="PreferNonLeadReadingNoFrontTextLeadNotHyphenBound"/>
 			<xs:enumeration value="PreferNonLeadReadingNoFrontTextNotHyphenBound"/>
+			<xs:enumeration value="PreferNonLeadReadingNoTrailingText"/>
+			<xs:enumeration value="PreferNonLeadReadingNoTrailingTextLeadNotHyphenBound"/>
+			<xs:enumeration value="PreferNonLeadReadingNoTrailingTextNotHyphenBound"/>
 			<xs:enumeration value="PreferNonLeadReadingNotHyphenBound"/>
 			<xs:enumeration value="PreferNonPrimaryLeadReading"/>
+			<xs:enumeration value="PreferNonPrimaryLeadReadingInfixTextOnly"/>
+			<xs:enumeration value="PreferNonPrimaryLeadReadingInfixTextOnlyLeadNotHyphenBound"/>
+			<xs:enumeration value="PreferNonPrimaryLeadReadingInfixTextOnlyNotHyphenBound"/>
 			<xs:enumeration value="PreferNonPrimaryLeadReadingLeadNotHyphenBound"/>
 			<xs:enumeration value="PreferNonPrimaryLeadReadingNoFrontText"/>
 			<xs:enumeration value="PreferNonPrimaryLeadReadingNoFrontTextLeadNotHyphenBound"/>
 			<xs:enumeration value="PreferNonPrimaryLeadReadingNoFrontTextNotHyphenBound"/>
+			<xs:enumeration value="PreferNonPrimaryLeadReadingNoTrailingText"/>
+			<xs:enumeration value="PreferNonPrimaryLeadReadingNoTrailingTextLeadNotHyphenBound"/>
+			<xs:enumeration value="PreferNonPrimaryLeadReadingNoTrailingTextNotHyphenBound"/>
 			<xs:enumeration value="PreferNonPrimaryLeadReadingNotHyphenBound"/>
 			<xs:enumeration value="PreferPrimaryLeadReading"/>
+			<xs:enumeration value="PreferPrimaryLeadReadingInfixTextOnly"/>
+			<xs:enumeration value="PreferPrimaryLeadReadingInfixTextOnlyLeadNotHyphenBound"/>
+			<xs:enumeration value="PreferPrimaryLeadReadingInfixTextOnlyNotHyphenBound"/>
 			<xs:enumeration value="PreferPrimaryLeadReadingLeadNotHyphenBound"/>
 			<xs:enumeration value="PreferPrimaryLeadReadingNoFrontText"/>
 			<xs:enumeration value="PreferPrimaryLeadReadingNoFrontTextLeadNotHyphenBound"/>
 			<xs:enumeration value="PreferPrimaryLeadReadingNoFrontTextNotHyphenBound"/>
+			<xs:enumeration value="PreferPrimaryLeadReadingNoTrailingText"/>
+			<xs:enumeration value="PreferPrimaryLeadReadingNoTrailingTextLeadNotHyphenBound"/>
+			<xs:enumeration value="PreferPrimaryLeadReadingNoTrailingTextNotHyphenBound"/>
 			<xs:enumeration value="PreferPrimaryLeadReadingNotHyphenBound"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="ReadingChoicePreferSingleMatchEnum">
 		<xs:restriction base="xs:string">
-			<!-- Allowable options are {Prefer[Non][Primary]LeadReading[NoFrontText][[Lead]NotHyphenBound]} -->
+			<!-- Allowable options are {Prefer[Non][Primary]LeadReading[InfixTextOnly|[NoFrontText|NoTrailingText]][[Lead]NotHyphenBound]} -->
 			<xs:enumeration value="PreferLeadReading"/>
+			<xs:enumeration value="PreferLeadReadingInfixTextOnly"/>
+			<xs:enumeration value="PreferLeadReadingInfixTextOnlyLeadNotHyphenBound"/>
+			<xs:enumeration value="PreferLeadReadingInfixTextOnlyNotHyphenBound"/>
 			<xs:enumeration value="PreferLeadReadingLeadNotHyphenBound"/>
 			<xs:enumeration value="PreferLeadReadingNoFrontText"/>
 			<xs:enumeration value="PreferLeadReadingNoFrontTextLeadNotHyphenBound"/>
 			<xs:enumeration value="PreferLeadReadingNoFrontTextNotHyphenBound"/>
+			<xs:enumeration value="PreferLeadReadingNoTrailingText"/>
+			<xs:enumeration value="PreferLeadReadingNoTrailingTextLeadNotHyphenBound"/>
+			<xs:enumeration value="PreferLeadReadingNoTrailingTextNotHyphenBound"/>
 			<xs:enumeration value="PreferLeadReadingNotHyphenBound"/>
 			<xs:enumeration value="PreferNonLeadReading"/>
+			<xs:enumeration value="PreferNonLeadReadingInfixTextOnly"/>
+			<xs:enumeration value="PreferNonLeadReadingInfixTextOnlyLeadNotHyphenBound"/>
+			<xs:enumeration value="PreferNonLeadReadingInfixTextOnlyNotHyphenBound"/>
 			<xs:enumeration value="PreferNonLeadReadingLeadNotHyphenBound"/>
 			<xs:enumeration value="PreferNonLeadReadingNoFrontText"/>
 			<xs:enumeration value="PreferNonLeadReadingNoFrontTextLeadNotHyphenBound"/>
 			<xs:enumeration value="PreferNonLeadReadingNoFrontTextNotHyphenBound"/>
+			<xs:enumeration value="PreferNonLeadReadingNoTrailingText"/>
+			<xs:enumeration value="PreferNonLeadReadingNoTrailingTextLeadNotHyphenBound"/>
+			<xs:enumeration value="PreferNonLeadReadingNoTrailingTextNotHyphenBound"/>
 			<xs:enumeration value="PreferNonLeadReadingNotHyphenBound"/>
 			<xs:enumeration value="PreferNonPrimaryLeadReading"/>
+			<xs:enumeration value="PreferNonPrimaryLeadReadingInfixTextOnly"/>
+			<xs:enumeration value="PreferNonPrimaryLeadReadingInfixTextOnlyLeadNotHyphenBound"/>
+			<xs:enumeration value="PreferNonPrimaryLeadReadingInfixTextOnlyNotHyphenBound"/>
 			<xs:enumeration value="PreferNonPrimaryLeadReadingLeadNotHyphenBound"/>
 			<xs:enumeration value="PreferNonPrimaryLeadReadingNoFrontText"/>
 			<xs:enumeration value="PreferNonPrimaryLeadReadingNoFrontTextLeadNotHyphenBound"/>
 			<xs:enumeration value="PreferNonPrimaryLeadReadingNoFrontTextNotHyphenBound"/>
+			<xs:enumeration value="PreferNonPrimaryLeadReadingTrailingTextOnly"/>
+			<xs:enumeration value="PreferNonPrimaryLeadReadingTrailingTextOnlyLeadNotHyphenBound"/>
+			<xs:enumeration value="PreferNonPrimaryLeadReadingTrailingTextOnlyNotHyphenBound"/>
 			<xs:enumeration value="PreferNonPrimaryLeadReadingNotHyphenBound"/>
 			<xs:enumeration value="PreferPrimaryLeadReading"/>
+			<xs:enumeration value="PreferPrimaryLeadReadingInfixTextOnly"/>
+			<xs:enumeration value="PreferPrimaryLeadReadingInfixTextOnlyLeadNotHyphenBound"/>
+			<xs:enumeration value="PreferPrimaryLeadReadingInfixTextOnlyNotHyphenBound"/>
 			<xs:enumeration value="PreferPrimaryLeadReadingLeadNotHyphenBound"/>
 			<xs:enumeration value="PreferPrimaryLeadReadingNoFrontText"/>
 			<xs:enumeration value="PreferPrimaryLeadReadingNoFrontTextLeadNotHyphenBound"/>
 			<xs:enumeration value="PreferPrimaryLeadReadingNoFrontTextNotHyphenBound"/>
+			<xs:enumeration value="PreferPrimaryLeadReadingTrailingTextOnly"/>
+			<xs:enumeration value="PreferPrimaryLeadReadingTrailingTextOnlyLeadNotHyphenBound"/>
+			<xs:enumeration value="PreferPrimaryLeadReadingTrailingTextOnlyNotHyphenBound"/>
 			<xs:enumeration value="PreferPrimaryLeadReadingNotHyphenBound"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="ReadingChoiceFullRequiredMatchEnum">
 		<xs:restriction base="xs:string">
-			<!-- Allowable options are {Require[All][Non][Primary]LeadReading[NoFrontText][[Lead]NotHyphenBound]} -->
+			<!-- Allowable options are {Require[All][Non][Primary]LeadReading[InfixTextOnly|[NoFrontText|NoTrailingText]][[Lead]NotHyphenBound]} -->
 			<xs:enumeration value="RequireLeadReading"/>
+			<xs:enumeration value="RequireLeadReadingInfixTextOnly"/>
+			<xs:enumeration value="RequireLeadReadingInfixTextOnlyLeadNotHyphenBound"/>
+			<xs:enumeration value="RequireLeadReadingInfixTextOnlyNotHyphenBound"/>
 			<xs:enumeration value="RequireLeadReadingLeadNotHyphenBound"/>
 			<xs:enumeration value="RequireLeadReadingNoFrontText"/>
 			<xs:enumeration value="RequireLeadReadingNoFrontTextLeadNotHyphenBound"/>
 			<xs:enumeration value="RequireLeadReadingNoFrontTextNotHyphenBound"/>
+			<xs:enumeration value="RequireLeadReadingTrailingTextOnly"/>
+			<xs:enumeration value="RequireLeadReadingTrailingTextOnlyLeadNotHyphenBound"/>
+			<xs:enumeration value="RequireLeadReadingTrailingTextOnlyNotHyphenBound"/>
 			<xs:enumeration value="RequireLeadReadingNotHyphenBound"/>
 			<xs:enumeration value="RequireNonLeadReading"/>
+			<xs:enumeration value="RequireNonLeadReadingInfixTextOnly"/>
+			<xs:enumeration value="RequireNonLeadReadingInfixTextOnlyLeadNotHyphenBound"/>
+			<xs:enumeration value="RequireNonLeadReadingInfixTextOnlyNotHyphenBound"/>
 			<xs:enumeration value="RequireNonLeadReadingLeadNotHyphenBound"/>
 			<xs:enumeration value="RequireNonLeadReadingNoFrontText"/>
 			<xs:enumeration value="RequireNonLeadReadingNoFrontTextLeadNotHyphenBound"/>
 			<xs:enumeration value="RequireNonLeadReadingNoFrontTextNotHyphenBound"/>
+			<xs:enumeration value="RequireNonLeadReadingTrailingTextOnly"/>
+			<xs:enumeration value="RequireNonLeadReadingTrailingTextOnlyLeadNotHyphenBound"/>
+			<xs:enumeration value="RequireNonLeadReadingTrailingTextOnlyNotHyphenBound"/>
 			<xs:enumeration value="RequireNonLeadReadingNotHyphenBound"/>
 			<xs:enumeration value="RequirePrimaryLeadReading"/>
+			<xs:enumeration value="RequirePrimaryLeadReadingInfixTextOnly"/>
+			<xs:enumeration value="RequirePrimaryLeadReadingInfixTextOnlyLeadNotHyphenBound"/>
+			<xs:enumeration value="RequirePrimaryLeadReadingInfixTextOnlyNotHyphenBound"/>
 			<xs:enumeration value="RequirePrimaryLeadReadingLeadNotHyphenBound"/>
 			<xs:enumeration value="RequirePrimaryLeadReadingNoFrontText"/>
 			<xs:enumeration value="RequirePrimaryLeadReadingNoFrontTextLeadNotHyphenBound"/>
 			<xs:enumeration value="RequirePrimaryLeadReadingNoFrontTextNotHyphenBound"/>
+			<xs:enumeration value="RequirePrimaryLeadReadingTrailingTextOnly"/>
+			<xs:enumeration value="RequirePrimaryLeadReadingTrailingTextOnlyLeadNotHyphenBound"/>
+			<xs:enumeration value="RequirePrimaryLeadReadingTrailingTextOnlyNotHyphenBound"/>
 			<xs:enumeration value="RequirePrimaryLeadReadingNotHyphenBound"/>
 			<xs:enumeration value="RequireNonPrimaryLeadReading"/>
+			<xs:enumeration value="RequireNonPrimaryLeadReadingInfixTextOnly"/>
+			<xs:enumeration value="RequireNonPrimaryLeadReadingInfixTextOnlyLeadNotHyphenBound"/>
+			<xs:enumeration value="RequireNonPrimaryLeadReadingInfixTextOnlyNotHyphenBound"/>
 			<xs:enumeration value="RequireNonPrimaryLeadReadingLeadNotHyphenBound"/>
 			<xs:enumeration value="RequireNonPrimaryLeadReadingNoFrontText"/>
 			<xs:enumeration value="RequireNonPrimaryLeadReadingNoFrontTextLeadNotHyphenBound"/>
 			<xs:enumeration value="RequireNonPrimaryLeadReadingNoFrontTextNotHyphenBound"/>
+			<xs:enumeration value="RequireNonPrimaryLeadReadingTrailingTextOnly"/>
+			<xs:enumeration value="RequireNonPrimaryLeadReadingTrailingTextOnlyLeadNotHyphenBound"/>
+			<xs:enumeration value="RequireNonPrimaryLeadReadingTrailingTextOnlyNotHyphenBound"/>
 			<xs:enumeration value="RequireNonPrimaryLeadReadingNotHyphenBound"/>
 			<xs:enumeration value="RequireAllLeadReading"/>
+			<xs:enumeration value="RequireAllLeadReadingInfixTextOnly"/>
+			<xs:enumeration value="RequireAllLeadReadingInfixTextOnlyLeadNotHyphenBound"/>
+			<xs:enumeration value="RequireAllLeadReadingInfixTextOnlyNotHyphenBound"/>
 			<xs:enumeration value="RequireAllLeadReadingLeadNotHyphenBound"/>
 			<xs:enumeration value="RequireAllLeadReadingNoFrontText"/>
 			<xs:enumeration value="RequireAllLeadReadingNoFrontTextLeadNotHyphenBound"/>
 			<xs:enumeration value="RequireAllLeadReadingNoFrontTextNotHyphenBound"/>
+			<xs:enumeration value="RequireAllLeadReadingTrailingTextOnly"/>
+			<xs:enumeration value="RequireAllLeadReadingTrailingTextOnlyLeadNotHyphenBound"/>
+			<xs:enumeration value="RequireAllLeadReadingTrailingTextOnlyNotHyphenBound"/>
 			<xs:enumeration value="RequireAllLeadReadingNotHyphenBound"/>
 			<xs:enumeration value="RequireAllNonLeadReading"/>
+			<xs:enumeration value="RequireAllNonLeadReadingInfixTextOnly"/>
+			<xs:enumeration value="RequireAllNonLeadReadingInfixTextOnlyLeadNotHyphenBound"/>
+			<xs:enumeration value="RequireAllNonLeadReadingInfixTextOnlyNotHyphenBound"/>
 			<xs:enumeration value="RequireAllNonLeadReadingLeadNotHyphenBound"/>
 			<xs:enumeration value="RequireAllNonLeadReadingNoFrontText"/>
 			<xs:enumeration value="RequireAllNonLeadReadingNoFrontTextLeadNotHyphenBound"/>
 			<xs:enumeration value="RequireAllNonLeadReadingNoFrontTextNotHyphenBound"/>
+			<xs:enumeration value="RequireAllNonLeadReadingTrailingTextOnly"/>
+			<xs:enumeration value="RequireAllNonLeadReadingTrailingTextOnlyLeadNotHyphenBound"/>
+			<xs:enumeration value="RequireAllNonLeadReadingTrailingTextOnlyNotHyphenBound"/>
 			<xs:enumeration value="RequireAllNonLeadReadingNotHyphenBound"/>
 			<xs:enumeration value="RequireAllNonPrimaryLeadReading"/>
+			<xs:enumeration value="RequireAllNonPrimaryLeadReadingInfixTextOnly"/>
+			<xs:enumeration value="RequireAllNonPrimaryLeadReadingInfixTextOnlyLeadNotHyphenBound"/>
+			<xs:enumeration value="RequireAllNonPrimaryLeadReadingInfixTextOnlyNotHyphenBound"/>
 			<xs:enumeration value="RequireAllNonPrimaryLeadReadingLeadNotHyphenBound"/>
 			<xs:enumeration value="RequireAllNonPrimaryLeadReadingNoFrontText"/>
 			<xs:enumeration value="RequireAllNonPrimaryLeadReadingNoFrontTextLeadNotHyphenBound"/>
 			<xs:enumeration value="RequireAllNonPrimaryLeadReadingNoFrontTextNotHyphenBound"/>
+			<xs:enumeration value="RequireAllNonPrimaryLeadReadingTrailingTextOnly"/>
+			<xs:enumeration value="RequireAllNonPrimaryLeadReadingTrailingTextOnlyLeadNotHyphenBound"/>
+			<xs:enumeration value="RequireAllNonPrimaryLeadReadingTrailingTextOnlyNotHyphenBound"/>
 			<xs:enumeration value="RequireAllNonPrimaryLeadReadingNotHyphenBound"/>
 			<xs:enumeration value="RequireAllPrimaryLeadReading"/>
+			<xs:enumeration value="RequireAllPrimaryLeadReadingInfixTextOnly"/>
+			<xs:enumeration value="RequireAllPrimaryLeadReadingInfixTextOnlyLeadNotHyphenBound"/>
+			<xs:enumeration value="RequireAllPrimaryLeadReadingInfixTextOnlyNotHyphenBound"/>
 			<xs:enumeration value="RequireAllPrimaryLeadReadingLeadNotHyphenBound"/>
 			<xs:enumeration value="RequireAllPrimaryLeadReadingNoFrontText"/>
 			<xs:enumeration value="RequireAllPrimaryLeadReadingNoFrontTextLeadNotHyphenBound"/>
 			<xs:enumeration value="RequireAllPrimaryLeadReadingNoFrontTextNotHyphenBound"/>
+			<xs:enumeration value="RequireAllPrimaryLeadReadingTrailingTextOnly"/>
+			<xs:enumeration value="RequireAllPrimaryLeadReadingTrailingTextOnlyLeadNotHyphenBound"/>
+			<xs:enumeration value="RequireAllPrimaryLeadReadingTrailingTextOnlyNotHyphenBound"/>
 			<xs:enumeration value="RequireAllPrimaryLeadReadingNotHyphenBound"/>
 		</xs:restriction>
 	</xs:simpleType>
@@ -323,6 +419,11 @@
 			<xs:enumeration value="included"/>
 			<xs:enumeration value="excluded"/>
 			<xs:enumeration value="constraintRoles"/>
+			<xs:enumeration value="providedConstraintRoles">
+				<xs:annotation>
+					<xs:documentation>Role replacements are generated by a callback to the context path verbalizer, which will automatically subscript and quantify the role players.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 			<xs:enumeration value="preferredIdentifier"/>
 			<xs:enumeration value="playedRoles"/>
 		</xs:restriction>
@@ -391,7 +492,7 @@
 			</xs:enumeration>
 			<xs:enumeration value="BinaryLeadReading">
 				<xs:annotation>
-					<xs:documentation>Used to determine whether binary lead readings are available for some column of a two-column of a two-column SetComparisonConstraint.</xs:documentation>
+					<xs:documentation>Used to determine whether binary lead readings are available for some column of a two-column SetComparisonConstraint with no hyphen binding and the same role players.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="SubtypeFactRolePlayers">
@@ -423,7 +524,12 @@
 			</xs:enumeration>
 			<xs:enumeration value="IsObjectifiedFactType">
 				<xs:annotation>
-					<xs:documentation>True if the IsValueType property for the current object type is true.</xs:documentation>
+					<xs:documentation>True if the current object type objectifies a fact type.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HasVerbalizableSubtypeDerivationPath">
+				<xs:annotation>
+					<xs:documentation>True if there is a path-based subtype verbalization available for an object type.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="HasPortableDataType">
@@ -655,6 +761,7 @@
 			<xs:element name="IterateRoles" type="IterateRolesType"/>
 			<xs:element name="IterateSequences" type="IterateSequencesType"/>
 			<xs:element name="CompositeList" type="CompositeListType"/>
+			<xs:element name="DerivationPath" type="DerivationPathType"/>
 			<xs:element name="Fact" type="FactType"/>
 			<xs:element name="IterateFacts" type="IterateFactsType"/>
 			<xs:element name="ReferenceScheme" type="ReferenceSchemeType"/>
@@ -667,6 +774,7 @@
 			<xs:element name="IterateContextRoles" type="IterateContextRolesType"/>
 			<xs:element name="PreferredIdentifierFor" type="PreferredIdentifierForType"/>
 			<xs:element name="PreferredIdentifierForId" type="ElementIdType"/>
+			<xs:element name="ProvidedRolePlayer" type="ProvidedRolePlayerType"/>
 			<xs:element name="RoleName" type="RoleNameType"/>
 			<xs:element name="RolePlayer" type="RolePlayerType"/>
 			<xs:element name="RolePlayerReferenceMode" type="RolePlayerReferenceModeType"/>
@@ -1038,6 +1146,27 @@
 			</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
+	<xs:complexType name="ProvidedRolePlayerType">
+		<xs:annotation>
+			<xs:documentation>Returns the role player formatted by path verbalizer for the given key.</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="rolePlayerKey" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="DerivationRule">
+						<xs:annotation>
+							<xs:documentation>Get the replacement based on the derivation key. Gets the current type (possibly subscripted) for a subtype derivation rule.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="DerivationPathType">
+		<xs:annotation>
+			<xs:documentation>Defer to the path verbalizer to render the derivation path.</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
 	<xs:complexType name="RolePlayerReferenceModeType">
 		<xs:annotation>
 			<xs:documentation>
@@ -1085,6 +1214,28 @@
 			</xs:annotation>
 		</xs:attribute>
 		<xs:attribute name="pass" use="optional" type="PassEnum"/>
+	</xs:complexType>
+	<xs:complexType name="ProvidedPredicateReplacementType">
+		<xs:attribute name="included" default="false" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>Apply this replacement style to elements included in the current constraint.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="quantify" default="false" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>Quantify the returned replacement field.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="markAsHead" default="false" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>Mark the returned variable as a head variable. Head variables are given back reference priority during automatic role path verbalization.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="minimizeHeadSubscripting" default="false" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>Do not subscript a head variable of a type that is used for a single variable and also used fully existentially.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="FactConstructType">
 		<!-- Nothing here yet, this is for the top-level verbalization of a Fact -->
@@ -1176,9 +1327,10 @@
 				Returns the full verbalization for a fact type, i.e, Company provides Product to Company.
 			</xs:documentation>
 		</xs:annotation>
-		<xs:sequence minOccurs="0" maxOccurs="1">
+		<xs:choice>
 			<xs:element name="PredicateReplacement" type="PredicateReplacementType" minOccurs="0" maxOccurs="unbounded"/>
-		</xs:sequence>
+			<xs:element name="ProvidedPredicateReplacement" type="ProvidedPredicateReplacementType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:choice>
 		<xs:attribute name="readingChoice" use="optional" type="ReadingChoicePreferSingleMatchWithContextEnum"/>
 		<xs:attribute name="subtypeMetaReading" type="xs:boolean" default="false">
 			<xs:annotation>
@@ -1245,6 +1397,21 @@
 				<xs:documentation>Set to true if the FactType has not already been verified as have sufficient state to support verbalization.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute name="markProvidedConstraintRolesAsHead" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>Used with the providedConstraintRoles match style. Mark the variable returned for the constrained role as a head variable. Head variables are given back reference priority during automatic role path verbalization.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="minimizeProvidedConstraintRoleHeadSubscripting" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>Used with the providedConstraintRoles match style. Do not subscript a head variable of a type that is used for a single variable and also used fully existentially.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="quantifyProvidedConstraintRoles" default="false" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>Used with the providedConstraintRoles match style. Quantify the returned replacement field.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="IterateRolesType">
 		<xs:complexContent>
@@ -1253,10 +1420,25 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="IterateSequencesType">
-		<xs:choice minOccurs="0" maxOccurs="unbounded">
+	<xs:complexType name="SequenceJoinPathType">
+		<xs:annotation>
+			<xs:documentation>Use the join path for this sequence if it is available. Otherwise, verbalize the contents.</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
 			<xs:element name="Snippet" type="SnippetType"/>
 			<xs:element name="IterateRoles" type="IterateRolesType"/>
+		</xs:choice>
+		<xs:attribute name="markTrailingOutdentStart" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>Strings returned for rendering a full role path should add an outdent replacement field immediately before the first of any trailing snippets that close an indentation.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="IterateSequencesType">
+		<xs:choice>
+			<xs:element name="Snippet" type="SnippetType"/>
+			<xs:element name="IterateRoles" type="IterateRolesType"/>
+			<xs:element name="SequenceJoinPath" type="SequenceJoinPathType"/>
 		</xs:choice>
 		<xs:attributeGroup ref="FactArityAttributes"/>
 		<xs:attribute name="pass" use="optional" type="PassEnum"/>
@@ -1266,7 +1448,6 @@
 				<xs:documentation>The listStyle represents a composite list. Ignored if listStyle is null. false is not currently supported.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="hyphenBind" type="xs:boolean" default="false"/>
 	</xs:complexType>
 	<xs:complexType name="IterateInstancesType">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -1280,9 +1461,10 @@
 				Returns the full verbalization for a list of fact types with the specified list style.
 			</xs:documentation>
 		</xs:annotation>
-		<xs:sequence minOccurs="0" maxOccurs="1">
+		<xs:choice>
 			<xs:element name="PredicateReplacement" type="PredicateReplacementType" minOccurs="0" maxOccurs="unbounded"/>
-		</xs:sequence>
+			<xs:element name="ProvidedPredicateReplacement" type="ProvidedPredicateReplacementType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:choice>
 		<xs:attribute name="listStyle" use="required" type="ListStyleEnumOrNull"/>
 		<xs:attribute name="readingChoice" use="optional" type="ReadingChoicePreferSingleMatchEnum"/>
 	</xs:complexType>

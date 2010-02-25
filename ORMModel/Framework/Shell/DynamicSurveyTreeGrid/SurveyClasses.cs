@@ -679,6 +679,10 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 		/// </summary>
 		protected void ElementReferenceTargetChanged(ISurveyNodeReference elementReference, object previousReferencedElement, object newReferencedElement, object contextElement)
 		{
+			if (previousReferencedElement == newReferencedElement)
+			{
+				return;
+			}
 			LinkedNode<SurveyNodeReference> headLinkNode;
 			Dictionary<object, LinkedNode<SurveyNodeReference>> referenceDictionary = myReferenceDictionary;
 			MainList notifyList;

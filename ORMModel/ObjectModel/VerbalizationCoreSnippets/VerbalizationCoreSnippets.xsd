@@ -1286,6 +1286,14 @@
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
+				<xs:enumeration value="FullSubtypeDerivation">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to specify a fully derived subtype derivation rule.
+							Format: each {0} is {1}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
 			</xs:restriction>
 		</xs:simpleType>
 	</xs:redefine>

@@ -85,6 +85,7 @@ You must not remove this notice, or any other, from this software.
 			<!-- Snippets related to derivation rules and join paths -->
 			<Snippet type="FullFactTypeDerivation"><![CDATA[<span class="quantifier">*</span>{0} <span class="quantifier">if and only if</span></br>{1}<br/>]]></Snippet>
 			<Snippet type="PartialFactTypeDerivation"><![CDATA[<span class="quantifier">+</span>{0} <span class="quantifier">if</span><br/>{1}<br/>]]></Snippet>
+			<Snippet type="FullSubtypeDerivation"><![CDATA[<span class="quantifier">*Each</span> {0} <span class="quantifier">is</span> {1}]]></Snippet>
 
 			<!-- Used inside a ModalOperator -->
 			<Snippet type="NegativeReadingForUnaryOnlyDisjunctiveMandatory" sign="negative"><![CDATA[<span class="quantifier">some</span> {0} <span class="quantifier">participates in none of the following:</span>{1}]]></Snippet>

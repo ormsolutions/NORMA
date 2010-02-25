@@ -10969,6 +10969,35 @@
 					<orm:RoleSequence id="_FCA6C669-3131-44D1-9CF5-8A0EC65814A2">
 						<orm:Role id="_E6EF9863-0D6B-4E11-BDB7-E9E23117CDA7" ref="_C620856D-03D4-41A5-80BC-67B67A9F60A8" />
 						<orm:Role id="_50FDC037-C628-43C2-9E6A-8C9DA13FFC03" ref="_2071B67C-0612-4D84-852F-9C41E9FF35AA" />
+						<orm:JoinRule>
+							<orm:JoinPath IsAutomatic="true" id="_EA1A9387-9ACE-464C-B41A-C4714520552C">
+								<orm:PathComponents>
+									<orm:RolePath id="_94F2FE40-30FA-477D-A84F-292CA1493A4B">
+										<orm:PathedRoles>
+											<orm:PathedRole Purpose="StartRole" id="_62FB918B-DCEA-44BF-ACE2-40E19C35C1CA" ref="_C620856D-03D4-41A5-80BC-67B67A9F60A8" />
+											<orm:PathedRole Purpose="SameFactType" id="_C9CD2DC6-F707-43AC-B05D-C9999B5751A7" ref="_4D2B11C8-A640-40E0-B413-6CD1F570C54A" />
+											<orm:PathedRole Purpose="PostInnerJoin" id="_BD3E6428-C079-4BBA-B046-D583FB309B67" ref="_7299D654-19AA-46A8-8AEE-8F5A0707C2F1" />
+											<orm:PathedRole Purpose="SameFactType" id="_3613D2E2-2B65-4637-A8D4-F37207577BBC" ref="_2071B67C-0612-4D84-852F-9C41E9FF35AA" />
+										</orm:PathedRoles>
+										<orm:RootObjectType ref="_D1AB05D1-1793-488C-BB28-69F323F40D87" />
+									</orm:RolePath>
+								</orm:PathComponents>
+								<orm:JoinPathProjections>
+									<orm:JoinPathProjection id="_D4CC41A4-4594-41B8-A8AC-5E17ADB6F5F4" ref="_94F2FE40-30FA-477D-A84F-292CA1493A4B">
+										<orm:ConstraintRoleProjection id="_FDC7FEED-47E9-49FB-BB15-8029FC2F81D6" ref="_E6EF9863-0D6B-4E11-BDB7-E9E23117CDA7">
+											<orm:ProjectedFrom>
+												<orm:PathedRole ref="_62FB918B-DCEA-44BF-ACE2-40E19C35C1CA" />
+											</orm:ProjectedFrom>
+										</orm:ConstraintRoleProjection>
+										<orm:ConstraintRoleProjection id="_712FCEE8-235E-4514-8177-C97893AF8BAB" ref="_50FDC037-C628-43C2-9E6A-8C9DA13FFC03">
+											<orm:ProjectedFrom>
+												<orm:PathedRole ref="_3613D2E2-2B65-4637-A8D4-F37207577BBC" />
+											</orm:ProjectedFrom>
+										</orm:ConstraintRoleProjection>
+									</orm:JoinPathProjection>
+								</orm:JoinPathProjections>
+							</orm:JoinPath>
+						</orm:JoinRule>
 					</orm:RoleSequence>
 					<orm:RoleSequence id="_63A10B93-8855-41CB-9A93-5AFE2E79DCA2">
 						<orm:Role id="_0994B765-ACE4-4533-A480-574045594C3B" ref="_8373432B-A125-4C56-BE7B-9C450759FE87" />
@@ -11214,9 +11243,6 @@
 			</orm:JoinPathRequiredError>
 			<orm:JoinPathRequiredError Name="Sequence '1' of constraint 'SubsetConstraint2' in model 'Zee_New' requires a join path." id="_CAAA23CD-999F-4220-8CBC-F56FA502CFAE">
 				<orm:ConstraintRoleSequence ref="_D4D20AFE-E8F7-418D-9862-2B3D98C13949" />
-			</orm:JoinPathRequiredError>
-			<orm:JoinPathRequiredError Name="Sequence '1' of constraint 'SubsetConstraint5' in model 'Zee_New' requires a join path." id="_C2A62D37-75CD-4713-8E0D-62B889DC2136">
-				<orm:ConstraintRoleSequence ref="_FCA6C669-3131-44D1-9CF5-8A0EC65814A2" />
 			</orm:JoinPathRequiredError>
 		</orm:ModelErrors>
 		<orm:ReferenceModeKinds>
