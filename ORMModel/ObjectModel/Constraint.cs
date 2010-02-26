@@ -4416,7 +4416,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						// case ConstraintType.SimpleMandatory:
 						// case ConstraintType.ImpliedMandatory:
 						case ConstraintType.DisjunctiveMandatory:
-						case ConstraintType.Ring:
 							return false;
 					}
 				}
@@ -4519,7 +4518,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					case ConstraintType.ImpliedMandatory:
 					case ConstraintType.SimpleMandatory:
 					case ConstraintType.DisjunctiveMandatory:
-					case ConstraintType.Ring:
 						// These never have join paths, do not bother tracking them
 						return;
 				}
@@ -4550,7 +4548,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					case ConstraintType.ImpliedMandatory:
 					case ConstraintType.SimpleMandatory:
 					case ConstraintType.DisjunctiveMandatory:
-					case ConstraintType.Ring:
 						// These types never have a join path, and this is enforced
 						// by the XML schema so they cannot be present on load.
 						return;
