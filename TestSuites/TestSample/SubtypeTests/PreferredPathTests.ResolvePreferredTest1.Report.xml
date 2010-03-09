@@ -1,4 +1,5 @@
-﻿<TestReport xmlns="http://schemas.neumont.edu/ORM/SDK/TestReport">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestReport xmlns="http://schemas.neumont.edu/ORM/SDK/TestReport">
 	<ValidationErrors name="Expected three initial errors">
 		<ValidationError>Entity type 'EntityType5' in model 'ORMModel1' requires a local preferred reference scheme or supertype(s) that provide preferred identification.</ValidationError>
 		<ValidationError>Entity type 'EntityType6' in model 'ORMModel1' requires a local preferred reference scheme or supertype(s) that provide preferred identification.</ValidationError>
@@ -7,7 +8,7 @@
 	<Message>Scenario 1: Make 5-&gt;2 preferred path, sibling and downstream subtypes should all be preferred</Message>
 	<ValidationErrors name="No errors expected" />
 	<Message>5-&gt;4, 6-&gt;5, 6-&gt;7 are on the preferred path: True</Message>
-	<Message>ValueConstraint should be a string type: { '10' }</Message>
+	<Message>ValueConstraint should be a string type: {'10'}</Message>
 	<Message>Scenario 2: Make 5-&gt;3 preferred path, downstream subtypes are no ambiguous</Message>
 	<ValidationErrors name="Two errors expected">
 		<ValidationError>Entity type 'EntityType6' in model 'ORMModel1' requires a local preferred reference scheme or supertype(s) that provide preferred identification.</ValidationError>
@@ -17,11 +18,11 @@
 	<Message>Scenario 3: Make 6-&gt;5 preferred path</Message>
 	<ValidationErrors name="No errors expected" />
 	<Message>6-&gt;7 is not on the preferred path: True</Message>
-	<Message>ValueConstraint should be a number type: { 10 }</Message>
+	<Message>ValueConstraint should be a number type: {10}</Message>
 	<Message>Scenario 4: Make 6-&gt;7 preferred path</Message>
 	<ValidationErrors name="No errors expected" />
 	<Message>6-&gt;5 is not on the preferred path: True</Message>
-	<Message>ValueConstraint should be a string type: { '10' }</Message>
+	<Message>ValueConstraint should be a string type: {'10'}</Message>
 	<Message>Scenario 5: Delete 7-&gt;4 to break subtype structure</Message>
 	<ValidationErrors name="Expecting invalid graph, detached valuetype, and no reference scheme errors">
 		<ValidationError>Direct supertypes of ObjectType 'EntityType6' in model 'ORMModel1' must be overlapping without transitive implication or mutual exclusion.</ValidationError>

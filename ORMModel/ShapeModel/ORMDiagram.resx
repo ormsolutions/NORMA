@@ -487,7 +487,11 @@
     <value xml:space="preserve">Add Internal Uniqueness Constraint</value>
     <comment xml:space="preserve">The name given to the transaction used when adding an internal uniqueness constraint to correct the FactTypeRequiresInternalUniquenessConstraint error.</comment>
   </data>
-  <data name="DropShape.TransactionName">
+	<data name="CultureChanged.TransactionName">
+		<value xml:space="preserve">Locale Settings Changed</value>
+		<comment xml:space="preserve">The name given to the transaction used when a culture change modifies displayed diagram elements.</comment>
+	</data>
+	<data name="DropShape.TransactionName">
     <value xml:space="preserve">Add Shape</value>
     <comment xml:space="preserve">The name given to the transaction used when adding a shape element for an existing object.</comment>
   </data>

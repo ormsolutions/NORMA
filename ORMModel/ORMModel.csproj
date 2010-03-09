@@ -759,6 +759,9 @@
     <EmbeddedResource Include="Load\ORM2Root.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="ObjectModel\DataTypesGenerator.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="ObjectModel\VerbalizationReportSnippets\VerbalizationReportSnippets.xsd">
       <SubType>Designer</SubType>
     </None>

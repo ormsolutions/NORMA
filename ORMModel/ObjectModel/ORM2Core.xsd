@@ -405,14 +405,19 @@
 		<xs:annotation>
 			<xs:documentation>Value instance. All other instance specifications are ultimately combinations of value instances.</xs:documentation>
 		</xs:annotation>
-		<xs:sequence>
+		<xs:all>
 			<xs:element name="Value" type="xs:string">
 				<xs:annotation>
 					<xs:documentation>The text form of an instance value.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
+			<xs:element name="InvariantValue" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A culture-invariant form of the instance value. This will not be set for data types with data that is not culture dependent.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
 			<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
-		</xs:sequence>
+		</xs:all>
 		<xs:attributeGroup ref="idAttribute"/>
 	</xs:complexType>
 	<xs:complexType name="ValueTypeInstanceRef">
@@ -3159,6 +3164,16 @@
 		<xs:attribute name="MaxInclusion" type="RangeInclusionValues" default="NotSet">
 			<xs:annotation>
 				<xs:documentation>Does the range include the upper bound?</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="InvariantMinValue" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>A culture-invariant form of the minValue attribute. This value will not be set for a data type where any value is allowed (such as a string) or if the minValue could not be interpreted by the current data type.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="InvariantMaxValue" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>A culture-invariant form of the maxValue attribute. This value will not be set for a data type where any value is allowed (such as a string) or if the minValue could not be interpreted by the current data type.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>

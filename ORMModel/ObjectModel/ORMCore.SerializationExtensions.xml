@@ -403,6 +403,15 @@
 			</plx:return>
 		</se:ConditionalSerialization>
 		<se:Attribute ID="Value" WriteStyle="Element"/>
+		<se:Attribute ID="InvariantValue" WriteStyle="Element">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:callStatic name="IsNullOrEmpty" dataTypeName=".string">
+					<plx:passParam>
+						<plx:callThis name="InvariantValue" type="property"/>
+					</plx:passParam>
+				</plx:callStatic>
+			</se:Condition>
+		</se:Attribute>
 		<se:Link RelationshipName="EntityTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ValueTypeInstanceHasCompatibleValueTypeInstanceValueError" RoleName="CompatibleValueTypeInstanceValueError" WriteStyle="NotWritten"/>
@@ -495,6 +504,24 @@
 		<se:Link RelationshipName="PathConditionRoleValueConstraintAppliesToRolePathCombination" RoleName="Combination" Name="AppliesToRolePathCombination"/>
 	</se:Element>
 	<se:Element Class="ValueRange" Override="true">
+		<se:Attribute ID="InvariantMaxValue">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:callStatic name="IsNullOrEmpty" dataTypeName=".string">
+					<plx:passParam>
+						<plx:callThis name="InvariantMaxValue" type="property"/>
+					</plx:passParam>
+				</plx:callStatic>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="InvariantMinValue">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:callStatic name="IsNullOrEmpty" dataTypeName=".string">
+					<plx:passParam>
+						<plx:callThis name="InvariantMaxValue" type="property"/>
+					</plx:passParam>
+				</plx:callStatic>
+			</se:Condition>
+		</se:Attribute>
 		<se:Link RelationshipName="ValueRangeHasMinValueMismatchError" RoleName="MinValueMismatchError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ValueRangeHasMaxValueMismatchError" RoleName="MaxValueMismatchError" WriteStyle="NotWritten"/>
 	</se:Element>

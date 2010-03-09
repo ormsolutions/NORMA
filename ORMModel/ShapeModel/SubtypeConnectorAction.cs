@@ -77,7 +77,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				if ((null != (sourceObjectType = action.mySourceObjectType)) &&
 					(null != (targetObjectType = ObjectTypeFromShape(targetShapeElement))))
 				{
-					// UNDONE: Now be smarter here, or display message later on
+					// UNDONE: Be smarter here, or display message later on
 					return sourceObjectType != targetObjectType && ((sourceObjectType.DataType == null) == (targetObjectType.DataType == null));
 				}
 				return false;

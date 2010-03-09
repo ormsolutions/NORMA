@@ -1802,17 +1802,22 @@
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="MinValue" DefaultValue="" DisplayName="MinValue" IsBrowsable="false" Id="59B141FD-47ED-43FF-837E-858F140FAD57">
+				<DomainProperty Name="MinValue" DefaultValue="" DisplayName="MinValue" IsBrowsable="false" Id="59B141FD-47ED-43FF-837E-858F140FAD57" Description="The lower bound for the range. An equivalent MaxValue indicates that the range represents a single value.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="MaxValue" DefaultValue="" DisplayName="MaxValue" IsBrowsable="false" Id="08199824-9DDC-4878-8E04-E0F432069726">
+				<DomainProperty Name="InvariantMinValue" DefaultValue="" DisplayName="InvariantMinValue" IsBrowsable="false" Id="F758A122-E610-4611-920D-463C58BB0407" Description="The culture-invariant form of the MinValue property.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="Text" DefaultValue="" DisplayName="Text" IsBrowsable="false" Id="1FB8C126-4481-41D0-B41C-5A30BC7245DE" Kind="CustomStorage">
+				<DomainProperty Name="MaxValue" DefaultValue="" DisplayName="MaxValue" IsBrowsable="false" Id="08199824-9DDC-4878-8E04-E0F432069726" Description="The upper bound for the range. An equivalent MinValue indicates that the range represents a single value.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="InvariantMaxValue" DefaultValue="" DisplayName="InvariantMaxValue" IsBrowsable="false" Id="A2615C61-231A-4E80-8016-40E6F2F68ECD" Description="The culture-invariant form of the MaxValue property.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
@@ -2125,6 +2130,11 @@
 			</BaseClass>
 			<Properties>
 				<DomainProperty Name="Value" DefaultValue="" DisplayName="Value" Id="1D0232BA-A92F-4B81-99BF-2A2A44821030" Description="The instance value.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="InvariantValue" DefaultValue="" DisplayName="InvariantValue" IsBrowsable="false" Id="724B068B-5DFE-4C0C-B21C-B48FDC7A1752" Description="The culture-invariant form of the value property.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>

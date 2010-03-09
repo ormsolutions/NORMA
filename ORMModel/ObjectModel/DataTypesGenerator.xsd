@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema
+	targetNamespace="http://schemas.ormsolutions.com/ORM/SDK/DataTypesGenerator" 
+	attributeFormDefault="unqualified"
+	elementFormDefault="qualified"
+	xmlns="http://schemas.ormsolutions.com/ORM/SDK/DataTypesGenerator"
+	xmlns:dtg="http://schemas.ormsolutions.com/ORM/SDK/DataTypesGenerator"
+	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:annotation>
+		<xs:appinfo source="Common Public License Copyright Notice">
+			Natural Object-Role Modeling Architect for Visual Studio
+
+			Copyright © ORM Solutions, LLC. All rights reserved.
+
+			The use and distribution terms for this software are covered by the
+			Common Public License 1.0 (http://opensource.org/licenses/cpl) which
+			can be found in the file CPL.txt at the root of this distribution.
+			By using this software in any fashion, you are agreeing to be bound by
+			the terms of this license.
+
+			You must not remove this notice, or any other, from this software.
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:import namespace="http://schemas.neumont.edu/CodeGeneration/PLiX"/>
+	<xs:element name="DataTypes">
+		<xs:complexType>
+			<xs:annotation>
+				<xs:documentation>The root node. Contains DataType nodes.</xs:documentation>
+			</xs:annotation>
+			<xs:sequence>
+				<xs:element name="Copyright" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Copyright notice which applies to both the source document and anything generated from it.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="CopyrightLine" type="xs:string" maxOccurs="unbounded"/>
+						</xs:sequence>
+						<xs:attribute name="name" type="xs:string" use="required"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="DataTypeGroup" type="DataTypeGroupType" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="BaseDataTypeType" abstract="true">
+		<xs:attribute name="name" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>The name of the data type.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="backingType">
+			<xs:simpleType>
+				<xs:restriction base="plx:dataTypeNameType">
+					<xs:pattern value="\..*"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="canCompare" type="xs:boolean" default="true">
+			<xs:annotation>
+				<xs:documentation>True if values in the data type are comparable.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="rangeSupport" default="ContinuousEndPoints">
+			<xs:annotation>
+				<xs:documentation>The range endpoints supported by the data type</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="None">
+						<xs:annotation>
+							<xs:documentation>Ranges are not supported for this data type.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="ContinuousEndPoints">
+						<xs:annotation>
+							<xs:documentation>The data type supports continuous open ranges.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="DiscontinuousEndPoints">
+						<xs:annotation>
+							<xs:documentation>The data type supports open ranges by adjusting the range end points to neighboring discontinuous values.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="discontinuousRangePattern">
+			<xs:annotation>
+				<xs:documentation>The pattern for implementation of discontinuous range support.</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="Integer">
+						<xs:annotation>
+							<xs:documentation>The backing type is an integer type that can be used to find the next value for open range support.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="cultureSensitive" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>Is the stringized representation of data in this datatype different for different cultures?</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="DataTypeGroupType">
+		<xs:annotation>
+			<xs:documentation>A group to related multiple data types.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="BaseDataTypeType">
+				<xs:sequence>
+					<xs:element maxOccurs="unbounded" name="DataType" type="DataTypeType"/>
+				</xs:sequence>
+				<xs:attribute name="enumOnly" type="xs:boolean" use="optional">
+					<xs:annotation>
+						<xs:documentation>Generate an enum for data types in this group, but no other data.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DataTypeType">
+		<xs:annotation>
+			<xs:documentation>A data type to generate.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="BaseDataTypeType">
+				<xs:sequence>
+					<xs:element name="Comment" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>A documentation comment for the generated type.</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:simpleContent>
+								<xs:extension base="xs:string">
+									<xs:attribute name="type" type="xs:string" use="required">
+										<xs:annotation>
+											<xs:documentation>The type of documentation comment to add. Generally summary.</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+								</xs:extension>
+							</xs:simpleContent>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="lengthName" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>The name of a resource string to display for the stock 'length' facet on the data type. An empty attribute value indicates to show the length facet with the default display name.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="lengthDescription" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>The name of a resource string for the description of the stock 'length' facet on the data type. Omit the attribute for the default description.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="scaleName" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>The name of a resource string to display for the stock 'scale' facet on the data type. An empty attribute value indicates to show the scale facet with the default display name.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="scaleDescription" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>The name of a resource string for the description of the stock 'scale' facet on the data type. Omit the attribute for the default description.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="numberStyles">
+					<xs:annotation>
+						<xs:documentation>A list of values from the System.Globalization.NumberStyles enum indicating the parsing options for this data type.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:list>
+							<xs:simpleType>
+								<xs:restriction base="xs:token">
+									<xs:enumeration value="AllowCurrencySymbol"/>
+									<xs:enumeration value="AllowDecimalPoint"/>
+									<xs:enumeration value="AllowExponent"/>
+									<xs:enumeration value="AllowHexSpecifier"/>
+									<xs:enumeration value="AllowLeadingSign"/>
+									<xs:enumeration value="AllowLeadingWhite"/>
+									<xs:enumeration value="AllowParentheses"/>
+									<xs:enumeration value="AllowThousands"/>
+									<xs:enumeration value="AllowTrailingSign"/>
+									<xs:enumeration value="AllowTrailingWhite"/>
+									<xs:enumeration value="Any"/>
+									<xs:enumeration value="Currency"/>
+									<xs:enumeration value="Float"/>
+									<xs:enumeration value="HexNumber"/>
+									<xs:enumeration value="Integer"/>
+									<xs:enumeration value="None"/>
+									<xs:enumeration value="Number"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:list>
+					</xs:simpleType>
+				</xs:attribute>
+				<xs:attribute name="dateTimeStyles">
+					<xs:annotation>
+						<xs:documentation>A list of values from the System.Globalization.DateTimeStyles enum indicating the parsing options for this data type.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:list>
+							<xs:simpleType>
+								<xs:restriction base="xs:token">
+									<xs:enumeration value="AdjustToUniversal"/>
+									<xs:enumeration value="AllowInnerWhite"/>
+									<xs:enumeration value="AllowLeadingWhite"/>
+									<xs:enumeration value="AllowTrailingWhite"/>
+									<xs:enumeration value="AllowWhiteSpaces"/>
+									<xs:enumeration value="AssumeLocal"/>
+									<xs:enumeration value="AssumeUniversal"/>
+									<xs:enumeration value="NoCurrentDateDefault"/>
+									<xs:enumeration value="None"/>
+									<xs:enumeration value="RoundtripKind"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:list>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

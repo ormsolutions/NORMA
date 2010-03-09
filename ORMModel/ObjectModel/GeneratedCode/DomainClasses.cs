@@ -18890,7 +18890,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of MinValue domain property.
-		/// Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRange.MinValue
+		/// The lower bound for the range. An equivalent MaxValue indicates that the range
+		/// represents a single value.
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRange/MinValue.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRange/MinValue.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
@@ -18964,6 +18965,94 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		
 		#endregion
+		#region InvariantMinValue domain property code
+		
+		/// <summary>
+		/// InvariantMinValue domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid InvariantMinValueDomainPropertyId = new global::System.Guid(0xf758a122, 0xe610, 0x4611, 0x92, 0x0d, 0x46, 0x3c, 0x58, 0xbb, 0x04, 0x07);
+		
+		/// <summary>
+		/// Storage for InvariantMinValue
+		/// </summary>
+		private global::System.String invariantMinValuePropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// Gets or sets the value of InvariantMinValue domain property.
+		/// The culture-invariant form of the MinValue property.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRange/InvariantMinValue.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRange/InvariantMinValue.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainObjectId("f758a122-e610-4611-920d-463c58bb0407")]
+		public global::System.String InvariantMinValue
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return invariantMinValuePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				InvariantMinValuePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ValueRange.InvariantMinValue domain property.
+		/// </summary>
+		internal sealed partial class InvariantMinValuePropertyHandler : DslModeling::DomainPropertyValueHandler<ValueRange, global::System.String>
+		{
+			private InvariantMinValuePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ValueRange.InvariantMinValue domain property value handler.
+			/// </summary>
+			public static readonly InvariantMinValuePropertyHandler Instance = new InvariantMinValuePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ValueRange.InvariantMinValue domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return InvariantMinValueDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(ValueRange element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.invariantMinValuePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ValueRange element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.invariantMinValuePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region MaxValue domain property code
 		
 		/// <summary>
@@ -18978,7 +19067,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of MaxValue domain property.
-		/// Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRange.MaxValue
+		/// The upper bound for the range. An equivalent MinValue indicates that the range
+		/// represents a single value.
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRange/MaxValue.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRange/MaxValue.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
@@ -19052,56 +19142,60 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		
 		#endregion
-		#region Text domain property code
+		#region InvariantMaxValue domain property code
 		
 		/// <summary>
-		/// Text domain property Id.
+		/// InvariantMaxValue domain property Id.
 		/// </summary>
-		public static readonly global::System.Guid TextDomainPropertyId = new global::System.Guid(0x1fb8c126, 0x4481, 0x41d0, 0xb4, 0x1c, 0x5a, 0x30, 0xbc, 0x72, 0x45, 0xde);
+		public static readonly global::System.Guid InvariantMaxValueDomainPropertyId = new global::System.Guid(0xa2615c61, 0x231a, 0x4e80, 0x80, 0x16, 0x40, 0xe6, 0xf2, 0xf6, 0x8e, 0xcd);
 		
 		/// <summary>
-		/// Gets or sets the value of Text domain property.
-		/// Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRange.Text
+		/// Storage for InvariantMaxValue
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRange/Text.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRange/Text.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		private global::System.String invariantMaxValuePropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// Gets or sets the value of InvariantMaxValue domain property.
+		/// The culture-invariant form of the MaxValue property.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRange/InvariantMaxValue.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRange/InvariantMaxValue.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[global::System.ComponentModel.Browsable(false)]
-		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
-		[DslModeling::DomainObjectId("1fb8c126-4481-41d0-b41c-5a30bc7245de")]
-		public global::System.String Text
+		[DslModeling::DomainObjectId("a2615c61-231a-4e80-8016-40e6f2f68ecd")]
+		public global::System.String InvariantMaxValue
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return TextPropertyHandler.Instance.GetValue(this);
+				return invariantMaxValuePropertyStorage;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				TextPropertyHandler.Instance.SetValue(this, value);
+				InvariantMaxValuePropertyHandler.Instance.SetValue(this, value);
 			}
 		}
 		/// <summary>
-		/// Value handler for the ValueRange.Text domain property.
+		/// Value handler for the ValueRange.InvariantMaxValue domain property.
 		/// </summary>
-		internal sealed partial class TextPropertyHandler : DslModeling::DomainPropertyValueHandler<ValueRange, global::System.String>
+		internal sealed partial class InvariantMaxValuePropertyHandler : DslModeling::DomainPropertyValueHandler<ValueRange, global::System.String>
 		{
-			private TextPropertyHandler() { }
+			private InvariantMaxValuePropertyHandler() { }
 		
 			/// <summary>
-			/// Gets the singleton instance of the ValueRange.Text domain property value handler.
+			/// Gets the singleton instance of the ValueRange.InvariantMaxValue domain property value handler.
 			/// </summary>
-			public static readonly TextPropertyHandler Instance = new TextPropertyHandler();
+			public static readonly InvariantMaxValuePropertyHandler Instance = new InvariantMaxValuePropertyHandler();
 		
 			/// <summary>
-			/// Gets the Id of the ValueRange.Text domain property.
+			/// Gets the Id of the ValueRange.InvariantMaxValue domain property.
 			/// </summary>
 			public sealed override global::System.Guid DomainPropertyId
 			{
 				[global::System.Diagnostics.DebuggerStepThrough]
 				get
 				{
-					return TextDomainPropertyId;
+					return InvariantMaxValueDomainPropertyId;
 				}
 			}
 			
@@ -19113,10 +19207,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			public override sealed global::System.String GetValue(ValueRange element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-				// There is no storage for Text because its Kind is
-				// set to CustomStorage. Please provide the GetTextValue()
-				// method on the domain class.
-				return element.GetTextValue();
+				return element.invariantMaxValuePropertyStorage;
 			}
 		
 			/// <summary>
@@ -19132,11 +19223,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (newValue != oldValue)
 				{
 					ValueChanging(element, oldValue, newValue);
-					// There is no storage for Text because its Kind is
-					// set to CustomStorage. Please provide the SetTextValue()
-					// method on the domain class.
-					element.SetTextValue(newValue);
-					//ValueChanged(element, oldValue, GetValue(element));
+					element.invariantMaxValuePropertyStorage = newValue;
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
@@ -22936,6 +23023,94 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					ValueChanging(element, oldValue, newValue);
 					element.valuePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region InvariantValue domain property code
+		
+		/// <summary>
+		/// InvariantValue domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid InvariantValueDomainPropertyId = new global::System.Guid(0x724b068b, 0x5dfe, 0x4c0c, 0xb2, 0x1c, 0xb4, 0x8f, 0xdc, 0x7a, 0x17, 0x52);
+		
+		/// <summary>
+		/// Storage for InvariantValue
+		/// </summary>
+		private global::System.String invariantValuePropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// Gets or sets the value of InvariantValue domain property.
+		/// The culture-invariant form of the value property.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstance/InvariantValue.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstance/InvariantValue.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainObjectId("724b068b-5dfe-4c0c-b21c-b48fdc7a1752")]
+		public global::System.String InvariantValue
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return invariantValuePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				InvariantValuePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ValueTypeInstance.InvariantValue domain property.
+		/// </summary>
+		internal sealed partial class InvariantValuePropertyHandler : DslModeling::DomainPropertyValueHandler<ValueTypeInstance, global::System.String>
+		{
+			private InvariantValuePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ValueTypeInstance.InvariantValue domain property value handler.
+			/// </summary>
+			public static readonly InvariantValuePropertyHandler Instance = new InvariantValuePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ValueTypeInstance.InvariantValue domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return InvariantValueDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(ValueTypeInstance element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.invariantValuePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ValueTypeInstance element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.invariantValuePropertyStorage = newValue;
 					ValueChanged(element, oldValue, newValue);
 				}
 			}

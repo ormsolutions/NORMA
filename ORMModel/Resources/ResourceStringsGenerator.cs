@@ -573,6 +573,14 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "ExclusiveOrDecoupler.TransactionName");
 			}
 		}
+		/// <summary>The name given to the transaction used when a culture change modifies displayed diagram elements.</summary>
+		public static string CultureChangedTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "CultureChanged.TransactionName");
+			}
+		}
 		/// <summary>The name given to the transaction used when adding a shape element for an existing object.</summary>
 		public static string DropShapeTransactionName
 		{
@@ -2428,20 +2436,60 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "Role.SurveyNameMissingRolePlayer");
 			}
 		}
-		/// <summary>Pattern showing left- and right-string to use for containing a value range definition.</summary>
-		public static string ValueConstraintDefinitionContainerPattern
+		/// <summary>Closing delimiter to contain one or more value ranges.</summary>
+		public static string ValueConstraintDefinitionContainerCloseDelimiter
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ValueConstraint.DefinitionContainerPattern");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ValueConstraint.DefinitionContainer.CloseDelimiter");
 			}
 		}
-		/// <summary>String used to delimit sets of value ranges in a definition.</summary>
-		public static string ValueConstraintRangeDelimiter
+		/// <summary>Opening delimiter to contain one or more value ranges.</summary>
+		public static string ValueConstraintDefinitionContainerOpenDelimiter
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ValueConstraint.RangeDelimiter");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ValueConstraint.DefinitionContainer.OpenDelimiter");
+			}
+		}
+		/// <summary>One character with possible spaces for the closed lower bound of a value range.</summary>
+		public static string ValueConstraintClosedInclusionLowerDelimiter
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ValueConstraint.ClosedInclusion.LowerDelimiter");
+			}
+		}
+		/// <summary>One character with possible spaces for the closed upper bound of a value range.</summary>
+		public static string ValueConstraintClosedInclusionUpperDelimiter
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ValueConstraint.ClosedInclusion.UpperDelimiter");
+			}
+		}
+		/// <summary>One character with possible spaces for the open lower bound of a value range.</summary>
+		public static string ValueConstraintOpenInclusionLowerDelimiter
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ValueConstraint.OpenInclusion.LowerDelimiter");
+			}
+		}
+		/// <summary>One character with possible spaces for the open upper bound of a value range.</summary>
+		public static string ValueConstraintOpenInclusionUpperDelimiter
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ValueConstraint.OpenInclusion.UpperDelimiter");
+			}
+		}
+		/// <summary>The string delimiter character. Used to open and close strings. Doubling this character in a string results in the string in the final result.</summary>
+		public static string ValueConstraintStringDelimiter
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ValueConstraint.StringDelimiter");
 			}
 		}
 		/// <summary>String used to delimit the min- and max-values of a value range.</summary>
@@ -2452,28 +2500,21 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ValueConstraint.ValueDelimiter");
 			}
 		}
-		/// <summary>Pattern showing left- and right-string to use for containing a value range as a string.</summary>
-		public static string ValueConstraintStringContainerPattern
+		/// <summary>A regex pattern used for extracting parts of a single value range.
+		/// This string contains a number of other resource values, escaped for use in a regex expression. The format string and replacements are:
+		/// (?n)\s*((?&lt;MinClosedInclusion>{2})|(?&lt;MinOpenInclusion>{4}))?\s*(?&lt;MinValue>(((?!{1})[^{0}])+|({0}.*?{0})+)*)\s*(?&lt;RangeDelimiter>{1})?\s*(?&lt;MaxValue>(((?!({3}|{5}))[^{0}])+|({0}.*?{0})+)*)\s*((?&lt;MaxClosedInclusion>{3})|(?&lt;MaxOpenInclusion>{5}))?\s*
+		/// {0}=ObjectModel.ValueConstraint.StringDelimiter
+		/// {1}=ObjectModel.ValueConstraint.ValueDelimiter
+		/// The remaining replacements are trimmed for leading/trailing whitespace
+		/// {2}=ObjectModel.ValueConstraint.ClosedInclusion.LowerDelimiter
+		/// {3}=ObjectModel.ValueConstraint.ClosedInclusion.UpperDelimiter
+		/// {4}=ObjectModel.ValueConstraint.OpenInclusion.LowerDelimiter
+		/// {5}=ObjectModel.ValueConstraint.OpenInclusion.UpperDelimiter</summary>
+		public static string ValueConstraintValueRangeRegexPattern
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ValueConstraint.StringContainerPattern");
-			}
-		}
-		/// <summary>Pattern showing left- and right-string to use to indicate the min- and max-values are open (i.e. the value itself is not a member of the range).</summary>
-		public static string ValueConstraintOpenInclusionContainer
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ValueConstraint.OpenInclusionPattern");
-			}
-		}
-		/// <summary>Pattern showing left- and right-string to use to indicate the min- and max-values are closed (i.e. the value itself is a member of the range).</summary>
-		public static string ValueConstraintClosedInclusionContainer
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ValueConstraint.ClosedInclusionPattern");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ValueConstraint.ValueRangeRegexPattern");
 			}
 		}
 		/// <summary>Model validation error text used when multiple recognized phrases with the same name are loaded into a model.Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</summary>
@@ -2588,7 +2629,7 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "ReadingShape.AttachedDuplicateRoleDisplay");
 			}
 		}
-		/// <summary>The string used to display a reading with a non-primary order when the role is not attached.</summary>
+		/// <summary>The string used to display a reading with a non-primary order when the role is not attached. Replement fields: {0}=displayed role index</summary>
 		public static string ReadingShapeUnattachedRoleDisplay
 		{
 			get

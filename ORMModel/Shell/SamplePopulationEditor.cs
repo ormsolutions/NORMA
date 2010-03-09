@@ -3459,18 +3459,29 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						bool canParseAnyValue = valueDataType.CanParseAnyValue;
 						LinkedElementCollection<ValueTypeInstance> instances = parentType.ValueTypeInstanceCollection;
 						int instanceCount = instances.Count;
-						for (int i = 0; i < instanceCount; ++i)
+						if (instanceCount != 0)
 						{
-							ValueTypeInstance currentValueInstance = instances[i];
-							string value = currentValueInstance.Value;
-							if (canParseAnyValue ||
-								(valueDataType.CanParse(value) && valueDataType.CanParse(newText)))
+							string invariantNewText = newText;
+							bool validNewValue = true;
+							if (!canParseAnyValue)
 							{
-								int compare = valueDataType.Compare(value, newText);
-								if (compare == 0)
+								validNewValue = valueDataType.TryConvertToInvariant(newText, out invariantNewText);
+							}
+							for (int i = 0; i < instanceCount; ++i)
+							{
+								ValueTypeInstance currentValueInstance = instances[i];
+								string value = currentValueInstance.Value;
+								if (validNewValue)
 								{
-									rootInstance = instances[i];
-									return rootInstance;
+									if ((canParseAnyValue || valueDataType.ParseNormalizeValue(value, currentValueInstance.InvariantValue, out value)) &&
+										0 == valueDataType.Compare(value, invariantNewText))
+									{
+										return rootInstance = currentValueInstance;
+									}
+								}
+								else if (value == newText) // Just go for a string match with unparseable new text
+								{
+									return rootInstance = currentValueInstance;
 								}
 							}
 						}
@@ -3821,7 +3832,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				string text = base.GetText(row, column);
 				if (text != null && text.Length == 0)
 				{
-					text = myCachedInstances[row].Value;
+					text = myCachedInstances[row].Name;
 				}
 				return text;
 			}

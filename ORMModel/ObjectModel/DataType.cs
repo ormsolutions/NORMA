@@ -154,18 +154,120 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		None,
 		/// <summary>
-		/// The data type supports closed ranges only
+		/// The data type naturally supports open ranges
+		/// with continuous values.
 		/// </summary>
-		Closed,
+		ContinuousEndPoints,
 		/// <summary>
-		/// The data type supports open and closed ranges
+		/// The data type does not naturally support open
+		/// ranges. Open intervals endpoints are interpreted
+		/// by adjusting the endpoint to the nearest value.
+		/// For example, for an integer, an open lower
+		/// bound from 1 is treated as a closed lower bound
+		/// from 2.
 		/// </summary>
-		Open,
+		DiscontinuousEndPoints,
 	}
 	#endregion // DataTypeRangeSupport enum
 	#region DataType class
 	public abstract partial class DataType
 	{
+		#region Helper Methods and Properties
+		/// <summary>
+		/// Get the current format provider
+		/// </summary>
+		public CultureInfo CurrentCulture
+		{
+			get
+			{
+				// UNDONE: Consider storing a culture with the model, with a
+				// user option to display and parse with either the native culture
+				// or the model's stored culture.
+				return CultureInfo.CurrentCulture;
+			}
+		}
+		/// <summary>
+		/// Determine the best text display value based on the
+		/// current culture settings. If the <paramref name="value"/>
+		/// is not the same as the <paramref name="invariantValue"/> according to
+		/// the current culture data, then format and return the invariant text.
+		/// </summary>
+		/// <param name="value">Text formatted by some culture.</param>
+		/// <param name="invariantValue">Text formatted to the invariant culture.</param>
+		/// <returns>Best matching text.</returns>
+		public string NormalizeDisplayText(string value, string invariantValue)
+		{
+			if (IsCultureSensitive)
+			{
+				string alternateForm;
+				if (value.Length != 0)
+				{
+					// Can't fix data with no data
+					if (invariantValue.Length != 0 &&
+						(!TryConvertToInvariant(value, out alternateForm) ||
+						alternateForm != invariantValue) &&
+						TryConvertFromInvariant(invariantValue, out alternateForm))
+					{
+						return alternateForm;
+					}
+				}
+				else if (invariantValue.Length != 0 &&
+					TryConvertFromInvariant(invariantValue, out alternateForm))
+				{
+					return alternateForm;
+				}
+			}
+			return value;
+		}
+		/// <summary>
+		/// Determine if a string value or a cached invariant form of
+		/// that value can be recognized by this data type.
+		/// </summary>
+		/// <param name="value">Text formatted by some culture.</param>
+		/// <param name="invariantValue">Text formatted to the invariant culture.</param>
+		/// <param name="normalizedValue">The normalized value. Use this value with other
+		/// functions such as <see cref="Compare"/>, <see cref="AdjustDiscontinuousLowerBound"/>, and
+		/// <see cref="AdjustDiscontinuousUpperBound"/></param>
+		/// <returns>Best matching text.</returns>
+		public bool ParseNormalizeValue(string value, string invariantValue, out string normalizedValue)
+		{
+			normalizedValue = value;
+			if (CanParseAnyValue)
+			{
+				return true;
+			}
+			if (IsCultureSensitive)
+			{
+				if (value == invariantValue)
+				{
+					string alternateForm;
+					if (TryConvertToInvariant(value, out alternateForm))
+					{
+						normalizedValue = alternateForm;
+						return true;
+					}
+					else if (CanParseInvariant(value))
+					{
+						return true;
+					}
+					return false;
+				}
+				else if (invariantValue.Length != 0)
+				{
+					string alternateForm;
+					if ((TryConvertToInvariant(value, out alternateForm) && alternateForm == invariantValue) ||
+						CanParseInvariant(invariantValue))
+					{
+						normalizedValue = invariantValue;
+						return true;
+					}
+					return false;
+				}
+			}
+			return CanParse(value);
+		}
+		#endregion // Helper Methods and Properties
+		#region Abstract and Virtual Methods and Properties
 		/// <summary>
 		/// Gets the PortableDataType of this DataType.
 		/// </summary>
@@ -178,10 +280,42 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Virtual function to determine if string data can be interpreted
 		/// as a value in this data type.
 		/// </summary>
-		/// <param name="value">value to parse</param>
+		/// <param name="value">Value to parse</param>
 		/// <returns>default to true</returns>
 		public virtual bool CanParse(string value)
 		{
+			return true;
+		}
+		/// <summary>
+		/// Virtual function to determine if a string value in invariant form
+		/// can be interpreted as a value in this data type
+		/// </summary>
+		/// <param name="invariantValue">Invariant value to parse.</param>
+		/// <returns>default to true</returns>
+		public virtual bool CanParseInvariant(string invariantValue)
+		{
+			return true;
+		}
+		/// <summary>
+		/// Convert stringized data in the current culture to an invariant form.
+		/// </summary>
+		/// <param name="value">A string in the current culture.</param>
+		/// <param name="invariantValue">Invariant form of the string.</param>
+		/// <returns><see langword="true"/> if the value was recognized and converted.</returns>
+		public virtual bool TryConvertToInvariant(string value, out string invariantValue)
+		{
+			invariantValue = value;
+			return true;
+		}
+		/// <summary>
+		/// Convert a culture-invariant form of stringized data to a culture-specific form.
+		/// </summary>
+		/// <param name="invariantValue">A string in the invariant form.</param>
+		/// <param name="value">Culture-specific form of the string.</param>
+		/// <returns><see langword="true"/> if the value was recognized and converted.</returns>
+		public virtual bool TryConvertFromInvariant(string invariantValue, out string value)
+		{
+			value = invariantValue;
 			return true;
 		}
 		/// <summary>
@@ -195,9 +329,43 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
+		/// Return true if the string form of the data is
+		/// sensitive to changes in the culture. If this is
+		/// set, then data sent to the <see cref="Compare"/>
+		/// function should be in an invariant form returned
+		/// by the <see cref="TryConvertToInvariant"/> method.
+		/// </summary>
+		public virtual bool IsCultureSensitive
+		{
+			get
+			{
+				return false;
+			}
+		}
+		/// <summary>
 		/// Specify if a data type supports single values only, closed ranges, or open ranges
 		/// </summary>
 		public abstract DataTypeRangeSupport RangeSupport { get; }
+		/// <summary>
+		/// Adjust the lower bound of an interval with discontinuous range support.
+		/// </summary>
+		/// <param name="invariantBound">The original bound in invariant form. Value may be modified on return.</param>
+		/// <param name="isOpen"><see langword="true"/> if the bound is for an open range. Value may be modified on return.</param>
+		/// <returns><see langword="true"/> if the value could be adjusted.</returns>
+		public virtual bool AdjustDiscontinuousLowerBound(ref string invariantBound, ref bool isOpen)
+		{
+			return true;
+		}
+		/// <summary>
+		/// Adjust the upper bound of an interval with discontinuous range support.
+		/// </summary>
+		/// <param name="invariantBound">The original bound in invariant form. Value may be modified on return.</param>
+		/// <param name="isOpen"><see langword="true"/> if the bound is for an open range. Value may be modified on return.</param>
+		/// <returns><see langword="true"/> if the value could be adjusted.</returns>
+		public virtual bool AdjustDiscontinuousUpperBound(ref string invariantBound, ref bool isOpen)
+		{
+			return true;
+		}
 		/// <summary>
 		/// Return true if the compare function should be called. Should
 		/// be true (the default) for all but the UnspecifiedDataType
@@ -256,10 +424,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Compare two values according to the semantics of this data type
 		/// </summary>
-		/// <param name="value1">Left string value</param>
-		/// <param name="value2">Right string value</param>
+		/// <param name="invariantValue1">Left string value</param>
+		/// <param name="invariantValue2">Right string value</param>
 		/// <returns>Standard compare functions values (-1, 0, 1)</returns>
-		public abstract int Compare(string value1, string value2);
+		public abstract int Compare(string invariantValue1, string invariantValue2);
+		#endregion // Abstract and Virtual Methods and Properties
 	}
 	#endregion // DataType class
 	#region Custom CanParse implementations
@@ -268,8 +437,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// return true if the string represents yes or no
 		/// </summary>
-		/// <param name="value"></param>
-		/// <returns></returns>
 		public override bool CanParse(string value)
 		{
 			// UNDONE: How are we going to localize this properly? We may need to

@@ -115,6 +115,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ObjectType valueType = (valueTypeInstance != null) ? valueTypeInstance.ValueType : null;
 			string valueName = (valueType != null) ? valueType.Name : "";
 			string dataType = (valueType != null) ? valueType.DataType.PortableDataType.ToString() : "";
+			// Go ahead and use the value directly here instead of looking at the invariant value.
+			// If the invariant value succeeds as a backup then you don't get to this point.
 			string value = (valueTypeInstance != null) ? valueTypeInstance.Value : "";
 			string modelName = Model.Name;
 			string currentText = ErrorText;
@@ -779,6 +781,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			// Do nothing here. The base calls SetUniqueName, but we don't enforce
 			// unique names on the generated ObjectTypeInstance name.
+		}
+		/// <summary>
+		/// Reset the name for each <see cref="FactTypeInstance"/> in the <paramref name="store"/>
+		/// </summary>
+		/// <param name="store">Context <see cref="Store"/> to reset names for.</param>
+		public static void InvalidateNames(Store store)
+		{
+			foreach (FactTypeInstance factInstance in store.ElementDirectory.FindElements<FactTypeInstance>(false))
+			{
+				FrameworkDomainModel.DelayValidateElement(factInstance, DelayValidateNamePartChanged);
+			}
 		}
 		#endregion // Automatic Name Generation
 		#region Base overrides
@@ -2493,6 +2506,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	public partial class ValueTypeInstance : IModelErrorOwner
 	{
 		#region Base overrides
+		private string NormalizedValue
+		{
+			get
+			{
+				string value = Value;
+				ObjectType valueType;
+				DataType dataType;
+				if (null != (valueType = ValueType) &&
+					null != (dataType = valueType.DataType))
+				{
+					value = dataType.NormalizeDisplayText(value, InvariantValue);
+				}
+				return value;
+			}
+		}
 		/// <summary>
 		/// Display the <see cref="Value"/> property
 		/// </summary>
@@ -2500,7 +2528,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			// Note that we would get here eventually with the
 			// base implementation, but this cuts out two virtual calls
-			return Value;
+			return NormalizedValue;
 		}
 		/// <summary>
 		/// Provide the current value for the <see cref="P:Name"/> property
@@ -2509,7 +2537,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get
 			{
-				return Value;
+				return NormalizedValue;
 			}
 			set
 			{
@@ -2523,7 +2551,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get
 			{
-				return Value;
+				return NormalizedValue;
 			}
 			set
 			{
@@ -2593,8 +2621,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // IModelErrorOwner Implementation
 		#region CompatibleValueTypeInstanceValueError Validation
 		/// <summary>
-		/// Validator callback for TooFewEntityTypeRoleInstancesError
+		/// Validator callback for CompatibleValueTypeInstanceValueError
 		/// </summary>
+		[DelayValidatePriority(-1)] // Run this early because it also sets or clears invariant values, which are used in other validators
 		private static void DelayValidateCompatibleValueTypeInstanceValueError(ModelElement element)
 		{
 			(element as ValueTypeInstance).ValidateCompatibleValueTypeInstanceValueError(null);
@@ -2616,14 +2645,27 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			if (!IsDeleted)
 			{
-				ObjectType parent = this.ValueType;
+				ObjectType parent;
+				DataType dataType;
 				bool hasError = false;
-				if (parent != null)
+				if (null != (parent = ValueType) &&
+					null != (dataType = parent.DataType))
 				{
-					DataType dataType = parent.DataType;
-					if (!dataType.CanParseAnyValue && !dataType.CanParse(this.Value))
+					if (!dataType.CanParseAnyValue && dataType.IsCultureSensitive)
 					{
-						hasError = true;
+						string value = Value;
+						if (dataType.ParseNormalizeValue(value, InvariantValue, out value))
+						{
+							InvariantValue = value;
+						}
+						else
+						{
+							hasError = true;
+						}
+					}
+					else
+					{
+						InvariantValue = "";
 					}
 				}
 				CompatibleValueTypeInstanceValueError badValue = this.CompatibleValueTypeInstanceValueError;
@@ -2744,6 +2786,59 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			FrameworkDomainModel.DelayValidateElement(valueTypeInstance, ObjectTypeInstance.DelayValidateInstancePopulationMandatoryError);
 		}
 		#endregion // ValueTypeInstance Rules
+		#region Deserialization Fixup
+		/// <summary>
+		/// Return a deserialization fixup listener. The listener
+		/// adds invariant values as needed.
+		/// </summary>
+		public static IDeserializationFixupListener FixupListener
+		{
+			get
+			{
+				return new InvariantValueFixupListener();
+			}
+		}
+		/// <summary>
+		/// Fixup listener implementation.
+		/// </summary>
+		private sealed class InvariantValueFixupListener : DeserializationFixupListener<ValueTypeHasDataType>
+		{
+			/// <summary>
+			/// InvariantValueFixupListener constructor
+			/// </summary>
+			public InvariantValueFixupListener()
+				: base((int)ORMDeserializationFixupPhase.ValidateImplicitStoredElements)
+			{
+			}
+			/// <summary>
+			/// Process instance collections for the ValueType of ValueTypeHasDataType elements
+			/// </summary>
+			/// <param name="element">A ValueTypeHasDataType element</param>
+			/// <param name="store">The context store</param>
+			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
+			protected sealed override void ProcessElement(ValueTypeHasDataType element, Store store, INotifyElementAdded notifyAdded)
+			{
+				if (!element.IsDeleted)
+				{
+					DataType dataType = element.DataType;
+					if (dataType.IsCultureSensitive)
+					{
+						foreach (ValueTypeInstance instance in element.ValueType.ValueTypeInstanceCollection)
+						{
+							string value;
+							string invariantValue;
+							if ((invariantValue = instance.InvariantValue).Length == 0 &&
+								(value = instance.Value).Length != 0 &&
+								dataType.TryConvertToInvariant(value, out invariantValue))
+							{
+								instance.InvariantValue = invariantValue;
+							}
+						}
+					}
+				}
+			}
+		}
+		#endregion // Deserialization Fixup
 	}
 	#endregion // ValueTypeInstance class
 	#region Role class
@@ -3355,6 +3450,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			// Do nothing here. The base calls SetUniqueName, but we don't enforce
 			// unique names on the generated ObjectTypeInstance name.
 		}
+		/// <summary>
+		/// Reset the name for each <see cref="ObjectTypeInstance"/> with a cached name in the <paramref name="store"/>
+		/// </summary>
+		/// <param name="store">Context <see cref="Store"/> to reset names for.</param>
+		public static void InvalidateNames(Store store)
+		{
+			IElementDirectory directory = store.ElementDirectory;
+			foreach (EntityTypeInstance entityInstance in directory.FindElements<EntityTypeInstance>(false))
+			{
+				FrameworkDomainModel.DelayValidateElement(entityInstance, DelayValidateNamePartChanged);
+			}
+			foreach (EntityTypeSubtypeInstance subtypeInstance in directory.FindElements<EntityTypeSubtypeInstance>(false))
+			{
+				FrameworkDomainModel.DelayValidateElement(subtypeInstance, DelayValidateNamePartChanged);
+			}
+		}
 		#endregion // Automatic Name Generation
 		#region Base overrides
 		/// <summary>
@@ -3449,6 +3560,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static string RecurseObjectTypeInstanceValue(ObjectTypeInstance objectInstance, ObjectType parentObjectType, bool ignoreObjectification, bool nestedLeadValue, FactTypeInstance factInstance, FactType parentFactType, ref string listSeparator, ref StringBuilder outputText, IFormatProvider formatProvider, string valueTextFormat, string valueNonTextFormat, bool outerGrouping)
 		{
 			string blankValueText = nestedLeadValue ? " " : "";
+			DataType dataType;
 			if (parentObjectType == null && parentFactType == null)
 			{
 				if (outputText != null)
@@ -3458,31 +3570,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return blankValueText;
 			}
 			else if (parentObjectType != null &&
-				parentObjectType.IsValueType)
+				null != (dataType = parentObjectType.DataType)) // A ValueType
 			{
 				ValueTypeInstance valueInstance = objectInstance as ValueTypeInstance;
 				string valueText = blankValueText;
 				if (valueInstance != null)
 				{
+					valueText = dataType.NormalizeDisplayText(valueInstance.Value, valueInstance.InvariantValue);
 					if (valueTextFormat != null && parentObjectType.DataType is TextDataType)
 					{
-						if (formatProvider == null)
-						{
-							formatProvider = CultureInfo.CurrentCulture;
-						}
-						valueText = string.Format(formatProvider, valueTextFormat, valueInstance.Value);
+						valueText = string.Format(formatProvider ?? dataType.CurrentCulture, valueTextFormat, valueText);
 					}
 					else if (valueNonTextFormat != null)
 					{
-						if (formatProvider == null)
-						{
-							formatProvider = CultureInfo.CurrentCulture;
-						}
-						valueText = string.Format(formatProvider, valueNonTextFormat, valueInstance.Value);
-					}
-					else
-					{
-						valueText = valueInstance.Value;
+						valueText = string.Format(formatProvider ?? dataType.CurrentCulture, valueNonTextFormat, valueText);
 					}
 				}
 				if (outputText != null)

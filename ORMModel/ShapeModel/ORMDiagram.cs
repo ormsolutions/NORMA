@@ -2622,6 +2622,27 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		#endregion // IDynamicColorSetConsumer Implementation
 	}
 	#endregion // IDynamicColorSetConsumer implementation
+	#region INotifyCultureChange implementation
+	partial class ORMShapeDomainModel : INotifyCultureChange
+	{
+		/// <summary>
+		/// Implements <see cref="INotifyCultureChange.CultureChanged"/>
+		/// </summary>
+		protected void CultureChanged()
+		{
+			// Note that the calling code will have an open transaction
+			// Culture changes can affect value constraint shapes
+			foreach (ValueConstraintShape constraintShape in Store.ElementDirectory.FindElements<ValueConstraintShape>(true))
+			{
+				constraintShape.InvalidateDisplayText();
+			}
+		}
+		void INotifyCultureChange.CultureChanged()
+		{
+			CultureChanged();
+		}
+	}
+	#endregion // INotifyCultureChange implementation
 	#region IStickyObject interface
 	/// <summary>
 	/// Interface for implementing "Sticky" selections.  Presentation elements that are sticky

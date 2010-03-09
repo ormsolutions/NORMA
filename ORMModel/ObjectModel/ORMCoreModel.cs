@@ -32,7 +32,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	[VerbalizationTargetProvider("VerbalizationTargets")]
 	[VerbalizationSnippetsProvider("VerbalizationSnippets")]
-	public partial class ORMCoreDomainModel : IModelingEventSubscriber, ISurveyNodeProvider
+	public partial class ORMCoreDomainModel : IModelingEventSubscriber, ISurveyNodeProvider, INotifyCultureChange
 	{
 		#region Static Survey Data
 		private static readonly Type[] SurveyErrorQuestionTypes = new Type[] { typeof(SurveyErrorState) };
@@ -1302,6 +1302,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion //SurveyEventHandling
+		#region INotifyCultureChange implementation
+		/// <summary>
+		/// Implements <see cref="INotifyCultureChange.CultureChanged"/>
+		/// </summary>
+		protected void CultureChanged()
+		{
+			// Culture changes can affect value constraint shapes
+			Store store = Store;
+			ObjectTypeInstance.InvalidateNames(store);
+			FactTypeInstance.InvalidateNames(store);
+		}
+		void INotifyCultureChange.CultureChanged()
+		{
+			CultureChanged();
+		}
+		#endregion // INotifyCultureChange implementation
 	}
 	#region IModelErrorOwner Implementations
 	partial class FactTypeHasFactTypeInstance : IModelErrorOwnerPath

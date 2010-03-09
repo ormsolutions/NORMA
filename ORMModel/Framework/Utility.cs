@@ -960,4 +960,19 @@ namespace ORMSolutions.ORMArchitect.Framework
 		}
 	}
 	#endregion // BitTracker struct
+	#region INotifyCultureChange interface
+	/// <summary>
+	/// A callback interface to implement on a <see cref="DomainModel"/> for
+	/// notification when the display culture for the current thread is modified.
+	/// </summary>
+	public interface INotifyCultureChange
+	{
+		/// <summary>
+		/// The current culture for the thread has been changed.
+		/// The calling code will have an open <see cref="Transaction"/>
+		/// when this method is called.
+		/// </summary>
+		void CultureChanged();
+	}
+	#endregion // INotifyCultureChange interface
 }

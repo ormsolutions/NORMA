@@ -1880,7 +1880,11 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 					{
 						return -1;
 					}
-
+					if (ws0 == 0)
+					{
+						// Sort attributes rendered as elements in model definition order.
+						return index1.CompareTo(index2);
+					}
 					return 0;
 				});
 				for (int i = 0; i < propertyCount; ++i)
@@ -2253,7 +2257,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 				}
 #endif // WRITE_ALL_DEFAULT_LINKS
 			}
-			// UNDONE: NOW Write start element off roleplayer, not link, for standalone primary link element
+			// UNDONE: Write start element off roleplayer, not link, for standalone primary link element
 			if (!WriteCustomizedStartElement(file, customInfo, null, defaultPrefix, standaloneLink ? link.GetDomainClass().Name : string.Concat(rolePlayedInfo.DomainRelationship.Name, ".", rolePlayedInfo.OppositeDomainRole.Name)))
 			{
 				return;
@@ -2271,7 +2275,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 			Guid keyId = writeContents ? link.Id : oppositeRolePlayer.Id;
 			if (writeContents)
 			{
-				// UNDONE: NOW Write content of the oppositeRolePlayer for the standalone link
+				// UNDONE: Write content of the oppositeRolePlayer for the standalone link
 				ReadOnlyCollection<DomainRoleInfo> rolesPlayed = link.GetDomainClass().AllDomainRolesPlayed;
 				bool writeChildren = aggregatingLink || rolesPlayed.Count != 0;
 

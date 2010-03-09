@@ -1991,28 +1991,36 @@
     <comment>DisplayName for DomainClass &apos;ValueRange&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRange/MinValue.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRange.MinValue</value>
+    <value>The lower bound for the range. An equivalent MaxValue indicates that the range represents a single value.</value>
     <comment>Description for DomainProperty &apos;MinValue&apos; on DomainClass &apos;ValueRange&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRange/MinValue.DisplayName" xml:space="preserve">
     <value>MinValue</value>
     <comment>DisplayName for DomainProperty &apos;MinValue&apos; on DomainClass &apos;ValueRange&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRange/InvariantMinValue.Description" xml:space="preserve">
+    <value>The culture-invariant form of the MinValue property.</value>
+    <comment>Description for DomainProperty &apos;InvariantMinValue&apos; on DomainClass &apos;ValueRange&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRange/InvariantMinValue.DisplayName" xml:space="preserve">
+    <value>InvariantMinValue</value>
+    <comment>DisplayName for DomainProperty &apos;InvariantMinValue&apos; on DomainClass &apos;ValueRange&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRange/MaxValue.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRange.MaxValue</value>
+    <value>The upper bound for the range. An equivalent MinValue indicates that the range represents a single value.</value>
     <comment>Description for DomainProperty &apos;MaxValue&apos; on DomainClass &apos;ValueRange&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRange/MaxValue.DisplayName" xml:space="preserve">
     <value>MaxValue</value>
     <comment>DisplayName for DomainProperty &apos;MaxValue&apos; on DomainClass &apos;ValueRange&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRange/Text.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRange.Text</value>
-    <comment>Description for DomainProperty &apos;Text&apos; on DomainClass &apos;ValueRange&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRange/InvariantMaxValue.Description" xml:space="preserve">
+    <value>The culture-invariant form of the MaxValue property.</value>
+    <comment>Description for DomainProperty &apos;InvariantMaxValue&apos; on DomainClass &apos;ValueRange&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRange/Text.DisplayName" xml:space="preserve">
-    <value>Text</value>
-    <comment>DisplayName for DomainProperty &apos;Text&apos; on DomainClass &apos;ValueRange&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRange/InvariantMaxValue.DisplayName" xml:space="preserve">
+    <value>InvariantMaxValue</value>
+    <comment>DisplayName for DomainProperty &apos;InvariantMaxValue&apos; on DomainClass &apos;ValueRange&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRange/MinInclusion.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRange.MinInclusion</value>
@@ -2339,6 +2347,14 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstance/Value.DisplayName" xml:space="preserve">
     <value>Value</value>
     <comment>DisplayName for DomainProperty &apos;Value&apos; on DomainClass &apos;ValueTypeInstance&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstance/InvariantValue.Description" xml:space="preserve">
+    <value>The culture-invariant form of the value property.</value>
+    <comment>Description for DomainProperty &apos;InvariantValue&apos; on DomainClass &apos;ValueTypeInstance&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstance/InvariantValue.DisplayName" xml:space="preserve">
+    <value>InvariantValue</value>
+    <comment>DisplayName for DomainProperty &apos;InvariantValue&apos; on DomainClass &apos;ValueTypeInstance&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance.Description" xml:space="preserve">
     <value></value>

@@ -3,7 +3,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
-<title>NORMA October 2009 CTP Readme</title>
+<title>NORMA February 2010 CTP Readme</title>
 <style type="text/css">
 	.new {font-size:x-small; background-color:Gold; color:Blue; }
 	li {padding-bottom: 3px;}
@@ -12,9 +12,9 @@
 
 <body>
 
-<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA October 2009 CTP Readme</a>&nbsp;</b></p>
+<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA February 2010 CTP Readme</a>&nbsp;</b></p>
 <p>This file supersedes the previous readme.txt and older readme.htm files. This readme has parallel indexing mechanisms: by topic, and by release date (starting with the October 2008 (2008-10) release). The file will be extended for future product releases.<br/><br/>
-The October 2009 release is a stabilization release with minor feature changes. See detailed change notes below for specifics. 
+The February 2010 release is a stabilization release with major changes in join path verbalization for set comparison constraints and additional portability of .orm files. See detailed change notes below for specifics. 
 <br/><br/></p>
 <h2>Contents</h2>
 <ul>
@@ -41,8 +41,35 @@ The October 2009 release is a stabilization release with minor feature changes. 
 </ul>-->
 
 <hr/>
+<h2>February 2010 CTP Changes</h2>
+<div>The February 2010 CTP release includes all modifications through changeset 1431. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<ul>
+<li><a href="#Localized Value Constraints 2010-02">Localized value constraints</a>&nbsp;</li>
+<li><a href="#Value Constraint Special String Characters 2010-02">Value constraint special string characters</a>&nbsp;</li>
+<li><a href="#Join Path Verbalization 2010-02">Join path verbalization</a>&nbsp;</li>
+<li><a href="#Drag Role Reordering 2010-02">Drag role reordering</a>&nbsp;</li>
+<li>Other Features:
+<ol>
+<li>Added custom property support to the ORM Model element.</li>
+<li>Added 'Select on Diagram' and 'Select on Diagram Spy' to link elements in the Model Browser, eliminating the need to jump to the target element with a double-click to navigate out of the Model Browser window.</li>
+</ol>
+</li>
+<li>Bug Fixes:
+<ol>
+<li>Dragging objectification off the toolbox created an element with no shape for the object type name.</li>
+<li>Committing a fact editor line with an objectified fact type selected moved the object type name shape back to the original position.</li>
+<li>The fact editor could not be used to delete a forward or reverse reading for binary ring fact types. Replacing 'A r A' with 'A /s A' would result in a forward 'A s A' reading.</li>
+<li>Most menu items were disabled for diagram tabs on systems with multiple monitors with NORMA displayed on a secondary monitor to the left of the primary monitor.</li>
+<li>Reading display with a fact type shape whose display order does not match either an exact forward or exact reverse reading would not distinguish like-typed (ring) role players. Duplicate role players are now number by display position.</li>
+<li>Removed unneeded subscripts on acyclic verbalization patterns.</li>
+<li>One-to-one binary fact types with no explicit or implicit mandatory constraints would always absorb to the right, resulting in extra tables for shared value types.</li>
+</ol>
+</li>
+</ul>
+
+<hr/>
 <h2>October 2009 CTP Changes</h2>
-<div>The October 2009 CTP release includes all modifications through changeset 1416. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<div>The October 2009 CTP release includes all modifications through changeset 1416.</div>
 <ul>
 <li><a href="#Multiline Value Constraint Shapes 2009-10">Multiline value constraint shapes</a>&nbsp;</li>
 <li><a href="#Sample population identifying fact type role selection 2009-10">Sample population identifying fact type role selection</a>&nbsp;</li>
@@ -228,6 +255,8 @@ Commands are provided to jump from any shape selection in a main document view t
 The ORM Model Browser tool window contains some nodes that are links to other elements. Link nodes are marked with a shortcut overlay glyph, and selecting these nodes is equivalent to a selection of the target node. Double-clicking a link node will select the target node. Link nodes to the constrained FactTypes have been added to external constraint expansions, and column reference links appear in multiple places in the Relational Schema.</li>
 <li><a id="Drag out role player shapes 2009-05" class="new" title="May 2009 CTP: Drag out role player shapes">2009-05</a>&nbsp;
 If a new shape is created for a FactType via control-drag, dragging to a new diagram, or dragging from the model browser, then you can easily get a FactType shape with no attached role players. If the role player is set for a role, then dragging that role onto the diagram surface will automatically add a new shape for the role player.</li>
+<li><a id="Drag Role Reordering 2010-02" class="new" title="February 2010 CTP: Drag role reordering">2010-02</a>&nbsp;
+Role display order within a shape can be changed by dragging one role and dropping on another. NORMA provides cursor feedback to distinguish this action from setting a role player or adding a new shape. Note that dropping on an item always selects the drop target (a role), which for a binary fact type will move to the location of the dragged role when the role reorder action is complete. The resulting experience is that the selection rectangle does not move when reordering binary roles.</li>
 </ol>
 <a href="#The Top">Return to top</a>
 <hr/>
@@ -301,7 +330,12 @@ All FactTypes associated with an ObjectType are now shown with the verbalization
 Table elements now verbalize all of the top-level ObjectTypes that correspond to the table. The full FactType path is also verbalized for each column selection. These verbalizations, along with the new Diagram Spy window, allow the user to navigation through and edit ORM space while the Relational View remains the primary selected document.</li>
 <li>
 <a id="Verbalization Double Hyphens 2009-10" class="new" title="October 2009 CTP: Hyphen display with hyphen-bound readings">2009-10</a>&nbsp;
-If hyphen-binding is used in reading text and a hyphen directly precedes the hyphen/space character pair the triggers the hyphen-binding interpretation, then the additional hyphen will be verbalized with no trailing space. So (here, an underscore (_) indicates a space), <i>ADJECTIVE--_ROLEPLAYER</i> will verbalize as <i>ADJECTIVE-ROLEPLAYER</i>. If <i>ADJECTIVE-_ROLEPLAYER</i> is the desired output, then the user can add an extra space to the reading text. Symmetric rules apply to reverse hyphen-binding.</li>
+If hyphen-binding is used in reading text and a hyphen directly precedes the hyphen/space character pair the triggers the hyphen-binding interpretation, then the additional hyphen will be verbalized with no trailing space. So (here, an underscore (_) indicates a space), <i>ADJECTIVE--_ROLEPLAYER</i> will verbalize as <i>ADJECTIVE-ROLEPLAYER</i>. If <i>ADJECTIVE-_ROLEPLAYER</i> is the desired output, then the user can add an extra space to the reading text. Symmetric rules apply to reverse hyphen-binding.
+</li>
+<li>
+<a id="Join Path Verbalization 2010-02" class="new" title="February 2010 CTP: Join path verbalization">2010-02</a>&nbsp;
+Join paths for set comparison constraints (subset, equality, exclusion) are correctly verbalized. Join paths for simple, unambiguous patterns where joined fact types share a role player or pass through an objectification are generated automatically. More complicated join paths are also verbalized, but cannot be entered with this release of NORMA. The tool(s) to enter these paths will be available in future releases and versions of the product. Note that paths are also automatically generated for uniqueness, frequency, and ring constraints, but join paths are not yet verbalized for these patterns.
+</li>
 </ol>
 <a href="#The Top">Return to top</a>
 <hr />
@@ -361,6 +395,13 @@ ORM2 specifies freeform placement of role name shapes. The modeler is responsibl
 </li>
 <li><a id="Multiline Value Constraint Shapes 2009-10" class="new" title="October 2009 CTP: Multiline value constraint shapes">2009-10</a>&nbsp;
 Individual shapes for value constraints have two additional display properties, <i>MaxColumns</i> and <i>MaxValues</i>, that enable value constraints with multiple items to be displayed on more than one line. MaxColumns controls the maximum number of columns that should be displayed, and MaxValues allows truncation of the total number of values. If the full list of values is truncated, hover over the value constraint shape will display a tooltip with the full list of values.
+</li>
+<li><a id="Localized Value Constraints 2010-02" class="new" title="February 2010 CTP: Localized value constraints">2010-02</a>&nbsp;
+Value constraints are now displayed with locale-specific list separators and locale-specific numeric formatting based on machine settings. Value constraints are also entered based on the machine settings for list and decimal separators. So, in an US English systems you would enter {1.5..2, 3..4}, whereas a German system would use {1,5..2; 3..4} for the same value constraint. The value constraint display will change when the system settings are changed.
+If the user-entered form of a number cannot be interpreted as the same number in the new locale, then an invariant form of the number is used. For example, a US English user might enter the floating point number <em>.5</em>. If the file is then opened on a German system, the user will see <em>0,5</em> for this value. Similar adjustments are made for displayed sample population values.
+</li>
+<li><a id="Value Constraint Special String Characters 2010-02" class="new" title="February 2010 CTP: Value constraint special string characters">2010-02</a>&nbsp;
+Special delimiter characters used in value constraint definitions can be specified inside single-quotation characters. For example, <em>a,b,c</em> for a string data type is parsed and listed back as <em>{'a', 'b', 'c'}</em>, while <em>'a,b,c'</em> is treated as a single string value. Use two adjacent single quotes to represent a single quote in a string (<em>'''abc'''</em> represents the string <em>'abc'</em>), and use <em>''</em> to represent the empty string.
 </li>
 </ol>
 <a href="#The Top">Return to top</a>

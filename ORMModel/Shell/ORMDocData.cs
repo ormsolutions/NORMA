@@ -28,6 +28,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Schema;
+using Microsoft.Win32;
 using EnvDTE;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Modeling;
@@ -698,6 +699,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// </summary>
 		protected virtual void AddPostLoadModelingEventHandlers(bool isReload)
 		{
+			if (!isReload)
+			{
+				SystemEvents.UserPreferenceChanged += new UserPreferenceChangedEventHandler(CultureChangedEvent);
+			}
 			Store store = Store;
 			ModelingEventManager eventManager = ModelingEventManager.GetModelingEventManager(store);
 			EventSubscriberReasons reasons = EventSubscriberReasons.DocumentLoaded | EventSubscriberReasons.ModelStateEvents | EventSubscriberReasons.UserInterfaceEvents;
@@ -772,6 +777,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				ManageTabRestoreEvents(eventManager, EventHandlerAction.Remove);
 				ManageErrorReportingEvents(eventManager, EventHandlerAction.Remove);
+				if (!isReload)
+				{
+					SystemEvents.UserPreferenceChanged -= new UserPreferenceChangedEventHandler(CultureChangedEvent);
+				}
 			}
 		}
 		/// <summary>
@@ -1120,6 +1129,29 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			GetAutomationObject(Name, pParent, out ppDisp);
 		}
 		#endregion // Automation support
+		#region Locale Change
+		/// <summary>
+		/// Gives extensions a chance to update when the thread culture changes
+		/// </summary>
+		private void CultureChangedEvent(object sender, UserPreferenceChangedEventArgs e)
+		{
+			if (e.Category == UserPreferenceCategory.Locale)
+			{
+				Store store = Store;
+				using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.CultureChangedTransactionName))
+				{
+					foreach (INotifyCultureChange changeListener in Utility.EnumerateDomainModels<INotifyCultureChange>(store.DomainModels))
+					{
+						changeListener.CultureChanged();
+					}
+					if (t.HasPendingChanges)
+					{
+						t.Commit();
+					}
+				}
+			}
+		}
+		#endregion // Implementation
 	}
 	#endregion // ORMDesignerDocData class
 }

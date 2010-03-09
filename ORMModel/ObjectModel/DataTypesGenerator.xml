@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<DataTypes>
+<DataTypes xmlns="http://schemas.ormsolutions.com/ORM/SDK/DataTypesGenerator">
 	<Copyright name="Common Public License Copyright Notice">
 		<CopyrightLine>/**************************************************************************\</CopyrightLine>
 		<CopyrightLine>* Natural Object-Role Modeling Architect for Visual Studio                 *</CopyrightLine>
 		<CopyrightLine>*                                                                          *</CopyrightLine>
 		<CopyrightLine>* Copyright © Neumont University. All rights reserved.                     *</CopyrightLine>
-		<CopyrightLine>* Copyright © ORM Solutions, LLC. All rights reserved.                        *</CopyrightLine>
+		<CopyrightLine>* Copyright © ORM Solutions, LLC. All rights reserved.                     *</CopyrightLine>
 		<CopyrightLine>*                                                                          *</CopyrightLine>
 		<CopyrightLine>* The use and distribution terms for this software are covered by the      *</CopyrightLine>
 		<CopyrightLine>* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *</CopyrightLine>
@@ -16,113 +16,113 @@
 		<CopyrightLine>* You must not remove this notice, or any other, from this software.       *</CopyrightLine>
 		<CopyrightLine>\**************************************************************************/</CopyrightLine>
 	</Copyright>
-	<DataType name="Unspecified" canCompare="false" rangeSupport="Open">
-		<SubType name="">
-			<comment type="summary">A default type indicating 'no type set'</comment>
-		</SubType>
-	</DataType>
-	<DataType name="Text" backingType=".string">
-		<SubType name="FixedLength" lengthName="" lengthDescription="DataTypeExactLengthDescription">
-			<comment type="summary">A fixed length text data type</comment>
-		</SubType>
-		<SubType name="VariableLength" lengthName="">
-			<comment type="summary">A variable length text data type</comment>
-		</SubType>
-		<SubType name="LargeLength" lengthName="">
-			<comment type="summary">A large length text data type</comment>
-		</SubType>
-	</DataType>
-	<DataType name="Numeric">
-		<SubType name="SignedInteger" backingType=".i4">
-			<comment type="summary">A signed integer numeric data type</comment>
-		</SubType>
-		<SubType name="SignedSmallInteger" backingType=".i2">
-			<comment type="summary">A small signed integer numeric data type</comment>
-		</SubType>
-		<SubType name="SignedLargeInteger" backingType=".i8">
-			<comment type="summary">A small signed integer numeric data type</comment>
-		</SubType>
-		<SubType name="UnsignedInteger" backingType=".u4">
-			<comment type="summary">An unsigned integer numeric data type</comment>
-		</SubType>
-		<SubType name="UnsignedTinyInteger" backingType=".u1">
-			<comment type="summary">A tiny unsigned integer numeric data type</comment>
-		</SubType>
-		<SubType name="UnsignedSmallInteger" backingType=".u2">
-			<comment type="summary">A small unsigned integer numeric data type</comment>
-		</SubType>
-		<SubType name="UnsignedLargeInteger" backingType=".u8">
-			<comment type="summary">A large unsigned integer numeric data type</comment>
-		</SubType>
-		<SubType name="AutoCounter" backingType=".u8">
-			<comment type="summary">An auto counter numeric data type</comment>
-		</SubType>
-		<SubType name="FloatingPoint" rangeSupport="Open" backingType=".r8" lengthName="DataTypePrecision" lengthDescription="DataTypePrecisionDescription">
-			<comment type="summary">A custom precision floating point numeric data type</comment>
-		</SubType>
-		<SubType name="SinglePrecisionFloatingPoint" rangeSupport="Open" backingType=".r4">
-			<comment type="summary">A 32-bit floating point numeric data type</comment>
-		</SubType>
-		<SubType name="DoublePrecisionFloatingPoint" rangeSupport="Open" backingType=".r8">
-			<comment type="summary">A 64-bit floating point numeric data type</comment>
-		</SubType>
-		<SubType name="Decimal" rangeSupport="Open" backingType=".decimal" lengthName="DataTypePrecision" lengthDescription="DataTypePrecisionDescription" scaleName="">
-			<comment type="summary">A decimal numeric data type</comment>
-		</SubType>
-		<SubType name="Money" rangeSupport="Open" backingType=".decimal" lengthName="DataTypePrecision" lengthDescription="DataTypePrecisionDescription" scaleName="">
-			<comment type="summary">A money numeric data type</comment>
-		</SubType>
-	</DataType>
-	<DataType name="RawData" canCompare="false" rangeSupport="None">
-		<SubType name="FixedLength" lengthName="" lengthDescription="DataTypeExactLengthDescription">
-			<comment type="summary">A fixed length raw data data type</comment>
-		</SubType>
-		<SubType name="VariableLength" lengthName="">
-			<comment type="summary">A variable length raw data data type</comment>
-		</SubType>
-		<SubType name="LargeLength" lengthName="">
-			<comment type="summary">A large length raw data data type</comment>
-		</SubType>
-		<SubType name="Picture">
-			<comment type="summary">A picture raw data data type</comment>
-		</SubType>
-		<SubType name="OleObject">
-			<comment type="summary">An OLE object raw data data type</comment>
-		</SubType>
-	</DataType>
-	<DataType name="Temporal" rangeSupport="Open" backingType=".date">
-		<SubType name="AutoTimestamp">
-			<comment type="summary">An auto timestamp temporal data type</comment>
-		</SubType>
-		<SubType name="Time">
-			<comment type="summary">A time temporal data type</comment>
-		</SubType>
-		<SubType name="Date">
-			<comment type="summary">A date temporal data type</comment>
-		</SubType>
-		<SubType name="DateAndTime">
-			<comment type="summary">A date and time temporal data type</comment>
-		</SubType>
-	</DataType>
-	<DataType name="Logical" rangeSupport="None">
-		<SubType name="TrueOrFalse" backingType=".boolean">
-			<comment type="summary">A true or false logical data type</comment>
-		</SubType>
-		<SubType name="YesOrNo">
-			<comment type="summary">A yes or no logical data type</comment>
-		</SubType>
-	</DataType>
-	<DataType name="Other" rangeSupport="None" backingType=".u8">
-		<SubType name="RowId">
-			<comment type="summary">A row id data type (can not be classified in any of the groups above)</comment>
-		</SubType>
-		<SubType name="ObjectId">
-			<comment type="summary">An object id data type (can not be classified in any of the groups above)</comment>
-		</SubType>
-	</DataType>
-	<DataType name="UserDefined" enumOnly="true">
-		<SubType name="">
-			<comment type="summary">Used for the upper bounds of the enum values.</comment>
-		</SubType>
-	</DataType>
+	<DataTypeGroup name="Unspecified" canCompare="false">
+		<DataType name="">
+			<Comment type="summary">A default type indicating 'no type set'</Comment>
+		</DataType>
+	</DataTypeGroup>
+	<DataTypeGroup name="Text" backingType=".string">
+		<DataType name="FixedLength" lengthName="" lengthDescription="DataTypeExactLengthDescription">
+			<Comment type="summary">A fixed length text data type</Comment>
+		</DataType>
+		<DataType name="VariableLength" lengthName="">
+			<Comment type="summary">A variable length text data type</Comment>
+		</DataType>
+		<DataType name="LargeLength" lengthName="">
+			<Comment type="summary">A large length text data type</Comment>
+		</DataType>
+	</DataTypeGroup>
+	<DataTypeGroup name="Numeric" cultureSensitive="true">
+		<DataType name="SignedInteger" backingType=".i4" rangeSupport="DiscontinuousEndPoints" discontinuousRangePattern="Integer" numberStyles="Integer">
+			<Comment type="summary">A signed integer numeric data type</Comment>
+		</DataType>
+		<DataType name="SignedSmallInteger" backingType=".i2" rangeSupport="DiscontinuousEndPoints" discontinuousRangePattern="Integer" numberStyles="Integer">
+			<Comment type="summary">A small signed integer numeric data type</Comment>
+		</DataType>
+		<DataType name="SignedLargeInteger" backingType=".i8" rangeSupport="DiscontinuousEndPoints" discontinuousRangePattern="Integer" numberStyles="Integer">
+			<Comment type="summary">A small signed integer numeric data type</Comment>
+		</DataType>
+		<DataType name="UnsignedInteger" backingType=".u4" rangeSupport="DiscontinuousEndPoints" discontinuousRangePattern="Integer" numberStyles="Integer">
+			<Comment type="summary">An unsigned integer numeric data type</Comment>
+		</DataType>
+		<DataType name="UnsignedTinyInteger" backingType=".u1" rangeSupport="DiscontinuousEndPoints" discontinuousRangePattern="Integer" numberStyles="Integer">
+			<Comment type="summary">A tiny unsigned integer numeric data type</Comment>
+		</DataType>
+		<DataType name="UnsignedSmallInteger" backingType=".u2" rangeSupport="DiscontinuousEndPoints" discontinuousRangePattern="Integer" numberStyles="Integer">
+			<Comment type="summary">A small unsigned integer numeric data type</Comment>
+		</DataType>
+		<DataType name="UnsignedLargeInteger" backingType=".u8" rangeSupport="DiscontinuousEndPoints" discontinuousRangePattern="Integer" numberStyles="Integer">
+			<Comment type="summary">A large unsigned integer numeric data type</Comment>
+		</DataType>
+		<DataType name="AutoCounter" backingType=".u8" rangeSupport="DiscontinuousEndPoints" discontinuousRangePattern="Integer" numberStyles="Integer">
+			<Comment type="summary">An auto counter numeric data type</Comment>
+		</DataType>
+		<DataType name="FloatingPoint" backingType=".r8" lengthName="DataTypePrecision" lengthDescription="DataTypePrecisionDescription" numberStyles="Float AllowThousands">
+			<Comment type="summary">A custom precision floating point numeric data type</Comment>
+		</DataType>
+		<DataType name="SinglePrecisionFloatingPoint" backingType=".r4" numberStyles="Float AllowThousands">
+			<Comment type="summary">A 32-bit floating point numeric data type</Comment>
+		</DataType>
+		<DataType name="DoublePrecisionFloatingPoint" backingType=".r8" numberStyles="Float AllowThousands">
+			<Comment type="summary">A 64-bit floating point numeric data type</Comment>
+		</DataType>
+		<DataType name="Decimal" backingType=".decimal" lengthName="DataTypePrecision" lengthDescription="DataTypePrecisionDescription" scaleName="" numberStyles="Number">
+			<Comment type="summary">A decimal numeric data type</Comment>
+		</DataType>
+		<DataType name="Money" backingType=".decimal" lengthName="DataTypePrecision" lengthDescription="DataTypePrecisionDescription" scaleName="" numberStyles="Number">
+			<Comment type="summary">A money numeric data type</Comment>
+		</DataType>
+	</DataTypeGroup>
+	<DataTypeGroup name="RawData" canCompare="false" rangeSupport="None">
+		<DataType name="FixedLength" lengthName="" lengthDescription="DataTypeExactLengthDescription">
+			<Comment type="summary">A fixed length raw data data type</Comment>
+		</DataType>
+		<DataType name="VariableLength" lengthName="">
+			<Comment type="summary">A variable length raw data data type</Comment>
+		</DataType>
+		<DataType name="LargeLength" lengthName="">
+			<Comment type="summary">A large length raw data data type</Comment>
+		</DataType>
+		<DataType name="Picture">
+			<Comment type="summary">A picture raw data data type</Comment>
+		</DataType>
+		<DataType name="OleObject">
+			<Comment type="summary">An OLE object raw data data type</Comment>
+		</DataType>
+	</DataTypeGroup>
+	<DataTypeGroup name="Temporal" backingType=".date">
+		<DataType name="AutoTimestamp" dateTimeStyles="None">
+			<Comment type="summary">An auto timestamp temporal data type</Comment>
+		</DataType>
+		<DataType name="Time" dateTimeStyles="None">
+			<Comment type="summary">A time temporal data type</Comment>
+		</DataType>
+		<DataType name="Date" dateTimeStyles="None">
+			<Comment type="summary">A date temporal data type</Comment>
+		</DataType>
+		<DataType name="DateAndTime" dateTimeStyles="None">
+			<Comment type="summary">A date and time temporal data type</Comment>
+		</DataType>
+	</DataTypeGroup>
+	<DataTypeGroup name="Logical" rangeSupport="None">
+		<DataType name="TrueOrFalse" backingType=".boolean">
+			<Comment type="summary">A true or false logical data type</Comment>
+		</DataType>
+		<DataType name="YesOrNo">
+			<Comment type="summary">A yes or no logical data type</Comment>
+		</DataType>
+	</DataTypeGroup>
+	<DataTypeGroup name="Other" rangeSupport="None" backingType=".u8">
+		<DataType name="RowId">
+			<Comment type="summary">A row id data type (can not be classified in any of the groups above)</Comment>
+		</DataType>
+		<DataType name="ObjectId">
+			<Comment type="summary">An object id data type (can not be classified in any of the groups above)</Comment>
+		</DataType>
+	</DataTypeGroup>
+	<DataTypeGroup name="UserDefined" enumOnly="true">
+		<DataType name="">
+			<Comment type="summary">Used for the upper bounds of the enum values.</Comment>
+		</DataType>
+	</DataTypeGroup>
 </DataTypes>

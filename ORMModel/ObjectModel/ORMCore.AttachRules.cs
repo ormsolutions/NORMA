@@ -354,7 +354,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						typeof(ValueConstraint).GetNestedType("ValueConstraintChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueConstraint).GetNestedType("ValueRangeAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueConstraint).GetNestedType("ValueRangeChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ValueRange).GetNestedType("ValueRangeChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueTypeInstance).GetNestedType("ValueTypeHasDataTypeAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueTypeInstance).GetNestedType("ValueTypeHasDataTypeDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueTypeInstance).GetNestedType("ValueTypeHasDataTypeRolePlayerChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -393,7 +392,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMCoreDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 325; ++i)
+			for (int i = 0; i < 324; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -8905,37 +8904,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // Rule classes for ValueConstraint
-	#region Rule classes for ValueRange
-	partial class ValueRange
-	{
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ValueRange), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class ValueRangeChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
-		{
-			[System.Diagnostics.DebuggerStepThrough()]
-			public ValueRangeChangeRuleClass()
-			{
-				base.IsEnabled = false;
-			}
-			/// <summary>
-			/// Provide the following method in class: 
-			/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRange
-			/// /// <summary>
-			/// /// ChangeRule: typeof(ValueRange)
-			/// /// </summary>
-			/// private static void ValueRangeChangeRule(ElementPropertyChangedEventArgs e)
-			/// {
-			/// }
-			/// </summary>
-			[System.Diagnostics.DebuggerStepThrough()]
-			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
-			{
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRange.ValueRangeChangeRule");
-				ValueRange.ValueRangeChangeRule(e);
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRange.ValueRangeChangeRule");
-			}
-		}
-	}
-	#endregion // Rule classes for ValueRange
 	#region Rule classes for ValueTypeInstance
 	partial class ValueTypeInstance
 	{

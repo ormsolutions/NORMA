@@ -528,7 +528,7 @@
 						<orm:ValueRestriction>
 							<orm:RoleValueConstraint id="_8290FCDA-1DC5-4686-80E0-3B79610A0C0C" Name="RoleValueConstraint1">
 								<orm:ValueRanges>
-									<orm:ValueRange id="_28D93BF9-BD03-4740-B6CD-E380FFB21CFC" MinValue="1" MaxValue="5" MinInclusion="NotSet" MaxInclusion="NotSet" />
+									<orm:ValueRange id="_28D93BF9-BD03-4740-B6CD-E380FFB21CFC" MinValue="1" MaxValue="5" MinInclusion="NotSet" MaxInclusion="NotSet" InvariantMinValue="1" InvariantMaxValue="5" />
 								</orm:ValueRanges>
 							</orm:RoleValueConstraint>
 						</orm:ValueRestriction>
@@ -1007,7 +1007,7 @@
 			</ormDiagram:ObjectTypeShape>
 			<ormDiagram:ObjectTypeShape id="_42A8C68D-EDC4-402A-9687-DF64F7B1E3AE" IsExpanded="true" AbsoluteBounds="4.729166666666667, 4.2616080845581985, 0.60443377017974853, 0.35900605320930479">
 				<ormDiagram:RelativeShapes>
-					<ormDiagram:ValueConstraintShape id="_B35B0DC7-42EC-401F-837F-6E686C2B6B51" IsExpanded="true" AbsoluteBounds="5.3936004368464152, 4.1321050579535461, 0.36129194498062134, 0.12950302660465241">
+					<ormDiagram:ValueConstraintShape id="_B35B0DC7-42EC-401F-837F-6E686C2B6B51" IsExpanded="true" AbsoluteBounds="5.3936004368464152, 4.1321050579535461, 0.29872411489486694, 0.12950302660465241">
 						<ormDiagram:Subject ref="_8290FCDA-1DC5-4686-80E0-3B79610A0C0C" />
 					</ormDiagram:ValueConstraintShape>
 				</ormDiagram:RelativeShapes>

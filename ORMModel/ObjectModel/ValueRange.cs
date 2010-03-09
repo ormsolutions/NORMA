@@ -29,28 +29,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	partial class ValueRange : IModelErrorOwner, IHasIndirectModelErrorOwner
 	{
-		#region variables
-		private static readonly string valueDelim = ResourceStrings.ValueConstraintValueDelimiter;
-		private static readonly string stringContainerString = ResourceStrings.ValueConstraintStringContainerPattern;
-		private static readonly string leftStringContainerMark = GetLeftMark(stringContainerString);
-		private static readonly string rightStringContainerMark = GetRightMark(stringContainerString);
-		private static readonly string openInclusionContainerString = ResourceStrings.ValueConstraintOpenInclusionContainer;
-		private static readonly string minOpenInclusionMark = GetLeftMark(openInclusionContainerString);
-		private static readonly string maxOpenInclusionMark = GetRightMark(openInclusionContainerString);
-		private static readonly string closedInclusionContainerString = ResourceStrings.ValueConstraintClosedInclusionContainer;
-		private static readonly string minClosedInclusionMark = GetLeftMark(closedInclusionContainerString);
-		private static readonly string maxClosedInclusionMark = GetRightMark(closedInclusionContainerString);
-		private static readonly string[] minInclusionMarks = new string[] { "", minOpenInclusionMark, minClosedInclusionMark };
-		private static readonly string[] maxInclusionMarks = new string[] { "", maxOpenInclusionMark, maxClosedInclusionMark };
-		private static string GetLeftMark(string containerString)
-		{
-			return containerString.Substring(0, containerString.IndexOf("{0}"));
-		}
-		private static string GetRightMark(string containerString)
-		{
-			return containerString.Substring(containerString.IndexOf("{0}") + 3);
-		}
-		#endregion // variables
 		#region IModelErrorOwner implementation
 		/// <summary>
 		/// Implements IModelErrorOwner.GetErrorCollection
@@ -129,183 +107,241 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return GetIndirectModelErrorOwnerLinkRoles();
 		}
 		#endregion // IHasIndirectModelErrorOwner Implementation
-		#region ValueRangeChangeRule rule
+		#region Helper Methods
 		/// <summary>
-		/// ChangeRule: typeof(ValueRange)
-		/// Translate the Text property
+		/// Get the display text for this value range for
+		/// the specified <paramref name="dataType"/>
 		/// </summary>
-		private static void ValueRangeChangeRule(ElementPropertyChangedEventArgs e)
+		/// <param name="dataType">The <see cref="DataType"/> used to interpret values.</param>
+		/// <returns>Formatted string</returns>
+		/// <remarks>If an invariant min or max value is available and the culture-specific
+		/// value does not match the invariant value for the provided datatype, then display
+		/// a parsed form of the invariant value in place of the user-supplied min or max value.</remarks>
+		public string GetDisplayText(DataType dataType)
 		{
-			Guid attributeGuid = e.DomainProperty.Id;
-			if (attributeGuid == ValueRange.TextDomainPropertyId)
+			string minInclusionMark;
+			switch (MinInclusion)
 			{
-				ValueRange vr = e.ModelElement as ValueRange;
-				Debug.Assert(vr != null);
-				string newValue = e.NewValue as string;
-				//Set the min- and max-inclusion
-				string minInclusion;
-				string maxInclusion;
-				newValue = StripInclusions(out minInclusion, out maxInclusion, newValue);
-				if (minInclusion.Length != 0)
-				{
-					vr.MinInclusion = minInclusion.Equals(minOpenInclusionMark) ? RangeInclusion.Open : RangeInclusion.Closed;
-				}
-				if (maxInclusion.Length != 0)
-				{
-					vr.MaxInclusion = maxInclusion.Equals(maxOpenInclusionMark) ? RangeInclusion.Open : RangeInclusion.Closed;
-				}
-				//Split the range, if one exists, and set the values
-				if (newValue.Contains(valueDelim))
-				{
-					int currentPos = newValue.IndexOf(valueDelim);
-					string value = TrimStringMarkers(newValue.Substring(0, currentPos));
-					vr.MinValue = string.Format(CultureInfo.InvariantCulture, value);
-					currentPos += valueDelim.Length;
-					value = TrimStringMarkers(newValue.Substring(currentPos, newValue.Length - currentPos));
-					vr.MaxValue = string.Format(CultureInfo.InvariantCulture, value);
-				}
-				//Not a range? Set the value as both the min and max
-				else
-				{
-					vr.MinValue = vr.MaxValue = string.Format(CultureInfo.InvariantCulture, TrimStringMarkers(newValue));
-				}
+				case RangeInclusion.Open:
+					minInclusionMark = ResourceStrings.ValueConstraintOpenInclusionLowerDelimiter;
+					break;
+				case RangeInclusion.Closed:
+					minInclusionMark = ResourceStrings.ValueConstraintClosedInclusionLowerDelimiter;
+					break;
+				default:
+					minInclusionMark = "";
+					break;
 			}
-		}
-		#endregion // ValueRangeChangeRule rule
-		#region CustomStorage handlers
-		private string GetTextValue()
-		{
-			string minInclusionMarkToUse = minInclusionMarks[(int)this.MinInclusion];
-			string maxInclusionMarkToUse = maxInclusionMarks[(int)this.MaxInclusion];
+			string maxInclusionMark;
+			switch (MaxInclusion)
+			{
+				case RangeInclusion.Open:
+					maxInclusionMark = ResourceStrings.ValueConstraintOpenInclusionUpperDelimiter;
+					break;
+				case RangeInclusion.Closed:
+					maxInclusionMark = ResourceStrings.ValueConstraintClosedInclusionUpperDelimiter;
+					break;
+				default:
+					maxInclusionMark = "";
+					break;
+			}
 			string minValue = MinValue;
 			string maxValue = MaxValue;
-			bool minExists = (minValue.Length != 0);
-			bool maxExists = (maxValue.Length != 0);
-			bool isText = IsText;
-			// put values in string container if need to
-			if (minExists && isText)
+			if (dataType != null)
 			{
-				minValue = String.Format(CultureInfo.InvariantCulture, stringContainerString, minValue);
+				minValue = dataType.NormalizeDisplayText(minValue, InvariantMinValue);
+				maxValue = dataType.NormalizeDisplayText(maxValue, InvariantMaxValue);
 			}
-			if (maxExists && isText)
+			bool minExists = minValue.Length != 0;
+			bool maxExists = maxValue.Length != 0;
+
+			// Delimit strings if needed
+			// Since text is by far the minority of all the data types and
+			// the only type to require string container marks, we do not put values inside 
+			// those marks by default whenever a data type is not known.
+			if (dataType != null && dataType is TextDataType)
 			{
-				maxValue = String.Format(CultureInfo.InvariantCulture, stringContainerString, maxValue);
+				string stringDelimiter = ResourceStrings.ValueConstraintStringDelimiter;
+				if (minExists && minValue.Contains(stringDelimiter))
+				{
+					minValue = minValue.Replace(stringDelimiter, stringDelimiter + stringDelimiter);
+				}
+				minValue = stringDelimiter + minValue + stringDelimiter;
+				if (maxExists && maxValue.Contains(stringDelimiter))
+				{
+					maxValue = maxValue.Replace(stringDelimiter, stringDelimiter + stringDelimiter);
+				}
+				maxValue = stringDelimiter + maxValue + stringDelimiter;
 			}
+
 			// Assemble values into a value range text
-			if (minExists && maxExists && !minValue.Equals(maxValue))
+			string valueDelimiter = ResourceStrings.ValueConstraintValueDelimiter;
+			if (minExists)
 			{
-				return string.Concat(minInclusionMarkToUse, minValue, valueDelim, maxValue, maxInclusionMarkToUse);
+				if (maxExists)
+				{
+					if (minValue == maxValue)
+					{
+						return minValue;
+					}
+					return string.Concat(minInclusionMark, minValue, valueDelimiter, maxValue, maxInclusionMark);
+				}
+				return string.Concat(minInclusionMark, minValue, valueDelimiter, maxInclusionMark);
 			}
-			else if (minExists && !maxExists)
+			else if (maxExists)
 			{
-				return string.Concat(minInclusionMarkToUse, minValue, valueDelim, maxInclusionMarkToUse);
+				return string.Concat(minInclusionMark, valueDelimiter, maxValue, maxInclusionMark);
 			}
-			else if (minExists && ((maxExists && minValue.Equals(maxValue)) || !maxExists))
-			{
-				return minValue;
-			}
-			else
-			{
-				return string.Concat(minInclusionMarkToUse, valueDelim, maxValue, maxInclusionMarkToUse);
-			}
+			return minValue;
 		}
-		private void SetTextValue(string newValue)
-		{
-			// Handled by ValueRangeChangeRule
-		}
+		private static Regex myValueRangeRegex;
+		private static string myValueRangePattern;
+		private const string ValueRangeDelimiterGroupName = "RangeDelimiter";
+		private const string ValueRangeLowerBoundGroupName = "MinValue";
+		private const string ValueRangeUpperBoundGroupName = "MaxValue";
+		private const string ValueRangeMinClosedInclusionGroupName = "MinClosedInclusion";
+		private const string ValueRangeMaxClosedInclusionGroupName = "MaxClosedInclusion";
+		private const string ValueRangeMinOpenInclusionGroupName = "MinOpenInclusion";
+		private const string ValueRangeMaxOpenInclusionGroupName = "MaxOpenInclusion";
 		/// <summary>
-		/// Tests if the associated data type is a text type.
+		/// A regular expression for extracting all parts of a value range
 		/// </summary>
-		/// <returns>ValueConstraint.IsText() if definition exists; otherwise, true.</returns>
-		/// <remarks>Since text is by far the minority of all the data types and
-		/// the only type to require string container marks, we do not put values inside 
-		/// those marks by default whenever we can't determine the data type (i.e. no
-		/// ValueConstraint exists).</remarks>
-		protected bool IsText
+		private static Regex ValueRangeRegex
 		{
 			get
 			{
-				ValueConstraint constraint = ValueConstraint;
-				return (constraint != null) ? constraint.IsText : false;
+				string valueRangePattern = ResourceStrings.ValueConstraintValueRangeRegexPattern;
+				Regex retVal = myValueRangeRegex;
+				if (valueRangePattern != myValueRangePattern)
+				{
+					Regex newRegex = new Regex(valueRangePattern, RegexOptions.Compiled);
+					if ((object)retVal == System.Threading.Interlocked.CompareExchange<Regex>(ref myValueRangeRegex, newRegex, retVal))
+					{
+						// We used the current values, store them
+						myValueRangePattern = valueRangePattern;
+					}
+					retVal = myValueRangeRegex;
+				}
+				return retVal;
 			}
+		}
+		/// <summary>
+		/// Interpret value range text and create or update a corresponding <see cref="ValueRange"/> object.
+		/// </summary>
+		/// <param name="contextConstraint">The <see cref="ValueConstraint"/> context. If the <paramref name="existingValueRange"/>
+		/// is not set and parsing succeeds, then a new range is created and added to the context constraint.</param>
+		/// <param name="existingValueRange">An existing range to modify. If the text cannot be parsed, then the existing range is deleted.</param>
+		/// <param name="rangeText">The text to interpret.</param>
+		/// <returns>A <see cref="ValueRange"/>, or <see langword="null"/> if the text cannot be parsed.</returns>
+		public static ValueRange ParseValueRangeText(ValueConstraint contextConstraint, ValueRange existingValueRange, string rangeText)
+		{
+			Match rangeMatch = ValueRangeRegex.Match(rangeText);
+			bool invalid = true;
+			if (rangeMatch.Success)
+			{
+				invalid = false;
+				string minValue = "";
+				string maxValue = "";
+				RangeInclusion minInclusion = RangeInclusion.NotSet;
+				RangeInclusion maxInclusion = RangeInclusion.NotSet;
+				GroupCollection groups = rangeMatch.Groups;
+				if (rangeMatch.Groups[ValueRangeDelimiterGroupName].Length != 0)
+				{
+					minValue = TrimStringMarkers(groups[ValueRangeLowerBoundGroupName].Value);
+					maxValue = TrimStringMarkers(groups[ValueRangeUpperBoundGroupName].Value);
+					bool haveMin = minValue.Length != 0;
+					bool haveMax = maxValue.Length != 0;
+					if (!haveMin && !haveMax)
+					{
+						// Treat as a single empty value, no reason to check inclusion
+						if (!contextConstraint.IsText)
+						{
+							invalid = true;
+						}
+					}
+					else
+					{
+						if (haveMin)
+						{
+							if (groups[ValueRangeMinOpenInclusionGroupName].Length != 0)
+							{
+								minInclusion = RangeInclusion.Open;
+							}
+							else if (groups[ValueRangeMinClosedInclusionGroupName].Length != 0)
+							{
+								minInclusion = RangeInclusion.Closed;
+							}
+						}
+						if (haveMax)
+						{
+							if (groups[ValueRangeMaxOpenInclusionGroupName].Length != 0)
+							{
+								maxInclusion = RangeInclusion.Open;
+							}
+							else if (groups[ValueRangeMaxClosedInclusionGroupName].Length != 0)
+							{
+								maxInclusion = RangeInclusion.Closed;
+							}
+						}
+					}
+				}
+				else
+				{
+					// Do not check inclusion on single elements
+					minValue = maxValue = TrimStringMarkers(groups[ValueRangeLowerBoundGroupName].Value);
+					if (minValue.Length == 0 && !contextConstraint.IsText)
+					{
+						invalid = true;
+					}
+				}
+				if (!invalid)
+				{
+					bool newRange = existingValueRange == null;
+					if (newRange)
+					{
+						existingValueRange = new ValueRange(contextConstraint.Store);
+					}
+					existingValueRange.MinValue = minValue;
+					existingValueRange.MaxValue = maxValue;
+					existingValueRange.MinInclusion = minInclusion;
+					existingValueRange.MaxInclusion = maxInclusion;
+					if (newRange)
+					{
+						existingValueRange.ValueConstraint = contextConstraint;
+					}
+				}
+			}
+			if (invalid && existingValueRange != null)
+			{
+				existingValueRange.Delete();
+				existingValueRange = null;
+			}
+			return existingValueRange;
 		}
 		/// <summary>
 		/// Removes the left- and right-strings which denote a value as a string.
 		/// </summary>
-		/// <param name="range">The string to remove left and right string delimiters from.</param>
-		public static string TrimStringMarkers(string range)
+		/// <param name="value">The string to remove string delimiters from.</param>
+		private static string TrimStringMarkers(string value)
 		{
-			range = range.Trim();
-			string leftStringContainerMarkTrimmed = leftStringContainerMark.Trim();
-			if (range.StartsWith(leftStringContainerMarkTrimmed))
+			string stringDelimiter = ResourceStrings.ValueConstraintStringDelimiter;
+			value = value.Trim();
+			if (value.StartsWith(stringDelimiter) && value.EndsWith(stringDelimiter))
 			{
-				range = range.Remove(0, leftStringContainerMarkTrimmed.Length);
+				int stringDelimiterLength = stringDelimiter.Length;
+				value = value.Substring(stringDelimiterLength, value.Length - stringDelimiterLength - stringDelimiterLength);
+				if (!string.IsNullOrEmpty(value) && value.Contains(stringDelimiter))
+				{
+					// Treat doubled delimiter characters as a single character.
+					value = value.Replace(stringDelimiter + stringDelimiter, stringDelimiter);
+				}
 			}
-			string rightStringContainerMarkTrimmed = rightStringContainerMark.Trim();
-			if (range.EndsWith(rightStringContainerMarkTrimmed))
-			{
-				range = range.Remove(range.Length - rightStringContainerMarkTrimmed.Length);
-			}
-			return range;
+			return value;
 		}
-		/// <summary>
-		/// Pops the inclusion strings off the ends of the range and stores them
-		/// in the appropriate out string.
-		/// </summary>
-		/// <param name="minInclusion">
-		/// The string to put the minInclusion mark from the rangeString into.
-		/// Will return "" if no mark exists.
-		/// </param>
-		/// <param name="maxInclusion">
-		/// The string to put the maxInclusion mark from the rangeString into.
-		/// Will return "" if no mark exists.
-		/// </param>
-		/// <param name="range">The string to remove inclusion marks from.</param>
-		private static string StripInclusions(out string minInclusion, out string maxInclusion, string range)
-		{
-			minInclusion = "";
-			maxInclusion = "";
-			range = range.Trim();
-			//Take care of the min-marks
-			string minOpenInclusionMarkTrimmed = minOpenInclusionMark.Trim();
-			string minClosedInclusionMarkTrimmed = minClosedInclusionMark.Trim();
-			if (range.StartsWith(minOpenInclusionMarkTrimmed))
-			{
-				range = range.Remove(0, minOpenInclusionMarkTrimmed.Length);
-				minInclusion = minOpenInclusionMark;
-			}
-			else if (range.StartsWith(minClosedInclusionMarkTrimmed))
-			{
-				range = range.Remove(0, minClosedInclusionMarkTrimmed.Length);
-				minInclusion = minClosedInclusionMark;
-			}
-			//Take care of the max-marks
-			string maxOpenInclusionMarkTrimmed = maxOpenInclusionMark.Trim();
-			string maxClosedInclusionMarkTrimmed = maxClosedInclusionMark.Trim();
-			if (range.EndsWith(maxOpenInclusionMarkTrimmed))
-			{
-				range = range.Remove(range.Length - maxOpenInclusionMarkTrimmed.Length);
-				maxInclusion = maxOpenInclusionMark;
-			}
-			else if (range.EndsWith(maxClosedInclusionMarkTrimmed))
-			{
-				range = range.Remove(range.Length - maxClosedInclusionMarkTrimmed.Length);
-				maxInclusion = maxClosedInclusionMark;
-			}
-			return range;
-		}
-		#endregion // CustomStorage handlers
+		#endregion // Helper Methods
 	}
 	partial class ValueConstraint : IModelErrorOwner
 	{
-		#region variables
-		private static readonly string defnContainerString = ResourceStrings.ValueConstraintDefinitionContainerPattern;
-		private static readonly string leftContainerMark = defnContainerString.Substring(0, defnContainerString.IndexOf("{0}"));
-		private static readonly string rightContainerMark = defnContainerString.Substring(defnContainerString.IndexOf("{0}") + 3);
-		private static readonly string rangeDelim = ResourceStrings.ValueConstraintRangeDelimiter;
-		private static readonly string delimSansSpace = rangeDelim.Trim();
-		private static readonly string delimSansSpaceEscaped = Regex.Escape(delimSansSpace);
-		#endregion // variables
 		#region CustomStorage Handling
 		private void SetDefinitionTextValue(string newValue)
 		{
@@ -362,7 +398,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			int rangeCount = ranges.Count;
 			for (int i = 0; i < rangeCount; ++i)
 			{
-				foreach (ModelErrorUsage rangeError in (ranges[i] as IModelErrorOwner).GetErrorCollection(filter))
+				foreach (ModelErrorUsage rangeError in ((IModelErrorOwner)ranges[i]).GetErrorCollection(filter))
 				{
 					yield return rangeError;
 				}
@@ -437,8 +473,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (dataType != null)
 			{
 				string min = range.MinValue;
+				bool haveMin = min.Length != 0;
 				string max = range.MaxValue;
-				if (min.Length != 0 && !dataType.CanParse(min))
+				bool haveMax = max.Length != 0;
+				string normalizedParsedForm;
+				if ((haveMin && !dataType.ParseNormalizeValue(min, range.InvariantMinValue, out normalizedParsedForm)) ||
+					(!haveMin && !haveMax && !(dataType is TextDataType)))
 				{
 					needMinError = true;
 					minMismatch = range.MinValueMismatchError;
@@ -457,7 +497,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				if (min != max)
 				{
-					if (max.Length != 0 && !dataType.CanParse(max))
+					if (haveMax && !dataType.ParseNormalizeValue(max, range.InvariantMaxValue, out normalizedParsedForm))
 					{
 						needMaxError = true;
 						maxMismatch = range.MaxValueMismatchError;
@@ -485,10 +525,48 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				maxMismatch.Delete();
 			}
 		}
-		[DelayValidatePriority(1)] // We want this after reference scheme validation
+		/// <summary>
+		/// Synchronize the <see cref="ValueRange.InvariantMinValue"/> and <see cref="ValueRange.InvariantMaxValue"/>
+		/// values for a modified data type. If neither the culture-specific nor invariant form of the data matches then
+		/// do not toss either piece of data.
+		/// </summary>
+		[DelayValidatePriority(1)]
+		private static void DelayValidateInvariantValues(ModelElement element)
+		{
+			ValueConstraint valueConstraint;
+			DataType dataType;
+			if (element.IsDeleted ||
+				null == (dataType = (valueConstraint = (ValueConstraint)element).DataType))
+			{
+				return;
+			}
+			bool updateInvariant = !dataType.CanParseAnyValue && dataType.IsCultureSensitive;
+			foreach (ValueRange valueRange in valueConstraint.ValueRangeCollection)
+			{
+				if (!dataType.CanParseAnyValue && dataType.IsCultureSensitive)
+				{
+					string value = valueRange.MinValue;
+					if (dataType.ParseNormalizeValue(value, valueRange.InvariantMinValue, out value))
+					{
+						valueRange.InvariantMinValue = value;
+					}
+					value = valueRange.MaxValue;
+					if (dataType.ParseNormalizeValue(value, valueRange.InvariantMaxValue, out value))
+					{
+						valueRange.InvariantMaxValue = value;
+					}
+				}
+				else
+				{
+					valueRange.InvariantMinValue = "";
+					valueRange.InvariantMaxValue = "";
+				}
+			}
+		}
+		[DelayValidatePriority(2)] // We want this after reference scheme validation and invariant value validation
 		private static void DelayValidateValueRangeValues(ModelElement element)
 		{
-			(element as ValueConstraint).VerifyValueRangeValues(null);
+			((ValueConstraint)element).VerifyValueRangeValues(null);
 		}
 		private void VerifyValueRangeValues(INotifyElementAdded notifyAdded)
 		{
@@ -547,27 +625,39 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				return;
 			}
-			DelayValidateValueConstraint(valueType.ValueConstraint);
+			DelayValidateValueConstraint(valueType.ValueConstraint, true);
 			Role.WalkDescendedValueRoles(valueType, null, delegate(Role role, PathedRole pathedRole, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
 			{
-				DelayValidateValueConstraint(currentValueConstraint);
+				DelayValidateValueConstraint(currentValueConstraint, true);
 				return true;
 			});
 		}
 		/// <summary>
 		/// Validate errors on the specified value constraint
 		/// </summary>
-		/// <param name="constraint">Constraint to validate. Can be null.</param>
-		public static void DelayValidateValueConstraint(ValueConstraint constraint)
+		/// <param name="valueConstraint">A <see cref="ValueConstraint"/> to validate. Can be null.</param>
+		/// <param name="checkForDataTypeChange"><see langword="true"/> if the data type of the associated constraint
+		/// may have changed.</param>
+		public static void DelayValidateValueConstraint(ValueConstraint valueConstraint, bool checkForDataTypeChange)
 		{
-			if (constraint != null && !constraint.IsDeleting && !constraint.IsDeleted)
+			if (valueConstraint != null && !valueConstraint.IsDeleting && !valueConstraint.IsDeleted)
 			{
-				if (FrameworkDomainModel.DelayValidateElement(constraint, DelayValidateValueRangeValues))
+				bool updateText = false;
+				if (checkForDataTypeChange &&
+					FrameworkDomainModel.DelayValidateElement(valueConstraint, DelayValidateInvariantValues))
+				{
+					updateText = true;
+				}
+				if (FrameworkDomainModel.DelayValidateElement(valueConstraint, DelayValidateValueRangeValues))
+				{
+					updateText = true;
+				}
+				if (updateText)
 				{
 					// Add a text change the first time this is called
-					constraint.OnTextChanged();
+					valueConstraint.OnTextChanged();
 				}
-				FrameworkDomainModel.DelayValidateElement(constraint, DelayValidateValueRangeOverlapError);
+				FrameworkDomainModel.DelayValidateElement(valueConstraint, DelayValidateValueRangeOverlapError);
 			}
 		}
 		/// <summary>
@@ -580,7 +670,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			Role.WalkDescendedValueRoles(anchorType, unattachedRole, delegate(Role role, PathedRole pathedRole, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
 			{
-				DelayValidateValueConstraint(currentValueConstraint);
+				DelayValidateValueConstraint(currentValueConstraint, true);
 				return true; // Continue walking
 			});
 		}
@@ -593,7 +683,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			if (e.DomainRole.Id == ValueTypeHasDataType.DataTypeDomainRoleId)
 			{
-				DelayValidateAssociatedValueConstraints((e.ElementLink as ValueTypeHasDataType).ValueType);
+				DelayValidateAssociatedValueConstraints(((ValueTypeHasDataType)e.ElementLink).ValueType);
 			}
 		}
 		#endregion // DataTypeRolePlayerChangeRule
@@ -607,7 +697,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void DataTypeDeletingRule(ElementDeletingEventArgs e)
 		{
-			ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
+			ValueTypeHasDataType link = (ValueTypeHasDataType)e.ModelElement;
 			ObjectType oldValueType = link.ValueType;
 			if (!oldValueType.IsDeleting)
 			{
@@ -727,7 +817,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (attributeId == ValueTypeHasDataType.ScaleDomainPropertyId ||
 				attributeId == ValueTypeHasDataType.LengthDomainPropertyId)
 			{
-				DelayValidateAssociatedValueConstraints((e.ModelElement as ValueTypeHasDataType).ValueType);
+				DelayValidateAssociatedValueConstraints(((ValueTypeHasDataType)e.ModelElement).ValueType);
 			}
 		}
 		#endregion // DataTypeChangeRule
@@ -738,7 +828,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void ValueConstraintAddRule(ElementAddedEventArgs e)
 		{
-			DelayValidateValueConstraint(((ValueTypeHasValueConstraint)e.ModelElement).ValueConstraint);
+			ValueConstraint valueConstraint = ((ValueTypeHasValueConstraint)e.ModelElement).ValueConstraint;
+			DelayValidateValueConstraint(valueConstraint, valueConstraint.ValueRangeCollection.Count != 0);
 		}
 		#endregion // ValueConstraintAddRule
 		#region RoleValueConstraintAddedRule
@@ -748,7 +839,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void RoleValueConstraintAddedRule(ElementAddedEventArgs e)
 		{
-			DelayValidateValueConstraint(((RoleHasValueConstraint)e.ModelElement).ValueConstraint);
+			ValueConstraint valueConstraint = ((RoleHasValueConstraint)e.ModelElement).ValueConstraint;
+			DelayValidateValueConstraint(valueConstraint, valueConstraint.ValueRangeCollection.Count != 0);
 		}
 		#endregion // RoleValueConstraintAddedRule
 		#region  PathConditionRoleValueConstraintAddedRule
@@ -758,7 +850,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void PathConditionRoleValueConstraintAddedRule(ElementAddedEventArgs e)
 		{
-			DelayValidateValueConstraint(((PathedRoleHasValueConstraint)e.ModelElement).ValueConstraint);
+			ValueConstraint valueConstraint = ((PathedRoleHasValueConstraint)e.ModelElement).ValueConstraint;
+			DelayValidateValueConstraint(valueConstraint, valueConstraint.ValueRangeCollection.Count != 0);
 		}
 		#endregion // PathConditionRoleValueConstraintAddedRule
 		#region ObjectTypeRoleAdded
@@ -768,7 +861,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void ObjectTypeRoleAdded(ElementAddedEventArgs e)
 		{
-			ObjectType valueType = (e.ModelElement as ObjectTypePlaysRole).RolePlayer;
+			ObjectType valueType = ((ObjectTypePlaysRole)e.ModelElement).RolePlayer;
 			if (valueType.DataType != null)
 			{
 				DelayValidateAssociatedValueConstraints(valueType);
@@ -782,20 +875,58 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void ValueRangeAddedRule(ElementAddedEventArgs e)
 		{
-			DelayValidateValueConstraint((e.ModelElement as ValueConstraintHasValueRange).ValueConstraint);
+			ValueConstraintHasValueRange link = (ValueConstraintHasValueRange)e.ModelElement;
+			ValueConstraint valueConstraint = link.ValueConstraint;
+			DataType dataType = valueConstraint.DataType;
+			if (dataType != null)
+			{
+				string minInvariant = null;
+				string maxInvariant = null;
+				ValueRange range = link.ValueRange;
+				if (dataType.IsCultureSensitive)
+				{
+					dataType.TryConvertToInvariant(range.MinValue, out minInvariant);
+					dataType.TryConvertToInvariant(range.MaxValue, out maxInvariant);
+				}
+				range.InvariantMinValue = minInvariant ?? "";
+				range.InvariantMaxValue = maxInvariant ?? "";
+			}
+			DelayValidateValueConstraint(valueConstraint, false);
 		}
 		#endregion // ValueRangeAddedRule
 		#region ValueRangeChangeRule
 		/// <summary>
 		/// ChangeRule: typeof(ValueRange)
-		/// Validate values when any non-calculated properties change
+		/// Validate values when a range value is changed
 		/// </summary>
 		private static void ValueRangeChangeRule(ElementPropertyChangedEventArgs e)
 		{
-			Guid attributeGuid = e.DomainProperty.Id;
-			if (attributeGuid != ValueRange.TextDomainPropertyId)
+			ValueRange range = (ValueRange)e.ModelElement;
+			ValueConstraint valueConstraint = range.ValueConstraint;
+			if (valueConstraint != null)
 			{
-				DelayValidateValueConstraint((e.ModelElement as ValueRange).ValueConstraint);
+				Guid propertyId = e.DomainProperty.Id;
+				bool isMin;
+				if (isMin = (propertyId == ValueRange.MinValueDomainPropertyId) ||
+					(propertyId == ValueRange.MaxValueDomainPropertyId))
+				{
+					string invariantForm = null;
+					DataType dataType = valueConstraint.DataType;
+					if (null != (dataType = valueConstraint.DataType) &&
+						dataType.IsCultureSensitive)
+					{
+						dataType.TryConvertToInvariant((string)e.NewValue, out invariantForm);
+					}
+					if (isMin)
+					{
+						range.InvariantMinValue = invariantForm ?? "";
+					}
+					else
+					{
+						range.InvariantMaxValue = invariantForm ?? "";
+					}
+				}
+				DelayValidateValueConstraint(valueConstraint, false);
 			}
 		}
 		#endregion // ValueRangeChangeRule
@@ -809,7 +940,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			Guid attributeGuid = e.DomainProperty.Id;
 			if (attributeGuid == ValueConstraint.TextDomainPropertyId)
 			{
-				ValueConstraint valueConstraint = e.ModelElement as ValueConstraint;
+				ValueConstraint valueConstraint = (ValueConstraint)e.ModelElement;
 				//Set the new definition
 				string newText = (string)e.NewValue;
 				if (newText.Length == 0)
@@ -832,7 +963,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void PreferredIdentifierDeletingRule(ElementDeletingEventArgs e)
 		{
-			ProcessPreferredIdentifierDeleting(e.ModelElement as EntityTypeHasPreferredIdentifier, null);
+			ProcessPreferredIdentifierDeleting((EntityTypeHasPreferredIdentifier)e.ModelElement, null);
 		}
 		/// <summary>
 		/// Common rule code for processing preferred identifier deletion
@@ -864,7 +995,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				oldObjectType = (ObjectType)e.OldRolePlayer;
 			}
-			ProcessPreferredIdentifierDeleting(e.ElementLink as EntityTypeHasPreferredIdentifier, oldObjectType);
+			ProcessPreferredIdentifierDeleting((EntityTypeHasPreferredIdentifier)e.ElementLink, oldObjectType);
 		}
 		#endregion // PreferredIdentifierRolePlayerChangeRule
 		#region PreferredIdentifierRoleAddRule
@@ -878,7 +1009,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			UniquenessConstraint constraint;
 			ObjectType identifiedObject;
 			LinkedElementCollection<Role> roles;
-			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+			ConstraintRoleSequenceHasRole link = (ConstraintRoleSequenceHasRole)e.ModelElement;
 			if (null != (constraint = link.ConstraintRoleSequence as UniquenessConstraint) &&
 				null != (identifiedObject = constraint.PreferredIdentifierFor) &&
 				(roles = constraint.RoleCollection).Count == 2) // Moving from 1 role to 2
@@ -921,7 +1052,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void RolePlayerDeletingRule(ElementDeletingEventArgs e)
 		{
-			DelayValidateDescendedValueConstraints((e.ModelElement as ObjectTypePlaysRole).RolePlayer, null);
+			DelayValidateDescendedValueConstraints(((ObjectTypePlaysRole)e.ModelElement).RolePlayer, null);
 		}
 		#endregion // RolePlayerDeletingRule
 		#region RolePlayerRolePlayerChangeRule
@@ -935,7 +1066,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			if (e.DomainRole.Id == ObjectTypePlaysRole.RolePlayerDomainRoleId)
 			{
-				Role changedRole = (e.ElementLink as ObjectTypePlaysRole).PlayedRole;
+				Role changedRole = ((ObjectTypePlaysRole)e.ElementLink).PlayedRole;
 				ObjectType oldRolePlayer = (ObjectType)e.OldRolePlayer;
 				if (changedRole.IsValueRoleForAlternateRolePlayer(oldRolePlayer))
 				{
@@ -948,7 +1079,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						visited = true;
 						// Make sure that this value constraint is compatible with
 						// other constraints above it.
-						DelayValidateValueConstraint(currentValueConstraint);
+						DelayValidateValueConstraint(currentValueConstraint, true);
 						return true;
 					});
 					if (!visited)
@@ -963,51 +1094,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // RolePlayerRolePlayerChangeRule
 		#endregion // ValueMatch Validation
 		#region VerifyValueRangeOverlapError
-		[DelayValidatePriority(2)] // We want this after reference scheme validation and range validation
+		[DelayValidatePriority(3)] // We want this after reference scheme validation, invariant validation, and range validation
 		private static void DelayValidateValueRangeOverlapError(ModelElement element)
 		{
-			(element as ValueConstraint).VerifyValueRangeOverlapError(null);
+			((ValueConstraint)element).VerifyValueRangeOverlapError(null);
 		}
 		private struct RangeValueNode
 		{
-			private string myValue;
-			private bool myIsLower;
-			private int myIndex;
-			private RangeInclusion myInclusion;
-			public RangeValueNode(string value, bool isLower, int index, RangeInclusion inclusion)
+			public readonly string Value;
+			public readonly bool IsLower;
+			public readonly int Index;
+			public readonly bool IsOpen;
+			public RangeValueNode(string value, bool isLower, int index, bool isOpen)
 			{
-				myValue = value;
-				myIsLower = isLower;
-				myIndex = index;
-				myInclusion = inclusion;
-			}
-			public string Value
-			{
-				get
-				{
-					return myValue;
-				}
-			}
-			public bool IsLower
-			{
-				get
-				{
-					return myIsLower;
-				}
-			}
-			public int Index
-			{
-				get
-				{
-					return myIndex;
-				}
-			}
-			public RangeInclusion Inclusion
-			{
-				get
-				{
-					return myInclusion;
-				}
+				Value = value;
+				IsLower = isLower;
+				Index = index;
+				IsOpen = isOpen;
 			}
 		}
 		private void VerifyValueRangeOverlapError(INotifyElementAdded notifyAdded)
@@ -1032,24 +1135,72 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							if (rangeCount > 1)
 							{
-								// UNDONE: None of the single elements should be equal
+								string[] singleValues = new string[rangeCount];
+								int i = 0;
+								for (; i < rangeCount; ++i)
+								{
+									range = ranges[i];
+
+									// The lower node is sufficient
+									minValue = range.MinValue;
+									if (minValue.Length != 0 && !dataType.ParseNormalizeValue(minValue, range.InvariantMinValue, out minValue))
+									{
+										break;
+									}
+									singleValues[i] = minValue;
+								}
+								if (i == rangeCount)
+								{
+									Array.Sort<string>(
+										singleValues,
+										dataType.Compare);
+									i = 1;
+									for (; i < rangeCount; ++i)
+									{
+										if (singleValues[i - 1] == singleValues[i])
+										{
+											break;
+										}
+									}
+									hasError = i < rangeCount;
+								}
 							}
 							break;
 						}
-					case DataTypeRangeSupport.Closed:
-					case DataTypeRangeSupport.Open:
+					case DataTypeRangeSupport.ContinuousEndPoints:
+					case DataTypeRangeSupport.DiscontinuousEndPoints:
 						{
-							bool alwaysClosed = rangeSupport == DataTypeRangeSupport.Closed;
+							bool adjustEndPoints = rangeSupport == DataTypeRangeSupport.DiscontinuousEndPoints;
+							bool isOpen;
 							if (rangeCount == 1)
 							{
 								// The data is overlapping if the values are backwards
 								range = ranges[0];
 								minValue = range.MinValue;
 								maxValue = range.MaxValue;
-								if (minValue.Length != 0 && dataType.CanParse(minValue) &&
-									maxValue.Length != 0 && dataType.CanParse(maxValue))
+								if (minValue.Length != 0 && dataType.ParseNormalizeValue(minValue, range.InvariantMinValue, out minValue) &&
+									maxValue.Length != 0 && dataType.ParseNormalizeValue(maxValue, range.InvariantMaxValue, out maxValue))
 								{
-									hasError = dataType.Compare(minValue, maxValue) > 0;
+									if (adjustEndPoints)
+									{
+										isOpen = range.MinInclusion == RangeInclusion.Open;
+										if (!dataType.AdjustDiscontinuousLowerBound(ref minValue, ref isOpen))
+										{
+											hasError = true;
+										}
+										else
+										{
+											isOpen = range.MaxInclusion == RangeInclusion.Open;
+											if (!dataType.AdjustDiscontinuousUpperBound(ref maxValue, ref isOpen))
+											{
+												hasError = true;
+											}
+										}
+									}
+									if (!hasError)
+									{
+										hasError = dataType.Compare(minValue, maxValue) > 0;
+									}
 								}
 							}
 							else
@@ -1058,49 +1209,41 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								int index = 0;
 								int leftIndex;
 								int rightIndex;
-								RangeInclusion inclusion = RangeInclusion.Closed;
-								bool keepGoing = true;
-								for (int i = 0; i < rangeCount; ++i)
+								int i = 0;
+								for (; i < rangeCount; ++i)
 								{
 									range = ranges[i];
 
 									// Add the lower node
-									if (!alwaysClosed)
-									{
-										inclusion = range.MinInclusion;
-										if (inclusion == RangeInclusion.NotSet)
-										{
-											inclusion = RangeInclusion.Closed;
-										}
-									}
 									minValue = range.MinValue;
-									if (minValue.Length != 0 && !dataType.CanParse(minValue))
+									if (minValue.Length != 0 && !dataType.ParseNormalizeValue(minValue, range.InvariantMinValue, out minValue))
 									{
-										keepGoing = false;
 										break;
 									}
-
-									nodes[index] = new RangeValueNode(minValue, true, i, inclusion);
+									isOpen = range.MinInclusion == RangeInclusion.Open;
+									if (adjustEndPoints &&
+										!(dataType.AdjustDiscontinuousLowerBound(ref minValue, ref isOpen)))
+									{
+										break;
+									}
+									nodes[index] = new RangeValueNode(minValue, true, i, isOpen);
 
 									// Add the upper node
 									maxValue = range.MaxValue;
-									if (maxValue.Length != 0 && !dataType.CanParse(maxValue))
+									if (maxValue.Length != 0 && !dataType.ParseNormalizeValue(maxValue, range.InvariantMaxValue, out maxValue))
 									{
-										keepGoing = false;
 										break;
 									}
-									if (!alwaysClosed)
+									isOpen = range.MaxInclusion == RangeInclusion.Open;
+									if (adjustEndPoints &&
+										!(dataType.AdjustDiscontinuousLowerBound(ref maxValue, ref isOpen)))
 									{
-										inclusion = range.MaxInclusion;
-										if (inclusion == RangeInclusion.NotSet)
-										{
-											inclusion = RangeInclusion.Closed;
-										}
+										break;
 									}
-									nodes[index + 1] = new RangeValueNode(maxValue, false, i, inclusion);
+									nodes[index + 1] = new RangeValueNode(maxValue, false, i, isOpen);
 									index += 2;
 								}
-								if (keepGoing)
+								if (i == rangeCount)
 								{
 									Array.Sort<RangeValueNode>(
 										nodes,
@@ -1156,32 +1299,31 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									index = 0;
 									RangeValueNode lower;
 									RangeValueNode upper = default(RangeValueNode);
-									for (int i = 0; i < rangeCount; ++i)
+									i = 0;
+									for (; i < rangeCount; ++i)
 									{
 										lower = nodes[index];
 										if (!lower.IsLower)
 										{
-											keepGoing = false;
 											break;
 										}
-										if ((alwaysClosed ||(lower.Inclusion == RangeInclusion.Closed && upper.Inclusion == RangeInclusion.Closed)) &&
+										if (!lower.IsOpen &&
+											!upper.IsOpen &&
 											i != 0 &&
 											lower.Value.Length != 0 &&
 											upper.Value.Length != 0 &&
 											0 == dataType.Compare(lower.Value, upper.Value))
 										{
-											keepGoing = false;
 											break;
 										}
 										upper = nodes[index + 1];
 										if (upper.IsLower || (upper.Index != lower.Index))
 										{
-											keepGoing = false;
 											break;
 										}
 										index += 2;
 									}
-									hasError = !keepGoing;
+									hasError = i != rangeCount;
 								}
 							}
 							break;
@@ -1226,7 +1368,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			else if (rangeCount == 1)
 			{
-				return string.Concat(leftContainerMark, ranges[0].Text, rightContainerMark);
+				return string.Concat(ResourceStrings.ValueConstraintDefinitionContainerOpenDelimiter, ranges[0].GetDisplayText(DataType), ResourceStrings.ValueConstraintDefinitionContainerCloseDelimiter);
 			}
 			int totalValues = rangeCount;
 			int totalSlots = rangeCount; // Possibly treat a trailing ellipsis in the total
@@ -1253,13 +1395,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				maxColumns = -1; // Standardize for loop
 			}
 			StringBuilder valueRangeText = new StringBuilder();
-			valueRangeText.Append(leftContainerMark);
+			valueRangeText.Append(ResourceStrings.ValueConstraintDefinitionContainerOpenDelimiter);
 			int currentColumn = 0;
+			string rangeSeparator = null;
+			DataType dataType = this.DataType;
 			for (int i = 0; i < totalValues; ++i)
 			{
 				if (i != 0)
 				{
-					valueRangeText.Append(rangeDelim);
+					valueRangeText.Append(rangeSeparator ?? (rangeSeparator = DisplayedRangeSeparator));
 					if (currentColumn == maxColumns)
 					{
 						valueRangeText.AppendLine();
@@ -1267,18 +1411,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 				}
 				++currentColumn;
-				valueRangeText.Append(ranges[i].Text);
+				valueRangeText.Append(ranges[i].GetDisplayText(dataType));
 			}
 			if (totalSlots > totalValues)
 			{
-				valueRangeText.Append(rangeDelim);
+				valueRangeText.Append(rangeSeparator ?? (rangeSeparator = DisplayedRangeSeparator));
 				if (currentColumn == maxColumns)
 				{
 					valueRangeText.AppendLine();
 				}
 				valueRangeText.Append(ResourceStrings.ReadingShapeEllipsis);
 			}
-			valueRangeText.Append(rightContainerMark);
+			valueRangeText.Append(ResourceStrings.ValueConstraintDefinitionContainerCloseDelimiter);
 			return valueRangeText.ToString();
 		}
 		private string GetTextValue()
@@ -1315,6 +1459,66 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			// Nothing to do, we're just trying to create a transaction log entry
 		}
 		#endregion // CustomStorage handlers
+		#region Deserialization Fixup
+		/// <summary>
+		/// Return a deserialization fixup listener. The listener
+		/// adds invariant values as needed.
+		/// </summary>
+		public static IDeserializationFixupListener FixupListener
+		{
+			get
+			{
+				return new InvariantValueFixupListener();
+			}
+		}
+		/// <summary>
+		/// Fixup listener implementation.
+		/// </summary>
+		private sealed class InvariantValueFixupListener : DeserializationFixupListener<ValueConstraint>
+		{
+			/// <summary>
+			/// InvariantValueFixupListener constructor
+			/// </summary>
+			public InvariantValueFixupListener()
+				: base((int)ORMDeserializationFixupPhase.ValidateImplicitStoredElements)
+			{
+			}
+			/// <summary>
+			/// Process ValueConstraint elements
+			/// </summary>
+			/// <param name="element">A ValueConstraint element</param>
+			/// <param name="store">The context store</param>
+			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
+			protected sealed override void ProcessElement(ValueConstraint element, Store store, INotifyElementAdded notifyAdded)
+			{
+				if (!element.IsDeleted)
+				{
+					DataType dataType;
+					if (null != (dataType = element.DataType) &&
+						dataType.IsCultureSensitive)
+					{
+						foreach (ValueRange valueRange in element.ValueRangeCollection)
+						{
+							string value;
+							string invariantValue;
+							if ((invariantValue = valueRange.InvariantMinValue).Length == 0 &&
+								(value = valueRange.MinValue).Length != 0 &&
+								dataType.TryConvertToInvariant(value, out invariantValue))
+							{
+								valueRange.InvariantMinValue = invariantValue;
+							}
+							if ((invariantValue = valueRange.InvariantMaxValue).Length == 0 &&
+								(value = valueRange.MaxValue).Length != 0 &&
+								dataType.TryConvertToInvariant(value, out invariantValue))
+							{
+								valueRange.InvariantMaxValue = invariantValue;
+							}
+						}
+					}
+				}
+			}
+		}
+		#endregion // Deserialization Fixup
 		#region ValueConstraint specific
 		/// <summary>
 		/// The data type associated with this value range definition
@@ -1339,27 +1543,82 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
+		/// Get the current format provider
+		/// </summary>
+		private CultureInfo CurrentCulture
+		{
+			get
+			{
+				// UNDONE: Consider storing a culture with the model, with a
+				// user option to display and parse with either the native culture
+				// or the model's stored culture.
+				return CultureInfo.CurrentCulture;
+			}
+		}
+		/// <summary>
+		/// Get the displayed separator used between two ranges.
+		/// </summary>
+		private string DisplayedRangeSeparator
+		{
+			get
+			{
+				string retVal = CurrentCulture.TextInfo.ListSeparator;
+				return !char.IsWhiteSpace(retVal[retVal.Length - 1]) ? retVal + " " : retVal;
+			}
+		}
+		private static Regex myRangeSeparatorRegex;
+		private const string RangeSeparatorGroupName = "Data";
+		private static string myRangeSeparator;
+		private static string myStringDelimiter;
+		private Regex RangeSeparatorRegex
+		{
+			get
+			{
+				string rangeSeparator = CurrentCulture.TextInfo.ListSeparator;
+				string stringDelimiter = ResourceStrings.ValueConstraintStringDelimiter;
+				Regex retVal = myRangeSeparatorRegex;
+				if (rangeSeparator != myRangeSeparator ||
+					stringDelimiter != myStringDelimiter)
+				{
+					Regex newRegex = new Regex(
+						string.Format(CultureInfo.InvariantCulture, @"(?n)\G(\s*(?<Data>([^{0}{1}]+|({0}.*?{0})+)*)\s*)(({1})|\z)", Regex.Escape(stringDelimiter), Regex.Escape(rangeSeparator)),
+						RegexOptions.Compiled);
+					if ((object)retVal == System.Threading.Interlocked.CompareExchange<Regex>(ref myRangeSeparatorRegex, newRegex, retVal))
+					{
+						// We used the current values, store them
+						myStringDelimiter = stringDelimiter;
+						myRangeSeparator = rangeSeparator;
+					}
+					retVal = myRangeSeparatorRegex;
+				}
+				return retVal;
+			}
+		}
+		/// <summary>
 		/// Breaks a value range definition into value ranges and adds them
 		/// to the ValueRangeCollection.
 		/// </summary>
 		/// <param name="newDefinition">The string containing a value range definition.</param>
 		protected void ParseDefinition(string newDefinition)
 		{
-			LinkedElementCollection<ValueRange> vrColl = this.ValueRangeCollection;
 			// First, remove the container strings from the ends of the definition string
 			newDefinition = TrimDefinitionMarkers(newDefinition);
+			// UNDONE: Can we preserve this collection instead of clearing it?
+			ValueRangeCollection.Clear();
 			// Second, find the value ranges in the definition string
 			// and add them to the collection
 			if (newDefinition.Length != 0)
 			{
-				vrColl.Clear();
-				string[] ranges = Regex.Split(newDefinition, delimSansSpaceEscaped);
-				for (int i = 0; i < ranges.Length; ++i)
+				Match match = RangeSeparatorRegex.Match(newDefinition);
+				while (match.Success)
 				{
-					string s = ranges[i].Trim();
-					ValueRange valueRange = new ValueRange(Store);
-					valueRange.Text = s;
-					vrColl.Add(valueRange);
+					string rangeData = match.Groups[RangeSeparatorGroupName].Value;
+					// Note that the range data is already trimmed by the regex
+					if (!string.IsNullOrEmpty(rangeData))
+					{
+						ValueRange.ParseValueRangeText(this, null, rangeData);
+					}
+					match = match.NextMatch();
 				}
 			}
 		}
@@ -1367,18 +1626,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Removes the left- and right-strings which denote a value range definition.
 		/// </summary>
 		/// <param name="definition">The string to remove left and right value range definition strings from.</param>
-		public static string TrimDefinitionMarkers(string definition)
+		private static string TrimDefinitionMarkers(string definition)
 		{
 			definition = definition.Trim();
-			string leftContainerMarkTrimmed = leftContainerMark.Trim();
+			string leftContainerMarkTrimmed = ResourceStrings.ValueConstraintDefinitionContainerOpenDelimiter;
+			if (leftContainerMarkTrimmed.Length != 0)
+			{
+				leftContainerMarkTrimmed = leftContainerMarkTrimmed.Trim();
+			}
 			if (definition.StartsWith(leftContainerMarkTrimmed))
 			{
-				definition = definition.Remove(0, leftContainerMarkTrimmed.Length);
+				definition = definition.Substring(leftContainerMarkTrimmed.Length);
 			}
-			string rightContainerMarkTrimmed = rightContainerMark.Trim();
+			string rightContainerMarkTrimmed = ResourceStrings.ValueConstraintDefinitionContainerCloseDelimiter;
+			if (rightContainerMarkTrimmed.Length != 0)
+			{
+				rightContainerMarkTrimmed = rightContainerMarkTrimmed.Trim();
+			}
 			if (definition.EndsWith(rightContainerMarkTrimmed))
 			{
-				definition = definition.Remove(definition.Length - rightContainerMarkTrimmed.Length);
+				definition = definition.Substring(0, definition.Length - rightContainerMarkTrimmed.Length);
 			}
 			return definition;
 		}

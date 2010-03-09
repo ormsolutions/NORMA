@@ -229,12 +229,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// Notifies the shape that the currently cached display text may no longer
 		/// be accurate, so it needs to be recreated.
 		/// </summary>
-		private void InvalidateDisplayText()
+		public void InvalidateDisplayText()
 		{
-			Debug.Assert(Store.TransactionManager.InTransaction);
-			myDisplayText = null;
-			InvalidateRequired();
-			this.AutoResize();
+			BeforeInvalidate();
+			if (Store.TransactionManager.InTransaction)
+			{
+				AutoResize();
+				InvalidateRequired(true);
+			}
 		}
 		/// <summary>
 		/// The constraint shape text needs to be refreshed before it is invalidated
@@ -356,7 +358,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 		}
 		/// <summary>
-		/// A listener to reset the size of a multi-line value constraint shape.
+		/// A listener to reset the size of value constraint shapes on load. Shapes are dependent
+		/// on user settings not stored with the model.
 		/// </summary>
 		private sealed class ValueConstraintShapeFixupListener : DeserializationFixupListener<ValueConstraintShape>
 		{
@@ -368,12 +371,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 			}
 			/// <summary>
-			/// Update the shape size if there are multiple lines set for the shape.
+			/// Update the shape size.
 			/// </summary>
 			protected sealed override void ProcessElement(ValueConstraintShape element, Store store, INotifyElementAdded notifyAdded)
 			{
-				if (!element.IsDeleted &&
-					element.MaximumDisplayedColumns > 0)
+				if (!element.IsDeleted)
 				{
 					element.AutoResize();
 				}

@@ -1088,11 +1088,6 @@
 				<arg:RuleOn targetType="ValueRange"/>
 			</arg:ChangeRule>
 		</arg:RuleContainer>
-		<arg:RuleContainer class="ValueRange">
-			<arg:ChangeRule methodName="ValueRangeChangeRule">
-				<arg:RuleOn targetType="ValueRange"/>
-			</arg:ChangeRule>
-		</arg:RuleContainer>
 		<arg:RuleContainer class="ValueTypeInstance">
 			<arg:AddRule methodName="ValueTypeHasDataTypeAddedRule">
 				<arg:RuleOn targetType="ValueTypeHasDataType"/>

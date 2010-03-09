@@ -121,6 +121,7 @@
 	<ResourceString name="UnobjectifyFactTypeTransactionName" model="Diagram" resourceName="UnobjectifyFactType.TransactionName"/>
 	<ResourceString name="ExclusiveOrCouplerTransactionName" model="Diagram" resourceName="ExclusiveOrCoupler.TransactionName"/>
 	<ResourceString name="ExclusiveOrDecouplerTransactionName" model="Diagram" resourceName="ExclusiveOrDecoupler.TransactionName"/>
+	<ResourceString name="CultureChangedTransactionName" model="Diagram" resourceName="CultureChanged.TransactionName"/>
 	<ResourceString name="DropShapeTransactionName" model="Diagram" resourceName="DropShape.TransactionName"/>
 	<ResourceString name="ElementGroupingPropertyCategory" model="ObjectModel" resourceName="ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping/TypeCompliance.Category"/>
 	<ResourceString name="ElementGroupingDefaultNamePattern" model="Model" resourceName="ElementGrouping.DefaultNamePattern"/>
@@ -353,12 +354,15 @@
 	<ResourceString name="ExclusiveOrConstraintExclusionConstraintNameDisplayName" model="Model" resourceName="ExclusiveOrConstraint.ExclusionConstraintName.DisplayName"/>
 	<ResourceString name="RoleSurveyNameFormat" model="Model" resourceName="Role.SurveyNameFormat"/>
 	<ResourceString name="RoleSurveyNameMissingRolePlayer" model="Model" resourceName="Role.SurveyNameMissingRolePlayer"/>
-	<ResourceString name="ValueConstraintDefinitionContainerPattern" model="Model" resourceName="ObjectModel.ValueConstraint.DefinitionContainerPattern"/>
-	<ResourceString name="ValueConstraintRangeDelimiter" model="Model" resourceName="ObjectModel.ValueConstraint.RangeDelimiter"/>
+	<ResourceString name="ValueConstraintDefinitionContainerCloseDelimiter" model="Model" resourceName="ObjectModel.ValueConstraint.DefinitionContainer.CloseDelimiter"/>
+	<ResourceString name="ValueConstraintDefinitionContainerOpenDelimiter" model="Model" resourceName="ObjectModel.ValueConstraint.DefinitionContainer.OpenDelimiter"/>
+	<ResourceString name="ValueConstraintClosedInclusionLowerDelimiter" model="Model" resourceName="ObjectModel.ValueConstraint.ClosedInclusion.LowerDelimiter"/>
+	<ResourceString name="ValueConstraintClosedInclusionUpperDelimiter" model="Model" resourceName="ObjectModel.ValueConstraint.ClosedInclusion.UpperDelimiter"/>
+	<ResourceString name="ValueConstraintOpenInclusionLowerDelimiter" model="Model" resourceName="ObjectModel.ValueConstraint.OpenInclusion.LowerDelimiter"/>
+	<ResourceString name="ValueConstraintOpenInclusionUpperDelimiter" model="Model" resourceName="ObjectModel.ValueConstraint.OpenInclusion.UpperDelimiter"/>
+	<ResourceString name="ValueConstraintStringDelimiter" model="Model" resourceName="ObjectModel.ValueConstraint.StringDelimiter"/>
 	<ResourceString name="ValueConstraintValueDelimiter" model="Model" resourceName="ObjectModel.ValueConstraint.ValueDelimiter"/>
-	<ResourceString name="ValueConstraintStringContainerPattern" model="Model" resourceName="ObjectModel.ValueConstraint.StringContainerPattern"/>
-	<ResourceString name="ValueConstraintOpenInclusionContainer" model="Model" resourceName="ObjectModel.ValueConstraint.OpenInclusionPattern"/>
-	<ResourceString name="ValueConstraintClosedInclusionContainer" model="Model" resourceName="ObjectModel.ValueConstraint.ClosedInclusionPattern"/>
+	<ResourceString name="ValueConstraintValueRangeRegexPattern" model="Model" resourceName="ObjectModel.ValueConstraint.ValueRangeRegexPattern"/>
 	<ResourceString name="ModelErrorModelHasDuplicateRecognizedPhrases" model="Model" resourceName="ModelError.RecognizedPhrase.DuplicateNameError.Message"/>
 	<ResourceString name="ObjectTypeShapeDerivedSubtypeFormatString" model="Diagram" resourceName="ObjectTypeShape.DerivedSubtypeFormatString"/>
 	<ResourceString name="ObjectTypeShapeIndependentFormatString" model="Diagram" resourceName="ObjectTypeShape.IndependentFormatString"/>

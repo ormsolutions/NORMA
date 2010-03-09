@@ -44,9 +44,11 @@
 				<orm:Instances>
 					<orm:ValueTypeInstance id="_FC4F17D6-0B3B-4F1B-947B-5FC858F05B46">
 						<orm:Value>10</orm:Value>
+						<orm:InvariantValue>10</orm:InvariantValue>
 					</orm:ValueTypeInstance>
 					<orm:ValueTypeInstance id="_00F1E1F0-2551-4119-A3D2-AD8AA81E1FAA">
 						<orm:Value>20</orm:Value>
+						<orm:InvariantValue>20</orm:InvariantValue>
 					</orm:ValueTypeInstance>
 				</orm:Instances>
 			</orm:ValueType>
@@ -58,6 +60,7 @@
 				<orm:Instances>
 					<orm:ValueTypeInstance id="_BB51141C-CC0D-45A3-BDCD-4F4F3EBFCF54">
 						<orm:Value>100</orm:Value>
+						<orm:InvariantValue>100</orm:InvariantValue>
 					</orm:ValueTypeInstance>
 				</orm:Instances>
 			</orm:ValueType>

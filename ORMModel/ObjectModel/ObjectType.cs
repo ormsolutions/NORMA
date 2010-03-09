@@ -2778,7 +2778,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 											{
 												Role.WalkDescendedValueRoles(currentSupertype, currentSupertypeRole, delegate(Role role, PathedRole pathedRole, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
 												{
-													ObjectModel.ValueConstraint.DelayValidateValueConstraint(currentValueConstraint);
+													ObjectModel.ValueConstraint.DelayValidateValueConstraint(currentValueConstraint, true);
 													return true;
 												});
 											}
@@ -2873,7 +2873,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					// This can only runs if notifyAdded is null
 					Role.WalkDescendedValueRoles(this, null, delegate(Role role, PathedRole pathedRole, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
 					{
-						ObjectModel.ValueConstraint.DelayValidateValueConstraint(currentValueConstraint);
+						ObjectModel.ValueConstraint.DelayValidateValueConstraint(currentValueConstraint, true);
 						return true;
 					});
 					WalkSubtypes(
@@ -3929,7 +3929,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 												visited = true;
 												// Make sure that this value constraint is compatible with
 												// other constraints above it.
-												ObjectModel.ValueConstraint.DelayValidateValueConstraint(currentValueConstraint);
+												ObjectModel.ValueConstraint.DelayValidateValueConstraint(currentValueConstraint, true);
 												return true;
 											});
 											if (!visited)
@@ -3940,7 +3940,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 												// supertype role.
 												Role.WalkDescendedValueRoles(oldIdentifier.PreferredIdentifierFor, oldSupertypeRole, delegate(Role role, PathedRole pathedRole, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
 												{
-													ObjectModel.ValueConstraint.DelayValidateValueConstraint(currentValueConstraint);
+													ObjectModel.ValueConstraint.DelayValidateValueConstraint(currentValueConstraint, true);
 													return true;
 												});
 											}
@@ -3950,7 +3950,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								});
 							Role.WalkDescendedValueRoles(changedSubtypeLink.Subtype, null, delegate(Role role, PathedRole pathedRole, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
 							{
-								ObjectModel.ValueConstraint.DelayValidateValueConstraint(currentValueConstraint);
+								ObjectModel.ValueConstraint.DelayValidateValueConstraint(currentValueConstraint, true);
 								return true;
 							});
 

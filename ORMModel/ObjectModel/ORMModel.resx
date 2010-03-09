@@ -1273,29 +1273,50 @@
 		<value>ExternalUniquenessConstraint</value>
 		<comment>The display name used for an external uniqueness constraint</comment>
 	</data>
-	<data name="ObjectModel.ValueConstraint.ClosedInclusionPattern" xml:space="preserve">
-		<value>[{0}]</value>
-		<comment>Pattern showing left- and right-string to use to indicate the min- and max-values are closed (i.e. the value itself is a member of the range).</comment>
+	<data name="ObjectModel.ValueConstraint.ClosedInclusion.LowerDelimiter" xml:space="preserve">
+		<value>[</value>
+		<comment>One character with possible spaces for the closed lower bound of a value range.</comment>
 	</data>
-	<data name="ObjectModel.ValueConstraint.DefinitionContainerPattern" xml:space="preserve">
-		<value>{ {0} }</value>
-		<comment>Pattern showing left- and right-string to use for containing a value range definition.</comment>
+	<data name="ObjectModel.ValueConstraint.ClosedInclusion.UpperDelimiter" xml:space="preserve">
+		<value>]</value>
+		<comment>One character with possible spaces for the closed upper bound of a value range.</comment>
 	</data>
-	<data name="ObjectModel.ValueConstraint.OpenInclusionPattern" xml:space="preserve">
-		<value>({0})</value>
-		<comment>Pattern showing left- and right-string to use to indicate the min- and max-values are open (i.e. the value itself is not a member of the range).</comment>
+	<data name="ObjectModel.ValueConstraint.DefinitionContainer.OpenDelimiter" xml:space="preserve">
+		<value>{</value>
+		<comment>Opening delimiter to contain one or more value ranges.</comment>
 	</data>
-	<data name="ObjectModel.ValueConstraint.RangeDelimiter" xml:space="preserve">
-		<value>, </value>
-		<comment>String used to delimit sets of value ranges in a definition.</comment>
+	<data name="ObjectModel.ValueConstraint.DefinitionContainer.CloseDelimiter" xml:space="preserve">
+		<value>}</value>
+		<comment>Closing delimiter to contain one or more value ranges.</comment>
 	</data>
-	<data name="ObjectModel.ValueConstraint.StringContainerPattern" xml:space="preserve">
-		<value>'{0}'</value>
-		<comment>Pattern showing left- and right-string to use for containing a value range as a string.</comment>
+	<data name="ObjectModel.ValueConstraint.OpenInclusion.LowerDelimiter" xml:space="preserve">
+		<value>(</value>
+		<comment>One character with possible spaces for the open lower bound of a value range.</comment>
+	</data>
+	<data name="ObjectModel.ValueConstraint.OpenInclusion.UpperDelimiter" xml:space="preserve">
+		<value>)</value>
+		<comment>One character with possible spaces for the open upper bound of a value range.</comment>
+	</data>
+	<data name="ObjectModel.ValueConstraint.StringDelimiter" xml:space="preserve">
+		<value>'</value>
+		<comment>The string delimiter character. Used to open and close strings. Doubling this character in a string results in the string in the final result.</comment>
 	</data>
 	<data name="ObjectModel.ValueConstraint.ValueDelimiter" xml:space="preserve">
 		<value>..</value>
 		<comment>String used to delimit the min- and max-values of a value range.</comment>
+	</data>
+	<data name="ObjectModel.ValueConstraint.ValueRangeRegexPattern" xml:space="preserve">
+		<value><![CDATA[(?n)\s*((?<MinClosedInclusion>\[)|(?<MinOpenInclusion>\())?\s*(?<MinValue>(((?!\.\.)[^'])+|('.*?')+)*)\s*(?<RangeDelimiter>\.\.)?\s*(?<MaxValue>(((?!(]|\)))[^'])+|('.*?')+)*)\s*((?<MaxClosedInclusion>])|(?<MaxOpenInclusion>\)))?\s*]]></value>
+		<comment><![CDATA[A regex pattern used for extracting parts of a single value range.
+This string contains a number of other resource values, escaped for use in a regex expression. The format string and replacements are:
+(?n)\s*((?&lt;MinClosedInclusion>{2})|(?&lt;MinOpenInclusion>{4}))?\s*(?&lt;MinValue>(((?!{1})[^{0}])+|({0}.*?{0})+)*)\s*(?&lt;RangeDelimiter>{1})?\s*(?&lt;MaxValue>(((?!({3}|{5}))[^{0}])+|({0}.*?{0})+)*)\s*((?&lt;MaxClosedInclusion>{3})|(?&lt;MaxOpenInclusion>{5}))?\s*]]>
+{0}=ObjectModel.ValueConstraint.StringDelimiter
+{1}=ObjectModel.ValueConstraint.ValueDelimiter
+The remaining replacements are trimmed for leading/trailing whitespace
+{2}=ObjectModel.ValueConstraint.ClosedInclusion.LowerDelimiter
+{3}=ObjectModel.ValueConstraint.ClosedInclusion.UpperDelimiter
+{4}=ObjectModel.ValueConstraint.OpenInclusion.LowerDelimiter
+{5}=ObjectModel.ValueConstraint.OpenInclusion.UpperDelimiter</comment>
 	</data>
 	<data name="ObjectModel.ValueType" xml:space="preserve">
 		<value>ValueType</value>
