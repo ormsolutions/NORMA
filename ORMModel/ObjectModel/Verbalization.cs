@@ -6064,6 +6064,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					VerbalizationPlanNode parentNode;
 					bool checkOppositeNegation =
 						roleCount == 2 &&
+						roles[0] == factTypeEntry.Role &&
 						verbalizationNodeLink != null &&
 						verbalizationNodeLink.Previous == null &&
 						null != (parentNode = verbalizationNode.ParentNode) &&
@@ -7518,7 +7519,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									{
 										// The dynamic flag if there is a trailing pathed role in the same role path
 										ReadOnlyCollection<PathedRole> childPathedRoles = myRolePathCache.PathedRoleCollection(entryPathedRole.RolePath);
-										if (GetRolePlayerVariableUse(childPathedRoles[childPathedRoles.IndexOf(entryPathedRole) + 1]).Value.PrimaryRolePlayerVariable.HasBeenUsed(CurrentQuantificationUsePhase, true))
+										int testChildIndex = childPathedRoles.IndexOf(entryPathedRole) + 1;
+										if (testChildIndex < childPathedRoles.Count &&
+											GetRolePlayerVariableUse(childPathedRoles[testChildIndex]).Value.PrimaryRolePlayerVariable.HasBeenUsed(CurrentQuantificationUsePhase, true))
 										{
 											readingOptions |= VerbalizationPlanReadingOptions.NegatedExitRole;
 											childNode.ReadingOptions = readingOptions;

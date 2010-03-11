@@ -517,7 +517,7 @@
 			<se:Condition WriteStyle="NotWritten">
 				<plx:callStatic name="IsNullOrEmpty" dataTypeName=".string">
 					<plx:passParam>
-						<plx:callThis name="InvariantMaxValue" type="property"/>
+						<plx:callThis name="InvariantMinValue" type="property"/>
 					</plx:passParam>
 				</plx:callStatic>
 			</se:Condition>

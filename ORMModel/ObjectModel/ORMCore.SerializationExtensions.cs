@@ -3304,7 +3304,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			if (domainPropertyInfo.Id == ValueRange.InvariantMinValueDomainPropertyId)
 			{
-				if (string.IsNullOrEmpty(this.InvariantMaxValue))
+				if (string.IsNullOrEmpty(this.InvariantMinValue))
 				{
 					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
 				}
