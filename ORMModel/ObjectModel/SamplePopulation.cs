@@ -1886,7 +1886,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					EntityTypeInstanceHasRoleInstance currentLink = currentLinks[i];
 					if (link != currentLink && role == currentLink.RoleInstance.Role)
 					{
-						throw new InvalidOperationException(ResourceStrings.ModelExceptionEntiyTypeInstanceEnforceRoleUniqueness);
+						throw new InvalidOperationException(ResourceStrings.ModelExceptionEntityTypeInstanceEnforceRoleUniqueness);
 					}
 				}
 			}

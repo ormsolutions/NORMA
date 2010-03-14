@@ -164,9 +164,14 @@
 	<ResourceString name="ModelExceptionObjectificationInstanceIncompleteRolePlayers" model="Model" resourceName="ModelException.ObjectificationInstance.IncompleteRolePlayers"/>
 	<ResourceString name="ModelExceptionReadingIsPrimaryToFalse" model="Model" resourceName="ModelException.Reading.IsPrimary.ReadOnlyWhenFalse"/>
 	<ResourceString name="ModelExceptionFactAddReadingInvalidReadingText" model="Model" resourceName="ModelException.Fact.AddReading.InvalidReadingText"/>
+	<ResourceString name="ModelErrorCalculatedPathValueRequiresFunction" model="Model" resourceName="ModelError.CalculatedPathValue.CalculatedPathValueRequiresFunction.Text"/>
+	<ResourceString name="ModelErrorCalculatedPathValueParameterBinding" model="Model" resourceName="ModelError.CalculatedPathValue.CalculatedPathValueParameterBinding.Text"/>
+	<ResourceString name="ModelErrorCalculatedPathValueMustBeConsumed" model="Model" resourceName="ModelError.CalculatedPathValue.CalculatedPathValueMustBeConsumed.Text"/>
 	<ResourceString name="ModelErrorConstraintImplication" model="Model" resourceName="ModelError.Constraint.ImplicationError.Text"/>
 	<ResourceString name="ModelErrorConstraintImplicationEqualityMandatory" model="Model" resourceName="ModelError.Constraint.EqualityImpliedByMandatoryError.Text"/>
 	<ResourceString name="ModelErrorConstraintImplicationSubsetMandatory" model="Model" resourceName="ModelError.Constraint.SubsetImpliedByMandatoryError.Text"/>
+	<ResourceString name="ModelErrorFactTypeDerivationRuleProjectionRequired" model="Model" resourceName="ModelError.FactTypeDerivationRule.FactTypeDerivationRequiresProjection.Text"/>
+	<ResourceString name="ModelErrorFactTypeDerivationRulePartialProjection" model="Model" resourceName="ModelError.FactTypeDerivationRule.PartialFactTypeDerivationProjection.Text"/>
 	<ResourceString name="ModelErrorNotWellModeledSubsetAndMandatoryError" model="Model" resourceName="ModelError.Constraint.NotWellModeledSubsetAndMandatoryError.Text"/>
 	<ResourceString name="ModelErrorConstraintContradiction" model="Model" resourceName="ModelError.Constraint.ContradictionError.Text"/>
 	<ResourceString name="ModelErrorConstraintHasTooFewRoleSequencesText" model="Model" resourceName="ModelError.Constraint.TooFewRoleSequences.Text"/>
@@ -181,6 +186,8 @@
 	<ResourceString name="ModelErrorFrequencyConstraintViolatedByUniquenessConstraintText" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintViolatedByUniquenessConstraintError.Text"/>
 	<ResourceString name="ModelErrorConstraintHasTooManyRoleSequencesText" model="Model" resourceName="ModelError.Constraint.TooManyRoleSequences.Text"/>
 	<ResourceString name="ModelErrorConstraintExternalConstraintArityMismatch" model="Model" resourceName="ModelError.Constraint.ExternalConstraintArityMismatch.Text"/>
+	<ResourceString name="ModelErrorJoinPathProjectionRequired" model="Model" resourceName="ModelError.ConstraintRoleSequenceJoinPath.ConstraintRoleSequenceJoinPathRequiresProjection.Text"/>
+	<ResourceString name="ModelErrorJoinPathPartialProjection" model="Model" resourceName="ModelError.ConstraintRoleSequenceJoinPath.PartialConstraintRoleSequenceJoinPathProjection.Text"/>
 	<ResourceString name="ModelErrorModelHasDuplicateConstraintNames" model="Model" resourceName="ModelError.Model.DuplicateConstraintNames.Text"/>
 	<ResourceString name="ModelErrorModelHasDuplicateFunctionNames" model="Model" resourceName="ModelError.Model.DuplicateFunctionNames.Text"/>
 	<ResourceString name="ModelErrorModelHasDuplicateObjectTypeNames" model="Model" resourceName="ModelError.Model.DuplicateObjectTypeNames.Text"/>
@@ -189,6 +196,12 @@
 	<ResourceString name="ModelErrorModelHasPopulationUniquenessErrorWithUnnamedRole" model="Model" resourceName="ModelError.Model.PopulationUniquenessError.FactType.Text"/>
 	<ResourceString name="ModelErrorModelHasPopulationMandatoryError" model="Model" resourceName="ModelError.Model.PopulationMandatoryError.Text"/>
 	<ResourceString name="ModelErrorModelHasPopulationMandatoryErrorAdditionalFactType" model="Model" resourceName="ModelError.Model.PopulationMandatoryError.AdditionalFactTypeText"/>
+	<ResourceString name="ModelErrorRolePathIncompatibleCorrelation" model="Model" resourceName="ModelError.RolePath.CorrelatedPathRoleRequiresCompatibleRolePlayer.Text"/>
+	<ResourceString name="ModelErrorRolePathIncompatibleJoin" model="Model" resourceName="ModelError.RolePath.JoinedPathRoleRequiresCompatibleRolePlayer.Text"/>
+	<ResourceString name="ModelErrorRolePathSameFactTypeRoleFollowsJoin" model="Model" resourceName="ModelError.RolePath.SameFactTypeRoleFollowsJoin.Text"/>
+	<ResourceString name="ModelErrorRolePathStartRoleFollowsRootObjectType" model="Model" resourceName="ModelError.RolePath.StartRoleFollowsRootObjectType.Text"/>
+	<ResourceString name="ModelErrorRolePathMandatoryOuterJoin" model="Model" resourceName="ModelError.RolePath.OuterJoinRequiresOptionalRole.Text"/>
+	<ResourceString name="ModelErrorRolePathRequiresRootObjectType" model="Model" resourceName="ModelError.RolePath.RequiresRootObjectType.Text"/>
 	<ResourceString name="ModelErrorValueConstraintValueTypeDetachedError" model="Model" resourceName="ModelError.ValueConstraint.ValueTypeDetachedError.Message"/>
 	<ResourceString name="ModelErrorValueConstraintValueRangeOverlapError" model="Model" resourceName="ModelError.ValueConstraint.ValueRangeOverlapError.Message"/>
 	<ResourceString name="ModelErrorValueRangeMaxValueMismatchError" model="Model" resourceName="ModelError.ValueRange.MaxValueMismatchError.Message"/>
@@ -223,7 +236,7 @@
 	<ResourceString name="ModelExceptionFactTypeInstanceEnforceRoleUniqueness" model="Model" resourceName="ModelException.FactTypeInstance.EnforceRoleUniqueness"/>
 	<ResourceString name="ModelExceptionFactTypeInstanceInconsistentRoleOwners" model="Model" resourceName="ModelException.FactTypeInstance.InconsistentRoleOwners"/>
 	<ResourceString name="ModelExceptionEntityTypeInstanceEnforceFixedRoleInstance" model="Model" resourceName="ModelException.EntityTypeInstance.EnforceFixedRoleInstance"/>
-	<ResourceString name="ModelExceptionEntiyTypeInstanceEnforceRoleUniqueness" model="Model" resourceName="ModelException.EntiyTypeInstance.EnforceRoleUniqueness"/>
+	<ResourceString name="ModelExceptionEntityTypeInstanceEnforceRoleUniqueness" model="Model" resourceName="ModelException.EntityTypeInstance.EnforceRoleUniqueness"/>
 	<ResourceString name="ModelExceptionEntityTypeInstanceInvalidRolesPreferredIdentifier" model="Model" resourceName="ModelException.EntityTypeInstance.InvalidRolesPreferredIdentifier"/>
 	<ResourceString name="ModelExceptionEntityTypeInstanceInvalidEntityTypeParent" model="Model" resourceName="ModelException.EntityTypeInstance.InvalidEntityTypeParent"/>
 	<ResourceString name="ModelExceptionEntityTypeSubtypeInstanceDuplicateSupertypeInstance" model="Model" resourceName="ModelException.EntityTypeSubtypeInstance.DuplicateSupertypeInstance"/>

@@ -325,6 +325,14 @@
     <value>Naming Errors</value>
     <comment>DisplayName for DomainClass &apos;NameErrorCategory&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathErrorCategory.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;RolePathErrorCategory&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathErrorCategory.DisplayName" xml:space="preserve">
+    <value>Derivation Path and Join Path Errors</value>
+    <comment>DisplayName for DomainClass &apos;RolePathErrorCategory&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingSet.Description" xml:space="preserve">
     <value>A Group owner, allows group containment, order, and naming enforcement.</value>
     <comment>Description for DomainClass &apos;ElementGroupingSet&apos;</comment>
@@ -1301,6 +1309,110 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath/IsAutomatic.DisplayName" xml:space="preserve">
     <value>AutomaticJoinPath</value>
     <comment>DisplayName for DomainProperty &apos;IsAutomatic&apos; on DomainClass &apos;ConstraintRoleSequenceJoinPath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathRequiresRootObjectTypeError.Description" xml:space="preserve">
+    <value>A LeadRolePath must specify a root object type.</value>
+    <comment>Description for DomainClass &apos;PathRequiresRootObjectTypeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathRequiresRootObjectTypeError.DisplayName" xml:space="preserve">
+    <value>Root Object Type Required</value>
+    <comment>DisplayName for DomainClass &apos;PathRequiresRootObjectTypeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathStartRoleFollowsRootObjectTypeError.Description" xml:space="preserve">
+    <value>All PathedRole instances directly attached to the root of a path must have a StartRole purpose, and StartRole may only be used at this point in the path.</value>
+    <comment>Description for DomainClass &apos;PathStartRoleFollowsRootObjectTypeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathStartRoleFollowsRootObjectTypeError.DisplayName" xml:space="preserve">
+    <value>Start Role After Root</value>
+    <comment>DisplayName for DomainClass &apos;PathStartRoleFollowsRootObjectTypeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathSameFactTypeRoleFollowsJoinError.Description" xml:space="preserve">
+    <value>A role in a fact type was used without a join role entering that fact type, or a role from a single fact type was used multiple times without an intermediate join. A PathStartRoleFollowsRootObjectTypeError error is generated instead of this one for a SameFactType role in a StartRole position.</value>
+    <comment>Description for DomainClass &apos;PathSameFactTypeRoleFollowsJoinError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathSameFactTypeRoleFollowsJoinError.DisplayName" xml:space="preserve">
+    <value>Role used Without Join</value>
+    <comment>DisplayName for DomainClass &apos;PathSameFactTypeRoleFollowsJoinError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.JoinedPathRoleRequiresCompatibleRolePlayerError.Description" xml:space="preserve">
+    <value>A joined pathed roles must have a role player that is compatible with the join source, and a start role must be compatible with the root object type.</value>
+    <comment>Description for DomainClass &apos;JoinedPathRoleRequiresCompatibleRolePlayerError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.JoinedPathRoleRequiresCompatibleRolePlayerError.DisplayName" xml:space="preserve">
+    <value>Incompatible Join</value>
+    <comment>DisplayName for DomainClass &apos;JoinedPathRoleRequiresCompatibleRolePlayerError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CorrelatedPathRoleRequiresCompatibleRolePlayerError.Description" xml:space="preserve">
+    <value>An explicitly correlated pathed role must have a role player that is compatible with the correlation target.</value>
+    <comment>Description for DomainClass &apos;CorrelatedPathRoleRequiresCompatibleRolePlayerError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CorrelatedPathRoleRequiresCompatibleRolePlayerError.DisplayName" xml:space="preserve">
+    <value>Incompatible Correlation</value>
+    <comment>DisplayName for DomainClass &apos;CorrelatedPathRoleRequiresCompatibleRolePlayerError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathOuterJoinRequiresOptionalRoleError.Description" xml:space="preserve">
+    <value>Outer join semantics are not supported for roles with explicit or implied simple mandatory constraints.</value>
+    <comment>Description for DomainClass &apos;PathOuterJoinRequiresOptionalRoleError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathOuterJoinRequiresOptionalRoleError.DisplayName" xml:space="preserve">
+    <value>Outer Join To Mandatory Role</value>
+    <comment>DisplayName for DomainClass &apos;PathOuterJoinRequiresOptionalRoleError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueRequiresFunctionError.Description" xml:space="preserve">
+    <value>A calculation is specified but does not have an associated function.</value>
+    <comment>Description for DomainClass &apos;CalculatedPathValueRequiresFunctionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueRequiresFunctionError.DisplayName" xml:space="preserve">
+    <value>Calculation Requires Function</value>
+    <comment>DisplayName for DomainClass &apos;CalculatedPathValueRequiresFunctionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueParameterBindingError.Description" xml:space="preserve">
+    <value>A path calculation is missing an input for a function parameter.</value>
+    <comment>Description for DomainClass &apos;CalculatedPathValueParameterBindingError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueParameterBindingError.DisplayName" xml:space="preserve">
+    <value>Calculation Missing Parameter Input</value>
+    <comment>DisplayName for DomainClass &apos;CalculatedPathValueParameterBindingError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueMustBeConsumedError.Description" xml:space="preserve">
+    <value>A path calculation must be consumed as a path condition, an input to another calculation, or as a projection from the path.</value>
+    <comment>Description for DomainClass &apos;CalculatedPathValueMustBeConsumedError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueMustBeConsumedError.DisplayName" xml:space="preserve">
+    <value>Calculation Not Used</value>
+    <comment>DisplayName for DomainClass &apos;CalculatedPathValueMustBeConsumedError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRequiresProjectionError.Description" xml:space="preserve">
+    <value>Roles in a fact type derivation rule must be projected from at least one path or path combination.</value>
+    <comment>Description for DomainClass &apos;FactTypeDerivationRequiresProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRequiresProjectionError.DisplayName" xml:space="preserve">
+    <value>Fact Type Derivation Not Projected</value>
+    <comment>DisplayName for DomainClass &apos;FactTypeDerivationRequiresProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PartialFactTypeDerivationProjectionError.Description" xml:space="preserve">
+    <value>A fact type derivation projection must project on every role in the fact type.</value>
+    <comment>Description for DomainClass &apos;PartialFactTypeDerivationProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PartialFactTypeDerivationProjectionError.DisplayName" xml:space="preserve">
+    <value>Incomplete Fact Type Derivation Projection</value>
+    <comment>DisplayName for DomainClass &apos;PartialFactTypeDerivationProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathRequiresProjectionError.Description" xml:space="preserve">
+    <value>Roles in a constraint role sequence join path must be projected from at least one path or path combination.</value>
+    <comment>Description for DomainClass &apos;ConstraintRoleSequenceJoinPathRequiresProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathRequiresProjectionError.DisplayName" xml:space="preserve">
+    <value>Join Path Not Projected</value>
+    <comment>DisplayName for DomainClass &apos;ConstraintRoleSequenceJoinPathRequiresProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PartialConstraintRoleSequenceJoinPathProjectionError.Description" xml:space="preserve">
+    <value>A constraint role sequence join path projection must project on every role in the sequence.</value>
+    <comment>Description for DomainClass &apos;PartialConstraintRoleSequenceJoinPathProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PartialConstraintRoleSequenceJoinPathProjectionError.DisplayName" xml:space="preserve">
+    <value>Incomplete Join Path Projection</value>
+    <comment>DisplayName for DomainClass &apos;PartialConstraintRoleSequenceJoinPathProjectionError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.TooFewRoleSequencesError.Description" xml:space="preserve">
     <value></value>
@@ -7817,7 +7929,7 @@
     <comment>PropertyDisplayName for DomainRole &apos;PathComponent&apos; on DomainRelationship &apos;RolePathComponentSatisfiesCalculatedCondition&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentSatisfiesCalculatedCondition/CalculatedCondition.Description" xml:space="preserve">
-    <value>The primary role path that requires this condition to be true.</value>
+    <value>The lead role path or path combination that requires this condition to be true.</value>
     <comment>Description for DomainRole &apos;CalculatedCondition&apos; on DomainRelationship &apos;RolePathComponentSatisfiesCalculatedCondition&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentSatisfiesCalculatedCondition/CalculatedCondition.DisplayName" xml:space="preserve">
@@ -7825,7 +7937,7 @@
     <comment>DisplayName for DomainRole &apos;CalculatedCondition&apos; on DomainRelationship &apos;RolePathComponentSatisfiesCalculatedCondition&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentSatisfiesCalculatedCondition/CalculatedCondition.PropertyDisplayName" xml:space="preserve">
-    <value>Required For Path Collection</value>
+    <value>Required For Path Component Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;CalculatedCondition&apos; on DomainRelationship &apos;RolePathComponentSatisfiesCalculatedCondition&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasInput.Description" xml:space="preserve">
@@ -8371,6 +8483,454 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationRule/DerivationRule.PropertyDisplayName" xml:space="preserve">
     <value>Subtype</value>
     <comment>PropertyDisplayName for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;SubtypeHasDerivationRule&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError</value>
+    <comment>Description for DomainClass &apos;LeadRolePathHasRootObjectTypeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError.DisplayName" xml:space="preserve">
+    <value>Lead Role Path Has Root Object Type Error</value>
+    <comment>DisplayName for DomainClass &apos;LeadRolePathHasRootObjectTypeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError/LeadRolePath.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError.LeadRolePath</value>
+    <comment>Description for DomainRole &apos;LeadRolePath&apos; on DomainRelationship &apos;LeadRolePathHasRootObjectTypeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError/LeadRolePath.DisplayName" xml:space="preserve">
+    <value>LeadRolePath</value>
+    <comment>DisplayName for DomainRole &apos;LeadRolePath&apos; on DomainRelationship &apos;LeadRolePathHasRootObjectTypeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError/LeadRolePath.PropertyDisplayName" xml:space="preserve">
+    <value>Root Object Type Required Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;LeadRolePath&apos; on DomainRelationship &apos;LeadRolePathHasRootObjectTypeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError/RootObjectTypeRequiredError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError.RootObjectTypeRequiredError</value>
+    <comment>Description for DomainRole &apos;RootObjectTypeRequiredError&apos; on DomainRelationship &apos;LeadRolePathHasRootObjectTypeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError/RootObjectTypeRequiredError.DisplayName" xml:space="preserve">
+    <value>RootObjectTypeRequiredError</value>
+    <comment>DisplayName for DomainRole &apos;RootObjectTypeRequiredError&apos; on DomainRelationship &apos;LeadRolePathHasRootObjectTypeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError/RootObjectTypeRequiredError.PropertyDisplayName" xml:space="preserve">
+    <value>Lead Role Path</value>
+    <comment>PropertyDisplayName for DomainRole &apos;RootObjectTypeRequiredError&apos; on DomainRelationship &apos;LeadRolePathHasRootObjectTypeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleJoinRolePlayerError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleJoinRolePlayerError</value>
+    <comment>Description for DomainClass &apos;PathedRoleHasCompatibleJoinRolePlayerError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleJoinRolePlayerError.DisplayName" xml:space="preserve">
+    <value>Pathed Role Has Compatible Join Role Player Error</value>
+    <comment>DisplayName for DomainClass &apos;PathedRoleHasCompatibleJoinRolePlayerError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleJoinRolePlayerError/PathedRole.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleJoinRolePlayerError.PathedRole</value>
+    <comment>Description for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasCompatibleJoinRolePlayerError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleJoinRolePlayerError/PathedRole.DisplayName" xml:space="preserve">
+    <value>PathedRole</value>
+    <comment>DisplayName for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasCompatibleJoinRolePlayerError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleJoinRolePlayerError/PathedRole.PropertyDisplayName" xml:space="preserve">
+    <value>Join Compatibility Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasCompatibleJoinRolePlayerError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleJoinRolePlayerError/JoinCompatibilityError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleJoinRolePlayerError.JoinCompatibilityError</value>
+    <comment>Description for DomainRole &apos;JoinCompatibilityError&apos; on DomainRelationship &apos;PathedRoleHasCompatibleJoinRolePlayerError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleJoinRolePlayerError/JoinCompatibilityError.DisplayName" xml:space="preserve">
+    <value>JoinCompatibilityError</value>
+    <comment>DisplayName for DomainRole &apos;JoinCompatibilityError&apos; on DomainRelationship &apos;PathedRoleHasCompatibleJoinRolePlayerError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleJoinRolePlayerError/JoinCompatibilityError.PropertyDisplayName" xml:space="preserve">
+    <value>Pathed Role</value>
+    <comment>PropertyDisplayName for DomainRole &apos;JoinCompatibilityError&apos; on DomainRelationship &apos;PathedRoleHasCompatibleJoinRolePlayerError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError</value>
+    <comment>Description for DomainClass &apos;PathedRoleHasCompatibleCorrelationRolePlayerError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError.DisplayName" xml:space="preserve">
+    <value>Pathed Role Has Compatible Correlation Role Player Error</value>
+    <comment>DisplayName for DomainClass &apos;PathedRoleHasCompatibleCorrelationRolePlayerError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError/PathedRole.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError.PathedRole</value>
+    <comment>Description for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasCompatibleCorrelationRolePlayerError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError/PathedRole.DisplayName" xml:space="preserve">
+    <value>PathedRole</value>
+    <comment>DisplayName for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasCompatibleCorrelationRolePlayerError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError/PathedRole.PropertyDisplayName" xml:space="preserve">
+    <value>Correlation Compatibility Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasCompatibleCorrelationRolePlayerError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError/CorrelationCompatibilityError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError.CorrelationCompatibilityError</value>
+    <comment>Description for DomainRole &apos;CorrelationCompatibilityError&apos; on DomainRelationship &apos;PathedRoleHasCompatibleCorrelationRolePlayerError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError/CorrelationCompatibilityError.DisplayName" xml:space="preserve">
+    <value>CorrelationCompatibilityError</value>
+    <comment>DisplayName for DomainRole &apos;CorrelationCompatibilityError&apos; on DomainRelationship &apos;PathedRoleHasCompatibleCorrelationRolePlayerError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError/CorrelationCompatibilityError.PropertyDisplayName" xml:space="preserve">
+    <value>Pathed Role</value>
+    <comment>PropertyDisplayName for DomainRole &apos;CorrelationCompatibilityError&apos; on DomainRelationship &apos;PathedRoleHasCompatibleCorrelationRolePlayerError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasSameFactTypeFollowsJoinError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasSameFactTypeFollowsJoinError</value>
+    <comment>Description for DomainClass &apos;PathedRoleHasSameFactTypeFollowsJoinError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasSameFactTypeFollowsJoinError.DisplayName" xml:space="preserve">
+    <value>Pathed Role Has Same Fact Type Follows Join Error</value>
+    <comment>DisplayName for DomainClass &apos;PathedRoleHasSameFactTypeFollowsJoinError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasSameFactTypeFollowsJoinError/PathedRole.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasSameFactTypeFollowsJoinError.PathedRole</value>
+    <comment>Description for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasSameFactTypeFollowsJoinError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasSameFactTypeFollowsJoinError/PathedRole.DisplayName" xml:space="preserve">
+    <value>PathedRole</value>
+    <comment>DisplayName for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasSameFactTypeFollowsJoinError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasSameFactTypeFollowsJoinError/PathedRole.PropertyDisplayName" xml:space="preserve">
+    <value>Same Fact Type Role Without Join Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasSameFactTypeFollowsJoinError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasSameFactTypeFollowsJoinError/SameFactTypeRoleFollowsJoinError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasSameFactTypeFollowsJoinError.SameFactTypeRoleFollowsJoinError</value>
+    <comment>Description for DomainRole &apos;SameFactTypeRoleFollowsJoinError&apos; on DomainRelationship &apos;PathedRoleHasSameFactTypeFollowsJoinError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasSameFactTypeFollowsJoinError/SameFactTypeRoleFollowsJoinError.DisplayName" xml:space="preserve">
+    <value>SameFactTypeRoleFollowsJoinError</value>
+    <comment>DisplayName for DomainRole &apos;SameFactTypeRoleFollowsJoinError&apos; on DomainRelationship &apos;PathedRoleHasSameFactTypeFollowsJoinError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasSameFactTypeFollowsJoinError/SameFactTypeRoleFollowsJoinError.PropertyDisplayName" xml:space="preserve">
+    <value>Pathed Role</value>
+    <comment>PropertyDisplayName for DomainRole &apos;SameFactTypeRoleFollowsJoinError&apos; on DomainRelationship &apos;PathedRoleHasSameFactTypeFollowsJoinError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError</value>
+    <comment>Description for DomainClass &apos;PathedRoleHasStartRoleError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError.DisplayName" xml:space="preserve">
+    <value>Pathed Role Has Start Role Error</value>
+    <comment>DisplayName for DomainClass &apos;PathedRoleHasStartRoleError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError/PathedRole.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError.PathedRole</value>
+    <comment>Description for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasStartRoleError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError/PathedRole.DisplayName" xml:space="preserve">
+    <value>PathedRole</value>
+    <comment>DisplayName for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasStartRoleError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError/PathedRole.PropertyDisplayName" xml:space="preserve">
+    <value>Start Role Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasStartRoleError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError/StartRoleError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError.StartRoleError</value>
+    <comment>Description for DomainRole &apos;StartRoleError&apos; on DomainRelationship &apos;PathedRoleHasStartRoleError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError/StartRoleError.DisplayName" xml:space="preserve">
+    <value>StartRoleError</value>
+    <comment>DisplayName for DomainRole &apos;StartRoleError&apos; on DomainRelationship &apos;PathedRoleHasStartRoleError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError/StartRoleError.PropertyDisplayName" xml:space="preserve">
+    <value>Pathed Role</value>
+    <comment>PropertyDisplayName for DomainRole &apos;StartRoleError&apos; on DomainRelationship &apos;PathedRoleHasStartRoleError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMandatoryOuterJoinError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMandatoryOuterJoinError</value>
+    <comment>Description for DomainClass &apos;PathedRoleHasMandatoryOuterJoinError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMandatoryOuterJoinError.DisplayName" xml:space="preserve">
+    <value>Pathed Role Has Mandatory Outer Join Error</value>
+    <comment>DisplayName for DomainClass &apos;PathedRoleHasMandatoryOuterJoinError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMandatoryOuterJoinError/PathedRole.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMandatoryOuterJoinError.PathedRole</value>
+    <comment>Description for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasMandatoryOuterJoinError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMandatoryOuterJoinError/PathedRole.DisplayName" xml:space="preserve">
+    <value>PathedRole</value>
+    <comment>DisplayName for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasMandatoryOuterJoinError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMandatoryOuterJoinError/PathedRole.PropertyDisplayName" xml:space="preserve">
+    <value>Mandatory Outer Join Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasMandatoryOuterJoinError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMandatoryOuterJoinError/MandatoryOuterJoinError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMandatoryOuterJoinError.MandatoryOuterJoinError</value>
+    <comment>Description for DomainRole &apos;MandatoryOuterJoinError&apos; on DomainRelationship &apos;PathedRoleHasMandatoryOuterJoinError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMandatoryOuterJoinError/MandatoryOuterJoinError.DisplayName" xml:space="preserve">
+    <value>MandatoryOuterJoinError</value>
+    <comment>DisplayName for DomainRole &apos;MandatoryOuterJoinError&apos; on DomainRelationship &apos;PathedRoleHasMandatoryOuterJoinError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMandatoryOuterJoinError/MandatoryOuterJoinError.PropertyDisplayName" xml:space="preserve">
+    <value>Pathed Role</value>
+    <comment>PropertyDisplayName for DomainRole &apos;MandatoryOuterJoinError&apos; on DomainRelationship &apos;PathedRoleHasMandatoryOuterJoinError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasFunctionRequiredError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasFunctionRequiredError</value>
+    <comment>Description for DomainClass &apos;CalculatedPathValueHasFunctionRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasFunctionRequiredError.DisplayName" xml:space="preserve">
+    <value>Calculated Path Value Has Function Required Error</value>
+    <comment>DisplayName for DomainClass &apos;CalculatedPathValueHasFunctionRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasFunctionRequiredError/CalculatedPathValue.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasFunctionRequiredError.CalculatedPathValue</value>
+    <comment>Description for DomainRole &apos;CalculatedPathValue&apos; on DomainRelationship &apos;CalculatedPathValueHasFunctionRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasFunctionRequiredError/CalculatedPathValue.DisplayName" xml:space="preserve">
+    <value>Calculation</value>
+    <comment>DisplayName for DomainRole &apos;CalculatedPathValue&apos; on DomainRelationship &apos;CalculatedPathValueHasFunctionRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasFunctionRequiredError/CalculatedPathValue.PropertyDisplayName" xml:space="preserve">
+    <value>Function Required Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;CalculatedPathValue&apos; on DomainRelationship &apos;CalculatedPathValueHasFunctionRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasFunctionRequiredError/FunctionRequiredError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasFunctionRequiredError.FunctionRequiredError</value>
+    <comment>Description for DomainRole &apos;FunctionRequiredError&apos; on DomainRelationship &apos;CalculatedPathValueHasFunctionRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasFunctionRequiredError/FunctionRequiredError.DisplayName" xml:space="preserve">
+    <value>FunctionRequiredError</value>
+    <comment>DisplayName for DomainRole &apos;FunctionRequiredError&apos; on DomainRelationship &apos;CalculatedPathValueHasFunctionRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasFunctionRequiredError/FunctionRequiredError.PropertyDisplayName" xml:space="preserve">
+    <value>Calculated Path Value</value>
+    <comment>PropertyDisplayName for DomainRole &apos;FunctionRequiredError&apos; on DomainRelationship &apos;CalculatedPathValueHasFunctionRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasUnboundParameterError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasUnboundParameterError</value>
+    <comment>Description for DomainClass &apos;CalculatedPathValueHasUnboundParameterError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasUnboundParameterError.DisplayName" xml:space="preserve">
+    <value>Calculated Path Value Has Unbound Parameter Error</value>
+    <comment>DisplayName for DomainClass &apos;CalculatedPathValueHasUnboundParameterError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasUnboundParameterError/CalculatedPathValue.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasUnboundParameterError.CalculatedPathValue</value>
+    <comment>Description for DomainRole &apos;CalculatedPathValue&apos; on DomainRelationship &apos;CalculatedPathValueHasUnboundParameterError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasUnboundParameterError/CalculatedPathValue.DisplayName" xml:space="preserve">
+    <value>Calculation</value>
+    <comment>DisplayName for DomainRole &apos;CalculatedPathValue&apos; on DomainRelationship &apos;CalculatedPathValueHasUnboundParameterError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasUnboundParameterError/CalculatedPathValue.PropertyDisplayName" xml:space="preserve">
+    <value>Parameter Binding Error Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;CalculatedPathValue&apos; on DomainRelationship &apos;CalculatedPathValueHasUnboundParameterError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasUnboundParameterError/ParameterBindingError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasUnboundParameterError.ParameterBindingError</value>
+    <comment>Description for DomainRole &apos;ParameterBindingError&apos; on DomainRelationship &apos;CalculatedPathValueHasUnboundParameterError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasUnboundParameterError/ParameterBindingError.DisplayName" xml:space="preserve">
+    <value>ParameterBindingError</value>
+    <comment>DisplayName for DomainRole &apos;ParameterBindingError&apos; on DomainRelationship &apos;CalculatedPathValueHasUnboundParameterError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasUnboundParameterError/ParameterBindingError.PropertyDisplayName" xml:space="preserve">
+    <value>Calculated Path Value</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ParameterBindingError&apos; on DomainRelationship &apos;CalculatedPathValueHasUnboundParameterError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueParameterBindingErrorTargetsFunctionParameter.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueParameterBindingErrorTargetsFunctionParameter</value>
+    <comment>Description for DomainClass &apos;CalculatedPathValueParameterBindingErrorTargetsFunctionParameter&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueParameterBindingErrorTargetsFunctionParameter.DisplayName" xml:space="preserve">
+    <value>Calculated Path Value Parameter Binding Error Targets Function Parameter</value>
+    <comment>DisplayName for DomainClass &apos;CalculatedPathValueParameterBindingErrorTargetsFunctionParameter&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueParameterBindingErrorTargetsFunctionParameter/ParameterBindingError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueParameterBindingErrorTargetsFunctionParameter.ParameterBindingError</value>
+    <comment>Description for DomainRole &apos;ParameterBindingError&apos; on DomainRelationship &apos;CalculatedPathValueParameterBindingErrorTargetsFunctionParameter&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueParameterBindingErrorTargetsFunctionParameter/ParameterBindingError.DisplayName" xml:space="preserve">
+    <value>ParameterBindingError</value>
+    <comment>DisplayName for DomainRole &apos;ParameterBindingError&apos; on DomainRelationship &apos;CalculatedPathValueParameterBindingErrorTargetsFunctionParameter&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueParameterBindingErrorTargetsFunctionParameter/ParameterBindingError.PropertyDisplayName" xml:space="preserve">
+    <value>Parameter</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ParameterBindingError&apos; on DomainRelationship &apos;CalculatedPathValueParameterBindingErrorTargetsFunctionParameter&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueParameterBindingErrorTargetsFunctionParameter/Parameter.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueParameterBindingErrorTargetsFunctionParameter.Parameter</value>
+    <comment>Description for DomainRole &apos;Parameter&apos; on DomainRelationship &apos;CalculatedPathValueParameterBindingErrorTargetsFunctionParameter&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueParameterBindingErrorTargetsFunctionParameter/Parameter.DisplayName" xml:space="preserve">
+    <value>Parameter</value>
+    <comment>DisplayName for DomainRole &apos;Parameter&apos; on DomainRelationship &apos;CalculatedPathValueParameterBindingErrorTargetsFunctionParameter&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueParameterBindingErrorTargetsFunctionParameter/Parameter.PropertyDisplayName" xml:space="preserve">
+    <value>Parameter Binding Error Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Parameter&apos; on DomainRelationship &apos;CalculatedPathValueParameterBindingErrorTargetsFunctionParameter&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasConsumptionRequiredError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasConsumptionRequiredError</value>
+    <comment>Description for DomainClass &apos;CalculatedPathValueHasConsumptionRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasConsumptionRequiredError.DisplayName" xml:space="preserve">
+    <value>Calculated Path Value Has Consumption Required Error</value>
+    <comment>DisplayName for DomainClass &apos;CalculatedPathValueHasConsumptionRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasConsumptionRequiredError/CalculatedPathValue.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasConsumptionRequiredError.CalculatedPathValue</value>
+    <comment>Description for DomainRole &apos;CalculatedPathValue&apos; on DomainRelationship &apos;CalculatedPathValueHasConsumptionRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasConsumptionRequiredError/CalculatedPathValue.DisplayName" xml:space="preserve">
+    <value>Calculation</value>
+    <comment>DisplayName for DomainRole &apos;CalculatedPathValue&apos; on DomainRelationship &apos;CalculatedPathValueHasConsumptionRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasConsumptionRequiredError/CalculatedPathValue.PropertyDisplayName" xml:space="preserve">
+    <value>Consumption Required Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;CalculatedPathValue&apos; on DomainRelationship &apos;CalculatedPathValueHasConsumptionRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasConsumptionRequiredError/ConsumptionRequiredError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasConsumptionRequiredError.ConsumptionRequiredError</value>
+    <comment>Description for DomainRole &apos;ConsumptionRequiredError&apos; on DomainRelationship &apos;CalculatedPathValueHasConsumptionRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasConsumptionRequiredError/ConsumptionRequiredError.DisplayName" xml:space="preserve">
+    <value>ConsumptionRequiredError</value>
+    <comment>DisplayName for DomainRole &apos;ConsumptionRequiredError&apos; on DomainRelationship &apos;CalculatedPathValueHasConsumptionRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasConsumptionRequiredError/ConsumptionRequiredError.PropertyDisplayName" xml:space="preserve">
+    <value>Calculated Path Value</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ConsumptionRequiredError&apos; on DomainRelationship &apos;CalculatedPathValueHasConsumptionRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasProjectionRequiredError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasProjectionRequiredError</value>
+    <comment>Description for DomainClass &apos;FactTypeDerivationRuleHasProjectionRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasProjectionRequiredError.DisplayName" xml:space="preserve">
+    <value>Fact Type Derivation Rule Has Projection Required Error</value>
+    <comment>DisplayName for DomainClass &apos;FactTypeDerivationRuleHasProjectionRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasProjectionRequiredError/DerivationRule.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasProjectionRequiredError.DerivationRule</value>
+    <comment>Description for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;FactTypeDerivationRuleHasProjectionRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasProjectionRequiredError/DerivationRule.DisplayName" xml:space="preserve">
+    <value>DerivationRule</value>
+    <comment>DisplayName for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;FactTypeDerivationRuleHasProjectionRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasProjectionRequiredError/DerivationRule.PropertyDisplayName" xml:space="preserve">
+    <value>Projection Required Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;FactTypeDerivationRuleHasProjectionRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasProjectionRequiredError/ProjectionRequiredError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasProjectionRequiredError.ProjectionRequiredError</value>
+    <comment>Description for DomainRole &apos;ProjectionRequiredError&apos; on DomainRelationship &apos;FactTypeDerivationRuleHasProjectionRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasProjectionRequiredError/ProjectionRequiredError.DisplayName" xml:space="preserve">
+    <value>ProjectionRequiredError</value>
+    <comment>DisplayName for DomainRole &apos;ProjectionRequiredError&apos; on DomainRelationship &apos;FactTypeDerivationRuleHasProjectionRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasProjectionRequiredError/ProjectionRequiredError.PropertyDisplayName" xml:space="preserve">
+    <value>Derivation Rule</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ProjectionRequiredError&apos; on DomainRelationship &apos;FactTypeDerivationRuleHasProjectionRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjectionHasPartialProjectionError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjectionHasPartialProjectionError</value>
+    <comment>Description for DomainClass &apos;FactTypeDerivationProjectionHasPartialProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjectionHasPartialProjectionError.DisplayName" xml:space="preserve">
+    <value>Fact Type Derivation Projection Has Partial Projection Error</value>
+    <comment>DisplayName for DomainClass &apos;FactTypeDerivationProjectionHasPartialProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjectionHasPartialProjectionError/DerivationProjection.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjectionHasPartialProjectionError.DerivationProjection</value>
+    <comment>Description for DomainRole &apos;DerivationProjection&apos; on DomainRelationship &apos;FactTypeDerivationProjectionHasPartialProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjectionHasPartialProjectionError/DerivationProjection.DisplayName" xml:space="preserve">
+    <value>DerivationProjection</value>
+    <comment>DisplayName for DomainRole &apos;DerivationProjection&apos; on DomainRelationship &apos;FactTypeDerivationProjectionHasPartialProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjectionHasPartialProjectionError/DerivationProjection.PropertyDisplayName" xml:space="preserve">
+    <value>Partial Projection Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DerivationProjection&apos; on DomainRelationship &apos;FactTypeDerivationProjectionHasPartialProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjectionHasPartialProjectionError/PartialProjectionError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjectionHasPartialProjectionError.PartialProjectionError</value>
+    <comment>Description for DomainRole &apos;PartialProjectionError&apos; on DomainRelationship &apos;FactTypeDerivationProjectionHasPartialProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjectionHasPartialProjectionError/PartialProjectionError.DisplayName" xml:space="preserve">
+    <value>PartialProjectionError</value>
+    <comment>DisplayName for DomainRole &apos;PartialProjectionError&apos; on DomainRelationship &apos;FactTypeDerivationProjectionHasPartialProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjectionHasPartialProjectionError/PartialProjectionError.PropertyDisplayName" xml:space="preserve">
+    <value>Derivation Projection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PartialProjectionError&apos; on DomainRelationship &apos;FactTypeDerivationProjectionHasPartialProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathHasProjectionRequiredError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathHasProjectionRequiredError</value>
+    <comment>Description for DomainClass &apos;ConstraintRoleSequenceJoinPathHasProjectionRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathHasProjectionRequiredError.DisplayName" xml:space="preserve">
+    <value>Constraint Role Sequence Join Path Has Projection Required Error</value>
+    <comment>DisplayName for DomainClass &apos;ConstraintRoleSequenceJoinPathHasProjectionRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathHasProjectionRequiredError/JoinPath.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathHasProjectionRequiredError.JoinPath</value>
+    <comment>Description for DomainRole &apos;JoinPath&apos; on DomainRelationship &apos;ConstraintRoleSequenceJoinPathHasProjectionRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathHasProjectionRequiredError/JoinPath.DisplayName" xml:space="preserve">
+    <value>JoinPath</value>
+    <comment>DisplayName for DomainRole &apos;JoinPath&apos; on DomainRelationship &apos;ConstraintRoleSequenceJoinPathHasProjectionRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathHasProjectionRequiredError/JoinPath.PropertyDisplayName" xml:space="preserve">
+    <value>Projection Required Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;JoinPath&apos; on DomainRelationship &apos;ConstraintRoleSequenceJoinPathHasProjectionRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathHasProjectionRequiredError/ProjectionRequiredError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathHasProjectionRequiredError.ProjectionRequiredError</value>
+    <comment>Description for DomainRole &apos;ProjectionRequiredError&apos; on DomainRelationship &apos;ConstraintRoleSequenceJoinPathHasProjectionRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathHasProjectionRequiredError/ProjectionRequiredError.DisplayName" xml:space="preserve">
+    <value>ProjectionRequiredError</value>
+    <comment>DisplayName for DomainRole &apos;ProjectionRequiredError&apos; on DomainRelationship &apos;ConstraintRoleSequenceJoinPathHasProjectionRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathHasProjectionRequiredError/ProjectionRequiredError.PropertyDisplayName" xml:space="preserve">
+    <value>Join Path</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ProjectionRequiredError&apos; on DomainRelationship &apos;ConstraintRoleSequenceJoinPathHasProjectionRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceProjectionHasPartialProjectionError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceProjectionHasPartialProjectionError</value>
+    <comment>Description for DomainClass &apos;ConstraintRoleSequenceProjectionHasPartialProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceProjectionHasPartialProjectionError.DisplayName" xml:space="preserve">
+    <value>Constraint Role Sequence Projection Has Partial Projection Error</value>
+    <comment>DisplayName for DomainClass &apos;ConstraintRoleSequenceProjectionHasPartialProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceProjectionHasPartialProjectionError/JoinPathProjection.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceProjectionHasPartialProjectionError.JoinPathProjection</value>
+    <comment>Description for DomainRole &apos;JoinPathProjection&apos; on DomainRelationship &apos;ConstraintRoleSequenceProjectionHasPartialProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceProjectionHasPartialProjectionError/JoinPathProjection.DisplayName" xml:space="preserve">
+    <value>JoinPathProjection</value>
+    <comment>DisplayName for DomainRole &apos;JoinPathProjection&apos; on DomainRelationship &apos;ConstraintRoleSequenceProjectionHasPartialProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceProjectionHasPartialProjectionError/JoinPathProjection.PropertyDisplayName" xml:space="preserve">
+    <value>Partial Projection Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;JoinPathProjection&apos; on DomainRelationship &apos;ConstraintRoleSequenceProjectionHasPartialProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceProjectionHasPartialProjectionError/PartialProjectionError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceProjectionHasPartialProjectionError.PartialProjectionError</value>
+    <comment>Description for DomainRole &apos;PartialProjectionError&apos; on DomainRelationship &apos;ConstraintRoleSequenceProjectionHasPartialProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceProjectionHasPartialProjectionError/PartialProjectionError.DisplayName" xml:space="preserve">
+    <value>PartialProjectionError</value>
+    <comment>DisplayName for DomainRole &apos;PartialProjectionError&apos; on DomainRelationship &apos;ConstraintRoleSequenceProjectionHasPartialProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceProjectionHasPartialProjectionError/PartialProjectionError.PropertyDisplayName" xml:space="preserve">
+    <value>Join Path Projection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PartialProjectionError&apos; on DomainRelationship &apos;ConstraintRoleSequenceProjectionHasPartialProjectionError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationExpressionStorageType/Derived.DisplayName" xml:space="preserve">
     <value>Derived</value>

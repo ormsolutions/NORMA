@@ -916,6 +916,30 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Fact.AddReading.InvalidReadingText");
 			}
 		}
+		/// <summary>Model validation error text for a path calculation without no specified function. {0}=error display context</summary>
+		public static string ModelErrorCalculatedPathValueRequiresFunction
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.CalculatedPathValue.CalculatedPathValueRequiresFunction.Text");
+			}
+		}
+		/// <summary>Model validation error text for a path calculation with no binding for some parameter. {0}=error display context,{1}=parameter name</summary>
+		public static string ModelErrorCalculatedPathValueParameterBinding
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.CalculatedPathValue.CalculatedPathValueParameterBinding.Text");
+			}
+		}
+		/// <summary>Model validation error text for a path calculation with a result that is not being used. {0}=error display context</summary>
+		public static string ModelErrorCalculatedPathValueMustBeConsumed
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.CalculatedPathValue.CalculatedPathValueMustBeConsumed.Text");
+			}
+		}
 		/// <summary>Model validation error text when a constraint intersects a second constraint where the second constraints roles are a subset of the constraint roles.</summary>
 		public static string ModelErrorConstraintImplication
 		{
@@ -938,6 +962,22 @@ namespace ORMSolutions.ORMArchitect.Core
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.SubsetImpliedByMandatoryError.Text");
+			}
+		}
+		/// <summary>Model validation error text for a fact type derivation with no path projection. {0}=error display context</summary>
+		public static string ModelErrorFactTypeDerivationRuleProjectionRequired
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactTypeDerivationRule.FactTypeDerivationRequiresProjection.Text");
+			}
+		}
+		/// <summary>Model validation error text for a fact type derivation projection that does not project all fact type roles. {0}=error display context</summary>
+		public static string ModelErrorFactTypeDerivationRulePartialProjection
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactTypeDerivationRule.PartialFactTypeDerivationProjection.Text");
 			}
 		}
 		/// <summary>Model validation error text when a mandatory constraint is put on the subset role of a subset constraint relationship.</summary>
@@ -1052,6 +1092,22 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ExternalConstraintArityMismatch.Text");
 			}
 		}
+		/// <summary>Model validation error text for a constraint join path with no path projection. {0}=error display context</summary>
+		public static string ModelErrorJoinPathProjectionRequired
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ConstraintRoleSequenceJoinPath.ConstraintRoleSequenceJoinPathRequiresProjection.Text");
+			}
+		}
+		/// <summary>Model validation error text for a constraint join path projection that does not project all constraint roles. {0}=error display context</summary>
+		public static string ModelErrorJoinPathPartialProjection
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ConstraintRoleSequenceJoinPath.PartialConstraintRoleSequenceJoinPathProjection.Text");
+			}
+		}
 		/// <summary>Model validation error text used when multiple constraints with the same name are loaded into a model. Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</summary>
 		public static string ModelErrorModelHasDuplicateConstraintNames
 		{
@@ -1114,6 +1170,54 @@ namespace ORMSolutions.ORMArchitect.Core
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.PopulationMandatoryError.AdditionalFactTypeText");
+			}
+		}
+		/// <summary>Model validation error text for an explicit correlation to a pathed role with a with a role player that is not compatible with the correlation target. {0}=error display context</summary>
+		public static string ModelErrorRolePathIncompatibleCorrelation
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RolePath.CorrelatedPathRoleRequiresCompatibleRolePlayer.Text");
+			}
+		}
+		/// <summary>Model validation error text for a join to a pathed role with a role player that is not compatible with the join source. {0}=error display context</summary>
+		public static string ModelErrorRolePathIncompatibleJoin
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RolePath.JoinedPathRoleRequiresCompatibleRolePlayer.Text");
+			}
+		}
+		/// <summary>Model validation error text for a same fact type role specified without a corresponding start or join role. {0}=error display context</summary>
+		public static string ModelErrorRolePathSameFactTypeRoleFollowsJoin
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RolePath.SameFactTypeRoleFollowsJoin.Text");
+			}
+		}
+		/// <summary>Model validation error text for a pathed role that is not marked as a start role or is marked as a start role and should not be. {0}=error display context</summary>
+		public static string ModelErrorRolePathStartRoleFollowsRootObjectType
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RolePath.StartRoleFollowsRootObjectType.Text");
+			}
+		}
+		/// <summary>Model validation error text for an outer join to a mandatory role. {0}=error display context</summary>
+		public static string ModelErrorRolePathMandatoryOuterJoin
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RolePath.OuterJoinRequiresOptionalRole.Text");
+			}
+		}
+		/// <summary>Model validation error text for a role path with no root object type. {0}=error display context</summary>
+		public static string ModelErrorRolePathRequiresRootObjectType
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RolePath.RequiresRootObjectType.Text");
 			}
 		}
 		/// <summary>ValueConstraintValueTypeDetachedError text with owner place holder. The resulting sentence will be capitalized automatically. {0}=owner information</summary>
@@ -1389,11 +1493,11 @@ namespace ORMSolutions.ORMArchitect.Core
 			}
 		}
 		/// <summary>Exception message when an attempt is made to add an EntityTypeRoleInstance with a duplicate Role to the EntityTypeRoleInstance collection.</summary>
-		public static string ModelExceptionEntiyTypeInstanceEnforceRoleUniqueness
+		public static string ModelExceptionEntityTypeInstanceEnforceRoleUniqueness
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.EntiyTypeInstance.EnforceRoleUniqueness");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.EntityTypeInstance.EnforceRoleUniqueness");
 			}
 		}
 		/// <summary>Exception message when an attempt is made to hook up role instances to an entity type where the roles are not in the entity type's preferred identifier collection.</summary>
@@ -2669,7 +2773,7 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.CompatibleRolePlayerTypeError.SetComparison.Text");
 			}
 		}
-		/// <summary>Text displayed in the text of the RoleRequiresRolePlayerError. {0} is the (1-based) role number, {1} is the name of the fact, and {2} is the name of the model.</summary>
+		/// <summary>Model validation error text displayed when a role does not have a specified role player. {0} is the (1-based) role number, {1} is the name of the fact, and {2} is the name of the model.</summary>
 		public static string ModelErrorRolePlayerRequiredError
 		{
 			get

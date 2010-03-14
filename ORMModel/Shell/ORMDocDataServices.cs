@@ -1195,9 +1195,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				ORMModelErrorActivator activator;
 				if (myActivators.TryGetValue(domainClass.ImplementationClass, out activator))
 				{
-					if (activator((IORMToolServices)myStore, selectedElement, error))
+					Delegate[] targets = activator.GetInvocationList();
+					IORMToolServices services = (IORMToolServices)myStore;
+					for (int i = 0; i < targets.Length; ++i)
 					{
-						return true;
+						if (((ORMModelErrorActivator)targets[i])(services, selectedElement, error))
+						{
+							return true;
+						}
 					}
 				}
 				// See if anything on a base type can handle it. This maximizes the chances of finding a handler.
@@ -1220,10 +1225,24 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// <param name="activator">A delegate callback for when an element of this type is selected</param>
 			private void RegisterErrorActivator(DomainClassInfo domainClass, ORMModelErrorActivator activator)
 			{
-				myActivators[domainClass.ImplementationClass] = activator;
+				AddErrorActivator(domainClass.ImplementationClass, activator);
 				foreach (DomainClassInfo derivedClassInfo in domainClass.AllDescendants)
 				{
 					RegisterErrorActivator(derivedClassInfo, activator);
+				}
+			}
+			private void AddErrorActivator(Type elementType, ORMModelErrorActivator activator)
+			{
+				Dictionary<Type, ORMModelErrorActivator> activators = myActivators;
+				ORMModelErrorActivator existingActivator;
+				if (activators.TryGetValue(elementType, out existingActivator))
+				{
+					existingActivator += activator;
+					activators[elementType] = existingActivator;
+				}
+				else
+				{
+					activators[elementType] = activator;
 				}
 			}
 			void IORMModelErrorActivationService.RegisterErrorActivator(Type elementType, bool registerDerivedTypes, ORMModelErrorActivator activator)
@@ -1235,7 +1254,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 				else
 				{
-					myActivators[elementType] = activator;
+					AddErrorActivator(elementType, activator);
 				}
 			}
 			#endregion // IORMModelErrorActivationService Implementation

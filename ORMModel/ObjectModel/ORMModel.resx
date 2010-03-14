@@ -264,6 +264,18 @@
 		<value>ORM Context Window</value>
 		<comment>Text to place in the title bar of the context tool window.</comment>
 	</data>
+	<data name="ModelError.CalculatedPathValue.CalculatedPathValueRequiresFunction.Text" xml:space="preserve">
+		<value>{0} has a calculation with no function.</value>
+		<comment>Model validation error text for a path calculation without no specified function. {0}=error display context</comment>
+	</data>
+	<data name="ModelError.CalculatedPathValue.CalculatedPathValueParameterBinding.Text" xml:space="preserve">
+		<value>{0} must provide input for parameter '{1}'.</value>
+		<comment>Model validation error text for a path calculation with no binding for some parameter. {0}=error display context,{1}=parameter name</comment>
+	</data>
+	<data name="ModelError.CalculatedPathValue.CalculatedPathValueMustBeConsumed.Text" xml:space="preserve">
+		<value>{0} must use a calculation result as a path condition, calculation input, or projection source.</value>
+		<comment>Model validation error text for a path calculation with a result that is not being used. {0}=error display context</comment>
+	</data>
 	<data name="ModelError.Constraint.CompatibleRolePlayerTypeError.Set.Text" xml:space="preserve">
 		<value>Constraint '{0}' in model '{1}' has role players with incompatible types.</value>
 		<comment>The role players in an external constraint must have compatible types. Replacement field {0} is the constraint name and {1} is the model name.</comment>
@@ -320,6 +332,14 @@
 		<value>Constraint '{0}' has too many role sequences.</value>
 		<comment>Model validation error text when too many role sequences are specified for a constraint. This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
 	</data>
+	<data name="ModelError.ConstraintRoleSequenceJoinPath.ConstraintRoleSequenceJoinPathRequiresProjection.Text" xml:space="preserve">
+		<value>{0} must project constrained roles from at least one source path.</value>
+		<comment>Model validation error text for a constraint join path with no path projection. {0}=error display context</comment>
+	</data>
+	<data name="ModelError.ConstraintRoleSequenceJoinPath.PartialConstraintRoleSequenceJoinPathProjection.Text" xml:space="preserve">
+		<value>{0} must project all constrained roles from each projected source path.</value>
+		<comment>Model validation error text for a constraint join path projection that does not project all constraint roles. {0}=error display context</comment>
+	</data>
 	<data name="ModelError.ElementGrouping.DuplicateNameError.Message" xml:space="preserve">
 		<value>Model '{0}' contains multiple groups named '{1}'. Group names must be unique in the model.</value>
 		<comment>Model validation error text used when multiple groups with the same name are loaded into a model. Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
@@ -355,6 +375,14 @@
 	<data name="ModelError.FactType.RequiresReading.Message" xml:space="preserve">
 		<value>At least one reading is required for FactType '{0}' in model '{1}'.</value>
 		<comment>Text displayed in the text of the FactTypeRequiresReadingError</comment>
+	</data>
+	<data name="ModelError.FactTypeDerivationRule.FactTypeDerivationRequiresProjection.Text" xml:space="preserve">
+		<value>{0} must project derived roles from at least one source path.</value>
+		<comment>Model validation error text for a fact type derivation with no path projection. {0}=error display context</comment>
+	</data>
+	<data name="ModelError.FactTypeDerivationRule.PartialFactTypeDerivationProjection.Text" xml:space="preserve">
+		<value>{0} must project all derived roles from each projected source path.</value>
+		<comment>Model validation error text for a fact type derivation projection that does not project all fact type roles. {0}=error display context</comment>
 	</data>
 	<data name="ModelError.FactTypeInstance.ObjectifyingInstanceRequired.Message" xml:space="preserve">
 		<value>Identifier required for FactType instance '{0}' in model '{1}'.</value>
@@ -422,7 +450,31 @@
 	</data>
 	<data name="ModelError.Role.RolePlayerRequired.Message" xml:space="preserve">
 		<value>Role '{0}' in FactType '{1}' in model '{2}' requires a role player.</value>
-		<comment>Text displayed in the text of the RoleRequiresRolePlayerError. {0} is the (1-based) role number, {1} is the name of the fact, and {2} is the name of the model.</comment>
+		<comment>Model validation error text displayed when a role does not have a specified role player. {0} is the (1-based) role number, {1} is the name of the fact, and {2} is the name of the model.</comment>
+	</data>
+	<data name="ModelError.RolePath.CorrelatedPathRoleRequiresCompatibleRolePlayer.Text" xml:space="preserve">
+		<value>{0} explicitly correlates a path role with an incompatible role player.</value>
+		<comment>Model validation error text for an explicit correlation to a pathed role with a with a role player that is not compatible with the correlation target. {0}=error display context</comment>
+	</data>
+	<data name="ModelError.RolePath.JoinedPathRoleRequiresCompatibleRolePlayer.Text" xml:space="preserve">
+		<value>{0} joins to a path role with an incompatible role player.</value>
+		<comment>Model validation error text for a join to a pathed role with a role player that is not compatible with the join source. {0}=error display context</comment>
+	</data>
+	<data name="ModelError.RolePath.OuterJoinRequiresOptionalRole.Text" xml:space="preserve">
+		<value>{0} has outer join semantics to a mandatory role.</value>
+		<comment>Model validation error text for an outer join to a mandatory role. {0}=error display context</comment>
+	</data>
+	<data name="ModelError.RolePath.RequiresRootObjectType.Text" xml:space="preserve">
+		<value>{0} has a role path with no root object type.</value>
+		<comment>Model validation error text for a role path with no root object type. {0}=error display context</comment>
+	</data>
+	<data name="ModelError.RolePath.SameFactTypeRoleFollowsJoin.Text" xml:space="preserve">
+		<value>{0} has a same fact type role without a preceding fact type entry.</value>
+		<comment>Model validation error text for a same fact type role specified without a corresponding start or join role. {0}=error display context</comment>
+	</data>
+	<data name="ModelError.RolePath.StartRoleFollowsRootObjectType.Text" xml:space="preserve">
+		<value>{0} has a start role in an invalid path position.</value>
+		<comment>Model validation error text for a pathed role that is not marked as a start role or is marked as a start role and should not be. {0}=error display context</comment>
 	</data>
 	<data name="ModelError.UncategorizedModelError.CategoryDisplayName" xml:space="preserve">
 		<value>Uncategorized Model Validation Errors</value>
@@ -529,7 +581,7 @@
 		<value>All sample value roles must be part of the parent entity type's preferred identifier.</value>
 		<comment xml:space="preserve">Exception message when an attempt is made to hook up role instances to an entity type where the roles are not in the entity type's preferred identifier collection.</comment>
 	</data>
-	<data name="ModelException.EntiyTypeInstance.EnforceRoleUniqueness" xml:space="preserve">
+	<data name="ModelException.EntityTypeInstance.EnforceRoleUniqueness" xml:space="preserve">
 		<value>EntityTypeRoleInstance.Role must be unique in the EntityTypeRoleInstance collection.</value>
 		<comment xml:space="preserve">Exception message when an attempt is made to add an EntityTypeRoleInstance with a duplicate Role to the EntityTypeRoleInstance collection.</comment>
 	</data>

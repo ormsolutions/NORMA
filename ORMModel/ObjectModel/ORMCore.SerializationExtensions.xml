@@ -706,9 +706,11 @@
 			<se:Link RelationshipName="FactTypeDerivationProjection" RoleName="PathComponent"/>
 		</se:Container>
 		<se:Link RelationshipName="FactTypeDerivationProjection" RoleName="PathComponent" Name="DerivationProjection" WriteStyle="PrimaryLinkElement"/>
+		<se:Link RelationshipName="FactTypeDerivationRuleHasProjectionRequiredError" RoleName="ProjectionRequiredError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="FactTypeDerivationProjection">
 		<se:Link RelationshipName="FactTypeRoleProjection" RoleName="ProjectedRole" Name="RoleProjection" WriteStyle="PrimaryLinkElement"/>
+		<se:Link RelationshipName="FactTypeDerivationProjectionHasPartialProjectionError" RoleName="PartialProjectionError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="FactTypeRoleProjection">
 		<se:Container Name="DerivationSource">
@@ -919,9 +921,11 @@
 			<se:Link RelationshipName="ConstraintRoleSequenceJoinPathProjection" RoleName="PathComponent"/>
 		</se:Container>
 		<se:Link RelationshipName="ConstraintRoleSequenceJoinPathProjection" RoleName="PathComponent" Name="JoinPathProjection" WriteStyle="PrimaryLinkElement"/>
+		<se:Link RelationshipName="ConstraintRoleSequenceJoinPathHasProjectionRequiredError" RoleName="ProjectionRequiredError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="ConstraintRoleSequenceJoinPathProjection">
 		<se:Link RelationshipName="ConstraintRoleProjection" RoleName="ProjectedConstraintRole" Name="ConstraintRoleProjection" WriteStyle="PrimaryLinkElement"/>
+		<se:Link RelationshipName="ConstraintRoleSequenceProjectionHasPartialProjectionError" RoleName="PartialProjectionError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="ConstraintRoleProjection">
 		<se:Container Name="ProjectedFrom">
@@ -1036,6 +1040,7 @@
 			</se:Condition>
 		</se:Attribute>
 		<se:Link RelationshipName="CalculatedPathValueInputCorrespondsToFunctionParameter" RoleName="Input" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="CalculatedPathValueParameterBindingErrorTargetsFunctionParameter" RoleName="ParameterBindingError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="RolePathOwner" Override="true" SortChildElements="true">
 		<!-- UNDONE: File format change, remove old role path constructs (PathComponent, CalculatedValues) -->
@@ -1124,6 +1129,7 @@
 			<se:Link RelationshipName="RolePathComponentSatisfiesCalculatedCondition" RoleName="CalculatedCondition"/>
 		</se:Container>
 		<se:Link RelationshipName="RolePathComponentSatisfiesCalculatedCondition" RoleName="CalculatedCondition" Name="CalculatedCondition"/>
+		<se:Link RelationshipName="LeadRolePathHasRootObjectTypeError" RoleName="RootObjectTypeRequiredError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="CalculatedPathValue" Name="CalculatedValue" SortChildElements="true" Override="true">
 		<se:Link RelationshipName="CalculatedPathValueIsCalculatedWithFunction" RoleName="Function" Name="Function"/>
@@ -1137,6 +1143,9 @@
 		<se:Link RelationshipName="RoleDerivesFromCalculatedPathValue_Deprecated" RoleName="Role" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ConstraintRoleProjectedFromCalculatedPathValue" RoleName="ConstraintRoleProjection" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ConstraintRoleProjectedFromCalculatedPathValue_Deprecated" RoleName="ConstraintRole" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="CalculatedPathValueHasFunctionRequiredError" RoleName="FunctionRequiredError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="CalculatedPathValueHasUnboundParameterError" RoleName="ParameterBindingError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="CalculatedPathValueHasConsumptionRequiredError" RoleName="ConsumptionRequiredError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="CalculatedPathValueInput" SortChildElements="true" Name="Input" Override="true">
 		<se:Attribute ID="DistinctValues">
@@ -1281,6 +1290,11 @@
 		<se:Link RelationshipName="ConstraintRoleProjectedFromPathedRole" RoleName="ConstraintRoleProjection" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ConstraintRoleProjectedFromPathedRole_Deprecated" RoleName="ConstraintRole" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="RolePathCombinationCorrelationCorrelatesPathedRole" RoleName="Correlation" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="PathedRoleHasStartRoleError" RoleName="StartRoleError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="PathedRoleHasCompatibleJoinRolePlayerError" RoleName="JoinCompatibilityError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="PathedRoleHasCompatibleCorrelationRolePlayerError" RoleName="CorrelationCompatibilityError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="PathedRoleHasSameFactTypeFollowsJoinError" RoleName="SameFactTypeRoleFollowsJoinError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="PathedRoleHasMandatoryOuterJoinError" RoleName="MandatoryOuterJoinError" WriteStyle="NotWritten"/>
 	</se:Element>
 
 	<!--Errors-->
@@ -1452,7 +1466,6 @@
 			<se:Link RelationshipName="SetComparisonConstraintHasContradictionError" RoleName="SetComparisonConstraint" CreateAsRelationshipName="SetComparisonConstraintHasExclusionContradictsEqualityError"/>
 		</se:Container>
 		<se:Link RelationshipName="SetComparisonConstraintHasContradictionError" RoleName="SetComparisonConstraint" CreateAsRelationshipName="SetComparisonConstraintHasExclusionContradictsEqualityError" Name="EqualityConstraint">
-
 			<se:ConditionalName Name="ExclusionConstraintThatContradictsWithEquality">
 				<plx:binaryOperator type="typeEquality">
 					<plx:left>
@@ -1579,6 +1592,50 @@
 		</se:Link>
 		<se:Link RelationshipName="SetComparisonConstraintHasImplicationError" RoleName="SetComparisonConstraint" WriteStyle="NotWritten"/>
 	</se:Element>
+	<se:Element Class="PathRequiresRootObjectTypeError" Override="true">
+		<se:Link RelationshipName="LeadRolePathHasRootObjectTypeError" RoleName="LeadRolePath" Name="RolePath"/>
+	</se:Element>
+	<se:Element Class="PathStartRoleFollowsRootObjectTypeError" Override="true">
+		<se:Link RelationshipName="PathedRoleHasStartRoleError" RoleName="PathedRole" Name="PathedRole"/>
+	</se:Element>
+	<se:Element Class="JoinedPathRoleRequiresCompatibleRolePlayerError" Override="true">
+		<se:Link RelationshipName="PathedRoleHasCompatibleJoinRolePlayerError" RoleName="PathedRole" Name="PathedRole"/>
+	</se:Element>
+	<se:Element Class="CorrelatedPathRoleRequiresCompatibleRolePlayerError" Override="true">
+		<se:Link RelationshipName="PathedRoleHasCompatibleCorrelationRolePlayerError" RoleName="PathedRole" Name="PathedRole"/>
+	</se:Element>
+	<se:Element Class="PathSameFactTypeRoleFollowsJoinError" Override="true">
+		<se:Link RelationshipName="PathedRoleHasSameFactTypeFollowsJoinError" RoleName="PathedRole" Name="PathedRole"/>
+	</se:Element>
+	<se:Element Class="PathOuterJoinRequiresOptionalRoleError" Override="true">
+		<se:Link RelationshipName="PathedRoleHasMandatoryOuterJoinError" RoleName="PathedRole" Name="PathedRole"/>
+	</se:Element>
+	<se:Element Class="CalculatedPathValueRequiresFunctionError" Override="true">
+		<se:Link RelationshipName="CalculatedPathValueHasFunctionRequiredError" RoleName="CalculatedPathValue" Name="CalculatedValue"/>
+	</se:Element>
+	<se:Element Class="CalculatedPathValueMustBeConsumedError" Override="true">
+		<se:Link RelationshipName="CalculatedPathValueHasConsumptionRequiredError" RoleName="CalculatedPathValue" Name="CalculatedValue"/>
+	</se:Element>
+	<se:Element Class="CalculatedPathValueParameterBindingError" Override="true">
+		<se:Link RelationshipName="CalculatedPathValueHasUnboundParameterError" RoleName="CalculatedPathValue" Name="CalculatedValue" WriteStyle="PrimaryLinkElement"/>
+	</se:Element>
+	<se:Element Class="CalculatedPathValueHasUnboundParameterError">
+		<se:Link RelationshipName="CalculatedPathValueParameterBindingErrorTargetsFunctionParameter" RoleName="Parameter" Name="Parameter"/>
+	</se:Element>
+	<se:Element Class="FactTypeDerivationRequiresProjectionError" Override="true">
+		<se:Link RelationshipName="FactTypeDerivationRuleHasProjectionRequiredError" RoleName="DerivationRule" Name="FactTypeDerivationPath"/>
+	</se:Element>
+	<se:Element Class="PartialFactTypeDerivationProjectionError" Override="true">
+		<se:Link RelationshipName="FactTypeDerivationProjectionHasPartialProjectionError" RoleName="DerivationProjection" Name="DerivationProjection"/>
+	</se:Element>
+	<se:Element Class="ConstraintRoleSequenceJoinPathRequiresProjectionError" Name="JoinPathRequiresProjectionError" Override="true">
+		<se:Link RelationshipName="ConstraintRoleSequenceJoinPathHasProjectionRequiredError" RoleName="JoinPath" Name="JoinPath"/>
+	</se:Element>
+	<se:Element Class="PartialConstraintRoleSequenceJoinPathProjectionError" Name="PartialJoinPathProjectionError" Override="true">
+		<se:Link RelationshipName="ConstraintRoleSequenceProjectionHasPartialProjectionError" RoleName="JoinPathProjection" Name="JoinPathProjection"/>
+	</se:Element>
+
+	<!-- Grouping constructs -->
 	<se:Element Class="ElementGroupingSet" Name="Grouping" SortChildElements="true" Sealed="true">
 		<se:Link RelationshipName="ElementGroupingSetRelatesToORMModel" RoleName="Model" Name="ORMModel"/>
 		<se:Container Name="Groups">

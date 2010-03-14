@@ -55,6 +55,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static void EnableCustomRuleNotifications(Store store)
 		{
 			ConstraintRoleSequence.EnableRuleNotifications(store);
+			RolePathOwner.EnableRuleNotifications(store);
 		}
 		#endregion // Custom Rule Notifications
 		#region IModelingEventSubscriber Implementation
@@ -187,6 +188,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				classInfo = directory.FindDomainRelationship(PathedRole.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
 				classInfo = directory.FindDomainRelationship(PathedRoleHasValueConstraint.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
+				classInfo = directory.FindDomainRelationship(RolePathComponentCalculatesCalculatedPathValue.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
 				classInfo = directory.FindDomainRelationship(FactTypeHasDerivationRule.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
@@ -1507,6 +1510,28 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				return PathOwner;
+			}
+		}
+		ModelElement IModelErrorOwnerPath.ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return ErrorOwnerRolePlayer;
+			}
+		}
+		#endregion // IModelErrorOwnerPath Implementation
+	}
+	partial class RolePathComponentCalculatesCalculatedPathValue : IModelErrorOwnerPath
+	{
+		#region IModelErrorOwnerPath Implementation
+		/// <summary>
+		/// Implements <see cref="IModelErrorOwnerPath.ErrorOwnerRolePlayer"/>
+		/// </summary>
+		protected ModelElement ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return PathComponent;
 			}
 		}
 		ModelElement IModelErrorOwnerPath.ErrorOwnerRolePlayer

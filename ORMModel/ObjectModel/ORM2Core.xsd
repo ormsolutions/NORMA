@@ -1621,6 +1621,12 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+	<xs:complexType name="LeadRolePathRef">
+		<xs:annotation>
+			<xs:documentation>A reference to a role path.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
+	</xs:complexType>
 	<xs:complexType name="CalculatedValueType">
 		<xs:annotation>
 			<xs:documentation>Specifies the function, scope, and inputs used for an algorithmic calculation.</xs:documentation>
@@ -1727,6 +1733,12 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+	<xs:complexType name="FactTypeDerivationPathRef">
+		<xs:annotation>
+			<xs:documentation>A reference to a fact type derivation path.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
+	</xs:complexType>
 	<xs:complexType name="FactTypeDerivationProjectionType">
 		<xs:annotation>
 			<xs:documentation>Specify projections for each role used in a role projection corresponding to the referenced role path.</xs:documentation>
@@ -1735,6 +1747,12 @@
 			<xs:element name="RoleProjection" type="FactTypeRoleProjectionType" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 		<xs:attributeGroup ref="idAttribute"/>
+		<xs:attributeGroup ref="refAttribute"/>
+	</xs:complexType>
+	<xs:complexType name="FactTypeDerivationProjectionRef">
+		<xs:annotation>
+			<xs:documentation>A reference to a fact type derivation projection.</xs:documentation>
+		</xs:annotation>
 		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
 	<xs:complexType name="FactTypeRoleProjectionType">
@@ -1827,6 +1845,12 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+	<xs:complexType name="ConstraintRoleSequenceJoinPathRef">
+		<xs:annotation>
+			<xs:documentation>A reference to a constraint role sequence join path.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
+	</xs:complexType>
 	<xs:complexType name="JoinPathProjectionType">
 		<xs:annotation>
 			<xs:documentation>Specify projections for each constraint role used in a join path projection corresponding to the referenced role path.</xs:documentation>
@@ -1835,6 +1859,12 @@
 			<xs:element name="ConstraintRoleProjection" type="ConstraintRoleProjectionType" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 		<xs:attributeGroup ref="idAttribute"/>
+		<xs:attributeGroup ref="refAttribute"/>
+	</xs:complexType>
+	<xs:complexType name="JoinPathProjectionRef">
+		<xs:annotation>
+			<xs:documentation>A reference to a join path projection.</xs:documentation>
+		</xs:annotation>
 		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
 	<xs:complexType name="ConstraintRoleProjectionType">
@@ -2277,6 +2307,19 @@
 			<xs:element name="PopulationUniquenessError" type="PopulationUniquenessErrorType"/>
 			<xs:element name="ExclusionContradictsEqualityError" type="ExclusionContradictsEqualityErrorType"/>
 			<xs:element name="ExclusionContradictsSubsetError" type="ExclusionContradictsSubsetErrorType"/>
+			<xs:element name="PathRequiresRootObjectTypeError" type="PathRequiresRootObjectTypeErrorType"/>
+			<xs:element name="PathStartRoleFollowsRootObjectTypeError" type="PathStartRoleFollowsRootObjectTypeErrorType"/>
+			<xs:element name="JoinedPathRoleRequiresCompatibleRolePlayerError" type="JoinedPathRoleRequiresCompatibleRolePlayerErrorType"/>
+			<xs:element name="CorrelatedPathRoleRequiresCompatibleRolePlayerError" type="CorrelatedPathRoleRequiresCompatibleRolePlayerErrorType"/>
+			<xs:element name="PathSameFactTypeRoleFollowsJoinError" type="PathSameFactTypeRoleFollowsJoinErrorType"/>
+			<xs:element name="PathOuterJoinRequiresOptionalRoleError" type="PathOuterJoinRequiresOptionalRoleErrorType"/>
+			<xs:element name="CalculatedPathValueRequiresFunctionError" type="CalculatedPathValueRequiresFunctionErrorType"/>
+			<xs:element name="CalculatedPathValueMustBeConsumedError" type="CalculatedPathValueMustBeConsumedErrorType"/>
+			<xs:element name="CalculatedPathValueParameterBindingError" type="CalculatedPathValueParameterBindingErrorType"/>
+			<xs:element name="FactTypeDerivationRequiresProjectionError" type="FactTypeDerivationRequiresProjectionErrorType"/>
+			<xs:element name="PartialFactTypeDerivationProjectionError" type="PartialFactTypeDerivationProjectionErrorType"/>
+			<xs:element name="JoinPathRequiresProjectionError" type="JoinPathRequiresProjectionErrorType"/>
+			<xs:element name="PartialJoinPathProjectionError" type="PartialJoinPathProjectionErrorType"/>
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="ModelError" abstract="true">
@@ -2960,6 +3003,173 @@
 					<xs:element name="EntityTypeInstance" type="EntityTypeInstanceRef"/>
 					<xs:element name="EntityTypeSubtypeInstance" type="EntityTypeSubtypeInstanceRef"/>
 				</xs:choice>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="PathRequiresRootObjectTypeErrorType">
+		<xs:annotation>
+			<xs:documentation>A role path does not have a specified root object type.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="RolePath" type="LeadRolePathRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="PathStartRoleFollowsRootObjectTypeErrorType">
+		<xs:annotation>
+			<xs:documentation>A PathedRole with a purpose of StartRole must be the first PathedRole after the path root.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="PathedRole" type="PathedRoleRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="JoinedPathRoleRequiresCompatibleRolePlayerErrorType">
+		<xs:annotation>
+			<xs:documentation>A PathedRole is joined to a preceding PathedRole with an incompatible role player or is a start role attached to an incompatible RootObjectType.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="PathedRole" type="PathedRoleRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CorrelatedPathRoleRequiresCompatibleRolePlayerErrorType">
+		<xs:annotation>
+			<xs:documentation>A PathedRole has an explicit correlation with a PathedRole that has an incompatible role player.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="PathedRole" type="PathedRoleRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="PathSameFactTypeRoleFollowsJoinErrorType">
+		<xs:annotation>
+			<xs:documentation>A PathedRole with a purpose of SameFactType must follow an entry into the fact type with a join or start role. A role within a single fact type cannot be reused in a path without first joining to another instance of the same fact type.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="PathedRole" type="PathedRoleRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="PathOuterJoinRequiresOptionalRoleErrorType">
+		<xs:annotation>
+			<xs:documentation>An PathedRole with outer join semantics is joined to a mandatory role and can never be null.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="PathedRole" type="PathedRoleRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CalculatedPathValueRequiresFunctionErrorType">
+		<xs:annotation>
+			<xs:documentation>A calculated value in a role path must have a function specified to perform the calculation.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="CalculatedValue" type="CalculatedValueRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CalculatedPathValueMustBeConsumedErrorType">
+		<xs:annotation>
+			<xs:documentation>A calculated value in a role path must be consumed as a path condition, an input to another calculation, or a projection onto a path.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="CalculatedValue" type="CalculatedValueRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CalculatedPathValueParameterBindingErrorType">
+		<xs:annotation>
+			<xs:documentation>A parameter binding is missing for the parameters associated with the function that calculates a calculated value.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="CalculatedValue">
+						<xs:complexType>
+							<xs:complexContent>
+								<xs:extension base="CalculatedValueRef">
+									<xs:sequence>
+										<xs:element name="Parameter" type="FunctionParameterRef"/>
+									</xs:sequence>
+									<xs:attributeGroup ref="idAttribute"/>
+								</xs:extension>
+							</xs:complexContent>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="FactTypeDerivationRequiresProjectionErrorType">
+		<xs:annotation>
+			<xs:documentation>A fact type derivation path must be projected on at least one role path or role path combination.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="FactTypeDerivationPath" type="FactTypeDerivationPathRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="PartialFactTypeDerivationProjectionErrorType">
+		<xs:annotation>
+			<xs:documentation>A fact type derivation projection must project on all roles in the derived fact type.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="DerivationProjection" type="FactTypeDerivationProjectionRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="JoinPathRequiresProjectionErrorType">
+		<xs:annotation>
+			<xs:documentation>A constraint join path must be projected on at least one role path or role path combination.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="JoinPath" type="ConstraintRoleSequenceJoinPathRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="PartialJoinPathProjectionErrorType">
+		<xs:annotation>
+			<xs:documentation>A join path projection must project on all roles in the constraint role sequence.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="JoinPathProjection" type="JoinPathProjectionRef"/>
+				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>

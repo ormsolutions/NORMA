@@ -175,6 +175,11 @@
 				<DomainClassMoniker Name="ModelErrorCategory"/>
 			</BaseClass>
 		</DomainClass>
+		<DomainClass Name="RolePathErrorCategory" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="ABB9DB45-338E-47FF-994F-7766818C8A2A" DisplayName="Derivation Path and Join Path Errors" InheritanceModifier="Abstract" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelErrorCategory"/>
+			</BaseClass>
+		</DomainClass>
 
 		<DomainClass Name="ElementGroupingSet" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="C0436CE8-6957-4FB9-A526-D94DC2073C02" DisplayName="Groups" InheritanceModifier="Sealed" Description="A Group owner, allows group containment, order, and naming enforcement."/>
 		<DomainClass Name="ElementGrouping" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="B3856187-EFEB-4437-AF4C-8DF5504FB461" DisplayName="Group" Description="A group of elements. A GroupType is associated with the Group to control the group contents.">
@@ -1237,6 +1242,72 @@
 					</Type>
 				</DomainProperty>
 			</Properties>
+		</DomainClass>
+		<!-- Role path errors -->
+		<DomainClass Name="PathRequiresRootObjectTypeError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="6DFCE057-33B0-45BB-A957-8F45B6D3A673" DisplayName="Root Object Type Required" Description="A LeadRolePath must specify a root object type.">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="PathStartRoleFollowsRootObjectTypeError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="817982B9-E3A0-484C-922A-91B54C6F8F7E" DisplayName="Start Role After Root" Description="All PathedRole instances directly attached to the root of a path must have a StartRole purpose, and StartRole may only be used at this point in the path.">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="PathSameFactTypeRoleFollowsJoinError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="0573DD32-9D70-487E-9FFF-72CA8D57FCBE" DisplayName="Role used Without Join" Description="A role in a fact type was used without a join role entering that fact type, or a role from a single fact type was used multiple times without an intermediate join. A PathStartRoleFollowsRootObjectTypeError error is generated instead of this one for a SameFactType role in a StartRole position.">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="JoinedPathRoleRequiresCompatibleRolePlayerError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="92CB3188-9BAF-4317-8558-6A6C4349663E" DisplayName="Incompatible Join" Description="A joined pathed roles must have a role player that is compatible with the join source, and a start role must be compatible with the root object type.">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="CorrelatedPathRoleRequiresCompatibleRolePlayerError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="5E811D63-4B15-4AE4-8660-8D031B66126B" DisplayName="Incompatible Correlation" Description="An explicitly correlated pathed role must have a role player that is compatible with the correlation target.">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="PathOuterJoinRequiresOptionalRoleError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="4D292209-CD06-4F23-9BDB-46D0ED1FCB97" DisplayName="Outer Join To Mandatory Role" Description="Outer join semantics are not supported for roles with explicit or implied simple mandatory constraints.">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="CalculatedPathValueRequiresFunctionError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="638E20FD-3743-4967-94FE-F3A1CDB985E5" DisplayName="Calculation Requires Function" Description="A calculation is specified but does not have an associated function.">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="CalculatedPathValueParameterBindingError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="32AF177A-3ACB-435C-9005-9318A7BE64E7" DisplayName="Calculation Missing Parameter Input" Description="A path calculation is missing an input for a function parameter.">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="CalculatedPathValueMustBeConsumedError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="878CB335-F636-4E0F-82C4-A64A6BADD63D" DisplayName="Calculation Not Used" Description="A path calculation must be consumed as a path condition, an input to another calculation, or as a projection from the path.">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="FactTypeDerivationRequiresProjectionError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="E9B0F6E7-B1D4-4437-AB27-375DC63FB7C3" DisplayName="Fact Type Derivation Not Projected" Description="Roles in a fact type derivation rule must be projected from at least one path or path combination.">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="PartialFactTypeDerivationProjectionError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="926850BE-EA62-4552-91B6-B9A7E0E22DCC" DisplayName="Incomplete Fact Type Derivation Projection" Description="A fact type derivation projection must project on every role in the fact type.">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="ConstraintRoleSequenceJoinPathRequiresProjectionError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="07B0F1A0-148E-4D8E-AA59-77F3D301B2BE" DisplayName="Join Path Not Projected" Description="Roles in a constraint role sequence join path must be projected from at least one path or path combination.">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="PartialConstraintRoleSequenceJoinPathProjectionError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="D58118A4-7D4C-4361-9245-EA71DBD54702" DisplayName="Incomplete Join Path Projection" Description="A constraint role sequence join path projection must project on every role in the sequence.">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
 		</DomainClass>
 
 		<DomainClass Name="TooFewRoleSequencesError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="686A4B07-0ED9-4143-8225-5524C4D6C001" DisplayName="Too Few Role Sequences" Description="">
@@ -4905,7 +4976,7 @@
 			</Source>
 			<Target>
 				<!-- Although it is unusual to project the same data twice, it should not illegal. -->
-				<DomainRole Name="Source" PropertyName="ConstraintRoleProjections" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="Source" Id="688AF0D6-47BF-4049-A9D5-B31988E690D0" Description="The projected constraint role associated with this pathed role.">
+				<DomainRole Name="Source" PropertyName="ConstraintRoleProjections" Multiplicity="ZeroMany" IsPropertyGenerator="false" DisplayName="Source" Id="688AF0D6-47BF-4049-A9D5-B31988E690D0" Description="The projected constraint role associated with this pathed role.">
 					<RolePlayer>
 						<DomainRelationshipMoniker Name="PathedRole"/>
 					</RolePlayer>
@@ -4922,7 +4993,7 @@
 			</Source>
 			<Target>
 				<!-- Although it is unusual to project the same data twice, it should not illegal. -->
-				<DomainRole Name="Source" PropertyName="ConstraintRoleProjections" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="Source" Id="D8A1DE32-1473-4DB7-8124-A5CE82FA8E69" Description="The projected constraint role associated with this calculated value.">
+				<DomainRole Name="Source" PropertyName="ConstraintRoleProjections" Multiplicity="ZeroMany" IsPropertyGenerator="false" DisplayName="Source" Id="D8A1DE32-1473-4DB7-8124-A5CE82FA8E69" Description="The projected constraint role associated with this calculated value.">
 					<RolePlayer>
 						<DomainClassMoniker Name="CalculatedPathValue"/>
 					</RolePlayer>
@@ -5506,7 +5577,7 @@
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="CalculatedCondition" PropertyName="RequiredForPathCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="CalculatedCondition" Id="18F0E45A-F8F2-4AE5-919C-C5946C7193BD" Description="The primary role path that requires this condition to be true.">
+				<DomainRole Name="CalculatedCondition" PropertyName="RequiredForPathComponentCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="CalculatedCondition" Id="18F0E45A-F8F2-4AE5-919C-C5946C7193BD" Description="The lead role path or path combination that requires this condition to be true.">
 					<RolePlayer>
 						<DomainClassMoniker Name="CalculatedPathValue"/>
 					</RolePlayer>
@@ -5786,6 +5857,269 @@
 				<DomainRole Name="DerivationRule" PropertyName="Subtype" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="DerivationRule" Id="556D13CB-9B64-46D7-8D2C-312D3F30CC75">
 					<RolePlayer>
 						<DomainClassMoniker Name="SubtypeDerivationRule"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="LeadRolePathHasRootObjectTypeError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="C831B1CB-D415-4851-AC42-1266C2149BAC">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="LeadRolePath" PropertyName="RootObjectTypeRequiredError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="LeadRolePath" Id="34867F08-CEF6-49F3-91E4-7FD19A907993">
+					<RolePlayer>
+						<DomainClassMoniker Name="LeadRolePath"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="RootObjectTypeRequiredError" PropertyName="LeadRolePath" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="RootObjectTypeRequiredError" Id="377992C2-2E35-42FC-BC11-CB621669121E">
+					<RolePlayer>
+						<DomainClassMoniker Name="PathRequiresRootObjectTypeError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="PathedRoleHasCompatibleJoinRolePlayerError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="A1AF8BEF-CF30-42AD-82E2-64B944DA6367">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="PathedRole" PropertyName="JoinCompatibilityError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="PathedRole" Id="DE925D2E-196A-4FB0-8759-6312FB6D0811">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="PathedRole"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="JoinCompatibilityError" PropertyName="PathedRole" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="JoinCompatibilityError" Id="8CBAF10F-3057-4C6F-94DD-D700446E4AB9">
+					<RolePlayer>
+						<DomainClassMoniker Name="JoinedPathRoleRequiresCompatibleRolePlayerError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="PathedRoleHasCompatibleCorrelationRolePlayerError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="83511F80-C376-47E6-A269-C0484AE62E10">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="PathedRole" PropertyName="CorrelationCompatibilityError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="PathedRole" Id="13CE0A9C-613D-4525-A5B5-3C4B374218B0">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="PathedRole"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="CorrelationCompatibilityError" PropertyName="PathedRole" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="CorrelationCompatibilityError" Id="8CB7BAF7-1855-4E26-B6B2-C4AA8CBCEFA9">
+					<RolePlayer>
+						<DomainClassMoniker Name="CorrelatedPathRoleRequiresCompatibleRolePlayerError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="PathedRoleHasSameFactTypeFollowsJoinError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="74D91E98-EFF2-4BE7-93DB-1BC0259EAE3E">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="PathedRole" PropertyName="SameFactTypeRoleWithoutJoinError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="PathedRole" Id="7EC398B9-09E3-4EFD-91DB-5D322F7B12B4">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="PathedRole"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="SameFactTypeRoleFollowsJoinError" PropertyName="PathedRole" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="SameFactTypeRoleFollowsJoinError" Id="7768FB17-4181-466B-A88E-85AE077A8892">
+					<RolePlayer>
+						<DomainClassMoniker Name="PathSameFactTypeRoleFollowsJoinError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="PathedRoleHasStartRoleError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="C7B96F20-10C3-4044-B4D8-430E2CDB7C71">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="PathedRole" PropertyName="StartRoleError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="PathedRole" Id="094CD818-15BB-48F9-9ECF-530E79EBD593">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="PathedRole"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="StartRoleError" PropertyName="PathedRole" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="StartRoleError" Id="6CA7A7A3-4680-421D-9791-548383045113">
+					<RolePlayer>
+						<DomainClassMoniker Name="PathStartRoleFollowsRootObjectTypeError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="PathedRoleHasMandatoryOuterJoinError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="B72C5E98-EC61-48FE-9717-889465C417FA">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="PathedRole" PropertyName="MandatoryOuterJoinError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="PathedRole" Id="87DE6B3E-0035-4166-8DB2-E144F9FCD4BE">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="PathedRole"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="MandatoryOuterJoinError" PropertyName="PathedRole" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="MandatoryOuterJoinError" Id="944665CB-08C2-42CB-9749-C7B2D738E5DE">
+					<RolePlayer>
+						<DomainClassMoniker Name="PathOuterJoinRequiresOptionalRoleError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="CalculatedPathValueHasFunctionRequiredError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="6DD2FAE5-BB57-4332-A343-AEFFD2E4B3B4">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="CalculatedPathValue" PropertyName="FunctionRequiredError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Calculation" Id="922C4D43-974A-4B32-B871-F7FE813FFF3B">
+					<RolePlayer>
+						<DomainClassMoniker Name="CalculatedPathValue"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="FunctionRequiredError" PropertyName="CalculatedPathValue" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="FunctionRequiredError" Id="F037C137-43A0-400E-9F0C-990EA7BD6938">
+					<RolePlayer>
+						<DomainClassMoniker Name="CalculatedPathValueRequiresFunctionError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="CalculatedPathValueHasUnboundParameterError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="4E2B57AE-B16A-4D13-9355-00B72337C56D">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="CalculatedPathValue" PropertyName="ParameterBindingErrorCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Calculation" Id="F256CF08-B0A4-44C2-AAE4-A46AEC0D1CF6">
+					<RolePlayer>
+						<DomainClassMoniker Name="CalculatedPathValue"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="ParameterBindingError" PropertyName="CalculatedPathValue" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ParameterBindingError" Id="22244386-FA38-484C-8065-689106C64F0D">
+					<RolePlayer>
+						<DomainClassMoniker Name="CalculatedPathValueParameterBindingError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="CalculatedPathValueParameterBindingErrorTargetsFunctionParameter" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="09891DED-6224-453D-AB7B-4E178F74467E">
+			<Source>
+				<DomainRole Name="ParameterBindingError" PropertyName="Parameter" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ParameterBindingError" Id="77B85305-AB1B-4EF4-9FE2-331CA955C6CD">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="CalculatedPathValueHasUnboundParameterError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Parameter" PropertyName="ParameterBindingErrorCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="Parameter" Id="994360CA-64C9-4095-A42B-B6EE27EFD1D5">
+					<RolePlayer>
+						<DomainClassMoniker Name="FunctionParameter"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="CalculatedPathValueHasConsumptionRequiredError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="8B56ED0C-7C34-493B-BE51-9D34087BA4BF">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="CalculatedPathValue" PropertyName="ConsumptionRequiredError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Calculation" Id="FE8A8094-5BD2-407C-930F-909D68B377F6">
+					<RolePlayer>
+						<DomainClassMoniker Name="CalculatedPathValue"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="ConsumptionRequiredError" PropertyName="CalculatedPathValue" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ConsumptionRequiredError" Id="1B1AD951-4355-42A9-89B7-781357D8B80F">
+					<RolePlayer>
+						<DomainClassMoniker Name="CalculatedPathValueMustBeConsumedError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="FactTypeDerivationRuleHasProjectionRequiredError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="FB983BA1-60F2-4C56-8BA4-B2C2A6DE6CA8">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="DerivationRule" PropertyName="ProjectionRequiredError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="DerivationRule" Id="BCEAF3F3-C188-4F83-BEB1-71920310711D">
+					<RolePlayer>
+						<DomainClassMoniker Name="FactTypeDerivationRule"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="ProjectionRequiredError" PropertyName="DerivationRule" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ProjectionRequiredError" Id="4D4B10EF-6A87-4721-B4C5-CF0D321374F9">
+					<RolePlayer>
+						<DomainClassMoniker Name="FactTypeDerivationRequiresProjectionError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="FactTypeDerivationProjectionHasPartialProjectionError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="9972479B-3323-4446-9DD9-FD42F70C96A2">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="DerivationProjection" PropertyName="PartialProjectionError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="DerivationProjection" Id="29F09464-ABFF-43CC-9AA1-067A2FF0ADD8">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="FactTypeDerivationProjection"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="PartialProjectionError" PropertyName="DerivationProjection" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="PartialProjectionError" Id="53B3D1CE-E61C-4567-81A0-829BE37B7DA7">
+					<RolePlayer>
+						<DomainClassMoniker Name="PartialFactTypeDerivationProjectionError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="ConstraintRoleSequenceJoinPathHasProjectionRequiredError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="9B4AAF66-EF35-4279-8DC0-5DE1C6306ED6">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="JoinPath" PropertyName="ProjectionRequiredError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="JoinPath" Id="264F2A22-23FD-4358-8C88-A715FF085F54">
+					<RolePlayer>
+						<DomainClassMoniker Name="ConstraintRoleSequenceJoinPath"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="ProjectionRequiredError" PropertyName="JoinPath" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ProjectionRequiredError" Id="89C0F915-F8CB-4FBB-933E-4F18CC77409C">
+					<RolePlayer>
+						<DomainClassMoniker Name="ConstraintRoleSequenceJoinPathRequiresProjectionError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="ConstraintRoleSequenceProjectionHasPartialProjectionError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="6710318F-0FCD-4C8B-8C17-1E19C8EA37E9">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="JoinPathProjection" PropertyName="PartialProjectionError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="JoinPathProjection" Id="72AC227F-7998-4E6F-BFFE-B8D074B3C3BF">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="ConstraintRoleSequenceJoinPathProjection"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="PartialProjectionError" PropertyName="JoinPathProjection" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="PartialProjectionError" Id="F92910D0-FBCD-41A2-B0B4-8CF3DA9DC75E">
+					<RolePlayer>
+						<DomainClassMoniker Name="PartialConstraintRoleSequenceJoinPathProjectionError"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
