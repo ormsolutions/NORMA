@@ -2769,7 +2769,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Specify a space-separated list of items to determine
 		/// if a list style supports collapsing a repeated lead
-		/// role. Allowed values are {Chain, And, Or, Xor, !And, !Or, !Xor, !Chain}.
+		/// role. Allowed values are {Chain, And, Or, Xor, !And,
+		/// !Or, !Xor, !Chain}. The !Chain directive here applies
+		/// to the long form of negation, not the inlined form
+		/// where the verbose negation constructs are not used.
 		/// </summary>
 		CollapsibleLeadDirective,
 		/// <summary>
@@ -2800,10 +2803,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		ImpersonalIdentityCorrelation,
 		/// <summary>
+		/// A form of ImpersonalIdentityCorrelation for lead role scenarios. Relate two
+		/// variables of different types that represent the same instance where the
+		/// first variable is an impersonal object type: {1} is {0} that.
+		/// </summary>
+		ImpersonalLeadIdentityCorrelation,
+		/// <summary>
 		/// Relate two variable names of different types that represent the same instance
 		/// where the first variable is a personal object type: {0} who is {1}.
 		/// </summary>
 		PersonalIdentityCorrelation,
+		/// <summary>
+		/// A form of PersonalIdentityCorrelation for lead role scenarios. Relate two
+		/// variables of different types that represent the same instance where the
+		/// first variable is an personal object type: {1} is {0} who.
+		/// </summary>
+		PersonalLeadIdentityCorrelation,
 		/// <summary>
 		/// Combine different hyphen-bound predicate parts around a central replacement
 		/// field occupied by the role player: {0}{{0}}{1}
@@ -3171,7 +3186,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				case RolePathVerbalizerSnippetType.HeaderListDirective:
 					return "!And !Or Xor !Xor";
 				case RolePathVerbalizerSnippetType.CollapsibleLeadDirective:
-					return "And Or Chain !Chain";
+					return "And Or Chain";
 				case RolePathVerbalizerSnippetType.ImpersonalPronoun:
 					return snippets.GetSnippet(CoreVerbalizationSnippetType.ImpersonalPronoun);
 				case RolePathVerbalizerSnippetType.PersonalPronoun:
@@ -3184,8 +3199,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					return snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, false, false);
 				case RolePathVerbalizerSnippetType.ImpersonalIdentityCorrelation:
 					return @"{0} <span class=""quantifier""/>that is</span> {1}";
+				case RolePathVerbalizerSnippetType.ImpersonalLeadIdentityCorrelation:
+					return @"{1} <span class=""quantifier""/>is</span> {0} <span class=""quantifier""/>that</span>";
 				case RolePathVerbalizerSnippetType.PersonalIdentityCorrelation:
 					return @"{0} <span class=""quantifier""/>who is</span> {1}";
+				case RolePathVerbalizerSnippetType.PersonalLeadIdentityCorrelation:
+					return @"{1} <span class=""quantifier""/>is</span> {0} <span class=""quantifier""/>who</span>";
 				case RolePathVerbalizerSnippetType.HyphenBoundPredicatePart:
 					return snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart);
 				case RolePathVerbalizerSnippetType.HeadVariableProjection:
@@ -4484,26 +4503,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// </summary>
 			None = 0,
 			/// <summary>
+			/// A reading has a basic lead role, which is a role with no hyphen
+			/// binding or front text associated with it. This state will always
+			/// be set along with the <see cref="FullyCollapseFirstRole"/> and
+			/// <see cref="BackReferenceFirstRole"/> settings, but can also hold
+			/// when these conditions do not. Set during the reading resolution phase.
+			/// </summary>
+			BasicLeadRole = 1,
+			/// <summary>
 			/// Completely eliminate the first role during role replacement.
 			/// Used during branch conditions when a reading is found that
 			/// matches the lead role player for the lead fact type in the
 			/// previous branch. Set during the reading resolution phase.
 			/// </summary>
-			FullyCollapseFirstRole = 1,
+			FullyCollapseFirstRole = 2,
 			/// <summary>
 			/// Use a personal or impersonal back referencing pronoun in place
 			/// of the first role. Used for a joined fact type where the previous
 			/// reading ends with the role player name. Set during the reading
 			/// resolution phase.
 			/// </summary>
-			BackReferenceFirstRole = 2,
+			BackReferenceFirstRole = 4,
 			/// <summary>
 			/// Use a negated existential quantifier for the non-entry role.
 			/// Set during path execution if the first fact type in a negated
 			/// chain is a binary fact type with an opposite role player with
 			/// an associated variable that has not been used.
 			/// </summary>
-			NegatedExitRole = 4,
+			NegatedExitRole = 8,
 			/// <summary>
 			/// Set during fact type analysis to determine if it is possible
 			/// that conditions might be met while the path is being verbalized
@@ -4511,7 +4538,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// role is fully existential, then the first flag can be set
 			/// when the readings are bound.
 			/// </summary>
-			DynamicNegatedExitRole = 8,
+			DynamicNegatedExitRole = 0x10,
 		}
 		#endregion // VerbalizationPlanReadingOptions enum
 		#region VerbalizationPlanBranchCorrelationStyle enum
@@ -4814,6 +4841,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 			/// <summary>
+			/// The variable used as a back reference with a type change
+			/// for a fact type node. Provides the context variable that
+			/// is being referenced. Set only if a back reference implies
+			/// a type correlation.
+			/// </summary>
+			public virtual RolePlayerVariable CorrelateWithBackReferencedVariable
+			{
+				get
+				{
+					return null;
+				}
+				set
+				{
+				}
+			}
+			/// <summary>
 			/// Get the entry <see cref="PathedRole"/> of a fact type node.
 			/// </summary>
 			public virtual PathedRole FactTypeEntry
@@ -4915,6 +4958,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				private readonly PathedRole myEntryPathedRole;
 				private IReading myReading;
 				private VerbalizationPlanReadingOptions myOptions;
+				private RolePlayerVariable myBackReferencedVariable;
 				public FactTypeNode(VerbalizationPlanNode parentNode, FactType factType, PathedRole factTypeEntryRole)
 					: base(parentNode)
 				{
@@ -4948,6 +4992,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					set
 					{
 						myReading = value;
+					}
+				}
+				public override RolePlayerVariable CorrelateWithBackReferencedVariable
+				{
+					get
+					{
+						return myBackReferencedVariable;
+					}
+					set
+					{
+						myBackReferencedVariable = value;
 					}
 				}
 				public override VerbalizationPlanReadingOptions ReadingOptions
@@ -5950,19 +6005,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					RoleBase entryRoleBase = ResolveRoleBaseInFactType(factTypeEntry.Role, factType);
 					RolePlayerVariable localContextLeadVariable = contextLeadVariable;
 					RolePlayerVariable localContextTrailingVariable = contextTrailingVariable;
-					// UNDONE: RolePathVerbalizerPending Do we want to get smarter on correlation here, or
-					// just attempt to check across exact types?
-					RolePlayerVariable entryVariable = GetRolePlayerVariableUse(factTypeEntry).Value.PrimaryRolePlayerVariable;
 					LinkedElementCollection<ReadingOrder> readingOrders = factType.ReadingOrderCollection;
-					bool matchedContextLead = false;
-					bool matchedContextTrailing = false;
 					IReading reading = null;
+					VerbalizationPlanReadingOptions options = VerbalizationPlanReadingOptions.None;
 					if (localContextLeadVariable != null)
 					{
 						// Continue with another reading starting with the lead role of the
 						// preceding fact type.
-						if (localContextLeadVariable == entryVariable)
+						if (localContextLeadVariable == GetRolePlayerVariableUse(factTypeEntry).Value.PrimaryRolePlayerVariable)
 						{
+							// Optimization of next branch to test the entry variable without invoking the delegate
 							reading = factType.GetMatchingReading(readingOrders, null, entryRoleBase, null, null, MatchingReadingOptions.NoFrontText | MatchingReadingOptions.LeadRolesNotHyphenBound);
 						}
 						else
@@ -5971,90 +6023,101 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								factTypeEntry,
 								delegate(PathedRole testPathedRole)
 								{
-									if (GetRolePlayerVariableUse(testPathedRole).Value.PrimaryRolePlayerVariable == localContextLeadVariable)
-									{
-										reading = factType.GetMatchingReading(readingOrders, null, ResolveRoleBaseInFactType(testPathedRole.Role, factType), null, null, MatchingReadingOptions.NoFrontText | MatchingReadingOptions.LeadRolesNotHyphenBound);
-										return false;
-									}
-									return true;
+									return !(testPathedRole != factTypeEntry && // Tested in previous branch
+										GetRolePlayerVariableUse(testPathedRole).Value.PrimaryRolePlayerVariable == localContextLeadVariable &&
+										null != (reading = factType.GetMatchingReading(readingOrders, null, ResolveRoleBaseInFactType(testPathedRole.Role, factType), null, null, MatchingReadingOptions.NoFrontText | MatchingReadingOptions.LeadRolesNotHyphenBound)));
 								});
 						}
-						matchedContextLead = reading != null;
+						if (reading != null)
+						{
+							options |= VerbalizationPlanReadingOptions.FullyCollapseFirstRole | VerbalizationPlanReadingOptions.BasicLeadRole;
+						}
 					}
-					if (!matchedContextLead && localContextTrailingVariable != null)
+					if (reading == null && localContextTrailingVariable != null)
 					{
-						if (localContextTrailingVariable == entryVariable)
-						{
-							reading = factType.GetMatchingReading(readingOrders, null, entryRoleBase, null, null, MatchingReadingOptions.NoFrontText | MatchingReadingOptions.LeadRolesNotHyphenBound);
-						}
-						else
-						{
-							VisitPathedRolesForFactTypeEntry(
-								factTypeEntry,
-								delegate(PathedRole testPathedRole)
+						IReading pairedReading = null;
+						VisitPathedRolesForFactTypeEntry(
+							factTypeEntry,
+							delegate(PathedRole testPathedRole)
+							{
+								bool exactMatch;
+								if (CanPartnerWithVariable(testPathedRole, localContextTrailingVariable, out exactMatch) &&
+									null != (reading = factType.GetMatchingReading(readingOrders, null, ResolveRoleBaseInFactType(testPathedRole.Role, factType), null, null, MatchingReadingOptions.NoFrontText | MatchingReadingOptions.LeadRolesNotHyphenBound)))
 								{
-									if (GetRolePlayerVariableUse(testPathedRole).Value.PrimaryRolePlayerVariable == localContextTrailingVariable)
+									// Keep going if we don't have an exact variable match, we might still find one.
+									if (exactMatch)
 									{
-										reading = factType.GetMatchingReading(readingOrders, null, ResolveRoleBaseInFactType(testPathedRole.Role, factType), null, null, MatchingReadingOptions.NoFrontText | MatchingReadingOptions.LeadRolesNotHyphenBound);
 										return false;
 									}
-									return true;
-								});
+									if (pairedReading == null)
+									{
+										pairedReading = reading;
+									}
+									reading = null;
+								}
+								return true;
+							});
+						if (reading != null)
+						{
+							// We have a forward primary reading starting with the same variable
+							options |= VerbalizationPlanReadingOptions.BackReferenceFirstRole | VerbalizationPlanReadingOptions.BasicLeadRole;
 						}
-						matchedContextTrailing = reading != null;
+						else if (pairedReading != null)
+						{
+							// The primary reading has a lead role that can be successfully
+							// paired with the context variable.
+							reading = pairedReading;
+							options |= VerbalizationPlanReadingOptions.BackReferenceFirstRole | VerbalizationPlanReadingOptions.BasicLeadRole;
+							verbalizationNode.CorrelateWithBackReferencedVariable = localContextTrailingVariable;
+						}
 					}
+
+					// Determine basic lead reading settings plus lead and trailing variables
+					string readingText;
 					if (reading == null)
 					{
 						// Fall back on any reading for the current entry, or a mocked-up reading if no others are available
 						reading = factType.GetMatchingReading(readingOrders, null, entryRoleBase, null, null, MatchingReadingOptions.AllowAnyOrder) ?? factType.GetDefaultReading();
+						readingText = reading.Text;
+						if (readingText.StartsWith("{0}") && !VerbalizationHyphenBinder.IsHyphenBound(readingText, 0))
+						{
+							options |= VerbalizationPlanReadingOptions.BasicLeadRole;
+						}
 					}
-
-					// Determine lead and trailing variables
-					VerbalizationPlanReadingOptions options = VerbalizationPlanReadingOptions.None;
+					else
+					{
+						readingText = reading.Text;
+					}
 					IList<RoleBase> roles = reading.RoleCollection;
 					if (canCollapseLead)
 					{
-						if (localContextLeadVariable != null)
+						if (null != localContextLeadVariable &&
+							0 == (options & VerbalizationPlanReadingOptions.FullyCollapseFirstRole))
 						{
-							if (matchedContextLead)
-							{
-								options |= VerbalizationPlanReadingOptions.FullyCollapseFirstRole;
-							}
-							else
-							{
-								contextLeadVariable = null;
-							}
+							contextLeadVariable = null;
 						}
-						if (contextLeadVariable == null)
+						if (contextLeadVariable == null &&
+							0 != (options & VerbalizationPlanReadingOptions.BasicLeadRole))
 						{
-							RoleBase firstRoleBase = roles[0];
-							if (reading.Text.StartsWith("{0}") && !VerbalizationHyphenBinder.IsHyphenBound(reading, firstRoleBase))
-							{
-								Role findRole = firstRoleBase.Role;
-								// Find the corresponding variable in the fact type entry
-								VisitPathedRolesForFactTypeEntry(
-									factTypeEntry,
-									delegate(PathedRole testPathedRole)
+							Role findRole = roles[0].Role;
+							// Find the corresponding variable in the fact type entry
+							VisitPathedRolesForFactTypeEntry(
+								factTypeEntry,
+								delegate(PathedRole testPathedRole)
+								{
+									if (testPathedRole.Role == findRole)
 									{
-										if (testPathedRole.Role == findRole)
-										{
-											localContextLeadVariable = GetRolePlayerVariableUse(testPathedRole).Value.PrimaryRolePlayerVariable;
-											return false;
-										}
-										return true;
-									});
-								contextLeadVariable = localContextLeadVariable;
-							}
+										localContextLeadVariable = GetRolePlayerVariableUse(testPathedRole).Value.PrimaryRolePlayerVariable;
+										return false;
+									}
+									return true;
+								});
+							contextLeadVariable = localContextLeadVariable;
 						}
 					}
 					else
 					{
 						contextLeadVariable = null;
-					}
-
-					if (matchedContextTrailing)
-					{
-						options |= VerbalizationPlanReadingOptions.BackReferenceFirstRole;
 					}
 					
 					// Get the trailing information for the next step
@@ -6069,7 +6132,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						verbalizationNodeLink.Previous == null &&
 						null != (parentNode = verbalizationNode.ParentNode) &&
 						parentNode.BranchType == VerbalizationPlanBranchType.NegatedChain;
-					bool hasTrailingRolePlayer = roleCount > 1 && reading.Text.EndsWith("{" + (roleCount - 1).ToString(CultureInfo.InvariantCulture) + "}");
+					bool hasTrailingRolePlayer = roleCount > 1 && readingText.EndsWith("{" + (roleCount - 1).ToString(CultureInfo.InvariantCulture) + "}");
 					if (checkOppositeNegation || hasTrailingRolePlayer)
 					{
 						Role findRole = roles[roleCount - 1].Role;
@@ -6114,6 +6177,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				case VerbalizationPlanNodeType.Branch:
 					VerbalizationPlanBranchType branchType = verbalizationNode.BranchType;
 					bool childCanCollapseLead = GetCollapsibleLeadAllowedFromBranchType(branchType);
+					if (!childCanCollapseLead && branchType == VerbalizationPlanBranchType.NegatedChain && canCollapseLead)
+					{
+						// Dynamic negation inlining means that we may not know until rendering
+						// the path if a construct can be inlined or not, so we recheck the collapsible
+						// lead permissions for a negated chain dynamically based on whether or
+						// not the negation is inlined. We need to calculate collapsed lead settings
+						// just in case we use them, so we always mark collapsing as possible
+						// irrespective of the directive settings for the negated chain.
+						childCanCollapseLead = true;
+					}
 					bool splitBlocksTrailingVariable = BranchSplits(branchType);
 					contextTrailingVariable = null;
 					RolePlayerVariable startContextLeadVariable;
@@ -6603,6 +6676,71 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			VerbalizationPlanNode parentNode = chainNode.ParentNode;
 			myCurrentBranchNode = parentNode;
 			LinkedNode<VerbalizationPlanNode> headChildNode = chainNode.FirstChildNode;
+
+			// Walk the child nodes and remove any supertype entry fact types with trailing
+			// trailing chained information on the subtype role. If there is no trailing
+			// information then this is a subtype assertion (supertype A must be a subtype B)
+			// and cannot be collapased. The goal here is to verbalize an explicit crossing
+			// of a subtype link the same as an implicit subtype crossing. So, if B->A and 'B r',
+			// a path rooted at A and starting directly to the 'r' role should verbalize the
+			// same as a path rooted at A, starting at the supertype role of the subtype instance
+			// relationship, then joining the subtype role to the 'r' role.
+			if (headChildNode != null)
+			{
+				LinkedNode<VerbalizationPlanNode> currentNode = headChildNode;
+				LinkedNode<VerbalizationPlanNode> nextNode = currentNode.Next;
+				while (nextNode != null)
+				{
+					VerbalizationPlanNode testPlanNode = currentNode.Value;
+					PathedRole supertypePathedRole;
+					SupertypeMetaRole supertypeRole;
+					if (testPlanNode.NodeType == VerbalizationPlanNodeType.FactType &&
+						null != (supertypeRole = (supertypePathedRole = testPlanNode.FactTypeEntry).Role as SupertypeMetaRole))
+					{
+						PathedRole subtypePathedRole = null;
+						VisitPathedRolesForFactTypeEntry(
+							supertypePathedRole,
+							delegate(PathedRole pathedRole)
+							{
+								if (pathedRole != supertypePathedRole)
+								{
+									// Conditions should always be true for a clean path,
+									// provided as defensive sanity code.
+									SubtypeMetaRole subtypeRole;
+									if (null != (subtypeRole = pathedRole.Role as SubtypeMetaRole) &&
+										subtypeRole.FactType == subtypeRole.FactType)
+									{
+										subtypePathedRole = pathedRole;
+									}
+									return false;
+								}
+								return true;
+							});
+						if (subtypePathedRole != null)
+						{
+							// We only do something here if we've actually defined a variable for
+							// this pathed role. Otherwise, the pathed role is there but does nothing.
+							Dictionary<object, RolePlayerVariableUse> useMap = myUseToVariableMap;
+							RolePlayerVariableUse supertypeVariableUse;
+							RolePlayerVariableUse subtypeVariableUse;
+							if (useMap.TryGetValue(supertypePathedRole, out supertypeVariableUse) &&
+								useMap.TryGetValue(subtypePathedRole, out subtypeVariableUse))
+							{
+								currentNode.Detach(ref headChildNode);
+								// Note that both variables are already registered, this just modifies the settings
+								// and adjust or adds the the join for the subtype variable. There is no need to remove
+								// other parts of the registered variable information. If there is a chained subtype, then
+								// the middle correlations steps will just be ignored.
+								RegisterRolePlayerUse(subtypePathedRole.Role.RolePlayer, supertypeVariableUse.PrimaryRolePlayerVariable, subtypePathedRole, null);
+							}
+						}
+					}
+					currentNode = nextNode;
+					nextNode = nextNode.Next;
+				}
+				chainNode.FirstChildNode = headChildNode;
+			}
+
 			// If the node has no children or one child or the parent is a chain node,
 			// then flatten the hierarchy.
 			if (headChildNode == null ||
@@ -7330,7 +7468,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					RolePlayerVariable partnerWithVariable = GetUnpairedPartnerVariable(variable, firstUse, externalCorrelationNode);
 					if (partnerWithVariable != null)
 					{
-						retVal = PartnerVariables(variable, retVal, partnerWithVariable, null);
+						retVal = PartnerVariables(variable, retVal, partnerWithVariable, null, false);
 					}
 				}
 			}
@@ -7419,17 +7557,71 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							{
 								if (0 != (readingOptions & VerbalizationPlanReadingOptions.BackReferenceFirstRole))
 								{
-									ObjectType rolePlayer = pathedRole.Role.RolePlayer;
-									replacement = renderer.ResolveVerbalizerSnippet(rolePlayer != null && rolePlayer.IsPersonal ? RolePathVerbalizerSnippetType.PersonalPronoun : RolePathVerbalizerSnippetType.ImpersonalPronoun);
+									RolePlayerVariable backReferenceVariable = node.CorrelateWithBackReferencedVariable;
+									ObjectType rolePlayer;
+									if (backReferenceVariable != null)
+									{
+										// Inline a significantly simplified version of QualifyRolePlayer. This assumes that
+										// a back referenced variable is already sufficiently paired with other variables that
+										// no additional external pairing work needs to be done. There are three possible states at this point:
+										// 1) The primary variable has not been used (corollary: the variables have not been paired)
+										// 2) The primary variable has been used, but not paired with the back referenced variable.
+										// 3) The variables have already been paired.
+										// The first two cases are the same apart from different quantifiers. The third case is the
+										// same as the same variable case except that the IsPersonal setting is pulled from the back
+										// referenced variable, not the current role.
+										
+										// We'll use the lead (im)personal pronoun regardless, get it first
+										rolePlayer = backReferenceVariable.RolePlayer;
+										replacement = renderer.ResolveVerbalizerSnippet(rolePlayer != null && rolePlayer.IsPersonal ? RolePathVerbalizerSnippetType.PersonalPronoun : RolePathVerbalizerSnippetType.ImpersonalPronoun);
+
+										// Figure out if we need to the variables as well
+										Dictionary<CorrelatedVariablePairing, int> pairings = myCorrelatedVariablePairing;
+										RolePlayerVariable primaryVariable = GetRolePlayerVariableUse(pathedRole).Value.PrimaryRolePlayerVariable;
+										CorrelatedVariablePairing pairing = new CorrelatedVariablePairing(primaryVariable, backReferenceVariable);
+										int pairedDuringPhase;
+										if (pairings == null ||
+											!pairings.TryGetValue(pairing, out pairedDuringPhase) ||
+											!IsPairingUsePhaseInScope(pairedDuringPhase))
+										{
+											rolePlayer = pathedRole.Role.RolePlayer;
+											replacement = string.Format(
+												renderer.FormatProvider,
+												renderer.ResolveVerbalizerSnippet(rolePlayer != null && rolePlayer.IsPersonal ? RolePathVerbalizerSnippetType.PersonalLeadIdentityCorrelation : RolePathVerbalizerSnippetType.ImpersonalLeadIdentityCorrelation),
+												QuantifyRolePlayerName(GetSubscriptedRolePlayerName(primaryVariable), primaryVariable.Use(CurrentQuantificationUsePhase, true), false),
+												replacement);
+											if (pairings == null)
+											{
+												myCorrelatedVariablePairing = pairings = new Dictionary<CorrelatedVariablePairing, int>();
+											}
+											pairings[pairing] = CurrentPairingUsePhase;
+										}
+									}
+									else
+									{
+										rolePlayer = pathedRole.Role.RolePlayer;
+										replacement = renderer.ResolveVerbalizerSnippet(rolePlayer != null && rolePlayer.IsPersonal ? RolePathVerbalizerSnippetType.PersonalPronoun : RolePathVerbalizerSnippetType.ImpersonalPronoun);
+									}
 								}
 								else if (0 != (readingOptions & VerbalizationPlanReadingOptions.FullyCollapseFirstRole))
 								{
-									replacement = "";
+									// The collapsed first role settings for the lead role in a negated chain
+									// are dependent on whether the negation is inlined and, if not inlined, whether
+									// the negated chain branching snippets allow a lead collapse. This was deferred
+									// until this point the ability to inline a negation is not known until it is
+									// rendered.
+									VerbalizationPlanNode parentNode;
+									if (0 != (readingOptions & VerbalizationPlanReadingOptions.NegatedExitRole) || // Inline negation supported, can collapse as set is based on the containing branch, not the negation
+										null != nodeLink.Previous || // Inline negation applies only to the lead fact type in a negated chain
+										(null != (parentNode = node.ParentNode) && parentNode.BranchType == VerbalizationPlanBranchType.NegatedChain && GetCollapsibleLeadAllowedFromBranchType(VerbalizationPlanBranchType.NegatedChain)))
+									{
+										replacement = "";
+									}
 								}
 							}
 							if (replacement == null)
 							{
-								replacement = QuantifyRolePlayer(pathedRole, i == negatedExitRoleIndex, hyphenBinder, i);
+								replacement = QuantifyRolePlayer(pathedRole, i == negatedExitRoleIndex, i == 0 && 0 != (readingOptions & VerbalizationPlanReadingOptions.BasicLeadRole), hyphenBinder, i);
 							}
 						}
 						else
@@ -7517,11 +7709,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									if (0 != ((readingOptions = childNode.ReadingOptions) & VerbalizationPlanReadingOptions.DynamicNegatedExitRole) &&
 										null != (entryPathedRole = childNode.FactTypeEntry))
 									{
-										// The dynamic flag if there is a trailing pathed role in the same role path
+										// The dynamic flag is set if there is a trailing pathed role on the
+										// binary in the same role path. We can use the collapsed negated form
+										// if the variable has not been introduced yet.
 										ReadOnlyCollection<PathedRole> childPathedRoles = myRolePathCache.PathedRoleCollection(entryPathedRole.RolePath);
 										int testChildIndex = childPathedRoles.IndexOf(entryPathedRole) + 1;
 										if (testChildIndex < childPathedRoles.Count &&
-											GetRolePlayerVariableUse(childPathedRoles[testChildIndex]).Value.PrimaryRolePlayerVariable.HasBeenUsed(CurrentQuantificationUsePhase, true))
+											!GetRolePlayerVariableUse(childPathedRoles[testChildIndex]).Value.PrimaryRolePlayerVariable.HasBeenUsed(CurrentQuantificationUsePhase, true))
 										{
 											readingOptions |= VerbalizationPlanReadingOptions.NegatedExitRole;
 											childNode.ReadingOptions = readingOptions;
@@ -7689,7 +7883,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			return null;
 		}
-		private string QuantifyRolePlayer(PathedRole pathedRole, bool negateExistentialQuantifier, VerbalizationHyphenBinder hyphenBinder, int hyphenBinderRoleIndex)
+		private string QuantifyRolePlayer(PathedRole pathedRole, bool negateExistentialQuantifier, bool basicLeadRole, VerbalizationHyphenBinder hyphenBinder, int hyphenBinderRoleIndex)
 		{
 			Role role = pathedRole.Role;
 			RolePlayerVariableUse variableUse = GetRolePlayerVariableUse(pathedRole).Value;
@@ -7697,7 +7891,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			int quantificationUsePhase = CurrentQuantificationUsePhase;
 			bool firstUseOfPrimaryVariable = !primaryVariable.HasBeenUsed(quantificationUsePhase, false);
 			string result = GetSubscriptedRolePlayerName(primaryVariable);
-			IRolePathRenderer renderer = myRenderer;
 
 			// Potentially add a single correlation relationship as follows.
 			// 1) If there are any used variables (other than the current primary variable)
@@ -7768,7 +7961,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							if (externalPartnerVariable != null)
 							{
-								preRenderedPartnerWith = PartnerVariables(externalPartnerVariable, null, partnerExternalPartnerVariable, null);
+								preRenderedPartnerWith = PartnerVariables(externalPartnerVariable, null, partnerExternalPartnerVariable, null, false);
 							}
 							else
 							{
@@ -7778,16 +7971,86 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					if (externalPartnerVariable != null)
 					{
-						preRenderedPartnerWith = PartnerVariables(partnerWithVariable, null, externalPartnerVariable, preRenderedPartnerWith);
+						preRenderedPartnerWith = PartnerVariables(partnerWithVariable, null, externalPartnerVariable, preRenderedPartnerWith, false);
 					}
 				}
 			}
 
 			if (partnerWithVariable != null)
 			{
-				result = PartnerVariables(primaryVariable, result, partnerWithVariable, preRenderedPartnerWith);
+				if (basicLeadRole && !negateExistentialQuantifier && preRenderedPartnerWith == null)
+				{
+					// Use the optimized lead version of the identity correlation.
+					return PartnerVariables(primaryVariable, QuantifyRolePlayerName(result, primaryVariable.Use(quantificationUsePhase, true), negateExistentialQuantifier), partnerWithVariable, preRenderedPartnerWith, true);
+				}
+				// Note that we never chain with the optimized lead form
+				result = PartnerVariables(primaryVariable, result, partnerWithVariable, preRenderedPartnerWith, false);
 			}
 			return QuantifyRolePlayerName(hyphenBinder.HyphenBindRoleReplacement(result, hyphenBinderRoleIndex), primaryVariable.Use(quantificationUsePhase, true), negateExistentialQuantifier);
+		}
+		/// <summary>
+		/// Test if two variables can be partnered, meanign that they represent different types
+		/// of the same underlying instance.
+		/// </summary>
+		/// <param name="useKey">Key for the variable use to partner with</param>
+		/// <param name="variable">The variable to test for available partnership.</param>
+		/// <param name="exactMatch">The primary variable for the <paramref name="useKey"/>
+		/// is the <paramref name="variable"/>.</param>
+		/// <returns><see langword="true"/> if the two variables represent the same instance.</returns>
+		private bool CanPartnerWithVariable(object useKey, RolePlayerVariable variable, out bool exactMatch)
+		{
+			RolePlayerVariableUse? optionalVariableUse = GetRolePlayerVariableUse(useKey);
+			if (optionalVariableUse.HasValue)
+			{
+				RolePlayerVariableUse variableUse = optionalVariableUse.Value;
+				RolePlayerVariable primaryUseVariable = variableUse.PrimaryRolePlayerVariable;
+				if (variable == primaryUseVariable)
+				{
+					exactMatch = true;
+					return true;
+				}
+				exactMatch = false;
+				if (variable == variableUse.JoinedToVariable)
+				{
+					return true;
+				}
+				PathedRole correlationRoot;
+				if (variableUse.CorrelatedVariablesHead != null)
+				{
+					foreach (RolePlayerVariable testVariable in variableUse.GetCorrelatedVariables(false))
+					{
+						if (testVariable == variable)
+						{
+							return true;
+						}
+					}
+				}
+				else if (null != (correlationRoot = variableUse.CorrelationRoot))
+				{
+					foreach (RolePlayerVariable testVariable in GetRolePlayerVariableUse(correlationRoot).Value.GetCorrelatedVariables(true))
+					{
+						if (testVariable == variable)
+						{
+							return true;
+						}
+					}
+				}
+				Dictionary<RolePlayerVariable, LinkedNode<RolePlayerVariable>> externalCorrelations;
+				LinkedNode<RolePlayerVariable> externalLinks;
+				if (null != (externalCorrelations = myCorrelatedExternalVariables) &&
+					externalCorrelations.TryGetValue(primaryUseVariable, out externalLinks))
+				{
+					foreach (RolePlayerVariable testVariable in externalLinks)
+					{
+						if (testVariable == variable)
+						{
+							return true;
+						}
+					}
+				}
+			}
+			exactMatch = false;
+			return false;
 		}
 		/// <summary>
 		/// Get an unused partner variable pairing from a list of partners. If
@@ -7857,8 +8120,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="preRenderedPrimary">Already rendered text to represent the primary variable, or null for a standard replacement.</param>
 		/// <param name="partnerWithVariable">The partner (right) variable.</param>
 		/// <param name="preRenderedPartner">Already rendered text to represent the partner variable, or null for a standard replacement.</param>
+		/// <param name="leadRolePattern">Use the basic lead role pattern, which gives a smoother reading by using a separate statement
+		/// to form an identity pair at the expense of only being usable in lead constructs. The universally applicable but somewhat clumsy
+		/// 'some A that is that B' becomes 'that B is some A that', or in a collapsed form using a person or impersonal pronoun 'that is some A that'.</param>
 		/// <returns>A combined string</returns>
-		private string PartnerVariables(RolePlayerVariable primaryVariable, string preRenderedPrimary, RolePlayerVariable partnerWithVariable, string preRenderedPartner)
+		private string PartnerVariables(RolePlayerVariable primaryVariable, string preRenderedPrimary, RolePlayerVariable partnerWithVariable, string preRenderedPartner, bool leadRolePattern)
 		{
 			if (preRenderedPrimary == null)
 			{
@@ -7873,7 +8139,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			Dictionary<CorrelatedVariablePairing, int> pairings = myCorrelatedVariablePairing;
 			string retVal = string.Format(
 				renderer.FormatProvider,
-				renderer.ResolveVerbalizerSnippet(leftRolePlayer != null && leftRolePlayer.IsPersonal ? RolePathVerbalizerSnippetType.PersonalIdentityCorrelation : RolePathVerbalizerSnippetType.ImpersonalIdentityCorrelation),
+				renderer.ResolveVerbalizerSnippet(leftRolePlayer != null && leftRolePlayer.IsPersonal ? (leadRolePattern ? RolePathVerbalizerSnippetType.PersonalLeadIdentityCorrelation : RolePathVerbalizerSnippetType.PersonalIdentityCorrelation) : (leadRolePattern ? RolePathVerbalizerSnippetType.ImpersonalLeadIdentityCorrelation : RolePathVerbalizerSnippetType.ImpersonalIdentityCorrelation)),
 				preRenderedPrimary,
 				QuantifyRolePlayerName(preRenderedPartner, partnerWithVariable.Use(CurrentQuantificationUsePhase, true), false));
 			if (pairings == null)

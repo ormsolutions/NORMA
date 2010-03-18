@@ -269,6 +269,9 @@
 			<arg:AddRule methodName="ReadingAddedRule">
 				<arg:RuleOn targetType="ReadingOrderHasReading" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:AddRule>
+			<arg:DeleteRule methodName="ReadingDeletedRule">
+				<arg:RuleOn targetType="ReadingOrderHasReading" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
+			</arg:DeleteRule>
 			<arg:DeleteRule methodName="ReadingOrderDeletedRule">
 				<arg:RuleOn targetType="FactTypeHasReadingOrder" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:DeleteRule>

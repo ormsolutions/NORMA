@@ -719,23 +719,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		private static void ReadingOrderDeletedRule(ElementDeletedEventArgs e)
 		{
-			FactTypeHasReadingOrder link = e.ModelElement as FactTypeHasReadingOrder;
-			FactType factType = link.FactType;
-			foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
-			{
-				FactTypeShape factShape = pel as FactTypeShape;
-				if (factShape != null)
-				{
-					foreach (ShapeElement shape in factShape.RelativeChildShapes)
-					{
-						ReadingShape readingShape = shape as ReadingShape;
-						if (readingShape != null)
-						{
-							readingShape.InvalidateDisplayText();
-						}
-					}
-				}
-			}
+			InvalidateReadingShape(((FactTypeHasReadingOrder)e.ModelElement).FactType);
 		}
 		#endregion // Reading text display update rules
 		#region Derivation Rules
@@ -1081,23 +1065,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			if (e.OldOrdinal == 0 || e.NewOrdinal == 0)
 			{
-				ReadingOrder order = e.SourceElement as ReadingOrder;
-				FactType factType = order.FactType;
-				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
-				{
-					FactTypeShape factShape = pel as FactTypeShape;
-					if (factShape != null)
-					{
-						foreach (ShapeElement shape in factShape.RelativeChildShapes)
-						{
-							ReadingShape readingShape = shape as ReadingShape;
-							if (readingShape != null)
-							{
-								readingShape.InvalidateDisplayText();
-							}
-						}
-					}
-				}
+				InvalidateReadingShape(((ReadingOrder)e.SourceElement).FactType);
 			}
 		}
 		/// <summary>
@@ -1111,26 +1079,22 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			if (!link.IsDeleted)
 			{
 				ReadingOrder order = link.ReadingOrder;
-				FactType factType;
-				if (order.ReadingCollection[0] == link.Reading &&
-					null != (factType = order.FactType))
+				if (order.ReadingCollection[0] == link.Reading)
 				{
-					foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
-					{
-						FactTypeShape factShape = pel as FactTypeShape;
-						if (factShape != null)
-						{
-							foreach (ShapeElement shape in factShape.RelativeChildShapes)
-							{
-								ReadingShape readingShape = shape as ReadingShape;
-								if (readingShape != null)
-								{
-									readingShape.InvalidateDisplayText();
-								}
-							}
-						}
-					}
+					InvalidateReadingShape(order.FactType);
 				}
+			}
+		}
+		/// <summary>
+		/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrderHasReading), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// Deleting a reading without deleting the reading order may require a shape update
+		/// </summary>
+		private static void ReadingDeletedRule(ElementDeletedEventArgs e)
+		{
+			ReadingOrder order = ((ReadingOrderHasReading)e.ModelElement).ReadingOrder;
+			if (!order.IsDeleted)
+			{
+				InvalidateReadingShape(order.FactType);
 			}
 		}
 		/// <summary>
@@ -1256,32 +1220,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				Reading reading = e.ModelElement as Reading;
 				ReadingOrder readingOrder;
-				FactType factType;
 				if (!reading.IsDeleted &&
-					null != (readingOrder = reading.ReadingOrder) &&
-					null != (factType = readingOrder.FactType))
+					null != (readingOrder = reading.ReadingOrder))
 				{
-					// UNDONE: We're using this and similar foreach constructs all over this
-					// file. Put some clean helper functions together and start using them.
-					LinkedElementCollection<PresentationElement> pelList = PresentationViewsSubject.GetPresentation(factType);
-					int pelCount = pelList.Count;
-					for (int i = 0; i < pelCount; ++i)
-					{
-						FactTypeShape factShape = pelList[i] as FactTypeShape;
-						if (factShape != null)
-						{
-							LinkedElementCollection<ShapeElement> childShapes = factShape.RelativeChildShapes;
-							int childPelCount = childShapes.Count;
-							for (int j = 0; j < childPelCount; ++j)
-							{
-								ReadingShape readingShape = childShapes[j] as ReadingShape;
-								if (readingShape != null)
-								{
-									readingShape.InvalidateDisplayText();
-								}
-							}
-						}
-					}
+					InvalidateReadingShape(readingOrder.FactType);
 				}
 			}
 		}
