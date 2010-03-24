@@ -394,10 +394,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								.smallIndent { left: 8px; position: relative;}
 								.listSeparator { color: windowtext; font-weight: 200;}
 								.logicalOperator { color: MediumBlue; font-weight: bold;}
-								.note { color: DarkGray; font-style: italic; font-weight: normal; }
+								.note { color: Black; font-style: italic; font-weight: normal; }
+								.definition { color: Black; font-style: italic; font-weight: normal; }
 								.notAvailable { font-style: italic; }
 								.instance { color: Brown; font-weight: normal; }
-								
+
+								table.hidden, tr.hidden, td.hidden {{ margin: 0em; padding: 0em; border-collapse: collapse;}}
+								td.hidden {{ vertical-align: top; }}
+								table.hidden {{ display:inline; }}
+
 								div.disclaimer
 								{
 									font-weight:bold;
