@@ -69,6 +69,8 @@
 				<Fact/>
 			</Snippet>
 			<Snippet ref="ReferenceSchemeVerbalization" conditionalMatch="HasUnobjectifiedPreferredIdentifier">
+				<!-- UNDONE: Non-trivial join path external identifiers are not currently supported. Verbalize
+				the join path here when they are. -->
 				<IterateRoles match="preferredIdentifier" listStyle="CompoundList">
 					<Fact/>
 				</IterateRoles>
@@ -126,7 +128,7 @@
 										<SequenceJoinPath markTrailingOutdentStart="true">
 											<IterateRoles listStyle="null" match="constraintRoles">
 												<Fact readingChoice="PreferPrimaryLeadReading">
-													<ProvidedPredicateReplacement included="true" quantify="true"/>
+													<ProvidedPredicateReplacement match="included" quantify="true"/>
 													<ProvidedPredicateReplacement quantify="true"/>
 												</Fact>
 											</IterateRoles>
@@ -136,7 +138,7 @@
 										<SequenceJoinPath markTrailingOutdentStart="true">
 											<IterateRoles match="constraintRoles" listStyle="null">
 												<Fact readingChoice="PreferPrimaryLeadReading">
-													<ProvidedPredicateReplacement included="true" quantify="true"/>
+													<ProvidedPredicateReplacement match="included" quantify="true"/>
 													<ProvidedPredicateReplacement quantify="true"/>
 												</Fact>
 											</IterateRoles>
@@ -156,7 +158,7 @@
 											<SequenceJoinPath markTrailingOutdentStart="true">
 												<IterateRoles match="constraintRoles" listStyle="null" pass="first">
 													<Fact readingChoice="PreferLeadReading">
-														<ProvidedPredicateReplacement included="true" quantify="true"/>
+														<ProvidedPredicateReplacement match="included" quantify="true"/>
 														<ProvidedPredicateReplacement quantify="true"/>
 													</Fact>
 												</IterateRoles>
@@ -166,7 +168,7 @@
 											<SequenceJoinPath markTrailingOutdentStart="true">
 												<IterateRoles match="constraintRoles" listStyle="null" pass="first">
 													<Fact readingChoice="PreferLeadReading">
-														<ProvidedPredicateReplacement included="true" quantify="true"/>
+														<ProvidedPredicateReplacement match="included" quantify="true"/>
 														<ProvidedPredicateReplacement quantify="true"/>
 													</Fact>
 												</IterateRoles>
@@ -185,7 +187,7 @@
 								<SequenceJoinPath markTrailingOutdentStart="true">
 									<IterateRoles match="constraintRoles" listStyle="null" uniqueFactType="true">
 										<Fact readingChoice="PreferPrimaryLeadReading">
-											<ProvidedPredicateReplacement included="true" quantify="true"/>
+											<ProvidedPredicateReplacement match="included" quantify="true"/>
 											<ProvidedPredicateReplacement quantify="true"/>
 										</Fact>
 									</IterateRoles>
@@ -195,7 +197,7 @@
 								<SequenceJoinPath markTrailingOutdentStart="true">
 									<IterateRoles match="constraintRoles" listStyle="null" uniqueFactType="true">
 										<Fact readingChoice="PreferPrimaryLeadReading">
-											<ProvidedPredicateReplacement included="true" quantify="true"/>
+											<ProvidedPredicateReplacement match="included" quantify="true"/>
 											<ProvidedPredicateReplacement quantify="true"/>
 										</Fact>
 									</IterateRoles>
@@ -558,7 +560,7 @@
 				</ConstrainedRoles>-->
 			</Constraint>
 			<!-- Start Uniqueness Constraint-->
-			<Constraint type="UniquenessConstraint" patternGroup="SetConstraint">
+			<Constraint type="UniquenessConstraint" patternGroup="SetConstraint" automaticJoinPathPattern="OppositeRole">
 				<!-- UNDONE: Subscripting requirements are harder than this. Subscripting
 				needs to go across FactTypes, and be based on included/excluded roles. In this
 				case, the subscripts are only needed if the duplicates role players intersect
@@ -786,42 +788,46 @@
 
 				<!-- External constraints -->
 				<!-- Positive Reading -->
-				<ConstrainedRoles sign="positive" minFactArity="2" maxFactArity="2">
+				<ConstrainedRoles trivialOppositeRolePath="true" sign="positive" minFactArity="2" maxFactArity="2" blockHelpers="pathVerbalizer">
 					<ConditionalReading>
 						<ReadingChoice match="RequireAllNonLeadReadingNoFrontText">
 							<Snippet ref="ForEachCompactQuantifier">
-								<IterateRoles match="constraintRoles" listStyle="SimpleList" hyphenBind="true">
+								<IterateRoles match="providedConstraintRoles" listStyle="SimpleList" hyphenBind="true">
 									<ReadingContext match="PreferNonPrimaryLeadReadingNoFrontText"/>
 								</IterateRoles>
-								<IterateRoles match="constraintRoles" listStyle="IndentedList">
+								<IterateRoles match="providedConstraintRoles" listStyle="IndentedList">
 									<Fact readingChoice="Context">
-										<PredicateReplacement match="excluded" pass="first">
+										<ProvidedPredicateReplacement match="excluded" pass="first">
 											<Snippet ref="AtMostOneQuantifier" />
-										</PredicateReplacement>
-										<PredicateReplacement match="excluded">
+										</ProvidedPredicateReplacement>
+										<ProvidedPredicateReplacement match="excluded">
 											<Snippet ref="null" />
-										</PredicateReplacement>
-										<PredicateReplacement>
-											<Snippet ref="DefiniteArticle"/>
-										</PredicateReplacement>
+										</ProvidedPredicateReplacement>
+										<ProvidedPredicateReplacement match="included" quantify="true"/>
 									</Fact>
 								</IterateRoles>
 							</Snippet>
 						</ReadingChoice>
 						<ReadingChoice>
 							<Snippet ref="ContextScope">
-								<!--Need to add the fact reading in "" after Context: "Room is in Building; Room has RoomNr"-->
-								<IterateFacts listStyle="CompoundList"/>
+								<!-- State the join path with a fallback to list the fact types. The fallback should
+								occur only for an non-automatic join path with insufficient data to verbalize. -->
+								<SequenceJoinPath>
+									<IterateRoles match="constraintRoles" listStyle="CompoundList" uniqueFactType="true">
+										<Fact readingChoice="PreferPrimaryLeadReading">
+											<ProvidedPredicateReplacement match="included" quantify="false"/>
+											<ProvidedPredicateReplacement quantify="false"/>
+										</Fact>
+									</IterateRoles>
+								</SequenceJoinPath>
 							</Snippet>
 							<Snippet ref="ContextScopeReference">
 								<Snippet ref="ImpliedModalNecessityOperator">
 									<Snippet ref="UniversalQuantifier">
 										<Snippet ref="CombinationAssociation">
-											<IterateRoles match="constraintRoles" listStyle="CompactSimpleList"/>
+											<IterateRoles match="providedConstraintRoles" listStyle="CompactSimpleList"/>
 											<Snippet ref="OneQuantifier">
-												<IterateRoles match="constraintRoles" pass="first" listStyle="null">
-													<IterateContextRoles match="excluded" listStyle="SimpleList"/>
-												</IterateRoles>
+												<ProvidedRolePlayer rolePlayerKey="SingleLeadRolePath"/>
 											</Snippet>
 										</Snippet>
 									</Snippet>
@@ -830,7 +836,7 @@
 						</ReadingChoice>
 					</ConditionalReading>
 					<Snippet ref="ConstraintProvidesPreferredIdentifier" conditionalMatch="IsPreferredIdentifier" conditionalBlockContext="PreferredFor">
-						<IterateRoles listStyle="CompactSimpleList" match="constraintRoles"/>
+						<IterateRoles listStyle="CompactSimpleList" match="providedConstraintRoles"/>
 						<Snippet ref="ObjectType">
 							<PreferredIdentifierFor/>
 							<PreferredIdentifierForId/>
@@ -838,40 +844,46 @@
 					</Snippet>
 				</ConstrainedRoles>
 				<!-- Negative Reading for External Uniqueness Constraint-->
-				<ConstrainedRoles sign="negative" minFactArity="2" maxFactArity="2">
+				<ConstrainedRoles trivialOppositeRolePath="true" sign="negative" minFactArity="2" maxFactArity="2" blockHelpers="pathVerbalizer">
 					<ConditionalReading>
 						<ReadingChoice match="RequireAllNonLeadReadingNoFrontText">
 							<Snippet ref="ModalPossibilityOperator">
-								<IterateRoles match="constraintRoles" listStyle="SimpleList">
+								<IterateRoles match="providedConstraintRoles" listStyle="SimpleList">
 									<Fact readingChoice="Context">
-										<PredicateReplacement match="excluded" pass="first">
+										<ProvidedPredicateReplacement match="excluded" pass="first">
 											<Snippet ref="MoreThanOneQuantifier" />
-										</PredicateReplacement>
-										<PredicateReplacement match="excluded">
+										</ProvidedPredicateReplacement>
+										<ProvidedPredicateReplacement match="excluded">
 											<Snippet ref="null" />
-										</PredicateReplacement>
-										<PredicateReplacement>
+										</ProvidedPredicateReplacement>
+										<ProvidedPredicateReplacement match="included">
 											<Snippet ref="IdentityReferenceQuantifier" />
-										</PredicateReplacement>
+										</ProvidedPredicateReplacement>
 									</Fact>
 								</IterateRoles>
 							</Snippet>
 						</ReadingChoice>
 						<ReadingChoice>
 							<Snippet ref="ContextScope">
-								<!--Need to add the fact reading in "" after Context: "Room is in Building; Room has RoomNr"-->
-								<IterateFacts listStyle="CompoundList"/>
+								<!-- State the join path with a fallback to list the fact types. The fallback should
+								occur only for an non-automatic join path with insufficient data to verbalize. -->
+								<SequenceJoinPath>
+									<IterateRoles match="constraintRoles" listStyle="CompoundList" uniqueFactType="true">
+										<Fact readingChoice="PreferPrimaryLeadReading">
+											<ProvidedPredicateReplacement match="included" quantify="false"/>
+											<ProvidedPredicateReplacement quantify="false"/>
+										</Fact>
+									</IterateRoles>
+								</SequenceJoinPath>
 							</Snippet>
 							<Snippet ref="ContextScopeReference">
 								<Snippet ref="ModalPossibilityOperator">
 									<Snippet ref="CombinationAssociation">
 										<Snippet ref="IdentityReferenceQuantifier">
-											<IterateRoles match="constraintRoles" listStyle="CompactSimpleList"/>
+											<IterateRoles match="providedConstraintRoles" listStyle="CompactSimpleList"/>
 										</Snippet>
 										<Snippet ref="MoreThanOneQuantifier">
-											<IterateRoles match="constraintRoles" pass="first" listStyle="null">
-												<IterateContextRoles match="excluded" listStyle="SimpleList"/>
-											</IterateRoles>
+											<ProvidedRolePlayer rolePlayerKey="SingleLeadRolePath"/>
 										</Snippet>
 									</Snippet>
 								</Snippet>
@@ -879,7 +891,36 @@
 						</ReadingChoice>
 					</ConditionalReading>
 					<Snippet ref="ConstraintProvidesPreferredIdentifier" conditionalMatch="IsPreferredIdentifier" conditionalBlockContext="PreferredFor">
-						<IterateRoles listStyle="CompactSimpleList" match="constraintRoles"/>
+						<IterateRoles listStyle="CompactSimpleList" match="providedConstraintRoles"/>
+						<Snippet ref="ObjectType">
+							<PreferredIdentifierFor/>
+							<PreferredIdentifierForId/>
+						</Snippet>
+					</Snippet>
+				</ConstrainedRoles>
+				<ConstrainedRoles sign="positive" blockHelpers="pathVerbalizer">
+					<Snippet ref="ContextScope">
+						<!-- State the join path with a fallback to list the fact types. -->
+						<SequenceJoinPath>
+							<IterateRoles match="constraintRoles" listStyle="CompoundList" uniqueFactType="true">
+								<Fact readingChoice="PreferPrimaryLeadReading">
+									<ProvidedPredicateReplacement match="included" quantify="false"/>
+									<ProvidedPredicateReplacement quantify="false"/>
+								</Fact>
+							</IterateRoles>
+						</SequenceJoinPath>
+					</Snippet>
+					<Snippet ref="ContextScopeReference">
+						<Snippet ref="ImpliedModalNecessityOperator">
+							<Snippet ref="UniversalQuantifier">
+								<Snippet ref="CombinationUniqueness">
+									<IterateRoles match="providedConstraintRoles" listStyle="CompactSimpleList"/>
+								</Snippet>
+							</Snippet>
+						</Snippet>
+					</Snippet>
+					<Snippet ref="ConstraintProvidesPreferredIdentifier" conditionalMatch="IsPreferredIdentifier" conditionalBlockContext="PreferredFor">
+						<IterateRoles listStyle="CompactSimpleList" match="providedConstraintRoles"/>
 						<Snippet ref="ObjectType">
 							<PreferredIdentifierFor/>
 							<PreferredIdentifierForId/>
@@ -889,7 +930,7 @@
 			</Constraint>
 			<!-- End Uniqueness Constraint  -->
 			<!-- Begin Frequency Constraint  -->
-			<Constraint patternGroup="SetConstraint" type="FrequencyConstraint">
+			<Constraint patternGroup="SetConstraint" type="FrequencyConstraint" automaticJoinPathPattern="OppositeRole">
 				<EnableSubscripts nonOptimizedFrequencyPattern="true"/>
 				<ConstrainedRoles factCount="1" factArity="2" constraintArity="1" sign="positive" frequencyRangePattern="MinUnbounded">
 					<ConditionalReading>
@@ -957,20 +998,57 @@
 						</Snippet>
 					</Snippet>
 				</ConstrainedRoles>
-				<ConstrainedRoles sign="positive" minFactArity="2" maxFactArity="2">
+				<ConstrainedRoles sign="positive" minFactArity="2" maxFactArity="2" trivialOppositeRolePath="true" blockHelpers="pathVerbalizer">
 					<Snippet ref="ContextScope">
-						<!--Need to add the fact reading in "" after Context: "Room is in Building; Room has RoomNr"-->
-						<IterateFacts listStyle="CompoundList"/>
+						<SequenceJoinPath>
+							<IterateRoles match="constraintRoles" listStyle="CompoundList" uniqueFactType="true">
+								<Fact readingChoice="PreferPrimaryLeadReading">
+									<ProvidedPredicateReplacement match="included" quantify="false"/>
+									<ProvidedPredicateReplacement quantify="false"/>
+								</Fact>
+							</IterateRoles>
+						</SequenceJoinPath>
 					</Snippet>
 					<Snippet ref="ContextScopeReference">
 						<Snippet ref="ImpliedModalNecessityOperator">
 							<Snippet ref="UniversalQuantifier">
 								<Snippet ref="CombinationAssociation">
-									<IterateRoles match="constraintRoles" listStyle="CompactSimpleList"/>
+									<IterateRoles match="providedConstraintRoles" listStyle="CompactSimpleList"/>
 									<Snippet ref="FrequencyTypedOccurrences">
-										<IterateRoles match="constraintRoles" pass="first" listStyle="null">
-											<IterateContextRoles match="excluded" listStyle="SimpleList"/>
-										</IterateRoles>
+										<ProvidedRolePlayer rolePlayerKey="SingleLeadRolePath"/>
+										<ConditionalSnippet>
+											<Snippet ref="FrequencyRangeExact" conditionalMatch="FrequencyRangeExact"/>
+											<Snippet ref="FrequencyRangeMaxUnbounded" conditionalMatch="FrequencyRangeMaxUnbounded"/>
+											<Snippet ref="FrequencyRangeMinUnbounded" conditionalMatch="FrequencyRangeMinUnbounded"/>
+											<Snippet ref="FrequencyRangeMinAndMax"/>
+											<SnippetReplacements>
+												<MinFrequencyValue/>
+												<MaxFrequencyValue/>
+											</SnippetReplacements>
+										</ConditionalSnippet>
+									</Snippet>
+								</Snippet>
+							</Snippet>
+						</Snippet>
+					</Snippet>
+				</ConstrainedRoles>
+				<ConstrainedRoles sign="positive" blockHelpers="pathVerbalizer">
+					<Snippet ref="ContextScope">
+						<SequenceJoinPath>
+							<IterateRoles match="constraintRoles" listStyle="CompoundList" uniqueFactType="true">
+								<Fact readingChoice="PreferPrimaryLeadReading">
+									<ProvidedPredicateReplacement match="included" quantify="false"/>
+									<ProvidedPredicateReplacement quantify="false"/>
+								</Fact>
+							</IterateRoles>
+						</SequenceJoinPath>
+					</Snippet>
+					<Snippet ref="ContextScopeReference">
+						<Snippet ref="ImpliedModalNecessityOperator">
+							<Snippet ref="UniversalQuantifier">
+								<Snippet ref="CombinationOccurrence">
+									<IterateRoles match="providedConstraintRoles" listStyle="CompactSimpleList"/>
+									<Snippet ref="FrequencyUntypedOccurrences">
 										<ConditionalSnippet>
 											<Snippet ref="FrequencyRangeExact" conditionalMatch="FrequencyRangeExact"/>
 											<Snippet ref="FrequencyRangeMaxUnbounded" conditionalMatch="FrequencyRangeMaxUnbounded"/>
@@ -1578,7 +1656,7 @@
 									<SequenceJoinPath markTrailingOutdentStart="true">
 										<IterateRoles match="constraintRoles" listStyle="null" pass="first">
 											<Fact readingChoice="PreferPrimaryLeadReading">
-												<ProvidedPredicateReplacement included="true" quantify="true"/>
+												<ProvidedPredicateReplacement match="included"  quantify="true"/>
 												<ProvidedPredicateReplacement quantify="true"/>
 											</Fact>
 										</IterateRoles>
@@ -1588,7 +1666,7 @@
 									<SequenceJoinPath markTrailingOutdentStart="true">
 										<IterateRoles match="constraintRoles" listStyle="null" pass="first">
 											<Fact readingChoice="PreferPrimaryLeadReading">
-												<ProvidedPredicateReplacement included="true" quantify="true"/>
+												<ProvidedPredicateReplacement match="included" quantify="true"/>
 												<ProvidedPredicateReplacement quantify="true"/>
 											</Fact>
 										</IterateRoles>
@@ -1609,7 +1687,7 @@
 									<SequenceJoinPath markTrailingOutdentStart="true">
 										<IterateRoles match="constraintRoles" listStyle="null" pass="first">
 											<Fact readingChoice="PreferPrimaryLeadReading">
-												<ProvidedPredicateReplacement included="true" quantify="true"/>
+												<ProvidedPredicateReplacement match="included" quantify="true"/>
 												<ProvidedPredicateReplacement quantify="true"/>
 											</Fact>
 										</IterateRoles>
@@ -1619,7 +1697,7 @@
 									<SequenceJoinPath markTrailingOutdentStart="true">
 										<IterateRoles match="constraintRoles" listStyle="null" pass="first">
 											<Fact readingChoice="PreferPrimaryLeadReading">
-												<ProvidedPredicateReplacement included="true" quantify="true"/>
+												<ProvidedPredicateReplacement match="included" quantify="true"/>
 												<ProvidedPredicateReplacement quantify="true"/>
 											</Fact>
 										</IterateRoles>
@@ -1640,7 +1718,7 @@
 									<SequenceJoinPath markTrailingOutdentStart="true">
 										<IterateRoles match="constraintRoles" listStyle="null" uniqueFactType="true">
 											<Fact readingChoice="PreferPrimaryLeadReading">
-												<ProvidedPredicateReplacement included="true" quantify="true"/>
+												<ProvidedPredicateReplacement match="included" quantify="true"/>
 												<ProvidedPredicateReplacement quantify="true"/>
 											</Fact>
 										</IterateRoles>
@@ -1670,7 +1748,7 @@
 										<SequenceJoinPath markTrailingOutdentStart="true">
 											<IterateRoles match="constraintRoles" listStyle="null" uniqueFactType="true">
 												<Fact readingChoice="PreferPrimaryLeadReading">
-													<ProvidedPredicateReplacement included="true" quantify="true"/>
+													<ProvidedPredicateReplacement match="included" quantify="true"/>
 													<ProvidedPredicateReplacement quantify="true"/>
 												</Fact>
 											</IterateRoles>
@@ -1733,7 +1811,7 @@
 											<SequenceJoinPath markTrailingOutdentStart="true">
 												<IterateRoles match="constraintRoles" listStyle="null" uniqueFactType="true">
 													<Fact>
-														<ProvidedPredicateReplacement included="true" quantify="true"/>
+														<ProvidedPredicateReplacement match="included" quantify="true"/>
 														<ProvidedPredicateReplacement quantify="true"/>
 													</Fact>
 												</IterateRoles>
@@ -1756,7 +1834,7 @@
 									<SequenceJoinPath markTrailingOutdentStart="true">
 										<IterateRoles match="constraintRoles" listStyle="null" uniqueFactType="true">
 											<Fact readingChoice="PreferPrimaryLeadReading">
-												<ProvidedPredicateReplacement included="true" quantify="true"/>
+												<ProvidedPredicateReplacement match="included" quantify="true"/>
 												<ProvidedPredicateReplacement quantify="true"/>
 											</Fact>
 										</IterateRoles>

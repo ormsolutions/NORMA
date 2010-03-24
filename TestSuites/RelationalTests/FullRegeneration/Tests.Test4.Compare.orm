@@ -341,6 +341,43 @@
 				<orm:RoleSequence>
 					<orm:Role id="_93EA957A-D371-4164-82AC-379BA6337579" ref="_54EDDFD9-33F8-43AD-90A2-DCF78D729786" />
 					<orm:Role id="_F7BED27A-7B02-4528-BBF6-2E243B66366F" ref="_27644BC9-32F4-44E7-BB74-C5163C36C305" />
+					<orm:JoinRule>
+						<orm:JoinPath IsAutomatic="true" id="_2FBBB6F0-7CDA-4FFC-854A-E2C1E1639D06">
+							<orm:PathComponents>
+								<orm:RolePath id="_67C966BD-948A-4089-A826-9590A299BC37">
+									<orm:SubPaths>
+										<orm:SubPath id="_D13E21A3-4D2F-43C8-A9D9-FD593552A38F">
+											<orm:PathedRoles>
+												<orm:PathedRole Purpose="StartRole" id="_5483AFAF-8F30-4C87-8A21-D73FA18A9C63" ref="_DD840453-F3B4-432D-85F6-9FBDEFC81987" />
+												<orm:PathedRole Purpose="SameFactType" id="_6836194B-48F4-4F43-A48F-4F978439275F" ref="_54EDDFD9-33F8-43AD-90A2-DCF78D729786" />
+											</orm:PathedRoles>
+										</orm:SubPath>
+										<orm:SubPath id="_4B14792B-DBA2-43F7-BD6B-F6E50B030768">
+											<orm:PathedRoles>
+												<orm:PathedRole Purpose="StartRole" id="_DDCB7962-60AA-4172-BCA6-9A4322860588" ref="_D4DA078B-97D5-4122-AE8B-E83777A8BB45" />
+												<orm:PathedRole Purpose="SameFactType" id="_56DB7522-3E91-4910-8574-FF623BDB9CA1" ref="_27644BC9-32F4-44E7-BB74-C5163C36C305" />
+											</orm:PathedRoles>
+										</orm:SubPath>
+									</orm:SubPaths>
+									<orm:RootObjectType ref="_808052B8-CD48-40AA-82C2-8BF6B31CBAAE" />
+								</orm:RolePath>
+							</orm:PathComponents>
+							<orm:JoinPathProjections>
+								<orm:JoinPathProjection id="_288129B0-26A0-4887-8E99-DCAF4D384E53" ref="_67C966BD-948A-4089-A826-9590A299BC37">
+									<orm:ConstraintRoleProjection id="_960860D4-139E-4DAE-8954-0BF4F664CEA3" ref="_93EA957A-D371-4164-82AC-379BA6337579">
+										<orm:ProjectedFrom>
+											<orm:PathedRole ref="_6836194B-48F4-4F43-A48F-4F978439275F" />
+										</orm:ProjectedFrom>
+									</orm:ConstraintRoleProjection>
+									<orm:ConstraintRoleProjection id="_45CFC27D-4608-4D14-8135-AB2760DED40B" ref="_F7BED27A-7B02-4528-BBF6-2E243B66366F">
+										<orm:ProjectedFrom>
+											<orm:PathedRole ref="_56DB7522-3E91-4910-8574-FF623BDB9CA1" />
+										</orm:ProjectedFrom>
+									</orm:ConstraintRoleProjection>
+								</orm:JoinPathProjection>
+							</orm:JoinPathProjections>
+						</orm:JoinPath>
+					</orm:JoinRule>
 				</orm:RoleSequence>
 				<orm:PreferredIdentifierFor ref="_808052B8-CD48-40AA-82C2-8BF6B31CBAAE" />
 			</orm:UniquenessConstraint>

@@ -205,6 +205,20 @@
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
+				<xs:enumeration value="CombinationOccurrence">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Verbalizes a range of combination occurrences.  Form at: {0} combination occurs {1}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="CombinationUniqueness">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Verbalizes uniqueness of a combination.  Format: {0} combination is unique
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
 				<xs:enumeration value="MoreThanOneQuantifier">
 					<xs:annotation>
 						<xs:documentation>

@@ -436,6 +436,26 @@
 		<xs:attribute name="minFactArity" type="xs:unsignedByte" use="optional"/>
 		<xs:attribute name="maxFactArity" type="xs:unsignedByte" use="optional"/>
 	</xs:attributeGroup>
+	<xs:attributeGroup name="BlockHelperAttributes">
+		<xs:attribute name="blockHelpers" use="optional">
+			<xs:annotation>
+				<xs:documentation>A list of helper patterns that should be defined inside a code block.</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:list>
+					<xs:simpleType>
+						<xs:restriction base="xs:token">
+							<xs:enumeration value="pathVerbalizer">
+								<xs:annotation>
+									<xs:documentation>Initialize a path verbalizer for the context join path.</xs:documentation>
+								</xs:annotation>
+							</xs:enumeration>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:list>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
 	<xs:complexType name="SnippetLeafType">
 		<xs:attribute name="ref" use="required">
 			<xs:simpleType>
@@ -778,6 +798,7 @@
 			<xs:element name="RoleName" type="RoleNameType"/>
 			<xs:element name="RolePlayer" type="RolePlayerType"/>
 			<xs:element name="RolePlayerReferenceMode" type="RolePlayerReferenceModeType"/>
+			<xs:element name="SequenceJoinPath" type="SequenceJoinPathType"/>
 			<xs:element name="SubtypeName" type="SubtypeNameType"/>
 			<xs:element name="SubtypeId" type="ElementIdType"/>
 			<xs:element name="SupertypeName" type="SupertypeNameType"/>
@@ -1158,6 +1179,16 @@
 							<xs:documentation>Get the replacement based on the derivation key. Gets the current type (possibly subscripted) for a subtype derivation rule.</xs:documentation>
 						</xs:annotation>
 					</xs:enumeration>
+					<xs:enumeration value="SingleLeadRolePath">
+						<xs:annotation>
+							<xs:documentation>Get the replacement based on a single lead role path. For constraints with automatic opposite role players (trivial uniqueness and frequency patterns), this will be constrained object type.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="ConstraintRole">
+						<xs:annotation>
+							<xs:documentation>The role player for the constrained role in a role iterator context.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
@@ -1216,9 +1247,17 @@
 		<xs:attribute name="pass" use="optional" type="PassEnum"/>
 	</xs:complexType>
 	<xs:complexType name="ProvidedPredicateReplacementType">
-		<xs:attribute name="included" default="false" type="xs:boolean">
+		<xs:choice minOccurs="0">
+			<!--<xs:element name="ConditionalSnippet" type="ConditionalSnippetType"/>-->
+			<xs:element name="Snippet" type="SnippetType">
+				<xs:annotation>
+					<xs:documentation>Add a custom quantifier to the provided predicate replacement. Existential and back reference quantification is provided by the @quantify attribute, this allows other quantifiers.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+		<xs:attribute name="match" type="RoleIteratorContextMatchEnum" use="optional">
 			<xs:annotation>
-				<xs:documentation>Apply this replacement style to elements included in the current constraint.</xs:documentation>
+				<xs:documentation>Determine the type of constraint role to match.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 		<xs:attribute name="quantify" default="false" type="xs:boolean">
@@ -1236,6 +1275,7 @@
 				<xs:documentation>Do not subscript a head variable of a type that is used for a single variable and also used fully existentially.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute name="pass" use="optional" type="PassEnum"/>
 	</xs:complexType>
 	<xs:complexType name="FactConstructType">
 		<!-- Nothing here yet, this is for the top-level verbalization of a Fact -->
@@ -1492,6 +1532,7 @@
 		<xs:complexContent>
 			<xs:extension base="BaseReadingContextType">
 				<xs:attribute name="match" use="optional" type="ReadingChoiceFullRequiredMatchEnum"/>
+				<xs:attributeGroup ref="BlockHelperAttributes"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -1637,13 +1678,33 @@
 							<xs:documentation>The frequency range pattern to check</xs:documentation>
 						</xs:annotation>
 					</xs:attribute>
+					<xs:attribute name="trivialOppositeRolePath" type="xs:boolean" use="optional">
+						<xs:annotation>
+							<xs:documentation>A join path must be in place, and that join path must have a trivial opposite role player pattern, meaning that there is a shared opposite role player in binary fact types for all constraint roles.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
 					<xs:attributeGroup ref="FactArityAttributes"/>
+					<xs:attributeGroup ref="BlockHelperAttributes"/>
 				</xs:complexType>
 			</xs:element>
 			<xs:element name="ConditionalSnippet" type="ConditionalSnippetType"/>
 		</xs:choice>
 		<xs:attribute name="type" type="ConstraintTypeEnum" use="required"/>
 		<xs:attribute name="patternGroup" type="ConstraintPatternGroupEnum" use="required"/>
+		<xs:attribute name="automaticJoinPathPattern" use="optional">
+			<xs:annotation>
+				<xs:documentation>The verbalization leverages automatically created join paths. Add preliminary tests to see if automatic join paths are defined.</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="OppositeRole">
+						<xs:annotation>
+							<xs:documentation>Test if the automatic join path was created for a single opposite role player.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
 		<xs:attribute name="compatibleColumns" type="xs:boolean" default="false"/>
 		<xs:attributeGroup ref="childHelperAttributes"/>
 		<xs:attribute name="deferMatchesTo" type="xs:string">

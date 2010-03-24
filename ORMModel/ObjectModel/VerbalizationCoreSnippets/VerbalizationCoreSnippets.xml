@@ -78,10 +78,12 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="ImpliedModalNecessityOperator" modality="alethic" sign="negative"><![CDATA[<span class="quantifier">it is impossible that</span> {0}]]></Snippet>
 			<Snippet type="ImpliedModalNecessityOperator" modality="deontic" sign="negative"><![CDATA[<span class="quantifier">it is forbidden that</span> {0}]]></Snippet>
 
-			<Snippet type="ContextScope"><![CDATA[<span class="quantifier">context: </span>{0}]]></Snippet>
-			<Snippet type="ContextScopeReference"><![CDATA[<span class="quantifier">in this context,</span> {0}]]></Snippet>
+			<Snippet type="ContextScope"><![CDATA[<table class="hidden"><tr class="hidden"><td class="hidden"><span class="quantifier">context:&nbsp;</span></td><td class="hidden">{0}</td></tr></table>]]></Snippet>
+			<Snippet type="ContextScopeReference"><![CDATA[<span class="quantifier">in this context</span><span class="listSeparator">,</span> {0}]]></Snippet>
 			<Snippet type="CombinationAssociation"><![CDATA[{0} <span class="quantifier">combination is associated with</span> {1}]]></Snippet>
-			
+			<Snippet type="CombinationOccurrence"><![CDATA[{0} <span class="quantifier">combination occurs</span> {1}]]></Snippet>
+			<Snippet type="CombinationUniqueness"><![CDATA[{0} <span class="quantifier">combination is unique</span>]]></Snippet>
+
 			<!-- Snippets related to derivation rules and join paths -->
 			<Snippet type="FullFactTypeDerivation"><![CDATA[<span class="quantifier">*</span>{0} <span class="quantifier">if and only if</span></br>{1}<br/>]]></Snippet>
 			<Snippet type="PartialFactTypeDerivation"><![CDATA[<span class="quantifier">+</span>{0} <span class="quantifier">if</span><br/>{1}<br/>]]></Snippet>
@@ -179,14 +181,19 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="VerbalizerNewLine"><![CDATA[<br/>]]></Snippet>
 			<Snippet type="VerbalizerIncreaseIndent"><![CDATA[<span class="indent">]]></Snippet>
 			<Snippet type="VerbalizerDecreaseIndent"><![CDATA[</span>]]></Snippet>
-			<Snippet type="VerbalizerOpenVerbalization"><![CDATA[<p class="verbalization">]]></Snippet>
-			<Snippet type="VerbalizerCloseVerbalization"><![CDATA[</p>]]></Snippet>
-			<Snippet type="VerbalizerDocumentHeader"><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+			<Snippet type="VerbalizerOpenVerbalization"><![CDATA[<div class="verbalization">]]></Snippet>
+			<Snippet type="VerbalizerCloseVerbalization"><![CDATA[</div>]]></Snippet>
+			<Snippet type="VerbalizerDocumentHeader">
+			<![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<title>ORM2 Verbalization</title>
 	<style type="text/css">
-		body {{ font-family: {0}; font-size: {1}pt; padding: .1em; color: {2}; {3} }}
+		body, table {{ font-family: {0}; font-size: {1}pt; color: {2}; {3} }}
+		body {{ padding: 0em .1em; }}
+		table.hidden, tr.hidden, td.hidden {{ margin: 0em; padding: 0em; border-collapse: collapse;}}
+		td.hidden {{ vertical-align: top; }}
+		table.hidden {{ display:inline; }}
 		a {{text-decoration:none; }}
 		a:hover {{background-color:infobackground; }}
 		.objectType {{ color: {4}; {5} }}

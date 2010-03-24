@@ -4579,8 +4579,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					ObjectType resolvedOppositeRolePlayer = null;
 					ObjectType resolvedOppositeRolePlayerAlternate = null; // Note that the alternate will not be set if the first choice is not
 					bool checkedFirstOppositeRolePlayer = false;
+#if BLOCK_TRIVIAL_JOINPATHS
 					bool multipleCompatibleOppositeRolePlayers = false;
 					bool usesOppositeObjectification = false;
+#endif // BLOCK_TRIVIAL_JOINPATHS
 					BitTracker usedObjectifyingRole = new BitTracker(constraintRoleCount);
 					for (int i = 1; i < constraintRoleCount; ++i)
 					{
@@ -4609,7 +4611,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										if (resolvedOppositeRolePlayer == null)
 										{
 											resolvedOppositeRolePlayer = oppositeRole.RolePlayer;
+#if BLOCK_TRIVIAL_JOINPATHS
 											usesOppositeObjectification = true;
+#endif // BLOCK_TRIVIAL_JOINPATHS
 											usedObjectifyingRole[0] = true;
 										}
 										else
@@ -4633,7 +4637,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										{
 											resolvedOppositeRolePlayer = resolvedOppositeRolePlayerAlternate;
 											resolvedOppositeRolePlayerAlternate = null;
+#if BLOCK_TRIVIAL_JOINPATHS
 											usesOppositeObjectification = true;
+#endif // BLOCK_TRIVIAL_JOINPATHS
 											usedObjectifyingRole[0] = true;
 											continue;
 										}
@@ -4644,7 +4650,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										if (objectifyingRolePlayer == resolvedOppositeRolePlayer)
 										{
 											resolvedOppositeRolePlayerAlternate = null;
+#if BLOCK_TRIVIAL_JOINPATHS
 											usesOppositeObjectification = true;
+#endif // BLOCK_TRIVIAL_JOINPATHS
 											usedObjectifyingRole[i] = true;
 											continue;
 										}
@@ -4652,7 +4660,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										{
 											resolvedOppositeRolePlayer = resolvedOppositeRolePlayerAlternate;
 											resolvedOppositeRolePlayerAlternate = null;
+#if BLOCK_TRIVIAL_JOINPATHS
 											usesOppositeObjectification = true;
+#endif // BLOCK_TRIVIAL_JOINPATHS
 											usedObjectifyingRole[i] = true;
 											continue;
 										}
@@ -4666,7 +4676,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										{
 											resolvedOppositeRolePlayer = compatibleSupertype;
 											resolvedOppositeRolePlayerAlternate = null;
+#if BLOCK_TRIVIAL_JOINPATHS
 											multipleCompatibleOppositeRolePlayers = true;
+#endif // BLOCK_TRIVIAL_JOINPATHS
 											// Note that we'll create an automatic join path for this case,
 											// but we leave joinNotNeeded as true to distinguish a subsequent
 											// break from the pattern. (Reapply comment applies to remaining three cases).
@@ -4677,9 +4689,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										{
 											resolvedOppositeRolePlayer = compatibleSupertype;
 											resolvedOppositeRolePlayerAlternate = null;
-											usesOppositeObjectification = true;
 											usedObjectifyingRole[0] = true;
+#if BLOCK_TRIVIAL_JOINPATHS
+											usesOppositeObjectification = true;
 											multipleCompatibleOppositeRolePlayers = true;
+#endif // BLOCK_TRIVIAL_JOINPATHS
 											continue;
 										}
 									}
@@ -4689,9 +4703,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										{
 											resolvedOppositeRolePlayer = compatibleSupertype;
 											resolvedOppositeRolePlayerAlternate = null;
-											usesOppositeObjectification = true;
 											usedObjectifyingRole[i] = true;
+#if BLOCK_TRIVIAL_JOINPATHS
+											usesOppositeObjectification = true;
 											multipleCompatibleOppositeRolePlayers = true;
+#endif // BLOCK_TRIVIAL_JOINPATHS
 											continue;
 										}
 										else if (null != resolvedOppositeRolePlayerAlternate &&
@@ -4699,9 +4715,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										{
 											resolvedOppositeRolePlayer = compatibleSupertype;
 											resolvedOppositeRolePlayerAlternate = null;
-											usesOppositeObjectification = true;
 											usedObjectifyingRole[i] = true;
+#if BLOCK_TRIVIAL_JOINPATHS
+											usesOppositeObjectification = true;
 											multipleCompatibleOppositeRolePlayers = true;
+#endif // BLOCK_TRIVIAL_JOINPATHS
 											continue;
 										}
 									}
@@ -4713,7 +4731,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					if (joinNotNeeded)
 					{
+#if BLOCK_TRIVIAL_JOINPATHS
+
 						if (multipleCompatibleOppositeRolePlayers || usesOppositeObjectification)
+#else // !BLOCK_TRIVIAL_JOINPATHS
+						if (resolvedOppositeRolePlayer != null)
+#endif // BLOCK_TRIVIAL_JOINPATHS
 						{
 							// Build and/or verify an automatic join path centered
 							// on resolved object type.

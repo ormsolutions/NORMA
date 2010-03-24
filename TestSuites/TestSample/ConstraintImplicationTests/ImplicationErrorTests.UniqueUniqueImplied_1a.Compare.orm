@@ -427,6 +427,43 @@
 				<orm:RoleSequence>
 					<orm:Role id="_8E32871E-C1A9-499D-9516-72EF0F1D1AFB" ref="_EF1A168A-5EB6-4FC5-AF0C-8B7FDB450D71" />
 					<orm:Role id="_C33E9FF4-87FB-452E-83E9-13880D2A087B" ref="_0A403D89-6392-4E66-AAB5-0C5E41E5A64A" />
+					<orm:JoinRule>
+						<orm:JoinPath IsAutomatic="true" id="_0CF245A3-4801-45B1-BD65-9DF6D27B7215">
+							<orm:PathComponents>
+								<orm:RolePath id="_7DA2262A-776C-4E3B-B9BD-4D431441A7EB">
+									<orm:SubPaths>
+										<orm:SubPath id="_CD219A8E-7680-4E60-9AF4-D9548AC79674">
+											<orm:PathedRoles>
+												<orm:PathedRole Purpose="StartRole" id="_1F3343BA-DC33-46C1-B828-FFCB4CB8098F" ref="_1F9D8951-DA7C-4088-A971-277D81D019AF" />
+												<orm:PathedRole Purpose="SameFactType" id="_589A3771-C669-46D4-97BF-8F3F08359F09" ref="_EF1A168A-5EB6-4FC5-AF0C-8B7FDB450D71" />
+											</orm:PathedRoles>
+										</orm:SubPath>
+										<orm:SubPath id="_9DE67E21-5615-40EE-BD11-D43E4B2A1D1C">
+											<orm:PathedRoles>
+												<orm:PathedRole Purpose="StartRole" id="_F6B9CEF4-90F3-4397-A93E-1D0F7629B653" ref="_4FF4214D-AB0B-4C6B-B219-590AF070E3DA" />
+												<orm:PathedRole Purpose="SameFactType" id="_8A1B3FF2-9769-4451-9EF5-B97DFC1191C5" ref="_0A403D89-6392-4E66-AAB5-0C5E41E5A64A" />
+											</orm:PathedRoles>
+										</orm:SubPath>
+									</orm:SubPaths>
+									<orm:RootObjectType ref="_C941460F-F5CB-49DA-A9C3-CF0EEDC17BC5" />
+								</orm:RolePath>
+							</orm:PathComponents>
+							<orm:JoinPathProjections>
+								<orm:JoinPathProjection id="_7E8701CA-BF78-46B4-A126-FB64A5296FB0" ref="_7DA2262A-776C-4E3B-B9BD-4D431441A7EB">
+									<orm:ConstraintRoleProjection id="_AEC9B2BF-1169-48DD-8788-A9282084E3E0" ref="_8E32871E-C1A9-499D-9516-72EF0F1D1AFB">
+										<orm:ProjectedFrom>
+											<orm:PathedRole ref="_589A3771-C669-46D4-97BF-8F3F08359F09" />
+										</orm:ProjectedFrom>
+									</orm:ConstraintRoleProjection>
+									<orm:ConstraintRoleProjection id="_AF314285-98DB-4CF3-A647-0EFAB234CD18" ref="_C33E9FF4-87FB-452E-83E9-13880D2A087B">
+										<orm:ProjectedFrom>
+											<orm:PathedRole ref="_8A1B3FF2-9769-4451-9EF5-B97DFC1191C5" />
+										</orm:ProjectedFrom>
+									</orm:ConstraintRoleProjection>
+								</orm:JoinPathProjection>
+							</orm:JoinPathProjections>
+						</orm:JoinPath>
+					</orm:JoinRule>
 				</orm:RoleSequence>
 			</orm:UniquenessConstraint>
 		</orm:Constraints>

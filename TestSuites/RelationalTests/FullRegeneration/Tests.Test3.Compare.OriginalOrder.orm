@@ -561,6 +561,43 @@
 				<orm:RoleSequence>
 					<orm:Role id="_95324C7F-23DD-45A8-B39C-4E195799717F" ref="_31727A33-08D1-4E2E-A842-51AF6691D0C9" />
 					<orm:Role id="_F03E0ABF-8A1A-4FC6-AD05-73D3B8E41E8A" ref="_490202CC-9F32-4858-B0B5-378ABF19F019" />
+					<orm:JoinRule>
+						<orm:JoinPath IsAutomatic="true" id="_8EAE27F6-0761-4258-8E2A-F21949A0AC3D">
+							<orm:PathComponents>
+								<orm:RolePath id="_8A49464D-13BA-450B-978A-AFB22AF5E4F2">
+									<orm:SubPaths>
+										<orm:SubPath id="_7AB9D9E0-AB90-4472-AAB6-F4749B5B5FFE">
+											<orm:PathedRoles>
+												<orm:PathedRole Purpose="StartRole" id="_E1734290-595F-4991-AD93-3C7CCFEC9937" ref="_77717801-77E8-42F9-9664-91323CBB57AC" />
+												<orm:PathedRole Purpose="SameFactType" id="_5F0B495F-E37B-42DB-94C5-E4790A1E82F1" ref="_31727A33-08D1-4E2E-A842-51AF6691D0C9" />
+											</orm:PathedRoles>
+										</orm:SubPath>
+										<orm:SubPath id="_37A8FC18-CF9E-49B5-AEAA-46959F897BD5">
+											<orm:PathedRoles>
+												<orm:PathedRole Purpose="StartRole" id="_5EF3FCD2-9D30-42E3-9B0F-B4B12FD029FB" ref="_DE641E10-E05D-4325-87D3-457ADB47D297" />
+												<orm:PathedRole Purpose="SameFactType" id="_A2D602F3-467F-4009-B3BE-21A9BEB5B09A" ref="_490202CC-9F32-4858-B0B5-378ABF19F019" />
+											</orm:PathedRoles>
+										</orm:SubPath>
+									</orm:SubPaths>
+									<orm:RootObjectType ref="_BD9F65BD-86A1-4FC3-B3AC-F95FD2379310" />
+								</orm:RolePath>
+							</orm:PathComponents>
+							<orm:JoinPathProjections>
+								<orm:JoinPathProjection id="_549A3FB5-44F3-4B63-97BB-7462CBE5EB77" ref="_8A49464D-13BA-450B-978A-AFB22AF5E4F2">
+									<orm:ConstraintRoleProjection id="_34D8AD10-704A-4B47-BD3D-A111A9E9616D" ref="_95324C7F-23DD-45A8-B39C-4E195799717F">
+										<orm:ProjectedFrom>
+											<orm:PathedRole ref="_5F0B495F-E37B-42DB-94C5-E4790A1E82F1" />
+										</orm:ProjectedFrom>
+									</orm:ConstraintRoleProjection>
+									<orm:ConstraintRoleProjection id="_AAECF360-E831-42CA-8C2B-BA4CE2CDDF93" ref="_F03E0ABF-8A1A-4FC6-AD05-73D3B8E41E8A">
+										<orm:ProjectedFrom>
+											<orm:PathedRole ref="_A2D602F3-467F-4009-B3BE-21A9BEB5B09A" />
+										</orm:ProjectedFrom>
+									</orm:ConstraintRoleProjection>
+								</orm:JoinPathProjection>
+							</orm:JoinPathProjections>
+						</orm:JoinPath>
+					</orm:JoinRule>
 				</orm:RoleSequence>
 				<orm:PreferredIdentifierFor ref="_BD9F65BD-86A1-4FC3-B3AC-F95FD2379310" />
 			</orm:UniquenessConstraint>
@@ -585,6 +622,43 @@
 				<orm:RoleSequence>
 					<orm:Role id="_8F710C34-69BB-4FE6-A10E-EBD92141ACEB" ref="_30A56A92-E619-467B-B936-C908C31CFC2D" />
 					<orm:Role id="_91A31BDF-B7FA-4D2D-B85B-E646E09C1B0A" ref="_9FE40EBC-D18A-4D20-9844-B097DDE6C6CF" />
+					<orm:JoinRule>
+						<orm:JoinPath IsAutomatic="true" id="_04C0548A-C455-4467-917E-98EFB4A40F94">
+							<orm:PathComponents>
+								<orm:RolePath id="_516DB7C7-D296-4238-A580-B22E7E5CC39A">
+									<orm:SubPaths>
+										<orm:SubPath id="_1DCAC4AD-ED59-4E65-AA7A-C7CCBBC3E262">
+											<orm:PathedRoles>
+												<orm:PathedRole Purpose="StartRole" id="_7A1D5802-B97E-4480-924D-116D7FDD9F3A" ref="_4AE24426-64FF-4C42-96D1-9720DE938E5A" />
+												<orm:PathedRole Purpose="SameFactType" id="_077E180A-983A-4199-93AE-8A50DF5CC8FC" ref="_30A56A92-E619-467B-B936-C908C31CFC2D" />
+											</orm:PathedRoles>
+										</orm:SubPath>
+										<orm:SubPath id="_4770CAF0-F9D2-4D6B-923C-9AD4E06A205B">
+											<orm:PathedRoles>
+												<orm:PathedRole Purpose="StartRole" id="_9202A81F-AFDB-4F4C-916C-C4766CBDBF09" ref="_8D87FB39-409D-48EC-B054-19A533E6A49A" />
+												<orm:PathedRole Purpose="SameFactType" id="_6ACDE38F-8606-4B32-8884-6CC8933F0772" ref="_9FE40EBC-D18A-4D20-9844-B097DDE6C6CF" />
+											</orm:PathedRoles>
+										</orm:SubPath>
+									</orm:SubPaths>
+									<orm:RootObjectType ref="_91C49CD4-EDD5-4E4E-B490-EC0C8CC92733" />
+								</orm:RolePath>
+							</orm:PathComponents>
+							<orm:JoinPathProjections>
+								<orm:JoinPathProjection id="_D4B7A074-125F-4BEF-8733-9D5760D988E5" ref="_516DB7C7-D296-4238-A580-B22E7E5CC39A">
+									<orm:ConstraintRoleProjection id="_766854BC-2E81-4003-ADCF-85CD80A84B7B" ref="_8F710C34-69BB-4FE6-A10E-EBD92141ACEB">
+										<orm:ProjectedFrom>
+											<orm:PathedRole ref="_077E180A-983A-4199-93AE-8A50DF5CC8FC" />
+										</orm:ProjectedFrom>
+									</orm:ConstraintRoleProjection>
+									<orm:ConstraintRoleProjection id="_D37866A9-E46A-44DE-A1E1-4EE4CF0123F4" ref="_91A31BDF-B7FA-4D2D-B85B-E646E09C1B0A">
+										<orm:ProjectedFrom>
+											<orm:PathedRole ref="_6ACDE38F-8606-4B32-8884-6CC8933F0772" />
+										</orm:ProjectedFrom>
+									</orm:ConstraintRoleProjection>
+								</orm:JoinPathProjection>
+							</orm:JoinPathProjections>
+						</orm:JoinPath>
+					</orm:JoinRule>
 				</orm:RoleSequence>
 				<orm:PreferredIdentifierFor ref="_91C49CD4-EDD5-4E4E-B490-EC0C8CC92733" />
 			</orm:UniquenessConstraint>

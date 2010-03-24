@@ -1548,6 +1548,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return basicRoleReplacement;
 		}
 		/// <summary>
+		/// Get the format string used to hyphen bind a specific role
+		/// </summary>
+		/// <param name="roleIndex">The index of the represented role in the fact order</param>
+		/// <returns>A format string, or <see langword="null"/></returns>
+		public string GetRoleFormatString(int roleIndex)
+		{
+			string[] formatFields = myFormatReplacementFields;
+			return (formatFields != null && roleIndex < formatFields.Length) ? formatFields[roleIndex] : null;
+		}
+		/// <summary>
 		/// Populate the predicate text with the supplied replacement fields. Defers to
 		/// <see cref="FactType.PopulatePredicateText(IReading,IFormatProvider,String,IList{RoleBase},String[])"/> if no hyphen-bind occurred.
 		/// </summary>
@@ -4732,8 +4742,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (childNode != null)
 				{
 					VerbalizationPlanNode parentNode = childNode.ParentNode;
-					newNode = new FloatingRootVariableNode(parentNode, floatingRootVariable, childNode);
+					newNode = new FloatingRootVariableNode(null, floatingRootVariable, childNode);
 					childNode.myParentNode = newNode;
+					newNode.myParentNode = parentNode;
 					if (parentNode == null)
 					{
 						rootNode = newNode;
@@ -5529,7 +5540,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				mySingleRolePathOwner = previousPathOwner;
 			}
 			// Use phases are used during both initialization and rendering. Make
-			// sure a use phase is passed so that we don't see quantified elements
+			// sure a use phase is pushed so that we don't see quantified elements
 			// as a side effect of initialization.
 			BeginQuantificationUsePhase();
 		}
@@ -5551,6 +5562,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			PathedRole pendingForSameFactType = null;
 			// A list (acting like a stack) to get the full history of the parent pathed roles.
 			List<ReadOnlyCollection<PathedRole>> contextPathedRoles = null;
+			VerbalizationPlanNode startingBranchNode = myCurrentBranchNode;
+			LinkedNode<VerbalizationPlanNode> startingBranchTailLink = startingBranchNode != null ? startingBranchNode.FirstChildNode : null;
+			if (startingBranchTailLink != null)
+			{
+				startingBranchTailLink = startingBranchTailLink.GetTail();
+			}
 			PushConditionalChainNode();
 			if (VerbalizeRootObjectType)
 			{
@@ -5806,7 +5823,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				!rootObjectTypeVariable.HasBeenUsed(myLatestUsePhase, false) &&
 				myCurrentBranchNode != null)
 			{
-				myCurrentBranchNode = VerbalizationPlanNode.InsertFloatingRootVariableNode(rootObjectTypeVariable, myCurrentBranchNode, ref myRootPlanNode);
+				if (startingBranchNode != null)
+				{
+					LinkedNode<VerbalizationPlanNode> newTailLink = startingBranchTailLink ?? startingBranchNode.FirstChildNode;
+					if (newTailLink != null)
+					{
+						newTailLink = newTailLink.GetTail();
+					}
+					if (newTailLink != startingBranchTailLink)
+					{
+						VerbalizationPlanNode.InsertFloatingRootVariableNode(rootObjectTypeVariable, newTailLink.Value, ref myRootPlanNode);
+					}
+				}
+				else
+				{
+					myCurrentBranchNode = VerbalizationPlanNode.InsertFloatingRootVariableNode(rootObjectTypeVariable, myCurrentBranchNode, ref myRootPlanNode);
+				}
 			}
 			++myLatestUsePhase;
 		}
@@ -8339,6 +8371,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return retVal;
 		}
 		/// <summary>
+		/// Create a new <see cref="RolePathVerbalizer"/> for a given <see cref="SetConstraint"/>
+		/// </summary>
+		public static RolePathVerbalizer Create(SetConstraint setConstraint, IRolePathRenderer rolePathRenderer)
+		{
+			SetConstraintVerbalizer retVal = new SetConstraintVerbalizer(rolePathRenderer);
+			retVal.Initialize(setConstraint);
+			return retVal;
+		}
+		/// <summary>
 		/// Create a new <see cref="RolePathVerbalizer"/> for a given <see cref="SetComparisonConstraint"/>
 		/// </summary>
 		public static RolePathVerbalizer Create(SetComparisonConstraint setComparisonConstraint, IRolePathRenderer rolePathRenderer)
@@ -8446,6 +8487,107 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // SubTypeDerivationRuleVerbalizer class
+		#region SetConstraintVerbalizer class
+		private sealed class SetConstraintVerbalizer : RolePathVerbalizer
+		{
+			// Member variables, used during initialization callbacks to
+			// correlate columns.
+			public SetConstraintVerbalizer(IRolePathRenderer rolePathRenderer)
+				: base(rolePathRenderer)
+			{
+			}
+			/// <summary>
+			/// Initialize all column and join path bindings
+			/// </summary>
+			/// <param name="setConstraint">The <see cref="SetConstraint"/> to analyze.</param>
+			public void Initialize(SetConstraint setConstraint)
+			{
+				ConstraintRoleSequenceJoinPath joinPath = setConstraint.JoinPath;
+				if (joinPath != null)
+				{
+					InitializeRolePathOwner(joinPath);
+				}
+
+				// Fill in any constraint roles that do not have an associated variable.
+				// Note that this is an error condition for a pathed sequence, which should be fully
+				// projected, but not for a non-pathed sequence. We register variables for all uses to
+				// support subscripting for ring situations within the sequenct. Checking this condition
+				// for pathed sequences also enables better verbalization of incomplete structures.
+				foreach (ConstraintRoleSequenceHasRole constraintRole in ConstraintRoleSequenceHasRole.GetLinksToRoleCollection(setConstraint))
+				{
+					RolePlayerVariableUse? variableUse = GetRolePlayerVariableUse(constraintRole);
+					if (!variableUse.HasValue)
+					{
+						AddExternalVariable(constraintRole, null, constraintRole.Role.RolePlayer, null);
+					}
+				}
+
+				// Use phases are used during both initialization and rendering. Make
+				// sure a use phase is pushed so that we don't see quantified elements
+				// as a side effect of initialization.
+				BeginQuantificationUsePhase();
+			}
+			/// <summary>
+			/// Override to add and correlate variables for projection bindings
+			/// </summary>
+			protected override void AddPathProjections(RolePathOwner pathOwner)
+			{
+				// Overlay all projection information
+				ConstraintRoleSequenceJoinPath joinPath = (ConstraintRoleSequenceJoinPath)pathOwner;
+				ConstraintRoleSequence roleSequence = joinPath.RoleSequence;
+				bool correlateProjectedRoles = 0 != (((IConstraint)roleSequence).RoleSequenceStyles & RoleSequenceStyles.CompatibleColumns);
+				RolePlayerVariable correlatedProjectionVariable = null;
+				ReadOnlyCollection<ConstraintRoleSequenceHasRole> constraintRoles = ConstraintRoleSequenceHasRole.GetLinksToRoleCollection(roleSequence);
+				foreach (ConstraintRoleSequenceJoinPathProjection projection in ConstraintRoleSequenceJoinPathProjection.GetLinksToProjectedPathComponentCollection(joinPath))
+				{
+					if (projection.PathComponent is RolePathCombination)
+					{
+						// UNDONE: RolePathCombination
+						continue;
+					}
+					foreach (ConstraintRoleProjection constraintRoleProjection in ConstraintRoleProjection.GetLinksToProjectedRoleCollection(projection))
+					{
+						ConstraintRoleSequenceHasRole constraintRole = constraintRoleProjection.ProjectedConstraintRole;
+						RolePlayerVariable newVariable = AddExternalVariable(constraintRole, correlatedProjectionVariable, constraintRole.Role.RolePlayer, constraintRoleProjection.ProjectedFromPathedRole);
+						if (correlateProjectedRoles)
+						{
+							correlateProjectedRoles = false;
+							correlatedProjectionVariable = newVariable;
+						}
+					}
+				}
+			}
+			/// <summary>
+			/// Override to bind calculation and constant projections
+			/// </summary>
+			protected override void AddCalculatedAndConstantProjections(RolePathComponent leadPathComponent)
+			{
+				if (leadPathComponent is RolePathCombination)
+				{
+					// UNDONE: RolePathCombination
+					return;
+				}
+				// Overlay projection information
+				ConstraintRoleSequenceJoinPathProjection projection = ConstraintRoleSequenceJoinPathProjection.GetLinkToConstraintRoleSequenceJoinPathProjection(leadPathComponent);
+				if (projection != null)
+				{
+					foreach (ConstraintRoleProjection constraintRoleProjection in ConstraintRoleProjection.GetLinksToProjectedRoleCollection(projection))
+					{
+						CalculatedPathValue calculation;
+						PathConstant constant;
+						if (null != (calculation = constraintRoleProjection.ProjectedFromCalculatedValue))
+						{
+							ProjectExternalVariable(constraintRoleProjection.ProjectedConstraintRole, calculation);
+						}
+						else if (null != (constant = constraintRoleProjection.ProjectedFromConstant))
+						{
+							ProjectExternalVariable(constraintRoleProjection.ProjectedConstraintRole, constant);
+						}
+					}
+				}
+			}
+		}
+		#endregion // SetConstraintVerbalizer class
 		#region SetComparisonConstraintVerbalizer class
 		private sealed class SetComparisonConstraintVerbalizer : RolePathVerbalizer
 		{
@@ -8516,7 +8658,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 				}
 				// Use phases are used during both initialization and rendering. Make
-				// sure a use phase is passed so that we don't see quantified elements
+				// sure a use phase is pushed so that we don't see quantified elements
 				// as a side effect of initialization.
 				BeginQuantificationUsePhase();
 			}
