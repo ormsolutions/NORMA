@@ -447,39 +447,57 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // MergeContext functions
 		#region CustomStorage handlers
-		private string GetDerivationExpressionDisplayValue()
+		private string GetDerivationNoteDisplayValue()
 		{
-			FactTypeDerivationExpression derivation = DerivationExpression;
-			return (derivation == null || derivation.IsDeleted) ? String.Empty : derivation.Body;
+			FactTypeDerivationRule derivationRule;
+			DerivationNote derivationNote;
+			return (null != (derivationRule = DerivationRule) && null != (derivationNote = derivationRule.DerivationNote)) ? derivationNote.Body : String.Empty;
 		}
-		private void SetDerivationExpressionDisplayValue(string newValue)
+		private void SetDerivationNoteDisplayValue(string newValue)
 		{
-			Store store;
-			if (!(store = Store).InUndoRedoOrRollback)
+			Store store = Store;
+			if (!store.InUndoRedoOrRollback)
 			{
-				FactTypeDerivationExpression currentExpression = DerivationExpression;
-				if (string.IsNullOrEmpty(newValue))
+				FactTypeDerivationRule derivationRule;
+				DerivationNote derivationNote;
+				if (null != (derivationRule = DerivationRule))
 				{
-					if (currentExpression != null)
+					derivationNote = derivationRule.DerivationNote;
+					if (derivationNote == null && string.IsNullOrEmpty(newValue))
 					{
-						currentExpression.Body = string.Empty;
+						return;
 					}
+				}
+				else if (string.IsNullOrEmpty(newValue))
+				{
+					return; // Don't create a new rule for an empty note body
 				}
 				else
 				{
-					if (null == currentExpression)
-					{
-						currentExpression = new FactTypeDerivationExpression(store);
-						DerivationExpression = currentExpression;
-					}
-					currentExpression.Body = newValue;
+					new FactTypeHasDerivationRule(
+						this,
+						derivationRule = new FactTypeDerivationRule(
+							store,
+							new PropertyAssignment(FactTypeDerivationRule.ExternalDerivationDomainPropertyId, true)));
+					derivationNote = null;
+				}
+				if (derivationNote == null)
+				{
+					new FactTypeDerivationRuleHasDerivationNote(
+						derivationRule,
+						new DerivationNote(
+							store,
+							new PropertyAssignment(DerivationNote.BodyDomainPropertyId, newValue)));
+				}
+				else
+				{
+					derivationNote.Body = newValue;
 				}
 			}
 		}
 		private DerivationExpressionStorageType GetDerivationStorageDisplayValue()
 		{
 			FactTypeDerivationRule rule;
-			FactTypeDerivationExpression expression;
 			if (null != (rule = DerivationRule))
 			{
 				switch (rule.DerivationCompleteness)
@@ -490,10 +508,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						return (rule.DerivationStorage == DerivationStorage.Stored) ? DerivationExpressionStorageType.PartiallyDerivedAndStored : DerivationExpressionStorageType.PartiallyDerived;
 				}
 			}
-			else if (null != (expression = DerivationExpression))
-			{
-				return expression.DerivationStorage;
-			}
 			return DerivationExpressionStorageType.Derived;
 		}
 		private void SetDerivationStorageDisplayValue(DerivationExpressionStorageType newValue)
@@ -501,7 +515,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (!Store.InUndoRedoOrRollback)
 			{
 				FactTypeDerivationRule rule;
-				FactTypeDerivationExpression expression;
 				if (null != (rule = DerivationRule))
 				{
 					DerivationCompleteness completeness = DerivationCompleteness.FullyDerived;
@@ -522,10 +535,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					rule.DerivationCompleteness = completeness;
 					rule.DerivationStorage = storage;
-				}
-				else if (null != (expression = DerivationExpression))
-				{
-					expression.DerivationStorage = newValue;
 				}
 			}
 		}
@@ -2271,22 +2280,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				link.NestingType.Name = "";
 			}
 		}
-		/// <summary>
-		/// ChangeRule: typeof(FactTypeDerivationExpression)
-		/// check the Body property of the FactTypeDerivationExpression and delete the FactTypeDerivationExpression 
-		/// if Body is empty
-		/// </summary>
-		private static void FactTypeDerivationExpressionChangeRule(ElementPropertyChangedEventArgs e)
-		{
-			Guid attributeGuid = e.DomainProperty.Id;
-			if (attributeGuid == FactTypeDerivationExpression.BodyDomainPropertyId)
-			{
-				if (string.IsNullOrEmpty((string)e.NewValue))
-				{
-					e.ModelElement.Delete();
-				}
-			}
-		}
 		#endregion // Model Validation Rules
 		#region AutoFix Methods
 		/// <summary>
@@ -2937,6 +2930,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					yield return CustomChildVerbalizer.VerbalizeInstance(verbalizer, true);
 				}
 				yield return CustomChildVerbalizer.VerbalizeInstance(FactTypeInstanceBlockEnd.GetVerbalizer(), true);
+			}
+
+			// Verbalize a derivation note.
+			// The derivation rule is verbalized with the fact type. Instead of making the verbalizer walk all derivation
+			// rule children, we jump to the only thing we want to verbalize independently.
+			FactTypeDerivationRule derivationRule;
+			DerivationNote derivationNote;
+			if (null != (derivationRule = DerivationRule) &&
+				null != (derivationNote = derivationRule.DerivationNote))
+			{
+				yield return CustomChildVerbalizer.VerbalizeInstance(derivationNote, false);
 			}
 		}
 		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)

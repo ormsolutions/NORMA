@@ -324,7 +324,11 @@
 			<xs:documentation>The formal derivation rule defining a subtype.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="SubtypeDerivationExpression" type="DerivationExpressionType" minOccurs="0"/>
+			<xs:element name="SubtypeDerivationExpression" type="DerivationExpressionType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>(Deprecated) A derivation expression. Use SubtypeDerivationPath/InformalRule/DerivationNote instead.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
 			<xs:element name="SubtypeDerivationPath" type="SubtypeDerivationPathType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
@@ -1210,6 +1214,9 @@
 		<xs:attributeGroup ref="idAttribute"/>
 	</xs:complexType>
 	<xs:complexType name="FactTypeDerivationExpressionType">
+		<xs:annotation>
+			<xs:documentation>(Deprecated) A derivation expression. Use FactTypeDerivationPath/InformalRule/DerivationNote instead.</xs:documentation>
+		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="DerivationExpressionType">
 				<xs:attribute name="DerivationStorage" type="DerivationExpressionStorageValues" use="required"/>
@@ -1717,6 +1724,7 @@
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
+					<xs:element name="InformalRule" type="InformalDerivationRuleType" minOccurs="0"/>
 				</xs:sequence>
 				<xs:attribute name="DerivationCompleteness" type="DerivationCompletenessValues" default="FullyDerived"/>
 				<xs:attribute name="DerivationStorage" type="DerivationStorageValues" default="NotStored"/>
@@ -1728,6 +1736,11 @@
 				<xs:attribute name="Name" type="xs:string" use="optional">
 					<xs:annotation>
 						<xs:documentation>The name of a fully derived fact type.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="ExternalDerivation" default="false" type="xs:boolean">
+					<xs:annotation>
+						<xs:documentation>An empty derivation rule is externally defined.</xs:documentation>
 					</xs:annotation>
 				</xs:attribute>
 			</xs:extension>
@@ -1816,6 +1829,14 @@
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="RolePathOwnerType">
+				<xs:sequence>
+					<xs:element name="InformalRule" type="InformalDerivationRuleType" minOccurs="0"/>
+				</xs:sequence>
+				<xs:attribute name="ExternalDerivation" default="false" type="xs:boolean">
+					<xs:annotation>
+						<xs:documentation>An empty derivation rule is externally defined.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -1887,6 +1908,14 @@
 		</xs:sequence>
 		<xs:attributeGroup ref="idAttribute"/>
 		<xs:attributeGroup ref="refAttribute"/>
+	</xs:complexType>
+	<xs:complexType name="InformalDerivationRuleType">
+		<xs:annotation>
+			<xs:documentation>An informal description of the intent of a derivation rule.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="DerivationNote" type="DerivationExpressionType"/>
+		</xs:sequence>
 	</xs:complexType>
 	<!-- End Role Paths -->
 	<!--Constraints-->

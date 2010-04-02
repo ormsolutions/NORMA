@@ -26,7 +26,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 	/// An editor for a derivation rule dropdown
 	/// </summary>
 	[PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
-	public sealed class DerivationRuleEditor : MultilineTextEditor<DerivationRuleEditor>
+	public sealed class DerivationNoteEditor : MultilineTextEditor<DerivationNoteEditor>
 	{
 		private static readonly Size InitialControlSize = SetupInitialControlSize();
 		private static Size SetupInitialControlSize()

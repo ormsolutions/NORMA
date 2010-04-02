@@ -217,7 +217,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				classNameMap.Add("FactTypeDerivationPath", FactTypeDerivationRule.DomainClassId);
 				classNameMap.Add("FactTypeDerivationProjection", FactTypeDerivationProjection.DomainClassId);
 				classNameMap.Add("FactTypeRoleProjection", FactTypeRoleProjection.DomainClassId);
-				classNameMap.Add("SubtypeDerivationExpression", SubtypeDerivationExpression.DomainClassId);
 				classNameMap.Add("SubtypeDerivationPath", SubtypeDerivationRule.DomainClassId);
 				classNameMap.Add("SubtypeFact", SubtypeFact.DomainClassId);
 				classNameMap.Add("ReadingOrder", ReadingOrder.DomainClassId);
@@ -4079,12 +4078,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						baseInfoCount = baseInfo.Length;
 					}
 				}
-				ret = new CustomSerializedContainerElementInfo[baseInfoCount + 1];
+				ret = new CustomSerializedContainerElementInfo[baseInfoCount + 2];
 				if (baseInfoCount != 0)
 				{
-					baseInfo.CopyTo(ret, 1);
+					baseInfo.CopyTo(ret, 2);
 				}
 				ret[0] = new CustomSerializedContainerElementInfo(null, "DerivationProjections", null, CustomSerializedElementWriteStyle.Element, null, FactTypeDerivationProjection.PathComponentDomainRoleId);
+				ret[1] = new CustomSerializedContainerElementInfo(null, "InformalRule", null, CustomSerializedElementWriteStyle.Element, null, FactTypeDerivationRuleHasDerivationNote.DerivationNoteDomainRoleId);
 				FactTypeDerivationRule.myCustomSerializedChildElementInfo = ret;
 			}
 			return ret;
@@ -4143,6 +4143,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				return new CustomSerializedPropertyInfo(null, "Name", null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
 			}
+			if (domainPropertyInfo.Id == FactTypeDerivationRule.ExternalDerivationDomainPropertyId)
+			{
+				if (!this.ExternalDerivation || this.PathComponentCollection.Count != 0)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
 			if (0 != (CustomSerializedElementSupportedOperations.PropertyInfo & base.SupportedCustomSerializedOperations))
 			{
 				return base.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
@@ -4186,6 +4194,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
 				match.InitializeRoles(FactTypeDerivationProjection.PathComponentDomainRoleId);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|DerivationProjections||DerivationProjection", match);
+				match.InitializeRoles(FactTypeDerivationRuleHasDerivationNote.DerivationNoteDomainRoleId);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|InformalRule||", match);
 				FactTypeDerivationRule.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
@@ -4211,6 +4221,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				customSerializedAttributes.Add("DerivationStorage", FactTypeDerivationRule.DerivationStorageDomainPropertyId);
 				customSerializedAttributes.Add("SetProjection", FactTypeDerivationRule.SetProjectionDomainPropertyId);
 				customSerializedAttributes.Add("Name", FactTypeDerivationRule.NameDomainPropertyId);
+				customSerializedAttributes.Add("ExternalDerivation", FactTypeDerivationRule.ExternalDerivationDomainPropertyId);
 				FactTypeDerivationRule.myCustomSerializedAttributes = customSerializedAttributes;
 			}
 			Guid rVal;
@@ -4493,36 +4504,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // FactTypeRoleProjection serialization
-	#region SubtypeDerivationExpression serialization
-	partial class SubtypeDerivationExpression : ICustomSerializedElement
-	{
-		/// <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
-		protected new CustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
-		{
-			get
-			{
-				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.None;
-			}
-		}
-		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
-		{
-			get
-			{
-				return this.SupportedCustomSerializedOperations;
-			}
-		}
-		/// <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
-		protected new bool ShouldSerialize()
-		{
-			// We leave this in memory so that a user can easily switch subtypes, but do not serialize it.
-			return this.Subtype.IsSubtype;
-		}
-		bool ICustomSerializedElement.ShouldSerialize()
-		{
-			return this.ShouldSerialize();
-		}
-	}
-	#endregion // SubtypeDerivationExpression serialization
 	#region SubtypeDerivationRule serialization
 	partial class SubtypeDerivationRule : ICustomSerializedElement
 	{
@@ -4531,7 +4512,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get
 			{
-				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.ElementInfo;
+				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.ChildElementInfo | CustomSerializedElementSupportedOperations.ElementInfo | CustomSerializedElementSupportedOperations.PropertyInfo;
 			}
 		}
 		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
@@ -4540,6 +4521,37 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				return this.SupportedCustomSerializedOperations;
 			}
+		}
+		private static CustomSerializedContainerElementInfo[] myCustomSerializedChildElementInfo;
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
+		protected new CustomSerializedContainerElementInfo[] GetCustomSerializedChildElementInfo()
+		{
+			CustomSerializedContainerElementInfo[] ret = SubtypeDerivationRule.myCustomSerializedChildElementInfo;
+			if (ret == null)
+			{
+				CustomSerializedContainerElementInfo[] baseInfo = null;
+				int baseInfoCount = 0;
+				if (0 != (CustomSerializedElementSupportedOperations.ChildElementInfo & base.SupportedCustomSerializedOperations))
+				{
+					baseInfo = base.GetCustomSerializedChildElementInfo();
+					if (baseInfo != null)
+					{
+						baseInfoCount = baseInfo.Length;
+					}
+				}
+				ret = new CustomSerializedContainerElementInfo[baseInfoCount + 1];
+				if (baseInfoCount != 0)
+				{
+					baseInfo.CopyTo(ret, 1);
+				}
+				ret[0] = new CustomSerializedContainerElementInfo(null, "InformalRule", null, CustomSerializedElementWriteStyle.Element, null, SubtypeDerivationRuleHasDerivationNote.DerivationNoteDomainRoleId);
+				SubtypeDerivationRule.myCustomSerializedChildElementInfo = ret;
+			}
+			return ret;
+		}
+		CustomSerializedContainerElementInfo[] ICustomSerializedElement.GetCustomSerializedChildElementInfo()
+		{
+			return this.GetCustomSerializedChildElementInfo();
 		}
 		/// <summary>Implements ICustomSerializedElement.CustomSerializedElementInfo</summary>
 		protected new CustomSerializedElementInfo CustomSerializedElementInfo
@@ -4555,6 +4567,78 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				return this.CustomSerializedElementInfo;
 			}
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
+		protected new CustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		{
+			if (domainPropertyInfo.Id == SubtypeDerivationRule.ExternalDerivationDomainPropertyId)
+			{
+				if (!this.ExternalDerivation || this.PathComponentCollection.Count != 0)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (0 != (CustomSerializedElementSupportedOperations.PropertyInfo & base.SupportedCustomSerializedOperations))
+			{
+				return base.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
+			}
+			return CustomSerializedPropertyInfo.Default;
+		}
+		CustomSerializedPropertyInfo ICustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		{
+			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
+		}
+		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;
+		/// <summary>Implements ICustomSerializedElement.MapChildElement</summary>
+		protected new CustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			Dictionary<string, CustomSerializedElementMatch> childElementMappings = SubtypeDerivationRule.myChildElementMappings;
+			if (childElementMappings == null)
+			{
+				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
+				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
+				match.InitializeRoles(SubtypeDerivationRuleHasDerivationNote.DerivationNoteDomainRoleId);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|InformalRule||", match);
+				SubtypeDerivationRule.myChildElementMappings = childElementMappings;
+			}
+			CustomSerializedElementMatch rVal;
+			if (!childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", (object)containerNamespace != (object)outerContainerNamespace ? containerNamespace : null, "|", containerName, "|", (object)elementNamespace != (object)containerNamespace ? elementNamespace : null, "|", elementName), out rVal))
+			{
+				rVal = base.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+			}
+			return rVal;
+		}
+		CustomSerializedElementMatch ICustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+		}
+		private static Dictionary<string, Guid> myCustomSerializedAttributes;
+		/// <summary>Implements ICustomSerializedElement.MapAttribute</summary>
+		protected new Guid MapAttribute(string xmlNamespace, string attributeName)
+		{
+			Dictionary<string, Guid> customSerializedAttributes = SubtypeDerivationRule.myCustomSerializedAttributes;
+			if (customSerializedAttributes == null)
+			{
+				customSerializedAttributes = new Dictionary<string, Guid>();
+				customSerializedAttributes.Add("ExternalDerivation", SubtypeDerivationRule.ExternalDerivationDomainPropertyId);
+				SubtypeDerivationRule.myCustomSerializedAttributes = customSerializedAttributes;
+			}
+			Guid rVal;
+			string key = attributeName;
+			if (xmlNamespace.Length != 0)
+			{
+				key = string.Concat(xmlNamespace, "|", attributeName);
+			}
+			if (!customSerializedAttributes.TryGetValue(key, out rVal))
+			{
+				rVal = base.MapAttribute(xmlNamespace, attributeName);
+			}
+			return rVal;
+		}
+		Guid ICustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
+		{
+			return this.MapAttribute(xmlNamespace, attributeName);
 		}
 		/// <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
 		protected new bool ShouldSerialize()

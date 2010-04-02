@@ -550,11 +550,11 @@
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="DerivationExpressionDisplay" DefaultValue="" DisplayName="DerivationRule" Id="B852BC09-7887-4BA7-A7AA-09D4F4E2AAD2" Kind="CustomStorage" Description="The derivation rule for this subtype. If a rule is not specified, then this is treated as an asserted subtype.">
+				<DomainProperty Name="DerivationNoteDisplay" DefaultValue="" DisplayName="DerivationNote" Id="B852BC09-7887-4BA7-A7AA-09D4F4E2AAD2" Kind="CustomStorage" Description="A description of the derivation rule for this subtype. If a rule is not specified, then this is treated as an asserted subtype.">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.DerivationRuleEditor)"/>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.DerivationNoteEditor)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 							</Parameters>
 						</ClrAttribute>
@@ -646,11 +646,11 @@
 						<ExternalTypeMoniker Name="/System/Int64"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="DerivationExpressionDisplay" DefaultValue="" DisplayName="DerivationRule" Id="7AF5C436-C28A-49BA-B8E0-05C409B67358" Kind="CustomStorage" Description="A derivation rule for this FactType.">
+				<DomainProperty Name="DerivationNoteDisplay" DefaultValue="" DisplayName="DerivationNote" Id="7AF5C436-C28A-49BA-B8E0-05C409B67358" Kind="CustomStorage" Description="A description of the derivation rule for this FactType.">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.DerivationRuleEditor)"/>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.DerivationNoteEditor)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 							</Parameters>
 						</ClrAttribute>
@@ -1200,6 +1200,13 @@
 			</Properties>
 		</DomainClass>
 		<DomainClass Name="FactTypeDerivationRule" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="DEDADFCE-C351-4FCB-A455-B19FB91875B8" DisplayName="FactTypeDerivationRule" Description="A role path defining a fact type derivation.">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;FactTypeDerivationRule, Design.FactTypeDerivationRuleTypeDescriptor&lt;FactTypeDerivationRule&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
 			<BaseClass>
 				<DomainClassMoniker Name="RolePathOwner"/>
 			</BaseClass>
@@ -1224,12 +1231,31 @@
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
+				<DomainProperty Name="ExternalDerivation" Id="C74C453B-4539-4C67-BF96-E3A76467DEAA" DisplayName="ExternalDerivation" Description="An empty path is a placeholder for an externally defined derivation rule and is not validated.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
 			</Properties>
 		</DomainClass>
 		<DomainClass Name="SubtypeDerivationRule" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="7B27FBFE-0A5E-447C-89B7-1BA25F9ED880" DisplayName="SubtypeDerivationRule" Description="A role path defining subtype population.">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;SubtypeDerivationRule, Design.SubtypeDerivationRuleTypeDescriptor&lt;SubtypeDerivationRule&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
 			<BaseClass>
 				<DomainClassMoniker Name="RolePathOwner"/>
 			</BaseClass>
+			<Properties>
+				<DomainProperty Name="ExternalDerivation" Id="975022FC-C9E1-441B-BC0B-C939172C3340" DisplayName="ExternalDerivation" Description="An empty path is a placeholder for an externally defined derivation rule and is not validated.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
 		</DomainClass>
 		<DomainClass Name="ConstraintRoleSequenceJoinPath" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="56690364-4793-49F3-94C2-2984ED932D84" DisplayName="ConstraintRoleSequenceJoinPath" Description="A role path defining cross fact type relationships within a constraint role sequence.">
 			<BaseClass>
@@ -2124,6 +2150,12 @@
 		<DomainClass Name="ValueConstraintValueTypeDetachedError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="92C7060E-A912-4986-984E-E9915B1321AD" DisplayName="Path to Identifying ValueType Detached" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ValueConstraintError"/>
+			</BaseClass>
+		</DomainClass>
+
+		<DomainClass Name="DerivationNote" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="A27ABBAF-9B26-4EBD-8451-EAA0223CD9F5" DisplayName="DerivationNote" Description="An informal note describing the purpose of a derivation rule.">
+			<BaseClass>
+				<DomainClassMoniker Name="Expression"/>
 			</BaseClass>
 		</DomainClass>
 
@@ -5712,6 +5744,22 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
+		<DomainRelationship Name="FactTypeDerivationRuleHasDerivationNote" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="80352861-B31D-48EE-A752-DB34B3244AED">
+			<Source>
+				<DomainRole Name="DerivationRule" PropertyName="DerivationNote" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="DerivationRule" Id="A5705890-8370-4A38-B072-6FB6428E210E">
+					<RolePlayer>
+						<DomainClassMoniker Name="FactTypeDerivationRule"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="DerivationNote" PropertyName="FactTypeDerivationRule" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="DerivationNote" Id="D9BB9D89-FA8B-4607-A957-B9DC78519674">
+					<RolePlayer>
+						<DomainClassMoniker Name="DerivationNote"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
 		<DomainRelationship Name="FactTypeDerivationProjection" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="029B0F47-FA95-4ED3-848B-239FDBCEBAF8">
 			<Source>
 				<DomainRole Name="DerivationRule" PropertyName="ProjectedPathComponentCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="DerivationRule" Id="93BC60F8-A436-406A-B7F3-1200360C34D9">
@@ -5857,6 +5905,22 @@
 				<DomainRole Name="DerivationRule" PropertyName="Subtype" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="DerivationRule" Id="556D13CB-9B64-46D7-8D2C-312D3F30CC75">
 					<RolePlayer>
 						<DomainClassMoniker Name="SubtypeDerivationRule"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="SubtypeDerivationRuleHasDerivationNote" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="586EE173-C289-4DB2-BA8A-DCD9C5C29F5D">
+			<Source>
+				<DomainRole Name="DerivationRule" PropertyName="DerivationNote" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="DerivationRule" Id="9A0D4BB7-559F-4CD7-95B0-0E2331377BD6">
+					<RolePlayer>
+						<DomainClassMoniker Name="SubtypeDerivationRule"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="DerivationNote" PropertyName="SubtypeDerivationRule" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="DerivationNote" Id="962B225E-E9EF-4BA8-B82A-1B63C73087D6">
+					<RolePlayer>
+						<DomainClassMoniker Name="DerivationNote"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>

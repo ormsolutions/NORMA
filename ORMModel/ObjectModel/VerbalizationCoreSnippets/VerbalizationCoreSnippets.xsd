@@ -30,9 +30,9 @@
 						<xs:documentation>Description: Verbalizes the text specified for an element description.  Format: Informal Description: {0}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="DerivationRuleVerbalization">
+				<xs:enumeration value="DerivationNoteVerbalization">
 					<xs:annotation>
-						<xs:documentation>Description: Verbalizes the text specified for an element derivation rule.  Format: Derivation  Rule: {0}</xs:documentation>
+						<xs:documentation>Description: Verbalizes the informal note specified for an element derivation rule.  Format: Derivation  Note: {0}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="NotesVerbalization">

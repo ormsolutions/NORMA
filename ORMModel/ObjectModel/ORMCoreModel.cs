@@ -128,15 +128,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				eventManager.AddOrRemoveHandler(propertyInfo, standardNameChangedHandler, action);
 
 				// Derivation display (* after derived fact type and subtype names)
-				classInfo = directory.FindDomainClass(FactTypeHasDerivationExpression.DomainClassId);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeDerivationExpressionAddedEvent), action);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeDerivationExpressionDeletedEvent), action);
 				classInfo = directory.FindDomainClass(FactTypeHasDerivationRule.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeDerivationRuleAddedEvent), action);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeDerivationRuleDeletedEvent), action);
-				classInfo = directory.FindDomainClass(SubtypeHasDerivationExpression.DomainClassId);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(SubtypeDerivationExpressionAddedEvent), action);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(SubtypeDerivationExpressionDeletedEvent), action);
 				classInfo = directory.FindDomainClass(SubtypeHasDerivationRule.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(SubtypeDerivationRuleAddedEvent), action);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(SubtypeDerivationRuleDeletedEvent), action);
@@ -708,34 +702,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Survey event handler for adding a <see cref="FactTypeHasDerivationExpression"/>
-		/// </summary>
-		private static void FactTypeDerivationExpressionAddedEvent(object sender, ElementAddedEventArgs e)
-		{
-			INotifySurveyElementChanged eventNotify;
-			ModelElement element = e.ModelElement;
-			FactType factType;
-			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged) &&
-				!(factType = ((FactTypeHasDerivationExpression)element).FactType).IsDeleted)
-			{
-				eventNotify.ElementChanged(factType, SurveyDerivationQuestionTypes);
-			}
-		}
-		/// <summary>
-		/// Survey event handler for deleting a <see cref="FactTypeHasDerivationExpression"/>
-		/// </summary>
-		private static void FactTypeDerivationExpressionDeletedEvent(object sender, ElementDeletedEventArgs e)
-		{
-			INotifySurveyElementChanged eventNotify;
-			ModelElement element = e.ModelElement;
-			FactType factType;
-			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged) &&
-				!(factType = ((FactTypeHasDerivationExpression)element).FactType).IsDeleted)
-			{
-				eventNotify.ElementChanged(factType, SurveyDerivationQuestionTypes);
-			}
-		}
-		/// <summary>
 		/// Survey event handler for adding a <see cref="FactTypeHasDerivationRule"/>
 		/// </summary>
 		private static void FactTypeDerivationRuleAddedEvent(object sender, ElementAddedEventArgs e)
@@ -761,34 +727,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				!(factType = ((FactTypeHasDerivationRule)element).FactType).IsDeleted)
 			{
 				eventNotify.ElementChanged(factType, SurveyDerivationQuestionTypes);
-			}
-		}
-		/// <summary>
-		/// Survey event handler for adding a <see cref="SubtypeHasDerivationExpression"/>
-		/// </summary>
-		private static void SubtypeDerivationExpressionAddedEvent(object sender, ElementAddedEventArgs e)
-		{
-			INotifySurveyElementChanged eventNotify;
-			ModelElement element = e.ModelElement;
-			ObjectType subtype;
-			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged) &&
-				!(subtype = ((SubtypeHasDerivationExpression)element).Subtype).IsDeleted)
-			{
-				eventNotify.ElementChanged(subtype, SurveyDerivationQuestionTypes);
-			}
-		}
-		/// <summary>
-		/// Survey event handler for deleting a <see cref="SubtypeHasDerivationExpression"/>
-		/// </summary>
-		private static void SubtypeDerivationExpressionDeletedEvent(object sender, ElementDeletedEventArgs e)
-		{
-			INotifySurveyElementChanged eventNotify;
-			ModelElement element = e.ModelElement;
-			ObjectType subtype;
-			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged) &&
-				!(subtype = ((SubtypeHasDerivationExpression)element).Subtype).IsDeleted)
-			{
-				eventNotify.ElementChanged(subtype, SurveyDerivationQuestionTypes);
 			}
 		}
 		/// <summary>

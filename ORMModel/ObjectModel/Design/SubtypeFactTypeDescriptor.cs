@@ -128,7 +128,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		protected override bool ShouldCreatePropertyDescriptor(ModelElement requestor, DomainPropertyInfo domainProperty)
 		{
 			Guid propertyId = domainProperty.Id;
-			if (propertyId == FactType.DerivationExpressionDisplayDomainPropertyId ||
+			if (propertyId == FactType.DerivationNoteDisplayDomainPropertyId ||
 				propertyId == FactType.DerivationStorageDisplayDomainPropertyId)
 			{
 				return false;

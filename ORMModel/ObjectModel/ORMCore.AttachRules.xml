@@ -181,6 +181,11 @@
 				<arg:RuleOn targetType="ObjectTypePlaysRole"/>
 			</arg:RolePlayerChangeRule>
 		</arg:RuleContainer>
+		<arg:RuleContainer class="DerivationNote">
+			<arg:ChangeRule methodName="DerivationNoteChangedRule">
+				<arg:RuleOn targetType="DerivationNote"/>
+			</arg:ChangeRule>
+		</arg:RuleContainer>
 		<arg:RuleContainer class="EntityTypeInstance">
 			<arg:AddRule methodName="EntityTypeInstanceAddedRule">
 				<arg:RuleOn targetType="EntityTypeHasEntityTypeInstance"/>
@@ -304,9 +309,6 @@
 			<arg:AddRule methodName="FactTypeAddedRule">
 				<arg:RuleOn targetType="ModelHasFactType"/>
 			</arg:AddRule>
-			<arg:ChangeRule methodName="FactTypeDerivationExpressionChangeRule">
-				<arg:RuleOn targetType="FactTypeDerivationExpression"/>
-			</arg:ChangeRule>
 			<arg:AddRule methodName="FactTypeHasReadingOrderAddRule">
 				<arg:RuleOn targetType="FactTypeHasReadingOrder"/>
 			</arg:AddRule>
@@ -404,21 +406,18 @@
 			</arg:ChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="FactTypeDerivationExpression">
-			<!-- Temporary synchronization methods pending full transition to derivation paths. -->
-			<arg:AddRule methodName="DerivationExpressionAddedRule">
-				<arg:RuleOn targetType="FactTypeHasDerivationExpression"/>
-			</arg:AddRule>
-			<arg:ChangeRule methodName="DerivationExpressionChangedRule">
+			<!-- All derivation expression settings are mapped to the derivation path on load, stop new ones from being created -->
+			<arg:AddRule methodName="DeprecateFactTypeDerivationExpression">
 				<arg:RuleOn targetType="FactTypeDerivationExpression"/>
-			</arg:ChangeRule>
-			<arg:AddRule methodName="DerivationRuleAddedRule">
-				<arg:RuleOn targetType="FactTypeHasDerivationRule"/>
 			</arg:AddRule>
-			<arg:ChangeRule methodName="DerivationRuleChangedRule">
-				<arg:RuleOn targetType="FactTypeDerivationRule"/>
-			</arg:ChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="FactTypeDerivationRule">
+			<arg:DeleteRule methodName="DerivationNoteDeletedRule">
+				<arg:RuleOn targetType="FactTypeDerivationRuleHasDerivationNote" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
+			</arg:DeleteRule>
+			<arg:ChangeRule methodName="FactTypeDerivationRuleChangedRule">
+				<arg:RuleOn targetType="FactTypeDerivationRule"/>
+			</arg:ChangeRule>
 			<arg:AddRule methodName="FactTypeRoleProjectionOnCalculatedPathValueAddedRule">
 				<arg:RuleOn targetType="FactTypeRoleProjectedFromCalculatedPathValue"/>
 			</arg:AddRule>
@@ -443,6 +442,9 @@
 			<arg:RolePlayerChangeRule methodName="ProjectionRolePlayerChangedRule">
 				<arg:RuleOn targetType="FactTypeDerivationProjection"/>
 			</arg:RolePlayerChangeRule>
+			<arg:AddRule methodName="RolePathComponentAddedRule">
+				<arg:RuleOn targetType="RolePathOwnerHasPathComponent" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
+			</arg:AddRule>
 			<arg:AddRule methodName="RoleProjectionAddedRule">
 				<arg:RuleOn targetType="FactTypeRoleProjection"/>
 			</arg:AddRule>
@@ -697,9 +699,6 @@
 			<arg:DeletingRule methodName="ObjectTypeDeletingRule">
 				<arg:RuleOn targetType="ObjectType"/>
 			</arg:DeletingRule>
-			<arg:ChangeRule methodName="SubtypeDerivationExpressionChangeRule">
-				<arg:RuleOn targetType="SubtypeDerivationExpression"/>
-			</arg:ChangeRule>
 			<arg:ChangeRule methodName="SubtypeFactChangeRule" methodInRuleClass="true">
 				<arg:RuleOn targetType="SubtypeFact"/>
 			</arg:ChangeRule>
@@ -1165,6 +1164,20 @@
 			<arg:DeletingRule methodName="SetConstraintRoleSequenceHasRoleDeletingRule">
 				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
 			</arg:DeletingRule>
+		</arg:RuleContainer>
+		<arg:RuleContainer class="SubtypeDerivationExpression">
+			<!-- All derivation expression settings are mapped to the derivation path on load, stop new ones from being created -->
+			<arg:AddRule methodName="DeprecateSubtypeDerivationExpression">
+				<arg:RuleOn targetType="SubtypeDerivationExpression"/>
+			</arg:AddRule>
+		</arg:RuleContainer>
+		<arg:RuleContainer class="SubtypeDerivationRule">
+			<arg:DeleteRule methodName="DerivationNoteDeletedRule">
+				<arg:RuleOn targetType="SubtypeDerivationRuleHasDerivationNote" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
+			</arg:DeleteRule>
+			<arg:AddRule methodName="RolePathComponentAddedRule">
+				<arg:RuleOn targetType="RolePathOwnerHasPathComponent" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
+			</arg:AddRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="SubtypeFact">
 			<arg:DeleteRule methodName="DeleteSubtypeWhenRolePlayerDeletedRule">

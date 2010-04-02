@@ -103,16 +103,11 @@
 				<NoteText/>
 			</Snippet>
 		</Note>
-		<FactTypeDerivationExpression>
-			<Snippet ref="DerivationRuleVerbalization">
+		<DerivationNote>
+			<Snippet ref="DerivationNoteVerbalization">
 				<ExpressionBody/>
 			</Snippet>
-		</FactTypeDerivationExpression>
-		<SubtypeDerivationExpression>
-			<Snippet ref="DerivationRuleVerbalization">
-				<ExpressionBody/>
-			</Snippet>
-		</SubtypeDerivationExpression>
+		</DerivationNote>
 		<ErrorReports>
 			<ErrorReport type="ErrorReport" childHelperFor="Role" childHelperErrorReport="true"/>
 		</ErrorReports>

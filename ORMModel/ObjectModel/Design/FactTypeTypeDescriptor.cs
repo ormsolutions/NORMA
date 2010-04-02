@@ -61,17 +61,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 
 		/// <summary>
 		/// Stop the <see cref="FactType.DerivationStorageDisplay"/> property from displaying if
-		/// no <see cref="FactType.DerivationExpression"/> is specified.
+		/// no <see cref="FactType.DerivationRule"/> is specified.
 		/// </summary>
 		protected override bool ShouldCreatePropertyDescriptor(ModelElement requestor, DomainPropertyInfo domainProperty)
 		{
 			Guid propertyId = domainProperty.Id;
-			if (propertyId.Equals(FactType.DerivationStorageDisplayDomainPropertyId))
+			if (propertyId == FactType.DerivationStorageDisplayDomainPropertyId)
 			{
 				FactType factType = ModelElement;
-				return factType.DerivationExpression != null || factType.DerivationRule != null;
+				return factType.DerivationRule != null;
 			}
-			else if (propertyId.Equals(FactType.IsExternalDomainPropertyId))
+			else if (propertyId == FactType.IsExternalDomainPropertyId)
 			{
 				// UNDONE: Support IsExternal
 				return false;

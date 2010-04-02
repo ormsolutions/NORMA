@@ -5029,58 +5029,58 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		
 		#endregion
-		#region DerivationExpressionDisplay domain property code
+		#region DerivationNoteDisplay domain property code
 		
 		/// <summary>
-		/// DerivationExpressionDisplay domain property Id.
+		/// DerivationNoteDisplay domain property Id.
 		/// </summary>
-		public static readonly global::System.Guid DerivationExpressionDisplayDomainPropertyId = new global::System.Guid(0xb852bc09, 0x7887, 0x4ba7, 0xa7, 0xaa, 0x09, 0xd4, 0xf4, 0xe2, 0xaa, 0xd2);
+		public static readonly global::System.Guid DerivationNoteDisplayDomainPropertyId = new global::System.Guid(0xb852bc09, 0x7887, 0x4ba7, 0xa7, 0xaa, 0x09, 0xd4, 0xf4, 0xe2, 0xaa, 0xd2);
 		
 		/// <summary>
-		/// Gets or sets the value of DerivationExpressionDisplay domain property.
-		/// The derivation rule for this subtype. If a rule is not specified, then this is
-		/// treated as an asserted subtype.
+		/// Gets or sets the value of DerivationNoteDisplay domain property.
+		/// A description of the derivation rule for this subtype. If a rule is not
+		/// specified, then this is treated as an asserted subtype.
 		/// </summary>
-		[global::System.ComponentModel.Editor(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.DerivationRuleEditor), typeof(global::System.Drawing.Design.UITypeEditor))]
+		[global::System.ComponentModel.Editor(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.DerivationNoteEditor), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[global::System.ComponentModel.MergableProperty(false)]
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/DerivationExpressionDisplay.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/DerivationExpressionDisplay.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/DerivationNoteDisplay.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/DerivationNoteDisplay.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("b852bc09-7887-4ba7-a7aa-09d4f4e2aad2")]
-		public global::System.String DerivationExpressionDisplay
+		public global::System.String DerivationNoteDisplay
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DerivationExpressionDisplayPropertyHandler.Instance.GetValue(this);
+				return DerivationNoteDisplayPropertyHandler.Instance.GetValue(this);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DerivationExpressionDisplayPropertyHandler.Instance.SetValue(this, value);
+				DerivationNoteDisplayPropertyHandler.Instance.SetValue(this, value);
 			}
 		}
 		/// <summary>
-		/// Value handler for the ObjectType.DerivationExpressionDisplay domain property.
+		/// Value handler for the ObjectType.DerivationNoteDisplay domain property.
 		/// </summary>
-		internal sealed partial class DerivationExpressionDisplayPropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, global::System.String>
+		internal sealed partial class DerivationNoteDisplayPropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, global::System.String>
 		{
-			private DerivationExpressionDisplayPropertyHandler() { }
+			private DerivationNoteDisplayPropertyHandler() { }
 		
 			/// <summary>
-			/// Gets the singleton instance of the ObjectType.DerivationExpressionDisplay domain property value handler.
+			/// Gets the singleton instance of the ObjectType.DerivationNoteDisplay domain property value handler.
 			/// </summary>
-			public static readonly DerivationExpressionDisplayPropertyHandler Instance = new DerivationExpressionDisplayPropertyHandler();
+			public static readonly DerivationNoteDisplayPropertyHandler Instance = new DerivationNoteDisplayPropertyHandler();
 		
 			/// <summary>
-			/// Gets the Id of the ObjectType.DerivationExpressionDisplay domain property.
+			/// Gets the Id of the ObjectType.DerivationNoteDisplay domain property.
 			/// </summary>
 			public sealed override global::System.Guid DomainPropertyId
 			{
 				[global::System.Diagnostics.DebuggerStepThrough]
 				get
 				{
-					return DerivationExpressionDisplayDomainPropertyId;
+					return DerivationNoteDisplayDomainPropertyId;
 				}
 			}
 			
@@ -5092,10 +5092,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			public override sealed global::System.String GetValue(ObjectType element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-				// There is no storage for DerivationExpressionDisplay because its Kind is
-				// set to CustomStorage. Please provide the GetDerivationExpressionDisplayValue()
+				// There is no storage for DerivationNoteDisplay because its Kind is
+				// set to CustomStorage. Please provide the GetDerivationNoteDisplayValue()
 				// method on the domain class.
-				return element.GetDerivationExpressionDisplayValue();
+				return element.GetDerivationNoteDisplayValue();
 			}
 		
 			/// <summary>
@@ -5111,10 +5111,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (newValue != oldValue)
 				{
 					ValueChanging(element, oldValue, newValue);
-					// There is no storage for DerivationExpressionDisplay because its Kind is
-					// set to CustomStorage. Please provide the SetDerivationExpressionDisplayValue()
+					// There is no storage for DerivationNoteDisplay because its Kind is
+					// set to CustomStorage. Please provide the SetDerivationNoteDisplayValue()
 					// method on the domain class.
-					element.SetDerivationExpressionDisplayValue(newValue);
+					element.SetDerivationNoteDisplayValue(newValue);
 					//ValueChanged(element, oldValue, GetValue(element));
 					ValueChanged(element, oldValue, newValue);
 				}
@@ -6250,57 +6250,57 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		
 		#endregion
-		#region DerivationExpressionDisplay domain property code
+		#region DerivationNoteDisplay domain property code
 		
 		/// <summary>
-		/// DerivationExpressionDisplay domain property Id.
+		/// DerivationNoteDisplay domain property Id.
 		/// </summary>
-		public static readonly global::System.Guid DerivationExpressionDisplayDomainPropertyId = new global::System.Guid(0x7af5c436, 0xc28a, 0x49ba, 0xb8, 0xe0, 0x05, 0xc4, 0x09, 0xb6, 0x73, 0x58);
+		public static readonly global::System.Guid DerivationNoteDisplayDomainPropertyId = new global::System.Guid(0x7af5c436, 0xc28a, 0x49ba, 0xb8, 0xe0, 0x05, 0xc4, 0x09, 0xb6, 0x73, 0x58);
 		
 		/// <summary>
-		/// Gets or sets the value of DerivationExpressionDisplay domain property.
-		/// A derivation rule for this FactType.
+		/// Gets or sets the value of DerivationNoteDisplay domain property.
+		/// A description of the derivation rule for this FactType.
 		/// </summary>
-		[global::System.ComponentModel.Editor(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.DerivationRuleEditor), typeof(global::System.Drawing.Design.UITypeEditor))]
+		[global::System.ComponentModel.Editor(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.DerivationNoteEditor), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[global::System.ComponentModel.MergableProperty(false)]
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactType/DerivationExpressionDisplay.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactType/DerivationExpressionDisplay.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactType/DerivationNoteDisplay.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactType/DerivationNoteDisplay.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("7af5c436-c28a-49ba-b8e0-05c409b67358")]
-		public global::System.String DerivationExpressionDisplay
+		public global::System.String DerivationNoteDisplay
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DerivationExpressionDisplayPropertyHandler.Instance.GetValue(this);
+				return DerivationNoteDisplayPropertyHandler.Instance.GetValue(this);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DerivationExpressionDisplayPropertyHandler.Instance.SetValue(this, value);
+				DerivationNoteDisplayPropertyHandler.Instance.SetValue(this, value);
 			}
 		}
 		/// <summary>
-		/// Value handler for the FactType.DerivationExpressionDisplay domain property.
+		/// Value handler for the FactType.DerivationNoteDisplay domain property.
 		/// </summary>
-		internal sealed partial class DerivationExpressionDisplayPropertyHandler : DslModeling::DomainPropertyValueHandler<FactType, global::System.String>
+		internal sealed partial class DerivationNoteDisplayPropertyHandler : DslModeling::DomainPropertyValueHandler<FactType, global::System.String>
 		{
-			private DerivationExpressionDisplayPropertyHandler() { }
+			private DerivationNoteDisplayPropertyHandler() { }
 		
 			/// <summary>
-			/// Gets the singleton instance of the FactType.DerivationExpressionDisplay domain property value handler.
+			/// Gets the singleton instance of the FactType.DerivationNoteDisplay domain property value handler.
 			/// </summary>
-			public static readonly DerivationExpressionDisplayPropertyHandler Instance = new DerivationExpressionDisplayPropertyHandler();
+			public static readonly DerivationNoteDisplayPropertyHandler Instance = new DerivationNoteDisplayPropertyHandler();
 		
 			/// <summary>
-			/// Gets the Id of the FactType.DerivationExpressionDisplay domain property.
+			/// Gets the Id of the FactType.DerivationNoteDisplay domain property.
 			/// </summary>
 			public sealed override global::System.Guid DomainPropertyId
 			{
 				[global::System.Diagnostics.DebuggerStepThrough]
 				get
 				{
-					return DerivationExpressionDisplayDomainPropertyId;
+					return DerivationNoteDisplayDomainPropertyId;
 				}
 			}
 			
@@ -6312,10 +6312,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			public override sealed global::System.String GetValue(FactType element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-				// There is no storage for DerivationExpressionDisplay because its Kind is
-				// set to CustomStorage. Please provide the GetDerivationExpressionDisplayValue()
+				// There is no storage for DerivationNoteDisplay because its Kind is
+				// set to CustomStorage. Please provide the GetDerivationNoteDisplayValue()
 				// method on the domain class.
-				return element.GetDerivationExpressionDisplayValue();
+				return element.GetDerivationNoteDisplayValue();
 			}
 		
 			/// <summary>
@@ -6331,10 +6331,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (newValue != oldValue)
 				{
 					ValueChanging(element, oldValue, newValue);
-					// There is no storage for DerivationExpressionDisplay because its Kind is
-					// set to CustomStorage. Please provide the SetDerivationExpressionDisplayValue()
+					// There is no storage for DerivationNoteDisplay because its Kind is
+					// set to CustomStorage. Please provide the SetDerivationNoteDisplayValue()
 					// method on the domain class.
-					element.SetDerivationExpressionDisplayValue(newValue);
+					element.SetDerivationNoteDisplayValue(newValue);
 					//ValueChanged(element, oldValue, GetValue(element));
 					ValueChanged(element, oldValue, newValue);
 				}
@@ -13233,6 +13233,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	/// DomainClass FactTypeDerivationRule
 	/// A role path defining a fact type derivation.
 	/// </summary>
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider<FactTypeDerivationRule, Design.FactTypeDerivationRuleTypeDescriptor<FactTypeDerivationRule>>))]
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
@@ -13618,6 +13619,94 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		
 		#endregion
+		#region ExternalDerivation domain property code
+		
+		/// <summary>
+		/// ExternalDerivation domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid ExternalDerivationDomainPropertyId = new global::System.Guid(0xc74c453b, 0x4539, 0x4c67, 0xbf, 0x96, 0xe3, 0xa7, 0x64, 0x67, 0xde, 0xaa);
+		
+		/// <summary>
+		/// Storage for ExternalDerivation
+		/// </summary>
+		private global::System.Boolean externalDerivationPropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of ExternalDerivation domain property.
+		/// An empty path is a placeholder for an externally defined derivation rule and is
+		/// not validated.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/ExternalDerivation.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/ExternalDerivation.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainObjectId("c74c453b-4539-4c67-bf96-e3a76467deaa")]
+		public global::System.Boolean ExternalDerivation
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return externalDerivationPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				ExternalDerivationPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the FactTypeDerivationRule.ExternalDerivation domain property.
+		/// </summary>
+		internal sealed partial class ExternalDerivationPropertyHandler : DslModeling::DomainPropertyValueHandler<FactTypeDerivationRule, global::System.Boolean>
+		{
+			private ExternalDerivationPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the FactTypeDerivationRule.ExternalDerivation domain property value handler.
+			/// </summary>
+			public static readonly ExternalDerivationPropertyHandler Instance = new ExternalDerivationPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the FactTypeDerivationRule.ExternalDerivation domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return ExternalDerivationDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(FactTypeDerivationRule element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.externalDerivationPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(FactTypeDerivationRule element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.externalDerivationPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region FactType opposite domain role accessor
 		/// <summary>
 		/// Gets or sets FactType.
@@ -13646,6 +13735,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				else
 				{
 					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationRule.DerivationRuleDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region DerivationNote opposite domain role accessor
+		/// <summary>
+		/// Gets or sets DerivationNote.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote.DerivationRule
+		/// </summary>
+		public virtual DerivationNote DerivationNote
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote.DerivationRuleDomainRoleId) as DerivationNote;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote.DerivationNoteDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote.DerivationNoteDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote.DerivationRuleDomainRoleId, value);
 				}
 			}
 		}
@@ -13705,6 +13826,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	/// DomainClass SubtypeDerivationRule
 	/// A role path defining subtype population.
 	/// </summary>
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider<SubtypeDerivationRule, Design.SubtypeDerivationRuleTypeDescriptor<SubtypeDerivationRule>>))]
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
@@ -13737,6 +13859,94 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 		}
 		#endregion
+		#region ExternalDerivation domain property code
+		
+		/// <summary>
+		/// ExternalDerivation domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid ExternalDerivationDomainPropertyId = new global::System.Guid(0x975022fc, 0xc9e1, 0x441b, 0xbc, 0x0b, 0xc9, 0x39, 0x17, 0x2c, 0x33, 0x40);
+		
+		/// <summary>
+		/// Storage for ExternalDerivation
+		/// </summary>
+		private global::System.Boolean externalDerivationPropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of ExternalDerivation domain property.
+		/// An empty path is a placeholder for an externally defined derivation rule and is
+		/// not validated.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule/ExternalDerivation.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule/ExternalDerivation.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainObjectId("975022fc-c9e1-441b-bc0b-c939172c3340")]
+		public global::System.Boolean ExternalDerivation
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return externalDerivationPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				ExternalDerivationPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the SubtypeDerivationRule.ExternalDerivation domain property.
+		/// </summary>
+		internal sealed partial class ExternalDerivationPropertyHandler : DslModeling::DomainPropertyValueHandler<SubtypeDerivationRule, global::System.Boolean>
+		{
+			private ExternalDerivationPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the SubtypeDerivationRule.ExternalDerivation domain property value handler.
+			/// </summary>
+			public static readonly ExternalDerivationPropertyHandler Instance = new ExternalDerivationPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the SubtypeDerivationRule.ExternalDerivation domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return ExternalDerivationDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(SubtypeDerivationRule element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.externalDerivationPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(SubtypeDerivationRule element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.externalDerivationPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region Subtype opposite domain role accessor
 		/// <summary>
 		/// Gets or sets Subtype.
@@ -13765,6 +13975,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				else
 				{
 					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationRule.DerivationRuleDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region DerivationNote opposite domain role accessor
+		/// <summary>
+		/// Gets or sets DerivationNote.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote.DerivationRule
+		/// </summary>
+		public virtual DerivationNote DerivationNote
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote.DerivationRuleDomainRoleId) as DerivationNote;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote.DerivationNoteDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote.DerivationNoteDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote.DerivationRuleDomainRoleId, value);
 				}
 			}
 		}
@@ -23166,6 +23408,110 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				else
 				{
 					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasValueTypeDetachedError.ValueTypeDetachedErrorDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainClass DerivationNote
+	/// An informal note describing the purpose of a derivation rule.
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationNote.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationNote.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("a27abbaf-9b26-4ebd-8451-eaa0223cd9f5")]
+	public partial class DerivationNote : Expression
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// DerivationNote domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xa27abbaf, 0x9b26, 0x4ebd, 0x84, 0x51, 0xea, 0xa0, 0x22, 0x3c, 0xd9, 0xf5);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public DerivationNote(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public DerivationNote(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region FactTypeDerivationRule opposite domain role accessor
+		/// <summary>
+		/// Gets or sets FactTypeDerivationRule.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote.DerivationNote
+		/// </summary>
+		public virtual FactTypeDerivationRule FactTypeDerivationRule
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote.DerivationNoteDomainRoleId) as FactTypeDerivationRule;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote.DerivationRuleDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote.DerivationRuleDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote.DerivationNoteDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region SubtypeDerivationRule opposite domain role accessor
+		/// <summary>
+		/// Gets or sets SubtypeDerivationRule.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote.DerivationNote
+		/// </summary>
+		public virtual SubtypeDerivationRule SubtypeDerivationRule
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote.DerivationNoteDomainRoleId) as SubtypeDerivationRule;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote.DerivationRuleDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote.DerivationRuleDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote.DerivationNoteDomainRoleId, value);
 				}
 			}
 		}

@@ -2590,7 +2590,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 			FactTypeDerivationRequiresProjectionError projectionRequiredError = ProjectionRequiredError;
-			if (!seenProjection)
+			if (!seenProjection && !ExternalDerivation)
 			{
 				if (projectionRequiredError == null)
 				{
@@ -2703,6 +2703,30 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // IModelErrorOwner Implementation
 		#region Validation Rule Methods
 		/// <summary>
+		/// DeleteRule: typeof(FactTypeDerivationRuleHasDerivationNote), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// </summary>
+		private static void DerivationNoteDeletedRule(ElementDeletedEventArgs e)
+		{
+			FactTypeDerivationRule derivationRule = ((FactTypeDerivationRuleHasDerivationNote)e.ModelElement).DerivationRule;
+			if (!derivationRule.IsDeleted &&
+				derivationRule.ExternalDerivation &&
+				derivationRule.PathComponentCollection.Count == 0)
+			{
+				derivationRule.Delete();
+			}
+		}
+		/// <summary>
+		/// ChangeRule: typeof(FactTypeDerivationRule)
+		/// </summary>
+		private static void FactTypeDerivationRuleChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			if (e.DomainProperty.Id == ExternalDerivationDomainPropertyId)
+			{
+				// Projection errors with come and go based on this setting
+				FrameworkDomainModel.DelayValidateElement(e.ModelElement, DelayValidateProjections);
+			}
+		}
+		/// <summary>
 		/// AddRule: typeof(FactTypeRoleProjectedFromCalculatedPathValue)
 		/// </summary>
 		private static void FactTypeRoleProjectionOnCalculatedPathValueAddedRule(ElementAddedEventArgs e)
@@ -2786,6 +2810,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			else
 			{
 				FrameworkDomainModel.DelayValidateElement(((FactTypeDerivationProjection)e.ElementLink).DerivationRule, DelayValidateProjections);
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(RolePathOwnerHasPathComponent), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// Clear the ExternalDefinition setting when elements are added to the path.
+		/// </summary>
+		private static void RolePathComponentAddedRule(ElementAddedEventArgs e)
+		{
+			RolePathOwnerHasPathComponent link = (RolePathOwnerHasPathComponent)e.ModelElement;
+			FactTypeDerivationRule derivationRule;
+			if (!link.IsDeleted &&
+				null != (derivationRule = link.PathOwner as FactTypeDerivationRule))
+			{
+				derivationRule.ExternalDerivation = false;
 			}
 		}
 		/// <summary>
@@ -3028,6 +3066,35 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return GetIndirectModelErrorOwnerLinkRoles();
 		}
 		#endregion // IHasIndirectModelErrorOwner Implementation
+		#region Validation Rule Methods
+		/// <summary>
+		/// DeleteRule: typeof(SubtypeDerivationRuleHasDerivationNote), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// </summary>
+		private static void DerivationNoteDeletedRule(ElementDeletedEventArgs e)
+		{
+			SubtypeDerivationRule derivationRule = ((SubtypeDerivationRuleHasDerivationNote)e.ModelElement).DerivationRule;
+			if (!derivationRule.IsDeleted &&
+				derivationRule.ExternalDerivation &&
+				derivationRule.PathComponentCollection.Count == 0)
+			{
+				derivationRule.Delete();
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(RolePathOwnerHasPathComponent), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// Clear the ExternalDefinition setting when elements are added to the path.
+		/// </summary>
+		private static void RolePathComponentAddedRule(ElementAddedEventArgs e)
+		{
+			RolePathOwnerHasPathComponent link = (RolePathOwnerHasPathComponent)e.ModelElement;
+			SubtypeDerivationRule derivationRule;
+			if (!link.IsDeleted &&
+				null != (derivationRule = link.PathOwner as SubtypeDerivationRule))
+			{
+				derivationRule.ExternalDerivation = false;
+			}
+		}
+		#endregion // Validation Rule Methods
 	}
 	#endregion // SubtypeDerivationRule class
 	#region ConstraintRoleSequenceJoinPath class
@@ -4156,46 +4223,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	}
 	#endregion // Path Errors
 	#region FactTypeDerivationExpression class (transitional)
-	// Transitional code to synchronize derivation storage settings on
-	// the old (expression) and new (path) derivation mechanisms.
+	// Transitional code to move all information stored in the
+	// old derivation expression elements into the new derivation
+	// path elements. The old expression elements are removed when
+	// the file is loaded.
 	partial class FactTypeDerivationExpression
 	{
-		#region Helper Methods
-		private static void SynchronizeExpression(FactTypeDerivationExpression expression, DerivationCompleteness completeness, DerivationStorage storage)
-		{
-			switch (completeness)
-			{
-				case DerivationCompleteness.FullyDerived:
-					expression.DerivationStorage = (storage == ObjectModel.DerivationStorage.Stored) ? DerivationExpressionStorageType.DerivedAndStored : DerivationExpressionStorageType.Derived;
-					break;
-				case DerivationCompleteness.PartiallyDerived:
-					expression.DerivationStorage = (storage == ObjectModel.DerivationStorage.Stored) ? DerivationExpressionStorageType.PartiallyDerivedAndStored : DerivationExpressionStorageType.PartiallyDerived;
-					break;
-			}
-		}
-		private static void SynchronizeRule(FactTypeDerivationRule rule, DerivationExpressionStorageType storageType)
-		{
-			switch (storageType)
-			{
-				case DerivationExpressionStorageType.Derived:
-					rule.DerivationCompleteness = DerivationCompleteness.FullyDerived;
-					rule.DerivationStorage = ObjectModel.DerivationStorage.NotStored;
-					break;
-				case DerivationExpressionStorageType.DerivedAndStored:
-					rule.DerivationCompleteness = DerivationCompleteness.FullyDerived;
-					rule.DerivationStorage = ObjectModel.DerivationStorage.Stored;
-					break;
-				case DerivationExpressionStorageType.PartiallyDerived:
-					rule.DerivationCompleteness = DerivationCompleteness.PartiallyDerived;
-					rule.DerivationStorage = ObjectModel.DerivationStorage.NotStored;
-					break;
-				case DerivationExpressionStorageType.PartiallyDerivedAndStored:
-					rule.DerivationCompleteness = DerivationCompleteness.PartiallyDerived;
-					rule.DerivationStorage = ObjectModel.DerivationStorage.Stored;
-					break;
-			}
-		}
-		#endregion // Helper Methods
 		#region Deserialization Fixup
 		/// <summary>
 		/// Return a deserialization fixup listener. The listener
@@ -4217,7 +4250,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// DerivationRuleFixupListener constructor
 			/// </summary>
 			public DerivationRuleFixupListener()
-				: base((int)ORMDeserializationFixupPhase.ValidateImplicitStoredElements)
+				: base((int)ORMDeserializationFixupPhase.ReplaceDeprecatedStoredElements)
 			{
 			}
 			/// <summary>
@@ -4228,71 +4261,192 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
 			protected sealed override void ProcessElement(FactTypeHasDerivationExpression element, Store store, INotifyElementAdded notifyAdded)
 			{
-				FactTypeDerivationRule rule;
-				if (!element.IsDeleted &&
-					null != (rule = element.FactType.DerivationRule))
+				if (!element.IsDeleted)
 				{
-					// Expressions were around before rules, synchronize rules with
-					// the expression storage.
-					SynchronizeRule(rule, element.DerivationRule.DerivationStorage);
+					FactType factType = element.FactType;
+					FactTypeDerivationRule derivationRule = factType.DerivationRule;
+					FactTypeDerivationExpression derivationExpression = element.DerivationRule;
+					string expressionBody = derivationExpression.Body;
+					DerivationNote derivationNote;
+					if (derivationRule != null)
+					{
+						derivationNote = derivationRule.DerivationNote;
+					}
+					else
+					{
+						notifyAdded.ElementAdded(derivationRule = new FactTypeDerivationRule(
+							store,
+							new PropertyAssignment(FactTypeDerivationRule.ExternalDerivationDomainPropertyId, true)));
+						notifyAdded.ElementAdded(new FactTypeHasDerivationRule(factType, derivationRule));
+						derivationNote = null;
+					}
+
+					// Expressions were around before rules, so we synchronize the two part rule values
+					// with the expression storage settings.
+					switch (derivationExpression.DerivationStorage)
+					{
+						case DerivationExpressionStorageType.Derived:
+							derivationRule.DerivationCompleteness = DerivationCompleteness.FullyDerived;
+							derivationRule.DerivationStorage = ObjectModel.DerivationStorage.NotStored;
+							break;
+						case DerivationExpressionStorageType.DerivedAndStored:
+							derivationRule.DerivationCompleteness = DerivationCompleteness.FullyDerived;
+							derivationRule.DerivationStorage = ObjectModel.DerivationStorage.Stored;
+							break;
+						case DerivationExpressionStorageType.PartiallyDerived:
+							derivationRule.DerivationCompleteness = DerivationCompleteness.PartiallyDerived;
+							derivationRule.DerivationStorage = ObjectModel.DerivationStorage.NotStored;
+							break;
+						case DerivationExpressionStorageType.PartiallyDerivedAndStored:
+							derivationRule.DerivationCompleteness = DerivationCompleteness.PartiallyDerived;
+							derivationRule.DerivationStorage = ObjectModel.DerivationStorage.Stored;
+							break;
+					}
+
+					// Migrate settings from the expression body
+					if (!string.IsNullOrEmpty(expressionBody))
+					{
+						if (derivationNote == null)
+						{
+							notifyAdded.ElementAdded(derivationNote = new DerivationNote(
+								store,
+								new PropertyAssignment(DerivationNote.BodyDomainPropertyId, expressionBody)));
+							notifyAdded.ElementAdded(new FactTypeDerivationRuleHasDerivationNote(derivationRule, derivationNote));
+						}
+						else
+						{
+							string existingBody = derivationNote.Body;
+							derivationNote.Body = string.IsNullOrEmpty(existingBody) ? expressionBody : existingBody + "\r\n" + expressionBody;
+						}
+					}
+
+					// Remove the deprecated expression
+					element.Delete();
 				}
 			}
 		}
 		#endregion // Deserialization Fixup
 		#region Rule Methods
 		/// <summary>
-		/// AddRule: typeof(FactTypeHasDerivationExpression)
+		/// AddRule: typeof(FactTypeDerivationExpression)
 		/// </summary>
-		private static void DerivationExpressionAddedRule(ElementAddedEventArgs e)
+		private static void DeprecateFactTypeDerivationExpression(ElementAddedEventArgs e)
 		{
-			FactTypeHasDerivationExpression link = (FactTypeHasDerivationExpression)e.ModelElement;
-			FactTypeDerivationRule rule;
-			if (null != (rule = link.FactType.DerivationRule))
-			{
-				SynchronizeExpression(link.DerivationRule, rule.DerivationCompleteness, rule.DerivationStorage);
-			}
-		}
-		/// <summary>
-		/// ChangeRule: typeof(FactTypeDerivationExpression)
-		/// </summary>
-		private static void DerivationExpressionChangedRule(ElementPropertyChangedEventArgs e)
-		{
-			FactTypeDerivationExpression expression = (FactTypeDerivationExpression)e.ModelElement;
-			FactType factType;
-			FactTypeDerivationRule rule;
-			if (null != (factType = expression.FactType) &&
-				null != (rule = factType.DerivationRule))
-			{
-				SynchronizeRule(rule, expression.DerivationStorage);
-			}
-		}
-		/// <summary>
-		/// AddRule: typeof(FactTypeHasDerivationRule)
-		/// </summary>
-		private static void DerivationRuleAddedRule(ElementAddedEventArgs e)
-		{
-			FactTypeHasDerivationRule link = (FactTypeHasDerivationRule)e.ModelElement;
-			FactTypeDerivationExpression expression;
-			if (null != (expression = link.FactType.DerivationExpression))
-			{
-				SynchronizeRule(link.DerivationRule, expression.DerivationStorage);
-			}
-		}
-		/// <summary>
-		/// ChangeRule: typeof(FactTypeDerivationRule)
-		/// </summary>
-		private static void DerivationRuleChangedRule(ElementPropertyChangedEventArgs e)
-		{
-			FactTypeDerivationRule rule = (FactTypeDerivationRule)e.ModelElement;
-			FactType factType;
-			FactTypeDerivationExpression expression;
-			if (null != (factType = rule.FactType) &&
-				null != (expression = factType.DerivationExpression))
-			{
-				SynchronizeExpression(expression, rule.DerivationCompleteness, rule.DerivationStorage);
-			}
+			// There is no need to localize this, we'll pull it altogether on the next file format upgrade.
+			throw new InvalidOperationException("FactTypeDerivationExpression is deprecated. Use FactTypeDerivationRule instead.");
 		}
 		#endregion // Rule Methods
 	}
 	#endregion // FactTypeDerivationExpression class
+	#region SubtypeDerivationExpression class (transitional)
+	// Transitional code to move all information stored in the
+	// old derivation expression elements into the new derivation
+	// path elements. The old expression elements are removed when
+	// the file is loaded.
+	partial class SubtypeDerivationExpression
+	{
+		#region Deserialization Fixup
+		/// <summary>
+		/// Return a deserialization fixup listener. The listener
+		/// verifies that the two derivation storage types are in sync.
+		/// </summary>
+		public static IDeserializationFixupListener FixupListener
+		{
+			get
+			{
+				return new DerivationRuleFixupListener();
+			}
+		}
+		/// <summary>
+		/// Fixup listener implementation.
+		/// </summary>
+		private sealed class DerivationRuleFixupListener : DeserializationFixupListener<SubtypeHasDerivationExpression>
+		{
+			/// <summary>
+			/// DerivationRuleFixupListener constructor
+			/// </summary>
+			public DerivationRuleFixupListener()
+				: base((int)ORMDeserializationFixupPhase.ReplaceDeprecatedStoredElements)
+			{
+			}
+			/// <summary>
+			/// Process SubtypeHasDerivationExpression elements
+			/// </summary>
+			/// <param name="element">An SubtypeHasDerivationExpression element</param>
+			/// <param name="store">The context store</param>
+			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
+			protected sealed override void ProcessElement(SubtypeHasDerivationExpression element, Store store, INotifyElementAdded notifyAdded)
+			{
+				if (!element.IsDeleted)
+				{
+					ObjectType subType = element.Subtype;
+					SubtypeDerivationExpression derivationExpression = element.DerivationRule;
+					string expressionBody = derivationExpression.Body;
+					if (!string.IsNullOrEmpty(expressionBody))
+					{
+						SubtypeDerivationRule derivationRule = subType.DerivationRule;
+						DerivationNote derivationNote;
+						if (derivationRule != null)
+						{
+							derivationNote = derivationRule.DerivationNote;
+						}
+						else
+						{
+							notifyAdded.ElementAdded(derivationRule = new SubtypeDerivationRule(
+								store,
+								new PropertyAssignment(SubtypeDerivationRule.ExternalDerivationDomainPropertyId, true)));
+							notifyAdded.ElementAdded(new SubtypeHasDerivationRule(subType, derivationRule));
+							derivationNote = null;
+						}
+						if (derivationNote == null)
+						{
+							notifyAdded.ElementAdded(derivationNote = new DerivationNote(
+								store,
+								new PropertyAssignment(DerivationNote.BodyDomainPropertyId, expressionBody)));
+							notifyAdded.ElementAdded(new SubtypeDerivationRuleHasDerivationNote(derivationRule, derivationNote));
+						}
+						else
+						{
+							string existingBody = derivationNote.Body;
+							derivationNote.Body = string.IsNullOrEmpty(existingBody) ? expressionBody : existingBody + "\r\n" + expressionBody;
+						}
+					}
+
+					// Remove the deprecated expression
+					element.Delete();
+				}
+			}
+		}
+		#endregion // Deserialization Fixup
+		#region Rule Methods
+		/// <summary>
+		/// AddRule: typeof(SubtypeDerivationExpression)
+		/// </summary>
+		private static void DeprecateSubtypeDerivationExpression(ElementAddedEventArgs e)
+		{
+			// There is no need to localize this, we'll pull it altogether on the next file format upgrade.
+			throw new InvalidOperationException("SubtypeDerivationExpression is deprecated. Use SubtypeDerivationRule instead.");
+		}
+		#endregion // Rule Methods
+	}
+	#endregion // SubtypeDerivationExpression class
+	#region DerivationNote class
+	partial class DerivationNote
+	{
+		#region Rule Methods
+		/// <summary>
+		/// ChangeRule: typeof(DerivationNote)
+		/// Delete a <see cref="DerivationNote"/> if the <see cref="Expression.Body"/> property is empty.
+		/// </summary>
+		private static void DerivationNoteChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			if (e.DomainProperty.Id == DerivationNote.BodyDomainPropertyId &&
+				string.IsNullOrEmpty((string)e.NewValue))
+			{
+				e.ModelElement.Delete();
+			}
+		}
+		#endregion // Rule Methods
+	}
+	#endregion // DerivationNote class
 }

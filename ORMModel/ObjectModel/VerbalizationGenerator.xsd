@@ -1777,8 +1777,7 @@
 							<xs:element name="ObjectType" type="ObjectConstructType" />
 							<xs:element name="Definition" type="NoteConstructType" />
 							<xs:element name="Note" type="NoteConstructType" />
-							<xs:element name="SubtypeDerivationExpression" type="DerivationExpressionConstructType"/>
-							<xs:element name="FactTypeDerivationExpression" type="DerivationExpressionConstructType"/>
+							<xs:element name="DerivationNote" type="DerivationExpressionConstructType"/>
 							<xs:element name="ORMModel" type="ModelConstructType"/>
 							<xs:element name="ErrorReports" type="ErrorReportsType"/>
 						</xs:all>

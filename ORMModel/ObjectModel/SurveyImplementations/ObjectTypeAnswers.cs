@@ -90,7 +90,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		protected int AnswerDerivationTypeQuestion(object contextElement)
 		{
-			return (DerivationRule != null || DerivationExpression != null) ? (int)SurveyDerivationType.Derived : -1;
+			return DerivationRule != null ? (int)SurveyDerivationType.Derived : -1;
 		}
 		#endregion // IAnswerSurveyQuestion<SurveyDerivationType> Implementation
 		#region ISurveyNode Implementation

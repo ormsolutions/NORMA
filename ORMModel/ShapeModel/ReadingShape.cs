@@ -464,8 +464,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			string retVal = null;
 			if (factType != null)
 			{
-				if (null != factType.DerivationRule ||
-					null != factType.DerivationExpression)
+				if (null != factType.DerivationRule)
 				{
 					// UNDONE: Localize the derived fact marks. This should probably be a format expression, not just an append
 					DerivationExpressionStorageType storage = factType.DerivationStorageDisplay;
@@ -748,41 +747,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		private static void DerivationRuleDeletedRule(ElementDeletedEventArgs e)
 		{
 			FactType factType = ((FactTypeHasDerivationRule)e.ModelElement).FactType;
-			if (!factType.IsDeleted &&
-				null == factType.DerivationExpression)
-			{
-				InvalidateReadingShape(factType);
-			}
-		}
-		/// <summary>
-		/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
-		/// </summary>
-		private static void DerivationExpressionChangedRule(ElementPropertyChangedEventArgs e)
-		{
-			if (e.DomainProperty.Id == FactTypeDerivationExpression.DerivationStorageDomainPropertyId)
-			{
-				FactType factType = ((FactTypeDerivationExpression)e.ModelElement).FactType;
-				if (factType.DerivationRule == null) // We'll get corresponding changes on the derivation rule
-				{
-					InvalidateReadingShape(factType);
-				}
-			}
-		}
-		/// <summary>
-		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
-		/// </summary>
-		private static void DerivationExpressionAddedRule(ElementAddedEventArgs e)
-		{
-			InvalidateReadingShape(((FactTypeHasDerivationExpression)e.ModelElement).FactType);
-		}
-		/// <summary>
-		/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationExpression), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
-		/// </summary>
-		private static void DerivationExpressionDeletedRule(ElementDeletedEventArgs e)
-		{
-			FactType factType = ((FactTypeHasDerivationExpression)e.ModelElement).FactType;
-			if (!factType.IsDeleted &&
-				null == factType.DerivationRule)
+			if (!factType.IsDeleted)
 			{
 				InvalidateReadingShape(factType);
 			}
@@ -1312,7 +1277,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					null != (order = (ReadingOrder)element.ModelElement) &&
 					null != (factType = order.FactType) &&
 					(null != factType.DerivationRule ||
-					null != factType.DerivationExpression ||
 					// We did not used to index duplicate role player names,
 					// now we do, making the shape require more space. It isn't
 					// worth the search for duplicates here, but the role count

@@ -1880,7 +1880,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 					{
 						return -1;
 					}
-					if (ws0 == 0)
+					if (ws0 == 1)
 					{
 						// Sort attributes rendered as elements in model definition order.
 						return index1.CompareTo(index2);

@@ -46479,6 +46479,266 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship FactTypeDerivationRuleHasDerivationNote
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("80352861-b31d-48ee-a752-db34b3244aed")]
+	public partial class FactTypeDerivationRuleHasDerivationNote : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// FactTypeDerivationRuleHasDerivationNote domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x80352861, 0xb31d, 0x48ee, 0xa7, 0x52, 0xdb, 0x34, 0xb3, 0x24, 0x4a, 0xed);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a FactTypeDerivationRuleHasDerivationNote link in the same Partition as the given FactTypeDerivationRule
+		/// </summary>
+		/// <param name="source">FactTypeDerivationRule to use as the source of the relationship.</param>
+		/// <param name="target">DerivationNote to use as the target of the relationship.</param>
+		public FactTypeDerivationRuleHasDerivationNote(FactTypeDerivationRule source, DerivationNote target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(FactTypeDerivationRuleHasDerivationNote.DerivationRuleDomainRoleId, source), new DslModeling::RoleAssignment(FactTypeDerivationRuleHasDerivationNote.DerivationNoteDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public FactTypeDerivationRuleHasDerivationNote(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public FactTypeDerivationRuleHasDerivationNote(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public FactTypeDerivationRuleHasDerivationNote(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public FactTypeDerivationRuleHasDerivationNote(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region DerivationRule domain role code
+		
+		/// <summary>
+		/// DerivationRule domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DerivationRuleDomainRoleId = new global::System.Guid(0xa5705890, 0x8370, 0x4a38, 0xb0, 0x72, 0x6f, 0xb6, 0x42, 0x8e, 0x21, 0x0e);
+		
+		/// <summary>
+		/// DomainRole DerivationRule
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote.DerivationRule
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote/DerivationRule.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote/DerivationRule.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DerivationNote", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote/DerivationRule.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("a5705890-8370-4a38-b072-6fb6428e210e")]
+		public virtual FactTypeDerivationRule DerivationRule
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (FactTypeDerivationRule)DslModeling::DomainRoleInfo.GetRolePlayer(this, DerivationRuleDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DerivationRuleDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access FactTypeDerivationRule of a DerivationNote
+		/// <summary>
+		/// Gets FactTypeDerivationRule.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static FactTypeDerivationRule GetFactTypeDerivationRule(DerivationNote element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, DerivationNoteDomainRoleId) as FactTypeDerivationRule;
+		}
+		
+		/// <summary>
+		/// Sets FactTypeDerivationRule.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetFactTypeDerivationRule(DerivationNote element, FactTypeDerivationRule newDerivationRule)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, DerivationNoteDomainRoleId, newDerivationRule);
+		}
+		#endregion
+		#region DerivationNote domain role code
+		
+		/// <summary>
+		/// DerivationNote domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DerivationNoteDomainRoleId = new global::System.Guid(0xd9bb9d89, 0xfa8b, 0x4607, 0xa9, 0x57, 0xb9, 0xdc, 0x78, 0x51, 0x96, 0x74);
+		
+		/// <summary>
+		/// DomainRole DerivationNote
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote.DerivationNote
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote/DerivationNote.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote/DerivationNote.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FactTypeDerivationRule", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote/DerivationNote.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("d9bb9d89-fa8b-4607-a957-b9dc78519674")]
+		public virtual DerivationNote DerivationNote
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (DerivationNote)DslModeling::DomainRoleInfo.GetRolePlayer(this, DerivationNoteDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DerivationNoteDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access DerivationNote of a FactTypeDerivationRule
+		/// <summary>
+		/// Gets DerivationNote.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DerivationNote GetDerivationNote(FactTypeDerivationRule element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, DerivationRuleDomainRoleId) as DerivationNote;
+		}
+		
+		/// <summary>
+		/// Sets DerivationNote.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetDerivationNote(FactTypeDerivationRule element, DerivationNote newDerivationNote)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, DerivationRuleDomainRoleId, newDerivationNote);
+		}
+		#endregion
+		#region DerivationRule link accessor
+		/// <summary>
+		/// Get the FactTypeDerivationRuleHasDerivationNote link to a FactTypeDerivationRule.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote GetLinkToDerivationNote (global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule derivationRuleInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote>(derivationRuleInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote.DerivationRuleDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of DerivationRule not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region DerivationNote link accessor
+		/// <summary>
+		/// Get the FactTypeDerivationRuleHasDerivationNote link to a DerivationNote.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote GetLinkToFactTypeDerivationRule (global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationNote derivationNoteInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote>(derivationNoteInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote.DerivationNoteDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of DerivationNote not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region FactTypeDerivationRuleHasDerivationNote instance accessors
+		
+		/// <summary>
+		/// Get any FactTypeDerivationRuleHasDerivationNote links between a given FactTypeDerivationRule and a DerivationNote.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationNote target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote.DerivationRuleDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote link in links )
+			{
+				if ( target.Equals(link.DerivationNote) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one FactTypeDerivationRuleHasDerivationNote link between a given FactTypeDerivationRuleand a DerivationNote.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationNote target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote.DerivationRuleDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote link in links )
+			{
+				if ( target.Equals(link.DerivationNote) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship FactTypeDerivationProjection
 	/// Description for
 	/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection
@@ -48785,6 +49045,266 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationRule link in links )
 			{
 				if ( target.Equals(link.DerivationRule) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship SubtypeDerivationRuleHasDerivationNote
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("586ee173-c289-4db2-ba8a-dcd9c5c29f5d")]
+	public partial class SubtypeDerivationRuleHasDerivationNote : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// SubtypeDerivationRuleHasDerivationNote domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x586ee173, 0xc289, 0x4db2, 0xba, 0x8a, 0xdc, 0xd9, 0xc5, 0xc2, 0x9f, 0x5d);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a SubtypeDerivationRuleHasDerivationNote link in the same Partition as the given SubtypeDerivationRule
+		/// </summary>
+		/// <param name="source">SubtypeDerivationRule to use as the source of the relationship.</param>
+		/// <param name="target">DerivationNote to use as the target of the relationship.</param>
+		public SubtypeDerivationRuleHasDerivationNote(SubtypeDerivationRule source, DerivationNote target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(SubtypeDerivationRuleHasDerivationNote.DerivationRuleDomainRoleId, source), new DslModeling::RoleAssignment(SubtypeDerivationRuleHasDerivationNote.DerivationNoteDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public SubtypeDerivationRuleHasDerivationNote(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public SubtypeDerivationRuleHasDerivationNote(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public SubtypeDerivationRuleHasDerivationNote(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public SubtypeDerivationRuleHasDerivationNote(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region DerivationRule domain role code
+		
+		/// <summary>
+		/// DerivationRule domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DerivationRuleDomainRoleId = new global::System.Guid(0x9a0d4bb7, 0x559f, 0x4cd7, 0x95, 0xb0, 0x0e, 0x23, 0x31, 0x37, 0x7b, 0xd6);
+		
+		/// <summary>
+		/// DomainRole DerivationRule
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote.DerivationRule
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote/DerivationRule.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote/DerivationRule.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DerivationNote", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote/DerivationRule.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("9a0d4bb7-559f-4cd7-95b0-0e2331377bd6")]
+		public virtual SubtypeDerivationRule DerivationRule
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (SubtypeDerivationRule)DslModeling::DomainRoleInfo.GetRolePlayer(this, DerivationRuleDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DerivationRuleDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access SubtypeDerivationRule of a DerivationNote
+		/// <summary>
+		/// Gets SubtypeDerivationRule.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static SubtypeDerivationRule GetSubtypeDerivationRule(DerivationNote element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, DerivationNoteDomainRoleId) as SubtypeDerivationRule;
+		}
+		
+		/// <summary>
+		/// Sets SubtypeDerivationRule.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetSubtypeDerivationRule(DerivationNote element, SubtypeDerivationRule newDerivationRule)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, DerivationNoteDomainRoleId, newDerivationRule);
+		}
+		#endregion
+		#region DerivationNote domain role code
+		
+		/// <summary>
+		/// DerivationNote domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DerivationNoteDomainRoleId = new global::System.Guid(0x962b225e, 0xe9ef, 0x4ba8, 0xb8, 0x2a, 0x1b, 0x63, 0xc7, 0x30, 0x87, 0xd6);
+		
+		/// <summary>
+		/// DomainRole DerivationNote
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote.DerivationNote
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote/DerivationNote.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote/DerivationNote.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "SubtypeDerivationRule", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote/DerivationNote.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("962b225e-e9ef-4ba8-b82a-1b63c73087d6")]
+		public virtual DerivationNote DerivationNote
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (DerivationNote)DslModeling::DomainRoleInfo.GetRolePlayer(this, DerivationNoteDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DerivationNoteDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access DerivationNote of a SubtypeDerivationRule
+		/// <summary>
+		/// Gets DerivationNote.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DerivationNote GetDerivationNote(SubtypeDerivationRule element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, DerivationRuleDomainRoleId) as DerivationNote;
+		}
+		
+		/// <summary>
+		/// Sets DerivationNote.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetDerivationNote(SubtypeDerivationRule element, DerivationNote newDerivationNote)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, DerivationRuleDomainRoleId, newDerivationNote);
+		}
+		#endregion
+		#region DerivationRule link accessor
+		/// <summary>
+		/// Get the SubtypeDerivationRuleHasDerivationNote link to a SubtypeDerivationRule.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote GetLinkToDerivationNote (global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule derivationRuleInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote>(derivationRuleInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote.DerivationRuleDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of DerivationRule not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region DerivationNote link accessor
+		/// <summary>
+		/// Get the SubtypeDerivationRuleHasDerivationNote link to a DerivationNote.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote GetLinkToSubtypeDerivationRule (global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationNote derivationNoteInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote>(derivationNoteInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote.DerivationNoteDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of DerivationNote not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region SubtypeDerivationRuleHasDerivationNote instance accessors
+		
+		/// <summary>
+		/// Get any SubtypeDerivationRuleHasDerivationNote links between a given SubtypeDerivationRule and a DerivationNote.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationNote target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote.DerivationRuleDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote link in links )
+			{
+				if ( target.Equals(link.DerivationNote) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one SubtypeDerivationRuleHasDerivationNote link between a given SubtypeDerivationRuleand a DerivationNote.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationNote target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote.DerivationRuleDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote link in links )
+			{
+				if ( target.Equals(link.DerivationNote) )
 				{
 					return link;
 				}

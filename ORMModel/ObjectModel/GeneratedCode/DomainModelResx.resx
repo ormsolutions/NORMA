@@ -636,13 +636,13 @@
     <value>IsImplicitBooleanValue</value>
     <comment>DisplayName for DomainProperty &apos;IsImplicitBooleanValue&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/DerivationExpressionDisplay.Description" xml:space="preserve">
-    <value>The derivation rule for this subtype. If a rule is not specified, then this is treated as an asserted subtype.</value>
-    <comment>Description for DomainProperty &apos;DerivationExpressionDisplay&apos; on DomainClass &apos;ObjectType&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/DerivationNoteDisplay.Description" xml:space="preserve">
+    <value>A description of the derivation rule for this subtype. If a rule is not specified, then this is treated as an asserted subtype.</value>
+    <comment>Description for DomainProperty &apos;DerivationNoteDisplay&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/DerivationExpressionDisplay.DisplayName" xml:space="preserve">
-    <value>DerivationRule</value>
-    <comment>DisplayName for DomainProperty &apos;DerivationExpressionDisplay&apos; on DomainClass &apos;ObjectType&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/DerivationNoteDisplay.DisplayName" xml:space="preserve">
+    <value>DerivationNote</value>
+    <comment>DisplayName for DomainProperty &apos;DerivationNoteDisplay&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.Description" xml:space="preserve">
     <value></value>
@@ -704,13 +704,13 @@
     <value>NameChanged</value>
     <comment>DisplayName for DomainProperty &apos;NameChanged&apos; on DomainClass &apos;FactType&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType/DerivationExpressionDisplay.Description" xml:space="preserve">
-    <value>A derivation rule for this FactType.</value>
-    <comment>Description for DomainProperty &apos;DerivationExpressionDisplay&apos; on DomainClass &apos;FactType&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType/DerivationNoteDisplay.Description" xml:space="preserve">
+    <value>A description of the derivation rule for this FactType.</value>
+    <comment>Description for DomainProperty &apos;DerivationNoteDisplay&apos; on DomainClass &apos;FactType&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType/DerivationExpressionDisplay.DisplayName" xml:space="preserve">
-    <value>DerivationRule</value>
-    <comment>DisplayName for DomainProperty &apos;DerivationExpressionDisplay&apos; on DomainClass &apos;FactType&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType/DerivationNoteDisplay.DisplayName" xml:space="preserve">
+    <value>DerivationNote</value>
+    <comment>DisplayName for DomainProperty &apos;DerivationNoteDisplay&apos; on DomainClass &apos;FactType&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType/DerivationStorageDisplay.Description" xml:space="preserve">
     <value>Storage options for a derived FactType.</value>
@@ -1286,6 +1286,14 @@
     <value>Name</value>
     <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;FactTypeDerivationRule&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/ExternalDerivation.Description" xml:space="preserve">
+    <value>An empty path is a placeholder for an externally defined derivation rule and is not validated.</value>
+    <comment>Description for DomainProperty &apos;ExternalDerivation&apos; on DomainClass &apos;FactTypeDerivationRule&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/ExternalDerivation.DisplayName" xml:space="preserve">
+    <value>ExternalDerivation</value>
+    <comment>DisplayName for DomainProperty &apos;ExternalDerivation&apos; on DomainClass &apos;FactTypeDerivationRule&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule.Description" xml:space="preserve">
     <value>A role path defining subtype population.</value>
     <comment>Description for DomainClass &apos;SubtypeDerivationRule&apos;</comment>
@@ -1293,6 +1301,14 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule.DisplayName" xml:space="preserve">
     <value>SubtypeDerivationRule</value>
     <comment>DisplayName for DomainClass &apos;SubtypeDerivationRule&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule/ExternalDerivation.Description" xml:space="preserve">
+    <value>An empty path is a placeholder for an externally defined derivation rule and is not validated.</value>
+    <comment>Description for DomainProperty &apos;ExternalDerivation&apos; on DomainClass &apos;SubtypeDerivationRule&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule/ExternalDerivation.DisplayName" xml:space="preserve">
+    <value>ExternalDerivation</value>
+    <comment>DisplayName for DomainProperty &apos;ExternalDerivation&apos; on DomainClass &apos;SubtypeDerivationRule&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.Description" xml:space="preserve">
     <value>A role path defining cross fact type relationships within a constraint role sequence.</value>
@@ -2371,6 +2387,14 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintValueTypeDetachedError.DisplayName" xml:space="preserve">
     <value>Path to Identifying ValueType Detached</value>
     <comment>DisplayName for DomainClass &apos;ValueConstraintValueTypeDetachedError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationNote.Description" xml:space="preserve">
+    <value>An informal note describing the purpose of a derivation rule.</value>
+    <comment>Description for DomainClass &apos;DerivationNote&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationNote.DisplayName" xml:space="preserve">
+    <value>DerivationNote</value>
+    <comment>DisplayName for DomainClass &apos;DerivationNote&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationExpression.Description" xml:space="preserve">
     <value></value>
@@ -8196,6 +8220,38 @@
     <value>Fact Type</value>
     <comment>PropertyDisplayName for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;FactTypeHasDerivationRule&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote</value>
+    <comment>Description for DomainClass &apos;FactTypeDerivationRuleHasDerivationNote&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote.DisplayName" xml:space="preserve">
+    <value>Fact Type Derivation Rule Has Derivation Note</value>
+    <comment>DisplayName for DomainClass &apos;FactTypeDerivationRuleHasDerivationNote&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote/DerivationRule.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote.DerivationRule</value>
+    <comment>Description for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;FactTypeDerivationRuleHasDerivationNote&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote/DerivationRule.DisplayName" xml:space="preserve">
+    <value>DerivationRule</value>
+    <comment>DisplayName for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;FactTypeDerivationRuleHasDerivationNote&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote/DerivationRule.PropertyDisplayName" xml:space="preserve">
+    <value>Derivation Note</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;FactTypeDerivationRuleHasDerivationNote&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote/DerivationNote.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote.DerivationNote</value>
+    <comment>Description for DomainRole &apos;DerivationNote&apos; on DomainRelationship &apos;FactTypeDerivationRuleHasDerivationNote&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote/DerivationNote.DisplayName" xml:space="preserve">
+    <value>DerivationNote</value>
+    <comment>DisplayName for DomainRole &apos;DerivationNote&apos; on DomainRelationship &apos;FactTypeDerivationRuleHasDerivationNote&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasDerivationNote/DerivationNote.PropertyDisplayName" xml:space="preserve">
+    <value>Fact Type Derivation Rule</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DerivationNote&apos; on DomainRelationship &apos;FactTypeDerivationRuleHasDerivationNote&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection</value>
     <comment>Description for DomainClass &apos;FactTypeDerivationProjection&apos;</comment>
@@ -8483,6 +8539,38 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationRule/DerivationRule.PropertyDisplayName" xml:space="preserve">
     <value>Subtype</value>
     <comment>PropertyDisplayName for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;SubtypeHasDerivationRule&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote</value>
+    <comment>Description for DomainClass &apos;SubtypeDerivationRuleHasDerivationNote&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote.DisplayName" xml:space="preserve">
+    <value>Subtype Derivation Rule Has Derivation Note</value>
+    <comment>DisplayName for DomainClass &apos;SubtypeDerivationRuleHasDerivationNote&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote/DerivationRule.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote.DerivationRule</value>
+    <comment>Description for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;SubtypeDerivationRuleHasDerivationNote&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote/DerivationRule.DisplayName" xml:space="preserve">
+    <value>DerivationRule</value>
+    <comment>DisplayName for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;SubtypeDerivationRuleHasDerivationNote&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote/DerivationRule.PropertyDisplayName" xml:space="preserve">
+    <value>Derivation Note</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;SubtypeDerivationRuleHasDerivationNote&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote/DerivationNote.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote.DerivationNote</value>
+    <comment>Description for DomainRole &apos;DerivationNote&apos; on DomainRelationship &apos;SubtypeDerivationRuleHasDerivationNote&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote/DerivationNote.DisplayName" xml:space="preserve">
+    <value>DerivationNote</value>
+    <comment>DisplayName for DomainRole &apos;DerivationNote&apos; on DomainRelationship &apos;SubtypeDerivationRuleHasDerivationNote&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRuleHasDerivationNote/DerivationNote.PropertyDisplayName" xml:space="preserve">
+    <value>Subtype Derivation Rule</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DerivationNote&apos; on DomainRelationship &apos;SubtypeDerivationRuleHasDerivationNote&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError</value>

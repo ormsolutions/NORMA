@@ -101,66 +101,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public static readonly ObjectType[] EmptyArray = new ObjectType[0];
 		#endregion // Public static fields
 		#region CustomStorage handlers
-		private void SetIsValueTypeValue(bool newValue)
-		{
-			// Handled by ObjectTypeChangeRule
-		}
-		private void SetDataTypeScaleValue(int newValue)
-		{
-			// Handled by ObjectTypeChangeRule
-		}
-		private void SetDataTypeLengthValue(int newValue)
-		{
-			// Handled by ObjectTypeChangeRule
-		}
-		private void SetDataTypeDisplayValue(DataType newValue)
-		{
-			// Handled by ObjectTypeChangeRule
-		}
-		private void SetNestedFactTypeDisplayValue(FactType newValue)
-		{
-			// Handled by ObjectTypeChangeRule
-		}
-		private void SetReferenceModeDisplayValue(object newValue)
-		{
-			// Handled by ObjectTypeChangeRule
-		}
-		private void SetReferenceModeValue(ReferenceMode newValue)
-		{
-			// Handled by ObjectTypeChangeRule
-		}
-		private void SetReferenceModeStringValue(string newValue)
-		{
-			// Handled by ObjectTypeChangeRule
-		}
-		private void SetReferenceModeDecoratedStringValue(string newValue)
-		{
-			// Handled by ObjectTypeChangeRule
-		}
-		private void SetValueRangeTextValue(string newValue)
-		{
-			// Handled by ObjectTypeChangeRule
-		}
-		private void SetValueTypeValueRangeTextValue(string newValue)
-		{
-			// Handled by ObjectTypeChangeRule
-		}
-		private void SetDefinitionTextValue(string newValue)
-		{
-			// Handled by ObjectTypeChangeRule
-		}
-		private void SetNoteTextValue(string newValue)
-		{
-			// Handled by ObjectTypeChangeRule
-		}
-		private void SetDerivationExpressionDisplayValue(string newValue)
-		{
-			// Handled by ObjectTypeChangeRule
-		}
-
 		private bool GetIsValueTypeValue()
 		{
 			return this.DataType != null;
+		}
+		private void SetIsValueTypeValue(bool newValue)
+		{
+			if (!Store.InUndoRedoOrRollback)
+			{
+				DataType dataType = null;
+				ORMModel model;
+				if (newValue &&
+					null != (model = Model))
+				{
+					dataType = model.DefaultDataType;
+				}
+				DataType = dataType;
+			}
 		}
 		/// <summary>
 		/// A variant on the <see cref="IsValueType"/> property.
@@ -179,34 +136,63 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private int GetDataTypeScaleValue()
 		{
 			ValueTypeHasDataType link = GetDataTypeLink();
-			if (link == null)
+			ObjectType identifyingObjectType;
+			return null != (link = GetDataTypeLink()) ||
+				(null != (identifyingObjectType = GetObjectTypeForPreferredConstraint()) &&
+				null != (link = identifyingObjectType.GetDataTypeLink())) ? link.Scale : 0;
+		}
+		private void SetDataTypeScaleValue(int newValue)
+		{
+			ValueTypeHasDataType link;
+			ObjectType identifyingObjectType;
+			if (!Store.InUndoRedoOrRollback &&
+				(null != (link = GetDataTypeLink()) ||
+				(null != (identifyingObjectType = GetObjectTypeForPreferredConstraint()) &&
+				null != (link = identifyingObjectType.GetDataTypeLink()))))
 			{
-				ObjectType refModeRolePlayer = GetValueTypeForPreferredConstraint();
-				if (refModeRolePlayer != null)
-				{
-					link = refModeRolePlayer.GetDataTypeLink();
-				}
+				link.Scale = newValue;
 			}
-			return (link == null) ? 0 : link.Scale;
 		}
 		private int GetDataTypeLengthValue()
 		{
 			ValueTypeHasDataType link = GetDataTypeLink();
-			if (link == null)
+			ObjectType identifyingObjectType;
+			return null != (link = GetDataTypeLink()) ||
+				(null != (identifyingObjectType = GetObjectTypeForPreferredConstraint()) &&
+				null != (link = identifyingObjectType.GetDataTypeLink())) ? link.Length : 0;
+		}
+		private void SetDataTypeLengthValue(int newValue)
+		{
+			ValueTypeHasDataType link;
+			ObjectType identifyingObjectType;
+			if (!Store.InUndoRedoOrRollback &&
+				(null != (link = GetDataTypeLink()) ||
+				(null != (identifyingObjectType = GetObjectTypeForPreferredConstraint()) &&
+				null != (link = identifyingObjectType.GetDataTypeLink()))))
 			{
-				ObjectType refModeRolePlayer = GetValueTypeForPreferredConstraint();
-				if (refModeRolePlayer != null)
-				{
-					link = refModeRolePlayer.GetDataTypeLink();
-				}
+				link.Length = newValue;
 			}
-			return (link == null) ? 0 : link.Length;
 		}
 		private DataType GetDataTypeDisplayValue()
 		{
 			// If this ObjecType has a reference mode, return its DataType.
 			ObjectType refModeRolePlayer = GetValueTypeForPreferredConstraint();
 			return (refModeRolePlayer != null) ? refModeRolePlayer.DataType : this.DataType;
+		}
+		private void SetDataTypeDisplayValue(DataType newValue)
+		{
+			if (!Store.InUndoRedoOrRollback)
+			{
+				//If this objectype has a reference mode, return the datatype corresponding
+				//to the ref mode's datatype.
+				ObjectType targetObjectType = this;
+				ObjectType refModeRolePlayer = GetValueTypeForPreferredConstraint();
+				if (refModeRolePlayer != null)
+				{
+					targetObjectType = refModeRolePlayer;
+				}
+				targetObjectType.DataType = newValue;
+			}
 		}
 		private object GetReferenceModeDisplayValue()
 		{
@@ -215,12 +201,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			this.GetReferenceMode(out refMode, out referenceModeString);
 			return (object)refMode ?? referenceModeString;
 		}
+		private void SetReferenceModeDisplayValue(object newValue)
+		{
+			// Handled by ObjectTypeChangeRule
+		}
 		private string GetReferenceModeStringValue()
 		{
 			ReferenceMode refMode;
 			string referenceModeString;
 			this.GetReferenceMode(out refMode, out referenceModeString);
 			return referenceModeString;
+		}
+		private void SetReferenceModeValue(ReferenceMode newValue)
+		{
+			// Handled by ObjectTypeChangeRule
 		}
 		private string GetReferenceModeDecoratedStringValue()
 		{
@@ -233,6 +227,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			return referenceModeString;
 		}
+		private void SetReferenceModeStringValue(string newValue)
+		{
+			// Handled by ObjectTypeChangeRule
+		}
 		private ReferenceMode GetReferenceModeValue()
 		{
 			ReferenceMode refMode;
@@ -240,34 +238,139 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			GetReferenceMode(out refMode, out referenceModeString);
 			return refMode;
 		}
+		private void SetReferenceModeDecoratedStringValue(string newValue)
+		{
+			// Handled by ObjectTypeChangeRule
+		}
 		private FactType GetNestedFactTypeDisplayValue()
 		{
 			return NestedFactType;
+		}
+		private void SetNestedFactTypeDisplayValue(FactType newValue)
+		{
+			// Handled directly by the editor. A setter is provided to make this writable.
 		}
 		private string GetValueRangeTextValue()
 		{
 			ValueConstraint valueConstraint = FindValueConstraint(false);
 			return (valueConstraint != null) ? valueConstraint.Text : String.Empty;
 		}
+		private void SetValueRangeTextValue(string newValue)
+		{
+			ValueConstraint valueConstraint;
+			if (!Store.InUndoRedoOrRollback &&
+				null != (valueConstraint = FindValueConstraint(true)))
+			{
+				valueConstraint.Text = newValue;
+			}
+		}
 		private string GetValueTypeValueRangeTextValue()
 		{
 			ValueConstraint valueConstraint = FindValueTypeValueConstraint(false);
 			return (valueConstraint != null) ? valueConstraint.Text : String.Empty;
+		}
+		private void SetValueTypeValueRangeTextValue(string newValue)
+		{
+			ValueTypeValueConstraint valueConstraint;
+			if (!Store.InUndoRedoOrRollback &&
+				null != (valueConstraint = FindValueTypeValueConstraint(true)))
+			{
+				valueConstraint.Text = newValue;
+			}
 		}
 		private string GetDefinitionTextValue()
 		{
 			Definition currentDefinition = Definition;
 			return (currentDefinition != null) ? currentDefinition.Text : String.Empty;
 		}
+		private void SetDefinitionTextValue(string newValue)
+		{
+			if (!Store.InUndoRedoOrRollback)
+			{
+				// Modify an existing definition, or create a new one
+				Definition definition = Definition;
+				if (definition != null)
+				{
+					definition.Text = newValue;
+				}
+				else if (!string.IsNullOrEmpty(newValue))
+				{
+					definition = new Definition(Store);
+					definition.Text = newValue;
+					Definition = definition;
+				}
+			}
+		}
 		private string GetNoteTextValue()
 		{
 			Note currentNote = Note;
 			return (currentNote != null) ? currentNote.Text : String.Empty;
 		}
-		private string GetDerivationExpressionDisplayValue()
+		private void SetNoteTextValue(string newValue)
 		{
-			SubtypeDerivationExpression derivation = DerivationExpression;
-			return (derivation == null || derivation.IsDeleted) ? String.Empty : derivation.Body;
+			if (!Store.InUndoRedoOrRollback)
+			{
+				// Modify an existing note, or create a new one
+				Note note = Note;
+				if (note != null)
+				{
+					note.Text = newValue;
+				}
+				else if (!string.IsNullOrEmpty(newValue))
+				{
+					note = new Note(Store);
+					note.Text = newValue;
+					Note = note;
+				}
+			}
+		}
+		private string GetDerivationNoteDisplayValue()
+		{
+			SubtypeDerivationRule derivationRule;
+			DerivationNote derivationNote;
+			return (null != (derivationRule = DerivationRule) && null != (derivationNote = derivationRule.DerivationNote)) ? derivationNote.Body : String.Empty;
+		}
+		private void SetDerivationNoteDisplayValue(string newValue)
+		{
+			Store store = Store;
+			if (!store.InUndoRedoOrRollback)
+			{
+				SubtypeDerivationRule derivationRule;
+				DerivationNote derivationNote;
+				if (null != (derivationRule = DerivationRule))
+				{
+					derivationNote = derivationRule.DerivationNote;
+					if (derivationNote == null && string.IsNullOrEmpty(newValue))
+					{
+						return;
+					}
+				}
+				else if (string.IsNullOrEmpty(newValue))
+				{
+					return; // Don't create a new rule for an empty note body
+				}
+				else
+				{
+					new SubtypeHasDerivationRule(
+						this,
+						derivationRule = new SubtypeDerivationRule(
+							store,
+							new PropertyAssignment(SubtypeDerivationRule.ExternalDerivationDomainPropertyId, true)));
+					derivationNote = null;
+				}
+				if (derivationNote == null)
+				{
+					new SubtypeDerivationRuleHasDerivationNote(
+						derivationRule,
+						new DerivationNote(
+							store,
+							new PropertyAssignment(DerivationNote.BodyDomainPropertyId, newValue)));
+				}
+				else
+				{
+					derivationNote.Body = newValue;
+				}
+			}
 		}
 		/// <summary>
 		/// Return the link object between a value type and its referenced
@@ -1513,24 +1616,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			bag[key] = newHierarchyChange;
 		}
 		#endregion // Subtype and Supertype routines
-		#region Derivation Rules
-		/// <summary>
-		/// ChangeRule: typeof(SubtypeDerivationExpression)
-		/// Check the Body property of the SubtypeDerivationExpression and delete the SubtypeDerivationExpression 
-		/// if Body is empty
-		/// </summary>
-		private static void SubtypeDerivationExpressionChangeRule(ElementPropertyChangedEventArgs e)
-		{
-			Guid attributeGuid = e.DomainProperty.Id;
-			if (attributeGuid == SubtypeDerivationExpression.BodyDomainPropertyId)
-			{
-				if (string.IsNullOrEmpty((string)e.NewValue))
-				{
-					e.ModelElement.Delete();
-				}
-			}
-		}
-		#endregion // Derivation Rules
 		#region ObjectTypeChangeRule
 		/// <summary>
 		/// ChangeRule: typeof(ObjectType)
@@ -1547,61 +1632,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				// UNDONE: This should only allow rules from our domain model.
 				// We also allow rules from any other domain model with the current ChangeSource check
 				throw new InvalidOperationException(ResourceStrings.ImplicitBooleanValueTypeRestriction);
-			}
-			else if (attributeGuid == ObjectType.IsValueTypeDomainPropertyId)
-			{
-				bool newValue = (bool)e.NewValue;
-				DataType dataType = null;
-				if (newValue)
-				{
-					dataType = objectType.Model.DefaultDataType;
-				}
-				objectType.DataType = dataType;
-			}
-			else if (attributeGuid == ObjectType.DataTypeScaleDomainPropertyId)
-			{
-				ValueTypeHasDataType link = objectType.GetDataTypeLink();
-				// No effect for non-value types
-				if (link != null)
-				{
-					link.Scale = (int)e.NewValue;
-				}
-				else
-				{
-					if ((null != (objectType = objectType.GetValueTypeForPreferredConstraint()) &&
-						(null != (link = objectType.GetDataTypeLink()))))
-					{
-						link.Scale = (int)e.NewValue;
-					}
-				}
-			}
-			else if (attributeGuid == ObjectType.DataTypeDisplayDomainPropertyId)
-			{
-				//If this objectype has a reference mode, return the datatype corresponding
-				//to the ref mode's datatype.
-				ObjectType refModeRolePlayer = objectType.GetValueTypeForPreferredConstraint();
-				if (refModeRolePlayer != null)
-				{
-					objectType = refModeRolePlayer;
-				}
-				objectType.DataType = e.NewValue as DataType;
-			}
-			else if (attributeGuid == ObjectType.DataTypeLengthDomainPropertyId)
-			{
-				ValueTypeHasDataType link = objectType.GetDataTypeLink();
-				// No effect for non-value types
-				if (link != null)
-				{
-					link.Length = (int)e.NewValue;
-				}
-				else
-				{
-					if ((null != (objectType = objectType.GetValueTypeForPreferredConstraint()) &&
-						(null != (link = objectType.GetDataTypeLink()))))
-					{
-						link.Length = (int)e.NewValue;
-					}
-				}
 			}
 			else if (attributeGuid == ObjectType.NameDomainPropertyId)
 			{
@@ -1675,59 +1705,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				SetReferenceMode(objectType, (ReferenceMode)e.NewValue, (ReferenceMode)e.OldValue, null, null, false);
 			}
-			else if (attributeGuid == ObjectType.ValueRangeTextDomainPropertyId)
-			{
-				ValueConstraint valueConstraint = objectType.FindValueConstraint(true);
-				valueConstraint.Text = (string)e.NewValue;
-			}
-			else if (attributeGuid == ObjectType.ValueTypeValueRangeTextDomainPropertyId)
-			{
-				ValueTypeValueConstraint valueConstraint = objectType.FindValueTypeValueConstraint(true);
-				if (valueConstraint != null)
-				{
-					valueConstraint.Text = (string)e.NewValue;
-				}
-			}
-			else if (attributeGuid == ObjectType.DefinitionTextDomainPropertyId)
-			{
-				// cache the text.
-				string newText = (string)e.NewValue;
-				// Get the definition if it exists
-				Definition definition = objectType.Definition;
-				if (definition != null)
-				{
-					// and try to set the text to the cached value.
-					definition.Text = newText;
-				}
-				else if (!string.IsNullOrEmpty(newText))
-				{
-					// Otherwise, create the definition and set the text,
-					definition = new Definition(objectType.Store);
-					definition.Text = newText;
-					// then attach the definition to the ObjectType
-					objectType.Definition = definition;
-				}
-			}
-			else if (attributeGuid == ObjectType.NoteTextDomainPropertyId)
-			{
-				// cache the text.
-				string newText = (string)e.NewValue;
-				// Get the note if it exists
-				Note note = objectType.Note;
-				if (note != null)
-				{
-					// and try to set the text to the cached value.
-					note.Text = newText;
-				}
-				else if (!string.IsNullOrEmpty(newText))
-				{
-					// Otherwise, create the note and set the text,
-					note = new Note(objectType.Store);
-					note.Text = newText;
-					// then attach the note to the ObjectType.
-					objectType.Note = note;
-				}
-			}
 			else if (attributeGuid == ObjectType.IsIndependentDomainPropertyId)
 			{
 				if ((bool)e.NewValue)
@@ -1738,27 +1715,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				else
 				{
 					FrameworkDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
-				}
-			}
-			else if (attributeGuid == ObjectType.DerivationExpressionDisplayDomainPropertyId)
-			{
-				string newVal = e.NewValue as string;
-				SubtypeDerivationExpression currentRule = objectType.DerivationExpression;
-				if (string.IsNullOrEmpty(newVal))
-				{
-					if (currentRule != null)
-					{
-						currentRule.Body = string.Empty;
-					}
-				}
-				else
-				{
-					if (null == currentRule)
-					{
-						currentRule = new SubtypeDerivationExpression(objectType.Store);
-						objectType.DerivationExpression = currentRule;
-					}
-					currentRule.Body = newVal;
 				}
 			}
 			else if (attributeGuid == ObjectType.IsImplicitBooleanValueDomainPropertyId)
@@ -4396,6 +4352,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				ObjectTypeInstanceVerbalizer verbalizer = ObjectTypeInstanceVerbalizer.GetVerbalizer();
 				verbalizer.Initialize(this, instances);
 				yield return CustomChildVerbalizer.VerbalizeInstance(verbalizer, true);
+			}
+			// Verbalize a derivation note.
+			// The derivation rule is verbalized with the object type. Instead of making the
+			// verbalizer walk all derivation rule children, we jump to the only thing we
+			// want to verbalize independently.
+			SubtypeDerivationRule derivationRule;
+			DerivationNote derivationNote;
+			if (null != (derivationRule = DerivationRule) &&
+				null != (derivationNote = derivationRule.DerivationNote) &&
+				IsSubtype)
+			{
+				yield return CustomChildVerbalizer.VerbalizeInstance(derivationNote, false);
 			}
 		}
 		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)

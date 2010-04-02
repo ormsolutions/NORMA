@@ -304,6 +304,7 @@
 			<se:Link RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRole"/>
 		</se:Container>
 		<se:Container Name="SubtypeDerivationRule" SortChildElements="true">
+			<!-- UNDONE: File format change, remove derivation expression before deserialization. -->
 			<se:Embed RelationshipName="SubtypeHasDerivationExpression" RoleName="DerivationRule"/>
 			<se:Embed RelationshipName="SubtypeHasDerivationRule" RoleName="DerivationRule"/>
 		</se:Container>
@@ -561,6 +562,7 @@
 			<se:Link RelationshipName="FactSetConstraint" RoleName="SetConstraint"/>
 		</se:Container>
 		<se:Container Name="DerivationRule" SortChildElements="true">
+			<!-- UNDONE: File format change, remove derivation expression. -->
 			<se:Embed RelationshipName="FactTypeHasDerivationExpression" RoleName="DerivationRule"/>
 			<se:Embed RelationshipName="FactTypeHasDerivationRule" RoleName="DerivationRule"/>
 		</se:Container>
@@ -657,6 +659,7 @@
 		<se:Attribute ID="Language" WriteStyle="NotWritten"/>
 		<se:Attribute ID="Body" WriteStyle="Element"/>
 	</se:Element>
+	<!-- UNDONE: File format change, remove derivation expression. -->
 	<se:Element Class="FactTypeDerivationExpression" Name="DerivationExpression" Override="true"/>
 	<se:Element Class="FactTypeDerivationRule" Name="FactTypeDerivationPath" Override="true">
 		<se:Attribute ID="DerivationCompleteness">
@@ -702,8 +705,36 @@
 				</plx:binaryOperator>
 			</se:Condition>
 		</se:Attribute>
+		<se:Attribute ID="ExternalDerivation">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="booleanOr">
+					<plx:left>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callThis name="ExternalDerivation" type="property"/>
+						</plx:unaryOperator>
+					</plx:left>
+					<plx:right>
+						<plx:binaryOperator type="inequality">
+							<plx:left>
+								<plx:callInstance name="Count" type="property">
+									<plx:callObject>
+										<plx:callThis name="PathComponentCollection" type="property"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:value data="0" type="i4"/>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
 		<se:Container Name="DerivationProjections">
 			<se:Link RelationshipName="FactTypeDerivationProjection" RoleName="PathComponent"/>
+		</se:Container>
+		<se:Container Name="InformalRule">
+			<se:Embed RelationshipName="FactTypeDerivationRuleHasDerivationNote" RoleName="DerivationNote"/>
 		</se:Container>
 		<se:Link RelationshipName="FactTypeDerivationProjection" RoleName="PathComponent" Name="DerivationProjection" WriteStyle="PrimaryLinkElement"/>
 		<se:Link RelationshipName="FactTypeDerivationRuleHasProjectionRequiredError" RoleName="ProjectionRequiredError" WriteStyle="NotWritten"/>
@@ -721,18 +752,6 @@
 		<se:Link RelationshipName="FactTypeRoleProjectedFromPathedRole" RoleName="Source" Name="PathedRole"/>
 		<se:Link RelationshipName="FactTypeRoleProjectedFromCalculatedPathValue" RoleName="Source" Name="CalculatedValue"/>
 	</se:Element>
-	<se:Element Class="SubtypeDerivationExpression" Override="true">
-		<se:ConditionalSerialization>
-			<plx:comment>We leave this in memory so that a user can easily switch subtypes, but do not serialize it.</plx:comment>
-			<plx:return>
-				<plx:callInstance name="IsSubtype" type="property">
-					<plx:callObject>
-						<plx:callThis name="Subtype" type="property"/>
-					</plx:callObject>
-				</plx:callInstance>
-			</plx:return>
-		</se:ConditionalSerialization>
-	</se:Element>
 	<se:Element Class="SubtypeDerivationRule" Name="SubtypeDerivationPath" Override="true">
 		<se:ConditionalSerialization>
 			<plx:comment>We leave this in memory so that a user can easily switch subtypes, but do not serialize it unless we have a current subtype.</plx:comment>
@@ -744,6 +763,34 @@
 				</plx:callInstance>
 			</plx:return>
 		</se:ConditionalSerialization>
+		<se:Attribute ID="ExternalDerivation">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="booleanOr">
+					<plx:left>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callThis name="ExternalDerivation" type="property"/>
+						</plx:unaryOperator>
+					</plx:left>
+					<plx:right>
+						<plx:binaryOperator type="inequality">
+							<plx:left>
+								<plx:callInstance name="Count" type="property">
+									<plx:callObject>
+										<plx:callThis name="PathComponentCollection" type="property"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:value data="0" type="i4"/>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Container Name="InformalRule">
+			<se:Embed RelationshipName="SubtypeDerivationRuleHasDerivationNote" RoleName="DerivationNote"/>
+		</se:Container>
 	</se:Element>
 	<se:Element Class="SubtypeFact" Name="SubtypeFact" Override="true">
 		<!-- UNDONE: Remove IsPrimary on next file format change -->

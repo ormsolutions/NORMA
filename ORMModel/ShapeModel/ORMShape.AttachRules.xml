@@ -136,12 +136,6 @@
 			<arg:RolePlayerChangeRule methodName="RolePlayerRolePlayerChangedRule">
 				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:RolePlayerChangeRule>
-			<arg:AddRule methodName="SubtypeDerivationExpressionAddedRule">
-				<arg:RuleOn targetType="SubtypeHasDerivationExpression" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AutoLayoutShapesRulePriority"/>
-			</arg:AddRule>
-			<arg:DeleteRule methodName="SubtypeDerivationExpressionDeletedRule">
-				<arg:RuleOn targetType="SubtypeHasDerivationExpression" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AutoLayoutShapesRulePriority"/>
-			</arg:DeleteRule>
 			<arg:AddRule methodName="SubtypeDerivationRuleAddedRule">
 				<arg:RuleOn targetType="SubtypeHasDerivationRule" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AutoLayoutShapesRulePriority"/>
 			</arg:AddRule>
@@ -245,15 +239,6 @@
 			</arg:AddRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="ReadingShape">
-			<arg:AddRule methodName="DerivationExpressionAddedRule">
-				<arg:RuleOn targetType="FactTypeHasDerivationExpression" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AutoLayoutShapesRulePriority"/>
-			</arg:AddRule>
-			<arg:ChangeRule methodName="DerivationExpressionChangedRule">
-				<arg:RuleOn targetType="FactTypeDerivationExpression" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AutoLayoutShapesRulePriority"/>
-			</arg:ChangeRule>
-			<arg:DeleteRule methodName="DerivationExpressionDeletedRule">
-				<arg:RuleOn targetType="FactTypeHasDerivationExpression" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AutoLayoutShapesRulePriority"/>
-			</arg:DeleteRule>
 			<arg:AddRule methodName="DerivationRuleAddedRule">
 				<arg:RuleOn targetType="FactTypeHasDerivationRule" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AutoLayoutShapesRulePriority"/>
 			</arg:AddRule>

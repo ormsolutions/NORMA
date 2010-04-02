@@ -691,7 +691,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// Create a new SubtypeFactFixupListener
 			/// </summary>
 			public SubtypeFactFixupListener()
-				: base((int)ORMDeserializationFixupPhase.ValidateImplicitStoredElements)
+				// UNDONE: When the file format portions of this are done, move this phase back to ValidateImplicitStoredElements.
+				// It is not worth splitting this into two fixup listeners to run half of it one phase later.
+				: base((int)ORMDeserializationFixupPhase.ReplaceDeprecatedStoredElements)
 			{
 			}
 			/// <summary>
@@ -751,31 +753,57 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						element.ProvidesPreferredIdentifier = true;
 					}
 					
-					// Move any derivation rules to the subtype
+					// Move any derivation expressions to the subtype.
+					// Note that derivation paths have never been written to the .orm file
+					// on a subtype, so we just look for the older expression form.
 					// UNDONE: Do this during file format upgrade transformation
-					FactTypeDerivationExpression derivation;
-					if (null != (derivation = element.DerivationExpression))
+					FactTypeDerivationExpression factTypeDerivationExpression;
+					if (null != (factTypeDerivationExpression = element.DerivationExpression))
 					{
-						string ruleBody = derivation.Body;
+						string ruleBody = factTypeDerivationExpression.Body;
 						if (!string.IsNullOrEmpty(ruleBody))
 						{
 							ObjectType subtype = element.Subtype;
-							SubtypeDerivationExpression subtypeDerivation = subtype.DerivationExpression;
-							if (subtypeDerivation == null)
+							SubtypeDerivationExpression derivationExpression = subtype.DerivationExpression;
+							SubtypeDerivationRule derivationRule = subtype.DerivationRule;
+							DerivationNote derivationNote;
+							string existingBody;
+							// Check both the old and deprecated expression forms. Note that the derivation
+							// expression will be merged into a note on the derivation path in another fixup
+							// listener, so we do not need to handle merging here.
+							if (derivationExpression == null && derivationRule == null)
 							{
-								subtypeDerivation = new SubtypeDerivationExpression(
+								notifyAdded.ElementAdded(derivationRule = new SubtypeDerivationRule(
 									store,
-									new PropertyAssignment(SubtypeDerivationExpression.BodyDomainPropertyId, ruleBody));
-								subtypeDerivation.Subtype = subtype;
-								notifyAdded.ElementAdded(subtypeDerivation, true);
+									new PropertyAssignment(SubtypeDerivationRule.ExternalDerivationDomainPropertyId, true)));
+								notifyAdded.ElementAdded(new SubtypeHasDerivationRule(subtype, derivationRule));
+								notifyAdded.ElementAdded(derivationNote = new DerivationNote(
+									store,
+									new PropertyAssignment(DerivationNote.BodyDomainPropertyId, ruleBody)));
+								notifyAdded.ElementAdded(new SubtypeDerivationRuleHasDerivationNote(derivationRule, derivationNote));
+							}
+							else if (derivationRule != null)
+							{
+								if (null != (derivationNote = derivationRule.DerivationNote))
+								{
+									existingBody = derivationExpression.Body;
+									derivationNote.Body = string.IsNullOrEmpty(existingBody) ? ruleBody : existingBody + "\r\n" + ruleBody;
+								}
+								else
+								{
+									notifyAdded.ElementAdded(derivationNote = new DerivationNote(
+										store,
+										new PropertyAssignment(DerivationNote.BodyDomainPropertyId, ruleBody)));
+									notifyAdded.ElementAdded(new SubtypeDerivationRuleHasDerivationNote(derivationRule, derivationNote));
+								}
 							}
 							else
 							{
-								string existingExpression = subtypeDerivation.Body;
-								subtypeDerivation.Body = string.IsNullOrEmpty(existingExpression) ? ruleBody : existingExpression + "\r\n" + ruleBody;
+								existingBody = derivationExpression.Body;
+								derivationExpression.Body = string.IsNullOrEmpty(existingBody) ? ruleBody : existingBody + "\r\n" + ruleBody;
 							}
 						}
-						derivation.Delete();
+						factTypeDerivationExpression.Delete();
 					}
 				}
 			}
