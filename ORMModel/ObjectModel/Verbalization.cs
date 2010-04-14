@@ -4054,7 +4054,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// the same set.</remarks>
 			public bool AddCorrelatedVariable(RolePlayerVariable variable)
 			{
-				if (myPrimaryVariable == variable)
+				if (myPrimaryVariable == variable || variable == null)
 				{
 					return false;
 				}
@@ -4296,6 +4296,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						retVal = explicitParent;
 						explicitParent = retVal.CorrelatingParent;
+					}
+				}
+				if (retVal.Role is SubtypeMetaRole && retVal.PathedRolePurpose == PathedRolePurpose.SameFactType)
+				{
+					foreach (PathedRole precedingPathedRole in GetPrecedingPathedRoles(retVal, false))
+					{
+						// UNDONE: Consider supporting this pattern for negation as well.
+						if (precedingPathedRole.Role is SupertypeMetaRole && !retVal.IsNegated)
+						{
+							retVal = GetCorrelationRootPathedRole(precedingPathedRole);
+						}
+						break;
 					}
 				}
 				return retVal;
@@ -6759,11 +6771,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								useMap.TryGetValue(subtypePathedRole, out subtypeVariableUse))
 							{
 								currentNode.Detach(ref headChildNode);
-								// Note that both variables are already registered, this just modifies the settings
-								// and adjust or adds the the join for the subtype variable. There is no need to remove
-								// other parts of the registered variable information. If there is a chained subtype, then
-								// the middle correlations steps will just be ignored.
-								RegisterRolePlayerUse(subtypePathedRole.Role.RolePlayer, supertypeVariableUse.PrimaryRolePlayerVariable, subtypePathedRole, null);
+								// Note that the variables are already correlated, all we need to do is pull the path.
 							}
 						}
 					}
@@ -7025,10 +7033,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						RolePlayerVariableUse existingVariableUse;
 						if (useMap.TryGetValue(usedFor, out existingVariableUse))
 						{
-							if (existingVariableUse.JoinedToVariable != joinToVariable)
+							if (joinToVariable != null && existingVariableUse.JoinedToVariable != joinToVariable)
 							{
 								existingVariableUse.JoinedToVariable = joinToVariable;
-								UpdateRolePlayerVariableUse(usedFor, existingVariableUse);
+								if (correlateWith == usedFor)
+								{
+									// Anything in the join should be in the head list as well
+									existingVariableUse.AddCorrelatedVariable(joinToVariable);
+								}
+								else if (correlateWith != null && correlationRootVariableUse.AddCorrelatedVariable(joinToVariable))
+								{
+									if (correlationRootVariableUse.AddCorrelatedVariable(joinToVariable))
+									{
+										useMap[correlateWith] = correlationRootVariableUse;
+									}
+								}
+								useMap[usedFor] = existingVariableUse;
 							}
 						}
 						else
@@ -7038,7 +7058,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						if (addNewVariableToCorrelationRoot && correlationRootVariableUse.AddCorrelatedVariable(existingVariable))
 						{
 							// An external variable was found that is not in the local correlation list
-							UpdateRolePlayerVariableUse(correlateWith, correlationRootVariableUse);
+							useMap[correlateWith] = correlationRootVariableUse;
 						}
 					}
 					// Track use phase during registration to see if the root variable is
@@ -7096,9 +7116,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						joinToVariable = null;
 					}
-					if (existingVariableUse.JoinedToVariable != joinToVariable)
+					if (joinToVariable != null && existingVariableUse.JoinedToVariable != joinToVariable)
 					{
 						existingVariableUse.JoinedToVariable = joinToVariable;
+						if (correlateWith == usedFor)
+						{
+							// Anything in the join should be in the head list as well
+							existingVariableUse.AddCorrelatedVariable(joinToVariable);
+						}
+						else if (correlateWith != null && correlationRootVariableUse.AddCorrelatedVariable(joinToVariable))
+						{
+							if (correlationRootVariableUse.AddCorrelatedVariable(joinToVariable))
+							{
+								useMap[correlateWith] = correlationRootVariableUse;
+							}
+						}
 						useMap[usedFor] = existingVariableUse;
 					}
 				}
@@ -7138,7 +7170,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				if (addNewVariableToCorrelationRoot && existingVariable != null && correlationRootVariableUse.AddCorrelatedVariable(existingVariable))
 				{
-					UpdateRolePlayerVariableUse(correlateWith, correlationRootVariableUse);
+					useMap[correlateWith] = correlationRootVariableUse;
 				}
 				if (joinToVariable != null && joinedToExternalVariable && !existingVariable.IsExternalVariable)
 				{
@@ -7161,13 +7193,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return variableUse;
 			}
 			return null;
-		}
-		/// <summary>
-		/// Update the <see cref="RolePlayerVariableUse"/> registered for a given key
-		/// </summary>
-		protected void UpdateRolePlayerVariableUse(object usedFor, RolePlayerVariableUse variableUse)
-		{
-			myUseToVariableMap[usedFor] = variableUse;
 		}
 		/// <summary>
 		/// A chance for a subtype to add path projections using the

@@ -1252,7 +1252,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static void RemoteCorrelationRolePlayerChangedRule(RolePlayerChangedEventArgs e)
 		{
 			// This will always change within the same lead path. Just use the new role player.
-			AddDelayedPathValidation((RolePath)e.NewRolePlayer);
+			AddDelayedPathValidation(((PathedRole)e.NewRolePlayer).RolePath);
 		}
 		/// <summary>
 		/// AddRule: typeof(RolePathOwner)
