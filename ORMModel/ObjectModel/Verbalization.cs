@@ -6737,9 +6737,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					VerbalizationPlanNode testPlanNode = currentNode.Value;
 					PathedRole supertypePathedRole;
-					SupertypeMetaRole supertypeRole;
 					if (testPlanNode.NodeType == VerbalizationPlanNodeType.FactType &&
-						null != (supertypeRole = (supertypePathedRole = testPlanNode.FactTypeEntry).Role as SupertypeMetaRole))
+						(supertypePathedRole = testPlanNode.FactTypeEntry).Role is	 SupertypeMetaRole)
 					{
 						PathedRole subtypePathedRole = null;
 						VisitPathedRolesForFactTypeEntry(

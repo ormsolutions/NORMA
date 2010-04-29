@@ -15,12 +15,12 @@
 #endregion
 using System;
 using System.Collections.Generic;
-using System.Text;
-using ORMSolutions.ORMArchitect.Core.ObjectModel;
-using ORMSolutions.ORMArchitect.ORMAbstraction;
-using Microsoft.VisualStudio.Modeling;
-using System.IO;
 using System.Diagnostics;
+using System.Text;
+using Microsoft.VisualStudio.Modeling;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.ORMAbstraction;
 
 namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 {
@@ -52,7 +52,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 
 					// Delete empty chains and find the largest chain.
 					int largestChainCount = 0;
-					for (int i = myChains.Count - 1; i >= 0; i--)
+					for (int i = myChains.Count - 1; i >= 0; --i)
 					{
 						Chain chain = myChains[i];
 						if (chain.UndecidedOneToOneFactTypeMappings.Count <= 0)
@@ -262,7 +262,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				Dictionary<ObjectType, object> deeplyMappedObjectTypes = new Dictionary<ObjectType, object>(largestChainCount);
 				ChainPermutationState permutationStateHelper = new ChainPermutationState();
 				// Used to eliminate deep mappings towards simple identifiers
-				Dictionary<ObjectType, bool> nonPreferredFuntionalObjectTypesCache = new Dictionary<ObjectType, bool>();
+				Dictionary<ObjectType, bool> nonPreferredFunctionalObjectTypesCache = new Dictionary<ObjectType, bool>();
 
 				// Loop through each chain, calculating the permutations.
 				foreach (Chain chain in chainer.Chains)
@@ -281,9 +281,12 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 					//int maxPermutations = CalculateMaxNumberOfPermutations(chain.UndecidedOneToOneFactTypeMappings);
 
 					PermuteFactTypeMappings(chain.PossiblePermutations, chain.UndecidedOneToOneFactTypeMappings, newlyDecidedFactTypeMappings, deeplyMappedObjectTypes, 0);
-					EliminateInvalidPermutations(chain, nonPreferredFuntionalObjectTypesCache);
+					EliminateInvalidPermutations(chain, nonPreferredFunctionalObjectTypesCache);
 					FindSmallestPermutationsInTermsOfConceptTypes(chain, permutationStateHelper);
+#if FALSE
+					// UNDONE: See notes on EliminatePermutationsWithIdenticalResults
 					EliminatePermutationsWithIdenticalResults(chain);
+#endif // FALSE
 
 					// Add each mapping from the optimal permutation to the "global" set of decided mappings.
 					foreach (FactTypeMapping optimalMapping in ChooseOptimalPermutation(chain).Mappings)
@@ -723,6 +726,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			}
 		}
 
+#if FALSE // The current implementation does not care about the reduced set, and this algorithm does not just eliminate equivalent elements
 			/// <summary>
 			/// Eliminates <see cref="Permutation"/>s that have the same set of top-level concept types and non-top-level concept types,
 			/// which will always result in the same OIAL.
@@ -745,14 +749,103 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 					}
 				}
 			}
+#endif // FALSE
 
 			private static Permutation ChooseOptimalPermutation(Chain chain)
 			{
-				// UNDONE: This should do something smart!
-				IList<Permutation> smallestPermutationsInTermsOfConceptTypes = chain.SmallestPermutationsInTermsOfConceptTypes;
-				Permutation firstFinalMappingState = smallestPermutationsInTermsOfConceptTypes[0];
+				IList<Permutation> permutations = chain.SmallestPermutationsInTermsOfConceptTypes;
+				int permutationCount = permutations.Count;
+				Permutation firstFinalMappingState;
+				if (permutationCount > 1)
+				{
+					// Prioritize permutations based on mandatory, entity/value, and mapping depth patterns.
+					long[] weights = new long[permutationCount];
+					int[] order = new int[permutationCount];
+					for (int i = 0; i < permutationCount; ++i)
+					{
+						weights[i] = GetPermutationPriority(permutations[i]);
+						order[i] = i;
+					}
+					Array.Sort<int>(
+						order,
+						delegate(int left, int right)
+						{
+							return weights[right].CompareTo(weights[left]);
+						});
+					firstFinalMappingState = permutations[order[0]];
+				}
+				else
+				{
+					firstFinalMappingState = permutations[0];
+				}
 				//smallestPermutationsInTermsOfConceptTypes.Clear();
 				return firstFinalMappingState;
+			}
+			private static long GetPermutationPriority(Permutation permutation)
+			{
+				// Prioritize the remaining elements in terms of mandatories, then entity/value balance, then deep/shallow.
+				// 1) An unbalanced mandatory constraint is given highest priority, outweighing all other concerns.
+				//    For a shallow, prefer a mapping towards the mandatory role. For a deep mapping, prefer a mapping
+				//    away from the mandatory role.
+				// 2) A double mandatory is given next priority, outweighing all entity/value issues
+				// 3) A mapping between an entity and value gets the next highest priority
+				// 4) A mapping between two entities is next (value-to-value gets no points)
+				// 5) A deep mapping has a higher priority than an shallow mapping, but does not override
+				//    any other concerns.
+				FactTypeMappingList mappings = permutation.Mappings;
+				int mappingCount = mappings.Count;
+				const long deepMappingValue = 1;
+				long balancedEntityValue = mappingCount + 1;
+				long unbalancedEntityValue = balancedEntityValue * mappingCount + 1;
+				long balancedMandatoryValue = unbalancedEntityValue * mappingCount + 1;
+				long unbalancedMandatoryValue = unbalancedEntityValue * mappingCount + 1;
+				long retVal = 0;
+				for (int i = 0; i < mappingCount; ++i)
+				{
+					FactTypeMapping mapping = mappings[i];
+					// Completely ignore implied mandatory. If both are implied mandatory, then this ranks the same as non-mandatory
+					bool fromMandatory = mapping.FromRoleExplicitlyMandatory;
+					bool toMandatory = mapping.TowardsRoleExplicitlyMandatory;
+					bool deepMapping = mapping.MappingDepth == MappingDepth.Deep;
+					if (fromMandatory)
+					{
+						if (toMandatory)
+						{
+							retVal += balancedMandatoryValue;
+						}
+						else if (deepMapping)
+						{
+							retVal += unbalancedMandatoryValue;
+						}
+					}
+					else if (toMandatory && !deepMapping)
+					{
+						retVal += unbalancedMandatoryValue;
+					}
+					if (mapping.FromValueType)
+					{
+						if (!mapping.TowardsValueType)
+						{
+							retVal += unbalancedEntityValue;
+						}
+					}
+					else if (!mapping.TowardsValueType)
+					{
+						retVal += balancedEntityValue; // Entity to entity gets higher priority than value/value
+					}
+					if (deepMapping)
+					{
+						if (mapping.IsFromPreferredIdentifier)
+						{
+							retVal -= deepMappingValue; // Discourage deep mapping away from the preferred identifier
+						}
+						else
+						{
+							retVal += deepMappingValue;
+						}
+					}
+				}
+				return retVal;
 			}
 
 			/// <summary>
@@ -842,7 +935,8 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				// All of the permutations will always contain the same number of mappings, so we can calculate it here.
 				int mappingsCount = possiblePermutations[0].Mappings.Count;
 
-				for (int permutationIndex = possiblePermutations.Count - 1; permutationIndex >= 0; permutationIndex--)
+				int permutationIndex;
+				for (permutationIndex = possiblePermutations.Count - 1; permutationIndex >= 0; permutationIndex--)
 				{
 					// We're checking a new permutation, so clear the visited dictionary.
 					visited.Clear();
@@ -929,6 +1023,84 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 							}
 						}
 					}
+				}
+
+				// If there are two or more remaining permutations with a deep mapping away
+				// from the same object type via two different non-subtype fact types, or if
+				// there is a subtype deep mapping away and other fact type deep mappings away,
+				// then eliminate the fact type-based deep mappings. The choice of which of these
+				// deep mappings ends up as an assimilation is arbitrary, so we choose to allow none
+				// of them.
+				permutationIndex = possiblePermutations.Count - 1;
+				BitTracker usesDeepFromSameObjectType = new BitTracker();
+				while (permutationIndex > 0) // There is no previous to check for the last item, so stop at 1
+				{
+					FactTypeMappingList mappings = possiblePermutations[permutationIndex].Mappings;
+					for (int i = 0; i < mappingsCount; ++i)
+					{
+						FactTypeMapping mapping = mappings[i];
+						if (mapping.MappingDepth == MappingDepth.Deep)
+						{
+							ObjectType fromObjectType = mapping.FromObjectType;
+							FactType viaFactType = mapping.FactType;
+							bool viaSubtype = mapping.IsSubtype;
+							usesDeepFromSameObjectType.Reset(permutationIndex + 1);
+							bool removeTrackedPermutation = false;
+							if (!viaSubtype)
+							{
+								usesDeepFromSameObjectType[permutationIndex] = true;
+							}
+							for (int j = permutationIndex - 1; j >= 0; --j)
+							{
+								FactTypeMappingList testMappings = possiblePermutations[j].Mappings;
+								for (int k = 0; k < mappingsCount; ++k)
+								{
+									FactTypeMapping testMapping = testMappings[k];
+									if (testMapping.MappingDepth == MappingDepth.Deep &&
+										testMapping.FromObjectType == fromObjectType)
+									{
+										FactType testViaFactType = testMapping.FactType;
+										if (viaSubtype)
+										{
+											if (!(testMapping.IsSubtype))
+											{
+												usesDeepFromSameObjectType[j] = true;
+												removeTrackedPermutation = true;
+											}
+										}
+										else if (testMapping.IsSubtype)
+										{
+											removeTrackedPermutation = true;
+										}
+										else
+										{
+											usesDeepFromSameObjectType[j] = true;
+											if (testViaFactType != viaFactType)
+											{
+												removeTrackedPermutation = true;
+											}
+										}
+									}
+								}
+							}
+							if (removeTrackedPermutation)
+							{
+								for (int j = permutationIndex; j >= 0; --j)
+								{
+									if (usesDeepFromSameObjectType[j])
+									{
+										possiblePermutations.RemoveAt(j);
+										if (j != permutationIndex)
+										{
+											--permutationIndex;
+										}
+									}
+								}
+								break;
+							}
+						}
+					}
+					--permutationIndex;
 				}
 			}
 			private static bool IsBlockedDeepMapping(FactTypeMappingList mappings, int currentMappingIndex, Dictionary<ObjectType, bool> nonPreferredFuntionalObjectTypes)

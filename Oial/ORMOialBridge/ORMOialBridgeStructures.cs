@@ -27,37 +27,55 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 {
 	partial class AbstractionModelIsForORMModel
 	{
-		private class InformationTypeFormatWithFactTypes
-		{
-			InformationTypeFormat informationTypeFormat;
-			IList<FactType> factTypes;
-
-			public InformationTypeFormat InformationTypeFormat
-			{
-				get { return informationTypeFormat; }
-				set { informationTypeFormat = value; }
-			}
-
-			public IList<FactType> FactTypes
-			{
-				get { return factTypes; }
-				set { factTypes = value; }
-			}
-
-			public InformationTypeFormatWithFactTypes()
-			{
-				factTypes = new List<FactType>();
-			}
-
-			public InformationTypeFormatWithFactTypes(InformationTypeFormat informationTypeFormat, IList<FactType> factTypes)
-			{
-				this.informationTypeFormat = informationTypeFormat;
-				// UNDONE: There might be a better place to clone this list...
-				this.factTypes = new List<FactType>(factTypes);
-			}
-		}
-
 		#region FactTypeMapping class
+		/// <summary>
+		/// Flags used by the <see cref="FactTypeMapping"/> class
+		/// </summary>
+		[Flags]
+		private enum FactTypeMappingFlags
+		{
+			/// <summary>
+			/// No flags
+			/// </summary>
+			None = 0,
+			/// <summary>
+			/// This is a deep mapping
+			/// </summary>
+			DeepMapping = 1,
+			/// <summary>
+			/// The towards role player is a value type
+			/// </summary>
+			TowardsValueType = 2,
+			/// <summary>
+			/// The towards role is mandatory (implied or explicit)
+			/// </summary>
+			TowardsRoleMandatory = 4,
+			/// <summary>
+			/// The mandatory constraint on the towards role is implied
+			/// </summary>
+			TowardsRoleImpliedMandatory = 8,
+			/// <summary>
+			/// The from role player is a value type
+			/// </summary>
+			FromValueType = 0x10,
+			/// <summary>
+			/// The from role is mandatory (implied or explicit)
+			/// </summary>
+			FromRoleMandatory = 0x20,
+			/// <summary>
+			/// The mandatory constraint on the from role is implied
+			/// </summary>
+			FromRoleImpliedMandatory = 0x40,
+			/// <summary>
+			/// This mapping is for a subtype fact
+			/// </summary>
+			Subtype = 0x80,
+			/// <summary>
+			/// The mapping is from a preferred identifier. Note that this is
+			/// calculated automatically in the constructor.
+			/// </summary>
+			FromPreferredIdentifier = 0x100,
+		}
 		/// <summary>
 		/// Indicates towards which <see cref="Role"/> a binary <see cref="FactType"/> is mapped,
 		/// as well as the <see cref="MappingDepth"/> of that mapping.
@@ -66,23 +84,22 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 		/// This type is the non-transacted counterpart to <see cref="FactTypeMapsTowardsRole"/>.
 		/// </remarks>
 		[Serializable]
-		[DebuggerDisplay("FactTypeMapping (TowardsRole={FactType.RoleCollection.IndexOf(TowardsRoleDebug)}, Depth={MappingDepth}, FactType={FactType.Name})")]
+		[DebuggerDisplay("FactTypeMapping (TowardsRole={FactType.RoleCollection.IndexOf((RoleBase)towardsRole.Proxy ?? towardsRole)}, Depth={MappingDepth}, FactType={FactType.Name})")]
 		private sealed class FactTypeMapping
 		{
-			private readonly FactType factType;
-			private readonly Role fromRole;
-			private readonly Role towardsRole;
-			private readonly ObjectType fromObjectType;
-			private readonly ObjectType towardsObjectType;
-			private readonly MappingDepth mappingDepth;
-			private readonly bool isFromPreferredIdentifier;
+			private readonly FactType myFactType;
+			private readonly Role myFromRole;
+			private readonly Role myTowardsRole;
+			private readonly ObjectType myFromObjectType;
+			private readonly ObjectType myTowardsObjectType;
+			private readonly FactTypeMappingFlags myFlags;
 
 			/// <value>
 			/// The <see cref="FactType"/> that this mapping is for.
 			/// </value>
 			public FactType FactType
 			{
-				get { return factType; }
+				get { return myFactType; }
 			}
 
 			/// <value>
@@ -90,7 +107,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			/// </value>
 			public ObjectType FromObjectType
 			{
-				get { return fromObjectType; }
+				get { return myFromObjectType; }
 			}
 
 			/// <value>
@@ -98,7 +115,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			/// </value>
 			public ObjectType TowardsObjectType
 			{
-				get { return towardsObjectType; }
+				get { return myTowardsObjectType; }
 			}
 
 			/// <value>
@@ -106,7 +123,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			/// </value>
 			public Role FromRole
 			{
-				get { return fromRole; }
+				get { return myFromRole; }
 			}
 
 			/// <value>
@@ -114,42 +131,77 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			/// </value>
 			public Role TowardsRole
 			{
-				get { return towardsRole; }
-			}
-
-			/// <summary>
-			/// Used by the <see cref="DebuggerDisplayAttribute"/> for this type.
-			/// </summary>
-			private RoleBase TowardsRoleDebug
-			{
-				get { return (RoleBase)towardsRole.Proxy ?? towardsRole; }
+				get { return myTowardsRole; }
 			}
 
 			public MappingDepth MappingDepth
 			{
-				get { return mappingDepth; }
+				get { return 0 != (myFlags & FactTypeMappingFlags.DeepMapping) ? MappingDepth.Deep : MappingDepth.Shallow; }
 			}
 
 			public bool IsFromPreferredIdentifier
 			{
-				get { return isFromPreferredIdentifier; }
+				get { return 0 != (myFlags & FactTypeMappingFlags.FromPreferredIdentifier); }
 			}
 
-			public FactTypeMapping(FactType factType, Role fromRole, Role towardsRole, MappingDepth mappingDepth)
+			public bool IsSubtype
 			{
-				this.factType = factType;
-				this.fromRole = fromRole;
-				this.towardsRole = towardsRole;
-				this.mappingDepth = mappingDepth;
+				get { return 0 != (myFlags & FactTypeMappingFlags.Subtype); }
+			}
 
-				this.fromObjectType = fromRole.RolePlayer;
-				this.towardsObjectType = towardsRole.RolePlayer;
-				this.isFromPreferredIdentifier = DetermineWhetherFromIsPreferredIdentifier();
+			public bool FromValueType
+			{
+				get { return 0 != (myFlags & FactTypeMappingFlags.FromValueType); }
+			}
+
+			public bool FromRoleMandatory
+			{
+				get { return 0 != (myFlags & FactTypeMappingFlags.FromRoleMandatory); }
+			}
+
+			public bool FromRoleExplicitlyMandatory
+			{
+				get { return FactTypeMappingFlags.FromRoleMandatory == (myFlags & (FactTypeMappingFlags.FromRoleMandatory | FactTypeMappingFlags.FromRoleImpliedMandatory)); }
+			}
+
+			public bool TowardsValueType
+			{
+				get { return 0 != (myFlags & FactTypeMappingFlags.TowardsValueType); }
+			}
+
+			public bool TowardsRoleMandatory
+			{
+				get { return 0 != (myFlags & FactTypeMappingFlags.TowardsRoleMandatory); }
+			}
+
+			public bool TowardsRoleExplicitlyMandatory
+			{
+				get { return FactTypeMappingFlags.TowardsRoleMandatory == (myFlags & (FactTypeMappingFlags.TowardsRoleMandatory | FactTypeMappingFlags.TowardsRoleImpliedMandatory)); }
+			}
+
+			public FactTypeMappingFlags Flags
+			{
+				get { return myFlags; }
+			}
+
+			public FactTypeMapping(FactType factType, Role fromRole, Role towardsRole, FactTypeMappingFlags flags)
+			{
+				myFactType = factType;
+				myFromRole = fromRole;
+				myTowardsRole = towardsRole;
+				myFromObjectType = fromRole.RolePlayer;
+				myTowardsObjectType = towardsRole.RolePlayer;
+				if (0 == (flags & FactTypeMappingFlags.FromPreferredIdentifier) &&
+					DetermineWhetherFromIsPreferredIdentifier())
+				{
+					flags |= FactTypeMappingFlags.FromPreferredIdentifier;
+				}
+				myFlags = flags;
 			}
 
 			private bool DetermineWhetherFromIsPreferredIdentifier()
 			{
-				foreach (ConstraintRoleSequence constraintRoleSequence in fromRole.ConstraintRoleSequenceCollection)
+				foreach (ConstraintRoleSequence constraintRoleSequence in myFromRole.ConstraintRoleSequenceCollection)
 				{
 					UniquenessConstraint uniquenessConstraint = constraintRoleSequence as UniquenessConstraint;
 					if (uniquenessConstraint != null && uniquenessConstraint.IsPreferred)

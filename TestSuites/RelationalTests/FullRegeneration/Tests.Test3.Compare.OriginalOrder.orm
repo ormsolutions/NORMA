@@ -819,7 +819,7 @@
 	</orm:NameGenerator>
 	<orm:GenerationState id="_FF27DDAF-62F8-41E6-AB38-0D295BDBB29E">
 		<orm:GenerationSettings>
-			<ormtooial:AbstractionModelGenerationSetting id="_4CA750F7-00B1-492A-9BC2-CF24B78D16D1" AlgorithmVersion="1.006">
+			<ormtooial:AbstractionModelGenerationSetting id="_4CA750F7-00B1-492A-9BC2-CF24B78D16D1" AlgorithmVersion="1.007">
 				<ormtooial:AbstractionModel ref="_B227B9F1-E66D-4885-9EBB-FA6C30E3AC66" />
 			</ormtooial:AbstractionModelGenerationSetting>
 			<oialtocdb:SchemaGenerationSetting id="_2FD2BA8B-8F38-413C-A5ED-5C43A9F3ED0C" CoreAlgorithmVersion="1.004" NameAlgorithmVersion="1.011">

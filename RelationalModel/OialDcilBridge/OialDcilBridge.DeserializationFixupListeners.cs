@@ -1058,7 +1058,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				return false;
 			}
 			// Walk the path backwards, since the end is more likely to differ than the beginning.
-			for (int i = desiredPath.Count - 1; i >= 0; i--)
+			for (int i = desiredPath.Count - 1; i >= 0; --i)
 			{
 				if (actualPath[i] != desiredPath[i])
 				{
@@ -1082,7 +1082,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				return false;
 			}
 			// Walk the path backwards, since the end is more likely to differ than the beginning.
-			for (int i = startingPathCount - 1; i >= 0; i--)
+			for (int i = startingPathCount - 1; i >= 0; --i)
 			{
 				if (startingPath[i] != actualPath[i])
 				{
