@@ -1172,12 +1172,12 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.PopulationMandatoryError.AdditionalFactTypeText");
 			}
 		}
-		/// <summary>Model validation error text for an explicit correlation to a pathed role with a with a role player that is not compatible with the correlation target. {0}=error display context</summary>
-		public static string ModelErrorRolePathIncompatibleCorrelation
+		/// <summary>Model validation error text for explicit object unifiers relating multiple disconnected pathed roles and path roots. {0}=error display context</summary>
+		public static string ModelErrorRolePathObjectUnifierIncompatibleCorrelation
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RolePath.CorrelatedPathRoleRequiresCompatibleRolePlayer.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RolePath.ObjectUnifierRequiresCompatibleObjectTypes.Text");
 			}
 		}
 		/// <summary>Model validation error text for a join to a pathed role with a role player that is not compatible with the join source. {0}=error display context</summary>

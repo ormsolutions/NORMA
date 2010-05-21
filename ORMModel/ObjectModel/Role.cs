@@ -696,40 +696,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					foreach (PathedRole pathedRole in PathedRole.GetLinksToRolePathCollection(role))
 					{
-						LinkedElementCollection<PathConditionRoleValueConstraint> valueConstraints = pathedRole.ValueConstraintCollection;
-						if (valueConstraints.Count == 0)
+						// Note that we visit for the pathed role even if no value constraint is present
+						// to allow processing for this pathed role.
+						if (!visitor(role, pathedRole, dataTypeLink, pathedRole.ValueConstraint, previousValueConstraint))
 						{
-							if (!visitor(role, pathedRole, dataTypeLink, null, previousValueConstraint))
-							{
-								return false;
-							}
-						}
-						else
-						{
-							PathConditionRoleValueConstraint directValueConstraint = null;
-							foreach (PathConditionRoleValueConstraint pathConditionValueConstraint in valueConstraints)
-							{
-								if (pathConditionValueConstraint.AppliesToPathCombination == null)
-								{
-									directValueConstraint = pathConditionValueConstraint;
-									break;
-								}
-							}
-							if (!visitor(role, pathedRole, dataTypeLink, directValueConstraint, previousValueConstraint))
-							{
-								return false;
-							}
-							LeadRolePath resolvedRolePath = null;
-							foreach (PathConditionRoleValueConstraint pathConditionValueConstraint in valueConstraints)
-							{
-								if (pathConditionValueConstraint != directValueConstraint)
-								{
-									if (!visitor(role, pathedRole, dataTypeLink, pathConditionValueConstraint, FindCombinationValueConstraint(pathedRole, pathConditionValueConstraint.AppliesToPathCombination, resolvedRolePath ?? (resolvedRolePath =  pathedRole.RolePath.RootRolePath), true) ??	directValueConstraint ?? previousValueConstraint))
-									{
-										return false;
-									}
-								}
-							}
+							return false;
 						}
 					}
 
@@ -759,47 +730,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 			return true;
-		}
-		/// <summary>
-		/// Helper for finding the closed context value constraint for pathed roles.
-		/// Used by WalkDescendedValueRoles.
-		/// </summary>
-		private static ValueConstraint FindCombinationValueConstraint(PathedRole pathedRole, RolePathCombination combination, LeadRolePath stopAtRolePath, bool initialCombination)
-		{
-			if (combination == null)
-			{
-				return null;
-			}
-			if (!initialCombination)
-			{
-				foreach (PathConditionRoleValueConstraint combinationScopedValueConstraint in combination.ValueConstraintCollection)
-				{
-					if (combinationScopedValueConstraint.PathedRole == pathedRole)
-					{
-						return combinationScopedValueConstraint;
-					}
-				}
-			}
-			LinkedElementCollection<RolePathComponent> containedComponents = combination.PathComponentCollection;
-			foreach (RolePathComponent containedComponent in containedComponents)
-			{
-				if (containedComponent == stopAtRolePath)
-				{
-					return null;
-				}
-			}
-			foreach (RolePathComponent containedComponent in containedComponents)
-			{
-				if (null != (combination = containedComponent as RolePathCombination))
-				{
-					ValueConstraint testValueConstraint = FindCombinationValueConstraint(pathedRole, combination, stopAtRolePath, false);
-					if (testValueConstraint != null)
-					{
-						return testValueConstraint;
-					}
-				}
-			}
-			return null;
 		}
 		#endregion // ValueRole methods
 		#region RoleChangeRule

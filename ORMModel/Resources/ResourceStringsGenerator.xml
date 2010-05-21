@@ -196,7 +196,7 @@
 	<ResourceString name="ModelErrorModelHasPopulationUniquenessErrorWithUnnamedRole" model="Model" resourceName="ModelError.Model.PopulationUniquenessError.FactType.Text"/>
 	<ResourceString name="ModelErrorModelHasPopulationMandatoryError" model="Model" resourceName="ModelError.Model.PopulationMandatoryError.Text"/>
 	<ResourceString name="ModelErrorModelHasPopulationMandatoryErrorAdditionalFactType" model="Model" resourceName="ModelError.Model.PopulationMandatoryError.AdditionalFactTypeText"/>
-	<ResourceString name="ModelErrorRolePathIncompatibleCorrelation" model="Model" resourceName="ModelError.RolePath.CorrelatedPathRoleRequiresCompatibleRolePlayer.Text"/>
+	<ResourceString name="ModelErrorRolePathObjectUnifierIncompatibleCorrelation" model="Model" resourceName="ModelError.RolePath.ObjectUnifierRequiresCompatibleObjectTypes.Text"/>
 	<ResourceString name="ModelErrorRolePathIncompatibleJoin" model="Model" resourceName="ModelError.RolePath.JoinedPathRoleRequiresCompatibleRolePlayer.Text"/>
 	<ResourceString name="ModelErrorRolePathSameFactTypeRoleFollowsJoin" model="Model" resourceName="ModelError.RolePath.SameFactTypeRoleFollowsJoin.Text"/>
 	<ResourceString name="ModelErrorRolePathStartRoleFollowsRootObjectType" model="Model" resourceName="ModelError.RolePath.StartRoleFollowsRootObjectType.Text"/>

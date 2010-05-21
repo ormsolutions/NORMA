@@ -1161,7 +1161,7 @@
 			<!-- UNDONE: Remove SubtypeFactTypeType.DerivationRule when file format is officially updated -->
 			<xs:element name="DerivationRule" type="FactTypeDerivationRuleType" minOccurs="0">
 				<xs:annotation>
-					<xs:documentation>(deprecated) Subtype derivation rules are expressed directly on the subtype, not the subtype fact relationship.</xs:documentation>
+					<xs:documentation>(Deprecated) Subtype derivation rules are expressed directly on the subtype, not the subtype fact relationship.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="Instances" type="FactTypeInstancesType" minOccurs="0"/>
@@ -1323,32 +1323,37 @@
 		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
 	<xs:complexType name="RolePathType" abstract="true">
-		<xs:sequence>
-			<xs:element name="PathedRoles" minOccurs="0">
-				<xs:annotation>
-					<xs:documentation>A container for PathedRole elements.</xs:documentation>
-				</xs:annotation>
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="PathedRole" type="PathedRoleType" minOccurs="0" maxOccurs="unbounded"/>
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="SubPaths" minOccurs="0">
-				<xs:annotation>
-					<xs:documentation>A container for SubPath elements.</xs:documentation>
-				</xs:annotation>
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="SubPath" type="RoleSubPathType" minOccurs="0" maxOccurs="unbounded"/>
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
-		</xs:sequence>
+		<xs:choice maxOccurs="2">
+			<!-- UNDONE: The choice here is a temporary hack to allow a RootObjectType to appear either before or after the PathedRoles and SubPaths,
+			as with older file formats. The RootObjectType is always saved first with the current format. -->
+			<xs:element name="RootObjectType" minOccurs="0" type="RootObjectTypeType"/>
+			<xs:sequence minOccurs="0">
+				<xs:element name="PathedRoles" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>A container for PathedRole elements.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="PathedRole" type="PathedRoleType" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="SubPaths" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>A container for SubPath elements.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="SubPath" type="RoleSubPathType" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:choice>
 		<xs:attributeGroup ref="idAttribute"/>
 		<xs:attribute name="SplitIsNegated" type="xs:boolean" default="false">
 			<xs:annotation>
-				<xs:documentation>Should all sub paths split from this path be treated as negations?</xs:documentation>
+				<xs:documentation>Should a negation be applied to the split combination operator?</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 		<xs:attribute name="SplitCombinationOperator" type="LogicalCombinationOperatorType" default="And">
@@ -1357,9 +1362,28 @@
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>
+	<xs:complexType name="RootObjectTypeType">
+		<xs:annotation>
+			<xs:documentation>A reference to the object type that establishes the start point object type for a role path.</xs:documentation>
+		</xs:annotation>
+		<!-- UNDONE: File format change, the id attribute should be required. -->
+		<xs:attributeGroup ref="idAttributeOptional"/>
+		<xs:attributeGroup ref="refAttribute"/>
+		<xs:attribute name="IsNegated" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>The path root is negated.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="RootObjectTypeRef">
+		<xs:annotation>
+			<xs:documentation>A reference to the root object type of a role path.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
+	</xs:complexType>
 	<xs:complexType name="RoleSubPathType">
 		<xs:annotation>
-			<xs:documentation>A role path that extends a parent path with a split condition.</xs:documentation>
+			<xs:documentation>A role path that continues a parent path with a new root or a split condition.</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="RolePathType"/>
@@ -1371,6 +1395,7 @@
 		</xs:annotation>
 		<xs:all>
 			<xs:element name="ValueRestriction" type="PathConditionValueRestrictionType" minOccurs="0"/>
+			<!-- UNDONE: File format change, CorrelatedWith is deprecated. Use ObjectUnifiers. -->
 			<xs:element name="CorrelatedWith" type="PathedRoleRef" minOccurs="0"/>
 		</xs:all>
 		<xs:attributeGroup ref="idAttribute"/>
@@ -1437,77 +1462,33 @@
 			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:group name="PathCalculationsAndConditionsGroup">
-		<xs:sequence>
-			<xs:element name="CalculatedValues" minOccurs="0">
-				<xs:annotation>
-					<xs:documentation>A container for calculated values applied to any roles included in this component.</xs:documentation>
-				</xs:annotation>
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="CalculatedValue" type="CalculatedValueType" minOccurs="0" maxOccurs="unbounded"/>
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="Conditions" minOccurs="0">
-				<xs:annotation>
-					<xs:documentation>A list of calculated boolean results that are necessary conditions for this path component.</xs:documentation>
-				</xs:annotation>
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="CalculatedCondition" type="CalculatedValueRef" minOccurs="0" maxOccurs="unbounded"/>
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
-		</xs:sequence>
-	</xs:group>
-	<!-- UNDONE: Format change, remove old role path components -->
-	<xs:simpleType name="SetCombinationOperatorType">
-		<xs:annotation>
-			<xs:documentation>(Deprecated) Specifies the set operator used to combine 2 or more path components.</xs:documentation>
-		</xs:annotation>
-		<xs:restriction base="xs:token">
-			<xs:enumeration value="Union">
-				<xs:annotation>
-					<xs:documentation>Combine all elements from both sets (default).</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="Intersection">
-				<xs:annotation>
-					<xs:documentation>Overlapping values are included.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-		</xs:restriction>
-	</xs:simpleType>
 	<xs:complexType name="RolePathOwnerType" abstract="true">
 		<xs:sequence>
 			<xs:choice>
 				<xs:element name="PathComponents" minOccurs="0">
 					<xs:annotation>
-						<xs:documentation>A container for the rooted and combined role paths defined for this owner.</xs:documentation>
+						<xs:documentation>A container for the role paths defined for this owner.</xs:documentation>
 					</xs:annotation>
 					<xs:complexType>
-						<xs:choice minOccurs="0" maxOccurs="unbounded">
+						<xs:sequence minOccurs="0" maxOccurs="unbounded">
 							<xs:element name="RolePath" type="LeadRolePathType"/>
-							<xs:element name="RolePathCombination" type="RolePathCombinationType"/>
-						</xs:choice>
+						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="PathComponent" minOccurs="0">
 					<xs:annotation>
-						<xs:documentation>(Deprecated, use Pathcomponents) A container for the single or composite path defined by this owner.</xs:documentation>
+						<xs:documentation>(Deprecated, use PathComponents) A container for the role path defined by this owner.</xs:documentation>
 					</xs:annotation>
 					<xs:complexType>
-						<xs:choice minOccurs="0">
+						<xs:sequence minOccurs="0">
 							<xs:element name="RolePath" type="LeadRolePathType"/>
-							<xs:element name="Compositor" type="RolePathCompositorType"/>
-						</xs:choice>
+						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
 			</xs:choice>
 			<xs:element name="CalculatedValues" minOccurs="0">
 				<xs:annotation>
-					<xs:documentation>(Deprecated, move to individual path components) A container for calculated values applied to any roles in contained paths.</xs:documentation>
+					<xs:documentation>(Deprecated, move to individual path components) A container for calculated values applied to elements in contained role paths.</xs:documentation>
 				</xs:annotation>
 				<xs:complexType>
 					<xs:sequence>
@@ -1517,101 +1498,6 @@
 			</xs:element>
 		</xs:sequence>
 		<xs:attributeGroup ref="idAttribute"/>
-	</xs:complexType>
-	<xs:complexType name="CombinedCorrelationType">
-		<xs:annotation>
-			<xs:documentation>A set of correlated pathed roles from different component paths.</xs:documentation>
-		</xs:annotation>
-		<xs:sequence>
-			<xs:element name="PathedRole" type="PathedRoleRef" minOccurs="0" maxOccurs="unbounded">
-				<xs:annotation>
-					<xs:documentation>A pathed role to be correlated. The pathed role should be part of a combined path.</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-		</xs:sequence>
-		<xs:attributeGroup ref="idAttribute"/>
-	</xs:complexType>
-	<!-- UNDONE: Format change, remove old role path constructs. -->
-	<xs:attributeGroup name="RolePathComponentIsComplementedAttribute">
-		<xs:attribute name="IsComplemented" type="xs:boolean" default="false">
-			<xs:annotation>
-				<xs:documentation>(Deprecated) True if we should take the inverse of this set. Used only inside a parent compositor.</xs:documentation>
-			</xs:annotation>
-		</xs:attribute>
-	</xs:attributeGroup>
-	<!-- UNDONE: Format change, remove old role path constructs. -->
-	<xs:complexType name="RolePathCompositorType">
-		<xs:annotation>
-			<xs:documentation>(Deprecated, use RolePathCombinationType) Combination of multiple role paths.</xs:documentation>
-		</xs:annotation>
-		<xs:sequence>
-			<xs:element name="PathComponents" minOccurs="0">
-				<xs:annotation>
-					<xs:documentation>A container for single or composite paths combined by this compositor.</xs:documentation>
-				</xs:annotation>
-				<xs:complexType>
-					<xs:choice minOccurs="0" maxOccurs="unbounded">
-						<xs:element name="RolePath" type="LeadRolePathType"/>
-						<xs:element name="Compositor" type="RolePathCompositorType"/>
-					</xs:choice>
-				</xs:complexType>
-			</xs:element>
-		</xs:sequence>
-		<xs:attributeGroup ref="idAttribute"/>
-		<xs:attributeGroup ref="RolePathComponentIsComplementedAttribute"/>
-		<xs:attribute name="SetCombinationOperator" type="SetCombinationOperatorType" default="Union">
-			<xs:annotation>
-				<xs:documentation>(Deprecated) Specify the operator used to combine path components.</xs:documentation>
-			</xs:annotation>
-		</xs:attribute>
-	</xs:complexType>
-	<xs:complexType name="RolePathCombinationType">
-		<xs:annotation>
-			<xs:documentation>Combination of multiple role paths.</xs:documentation>
-		</xs:annotation>
-		<xs:sequence>
-			<xs:element name="CombinedPaths" minOccurs="0">
-				<xs:annotation>
-					<xs:documentation>A container for the rooted and combined role paths in this combination.</xs:documentation>
-				</xs:annotation>
-				<xs:complexType>
-					<xs:choice minOccurs="0" maxOccurs="unbounded">
-						<xs:element name="RolePath" type="CombinedPathComponentType"/>
-						<xs:element name="RolePathCombination" type="CombinedPathComponentType"/>
-					</xs:choice>
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="CombinedCorrelations" minOccurs="0">
-				<xs:annotation>
-					<xs:documentation>A container for sets of pathed roles correlated from different component paths.</xs:documentation>
-				</xs:annotation>
-				<xs:complexType>
-					<xs:sequence minOccurs="0" maxOccurs="unbounded">
-						<xs:element name="CombinedCorrelation" type="CombinedCorrelationType"/>
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
-			<xs:group ref="PathCalculationsAndConditionsGroup"/>
-		</xs:sequence>
-		<xs:attributeGroup ref="idAttribute"/>
-	</xs:complexType>
-	<xs:complexType name="RolePathCombinationRef">
-		<xs:annotation>
-			<xs:documentation>A reference to a role path combination.</xs:documentation>
-		</xs:annotation>
-		<xs:attributeGroup ref="refAttribute"/>
-	</xs:complexType>
-	<xs:complexType name="CombinedPathComponentType">
-		<xs:annotation>
-			<xs:documentation>A simple or combined path available in the context path combination.</xs:documentation>
-		</xs:annotation>
-		<xs:attributeGroup ref="refAttribute"/>
-		<xs:attributeGroup ref="idAttribute"/>
-		<xs:attribute name="SetProjection" type="xs:boolean" default="false">
-			<xs:annotation>
-				<xs:documentation>Consider only distinct combinations from the combined results.</xs:documentation>
-			</xs:annotation>
-		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="LeadRolePathType">
 		<xs:annotation>
@@ -1620,17 +1506,65 @@
 		<xs:complexContent>
 			<xs:extension base="RolePathType">
 				<xs:sequence>
-					<xs:element name="RootObjectType" minOccurs="0" type="ObjectTypeRef"/>
-					<xs:group ref="PathCalculationsAndConditionsGroup"/>
+					<xs:element name="ObjectUnifiers" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>A container for object unifiers relating multiple pathed roles and pathed roots in difference branches of the path.</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="ObjectUnifier" type="ObjectUnifierType" minOccurs="0" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="CalculatedValues" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>A container for calculated values applied to any elements in this role path.</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="CalculatedValue" type="CalculatedValueType" minOccurs="0" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Conditions" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>A list of calculated boolean results that are necessary conditions for this role path.</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="CalculatedCondition" type="CalculatedValueRef" minOccurs="0" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
 				</xs:sequence>
-				<!-- UNDONE: Format change, remove old role path components. -->
-				<xs:attributeGroup ref="RolePathComponentIsComplementedAttribute"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="LeadRolePathRef">
 		<xs:annotation>
-			<xs:documentation>A reference to a role path.</xs:documentation>
+			<xs:documentation>A reference to a top-level role path.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
+	</xs:complexType>
+	<xs:complexType name="RoleSubPathRef">
+		<xs:annotation>
+			<xs:documentation>A reference to a sub path.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
+	</xs:complexType>
+	<xs:complexType name="ObjectUnifierType">
+		<xs:annotation>
+			<xs:documentation>A unification of multiple pathed roles or path roots, indicating that the unified path nodes correspond to the same instance.</xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="2" maxOccurs="unbounded">
+			<xs:element name="PathRoot" type="RootObjectTypeRef"/>
+			<xs:element name="PathedRole" type="PathedRoleRef"/>
+		</xs:choice>
+		<xs:attributeGroup ref="idAttribute"/>
+	</xs:complexType>
+	<xs:complexType name="ObjectUnifierRef">
+		<xs:annotation>
+			<xs:documentation>A reference to an object unifier.</xs:documentation>
 		</xs:annotation>
 		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
@@ -1674,6 +1608,7 @@
 				</xs:annotation>
 				<xs:complexType>
 					<xs:choice minOccurs="0">
+						<xs:element name="PathRoot" type="RootObjectTypeRef"/>
 						<xs:element name="PathedRole" type="PathedRoleRef"/>
 						<xs:element name="CalculatedValue" type="CalculatedValueRef"/>
 						<xs:element name="Constant" type="PathConstantType"/>
@@ -1779,6 +1714,7 @@
 				</xs:annotation>
 				<xs:complexType>
 					<xs:choice minOccurs="0">
+						<xs:element name="PathRoot" type="RootObjectTypeRef"/>
 						<xs:element name="PathedRole" type="PathedRoleRef"/>
 						<xs:element name="CalculatedValue" type="CalculatedValueRef"/>
 						<xs:element name="Constant" type="PathConstantType"/>
@@ -1899,6 +1835,7 @@
 				</xs:annotation>
 				<xs:complexType>
 					<xs:choice minOccurs="0">
+						<xs:element name="PathRoot" type="RootObjectTypeRef"/>
 						<xs:element name="PathedRole" type="PathedRoleRef"/>
 						<xs:element name="CalculatedValue" type="CalculatedValueRef"/>
 						<xs:element name="Constant" type="PathConstantType"/>
@@ -2337,9 +2274,12 @@
 			<xs:element name="ExclusionContradictsEqualityError" type="ExclusionContradictsEqualityErrorType"/>
 			<xs:element name="ExclusionContradictsSubsetError" type="ExclusionContradictsSubsetErrorType"/>
 			<xs:element name="PathRequiresRootObjectTypeError" type="PathRequiresRootObjectTypeErrorType"/>
+			<!-- UNDONE: Remove PathStartRoleFollowsRootObjectTypeError when file format is officially updated -->
 			<xs:element name="PathStartRoleFollowsRootObjectTypeError" type="PathStartRoleFollowsRootObjectTypeErrorType"/>
 			<xs:element name="JoinedPathRoleRequiresCompatibleRolePlayerError" type="JoinedPathRoleRequiresCompatibleRolePlayerErrorType"/>
+			<!-- UNDONE: Remove CorrelatedPathRoleRequiresCompatibleRolePlayerError when file format is officially updated -->
 			<xs:element name="CorrelatedPathRoleRequiresCompatibleRolePlayerError" type="CorrelatedPathRoleRequiresCompatibleRolePlayerErrorType"/>
+			<xs:element name="ObjectUnifierRequiresCompatibleObjectTypesError" type="ObjectUnifierRequiresCompatibleObjectTypesErrorType"/>
 			<xs:element name="PathSameFactTypeRoleFollowsJoinError" type="PathSameFactTypeRoleFollowsJoinErrorType"/>
 			<xs:element name="PathOuterJoinRequiresOptionalRoleError" type="PathOuterJoinRequiresOptionalRoleErrorType"/>
 			<xs:element name="CalculatedPathValueRequiresFunctionError" type="CalculatedPathValueRequiresFunctionErrorType"/>
@@ -2941,7 +2881,7 @@
 	<!-- UNDONE: Remove EqualityImpliedByMandatoryError when file format is officially updated -->
 	<xs:complexType name="EqualityImpliedByMandatoryErrorType">
 		<xs:annotation>
-			<xs:documentation>An equality constraint is implied by a mandatory constraint (deprecated, replaced by EqualityConstraintImpliedByMandatoryConstraintsError).</xs:documentation>
+			<xs:documentation>An equality constraint is implied by a mandatory constraint (Deprecated, replaced by EqualityConstraintImpliedByMandatoryConstraintsError).</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
@@ -3041,15 +2981,17 @@
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
-				<xs:sequence>
+				<xs:choice>
 					<xs:element name="RolePath" type="LeadRolePathRef"/>
-				</xs:sequence>
+					<xs:element name="SubPath" type="RoleSubPathRef"/>
+				</xs:choice>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+	<!-- UNDONE: Remove PathStartRoleFollowsRootObjectTypeErrorType when file format is officially updated -->
 	<xs:complexType name="PathStartRoleFollowsRootObjectTypeErrorType">
 		<xs:annotation>
-			<xs:documentation>A PathedRole with a purpose of StartRole must be the first PathedRole after the path root.</xs:documentation>
+			<xs:documentation>(Deprecated, StartRole is no longer used) A PathedRole with a purpose of StartRole must be the first PathedRole after the path root.</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
@@ -3071,14 +3013,27 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+	<!-- UNDONE: Remove CorrelatedPathRoleRequiresCompatibleRolePlayerErrorType when file format is officially updated -->
 	<xs:complexType name="CorrelatedPathRoleRequiresCompatibleRolePlayerErrorType">
 		<xs:annotation>
-			<xs:documentation>A PathedRole has an explicit correlation with a PathedRole that has an incompatible role player.</xs:documentation>
+			<xs:documentation>(Deprecated, use ObjectUnifierRequiresCompatibleRolePlayersError) A PathedRole has an explicit correlation with a PathedRole that has an incompatible role player.</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
 					<xs:element name="PathedRole" type="PathedRoleRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ObjectUnifierRequiresCompatibleObjectTypesErrorType">
+		<xs:annotation>
+			<xs:documentation>An ObjectUnifier unifies path nodes with incompatible object types.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="ObjectUnifier" type="ObjectUnifierRef"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -3156,7 +3111,7 @@
 	</xs:complexType>
 	<xs:complexType name="FactTypeDerivationRequiresProjectionErrorType">
 		<xs:annotation>
-			<xs:documentation>A fact type derivation path must be projected on at least one role path or role path combination.</xs:documentation>
+			<xs:documentation>A fact type derivation path must be projected on at least one role path.</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
@@ -3180,7 +3135,7 @@
 	</xs:complexType>
 	<xs:complexType name="JoinPathRequiresProjectionErrorType">
 		<xs:annotation>
-			<xs:documentation>A constraint join path must be projected on at least one role path or role path combination.</xs:documentation>
+			<xs:documentation>A constraint join path must be projected on at least one role path.</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
@@ -3335,20 +3290,8 @@
 			<xs:documentation>Restrict the values required to satisfy the role path.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="PathedRoleConditionValueConstraint" type="PathConditionValueConstraintType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="PathedRoleConditionValueConstraint" type="ValueConstraintType" minOccurs="0"/>
 		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="PathConditionValueConstraintType">
-		<xs:annotation>
-			<xs:documentation>A value constraint that is a necessary path condition.</xs:documentation>
-		</xs:annotation>
-		<xs:complexContent>
-			<xs:extension base="ValueConstraintType">
-				<xs:sequence>
-					<xs:element name="AppliesToRolePathCombination" type="RolePathCombinationRef" minOccurs="0"/>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="ValueRangesType">
 		<xs:annotation>

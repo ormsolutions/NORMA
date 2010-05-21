@@ -554,14 +554,15 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 			{
 				// Remove items from the primary display location
 				ISurveyNodeReference reference = element as ISurveyNodeReference;
-				if (reference != null && 0 == (reference.SurveyNodeReferenceOptions & SurveyNodeReferenceOptions.TrackReferenceInstance))
+				bool trackedReference = false;
+				if (reference != null && 0 != (reference.SurveyNodeReferenceOptions & SurveyNodeReferenceOptions.TrackReferenceInstance))
 				{
-					reference = null;
+					trackedReference = true;
 				}
 				MainList notifyList;
 				if (null != (notifyList = value.MainList))
 				{
-					if (reference != null)
+					if (reference != null && !trackedReference)
 					{
 						// Delete the node as a reference
 						ElementReferenceDeleted(reference.ReferencedElement, reference.SurveyNodeReferenceReason, notifyList.ContextElement);
@@ -570,6 +571,41 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 					{
 						// Delete the node directly
 						notifyList.NodeDeleted(value.ElementNode);
+
+						if (trackedReference)
+						{
+							// If this is a tracked reference then we still need to
+							// get it out of the reference tracking dictionary. This is
+							// very similar to ElementReferenceDeleted, except that we
+							// there are no notifications and the element context is ignored.
+							LinkedNode<SurveyNodeReference> headLinkNode;
+							object referencedElement = reference.ReferencedElement;
+							if (myReferenceDictionary.TryGetValue(referencedElement, out headLinkNode))
+							{
+								LinkedNode<SurveyNodeReference> linkNode = headLinkNode;
+								LinkedNode<SurveyNodeReference> startHeadLinkNode = headLinkNode;
+								object referenceReason = reference.SurveyNodeReferenceReason;
+								while (linkNode != null)
+								{
+									SurveyNodeReference link = linkNode.Value;
+									if (referenceReason == link.ReferenceReason)
+									{
+										linkNode.Detach(ref headLinkNode);
+										break;
+									}
+									linkNode = linkNode.Next;
+								}
+								if (headLinkNode == null)
+								{
+									myReferenceDictionary.Remove(referencedElement);
+								}
+								else if (startHeadLinkNode != headLinkNode)
+								{
+									myReferenceDictionary[referencedElement] = headLinkNode;
+								}
+							}
+						}
+
 					}
 				}
 

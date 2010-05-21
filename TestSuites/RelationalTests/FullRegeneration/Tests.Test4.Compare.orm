@@ -344,22 +344,22 @@
 					<orm:JoinRule>
 						<orm:JoinPath IsAutomatic="true" id="_2FBBB6F0-7CDA-4FFC-854A-E2C1E1639D06">
 							<orm:PathComponents>
-								<orm:RolePath id="_67C966BD-948A-4089-A826-9590A299BC37">
+								<orm:RolePath id="_67C966BD-948A-4089-A826-9590A299BC37" SplitCombinationOperator="And">
+									<orm:RootObjectType id="_EAEECE73-E657-4A0B-8467-B1E743A0E514" ref="_808052B8-CD48-40AA-82C2-8BF6B31CBAAE" />
 									<orm:SubPaths>
 										<orm:SubPath id="_D13E21A3-4D2F-43C8-A9D9-FD593552A38F">
 											<orm:PathedRoles>
-												<orm:PathedRole Purpose="StartRole" id="_5483AFAF-8F30-4C87-8A21-D73FA18A9C63" ref="_DD840453-F3B4-432D-85F6-9FBDEFC81987" />
+												<orm:PathedRole id="_5483AFAF-8F30-4C87-8A21-D73FA18A9C63" ref="_DD840453-F3B4-432D-85F6-9FBDEFC81987" Purpose="PostInnerJoin" />
 												<orm:PathedRole Purpose="SameFactType" id="_6836194B-48F4-4F43-A48F-4F978439275F" ref="_54EDDFD9-33F8-43AD-90A2-DCF78D729786" />
 											</orm:PathedRoles>
 										</orm:SubPath>
 										<orm:SubPath id="_4B14792B-DBA2-43F7-BD6B-F6E50B030768">
 											<orm:PathedRoles>
-												<orm:PathedRole Purpose="StartRole" id="_DDCB7962-60AA-4172-BCA6-9A4322860588" ref="_D4DA078B-97D5-4122-AE8B-E83777A8BB45" />
+												<orm:PathedRole id="_DDCB7962-60AA-4172-BCA6-9A4322860588" ref="_D4DA078B-97D5-4122-AE8B-E83777A8BB45" Purpose="PostInnerJoin" />
 												<orm:PathedRole Purpose="SameFactType" id="_56DB7522-3E91-4910-8574-FF623BDB9CA1" ref="_27644BC9-32F4-44E7-BB74-C5163C36C305" />
 											</orm:PathedRoles>
 										</orm:SubPath>
 									</orm:SubPaths>
-									<orm:RootObjectType ref="_808052B8-CD48-40AA-82C2-8BF6B31CBAAE" />
 								</orm:RolePath>
 							</orm:PathComponents>
 							<orm:JoinPathProjections>

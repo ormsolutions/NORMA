@@ -361,7 +361,7 @@
 		<se:Link RelationshipName="ObjectTypeHasPreferredIdentifierRequiresMandatoryError" RoleName="PreferredIdentifierRequiresMandatoryError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ObjectTypeHasCompatibleSupertypesError" RoleName="CompatibleSupertypesError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ModelNoteReferencesObjectType" RoleName="Note" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="LeadRolePathHasRootObjectType" RoleName="LeadRolePath" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="RolePathObjectTypeRoot" RoleName="RolePath" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="RecognizedPhrase" Override="true">
 		<se:Container Name="Abbreviations">
@@ -502,7 +502,6 @@
 	<se:Element Class="RoleValueConstraint" Name="RoleValueConstraint" Override="true"/>
 	<se:Element Class="PathConditionRoleValueConstraint" Name="PathedRoleConditionValueConstraint" Override="true">
 		<se:Attribute ID="Name" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="PathConditionRoleValueConstraintAppliesToRolePathCombination" RoleName="Combination" Name="AppliesToRolePathCombination"/>
 	</se:Element>
 	<se:Element Class="ValueRange" Override="true">
 		<se:Attribute ID="InvariantMaxValue">
@@ -718,7 +717,7 @@
 							<plx:left>
 								<plx:callInstance name="Count" type="property">
 									<plx:callObject>
-										<plx:callThis name="PathComponentCollection" type="property"/>
+										<plx:callThis name="LeadRolePathCollection" type="property"/>
 									</plx:callObject>
 								</plx:callInstance>
 							</plx:left>
@@ -731,12 +730,12 @@
 			</se:Condition>
 		</se:Attribute>
 		<se:Container Name="DerivationProjections">
-			<se:Link RelationshipName="FactTypeDerivationProjection" RoleName="PathComponent"/>
+			<se:Link RelationshipName="FactTypeDerivationProjection" RoleName="RolePath"/>
 		</se:Container>
 		<se:Container Name="InformalRule">
 			<se:Embed RelationshipName="FactTypeDerivationRuleHasDerivationNote" RoleName="DerivationNote"/>
 		</se:Container>
-		<se:Link RelationshipName="FactTypeDerivationProjection" RoleName="PathComponent" Name="DerivationProjection" WriteStyle="PrimaryLinkElement"/>
+		<se:Link RelationshipName="FactTypeDerivationProjection" RoleName="RolePath" Name="DerivationProjection" WriteStyle="PrimaryLinkElement"/>
 		<se:Link RelationshipName="FactTypeDerivationRuleHasProjectionRequiredError" RoleName="ProjectionRequiredError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="FactTypeDerivationProjection">
@@ -745,10 +744,12 @@
 	</se:Element>
 	<se:Element Class="FactTypeRoleProjection">
 		<se:Container Name="DerivationSource">
+			<se:Link RelationshipName="FactTypeRoleProjectedFromRolePathRoot" RoleName="Source"/>
 			<se:Link RelationshipName="FactTypeRoleProjectedFromPathedRole" RoleName="Source"/>
 			<se:Link RelationshipName="FactTypeRoleProjectedFromCalculatedPathValue" RoleName="Source"/>
 			<se:Embed RelationshipName="FactTypeRoleProjectedFromPathConstant" RoleName="Source"/>
 		</se:Container>
+		<se:Link RelationshipName="FactTypeRoleProjectedFromRolePathRoot" RoleName="Source" Name="PathRoot"/>
 		<se:Link RelationshipName="FactTypeRoleProjectedFromPathedRole" RoleName="Source" Name="PathedRole"/>
 		<se:Link RelationshipName="FactTypeRoleProjectedFromCalculatedPathValue" RoleName="Source" Name="CalculatedValue"/>
 	</se:Element>
@@ -776,7 +777,7 @@
 							<plx:left>
 								<plx:callInstance name="Count" type="property">
 									<plx:callObject>
-										<plx:callThis name="PathComponentCollection" type="property"/>
+										<plx:callThis name="LeadRolePathCollection" type="property"/>
 									</plx:callObject>
 								</plx:callInstance>
 							</plx:left>
@@ -965,9 +966,9 @@
 			</se:Condition>
 		</se:Attribute>
 		<se:Container Name="JoinPathProjections">
-			<se:Link RelationshipName="ConstraintRoleSequenceJoinPathProjection" RoleName="PathComponent"/>
+			<se:Link RelationshipName="ConstraintRoleSequenceJoinPathProjection" RoleName="RolePath"/>
 		</se:Container>
-		<se:Link RelationshipName="ConstraintRoleSequenceJoinPathProjection" RoleName="PathComponent" Name="JoinPathProjection" WriteStyle="PrimaryLinkElement"/>
+		<se:Link RelationshipName="ConstraintRoleSequenceJoinPathProjection" RoleName="RolePath" Name="JoinPathProjection" WriteStyle="PrimaryLinkElement"/>
 		<se:Link RelationshipName="ConstraintRoleSequenceJoinPathHasProjectionRequiredError" RoleName="ProjectionRequiredError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="ConstraintRoleSequenceJoinPathProjection">
@@ -976,10 +977,12 @@
 	</se:Element>
 	<se:Element Class="ConstraintRoleProjection">
 		<se:Container Name="ProjectedFrom">
+			<se:Link RelationshipName="ConstraintRoleProjectedFromRolePathRoot" RoleName="Source"/>
 			<se:Link RelationshipName="ConstraintRoleProjectedFromPathedRole" RoleName="Source"/>
 			<se:Link RelationshipName="ConstraintRoleProjectedFromCalculatedPathValue" RoleName="Source"/>
 			<se:Embed RelationshipName="ConstraintRoleProjectedFromPathConstant" RoleName="Source"/>
 		</se:Container>
+		<se:Link RelationshipName="ConstraintRoleProjectedFromRolePathRoot" RoleName="Source" Name="PathRoot"/>
 		<se:Link RelationshipName="ConstraintRoleProjectedFromPathedRole" RoleName="Source" Name="PathedRole"/>
 		<se:Link RelationshipName="ConstraintRoleProjectedFromCalculatedPathValue" RoleName="Source" Name="CalculatedValue"/>
 	</se:Element>
@@ -1092,91 +1095,28 @@
 	<se:Element Class="RolePathOwner" Override="true" SortChildElements="true">
 		<!-- UNDONE: File format change, remove old role path constructs (PathComponent, CalculatedValues) -->
 		<se:Container Name="PathComponent">
-			<se:Embed RelationshipName="RolePathOwnerHasPathComponent_Deprecated" RoleName="PathComponent"/>
+			<se:Embed RelationshipName="RolePathOwnerHasPathComponent_Deprecated" RoleName="RolePath"/>
 		</se:Container>
 		<se:Container Name="PathComponents">
-			<se:Embed RelationshipName="RolePathOwnerHasPathComponent" RoleName="PathComponent"/>
+			<se:Embed RelationshipName="RolePathOwnerHasLeadRolePath" RoleName="RolePath"/>
 		</se:Container>
 		<se:Container Name="CalculatedValues">
 			<se:Embed RelationshipName="RolePathOwnerCalculatesCalculatedPathValue_Deprecated" RoleName="CalculatedValue"/>
 		</se:Container>
 	</se:Element>
-	<se:Element Class="RolePathCombination" SortChildElements="true" Override="true" Name="Compositor">
-		<!-- UNDONE: File format change, remove old role path constructs. The multiple names allow
-		multiple incoming names to be recognized. The Compositor name needs to be eliminated. -->
-		<se:ConditionalName Name="RolePathCombination">
-			<plx:trueKeyword/>
-		</se:ConditionalName>
-		<se:Container Name="CombinedPaths">
-			<se:Link RelationshipName="RolePathCombinationHasPathComponent" RoleName="PathComponent"/>
+	<se:Element Class="LeadRolePath" Override="true" SortChildElements="true" Name="RolePath">
+		<se:Container Name="ObjectUnifiers">
+			<se:Embed RelationshipName="LeadRolePathHasObjectUnifier" RoleName="ObjectUnifier"/>
 		</se:Container>
-		<!-- UNDONE: File format change, remove old role path constructs -->
-		<se:Container Name="PathComponents">
-			<se:Embed RelationshipName="RolePathCompositorHasPathComponent_Deprecated" RoleName="PathComponent"/>
-		</se:Container>
-		<se:Link RelationshipName="RolePathCombinationHasPathComponent" RoleName="PathComponent" Name="RolePath" WriteStyle="PrimaryLinkElement">
-			<se:ConditionalName Name="RolePathCombination">
-				<plx:binaryOperator type="typeEquality">
-					<plx:left>
-						<plx:callStatic name="GetRolePlayer" dataTypeName="DomainRoleInfo">
-							<plx:passParam>
-								<plx:nameRef name="elementLink" type="parameter"/>
-							</plx:passParam>
-							<plx:passParam>
-								<plx:callStatic dataTypeName="RolePathCombinationHasPathComponent" name="PathComponentDomainRoleId" type="property"/>
-							</plx:passParam>
-						</plx:callStatic>
-					</plx:left>
-					<plx:right>
-						<plx:directTypeReference dataTypeName="RolePathCombination"/>
-					</plx:right>
-				</plx:binaryOperator>
-			</se:ConditionalName>
-		</se:Link>
-		<se:Container Name="CombinedCorrelations">
-			<se:Embed RelationshipName="RolePathCombinationHasCorrelation" RoleName="Correlation"/>
-		</se:Container>
-		<!-- See note in RolePathComponent. -->
 		<se:Container Name="CalculatedValues">
-			<se:Embed RelationshipName="RolePathComponentCalculatesCalculatedPathValue" RoleName="CalculatedValue"/>
+			<se:Embed RelationshipName="LeadRolePathCalculatesCalculatedPathValue" RoleName="CalculatedValue"/>
 		</se:Container>
 		<se:Container Name="Conditions">
-			<se:Link RelationshipName="RolePathComponentSatisfiesCalculatedCondition" RoleName="CalculatedCondition"/>
+			<se:Link RelationshipName="LeadRolePathSatisfiesCalculatedCondition" RoleName="CalculatedCondition"/>
 		</se:Container>
-		<se:Link RelationshipName="RolePathComponentSatisfiesCalculatedCondition" RoleName="CalculatedCondition" Name="CalculatedCondition"/>
-		<se:Link RelationshipName="PathConditionRoleValueConstraintAppliesToRolePathCombination" RoleName="ValueConstraint" WriteStyle="NotWritten"/>
-	</se:Element>
-	<!-- Required for PrimaryLinkElement to serialize correctly -->
-	<se:Element Class="RolePathCombinationHasPathComponent">
-		<se:Attribute ID="SetProjection">
-			<se:Condition WriteStyle="NotWritten">
-				<plx:unaryOperator type="booleanNot">
-					<plx:callThis name="SetProjection" type="property"/>
-				</plx:unaryOperator>
-			</se:Condition>
-		</se:Attribute>
-	</se:Element>
-	<se:Element Class="RolePathCombinationCorrelation" Name="CombinedCorrelation" Override="true">
-		<se:Link RelationshipName="RolePathCombinationCorrelationCorrelatesPathedRole" RoleName="PathedRole" Name="PathedRole"/>
-	</se:Element>
-	<se:Element Class="RolePathComponent" Override="true">
-		<!-- Note that CalculatedValues and Conditions are specified in LeadRolePath and RolePathCombination instead of
-		in PathComponent to push the PathedRole and CalculatedValue references after they are defined in most load scenarios. -->
+		<se:Link RelationshipName="LeadRolePathSatisfiesCalculatedCondition" RoleName="CalculatedCondition" Name="CalculatedCondition"/>
 		<se:Link RelationshipName="FactTypeDerivationProjection" RoleName="DerivationRule" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ConstraintRoleSequenceJoinPathProjection" RoleName="JoinPath" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="RolePathCombinationHasPathComponent" RoleName="Combination" WriteStyle="NotWritten"/>
-	</se:Element>
-	<se:Element Class="LeadRolePath" Override="true" SortChildElements="true" Name="RolePath">
-		<se:Link RelationshipName="LeadRolePathHasRootObjectType" RoleName="RootObjectType" Name="RootObjectType"/>
-		<!-- See note in RolePathComponent. -->
-		<se:Container Name="CalculatedValues">
-			<se:Embed RelationshipName="RolePathComponentCalculatesCalculatedPathValue" RoleName="CalculatedValue"/>
-		</se:Container>
-		<se:Container Name="Conditions">
-			<se:Link RelationshipName="RolePathComponentSatisfiesCalculatedCondition" RoleName="CalculatedCondition"/>
-		</se:Container>
-		<se:Link RelationshipName="RolePathComponentSatisfiesCalculatedCondition" RoleName="CalculatedCondition" Name="CalculatedCondition"/>
-		<se:Link RelationshipName="LeadRolePathHasRootObjectTypeError" RoleName="RootObjectTypeRequiredError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="CalculatedPathValue" Name="CalculatedValue" SortChildElements="true" Override="true">
 		<se:Link RelationshipName="CalculatedPathValueIsCalculatedWithFunction" RoleName="Function" Name="Function"/>
@@ -1184,7 +1124,7 @@
 		<se:Container Name="Inputs">
 			<se:Embed RelationshipName="CalculatedPathValueHasInput" RoleName="Input"/>
 		</se:Container>
-		<se:Link RelationshipName="RolePathComponentSatisfiesCalculatedCondition" RoleName="PathComponent" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="LeadRolePathSatisfiesCalculatedCondition" RoleName="LeadRolePath" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="CalculatedPathValueInputBindsToCalculatedPathValue" RoleName="Input" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeRoleProjectedFromCalculatedPathValue" RoleName="RoleProjection" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="RoleDerivesFromCalculatedPathValue_Deprecated" RoleName="Role" WriteStyle="NotWritten"/>
@@ -1241,10 +1181,12 @@
 		</se:Attribute>
 		<se:Link RelationshipName="CalculatedPathValueInputCorrespondsToFunctionParameter" RoleName="Parameter" Name="Parameter"/>
 		<se:Container Name="Source">
+			<se:Link RelationshipName="CalculatedPathValueInputBindsToRolePathRoot" RoleName="Source"/>
 			<se:Link RelationshipName="CalculatedPathValueInputBindsToPathedRole" RoleName="Source"/>
 			<se:Link RelationshipName="CalculatedPathValueInputBindsToCalculatedPathValue" RoleName="Source"/>
 			<se:Embed RelationshipName="CalculatedPathValueInputBindsToPathConstant" RoleName="Source"/>
 		</se:Container>
+		<se:Link RelationshipName="CalculatedPathValueInputBindsToRolePathRoot" RoleName="Source" Name="PathRoot"/>
 		<se:Link RelationshipName="CalculatedPathValueInputBindsToPathedRole" RoleName="Source" Name="PathedRole"/>
 		<se:Link RelationshipName="CalculatedPathValueInputBindsToCalculatedPathValue" RoleName="Source" Name="CalculatedValue"/>
 	</se:Element>
@@ -1261,16 +1203,16 @@
 						</plx:unaryOperator>
 					</plx:left>
 					<plx:right>
-						<plx:binaryOperator type="equality">
+						<plx:binaryOperator type="lessThanOrEqual">
 							<plx:left>
 								<plx:callInstance name="Count" type="property">
 									<plx:callObject>
-										<plx:callThis name="SplitPathCollection" type="property"/>
+										<plx:callThis name="SubPathCollection" type="property"/>
 									</plx:callObject>
 								</plx:callInstance>
 							</plx:left>
 							<plx:right>
-								<plx:value data="0" type="i4"/>
+								<plx:value data="1" type="i4"/>
 							</plx:right>
 						</plx:binaryOperator>
 					</plx:right>
@@ -1279,34 +1221,21 @@
 		</se:Attribute>
 		<se:Attribute ID="SplitCombinationOperator">
 			<se:Condition WriteStyle="NotWritten">
-				<plx:binaryOperator type="booleanOr">
+				<plx:binaryOperator type="lessThanOrEqual">
 					<plx:left>
-						<plx:binaryOperator type="equality">
-							<plx:left>
-								<plx:callThis name="SplitCombinationOperator" type="property"/>
-							</plx:left>
-							<plx:right>
-								<plx:callStatic dataTypeName="LogicalCombinationOperator" name="And" type="field"/>
-							</plx:right>
-						</plx:binaryOperator>
+						<plx:callInstance name="Count" type="property">
+							<plx:callObject>
+								<plx:callThis name="SubPathCollection" type="property"/>
+							</plx:callObject>
+						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:binaryOperator type="equality">
-							<plx:left>
-								<plx:callInstance name="Count" type="property">
-									<plx:callObject>
-										<plx:callThis name="SplitPathCollection" type="property"/>
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:left>
-							<plx:right>
-								<plx:value data="0" type="i4"/>
-							</plx:right>
-						</plx:binaryOperator>
+						<plx:value data="1" type="i4"/>
 					</plx:right>
 				</plx:binaryOperator>
 			</se:Condition>
 		</se:Attribute>
+		<se:Link RelationshipName="RolePathObjectTypeRoot" RoleName="RootObjectType" Name="RootObjectType" WriteStyle="PrimaryLinkElement"/>
 		<se:Container Name="PathedRoles">
 			<se:Link RelationshipName="PathedRole" RoleName="Role"/>
 		</se:Container>
@@ -1314,6 +1243,20 @@
 			<se:Embed RelationshipName="RoleSubPathIsContinuationOfRolePath" RoleName="SubPath"/>
 		</se:Container>
 		<se:Link RelationshipName="PathedRole" RoleName="Role" Name="PathedRole" WriteStyle="PrimaryLinkElement" AllowDuplicates="true"/>
+		<se:Link RelationshipName="RolePathHasRootObjectTypeError" RoleName="RootObjectTypeRequiredError" WriteStyle="NotWritten"/>
+	</se:Element>
+	<se:Element Class="RolePathObjectTypeRoot" Name="RootObjectType">
+		<se:Attribute ID="IsNegated">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="IsNegated" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Link RelationshipName="CalculatedPathValueInputBindsToRolePathRoot" RoleName="Input" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ConstraintRoleProjectedFromRolePathRoot" RoleName="ConstraintRoleProjection" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="FactTypeRoleProjectedFromRolePathRoot" RoleName="RoleProjection" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="PathObjectUnifierUnifiesRolePathRoot" RoleName="ObjectUnifier" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="RoleSubPath" Name="SubPath" Override="true"/>
 	<se:Element Class="PathedRole" SortChildElements="true">
@@ -1328,20 +1271,23 @@
 		<se:Container Name="ValueRestriction">
 			<se:Embed RelationshipName="PathedRoleHasValueConstraint" RoleName="ValueConstraint"/>
 		</se:Container>
-		<se:Link RelationshipName="PathedRoleIsRemotelyCorrelatedWithPathedRole" RoleName="CorrelatingParent" Name="CorrelatedWith"/>
-		<se:Link RelationshipName="PathedRoleIsRemotelyCorrelatedWithPathedRole" RoleName="CorrelatedChild" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated" RoleName="CorrelatingParent" Name="CorrelatedWith"/>
+		<se:Link RelationshipName="PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated" RoleName="CorrelatedChild" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="CalculatedPathValueScopedWithPathedRole" RoleName="CalculatedValue" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="CalculatedPathValueInputBindsToPathedRole" RoleName="Input" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeRoleProjectedFromPathedRole" RoleName="RoleProjection" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="RoleDerivesFromPathedRole_Deprecated" RoleName="Role" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ConstraintRoleProjectedFromPathedRole" RoleName="ConstraintRoleProjection" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ConstraintRoleProjectedFromPathedRole_Deprecated" RoleName="ConstraintRole" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="RolePathCombinationCorrelationCorrelatesPathedRole" RoleName="Correlation" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="PathedRoleHasStartRoleError" RoleName="StartRoleError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="PathedRoleHasCompatibleJoinRolePlayerError" RoleName="JoinCompatibilityError" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="PathedRoleHasCompatibleCorrelationRolePlayerError" RoleName="CorrelationCompatibilityError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="PathedRoleHasSameFactTypeFollowsJoinError" RoleName="SameFactTypeRoleFollowsJoinError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="PathedRoleHasMandatoryOuterJoinError" RoleName="MandatoryOuterJoinError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="PathObjectUnifierUnifiesPathedRole" RoleName="ObjectUnifier" WriteStyle="NotWritten"/>
+	</se:Element>
+	<se:Element Class="PathObjectUnifier" Name="ObjectUnifier" Override="true" SortChildElements="true">
+		<se:Link RelationshipName="PathObjectUnifierUnifiesRolePathRoot" RoleName="PathRoot" Name="PathRoot"/>
+		<se:Link RelationshipName="PathObjectUnifierUnifiesPathedRole" RoleName="PathedRole" Name="PathedRole"/>
+		<se:Link RelationshipName="PathObjectUnifierHasCompatibleObjectTypesError" RoleName="ObjectUnifier" WriteStyle="NotWritten"/>
 	</se:Element>
 
 	<!--Errors-->
@@ -1640,16 +1586,24 @@
 		<se:Link RelationshipName="SetComparisonConstraintHasImplicationError" RoleName="SetComparisonConstraint" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="PathRequiresRootObjectTypeError" Override="true">
-		<se:Link RelationshipName="LeadRolePathHasRootObjectTypeError" RoleName="LeadRolePath" Name="RolePath"/>
-	</se:Element>
-	<se:Element Class="PathStartRoleFollowsRootObjectTypeError" Override="true">
-		<se:Link RelationshipName="PathedRoleHasStartRoleError" RoleName="PathedRole" Name="PathedRole"/>
+		<se:Link RelationshipName="RolePathHasRootObjectTypeError" RoleName="RolePath" Name="RolePath">
+			<se:ConditionalName Name="SubPath">
+				<plx:binaryOperator type="typeEquality">
+					<plx:left>
+						<plx:callThis name="RolePath" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:directTypeReference dataTypeName="RoleSubPath"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:ConditionalName>
+		</se:Link>
 	</se:Element>
 	<se:Element Class="JoinedPathRoleRequiresCompatibleRolePlayerError" Override="true">
 		<se:Link RelationshipName="PathedRoleHasCompatibleJoinRolePlayerError" RoleName="PathedRole" Name="PathedRole"/>
 	</se:Element>
-	<se:Element Class="CorrelatedPathRoleRequiresCompatibleRolePlayerError" Override="true">
-		<se:Link RelationshipName="PathedRoleHasCompatibleCorrelationRolePlayerError" RoleName="PathedRole" Name="PathedRole"/>
+	<se:Element Class="PathObjectUnifierRequiresCompatibleObjectTypesError" Override="true" Name="ObjectUnifierRequiresCompatibleObjectTypesError">
+		<se:Link RelationshipName="PathObjectUnifierHasCompatibleObjectTypesError" RoleName="ObjectUnifier" Name="ObjectUnifier"/>
 	</se:Element>
 	<se:Element Class="PathSameFactTypeRoleFollowsJoinError" Override="true">
 		<se:Link RelationshipName="PathedRoleHasSameFactTypeFollowsJoinError" RoleName="PathedRole" Name="PathedRole"/>

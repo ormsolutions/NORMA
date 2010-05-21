@@ -15723,7 +15723,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint/PathedRole.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint/PathedRole.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ValueConstraintCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint/PathedRole.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ValueConstraint", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint/PathedRole.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("046a095e-696d-4899-8051-58a70aced299")]
 		public virtual PathedRole PathedRole
 		{
@@ -15792,26 +15792,45 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 				
 		#endregion
-		#region Static methods to access ValueConstraintCollection of a PathedRole
+		#region Static methods to access ValueConstraint of a PathedRole
 		/// <summary>
-		/// Gets a list of ValueConstraintCollection.
+		/// Gets ValueConstraint.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<PathConditionRoleValueConstraint> GetValueConstraintCollection(PathedRole element)
+		public static PathConditionRoleValueConstraint GetValueConstraint(PathedRole element)
 		{
-			return new DslModeling::LinkedElementCollection<PathConditionRoleValueConstraint>(element, PathedRoleDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, PathedRoleDomainRoleId) as PathConditionRoleValueConstraint;
+		}
+		
+		/// <summary>
+		/// Sets ValueConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetValueConstraint(PathedRole element, PathConditionRoleValueConstraint newValueConstraint)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, PathedRoleDomainRoleId, newValueConstraint);
 		}
 		#endregion
 		#region PathedRole link accessor
 		/// <summary>
-		/// Get the list of PathedRoleHasValueConstraint links to a PathedRole.
+		/// Get the PathedRoleHasValueConstraint link to a PathedRole.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint> GetLinksToValueConstraintCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole pathedRoleInstance )
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint GetLinkToValueConstraint (global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole pathedRoleInstance)
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint>(pathedRoleInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint.PathedRoleDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint>(pathedRoleInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint.PathedRoleDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of PathedRole not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
 		}
 		#endregion
 		#region ValueConstraint link accessor
@@ -15865,247 +15884,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint link in links )
 			{
 				if ( target.Equals(link.ValueConstraint) )
-				{
-					return link;
-				}
-			}
-			return null;
-		}
-		
-		#endregion
-	}
-}
-namespace ORMSolutions.ORMArchitect.Core.ObjectModel
-{
-	/// <summary>
-	/// DomainRelationship PathConditionRoleValueConstraintAppliesToRolePathCombination
-	/// Description for
-	/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraintAppliesToRolePathCombination
-	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraintAppliesToRolePathCombination.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraintAppliesToRolePathCombination.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship()]
-	[DslModeling::DomainObjectId("eed3b60c-2688-43a7-8e2b-df14a8b5dfc4")]
-	public partial class PathConditionRoleValueConstraintAppliesToRolePathCombination : DslModeling::ElementLink
-	{
-		#region Constructors, domain class Id
-		
-		/// <summary>
-		/// PathConditionRoleValueConstraintAppliesToRolePathCombination domain class Id.
-		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xeed3b60c, 0x2688, 0x43a7, 0x8e, 0x2b, 0xdf, 0x14, 0xa8, 0xb5, 0xdf, 0xc4);
-	
-				
-		/// <summary>
-		/// Constructor
-		/// Creates a PathConditionRoleValueConstraintAppliesToRolePathCombination link in the same Partition as the given PathConditionRoleValueConstraint
-		/// </summary>
-		/// <param name="source">PathConditionRoleValueConstraint to use as the source of the relationship.</param>
-		/// <param name="target">RolePathCombination to use as the target of the relationship.</param>
-		public PathConditionRoleValueConstraintAppliesToRolePathCombination(PathConditionRoleValueConstraint source, RolePathCombination target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(PathConditionRoleValueConstraintAppliesToRolePathCombination.ValueConstraintDomainRoleId, source), new DslModeling::RoleAssignment(PathConditionRoleValueConstraintAppliesToRolePathCombination.CombinationDomainRoleId, target)}, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public PathConditionRoleValueConstraintAppliesToRolePathCombination(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public PathConditionRoleValueConstraintAppliesToRolePathCombination(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public PathConditionRoleValueConstraintAppliesToRolePathCombination(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(partition, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public PathConditionRoleValueConstraintAppliesToRolePathCombination(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(partition, roleAssignments, propertyAssignments)
-		{
-		}
-		#endregion
-		#region ValueConstraint domain role code
-		
-		/// <summary>
-		/// ValueConstraint domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid ValueConstraintDomainRoleId = new global::System.Guid(0xe3a0ce35, 0x4238, 0x45b5, 0x91, 0x7f, 0x35, 0x10, 0x7a, 0x66, 0xa6, 0x98);
-		
-		/// <summary>
-		/// DomainRole ValueConstraint
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraintAppliesToRolePathCombination.ValueConstraint
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraintAppliesToRolePathCombination/ValueConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraintAppliesToRolePathCombination/ValueConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "AppliesToPathCombination", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraintAppliesToRolePathCombination/ValueConstraint.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
-		[DslModeling::DomainObjectId("e3a0ce35-4238-45b5-917f-35107a66a698")]
-		public virtual PathConditionRoleValueConstraint ValueConstraint
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (PathConditionRoleValueConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, ValueConstraintDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, ValueConstraintDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access ValueConstraintCollection of a RolePathCombination
-		/// <summary>
-		/// Gets a list of ValueConstraintCollection.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<PathConditionRoleValueConstraint> GetValueConstraintCollection(RolePathCombination element)
-		{
-			return new DslModeling::LinkedElementCollection<PathConditionRoleValueConstraint>(element, CombinationDomainRoleId);
-		}
-		#endregion
-		#region Combination domain role code
-		
-		/// <summary>
-		/// Combination domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid CombinationDomainRoleId = new global::System.Guid(0xb86177cd, 0x20a5, 0x4d1e, 0x97, 0x7f, 0xc3, 0x81, 0x1d, 0x92, 0xe3, 0x02);
-		
-		/// <summary>
-		/// DomainRole Combination
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraintAppliesToRolePathCombination.Combination
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraintAppliesToRolePathCombination/Combination.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraintAppliesToRolePathCombination/Combination.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ValueConstraintCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraintAppliesToRolePathCombination/Combination.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
-		[DslModeling::DomainObjectId("b86177cd-20a5-4d1e-977f-c3811d92e302")]
-		public virtual RolePathCombination Combination
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (RolePathCombination)DslModeling::DomainRoleInfo.GetRolePlayer(this, CombinationDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, CombinationDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access AppliesToPathCombination of a PathConditionRoleValueConstraint
-		/// <summary>
-		/// Gets AppliesToPathCombination.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static RolePathCombination GetAppliesToPathCombination(PathConditionRoleValueConstraint element)
-		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ValueConstraintDomainRoleId) as RolePathCombination;
-		}
-		
-		/// <summary>
-		/// Sets AppliesToPathCombination.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetAppliesToPathCombination(PathConditionRoleValueConstraint element, RolePathCombination newCombination)
-		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, ValueConstraintDomainRoleId, newCombination);
-		}
-		#endregion
-		#region ValueConstraint link accessor
-		/// <summary>
-		/// Get the PathConditionRoleValueConstraintAppliesToRolePathCombination link to a PathConditionRoleValueConstraint.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraintAppliesToRolePathCombination GetLinkToAppliesToPathCombination (global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraint valueConstraintInstance)
-		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraintAppliesToRolePathCombination> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraintAppliesToRolePathCombination>(valueConstraintInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraintAppliesToRolePathCombination.ValueConstraintDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ValueConstraint not obeyed.");
-			if ( links.Count == 0 )
-			{
-				return null;
-			}
-			else
-			{
-				return links[0];
-			}
-		}
-		#endregion
-		#region Combination link accessor
-		/// <summary>
-		/// Get the list of PathConditionRoleValueConstraintAppliesToRolePathCombination links to a RolePathCombination.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraintAppliesToRolePathCombination> GetLinksToValueConstraintCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombination combinationInstance )
-		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraintAppliesToRolePathCombination>(combinationInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraintAppliesToRolePathCombination.CombinationDomainRoleId);
-		}
-		#endregion
-		#region PathConditionRoleValueConstraintAppliesToRolePathCombination instance accessors
-		
-		/// <summary>
-		/// Get any PathConditionRoleValueConstraintAppliesToRolePathCombination links between a given PathConditionRoleValueConstraint and a RolePathCombination.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraintAppliesToRolePathCombination> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombination target )
-		{
-			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraintAppliesToRolePathCombination> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraintAppliesToRolePathCombination>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraintAppliesToRolePathCombination> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraintAppliesToRolePathCombination>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraintAppliesToRolePathCombination.ValueConstraintDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraintAppliesToRolePathCombination link in links )
-			{
-				if ( target.Equals(link.Combination) )
-				{
-					outLinks.Add(link);
-				}
-			}
-			return outLinks.AsReadOnly();
-		}
-		/// <summary>
-		/// Get the one PathConditionRoleValueConstraintAppliesToRolePathCombination link between a given PathConditionRoleValueConstraintand a RolePathCombination.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraintAppliesToRolePathCombination GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombination target )
-		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraintAppliesToRolePathCombination> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraintAppliesToRolePathCombination>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraintAppliesToRolePathCombination.ValueConstraintDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraintAppliesToRolePathCombination link in links )
-			{
-				if ( target.Equals(link.Combination) )
 				{
 					return link;
 				}
@@ -35059,9 +34837,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Creates a ConstraintRoleSequenceJoinPathProjection link in the same Partition as the given ConstraintRoleSequenceJoinPath
 		/// </summary>
 		/// <param name="source">ConstraintRoleSequenceJoinPath to use as the source of the relationship.</param>
-		/// <param name="target">RolePathComponent to use as the target of the relationship.</param>
-		public ConstraintRoleSequenceJoinPathProjection(ConstraintRoleSequenceJoinPath source, RolePathComponent target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ConstraintRoleSequenceJoinPathProjection.JoinPathDomainRoleId, source), new DslModeling::RoleAssignment(ConstraintRoleSequenceJoinPathProjection.PathComponentDomainRoleId, target)}, null)
+		/// <param name="target">LeadRolePath to use as the target of the relationship.</param>
+		public ConstraintRoleSequenceJoinPathProjection(ConstraintRoleSequenceJoinPath source, LeadRolePath target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ConstraintRoleSequenceJoinPathProjection.JoinPathDomainRoleId, source), new DslModeling::RoleAssignment(ConstraintRoleSequenceJoinPathProjection.RolePathDomainRoleId, target)}, null)
 		{
 		}
 		
@@ -35138,15 +34916,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 				
 		#endregion
-		#region Static methods to access ConstraintRoleSequenceJoinPathProjection of a RolePathComponent
+		#region Static methods to access ConstraintRoleSequenceJoinPathProjection of a LeadRolePath
 		/// <summary>
 		/// Gets ConstraintRoleSequenceJoinPathProjection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static ConstraintRoleSequenceJoinPath GetConstraintRoleSequenceJoinPathProjection(RolePathComponent element)
+		public static ConstraintRoleSequenceJoinPath GetConstraintRoleSequenceJoinPathProjection(LeadRolePath element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, PathComponentDomainRoleId) as ConstraintRoleSequenceJoinPath;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, RolePathDomainRoleId) as ConstraintRoleSequenceJoinPath;
 		}
 		
 		/// <summary>
@@ -35154,38 +34932,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetConstraintRoleSequenceJoinPathProjection(RolePathComponent element, ConstraintRoleSequenceJoinPath newJoinPath)
+		public static void SetConstraintRoleSequenceJoinPathProjection(LeadRolePath element, ConstraintRoleSequenceJoinPath newJoinPath)
 		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, PathComponentDomainRoleId, newJoinPath);
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, RolePathDomainRoleId, newJoinPath);
 		}
 		#endregion
-		#region PathComponent domain role code
+		#region RolePath domain role code
 		
 		/// <summary>
-		/// PathComponent domain role Id.
+		/// RolePath domain role Id.
 		/// </summary>
-		public static readonly global::System.Guid PathComponentDomainRoleId = new global::System.Guid(0x0a6ad07c, 0x880b, 0x460e, 0xad, 0x75, 0x13, 0x6e, 0x3a, 0xb6, 0x12, 0xac);
+		public static readonly global::System.Guid RolePathDomainRoleId = new global::System.Guid(0x0a6ad07c, 0x880b, 0x460e, 0xad, 0x75, 0x13, 0x6e, 0x3a, 0xb6, 0x12, 0xac);
 		
 		/// <summary>
-		/// DomainRole PathComponent
+		/// DomainRole RolePath
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathProjection.PathComponent
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathProjection.RolePath
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathProjection/PathComponent.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathProjection/PathComponent.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ConstraintRoleSequenceJoinPathProjection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathProjection/PathComponent.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathProjection/RolePath.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathProjection/RolePath.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ConstraintRoleSequenceJoinPathProjection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathProjection/RolePath.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("0a6ad07c-880b-460e-ad75-136e3ab612ac")]
-		public virtual RolePathComponent PathComponent
+		public virtual LeadRolePath RolePath
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (RolePathComponent)DslModeling::DomainRoleInfo.GetRolePlayer(this, PathComponentDomainRoleId);
+				return (LeadRolePath)DslModeling::DomainRoleInfo.GetRolePlayer(this, RolePathDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, PathComponentDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, RolePathDomainRoleId, value);
 			}
 		}
 				
@@ -35196,9 +34974,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<RolePathComponent> GetProjectedPathComponentCollection(ConstraintRoleSequenceJoinPath element)
+		public static DslModeling::LinkedElementCollection<LeadRolePath> GetProjectedPathComponentCollection(ConstraintRoleSequenceJoinPath element)
 		{
-			return new DslModeling::LinkedElementCollection<RolePathComponent>(element, JoinPathDomainRoleId);
+			return new DslModeling::LinkedElementCollection<LeadRolePath>(element, JoinPathDomainRoleId);
 		}
 		#endregion
 		#region Accessors for roles that this REL plays in other RELs
@@ -35261,16 +35039,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathProjection>(joinPathInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathProjection.JoinPathDomainRoleId);
 		}
 		#endregion
-		#region PathComponent link accessor
+		#region RolePath link accessor
 		/// <summary>
-		/// Get the ConstraintRoleSequenceJoinPathProjection link to a RolePathComponent.
+		/// Get the ConstraintRoleSequenceJoinPathProjection link to a LeadRolePath.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathProjection GetLinkToConstraintRoleSequenceJoinPathProjection (global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent pathComponentInstance)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathProjection GetLinkToConstraintRoleSequenceJoinPathProjection (global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath rolePathInstance)
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathProjection> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathProjection>(pathComponentInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathProjection.PathComponentDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of PathComponent not obeyed.");
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathProjection> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathProjection>(rolePathInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathProjection.RolePathDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of RolePath not obeyed.");
 			if ( links.Count == 0 )
 			{
 				return null;
@@ -35284,17 +35062,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#region ConstraintRoleSequenceJoinPathProjection instance accessors
 		
 		/// <summary>
-		/// Get any ConstraintRoleSequenceJoinPathProjection links between a given ConstraintRoleSequenceJoinPath and a RolePathComponent.
+		/// Get any ConstraintRoleSequenceJoinPathProjection links between a given ConstraintRoleSequenceJoinPath and a LeadRolePath.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathProjection> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathProjection> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath target )
 		{
 			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathProjection> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathProjection>();
 			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathProjection> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathProjection>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathProjection.JoinPathDomainRoleId);
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathProjection link in links )
 			{
-				if ( target.Equals(link.PathComponent) )
+				if ( target.Equals(link.RolePath) )
 				{
 					outLinks.Add(link);
 				}
@@ -35302,16 +35080,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one ConstraintRoleSequenceJoinPathProjection link between a given ConstraintRoleSequenceJoinPathand a RolePathComponent.
+		/// Get the one ConstraintRoleSequenceJoinPathProjection link between a given ConstraintRoleSequenceJoinPathand a LeadRolePath.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathProjection GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent target )
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathProjection GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath target )
 		{
 			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathProjection> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathProjection>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathProjection.JoinPathDomainRoleId);
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathProjection link in links )
 			{
-				if ( target.Equals(link.PathComponent) )
+				if ( target.Equals(link.RolePath) )
 				{
 					return link;
 				}
@@ -35482,6 +35260,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion
 		#region Accessors for roles that this REL plays in other RELs
+		#region ProjectedFromPathRoot opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ProjectedFromPathRoot.
+		/// The role path root in the join path associated with this constraint sequence.
+		/// </summary>
+		public virtual RolePathObjectTypeRoot ProjectedFromPathRoot
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromRolePathRoot.ConstraintRoleProjectionDomainRoleId) as RolePathObjectTypeRoot;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromRolePathRoot.ConstraintRoleProjectionDomainRoleId, value);
+			}
+		}
+		#endregion
 		#region ProjectedFromPathedRole opposite domain role accessor
 		/// <summary>
 		/// Gets or sets ProjectedFromPathedRole.
@@ -35605,6 +35402,245 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjection link in links )
 			{
 				if ( target.Equals(link.ProjectedConstraintRole) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship ConstraintRoleProjectedFromRolePathRoot
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromRolePathRoot
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromRolePathRoot.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromRolePathRoot.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("de5989e2-d99e-43e7-aaf1-25b54d50b73c")]
+	public partial class ConstraintRoleProjectedFromRolePathRoot : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ConstraintRoleProjectedFromRolePathRoot domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xde5989e2, 0xd99e, 0x43e7, 0xaa, 0xf1, 0x25, 0xb5, 0x4d, 0x50, 0xb7, 0x3c);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ConstraintRoleProjectedFromRolePathRoot link in the same Partition as the given ConstraintRoleProjection
+		/// </summary>
+		/// <param name="source">ConstraintRoleProjection to use as the source of the relationship.</param>
+		/// <param name="target">RolePathObjectTypeRoot to use as the target of the relationship.</param>
+		public ConstraintRoleProjectedFromRolePathRoot(ConstraintRoleProjection source, RolePathObjectTypeRoot target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ConstraintRoleProjectedFromRolePathRoot.ConstraintRoleProjectionDomainRoleId, source), new DslModeling::RoleAssignment(ConstraintRoleProjectedFromRolePathRoot.SourceDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ConstraintRoleProjectedFromRolePathRoot(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ConstraintRoleProjectedFromRolePathRoot(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ConstraintRoleProjectedFromRolePathRoot(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ConstraintRoleProjectedFromRolePathRoot(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ConstraintRoleProjection domain role code
+		
+		/// <summary>
+		/// ConstraintRoleProjection domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ConstraintRoleProjectionDomainRoleId = new global::System.Guid(0x2aa10160, 0x2441, 0x41aa, 0x9b, 0x10, 0x28, 0x1c, 0x13, 0xe2, 0x71, 0x6c);
+		
+		/// <summary>
+		/// DomainRole ConstraintRoleProjection
+		/// The role path root in the join path associated with this constraint sequence.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromRolePathRoot/ConstraintRoleProjection.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromRolePathRoot/ConstraintRoleProjection.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ProjectedFromPathRoot", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromRolePathRoot/ConstraintRoleProjection.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("2aa10160-2441-41aa-9b10-281c13e2716c")]
+		public virtual ConstraintRoleProjection ConstraintRoleProjection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ConstraintRoleProjection)DslModeling::DomainRoleInfo.GetRolePlayer(this, ConstraintRoleProjectionDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ConstraintRoleProjectionDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ConstraintRoleProjections of a RolePathObjectTypeRoot
+		/// <summary>
+		/// Gets a list of ConstraintRoleProjections.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<ConstraintRoleProjection> GetConstraintRoleProjections(RolePathObjectTypeRoot element)
+		{
+			return new DslModeling::LinkedElementCollection<ConstraintRoleProjection>(element, SourceDomainRoleId);
+		}
+		#endregion
+		#region Source domain role code
+		
+		/// <summary>
+		/// Source domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid SourceDomainRoleId = new global::System.Guid(0xa169e1b4, 0xdf2a, 0x46b8, 0x87, 0x60, 0x30, 0xb8, 0x64, 0x4a, 0xce, 0x9c);
+		
+		/// <summary>
+		/// DomainRole Source
+		/// The projected constraint role associated with this role path root.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromRolePathRoot/Source.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromRolePathRoot/Source.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ConstraintRoleProjections", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromRolePathRoot/Source.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("a169e1b4-df2a-46b8-8760-30b8644ace9c")]
+		public virtual RolePathObjectTypeRoot Source
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (RolePathObjectTypeRoot)DslModeling::DomainRoleInfo.GetRolePlayer(this, SourceDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, SourceDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ProjectedFromPathRoot of a ConstraintRoleProjection
+		/// <summary>
+		/// Gets ProjectedFromPathRoot.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static RolePathObjectTypeRoot GetProjectedFromPathRoot(ConstraintRoleProjection element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ConstraintRoleProjectionDomainRoleId) as RolePathObjectTypeRoot;
+		}
+		
+		/// <summary>
+		/// Sets ProjectedFromPathRoot.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetProjectedFromPathRoot(ConstraintRoleProjection element, RolePathObjectTypeRoot newSource)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ConstraintRoleProjectionDomainRoleId, newSource);
+		}
+		#endregion
+		#region ConstraintRoleProjection link accessor
+		/// <summary>
+		/// Get the ConstraintRoleProjectedFromRolePathRoot link to a ConstraintRoleProjection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromRolePathRoot GetLinkToProjectedFromPathRoot (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjection constraintRoleProjectionInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromRolePathRoot> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromRolePathRoot>(constraintRoleProjectionInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromRolePathRoot.ConstraintRoleProjectionDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ConstraintRoleProjection not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region Source link accessor
+		/// <summary>
+		/// Get the list of ConstraintRoleProjectedFromRolePathRoot links to a RolePathObjectTypeRoot.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromRolePathRoot> GetLinksToConstraintRoleProjections ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot sourceInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromRolePathRoot>(sourceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromRolePathRoot.SourceDomainRoleId);
+		}
+		#endregion
+		#region ConstraintRoleProjectedFromRolePathRoot instance accessors
+		
+		/// <summary>
+		/// Get any ConstraintRoleProjectedFromRolePathRoot links between a given ConstraintRoleProjection and a RolePathObjectTypeRoot.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromRolePathRoot> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjection source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromRolePathRoot> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromRolePathRoot>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromRolePathRoot> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromRolePathRoot>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromRolePathRoot.ConstraintRoleProjectionDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromRolePathRoot link in links )
+			{
+				if ( target.Equals(link.Source) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ConstraintRoleProjectedFromRolePathRoot link between a given ConstraintRoleProjectionand a RolePathObjectTypeRoot.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromRolePathRoot GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjection source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromRolePathRoot> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromRolePathRoot>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromRolePathRoot.ConstraintRoleProjectionDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromRolePathRoot link in links )
+			{
+				if ( target.Equals(link.Source) )
 				{
 					return link;
 				}
@@ -40252,9 +40288,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Creates a RolePathOwnerHasPathComponent_Deprecated link in the same Partition as the given RolePathOwner
 		/// </summary>
 		/// <param name="source">RolePathOwner to use as the source of the relationship.</param>
-		/// <param name="target">RolePathComponent to use as the target of the relationship.</param>
-		public RolePathOwnerHasPathComponent_Deprecated(RolePathOwner source, RolePathComponent target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(RolePathOwnerHasPathComponent_Deprecated.PathOwnerDomainRoleId, source), new DslModeling::RoleAssignment(RolePathOwnerHasPathComponent_Deprecated.PathComponentDomainRoleId, target)}, null)
+		/// <param name="target">LeadRolePath to use as the target of the relationship.</param>
+		public RolePathOwnerHasPathComponent_Deprecated(RolePathOwner source, LeadRolePath target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(RolePathOwnerHasPathComponent_Deprecated.PathOwnerDomainRoleId, source), new DslModeling::RoleAssignment(RolePathOwnerHasPathComponent_Deprecated.RolePathDomainRoleId, target)}, null)
 		{
 		}
 		
@@ -40331,15 +40367,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 				
 		#endregion
-		#region Static methods to access ParentOwner of a RolePathComponent
+		#region Static methods to access ParentOwner of a LeadRolePath
 		/// <summary>
 		/// Gets ParentOwner.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static RolePathOwner GetParentOwner(RolePathComponent element)
+		public static RolePathOwner GetParentOwner(LeadRolePath element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, PathComponentDomainRoleId) as RolePathOwner;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, RolePathDomainRoleId) as RolePathOwner;
 		}
 		
 		/// <summary>
@@ -40347,38 +40383,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetParentOwner(RolePathComponent element, RolePathOwner newPathOwner)
+		public static void SetParentOwner(LeadRolePath element, RolePathOwner newPathOwner)
 		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, PathComponentDomainRoleId, newPathOwner);
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, RolePathDomainRoleId, newPathOwner);
 		}
 		#endregion
-		#region PathComponent domain role code
+		#region RolePath domain role code
 		
 		/// <summary>
-		/// PathComponent domain role Id.
+		/// RolePath domain role Id.
 		/// </summary>
-		public static readonly global::System.Guid PathComponentDomainRoleId = new global::System.Guid(0x3f31cfcc, 0x88da, 0x44f8, 0xad, 0xb3, 0xb4, 0x01, 0x92, 0x83, 0xad, 0x4a);
+		public static readonly global::System.Guid RolePathDomainRoleId = new global::System.Guid(0x3f31cfcc, 0x88da, 0x44f8, 0xad, 0xb3, 0xb4, 0x01, 0x92, 0x83, 0xad, 0x4a);
 		
 		/// <summary>
-		/// DomainRole PathComponent
+		/// DomainRole RolePath
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated.PathComponent
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated.RolePath
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated/PathComponent.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated/PathComponent.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ParentOwner", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated/PathComponent.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated/RolePath.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated/RolePath.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ParentOwner", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated/RolePath.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("3f31cfcc-88da-44f8-adb3-b4019283ad4a")]
-		public virtual RolePathComponent PathComponent
+		public virtual LeadRolePath RolePath
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (RolePathComponent)DslModeling::DomainRoleInfo.GetRolePlayer(this, PathComponentDomainRoleId);
+				return (LeadRolePath)DslModeling::DomainRoleInfo.GetRolePlayer(this, RolePathDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, PathComponentDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, RolePathDomainRoleId, value);
 			}
 		}
 				
@@ -40389,9 +40425,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static RolePathComponent GetPathComponent(RolePathOwner element)
+		public static LeadRolePath GetPathComponent(RolePathOwner element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, PathOwnerDomainRoleId) as RolePathComponent;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, PathOwnerDomainRoleId) as LeadRolePath;
 		}
 		
 		/// <summary>
@@ -40399,9 +40435,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetPathComponent(RolePathOwner element, RolePathComponent newPathComponent)
+		public static void SetPathComponent(RolePathOwner element, LeadRolePath newRolePath)
 		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, PathOwnerDomainRoleId, newPathComponent);
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, PathOwnerDomainRoleId, newRolePath);
 		}
 		#endregion
 		#region PathOwner link accessor
@@ -40424,16 +40460,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
-		#region PathComponent link accessor
+		#region RolePath link accessor
 		/// <summary>
-		/// Get the RolePathOwnerHasPathComponent_Deprecated link to a RolePathComponent.
+		/// Get the RolePathOwnerHasPathComponent_Deprecated link to a LeadRolePath.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated GetLinkToParentOwner (global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent pathComponentInstance)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated GetLinkToParentOwner (global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath rolePathInstance)
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated>(pathComponentInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated.PathComponentDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of PathComponent not obeyed.");
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated>(rolePathInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated.RolePathDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of RolePath not obeyed.");
 			if ( links.Count == 0 )
 			{
 				return null;
@@ -40447,17 +40483,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#region RolePathOwnerHasPathComponent_Deprecated instance accessors
 		
 		/// <summary>
-		/// Get any RolePathOwnerHasPathComponent_Deprecated links between a given RolePathOwner and a RolePathComponent.
+		/// Get any RolePathOwnerHasPathComponent_Deprecated links between a given RolePathOwner and a LeadRolePath.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath target )
 		{
 			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated>();
 			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated.PathOwnerDomainRoleId);
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated link in links )
 			{
-				if ( target.Equals(link.PathComponent) )
+				if ( target.Equals(link.RolePath) )
 				{
 					outLinks.Add(link);
 				}
@@ -40465,16 +40501,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one RolePathOwnerHasPathComponent_Deprecated link between a given RolePathOwnerand a RolePathComponent.
+		/// Get the one RolePathOwnerHasPathComponent_Deprecated link between a given RolePathOwnerand a LeadRolePath.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent target )
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath target )
 		{
 			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated.PathOwnerDomainRoleId);
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated link in links )
 			{
-				if ( target.Equals(link.PathComponent) )
+				if ( target.Equals(link.RolePath) )
 				{
 					return link;
 				}
@@ -40488,33 +40524,33 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
-	/// DomainRelationship RolePathOwnerHasPathComponent
+	/// DomainRelationship RolePathOwnerHasLeadRolePath
 	/// Description for
-	/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath
 	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship(IsEmbedding=true)]
 	[DslModeling::DomainObjectId("c4d6e714-1489-4bd0-b92b-061d494ab66c")]
-	public partial class RolePathOwnerHasPathComponent : DslModeling::ElementLink
+	public partial class RolePathOwnerHasLeadRolePath : DslModeling::ElementLink
 	{
 		#region Constructors, domain class Id
 		
 		/// <summary>
-		/// RolePathOwnerHasPathComponent domain class Id.
+		/// RolePathOwnerHasLeadRolePath domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xc4d6e714, 0x1489, 0x4bd0, 0xb9, 0x2b, 0x06, 0x1d, 0x49, 0x4a, 0xb6, 0x6c);
 	
 				
 		/// <summary>
 		/// Constructor
-		/// Creates a RolePathOwnerHasPathComponent link in the same Partition as the given RolePathOwner
+		/// Creates a RolePathOwnerHasLeadRolePath link in the same Partition as the given RolePathOwner
 		/// </summary>
 		/// <param name="source">RolePathOwner to use as the source of the relationship.</param>
-		/// <param name="target">RolePathComponent to use as the target of the relationship.</param>
-		public RolePathOwnerHasPathComponent(RolePathOwner source, RolePathComponent target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(RolePathOwnerHasPathComponent.PathOwnerDomainRoleId, source), new DslModeling::RoleAssignment(RolePathOwnerHasPathComponent.PathComponentDomainRoleId, target)}, null)
+		/// <param name="target">LeadRolePath to use as the target of the relationship.</param>
+		public RolePathOwnerHasLeadRolePath(RolePathOwner source, LeadRolePath target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(RolePathOwnerHasLeadRolePath.PathOwnerDomainRoleId, source), new DslModeling::RoleAssignment(RolePathOwnerHasLeadRolePath.RolePathDomainRoleId, target)}, null)
 		{
 		}
 		
@@ -40523,7 +40559,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public RolePathOwnerHasPathComponent(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+		public RolePathOwnerHasLeadRolePath(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
 		{
 		}
@@ -40534,7 +40570,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public RolePathOwnerHasPathComponent(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public RolePathOwnerHasLeadRolePath(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
 		{
 		}
@@ -40544,7 +40580,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public RolePathOwnerHasPathComponent(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+		public RolePathOwnerHasLeadRolePath(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(partition, roleAssignments, null)
 		{
 		}
@@ -40555,7 +40591,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public RolePathOwnerHasPathComponent(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public RolePathOwnerHasLeadRolePath(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, roleAssignments, propertyAssignments)
 		{
 		}
@@ -40570,11 +40606,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// DomainRole PathOwner
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent.PathOwner
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath.PathOwner
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent/PathOwner.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent/PathOwner.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "PathComponentCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent/PathOwner.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath/PathOwner.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath/PathOwner.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "LeadRolePathCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath/PathOwner.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("7b7881da-9325-4882-950a-fec9a9cba048")]
 		public virtual RolePathOwner PathOwner
 		{
@@ -40591,15 +40627,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 				
 		#endregion
-		#region Static methods to access PathOwner of a RolePathComponent
+		#region Static methods to access PathOwner of a LeadRolePath
 		/// <summary>
 		/// Gets PathOwner.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static RolePathOwner GetPathOwner(RolePathComponent element)
+		public static RolePathOwner GetPathOwner(LeadRolePath element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, PathComponentDomainRoleId) as RolePathOwner;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, RolePathDomainRoleId) as RolePathOwner;
 		}
 		
 		/// <summary>
@@ -40607,74 +40643,74 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetPathOwner(RolePathComponent element, RolePathOwner newPathOwner)
+		public static void SetPathOwner(LeadRolePath element, RolePathOwner newPathOwner)
 		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, PathComponentDomainRoleId, newPathOwner);
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, RolePathDomainRoleId, newPathOwner);
 		}
 		#endregion
-		#region PathComponent domain role code
+		#region RolePath domain role code
 		
 		/// <summary>
-		/// PathComponent domain role Id.
+		/// RolePath domain role Id.
 		/// </summary>
-		public static readonly global::System.Guid PathComponentDomainRoleId = new global::System.Guid(0x50d66006, 0xe047, 0x4c5e, 0xb5, 0xae, 0xf1, 0xad, 0x19, 0xc1, 0xbb, 0xb8);
+		public static readonly global::System.Guid RolePathDomainRoleId = new global::System.Guid(0x50d66006, 0xe047, 0x4c5e, 0xb5, 0xae, 0xf1, 0xad, 0x19, 0xc1, 0xbb, 0xb8);
 		
 		/// <summary>
-		/// DomainRole PathComponent
+		/// DomainRole RolePath
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent.PathComponent
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath.RolePath
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent/PathComponent.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent/PathComponent.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "PathOwner", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent/PathComponent.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath/RolePath.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath/RolePath.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "PathOwner", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath/RolePath.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("50d66006-e047-4c5e-b5ae-f1ad19c1bbb8")]
-		public virtual RolePathComponent PathComponent
+		public virtual LeadRolePath RolePath
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (RolePathComponent)DslModeling::DomainRoleInfo.GetRolePlayer(this, PathComponentDomainRoleId);
+				return (LeadRolePath)DslModeling::DomainRoleInfo.GetRolePlayer(this, RolePathDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, PathComponentDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, RolePathDomainRoleId, value);
 			}
 		}
 				
 		#endregion
-		#region Static methods to access PathComponentCollection of a RolePathOwner
+		#region Static methods to access LeadRolePathCollection of a RolePathOwner
 		/// <summary>
-		/// Gets a list of PathComponentCollection.
+		/// Gets a list of LeadRolePathCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<RolePathComponent> GetPathComponentCollection(RolePathOwner element)
+		public static DslModeling::LinkedElementCollection<LeadRolePath> GetLeadRolePathCollection(RolePathOwner element)
 		{
-			return new DslModeling::LinkedElementCollection<RolePathComponent>(element, PathOwnerDomainRoleId);
+			return new DslModeling::LinkedElementCollection<LeadRolePath>(element, PathOwnerDomainRoleId);
 		}
 		#endregion
 		#region PathOwner link accessor
 		/// <summary>
-		/// Get the list of RolePathOwnerHasPathComponent links to a RolePathOwner.
+		/// Get the list of RolePathOwnerHasLeadRolePath links to a RolePathOwner.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent> GetLinksToPathComponentCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner pathOwnerInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath> GetLinksToLeadRolePathCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner pathOwnerInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent>(pathOwnerInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent.PathOwnerDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath>(pathOwnerInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath.PathOwnerDomainRoleId);
 		}
 		#endregion
-		#region PathComponent link accessor
+		#region RolePath link accessor
 		/// <summary>
-		/// Get the RolePathOwnerHasPathComponent link to a RolePathComponent.
+		/// Get the RolePathOwnerHasLeadRolePath link to a LeadRolePath.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent GetLinkToPathOwner (global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent pathComponentInstance)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath GetLinkToPathOwner (global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath rolePathInstance)
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent>(pathComponentInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent.PathComponentDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of PathComponent not obeyed.");
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath>(rolePathInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath.RolePathDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of RolePath not obeyed.");
 			if ( links.Count == 0 )
 			{
 				return null;
@@ -40685,20 +40721,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
-		#region RolePathOwnerHasPathComponent instance accessors
+		#region RolePathOwnerHasLeadRolePath instance accessors
 		
 		/// <summary>
-		/// Get any RolePathOwnerHasPathComponent links between a given RolePathOwner and a RolePathComponent.
+		/// Get any RolePathOwnerHasLeadRolePath links between a given RolePathOwner and a LeadRolePath.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath target )
 		{
-			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent.PathOwnerDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath.PathOwnerDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath link in links )
 			{
-				if ( target.Equals(link.PathComponent) )
+				if ( target.Equals(link.RolePath) )
 				{
 					outLinks.Add(link);
 				}
@@ -40706,16 +40742,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one RolePathOwnerHasPathComponent link between a given RolePathOwnerand a RolePathComponent.
+		/// Get the one RolePathOwnerHasLeadRolePath link between a given RolePathOwnerand a LeadRolePath.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent target )
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath target )
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent.PathOwnerDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath.PathOwnerDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath link in links )
 			{
-				if ( target.Equals(link.PathComponent) )
+				if ( target.Equals(link.RolePath) )
 				{
 					return link;
 				}
@@ -40989,1046 +41025,33 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
-	/// DomainRelationship RolePathCompositorHasPathComponent_Deprecated
+	/// DomainRelationship RolePathObjectTypeRoot
 	/// Description for
-	/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent_Deprecated
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot
 	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent_Deprecated.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent_Deprecated.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
-	[DslModeling::DomainObjectId("7dc33c12-2b06-4c93-af58-7be89a8f66fa")]
-	public partial class RolePathCompositorHasPathComponent_Deprecated : DslModeling::ElementLink
-	{
-		#region Constructors, domain class Id
-		
-		/// <summary>
-		/// RolePathCompositorHasPathComponent_Deprecated domain class Id.
-		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x7dc33c12, 0x2b06, 0x4c93, 0xaf, 0x58, 0x7b, 0xe8, 0x9a, 0x8f, 0x66, 0xfa);
-	
-				
-		/// <summary>
-		/// Constructor
-		/// Creates a RolePathCompositorHasPathComponent_Deprecated link in the same Partition as the given RolePathCombination
-		/// </summary>
-		/// <param name="source">RolePathCombination to use as the source of the relationship.</param>
-		/// <param name="target">RolePathComponent to use as the target of the relationship.</param>
-		public RolePathCompositorHasPathComponent_Deprecated(RolePathCombination source, RolePathComponent target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(RolePathCompositorHasPathComponent_Deprecated.CompositorDomainRoleId, source), new DslModeling::RoleAssignment(RolePathCompositorHasPathComponent_Deprecated.PathComponentDomainRoleId, target)}, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public RolePathCompositorHasPathComponent_Deprecated(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public RolePathCompositorHasPathComponent_Deprecated(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public RolePathCompositorHasPathComponent_Deprecated(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(partition, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public RolePathCompositorHasPathComponent_Deprecated(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(partition, roleAssignments, propertyAssignments)
-		{
-		}
-		#endregion
-		#region Compositor domain role code
-		
-		/// <summary>
-		/// Compositor domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid CompositorDomainRoleId = new global::System.Guid(0xe9444032, 0xc71f, 0x4cc8, 0x83, 0xb1, 0x3c, 0x58, 0x74, 0xfb, 0x50, 0x06);
-		
-		/// <summary>
-		/// DomainRole Compositor
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent_Deprecated.Compositor
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent_Deprecated/Compositor.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent_Deprecated/Compositor.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "PathComponentCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent_Deprecated/Compositor.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
-		[DslModeling::DomainObjectId("e9444032-c71f-4cc8-83b1-3c5874fb5006")]
-		public virtual RolePathCombination Compositor
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (RolePathCombination)DslModeling::DomainRoleInfo.GetRolePlayer(this, CompositorDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, CompositorDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access ParentCompositor of a RolePathComponent
-		/// <summary>
-		/// Gets ParentCompositor.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static RolePathCombination GetParentCompositor(RolePathComponent element)
-		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, PathComponentDomainRoleId) as RolePathCombination;
-		}
-		
-		/// <summary>
-		/// Sets ParentCompositor.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetParentCompositor(RolePathComponent element, RolePathCombination newCompositor)
-		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, PathComponentDomainRoleId, newCompositor);
-		}
-		#endregion
-		#region PathComponent domain role code
-		
-		/// <summary>
-		/// PathComponent domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid PathComponentDomainRoleId = new global::System.Guid(0x46d07b50, 0x1979, 0x4801, 0xaf, 0xdc, 0xa3, 0x67, 0x56, 0x56, 0xb2, 0x8c);
-		
-		/// <summary>
-		/// DomainRole PathComponent
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent_Deprecated.PathComponent
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent_Deprecated/PathComponent.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent_Deprecated/PathComponent.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ParentCompositor", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent_Deprecated/PathComponent.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
-		[DslModeling::DomainObjectId("46d07b50-1979-4801-afdc-a3675656b28c")]
-		public virtual RolePathComponent PathComponent
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (RolePathComponent)DslModeling::DomainRoleInfo.GetRolePlayer(this, PathComponentDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, PathComponentDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access PathComponentCollection of a RolePathCombination
-		/// <summary>
-		/// Gets a list of PathComponentCollection.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<RolePathComponent> GetPathComponentCollection(RolePathCombination element)
-		{
-			return new DslModeling::LinkedElementCollection<RolePathComponent>(element, CompositorDomainRoleId);
-		}
-		#endregion
-		#region Compositor link accessor
-		/// <summary>
-		/// Get the list of RolePathCompositorHasPathComponent_Deprecated links to a RolePathCombination.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent_Deprecated> GetLinksToPathComponentCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombination compositorInstance )
-		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent_Deprecated>(compositorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent_Deprecated.CompositorDomainRoleId);
-		}
-		#endregion
-		#region PathComponent link accessor
-		/// <summary>
-		/// Get the RolePathCompositorHasPathComponent_Deprecated link to a RolePathComponent.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent_Deprecated GetLinkToParentCompositor (global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent pathComponentInstance)
-		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent_Deprecated> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent_Deprecated>(pathComponentInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent_Deprecated.PathComponentDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of PathComponent not obeyed.");
-			if ( links.Count == 0 )
-			{
-				return null;
-			}
-			else
-			{
-				return links[0];
-			}
-		}
-		#endregion
-		#region RolePathCompositorHasPathComponent_Deprecated instance accessors
-		
-		/// <summary>
-		/// Get any RolePathCompositorHasPathComponent_Deprecated links between a given RolePathCombination and a RolePathComponent.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent_Deprecated> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombination source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent target )
-		{
-			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent_Deprecated> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent_Deprecated>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent_Deprecated> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent_Deprecated>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent_Deprecated.CompositorDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent_Deprecated link in links )
-			{
-				if ( target.Equals(link.PathComponent) )
-				{
-					outLinks.Add(link);
-				}
-			}
-			return outLinks.AsReadOnly();
-		}
-		/// <summary>
-		/// Get the one RolePathCompositorHasPathComponent_Deprecated link between a given RolePathCombinationand a RolePathComponent.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent_Deprecated GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombination source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent target )
-		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent_Deprecated> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent_Deprecated>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent_Deprecated.CompositorDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCompositorHasPathComponent_Deprecated link in links )
-			{
-				if ( target.Equals(link.PathComponent) )
-				{
-					return link;
-				}
-			}
-			return null;
-		}
-		
-		#endregion
-	}
-}
-namespace ORMSolutions.ORMArchitect.Core.ObjectModel
-{
-	/// <summary>
-	/// DomainRelationship RolePathCombinationHasPathComponent
-	/// Description for
-	/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasPathComponent
-	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasPathComponent.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasPathComponent.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship()]
-	[DslModeling::DomainObjectId("0ffba6c3-82e6-462f-8569-211213b17235")]
-	public partial class RolePathCombinationHasPathComponent : DslModeling::ElementLink
-	{
-		#region Constructors, domain class Id
-		
-		/// <summary>
-		/// RolePathCombinationHasPathComponent domain class Id.
-		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x0ffba6c3, 0x82e6, 0x462f, 0x85, 0x69, 0x21, 0x12, 0x13, 0xb1, 0x72, 0x35);
-	
-				
-		/// <summary>
-		/// Constructor
-		/// Creates a RolePathCombinationHasPathComponent link in the same Partition as the given RolePathCombination
-		/// </summary>
-		/// <param name="source">RolePathCombination to use as the source of the relationship.</param>
-		/// <param name="target">RolePathComponent to use as the target of the relationship.</param>
-		public RolePathCombinationHasPathComponent(RolePathCombination source, RolePathComponent target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(RolePathCombinationHasPathComponent.CombinationDomainRoleId, source), new DslModeling::RoleAssignment(RolePathCombinationHasPathComponent.PathComponentDomainRoleId, target)}, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public RolePathCombinationHasPathComponent(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public RolePathCombinationHasPathComponent(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public RolePathCombinationHasPathComponent(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(partition, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public RolePathCombinationHasPathComponent(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(partition, roleAssignments, propertyAssignments)
-		{
-		}
-		#endregion
-		#region Combination domain role code
-		
-		/// <summary>
-		/// Combination domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid CombinationDomainRoleId = new global::System.Guid(0xe43e6554, 0xd1ab, 0x480d, 0x9b, 0x95, 0x50, 0xd3, 0x30, 0x79, 0xd4, 0x3f);
-		
-		/// <summary>
-		/// DomainRole Combination
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasPathComponent.Combination
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasPathComponent/Combination.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasPathComponent/Combination.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "PathComponentCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasPathComponent/Combination.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
-		[DslModeling::DomainObjectId("e43e6554-d1ab-480d-9b95-50d33079d43f")]
-		public virtual RolePathCombination Combination
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (RolePathCombination)DslModeling::DomainRoleInfo.GetRolePlayer(this, CombinationDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, CombinationDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access RolePathCombinationCollection of a RolePathComponent
-		/// <summary>
-		/// Gets a list of RolePathCombinationCollection.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<RolePathCombination> GetRolePathCombinationCollection(RolePathComponent element)
-		{
-			return new DslModeling::LinkedElementCollection<RolePathCombination>(element, PathComponentDomainRoleId);
-		}
-		#endregion
-		#region PathComponent domain role code
-		
-		/// <summary>
-		/// PathComponent domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid PathComponentDomainRoleId = new global::System.Guid(0x619cf0c8, 0xc13c, 0x4859, 0xbe, 0xab, 0xa3, 0x6e, 0x67, 0xcd, 0xdc, 0x36);
-		
-		/// <summary>
-		/// DomainRole PathComponent
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasPathComponent.PathComponent
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasPathComponent/PathComponent.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasPathComponent/PathComponent.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "RolePathCombinationCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasPathComponent/PathComponent.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
-		[DslModeling::DomainObjectId("619cf0c8-c13c-4859-beab-a36e67cddc36")]
-		public virtual RolePathComponent PathComponent
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (RolePathComponent)DslModeling::DomainRoleInfo.GetRolePlayer(this, PathComponentDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, PathComponentDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access PathComponentCollection of a RolePathCombination
-		/// <summary>
-		/// Gets a list of PathComponentCollection.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<RolePathComponent> GetPathComponentCollection(RolePathCombination element)
-		{
-			return new DslModeling::LinkedElementCollection<RolePathComponent>(element, CombinationDomainRoleId);
-		}
-		#endregion
-		#region SetProjection domain property code
-		
-		/// <summary>
-		/// SetProjection domain property Id.
-		/// </summary>
-		public static readonly global::System.Guid SetProjectionDomainPropertyId = new global::System.Guid(0x0f869575, 0x7239, 0x413b, 0x92, 0x9a, 0xd3, 0x69, 0x49, 0x97, 0x41, 0x21);
-		
-		/// <summary>
-		/// Storage for SetProjection
-		/// </summary>
-		private global::System.Boolean setProjectionPropertyStorage;
-		
-		/// <summary>
-		/// Gets or sets the value of SetProjection domain property.
-		/// The combination uses distinct results from the combined path.
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasPathComponent/SetProjection.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasPathComponent/SetProjection.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainObjectId("0f869575-7239-413b-929a-d36949974121")]
-		public global::System.Boolean SetProjection
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return setProjectionPropertyStorage;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				SetProjectionPropertyHandler.Instance.SetValue(this, value);
-			}
-		}
-		/// <summary>
-		/// Value handler for the RolePathCombinationHasPathComponent.SetProjection domain property.
-		/// </summary>
-		internal sealed partial class SetProjectionPropertyHandler : DslModeling::DomainPropertyValueHandler<RolePathCombinationHasPathComponent, global::System.Boolean>
-		{
-			private SetProjectionPropertyHandler() { }
-		
-			/// <summary>
-			/// Gets the singleton instance of the RolePathCombinationHasPathComponent.SetProjection domain property value handler.
-			/// </summary>
-			public static readonly SetProjectionPropertyHandler Instance = new SetProjectionPropertyHandler();
-		
-			/// <summary>
-			/// Gets the Id of the RolePathCombinationHasPathComponent.SetProjection domain property.
-			/// </summary>
-			public sealed override global::System.Guid DomainPropertyId
-			{
-				[global::System.Diagnostics.DebuggerStepThrough]
-				get
-				{
-					return SetProjectionDomainPropertyId;
-				}
-			}
-			
-			/// <summary>
-			/// Gets a strongly-typed value of the property on specified element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <returns>Property value.</returns>
-			public override sealed global::System.Boolean GetValue(RolePathCombinationHasPathComponent element)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.setProjectionPropertyStorage;
-			}
-		
-			/// <summary>
-			/// Sets property value on an element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(RolePathCombinationHasPathComponent element, global::System.Boolean newValue)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-		
-				global::System.Boolean oldValue = GetValue(element);
-				if (newValue != oldValue)
-				{
-					ValueChanging(element, oldValue, newValue);
-					element.setProjectionPropertyStorage = newValue;
-					ValueChanged(element, oldValue, newValue);
-				}
-			}
-		}
-		
-		#endregion
-		#region Combination link accessor
-		/// <summary>
-		/// Get the list of RolePathCombinationHasPathComponent links to a RolePathCombination.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasPathComponent> GetLinksToPathComponentCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombination combinationInstance )
-		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasPathComponent>(combinationInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasPathComponent.CombinationDomainRoleId);
-		}
-		#endregion
-		#region PathComponent link accessor
-		/// <summary>
-		/// Get the list of RolePathCombinationHasPathComponent links to a RolePathComponent.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasPathComponent> GetLinksToRolePathCombinationCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent pathComponentInstance )
-		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasPathComponent>(pathComponentInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasPathComponent.PathComponentDomainRoleId);
-		}
-		#endregion
-		#region RolePathCombinationHasPathComponent instance accessors
-		
-		/// <summary>
-		/// Get any RolePathCombinationHasPathComponent links between a given RolePathCombination and a RolePathComponent.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasPathComponent> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombination source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent target )
-		{
-			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasPathComponent> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasPathComponent>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasPathComponent> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasPathComponent>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasPathComponent.CombinationDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasPathComponent link in links )
-			{
-				if ( target.Equals(link.PathComponent) )
-				{
-					outLinks.Add(link);
-				}
-			}
-			return outLinks.AsReadOnly();
-		}
-		/// <summary>
-		/// Get the one RolePathCombinationHasPathComponent link between a given RolePathCombinationand a RolePathComponent.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasPathComponent GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombination source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent target )
-		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasPathComponent> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasPathComponent>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasPathComponent.CombinationDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasPathComponent link in links )
-			{
-				if ( target.Equals(link.PathComponent) )
-				{
-					return link;
-				}
-			}
-			return null;
-		}
-		
-		#endregion
-	}
-}
-namespace ORMSolutions.ORMArchitect.Core.ObjectModel
-{
-	/// <summary>
-	/// DomainRelationship RolePathCombinationHasCorrelation
-	/// Description for
-	/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasCorrelation
-	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasCorrelation.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasCorrelation.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
-	[DslModeling::DomainObjectId("d52bed9f-2867-49f2-a6e6-a79415c837c6")]
-	public partial class RolePathCombinationHasCorrelation : DslModeling::ElementLink
-	{
-		#region Constructors, domain class Id
-		
-		/// <summary>
-		/// RolePathCombinationHasCorrelation domain class Id.
-		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xd52bed9f, 0x2867, 0x49f2, 0xa6, 0xe6, 0xa7, 0x94, 0x15, 0xc8, 0x37, 0xc6);
-	
-				
-		/// <summary>
-		/// Constructor
-		/// Creates a RolePathCombinationHasCorrelation link in the same Partition as the given RolePathCombination
-		/// </summary>
-		/// <param name="source">RolePathCombination to use as the source of the relationship.</param>
-		/// <param name="target">RolePathCombinationCorrelation to use as the target of the relationship.</param>
-		public RolePathCombinationHasCorrelation(RolePathCombination source, RolePathCombinationCorrelation target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(RolePathCombinationHasCorrelation.CombinationDomainRoleId, source), new DslModeling::RoleAssignment(RolePathCombinationHasCorrelation.CorrelationDomainRoleId, target)}, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public RolePathCombinationHasCorrelation(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public RolePathCombinationHasCorrelation(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public RolePathCombinationHasCorrelation(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(partition, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public RolePathCombinationHasCorrelation(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(partition, roleAssignments, propertyAssignments)
-		{
-		}
-		#endregion
-		#region Combination domain role code
-		
-		/// <summary>
-		/// Combination domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid CombinationDomainRoleId = new global::System.Guid(0xccf622d2, 0x2cea, 0x46ee, 0x9e, 0xab, 0x9d, 0x11, 0x53, 0x1f, 0x48, 0xe6);
-		
-		/// <summary>
-		/// DomainRole Combination
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasCorrelation.Combination
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasCorrelation/Combination.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasCorrelation/Combination.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "CorrelationCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasCorrelation/Combination.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
-		[DslModeling::DomainObjectId("ccf622d2-2cea-46ee-9eab-9d11531f48e6")]
-		public virtual RolePathCombination Combination
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (RolePathCombination)DslModeling::DomainRoleInfo.GetRolePlayer(this, CombinationDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, CombinationDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access Combination of a RolePathCombinationCorrelation
-		/// <summary>
-		/// Gets Combination.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static RolePathCombination GetCombination(RolePathCombinationCorrelation element)
-		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, CorrelationDomainRoleId) as RolePathCombination;
-		}
-		
-		/// <summary>
-		/// Sets Combination.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetCombination(RolePathCombinationCorrelation element, RolePathCombination newCombination)
-		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, CorrelationDomainRoleId, newCombination);
-		}
-		#endregion
-		#region Correlation domain role code
-		
-		/// <summary>
-		/// Correlation domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid CorrelationDomainRoleId = new global::System.Guid(0xa850c632, 0xc1f6, 0x4930, 0x9c, 0x2e, 0x7d, 0x8b, 0xfa, 0xbb, 0x3c, 0x93);
-		
-		/// <summary>
-		/// DomainRole Correlation
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasCorrelation.Correlation
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasCorrelation/Correlation.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasCorrelation/Correlation.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Combination", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasCorrelation/Correlation.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
-		[DslModeling::DomainObjectId("a850c632-c1f6-4930-9c2e-7d8bfabb3c93")]
-		public virtual RolePathCombinationCorrelation Correlation
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (RolePathCombinationCorrelation)DslModeling::DomainRoleInfo.GetRolePlayer(this, CorrelationDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, CorrelationDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access CorrelationCollection of a RolePathCombination
-		/// <summary>
-		/// Gets a list of CorrelationCollection.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<RolePathCombinationCorrelation> GetCorrelationCollection(RolePathCombination element)
-		{
-			return new DslModeling::LinkedElementCollection<RolePathCombinationCorrelation>(element, CombinationDomainRoleId);
-		}
-		#endregion
-		#region Combination link accessor
-		/// <summary>
-		/// Get the list of RolePathCombinationHasCorrelation links to a RolePathCombination.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasCorrelation> GetLinksToCorrelationCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombination combinationInstance )
-		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasCorrelation>(combinationInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasCorrelation.CombinationDomainRoleId);
-		}
-		#endregion
-		#region Correlation link accessor
-		/// <summary>
-		/// Get the RolePathCombinationHasCorrelation link to a RolePathCombinationCorrelation.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasCorrelation GetLinkToCombination (global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelation correlationInstance)
-		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasCorrelation> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasCorrelation>(correlationInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasCorrelation.CorrelationDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Correlation not obeyed.");
-			if ( links.Count == 0 )
-			{
-				return null;
-			}
-			else
-			{
-				return links[0];
-			}
-		}
-		#endregion
-		#region RolePathCombinationHasCorrelation instance accessors
-		
-		/// <summary>
-		/// Get any RolePathCombinationHasCorrelation links between a given RolePathCombination and a RolePathCombinationCorrelation.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasCorrelation> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombination source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelation target )
-		{
-			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasCorrelation> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasCorrelation>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasCorrelation> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasCorrelation>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasCorrelation.CombinationDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasCorrelation link in links )
-			{
-				if ( target.Equals(link.Correlation) )
-				{
-					outLinks.Add(link);
-				}
-			}
-			return outLinks.AsReadOnly();
-		}
-		/// <summary>
-		/// Get the one RolePathCombinationHasCorrelation link between a given RolePathCombinationand a RolePathCombinationCorrelation.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasCorrelation GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombination source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelation target )
-		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasCorrelation> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasCorrelation>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasCorrelation.CombinationDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationHasCorrelation link in links )
-			{
-				if ( target.Equals(link.Correlation) )
-				{
-					return link;
-				}
-			}
-			return null;
-		}
-		
-		#endregion
-	}
-}
-namespace ORMSolutions.ORMArchitect.Core.ObjectModel
-{
-	/// <summary>
-	/// DomainRelationship RolePathCombinationCorrelationCorrelatesPathedRole
-	/// Description for
-	/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelationCorrelatesPathedRole
-	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelationCorrelatesPathedRole.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelationCorrelatesPathedRole.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship()]
-	[DslModeling::DomainObjectId("ad8cf1cb-5981-490e-a2bd-9eef31ee0f39")]
-	public partial class RolePathCombinationCorrelationCorrelatesPathedRole : DslModeling::ElementLink
-	{
-		#region Constructors, domain class Id
-		
-		/// <summary>
-		/// RolePathCombinationCorrelationCorrelatesPathedRole domain class Id.
-		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xad8cf1cb, 0x5981, 0x490e, 0xa2, 0xbd, 0x9e, 0xef, 0x31, 0xee, 0x0f, 0x39);
-	
-				
-		/// <summary>
-		/// Constructor
-		/// Creates a RolePathCombinationCorrelationCorrelatesPathedRole link in the same Partition as the given RolePathCombinationCorrelation
-		/// </summary>
-		/// <param name="source">RolePathCombinationCorrelation to use as the source of the relationship.</param>
-		/// <param name="target">PathedRole to use as the target of the relationship.</param>
-		public RolePathCombinationCorrelationCorrelatesPathedRole(RolePathCombinationCorrelation source, PathedRole target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(RolePathCombinationCorrelationCorrelatesPathedRole.CorrelationDomainRoleId, source), new DslModeling::RoleAssignment(RolePathCombinationCorrelationCorrelatesPathedRole.PathedRoleDomainRoleId, target)}, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public RolePathCombinationCorrelationCorrelatesPathedRole(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public RolePathCombinationCorrelationCorrelatesPathedRole(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public RolePathCombinationCorrelationCorrelatesPathedRole(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(partition, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public RolePathCombinationCorrelationCorrelatesPathedRole(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(partition, roleAssignments, propertyAssignments)
-		{
-		}
-		#endregion
-		#region Correlation domain role code
-		
-		/// <summary>
-		/// Correlation domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid CorrelationDomainRoleId = new global::System.Guid(0xb8d4ef53, 0x2733, 0x444d, 0xbf, 0x4f, 0x87, 0x83, 0xdd, 0x2e, 0xdb, 0xa4);
-		
-		/// <summary>
-		/// DomainRole Correlation
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelationCorrelatesPathedRole.Correlation
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelationCorrelatesPathedRole/Correlation.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelationCorrelatesPathedRole/Correlation.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "CorrelatedRoleCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelationCorrelatesPathedRole/Correlation.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
-		[DslModeling::DomainObjectId("b8d4ef53-2733-444d-bf4f-8783dd2edba4")]
-		public virtual RolePathCombinationCorrelation Correlation
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (RolePathCombinationCorrelation)DslModeling::DomainRoleInfo.GetRolePlayer(this, CorrelationDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, CorrelationDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access CombinationCorrelationCollection of a PathedRole
-		/// <summary>
-		/// Gets a list of CombinationCorrelationCollection.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<RolePathCombinationCorrelation> GetCombinationCorrelationCollection(PathedRole element)
-		{
-			return new DslModeling::LinkedElementCollection<RolePathCombinationCorrelation>(element, PathedRoleDomainRoleId);
-		}
-		#endregion
-		#region PathedRole domain role code
-		
-		/// <summary>
-		/// PathedRole domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid PathedRoleDomainRoleId = new global::System.Guid(0xf03ffa1c, 0xb024, 0x4874, 0xb9, 0xf0, 0x81, 0xf3, 0x3b, 0x40, 0xac, 0x6d);
-		
-		/// <summary>
-		/// DomainRole PathedRole
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelationCorrelatesPathedRole.PathedRole
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelationCorrelatesPathedRole/PathedRole.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelationCorrelatesPathedRole/PathedRole.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "CombinationCorrelationCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelationCorrelatesPathedRole/PathedRole.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
-		[DslModeling::DomainObjectId("f03ffa1c-b024-4874-b9f0-81f33b40ac6d")]
-		public virtual PathedRole PathedRole
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (PathedRole)DslModeling::DomainRoleInfo.GetRolePlayer(this, PathedRoleDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, PathedRoleDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access CorrelatedRoleCollection of a RolePathCombinationCorrelation
-		/// <summary>
-		/// Gets a list of CorrelatedRoleCollection.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<PathedRole> GetCorrelatedRoleCollection(RolePathCombinationCorrelation element)
-		{
-			return new DslModeling::LinkedElementCollection<PathedRole>(element, CorrelationDomainRoleId);
-		}
-		#endregion
-		#region Correlation link accessor
-		/// <summary>
-		/// Get the list of RolePathCombinationCorrelationCorrelatesPathedRole links to a RolePathCombinationCorrelation.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelationCorrelatesPathedRole> GetLinksToCorrelatedRoleCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelation correlationInstance )
-		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelationCorrelatesPathedRole>(correlationInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelationCorrelatesPathedRole.CorrelationDomainRoleId);
-		}
-		#endregion
-		#region PathedRole link accessor
-		/// <summary>
-		/// Get the list of RolePathCombinationCorrelationCorrelatesPathedRole links to a PathedRole.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelationCorrelatesPathedRole> GetLinksToCombinationCorrelationCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole pathedRoleInstance )
-		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelationCorrelatesPathedRole>(pathedRoleInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelationCorrelatesPathedRole.PathedRoleDomainRoleId);
-		}
-		#endregion
-		#region RolePathCombinationCorrelationCorrelatesPathedRole instance accessors
-		
-		/// <summary>
-		/// Get any RolePathCombinationCorrelationCorrelatesPathedRole links between a given RolePathCombinationCorrelation and a PathedRole.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelationCorrelatesPathedRole> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelation source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole target )
-		{
-			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelationCorrelatesPathedRole> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelationCorrelatesPathedRole>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelationCorrelatesPathedRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelationCorrelatesPathedRole>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelationCorrelatesPathedRole.CorrelationDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelationCorrelatesPathedRole link in links )
-			{
-				if ( target.Equals(link.PathedRole) )
-				{
-					outLinks.Add(link);
-				}
-			}
-			return outLinks.AsReadOnly();
-		}
-		/// <summary>
-		/// Get the one RolePathCombinationCorrelationCorrelatesPathedRole link between a given RolePathCombinationCorrelationand a PathedRole.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelationCorrelatesPathedRole GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelation source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole target )
-		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelationCorrelatesPathedRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelationCorrelatesPathedRole>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelationCorrelatesPathedRole.CorrelationDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelationCorrelatesPathedRole link in links )
-			{
-				if ( target.Equals(link.PathedRole) )
-				{
-					return link;
-				}
-			}
-			return null;
-		}
-		
-		#endregion
-	}
-}
-namespace ORMSolutions.ORMArchitect.Core.ObjectModel
-{
-	/// <summary>
-	/// DomainRelationship LeadRolePathHasRootObjectType
-	/// Description for
-	/// ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType
-	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("4ffd036f-fc35-41af-a318-27db84e2d7b4")]
-	public partial class LeadRolePathHasRootObjectType : DslModeling::ElementLink
+	public partial class RolePathObjectTypeRoot : DslModeling::ElementLink
 	{
 		#region Constructors, domain class Id
 		
 		/// <summary>
-		/// LeadRolePathHasRootObjectType domain class Id.
+		/// RolePathObjectTypeRoot domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x4ffd036f, 0xfc35, 0x41af, 0xa3, 0x18, 0x27, 0xdb, 0x84, 0xe2, 0xd7, 0xb4);
 	
 				
 		/// <summary>
 		/// Constructor
-		/// Creates a LeadRolePathHasRootObjectType link in the same Partition as the given LeadRolePath
+		/// Creates a RolePathObjectTypeRoot link in the same Partition as the given RolePath
 		/// </summary>
-		/// <param name="source">LeadRolePath to use as the source of the relationship.</param>
+		/// <param name="source">RolePath to use as the source of the relationship.</param>
 		/// <param name="target">ObjectType to use as the target of the relationship.</param>
-		public LeadRolePathHasRootObjectType(LeadRolePath source, ObjectType target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(LeadRolePathHasRootObjectType.LeadRolePathDomainRoleId, source), new DslModeling::RoleAssignment(LeadRolePathHasRootObjectType.RootObjectTypeDomainRoleId, target)}, null)
+		public RolePathObjectTypeRoot(RolePath source, ObjectType target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(RolePathObjectTypeRoot.RolePathDomainRoleId, source), new DslModeling::RoleAssignment(RolePathObjectTypeRoot.RootObjectTypeDomainRoleId, target)}, null)
 		{
 		}
 		
@@ -42037,7 +41060,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public LeadRolePathHasRootObjectType(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+		public RolePathObjectTypeRoot(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
 		{
 		}
@@ -42048,7 +41071,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public LeadRolePathHasRootObjectType(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public RolePathObjectTypeRoot(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
 		{
 		}
@@ -42058,7 +41081,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public LeadRolePathHasRootObjectType(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+		public RolePathObjectTypeRoot(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(partition, roleAssignments, null)
 		{
 		}
@@ -42069,51 +41092,51 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public LeadRolePathHasRootObjectType(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public RolePathObjectTypeRoot(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, roleAssignments, propertyAssignments)
 		{
 		}
 		#endregion
-		#region LeadRolePath domain role code
+		#region RolePath domain role code
 		
 		/// <summary>
-		/// LeadRolePath domain role Id.
+		/// RolePath domain role Id.
 		/// </summary>
-		public static readonly global::System.Guid LeadRolePathDomainRoleId = new global::System.Guid(0x1f8ddc17, 0x4be8, 0x4bd6, 0x87, 0xd2, 0x96, 0x00, 0x58, 0xbf, 0x9f, 0x5b);
+		public static readonly global::System.Guid RolePathDomainRoleId = new global::System.Guid(0x1f8ddc17, 0x4be8, 0x4bd6, 0x87, 0xd2, 0x96, 0x00, 0x58, 0xbf, 0x9f, 0x5b);
 		
 		/// <summary>
-		/// DomainRole LeadRolePath
+		/// DomainRole RolePath
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType.LeadRolePath
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot.RolePath
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType/LeadRolePath.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType/LeadRolePath.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "RootObjectType", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType/LeadRolePath.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot/RolePath.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot/RolePath.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "RootObjectType", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot/RolePath.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("1f8ddc17-4be8-4bd6-87d2-960058bf9f5b")]
-		public virtual LeadRolePath LeadRolePath
+		public virtual RolePath RolePath
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (LeadRolePath)DslModeling::DomainRoleInfo.GetRolePlayer(this, LeadRolePathDomainRoleId);
+				return (RolePath)DslModeling::DomainRoleInfo.GetRolePlayer(this, RolePathDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, LeadRolePathDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, RolePathDomainRoleId, value);
 			}
 		}
 				
 		#endregion
-		#region Static methods to access LeadRolePathCollection of a ObjectType
+		#region Static methods to access RolePathCollection of a ObjectType
 		/// <summary>
-		/// Gets a list of LeadRolePathCollection.
+		/// Gets a list of RolePathCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<LeadRolePath> GetLeadRolePathCollection(ObjectType element)
+		public static DslModeling::LinkedElementCollection<RolePath> GetRolePathCollection(ObjectType element)
 		{
-			return new DslModeling::LinkedElementCollection<LeadRolePath>(element, RootObjectTypeDomainRoleId);
+			return new DslModeling::LinkedElementCollection<RolePath>(element, RootObjectTypeDomainRoleId);
 		}
 		#endregion
 		#region RootObjectType domain role code
@@ -42126,11 +41149,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// DomainRole RootObjectType
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType.RootObjectType
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot.RootObjectType
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType/RootObjectType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType/RootObjectType.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "LeadRolePathCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType/RootObjectType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot/RootObjectType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot/RootObjectType.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "RolePathCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot/RootObjectType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("7c63fedf-5f2c-4c95-82b5-d20ab15b2a03")]
 		public virtual ObjectType RootObjectType
 		{
@@ -42147,15 +41170,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 				
 		#endregion
-		#region Static methods to access RootObjectType of a LeadRolePath
+		#region Static methods to access RootObjectType of a RolePath
 		/// <summary>
 		/// Gets RootObjectType.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static ObjectType GetRootObjectType(LeadRolePath element)
+		public static ObjectType GetRootObjectType(RolePath element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, LeadRolePathDomainRoleId) as ObjectType;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, RolePathDomainRoleId) as ObjectType;
 		}
 		
 		/// <summary>
@@ -42163,21 +41186,143 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetRootObjectType(LeadRolePath element, ObjectType newRootObjectType)
+		public static void SetRootObjectType(RolePath element, ObjectType newRootObjectType)
 		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, LeadRolePathDomainRoleId, newRootObjectType);
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, RolePathDomainRoleId, newRootObjectType);
 		}
 		#endregion
-		#region LeadRolePath link accessor
+		#region IsNegated domain property code
+		
 		/// <summary>
-		/// Get the LeadRolePathHasRootObjectType link to a LeadRolePath.
+		/// IsNegated domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid IsNegatedDomainPropertyId = new global::System.Guid(0x0ca66a3f, 0x586d, 0x433c, 0xa8, 0x29, 0xb9, 0x69, 0x8d, 0xe2, 0xac, 0xb3);
+		
+		/// <summary>
+		/// Storage for IsNegated
+		/// </summary>
+		private global::System.Boolean isNegatedPropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of IsNegated domain property.
+		/// Indicates a negated path root.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot/IsNegated.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot/IsNegated.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainObjectId("0ca66a3f-586d-433c-a829-b9698de2acb3")]
+		public global::System.Boolean IsNegated
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return isNegatedPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				IsNegatedPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the RolePathObjectTypeRoot.IsNegated domain property.
+		/// </summary>
+		internal sealed partial class IsNegatedPropertyHandler : DslModeling::DomainPropertyValueHandler<RolePathObjectTypeRoot, global::System.Boolean>
+		{
+			private IsNegatedPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the RolePathObjectTypeRoot.IsNegated domain property value handler.
+			/// </summary>
+			public static readonly IsNegatedPropertyHandler Instance = new IsNegatedPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the RolePathObjectTypeRoot.IsNegated domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return IsNegatedDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(RolePathObjectTypeRoot element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.isNegatedPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(RolePathObjectTypeRoot element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.isNegatedPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region Accessors for roles that this REL plays in other RELs
+		#region ObjectUnifier opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ObjectUnifier.
+		/// The object unifier used to correlate this role path root with other path nodes.
+		/// </summary>
+		public virtual PathObjectUnifier ObjectUnifier
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesRolePathRoot.PathRootDomainRoleId) as PathObjectUnifier;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesRolePathRoot.PathRootDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region BoundInputCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of BoundInputCollection.
+		/// The calculated value inputs bound to this role path root node.
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<CalculatedPathValueInput> BoundInputCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<CalculatedPathValueInput>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToRolePathRoot.SourceDomainRoleId);
+			}
+		}
+		#endregion
+		#endregion
+		#region RolePath link accessor
+		/// <summary>
+		/// Get the RolePathObjectTypeRoot link to a RolePath.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType GetLinkToRootObjectType (global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath leadRolePathInstance)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot GetLinkToRootObjectType (global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePath rolePathInstance)
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType>(leadRolePathInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType.LeadRolePathDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of LeadRolePath not obeyed.");
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot>(rolePathInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot.RolePathDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of RolePath not obeyed.");
 			if ( links.Count == 0 )
 			{
 				return null;
@@ -42190,27 +41335,27 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion
 		#region RootObjectType link accessor
 		/// <summary>
-		/// Get the list of LeadRolePathHasRootObjectType links to a ObjectType.
+		/// Get the list of RolePathObjectTypeRoot links to a ObjectType.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType> GetLinksToLeadRolePathCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType rootObjectTypeInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot> GetLinksToRolePathCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType rootObjectTypeInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType>(rootObjectTypeInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType.RootObjectTypeDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot>(rootObjectTypeInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot.RootObjectTypeDomainRoleId);
 		}
 		#endregion
-		#region LeadRolePathHasRootObjectType instance accessors
+		#region RolePathObjectTypeRoot instance accessors
 		
 		/// <summary>
-		/// Get any LeadRolePathHasRootObjectType links between a given LeadRolePath and a ObjectType.
+		/// Get any RolePathObjectTypeRoot links between a given RolePath and a ObjectType.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePath source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType target )
 		{
-			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType.LeadRolePathDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot.RolePathDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot link in links )
 			{
 				if ( target.Equals(link.RootObjectType) )
 				{
@@ -42220,14 +41365,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one LeadRolePathHasRootObjectType link between a given LeadRolePathand a ObjectType.
+		/// Get the one RolePathObjectTypeRoot link between a given RolePathand a ObjectType.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType target )
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePath source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType target )
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType.LeadRolePathDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectType link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot.RolePathDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot link in links )
 			{
 				if ( target.Equals(link.RootObjectType) )
 				{
@@ -42498,7 +41643,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of PathedRolePurpose domain property.
-		/// Specifies how this pathed role relates to the previous pathed role.
+		/// Specifies how this pathed role relates to the previous pathed role or path root.
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole/PathedRolePurpose.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole/PathedRolePurpose.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
@@ -42573,66 +41718,54 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		
 		#endregion
 		#region Accessors for roles that this REL plays in other RELs
-		#region ValueConstraintCollection opposite domain role accessor
+		#region ValueConstraint opposite domain role accessor
 		/// <summary>
-		/// Gets a list of ValueConstraintCollection.
+		/// Gets or sets ValueConstraint.
 		/// Description for
 		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint.PathedRole
 		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<PathConditionRoleValueConstraint> ValueConstraintCollection
+		public virtual PathConditionRoleValueConstraint ValueConstraint
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::LinkedElementCollection<PathConditionRoleValueConstraint>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint.PathedRoleDomainRoleId);
-			}
-		}
-		#endregion
-		#region CombinationCorrelationCollection opposite domain role accessor
-		/// <summary>
-		/// Gets a list of CombinationCorrelationCollection.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelationCorrelatesPathedRole.PathedRole
-		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<RolePathCombinationCorrelation> CombinationCorrelationCollection
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return new DslModeling::LinkedElementCollection<RolePathCombinationCorrelation>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathCombinationCorrelationCorrelatesPathedRole.PathedRoleDomainRoleId);
-			}
-		}
-		#endregion
-		#region CorrelatingParent opposite domain role accessor
-		/// <summary>
-		/// Gets or sets CorrelatingParent.
-		/// The parent node this pathed role is correlated with.
-		/// </summary>
-		public virtual PathedRole CorrelatingParent
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole.CorrelatedChildDomainRoleId) as PathedRole;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint.PathedRoleDomainRoleId) as PathConditionRoleValueConstraint;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole.CorrelatedChildDomainRoleId, value);
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint.ValueConstraintDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint.ValueConstraintDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint.PathedRoleDomainRoleId, value);
+				}
 			}
 		}
 		#endregion
-		#region CorrelatedChildCollection opposite domain role accessor
+		#region ObjectUnifier opposite domain role accessor
 		/// <summary>
-		/// Gets a list of CorrelatedChildCollection.
-		/// All pathed roles that are directly correlated with this pathed role.
+		/// Gets or sets ObjectUnifier.
+		/// The object unifier used to correlate this pathed role with other path nodes.
 		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<PathedRole> CorrelatedChildCollection
+		public virtual PathObjectUnifier ObjectUnifier
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::LinkedElementCollection<PathedRole>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole.CorrelatingParentDomainRoleId);
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesPathedRole.PathedRoleDomainRoleId) as PathObjectUnifier;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesPathedRole.PathedRoleDomainRoleId, value);
 			}
 		}
 		#endregion
@@ -42696,38 +41829,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
-		#region CorrelationCompatibilityError opposite domain role accessor
-		/// <summary>
-		/// Gets or sets CorrelationCompatibilityError.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError.PathedRole
-		/// </summary>
-		public virtual CorrelatedPathRoleRequiresCompatibleRolePlayerError CorrelationCompatibilityError
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError.PathedRoleDomainRoleId) as CorrelatedPathRoleRequiresCompatibleRolePlayerError;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::ModelElement existingSource;
-				if (null != value &&
-					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError.CorrelationCompatibilityErrorDomainRoleId)))
-				{
-					if (existingSource != value)
-					{
-						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError.CorrelationCompatibilityErrorDomainRoleId, this);
-					}
-				}
-				else
-				{
-					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError.PathedRoleDomainRoleId, value);
-				}
-			}
-		}
-		#endregion
 		#region SameFactTypeRoleWithoutJoinError opposite domain role accessor
 		/// <summary>
 		/// Gets or sets SameFactTypeRoleWithoutJoinError.
@@ -42756,38 +41857,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				else
 				{
 					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasSameFactTypeFollowsJoinError.PathedRoleDomainRoleId, value);
-				}
-			}
-		}
-		#endregion
-		#region StartRoleError opposite domain role accessor
-		/// <summary>
-		/// Gets or sets StartRoleError.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError.PathedRole
-		/// </summary>
-		public virtual PathStartRoleFollowsRootObjectTypeError StartRoleError
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError.PathedRoleDomainRoleId) as PathStartRoleFollowsRootObjectTypeError;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::ModelElement existingSource;
-				if (null != value &&
-					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError.StartRoleErrorDomainRoleId)))
-				{
-					if (existingSource != value)
-					{
-						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError.StartRoleErrorDomainRoleId, this);
-					}
-				}
-				else
-				{
-					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError.PathedRoleDomainRoleId, value);
 				}
 			}
 		}
@@ -42873,33 +41942,33 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
-	/// DomainRelationship PathedRoleIsRemotelyCorrelatedWithPathedRole
+	/// DomainRelationship PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated
 	/// Description for
-	/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated
 	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("8019dba6-0330-4dd5-abc8-27197537008d")]
-	public partial class PathedRoleIsRemotelyCorrelatedWithPathedRole : DslModeling::ElementLink
+	public partial class PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated : DslModeling::ElementLink
 	{
 		#region Constructors, domain class Id
 		
 		/// <summary>
-		/// PathedRoleIsRemotelyCorrelatedWithPathedRole domain class Id.
+		/// PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x8019dba6, 0x0330, 0x4dd5, 0xab, 0xc8, 0x27, 0x19, 0x75, 0x37, 0x00, 0x8d);
 	
 				
 		/// <summary>
 		/// Constructor
-		/// Creates a PathedRoleIsRemotelyCorrelatedWithPathedRole link in the same Partition as the given PathedRole
+		/// Creates a PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated link in the same Partition as the given PathedRole
 		/// </summary>
 		/// <param name="source">PathedRole to use as the source of the relationship.</param>
 		/// <param name="target">PathedRole to use as the target of the relationship.</param>
-		public PathedRoleIsRemotelyCorrelatedWithPathedRole(PathedRole source, PathedRole target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(PathedRoleIsRemotelyCorrelatedWithPathedRole.CorrelatedChildDomainRoleId, source), new DslModeling::RoleAssignment(PathedRoleIsRemotelyCorrelatedWithPathedRole.CorrelatingParentDomainRoleId, target)}, null)
+		public PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated(PathedRole source, PathedRole target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated.CorrelatedChildDomainRoleId, source), new DslModeling::RoleAssignment(PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated.CorrelatingParentDomainRoleId, target)}, null)
 		{
 		}
 		
@@ -42908,7 +41977,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public PathedRoleIsRemotelyCorrelatedWithPathedRole(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+		public PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
 		{
 		}
@@ -42919,7 +41988,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public PathedRoleIsRemotelyCorrelatedWithPathedRole(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
 		{
 		}
@@ -42929,7 +41998,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public PathedRoleIsRemotelyCorrelatedWithPathedRole(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+		public PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(partition, roleAssignments, null)
 		{
 		}
@@ -42940,7 +42009,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public PathedRoleIsRemotelyCorrelatedWithPathedRole(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, roleAssignments, propertyAssignments)
 		{
 		}
@@ -42956,9 +42025,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// DomainRole CorrelatedChild
 		/// The parent node this pathed role is correlated with.
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole/CorrelatedChild.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole/CorrelatedChild.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "CorrelatingParent", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole/CorrelatedChild.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated/CorrelatedChild.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated/CorrelatedChild.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "CorrelatingParent", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated/CorrelatedChild.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("9071c1b5-9d76-496b-b3dc-5accda9a3d23")]
 		public virtual PathedRole CorrelatedChild
 		{
@@ -42997,9 +42066,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// DomainRole CorrelatingParent
 		/// All pathed roles that are directly correlated with this pathed role.
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole/CorrelatingParent.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole/CorrelatingParent.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "CorrelatedChildCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole/CorrelatingParent.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated/CorrelatingParent.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated/CorrelatingParent.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "CorrelatedChildCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated/CorrelatingParent.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("6eff9dcc-4bb7-4406-9e90-794681036c51")]
 		public virtual PathedRole CorrelatingParent
 		{
@@ -43039,13 +42108,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion
 		#region CorrelatedChild link accessor
 		/// <summary>
-		/// Get the PathedRoleIsRemotelyCorrelatedWithPathedRole link to a PathedRole.
+		/// Get the PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated link to a PathedRole.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole GetLinkToCorrelatingParent (global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole correlatedChildInstance)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated GetLinkToCorrelatingParent (global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole correlatedChildInstance)
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole>(correlatedChildInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole.CorrelatedChildDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated>(correlatedChildInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated.CorrelatedChildDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of CorrelatedChild not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -43059,27 +42128,27 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion
 		#region CorrelatingParent link accessor
 		/// <summary>
-		/// Get the list of PathedRoleIsRemotelyCorrelatedWithPathedRole links to a PathedRole.
+		/// Get the list of PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated links to a PathedRole.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole> GetLinksToCorrelatedChildCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole correlatingParentInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated> GetLinksToCorrelatedChildCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole correlatingParentInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole>(correlatingParentInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole.CorrelatingParentDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated>(correlatingParentInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated.CorrelatingParentDomainRoleId);
 		}
 		#endregion
-		#region PathedRoleIsRemotelyCorrelatedWithPathedRole instance accessors
+		#region PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated instance accessors
 		
 		/// <summary>
-		/// Get any PathedRoleIsRemotelyCorrelatedWithPathedRole links between a given PathedRole and a PathedRole.
+		/// Get any PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated links between a given PathedRole and a PathedRole.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole target )
 		{
-			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole.CorrelatedChildDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated.CorrelatedChildDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated link in links )
 			{
 				if ( target.Equals(link.CorrelatingParent) )
 				{
@@ -43089,16 +42158,733 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one PathedRoleIsRemotelyCorrelatedWithPathedRole link between a given PathedRoleand a PathedRole.
+		/// Get the one PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated link between a given PathedRoleand a PathedRole.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole target )
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole target )
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole.CorrelatedChildDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated.CorrelatedChildDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated link in links )
 			{
 				if ( target.Equals(link.CorrelatingParent) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship LeadRolePathHasObjectUnifier
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasObjectUnifier
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasObjectUnifier.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasObjectUnifier.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("4b7c3724-8c8d-4f50-8ee6-668fa0f8cb1f")]
+	public partial class LeadRolePathHasObjectUnifier : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// LeadRolePathHasObjectUnifier domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x4b7c3724, 0x8c8d, 0x4f50, 0x8e, 0xe6, 0x66, 0x8f, 0xa0, 0xf8, 0xcb, 0x1f);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a LeadRolePathHasObjectUnifier link in the same Partition as the given LeadRolePath
+		/// </summary>
+		/// <param name="source">LeadRolePath to use as the source of the relationship.</param>
+		/// <param name="target">PathObjectUnifier to use as the target of the relationship.</param>
+		public LeadRolePathHasObjectUnifier(LeadRolePath source, PathObjectUnifier target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(LeadRolePathHasObjectUnifier.LeadRolePathDomainRoleId, source), new DslModeling::RoleAssignment(LeadRolePathHasObjectUnifier.ObjectUnifierDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public LeadRolePathHasObjectUnifier(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public LeadRolePathHasObjectUnifier(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public LeadRolePathHasObjectUnifier(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public LeadRolePathHasObjectUnifier(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region LeadRolePath domain role code
+		
+		/// <summary>
+		/// LeadRolePath domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid LeadRolePathDomainRoleId = new global::System.Guid(0xe5e45a3d, 0x9cfe, 0x4fed, 0x8b, 0x8e, 0xf9, 0x74, 0xb1, 0x59, 0xa7, 0x11);
+		
+		/// <summary>
+		/// DomainRole LeadRolePath
+		/// The object unifier that uses pathed roles and path roots in this role path.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasObjectUnifier/LeadRolePath.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasObjectUnifier/LeadRolePath.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ObjectUnifierCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasObjectUnifier/LeadRolePath.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("e5e45a3d-9cfe-4fed-8b8e-f974b159a711")]
+		public virtual LeadRolePath LeadRolePath
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (LeadRolePath)DslModeling::DomainRoleInfo.GetRolePlayer(this, LeadRolePathDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, LeadRolePathDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access LeadRolePath of a PathObjectUnifier
+		/// <summary>
+		/// Gets LeadRolePath.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static LeadRolePath GetLeadRolePath(PathObjectUnifier element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectUnifierDomainRoleId) as LeadRolePath;
+		}
+		
+		/// <summary>
+		/// Sets LeadRolePath.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetLeadRolePath(PathObjectUnifier element, LeadRolePath newLeadRolePath)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectUnifierDomainRoleId, newLeadRolePath);
+		}
+		#endregion
+		#region ObjectUnifier domain role code
+		
+		/// <summary>
+		/// ObjectUnifier domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ObjectUnifierDomainRoleId = new global::System.Guid(0x766b759d, 0xc29b, 0x4426, 0xb4, 0x7b, 0xfd, 0x02, 0x10, 0xab, 0xec, 0x08);
+		
+		/// <summary>
+		/// DomainRole ObjectUnifier
+		/// The lead role path for this object unifier.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasObjectUnifier/ObjectUnifier.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasObjectUnifier/ObjectUnifier.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "LeadRolePath", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasObjectUnifier/ObjectUnifier.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("766b759d-c29b-4426-b47b-fd0210abec08")]
+		public virtual PathObjectUnifier ObjectUnifier
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (PathObjectUnifier)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectUnifierDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ObjectUnifierDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ObjectUnifierCollection of a LeadRolePath
+		/// <summary>
+		/// Gets a list of ObjectUnifierCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<PathObjectUnifier> GetObjectUnifierCollection(LeadRolePath element)
+		{
+			return new DslModeling::LinkedElementCollection<PathObjectUnifier>(element, LeadRolePathDomainRoleId);
+		}
+		#endregion
+		#region LeadRolePath link accessor
+		/// <summary>
+		/// Get the list of LeadRolePathHasObjectUnifier links to a LeadRolePath.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasObjectUnifier> GetLinksToObjectUnifierCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath leadRolePathInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasObjectUnifier>(leadRolePathInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasObjectUnifier.LeadRolePathDomainRoleId);
+		}
+		#endregion
+		#region ObjectUnifier link accessor
+		/// <summary>
+		/// Get the LeadRolePathHasObjectUnifier link to a PathObjectUnifier.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasObjectUnifier GetLinkToLeadRolePath (global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifier objectUnifierInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasObjectUnifier> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasObjectUnifier>(objectUnifierInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasObjectUnifier.ObjectUnifierDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ObjectUnifier not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region LeadRolePathHasObjectUnifier instance accessors
+		
+		/// <summary>
+		/// Get any LeadRolePathHasObjectUnifier links between a given LeadRolePath and a PathObjectUnifier.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasObjectUnifier> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifier target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasObjectUnifier> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasObjectUnifier>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasObjectUnifier> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasObjectUnifier>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasObjectUnifier.LeadRolePathDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasObjectUnifier link in links )
+			{
+				if ( target.Equals(link.ObjectUnifier) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one LeadRolePathHasObjectUnifier link between a given LeadRolePathand a PathObjectUnifier.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasObjectUnifier GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifier target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasObjectUnifier> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasObjectUnifier>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasObjectUnifier.LeadRolePathDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasObjectUnifier link in links )
+			{
+				if ( target.Equals(link.ObjectUnifier) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship PathObjectUnifierUnifiesPathedRole
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesPathedRole
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesPathedRole.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesPathedRole.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("d307a09c-3f98-4b3d-afd0-db28f7b2e50a")]
+	public partial class PathObjectUnifierUnifiesPathedRole : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// PathObjectUnifierUnifiesPathedRole domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xd307a09c, 0x3f98, 0x4b3d, 0xaf, 0xd0, 0xdb, 0x28, 0xf7, 0xb2, 0xe5, 0x0a);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a PathObjectUnifierUnifiesPathedRole link in the same Partition as the given PathObjectUnifier
+		/// </summary>
+		/// <param name="source">PathObjectUnifier to use as the source of the relationship.</param>
+		/// <param name="target">PathedRole to use as the target of the relationship.</param>
+		public PathObjectUnifierUnifiesPathedRole(PathObjectUnifier source, PathedRole target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(PathObjectUnifierUnifiesPathedRole.ObjectUnifierDomainRoleId, source), new DslModeling::RoleAssignment(PathObjectUnifierUnifiesPathedRole.PathedRoleDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public PathObjectUnifierUnifiesPathedRole(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public PathObjectUnifierUnifiesPathedRole(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public PathObjectUnifierUnifiesPathedRole(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public PathObjectUnifierUnifiesPathedRole(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ObjectUnifier domain role code
+		
+		/// <summary>
+		/// ObjectUnifier domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ObjectUnifierDomainRoleId = new global::System.Guid(0xb66ef79c, 0x9231, 0x4e02, 0xb5, 0xa6, 0xf1, 0x43, 0xdb, 0xdb, 0x3e, 0xe2);
+		
+		/// <summary>
+		/// DomainRole ObjectUnifier
+		/// The unified pathed roles.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesPathedRole/ObjectUnifier.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesPathedRole/ObjectUnifier.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "PathedRoleCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesPathedRole/ObjectUnifier.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("b66ef79c-9231-4e02-b5a6-f143dbdb3ee2")]
+		public virtual PathObjectUnifier ObjectUnifier
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (PathObjectUnifier)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectUnifierDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ObjectUnifierDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ObjectUnifier of a PathedRole
+		/// <summary>
+		/// Gets ObjectUnifier.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static PathObjectUnifier GetObjectUnifier(PathedRole element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, PathedRoleDomainRoleId) as PathObjectUnifier;
+		}
+		
+		/// <summary>
+		/// Sets ObjectUnifier.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetObjectUnifier(PathedRole element, PathObjectUnifier newObjectUnifier)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, PathedRoleDomainRoleId, newObjectUnifier);
+		}
+		#endregion
+		#region PathedRole domain role code
+		
+		/// <summary>
+		/// PathedRole domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid PathedRoleDomainRoleId = new global::System.Guid(0x13762fd7, 0xa9e8, 0x4f59, 0xbb, 0x86, 0x1e, 0xb4, 0xfa, 0x24, 0xdd, 0x75);
+		
+		/// <summary>
+		/// DomainRole PathedRole
+		/// The object unifier used to correlate this pathed role with other path nodes.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesPathedRole/PathedRole.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesPathedRole/PathedRole.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ObjectUnifier", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesPathedRole/PathedRole.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("13762fd7-a9e8-4f59-bb86-1eb4fa24dd75")]
+		public virtual PathedRole PathedRole
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (PathedRole)DslModeling::DomainRoleInfo.GetRolePlayer(this, PathedRoleDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, PathedRoleDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access PathedRoleCollection of a PathObjectUnifier
+		/// <summary>
+		/// Gets a list of PathedRoleCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<PathedRole> GetPathedRoleCollection(PathObjectUnifier element)
+		{
+			return new DslModeling::LinkedElementCollection<PathedRole>(element, ObjectUnifierDomainRoleId);
+		}
+		#endregion
+		#region ObjectUnifier link accessor
+		/// <summary>
+		/// Get the list of PathObjectUnifierUnifiesPathedRole links to a PathObjectUnifier.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesPathedRole> GetLinksToPathedRoleCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifier objectUnifierInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesPathedRole>(objectUnifierInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesPathedRole.ObjectUnifierDomainRoleId);
+		}
+		#endregion
+		#region PathedRole link accessor
+		/// <summary>
+		/// Get the PathObjectUnifierUnifiesPathedRole link to a PathedRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesPathedRole GetLinkToObjectUnifier (global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole pathedRoleInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesPathedRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesPathedRole>(pathedRoleInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesPathedRole.PathedRoleDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of PathedRole not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region PathObjectUnifierUnifiesPathedRole instance accessors
+		
+		/// <summary>
+		/// Get any PathObjectUnifierUnifiesPathedRole links between a given PathObjectUnifier and a PathedRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesPathedRole> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifier source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesPathedRole> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesPathedRole>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesPathedRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesPathedRole>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesPathedRole.ObjectUnifierDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesPathedRole link in links )
+			{
+				if ( target.Equals(link.PathedRole) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one PathObjectUnifierUnifiesPathedRole link between a given PathObjectUnifierand a PathedRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesPathedRole GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifier source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesPathedRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesPathedRole>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesPathedRole.ObjectUnifierDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesPathedRole link in links )
+			{
+				if ( target.Equals(link.PathedRole) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship PathObjectUnifierUnifiesRolePathRoot
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesRolePathRoot
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesRolePathRoot.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesRolePathRoot.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("e3853e06-a1ff-4be8-8fa7-d888ac4f9228")]
+	public partial class PathObjectUnifierUnifiesRolePathRoot : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// PathObjectUnifierUnifiesRolePathRoot domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xe3853e06, 0xa1ff, 0x4be8, 0x8f, 0xa7, 0xd8, 0x88, 0xac, 0x4f, 0x92, 0x28);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a PathObjectUnifierUnifiesRolePathRoot link in the same Partition as the given PathObjectUnifier
+		/// </summary>
+		/// <param name="source">PathObjectUnifier to use as the source of the relationship.</param>
+		/// <param name="target">RolePathObjectTypeRoot to use as the target of the relationship.</param>
+		public PathObjectUnifierUnifiesRolePathRoot(PathObjectUnifier source, RolePathObjectTypeRoot target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(PathObjectUnifierUnifiesRolePathRoot.ObjectUnifierDomainRoleId, source), new DslModeling::RoleAssignment(PathObjectUnifierUnifiesRolePathRoot.PathRootDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public PathObjectUnifierUnifiesRolePathRoot(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public PathObjectUnifierUnifiesRolePathRoot(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public PathObjectUnifierUnifiesRolePathRoot(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public PathObjectUnifierUnifiesRolePathRoot(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ObjectUnifier domain role code
+		
+		/// <summary>
+		/// ObjectUnifier domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ObjectUnifierDomainRoleId = new global::System.Guid(0xe6ccfc94, 0x69b8, 0x426a, 0xae, 0x4d, 0xea, 0x79, 0xb3, 0x0a, 0xe7, 0x2b);
+		
+		/// <summary>
+		/// DomainRole ObjectUnifier
+		/// The unified path roots.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesRolePathRoot/ObjectUnifier.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesRolePathRoot/ObjectUnifier.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "PathRootCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesRolePathRoot/ObjectUnifier.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("e6ccfc94-69b8-426a-ae4d-ea79b30ae72b")]
+		public virtual PathObjectUnifier ObjectUnifier
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (PathObjectUnifier)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectUnifierDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ObjectUnifierDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ObjectUnifier of a RolePathObjectTypeRoot
+		/// <summary>
+		/// Gets ObjectUnifier.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static PathObjectUnifier GetObjectUnifier(RolePathObjectTypeRoot element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, PathRootDomainRoleId) as PathObjectUnifier;
+		}
+		
+		/// <summary>
+		/// Sets ObjectUnifier.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetObjectUnifier(RolePathObjectTypeRoot element, PathObjectUnifier newObjectUnifier)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, PathRootDomainRoleId, newObjectUnifier);
+		}
+		#endregion
+		#region PathRoot domain role code
+		
+		/// <summary>
+		/// PathRoot domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid PathRootDomainRoleId = new global::System.Guid(0x40957b21, 0xd3bd, 0x4151, 0x92, 0x1d, 0xd8, 0xbe, 0xa4, 0x91, 0xe2, 0xd2);
+		
+		/// <summary>
+		/// DomainRole PathRoot
+		/// The object unifier used to correlate this role path root with other path nodes.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesRolePathRoot/PathRoot.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesRolePathRoot/PathRoot.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ObjectUnifier", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesRolePathRoot/PathRoot.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("40957b21-d3bd-4151-921d-d8bea491e2d2")]
+		public virtual RolePathObjectTypeRoot PathRoot
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (RolePathObjectTypeRoot)DslModeling::DomainRoleInfo.GetRolePlayer(this, PathRootDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, PathRootDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access PathRootCollection of a PathObjectUnifier
+		/// <summary>
+		/// Gets a list of PathRootCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<RolePathObjectTypeRoot> GetPathRootCollection(PathObjectUnifier element)
+		{
+			return new DslModeling::LinkedElementCollection<RolePathObjectTypeRoot>(element, ObjectUnifierDomainRoleId);
+		}
+		#endregion
+		#region ObjectUnifier link accessor
+		/// <summary>
+		/// Get the list of PathObjectUnifierUnifiesRolePathRoot links to a PathObjectUnifier.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesRolePathRoot> GetLinksToPathRootCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifier objectUnifierInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesRolePathRoot>(objectUnifierInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesRolePathRoot.ObjectUnifierDomainRoleId);
+		}
+		#endregion
+		#region PathRoot link accessor
+		/// <summary>
+		/// Get the PathObjectUnifierUnifiesRolePathRoot link to a RolePathObjectTypeRoot.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesRolePathRoot GetLinkToObjectUnifier (global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot pathRootInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesRolePathRoot> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesRolePathRoot>(pathRootInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesRolePathRoot.PathRootDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of PathRoot not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region PathObjectUnifierUnifiesRolePathRoot instance accessors
+		
+		/// <summary>
+		/// Get any PathObjectUnifierUnifiesRolePathRoot links between a given PathObjectUnifier and a RolePathObjectTypeRoot.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesRolePathRoot> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifier source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesRolePathRoot> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesRolePathRoot>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesRolePathRoot> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesRolePathRoot>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesRolePathRoot.ObjectUnifierDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesRolePathRoot link in links )
+			{
+				if ( target.Equals(link.PathRoot) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one PathObjectUnifierUnifiesRolePathRoot link between a given PathObjectUnifierand a RolePathObjectTypeRoot.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesRolePathRoot GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifier source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesRolePathRoot> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesRolePathRoot>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesRolePathRoot.ObjectUnifierDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierUnifiesRolePathRoot link in links )
+			{
+				if ( target.Equals(link.PathRoot) )
 				{
 					return link;
 				}
@@ -43197,7 +42983,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath/ParentRolePath.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath/ParentRolePath.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "SplitPathCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath/ParentRolePath.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "SubPathCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath/ParentRolePath.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("97c4e687-6ff4-403a-aa36-376476cba5d4")]
 		public virtual RolePath ParentRolePath
 		{
@@ -43265,13 +43051,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 				
 		#endregion
-		#region Static methods to access SplitPathCollection of a RolePath
+		#region Static methods to access SubPathCollection of a RolePath
 		/// <summary>
-		/// Gets a list of SplitPathCollection.
+		/// Gets a list of SubPathCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<RoleSubPath> GetSplitPathCollection(RolePath element)
+		public static DslModeling::LinkedElementCollection<RoleSubPath> GetSubPathCollection(RolePath element)
 		{
 			return new DslModeling::LinkedElementCollection<RoleSubPath>(element, ParentRolePathDomainRoleId);
 		}
@@ -43282,7 +43068,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath> GetLinksToSplitPathCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePath parentRolePathInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath> GetLinksToSubPathCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePath parentRolePathInstance )
 		{
 			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath>(parentRolePathInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSubPathIsContinuationOfRolePath.ParentRolePathDomainRoleId);
 		}
@@ -44067,33 +43853,33 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
-	/// DomainRelationship RolePathComponentCalculatesCalculatedPathValue
+	/// DomainRelationship LeadRolePathCalculatesCalculatedPathValue
 	/// Description for
-	/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentCalculatesCalculatedPathValue
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathCalculatesCalculatedPathValue
 	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentCalculatesCalculatedPathValue.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentCalculatesCalculatedPathValue.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathCalculatesCalculatedPathValue.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathCalculatesCalculatedPathValue.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship(IsEmbedding=true)]
 	[DslModeling::DomainObjectId("315ed779-4607-44cb-ac37-a173fa106232")]
-	public partial class RolePathComponentCalculatesCalculatedPathValue : DslModeling::ElementLink
+	public partial class LeadRolePathCalculatesCalculatedPathValue : DslModeling::ElementLink
 	{
 		#region Constructors, domain class Id
 		
 		/// <summary>
-		/// RolePathComponentCalculatesCalculatedPathValue domain class Id.
+		/// LeadRolePathCalculatesCalculatedPathValue domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x315ed779, 0x4607, 0x44cb, 0xac, 0x37, 0xa1, 0x73, 0xfa, 0x10, 0x62, 0x32);
 	
 				
 		/// <summary>
 		/// Constructor
-		/// Creates a RolePathComponentCalculatesCalculatedPathValue link in the same Partition as the given RolePathComponent
+		/// Creates a LeadRolePathCalculatesCalculatedPathValue link in the same Partition as the given LeadRolePath
 		/// </summary>
-		/// <param name="source">RolePathComponent to use as the source of the relationship.</param>
+		/// <param name="source">LeadRolePath to use as the source of the relationship.</param>
 		/// <param name="target">CalculatedPathValue to use as the target of the relationship.</param>
-		public RolePathComponentCalculatesCalculatedPathValue(RolePathComponent source, CalculatedPathValue target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(RolePathComponentCalculatesCalculatedPathValue.PathComponentDomainRoleId, source), new DslModeling::RoleAssignment(RolePathComponentCalculatesCalculatedPathValue.CalculatedValueDomainRoleId, target)}, null)
+		public LeadRolePathCalculatesCalculatedPathValue(LeadRolePath source, CalculatedPathValue target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(LeadRolePathCalculatesCalculatedPathValue.LeadRolePathDomainRoleId, source), new DslModeling::RoleAssignment(LeadRolePathCalculatesCalculatedPathValue.CalculatedValueDomainRoleId, target)}, null)
 		{
 		}
 		
@@ -44102,7 +43888,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public RolePathComponentCalculatesCalculatedPathValue(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+		public LeadRolePathCalculatesCalculatedPathValue(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
 		{
 		}
@@ -44113,7 +43899,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public RolePathComponentCalculatesCalculatedPathValue(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public LeadRolePathCalculatesCalculatedPathValue(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
 		{
 		}
@@ -44123,7 +43909,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public RolePathComponentCalculatesCalculatedPathValue(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+		public LeadRolePathCalculatesCalculatedPathValue(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(partition, roleAssignments, null)
 		{
 		}
@@ -44134,60 +43920,60 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public RolePathComponentCalculatesCalculatedPathValue(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public LeadRolePathCalculatesCalculatedPathValue(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, roleAssignments, propertyAssignments)
 		{
 		}
 		#endregion
-		#region PathComponent domain role code
+		#region LeadRolePath domain role code
 		
 		/// <summary>
-		/// PathComponent domain role Id.
+		/// LeadRolePath domain role Id.
 		/// </summary>
-		public static readonly global::System.Guid PathComponentDomainRoleId = new global::System.Guid(0x058c0609, 0x8b18, 0x4c05, 0x86, 0xdb, 0x7a, 0xba, 0x5d, 0x7c, 0x42, 0xda);
+		public static readonly global::System.Guid LeadRolePathDomainRoleId = new global::System.Guid(0x058c0609, 0x8b18, 0x4c05, 0x86, 0xdb, 0x7a, 0xba, 0x5d, 0x7c, 0x42, 0xda);
 		
 		/// <summary>
-		/// DomainRole PathComponent
+		/// DomainRole LeadRolePath
 		/// The values calculated using roles in this component.
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentCalculatesCalculatedPathValue/PathComponent.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentCalculatesCalculatedPathValue/PathComponent.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "CalculatedValueCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentCalculatesCalculatedPathValue/PathComponent.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathCalculatesCalculatedPathValue/LeadRolePath.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathCalculatesCalculatedPathValue/LeadRolePath.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "CalculatedValueCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathCalculatesCalculatedPathValue/LeadRolePath.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("058c0609-8b18-4c05-86db-7aba5d7c42da")]
-		public virtual RolePathComponent PathComponent
+		public virtual LeadRolePath LeadRolePath
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (RolePathComponent)DslModeling::DomainRoleInfo.GetRolePlayer(this, PathComponentDomainRoleId);
+				return (LeadRolePath)DslModeling::DomainRoleInfo.GetRolePlayer(this, LeadRolePathDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, PathComponentDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, LeadRolePathDomainRoleId, value);
 			}
 		}
 				
 		#endregion
-		#region Static methods to access PathComponent of a CalculatedPathValue
+		#region Static methods to access LeadRolePath of a CalculatedPathValue
 		/// <summary>
-		/// Gets PathComponent.
+		/// Gets LeadRolePath.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static RolePathComponent GetPathComponent(CalculatedPathValue element)
+		public static LeadRolePath GetLeadRolePath(CalculatedPathValue element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, CalculatedValueDomainRoleId) as RolePathComponent;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, CalculatedValueDomainRoleId) as LeadRolePath;
 		}
 		
 		/// <summary>
-		/// Sets PathComponent.
+		/// Sets LeadRolePath.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetPathComponent(CalculatedPathValue element, RolePathComponent newPathComponent)
+		public static void SetLeadRolePath(CalculatedPathValue element, LeadRolePath newLeadRolePath)
 		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, CalculatedValueDomainRoleId, newPathComponent);
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, CalculatedValueDomainRoleId, newLeadRolePath);
 		}
 		#endregion
 		#region CalculatedValue domain role code
@@ -44201,9 +43987,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// DomainRole CalculatedValue
 		/// The path component this value is calculated for.
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentCalculatesCalculatedPathValue/CalculatedValue.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentCalculatesCalculatedPathValue/CalculatedValue.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "PathComponent", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentCalculatesCalculatedPathValue/CalculatedValue.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathCalculatesCalculatedPathValue/CalculatedValue.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathCalculatesCalculatedPathValue/CalculatedValue.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "LeadRolePath", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathCalculatesCalculatedPathValue/CalculatedValue.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("9c87c629-060b-4c80-beae-dca38a4f4e2c")]
 		public virtual CalculatedPathValue CalculatedValue
 		{
@@ -44220,37 +44006,37 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 				
 		#endregion
-		#region Static methods to access CalculatedValueCollection of a RolePathComponent
+		#region Static methods to access CalculatedValueCollection of a LeadRolePath
 		/// <summary>
 		/// Gets a list of CalculatedValueCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<CalculatedPathValue> GetCalculatedValueCollection(RolePathComponent element)
+		public static DslModeling::LinkedElementCollection<CalculatedPathValue> GetCalculatedValueCollection(LeadRolePath element)
 		{
-			return new DslModeling::LinkedElementCollection<CalculatedPathValue>(element, PathComponentDomainRoleId);
+			return new DslModeling::LinkedElementCollection<CalculatedPathValue>(element, LeadRolePathDomainRoleId);
 		}
 		#endregion
-		#region PathComponent link accessor
+		#region LeadRolePath link accessor
 		/// <summary>
-		/// Get the list of RolePathComponentCalculatesCalculatedPathValue links to a RolePathComponent.
+		/// Get the list of LeadRolePathCalculatesCalculatedPathValue links to a LeadRolePath.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentCalculatesCalculatedPathValue> GetLinksToCalculatedValueCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent pathComponentInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathCalculatesCalculatedPathValue> GetLinksToCalculatedValueCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath leadRolePathInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentCalculatesCalculatedPathValue>(pathComponentInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentCalculatesCalculatedPathValue.PathComponentDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathCalculatesCalculatedPathValue>(leadRolePathInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathCalculatesCalculatedPathValue.LeadRolePathDomainRoleId);
 		}
 		#endregion
 		#region CalculatedValue link accessor
 		/// <summary>
-		/// Get the RolePathComponentCalculatesCalculatedPathValue link to a CalculatedPathValue.
+		/// Get the LeadRolePathCalculatesCalculatedPathValue link to a CalculatedPathValue.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentCalculatesCalculatedPathValue GetLinkToPathComponent (global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue calculatedValueInstance)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathCalculatesCalculatedPathValue GetLinkToLeadRolePath (global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue calculatedValueInstance)
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentCalculatesCalculatedPathValue> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentCalculatesCalculatedPathValue>(calculatedValueInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentCalculatesCalculatedPathValue.CalculatedValueDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathCalculatesCalculatedPathValue> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathCalculatesCalculatedPathValue>(calculatedValueInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathCalculatesCalculatedPathValue.CalculatedValueDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of CalculatedValue not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -44262,18 +44048,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
-		#region RolePathComponentCalculatesCalculatedPathValue instance accessors
+		#region LeadRolePathCalculatesCalculatedPathValue instance accessors
 		
 		/// <summary>
-		/// Get any RolePathComponentCalculatesCalculatedPathValue links between a given RolePathComponent and a CalculatedPathValue.
+		/// Get any LeadRolePathCalculatesCalculatedPathValue links between a given LeadRolePath and a CalculatedPathValue.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentCalculatesCalculatedPathValue> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathCalculatesCalculatedPathValue> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue target )
 		{
-			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentCalculatesCalculatedPathValue> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentCalculatesCalculatedPathValue>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentCalculatesCalculatedPathValue> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentCalculatesCalculatedPathValue>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentCalculatesCalculatedPathValue.PathComponentDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentCalculatesCalculatedPathValue link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathCalculatesCalculatedPathValue> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathCalculatesCalculatedPathValue>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathCalculatesCalculatedPathValue> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathCalculatesCalculatedPathValue>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathCalculatesCalculatedPathValue.LeadRolePathDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathCalculatesCalculatedPathValue link in links )
 			{
 				if ( target.Equals(link.CalculatedValue) )
 				{
@@ -44283,14 +44069,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one RolePathComponentCalculatesCalculatedPathValue link between a given RolePathComponentand a CalculatedPathValue.
+		/// Get the one LeadRolePathCalculatesCalculatedPathValue link between a given LeadRolePathand a CalculatedPathValue.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentCalculatesCalculatedPathValue GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue target )
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathCalculatesCalculatedPathValue GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue target )
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentCalculatesCalculatedPathValue> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentCalculatesCalculatedPathValue>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentCalculatesCalculatedPathValue.PathComponentDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentCalculatesCalculatedPathValue link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathCalculatesCalculatedPathValue> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathCalculatesCalculatedPathValue>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathCalculatesCalculatedPathValue.LeadRolePathDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathCalculatesCalculatedPathValue link in links )
 			{
 				if ( target.Equals(link.CalculatedValue) )
 				{
@@ -44306,33 +44092,33 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
-	/// DomainRelationship RolePathComponentSatisfiesCalculatedCondition
+	/// DomainRelationship LeadRolePathSatisfiesCalculatedCondition
 	/// Description for
-	/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentSatisfiesCalculatedCondition
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition
 	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentSatisfiesCalculatedCondition.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentSatisfiesCalculatedCondition.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("34f4b6c3-1575-4a4c-838e-261b981dee83")]
-	public partial class RolePathComponentSatisfiesCalculatedCondition : DslModeling::ElementLink
+	public partial class LeadRolePathSatisfiesCalculatedCondition : DslModeling::ElementLink
 	{
 		#region Constructors, domain class Id
 		
 		/// <summary>
-		/// RolePathComponentSatisfiesCalculatedCondition domain class Id.
+		/// LeadRolePathSatisfiesCalculatedCondition domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x34f4b6c3, 0x1575, 0x4a4c, 0x83, 0x8e, 0x26, 0x1b, 0x98, 0x1d, 0xee, 0x83);
 	
 				
 		/// <summary>
 		/// Constructor
-		/// Creates a RolePathComponentSatisfiesCalculatedCondition link in the same Partition as the given RolePathComponent
+		/// Creates a LeadRolePathSatisfiesCalculatedCondition link in the same Partition as the given LeadRolePath
 		/// </summary>
-		/// <param name="source">RolePathComponent to use as the source of the relationship.</param>
+		/// <param name="source">LeadRolePath to use as the source of the relationship.</param>
 		/// <param name="target">CalculatedPathValue to use as the target of the relationship.</param>
-		public RolePathComponentSatisfiesCalculatedCondition(RolePathComponent source, CalculatedPathValue target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(RolePathComponentSatisfiesCalculatedCondition.PathComponentDomainRoleId, source), new DslModeling::RoleAssignment(RolePathComponentSatisfiesCalculatedCondition.CalculatedConditionDomainRoleId, target)}, null)
+		public LeadRolePathSatisfiesCalculatedCondition(LeadRolePath source, CalculatedPathValue target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(LeadRolePathSatisfiesCalculatedCondition.LeadRolePathDomainRoleId, source), new DslModeling::RoleAssignment(LeadRolePathSatisfiesCalculatedCondition.CalculatedConditionDomainRoleId, target)}, null)
 		{
 		}
 		
@@ -44341,7 +44127,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public RolePathComponentSatisfiesCalculatedCondition(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+		public LeadRolePathSatisfiesCalculatedCondition(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
 		{
 		}
@@ -44352,7 +44138,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public RolePathComponentSatisfiesCalculatedCondition(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public LeadRolePathSatisfiesCalculatedCondition(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
 		{
 		}
@@ -44362,7 +44148,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public RolePathComponentSatisfiesCalculatedCondition(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+		public LeadRolePathSatisfiesCalculatedCondition(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(partition, roleAssignments, null)
 		{
 		}
@@ -44373,50 +44159,60 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public RolePathComponentSatisfiesCalculatedCondition(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public LeadRolePathSatisfiesCalculatedCondition(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, roleAssignments, propertyAssignments)
 		{
 		}
 		#endregion
-		#region PathComponent domain role code
+		#region LeadRolePath domain role code
 		
 		/// <summary>
-		/// PathComponent domain role Id.
+		/// LeadRolePath domain role Id.
 		/// </summary>
-		public static readonly global::System.Guid PathComponentDomainRoleId = new global::System.Guid(0x2f17d947, 0x3334, 0x4729, 0xba, 0xf1, 0xce, 0x5e, 0xfa, 0xe0, 0x39, 0xee);
+		public static readonly global::System.Guid LeadRolePathDomainRoleId = new global::System.Guid(0x2f17d947, 0x3334, 0x4729, 0xba, 0xf1, 0xce, 0x5e, 0xfa, 0xe0, 0x39, 0xee);
 		
 		/// <summary>
-		/// DomainRole PathComponent
+		/// DomainRole LeadRolePath
 		/// The calculated values that must be satisfied by the path.
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentSatisfiesCalculatedCondition/PathComponent.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentSatisfiesCalculatedCondition/PathComponent.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "CalculatedConditionCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentSatisfiesCalculatedCondition/PathComponent.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition/LeadRolePath.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition/LeadRolePath.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "CalculatedConditionCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition/LeadRolePath.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("2f17d947-3334-4729-baf1-ce5efae039ee")]
-		public virtual RolePathComponent PathComponent
+		public virtual LeadRolePath LeadRolePath
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (RolePathComponent)DslModeling::DomainRoleInfo.GetRolePlayer(this, PathComponentDomainRoleId);
+				return (LeadRolePath)DslModeling::DomainRoleInfo.GetRolePlayer(this, LeadRolePathDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, PathComponentDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, LeadRolePathDomainRoleId, value);
 			}
 		}
 				
 		#endregion
-		#region Static methods to access RequiredForPathComponentCollection of a CalculatedPathValue
+		#region Static methods to access RequiredForLeadRolePath of a CalculatedPathValue
 		/// <summary>
-		/// Gets a list of RequiredForPathComponentCollection.
+		/// Gets RequiredForLeadRolePath.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<RolePathComponent> GetRequiredForPathComponentCollection(CalculatedPathValue element)
+		public static LeadRolePath GetRequiredForLeadRolePath(CalculatedPathValue element)
 		{
-			return new DslModeling::LinkedElementCollection<RolePathComponent>(element, CalculatedConditionDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, CalculatedConditionDomainRoleId) as LeadRolePath;
+		}
+		
+		/// <summary>
+		/// Sets RequiredForLeadRolePath.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetRequiredForLeadRolePath(CalculatedPathValue element, LeadRolePath newLeadRolePath)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, CalculatedConditionDomainRoleId, newLeadRolePath);
 		}
 		#endregion
 		#region CalculatedCondition domain role code
@@ -44428,11 +44224,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		
 		/// <summary>
 		/// DomainRole CalculatedCondition
-		/// The lead role path or path combination that requires this condition to be true.
+		/// The lead role path that requires this condition to be true.
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentSatisfiesCalculatedCondition/CalculatedCondition.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentSatisfiesCalculatedCondition/CalculatedCondition.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "RequiredForPathComponentCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentSatisfiesCalculatedCondition/CalculatedCondition.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition/CalculatedCondition.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition/CalculatedCondition.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "RequiredForLeadRolePath", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition/CalculatedCondition.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("18f0e45a-f8f2-4ae5-919c-c5946c7193bd")]
 		public virtual CalculatedPathValue CalculatedCondition
 		{
@@ -44449,51 +44245,60 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 				
 		#endregion
-		#region Static methods to access CalculatedConditionCollection of a RolePathComponent
+		#region Static methods to access CalculatedConditionCollection of a LeadRolePath
 		/// <summary>
 		/// Gets a list of CalculatedConditionCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<CalculatedPathValue> GetCalculatedConditionCollection(RolePathComponent element)
+		public static DslModeling::LinkedElementCollection<CalculatedPathValue> GetCalculatedConditionCollection(LeadRolePath element)
 		{
-			return new DslModeling::LinkedElementCollection<CalculatedPathValue>(element, PathComponentDomainRoleId);
+			return new DslModeling::LinkedElementCollection<CalculatedPathValue>(element, LeadRolePathDomainRoleId);
 		}
 		#endregion
-		#region PathComponent link accessor
+		#region LeadRolePath link accessor
 		/// <summary>
-		/// Get the list of RolePathComponentSatisfiesCalculatedCondition links to a RolePathComponent.
+		/// Get the list of LeadRolePathSatisfiesCalculatedCondition links to a LeadRolePath.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentSatisfiesCalculatedCondition> GetLinksToCalculatedConditionCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent pathComponentInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition> GetLinksToCalculatedConditionCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath leadRolePathInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentSatisfiesCalculatedCondition>(pathComponentInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentSatisfiesCalculatedCondition.PathComponentDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition>(leadRolePathInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition.LeadRolePathDomainRoleId);
 		}
 		#endregion
 		#region CalculatedCondition link accessor
 		/// <summary>
-		/// Get the list of RolePathComponentSatisfiesCalculatedCondition links to a CalculatedPathValue.
+		/// Get the LeadRolePathSatisfiesCalculatedCondition link to a CalculatedPathValue.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentSatisfiesCalculatedCondition> GetLinksToRequiredForPathComponentCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue calculatedConditionInstance )
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition GetLinkToRequiredForLeadRolePath (global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue calculatedConditionInstance)
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentSatisfiesCalculatedCondition>(calculatedConditionInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentSatisfiesCalculatedCondition.CalculatedConditionDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition>(calculatedConditionInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition.CalculatedConditionDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of CalculatedCondition not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
 		}
 		#endregion
-		#region RolePathComponentSatisfiesCalculatedCondition instance accessors
+		#region LeadRolePathSatisfiesCalculatedCondition instance accessors
 		
 		/// <summary>
-		/// Get any RolePathComponentSatisfiesCalculatedCondition links between a given RolePathComponent and a CalculatedPathValue.
+		/// Get any LeadRolePathSatisfiesCalculatedCondition links between a given LeadRolePath and a CalculatedPathValue.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentSatisfiesCalculatedCondition> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue target )
 		{
-			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentSatisfiesCalculatedCondition> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentSatisfiesCalculatedCondition>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentSatisfiesCalculatedCondition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentSatisfiesCalculatedCondition>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentSatisfiesCalculatedCondition.PathComponentDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentSatisfiesCalculatedCondition link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition.LeadRolePathDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition link in links )
 			{
 				if ( target.Equals(link.CalculatedCondition) )
 				{
@@ -44503,14 +44308,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one RolePathComponentSatisfiesCalculatedCondition link between a given RolePathComponentand a CalculatedPathValue.
+		/// Get the one LeadRolePathSatisfiesCalculatedCondition link between a given LeadRolePathand a CalculatedPathValue.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentSatisfiesCalculatedCondition GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue target )
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue target )
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentSatisfiesCalculatedCondition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentSatisfiesCalculatedCondition>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentSatisfiesCalculatedCondition.PathComponentDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponentSatisfiesCalculatedCondition link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition.LeadRolePathDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathSatisfiesCalculatedCondition link in links )
 			{
 				if ( target.Equals(link.CalculatedCondition) )
 				{
@@ -45470,6 +45275,245 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputCorrespondsToFunctionParameter link in links )
 			{
 				if ( target.Equals(link.Parameter) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship CalculatedPathValueInputBindsToRolePathRoot
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToRolePathRoot
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToRolePathRoot.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToRolePathRoot.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("fe9df187-37da-449a-8f5a-0111b95d5177")]
+	public partial class CalculatedPathValueInputBindsToRolePathRoot : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// CalculatedPathValueInputBindsToRolePathRoot domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xfe9df187, 0x37da, 0x449a, 0x8f, 0x5a, 0x01, 0x11, 0xb9, 0x5d, 0x51, 0x77);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a CalculatedPathValueInputBindsToRolePathRoot link in the same Partition as the given CalculatedPathValueInput
+		/// </summary>
+		/// <param name="source">CalculatedPathValueInput to use as the source of the relationship.</param>
+		/// <param name="target">RolePathObjectTypeRoot to use as the target of the relationship.</param>
+		public CalculatedPathValueInputBindsToRolePathRoot(CalculatedPathValueInput source, RolePathObjectTypeRoot target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(CalculatedPathValueInputBindsToRolePathRoot.InputDomainRoleId, source), new DslModeling::RoleAssignment(CalculatedPathValueInputBindsToRolePathRoot.SourceDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public CalculatedPathValueInputBindsToRolePathRoot(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public CalculatedPathValueInputBindsToRolePathRoot(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public CalculatedPathValueInputBindsToRolePathRoot(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public CalculatedPathValueInputBindsToRolePathRoot(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Input domain role code
+		
+		/// <summary>
+		/// Input domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid InputDomainRoleId = new global::System.Guid(0xad17c292, 0x8627, 0x4b75, 0x8f, 0x29, 0xb5, 0x70, 0x25, 0xe6, 0x78, 0xd8);
+		
+		/// <summary>
+		/// DomainRole Input
+		/// The role path root bound to this function input.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToRolePathRoot/Input.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToRolePathRoot/Input.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "SourcePathRoot", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToRolePathRoot/Input.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("ad17c292-8627-4b75-8f29-b57025e678d8")]
+		public virtual CalculatedPathValueInput Input
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (CalculatedPathValueInput)DslModeling::DomainRoleInfo.GetRolePlayer(this, InputDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, InputDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access BoundInputCollection of a RolePathObjectTypeRoot
+		/// <summary>
+		/// Gets a list of BoundInputCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<CalculatedPathValueInput> GetBoundInputCollection(RolePathObjectTypeRoot element)
+		{
+			return new DslModeling::LinkedElementCollection<CalculatedPathValueInput>(element, SourceDomainRoleId);
+		}
+		#endregion
+		#region Source domain role code
+		
+		/// <summary>
+		/// Source domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid SourceDomainRoleId = new global::System.Guid(0xb49485b2, 0xbd3b, 0x435c, 0x81, 0x03, 0xe8, 0x23, 0x04, 0x2b, 0x5a, 0x31);
+		
+		/// <summary>
+		/// DomainRole Source
+		/// The calculated value inputs bound to this role path root node.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToRolePathRoot/Source.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToRolePathRoot/Source.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "BoundInputCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToRolePathRoot/Source.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("b49485b2-bd3b-435c-8103-e823042b5a31")]
+		public virtual RolePathObjectTypeRoot Source
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (RolePathObjectTypeRoot)DslModeling::DomainRoleInfo.GetRolePlayer(this, SourceDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, SourceDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access SourcePathRoot of a CalculatedPathValueInput
+		/// <summary>
+		/// Gets SourcePathRoot.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static RolePathObjectTypeRoot GetSourcePathRoot(CalculatedPathValueInput element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, InputDomainRoleId) as RolePathObjectTypeRoot;
+		}
+		
+		/// <summary>
+		/// Sets SourcePathRoot.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetSourcePathRoot(CalculatedPathValueInput element, RolePathObjectTypeRoot newSource)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, InputDomainRoleId, newSource);
+		}
+		#endregion
+		#region Input link accessor
+		/// <summary>
+		/// Get the CalculatedPathValueInputBindsToRolePathRoot link to a CalculatedPathValueInput.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToRolePathRoot GetLinkToSourcePathRoot (global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInput inputInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToRolePathRoot> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToRolePathRoot>(inputInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToRolePathRoot.InputDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Input not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region Source link accessor
+		/// <summary>
+		/// Get the list of CalculatedPathValueInputBindsToRolePathRoot links to a RolePathObjectTypeRoot.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToRolePathRoot> GetLinksToBoundInputCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot sourceInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToRolePathRoot>(sourceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToRolePathRoot.SourceDomainRoleId);
+		}
+		#endregion
+		#region CalculatedPathValueInputBindsToRolePathRoot instance accessors
+		
+		/// <summary>
+		/// Get any CalculatedPathValueInputBindsToRolePathRoot links between a given CalculatedPathValueInput and a RolePathObjectTypeRoot.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToRolePathRoot> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInput source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToRolePathRoot> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToRolePathRoot>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToRolePathRoot> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToRolePathRoot>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToRolePathRoot.InputDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToRolePathRoot link in links )
+			{
+				if ( target.Equals(link.Source) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one CalculatedPathValueInputBindsToRolePathRoot link between a given CalculatedPathValueInputand a RolePathObjectTypeRoot.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToRolePathRoot GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInput source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToRolePathRoot> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToRolePathRoot>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToRolePathRoot.InputDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToRolePathRoot link in links )
+			{
+				if ( target.Equals(link.Source) )
 				{
 					return link;
 				}
@@ -46763,9 +46807,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Creates a FactTypeDerivationProjection link in the same Partition as the given FactTypeDerivationRule
 		/// </summary>
 		/// <param name="source">FactTypeDerivationRule to use as the source of the relationship.</param>
-		/// <param name="target">RolePathComponent to use as the target of the relationship.</param>
-		public FactTypeDerivationProjection(FactTypeDerivationRule source, RolePathComponent target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(FactTypeDerivationProjection.DerivationRuleDomainRoleId, source), new DslModeling::RoleAssignment(FactTypeDerivationProjection.PathComponentDomainRoleId, target)}, null)
+		/// <param name="target">LeadRolePath to use as the target of the relationship.</param>
+		public FactTypeDerivationProjection(FactTypeDerivationRule source, LeadRolePath target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(FactTypeDerivationProjection.DerivationRuleDomainRoleId, source), new DslModeling::RoleAssignment(FactTypeDerivationProjection.RolePathDomainRoleId, target)}, null)
 		{
 		}
 		
@@ -46842,15 +46886,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 				
 		#endregion
-		#region Static methods to access FactTypeDerivationRuleProjection of a RolePathComponent
+		#region Static methods to access FactTypeDerivationRuleProjection of a LeadRolePath
 		/// <summary>
 		/// Gets FactTypeDerivationRuleProjection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static FactTypeDerivationRule GetFactTypeDerivationRuleProjection(RolePathComponent element)
+		public static FactTypeDerivationRule GetFactTypeDerivationRuleProjection(LeadRolePath element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, PathComponentDomainRoleId) as FactTypeDerivationRule;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, RolePathDomainRoleId) as FactTypeDerivationRule;
 		}
 		
 		/// <summary>
@@ -46858,38 +46902,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetFactTypeDerivationRuleProjection(RolePathComponent element, FactTypeDerivationRule newDerivationRule)
+		public static void SetFactTypeDerivationRuleProjection(LeadRolePath element, FactTypeDerivationRule newDerivationRule)
 		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, PathComponentDomainRoleId, newDerivationRule);
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, RolePathDomainRoleId, newDerivationRule);
 		}
 		#endregion
-		#region PathComponent domain role code
+		#region RolePath domain role code
 		
 		/// <summary>
-		/// PathComponent domain role Id.
+		/// RolePath domain role Id.
 		/// </summary>
-		public static readonly global::System.Guid PathComponentDomainRoleId = new global::System.Guid(0xb92067d1, 0x2dd4, 0x4e80, 0xa6, 0x67, 0xfc, 0xf4, 0x37, 0xc8, 0x4e, 0xf8);
+		public static readonly global::System.Guid RolePathDomainRoleId = new global::System.Guid(0xb92067d1, 0x2dd4, 0x4e80, 0xa6, 0x67, 0xfc, 0xf4, 0x37, 0xc8, 0x4e, 0xf8);
 		
 		/// <summary>
-		/// DomainRole PathComponent
+		/// DomainRole RolePath
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection.PathComponent
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection.RolePath
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection/PathComponent.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection/PathComponent.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FactTypeDerivationRuleProjection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection/PathComponent.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection/RolePath.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection/RolePath.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FactTypeDerivationRuleProjection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection/RolePath.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("b92067d1-2dd4-4e80-a667-fcf437c84ef8")]
-		public virtual RolePathComponent PathComponent
+		public virtual LeadRolePath RolePath
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (RolePathComponent)DslModeling::DomainRoleInfo.GetRolePlayer(this, PathComponentDomainRoleId);
+				return (LeadRolePath)DslModeling::DomainRoleInfo.GetRolePlayer(this, RolePathDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, PathComponentDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, RolePathDomainRoleId, value);
 			}
 		}
 				
@@ -46900,9 +46944,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<RolePathComponent> GetProjectedPathComponentCollection(FactTypeDerivationRule element)
+		public static DslModeling::LinkedElementCollection<LeadRolePath> GetProjectedPathComponentCollection(FactTypeDerivationRule element)
 		{
-			return new DslModeling::LinkedElementCollection<RolePathComponent>(element, DerivationRuleDomainRoleId);
+			return new DslModeling::LinkedElementCollection<LeadRolePath>(element, DerivationRuleDomainRoleId);
 		}
 		#endregion
 		#region Accessors for roles that this REL plays in other RELs
@@ -46965,16 +47009,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection>(derivationRuleInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection.DerivationRuleDomainRoleId);
 		}
 		#endregion
-		#region PathComponent link accessor
+		#region RolePath link accessor
 		/// <summary>
-		/// Get the FactTypeDerivationProjection link to a RolePathComponent.
+		/// Get the FactTypeDerivationProjection link to a LeadRolePath.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection GetLinkToFactTypeDerivationRuleProjection (global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent pathComponentInstance)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection GetLinkToFactTypeDerivationRuleProjection (global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath rolePathInstance)
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection>(pathComponentInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection.PathComponentDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of PathComponent not obeyed.");
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection>(rolePathInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection.RolePathDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of RolePath not obeyed.");
 			if ( links.Count == 0 )
 			{
 				return null;
@@ -46988,17 +47032,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#region FactTypeDerivationProjection instance accessors
 		
 		/// <summary>
-		/// Get any FactTypeDerivationProjection links between a given FactTypeDerivationRule and a RolePathComponent.
+		/// Get any FactTypeDerivationProjection links between a given FactTypeDerivationRule and a LeadRolePath.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath target )
 		{
 			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection>();
 			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection.DerivationRuleDomainRoleId);
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection link in links )
 			{
-				if ( target.Equals(link.PathComponent) )
+				if ( target.Equals(link.RolePath) )
 				{
 					outLinks.Add(link);
 				}
@@ -47006,16 +47050,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one FactTypeDerivationProjection link between a given FactTypeDerivationRuleand a RolePathComponent.
+		/// Get the one FactTypeDerivationProjection link between a given FactTypeDerivationRuleand a LeadRolePath.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathComponent target )
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath target )
 		{
 			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection.DerivationRuleDomainRoleId);
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection link in links )
 			{
-				if ( target.Equals(link.PathComponent) )
+				if ( target.Equals(link.RolePath) )
 				{
 					return link;
 				}
@@ -47186,6 +47230,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion
 		#region Accessors for roles that this REL plays in other RELs
+		#region ProjectedFromPathRoot opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ProjectedFromPathRoot.
+		/// The role path root used to populate the derived fact type for this role in this
+		/// projection.
+		/// </summary>
+		public virtual RolePathObjectTypeRoot ProjectedFromPathRoot
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot.RoleProjectionDomainRoleId) as RolePathObjectTypeRoot;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot.RoleProjectionDomainRoleId, value);
+			}
+		}
+		#endregion
 		#region ProjectedFromPathedRole opposite domain role accessor
 		/// <summary>
 		/// Gets or sets ProjectedFromPathedRole.
@@ -47311,6 +47375,246 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection link in links )
 			{
 				if ( target.Equals(link.ProjectedRole) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship FactTypeRoleProjectedFromRolePathRoot
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("31250f99-9b68-49f9-bf5a-712a0aedfb23")]
+	public partial class FactTypeRoleProjectedFromRolePathRoot : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// FactTypeRoleProjectedFromRolePathRoot domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x31250f99, 0x9b68, 0x49f9, 0xbf, 0x5a, 0x71, 0x2a, 0x0a, 0xed, 0xfb, 0x23);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a FactTypeRoleProjectedFromRolePathRoot link in the same Partition as the given FactTypeRoleProjection
+		/// </summary>
+		/// <param name="source">FactTypeRoleProjection to use as the source of the relationship.</param>
+		/// <param name="target">RolePathObjectTypeRoot to use as the target of the relationship.</param>
+		public FactTypeRoleProjectedFromRolePathRoot(FactTypeRoleProjection source, RolePathObjectTypeRoot target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(FactTypeRoleProjectedFromRolePathRoot.RoleProjectionDomainRoleId, source), new DslModeling::RoleAssignment(FactTypeRoleProjectedFromRolePathRoot.SourceDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public FactTypeRoleProjectedFromRolePathRoot(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public FactTypeRoleProjectedFromRolePathRoot(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public FactTypeRoleProjectedFromRolePathRoot(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public FactTypeRoleProjectedFromRolePathRoot(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region RoleProjection domain role code
+		
+		/// <summary>
+		/// RoleProjection domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid RoleProjectionDomainRoleId = new global::System.Guid(0x2494c062, 0x5df1, 0x4b88, 0x8f, 0xa3, 0xc1, 0x09, 0xe8, 0x7c, 0xd5, 0xa5);
+		
+		/// <summary>
+		/// DomainRole RoleProjection
+		/// The role path root used to populate the derived fact type for this role in this
+		/// projection.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot/RoleProjection.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot/RoleProjection.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ProjectedFromPathRoot", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot/RoleProjection.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("2494c062-5df1-4b88-8fa3-c109e87cd5a5")]
+		public virtual FactTypeRoleProjection RoleProjection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (FactTypeRoleProjection)DslModeling::DomainRoleInfo.GetRolePlayer(this, RoleProjectionDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, RoleProjectionDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access FactTypeRoleProjections of a RolePathObjectTypeRoot
+		/// <summary>
+		/// Gets a list of FactTypeRoleProjections.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<FactTypeRoleProjection> GetFactTypeRoleProjections(RolePathObjectTypeRoot element)
+		{
+			return new DslModeling::LinkedElementCollection<FactTypeRoleProjection>(element, SourceDomainRoleId);
+		}
+		#endregion
+		#region Source domain role code
+		
+		/// <summary>
+		/// Source domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid SourceDomainRoleId = new global::System.Guid(0xba3071d8, 0xf068, 0x4ede, 0xaa, 0x80, 0x86, 0x85, 0xb8, 0x2b, 0x51, 0x6a);
+		
+		/// <summary>
+		/// DomainRole Source
+		/// The derived role associated with this role path root.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot/Source.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot/Source.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FactTypeRoleProjections", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot/Source.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("ba3071d8-f068-4ede-aa80-8685b82b516a")]
+		public virtual RolePathObjectTypeRoot Source
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (RolePathObjectTypeRoot)DslModeling::DomainRoleInfo.GetRolePlayer(this, SourceDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, SourceDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ProjectedFromPathRoot of a FactTypeRoleProjection
+		/// <summary>
+		/// Gets ProjectedFromPathRoot.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static RolePathObjectTypeRoot GetProjectedFromPathRoot(FactTypeRoleProjection element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, RoleProjectionDomainRoleId) as RolePathObjectTypeRoot;
+		}
+		
+		/// <summary>
+		/// Sets ProjectedFromPathRoot.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetProjectedFromPathRoot(FactTypeRoleProjection element, RolePathObjectTypeRoot newSource)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, RoleProjectionDomainRoleId, newSource);
+		}
+		#endregion
+		#region RoleProjection link accessor
+		/// <summary>
+		/// Get the FactTypeRoleProjectedFromRolePathRoot link to a FactTypeRoleProjection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot GetLinkToProjectedFromPathRoot (global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection roleProjectionInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot>(roleProjectionInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot.RoleProjectionDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of RoleProjection not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region Source link accessor
+		/// <summary>
+		/// Get the list of FactTypeRoleProjectedFromRolePathRoot links to a RolePathObjectTypeRoot.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot> GetLinksToFactTypeRoleProjections ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot sourceInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot>(sourceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot.SourceDomainRoleId);
+		}
+		#endregion
+		#region FactTypeRoleProjectedFromRolePathRoot instance accessors
+		
+		/// <summary>
+		/// Get any FactTypeRoleProjectedFromRolePathRoot links between a given FactTypeRoleProjection and a RolePathObjectTypeRoot.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot.RoleProjectionDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot link in links )
+			{
+				if ( target.Equals(link.Source) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one FactTypeRoleProjectedFromRolePathRoot link between a given FactTypeRoleProjectionand a RolePathObjectTypeRoot.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot.RoleProjectionDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot link in links )
+			{
+				if ( target.Equals(link.Source) )
 				{
 					return link;
 				}
@@ -49318,33 +49622,33 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
-	/// DomainRelationship LeadRolePathHasRootObjectTypeError
+	/// DomainRelationship RolePathHasRootObjectTypeError
 	/// Description for
-	/// ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathHasRootObjectTypeError
 	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathHasRootObjectTypeError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathHasRootObjectTypeError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("c831b1cb-d415-4851-ac42-1266c2149bac")]
-	public partial class LeadRolePathHasRootObjectTypeError : ElementAssociatedWithModelError
+	public partial class RolePathHasRootObjectTypeError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
 		/// <summary>
-		/// LeadRolePathHasRootObjectTypeError domain class Id.
+		/// RolePathHasRootObjectTypeError domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xc831b1cb, 0xd415, 0x4851, 0xac, 0x42, 0x12, 0x66, 0xc2, 0x14, 0x9b, 0xac);
 	
 				
 		/// <summary>
 		/// Constructor
-		/// Creates a LeadRolePathHasRootObjectTypeError link in the same Partition as the given LeadRolePath
+		/// Creates a RolePathHasRootObjectTypeError link in the same Partition as the given RolePath
 		/// </summary>
-		/// <param name="source">LeadRolePath to use as the source of the relationship.</param>
+		/// <param name="source">RolePath to use as the source of the relationship.</param>
 		/// <param name="target">PathRequiresRootObjectTypeError to use as the target of the relationship.</param>
-		public LeadRolePathHasRootObjectTypeError(LeadRolePath source, PathRequiresRootObjectTypeError target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(LeadRolePathHasRootObjectTypeError.LeadRolePathDomainRoleId, source), new DslModeling::RoleAssignment(LeadRolePathHasRootObjectTypeError.RootObjectTypeRequiredErrorDomainRoleId, target)}, null)
+		public RolePathHasRootObjectTypeError(RolePath source, PathRequiresRootObjectTypeError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(RolePathHasRootObjectTypeError.RolePathDomainRoleId, source), new DslModeling::RoleAssignment(RolePathHasRootObjectTypeError.RootObjectTypeRequiredErrorDomainRoleId, target)}, null)
 		{
 		}
 		
@@ -49353,7 +49657,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public LeadRolePathHasRootObjectTypeError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+		public RolePathHasRootObjectTypeError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
 		{
 		}
@@ -49364,7 +49668,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public LeadRolePathHasRootObjectTypeError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public RolePathHasRootObjectTypeError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
 		{
 		}
@@ -49374,7 +49678,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public LeadRolePathHasRootObjectTypeError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+		public RolePathHasRootObjectTypeError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(partition, roleAssignments, null)
 		{
 		}
@@ -49385,67 +49689,67 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public LeadRolePathHasRootObjectTypeError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public RolePathHasRootObjectTypeError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, roleAssignments, propertyAssignments)
 		{
 		}
 		#endregion
-		#region LeadRolePath domain role code
+		#region RolePath domain role code
 		
 		/// <summary>
-		/// LeadRolePath domain role Id.
+		/// RolePath domain role Id.
 		/// </summary>
-		public static readonly global::System.Guid LeadRolePathDomainRoleId = new global::System.Guid(0x34867f08, 0xcef6, 0x49f3, 0x91, 0xe4, 0x7f, 0xd1, 0x9a, 0x90, 0x79, 0x93);
+		public static readonly global::System.Guid RolePathDomainRoleId = new global::System.Guid(0x34867f08, 0xcef6, 0x49f3, 0x91, 0xe4, 0x7f, 0xd1, 0x9a, 0x90, 0x79, 0x93);
 		
 		/// <summary>
-		/// DomainRole LeadRolePath
+		/// DomainRole RolePath
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError.LeadRolePath
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathHasRootObjectTypeError.RolePath
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError/LeadRolePath.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError/LeadRolePath.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "RootObjectTypeRequiredError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError/LeadRolePath.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathHasRootObjectTypeError/RolePath.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathHasRootObjectTypeError/RolePath.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "RootObjectTypeRequiredError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathHasRootObjectTypeError/RolePath.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("34867f08-cef6-49f3-91e4-7fd19a907993")]
-		public virtual LeadRolePath LeadRolePath
+		public virtual RolePath RolePath
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (LeadRolePath)DslModeling::DomainRoleInfo.GetRolePlayer(this, LeadRolePathDomainRoleId);
+				return (RolePath)DslModeling::DomainRoleInfo.GetRolePlayer(this, RolePathDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, LeadRolePathDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, RolePathDomainRoleId, value);
 			}
 		}
 				
 		#endregion
-		#region Static methods to access LeadRolePath of a PathRequiresRootObjectTypeError
+		#region Static methods to access RolePath of a PathRequiresRootObjectTypeError
 		/// <summary>
-		/// Gets LeadRolePath.
+		/// Gets RolePath.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static LeadRolePath GetLeadRolePath(PathRequiresRootObjectTypeError element)
+		public static RolePath GetRolePath(PathRequiresRootObjectTypeError element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, RootObjectTypeRequiredErrorDomainRoleId) as LeadRolePath;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, RootObjectTypeRequiredErrorDomainRoleId) as RolePath;
 		}
 		
 		/// <summary>
-		/// Sets LeadRolePath.
+		/// Sets RolePath.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetLeadRolePath(PathRequiresRootObjectTypeError element, LeadRolePath newLeadRolePath)
+		public static void SetRolePath(PathRequiresRootObjectTypeError element, RolePath newRolePath)
 		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, RootObjectTypeRequiredErrorDomainRoleId, newLeadRolePath);
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, RootObjectTypeRequiredErrorDomainRoleId, newRolePath);
 		}
 		#endregion
 		#region AssociatedElement domain role override
 		
 		/// <summary>
-		/// Gets the element playing LeadRolePath domain role.
+		/// Gets the element playing RolePath domain role.
 		/// Description for
 		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
 		/// </summary>
@@ -49454,12 +49758,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return this.LeadRolePath;
+				return this.RolePath;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				this.LeadRolePath = (LeadRolePath)value;
+				this.RolePath = (RolePath)value;
 			}
 		}
 		
@@ -49474,11 +49778,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// DomainRole RootObjectTypeRequiredError
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError.RootObjectTypeRequiredError
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathHasRootObjectTypeError.RootObjectTypeRequiredError
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError/RootObjectTypeRequiredError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError/RootObjectTypeRequiredError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "LeadRolePath", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError/RootObjectTypeRequiredError.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathHasRootObjectTypeError/RootObjectTypeRequiredError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathHasRootObjectTypeError/RootObjectTypeRequiredError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "RolePath", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathHasRootObjectTypeError/RootObjectTypeRequiredError.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("377992c2-2e35-42fc-bc11-cb621669121e")]
 		public virtual PathRequiresRootObjectTypeError RootObjectTypeRequiredError
 		{
@@ -49495,15 +49799,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 				
 		#endregion
-		#region Static methods to access RootObjectTypeRequiredError of a LeadRolePath
+		#region Static methods to access RootObjectTypeRequiredError of a RolePath
 		/// <summary>
 		/// Gets RootObjectTypeRequiredError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static PathRequiresRootObjectTypeError GetRootObjectTypeRequiredError(LeadRolePath element)
+		public static PathRequiresRootObjectTypeError GetRootObjectTypeRequiredError(RolePath element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, LeadRolePathDomainRoleId) as PathRequiresRootObjectTypeError;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, RolePathDomainRoleId) as PathRequiresRootObjectTypeError;
 		}
 		
 		/// <summary>
@@ -49511,9 +49815,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetRootObjectTypeRequiredError(LeadRolePath element, PathRequiresRootObjectTypeError newRootObjectTypeRequiredError)
+		public static void SetRootObjectTypeRequiredError(RolePath element, PathRequiresRootObjectTypeError newRootObjectTypeRequiredError)
 		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, LeadRolePathDomainRoleId, newRootObjectTypeRequiredError);
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, RolePathDomainRoleId, newRootObjectTypeRequiredError);
 		}
 		#endregion
 		#region ModelError domain role override
@@ -49538,16 +49842,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		
 		#endregion
-		#region LeadRolePath link accessor
+		#region RolePath link accessor
 		/// <summary>
-		/// Get the LeadRolePathHasRootObjectTypeError link to a LeadRolePath.
+		/// Get the RolePathHasRootObjectTypeError link to a RolePath.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError GetLinkToRootObjectTypeRequiredError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath leadRolePathInstance)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathHasRootObjectTypeError GetLinkToRootObjectTypeRequiredError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePath rolePathInstance)
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError>(leadRolePathInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError.LeadRolePathDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of LeadRolePath not obeyed.");
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathHasRootObjectTypeError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathHasRootObjectTypeError>(rolePathInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathHasRootObjectTypeError.RolePathDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of RolePath not obeyed.");
 			if ( links.Count == 0 )
 			{
 				return null;
@@ -49560,13 +49864,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion
 		#region RootObjectTypeRequiredError link accessor
 		/// <summary>
-		/// Get the LeadRolePathHasRootObjectTypeError link to a PathRequiresRootObjectTypeError.
+		/// Get the RolePathHasRootObjectTypeError link to a PathRequiresRootObjectTypeError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError GetLinkToLeadRolePath (global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathRequiresRootObjectTypeError rootObjectTypeRequiredErrorInstance)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathHasRootObjectTypeError GetLinkToRolePath (global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathRequiresRootObjectTypeError rootObjectTypeRequiredErrorInstance)
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError>(rootObjectTypeRequiredErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError.RootObjectTypeRequiredErrorDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathHasRootObjectTypeError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathHasRootObjectTypeError>(rootObjectTypeRequiredErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathHasRootObjectTypeError.RootObjectTypeRequiredErrorDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of RootObjectTypeRequiredError not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -49578,18 +49882,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
-		#region LeadRolePathHasRootObjectTypeError instance accessors
+		#region RolePathHasRootObjectTypeError instance accessors
 		
 		/// <summary>
-		/// Get any LeadRolePathHasRootObjectTypeError links between a given LeadRolePath and a PathRequiresRootObjectTypeError.
+		/// Get any RolePathHasRootObjectTypeError links between a given RolePath and a PathRequiresRootObjectTypeError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathRequiresRootObjectTypeError target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathHasRootObjectTypeError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePath source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathRequiresRootObjectTypeError target )
 		{
-			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError.LeadRolePathDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathHasRootObjectTypeError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathHasRootObjectTypeError>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathHasRootObjectTypeError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathHasRootObjectTypeError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathHasRootObjectTypeError.RolePathDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathHasRootObjectTypeError link in links )
 			{
 				if ( target.Equals(link.RootObjectTypeRequiredError) )
 				{
@@ -49599,14 +49903,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one LeadRolePathHasRootObjectTypeError link between a given LeadRolePathand a PathRequiresRootObjectTypeError.
+		/// Get the one RolePathHasRootObjectTypeError link between a given RolePathand a PathRequiresRootObjectTypeError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathRequiresRootObjectTypeError target )
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathHasRootObjectTypeError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePath source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathRequiresRootObjectTypeError target )
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError.LeadRolePathDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasRootObjectTypeError link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathHasRootObjectTypeError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathHasRootObjectTypeError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathHasRootObjectTypeError.RolePathDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathHasRootObjectTypeError link in links )
 			{
 				if ( target.Equals(link.RootObjectTypeRequiredError) )
 				{
@@ -49926,33 +50230,33 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
-	/// DomainRelationship PathedRoleHasCompatibleCorrelationRolePlayerError
+	/// DomainRelationship PathObjectUnifierHasCompatibleObjectTypesError
 	/// Description for
-	/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasCompatibleObjectTypesError
 	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasCompatibleObjectTypesError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasCompatibleObjectTypesError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("83511f80-c376-47e6-a269-c0484ae62e10")]
-	public partial class PathedRoleHasCompatibleCorrelationRolePlayerError : ElementAssociatedWithModelError
+	public partial class PathObjectUnifierHasCompatibleObjectTypesError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
 		/// <summary>
-		/// PathedRoleHasCompatibleCorrelationRolePlayerError domain class Id.
+		/// PathObjectUnifierHasCompatibleObjectTypesError domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x83511f80, 0xc376, 0x47e6, 0xa2, 0x69, 0xc0, 0x48, 0x4a, 0xe6, 0x2e, 0x10);
 	
 				
 		/// <summary>
 		/// Constructor
-		/// Creates a PathedRoleHasCompatibleCorrelationRolePlayerError link in the same Partition as the given PathedRole
+		/// Creates a PathObjectUnifierHasCompatibleObjectTypesError link in the same Partition as the given PathObjectUnifier
 		/// </summary>
-		/// <param name="source">PathedRole to use as the source of the relationship.</param>
-		/// <param name="target">CorrelatedPathRoleRequiresCompatibleRolePlayerError to use as the target of the relationship.</param>
-		public PathedRoleHasCompatibleCorrelationRolePlayerError(PathedRole source, CorrelatedPathRoleRequiresCompatibleRolePlayerError target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(PathedRoleHasCompatibleCorrelationRolePlayerError.PathedRoleDomainRoleId, source), new DslModeling::RoleAssignment(PathedRoleHasCompatibleCorrelationRolePlayerError.CorrelationCompatibilityErrorDomainRoleId, target)}, null)
+		/// <param name="source">PathObjectUnifier to use as the source of the relationship.</param>
+		/// <param name="target">PathObjectUnifierRequiresCompatibleObjectTypesError to use as the target of the relationship.</param>
+		public PathObjectUnifierHasCompatibleObjectTypesError(PathObjectUnifier source, PathObjectUnifierRequiresCompatibleObjectTypesError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(PathObjectUnifierHasCompatibleObjectTypesError.ObjectUnifierDomainRoleId, source), new DslModeling::RoleAssignment(PathObjectUnifierHasCompatibleObjectTypesError.CompatibilityErrorDomainRoleId, target)}, null)
 		{
 		}
 		
@@ -49961,7 +50265,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public PathedRoleHasCompatibleCorrelationRolePlayerError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+		public PathObjectUnifierHasCompatibleObjectTypesError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
 		{
 		}
@@ -49972,7 +50276,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public PathedRoleHasCompatibleCorrelationRolePlayerError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public PathObjectUnifierHasCompatibleObjectTypesError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
 		{
 		}
@@ -49982,7 +50286,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public PathedRoleHasCompatibleCorrelationRolePlayerError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+		public PathObjectUnifierHasCompatibleObjectTypesError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(partition, roleAssignments, null)
 		{
 		}
@@ -49993,67 +50297,67 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public PathedRoleHasCompatibleCorrelationRolePlayerError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public PathObjectUnifierHasCompatibleObjectTypesError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, roleAssignments, propertyAssignments)
 		{
 		}
 		#endregion
-		#region PathedRole domain role code
+		#region ObjectUnifier domain role code
 		
 		/// <summary>
-		/// PathedRole domain role Id.
+		/// ObjectUnifier domain role Id.
 		/// </summary>
-		public static readonly global::System.Guid PathedRoleDomainRoleId = new global::System.Guid(0x13ce0a9c, 0x613d, 0x4525, 0xa5, 0xb5, 0x3c, 0x4b, 0x37, 0x42, 0x18, 0xb0);
+		public static readonly global::System.Guid ObjectUnifierDomainRoleId = new global::System.Guid(0x13ce0a9c, 0x613d, 0x4525, 0xa5, 0xb5, 0x3c, 0x4b, 0x37, 0x42, 0x18, 0xb0);
 		
 		/// <summary>
-		/// DomainRole PathedRole
+		/// DomainRole ObjectUnifier
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError.PathedRole
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasCompatibleObjectTypesError.ObjectUnifier
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError/PathedRole.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError/PathedRole.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "CorrelationCompatibilityError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError/PathedRole.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasCompatibleObjectTypesError/ObjectUnifier.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasCompatibleObjectTypesError/ObjectUnifier.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "CompatibilityError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasCompatibleObjectTypesError/ObjectUnifier.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("13ce0a9c-613d-4525-a5b5-3c4b374218b0")]
-		public virtual PathedRole PathedRole
+		public virtual PathObjectUnifier ObjectUnifier
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (PathedRole)DslModeling::DomainRoleInfo.GetRolePlayer(this, PathedRoleDomainRoleId);
+				return (PathObjectUnifier)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectUnifierDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, PathedRoleDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ObjectUnifierDomainRoleId, value);
 			}
 		}
 				
 		#endregion
-		#region Static methods to access PathedRole of a CorrelatedPathRoleRequiresCompatibleRolePlayerError
+		#region Static methods to access ObjectUnifier of a PathObjectUnifierRequiresCompatibleObjectTypesError
 		/// <summary>
-		/// Gets PathedRole.
+		/// Gets ObjectUnifier.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static PathedRole GetPathedRole(CorrelatedPathRoleRequiresCompatibleRolePlayerError element)
+		public static PathObjectUnifier GetObjectUnifier(PathObjectUnifierRequiresCompatibleObjectTypesError element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, CorrelationCompatibilityErrorDomainRoleId) as PathedRole;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, CompatibilityErrorDomainRoleId) as PathObjectUnifier;
 		}
 		
 		/// <summary>
-		/// Sets PathedRole.
+		/// Sets ObjectUnifier.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetPathedRole(CorrelatedPathRoleRequiresCompatibleRolePlayerError element, PathedRole newPathedRole)
+		public static void SetObjectUnifier(PathObjectUnifierRequiresCompatibleObjectTypesError element, PathObjectUnifier newObjectUnifier)
 		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, CorrelationCompatibilityErrorDomainRoleId, newPathedRole);
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, CompatibilityErrorDomainRoleId, newObjectUnifier);
 		}
 		#endregion
 		#region AssociatedElement domain role override
 		
 		/// <summary>
-		/// Gets the element playing PathedRole domain role.
+		/// Gets the element playing ObjectUnifier domain role.
 		/// Description for
 		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
 		/// </summary>
@@ -50062,72 +50366,72 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return this.PathedRole;
+				return this.ObjectUnifier;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				this.PathedRole = (PathedRole)value;
+				this.ObjectUnifier = (PathObjectUnifier)value;
 			}
 		}
 		
 		#endregion
-		#region CorrelationCompatibilityError domain role code
+		#region CompatibilityError domain role code
 		
 		/// <summary>
-		/// CorrelationCompatibilityError domain role Id.
+		/// CompatibilityError domain role Id.
 		/// </summary>
-		public static readonly global::System.Guid CorrelationCompatibilityErrorDomainRoleId = new global::System.Guid(0x8cb7baf7, 0x1855, 0x4e26, 0xb6, 0xb2, 0xc4, 0xaa, 0x8c, 0xbc, 0xef, 0xa9);
+		public static readonly global::System.Guid CompatibilityErrorDomainRoleId = new global::System.Guid(0x8cb7baf7, 0x1855, 0x4e26, 0xb6, 0xb2, 0xc4, 0xaa, 0x8c, 0xbc, 0xef, 0xa9);
 		
 		/// <summary>
-		/// DomainRole CorrelationCompatibilityError
+		/// DomainRole CompatibilityError
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError.CorrelationCompatibilityError
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasCompatibleObjectTypesError.CompatibilityError
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError/CorrelationCompatibilityError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError/CorrelationCompatibilityError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "PathedRole", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError/CorrelationCompatibilityError.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasCompatibleObjectTypesError/CompatibilityError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasCompatibleObjectTypesError/CompatibilityError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ObjectUnifier", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasCompatibleObjectTypesError/CompatibilityError.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("8cb7baf7-1855-4e26-b6b2-c4aa8cbcefa9")]
-		public virtual CorrelatedPathRoleRequiresCompatibleRolePlayerError CorrelationCompatibilityError
+		public virtual PathObjectUnifierRequiresCompatibleObjectTypesError CompatibilityError
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (CorrelatedPathRoleRequiresCompatibleRolePlayerError)DslModeling::DomainRoleInfo.GetRolePlayer(this, CorrelationCompatibilityErrorDomainRoleId);
+				return (PathObjectUnifierRequiresCompatibleObjectTypesError)DslModeling::DomainRoleInfo.GetRolePlayer(this, CompatibilityErrorDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, CorrelationCompatibilityErrorDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, CompatibilityErrorDomainRoleId, value);
 			}
 		}
 				
 		#endregion
-		#region Static methods to access CorrelationCompatibilityError of a PathedRole
+		#region Static methods to access CompatibilityError of a PathObjectUnifier
 		/// <summary>
-		/// Gets CorrelationCompatibilityError.
+		/// Gets CompatibilityError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static CorrelatedPathRoleRequiresCompatibleRolePlayerError GetCorrelationCompatibilityError(PathedRole element)
+		public static PathObjectUnifierRequiresCompatibleObjectTypesError GetCompatibilityError(PathObjectUnifier element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, PathedRoleDomainRoleId) as CorrelatedPathRoleRequiresCompatibleRolePlayerError;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectUnifierDomainRoleId) as PathObjectUnifierRequiresCompatibleObjectTypesError;
 		}
 		
 		/// <summary>
-		/// Sets CorrelationCompatibilityError.
+		/// Sets CompatibilityError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetCorrelationCompatibilityError(PathedRole element, CorrelatedPathRoleRequiresCompatibleRolePlayerError newCorrelationCompatibilityError)
+		public static void SetCompatibilityError(PathObjectUnifier element, PathObjectUnifierRequiresCompatibleObjectTypesError newCompatibilityError)
 		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, PathedRoleDomainRoleId, newCorrelationCompatibilityError);
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectUnifierDomainRoleId, newCompatibilityError);
 		}
 		#endregion
 		#region ModelError domain role override
 		
 		/// <summary>
-		/// Gets the element playing CorrelationCompatibilityError domain role.
+		/// Gets the element playing CompatibilityError domain role.
 		/// Description for
 		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.ModelError
 		/// </summary>
@@ -50136,26 +50440,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return this.CorrelationCompatibilityError;
+				return this.CompatibilityError;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				this.CorrelationCompatibilityError = (CorrelatedPathRoleRequiresCompatibleRolePlayerError)value;
+				this.CompatibilityError = (PathObjectUnifierRequiresCompatibleObjectTypesError)value;
 			}
 		}
 		
 		#endregion
-		#region PathedRole link accessor
+		#region ObjectUnifier link accessor
 		/// <summary>
-		/// Get the PathedRoleHasCompatibleCorrelationRolePlayerError link to a PathedRole.
+		/// Get the PathObjectUnifierHasCompatibleObjectTypesError link to a PathObjectUnifier.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError GetLinkToCorrelationCompatibilityError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole pathedRoleInstance)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasCompatibleObjectTypesError GetLinkToCompatibilityError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifier objectUnifierInstance)
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError>(pathedRoleInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError.PathedRoleDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of PathedRole not obeyed.");
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasCompatibleObjectTypesError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasCompatibleObjectTypesError>(objectUnifierInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasCompatibleObjectTypesError.ObjectUnifierDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ObjectUnifier not obeyed.");
 			if ( links.Count == 0 )
 			{
 				return null;
@@ -50166,16 +50470,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
-		#region CorrelationCompatibilityError link accessor
+		#region CompatibilityError link accessor
 		/// <summary>
-		/// Get the PathedRoleHasCompatibleCorrelationRolePlayerError link to a CorrelatedPathRoleRequiresCompatibleRolePlayerError.
+		/// Get the PathObjectUnifierHasCompatibleObjectTypesError link to a PathObjectUnifierRequiresCompatibleObjectTypesError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError GetLinkToPathedRole (global::ORMSolutions.ORMArchitect.Core.ObjectModel.CorrelatedPathRoleRequiresCompatibleRolePlayerError correlationCompatibilityErrorInstance)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasCompatibleObjectTypesError GetLinkToObjectUnifier (global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierRequiresCompatibleObjectTypesError compatibilityErrorInstance)
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError>(correlationCompatibilityErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError.CorrelationCompatibilityErrorDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of CorrelationCompatibilityError not obeyed.");
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasCompatibleObjectTypesError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasCompatibleObjectTypesError>(compatibilityErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasCompatibleObjectTypesError.CompatibilityErrorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of CompatibilityError not obeyed.");
 			if ( links.Count == 0 )
 			{
 				return null;
@@ -50186,20 +50490,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
-		#region PathedRoleHasCompatibleCorrelationRolePlayerError instance accessors
+		#region PathObjectUnifierHasCompatibleObjectTypesError instance accessors
 		
 		/// <summary>
-		/// Get any PathedRoleHasCompatibleCorrelationRolePlayerError links between a given PathedRole and a CorrelatedPathRoleRequiresCompatibleRolePlayerError.
+		/// Get any PathObjectUnifierHasCompatibleObjectTypesError links between a given PathObjectUnifier and a PathObjectUnifierRequiresCompatibleObjectTypesError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CorrelatedPathRoleRequiresCompatibleRolePlayerError target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasCompatibleObjectTypesError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifier source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierRequiresCompatibleObjectTypesError target )
 		{
-			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError.PathedRoleDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasCompatibleObjectTypesError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasCompatibleObjectTypesError>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasCompatibleObjectTypesError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasCompatibleObjectTypesError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasCompatibleObjectTypesError.ObjectUnifierDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasCompatibleObjectTypesError link in links )
 			{
-				if ( target.Equals(link.CorrelationCompatibilityError) )
+				if ( target.Equals(link.CompatibilityError) )
 				{
 					outLinks.Add(link);
 				}
@@ -50207,16 +50511,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one PathedRoleHasCompatibleCorrelationRolePlayerError link between a given PathedRoleand a CorrelatedPathRoleRequiresCompatibleRolePlayerError.
+		/// Get the one PathObjectUnifierHasCompatibleObjectTypesError link between a given PathObjectUnifierand a PathObjectUnifierRequiresCompatibleObjectTypesError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CorrelatedPathRoleRequiresCompatibleRolePlayerError target )
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasCompatibleObjectTypesError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifier source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierRequiresCompatibleObjectTypesError target )
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError.PathedRoleDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasCompatibleCorrelationRolePlayerError link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasCompatibleObjectTypesError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasCompatibleObjectTypesError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasCompatibleObjectTypesError.ObjectUnifierDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasCompatibleObjectTypesError link in links )
 			{
-				if ( target.Equals(link.CorrelationCompatibilityError) )
+				if ( target.Equals(link.CompatibilityError) )
 				{
 					return link;
 				}
@@ -50521,310 +50825,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasSameFactTypeFollowsJoinError link in links )
 			{
 				if ( target.Equals(link.SameFactTypeRoleFollowsJoinError) )
-				{
-					return link;
-				}
-			}
-			return null;
-		}
-		
-		#endregion
-	}
-}
-namespace ORMSolutions.ORMArchitect.Core.ObjectModel
-{
-	/// <summary>
-	/// DomainRelationship PathedRoleHasStartRoleError
-	/// Description for
-	/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError
-	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship()]
-	[DslModeling::DomainObjectId("c7b96f20-10c3-4044-b4d8-430e2cdb7c71")]
-	public partial class PathedRoleHasStartRoleError : ElementAssociatedWithModelError
-	{
-		#region Constructors, domain class Id
-		
-		/// <summary>
-		/// PathedRoleHasStartRoleError domain class Id.
-		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xc7b96f20, 0x10c3, 0x4044, 0xb4, 0xd8, 0x43, 0x0e, 0x2c, 0xdb, 0x7c, 0x71);
-	
-				
-		/// <summary>
-		/// Constructor
-		/// Creates a PathedRoleHasStartRoleError link in the same Partition as the given PathedRole
-		/// </summary>
-		/// <param name="source">PathedRole to use as the source of the relationship.</param>
-		/// <param name="target">PathStartRoleFollowsRootObjectTypeError to use as the target of the relationship.</param>
-		public PathedRoleHasStartRoleError(PathedRole source, PathStartRoleFollowsRootObjectTypeError target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(PathedRoleHasStartRoleError.PathedRoleDomainRoleId, source), new DslModeling::RoleAssignment(PathedRoleHasStartRoleError.StartRoleErrorDomainRoleId, target)}, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public PathedRoleHasStartRoleError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public PathedRoleHasStartRoleError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public PathedRoleHasStartRoleError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(partition, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public PathedRoleHasStartRoleError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(partition, roleAssignments, propertyAssignments)
-		{
-		}
-		#endregion
-		#region PathedRole domain role code
-		
-		/// <summary>
-		/// PathedRole domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid PathedRoleDomainRoleId = new global::System.Guid(0x094cd818, 0x15bb, 0x48f9, 0x9e, 0xcf, 0x53, 0x0e, 0x79, 0xeb, 0xd5, 0x93);
-		
-		/// <summary>
-		/// DomainRole PathedRole
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError.PathedRole
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError/PathedRole.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError/PathedRole.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "StartRoleError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError/PathedRole.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
-		[DslModeling::DomainObjectId("094cd818-15bb-48f9-9ecf-530e79ebd593")]
-		public virtual PathedRole PathedRole
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (PathedRole)DslModeling::DomainRoleInfo.GetRolePlayer(this, PathedRoleDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, PathedRoleDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access PathedRole of a PathStartRoleFollowsRootObjectTypeError
-		/// <summary>
-		/// Gets PathedRole.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static PathedRole GetPathedRole(PathStartRoleFollowsRootObjectTypeError element)
-		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, StartRoleErrorDomainRoleId) as PathedRole;
-		}
-		
-		/// <summary>
-		/// Sets PathedRole.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetPathedRole(PathStartRoleFollowsRootObjectTypeError element, PathedRole newPathedRole)
-		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, StartRoleErrorDomainRoleId, newPathedRole);
-		}
-		#endregion
-		#region AssociatedElement domain role override
-		
-		/// <summary>
-		/// Gets the element playing PathedRole domain role.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
-		/// </summary>
-		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return this.PathedRole;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				this.PathedRole = (PathedRole)value;
-			}
-		}
-		
-		#endregion
-		#region StartRoleError domain role code
-		
-		/// <summary>
-		/// StartRoleError domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid StartRoleErrorDomainRoleId = new global::System.Guid(0x6ca7a7a3, 0x4680, 0x421d, 0x97, 0x91, 0x54, 0x83, 0x83, 0x04, 0x51, 0x13);
-		
-		/// <summary>
-		/// DomainRole StartRoleError
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError.StartRoleError
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError/StartRoleError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError/StartRoleError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "PathedRole", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError/StartRoleError.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
-		[DslModeling::DomainObjectId("6ca7a7a3-4680-421d-9791-548383045113")]
-		public virtual PathStartRoleFollowsRootObjectTypeError StartRoleError
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (PathStartRoleFollowsRootObjectTypeError)DslModeling::DomainRoleInfo.GetRolePlayer(this, StartRoleErrorDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, StartRoleErrorDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access StartRoleError of a PathedRole
-		/// <summary>
-		/// Gets StartRoleError.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static PathStartRoleFollowsRootObjectTypeError GetStartRoleError(PathedRole element)
-		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, PathedRoleDomainRoleId) as PathStartRoleFollowsRootObjectTypeError;
-		}
-		
-		/// <summary>
-		/// Sets StartRoleError.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetStartRoleError(PathedRole element, PathStartRoleFollowsRootObjectTypeError newStartRoleError)
-		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, PathedRoleDomainRoleId, newStartRoleError);
-		}
-		#endregion
-		#region ModelError domain role override
-		
-		/// <summary>
-		/// Gets the element playing StartRoleError domain role.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.ModelError
-		/// </summary>
-		public override ModelError ModelError
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return this.StartRoleError;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				this.StartRoleError = (PathStartRoleFollowsRootObjectTypeError)value;
-			}
-		}
-		
-		#endregion
-		#region PathedRole link accessor
-		/// <summary>
-		/// Get the PathedRoleHasStartRoleError link to a PathedRole.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError GetLinkToStartRoleError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole pathedRoleInstance)
-		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError>(pathedRoleInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError.PathedRoleDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of PathedRole not obeyed.");
-			if ( links.Count == 0 )
-			{
-				return null;
-			}
-			else
-			{
-				return links[0];
-			}
-		}
-		#endregion
-		#region StartRoleError link accessor
-		/// <summary>
-		/// Get the PathedRoleHasStartRoleError link to a PathStartRoleFollowsRootObjectTypeError.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError GetLinkToPathedRole (global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathStartRoleFollowsRootObjectTypeError startRoleErrorInstance)
-		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError>(startRoleErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError.StartRoleErrorDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of StartRoleError not obeyed.");
-			if ( links.Count == 0 )
-			{
-				return null;
-			}
-			else
-			{
-				return links[0];
-			}
-		}
-		#endregion
-		#region PathedRoleHasStartRoleError instance accessors
-		
-		/// <summary>
-		/// Get any PathedRoleHasStartRoleError links between a given PathedRole and a PathStartRoleFollowsRootObjectTypeError.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathStartRoleFollowsRootObjectTypeError target )
-		{
-			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError.PathedRoleDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError link in links )
-			{
-				if ( target.Equals(link.StartRoleError) )
-				{
-					outLinks.Add(link);
-				}
-			}
-			return outLinks.AsReadOnly();
-		}
-		/// <summary>
-		/// Get the one PathedRoleHasStartRoleError link between a given PathedRoleand a PathStartRoleFollowsRootObjectTypeError.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathStartRoleFollowsRootObjectTypeError target )
-		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError.PathedRoleDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasStartRoleError link in links )
-			{
-				if ( target.Equals(link.StartRoleError) )
 				{
 					return link;
 				}

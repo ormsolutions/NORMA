@@ -48,7 +48,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			Guid propertyId = domainProperty.Id;
 			if (propertyId == FactTypeDerivationRule.ExternalDerivationDomainPropertyId)
 			{
-				return ModelElement.PathComponentCollection.Count == 0;
+				return ModelElement.LeadRolePathCollection.Count == 0;
 			}
 			return base.ShouldCreatePropertyDescriptor(requestor, domainProperty);
 		}

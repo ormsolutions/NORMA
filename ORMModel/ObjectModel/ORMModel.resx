@@ -452,13 +452,13 @@
 		<value>Role '{0}' in FactType '{1}' in model '{2}' requires a role player.</value>
 		<comment>Model validation error text displayed when a role does not have a specified role player. {0} is the (1-based) role number, {1} is the name of the fact, and {2} is the name of the model.</comment>
 	</data>
-	<data name="ModelError.RolePath.CorrelatedPathRoleRequiresCompatibleRolePlayer.Text" xml:space="preserve">
-		<value>{0} explicitly correlates a path role with an incompatible role player.</value>
-		<comment>Model validation error text for an explicit correlation to a pathed role with a with a role player that is not compatible with the correlation target. {0}=error display context</comment>
-	</data>
 	<data name="ModelError.RolePath.JoinedPathRoleRequiresCompatibleRolePlayer.Text" xml:space="preserve">
 		<value>{0} joins to a path role with an incompatible role player.</value>
 		<comment>Model validation error text for a join to a pathed role with a role player that is not compatible with the join source. {0}=error display context</comment>
+	</data>
+	<data name="ModelError.RolePath.ObjectUnifierRequiresCompatibleObjectTypes.Text" xml:space="preserve">
+		<value>{0} unifies path elements with incompatible object types.</value>
+		<comment>Model validation error text for explicit object unifiers relating multiple disconnected pathed roles and path roots. {0}=error display context</comment>
 	</data>
 	<data name="ModelError.RolePath.OuterJoinRequiresOptionalRole.Text" xml:space="preserve">
 		<value>{0} has outer join semantics to a mandatory role.</value>

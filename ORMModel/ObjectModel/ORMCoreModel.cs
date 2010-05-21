@@ -173,7 +173,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
 				classInfo = directory.FindDomainRelationship(ValueConstraintHasValueRange.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
-				classInfo = directory.FindDomainRelationship(RolePathOwnerHasPathComponent.DomainClassId);
+				classInfo = directory.FindDomainRelationship(RolePathOwnerHasLeadRolePath.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
 				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathRolePlayedChangedHandler, action);
 				classInfo = directory.FindDomainRelationship(RoleSubPathIsContinuationOfRolePath.DomainClassId);
@@ -183,7 +183,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
 				classInfo = directory.FindDomainRelationship(PathedRoleHasValueConstraint.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
-				classInfo = directory.FindDomainRelationship(RolePathComponentCalculatesCalculatedPathValue.DomainClassId);
+				classInfo = directory.FindDomainRelationship(LeadRolePathCalculatesCalculatedPathValue.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
 				classInfo = directory.FindDomainRelationship(FactTypeHasDerivationRule.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
@@ -1437,7 +1437,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // IModelErrorOwnerPath Implementation
 	}
-	partial class RolePathOwnerHasPathComponent : IModelErrorOwnerPath
+	partial class RolePathOwnerHasLeadRolePath : IModelErrorOwnerPath
 	{
 		#region IModelErrorOwnerPath Implementation
 		/// <summary>
@@ -1459,7 +1459,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // IModelErrorOwnerPath Implementation
 	}
-	partial class RolePathComponentCalculatesCalculatedPathValue : IModelErrorOwnerPath
+	partial class LeadRolePathCalculatesCalculatedPathValue : IModelErrorOwnerPath
 	{
 		#region IModelErrorOwnerPath Implementation
 		/// <summary>
@@ -1469,7 +1469,29 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get
 			{
-				return PathComponent;
+				return LeadRolePath;
+			}
+		}
+		ModelElement IModelErrorOwnerPath.ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return ErrorOwnerRolePlayer;
+			}
+		}
+		#endregion // IModelErrorOwnerPath Implementation
+	}
+	partial class LeadRolePathHasObjectUnifier : IModelErrorOwnerPath
+	{
+		#region IModelErrorOwnerPath Implementation
+		/// <summary>
+		/// Implements <see cref="IModelErrorOwnerPath.ErrorOwnerRolePlayer"/>
+		/// </summary>
+		protected ModelElement ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return LeadRolePath;
 			}
 		}
 		ModelElement IModelErrorOwnerPath.ErrorOwnerRolePlayer
