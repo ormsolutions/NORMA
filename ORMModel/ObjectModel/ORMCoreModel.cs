@@ -173,7 +173,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
 				classInfo = directory.FindDomainRelationship(ValueConstraintHasValueRange.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
-				classInfo = directory.FindDomainRelationship(RolePathOwnerHasLeadRolePath.DomainClassId);
+				classInfo = directory.FindDomainRelationship(RolePathOwnerOwnsLeadRolePath.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
 				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathRolePlayedChangedHandler, action);
 				classInfo = directory.FindDomainRelationship(RoleSubPathIsContinuationOfRolePath.DomainClassId);
@@ -1437,7 +1437,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // IModelErrorOwnerPath Implementation
 	}
-	partial class RolePathOwnerHasLeadRolePath : IModelErrorOwnerPath
+	partial class RolePathOwnerOwnsLeadRolePath : IModelErrorOwnerPath
 	{
 		#region IModelErrorOwnerPath Implementation
 		/// <summary>

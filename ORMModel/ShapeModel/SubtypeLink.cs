@@ -332,12 +332,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			Color retVal = Color.Empty;
 			IDynamicShapeColorProvider<ORMDiagramDynamicColor, SubtypeLink, SubtypeFact>[] providers;
+			SubtypeFact element;
 			if ((penId == DiagramPens.ConnectionLine ||
 				penId == NonPrimaryNormalResource ||
 				penId == DiagramPens.ConnectionLineDecorator) &&
-				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, SubtypeLink, SubtypeFact>>()))
+				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, SubtypeLink, SubtypeFact>>()) &&
+				null != (element = (SubtypeFact)ModelElement))
 			{
-				SubtypeFact element = (SubtypeFact)ModelElement;
 				for (int i = 0; i < providers.Length; ++i)
 				{
 					Color alternateColor = providers[i].GetDynamicColor(ORMDiagramDynamicColor.Constraint, this, element);
@@ -363,11 +364,12 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			Color retVal = Color.Empty;
 			SolidBrush solidBrush;
 			IDynamicShapeColorProvider<ORMDiagramDynamicColor, SubtypeLink, SubtypeFact>[] providers;
+			SubtypeFact element;
 			if (brushId == DiagramBrushes.ConnectionLineDecorator &&
 				null != (solidBrush = brush as SolidBrush) &&
-				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, SubtypeLink, SubtypeFact>>()))
+				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, SubtypeLink, SubtypeFact>>()) &&
+				null != (element = (SubtypeFact)ModelElement))
 			{
-				SubtypeFact element = (SubtypeFact)ModelElement;
 				for (int i = 0; i < providers.Length; ++i)
 				{
 					Color alternateColor = providers[i].GetDynamicColor(ORMDiagramDynamicColor.Constraint, this, element);

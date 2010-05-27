@@ -1470,8 +1470,9 @@
 						<xs:documentation>A container for the role paths defined for this owner.</xs:documentation>
 					</xs:annotation>
 					<xs:complexType>
-						<xs:sequence minOccurs="0" maxOccurs="unbounded">
-							<xs:element name="RolePath" type="LeadRolePathType"/>
+						<xs:sequence>
+							<xs:element name="RolePath" type="LeadRolePathType" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element name="SharedRolePath" type="LeadRolePathRef" minOccurs="0" maxOccurs="unbounded"/>
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>

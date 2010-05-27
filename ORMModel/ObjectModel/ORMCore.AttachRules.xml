@@ -133,6 +133,12 @@
 			<arg:RolePlayerChangeRule methodName="ConstraintRoleProjectionOnCalculatedPathValueRolePlayerChangedRule">
 				<arg:RuleOn targetType="ConstraintRoleProjectedFromCalculatedPathValue"/>
 			</arg:RolePlayerChangeRule>
+			<arg:DeleteRule methodName="LeadRolePathDeletedRule">
+				<arg:RuleOn targetType="RolePathOwnerHasLeadRolePath" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
+			</arg:DeleteRule>
+			<arg:RolePlayerChangeRule methodName="LeadRolePathRolePlayerChangedRule">
+				<arg:RuleOn targetType="RolePathOwnerHasLeadRolePath" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
+			</arg:RolePlayerChangeRule>
 			<arg:AddRule methodName="ProjectionAddedRule">
 				<arg:RuleOn targetType="ConstraintRoleSequenceJoinPathProjection"/>
 			</arg:AddRule>
@@ -445,6 +451,18 @@
 			<arg:AddRule methodName="LeadRolePathAddedRule">
 				<arg:RuleOn targetType="RolePathOwnerHasLeadRolePath" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
 			</arg:AddRule>
+			<arg:DeleteRule methodName="LeadRolePathDeletedRule">
+				<arg:RuleOn targetType="RolePathOwnerHasLeadRolePath" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
+			</arg:DeleteRule>
+			<arg:RolePlayerChangeRule methodName="LeadRolePathRolePlayerChangedRule">
+				<arg:RuleOn targetType="RolePathOwnerHasLeadRolePath" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
+			</arg:RolePlayerChangeRule>
+			<arg:DeletingRule methodName="PathedRoleUnificationDeletingRule">
+				<arg:RuleOn targetType="PathObjectUnifierUnifiesPathedRole"/>
+			</arg:DeletingRule>
+			<arg:DeletingRule methodName="PathRootUnificationDeletingRule">
+				<arg:RuleOn targetType="PathObjectUnifierUnifiesRolePathRoot"/>
+			</arg:DeletingRule>
 			<arg:AddRule methodName="ProjectionAddedRule">
 				<arg:RuleOn targetType="FactTypeDerivationProjection"/>
 			</arg:AddRule>
@@ -1023,6 +1041,9 @@
 			<arg:DeleteRule methodName="LeadRolePathDeletedRule">
 				<arg:RuleOn targetType="RolePathOwnerHasLeadRolePath"/>
 			</arg:DeleteRule>
+			<arg:RolePlayerChangeRule methodName="LeadRolePathRolePlayerChangedRule">
+				<arg:RuleOn targetType="RolePathOwnerHasLeadRolePath"/>
+			</arg:RolePlayerChangeRule>
 			<arg:AddRule methodName="ObjectUnifierAddedRule">
 				<arg:RuleOn targetType="LeadRolePathHasObjectUnifier"/>
 			</arg:AddRule>
@@ -1209,6 +1230,9 @@
 			<arg:AddRule methodName="LeadRolePathAddedRule">
 				<arg:RuleOn targetType="RolePathOwnerHasLeadRolePath" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
 			</arg:AddRule>
+			<arg:RolePlayerChangeRule methodName="LeadRolePathRolePlayerChangedRule">
+				<arg:RuleOn targetType="RolePathOwnerHasLeadRolePath" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
+			</arg:RolePlayerChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="SubtypeFact">
 			<arg:DeleteRule methodName="DeleteSubtypeWhenRolePlayerDeletedRule">

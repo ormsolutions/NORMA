@@ -84,6 +84,8 @@
 			<se:OmitRelationship Class="ElementHasAlias"/>
 			<se:OmitRelationship Class="ObjectTypeHasObjectTypeInstance"/>
 			<se:OmitRelationship Class="RolePathOwnerHasSingleLeadRolePath"/>
+			<se:OmitRelationship Class="RolePathOwnerHasSingleOwnedLeadRolePath"/>
+			<se:OmitRelationship Class="RolePathOwnerHasLeadRolePath"/>
 			<se:OmitClass Class="IntrinsicReferenceMode"/>
 			<se:OmitRelationship Class="GroupingElementRelationship"/>
 			<se:OmitRelationship Class="ElementGroupingContainsElementGrouping"/>
@@ -1097,12 +1099,14 @@
 		<se:Container Name="PathComponent">
 			<se:Embed RelationshipName="RolePathOwnerHasPathComponent_Deprecated" RoleName="RolePath"/>
 		</se:Container>
-		<se:Container Name="PathComponents">
-			<se:Embed RelationshipName="RolePathOwnerHasLeadRolePath" RoleName="RolePath"/>
+		<se:Container Name="PathComponents" SortChildElements="true">
+			<se:Embed RelationshipName="RolePathOwnerOwnsLeadRolePath" RoleName="RolePath"/>
+			<se:Link RelationshipName="RolePathOwnerUsesSharedLeadRolePath" RoleName="RolePath"/>
 		</se:Container>
 		<se:Container Name="CalculatedValues">
 			<se:Embed RelationshipName="RolePathOwnerCalculatesCalculatedPathValue_Deprecated" RoleName="CalculatedValue"/>
 		</se:Container>
+		<se:Link RelationshipName="RolePathOwnerUsesSharedLeadRolePath" RoleName="RolePath" Name="SharedRolePath"/>
 	</se:Element>
 	<se:Element Class="LeadRolePath" Override="true" SortChildElements="true" Name="RolePath">
 		<se:Container Name="ObjectUnifiers">
@@ -1117,6 +1121,7 @@
 		<se:Link RelationshipName="LeadRolePathSatisfiesCalculatedCondition" RoleName="CalculatedCondition" Name="CalculatedCondition"/>
 		<se:Link RelationshipName="FactTypeDerivationProjection" RoleName="DerivationRule" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ConstraintRoleSequenceJoinPathProjection" RoleName="JoinPath" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="RolePathOwnerUsesSharedLeadRolePath" RoleName="PathOwner" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="CalculatedPathValue" Name="CalculatedValue" SortChildElements="true" Override="true">
 		<se:Link RelationshipName="CalculatedPathValueIsCalculatedWithFunction" RoleName="Function" Name="Function"/>

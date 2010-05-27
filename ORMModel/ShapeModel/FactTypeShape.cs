@@ -4521,11 +4521,12 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			Color retVal = Color.Empty;
 			IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, FactType>[] providers;
 			bool isRoleBox;
+			FactType element;
 			if (((isRoleBox = penId == RoleBoxResource) ||
 				penId == DiagramPens.ShapeOutline) &&
-				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, FactType>>()))
+				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, FactType>>()) &&
+				null != (element = (FactType)ModelElement))
 			{
-				FactType element = (FactType)ModelElement;
 				ORMDiagramDynamicColor requestColor = isRoleBox ? ORMDiagramDynamicColor.ForegroundGraphics : ORMDiagramDynamicColor.Outline;
 				for (int i = 0; i < providers.Length; ++i)
 				{
@@ -4551,12 +4552,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			Color retVal = Color.Empty;
 			SolidBrush solidBrush;
+			FactType element;
 			IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, FactType>[] providers;
 			if ((brushId == DiagramBrushes.DiagramBackground || brushId == DiagramBrushes.ShapeBackground) &&
 				null != (solidBrush = brush as SolidBrush) &&
-				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, FactType>>()))
+				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, FactType>>()) &&
+				null != (element = (FactType)ModelElement))
 			{
-				FactType element = (FactType)ModelElement;
 				for (int i = 0; i < providers.Length; ++i)
 				{
 					Color alternateColor = providers[i].GetDynamicColor(ORMDiagramDynamicColor.Background, this, element);

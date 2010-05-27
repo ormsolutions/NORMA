@@ -6729,7 +6729,7 @@
     <comment>DisplayName for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;ConstraintRoleSequenceJoinPathProjection&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathProjection/RolePath.PropertyDisplayName" xml:space="preserve">
-    <value>Constraint Role Sequence Join Path Projection</value>
+    <value>Constraint Role Sequence Join Path Projection Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;ConstraintRoleSequenceJoinPathProjection&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjection.Description" xml:space="preserve">
@@ -7465,11 +7465,75 @@
     <comment>DisplayName for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;RolePathOwnerHasLeadRolePath&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath/RolePath.PropertyDisplayName" xml:space="preserve">
-    <value>Path Owner</value>
+    <value>Path Owner Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;RolePathOwnerHasLeadRolePath&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerOwnsLeadRolePath.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerOwnsLeadRolePath</value>
+    <comment>Description for DomainClass &apos;RolePathOwnerOwnsLeadRolePath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerOwnsLeadRolePath.DisplayName" xml:space="preserve">
+    <value>Role Path Owner Owns Lead Role Path</value>
+    <comment>DisplayName for DomainClass &apos;RolePathOwnerOwnsLeadRolePath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerOwnsLeadRolePath/PathOwner.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerOwnsLeadRolePath.PathOwner</value>
+    <comment>Description for DomainRole &apos;PathOwner&apos; on DomainRelationship &apos;RolePathOwnerOwnsLeadRolePath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerOwnsLeadRolePath/PathOwner.DisplayName" xml:space="preserve">
+    <value>PathOwner</value>
+    <comment>DisplayName for DomainRole &apos;PathOwner&apos; on DomainRelationship &apos;RolePathOwnerOwnsLeadRolePath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerOwnsLeadRolePath/PathOwner.PropertyDisplayName" xml:space="preserve">
+    <value>Owned Lead Role Path Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PathOwner&apos; on DomainRelationship &apos;RolePathOwnerOwnsLeadRolePath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerOwnsLeadRolePath/RolePath.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerOwnsLeadRolePath.RolePath</value>
+    <comment>Description for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;RolePathOwnerOwnsLeadRolePath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerOwnsLeadRolePath/RolePath.DisplayName" xml:space="preserve">
+    <value>RolePath</value>
+    <comment>DisplayName for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;RolePathOwnerOwnsLeadRolePath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerOwnsLeadRolePath/RolePath.PropertyDisplayName" xml:space="preserve">
+    <value>Path Owner</value>
+    <comment>PropertyDisplayName for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;RolePathOwnerOwnsLeadRolePath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerUsesSharedLeadRolePath.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerUsesSharedLeadRolePath</value>
+    <comment>Description for DomainClass &apos;RolePathOwnerUsesSharedLeadRolePath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerUsesSharedLeadRolePath.DisplayName" xml:space="preserve">
+    <value>Role Path Owner Uses Shared Lead Role Path</value>
+    <comment>DisplayName for DomainClass &apos;RolePathOwnerUsesSharedLeadRolePath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerUsesSharedLeadRolePath/PathOwner.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerUsesSharedLeadRolePath.PathOwner</value>
+    <comment>Description for DomainRole &apos;PathOwner&apos; on DomainRelationship &apos;RolePathOwnerUsesSharedLeadRolePath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerUsesSharedLeadRolePath/PathOwner.DisplayName" xml:space="preserve">
+    <value>PathOwner</value>
+    <comment>DisplayName for DomainRole &apos;PathOwner&apos; on DomainRelationship &apos;RolePathOwnerUsesSharedLeadRolePath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerUsesSharedLeadRolePath/PathOwner.PropertyDisplayName" xml:space="preserve">
+    <value>Shared Lead Role Path Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PathOwner&apos; on DomainRelationship &apos;RolePathOwnerUsesSharedLeadRolePath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerUsesSharedLeadRolePath/RolePath.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerUsesSharedLeadRolePath.RolePath</value>
+    <comment>Description for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;RolePathOwnerUsesSharedLeadRolePath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerUsesSharedLeadRolePath/RolePath.DisplayName" xml:space="preserve">
+    <value>RolePath</value>
+    <comment>DisplayName for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;RolePathOwnerUsesSharedLeadRolePath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerUsesSharedLeadRolePath/RolePath.PropertyDisplayName" xml:space="preserve">
+    <value>Shared With Path Owner Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;RolePathOwnerUsesSharedLeadRolePath&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasSingleLeadRolePath.Description" xml:space="preserve">
-    <value>Derived relationship based on RolePathOwnerHasPathComponent to determine path owners with a single root.</value>
+    <value>Derived relationship based on RolePathOwnerHasLeadRolePath to determine path owners with a single shared or owned role path.</value>
     <comment>Description for DomainClass &apos;RolePathOwnerHasSingleLeadRolePath&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasSingleLeadRolePath.DisplayName" xml:space="preserve">
@@ -7499,6 +7563,38 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasSingleLeadRolePath/RolePath.PropertyDisplayName" xml:space="preserve">
     <value>Path Owner</value>
     <comment>PropertyDisplayName for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;RolePathOwnerHasSingleLeadRolePath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasSingleOwnedLeadRolePath.Description" xml:space="preserve">
+    <value>Derived relationship based on RolePathOwnerOwnsLeadRolePath to determine path owners with a single owned role path and no shared role paths.</value>
+    <comment>Description for DomainClass &apos;RolePathOwnerHasSingleOwnedLeadRolePath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasSingleOwnedLeadRolePath.DisplayName" xml:space="preserve">
+    <value>Role Path Owner Has Single Owned Lead Role Path</value>
+    <comment>DisplayName for DomainClass &apos;RolePathOwnerHasSingleOwnedLeadRolePath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasSingleOwnedLeadRolePath/PathOwner.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasSingleOwnedLeadRolePath.PathOwner</value>
+    <comment>Description for DomainRole &apos;PathOwner&apos; on DomainRelationship &apos;RolePathOwnerHasSingleOwnedLeadRolePath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasSingleOwnedLeadRolePath/PathOwner.DisplayName" xml:space="preserve">
+    <value>PathOwner</value>
+    <comment>DisplayName for DomainRole &apos;PathOwner&apos; on DomainRelationship &apos;RolePathOwnerHasSingleOwnedLeadRolePath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasSingleOwnedLeadRolePath/PathOwner.PropertyDisplayName" xml:space="preserve">
+    <value>Single Owned Lead Role Path</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PathOwner&apos; on DomainRelationship &apos;RolePathOwnerHasSingleOwnedLeadRolePath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasSingleOwnedLeadRolePath/RolePath.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasSingleOwnedLeadRolePath.RolePath</value>
+    <comment>Description for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;RolePathOwnerHasSingleOwnedLeadRolePath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasSingleOwnedLeadRolePath/RolePath.DisplayName" xml:space="preserve">
+    <value>RolePath</value>
+    <comment>DisplayName for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;RolePathOwnerHasSingleOwnedLeadRolePath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasSingleOwnedLeadRolePath/RolePath.PropertyDisplayName" xml:space="preserve">
+    <value>Path Owner</value>
+    <comment>PropertyDisplayName for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;RolePathOwnerHasSingleOwnedLeadRolePath&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot</value>
@@ -8257,7 +8353,7 @@
     <comment>DisplayName for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;FactTypeDerivationProjection&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection/RolePath.PropertyDisplayName" xml:space="preserve">
-    <value>Fact Type Derivation Rule Projection</value>
+    <value>Fact Type Derivation Rule Projection Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;FactTypeDerivationProjection&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection.Description" xml:space="preserve">

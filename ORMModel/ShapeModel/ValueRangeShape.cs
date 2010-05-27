@@ -74,13 +74,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			Color retVal = Color.Empty;
 			SolidBrush solidBrush;
 			IDynamicShapeColorProvider<ORMDiagramDynamicColor, ValueConstraintShape, ValueConstraint>[] providers;
+			ValueConstraint element;
 			// See notes in corresponding method on ExternalConstraintShape
 			// regarding not using the dynamic background color.
 			if (brushId == ValueRangeTextBrush &&
 				null != (solidBrush = brush as SolidBrush) &&
-				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ValueConstraintShape, ValueConstraint>>()))
+				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ValueConstraintShape, ValueConstraint>>()) &&
+				null != (element = (ValueConstraint)ModelElement))
 			{
-				ValueConstraint element = (ValueConstraint)ModelElement;
 				for (int i = 0; i < providers.Length; ++i)
 				{
 					Color alternateColor = providers[i].GetDynamicColor(ORMDiagramDynamicColor.Constraint, this, element);

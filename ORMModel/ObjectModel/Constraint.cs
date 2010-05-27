@@ -5428,13 +5428,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				// The only thing we want in the join path is a lead path with the initial
 				// object type as the root. This is a straight join path: there are no splits
 				// or conditions.
-				LinkedElementCollection<LeadRolePath> rolePaths = retVal.LeadRolePathCollection;
-				int pathCount = rolePaths.Count;
-				leadRolePath = pathCount != 0 ? rolePaths[0] : null;
-				if (pathCount > 1)
+				
+				// Find an appropriate lead role path to put in automatic form. If the path is shared,
+				// then we do not want to delete it outright or make it automatic. Detaching a shared
+				// path from its owner allows it to be reattached with another owner that currently shares it.
+				foreach (RolePathOwnerOwnsLeadRolePath rolePathLink in RolePathOwnerOwnsLeadRolePath.GetLinksToLeadRolePathCollection(retVal))
 				{
-					rolePaths.RemoveRange(1, pathCount - 1);
+					LeadRolePath testRolePath;
+					if (leadRolePath == null &&
+						0 == (testRolePath = rolePathLink.RolePath).SharedWithPathOwnerCollection.Count)
+					{
+						leadRolePath = testRolePath;
+					}
+					else
+					{
+						rolePathLink.Delete();
+					}
 				}
+				retVal.SharedLeadRolePathCollection.Clear();
 				if (leadRolePath != null)
 				{
 					rootObjectTypeLink = leadRolePath.PathRoot;
@@ -5555,7 +5566,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					ConstraintRoleProjectedFromRolePathRoot pathRootProjectionLink = null;
 					ConstraintRoleProjectedFromPathedRole pathedRoleProjectionLink = null;
 					if (null == pathProjection &&
-						null == (pathProjection = ConstraintRoleSequenceJoinPathProjection.GetLinkToConstraintRoleSequenceJoinPathProjection(leadRolePath)))
+						null == (pathProjection = ConstraintRoleSequenceJoinPathProjection.GetLink(retVal, leadRolePath)))
 					{
 						pathProjection = new ConstraintRoleSequenceJoinPathProjection(retVal, leadRolePath);
 						if (notifyAdded != null)
@@ -5648,13 +5659,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			// The only thing we want in the join path is a lead path with the resolved object type as the root
 			// and an 'and' tail split.
 			Store store = joinPath.Store;
-			LinkedElementCollection<LeadRolePath> rolePaths = joinPath.LeadRolePathCollection;
-			int pathCount = rolePaths.Count;
-			LeadRolePath leadRolePath = pathCount != 0 ? rolePaths[0] : null;
-			if (pathCount > 1)
+
+			// Find an appropriate lead role path to put in automatic form. If the path is shared,
+			// then we do not want to delete it outright or make it automatic. Detaching a shared
+			// path from its owner allows it to be reattached with another owner that currently shares it.
+			LeadRolePath leadRolePath = null;
+			foreach (RolePathOwnerOwnsLeadRolePath rolePathLink in RolePathOwnerOwnsLeadRolePath.GetLinksToLeadRolePathCollection(joinPath))
 			{
-				rolePaths.RemoveRange(1, pathCount - 1);
+				LeadRolePath testRolePath;
+				if (leadRolePath == null &&
+					0 == (testRolePath = rolePathLink.RolePath).SharedWithPathOwnerCollection.Count)
+				{
+					leadRolePath = testRolePath;
+				}
+				else
+				{
+					rolePathLink.Delete();
+				}
 			}
+			joinPath.SharedLeadRolePathCollection.Clear();
+			
 			LinkedElementCollection<RoleSubPath> subPaths;
 			if (leadRolePath == null)
 			{
@@ -5739,7 +5763,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								roleProjection = null;
 								projectionLink = null;
 								if (null == pathProjection &&
-									null == (pathProjection = ConstraintRoleSequenceJoinPathProjection.GetLinkToConstraintRoleSequenceJoinPathProjection(leadRolePath)))
+									null == (pathProjection = ConstraintRoleSequenceJoinPathProjection.GetLink(joinPath, leadRolePath)))
 								{
 									pathProjection = new ConstraintRoleSequenceJoinPathProjection(joinPath, leadRolePath);
 									if (notifyAdded != null)
@@ -5818,7 +5842,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				roleProjection = null;
 				projectionLink = null;
 				if (null == pathProjection &&
-					null == (pathProjection = ConstraintRoleSequenceJoinPathProjection.GetLinkToConstraintRoleSequenceJoinPathProjection(leadRolePath)))
+					null == (pathProjection = ConstraintRoleSequenceJoinPathProjection.GetLink(joinPath, leadRolePath)))
 				{
 					pathProjection = new ConstraintRoleSequenceJoinPathProjection(joinPath, leadRolePath);
 					if (notifyAdded != null)

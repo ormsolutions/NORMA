@@ -5516,23 +5516,49 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 			// Populate paths for this owner
 			AddPathProjections(pathOwner);
-			LeadRolePath simplePath = pathOwner.SingleLeadRolePath;
-			if (simplePath != null)
+
+			// Determine owned paths to verbalize
+			// Verbalize in owned/shared order. The LeadRolePathCollection is unordered.
+			ReadOnlyLinkedElementCollection<LeadRolePath> ownedRolePaths = pathOwner.OwnedLeadRolePathCollection;
+			int ownedPathCount = ownedRolePaths.Count;
+			ReadOnlyLinkedElementCollection<LeadRolePath> sharedRolePaths = pathOwner.SharedLeadRolePathCollection;
+			int sharedPathCount = sharedRolePaths.Count;
+			int rolePathCount = ownedPathCount + sharedPathCount;
+			if (rolePathCount != 0)
 			{
-				InitializeRolePath(simplePath);
-			}
-			else
-			{
-				bool first = true;
-				foreach (LeadRolePath rolePath in pathOwner.LeadRolePathCollection)
+				LeadRolePath[] filteredPaths = new LeadRolePath[rolePathCount];
+				int filteredPathCount = 0;
+				foreach (LeadRolePath leadRolePath in ownedRolePaths)
 				{
-					if (first)
+					if (VerbalizesPath(pathOwner, leadRolePath))
 					{
-						first = false;
-						myCurrentBranchNode = VerbalizationPlanNode.AddBranchNode(VerbalizationPlanBranchType.OrSplit, VerbalizationPlanBranchRenderingStyle.IsolatedList, null, ref myRootPlanNode);
+						filteredPaths[filteredPathCount] = leadRolePath;
+						++filteredPathCount;
 					}
-					InitializeRolePath(rolePath);
-					// UNDONE: Verbalize only projected paths, remove the split otherwise
+				}
+				foreach (LeadRolePath leadRolePath in sharedRolePaths)
+				{
+					if (VerbalizesPath(pathOwner, leadRolePath))
+					{
+						filteredPaths[filteredPathCount] = leadRolePath;
+						++filteredPathCount;
+					}
+				}
+				switch (filteredPathCount)
+				{
+					case 0:
+						// Nothing to do
+						break;
+					case 1:
+						InitializeRolePath(pathOwner, filteredPaths[0]);
+						break;
+					default:
+						myCurrentBranchNode = VerbalizationPlanNode.AddBranchNode(VerbalizationPlanBranchType.OrSplit, VerbalizationPlanBranchRenderingStyle.IsolatedList, null, ref myRootPlanNode);
+						for (int i = 0; i < filteredPathCount; ++i)
+						{
+							InitializeRolePath(pathOwner, filteredPaths[i]);
+						}
+						break;
 				}
 			}
 			VerbalizationPlanNode newRootNode = myRootPlanNode;
@@ -5572,7 +5598,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			// as a side effect of initialization.
 			BeginQuantificationUsePhase();
 		}
-		private void InitializeRolePath(LeadRolePath leadRolePath)
+		private void InitializeRolePath(RolePathOwner pathOwner, LeadRolePath leadRolePath)
 		{
 			LinkedElementCollection<CalculatedPathValue> pathConditions = leadRolePath.CalculatedConditionCollection;
 			int pathConditionCount = pathConditions.Count;
@@ -5872,7 +5898,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 				}
 			}
-			AddCalculatedAndConstantProjections(leadRolePath);
+			AddCalculatedAndConstantProjections(pathOwner, leadRolePath);
 			PopConditionalChainNode();
 			if (rootObjectTypeVariable != null &&
 				!rootObjectTypeVariable.HasBeenUsed(myLatestUsePhase, false) &&
@@ -7289,8 +7315,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// using the <see cref="ProjectExternalVariable(Object,CalculatedPathValue)"/> and
 		/// <see cref="ProjectExternalVariable(Object,PathConstant)"/> methods.
 		/// </summary>
+		/// <param name="pathOwner">The <see cref="RolePathOwner"/></param>
 		/// <param name="rolePath">A <see cref="LeadRolePath"/> with associated projections.</param>
-		protected virtual void AddCalculatedAndConstantProjections(LeadRolePath rolePath)
+		protected virtual void AddCalculatedAndConstantProjections(RolePathOwner pathOwner, LeadRolePath rolePath)
 		{
 			// Default implementation is empty
 		}
@@ -7304,6 +7331,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return false;
 			}
 		}
+		/// <summary>
+		/// Override to add a filtering to establish which paths should be verbalized.
+		/// Return <see langword="true"/> to allow verbalization of the path.
+		/// </summary>
+		/// <param name="pathOwner">The context <see cref="RolePathOwner"/> to test.</param>
+		/// <param name="rolePath">The <see cref="LeadRolePath"/> to test for verbalization.</param>
+		protected abstract bool VerbalizesPath(RolePathOwner pathOwner, LeadRolePath rolePath);
 		/// <summary>
 		/// Add a variable for use while verbalizing elements associated with the pathed role.
 		/// </summary>
@@ -8551,6 +8585,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 			}
 			/// <summary>
+			/// Verbalize a path if it is projected
+			/// </summary>
+			protected override bool VerbalizesPath(RolePathOwner pathOwner, LeadRolePath rolePath)
+			{
+				FactTypeDerivationRule derivationRule;
+				return null != (derivationRule = pathOwner as FactTypeDerivationRule) &&
+					null != FactTypeDerivationProjection.GetLink(derivationRule, rolePath);
+			}
+			/// <summary>
 			/// Override to add and correlate variables for projection bindings
 			/// </summary>
 			protected override void AddPathProjections(RolePathOwner pathOwner)
@@ -8569,10 +8612,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// <summary>
 			/// Override to bind calculation and constant projections
 			/// </summary>
-			protected override void AddCalculatedAndConstantProjections(LeadRolePath rolePath)
+			protected override void AddCalculatedAndConstantProjections(RolePathOwner pathOwner, LeadRolePath rolePath)
 			{
 				// Overlay projection information
-				FactTypeDerivationProjection projection = FactTypeDerivationProjection.GetLinkToFactTypeDerivationRuleProjection(rolePath);
+				FactTypeDerivationProjection projection = FactTypeDerivationProjection.GetLink((FactTypeDerivationRule)pathOwner, rolePath);
 				if (projection != null)
 				{
 					foreach (FactTypeRoleProjection roleProjection in FactTypeRoleProjection.GetLinksToProjectedRoleCollection(projection))
@@ -8612,6 +8655,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					return true;
 				}
+			}
+			/// <summary>
+			/// Verbalize a path if it has a supertype root object type.
+			/// </summary>
+			protected override bool VerbalizesPath(RolePathOwner pathOwner, LeadRolePath rolePath)
+			{
+				SubtypeDerivationRule derivationRule;
+				ObjectType rootObjectType;
+				ObjectType subtype;
+				return null != (derivationRule = pathOwner as SubtypeDerivationRule) &&
+					null != (rootObjectType = rolePath.RootObjectType) &&
+					null != (subtype = derivationRule.Subtype) &&
+					rootObjectType != subtype &&
+					ObjectType.GetNearestCompatibleTypes(new ObjectType[] { subtype, rootObjectType }).Length != 0;
 			}
 		}
 		#endregion // SubTypeDerivationRuleVerbalizer class
@@ -8656,6 +8713,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				BeginQuantificationUsePhase();
 			}
 			/// <summary>
+			/// Verbalize a path if it is projected
+			/// </summary>
+			protected override bool VerbalizesPath(RolePathOwner pathOwner, LeadRolePath rolePath)
+			{
+				ConstraintRoleSequenceJoinPath joinPath;
+				return null != (joinPath = pathOwner as ConstraintRoleSequenceJoinPath) &&
+					null != ConstraintRoleSequenceJoinPathProjection.GetLink(joinPath, rolePath);
+			}
+			/// <summary>
 			/// Override to add and correlate variables for projection bindings
 			/// </summary>
 			protected override void AddPathProjections(RolePathOwner pathOwner)
@@ -8683,10 +8749,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// <summary>
 			/// Override to bind calculation and constant projections
 			/// </summary>
-			protected override void AddCalculatedAndConstantProjections(LeadRolePath rolePath)
+			protected override void AddCalculatedAndConstantProjections(RolePathOwner pathOwner, LeadRolePath rolePath)
 			{
 				// Overlay projection information
-				ConstraintRoleSequenceJoinPathProjection projection = ConstraintRoleSequenceJoinPathProjection.GetLinkToConstraintRoleSequenceJoinPathProjection(rolePath);
+				ConstraintRoleSequenceJoinPathProjection projection = ConstraintRoleSequenceJoinPathProjection.GetLink((ConstraintRoleSequenceJoinPath)pathOwner, rolePath);
 				if (projection != null)
 				{
 					foreach (ConstraintRoleProjection constraintRoleProjection in ConstraintRoleProjection.GetLinksToProjectedRoleCollection(projection))
@@ -8781,6 +8847,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				BeginQuantificationUsePhase();
 			}
 			/// <summary>
+			/// Verbalize a path if it is projected
+			/// </summary>
+			protected override bool VerbalizesPath(RolePathOwner pathOwner, LeadRolePath rolePath)
+			{
+				ConstraintRoleSequenceJoinPath joinPath;
+				return null != (joinPath = pathOwner as ConstraintRoleSequenceJoinPath) &&
+					null != ConstraintRoleSequenceJoinPathProjection.GetLink(joinPath, rolePath);
+			}
+			/// <summary>
 			/// Override to add and correlate variables for projection bindings
 			/// </summary>
 			protected override void AddPathProjections(RolePathOwner pathOwner)
@@ -8808,10 +8883,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// <summary>
 			/// Override to bind calculation and constant projections
 			/// </summary>
-			protected override void AddCalculatedAndConstantProjections(LeadRolePath rolePath)
+			protected override void AddCalculatedAndConstantProjections(RolePathOwner pathOwner, LeadRolePath rolePath)
 			{
 				// Overlay projection information
-				ConstraintRoleSequenceJoinPathProjection projection = ConstraintRoleSequenceJoinPathProjection.GetLinkToConstraintRoleSequenceJoinPathProjection(rolePath);
+				ConstraintRoleSequenceJoinPathProjection projection = ConstraintRoleSequenceJoinPathProjection.GetLink((ConstraintRoleSequenceJoinPath)pathOwner, rolePath);
 				if (projection != null)
 				{
 					foreach (ConstraintRoleProjection constraintRoleProjection in ConstraintRoleProjection.GetLinksToProjectedRoleCollection(projection))

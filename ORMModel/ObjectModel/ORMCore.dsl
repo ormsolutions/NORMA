@@ -4942,7 +4942,7 @@
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="RolePath" PropertyName="ConstraintRoleSequenceJoinPathProjection" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="RolePath" Id="0A6AD07C-880B-460E-AD75-136E3AB612AC">
+				<DomainRole Name="RolePath" PropertyName="ConstraintRoleSequenceJoinPathProjectionCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="RolePath" Id="0A6AD07C-880B-460E-AD75-136E3AB612AC">
 					<RolePlayer>
 						<DomainClassMoniker Name="LeadRolePath"/>
 					</RolePlayer>
@@ -5335,9 +5335,28 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="RolePathOwnerHasLeadRolePath" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="C4D6E714-1489-4BD0-B92B-061D494AB66C">
+		<DomainRelationship Name="RolePathOwnerHasLeadRolePath" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" InheritanceModifier="Abstract" Id="475FED0E-E86A-4212-B1E2-2ECE769B1115">
 			<Source>
-				<DomainRole Name="PathOwner" PropertyName="LeadRolePathCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="PathOwner" Id="7B7881DA-9325-4882-950A-FEC9A9CBA048">
+				<DomainRole Name="PathOwner" PropertyName="LeadRolePathCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="PathOwner" Id="209E0C8C-5B2D-4AD8-BD5C-02FA63FC06C6">
+					<RolePlayer>
+						<DomainClassMoniker Name="RolePathOwner"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="RolePath" PropertyName="PathOwnerCollection" Multiplicity="ZeroMany" IsPropertyGenerator="false" PropagatesDelete="true" DisplayName="RolePath" Id="C127AB61-C937-4DA9-A566-79AFACD7F022">
+					<RolePlayer>
+						<DomainClassMoniker Name="LeadRolePath"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="RolePathOwnerOwnsLeadRolePath" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="C4D6E714-1489-4BD0-B92B-061D494AB66C">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="RolePathOwnerHasLeadRolePath"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="PathOwner" PropertyName="OwnedLeadRolePathCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="PathOwner" Id="7B7881DA-9325-4882-950A-FEC9A9CBA048">
 					<RolePlayer>
 						<DomainClassMoniker Name="RolePathOwner"/>
 					</RolePlayer>
@@ -5345,14 +5364,34 @@
 			</Source>
 			<Target>
 				<!-- UNDONE: Format change, remove old role path constructs. Multiplicity here should be one when the deprecated embedding is removed. -->
-				<DomainRole Name="RolePath" PropertyName="PathOwner" Multiplicity="ZeroOne" IsPropertyGenerator="true" PropagatesDelete="true" DisplayName="RolePath" Id="50D66006-E047-4C5E-B5AE-F1AD19C1BBB8">
+				<!-- Delete propagation here is turned off to enable transfer of a shared path to one of the other owners. -->
+				<DomainRole Name="RolePath" PropertyName="PathOwner" Multiplicity="ZeroOne" IsPropertyGenerator="true" PropagatesDelete="false" DisplayName="RolePath" Id="50D66006-E047-4C5E-B5AE-F1AD19C1BBB8">
 					<RolePlayer>
 						<DomainClassMoniker Name="LeadRolePath"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="RolePathOwnerHasSingleLeadRolePath" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="C77BEA97-713A-45C2-9EE3-AF6939C06A13" Description="Derived relationship based on RolePathOwnerHasPathComponent to determine path owners with a single root.">
+		<DomainRelationship Name="RolePathOwnerUsesSharedLeadRolePath" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="A9BC5F27-F494-4D97-9AE3-6B4032B0CAED">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="RolePathOwnerHasLeadRolePath"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="PathOwner" PropertyName="SharedLeadRolePathCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="PathOwner" Id="96062904-DD62-4519-A8E0-DA4BD553E047">
+					<RolePlayer>
+						<DomainClassMoniker Name="RolePathOwner"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="RolePath" PropertyName="SharedWithPathOwnerCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="RolePath" Id="54551ECB-CCD6-48A7-B7AA-304B3D6EB361">
+					<RolePlayer>
+						<DomainClassMoniker Name="LeadRolePath"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="RolePathOwnerHasSingleLeadRolePath" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="C77BEA97-713A-45C2-9EE3-AF6939C06A13" Description="Derived relationship based on RolePathOwnerHasLeadRolePath to determine path owners with a single shared or owned role path.">
 			<Source>
 				<DomainRole Name="PathOwner" PropertyName="SingleLeadRolePath" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="PathOwner" Id="B79117D1-DEE0-4EBD-9D2A-D51A1CAB54D7">
 					<RolePlayer>
@@ -5361,8 +5400,23 @@
 				</DomainRole>
 			</Source>
 			<Target>
-				<!-- Leave this without a delete propagation so that we can easily change the component to a non-deprecated relationship -->
-				<DomainRole Name="RolePath" PropertyName="PathOwner" Multiplicity="ZeroOne" IsPropertyGenerator="false" DisplayName="RolePath" Id="38B54CE8-5CFD-4CEC-9227-F09B07312C5A">
+				<DomainRole Name="RolePath" PropertyName="PathOwner" Multiplicity="ZeroMany" IsPropertyGenerator="false" DisplayName="RolePath" Id="38B54CE8-5CFD-4CEC-9227-F09B07312C5A">
+					<RolePlayer>
+						<DomainClassMoniker Name="LeadRolePath"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="RolePathOwnerHasSingleOwnedLeadRolePath" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="DD513CAB-7643-4FBF-9AED-A5EBFB44919C" Description="Derived relationship based on RolePathOwnerOwnsLeadRolePath to determine path owners with a single owned role path and no shared role paths.">
+			<Source>
+				<DomainRole Name="PathOwner" PropertyName="SingleOwnedLeadRolePath" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="PathOwner" Id="C1F48AEB-2DCF-44BD-938E-F2CBF193C3AF">
+					<RolePlayer>
+						<DomainClassMoniker Name="RolePathOwner"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="RolePath" PropertyName="PathOwner" Multiplicity="ZeroOne" IsPropertyGenerator="false" DisplayName="RolePath" Id="7C318CBC-480A-46FE-81B8-5ED2F0D0F456">
 					<RolePlayer>
 						<DomainClassMoniker Name="LeadRolePath"/>
 					</RolePlayer>
@@ -5751,7 +5805,7 @@
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="RolePath" PropertyName="FactTypeDerivationRuleProjection" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="RolePath" Id="B92067D1-2DD4-4E80-A667-FCF437C84EF8">
+				<DomainRole Name="RolePath" PropertyName="FactTypeDerivationRuleProjectionCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="RolePath" Id="B92067D1-2DD4-4E80-A667-FCF437C84EF8">
 					<RolePlayer>
 						<DomainClassMoniker Name="LeadRolePath"/>
 					</RolePlayer>

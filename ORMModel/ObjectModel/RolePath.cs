@@ -596,7 +596,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
 			if (linkRoles == null)
 			{
-				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { RolePathOwnerHasLeadRolePath.RolePathDomainRoleId };
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { RolePathOwnerOwnsLeadRolePath.RolePathDomainRoleId };
 			}
 			return linkRoles;
 		}
@@ -683,6 +683,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Get the containing <see cref="ORMModel"/> for this path owner.
 		/// </summary>
 		public abstract ORMModel Model { get;}
+		/// <summary>
+		/// Test if <see cref="LeadRolePath"/> elements owned by this
+		/// <see cref="RolePathOwner"/> can be shared with other owners.
+		/// </summary>
+		public virtual bool AllowOwnedPathSharing
+		{
+			get
+			{
+				return true;
+			}
+		}
 		#endregion // Abstract members
 		#region Helper Methods
 		/// <summary>
@@ -748,7 +759,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			List<ModelErrorUsage> errors = null;
 			ModelError error;
-			foreach (LeadRolePath rolePath in LeadRolePathCollection)
+			foreach (LeadRolePath rolePath in OwnedLeadRolePathCollection)
 			{
 				if (null != (error = rolePath.RootObjectTypeRequiredError))
 				{
@@ -849,6 +860,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			ValidateRolePaths(true, notifyAdded);
+			ValidateDerivedRolePathOwner(notifyAdded);
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{
@@ -930,12 +942,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						LeadRolePath leadRolePath = rootContainmentLink.RolePath;
 						rootContainmentLink.Delete(); // Does not propagate, the path is now unparented
-						notifyAdded.ElementAdded(new RolePathOwnerHasLeadRolePath(element, leadRolePath));
+						notifyAdded.ElementAdded(new RolePathOwnerOwnsLeadRolePath(element, leadRolePath));
 					}
 
 					// Note that we shouldn't get these if we have no single root container, but the
 					// XML still officially supports them. Given that functions for path combinations
-					// came in after this change, we will reasonable expect calculated values to use
+					// came in after this change, we will reasonably expect calculated values to use
 					// roles from a single LeadRolePath and delete them otherwise.
 					ReadOnlyCollection<RolePathOwnerCalculatesCalculatedPathValue_Deprecated> calculatedValueLinks = RolePathOwnerCalculatesCalculatedPathValue_Deprecated.GetLinksToCalculatedValueCollection(element);
 					bool checkedSingleRolePath = false;
@@ -943,7 +955,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					bool noLeadRolePath = false;
 					if (calculatedValueLinks.Count != 0)
 					{
-						FindSingleLeadRolePath(element, out singleLeadRolePath, out noLeadRolePath);
+						FindSingleOwnedLeadRolePath(element, out singleLeadRolePath, out noLeadRolePath);
 						checkedSingleRolePath = true;
 						foreach (RolePathOwnerCalculatesCalculatedPathValue_Deprecated calculatedValueLink in calculatedValueLinks)
 						{
@@ -984,7 +996,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						if (!checkedSingleRolePath)
 						{
-							FindSingleLeadRolePath(element, out singleLeadRolePath, out noLeadRolePath);
+							FindSingleOwnedLeadRolePath(element, out singleLeadRolePath, out noLeadRolePath);
 						}
 						LinkedElementCollection<RoleBase> factRoles = factTypeDerivation.FactType.RoleCollection;
 						int factRoleCount = factRoles.Count;
@@ -1126,7 +1138,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						if (!checkedSingleRolePath)
 						{
-							FindSingleLeadRolePath(element, out singleLeadRolePath, out noLeadRolePath);
+							FindSingleOwnedLeadRolePath(element, out singleLeadRolePath, out noLeadRolePath);
 						}
 						ReadOnlyCollection<ConstraintRoleSequenceHasRole> constraintRoles = ConstraintRoleSequenceHasRole.GetLinksToRoleCollection(joinPath.RoleSequence);
 						int constraintRoleCount = constraintRoles.Count;
@@ -1251,7 +1263,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 					// Replace deprecated StartRole pathed role purpose with PostInnerJoin pathed roles
 					// and modify projections.
-					foreach (LeadRolePath leadRolePath in element.LeadRolePathCollection)
+					foreach (LeadRolePath leadRolePath in element.OwnedLeadRolePathCollection)
 					{
 						VisitPathNodes(
 							leadRolePath,
@@ -1502,9 +1514,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				return constraintRoleProjection;
 			}
-			private static void FindSingleLeadRolePath(RolePathOwner pathOwner, out LeadRolePath singleLeadRolePath, out bool noLeadRolePath)
+			private static void FindSingleOwnedLeadRolePath(RolePathOwner pathOwner, out LeadRolePath singleLeadRolePath, out bool noLeadRolePath)
 			{
-				LinkedElementCollection<LeadRolePath> rolePaths = pathOwner.LeadRolePathCollection;
+				LinkedElementCollection<LeadRolePath> rolePaths = pathOwner.OwnedLeadRolePathCollection;
 				singleLeadRolePath = null;
 				noLeadRolePath = false;
 				switch (rolePaths.Count)
@@ -1515,23 +1527,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						break;
 					case 1:
 						singleLeadRolePath = rolePaths[0];
-						break;
-					default:
-						bool hasLeadRolePath = false;
-						foreach (LeadRolePath rolePath in rolePaths)
-						{
-							if (singleLeadRolePath == null)
-							{
-								singleLeadRolePath = rolePath;
-								hasLeadRolePath = true;
-							}
-							else
-							{
-								singleLeadRolePath = null;
-								break;
-							}
-						}
-						noLeadRolePath = !hasLeadRolePath;
 						break;
 				}
 			}
@@ -1600,10 +1595,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				if (!element.IsDeleted)
 				{
-					LinkedElementCollection<LeadRolePath> rolePaths = element.LeadRolePathCollection;
+					ReadOnlyCollection<RolePathOwnerHasLeadRolePath> rolePaths = RolePathOwnerHasLeadRolePath.GetLinksToLeadRolePathCollection(element);
 					if (rolePaths.Count == 1)
 					{
-						notifyAdded.ElementAdded(new RolePathOwnerHasSingleLeadRolePath(element, rolePaths[0]));
+						RolePathOwnerHasLeadRolePath link = rolePaths[0];
+						LeadRolePath singlePath = link.RolePath;
+						notifyAdded.ElementAdded(new RolePathOwnerHasSingleLeadRolePath(element, singlePath));
+						if (link is RolePathOwnerOwnsLeadRolePath)
+						{
+							notifyAdded.ElementAdded(new RolePathOwnerHasSingleOwnedLeadRolePath(element, singlePath));
+						}
 					}
 				}
 			}
@@ -1856,24 +1857,103 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			RolePathOwnerHasLeadRolePath link = (RolePathOwnerHasLeadRolePath)e.ModelElement;
 			RolePathOwner owner = link.PathOwner;
 			FrameworkDomainModel.DelayValidateElement(owner, DelayValidateSingleLeadRolePath);
-			FrameworkDomainModel.DelayValidateElement(owner, DelayValidateLeadRolePaths);
-			foreach (CalculatedPathValue calculation in link.RolePath.CalculatedValueCollection)
+			if (link is RolePathOwnerOwnsLeadRolePath)
 			{
-				// This would be unusual, but we need to make sure that any pre-attached calculations are validated
-				FrameworkDomainModel.DelayValidateElement(calculation, DelayValidateCalculatedPathValue);
+				FrameworkDomainModel.DelayValidateElement(owner, DelayValidateLeadRolePaths);
+				foreach (CalculatedPathValue calculation in link.RolePath.CalculatedValueCollection)
+				{
+					// This would be unusual, but we need to make sure that any pre-attached calculations are validated
+					FrameworkDomainModel.DelayValidateElement(calculation, DelayValidateCalculatedPathValue);
+				}
+			}
+			else
+			{
+				FrameworkDomainModel.DelayValidateElement(owner, DelayValidateDerivedRolePathOwner);
 			}
 		}
 		/// <summary>
 		/// DeleteRule: typeof(RolePathOwnerHasLeadRolePath)
-		/// See if the SingleLeadRolePath has changed
+		/// Validate single role path and other owner changes when the
+		/// path link is deleted. If the path itself is not deleted, transfer
+		/// ownership of the path to a <see cref="RolePathOwner"/> that
+		/// shares this path, or delete the path otherwise.
 		/// </summary>
 		private static void LeadRolePathDeletedRule(ElementDeletedEventArgs e)
 		{
-			RolePathOwner owner = ((RolePathOwnerHasLeadRolePath)e.ModelElement).PathOwner;
+			RolePathOwnerHasLeadRolePath link = (RolePathOwnerHasLeadRolePath)e.ModelElement;
+			bool isOwningLink = link is RolePathOwnerOwnsLeadRolePath;
+			RolePathOwner owner = link.PathOwner;
 			if (!owner.IsDeleted)
 			{
 				FrameworkDomainModel.DelayValidateElement(owner, DelayValidateSingleLeadRolePath);
-				FrameworkDomainModel.DelayValidateElement(owner, DelayValidateLeadRolePaths);
+				if (isOwningLink)
+				{
+					FrameworkDomainModel.DelayValidateElement(owner, DelayValidateLeadRolePaths);
+				}
+				else
+				{
+					FrameworkDomainModel.DelayValidateElement(owner, DelayValidateDerivedRolePathOwner);
+				}
+			}
+			LeadRolePath rolePath;
+			if (isOwningLink &&
+				!(rolePath = link.RolePath).IsDeleted)
+			{
+				foreach (RolePathOwnerUsesSharedLeadRolePath sharedLink in RolePathOwnerUsesSharedLeadRolePath.GetLinksToSharedWithPathOwnerCollection(rolePath))
+				{
+					RolePathOwner newOwner = sharedLink.PathOwner;
+					sharedLink.Delete();
+					new RolePathOwnerOwnsLeadRolePath(newOwner, rolePath);
+					return;
+				}
+				rolePath.Delete();
+			}
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(RolePathOwnerHasLeadRolePath)
+		/// </summary>
+		private static void LeadRolePathRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			RolePathOwner owner;
+			if (e.DomainRole.Id == RolePathOwnerHasLeadRolePath.PathOwnerDomainRoleId)
+			{
+				// The owner changed, delay validate old and new owners. Note that this
+				// is not an initial add, so existing calculations will already be validated.
+				owner = (RolePathOwner)e.OldRolePlayer;
+				bool isOwnerLink = e.ElementLink is RolePathOwnerOwnsLeadRolePath;
+				FrameworkDomainModel.DelayValidateElement(owner, DelayValidateSingleLeadRolePath);
+				if (isOwnerLink)
+				{
+					FrameworkDomainModel.DelayValidateElement(owner, DelayValidateLeadRolePaths);
+				}
+				else
+				{
+					FrameworkDomainModel.DelayValidateElement(owner, DelayValidateDerivedRolePathOwner);
+				}
+
+				owner = (RolePathOwner)e.NewRolePlayer;
+				FrameworkDomainModel.DelayValidateElement(owner, DelayValidateSingleLeadRolePath);
+				if (isOwnerLink)
+				{
+					FrameworkDomainModel.DelayValidateElement(owner, DelayValidateLeadRolePaths);
+				}
+				else
+				{
+					FrameworkDomainModel.DelayValidateElement(owner, DelayValidateDerivedRolePathOwner);
+				}
+			}
+			else
+			{
+				RolePathOwnerHasLeadRolePath link = (RolePathOwnerHasLeadRolePath)e.ElementLink;
+				owner = link.PathOwner;
+				if (link is RolePathOwnerOwnsLeadRolePath)
+				{
+					FrameworkDomainModel.DelayValidateElement(owner, DelayValidateLeadRolePaths);
+				}
+				else
+				{
+					FrameworkDomainModel.DelayValidateElement(owner, DelayValidateDerivedRolePathOwner);
+				}
 			}
 		}
 		/// <summary>
@@ -1885,11 +1965,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (!element.IsDeleted)
 			{
 				RolePathOwner owner = (RolePathOwner)element;
-				LinkedElementCollection<LeadRolePath> paths = owner.LeadRolePathCollection;
-				LeadRolePath singleRolePath = paths.Count == 1 ? paths[0] : null;
+				ReadOnlyCollection<RolePathOwnerHasLeadRolePath> pathLinks = RolePathOwnerHasLeadRolePath.GetLinksToLeadRolePathCollection(owner);
+				LeadRolePath singleRolePath = null;
+				LeadRolePath singleOwnedRolePath = null;
+				if (pathLinks.Count == 1)
+				{
+					RolePathOwnerHasLeadRolePath pathLink = pathLinks[0];
+					singleRolePath = pathLink.RolePath;
+					if (pathLink is RolePathOwnerOwnsLeadRolePath)
+					{
+						singleOwnedRolePath = singleRolePath;
+					}
+				}
 				if (owner.SingleLeadRolePath != singleRolePath)
 				{
 					owner.SingleLeadRolePath = singleRolePath;
+				}
+				if (owner.SingleOwnedLeadRolePath != singleOwnedRolePath)
+				{
+					owner.SingleOwnedLeadRolePath = singleOwnedRolePath;
 				}
 			}
 		}
@@ -2387,6 +2481,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (!element.IsDeleted)
 			{
 				((RolePathOwner)element).ValidateRolePaths(false, null);
+				FrameworkDomainModel.DelayValidateElement(element, DelayValidateDerivedRolePathOwner);
+			}
+		}
+		[DelayValidatePriority(1)] // Run after DelayValidateLeadRolePaths
+		private static void DelayValidateDerivedRolePathOwner(ModelElement element)
+		{
+			if (!element.IsDeleted)
+			{
+				((RolePathOwner)element).ValidateDerivedRolePathOwner(null);
 			}
 		}
 		/// <summary>
@@ -2398,6 +2501,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (!element.IsDeleted)
 			{
 				((RolePathOwner)element).ValidateRolePaths(true, null);
+				FrameworkDomainModel.DelayValidateElement(element, DelayValidateDerivedRolePathOwner);
 			}
 		}
 		/// <summary>
@@ -2412,7 +2516,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			BitTracker roleUseTracker = new BitTracker(0);
 			Stack<LinkedElementCollection<RoleBase>> factTypeRolesStack = new Stack<LinkedElementCollection<RoleBase>>();
 			ObjectType[] compatibilityTester = null;
-			foreach (LeadRolePath leadRolePath in LeadRolePathCollection)
+			foreach (LeadRolePath leadRolePath in OwnedLeadRolePathCollection)
 			{
 				// Walk all pathed roles to check path structure and join compatibility. Errors
 				// are specified on the pathed roles.
@@ -2890,14 +2994,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				#endregion // Validate calculation completeness
 			}
-
-			// Give owner derivations a chance for additional validation
-			ValidateDerivedRolePathOwner(notifyAdded);
 		}
 		/// <summary>
 		/// A callback point used during path validation to enable extensions
 		/// to be validated along with the base.
 		/// </summary>
+		/// <remarks>This should be called after <see cref="ValidateRolePaths"/>
+		/// is completed, but is kept separate to enable finer-grained control
+		/// over path-specific and owner-specific settings.
+		/// </remarks>
 		/// <param name="notifyAdded">Notification callback for added elements and errors.</param>
 		protected virtual void ValidateDerivedRolePathOwner(INotifyElementAdded notifyAdded)
 		{
@@ -3440,6 +3545,94 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
+		/// DeletingRule: typeof(PathObjectUnifierUnifiesPathedRole)
+		/// Preserve projection with other previously unified elements if
+		/// a unified pathed role is deleted.
+		/// </summary>
+		private static void PathedRoleUnificationDeletingRule(ElementDeletingEventArgs e)
+		{
+			PathObjectUnifierUnifiesPathedRole link = (PathObjectUnifierUnifiesPathedRole)e.ModelElement;
+			ReadOnlyCollection<FactTypeRoleProjectedFromPathedRole> roleProjections = FactTypeRoleProjectedFromPathedRole.GetLinksToFactTypeRoleProjections(link.PathedRole);
+			if (roleProjections.Count != 0)
+			{
+				PathObjectUnifier objectUnifier = link.ObjectUnifier;
+				foreach (PathObjectUnifierUnifiesRolePathRoot unifiedRootLink in PathObjectUnifierUnifiesRolePathRoot.GetLinksToPathRootCollection(objectUnifier))
+				{
+					if (!unifiedRootLink.IsDeleting)
+					{
+						RolePathObjectTypeRoot replaceWithPathRoot = unifiedRootLink.PathRoot;
+						foreach (FactTypeRoleProjectedFromPathedRole roleProjection in roleProjections)
+						{
+							if (!roleProjection.IsDeleting)
+							{
+								roleProjection.RoleProjection.ProjectedFromPathRoot = replaceWithPathRoot;
+							}
+						}
+						return;
+					}
+				}
+				foreach (PathObjectUnifierUnifiesPathedRole unifiedPathedRoleLink in PathObjectUnifierUnifiesPathedRole.GetLinksToPathedRoleCollection(objectUnifier))
+				{
+					if (!unifiedPathedRoleLink.IsDeleting)
+					{
+						PathedRole replaceWithPathedRole = unifiedPathedRoleLink.PathedRole;
+						foreach (FactTypeRoleProjectedFromPathedRole roleProjection in roleProjections)
+						{
+							if (!roleProjection.IsDeleting)
+							{
+								roleProjection.RoleProjection.ProjectedFromPathedRole = replaceWithPathedRole;
+							}
+						}
+						return;
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// DeletingRule: typeof(PathObjectUnifierUnifiesRolePathRoot)
+		/// Preserve projection with other previously unified elements if
+		/// a unified path root is deleted.
+		/// </summary>
+		private static void PathRootUnificationDeletingRule(ElementDeletingEventArgs e)
+		{
+			PathObjectUnifierUnifiesRolePathRoot link = (PathObjectUnifierUnifiesRolePathRoot)e.ModelElement;
+			ReadOnlyCollection<FactTypeRoleProjectedFromRolePathRoot> roleProjections = FactTypeRoleProjectedFromRolePathRoot.GetLinksToFactTypeRoleProjections(link.PathRoot);
+			if (roleProjections.Count != 0)
+			{
+				PathObjectUnifier objectUnifier = link.ObjectUnifier;
+				foreach (PathObjectUnifierUnifiesRolePathRoot unifiedRootLink in PathObjectUnifierUnifiesRolePathRoot.GetLinksToPathRootCollection(objectUnifier))
+				{
+					if (!unifiedRootLink.IsDeleting)
+					{
+						RolePathObjectTypeRoot replaceWithPathRoot = unifiedRootLink.PathRoot;
+						foreach (FactTypeRoleProjectedFromRolePathRoot roleProjection in roleProjections)
+						{
+							if (!roleProjection.IsDeleting)
+							{
+								roleProjection.RoleProjection.ProjectedFromPathRoot = replaceWithPathRoot;
+							}
+						}
+						return;
+					}
+				}
+				foreach (PathObjectUnifierUnifiesPathedRole unifiedPathedRoleLink in PathObjectUnifierUnifiesPathedRole.GetLinksToPathedRoleCollection(objectUnifier))
+				{
+					if (!unifiedPathedRoleLink.IsDeleting)
+					{
+						PathedRole replaceWithPathedRole = unifiedPathedRoleLink.PathedRole;
+						foreach (FactTypeRoleProjectedFromRolePathRoot roleProjection in roleProjections)
+						{
+							if (!roleProjection.IsDeleting)
+							{
+								roleProjection.RoleProjection.ProjectedFromPathedRole = replaceWithPathedRole;
+							}
+						}
+						return;
+					}
+				}
+			}
+		}
+		/// <summary>
 		/// AddRule: typeof(FactTypeDerivationProjection)
 		/// </summary>
 		private static void ProjectionAddedRule(ElementAddedEventArgs e)
@@ -3474,7 +3667,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		/// <summary>
 		/// AddRule: typeof(RolePathOwnerHasLeadRolePath), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
-		/// Clear the ExternalDefinition setting when elements are added to the path.
+		/// Clear the ExternalDefinition setting when paths are added to the derivation rule.
 		/// </summary>
 		private static void LeadRolePathAddedRule(ElementAddedEventArgs e)
 		{
@@ -3484,6 +3677,55 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				null != (derivationRule = link.PathOwner as FactTypeDerivationRule))
 			{
 				derivationRule.ExternalDerivation = false;
+			}
+		}
+		/// <summary>
+		/// DeleteRule: typeof(RolePathOwnerHasLeadRolePath), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// Eliminate projections for detached but undeleted paths.
+		/// </summary>
+		private static void LeadRolePathDeletedRule(ElementDeletedEventArgs e)
+		{
+			RolePathOwnerHasLeadRolePath link = (RolePathOwnerHasLeadRolePath)e.ModelElement;
+			DeleteProjectionForDetachedPath(link.PathOwner, link.RolePath);
+		}
+		/// <summary>
+		/// If a role path has been detached from the derivation rule but not deleted, then clear
+		/// the associated projection if the path has not been reattached through a different
+		/// (owns vs sharing) relationship.
+		/// </summary>
+		private static void DeleteProjectionForDetachedPath(RolePathOwner owner, LeadRolePath rolePath)
+		{
+			FactTypeDerivationRule derivationRule;
+			FactTypeDerivationProjection projection;
+			if (!rolePath.IsDeleted &&
+				null != (derivationRule = owner as FactTypeDerivationRule) &&
+				!derivationRule.IsDeleted &&
+				null == RolePathOwnerHasLeadRolePath.GetLink(derivationRule, rolePath) &&
+				null != (projection = FactTypeDerivationProjection.GetLink(derivationRule, rolePath)))
+			{
+				projection.Delete();
+			}
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(RolePathOwnerHasLeadRolePath), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// Clear the ExternalDefinition setting when paths are added to the derivation rule and
+		/// eliminate projections for detached but undeleted paths.
+		/// </summary>
+		private static void LeadRolePathRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			if (e.DomainRole.Id == RolePathOwnerHasLeadRolePath.PathOwnerDomainRoleId)
+			{
+				DeleteProjectionForDetachedPath((RolePathOwner)e.OldRolePlayer, ((RolePathOwnerHasLeadRolePath)e.ElementLink).RolePath);
+				FactTypeDerivationRule derivationRule;
+				if (null != (derivationRule = e.NewRolePlayer as FactTypeDerivationRule) &&
+					!derivationRule.IsDeleted)
+				{
+					derivationRule.ExternalDerivation = false;
+				}
+			}
+			else
+			{
+				DeleteProjectionForDetachedPath(((RolePathOwnerHasLeadRolePath)e.ElementLink).PathOwner, (LeadRolePath)e.OldRolePlayer);
 			}
 		}
 		/// <summary>
@@ -3763,7 +4005,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		/// <summary>
 		/// AddRule: typeof(RolePathOwnerHasLeadRolePath), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
-		/// Clear the ExternalDefinition setting when elements are added to the path.
+		/// Clear the ExternalDefinition setting when paths are added to the derivation rule.
 		/// </summary>
 		private static void LeadRolePathAddedRule(ElementAddedEventArgs e)
 		{
@@ -3771,6 +4013,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			SubtypeDerivationRule derivationRule;
 			if (!link.IsDeleted &&
 				null != (derivationRule = link.PathOwner as SubtypeDerivationRule))
+			{
+				derivationRule.ExternalDerivation = false;
+			}
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(RolePathOwnerHasLeadRolePath), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// Clear the ExternalDefinition setting when paths are added to the derivation rule.
+		/// </summary>
+		private static void LeadRolePathRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			SubtypeDerivationRule derivationRule;
+			if (e.DomainRole.Id == RolePathOwnerHasLeadRolePath.PathOwnerDomainRoleId &&
+				null != (derivationRule = e.NewRolePlayer as SubtypeDerivationRule) &&
+				!derivationRule.IsDeleted)
 			{
 				derivationRule.ExternalDerivation = false;
 			}
@@ -3792,6 +4048,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				ConstraintRoleSequence roleSequence;
 				IConstraint constraint;
 				return (null != (roleSequence = RoleSequence) && null != (constraint = roleSequence.Constraint)) ? constraint.Model : null;
+			}
+		}
+		/// <summary>
+		/// Automatic join paths cannot be shared. Changing a shared role path to automatic
+		/// will result in existing shared paths being detached from this owner.
+		/// </summary>
+		public override bool AllowOwnedPathSharing
+		{
+			get
+			{
+				return !IsAutomatic;
 			}
 		}
 		/// <summary>
@@ -4079,6 +4346,94 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
+		/// DeletingRule: typeof(PathObjectUnifierUnifiesPathedRole)
+		/// Preserve projection with other previously unified elements if
+		/// a unified pathed role is deleted.
+		/// </summary>
+		private static void PathedRoleUnificationDeletingRule(ElementDeletingEventArgs e)
+		{
+			PathObjectUnifierUnifiesPathedRole link = (PathObjectUnifierUnifiesPathedRole)e.ModelElement;
+			ReadOnlyCollection<ConstraintRoleProjectedFromPathedRole> constraintRoleProjections = ConstraintRoleProjectedFromPathedRole.GetLinksToConstraintRoleProjections(link.PathedRole);
+			if (constraintRoleProjections.Count != 0)
+			{
+				PathObjectUnifier objectUnifier = link.ObjectUnifier;
+				foreach (PathObjectUnifierUnifiesRolePathRoot unifiedRootLink in PathObjectUnifierUnifiesRolePathRoot.GetLinksToPathRootCollection(objectUnifier))
+				{
+					if (!unifiedRootLink.IsDeleting)
+					{
+						RolePathObjectTypeRoot replaceWithPathRoot = unifiedRootLink.PathRoot;
+						foreach (ConstraintRoleProjectedFromPathedRole constraintRoleProjection in constraintRoleProjections)
+						{
+							if (!constraintRoleProjection.IsDeleting)
+							{
+								constraintRoleProjection.ConstraintRoleProjection.ProjectedFromPathRoot = replaceWithPathRoot;
+							}
+						}
+						return;
+					}
+				}
+				foreach (PathObjectUnifierUnifiesPathedRole unifiedPathedRoleLink in PathObjectUnifierUnifiesPathedRole.GetLinksToPathedRoleCollection(objectUnifier))
+				{
+					if (!unifiedPathedRoleLink.IsDeleting)
+					{
+						PathedRole replaceWithPathedRole = unifiedPathedRoleLink.PathedRole;
+						foreach (ConstraintRoleProjectedFromPathedRole constraintRoleProjection in constraintRoleProjections)
+						{
+							if (!constraintRoleProjection.IsDeleting)
+							{
+								constraintRoleProjection.ConstraintRoleProjection.ProjectedFromPathedRole = replaceWithPathedRole;
+							}
+						}
+						return;
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// DeletingRule: typeof(PathObjectUnifierUnifiesRolePathRoot)
+		/// Preserve projection with other previously unified elements if
+		/// a unified path root is deleted.
+		/// </summary>
+		private static void PathRootUnificationDeletingRule(ElementDeletingEventArgs e)
+		{
+			PathObjectUnifierUnifiesRolePathRoot link = (PathObjectUnifierUnifiesRolePathRoot)e.ModelElement;
+			ReadOnlyCollection<ConstraintRoleProjectedFromRolePathRoot> constraintRoleProjections = ConstraintRoleProjectedFromRolePathRoot.GetLinksToConstraintRoleProjections(link.PathRoot);
+			if (constraintRoleProjections.Count != 0)
+			{
+				PathObjectUnifier objectUnifier = link.ObjectUnifier;
+				foreach (PathObjectUnifierUnifiesRolePathRoot unifiedRootLink in PathObjectUnifierUnifiesRolePathRoot.GetLinksToPathRootCollection(objectUnifier))
+				{
+					if (!unifiedRootLink.IsDeleting)
+					{
+						RolePathObjectTypeRoot replaceWithPathRoot = unifiedRootLink.PathRoot;
+						foreach (ConstraintRoleProjectedFromRolePathRoot constraintRoleProjection in constraintRoleProjections)
+						{
+							if (!constraintRoleProjection.IsDeleting)
+							{
+								constraintRoleProjection.ConstraintRoleProjection.ProjectedFromPathRoot = replaceWithPathRoot;
+							}
+						}
+						return;
+					}
+				}
+				foreach (PathObjectUnifierUnifiesPathedRole unifiedPathedRoleLink in PathObjectUnifierUnifiesPathedRole.GetLinksToPathedRoleCollection(objectUnifier))
+				{
+					if (!unifiedPathedRoleLink.IsDeleting)
+					{
+						PathedRole replaceWithPathedRole = unifiedPathedRoleLink.PathedRole;
+						foreach (ConstraintRoleProjectedFromRolePathRoot constraintRoleProjection in constraintRoleProjections)
+						{
+							if (!constraintRoleProjection.IsDeleting)
+							{
+								constraintRoleProjection.ConstraintRoleProjection.ProjectedFromPathedRole = replaceWithPathedRole;
+							}
+						}
+						return;
+					}
+				}
+			}
+		}
+		/// <summary>
 		/// AddRule: typeof(ConstraintRoleSequenceJoinPathProjection)
 		/// </summary>
 		private static void ProjectionAddedRule(ElementAddedEventArgs e)
@@ -4152,6 +4507,48 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					FrameworkDomainModel.DelayValidateElement(joinPath, DelayValidateProjections);
 				}
+			}
+		}
+		/// <summary>
+		/// DeleteRule: typeof(RolePathOwnerHasLeadRolePath), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// Eliminate projections for detached but undeleted paths.
+		/// </summary>
+		private static void LeadRolePathDeletedRule(ElementDeletedEventArgs e)
+		{
+			RolePathOwnerHasLeadRolePath link = (RolePathOwnerHasLeadRolePath)e.ModelElement;
+			DeleteProjectionForDetachedPath(link.PathOwner, link.RolePath);
+		}
+		/// <summary>
+		/// If a role path has been detached from the join path but not deleted, then clear
+		/// the associated projection if the path has not been reattached through a different
+		/// (owns vs sharing) relationship.
+		/// </summary>
+		private static void DeleteProjectionForDetachedPath(RolePathOwner owner, LeadRolePath rolePath)
+		{
+			ConstraintRoleSequenceJoinPath joinPath;
+			ConstraintRoleSequenceJoinPathProjection projection;
+			if (!rolePath.IsDeleted &&
+				null != (joinPath = owner as ConstraintRoleSequenceJoinPath) &&
+				!joinPath.IsDeleted &&
+				null == RolePathOwnerHasLeadRolePath.GetLink(joinPath, rolePath) &&
+				null != (projection = ConstraintRoleSequenceJoinPathProjection.GetLink(joinPath, rolePath)))
+			{
+				projection.Delete();
+			}
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(RolePathOwnerHasLeadRolePath), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// Eliminate projections for detached but undeleted paths.
+		/// </summary>
+		private static void LeadRolePathRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			if (e.DomainRole.Id == RolePathOwnerHasLeadRolePath.PathOwnerDomainRoleId)
+			{
+				DeleteProjectionForDetachedPath((RolePathOwner)e.OldRolePlayer, ((RolePathOwnerHasLeadRolePath)e.ElementLink).RolePath);
+			}
+			else
+			{
+				DeleteProjectionForDetachedPath(((RolePathOwnerHasLeadRolePath)e.ElementLink).PathOwner, (LeadRolePath)e.OldRolePlayer);
 			}
 		}
 		#endregion // Validation Rule Methods

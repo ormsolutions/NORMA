@@ -11424,12 +11424,42 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Description for
 		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath.PathOwner
 		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<LeadRolePath> LeadRolePathCollection
+		public virtual DslModeling::ReadOnlyLinkedElementCollection<LeadRolePath> LeadRolePathCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::LinkedElementCollection<LeadRolePath>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath.PathOwnerDomainRoleId);
+				return new DslModeling::ReadOnlyLinkedElementCollection<LeadRolePath>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath.PathOwnerDomainRoleId);
+			}
+		}
+		#endregion
+		#region OwnedLeadRolePathCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of OwnedLeadRolePathCollection.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerOwnsLeadRolePath.PathOwner
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<LeadRolePath> OwnedLeadRolePathCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<LeadRolePath>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerOwnsLeadRolePath.PathOwnerDomainRoleId);
+			}
+		}
+		#endregion
+		#region SharedLeadRolePathCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of SharedLeadRolePathCollection.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerUsesSharedLeadRolePath.PathOwner
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<LeadRolePath> SharedLeadRolePathCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<LeadRolePath>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerUsesSharedLeadRolePath.PathOwnerDomainRoleId);
 			}
 		}
 		#endregion
@@ -11449,18 +11479,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasSingleLeadRolePath.PathOwnerDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region SingleOwnedLeadRolePath opposite domain role accessor
+		/// <summary>
+		/// Gets or sets SingleOwnedLeadRolePath.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasSingleOwnedLeadRolePath.PathOwner
+		/// </summary>
+		public virtual LeadRolePath SingleOwnedLeadRolePath
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasSingleOwnedLeadRolePath.PathOwnerDomainRoleId) as LeadRolePath;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
 				DslModeling::ModelElement existingSource;
 				if (null != value &&
-					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasSingleLeadRolePath.RolePathDomainRoleId)))
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasSingleOwnedLeadRolePath.RolePathDomainRoleId)))
 				{
 					if (existingSource != value)
 					{
-						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasSingleLeadRolePath.RolePathDomainRoleId, this);
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasSingleOwnedLeadRolePath.RolePathDomainRoleId, this);
 					}
 				}
 				else
 				{
-					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasSingleLeadRolePath.PathOwnerDomainRoleId, value);
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasSingleOwnedLeadRolePath.PathOwnerDomainRoleId, value);
 				}
 			}
 		}
@@ -11796,19 +11846,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Gets or sets PathOwner.
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath.RolePath
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerOwnsLeadRolePath.RolePath
 		/// </summary>
 		public virtual RolePathOwner PathOwner
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath.RolePathDomainRoleId) as RolePathOwner;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerOwnsLeadRolePath.RolePathDomainRoleId) as RolePathOwner;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath.RolePathDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerOwnsLeadRolePath.RolePathDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region SharedWithPathOwnerCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of SharedWithPathOwnerCollection.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerUsesSharedLeadRolePath.RolePath
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<RolePathOwner> SharedWithPathOwnerCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<RolePathOwner>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerUsesSharedLeadRolePath.RolePathDomainRoleId);
 			}
 		}
 		#endregion

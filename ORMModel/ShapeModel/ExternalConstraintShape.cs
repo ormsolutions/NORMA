@@ -395,10 +395,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			Color retVal = Color.Empty;
 			IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintShape, IConstraint>[] providers;
+			IConstraint element;
 			if (penId == DiagramPens.ShapeOutline &&
-				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintShape, IConstraint>>()))
+				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintShape, IConstraint>>()) &&
+				null != (element = (IConstraint)ModelElement))
 			{
-				IConstraint element = (IConstraint)ModelElement;
 				ORMDiagramDynamicColor requestColor = element.Modality == ConstraintModality.Deontic ? ORMDiagramDynamicColor.DeonticConstraint : ORMDiagramDynamicColor.Constraint;
 				for (int i = 0; i < providers.Length; ++i)
 				{
@@ -425,6 +426,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			Color retVal = Color.Empty;
 			SolidBrush solidBrush;
 			IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintShape, IConstraint>[] providers;
+			IConstraint element;
 			// We could check for a background brush request here with
 			// DiagramBrushes.DiagramBackground. However, given the small
 			// amount of background showing in most constraints and the
@@ -435,9 +437,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			if ((brushId == ExternalConstraintBrush ||
 				brushId == DiagramBrushes.ShapeText) &&
 				null != (solidBrush = brush as SolidBrush) &&
-				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintShape, IConstraint>>()))
+				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintShape, IConstraint>>()) &&
+				null != (element = (IConstraint)ModelElement))
 			{
-				IConstraint element = (IConstraint)ModelElement;
 				ORMDiagramDynamicColor requestColor = element.Modality == ConstraintModality.Deontic ? ORMDiagramDynamicColor.DeonticConstraint : ORMDiagramDynamicColor.Constraint;
 				for (int i = 0; i < providers.Length; ++i)
 				{
