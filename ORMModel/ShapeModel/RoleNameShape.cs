@@ -31,7 +31,7 @@ using ORMSolutions.ORMArchitect.Core.Shell;
 
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
-	public partial class RoleNameShape : ISelectionContainerFilter, IProxyDisplayProvider, IDynamicColorGeometryHost
+	public partial class RoleNameShape : ISelectionContainerFilter, IProxyDisplayProvider, IDynamicColorGeometryHost, ICustomElementDeletion
 	{
 		#region Member Variables
 		private static AutoSizeTextField myTextField;
@@ -359,5 +359,23 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			return ElementDisplayedAs(element, forError);
 		}
 		#endregion // IProxyDisplayProvider Implementation
+		#region ICustomElementDeletion Implementation
+		/// <summary>
+		/// Implements <see cref="ICustomElementDeletion.DeleteCustomElement"/>
+		/// Clear the role name on deletion instead of deleting the role itself.
+		/// </summary>
+		protected void DeleteCustomElement()
+		{
+			Role role = ModelElement as Role;
+			if (role != null)
+			{
+				role.Name = "";
+			}
+		}
+		void ICustomElementDeletion.DeleteCustomElement()
+		{
+			DeleteCustomElement();
+		}
+		#endregion // ICustomElementDeletion Implementation
 	}
 }

@@ -468,7 +468,15 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								}
 								if (executeDelete)
 								{
-									deleteTarget.Delete();
+									ICustomElementDeletion customDeletion = deleteTarget as ICustomElementDeletion;
+									if (customDeletion != null)
+									{
+										customDeletion.DeleteCustomElement();
+									}
+									else
+									{
+										deleteTarget.Delete();
+									}
 								}
 							}
 							if (t.HasPendingChanges)

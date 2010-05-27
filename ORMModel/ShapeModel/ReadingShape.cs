@@ -37,7 +37,7 @@ using ORMSolutions.ORMArchitect.Framework.Diagrams;
 
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
-	public partial class ReadingShape : IModelErrorActivation, ISelectionContainerFilter, IDynamicColorGeometryHost
+	public partial class ReadingShape : IModelErrorActivation, ISelectionContainerFilter, IDynamicColorGeometryHost, ICustomElementDeletion
 	{
 		#region IDynamicColorGeometryHost Implementation
 		/// <summary>
@@ -1231,6 +1231,26 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 		}
 		#endregion // ISelectionContainerFilter Implementation
+		#region ICustomElementDeletion Implementation
+		/// <summary>
+		/// Implements <see cref="ICustomElementDeletion.DeleteCustomElement"/>
+		/// A reading shape selection should delete the fact type.
+		/// </summary>
+		protected void DeleteCustomElement()
+		{
+			ReadingOrder readingOrder;
+			FactType factType;
+			if (null != (readingOrder = ModelElement as ReadingOrder) &&
+				null != (factType = readingOrder.FactType))
+			{
+				factType.Delete();
+			}
+		}
+		void ICustomElementDeletion.DeleteCustomElement()
+		{
+			DeleteCustomElement();
+		}
+		#endregion // ICustomElementDeletion Implementation
 		#region Mouse handling
 		/// <summary>
 		/// Attempt model error activation

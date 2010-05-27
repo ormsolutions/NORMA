@@ -197,14 +197,30 @@ namespace ORMSolutions.ORMArchitect.Framework
 		bool MergeRelateIndirect(T mergeContext, ModelElement sourceElement, ElementGroup elementGroup);
 	}
 	#endregion // IMergeIndirectElements<T> interface
-	#region IAllowsStandardCommands interface
+	#region IAllowStandardCommands interface
 	/// <summary>
-	/// Implement the <see cref="IAllowStandardCommands"/> to turn
-	/// on standard command handling for a shape or element. Standard
-	/// commands allow element and shape deletion, shape alignment, and layout.
+	/// Implement IAllowStandardCommands to enable standard command
+	/// handling for a shape or element. Standard commands allow
+	/// element and shape deletion, shape alignment, and layout.
 	/// </summary>
 	public interface IAllowStandardCommands
 	{
 	}
-	#endregion // IAllowsStandardCommands interface
+	#endregion // IAllowStandardCommands interface
+	#region ICustomElementDeletion interface
+	/// <summary>
+	/// Implement ICustomElementDeletion to replace the standard
+	/// <see cref="ModelElement.Delete()"/> to handle deletion of
+	/// the implementing element. ICustomElementDeletion can be
+	/// coupled with <see cref="IAllowStandardCommands"/> to
+	/// enable deletion on extension elements.
+	/// </summary>
+	public interface ICustomElementDeletion
+	{
+		/// <summary>
+		/// Delete the current element.
+		/// </summary>
+		void DeleteCustomElement();
+	}
+	#endregion // ICustomElementDeletion interface
 }

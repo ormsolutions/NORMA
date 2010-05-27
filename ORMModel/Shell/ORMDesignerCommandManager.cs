@@ -1733,7 +1733,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				//    up before committing.
 				bool complexSelection = 0 == (enabledCommands & ORMDesignerCommands.Delete);
 
-				Diagram d = null;
+				Diagram diagram = null;
 				// Use the localized text from the command for our transaction name
 				using (Transaction t = store.TransactionManager.BeginTransaction(commandText.Replace("&", string.Empty)))
 				{
@@ -1746,6 +1746,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						object selectedObject = selectedElements[i];
 						ShapeElement pel; // just the shape
 						ModelElement mel;
+						ICustomElementDeletion customDeletion;
 						bool deleteReferenceModeValueTypeInContext = false;
 						if (null != (pel = selectedObject as ShapeElement))
 						{
@@ -1759,9 +1760,15 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							{
 								continue;
 							}
-							if (d == null)
+							if (diagram == null)
 							{
-								d = pel.Diagram;
+								diagram = pel.Diagram;
+							}
+
+							if (null != (customDeletion = pel as ICustomElementDeletion))
+							{
+								customDeletion.DeleteCustomElement();
+								continue;
 							}
 
 							// Get the actual object inside the pel before
@@ -1771,52 +1778,53 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							// Remove the actual object in the model
 							if (mel != null && !mel.IsDeleted)
 							{
-								Role role;
-								if (null != (role = mel as Role) && pel is RoleNameShape)
+								// Check if the object shape was in expanded mode
+								bool testRefModeCollapse = complexSelection || 0 != (enabledCommands & ORMDesignerCommands.DeleteObjectType);
+								ObjectTypeShape objectShape;
+								ObjectifiedFactTypeNameShape objectifiedShape;
+								if (testRefModeCollapse &&
+									((null != (objectShape = pel as ObjectTypeShape) &&
+									!objectShape.ExpandRefMode) ||
+									(null != (objectifiedShape = pel as ObjectifiedFactTypeNameShape) &&
+									!objectifiedShape.ExpandRefMode))
+									)
 								{
-									role.Name = "";
+									if (!deleteReferenceModeValueTypeInContext)
+									{
+										contextInfo[ObjectType.DeleteReferenceModeValueType] = null;
+										deleteReferenceModeValueTypeInContext = true;
+									}
+								}
+								else if (deleteReferenceModeValueTypeInContext)
+								{
+									deleteReferenceModeValueTypeInContext = false;
+									contextInfo.Remove(ObjectType.DeleteReferenceModeValueType);
+								}
+
+								// Get rid of the model element. Delete propagation on the PresentationViewsSubject
+								// relationship will automatically delete the pel.
+								if (null != (customDeletion = mel as ICustomElementDeletion))
+								{
+									customDeletion.DeleteCustomElement();
 								}
 								else
 								{
-									ReadingOrder readingOrder = mel as ReadingOrder;
-									if (readingOrder != null)
-									{
-										mel = readingOrder.FactType;
-									}
-									// Check if the object shape was in expanded mode
-									bool testRefModeCollapse = complexSelection || 0 != (enabledCommands & ORMDesignerCommands.DeleteObjectType);
-									ObjectTypeShape objectShape;
-									ObjectifiedFactTypeNameShape objectifiedShape;
-									if (testRefModeCollapse &&
-										((null != (objectShape = pel as ObjectTypeShape) &&
-										!objectShape.ExpandRefMode) ||
-										(null != (objectifiedShape = pel as ObjectifiedFactTypeNameShape) &&
-										!objectifiedShape.ExpandRefMode))
-										)
-									{
-										if (!deleteReferenceModeValueTypeInContext)
-										{
-											contextInfo[ObjectType.DeleteReferenceModeValueType] = null;
-											deleteReferenceModeValueTypeInContext = true;
-										}
-									}
-									else if (deleteReferenceModeValueTypeInContext)
-									{
-										deleteReferenceModeValueTypeInContext = false;
-										contextInfo.Remove(ObjectType.DeleteReferenceModeValueType);
-									}
-
-									// Get rid of the model element. Delete propagation on the PresentationViewsSubject
-									// relationship will automatically delete the pel.
 									mel.Delete();
 								}
 							}
 						}
 						else if (null != (mel = selectedObject as ModelElement) && !mel.IsDeleted)
 						{
-
 							// Remove the item
-							mel.Delete();
+							customDeletion = mel as ICustomElementDeletion;
+							if (customDeletion != null)
+							{
+								customDeletion.DeleteCustomElement();
+							}
+							else
+							{
+								mel.Delete();
+							}
 						}
 					}
 
@@ -1826,7 +1834,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 				}
 
-				if (d != null)
+				if (diagram != null)
 				{
 					// Clearing the selection selects the diagram
 					view.CurrentDesigner.Selection.Clear();
