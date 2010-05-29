@@ -951,6 +951,48 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return null;
 			}
 		}
+		/// <summary>
+		/// Retrieve an array of roles starting with a role
+		/// attached to a ValueType and ending with the single
+		/// role in the preferred identifier for this entity type.
+		/// If this role cannot have a ValueConstraint attached
+		/// to it, then an empty array will be returned.
+		/// </summary>
+		public Role[] GetIdentifyingValueRoles()
+		{
+			UniquenessConstraint pid;
+			LinkedElementCollection<Role> pidRoles;
+			if (null != (pid = ResolvedPreferredIdentifier) &&
+				1 == (pidRoles = pid.RoleCollection).Count)
+			{
+				return pidRoles[0].GetValueRoles();
+			}
+			return null;
+		}
+		/// <summary>
+		/// Test if this object type is ultimately identified by a single value.
+		/// This will be true for a ValueType or for any entity type that is
+		/// identified by a single object type that is itself identified by a
+		/// single value.
+		/// </summary>
+		public bool IsIdentifiedBySingleValue
+		{
+			get
+			{
+				if (DataType != null)
+				{
+					return true;
+				}
+				UniquenessConstraint pid;
+				LinkedElementCollection<Role> pidRoles;
+				if (null != (pid = ResolvedPreferredIdentifier) &&
+					1 == (pidRoles = pid.RoleCollection).Count)
+				{
+					return pidRoles[0].IsValueRole;
+				}
+				return false;
+			}
+		}
 		#endregion // Customize property display
 		#region Subtype and Supertype routines
 		/// <summary>
@@ -2732,7 +2774,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 											ObjectType currentSupertype = currentSupertypeRole.RolePlayer;
 											if (currentSupertype != null)
 											{
-												Role.WalkDescendedValueRoles(currentSupertype, currentSupertypeRole, delegate(Role role, PathedRole pathedRole, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+												Role.WalkDescendedValueRoles(currentSupertype, currentSupertypeRole, null, delegate(Role role, PathedRole pathedRole, RolePathObjectTypeRoot pathRoot, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
 												{
 													ObjectModel.ValueConstraint.DelayValidateValueConstraint(currentValueConstraint, true);
 													return true;
@@ -2827,7 +2869,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (verifyDownstream)
 				{
 					// This can only runs if notifyAdded is null
-					Role.WalkDescendedValueRoles(this, null, delegate(Role role, PathedRole pathedRole, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+					Role.WalkDescendedValueRoles(this, null, null, delegate(Role role, PathedRole pathedRole, RolePathObjectTypeRoot pathRoot, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
 					{
 						ObjectModel.ValueConstraint.DelayValidateValueConstraint(currentValueConstraint, true);
 						return true;
@@ -3879,7 +3921,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										{
 											// The old primary identification allowed value roles. Revalidate any downstream value roles.
 											bool visited = false;
-											Role.WalkDescendedValueRoles(changedSubtypeLink.Supertype, null, delegate(Role role, PathedRole pathedRole, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+											Role.WalkDescendedValueRoles(changedSubtypeLink.Supertype, null, null, delegate(Role role, PathedRole pathedRole, RolePathObjectTypeRoot pathRoot, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
 											{
 												// If we get any callback here, then the role can still be a value role
 												visited = true;
@@ -3894,7 +3936,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 												// Mark any downstream value constraints for validation. Skip from the entity
 												// type attached to the preferred identifier directly to the old
 												// supertype role.
-												Role.WalkDescendedValueRoles(oldIdentifier.PreferredIdentifierFor, oldSupertypeRole, delegate(Role role, PathedRole pathedRole, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+												Role.WalkDescendedValueRoles(oldIdentifier.PreferredIdentifierFor, oldSupertypeRole, null, delegate(Role role, PathedRole pathedRole, RolePathObjectTypeRoot pathRoot, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
 												{
 													ObjectModel.ValueConstraint.DelayValidateValueConstraint(currentValueConstraint, true);
 													return true;
@@ -3904,7 +3946,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									}
 									return ObjectTypeVisitorResult.SkipChildren;
 								});
-							Role.WalkDescendedValueRoles(changedSubtypeLink.Subtype, null, delegate(Role role, PathedRole pathedRole, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+							Role.WalkDescendedValueRoles(changedSubtypeLink.Subtype, null, null, delegate(Role role, PathedRole pathedRole, RolePathObjectTypeRoot pathRoot, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
 							{
 								ObjectModel.ValueConstraint.DelayValidateValueConstraint(currentValueConstraint, true);
 								return true;

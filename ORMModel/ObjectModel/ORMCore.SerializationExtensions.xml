@@ -505,6 +505,9 @@
 	<se:Element Class="PathConditionRoleValueConstraint" Name="PathedRoleConditionValueConstraint" Override="true">
 		<se:Attribute ID="Name" WriteStyle="NotWritten"/>
 	</se:Element>
+	<se:Element Class="PathConditionRootValueConstraint" Name="PathRootConditionValueConstraint" Override="true">
+		<se:Attribute ID="Name" WriteStyle="NotWritten"/>
+	</se:Element>
 	<se:Element Class="ValueRange" Override="true">
 		<se:Attribute ID="InvariantMaxValue">
 			<se:Condition WriteStyle="NotWritten">
@@ -1258,6 +1261,9 @@
 				</plx:unaryOperator>
 			</se:Condition>
 		</se:Attribute>
+		<se:Container Name="ValueRestriction">
+			<se:Embed RelationshipName="RolePathRootHasValueConstraint" RoleName="ValueConstraint"/>
+		</se:Container>
 		<se:Link RelationshipName="CalculatedPathValueInputBindsToRolePathRoot" RoleName="Input" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ConstraintRoleProjectedFromRolePathRoot" RoleName="ConstraintRoleProjection" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeRoleProjectedFromRolePathRoot" RoleName="RoleProjection" WriteStyle="NotWritten"/>

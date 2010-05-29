@@ -804,8 +804,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								}
 							}
 						}
-						// UNDONE: IntraPathRoot We'll need additional errors for path roots, including value constraints applied to the root
-						// and compatibility errors for set comparators
+						else
+						{
+							RolePathObjectTypeRoot pathRoot = currentPathNode;
+							ValueConstraint valueConstraint = pathRoot.ValueConstraint;
+							if (valueConstraint != null)
+							{
+								foreach (ModelErrorUsage valueConstraintErrorUsage in ((IModelErrorOwner)valueConstraint).GetErrorCollection(startFilter))
+								{
+									(errors ?? (errors = new List<ModelErrorUsage>())).Add(valueConstraintErrorUsage);
+								}
+							}
+							// UNDONE: IntraPathRoot We'll need additional errors for path roots, including compatibility errors for set comparators
+						}
 					});
 				if (errors != null && errors.Count != 0)
 				{
@@ -4660,8 +4671,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				RolePath rolePath = RolePath;
-				ReadOnlyCollection<PathedRole> steps = rolePath.PathedRoleCollection;
-				int index = steps.IndexOf(this);
+				ReadOnlyCollection<PathedRole> pathedRoles = rolePath.PathedRoleCollection;
+				int index = pathedRoles.IndexOf(this);
 				switch (index)
 				{
 					case -1:
@@ -4676,16 +4687,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						while (null != (subPath = rolePath as RoleSubPath) &&
 							null != (rolePath = subPath.ParentRolePath))
 						{
-							steps = rolePath.PathedRoleCollection;
-							int stepCount = steps.Count;
-							if (stepCount != 0)
+							pathedRoles = rolePath.PathedRoleCollection;
+							int pathedRoleCount = pathedRoles.Count;
+							if (pathedRoleCount != 0)
 							{
-								return steps[stepCount - 1];
+								return pathedRoles[pathedRoleCount - 1];
+							}
+							else if (null != (pathRoot = rolePath.PathRoot))
+							{
+								return pathRoot;
 							}
 						}
 						break;
 					default:
-						return steps[index - 1];
+						return pathedRoles[index - 1];
 				}
 				return RolePathNode.Empty;
 			}
@@ -4736,6 +4751,83 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // IModelErrorDisplayContext Implementation
 	}
 	#endregion // PathedRole class
+	#region RolePathObjectTypeRoot class
+	partial class RolePathObjectTypeRoot : IElementLinkRoleHasIndirectModelErrorOwner, IModelErrorDisplayContext
+	{
+		#region Accessor Properties
+		/// <summary>
+		/// Get the previous path node in the containing role path.
+		/// </summary>
+		public RolePathNode PreviousPathNode
+		{
+			get
+			{
+				RolePath rolePath = RolePath;
+				RoleSubPath subPath;
+				while (null != (subPath = rolePath as RoleSubPath) &&
+					null != (rolePath = subPath.ParentRolePath))
+				{
+					ReadOnlyCollection<PathedRole> pathedRoles = rolePath.PathedRoleCollection;
+					int pathedRoleCount = pathedRoles.Count;
+					RolePathObjectTypeRoot pathRoot;
+					if (pathedRoleCount != 0)
+					{
+						return pathedRoles[pathedRoleCount - 1];
+					}
+					else if (null != (pathRoot = rolePath.PathRoot))
+					{
+						return pathRoot;
+					}
+				}
+				return RolePathNode.Empty;
+			}
+		}
+		#endregion // Accessor Properties
+		#region IElementLinkRoleHasIndirectModelErrorOwner Implementation
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
+		/// <summary>
+		/// Implements <see cref="IElementLinkRoleHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerElementLinkRoles"/>
+		/// </summary>
+		protected static Guid[] GetIndirectModelErrorOwnerElementLinkRoles()
+		{
+			// Creating a static readonly guid array is causing static field initialization
+			// ordering issues with the partial classes. Defer initialization.
+			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+			if (linkRoles == null)
+			{
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { RolePathObjectTypeRoot.RolePathDomainRoleId };
+			}
+			return linkRoles;
+		}
+		Guid[] IElementLinkRoleHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerElementLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerElementLinkRoles();
+		}
+		#endregion // IElementLinkRoleHasIndirectModelErrorOwner Implementation
+		#region IModelErrorDisplayContext Implementation
+		/// <summary>
+		/// Implements <see cref="IModelErrorDisplayContext.ErrorDisplayContext"/>
+		/// </summary>
+		protected string ErrorDisplayContext
+		{
+			get
+			{
+				// UNDONE: Add more specific display context information at the path root level
+				// instead of deferring back up the parent hierarchy.
+				IModelErrorDisplayContext deferTo = RolePath.RootRolePath;
+				return deferTo != null ? deferTo.ErrorDisplayContext : "";
+			}
+		}
+		string IModelErrorDisplayContext.ErrorDisplayContext
+		{
+			get
+			{
+				return ErrorDisplayContext;
+			}
+		}
+		#endregion // IModelErrorDisplayContext Implementation
+	}
+	#endregion // RolePathObjectTypeRoot class
 	#region Function class
 	partial class Function : IModelErrorOwner
 	{

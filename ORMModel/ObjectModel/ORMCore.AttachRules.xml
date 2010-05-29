@@ -1320,6 +1320,9 @@
 			<arg:AddRule methodName="PathConditionRoleValueConstraintAddedRule">
 				<arg:RuleOn targetType="PathedRoleHasValueConstraint"/>
 			</arg:AddRule>
+			<arg:AddRule methodName="PathConditionRootValueConstraintAddedRule">
+				<arg:RuleOn targetType="RolePathRootHasValueConstraint"/>
+			</arg:AddRule>
 			<arg:DeletingRule methodName="PreferredIdentifierDeletingRule">
 				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier"/>
 			</arg:DeletingRule>

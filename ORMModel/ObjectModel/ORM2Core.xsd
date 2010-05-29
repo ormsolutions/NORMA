@@ -1366,6 +1366,9 @@
 		<xs:annotation>
 			<xs:documentation>A reference to the object type that establishes the start point object type for a role path.</xs:documentation>
 		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ValueRestriction" type="PathConditionRootValueRestrictionType" minOccurs="0"/>
+		</xs:sequence>
 		<!-- UNDONE: File format change, the id attribute should be required. -->
 		<xs:attributeGroup ref="idAttributeOptional"/>
 		<xs:attributeGroup ref="refAttribute"/>
@@ -1394,7 +1397,7 @@
 			<xs:documentation>A role in connected path.</xs:documentation>
 		</xs:annotation>
 		<xs:all>
-			<xs:element name="ValueRestriction" type="PathConditionValueRestrictionType" minOccurs="0"/>
+			<xs:element name="ValueRestriction" type="PathConditionRoleValueRestrictionType" minOccurs="0"/>
 			<!-- UNDONE: File format change, CorrelatedWith is deprecated. Use ObjectUnifiers. -->
 			<xs:element name="CorrelatedWith" type="PathedRoleRef" minOccurs="0"/>
 		</xs:all>
@@ -3286,12 +3289,20 @@
 			<xs:element name="RoleValueConstraint" type="ValueConstraintWithNameType"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="PathConditionValueRestrictionType">
+	<xs:complexType name="PathConditionRoleValueRestrictionType">
 		<xs:annotation>
-			<xs:documentation>Restrict the values required to satisfy the role path.</xs:documentation>
+			<xs:documentation>Restrict the values required by a pathed role to satisfy the role path.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
 			<xs:element name="PathedRoleConditionValueConstraint" type="ValueConstraintType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PathConditionRootValueRestrictionType">
+		<xs:annotation>
+			<xs:documentation>Restrict the values required by a path root to satisfy the role path.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PathRootConditionValueConstraint" type="ValueConstraintType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="ValueRangesType">

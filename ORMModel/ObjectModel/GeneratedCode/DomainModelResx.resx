@@ -2159,12 +2159,20 @@
     <comment>DisplayName for DomainClass &apos;RoleValueConstraint&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraint.Description" xml:space="preserve">
-    <value>Value constraint applied to a role in a join path.</value>
+    <value>Value constraint applied to a pathed role in a role path.</value>
     <comment>Description for DomainClass &apos;PathConditionRoleValueConstraint&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRoleValueConstraint.DisplayName" xml:space="preserve">
     <value>PathConditionRoleValueConstraint</value>
     <comment>DisplayName for DomainClass &apos;PathConditionRoleValueConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRootValueConstraint.Description" xml:space="preserve">
+    <value>Value constraint applied to a path root in a role path.</value>
+    <comment>Description for DomainClass &apos;PathConditionRootValueConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRootValueConstraint.DisplayName" xml:space="preserve">
+    <value>PathConditionRootValueConstraint</value>
+    <comment>DisplayName for DomainClass &apos;PathConditionRootValueConstraint&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint.Description" xml:space="preserve">
     <value></value>
@@ -4459,6 +4467,38 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasValueConstraint/ValueConstraint.PropertyDisplayName" xml:space="preserve">
     <value>Pathed Role</value>
     <comment>PropertyDisplayName for DomainRole &apos;ValueConstraint&apos; on DomainRelationship &apos;PathedRoleHasValueConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint</value>
+    <comment>Description for DomainClass &apos;RolePathRootHasValueConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint.DisplayName" xml:space="preserve">
+    <value>Role Path Root Has Value Constraint</value>
+    <comment>DisplayName for DomainClass &apos;RolePathRootHasValueConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint/PathRoot.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint.PathRoot</value>
+    <comment>Description for DomainRole &apos;PathRoot&apos; on DomainRelationship &apos;RolePathRootHasValueConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint/PathRoot.DisplayName" xml:space="preserve">
+    <value>PathRoot</value>
+    <comment>DisplayName for DomainRole &apos;PathRoot&apos; on DomainRelationship &apos;RolePathRootHasValueConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint/PathRoot.PropertyDisplayName" xml:space="preserve">
+    <value>Value Constraint</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PathRoot&apos; on DomainRelationship &apos;RolePathRootHasValueConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint/ValueConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint.ValueConstraint</value>
+    <comment>Description for DomainRole &apos;ValueConstraint&apos; on DomainRelationship &apos;RolePathRootHasValueConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint/ValueConstraint.DisplayName" xml:space="preserve">
+    <value>ValueConstraint</value>
+    <comment>DisplayName for DomainRole &apos;ValueConstraint&apos; on DomainRelationship &apos;RolePathRootHasValueConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint/ValueConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Path Root</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ValueConstraint&apos; on DomainRelationship &apos;RolePathRootHasValueConstraint&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasValueRange.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasValueRange</value>

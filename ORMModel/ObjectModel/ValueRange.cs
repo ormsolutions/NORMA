@@ -626,7 +626,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return;
 			}
 			DelayValidateValueConstraint(valueType.ValueConstraint, true);
-			Role.WalkDescendedValueRoles(valueType, null, delegate(Role role, PathedRole pathedRole, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+			Role.WalkDescendedValueRoles(valueType, null, null, delegate(Role role, PathedRole pathedRole, RolePathObjectTypeRoot pathRoot, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
 			{
 				DelayValidateValueConstraint(currentValueConstraint, true);
 				return true;
@@ -662,13 +662,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		/// <summary>
 		/// Force validation of downstream value constraints. Helper function, calls
-		/// <see cref="Role.WalkDescendedValueRoles(ObjectType, Role, ValueRoleVisitor)"/>
+		/// <see cref="Role.WalkDescendedValueRoles(ObjectType, Role, UniquenessConstraint, ValueRoleVisitor)"/>
 		/// </summary>
 		/// <param name="anchorType">The <see cref="ObjectType"/> to begin walking from</param>
 		/// <param name="unattachedRole">The alternate role</param>
-		private static void DelayValidateDescendedValueConstraints(ObjectType anchorType, Role unattachedRole)
+		/// <param name="unattachedPreferredIdentifier">The alternate preferred identifier</param>
+		private static void DelayValidateDescendedValueConstraints(ObjectType anchorType, Role unattachedRole, UniquenessConstraint unattachedPreferredIdentifier)
 		{
-			Role.WalkDescendedValueRoles(anchorType, unattachedRole, delegate(Role role, PathedRole pathedRole, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+			Role.WalkDescendedValueRoles(anchorType, unattachedRole, unattachedPreferredIdentifier, delegate(Role role, PathedRole pathedRole, RolePathObjectTypeRoot pathRoot, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
 			{
 				DelayValidateValueConstraint(currentValueConstraint, true);
 				return true; // Continue walking
@@ -705,7 +706,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				bool hasValueConstraint = valueTypeConstraintLink != null;
 				if (!hasValueConstraint)
 				{
-					Role.WalkDescendedValueRoles(oldValueType, null, delegate(Role role, PathedRole pathedRole, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+					Role.WalkDescendedValueRoles(oldValueType, null, null, delegate(Role role, PathedRole pathedRole, RolePathObjectTypeRoot pathRoot, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
 					{
 						if (currentValueConstraint != null && !currentValueConstraint.IsDeleting)
 						{
@@ -801,7 +802,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			else
 			{
-				DelayValidateDescendedValueConstraints(oldValueType, null);
+				DelayValidateDescendedValueConstraints(oldValueType, null, null);
 			}
 		}
 		#endregion // DataTypeDeletingRule
@@ -854,6 +855,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			DelayValidateValueConstraint(valueConstraint, valueConstraint.ValueRangeCollection.Count != 0);
 		}
 		#endregion // PathConditionRoleValueConstraintAddedRule
+		#region  PathConditionRootValueConstraintAddedRule
+		/// <summary>
+		/// AddRule: typeof(RolePathRootHasValueConstraint)
+		/// Checks if the the value range matches the specified date type
+		/// </summary>
+		private static void PathConditionRootValueConstraintAddedRule(ElementAddedEventArgs e)
+		{
+			ValueConstraint valueConstraint = ((RolePathRootHasValueConstraint)e.ModelElement).ValueConstraint;
+			DelayValidateValueConstraint(valueConstraint, valueConstraint.ValueRangeCollection.Count != 0);
+		}
+		#endregion // PathConditionRootValueConstraintAddedRule
 		#region ObjectTypeRoleAdded
 		/// <summary>
 		/// AddRule: typeof(ObjectTypePlaysRole)
@@ -963,22 +975,27 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void PreferredIdentifierDeletingRule(ElementDeletingEventArgs e)
 		{
-			ProcessPreferredIdentifierDeleting((EntityTypeHasPreferredIdentifier)e.ModelElement, null);
+			ProcessPreferredIdentifierDeleting((EntityTypeHasPreferredIdentifier)e.ModelElement, null, null);
 		}
 		/// <summary>
 		/// Common rule code for processing preferred identifier deletion
 		/// </summary>
 		/// <param name="link">The <see cref="EntityTypeHasPreferredIdentifier"/> being deleted or modified.</param>
 		/// <param name="objectType">An alternate EntityType role player from the <paramref name="link"/>. Use the link's role player if this is <see langword="null"/></param>
-		private static void ProcessPreferredIdentifierDeleting(EntityTypeHasPreferredIdentifier link, ObjectType objectType)
+		/// <param name="preferredIdentifier">An alternate UniquenessConstraint preferred identifier from the <paramref name="link"/>. Use the link's preferred identifier if this is <see langword="null"/></param>
+		private static void ProcessPreferredIdentifierDeleting(EntityTypeHasPreferredIdentifier link, ObjectType objectType, UniquenessConstraint preferredIdentifier)
 		{
 			if (objectType == null)
 			{
 				objectType = link.PreferredIdentifierFor;
 			}
+			if (preferredIdentifier == null)
+			{
+				preferredIdentifier = link.PreferredIdentifier;
+			}
 			if (!objectType.IsDeleting)
 			{
-				DelayValidateDescendedValueConstraints(objectType, null);
+				DelayValidateDescendedValueConstraints(objectType, null, preferredIdentifier);
 			}
 		}
 		#endregion // PreferredIdentifierDeletingRule
@@ -989,13 +1006,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void PreferredIdentifierRolePlayerChangeRule(RolePlayerChangedEventArgs e)
 		{
-			Guid changedRoleGuid = e.DomainRole.Id;
-			ObjectType oldObjectType = null;
-			if (changedRoleGuid == EntityTypeHasPreferredIdentifier.PreferredIdentifierForDomainRoleId)
+			EntityTypeHasPreferredIdentifier link = (EntityTypeHasPreferredIdentifier)e.ElementLink;
+			if (e.DomainRole.Id == EntityTypeHasPreferredIdentifier.PreferredIdentifierForDomainRoleId)
 			{
-				oldObjectType = (ObjectType)e.OldRolePlayer;
+				ProcessPreferredIdentifierDeleting(link, (ObjectType)e.OldRolePlayer, null);
+				DelayValidateDescendedValueConstraints((ObjectType)e.NewRolePlayer, null, null);
 			}
-			ProcessPreferredIdentifierDeleting((EntityTypeHasPreferredIdentifier)e.ElementLink, oldObjectType);
+			else
+			{
+				ProcessPreferredIdentifierDeleting(link, null, (UniquenessConstraint)e.OldRolePlayer);
+				DelayValidateDescendedValueConstraints(link.PreferredIdentifierFor, null, null);
+			}
 		}
 		#endregion // PreferredIdentifierRolePlayerChangeRule
 		#region PreferredIdentifierRoleAddRule
@@ -1037,7 +1058,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						if (testRole != oppositeRole)
 						{
 							// Test by skipping the binary fact for the old part of the preferred identifier
-							DelayValidateDescendedValueConstraints(originalRolePlayer, testRole);
+							DelayValidateDescendedValueConstraints(originalRolePlayer, testRole, null);
 						}
 					}
 				}
@@ -1052,7 +1073,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void RolePlayerDeletingRule(ElementDeletingEventArgs e)
 		{
-			DelayValidateDescendedValueConstraints(((ObjectTypePlaysRole)e.ModelElement).RolePlayer, null);
+			DelayValidateDescendedValueConstraints(((ObjectTypePlaysRole)e.ModelElement).RolePlayer, null, null);
 		}
 		#endregion // RolePlayerDeletingRule
 		#region RolePlayerRolePlayerChangeRule
@@ -1073,7 +1094,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					// If the old configuration did not have the changed role as a value
 					// role then there will be no value roles descended from it.
 					bool visited = false;
-					Role.WalkDescendedValueRoles((ObjectType)e.NewRolePlayer, changedRole, delegate(Role role, PathedRole pathedRole, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+					Role.WalkDescendedValueRoles((ObjectType)e.NewRolePlayer, changedRole, null, delegate(Role role, PathedRole pathedRole, RolePathObjectTypeRoot pathRoot, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
 					{
 						// If we get any callback here, then the role can still be a value role
 						visited = true;
@@ -1086,7 +1107,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						// The old role player supported values, the new one does not.
 						// Delete any downstream value constraints.
-						DelayValidateDescendedValueConstraints(oldRolePlayer, changedRole);
+						DelayValidateDescendedValueConstraints(oldRolePlayer, changedRole, null);
 					}
 				}
 			}
@@ -1858,6 +1879,80 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // IHasIndirectModelErrorOwner Implementation
 	}
 	#endregion // PathConditionRoleValueConstraint class
+	#region PathConditionRootValueConstraint class
+	partial class PathConditionRootValueConstraint : IHasIndirectModelErrorOwner
+	{
+		#region Base overrides
+		/// <summary>
+		/// Retrieve the <see cref="DataType"/> from the <see cref="PathedRole"/>
+		/// </summary>
+		public override DataType DataType
+		{
+			get
+			{
+				DataType retVal = null;
+				RolePathObjectTypeRoot pathRoot;
+				if (null != (pathRoot = PathRoot))
+				{
+					ObjectType rootObjectType = pathRoot.RootObjectType;
+					retVal = rootObjectType.DataType;
+					Role[] valueRoles;
+					if (retVal == null &&
+						null != (valueRoles = rootObjectType.GetIdentifyingValueRoles()))
+					{
+						retVal = valueRoles[0].RolePlayer.DataType;
+					}
+				}
+				return retVal;
+			}
+		}
+		/// <summary>
+		/// Get the error display context of the containing <see cref="RolePathOwner"/>
+		/// </summary>
+		public override IModelErrorDisplayContext ErrorDisplayContext
+		{
+			get
+			{
+				RolePathObjectTypeRoot pathRoot = PathRoot;
+				LeadRolePath leadRolePath = pathRoot.RolePath.RootRolePath;
+				return leadRolePath != null ? leadRolePath.RootOwner as IModelErrorDisplayContext : null;
+			}
+		}
+		/// <summary>
+		/// Get the associated <see cref="ORMModel"/>
+		/// </summary>
+		public override ORMModel Model
+		{
+			get
+			{
+				RolePathObjectTypeRoot pathRoot = PathRoot;
+				return null != pathRoot ? pathRoot.RootObjectType.Model : null;
+			}
+		}
+		#endregion // Base overrides
+		#region IHasIndirectModelErrorOwner Implementation
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
+		/// <summary>
+		/// Implements <see cref="IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles"/>
+		/// </summary>
+		protected static Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		{
+			// Creating a static readonly guid array is causing static field initialization
+			// ordering issues with the partial classes. Defer initialization.
+			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+			if (linkRoles == null)
+			{
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { RolePathRootHasValueConstraint.ValueConstraintDomainRoleId };
+			}
+			return linkRoles;
+		}
+		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerLinkRoles();
+		}
+		#endregion // IHasIndirectModelErrorOwner Implementation
+	}
+	#endregion // PathConditionRootValueConstraint class
 	#region ValueConstraintError class
 	/// <summary>
 	/// ValueConstraintError error abstract class

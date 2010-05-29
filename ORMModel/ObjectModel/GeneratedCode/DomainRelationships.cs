@@ -15897,6 +15897,266 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship RolePathRootHasValueConstraint
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("77a2cd67-bc5c-446d-91d7-153920bc2748")]
+	public partial class RolePathRootHasValueConstraint : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// RolePathRootHasValueConstraint domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x77a2cd67, 0xbc5c, 0x446d, 0x91, 0xd7, 0x15, 0x39, 0x20, 0xbc, 0x27, 0x48);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a RolePathRootHasValueConstraint link in the same Partition as the given RolePathObjectTypeRoot
+		/// </summary>
+		/// <param name="source">RolePathObjectTypeRoot to use as the source of the relationship.</param>
+		/// <param name="target">PathConditionRootValueConstraint to use as the target of the relationship.</param>
+		public RolePathRootHasValueConstraint(RolePathObjectTypeRoot source, PathConditionRootValueConstraint target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(RolePathRootHasValueConstraint.PathRootDomainRoleId, source), new DslModeling::RoleAssignment(RolePathRootHasValueConstraint.ValueConstraintDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public RolePathRootHasValueConstraint(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public RolePathRootHasValueConstraint(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public RolePathRootHasValueConstraint(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public RolePathRootHasValueConstraint(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region PathRoot domain role code
+		
+		/// <summary>
+		/// PathRoot domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid PathRootDomainRoleId = new global::System.Guid(0x7a7d5367, 0xdb3c, 0x4129, 0x84, 0x3a, 0x2f, 0x1f, 0xcd, 0xfc, 0x8a, 0x26);
+		
+		/// <summary>
+		/// DomainRole PathRoot
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint.PathRoot
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint/PathRoot.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint/PathRoot.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ValueConstraint", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint/PathRoot.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("7a7d5367-db3c-4129-843a-2f1fcdfc8a26")]
+		public virtual RolePathObjectTypeRoot PathRoot
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (RolePathObjectTypeRoot)DslModeling::DomainRoleInfo.GetRolePlayer(this, PathRootDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, PathRootDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access PathRoot of a PathConditionRootValueConstraint
+		/// <summary>
+		/// Gets PathRoot.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static RolePathObjectTypeRoot GetPathRoot(PathConditionRootValueConstraint element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ValueConstraintDomainRoleId) as RolePathObjectTypeRoot;
+		}
+		
+		/// <summary>
+		/// Sets PathRoot.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetPathRoot(PathConditionRootValueConstraint element, RolePathObjectTypeRoot newPathRoot)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ValueConstraintDomainRoleId, newPathRoot);
+		}
+		#endregion
+		#region ValueConstraint domain role code
+		
+		/// <summary>
+		/// ValueConstraint domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ValueConstraintDomainRoleId = new global::System.Guid(0xcf8d1b46, 0xa59d, 0x4ffb, 0xad, 0x71, 0x27, 0x71, 0x93, 0x33, 0x37, 0x35);
+		
+		/// <summary>
+		/// DomainRole ValueConstraint
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint.ValueConstraint
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint/ValueConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint/ValueConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "PathRoot", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint/ValueConstraint.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("cf8d1b46-a59d-4ffb-ad71-277193333735")]
+		public virtual PathConditionRootValueConstraint ValueConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (PathConditionRootValueConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, ValueConstraintDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ValueConstraintDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ValueConstraint of a RolePathObjectTypeRoot
+		/// <summary>
+		/// Gets ValueConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static PathConditionRootValueConstraint GetValueConstraint(RolePathObjectTypeRoot element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, PathRootDomainRoleId) as PathConditionRootValueConstraint;
+		}
+		
+		/// <summary>
+		/// Sets ValueConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetValueConstraint(RolePathObjectTypeRoot element, PathConditionRootValueConstraint newValueConstraint)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, PathRootDomainRoleId, newValueConstraint);
+		}
+		#endregion
+		#region PathRoot link accessor
+		/// <summary>
+		/// Get the RolePathRootHasValueConstraint link to a RolePathObjectTypeRoot.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint GetLinkToValueConstraint (global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot pathRootInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint>(pathRootInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint.PathRootDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of PathRoot not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ValueConstraint link accessor
+		/// <summary>
+		/// Get the RolePathRootHasValueConstraint link to a PathConditionRootValueConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint GetLinkToPathRoot (global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRootValueConstraint valueConstraintInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint>(valueConstraintInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint.ValueConstraintDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ValueConstraint not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region RolePathRootHasValueConstraint instance accessors
+		
+		/// <summary>
+		/// Get any RolePathRootHasValueConstraint links between a given RolePathObjectTypeRoot and a PathConditionRootValueConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRootValueConstraint target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint.PathRootDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint link in links )
+			{
+				if ( target.Equals(link.ValueConstraint) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one RolePathRootHasValueConstraint link between a given RolePathObjectTypeRootand a PathConditionRootValueConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathConditionRootValueConstraint target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint.PathRootDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint link in links )
+			{
+				if ( target.Equals(link.ValueConstraint) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship ValueConstraintHasValueRange
 	/// Description for
 	/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasValueRange
@@ -41886,6 +42146,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		
 		#endregion
 		#region Accessors for roles that this REL plays in other RELs
+		#region ValueConstraint opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ValueConstraint.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint.PathRoot
+		/// </summary>
+		public virtual PathConditionRootValueConstraint ValueConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint.PathRootDomainRoleId) as PathConditionRootValueConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint.ValueConstraintDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint.ValueConstraintDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathRootHasValueConstraint.PathRootDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
 		#region ObjectUnifier opposite domain role accessor
 		/// <summary>
 		/// Gets or sets ObjectUnifier.

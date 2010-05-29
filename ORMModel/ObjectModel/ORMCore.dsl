@@ -1927,7 +1927,13 @@
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="PathConditionRoleValueConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="9B47EDFC-4267-446D-B3F1-6C79982AD89D" DisplayName="PathConditionRoleValueConstraint" Description="Value constraint applied to a role in a join path.">
+		<DomainClass Name="PathConditionRoleValueConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="9B47EDFC-4267-446D-B3F1-6C79982AD89D" DisplayName="PathConditionRoleValueConstraint" Description="Value constraint applied to a pathed role in a role path.">
+			<BaseClass>
+				<DomainClassMoniker Name="ValueConstraint"/>
+			</BaseClass>
+		</DomainClass>
+
+		<DomainClass Name="PathConditionRootValueConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="DA5A020F-2CC4-4E80-B9A8-B80DCF7D0A10" DisplayName="PathConditionRootValueConstraint" Description="Value constraint applied to a path root in a role path.">
 			<BaseClass>
 				<DomainClassMoniker Name="ValueConstraint"/>
 			</BaseClass>
@@ -3522,6 +3528,23 @@
 				<DomainRole Name="ValueConstraint" PropertyName="PathedRole" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ValueConstraint" Id="D3438173-2268-4F8B-8237-FD563D69A3C6">
 					<RolePlayer>
 						<DomainClassMoniker Name="PathConditionRoleValueConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="RolePathRootHasValueConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="77A2CD67-BC5C-446D-91D7-153920BC2748">
+			<Source>
+				<DomainRole Name="PathRoot" PropertyName="ValueConstraint" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="PathRoot" Id="7A7D5367-DB3C-4129-843A-2F1FCDFC8A26">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="RolePathObjectTypeRoot"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="ValueConstraint" PropertyName="PathRoot" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ValueConstraint" Id="CF8D1B46-A59D-4FFB-AD71-277193333735">
+					<RolePlayer>
+						<DomainClassMoniker Name="PathConditionRootValueConstraint"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>

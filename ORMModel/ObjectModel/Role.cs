@@ -33,15 +33,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	/// <summary>
 	/// Visit a role with ValueConstraint information when a dataType or
 	/// role change is made that could affect the constraint's existence.
-	/// Used with the <see cref="Role.WalkDescendedValueRoles(ObjectType, Role, ValueRoleVisitor)"/> method.
+	/// Used with the <see cref="Role.WalkDescendedValueRoles(ObjectType, Role, UniquenessConstraint, ValueRoleVisitor)"/> method.
 	/// </summary>
 	/// <param name="role">A <see cref="Role"/> that is allowed to have a value constraint associated with it</param>
 	/// <param name="pathedRole">A <see cref="PathedRole"/> that is allowed to have a value constraint associated with it</param>
+	/// <param name="pathRoot">A <see cref="RolePathObjectTypeRoot"/> that is allowed to have a value constraint associated with it</param>
 	/// <param name="dataTypeLink">The link to the data type</param>
 	/// <param name="currentValueConstraint">The value constraint for the current role or pathed role.</param>
 	/// <param name="previousValueConstraint">The last value constraint encountered during the walk</param>
 	/// <returns>true to continue walking</returns>
-	public delegate bool ValueRoleVisitor(Role role, PathedRole pathedRole, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint);
+	public delegate bool ValueRoleVisitor(Role role, PathedRole pathedRole, RolePathObjectTypeRoot pathRoot, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint);
 	#endregion // ValueRoleVisitor delegate definition
 	#region ReferenceSchemePattern enum
 	/// <summary>
@@ -583,15 +584,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="unattachedRole">A role to test that is not currently attached to the anchorType.
 		/// If unattachedRole is not null, then only this role will be tested. Otherwise, all current played
 		/// roles will be walked.</param>
+		/// <param name="unattachedPreferredIdentifier">A preferred identifier to test that is not currently
+		/// attached to the anchorType.</param>
 		/// <param name="visitor">A <see cref="ValueRoleVisitor"/> callback delegate.</param>
-		public static void WalkDescendedValueRoles(ObjectType anchorType, Role unattachedRole, ValueRoleVisitor visitor)
+		public static void WalkDescendedValueRoles(ObjectType anchorType, Role unattachedRole, UniquenessConstraint unattachedPreferredIdentifier, ValueRoleVisitor visitor)
 		{
 			ValueTypeHasDataType dataTypeLink = anchorType.GetDataTypeLink();
-			if (dataTypeLink != null)
+			if (null == unattachedPreferredIdentifier &&
+				null != (dataTypeLink = anchorType.GetDataTypeLink()))
 			{
 				ObjectType unattachedRolePlayer;
 				WalkDescendedValueRoles(
 					(unattachedRole != null) ? new Role[] { unattachedRole } as IList<Role> : anchorType.PlayedRoleCollection,
+					RolePathObjectTypeRoot.GetLinksToRolePathCollection(anchorType),
 					dataTypeLink,
 					anchorType.ValueConstraint,
 					null,
@@ -602,7 +607,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				LinkedElementCollection<Role> roles;
 				UniquenessConstraint preferredIdentifier;
-				if (null != (preferredIdentifier = anchorType.ResolvedPreferredIdentifier) &&
+				if (null != (preferredIdentifier = unattachedPreferredIdentifier ?? anchorType.ResolvedPreferredIdentifier) &&
 					(roles = preferredIdentifier.RoleCollection).Count == 1)
 				{
 					Role currentRole = roles[0];
@@ -630,6 +635,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							WalkDescendedValueRoles(
 								(unattachedRole != null) ? new Role[] { unattachedRole } as IList<Role> : anchorType.PlayedRoleCollection,
+								RolePathObjectTypeRoot.GetLinksToRolePathCollection(anchorType),
 								dataTypeLink,
 								nearestValueConstraint,
 								nextSkipRole.Role,
@@ -642,11 +648,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		/// <summary>
 		/// Helper method to recursively walk value roles. A value role
-		/// is any role that is allowed to have a value type.
+		/// is any role that is allowed to have a value constraint.
 		/// </summary>
 		/// <param name="playedRoles">Roles from an ObjectType to walk. The assumption is made that the
 		/// owning ObjectType is either a value type or has a preferred identifier with exactly one role</param>
 		/// <param name="dataTypeLink">The data type information for the constraint</param>
+		/// <param name="pathRoots">The <see cref="RolePathObjectTypeRoot"/> relationships from a role path associated
+		/// with the root path.</param>
 		/// <param name="previousValueConstraint">The value constraint nearest this value role.
 		/// Any value constraint on the current set of roles must be a subset of the previousValueConstraint.</param>
 		/// <param name="skipRole">A role to skip. If the playedRoles came from a preferred identifier,
@@ -655,10 +663,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// EntityType and false if they come from a ValueType</param>
 		/// <param name="visitor">The callback delegate</param>
 		/// <returns>true to continue iteration</returns>
-		private static bool WalkDescendedValueRoles(IList<Role> playedRoles, ValueTypeHasDataType dataTypeLink, ValueConstraint previousValueConstraint, Role skipRole, bool walkSubtypes, ValueRoleVisitor visitor)
+		private static bool WalkDescendedValueRoles(IList<Role> playedRoles, IList<RolePathObjectTypeRoot> pathRoots, ValueTypeHasDataType dataTypeLink, ValueConstraint previousValueConstraint, Role skipRole, bool walkSubtypes, ValueRoleVisitor visitor)
 		{
-			int playedRolesCount = playedRoles.Count;
-			for (int i = 0; i < playedRolesCount; ++i)
+			int count = pathRoots.Count;
+			for (int i = 0; i < count; ++i)
+			{
+				RolePathObjectTypeRoot pathRoot = pathRoots[i];
+				if (!visitor(null, null, pathRoot, dataTypeLink, pathRoot.ValueConstraint, previousValueConstraint))
+				{
+					return false;
+				}
+			}
+			count = playedRoles.Count;
+			for (int i = 0; i < count; ++i)
 			{
 				Role role = playedRoles[i];
 				SupertypeMetaRole supertypeRole;
@@ -676,7 +693,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							null != (subtype = subtypeFact.Subtype) &&
 							subtype.PreferredIdentifier == null)
 						{
-							if (!WalkDescendedValueRoles(subtype.PlayedRoleCollection, dataTypeLink, previousValueConstraint, null, true, visitor))
+							if (!WalkDescendedValueRoles(subtype.PlayedRoleCollection, RolePathObjectTypeRoot.GetLinksToRolePathCollection(subtype), dataTypeLink, previousValueConstraint, null, true, visitor))
 							{
 								return false;
 							}
@@ -686,7 +703,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				else if (!(role is SubtypeMetaRole))
 				{
 					RoleValueConstraint currentValueConstraint = role.ValueConstraint;
-					if (!visitor(role, null, dataTypeLink, currentValueConstraint, previousValueConstraint))
+					if (!visitor(role, null, null, dataTypeLink, currentValueConstraint, previousValueConstraint))
 					{
 						return false;
 					}
@@ -696,9 +713,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					foreach (PathedRole pathedRole in PathedRole.GetLinksToRolePathCollection(role))
 					{
+						// UNDONE: VALUEROLE This does not correctly report a value constraint from a previous
+						// path node. Note that this, as well as allowing value restrictions on supertype roles
+						// (and possibly other patterns), can result in multiple previous value constraints, so
+						// the callback signature may possibly need to be modified here. As of changeset 1442,
+						// none of the callbacks use the previousValueConstraint information, so we can ignore
+						// this for now.
+
 						// Note that we visit for the pathed role even if no value constraint is present
 						// to allow processing for this pathed role.
-						if (!visitor(role, pathedRole, dataTypeLink, pathedRole.ValueConstraint, previousValueConstraint))
+						if (!visitor(role, pathedRole, null, dataTypeLink, pathedRole.ValueConstraint, previousValueConstraint))
 						{
 							return false;
 						}
@@ -721,7 +745,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							{
 								return false;
 							}
-							if (!WalkDescendedValueRoles(identifierFor.PlayedRoleCollection, dataTypeLink, previousValueConstraint, nextSkipRole.Role, true, visitor))
+							if (!WalkDescendedValueRoles(identifierFor.PlayedRoleCollection, RolePathObjectTypeRoot.GetLinksToRolePathCollection(identifierFor), dataTypeLink, previousValueConstraint, nextSkipRole.Role, true, visitor))
 							{
 								return false;
 							}

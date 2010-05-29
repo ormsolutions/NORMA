@@ -766,9 +766,13 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 
 				// Disable role deletion if the FactType is a unary
 				visibleCommands |= ORMDesignerCommands.DeleteRole;
-				if (unaryRole != null && (presentationElement == null || !(presentationElement is RoleNameShape)))
+				if (unaryRole != null)
 				{
-					enabledCommands &= ~ORMDesignerCommands.DeleteRole;
+					enabledCommands &= ~ORMDesignerCommands.ToggleSimpleMandatory;
+					if (presentationElement == null || !(presentationElement is RoleNameShape))
+					{
+						enabledCommands &= ~ORMDesignerCommands.DeleteRole;
+					}
 				}
 
 				Objectification objectification = fact.Objectification;
