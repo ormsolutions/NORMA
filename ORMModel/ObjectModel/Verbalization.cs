@@ -7904,7 +7904,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				case VerbalizationPlanNodeType.Branch:
 					int restoreBuilder = builder.Length;
 					VerbalizationPlanBranchType branchType = node.BranchType;
-					VerbalizationPlanBranchRenderingStyle renderingStyle = VerbalizationPlanBranchRenderingStyle.OperatorSeparated;
+					VerbalizationPlanBranchRenderingStyle renderingStyle = node.BranchRenderingStyle;
 					childNodeLink = node.FirstChildNode;
 					bool first = true;
 					bool isNestedBranch = false;
@@ -7918,19 +7918,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						snippet = (RolePathVerbalizerSnippetType)(-1);
 						childNode = childNodeLink.Value;
+						switch (renderingStyle)
+						{
+							case VerbalizationPlanBranchRenderingStyle.HeaderList:
+								if (!first)
+								{
+									PopPairingUsePhase();
+								}
+								PushPairingUsePhase();
+								break;
+							case VerbalizationPlanBranchRenderingStyle.IsolatedList:
+								BeginQuantificationUsePhase();
+								break;
+						}
 						if (first)
 						{
 							first = false;
-							renderingStyle = GetRenderingStyleFromBranchType(branchType);
-							switch (renderingStyle)
-							{
-								case VerbalizationPlanBranchRenderingStyle.HeaderList:
-									PushPairingUsePhase();
-									break;
-								case VerbalizationPlanBranchRenderingStyle.IsolatedList:
-									BeginQuantificationUsePhase();
-									break;
-							}
 							VerbalizationPlanNode parentNode = node.ParentNode;
 							if (parentNode != null)
 							{

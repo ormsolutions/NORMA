@@ -1878,17 +1878,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void PathedRoleUnificationDeletedRule(ElementDeletedEventArgs e)
 		{
-			PathObjectUnifierUnifiesPathedRole link = (PathObjectUnifierUnifiesPathedRole)e.ModelElement;
-			PathObjectUnifier objectUnifier;
-			LeadRolePath rolePath;
-			if (!link.IsDeleted &&
-				null != (rolePath = (objectUnifier = link.ObjectUnifier).LeadRolePath))
+			PathObjectUnifier objectUnifier = ((PathObjectUnifierUnifiesPathedRole)e.ModelElement).ObjectUnifier;
+			if (!objectUnifier.IsDeleted)
 			{
+				LeadRolePath rolePath;
 				if (1 >= (objectUnifier.PathedRoleCollection.Count + objectUnifier.PathRootCollection.Count))
 				{
 					objectUnifier.Delete();
 				}
-				else
+				else if (null != (rolePath = objectUnifier.LeadRolePath))
 				{
 					AddDelayedPathValidation(rolePath);
 				}
@@ -1942,17 +1940,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void RolePathRootUnificationDeletedRule(ElementDeletedEventArgs e)
 		{
-			PathObjectUnifierUnifiesRolePathRoot link = (PathObjectUnifierUnifiesRolePathRoot)e.ModelElement;
-			PathObjectUnifier objectUnifier;
-			LeadRolePath rolePath;
-			if (!link.IsDeleted &&
-				null != (rolePath = (objectUnifier = link.ObjectUnifier).LeadRolePath))
+			PathObjectUnifier objectUnifier = ((PathObjectUnifierUnifiesRolePathRoot)e.ModelElement).ObjectUnifier;
+			if (!objectUnifier.IsDeleted)
 			{
+				LeadRolePath rolePath;
 				if (1 >= (objectUnifier.PathedRoleCollection.Count + objectUnifier.PathRootCollection.Count))
 				{
 					objectUnifier.Delete();
 				}
-				else
+				else if (null != (rolePath = objectUnifier.LeadRolePath))
 				{
 					AddDelayedPathValidation(rolePath);
 				}
@@ -5105,7 +5101,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void FunctionAddedRule(ElementAddedEventArgs e)
 		{
-			FrameworkDomainModel.DelayValidateElement(e.ModelElement, DelayValidateFunction);
+			FrameworkDomainModel.DelayValidateElement(((ModelDefinesFunction)e.ModelElement).Function, DelayValidateFunction);
 		}
 		private static void DelayValidateFunction(ModelElement element)
 		{
