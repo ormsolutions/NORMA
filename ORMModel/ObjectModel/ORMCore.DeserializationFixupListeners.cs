@@ -36,6 +36,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				yield return SetComparisonConstraint.FixupListener;
 				yield return SetConstraint.FixupListener;
 				yield return ConstraintRoleSequence.JoinPathFixupListener;
+				yield return Function.FixupListener;
 				yield return RolePathOwner.UpdateRolePathFixupListener;
 				yield return RolePathOwner.FixupListener;
 				yield return NamedElementDictionary.GetFixupListener((int)ORMDeserializationFixupPhase.ValidateElementNames, contextDomainModel);

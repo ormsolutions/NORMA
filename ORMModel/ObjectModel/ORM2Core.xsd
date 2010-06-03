@@ -1582,11 +1582,24 @@
 					<xs:documentation>The function used to perform the calculation.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="Scope" type="PathedRoleRef" minOccurs="0">
-				<xs:annotation>
-					<xs:documentation>The pathed role that provides the context for this calculation. Generally used to defined the extent of elements based to a bag parameter.</xs:documentation>
-				</xs:annotation>
-			</xs:element>
+			<xs:choice>
+				<xs:element name="AggregationContext" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Path root and path role elements forming the aggregation context for the function evaluation. Populate if the function is an aggregate (meaning that a parameter is marked as a BagInput) and the UniversalAggregationContext attribute is not set.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:choice minOccurs="0" maxOccurs="unbounded">
+							<xs:element name="PathRoot" type="RootObjectTypeRef"/>
+							<xs:element name="PathedRole" type="PathedRoleRef"/>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Scope" type="PathedRoleRef" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>(deprecated, use AggregationContext) The pathed role that provides the context for this calculation. Generally used to defined the extent of elements based to a bag parameter.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
 			<xs:element name="Inputs" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Inputs passed to the function used for the calculation.</xs:documentation>
@@ -1599,6 +1612,11 @@
 			</xs:element>
 		</xs:sequence>
 		<xs:attributeGroup ref="idAttribute"/>
+		<xs:attribute name="UniversalAggregationContext" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>Set to true if the AggregationContext is not provided and the function is an aggregate, meaning that a parameter is marked as a BagInput.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="CalculatedValueInputType">
 		<xs:annotation>
@@ -2286,6 +2304,7 @@
 			<xs:element name="ObjectUnifierRequiresCompatibleObjectTypesError" type="ObjectUnifierRequiresCompatibleObjectTypesErrorType"/>
 			<xs:element name="PathSameFactTypeRoleFollowsJoinError" type="PathSameFactTypeRoleFollowsJoinErrorType"/>
 			<xs:element name="PathOuterJoinRequiresOptionalRoleError" type="PathOuterJoinRequiresOptionalRoleErrorType"/>
+			<xs:element name="CalculatedPathValueRequiresAggregationContextError" type="CalculatedPathValueRequiresAggregationContextErrorType"/>
 			<xs:element name="CalculatedPathValueRequiresFunctionError" type="CalculatedPathValueRequiresFunctionErrorType"/>
 			<xs:element name="CalculatedPathValueMustBeConsumedError" type="CalculatedPathValueMustBeConsumedErrorType"/>
 			<xs:element name="CalculatedPathValueParameterBindingError" type="CalculatedPathValueParameterBindingErrorType"/>
@@ -3069,6 +3088,18 @@
 	<xs:complexType name="CalculatedPathValueRequiresFunctionErrorType">
 		<xs:annotation>
 			<xs:documentation>A calculated value in a role path must have a function specified to perform the calculation.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="CalculatedValue" type="CalculatedValueRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CalculatedPathValueRequiresAggregationContextErrorType">
+		<xs:annotation>
+			<xs:documentation>A calculated value in a role path with an aggregate function must specify an aggregation context.</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">

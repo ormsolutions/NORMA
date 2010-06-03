@@ -164,6 +164,7 @@
 	<ResourceString name="ModelExceptionObjectificationInstanceIncompleteRolePlayers" model="Model" resourceName="ModelException.ObjectificationInstance.IncompleteRolePlayers"/>
 	<ResourceString name="ModelExceptionReadingIsPrimaryToFalse" model="Model" resourceName="ModelException.Reading.IsPrimary.ReadOnlyWhenFalse"/>
 	<ResourceString name="ModelExceptionFactAddReadingInvalidReadingText" model="Model" resourceName="ModelException.Fact.AddReading.InvalidReadingText"/>
+	<ResourceString name="ModelErrorCalculatedPathValueRequiresAggregationContext" model="Model" resourceName="ModelError.CalculatedPathValue.CalculatedPathValueRequiresAggregationContext.Text"/>
 	<ResourceString name="ModelErrorCalculatedPathValueRequiresFunction" model="Model" resourceName="ModelError.CalculatedPathValue.CalculatedPathValueRequiresFunction.Text"/>
 	<ResourceString name="ModelErrorCalculatedPathValueParameterBinding" model="Model" resourceName="ModelError.CalculatedPathValue.CalculatedPathValueParameterBinding.Text"/>
 	<ResourceString name="ModelErrorCalculatedPathValueMustBeConsumed" model="Model" resourceName="ModelError.CalculatedPathValue.CalculatedPathValueMustBeConsumed.Text"/>

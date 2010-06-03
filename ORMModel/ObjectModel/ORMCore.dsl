@@ -1133,6 +1133,13 @@
 			<BaseClass>
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
+			<Properties>
+				<DomainProperty Name="UniversalAggregationContext" Id="17CB3FCB-1B9C-4C2D-A689-F0927893D88D" IsBrowsable="false" Description="Set for a calculation with an aggregate function to use universal context (meaning all elements of the given type in the universal of discourse) instead of a context at one or more specific path nodes.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
 		</DomainClass>
 		<DomainClass Name="PathConstant" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="B8F65CC9-2BDE-4688-9671-9F4789A3828A" DisplayName="A constant value used directly in a path.">
 			<BaseClass>
@@ -1152,6 +1159,11 @@
 			</BaseClass>
 			<Properties>
 				<DomainProperty Name="IsBoolean" Id="363BE96E-1BD8-46B1-B54B-41DFE6B9D4CF" DisplayName="IsBoolean" DefaultValue="false" Description="Set if this function returns a boolean value that can be evaluated directly as a condition.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="IsAggregate" Id="C09ED9B0-A977-4980-848A-C576982C86CB" DisplayName="IsAggregate" IsBrowsable="false" DefaultValue="false" Description="Set if this function defines a bag input parameter.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
@@ -1284,6 +1296,11 @@
 			</BaseClass>
 		</DomainClass>
 		<DomainClass Name="CalculatedPathValueRequiresFunctionError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="638E20FD-3743-4967-94FE-F3A1CDB985E5" DisplayName="Calculation Requires Function" Description="A calculation is specified but does not have an associated function.">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="CalculatedPathValueRequiresAggregationContextError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="C9AE4BB0-9A00-4FD9-9B38-05978D6C4AF1" DisplayName="Calculation Requires Function" Description="A calculation using an aggregate function requires an aggregation context.">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
@@ -5675,18 +5692,50 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="CalculatedPathValueScopedWithPathedRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="627FCA97-86EF-473F-AAA7-FFF2F8295624">
+		<DomainRelationship Name="CalculatedPathValueScopedWithPathedRole_Deprecated" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="627FCA97-86EF-473F-AAA7-FFF2F8295624">
 			<Source>
-				<DomainRole Name="CalculatedValue" PropertyName="Scope" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="CalculatedValue" Id="63C8F93E-641D-4AA5-B42B-1A1E0C4AE9A4" Description="The PathedRole that provides context for this function. The scope must be related in the role path to any path inputs.">
+				<DomainRole Name="CalculatedValue" PropertyName="Scope" Multiplicity="ZeroOne" IsPropertyGenerator="false" DisplayName="CalculatedValue" Id="63C8F93E-641D-4AA5-B42B-1A1E0C4AE9A4" Description="The PathedRole that provides context for this function. The scope must be related in the role path to any path inputs.">
 					<RolePlayer>
 						<DomainClassMoniker Name="CalculatedPathValue"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="Scope" PropertyName="ScopedCalculatedValueCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="Input" Id="AE6B0A16-55A0-4805-BDDC-35C45C202A30" Description="Calculated values that are scoped using this PathedRole.">
+				<DomainRole Name="Scope" PropertyName="ScopedCalculatedValueCollection" Multiplicity="ZeroMany" IsPropertyGenerator="false" DisplayName="Input" Id="AE6B0A16-55A0-4805-BDDC-35C45C202A30" Description="Calculated values that are scoped using this PathedRole.">
 					<RolePlayer>
 						<DomainRelationshipMoniker Name="PathedRole"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="CalculatedPathValueAggregationContextIncludesPathedRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="6ECAB3B3-FB55-4CCB-B370-2210EF852105">
+			<Source>
+				<DomainRole Name="CalculatedValue" PropertyName="AggregationContextPathedRoleCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="CalculatedValue" Id="787BFCAC-C99C-4567-83B2-176BD1B5C99F" Description="A PathedRole that is part of the aggregation context for this function.">
+					<RolePlayer>
+						<DomainClassMoniker Name="CalculatedPathValue"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="PathedRole" PropertyName="AggregationContextForCalculationCollection" Multiplicity="ZeroMany" IsPropertyGenerator="false" DisplayName="PathedRole" Id="65446ACA-4106-4E53-B427-C99158A1C502" Description="Calculated values with an aggregation context that includes this PathedRole.">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="PathedRole"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="CalculatedPathValueAggregationContextIncludesRolePathRoot" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="210F887C-4568-47D2-8328-85527A8A127A">
+			<Source>
+				<DomainRole Name="CalculatedValue" PropertyName="AggregationContextPathRootCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="CalculatedValue" Id="3632F5E3-BA55-4EE3-A560-7A7F8BCF9661" Description="A role path root that is part of the aggregation context for this function.">
+					<RolePlayer>
+						<DomainClassMoniker Name="CalculatedPathValue"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="PathRoot" PropertyName="CalculationAggregationContexts" Multiplicity="ZeroMany" IsPropertyGenerator="false" DisplayName="PathRoot" Id="29300A91-AF99-4576-A823-686F2220535E" Description="Calculated values with an aggregation context that includes this role path root.">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="RolePathObjectTypeRoot"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -6165,6 +6214,25 @@
 				<DomainRole Name="ConsumptionRequiredError" PropertyName="CalculatedPathValue" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ConsumptionRequiredError" Id="1B1AD951-4355-42A9-89B7-781357D8B80F">
 					<RolePlayer>
 						<DomainClassMoniker Name="CalculatedPathValueMustBeConsumedError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="CalculatedPathValueHasAggregationContextRequiredError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="C7AC9EC0-5450-47CD-8DC8-003D80BBAEB3">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="CalculatedPathValue" PropertyName="AggregationContextRequiredError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Calculation" Id="B4CC26AC-BDAD-42E3-A630-54BEEC95497F">
+					<RolePlayer>
+						<DomainClassMoniker Name="CalculatedPathValue"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="AggregationContextRequiredError" PropertyName="CalculatedPathValue" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="AggregationContextRequiredError" Id="CF95B8A3-45E6-4F1D-84E8-0F826F1CC72F">
+					<RolePlayer>
+						<DomainClassMoniker Name="CalculatedPathValueRequiresAggregationContextError"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>

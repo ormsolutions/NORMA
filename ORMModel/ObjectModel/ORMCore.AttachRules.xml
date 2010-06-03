@@ -548,6 +548,11 @@
 				<arg:RuleOn targetType="FrequencyConstraint"/>
 			</arg:ChangeRule>
 		</arg:RuleContainer>
+		<arg:RuleContainer class="Function">
+			<arg:AddRule methodName="FunctionAddedRule">
+				<arg:RuleOn targetType="ModelDefinesFunction"/>
+			</arg:AddRule>
+		</arg:RuleContainer>
 		<arg:RuleContainer class="MandatoryConstraint">
 			<arg:ChangeRule methodName="MandatoryConstraintChangeRule">
 				<arg:RuleOn targetType="MandatoryConstraint"/>
@@ -969,12 +974,27 @@
 			<arg:AddRule methodName="CalculationAddedRule">
 				<arg:RuleOn targetType ="LeadRolePathCalculatesCalculatedPathValue"/>
 			</arg:AddRule>
+			<arg:AddRule methodName="CalculationAggregationContextPathedRoleAddedRule">
+				<arg:RuleOn targetType="CalculatedPathValueAggregationContextIncludesPathedRole"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="CalculationAggregationContextPathedRoleDeletedRule">
+				<arg:RuleOn targetType="CalculatedPathValueAggregationContextIncludesPathedRole"/>
+			</arg:DeleteRule>
+			<arg:AddRule methodName="CalculationAggregationContextPathRootAddedRule">
+				<arg:RuleOn targetType="CalculatedPathValueAggregationContextIncludesRolePathRoot"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="CalculationAggregationContextPathRootDeletedRule">
+				<arg:RuleOn targetType="CalculatedPathValueAggregationContextIncludesRolePathRoot"/>
+			</arg:DeleteRule>
 			<arg:AddRule methodName="CalculationAsConditionAddedRule">
 				<arg:RuleOn targetType="LeadRolePathSatisfiesCalculatedCondition"/>
 			</arg:AddRule>
 			<arg:DeleteRule methodName="CalculationAsConditionDeletedRule">
 				<arg:RuleOn targetType="LeadRolePathSatisfiesCalculatedCondition"/>
 			</arg:DeleteRule>
+			<arg:ChangeRule methodName="CalculationChangedRule">
+				<arg:RuleOn targetType="CalculatedPathValue"/>
+			</arg:ChangeRule>
 			<arg:AddRule methodName="CalculationFunctionAddedRule">
 				<arg:RuleOn targetType="CalculatedPathValueIsCalculatedWithFunction"/>
 			</arg:AddRule>

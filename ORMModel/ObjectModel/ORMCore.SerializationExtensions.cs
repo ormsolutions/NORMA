@@ -301,6 +301,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				classNameMap.Add("PathSameFactTypeRoleFollowsJoinError", PathSameFactTypeRoleFollowsJoinError.DomainClassId);
 				classNameMap.Add("PathOuterJoinRequiresOptionalRoleError", PathOuterJoinRequiresOptionalRoleError.DomainClassId);
 				classNameMap.Add("CalculatedPathValueRequiresFunctionError", CalculatedPathValueRequiresFunctionError.DomainClassId);
+				classNameMap.Add("CalculatedPathValueRequiresAggregationContextError", CalculatedPathValueRequiresAggregationContextError.DomainClassId);
 				classNameMap.Add("CalculatedPathValueMustBeConsumedError", CalculatedPathValueMustBeConsumedError.DomainClassId);
 				classNameMap.Add("CalculatedPathValueParameterBindingError", CalculatedPathValueParameterBindingError.DomainClassId);
 				classNameMap.Add("CalculatedPathValueHasUnboundParameterError", CalculatedPathValueHasUnboundParameterError.DomainClassId);
@@ -7816,6 +7817,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
 			}
+			if (domainPropertyInfo.Id == Function.IsAggregateDomainPropertyId)
+			{
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+			}
 			if (domainPropertyInfo.Id == Function.OperatorSymbolDomainPropertyId)
 			{
 				if (string.IsNullOrEmpty(this.OperatorSymbol))
@@ -8403,7 +8408,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get
 			{
-				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.ChildElementInfo | CustomSerializedElementSupportedOperations.ElementInfo | CustomSerializedElementSupportedOperations.LinkInfo | CustomSerializedElementSupportedOperations.CustomSortChildRoles;
+				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.ChildElementInfo | CustomSerializedElementSupportedOperations.ElementInfo | CustomSerializedElementSupportedOperations.PropertyInfo | CustomSerializedElementSupportedOperations.LinkInfo | CustomSerializedElementSupportedOperations.CustomSortChildRoles;
 			}
 		}
 		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
@@ -8430,12 +8435,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						baseInfoCount = baseInfo.Length;
 					}
 				}
-				ret = new CustomSerializedContainerElementInfo[baseInfoCount + 1];
+				ret = new CustomSerializedContainerElementInfo[baseInfoCount + 2];
 				if (baseInfoCount != 0)
 				{
-					baseInfo.CopyTo(ret, 1);
+					baseInfo.CopyTo(ret, 2);
 				}
-				ret[0] = new CustomSerializedContainerElementInfo(null, "Inputs", null, CustomSerializedElementWriteStyle.Element, null, CalculatedPathValueHasInput.InputDomainRoleId);
+				ret[0] = new CustomSerializedContainerElementInfo(null, "AggregationContext", null, CustomSerializedElementWriteStyle.Element, null, CalculatedPathValueAggregationContextIncludesRolePathRoot.PathRootDomainRoleId, CalculatedPathValueAggregationContextIncludesPathedRole.PathedRoleDomainRoleId);
+				ret[1] = new CustomSerializedContainerElementInfo(null, "Inputs", null, CustomSerializedElementWriteStyle.Element, null, CalculatedPathValueHasInput.InputDomainRoleId);
 				CalculatedPathValue.myCustomSerializedChildElementInfo = ret;
 			}
 			return ret;
@@ -8459,6 +8465,28 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return this.CustomSerializedElementInfo;
 			}
 		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
+		protected new CustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		{
+			if (domainPropertyInfo.Id == CalculatedPathValue.UniversalAggregationContextDomainPropertyId)
+			{
+				Function function;
+				if (!this.UniversalAggregationContext || (function = this.Function) == null || !function.IsAggregate)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (0 != (CustomSerializedElementSupportedOperations.PropertyInfo & base.SupportedCustomSerializedOperations))
+			{
+				return base.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
+			}
+			return CustomSerializedPropertyInfo.Default;
+		}
+		CustomSerializedPropertyInfo ICustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		{
+			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
+		}
 		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedLinkInfo</summary>
 		protected new CustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
@@ -8467,9 +8495,33 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				return new CustomSerializedElementInfo(null, "Function", null, CustomSerializedElementWriteStyle.Element, null);
 			}
-			if (roleId == CalculatedPathValueScopedWithPathedRole.ScopeDomainRoleId)
+			if (roleId == CalculatedPathValueScopedWithPathedRole_Deprecated.ScopeDomainRoleId)
 			{
 				return new CustomSerializedElementInfo(null, "Scope", null, CustomSerializedElementWriteStyle.Element, null);
+			}
+			if (roleId == CalculatedPathValueAggregationContextIncludesRolePathRoot.PathRootDomainRoleId)
+			{
+				string name = null;
+				CustomSerializedElementWriteStyle writeStyle = CustomSerializedElementWriteStyle.NotWritten;
+				Function function = this.Function;
+				if (function != null && function.IsAggregate)
+				{
+					name = "PathRoot";
+					writeStyle = CustomSerializedElementWriteStyle.Element;
+				}
+				return new CustomSerializedElementInfo(null, name, null, writeStyle, null);
+			}
+			if (roleId == CalculatedPathValueAggregationContextIncludesPathedRole.PathedRoleDomainRoleId)
+			{
+				string name = null;
+				CustomSerializedElementWriteStyle writeStyle = CustomSerializedElementWriteStyle.NotWritten;
+				Function function = this.Function;
+				if (function != null && function.IsAggregate)
+				{
+					name = "PathedRole";
+					writeStyle = CustomSerializedElementWriteStyle.Element;
+				}
+				return new CustomSerializedElementInfo(null, name, null, writeStyle, null);
 			}
 			if (roleId == LeadRolePathSatisfiesCalculatedCondition.LeadRolePathDomainRoleId)
 			{
@@ -8483,19 +8535,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
 			}
-			if (roleId == RoleDerivesFromCalculatedPathValue_Deprecated.RoleDomainRoleId)
-			{
-				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
-			}
 			if (roleId == ConstraintRoleProjectedFromCalculatedPathValue.ConstraintRoleProjectionDomainRoleId)
 			{
 				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
 			}
-			if (roleId == ConstraintRoleProjectedFromCalculatedPathValue_Deprecated.ConstraintRoleDomainRoleId)
+			if (roleId == CalculatedPathValueHasFunctionRequiredError.FunctionRequiredErrorDomainRoleId)
 			{
 				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
 			}
-			if (roleId == CalculatedPathValueHasFunctionRequiredError.FunctionRequiredErrorDomainRoleId)
+			if (roleId == CalculatedPathValueHasAggregationContextRequiredError.AggregationContextRequiredErrorDomainRoleId)
 			{
 				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
 			}
@@ -8530,28 +8578,30 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				DomainRoleInfo domainRole;
 				domainRole = domainDataDirectory.FindDomainRole(CalculatedPathValueIsCalculatedWithFunction.FunctionDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
-				domainRole = domainDataDirectory.FindDomainRole(CalculatedPathValueScopedWithPathedRole.ScopeDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(CalculatedPathValueScopedWithPathedRole_Deprecated.ScopeDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
-				domainRole = domainDataDirectory.FindDomainRole(CalculatedPathValueHasInput.InputDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(CalculatedPathValueAggregationContextIncludesRolePathRoot.PathRootDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 2;
-				domainRole = domainDataDirectory.FindDomainRole(LeadRolePathSatisfiesCalculatedCondition.LeadRolePathDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(CalculatedPathValueAggregationContextIncludesPathedRole.PathedRoleDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 3;
-				domainRole = domainDataDirectory.FindDomainRole(CalculatedPathValueInputBindsToCalculatedPathValue.InputDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(CalculatedPathValueHasInput.InputDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 4;
-				domainRole = domainDataDirectory.FindDomainRole(FactTypeRoleProjectedFromCalculatedPathValue.RoleProjectionDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(LeadRolePathSatisfiesCalculatedCondition.LeadRolePathDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 5;
-				domainRole = domainDataDirectory.FindDomainRole(RoleDerivesFromCalculatedPathValue_Deprecated.RoleDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(CalculatedPathValueInputBindsToCalculatedPathValue.InputDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 6;
-				domainRole = domainDataDirectory.FindDomainRole(ConstraintRoleProjectedFromCalculatedPathValue.ConstraintRoleProjectionDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(FactTypeRoleProjectedFromCalculatedPathValue.RoleProjectionDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 7;
-				domainRole = domainDataDirectory.FindDomainRole(ConstraintRoleProjectedFromCalculatedPathValue_Deprecated.ConstraintRoleDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(ConstraintRoleProjectedFromCalculatedPathValue.ConstraintRoleProjectionDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 8;
 				domainRole = domainDataDirectory.FindDomainRole(CalculatedPathValueHasFunctionRequiredError.FunctionRequiredErrorDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 9;
-				domainRole = domainDataDirectory.FindDomainRole(CalculatedPathValueHasUnboundParameterError.ParameterBindingErrorDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(CalculatedPathValueHasAggregationContextRequiredError.AggregationContextRequiredErrorDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 10;
-				domainRole = domainDataDirectory.FindDomainRole(CalculatedPathValueHasConsumptionRequiredError.ConsumptionRequiredErrorDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(CalculatedPathValueHasUnboundParameterError.ParameterBindingErrorDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 11;
+				domainRole = domainDataDirectory.FindDomainRole(CalculatedPathValueHasConsumptionRequiredError.ConsumptionRequiredErrorDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 12;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
 			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
@@ -8614,8 +8664,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
 				match.InitializeRoles(CalculatedPathValueIsCalculatedWithFunction.FunctionDomainRoleId);
 				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/2006-04/ORMCore|Function", match);
-				match.InitializeRoles(CalculatedPathValueScopedWithPathedRole.ScopeDomainRoleId);
+				match.InitializeRoles(CalculatedPathValueScopedWithPathedRole_Deprecated.ScopeDomainRoleId);
 				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/2006-04/ORMCore|Scope", match);
+				match.InitializeRoles(CalculatedPathValueAggregationContextIncludesRolePathRoot.PathRootDomainRoleId);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|AggregationContext||PathRoot", match);
+				match.InitializeRoles(CalculatedPathValueAggregationContextIncludesPathedRole.PathedRoleDomainRoleId);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|AggregationContext||PathedRole", match);
 				match.InitializeRoles(CalculatedPathValueHasInput.InputDomainRoleId);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|Inputs||", match);
 				CalculatedPathValue.myChildElementMappings = childElementMappings;
@@ -8630,6 +8684,33 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		CustomSerializedElementMatch ICustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
 		{
 			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+		}
+		private static Dictionary<string, Guid> myCustomSerializedAttributes;
+		/// <summary>Implements ICustomSerializedElement.MapAttribute</summary>
+		protected new Guid MapAttribute(string xmlNamespace, string attributeName)
+		{
+			Dictionary<string, Guid> customSerializedAttributes = CalculatedPathValue.myCustomSerializedAttributes;
+			if (customSerializedAttributes == null)
+			{
+				customSerializedAttributes = new Dictionary<string, Guid>();
+				customSerializedAttributes.Add("UniversalAggregationContext", CalculatedPathValue.UniversalAggregationContextDomainPropertyId);
+				CalculatedPathValue.myCustomSerializedAttributes = customSerializedAttributes;
+			}
+			Guid rVal;
+			string key = attributeName;
+			if (xmlNamespace.Length != 0)
+			{
+				key = string.Concat(xmlNamespace, "|", attributeName);
+			}
+			if (!customSerializedAttributes.TryGetValue(key, out rVal))
+			{
+				rVal = base.MapAttribute(xmlNamespace, attributeName);
+			}
+			return rVal;
+		}
+		Guid ICustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
+		{
+			return this.MapAttribute(xmlNamespace, attributeName);
 		}
 	}
 	#endregion // CalculatedPathValue serialization
@@ -9278,6 +9359,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
 			}
+			if (roleId == CalculatedPathValueAggregationContextIncludesRolePathRoot.CalculatedValueDomainRoleId)
+			{
+				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
+			}
 			return CustomSerializedElementInfo.Default;
 		}
 		CustomSerializedElementInfo ICustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
@@ -9469,14 +9554,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				return new CustomSerializedElementInfo(null, "CorrelatedWith", null, CustomSerializedElementWriteStyle.Element, null);
 			}
-			if (roleId == PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated.CorrelatedChildDomainRoleId)
-			{
-				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
-			}
-			if (roleId == CalculatedPathValueScopedWithPathedRole.CalculatedValueDomainRoleId)
-			{
-				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
-			}
 			if (roleId == CalculatedPathValueInputBindsToPathedRole.InputDomainRoleId)
 			{
 				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
@@ -9485,15 +9562,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
 			}
-			if (roleId == RoleDerivesFromPathedRole_Deprecated.RoleDomainRoleId)
-			{
-				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
-			}
 			if (roleId == ConstraintRoleProjectedFromPathedRole.ConstraintRoleProjectionDomainRoleId)
-			{
-				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
-			}
-			if (roleId == ConstraintRoleProjectedFromPathedRole_Deprecated.ConstraintRoleDomainRoleId)
 			{
 				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
 			}
@@ -9510,6 +9579,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
 			}
 			if (roleId == PathObjectUnifierUnifiesPathedRole.ObjectUnifierDomainRoleId)
+			{
+				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
+			}
+			if (roleId == CalculatedPathValueAggregationContextIncludesPathedRole.CalculatedValueDomainRoleId)
 			{
 				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
 			}
@@ -9532,28 +9605,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
 				domainRole = domainDataDirectory.FindDomainRole(PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated.CorrelatingParentDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
-				domainRole = domainDataDirectory.FindDomainRole(PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated.CorrelatedChildDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 2;
-				domainRole = domainDataDirectory.FindDomainRole(CalculatedPathValueScopedWithPathedRole.CalculatedValueDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 3;
 				domainRole = domainDataDirectory.FindDomainRole(CalculatedPathValueInputBindsToPathedRole.InputDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 4;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 2;
 				domainRole = domainDataDirectory.FindDomainRole(FactTypeRoleProjectedFromPathedRole.RoleProjectionDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 5;
-				domainRole = domainDataDirectory.FindDomainRole(RoleDerivesFromPathedRole_Deprecated.RoleDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 6;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 3;
 				domainRole = domainDataDirectory.FindDomainRole(ConstraintRoleProjectedFromPathedRole.ConstraintRoleProjectionDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 7;
-				domainRole = domainDataDirectory.FindDomainRole(ConstraintRoleProjectedFromPathedRole_Deprecated.ConstraintRoleDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 8;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 4;
 				domainRole = domainDataDirectory.FindDomainRole(PathedRoleHasCompatibleJoinRolePlayerError.JoinCompatibilityErrorDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 9;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 5;
 				domainRole = domainDataDirectory.FindDomainRole(PathedRoleHasSameFactTypeFollowsJoinError.SameFactTypeRoleFollowsJoinErrorDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 10;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 6;
 				domainRole = domainDataDirectory.FindDomainRole(PathedRoleHasMandatoryOuterJoinError.MandatoryOuterJoinErrorDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 11;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 7;
 				domainRole = domainDataDirectory.FindDomainRole(PathObjectUnifierUnifiesPathedRole.ObjectUnifierDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 12;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 8;
+				domainRole = domainDataDirectory.FindDomainRole(CalculatedPathValueAggregationContextIncludesPathedRole.CalculatedValueDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 9;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
 			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
@@ -13273,6 +13340,68 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // CalculatedPathValueRequiresFunctionError serialization
+	#region CalculatedPathValueRequiresAggregationContextError serialization
+	partial class CalculatedPathValueRequiresAggregationContextError : ICustomSerializedElement
+	{
+		/// <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
+		protected new CustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.LinkInfo;
+			}
+		}
+		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedLinkInfo</summary>
+		protected new CustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == CalculatedPathValueHasAggregationContextRequiredError.CalculatedPathValueDomainRoleId)
+			{
+				return new CustomSerializedElementInfo(null, "CalculatedValue", null, CustomSerializedElementWriteStyle.Element, null);
+			}
+			if (0 != (CustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
+			{
+				return base.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+			}
+			return CustomSerializedElementInfo.Default;
+		}
+		CustomSerializedElementInfo ICustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+		}
+		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;
+		/// <summary>Implements ICustomSerializedElement.MapChildElement</summary>
+		protected new CustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			Dictionary<string, CustomSerializedElementMatch> childElementMappings = CalculatedPathValueRequiresAggregationContextError.myChildElementMappings;
+			if (childElementMappings == null)
+			{
+				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
+				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
+				match.InitializeRoles(CalculatedPathValueHasAggregationContextRequiredError.CalculatedPathValueDomainRoleId);
+				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/2006-04/ORMCore|CalculatedValue", match);
+				CalculatedPathValueRequiresAggregationContextError.myChildElementMappings = childElementMappings;
+			}
+			CustomSerializedElementMatch rVal;
+			if (!childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", (object)containerNamespace != (object)outerContainerNamespace ? containerNamespace : null, "|", containerName, "|", (object)elementNamespace != (object)containerNamespace ? elementNamespace : null, "|", elementName), out rVal))
+			{
+				rVal = base.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+			}
+			return rVal;
+		}
+		CustomSerializedElementMatch ICustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+		}
+	}
+	#endregion // CalculatedPathValueRequiresAggregationContextError serialization
 	#region CalculatedPathValueMustBeConsumedError serialization
 	partial class CalculatedPathValueMustBeConsumedError : ICustomSerializedElement
 	{

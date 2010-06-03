@@ -161,11 +161,11 @@
 	</xs:attributeGroup>
 	<xs:element name="ConditionalName">
 		<xs:annotation>
-			<xs:documentation>Renames an element based on a PLIX condition.</xs:documentation>
+			<xs:documentation>Renames an element based on a PLIX condition. The last PLiX element is assumed to be condition, other elements are preliminary code.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
-				<xs:any namespace="http://schemas.neumont.edu/CodeGeneration/PLiX" processContents="lax" minOccurs="1"  maxOccurs="1"/>
+				<xs:any namespace="http://schemas.neumont.edu/CodeGeneration/PLiX" processContents="lax" minOccurs="1"  maxOccurs="unbounded"/>
 			</xs:sequence>
 			<xs:attribute name="Name" type="xs:string" use="required">
 				<xs:annotation>

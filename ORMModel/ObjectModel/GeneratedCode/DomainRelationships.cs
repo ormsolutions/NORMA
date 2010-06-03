@@ -42668,20 +42668,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
-		#region ScopedCalculatedValueCollection opposite domain role accessor
-		/// <summary>
-		/// Gets a list of ScopedCalculatedValueCollection.
-		/// Calculated values that are scoped using this PathedRole.
-		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<CalculatedPathValue> ScopedCalculatedValueCollection
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return new DslModeling::LinkedElementCollection<CalculatedPathValue>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole.ScopeDomainRoleId);
-			}
-		}
-		#endregion
 		#region BoundInputCollection opposite domain role accessor
 		/// <summary>
 		/// Gets a list of BoundInputCollection.
@@ -45469,33 +45455,33 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
-	/// DomainRelationship CalculatedPathValueScopedWithPathedRole
+	/// DomainRelationship CalculatedPathValueScopedWithPathedRole_Deprecated
 	/// Description for
-	/// ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated
 	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("627fca97-86ef-473f-aaa7-fff2f8295624")]
-	public partial class CalculatedPathValueScopedWithPathedRole : DslModeling::ElementLink
+	public partial class CalculatedPathValueScopedWithPathedRole_Deprecated : DslModeling::ElementLink
 	{
 		#region Constructors, domain class Id
 		
 		/// <summary>
-		/// CalculatedPathValueScopedWithPathedRole domain class Id.
+		/// CalculatedPathValueScopedWithPathedRole_Deprecated domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x627fca97, 0x86ef, 0x473f, 0xaa, 0xa7, 0xff, 0xf2, 0xf8, 0x29, 0x56, 0x24);
 	
 				
 		/// <summary>
 		/// Constructor
-		/// Creates a CalculatedPathValueScopedWithPathedRole link in the same Partition as the given CalculatedPathValue
+		/// Creates a CalculatedPathValueScopedWithPathedRole_Deprecated link in the same Partition as the given CalculatedPathValue
 		/// </summary>
 		/// <param name="source">CalculatedPathValue to use as the source of the relationship.</param>
 		/// <param name="target">PathedRole to use as the target of the relationship.</param>
-		public CalculatedPathValueScopedWithPathedRole(CalculatedPathValue source, PathedRole target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(CalculatedPathValueScopedWithPathedRole.CalculatedValueDomainRoleId, source), new DslModeling::RoleAssignment(CalculatedPathValueScopedWithPathedRole.ScopeDomainRoleId, target)}, null)
+		public CalculatedPathValueScopedWithPathedRole_Deprecated(CalculatedPathValue source, PathedRole target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(CalculatedPathValueScopedWithPathedRole_Deprecated.CalculatedValueDomainRoleId, source), new DslModeling::RoleAssignment(CalculatedPathValueScopedWithPathedRole_Deprecated.ScopeDomainRoleId, target)}, null)
 		{
 		}
 		
@@ -45504,7 +45490,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public CalculatedPathValueScopedWithPathedRole(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+		public CalculatedPathValueScopedWithPathedRole_Deprecated(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
 		{
 		}
@@ -45515,7 +45501,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public CalculatedPathValueScopedWithPathedRole(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public CalculatedPathValueScopedWithPathedRole_Deprecated(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
 		{
 		}
@@ -45525,7 +45511,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public CalculatedPathValueScopedWithPathedRole(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+		public CalculatedPathValueScopedWithPathedRole_Deprecated(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(partition, roleAssignments, null)
 		{
 		}
@@ -45536,7 +45522,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public CalculatedPathValueScopedWithPathedRole(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public CalculatedPathValueScopedWithPathedRole_Deprecated(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, roleAssignments, propertyAssignments)
 		{
 		}
@@ -45553,9 +45539,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// The PathedRole that provides context for this function. The scope must be
 		/// related in the role path to any path inputs.
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole/CalculatedValue.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole/CalculatedValue.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Scope", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole/CalculatedValue.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated/CalculatedValue.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated/CalculatedValue.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Scope", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated/CalculatedValue.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("63c8f93e-641d-4aa5-b42b-1a1e0c4ae9a4")]
 		public virtual CalculatedPathValue CalculatedValue
 		{
@@ -45594,9 +45580,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// DomainRole Scope
 		/// Calculated values that are scoped using this PathedRole.
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole/Scope.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole/Scope.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ScopedCalculatedValueCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole/Scope.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated/Scope.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated/Scope.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ScopedCalculatedValueCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated/Scope.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("ae6b0a16-55a0-4805-bddc-35c45c202a30")]
 		public virtual PathedRole Scope
 		{
@@ -45636,13 +45622,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion
 		#region CalculatedValue link accessor
 		/// <summary>
-		/// Get the CalculatedPathValueScopedWithPathedRole link to a CalculatedPathValue.
+		/// Get the CalculatedPathValueScopedWithPathedRole_Deprecated link to a CalculatedPathValue.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole GetLinkToScope (global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue calculatedValueInstance)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated GetLinkToScope (global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue calculatedValueInstance)
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole>(calculatedValueInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole.CalculatedValueDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated>(calculatedValueInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated.CalculatedValueDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of CalculatedValue not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -45656,27 +45642,27 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion
 		#region Scope link accessor
 		/// <summary>
-		/// Get the list of CalculatedPathValueScopedWithPathedRole links to a PathedRole.
+		/// Get the list of CalculatedPathValueScopedWithPathedRole_Deprecated links to a PathedRole.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole> GetLinksToScopedCalculatedValueCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole scopeInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated> GetLinksToScopedCalculatedValueCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole scopeInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole>(scopeInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole.ScopeDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated>(scopeInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated.ScopeDomainRoleId);
 		}
 		#endregion
-		#region CalculatedPathValueScopedWithPathedRole instance accessors
+		#region CalculatedPathValueScopedWithPathedRole_Deprecated instance accessors
 		
 		/// <summary>
-		/// Get any CalculatedPathValueScopedWithPathedRole links between a given CalculatedPathValue and a PathedRole.
+		/// Get any CalculatedPathValueScopedWithPathedRole_Deprecated links between a given CalculatedPathValue and a PathedRole.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole target )
 		{
-			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole.CalculatedValueDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated.CalculatedValueDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated link in links )
 			{
 				if ( target.Equals(link.Scope) )
 				{
@@ -45686,16 +45672,456 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one CalculatedPathValueScopedWithPathedRole link between a given CalculatedPathValueand a PathedRole.
+		/// Get the one CalculatedPathValueScopedWithPathedRole_Deprecated link between a given CalculatedPathValueand a PathedRole.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole target )
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole target )
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole.CalculatedValueDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated.CalculatedValueDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated link in links )
 			{
 				if ( target.Equals(link.Scope) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship CalculatedPathValueAggregationContextIncludesPathedRole
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("6ecab3b3-fb55-4ccb-b370-2210ef852105")]
+	public partial class CalculatedPathValueAggregationContextIncludesPathedRole : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// CalculatedPathValueAggregationContextIncludesPathedRole domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x6ecab3b3, 0xfb55, 0x4ccb, 0xb3, 0x70, 0x22, 0x10, 0xef, 0x85, 0x21, 0x05);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a CalculatedPathValueAggregationContextIncludesPathedRole link in the same Partition as the given CalculatedPathValue
+		/// </summary>
+		/// <param name="source">CalculatedPathValue to use as the source of the relationship.</param>
+		/// <param name="target">PathedRole to use as the target of the relationship.</param>
+		public CalculatedPathValueAggregationContextIncludesPathedRole(CalculatedPathValue source, PathedRole target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(CalculatedPathValueAggregationContextIncludesPathedRole.CalculatedValueDomainRoleId, source), new DslModeling::RoleAssignment(CalculatedPathValueAggregationContextIncludesPathedRole.PathedRoleDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public CalculatedPathValueAggregationContextIncludesPathedRole(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public CalculatedPathValueAggregationContextIncludesPathedRole(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public CalculatedPathValueAggregationContextIncludesPathedRole(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public CalculatedPathValueAggregationContextIncludesPathedRole(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region CalculatedValue domain role code
+		
+		/// <summary>
+		/// CalculatedValue domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid CalculatedValueDomainRoleId = new global::System.Guid(0x787bfcac, 0xc99c, 0x4567, 0x83, 0xb2, 0x17, 0x6b, 0xd1, 0xb5, 0xc9, 0x9f);
+		
+		/// <summary>
+		/// DomainRole CalculatedValue
+		/// A PathedRole that is part of the aggregation context for this function.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole/CalculatedValue.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole/CalculatedValue.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "AggregationContextPathedRoleCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole/CalculatedValue.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("787bfcac-c99c-4567-83b2-176bd1b5c99f")]
+		public virtual CalculatedPathValue CalculatedValue
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (CalculatedPathValue)DslModeling::DomainRoleInfo.GetRolePlayer(this, CalculatedValueDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, CalculatedValueDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access AggregationContextForCalculationCollection of a PathedRole
+		/// <summary>
+		/// Gets a list of AggregationContextForCalculationCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<CalculatedPathValue> GetAggregationContextForCalculationCollection(PathedRole element)
+		{
+			return new DslModeling::LinkedElementCollection<CalculatedPathValue>(element, PathedRoleDomainRoleId);
+		}
+		#endregion
+		#region PathedRole domain role code
+		
+		/// <summary>
+		/// PathedRole domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid PathedRoleDomainRoleId = new global::System.Guid(0x65446aca, 0x4106, 0x4e53, 0xb4, 0x27, 0xc9, 0x91, 0x58, 0xa1, 0xc5, 0x02);
+		
+		/// <summary>
+		/// DomainRole PathedRole
+		/// Calculated values with an aggregation context that includes this PathedRole.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole/PathedRole.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole/PathedRole.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "AggregationContextForCalculationCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole/PathedRole.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("65446aca-4106-4e53-b427-c99158a1c502")]
+		public virtual PathedRole PathedRole
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (PathedRole)DslModeling::DomainRoleInfo.GetRolePlayer(this, PathedRoleDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, PathedRoleDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access AggregationContextPathedRoleCollection of a CalculatedPathValue
+		/// <summary>
+		/// Gets a list of AggregationContextPathedRoleCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<PathedRole> GetAggregationContextPathedRoleCollection(CalculatedPathValue element)
+		{
+			return new DslModeling::LinkedElementCollection<PathedRole>(element, CalculatedValueDomainRoleId);
+		}
+		#endregion
+		#region CalculatedValue link accessor
+		/// <summary>
+		/// Get the list of CalculatedPathValueAggregationContextIncludesPathedRole links to a CalculatedPathValue.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole> GetLinksToAggregationContextPathedRoleCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue calculatedValueInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole>(calculatedValueInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole.CalculatedValueDomainRoleId);
+		}
+		#endregion
+		#region PathedRole link accessor
+		/// <summary>
+		/// Get the list of CalculatedPathValueAggregationContextIncludesPathedRole links to a PathedRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole> GetLinksToAggregationContextForCalculationCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole pathedRoleInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole>(pathedRoleInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole.PathedRoleDomainRoleId);
+		}
+		#endregion
+		#region CalculatedPathValueAggregationContextIncludesPathedRole instance accessors
+		
+		/// <summary>
+		/// Get any CalculatedPathValueAggregationContextIncludesPathedRole links between a given CalculatedPathValue and a PathedRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole.CalculatedValueDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole link in links )
+			{
+				if ( target.Equals(link.PathedRole) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one CalculatedPathValueAggregationContextIncludesPathedRole link between a given CalculatedPathValueand a PathedRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole.CalculatedValueDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole link in links )
+			{
+				if ( target.Equals(link.PathedRole) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship CalculatedPathValueAggregationContextIncludesRolePathRoot
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("210f887c-4568-47d2-8328-85527a8a127a")]
+	public partial class CalculatedPathValueAggregationContextIncludesRolePathRoot : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// CalculatedPathValueAggregationContextIncludesRolePathRoot domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x210f887c, 0x4568, 0x47d2, 0x83, 0x28, 0x85, 0x52, 0x7a, 0x8a, 0x12, 0x7a);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a CalculatedPathValueAggregationContextIncludesRolePathRoot link in the same Partition as the given CalculatedPathValue
+		/// </summary>
+		/// <param name="source">CalculatedPathValue to use as the source of the relationship.</param>
+		/// <param name="target">RolePathObjectTypeRoot to use as the target of the relationship.</param>
+		public CalculatedPathValueAggregationContextIncludesRolePathRoot(CalculatedPathValue source, RolePathObjectTypeRoot target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(CalculatedPathValueAggregationContextIncludesRolePathRoot.CalculatedValueDomainRoleId, source), new DslModeling::RoleAssignment(CalculatedPathValueAggregationContextIncludesRolePathRoot.PathRootDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public CalculatedPathValueAggregationContextIncludesRolePathRoot(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public CalculatedPathValueAggregationContextIncludesRolePathRoot(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public CalculatedPathValueAggregationContextIncludesRolePathRoot(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public CalculatedPathValueAggregationContextIncludesRolePathRoot(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region CalculatedValue domain role code
+		
+		/// <summary>
+		/// CalculatedValue domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid CalculatedValueDomainRoleId = new global::System.Guid(0x3632f5e3, 0xba55, 0x4ee3, 0xa5, 0x60, 0x7a, 0x7f, 0x8b, 0xcf, 0x96, 0x61);
+		
+		/// <summary>
+		/// DomainRole CalculatedValue
+		/// A role path root that is part of the aggregation context for this function.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot/CalculatedValue.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot/CalculatedValue.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "AggregationContextPathRootCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot/CalculatedValue.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("3632f5e3-ba55-4ee3-a560-7a7f8bcf9661")]
+		public virtual CalculatedPathValue CalculatedValue
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (CalculatedPathValue)DslModeling::DomainRoleInfo.GetRolePlayer(this, CalculatedValueDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, CalculatedValueDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access CalculationAggregationContexts of a RolePathObjectTypeRoot
+		/// <summary>
+		/// Gets a list of CalculationAggregationContexts.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<CalculatedPathValue> GetCalculationAggregationContexts(RolePathObjectTypeRoot element)
+		{
+			return new DslModeling::LinkedElementCollection<CalculatedPathValue>(element, PathRootDomainRoleId);
+		}
+		#endregion
+		#region PathRoot domain role code
+		
+		/// <summary>
+		/// PathRoot domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid PathRootDomainRoleId = new global::System.Guid(0x29300a91, 0xaf99, 0x4576, 0xa8, 0x23, 0x68, 0x6f, 0x22, 0x20, 0x53, 0x5e);
+		
+		/// <summary>
+		/// DomainRole PathRoot
+		/// Calculated values with an aggregation context that includes this role path root.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot/PathRoot.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot/PathRoot.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "CalculationAggregationContexts", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot/PathRoot.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("29300a91-af99-4576-a823-686f2220535e")]
+		public virtual RolePathObjectTypeRoot PathRoot
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (RolePathObjectTypeRoot)DslModeling::DomainRoleInfo.GetRolePlayer(this, PathRootDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, PathRootDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access AggregationContextPathRootCollection of a CalculatedPathValue
+		/// <summary>
+		/// Gets a list of AggregationContextPathRootCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<RolePathObjectTypeRoot> GetAggregationContextPathRootCollection(CalculatedPathValue element)
+		{
+			return new DslModeling::LinkedElementCollection<RolePathObjectTypeRoot>(element, CalculatedValueDomainRoleId);
+		}
+		#endregion
+		#region CalculatedValue link accessor
+		/// <summary>
+		/// Get the list of CalculatedPathValueAggregationContextIncludesRolePathRoot links to a CalculatedPathValue.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot> GetLinksToAggregationContextPathRootCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue calculatedValueInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot>(calculatedValueInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot.CalculatedValueDomainRoleId);
+		}
+		#endregion
+		#region PathRoot link accessor
+		/// <summary>
+		/// Get the list of CalculatedPathValueAggregationContextIncludesRolePathRoot links to a RolePathObjectTypeRoot.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot> GetLinksToCalculationAggregationContexts ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot pathRootInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot>(pathRootInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot.PathRootDomainRoleId);
+		}
+		#endregion
+		#region CalculatedPathValueAggregationContextIncludesRolePathRoot instance accessors
+		
+		/// <summary>
+		/// Get any CalculatedPathValueAggregationContextIncludesRolePathRoot links between a given CalculatedPathValue and a RolePathObjectTypeRoot.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot.CalculatedValueDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot link in links )
+			{
+				if ( target.Equals(link.PathRoot) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one CalculatedPathValueAggregationContextIncludesRolePathRoot link between a given CalculatedPathValueand a RolePathObjectTypeRoot.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot.CalculatedValueDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot link in links )
+			{
+				if ( target.Equals(link.PathRoot) )
 				{
 					return link;
 				}
@@ -53165,6 +53591,310 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasConsumptionRequiredError link in links )
 			{
 				if ( target.Equals(link.ConsumptionRequiredError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship CalculatedPathValueHasAggregationContextRequiredError
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("c7ac9ec0-5450-47cd-8dc8-003d80bbaeb3")]
+	public partial class CalculatedPathValueHasAggregationContextRequiredError : ElementAssociatedWithModelError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// CalculatedPathValueHasAggregationContextRequiredError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xc7ac9ec0, 0x5450, 0x47cd, 0x8d, 0xc8, 0x00, 0x3d, 0x80, 0xbb, 0xae, 0xb3);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a CalculatedPathValueHasAggregationContextRequiredError link in the same Partition as the given CalculatedPathValue
+		/// </summary>
+		/// <param name="source">CalculatedPathValue to use as the source of the relationship.</param>
+		/// <param name="target">CalculatedPathValueRequiresAggregationContextError to use as the target of the relationship.</param>
+		public CalculatedPathValueHasAggregationContextRequiredError(CalculatedPathValue source, CalculatedPathValueRequiresAggregationContextError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(CalculatedPathValueHasAggregationContextRequiredError.CalculatedPathValueDomainRoleId, source), new DslModeling::RoleAssignment(CalculatedPathValueHasAggregationContextRequiredError.AggregationContextRequiredErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public CalculatedPathValueHasAggregationContextRequiredError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public CalculatedPathValueHasAggregationContextRequiredError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public CalculatedPathValueHasAggregationContextRequiredError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public CalculatedPathValueHasAggregationContextRequiredError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region CalculatedPathValue domain role code
+		
+		/// <summary>
+		/// CalculatedPathValue domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid CalculatedPathValueDomainRoleId = new global::System.Guid(0xb4cc26ac, 0xbdad, 0x42e3, 0xa6, 0x30, 0x54, 0xbe, 0xec, 0x95, 0x49, 0x7f);
+		
+		/// <summary>
+		/// DomainRole CalculatedPathValue
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError.CalculatedPathValue
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError/CalculatedPathValue.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError/CalculatedPathValue.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "AggregationContextRequiredError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError/CalculatedPathValue.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("b4cc26ac-bdad-42e3-a630-54beec95497f")]
+		public virtual CalculatedPathValue CalculatedPathValue
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (CalculatedPathValue)DslModeling::DomainRoleInfo.GetRolePlayer(this, CalculatedPathValueDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, CalculatedPathValueDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access CalculatedPathValue of a CalculatedPathValueRequiresAggregationContextError
+		/// <summary>
+		/// Gets CalculatedPathValue.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static CalculatedPathValue GetCalculatedPathValue(CalculatedPathValueRequiresAggregationContextError element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, AggregationContextRequiredErrorDomainRoleId) as CalculatedPathValue;
+		}
+		
+		/// <summary>
+		/// Sets CalculatedPathValue.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetCalculatedPathValue(CalculatedPathValueRequiresAggregationContextError element, CalculatedPathValue newCalculatedPathValue)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, AggregationContextRequiredErrorDomainRoleId, newCalculatedPathValue);
+		}
+		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing CalculatedPathValue domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.CalculatedPathValue;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.CalculatedPathValue = (CalculatedPathValue)value;
+			}
+		}
+		
+		#endregion
+		#region AggregationContextRequiredError domain role code
+		
+		/// <summary>
+		/// AggregationContextRequiredError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid AggregationContextRequiredErrorDomainRoleId = new global::System.Guid(0xcf95b8a3, 0x45e6, 0x4f1d, 0x84, 0xe8, 0x0f, 0x82, 0x6f, 0x1c, 0xc7, 0x2f);
+		
+		/// <summary>
+		/// DomainRole AggregationContextRequiredError
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError.AggregationContextRequiredError
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError/AggregationContextRequiredError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError/AggregationContextRequiredError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "CalculatedPathValue", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError/AggregationContextRequiredError.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("cf95b8a3-45e6-4f1d-84e8-0f826f1cc72f")]
+		public virtual CalculatedPathValueRequiresAggregationContextError AggregationContextRequiredError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (CalculatedPathValueRequiresAggregationContextError)DslModeling::DomainRoleInfo.GetRolePlayer(this, AggregationContextRequiredErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, AggregationContextRequiredErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access AggregationContextRequiredError of a CalculatedPathValue
+		/// <summary>
+		/// Gets AggregationContextRequiredError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static CalculatedPathValueRequiresAggregationContextError GetAggregationContextRequiredError(CalculatedPathValue element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, CalculatedPathValueDomainRoleId) as CalculatedPathValueRequiresAggregationContextError;
+		}
+		
+		/// <summary>
+		/// Sets AggregationContextRequiredError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetAggregationContextRequiredError(CalculatedPathValue element, CalculatedPathValueRequiresAggregationContextError newAggregationContextRequiredError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, CalculatedPathValueDomainRoleId, newAggregationContextRequiredError);
+		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing AggregationContextRequiredError domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.AggregationContextRequiredError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.AggregationContextRequiredError = (CalculatedPathValueRequiresAggregationContextError)value;
+			}
+		}
+		
+		#endregion
+		#region CalculatedPathValue link accessor
+		/// <summary>
+		/// Get the CalculatedPathValueHasAggregationContextRequiredError link to a CalculatedPathValue.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError GetLinkToAggregationContextRequiredError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue calculatedPathValueInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError>(calculatedPathValueInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError.CalculatedPathValueDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of CalculatedPathValue not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region AggregationContextRequiredError link accessor
+		/// <summary>
+		/// Get the CalculatedPathValueHasAggregationContextRequiredError link to a CalculatedPathValueRequiresAggregationContextError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError GetLinkToCalculatedPathValue (global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueRequiresAggregationContextError aggregationContextRequiredErrorInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError>(aggregationContextRequiredErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError.AggregationContextRequiredErrorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of AggregationContextRequiredError not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region CalculatedPathValueHasAggregationContextRequiredError instance accessors
+		
+		/// <summary>
+		/// Get any CalculatedPathValueHasAggregationContextRequiredError links between a given CalculatedPathValue and a CalculatedPathValueRequiresAggregationContextError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueRequiresAggregationContextError target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError.CalculatedPathValueDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError link in links )
+			{
+				if ( target.Equals(link.AggregationContextRequiredError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one CalculatedPathValueHasAggregationContextRequiredError link between a given CalculatedPathValueand a CalculatedPathValueRequiresAggregationContextError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueRequiresAggregationContextError target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError.CalculatedPathValueDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError link in links )
+			{
+				if ( target.Equals(link.AggregationContextRequiredError) )
 				{
 					return link;
 				}

@@ -264,6 +264,10 @@
 		<value>ORM Context Window</value>
 		<comment>Text to place in the title bar of the context tool window.</comment>
 	</data>
+	<data name="ModelError.CalculatedPathValue.CalculatedPathValueRequiresAggregationContext.Text" xml:space="preserve">
+		<value>{0} must provide an aggregation context.</value>
+		<comment>Model validation error text for an aggregate calculation with no aggregation context. {0}=error display context</comment>
+	</data>
 	<data name="ModelError.CalculatedPathValue.CalculatedPathValueRequiresFunction.Text" xml:space="preserve">
 		<value>{0} has a calculation with no function.</value>
 		<comment>Model validation error text for a path calculation without no specified function. {0}=error display context</comment>

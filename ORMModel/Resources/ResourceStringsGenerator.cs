@@ -916,6 +916,14 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Fact.AddReading.InvalidReadingText");
 			}
 		}
+		/// <summary>Model validation error text for an aggregate calculation with no aggregation context. {0}=error display context</summary>
+		public static string ModelErrorCalculatedPathValueRequiresAggregationContext
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.CalculatedPathValue.CalculatedPathValueRequiresAggregationContext.Text");
+			}
+		}
 		/// <summary>Model validation error text for a path calculation without no specified function. {0}=error display context</summary>
 		public static string ModelErrorCalculatedPathValueRequiresFunction
 		{

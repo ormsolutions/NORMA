@@ -3,7 +3,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
-<title>NORMA February 2010 CTP Readme</title>
+<title>NORMA May 2010 CTP Readme</title>
 <style type="text/css">
 	.new {font-size:x-small; background-color:Gold; color:Blue; }
 	li {padding-bottom: 3px;}
@@ -12,9 +12,9 @@
 
 <body>
 
-<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA February 2010 CTP Readme</a>&nbsp;</b></p>
+<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA May 2010 CTP Readme</a>&nbsp;</b></p>
 <p>This file supersedes the previous readme.txt and older readme.htm files. This readme has parallel indexing mechanisms: by topic, and by release date (starting with the October 2008 (2008-10) release). The file will be extended for future product releases.<br/><br/>
-The February 2010 release is a stabilization release with major changes in join path verbalization for set comparison constraints and additional portability of .orm files. See detailed change notes below for specifics. 
+The May 2010 release is an incremental release with addition verbalization for uniqueness and frequency constraints and some relational mapping changes to make one-to-one fact type patterns map more consistently. The internal role path structure has also been extensively modified. Previous .orm files will be updated automatically, but saved files will not save in older versions of the tool. See detailed change notes below for specifics. 
 <br/><br/></p>
 <h2>Contents</h2>
 <ul>
@@ -41,8 +41,29 @@ The February 2010 release is a stabilization release with major changes in join 
 </ul>-->
 
 <hr/>
+<h2>May 2010 CTP Changes</h2>
+<div>The May 2010 CTP release includes all modifications through changeset 1444. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<ul>
+<li><a href="#Uniqueness Frequency Join Path Verbalization 2010-05">Uniqueness and frequency constraint join path verbalization</a>&nbsp;</li>
+<li><a href="#One-to-one Relational Mapping 2010-05">One-to-one Relational Mapping Refinement</a>&nbsp;</li>
+<li>Other Features:
+<ol>
+<li>The majority of changes in this release are internal and relate to ongoing work to make our <em>role path</em> structure relationally complete. Role paths are used for specifying derivation rules and join paths in terms of basic ORM elements (object types and roles). Role path definitions are a large undertaking that will result in major expressibility advances in ORM models, and your patience is appreciated as we refine and test this feature set internally before full public disclosure.</li>
+<li>The <em>DerivationRule</em> property for fact types and subtypes has been renamed to <em>DerivationNote</em> to indicate the informal nature of these derivation rules. Internally, these are now notes on derivation path elements instead of a parallel mechanism.</li>
+</ol>
+</li>
+<li>Bug Fixes:
+<ol>
+<li>The <em>Is Mandatory</em> menu was incorrectly enabled for a unary role.</li>
+<li>Value constraints on remote identifying roles—where an entity type is (possibly recursively) identified by another entity type—were not correctly revalidated on a preferred identifier change.</li>
+<li>Style specifications used in the core verbalization were not included in the generated report styles. All report styles have now been brought up to date.</li>
+</ol>
+</li>
+</ul>
+
+<hr/>
 <h2>February 2010 CTP Changes</h2>
-<div>The February 2010 CTP release includes all modifications through changeset 1432. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<div>The February 2010 CTP release includes all modifications through changeset 1432.</div>
 <ul>
 <li><a href="#Localized Value Constraints 2010-02">Localized value constraints</a>&nbsp;</li>
 <li><a href="#Value Constraint Special String Characters 2010-02">Value constraint special string characters</a>&nbsp;</li>
@@ -336,6 +357,10 @@ If hyphen-binding is used in reading text and a hyphen directly precedes the hyp
 <a id="Join Path Verbalization 2010-02" class="new" title="February 2010 CTP: Join path verbalization">2010-02</a>&nbsp;
 Join paths for set comparison constraints (subset, equality, exclusion) are correctly verbalized. Join paths for simple, unambiguous patterns where joined fact types share a role player or pass through an objectification are generated automatically. More complicated join paths are also verbalized, but cannot be entered with this release of NORMA. The tool(s) to enter these paths will be available in future releases and versions of the product. Note that paths are also automatically generated for uniqueness, frequency, and ring constraints, but join paths are not yet verbalized for these patterns.
 </li>
+<li>
+<a id="Uniqueness Frequency Join Path Verbalization 2010-05" class="new" title="May 2010 CTP: Uniqueness and frequency constraint join path verbalization">2010-05</a>&nbsp;
+Join paths for uniqueness and frequency constraints verbalized correctly, leaving joined ring constraints as the only non-verbalized constraint types (adjustment to previous item). Verbalization is now correct for common uniqueness patterns such as using objectified and non-objectified roles in the same constraint.
+</li>
 </ol>
 <a href="#The Top">Return to top</a>
 <hr />
@@ -445,6 +470,8 @@ The <em>Groups</em> menu and corresponding Model Browser node is a facility for 
 <li>Additional abbreviation of individual ObjectType names as well as specific phrases are available in the 'Abbreviations' dialog for any of the Name Generation Settings nodes. Phrase abbreviations can include multiple words and can map to empty strings, which will omit the phrase. Phrases are treated case insensitively for replacement. Note that each child node in the Name Generation Settings branch is a refinement of the parent node and affects the scope where the abbreviation is supplied and all children. For example, changes made with the <em>Relational Names</em> node selected apply to both column and table names.</li>
 <li><a id="Relational compound name interpretation 2009-06" class="new" title="June 2009 CTP: Relational compound name interpretation">2009-06</a>&nbsp;
 Name collapsing (showing only one of two equivalent adjacent names) is performed on a whole-word basis to avoid overaggressive collapsing of partial words. For example, in previous releases, <em>BidId</em> would reduce to <em>Bid</em> and <em>FemaleMale</em> to <em>Female</em>, which was clearly incorrect. To balance this fix, the notion of a whole word has been enhanced by recognizing each part of a multi-part word in the conceptual model as a whole word. Any word with embedded capitalization that does not also have two adjacent capitals is automatically treated as a multi-part word (<em>ObjectType</em>, etc). Recognition of these word patterns also enables easier word replacement. For example, replacing the phrase <em>Employee</em> with <em>Emp</em> will affect both <em>Employee</em> and <em>ContractEmployee</em>.</li>
+<li><a id="One-to-one Relational Mapping 2010-05" class="new" title="May 2010 CTP: One-to-one Relational Mapping Refinement">2010-05</a>&nbsp;
+Analysis of chained 1-1 fact types has been enhanced to provide an experience more consistent with non-chained 1-1 fact types in two ways:<ul><li>If there are multiple 1-1 fact types that can fully absorb an object type (similar to a subtype absorption) towards different object types, then consider the choice arbitrary and do not allow either absorption option.</li><li>Prioritize otherwise equivalent 1-1 chains based on mandatory patterns.</li></ul></li>
 </ol>
 <a href="#The Top">Return to top</a>
 <hr/>

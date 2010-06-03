@@ -12138,6 +12138,96 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 		}
 		#endregion
+		#region UniversalAggregationContext domain property code
+		
+		/// <summary>
+		/// UniversalAggregationContext domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid UniversalAggregationContextDomainPropertyId = new global::System.Guid(0x17cb3fcb, 0x1b9c, 0x4c2d, 0xa6, 0x89, 0xf0, 0x92, 0x78, 0x93, 0xd8, 0x8d);
+		
+		/// <summary>
+		/// Storage for UniversalAggregationContext
+		/// </summary>
+		private global::System.Boolean universalAggregationContextPropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of UniversalAggregationContext domain property.
+		/// Set for a calculation with an aggregate function to use universal context
+		/// (meaning all elements of the given type in the universal of discourse) instead
+		/// of a context at one or more specific path nodes.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue/UniversalAggregationContext.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue/UniversalAggregationContext.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainObjectId("17cb3fcb-1b9c-4c2d-a689-f0927893d88d")]
+		public global::System.Boolean UniversalAggregationContext
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return universalAggregationContextPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				UniversalAggregationContextPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the CalculatedPathValue.UniversalAggregationContext domain property.
+		/// </summary>
+		internal sealed partial class UniversalAggregationContextPropertyHandler : DslModeling::DomainPropertyValueHandler<CalculatedPathValue, global::System.Boolean>
+		{
+			private UniversalAggregationContextPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the CalculatedPathValue.UniversalAggregationContext domain property value handler.
+			/// </summary>
+			public static readonly UniversalAggregationContextPropertyHandler Instance = new UniversalAggregationContextPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the CalculatedPathValue.UniversalAggregationContext domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return UniversalAggregationContextDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(CalculatedPathValue element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.universalAggregationContextPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(CalculatedPathValue element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.universalAggregationContextPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region LeadRolePath opposite domain role accessor
 		/// <summary>
 		/// Gets or sets LeadRolePath.
@@ -12190,23 +12280,31 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
-		#region Scope opposite domain role accessor
+		#region AggregationContextPathedRoleCollection opposite domain role accessor
 		/// <summary>
-		/// Gets or sets Scope.
-		/// The PathedRole that provides context for this function. The scope must be
-		/// related in the role path to any path inputs.
+		/// Gets a list of AggregationContextPathedRoleCollection.
+		/// A PathedRole that is part of the aggregation context for this function.
 		/// </summary>
-		public virtual PathedRole Scope
+		public virtual DslModeling::LinkedElementCollection<PathedRole> AggregationContextPathedRoleCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole.CalculatedValueDomainRoleId) as PathedRole;
+				return new DslModeling::LinkedElementCollection<PathedRole>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole.CalculatedValueDomainRoleId);
 			}
+		}
+		#endregion
+		#region AggregationContextPathRootCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of AggregationContextPathRootCollection.
+		/// A role path root that is part of the aggregation context for this function.
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<RolePathObjectTypeRoot> AggregationContextPathRootCollection
+		{
 			[global::System.Diagnostics.DebuggerStepThrough]
-			set
+			get
 			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole.CalculatedValueDomainRoleId, value);
+				return new DslModeling::LinkedElementCollection<RolePathObjectTypeRoot>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot.CalculatedValueDomainRoleId);
 			}
 		}
 		#endregion
@@ -12318,6 +12416,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				else
 				{
 					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasConsumptionRequiredError.CalculatedPathValueDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region AggregationContextRequiredError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets AggregationContextRequiredError.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError.CalculatedPathValue
+		/// </summary>
+		public virtual CalculatedPathValueRequiresAggregationContextError AggregationContextRequiredError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError.CalculatedPathValueDomainRoleId) as CalculatedPathValueRequiresAggregationContextError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError.AggregationContextRequiredErrorDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError.AggregationContextRequiredErrorDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError.CalculatedPathValueDomainRoleId, value);
 				}
 			}
 		}
@@ -12664,6 +12794,94 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					ValueChanging(element, oldValue, newValue);
 					element.isBooleanPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region IsAggregate domain property code
+		
+		/// <summary>
+		/// IsAggregate domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid IsAggregateDomainPropertyId = new global::System.Guid(0xc09ed9b0, 0xa977, 0x4980, 0x84, 0x8a, 0xc5, 0x76, 0x98, 0x2c, 0x86, 0xcb);
+		
+		/// <summary>
+		/// Storage for IsAggregate
+		/// </summary>
+		private global::System.Boolean isAggregatePropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of IsAggregate domain property.
+		/// Set if this function defines a bag input parameter.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.Function/IsAggregate.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.Function/IsAggregate.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainObjectId("c09ed9b0-a977-4980-848a-c576982c86cb")]
+		public global::System.Boolean IsAggregate
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return isAggregatePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				IsAggregatePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the Function.IsAggregate domain property.
+		/// </summary>
+		internal sealed partial class IsAggregatePropertyHandler : DslModeling::DomainPropertyValueHandler<Function, global::System.Boolean>
+		{
+			private IsAggregatePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the Function.IsAggregate domain property value handler.
+			/// </summary>
+			public static readonly IsAggregatePropertyHandler Instance = new IsAggregatePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the Function.IsAggregate domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return IsAggregateDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(Function element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.isAggregatePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(Function element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.isAggregatePropertyStorage = newValue;
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
@@ -14666,6 +14884,78 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				else
 				{
 					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasFunctionRequiredError.FunctionRequiredErrorDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainClass CalculatedPathValueRequiresAggregationContextError
+	/// A calculation using an aggregate function requires an aggregation context.
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueRequiresAggregationContextError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueRequiresAggregationContextError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("c9ae4bb0-9a00-4fd9-9b38-05978d6c4af1")]
+	public partial class CalculatedPathValueRequiresAggregationContextError : ModelError
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// CalculatedPathValueRequiresAggregationContextError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xc9ae4bb0, 0x9a00, 0x4fd9, 0x9b, 0x38, 0x05, 0x97, 0x8d, 0x6c, 0x4a, 0xf1);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public CalculatedPathValueRequiresAggregationContextError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public CalculatedPathValueRequiresAggregationContextError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region CalculatedPathValue opposite domain role accessor
+		/// <summary>
+		/// Gets or sets CalculatedPathValue.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError.AggregationContextRequiredError
+		/// </summary>
+		public virtual CalculatedPathValue CalculatedPathValue
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError.AggregationContextRequiredErrorDomainRoleId) as CalculatedPathValue;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError.CalculatedPathValueDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError.CalculatedPathValueDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError.AggregationContextRequiredErrorDomainRoleId, value);
 				}
 			}
 		}

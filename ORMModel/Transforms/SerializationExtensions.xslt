@@ -2928,51 +2928,66 @@
 				</plx:local>
 			</xsl:if>
 			<xsl:for-each select="$conditionalNames">
-				<xsl:variable name="branchType">
-					<xsl:choose>
-						<xsl:when test="position()=1">
-							<xsl:text>plx:branch</xsl:text>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:text>plx:alternateBranch</xsl:text>
-						</xsl:otherwise>
-					</xsl:choose>
+				<xsl:variable name="allStatements" select="child::*"/>
+				<xsl:variable name="preConditionStatements" select="$allStatements[position()!=last()]"/>
+				<xsl:variable name="conditionFragment">
+					<xsl:copy-of select="$preConditionStatements"/>
+					<xsl:variable name="branchType">
+						<xsl:choose>
+							<xsl:when test="position()=1 or $preConditionStatements">
+								<xsl:text>plx:branch</xsl:text>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:text>plx:alternateBranch</xsl:text>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
+					<xsl:element name="{$branchType}">
+						<plx:condition>
+							<xsl:copy-of select="$allStatements[last()]"/>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:nameRef name="name{$modifier}"/>
+							</plx:left>
+							<plx:right>
+								<plx:string data="{@Name}"/>
+							</plx:right>
+						</plx:assign>
+						<xsl:variable name="currentWriteStyle" select="string(@WriteStyle)"/>
+						<xsl:if test="$currentWriteStyle and not($currentWriteStyle=$primaryWriteStyle)">
+							<plx:assign>
+								<plx:left>
+									<plx:nameRef name="writeStyle{$modifier}"/>
+								</plx:left>
+								<plx:right>
+									<plx:callStatic name="{$currentWriteStyle}" dataTypeName="CustomSerializedElementWriteStyle" type="field"/>
+								</plx:right>
+							</plx:assign>
+						</xsl:if>
+						<xsl:variable name="currentDoubleTagName" select="string(@DoubleTagName)"/>
+						<xsl:if test="$currentDoubleTagName and not($currentDoubleTagName=$primaryDoubleTagName)">
+							<plx:assign>
+								<plx:left>
+									<plx:nameRef name="doubleTagName{$modifier}"/>
+								</plx:left>
+								<plx:right>
+									<plx:string data="{$currentDoubleTagName}"/>
+								</plx:right>
+							</plx:assign>
+						</xsl:if>
+					</xsl:element>
 				</xsl:variable>
-				<xsl:element name="{$branchType}">
-					<plx:condition>
-						<xsl:copy-of select="child::*"/>
-					</plx:condition>
-					<plx:assign>
-						<plx:left>
-							<plx:nameRef name="name{$modifier}"/>
-						</plx:left>
-						<plx:right>
-							<plx:string data="{@Name}"/>
-						</plx:right>
-					</plx:assign>
-					<xsl:variable name="currentWriteStyle" select="string(@WriteStyle)"/>
-					<xsl:if test="$currentWriteStyle and not($currentWriteStyle=$primaryWriteStyle)">
-						<plx:assign>
-							<plx:left>
-								<plx:nameRef name="writeStyle{$modifier}"/>
-							</plx:left>
-							<plx:right>
-								<plx:callStatic name="{$currentWriteStyle}" dataTypeName="CustomSerializedElementWriteStyle" type="field"/>
-							</plx:right>
-						</plx:assign>
-					</xsl:if>
-					<xsl:variable name="currentDoubleTagName" select="string(@DoubleTagName)"/>
-					<xsl:if test="$currentDoubleTagName and not($currentDoubleTagName=$primaryDoubleTagName)">
-						<plx:assign>
-							<plx:left>
-								<plx:nameRef name="doubleTagName{$modifier}"/>
-							</plx:left>
-							<plx:right>
-								<plx:string data="{$currentDoubleTagName}"/>
-							</plx:right>
-						</plx:assign>
-					</xsl:if>
-				</xsl:element>
+				<xsl:choose>
+					<xsl:when test="$preConditionStatements and position()!=1">
+						<plx:fallbackBranch>
+							<xsl:copy-of select="$conditionFragment"/>
+						</plx:fallbackBranch>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:copy-of select="$conditionFragment"/>
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:for-each>
 		</xsl:if>
 	</xsl:template>

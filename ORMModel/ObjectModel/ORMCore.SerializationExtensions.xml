@@ -1071,6 +1071,7 @@
 				</plx:unaryOperator>
 			</se:Condition>
 		</se:Attribute>
+		<se:Attribute ID="IsAggregate" WriteStyle="NotWritten"/>
 		<se:Attribute ID="OperatorSymbol">
 			<se:Condition WriteStyle="NotWritten">
 				<plx:callStatic dataTypeName=".string" name="IsNullOrEmpty">
@@ -1127,18 +1128,122 @@
 		<se:Link RelationshipName="RolePathOwnerUsesSharedLeadRolePath" RoleName="PathOwner" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="CalculatedPathValue" Name="CalculatedValue" SortChildElements="true" Override="true">
+		<se:Attribute ID="UniversalAggregationContext">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:local name="function" dataTypeName="Function"/>
+				<plx:binaryOperator type="booleanOr">
+					<plx:left>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callThis name="UniversalAggregationContext" type="property"/>
+						</plx:unaryOperator>
+					</plx:left>
+					<plx:right>
+						<plx:binaryOperator type="booleanOr">
+							<plx:left>
+								<plx:binaryOperator type="identityEquality">
+									<plx:left>
+										<plx:inlineStatement dataTypeName="Function">
+											<plx:assign>
+												<plx:left>
+													<plx:nameRef name="function"/>
+												</plx:left>
+												<plx:right>
+													<plx:callThis name="Function" type="property"/>
+												</plx:right>
+											</plx:assign>
+										</plx:inlineStatement>
+									</plx:left>
+									<plx:right>
+										<plx:nullKeyword/>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:left>
+							<plx:right>
+								<plx:unaryOperator type="booleanNot">
+									<plx:callInstance name="IsAggregate" type="property">
+										<plx:callObject>
+											<plx:nameRef name="function"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:unaryOperator>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
 		<se:Link RelationshipName="CalculatedPathValueIsCalculatedWithFunction" RoleName="Function" Name="Function"/>
-		<se:Link RelationshipName="CalculatedPathValueScopedWithPathedRole" RoleName="Scope" Name="Scope"/>
+		<!-- UNDONE: File format change, remove old role path constructs -->
+		<se:Link RelationshipName="CalculatedPathValueScopedWithPathedRole_Deprecated" RoleName="Scope" Name="Scope"/>
+		<se:Container Name="AggregationContext" SortChildElements="true">
+			<se:Link RelationshipName="CalculatedPathValueAggregationContextIncludesRolePathRoot" RoleName="PathRoot"/>
+			<se:Link RelationshipName="CalculatedPathValueAggregationContextIncludesPathedRole" RoleName="PathedRole"/>
+		</se:Container>
 		<se:Container Name="Inputs">
 			<se:Embed RelationshipName="CalculatedPathValueHasInput" RoleName="Input"/>
 		</se:Container>
+		<se:Link RelationshipName="CalculatedPathValueAggregationContextIncludesRolePathRoot" RoleName="PathRoot" WriteStyle="NotWritten">
+			<se:ConditionalName Name="PathRoot" WriteStyle="Element">
+				<plx:local name="function" dataTypeName="Function">
+					<plx:initialize>
+						<plx:callThis name="Function" type="property"/>
+					</plx:initialize>
+				</plx:local>
+				<plx:binaryOperator type="booleanAnd">
+					<plx:left>
+						<plx:binaryOperator type="identityInequality">
+							<plx:left>
+								<plx:nameRef name="function"/>
+							</plx:left>
+							<plx:right>
+								<plx:nullKeyword/>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:left>
+					<plx:right>
+						<plx:callInstance name="IsAggregate" type="property">
+							<plx:callObject>
+								<plx:nameRef name="function"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:ConditionalName>
+		</se:Link>
+		<se:Link RelationshipName="CalculatedPathValueAggregationContextIncludesPathedRole" RoleName="PathedRole" WriteStyle="NotWritten">
+			<se:ConditionalName Name="PathedRole" WriteStyle="Element">
+				<plx:local name="function" dataTypeName="Function">
+					<plx:initialize>
+						<plx:callThis name="Function" type="property"/>
+					</plx:initialize>
+				</plx:local>
+				<plx:binaryOperator type="booleanAnd">
+					<plx:left>
+						<plx:binaryOperator type="identityInequality">
+							<plx:left>
+								<plx:nameRef name="function"/>
+							</plx:left>
+							<plx:right>
+								<plx:nullKeyword/>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:left>
+					<plx:right>
+						<plx:callInstance name="IsAggregate" type="property">
+							<plx:callObject>
+								<plx:nameRef name="function"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:ConditionalName>
+		</se:Link>
 		<se:Link RelationshipName="LeadRolePathSatisfiesCalculatedCondition" RoleName="LeadRolePath" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="CalculatedPathValueInputBindsToCalculatedPathValue" RoleName="Input" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeRoleProjectedFromCalculatedPathValue" RoleName="RoleProjection" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="RoleDerivesFromCalculatedPathValue_Deprecated" RoleName="Role" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ConstraintRoleProjectedFromCalculatedPathValue" RoleName="ConstraintRoleProjection" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="ConstraintRoleProjectedFromCalculatedPathValue_Deprecated" RoleName="ConstraintRole" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="CalculatedPathValueHasFunctionRequiredError" RoleName="FunctionRequiredError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="CalculatedPathValueHasAggregationContextRequiredError" RoleName="AggregationContextRequiredError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="CalculatedPathValueHasUnboundParameterError" RoleName="ParameterBindingError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="CalculatedPathValueHasConsumptionRequiredError" RoleName="ConsumptionRequiredError" WriteStyle="NotWritten"/>
 	</se:Element>
@@ -1268,6 +1373,7 @@
 		<se:Link RelationshipName="ConstraintRoleProjectedFromRolePathRoot" RoleName="ConstraintRoleProjection" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeRoleProjectedFromRolePathRoot" RoleName="RoleProjection" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="PathObjectUnifierUnifiesRolePathRoot" RoleName="ObjectUnifier" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="CalculatedPathValueAggregationContextIncludesRolePathRoot" RoleName="CalculatedValue" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="RoleSubPath" Name="SubPath" Override="true"/>
 	<se:Element Class="PathedRole" SortChildElements="true">
@@ -1283,17 +1389,14 @@
 			<se:Embed RelationshipName="PathedRoleHasValueConstraint" RoleName="ValueConstraint"/>
 		</se:Container>
 		<se:Link RelationshipName="PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated" RoleName="CorrelatingParent" Name="CorrelatedWith"/>
-		<se:Link RelationshipName="PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated" RoleName="CorrelatedChild" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="CalculatedPathValueScopedWithPathedRole" RoleName="CalculatedValue" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="CalculatedPathValueInputBindsToPathedRole" RoleName="Input" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeRoleProjectedFromPathedRole" RoleName="RoleProjection" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="RoleDerivesFromPathedRole_Deprecated" RoleName="Role" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ConstraintRoleProjectedFromPathedRole" RoleName="ConstraintRoleProjection" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="ConstraintRoleProjectedFromPathedRole_Deprecated" RoleName="ConstraintRole" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="PathedRoleHasCompatibleJoinRolePlayerError" RoleName="JoinCompatibilityError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="PathedRoleHasSameFactTypeFollowsJoinError" RoleName="SameFactTypeRoleFollowsJoinError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="PathedRoleHasMandatoryOuterJoinError" RoleName="MandatoryOuterJoinError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="PathObjectUnifierUnifiesPathedRole" RoleName="ObjectUnifier" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="CalculatedPathValueAggregationContextIncludesPathedRole" RoleName="CalculatedValue" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="PathObjectUnifier" Name="ObjectUnifier" Override="true" SortChildElements="true">
 		<se:Link RelationshipName="PathObjectUnifierUnifiesRolePathRoot" RoleName="PathRoot" Name="PathRoot"/>
@@ -1624,6 +1727,9 @@
 	</se:Element>
 	<se:Element Class="CalculatedPathValueRequiresFunctionError" Override="true">
 		<se:Link RelationshipName="CalculatedPathValueHasFunctionRequiredError" RoleName="CalculatedPathValue" Name="CalculatedValue"/>
+	</se:Element>
+	<se:Element Class="CalculatedPathValueRequiresAggregationContextError" Override="true">
+		<se:Link RelationshipName="CalculatedPathValueHasAggregationContextRequiredError" RoleName="CalculatedPathValue" Name="CalculatedValue"/>
 	</se:Element>
 	<se:Element Class="CalculatedPathValueMustBeConsumedError" Override="true">
 		<se:Link RelationshipName="CalculatedPathValueHasConsumptionRequiredError" RoleName="CalculatedPathValue" Name="CalculatedValue"/>

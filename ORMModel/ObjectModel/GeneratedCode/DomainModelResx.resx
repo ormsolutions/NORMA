@@ -1158,6 +1158,14 @@
     <value>CalculatedValue</value>
     <comment>DisplayName for DomainClass &apos;CalculatedPathValue&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue/UniversalAggregationContext.Description" xml:space="preserve">
+    <value>Set for a calculation with an aggregate function to use universal context (meaning all elements of the given type in the universal of discourse) instead of a context at one or more specific path nodes.</value>
+    <comment>Description for DomainProperty &apos;UniversalAggregationContext&apos; on DomainClass &apos;CalculatedPathValue&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue/UniversalAggregationContext.DisplayName" xml:space="preserve">
+    <value>Universal Aggregation Context</value>
+    <comment>DisplayName for DomainProperty &apos;UniversalAggregationContext&apos; on DomainClass &apos;CalculatedPathValue&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathConstant.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathConstant</value>
     <comment>Description for DomainClass &apos;PathConstant&apos;</comment>
@@ -1189,6 +1197,14 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.Function/IsBoolean.DisplayName" xml:space="preserve">
     <value>IsBoolean</value>
     <comment>DisplayName for DomainProperty &apos;IsBoolean&apos; on DomainClass &apos;Function&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.Function/IsAggregate.Description" xml:space="preserve">
+    <value>Set if this function defines a bag input parameter.</value>
+    <comment>Description for DomainProperty &apos;IsAggregate&apos; on DomainClass &apos;Function&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.Function/IsAggregate.DisplayName" xml:space="preserve">
+    <value>IsAggregate</value>
+    <comment>DisplayName for DomainProperty &apos;IsAggregate&apos; on DomainClass &apos;Function&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.Function/OperatorSymbol.Description" xml:space="preserve">
     <value>A string indicating this function should be displayed as an operator instead of using functional notation. Represents infix notation for a binary operator and prefix notation for a unary.</value>
@@ -1357,6 +1373,14 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueRequiresFunctionError.DisplayName" xml:space="preserve">
     <value>Calculation Requires Function</value>
     <comment>DisplayName for DomainClass &apos;CalculatedPathValueRequiresFunctionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueRequiresAggregationContextError.Description" xml:space="preserve">
+    <value>A calculation using an aggregate function requires an aggregation context.</value>
+    <comment>Description for DomainClass &apos;CalculatedPathValueRequiresAggregationContextError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueRequiresAggregationContextError.DisplayName" xml:space="preserve">
+    <value>Calculation Requires Function</value>
+    <comment>DisplayName for DomainClass &apos;CalculatedPathValueRequiresAggregationContextError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueParameterBindingError.Description" xml:space="preserve">
     <value>A path calculation is missing an input for a function parameter.</value>
@@ -8076,37 +8100,101 @@
     <value>Calculated Value</value>
     <comment>PropertyDisplayName for DomainRole &apos;Input&apos; on DomainRelationship &apos;CalculatedPathValueHasInput&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole</value>
-    <comment>Description for DomainClass &apos;CalculatedPathValueScopedWithPathedRole&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated</value>
+    <comment>Description for DomainClass &apos;CalculatedPathValueScopedWithPathedRole_Deprecated&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole.DisplayName" xml:space="preserve">
-    <value>Calculated Path Value Scoped With Pathed Role</value>
-    <comment>DisplayName for DomainClass &apos;CalculatedPathValueScopedWithPathedRole&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated.DisplayName" xml:space="preserve">
+    <value>Calculated Path Value Scoped With Pathed Role_ Deprecated</value>
+    <comment>DisplayName for DomainClass &apos;CalculatedPathValueScopedWithPathedRole_Deprecated&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole/CalculatedValue.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated/CalculatedValue.Description" xml:space="preserve">
     <value>The PathedRole that provides context for this function. The scope must be related in the role path to any path inputs.</value>
-    <comment>Description for DomainRole &apos;CalculatedValue&apos; on DomainRelationship &apos;CalculatedPathValueScopedWithPathedRole&apos;</comment>
+    <comment>Description for DomainRole &apos;CalculatedValue&apos; on DomainRelationship &apos;CalculatedPathValueScopedWithPathedRole_Deprecated&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole/CalculatedValue.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated/CalculatedValue.DisplayName" xml:space="preserve">
     <value>CalculatedValue</value>
-    <comment>DisplayName for DomainRole &apos;CalculatedValue&apos; on DomainRelationship &apos;CalculatedPathValueScopedWithPathedRole&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;CalculatedValue&apos; on DomainRelationship &apos;CalculatedPathValueScopedWithPathedRole_Deprecated&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole/CalculatedValue.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated/CalculatedValue.PropertyDisplayName" xml:space="preserve">
     <value>Scope</value>
-    <comment>PropertyDisplayName for DomainRole &apos;CalculatedValue&apos; on DomainRelationship &apos;CalculatedPathValueScopedWithPathedRole&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;CalculatedValue&apos; on DomainRelationship &apos;CalculatedPathValueScopedWithPathedRole_Deprecated&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole/Scope.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated/Scope.Description" xml:space="preserve">
     <value>Calculated values that are scoped using this PathedRole.</value>
-    <comment>Description for DomainRole &apos;Scope&apos; on DomainRelationship &apos;CalculatedPathValueScopedWithPathedRole&apos;</comment>
+    <comment>Description for DomainRole &apos;Scope&apos; on DomainRelationship &apos;CalculatedPathValueScopedWithPathedRole_Deprecated&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole/Scope.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated/Scope.DisplayName" xml:space="preserve">
     <value>Input</value>
-    <comment>DisplayName for DomainRole &apos;Scope&apos; on DomainRelationship &apos;CalculatedPathValueScopedWithPathedRole&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;Scope&apos; on DomainRelationship &apos;CalculatedPathValueScopedWithPathedRole_Deprecated&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole/Scope.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated/Scope.PropertyDisplayName" xml:space="preserve">
     <value>Scoped Calculated Value Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;Scope&apos; on DomainRelationship &apos;CalculatedPathValueScopedWithPathedRole&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;Scope&apos; on DomainRelationship &apos;CalculatedPathValueScopedWithPathedRole_Deprecated&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole</value>
+    <comment>Description for DomainClass &apos;CalculatedPathValueAggregationContextIncludesPathedRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole.DisplayName" xml:space="preserve">
+    <value>Calculated Path Value Aggregation Context Includes Pathed Role</value>
+    <comment>DisplayName for DomainClass &apos;CalculatedPathValueAggregationContextIncludesPathedRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole/CalculatedValue.Description" xml:space="preserve">
+    <value>A PathedRole that is part of the aggregation context for this function.</value>
+    <comment>Description for DomainRole &apos;CalculatedValue&apos; on DomainRelationship &apos;CalculatedPathValueAggregationContextIncludesPathedRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole/CalculatedValue.DisplayName" xml:space="preserve">
+    <value>CalculatedValue</value>
+    <comment>DisplayName for DomainRole &apos;CalculatedValue&apos; on DomainRelationship &apos;CalculatedPathValueAggregationContextIncludesPathedRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole/CalculatedValue.PropertyDisplayName" xml:space="preserve">
+    <value>Aggregation Context Pathed Role Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;CalculatedValue&apos; on DomainRelationship &apos;CalculatedPathValueAggregationContextIncludesPathedRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole/PathedRole.Description" xml:space="preserve">
+    <value>Calculated values with an aggregation context that includes this PathedRole.</value>
+    <comment>Description for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;CalculatedPathValueAggregationContextIncludesPathedRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole/PathedRole.DisplayName" xml:space="preserve">
+    <value>PathedRole</value>
+    <comment>DisplayName for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;CalculatedPathValueAggregationContextIncludesPathedRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole/PathedRole.PropertyDisplayName" xml:space="preserve">
+    <value>Aggregation Context For Calculation Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;CalculatedPathValueAggregationContextIncludesPathedRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot</value>
+    <comment>Description for DomainClass &apos;CalculatedPathValueAggregationContextIncludesRolePathRoot&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot.DisplayName" xml:space="preserve">
+    <value>Calculated Path Value Aggregation Context Includes Role Path Root</value>
+    <comment>DisplayName for DomainClass &apos;CalculatedPathValueAggregationContextIncludesRolePathRoot&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot/CalculatedValue.Description" xml:space="preserve">
+    <value>A role path root that is part of the aggregation context for this function.</value>
+    <comment>Description for DomainRole &apos;CalculatedValue&apos; on DomainRelationship &apos;CalculatedPathValueAggregationContextIncludesRolePathRoot&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot/CalculatedValue.DisplayName" xml:space="preserve">
+    <value>CalculatedValue</value>
+    <comment>DisplayName for DomainRole &apos;CalculatedValue&apos; on DomainRelationship &apos;CalculatedPathValueAggregationContextIncludesRolePathRoot&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot/CalculatedValue.PropertyDisplayName" xml:space="preserve">
+    <value>Aggregation Context Path Root Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;CalculatedValue&apos; on DomainRelationship &apos;CalculatedPathValueAggregationContextIncludesRolePathRoot&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot/PathRoot.Description" xml:space="preserve">
+    <value>Calculated values with an aggregation context that includes this role path root.</value>
+    <comment>Description for DomainRole &apos;PathRoot&apos; on DomainRelationship &apos;CalculatedPathValueAggregationContextIncludesRolePathRoot&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot/PathRoot.DisplayName" xml:space="preserve">
+    <value>PathRoot</value>
+    <comment>DisplayName for DomainRole &apos;PathRoot&apos; on DomainRelationship &apos;CalculatedPathValueAggregationContextIncludesRolePathRoot&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesRolePathRoot/PathRoot.PropertyDisplayName" xml:space="preserve">
+    <value>Calculation Aggregation Contexts</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PathRoot&apos; on DomainRelationship &apos;CalculatedPathValueAggregationContextIncludesRolePathRoot&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueIsCalculatedWithFunction.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueIsCalculatedWithFunction</value>
@@ -9003,6 +9091,38 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasConsumptionRequiredError/ConsumptionRequiredError.PropertyDisplayName" xml:space="preserve">
     <value>Calculated Path Value</value>
     <comment>PropertyDisplayName for DomainRole &apos;ConsumptionRequiredError&apos; on DomainRelationship &apos;CalculatedPathValueHasConsumptionRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError</value>
+    <comment>Description for DomainClass &apos;CalculatedPathValueHasAggregationContextRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError.DisplayName" xml:space="preserve">
+    <value>Calculated Path Value Has Aggregation Context Required Error</value>
+    <comment>DisplayName for DomainClass &apos;CalculatedPathValueHasAggregationContextRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError/CalculatedPathValue.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError.CalculatedPathValue</value>
+    <comment>Description for DomainRole &apos;CalculatedPathValue&apos; on DomainRelationship &apos;CalculatedPathValueHasAggregationContextRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError/CalculatedPathValue.DisplayName" xml:space="preserve">
+    <value>Calculation</value>
+    <comment>DisplayName for DomainRole &apos;CalculatedPathValue&apos; on DomainRelationship &apos;CalculatedPathValueHasAggregationContextRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError/CalculatedPathValue.PropertyDisplayName" xml:space="preserve">
+    <value>Aggregation Context Required Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;CalculatedPathValue&apos; on DomainRelationship &apos;CalculatedPathValueHasAggregationContextRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError/AggregationContextRequiredError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError.AggregationContextRequiredError</value>
+    <comment>Description for DomainRole &apos;AggregationContextRequiredError&apos; on DomainRelationship &apos;CalculatedPathValueHasAggregationContextRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError/AggregationContextRequiredError.DisplayName" xml:space="preserve">
+    <value>AggregationContextRequiredError</value>
+    <comment>DisplayName for DomainRole &apos;AggregationContextRequiredError&apos; on DomainRelationship &apos;CalculatedPathValueHasAggregationContextRequiredError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasAggregationContextRequiredError/AggregationContextRequiredError.PropertyDisplayName" xml:space="preserve">
+    <value>Calculated Path Value</value>
+    <comment>PropertyDisplayName for DomainRole &apos;AggregationContextRequiredError&apos; on DomainRelationship &apos;CalculatedPathValueHasAggregationContextRequiredError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasProjectionRequiredError.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasProjectionRequiredError</value>

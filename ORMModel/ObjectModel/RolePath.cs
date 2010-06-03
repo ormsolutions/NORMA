@@ -848,6 +848,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						yield return bindingError;
 					}
+					if (null != (error = calculation.AggregationContextRequiredError))
+					{
+						yield return error;
+					}
 					if (null != (error = calculation.ConsumptionRequiredError))
 					{
 						yield return error;
@@ -946,6 +950,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					// 5) OLD: Pathed roles were directly correlated with a single pathed role parent,
 					//         forming a hierarchy.
 					//    NEW: Pathed roles and path roots are correlated with a parent PathObjectUnifier.
+					// 6) OLD: CalculatedPathValue Scope referenced a single pathed role. Default scope indicated
+					//         a scope at the path root.
+					//    NEW: AggregationContext can reference multiple path nodes, UniversalAggregationContext
+					//         property used otherwise. No context for an aggregate calculation is an error.
+					//         Scope is no longer used for scalar functions.
 
 					// Move from the single contained element to the many containment
 					RolePathOwnerHasPathComponent_Deprecated rootContainmentLink = RolePathOwnerHasPathComponent_Deprecated.GetLinkToPathComponent(element);
@@ -1348,6 +1357,120 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									}
 								}
 							});
+
+						// Replace scope with aggregation context
+						foreach (CalculatedPathValue calculation in leadRolePath.CalculatedValueCollection)
+						{
+							CalculatedPathValueScopedWithPathedRole_Deprecated scopeLink = CalculatedPathValueScopedWithPathedRole_Deprecated.GetLinkToScope(calculation);
+							Function function = calculation.Function;
+							if (scopeLink != null)
+							{
+								if (null == function || !function.IsAggregate)
+								{
+									scopeLink.Delete();
+								}
+								else
+								{
+									notifyAdded.ElementAdded(new CalculatedPathValueAggregationContextIncludesPathedRole(calculation, scopeLink.Scope));
+									scopeLink.Delete();
+								}
+							}
+							else if (null != function &&
+								function.IsAggregate &&
+								!calculation.UniversalAggregationContext &&
+								calculation.AggregationContextRequiredError == null &&
+								calculation.AggregationContextPathedRoleCollection.Count == 0 &&
+								calculation.AggregationContextPathRootCollection.Count == 0)
+							{
+								// Switch the old default of no scope meaning a path root context
+								// to an explicit root context if one can be determined, or a universal
+								// context if aggregating over a path root. This is not a full implementation
+								// because it does not consider the aggregation context of nested aggregate
+								// calculations, but is a reasonable conversion for most existing cases.
+								// UNDONE: This is a very expensive load check, consider pulling it out in the near future.
+								foreach (CalculatedPathValueInput input in calculation.InputCollection)
+								{
+									FunctionParameter parameter;
+									if (null != (parameter = input.Parameter) &&
+										parameter.BagInput)
+									{
+										RolePathObjectTypeRoot bagPathRoot;
+										if (null != (bagPathRoot = input.SourcePathRoot) &&
+											bagPathRoot.PreviousPathNode.IsEmpty)
+										{
+											calculation.UniversalAggregationContext = true;
+										}
+										else
+										{
+											PathedRole bagPathedRole;
+											CalculatedPathValue bagCalculation;
+											IEnumerable<RolePathNode> satisfyPathNodes = null;
+											if (null != (bagPathedRole = input.SourcePathedRole))
+											{
+												satisfyPathNodes = new RolePathNode[] { bagPathedRole };
+											}
+											else if (null != (bagCalculation = input.SourceCalculatedValue))
+											{
+												satisfyPathNodes = ResolveCalculationPathNodes(bagCalculation);
+											}
+											if (satisfyPathNodes != null)
+											{
+												RolePathObjectTypeRoot commonRoot = null;
+												foreach (RolePathNode nestedNode in satisfyPathNodes)
+												{
+													bool seenBagNode = false;
+													bool processedPathRoot = false;
+													RolePathObjectTypeRoot resolvedRoot = null;
+													VisitPathNodes(
+														leadRolePath,
+														RolePathNode.Empty,
+														true,
+														delegate(RolePathNode currentPathNode, RolePathNode previousPathNode, bool unwinding)
+														{
+															if (unwinding)
+															{
+																if (seenBagNode)
+																{
+																	RolePathObjectTypeRoot pathRoot;
+																	if (!processedPathRoot &&
+																		null != (pathRoot = currentPathNode))
+																	{
+																		processedPathRoot = true;
+																		resolvedRoot = pathRoot;
+																	}
+																}
+																else if (currentPathNode == nestedNode)
+																{
+																	seenBagNode = true;
+																}
+															}
+														});
+													if (resolvedRoot == null)
+													{
+														commonRoot = null;
+														break;
+													}
+													else if (commonRoot == null)
+													{
+														commonRoot = resolvedRoot;
+													}
+													else if (commonRoot != resolvedRoot)
+													{
+														commonRoot = null;
+														break;
+													}
+												}
+												if (commonRoot != null)
+												{
+													notifyAdded.ElementAdded(new CalculatedPathValueAggregationContextIncludesRolePathRoot(calculation, commonRoot));
+												}
+											}
+										}
+										break;
+									}
+								}
+							}
+						}
 					}
 				}
 			}
@@ -1572,6 +1695,33 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 				}
 				return retVal;
+			}
+			/// <summary>
+			/// Get all path nodes used by a calculation 
+			/// </summary>
+			private static IEnumerable<RolePathNode> ResolveCalculationPathNodes(CalculatedPathValue calculation)
+			{
+				foreach (CalculatedPathValueInput input in calculation.InputCollection)
+				{
+					PathedRole pathedRole;
+					RolePathObjectTypeRoot pathRoot;
+					CalculatedPathValue nestedCalculation;
+					if (null != (pathedRole = input.SourcePathedRole))
+					{
+						yield return pathedRole;
+					}
+					else if (null != (pathRoot = input.SourcePathRoot))
+					{
+						yield return pathRoot;
+					}
+					else if (null != (nestedCalculation = input.SourceCalculatedValue))
+					{
+						foreach (RolePathNode nestedPathNode in ResolveCalculationPathNodes(nestedCalculation))
+						{
+							yield return nestedPathNode;
+						}
+					}
+				}
 			}
 		}
 		#endregion // Deprecated Element Removal
@@ -2005,6 +2155,62 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			FrameworkDomainModel.DelayValidateElement(((LeadRolePathCalculatesCalculatedPathValue)e.ModelElement).CalculatedValue, DelayValidateCalculatedPathValue);
 			// Note that we don't have a delete rule: all of the error deletion propagates
+		}
+		/// <summary>
+		/// AddRule: typeof(CalculatedPathValueAggregationContextIncludesPathedRole)
+		/// </summary>
+		private static void CalculationAggregationContextPathedRoleAddedRule(ElementAddedEventArgs e)
+		{
+			CalculatedPathValue calculation = ((CalculatedPathValueAggregationContextIncludesPathedRole)e.ModelElement).CalculatedValue;
+			calculation.UniversalAggregationContext = false;
+			FrameworkDomainModel.DelayValidateElement(calculation, DelayValidateCalculatedPathValue);
+		}
+		/// <summary>
+		/// DeleteRule: typeof(CalculatedPathValueAggregationContextIncludesPathedRole)
+		/// </summary>
+		private static void CalculationAggregationContextPathedRoleDeletedRule(ElementDeletedEventArgs e)
+		{
+			CalculatedPathValue calculation = ((CalculatedPathValueAggregationContextIncludesPathedRole)e.ModelElement).CalculatedValue;
+			if (!calculation.IsDeleted)
+			{
+				FrameworkDomainModel.DelayValidateElement(calculation, DelayValidateCalculatedPathValue);
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(CalculatedPathValueAggregationContextIncludesRolePathRoot)
+		/// </summary>
+		private static void CalculationAggregationContextPathRootAddedRule(ElementAddedEventArgs e)
+		{
+			CalculatedPathValue calculation = ((CalculatedPathValueAggregationContextIncludesRolePathRoot)e.ModelElement).CalculatedValue;
+			calculation.UniversalAggregationContext = false;
+			FrameworkDomainModel.DelayValidateElement(calculation, DelayValidateCalculatedPathValue);
+		}
+		/// <summary>
+		/// DeleteRule: typeof(CalculatedPathValueAggregationContextIncludesRolePathRoot)
+		/// </summary>
+		private static void CalculationAggregationContextPathRootDeletedRule(ElementDeletedEventArgs e)
+		{
+			CalculatedPathValue calculation = ((CalculatedPathValueAggregationContextIncludesRolePathRoot)e.ModelElement).CalculatedValue;
+			if (!calculation.IsDeleted)
+			{
+				FrameworkDomainModel.DelayValidateElement(calculation, DelayValidateCalculatedPathValue);
+			}
+		}
+		/// <summary>
+		/// ChangeRule: typeof(CalculatedPathValue)
+		/// </summary>
+		private static void CalculationChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			if (e.DomainProperty.Id == CalculatedPathValue.UniversalAggregationContextDomainPropertyId)
+			{
+				CalculatedPathValue calculation = (CalculatedPathValue)e.ModelElement;
+				if ((bool)e.NewValue)
+				{
+					calculation.AggregationContextPathedRoleCollection.Clear();
+					calculation.AggregationContextPathRootCollection.Clear();
+				}
+				FrameworkDomainModel.DelayValidateElement(calculation, DelayValidateCalculatedPathValue);
+			}
 		}
 		/// <summary>
 		/// AddRule: typeof(LeadRolePathSatisfiesCalculatedCondition)
@@ -3071,6 +3277,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			Function function = calculation.Function;
 			Store store = calculation.Store;
 			CalculatedPathValueRequiresFunctionError functionRequiredError = calculation.FunctionRequiredError;
+			CalculatedPathValueRequiresAggregationContextError aggregationContextRequiredError = calculation.AggregationContextRequiredError;
 			if (function == null)
 			{
 				calculation.ParameterBindingErrorCollection.Clear();
@@ -3078,10 +3285,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (functionRequiredError == null &&
 					(null != contextModel || null != (contextModel = calculation.Model)))
 				{
-					if (contextModel == null)
-					{
-						contextModel = calculation.Model;
-					}
 					functionRequiredError = new CalculatedPathValueRequiresFunctionError(store);
 					functionRequiredError.CalculatedPathValue = calculation;
 					functionRequiredError.Model = contextModel;
@@ -3090,6 +3293,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						notifyAdded.ElementAdded(functionRequiredError, true);
 					}
+				}
+				if (aggregationContextRequiredError != null)
+				{
+					aggregationContextRequiredError.Delete();
 				}
 			}
 			else
@@ -3187,6 +3394,29 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								input.Delete();
 							}
 						}
+					}
+				}
+
+				if (!function.IsAggregate ||
+					calculation.UniversalAggregationContext ||
+					calculation.AggregationContextPathRootCollection.Count != 0 ||
+					calculation.AggregationContextPathedRoleCollection.Count != 0)
+				{
+					if (aggregationContextRequiredError != null)
+					{
+						aggregationContextRequiredError.Delete();
+					}
+				}
+				else if (null == aggregationContextRequiredError &&
+					(null != contextModel || null != (contextModel = calculation.Model)))
+				{
+					aggregationContextRequiredError = new CalculatedPathValueRequiresAggregationContextError(store);
+					aggregationContextRequiredError.CalculatedPathValue = calculation;
+					aggregationContextRequiredError.Model = contextModel;
+					aggregationContextRequiredError.GenerateErrorText();
+					if (notifyAdded != null)
+					{
+						notifyAdded.ElementAdded(aggregationContextRequiredError, true);
 					}
 				}
 			}
@@ -4869,6 +5099,75 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return GetErrorCollection(filter);
 		}
 		#endregion // IModelErrorOwner Implementation
+		#region Rule Methods
+		/// <summary>
+		/// AddRule: typeof(ModelDefinesFunction)
+		/// </summary>
+		private static void FunctionAddedRule(ElementAddedEventArgs e)
+		{
+			FrameworkDomainModel.DelayValidateElement(e.ModelElement, DelayValidateFunction);
+		}
+		private static void DelayValidateFunction(ModelElement element)
+		{
+			// We can eventually add more validation here and add additional callers
+			// as function become editable. For now, we assume that function definitions
+			// immutable once they are loaded. All we do for now is determine the IsAggregate
+			// setting so that we do not need to touch it more than once.
+			if (!element.IsDeleted)
+			{
+				Function function = (Function)element;
+				bool isAggregate = false;
+				foreach (FunctionParameter parameter in function.ParameterCollection)
+				{
+					if (parameter.BagInput)
+					{
+						isAggregate = true;
+						break;
+					}
+				}
+				function.IsAggregate = isAggregate;
+			}
+		}
+		#endregion // Rule Methods
+		#region Deserialization Fixup
+		/// <summary>
+		/// Return a deserialization fixup listener. The listener
+		/// verifies that the two derivation storage types are in sync.
+		/// </summary>
+		public static IDeserializationFixupListener FixupListener
+		{
+			get
+			{
+				return new FunctionFixupListener();
+			}
+		}
+		/// <summary>
+		/// Fixup listener implementation.
+		/// </summary>
+		private sealed class FunctionFixupListener : DeserializationFixupListener<Function>
+		{
+			/// <summary>
+			/// DerivationRuleFixupListener constructor
+			/// </summary>
+			public FunctionFixupListener()
+				: base((int)ORMDeserializationFixupPhase.AddIntrinsicElements)
+			{
+				// Note that we run this fixup unusually early so that it comes
+				// before ReplaceDeprecatedStoredElements and we can rely on the
+				// function definitions during role path validation.
+			}
+			/// <summary>
+			/// Process Function elements
+			/// </summary>
+			/// <param name="element">A Function element</param>
+			/// <param name="store">The context store</param>
+			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
+			protected sealed override void ProcessElement(Function element, Store store, INotifyElementAdded notifyAdded)
+			{
+				DelayValidateFunction(element);
+			}
+		}
+		#endregion // Deserialization Fixup
 	}
 	#endregion // Function class
 	#region CalculatedPathValue class
@@ -5175,6 +5474,28 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			IModelErrorDisplayContext displayContext = CalculatedPathValue;
 			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorCalculatedPathValueRequiresFunction, displayContext != null ? displayContext.ErrorDisplayContext : ""));
+		}
+	}
+	[ModelErrorDisplayFilter(typeof(RolePathErrorCategory))]
+	partial class CalculatedPathValueRequiresAggregationContextError
+	{
+		/// <summary>
+		/// Standard override
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.ModelNameChange | RegenerateErrorTextEvents.OwnerNameChange;
+			}
+		}
+		/// <summary>
+		/// Generate the error text
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			IModelErrorDisplayContext displayContext = CalculatedPathValue;
+			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorCalculatedPathValueRequiresAggregationContext, displayContext != null ? displayContext.ErrorDisplayContext : ""));
 		}
 	}
 	[ModelErrorDisplayFilter(typeof(RolePathErrorCategory))]

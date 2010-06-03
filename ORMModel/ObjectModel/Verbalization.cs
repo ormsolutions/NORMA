@@ -2840,9 +2840,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		HeadVariableProjection,
 		/// <summary>
-		/// Provide a scope for an aggregated parameter input: {0} of each {1}
+		/// Decorate a single or complex aggregation context: {0} of {1}
 		/// </summary>
-		AggregateParameterScope,
+		AggregateParameterDecorator,
+		/// <summary>
+		/// Provide a description of a single aggregation context: each {0}
+		/// </summary>
+		AggregateParameterSimpleAggregationContext,
+		/// <summary>
+		/// The opening of a composite aggregation list: each
+		/// </summary>
+		AggregateParameterComplexAggregationContextListOpen,
+		/// <summary>
+		/// The separator of a composite aggregation list: ,
+		/// </summary>
+		AggregateParameterComplexAggregationContextListSeparator,
+		/// <summary>
+		/// The closing of a composite aggregation list: combination
+		/// </summary>
+		AggregateParameterComplexAggregationContextListClose,
 		/// <summary>
 		/// Limit values from an aggregate parameter input to distinct values: distinct {0}
 		/// </summary>
@@ -3228,8 +3244,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					return snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart);
 				case RolePathVerbalizerSnippetType.HeadVariableProjection:
 					return @"{0} <span class=""logicalOperator"">=</span> {1}";
-				case RolePathVerbalizerSnippetType.AggregateParameterScope:
-					return @"{0} <span class=""quantifier"">of each</span> {1}";
+				case RolePathVerbalizerSnippetType.AggregateParameterDecorator:
+					return @"{0} <span class=""quantifier"">of </span> {1}";
+				case RolePathVerbalizerSnippetType.AggregateParameterSimpleAggregationContext:
+					return @"<span class=""quantifier"">each</span> {0}";
+				case RolePathVerbalizerSnippetType.AggregateParameterComplexAggregationContextListOpen:
+					return @"<span class=""quantifier"">each </span>";
+				case RolePathVerbalizerSnippetType.AggregateParameterComplexAggregationContextListSeparator:
+					return @"<span class=""listSeparator"">, </span>";
+				case RolePathVerbalizerSnippetType.AggregateParameterComplexAggregationContextListClose:
+					return @"<span class=""quantifier""> combination</span>";
 				case RolePathVerbalizerSnippetType.AggregateSetProjection:
 					return @"<span class=""quantifier"">distinct</span> {0}";
 
@@ -3567,11 +3591,32 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			int restoreBuilder = builder.Length;
 			Function function = calculation.Function;
-			PathedRole calculationScope = calculation.Scope;
 			FunctionParameter parameter;
 			CalculatedPathValueInput input;
 			if (function != null)
 			{
+				RolePathNode[] aggregationContext = null;
+				if (function.IsAggregate)
+				{
+					LinkedElementCollection<RolePathObjectTypeRoot> aggregateRoots = calculation.AggregationContextPathRootCollection;
+					int aggregateRootCount = aggregateRoots.Count;
+					LinkedElementCollection<PathedRole> aggregateRoles = calculation.AggregationContextPathedRoleCollection;
+					int aggregateRoleCount = aggregateRoles.Count;
+					int aggregateCount = aggregateRootCount + aggregateRoleCount;
+					if (aggregateCount != 0)
+					{
+						aggregationContext = new RolePathNode[aggregateCount];
+						aggregateCount = -1;
+						foreach (RolePathObjectTypeRoot pathRoot in aggregateRoots)
+						{
+							aggregationContext[++aggregateCount] = pathRoot;
+						}
+						foreach (PathedRole pathedRole in aggregateRoles)
+						{
+							aggregationContext[++aggregateCount] = pathedRole;
+						}
+					}
+				}
 				LinkedElementCollection<FunctionParameter> parameters = function.ParameterCollection;
 				int parameterCount = parameters.Count;
 				LinkedElementCollection<CalculatedPathValueInput> inputs = calculation.InputCollection;
@@ -3586,7 +3631,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						builder.Append(operatorName);
 						if (inputCount == 1)
 						{
-							builder.Append(RenderParameter(inputs[0], parameter, calculationScope, rendererContext, builder));
+							builder.Append(RenderParameter(inputs[0], parameter, aggregationContext, rendererContext, builder));
 						}
 						else
 						{
@@ -3606,7 +3651,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								input = inputs[j];
 								if (input.Parameter == parameter)
 								{
-									builder.Append(RenderParameter(input, parameter, calculationScope, rendererContext, builder));
+									builder.Append(RenderParameter(input, parameter, aggregationContext, rendererContext, builder));
 									break;
 								}
 							}
@@ -3642,7 +3687,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							input = inputs[j];
 							if (input.Parameter == parameter)
 							{
-								builder.Append(RenderParameter(input, parameter, calculationScope, rendererContext, builder));
+								builder.Append(RenderParameter(input, parameter, aggregationContext, rendererContext, builder));
 								break;
 							}
 						}
@@ -3664,7 +3709,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			return RenderCalculation(calculation, rendererContext, builder);
 		}
-		private string RenderParameter(CalculatedPathValueInput calculatedValueInput, FunctionParameter parameter, PathedRole aggregateScope, IRolePathRendererContext rendererContext, StringBuilder builder)
+		private string RenderParameter(CalculatedPathValueInput calculatedValueInput, FunctionParameter parameter, RolePathNode[] aggregationContext, IRolePathRendererContext rendererContext, StringBuilder builder)
 		{
 			int restoreBuilder = builder.Length;
 			PathedRole sourceRole;
@@ -3686,10 +3731,63 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			builder.Length = restoreBuilder;
 			if (parameter.BagInput)
 			{
-				string scopeVariable = rendererContext.RenderAssociatedRolePlayer(aggregateScope, null, RolePathRolePlayerRenderingOptions.None);
-				if (!string.IsNullOrEmpty(scopeVariable))
+				if (aggregationContext != null)
 				{
-					result = string.Format(myFormatProvider, ResolveVerbalizerSnippet(RolePathVerbalizerSnippetType.AggregateParameterScope), result, scopeVariable);
+					string scopeVariable;
+					RolePathNode pathNode;
+					if (aggregationContext.Length == 1)
+					{
+						pathNode = aggregationContext[0];
+						scopeVariable = rendererContext.RenderAssociatedRolePlayer((object)pathNode.PathRoot ?? pathNode.PathedRole, null, RolePathRolePlayerRenderingOptions.None);
+						if (!string.IsNullOrEmpty(scopeVariable))
+						{
+							result = string.Format(myFormatProvider, ResolveVerbalizerSnippet(RolePathVerbalizerSnippetType.AggregateParameterDecorator), result, string.Format(myFormatProvider, ResolveVerbalizerSnippet(RolePathVerbalizerSnippetType.AggregateParameterSimpleAggregationContext), scopeVariable));
+						}
+					}
+					else
+					{
+						int processed = 0;
+						string firstScopeVariable = null;
+						for (int i = 0; i < aggregationContext.Length; ++i)
+						{
+							pathNode = aggregationContext[i];
+							scopeVariable = rendererContext.RenderAssociatedRolePlayer((object)pathNode.PathRoot ?? pathNode.PathedRole, null, RolePathRolePlayerRenderingOptions.None);
+							if (!string.IsNullOrEmpty(scopeVariable))
+							{
+								switch (processed)
+								{
+									case 0:
+										firstScopeVariable = scopeVariable;
+										++processed;
+										break;
+									case 1:
+										builder.Append(ResolveVerbalizerSnippet(RolePathVerbalizerSnippetType.AggregateParameterComplexAggregationContextListOpen));
+										builder.Append(firstScopeVariable);
+										goto default;
+									default:
+										builder.Append(ResolveVerbalizerSnippet(RolePathVerbalizerSnippetType.AggregateParameterComplexAggregationContextListSeparator));
+										builder.Append(scopeVariable);
+										++processed;
+										break;
+								}
+							}
+						}
+						if (processed != 0)
+						{
+							string aggregationDescription;
+							if (processed == 1)
+							{
+								aggregationDescription = string.Format(myFormatProvider, ResolveVerbalizerSnippet(RolePathVerbalizerSnippetType.AggregateParameterSimpleAggregationContext), firstScopeVariable);
+							}
+							else
+							{
+								builder.Append(ResolveVerbalizerSnippet(RolePathVerbalizerSnippetType.AggregateParameterComplexAggregationContextListClose));
+								aggregationDescription = builder.ToString(restoreBuilder, builder.Length - restoreBuilder);
+								builder.Length = restoreBuilder;
+							}
+							result = string.Format(myFormatProvider, ResolveVerbalizerSnippet(RolePathVerbalizerSnippetType.AggregateParameterDecorator), result, aggregationDescription);
+						}
+					}
 				}
 				if (calculatedValueInput.DistinctValues)
 				{
