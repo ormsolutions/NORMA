@@ -1447,6 +1447,11 @@
 				<xs:documentation>Used with the providedConstraintRoles match style. Do not subscript a head variable of a type that is used for a single variable and also used fully existentially.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute name="resolveProvidedConstraintRoleSupertype" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>Used with the providedConstraintRoles match style. Request that a resolved supertype variable be used in place of the role player directly associated with the constraint role.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 		<xs:attribute name="quantifyProvidedConstraintRoles" default="false" type="xs:boolean">
 			<xs:annotation>
 				<xs:documentation>Used with the providedConstraintRoles match style. Quantify the returned replacement field.</xs:documentation>

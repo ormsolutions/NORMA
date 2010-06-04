@@ -11755,7 +11755,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					for (int RoleIter1 = 0; RoleIter1 < 1; ++RoleIter1)
 					{
-						sbTemp.Append(pathVerbalizer.RenderAssociatedRolePlayer(includedConstraintRoles[RoleIter1], null, RolePathRolePlayerRenderingOptions.UsedInVerbalizationHead | RolePathRolePlayerRenderingOptions.MinimizeHeadSubscripting));
+						sbTemp.Append(pathVerbalizer.RenderAssociatedRolePlayer(includedConstraintRoles[RoleIter1], null, RolePathRolePlayerRenderingOptions.UsedInVerbalizationHead | RolePathRolePlayerRenderingOptions.MinimizeHeadSubscripting | RolePathRolePlayerRenderingOptions.ResolveSupertype));
 					}
 					snippet1Replace1Replace1 = sbTemp.ToString();
 				}
@@ -11915,7 +11915,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListSeparator;
 						}
 						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-						sbTemp.Append(pathVerbalizer.RenderAssociatedRolePlayer(includedConstraintRoles[RoleIter1], null, RolePathRolePlayerRenderingOptions.UsedInVerbalizationHead | RolePathRolePlayerRenderingOptions.MinimizeHeadSubscripting));
+						sbTemp.Append(pathVerbalizer.RenderAssociatedRolePlayer(includedConstraintRoles[RoleIter1], null, RolePathRolePlayerRenderingOptions.UsedInVerbalizationHead | RolePathRolePlayerRenderingOptions.MinimizeHeadSubscripting | RolePathRolePlayerRenderingOptions.ResolveSupertype));
 						if (RoleIter1 == columnArity - 1)
 						{
 							sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.SimpleLogicalAndListClose, isDeontic, isNegative));
@@ -12079,7 +12079,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListSeparator;
 						}
 						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-						sbTemp.Append(pathVerbalizer.RenderAssociatedRolePlayer(includedConstraintRoles[RoleIter1], null, RolePathRolePlayerRenderingOptions.UsedInVerbalizationHead | RolePathRolePlayerRenderingOptions.MinimizeHeadSubscripting));
+						sbTemp.Append(pathVerbalizer.RenderAssociatedRolePlayer(includedConstraintRoles[RoleIter1], null, RolePathRolePlayerRenderingOptions.UsedInVerbalizationHead | RolePathRolePlayerRenderingOptions.MinimizeHeadSubscripting | RolePathRolePlayerRenderingOptions.ResolveSupertype));
 						if (RoleIter1 == columnArity - 1)
 						{
 							sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.SimpleLogicalAndListClose, isDeontic, isNegative));
@@ -12494,7 +12494,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListSeparator;
 						}
 						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-						sbTemp.Append(pathVerbalizer.RenderAssociatedRolePlayer(includedConstraintRoles[RoleIter1], null, RolePathRolePlayerRenderingOptions.UsedInVerbalizationHead | RolePathRolePlayerRenderingOptions.MinimizeHeadSubscripting));
+						sbTemp.Append(pathVerbalizer.RenderAssociatedRolePlayer(includedConstraintRoles[RoleIter1], null, RolePathRolePlayerRenderingOptions.UsedInVerbalizationHead | RolePathRolePlayerRenderingOptions.MinimizeHeadSubscripting | RolePathRolePlayerRenderingOptions.ResolveSupertype));
 						if (RoleIter1 == columnArity - 1)
 						{
 							sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.SimpleLogicalAndListClose, isDeontic, isNegative));
@@ -12918,7 +12918,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListSeparator;
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-							sbTemp.Append(pathVerbalizer.RenderAssociatedRolePlayer(includedConstraintRoles[RoleIter1], null, RolePathRolePlayerRenderingOptions.UsedInVerbalizationHead | RolePathRolePlayerRenderingOptions.MinimizeHeadSubscripting));
+							sbTemp.Append(pathVerbalizer.RenderAssociatedRolePlayer(includedConstraintRoles[RoleIter1], null, RolePathRolePlayerRenderingOptions.UsedInVerbalizationHead | RolePathRolePlayerRenderingOptions.MinimizeHeadSubscripting | RolePathRolePlayerRenderingOptions.ResolveSupertype));
 							if (RoleIter1 == columnArity - 1)
 							{
 								sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.SimpleLogicalAndListClose, isDeontic, isNegative));
@@ -13157,7 +13157,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListSeparator;
 						}
 						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-						sbTemp.Append(pathVerbalizer.RenderAssociatedRolePlayer(includedConstraintRoles[RoleIter1], null, RolePathRolePlayerRenderingOptions.UsedInVerbalizationHead | RolePathRolePlayerRenderingOptions.MinimizeHeadSubscripting));
+						sbTemp.Append(pathVerbalizer.RenderAssociatedRolePlayer(includedConstraintRoles[RoleIter1], null, RolePathRolePlayerRenderingOptions.UsedInVerbalizationHead | RolePathRolePlayerRenderingOptions.MinimizeHeadSubscripting | RolePathRolePlayerRenderingOptions.ResolveSupertype));
 						if (RoleIter1 == columnArity - 1)
 						{
 							sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.SimpleLogicalAndListClose, isDeontic, isNegative));

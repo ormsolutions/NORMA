@@ -1461,25 +1461,39 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // Helper class for GetNearestCompatibleTypes
 		/// <summary>
 		/// Return an ObjectType array containing the nearest compatible
-		/// types for the given role collection.
+		/// types for the given collection of role collections.
 		/// </summary>
 		/// <param name="roleCollectionCollection">Set of collections of roles to walk</param>
 		/// <param name="column">The column to test</param>
 		/// <returns>ObjectType[]</returns>
 		public static ObjectType[] GetNearestCompatibleTypes(IEnumerable<IEnumerable<Role>> roleCollectionCollection, int column)
 		{
-			return GetNearestCompatibleTypes(GetColumnRoleCollection(roleCollectionCollection, column));
+			return GetNearestCompatibleTypes(GetRolePlayerCollection(GetColumnCollection(roleCollectionCollection, column), delegate(Role role) { return role.RolePlayer; }));
 		}
-		private static IEnumerable<Role> GetColumnRoleCollection(IEnumerable<IEnumerable<Role>> roleCollectionCollection, int column)
+		/// <summary>
+		/// Return an ObjectType array containing the nearest compatible
+		/// types for collection of collections of elements that can be
+		/// converted to an <see cref="ObjectType"/>.
+		/// </summary>
+		/// <param name="collectionCollection">Set of collections of convertible elements to walk</param>
+		/// <param name="column">The column to test</param>
+		/// <param name="converter">A <see cref="Converter{T,ObjectType}"/> to transform elements.</param>
+		/// <returns>ObjectType[]</returns>
+		public static ObjectType[] GetNearestCompatibleTypes<T>(IEnumerable<IEnumerable<T>> collectionCollection, int column, Converter<T, ObjectType> converter)
 		{
-			foreach (IEnumerable<Role> row in roleCollectionCollection)
+			return GetNearestCompatibleTypes(GetRolePlayerCollection(GetColumnCollection(collectionCollection, column), converter));
+		}
+		private static IEnumerable<T> GetColumnCollection<T>(IEnumerable<IEnumerable<T>> collectionCollection, int column)
+		{
+			foreach (IEnumerable<T> row in collectionCollection)
 			{
 				int currentColumn = 0;
-				foreach (Role role in row)
+				foreach (T t in row)
 				{
 					if (currentColumn == column)
 					{
-						yield return role;
+						yield return t;
+						break;
 					}
 					++currentColumn;
 				}
@@ -1493,13 +1507,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <returns>ObjectType[]</returns>
 		public static ObjectType[] GetNearestCompatibleTypes(IEnumerable<Role> roleCollection)
 		{
-			return GetNearestCompatibleTypes(GetRolePlayerCollection(roleCollection));
+			return GetNearestCompatibleTypes(GetRolePlayerCollection(roleCollection, delegate(Role role) { return role.RolePlayer; }));
 		}
-		private static IEnumerable<ObjectType> GetRolePlayerCollection(IEnumerable<Role> roleCollection)
+		/// <summary>
+		/// Return an ObjectType array containing the nearest compatible
+		/// types for the given collection of elements that can be
+		/// converted to an <see cref="ObjectType"/>.
+		/// </summary>
+		/// <param name="collection">Set of elements to walk</param>
+		/// <param name="converter">A <see cref="Converter{T,ObjectType}"/> to transform elements.</param>
+		/// <returns>ObjectType[]</returns>
+		public static ObjectType[] GetNearestCompatibleTypes<T>(IEnumerable<T> collection, Converter<T, ObjectType> converter)
 		{
-			foreach (Role role in roleCollection)
+			return GetNearestCompatibleTypes(GetRolePlayerCollection(collection, converter));
+		}
+		private static IEnumerable<ObjectType> GetRolePlayerCollection<T>(IEnumerable<T> collection, Converter<T, ObjectType> converter)
+		{
+			foreach (T t in collection)
 			{
-				yield return role.RolePlayer;
+				yield return converter(t);
 			}
 		}
 		/// <summary>

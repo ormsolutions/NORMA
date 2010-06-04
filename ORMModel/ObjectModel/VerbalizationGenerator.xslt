@@ -10570,6 +10570,9 @@
 												<plx:callStatic dataTypeName="RolePathRolePlayerRenderingOptions" name="MinimizeHeadSubscripting" type="field"/>
 											</xsl:if>
 										</xsl:if>
+										<xsl:if test="@resolveProvidedConstraintRoleSupertype='true' or @resolveProvidedConstraintRoleSupertype='1'">
+											<plx:callStatic dataTypeName="RolePathRolePlayerRenderingOptions" name="ResolveSupertype" type="field"/>
+										</xsl:if>
 									</xsl:variable>
 									<xsl:variable name="options" select="exsl:node-set($optionsFragment)/child::*"/>
 									<xsl:choose>
@@ -11260,7 +11263,7 @@
 		</plx:binaryOperator>
 	</xsl:template>
 	<!-- Ignore attributes that are not used as a filter -->
-	<xsl:template match="@listStyle|@pass|@conditionalMatch|@hyphenBind|@subscript|@markProvidedConstraintRolesAsHead|@quantifyProvidedConstraintRoles|@minimizeProvidedConstraintRoleHeadSubscripting" mode="IterateRolesFilterOperator"/>
+	<xsl:template match="@listStyle|@pass|@conditionalMatch|@hyphenBind|@subscript|@markProvidedConstraintRolesAsHead|@quantifyProvidedConstraintRoles|@minimizeProvidedConstraintRoleHeadSubscripting|@resolveProvidedConstraintRoleSupertype" mode="IterateRolesFilterOperator"/>
 	<!-- Terminate processing if we see an unrecognized operator -->
 	<xsl:template match="@*" mode="IterateRolesFilterOperator">
 		<xsl:call-template name="TerminateForInvalidAttribute">

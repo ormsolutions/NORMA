@@ -42,7 +42,7 @@ The May 2010 release is an incremental release with addition verbalization for u
 
 <hr/>
 <h2>May 2010 CTP Changes</h2>
-<div>The May 2010 CTP release includes all modifications through changeset 1445. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<div>The May 2010 CTP release includes all modifications through changeset 1446. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
 <ul>
 <li><a href="#Uniqueness Frequency Join Path Verbalization 2010-05">Uniqueness and frequency constraint join path verbalization</a>&nbsp;</li>
 <li><a href="#One-to-one Relational Mapping 2010-05">One-to-one Relational Mapping Refinement</a>&nbsp;</li>
@@ -57,6 +57,7 @@ The May 2010 release is an incremental release with addition verbalization for u
 <li>The <em>Is Mandatory</em> menu was incorrectly enabled for a unary role.</li>
 <li>Value constraints on remote identifying roles—where an entity type is (possibly recursively) identified by another entity type—were not correctly revalidated on a preferred identifier change.</li>
 <li>Style specifications used in the core verbalization were not included in the generated report styles. All report styles have now been brought up to date.</li>
+<li>Set comparison constraint verbalization across compatible types was not choosing a shared column supertype for the initial object type list, resulting in verbalizations with different meanings when the constraint sequence order was changed.</li>
 </ol>
 </li>
 </ul>

@@ -3101,6 +3101,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// suppresses subscripts in this situation.
 		/// </summary>
 		MinimizeHeadSubscripting = 4,
+		/// <summary>
+		/// The role player directly associated with a role player key should be replaced
+		/// with a role player of a resolved supertype. Determination of the associated
+		/// resolved supertype is dependent on the type of verbalization.
+		/// </summary>
+		ResolveSupertype = 8,
 	}
 	#endregion // RolePathRolePlayerRenderingOptions enum
 	#region IRolePathRendererContext interface
@@ -7430,6 +7436,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
+		/// Determine an alternate key for variable rendering that corresponds
+		/// to a variable with a resolved supertype appropriate associated with
+		/// the role player key.
+		/// </summary>
+		/// <param name="rolePlayerFor">The requested role player key</param>
+		/// <returns>An alternate key. The default implementation returns
+		/// the same key.</returns>
+		protected virtual object ResolveSupertypeKey(object rolePlayerFor)
+		{
+			return rolePlayerFor;
+		}
+		/// <summary>
 		/// Override to add a filtering to establish which paths should be verbalized.
 		/// Return <see langword="true"/> to allow verbalization of the path.
 		/// </summary>
@@ -7647,7 +7665,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // Analysis Methods
 		#region Rendering Methods
 		/// <summary>
-		/// Begin a verbalization of the path(s) and and associate head statement
+		/// Begin a verbalization of the path(s) and associated head statement
 		/// </summary>
 		public void BeginVerbalization()
 		{
@@ -7709,6 +7727,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			string retVal = null;
 			RoleBase roleBase; // Fallback for common case with non-projected role
+			if (0 != (renderingOptions & RolePathRolePlayerRenderingOptions.ResolveSupertype))
+			{
+				rolePlayerFor = ResolveSupertypeKey(rolePlayerFor);
+			}
 			RolePlayerVariableUse? nullableVariableUse = GetRolePlayerVariableUse(rolePlayerFor);
 			bool firstUse = true;
 			if (nullableVariableUse.HasValue)
@@ -8904,6 +8926,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					allSequencedRoleLinks[i] = sequencedRoleLinks;
 				}
 				RolePlayerVariable[] columnVariables = new RolePlayerVariable[columnCount];
+
+				// Determine a shared supertype for each column and register a variable of the appropriate
+				// type for each column.
+				for (int i = 0; i < columnCount; ++i)
+				{
+					ObjectType[] compatibleTypes = ObjectType.GetNearestCompatibleTypes(
+						allSequencedRoleLinks,
+						i,
+						delegate(ConstraintRoleSequenceHasRole constraintRole) { return constraintRole.Role.RolePlayer; });
+					while (compatibleTypes.Length > 1)
+					{
+						compatibleTypes = ObjectType.GetNearestCompatibleTypes(compatibleTypes);
+					}
+					columnVariables[i] = AddExternalVariable(i, null, compatibleTypes.Length != 0 ? compatibleTypes[0] : null, RolePathNode.Empty);
+				}
+
 				myColumnVariables = columnVariables;
 				for (int i = 0; i < sequenceCount; ++i)
 				{
@@ -8946,6 +8984,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				// sure a use phase is pushed so that we don't see quantified elements
 				// as a side effect of initialization.
 				BeginQuantificationUsePhase();
+			}
+			/// <summary>
+			/// The resolved supertype for each column is keyed by the column
+			/// number. Return the column number for a constraint role.
+			/// </summary>
+			protected override object ResolveSupertypeKey(object rolePlayerFor)
+			{
+				ConstraintRoleSequenceHasRole constraintRole;
+				if (null != (constraintRole = rolePlayerFor as ConstraintRoleSequenceHasRole))
+				{
+					return constraintRole.ConstraintRoleSequence.RoleCollection.IndexOf(constraintRole.Role);
+				}
+				return base.ResolveSupertypeKey(rolePlayerFor);
 			}
 			/// <summary>
 			/// Verbalize a path if it is projected

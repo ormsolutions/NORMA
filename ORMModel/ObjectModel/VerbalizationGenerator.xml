@@ -1644,7 +1644,7 @@
 					<Snippet ref="ImpliedModalNecessityOperator">
 						<Snippet ref="ForEachIndentedQuantifier">
 							<IterateSequences listStyle="null" pass="first">
-								<IterateRoles listStyle="null" match="providedConstraintRoles" pass="first" markProvidedConstraintRolesAsHead="true" minimizeProvidedConstraintRoleHeadSubscripting="true"/>
+								<IterateRoles listStyle="null" match="providedConstraintRoles" pass="first" markProvidedConstraintRolesAsHead="true" minimizeProvidedConstraintRoleHeadSubscripting="true" resolveProvidedConstraintRoleSupertype="true"/>
 							</IterateSequences>
 							<Snippet ref="Equality">
 								<IterateSequences listStyle="null" pass="first">
@@ -1675,7 +1675,7 @@
 					<Snippet ref="ImpliedModalNecessityOperator">
 						<Snippet ref="ForEachIndentedQuantifier">
 							<IterateSequences listStyle="null" pass="first">
-								<IterateRoles listStyle="SimpleLogicalAndList" match="providedConstraintRoles" markProvidedConstraintRolesAsHead="true" minimizeProvidedConstraintRoleHeadSubscripting="true"/>
+								<IterateRoles listStyle="SimpleLogicalAndList" match="providedConstraintRoles" markProvidedConstraintRolesAsHead="true" minimizeProvidedConstraintRoleHeadSubscripting="true" resolveProvidedConstraintRoleSupertype="true"/>
 							</IterateSequences>
 							<Snippet ref="Equality">
 								<IterateSequences listStyle="null" pass="first">
@@ -1706,7 +1706,7 @@
 					<Snippet ref="ImpliedModalNecessityOperator">
 						<Snippet ref="ForEachCompactQuantifier">
 							<IterateSequences listStyle="null" pass="first">
-								<IterateRoles match="providedConstraintRoles" listStyle="SimpleLogicalAndList" markProvidedConstraintRolesAsHead="true" minimizeProvidedConstraintRoleHeadSubscripting="true"/>
+								<IterateRoles match="providedConstraintRoles" listStyle="SimpleLogicalAndList" markProvidedConstraintRolesAsHead="true" minimizeProvidedConstraintRoleHeadSubscripting="true" resolveProvidedConstraintRoleSupertype="true"/>
 							</IterateSequences>
 							<Snippet ref="GroupEquality">
 								<IterateSequences listStyle="MultilineIndentedCompoundList" compositeList="true">
@@ -1733,7 +1733,7 @@
 					<Snippet ref="ImpliedModalNecessityOperator">
 						<Snippet ref="ForEachCompactQuantifier">
 							<IterateSequences listStyle="null" pass="first">
-								<IterateRoles match="providedConstraintRoles" listStyle="SimpleLogicalAndList" markProvidedConstraintRolesAsHead="true" minimizeProvidedConstraintRoleHeadSubscripting="true"/>
+								<IterateRoles match="providedConstraintRoles" listStyle="SimpleLogicalAndList" markProvidedConstraintRolesAsHead="true" minimizeProvidedConstraintRoleHeadSubscripting="true" resolveProvidedConstraintRoleSupertype="true"/>
 							</IterateSequences>
 							<ConditionalSnippet>
 								<Snippet ref="GroupExclusiveOr" conditionalMatch="ExclusionIsExclusiveOrConstraint"/>
@@ -1791,7 +1791,7 @@
 										</IterateSequences>
 									</Snippet>
 									<IterateSequences listStyle="null" pass="first">
-										<IterateRoles match="providedConstraintRoles" listStyle="SimpleLogicalAndList" markProvidedConstraintRolesAsHead="true" minimizeProvidedConstraintRoleHeadSubscripting="true"/>
+										<IterateRoles match="providedConstraintRoles" listStyle="SimpleLogicalAndList" markProvidedConstraintRolesAsHead="true" minimizeProvidedConstraintRoleHeadSubscripting="true" resolveProvidedConstraintRoleSupertype="true"/>
 									</IterateSequences>
 								</ConditionalReplacement>
 								<ConditionalReplacement>
@@ -1822,7 +1822,7 @@
 					<Snippet ref="ImpliedModalNecessityOperator">
 						<Snippet ref="ForEachCompactQuantifier">
 							<IterateSequences listStyle="null" pass="first">
-								<IterateRoles match="providedConstraintRoles" listStyle="SimpleLogicalAndList" markProvidedConstraintRolesAsHead="true" minimizeProvidedConstraintRoleHeadSubscripting="true"/>
+								<IterateRoles match="providedConstraintRoles" listStyle="SimpleLogicalAndList" markProvidedConstraintRolesAsHead="true" minimizeProvidedConstraintRoleHeadSubscripting="true" resolveProvidedConstraintRoleSupertype="true"/>
 							</IterateSequences>
 							<Snippet ref="GroupExclusion">
 								<IterateSequences listStyle="MultilineIndentedCompoundList" compositeList="true">
