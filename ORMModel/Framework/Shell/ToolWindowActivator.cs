@@ -122,6 +122,12 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		/// </summary>
 		/// <param name="docData">The document to detach from</param>
 		void ActivatorDetachEventHandlers(DocDataType docData);
+		/// <summary>
+		/// The <see cref="T:ToolWindowActivationHelper"/> has been hidden with notifications disabled
+		/// and is now transitioning to a visible state.
+		/// </summary>
+		/// <param name="activator">The corresponding <see cref="T:ToolWindowActivationHelper"/></param>
+		void ActivatorVisibleWindowSessionBeginning(ToolWindowActivationHelper<DocDataType, DocViewType, SelectionContainerType> activator);
 	}
 	#endregion // INotifyToolWindowActivation interface
 	#region ICurrentFrameVisibility interface
@@ -478,6 +484,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 					IMonitorSelectionService monitor = myMonitorSelectionService;
 					monitor.SelectionChanged += new EventHandler<MonitorSelectionEventArgs>(MonitorSelectionChanged);
 					monitor.DocumentWindowChanged += new EventHandler<MonitorSelectionEventArgs>(DocumentWindowChanged);
+					myNotifyCallback.ActivatorVisibleWindowSessionBeginning(this);
 					SetCurrentDocument(SafeGetCurrentDocument(monitor) as DocDataType, monitor.CurrentDocumentView as DocViewType);
 					myFrameVisibility = FrameVisibilityFlags.Visible | (flags & FrameVisibilityFlags.PersistentFlagsMask) | FrameVisibilityFlags.HasBeenVisible;
 					CurrentSelectionContainer = monitor.CurrentSelectionContainer as SelectionContainerType ?? monitor.CurrentDocumentView as SelectionContainerType;

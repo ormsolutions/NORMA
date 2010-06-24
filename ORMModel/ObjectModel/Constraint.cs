@@ -7208,6 +7208,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					Modality == ConstraintModality.Alethic &&
 					1 == (facts = FactTypeCollection).Count &&
 					(null == (derivationRule = (factType = facts[0]).DerivationRule) ||
+					derivationRule.ExternalDerivation ||
 					derivationRule.DerivationCompleteness != DerivationCompleteness.FullyDerived) &&
 					RoleCollection.Count < factType.RoleCollection.Count - 1)
 				{
@@ -7315,7 +7316,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static void NMinusOneFactTypeDerivationRuleAddedRule(ElementAddedEventArgs e)
 		{
 			FactTypeHasDerivationRule link = (FactTypeHasDerivationRule)e.ModelElement;
-			if (link.DerivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived)
+			FactTypeDerivationRule derivationRule = link.DerivationRule;
+			if (derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+				!derivationRule.ExternalDerivation)
 			{
 				DelayValidateInternalUniquenessConstraintsForNMinusOneRule(link.FactType);
 			}
@@ -7326,7 +7329,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static void NMinusOneFactTypeDerivationRuleChangedRule(ElementPropertyChangedEventArgs e)
 		{
 			FactType factType;
-			if (e.DomainProperty.Id == FactTypeDerivationRule.DerivationCompletenessDomainPropertyId &&
+			Guid domainPropertyId = e.DomainProperty.Id;
+			if ((domainPropertyId == FactTypeDerivationRule.DerivationCompletenessDomainPropertyId ||
+				domainPropertyId == FactTypeDerivationRule.ExternalDerivationDomainPropertyId) &&
 				null != (factType = ((FactTypeDerivationRule)e.ModelElement).FactType))
 			{
 				DelayValidateInternalUniquenessConstraintsForNMinusOneRule(factType);
@@ -7338,7 +7343,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static void NMinusOneFactTypeDerivationRuleDeletedRule(ElementDeletedEventArgs e)
 		{
 			FactTypeHasDerivationRule link = (FactTypeHasDerivationRule)e.ModelElement;
-			if (link.DerivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived)
+			FactTypeDerivationRule derivationRule = link.DerivationRule;
+			if (derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+				!derivationRule.ExternalDerivation)
 			{
 				DelayValidateInternalUniquenessConstraintsForNMinusOneRule(link.FactType);
 			}

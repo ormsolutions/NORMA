@@ -1083,7 +1083,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				{
 					return;
 				}
-				UpdateNode(fromIndex, nodeReference, node.UpdateSurveyName(mySurveyTree, myContextElement), true);
+				UpdateNode(fromIndex, nodeReference, node.UpdateSurveyName(mySurveyTree, myContextElement), true, false);
 			}
 			/// <summary>
 			/// Forwarded from <see cref="INotifySurveyElementChanged.ElementCustomSortChanged"/>
@@ -1106,15 +1106,15 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 					return;
 				}
 				Debug.Assert(!object.ReferenceEquals(customSortData, node.CustomSortData), "ICustomComparableSurveyNode.ResetCustomSortData should return a new instance, or false");
-				UpdateNode(fromIndex, nodeReference, node.UpdateCustomSortData(mySurveyTree, myContextElement, customSortData), false);
+				UpdateNode(fromIndex, nodeReference, node.UpdateCustomSortData(mySurveyTree, myContextElement, customSortData), false, false);
 			}
 			/// <summary>
 			/// The target of a reference element has changed. Reset all information about the node.
 			/// </summary>
 			/// <param name="elementReference">The element reference to retarget.</param>
-			/// <param name="nodeReference">An existing reference tracker associated with the node.</param>
+			/// <param name="previousTarget">The previous target for this element.</param>
 			/// <param name="removeOnly">Remove the element, but do not update or add it.</param>
-			public void NodeRetargeted(ISurveyNodeReference elementReference, LinkedNode<SurveyNodeReference> nodeReference, bool removeOnly)
+			public void NodeRetargeted(ISurveyNodeReference elementReference, object previousTarget, bool removeOnly)
 			{
 				// Because the binary search mechanism always references the referenced element directly,
 				// there is nothing we can do here except to do a linear walk of the list and find the
@@ -1142,64 +1142,113 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 					DeleteAt(fromIndex);
 					return;
 				}
-				UpdateNode(fromIndex, nodeReference, SampleDataElementNode.Create(mySurveyTree, mySurvey, myContextElement, elementReference, true), true);
+				// UNDONE: If the reference is expandable, then we need to replace the branch for this item only. However,
+				// there is no API available to force the tree to re-retrieve an expansion for a single item. The options are:
+				// 1) Wrap and individually track a separate branch instance for a link. This is possible, but adds a lot of
+				//    additional notification code for an uncommon scenario.
+				// 2) Use a Realign operation on the tree. This is not 100% percent because the same branch can possibly be expanded
+				//    from multiple locations, and there is insufficient information passed in to 
+				// 3) MSBUG: We should be able to use a custom level shift adjust here by deleting the first level, inserting no new
+				//    levels, and declining to reattach any nested branches. However, this is creating a crash in the tree with a
+				//    circular reference in the reconstructed child nodes when a parent is replaced by one of its children.
+				UpdateNode(
+					fromIndex,
+					null,
+					SampleDataElementNode.Create(mySurveyTree, mySurvey, myContextElement, elementReference, true),
+					true,
+					0 != (elementReference.SurveyNodeReferenceOptions & SurveyNodeReferenceOptions.InlineExpansion) && mySurveyTree.myMainListDictionary.ContainsKey(previousTarget));
 			}
-			private void UpdateNode(int nodeIndex, LinkedNode<SurveyNodeReference> nodeReference, SampleDataElementNode replacementNode, bool displayChanged)
+			/// <summary>
+			/// Update a node by either moving it or updating the display in line.
+			/// </summary>
+			/// <param name="nodeIndex">The current index of the node</param>
+			/// <param name="nodeReference">A node reference to update with the new node information.</param>
+			/// <param name="replacementNode">A populated replacement node.</param>
+			/// <param name="displayChanged">The display has changed, notify if position does not change.</param>
+			/// <param name="deleteAndAdd">Modify the tree through delete and add operations instead of direct move and display changes</param>
+			private void UpdateNode(int nodeIndex, LinkedNode<SurveyNodeReference> nodeReference, SampleDataElementNode replacementNode, bool displayChanged, bool deleteAndAdd)
 			{
-				int toIndex = myNodes.BinarySearch(replacementNode, myNodeComparer);
+				List<SampleDataElementNode> nodes = this.myNodes;
+				ListGrouper rootGrouper = this.myRootGrouper;
+				int toIndex = nodes.BinarySearch(replacementNode, myNodeComparer);
 				int inverseToIndex = ~toIndex;
 				BranchModificationEventHandler modificationEvents = myModificationEvents;
+				object element = replacementNode.Element;
+				ISurveyNodeReference reference;
+				if (null == (reference = element as ISurveyNodeReference) ||
+					0 != (reference.SurveyNodeReferenceOptions & SurveyNodeReferenceOptions.TrackReferenceInstance))
+				{
+					mySurveyTree.myNodeDictionary[element] = new NodeLocation(this, replacementNode);
+				}
+				if (nodeReference != null)
+				{
+					Debug.Assert(nodeReference.Value.ContextElement == myContextElement);
+					nodeReference.Value = new SurveyNodeReference(replacementNode, myContextElement);
+				}
 				if (nodeIndex == toIndex || (inverseToIndex >= 0 && (inverseToIndex == nodeIndex || (inverseToIndex - nodeIndex) == 1)))
 				{
-					myNodes[nodeIndex] = replacementNode;
-					object element = replacementNode.Element;
-					ISurveyNodeReference reference;
-					if (null == (reference = element as ISurveyNodeReference) ||
-						0 != (reference.SurveyNodeReferenceOptions & SurveyNodeReferenceOptions.TrackReferenceInstance))
+					if (deleteAndAdd && modificationEvents != null)
 					{
-						mySurveyTree.myNodeDictionary[element] = new NodeLocation(this, replacementNode);
+						nodes.RemoveAt(nodeIndex);
+						if (rootGrouper != null)
+						{
+							rootGrouper.ElementDeletedAt(nodeIndex, modificationEvents);
+							nodes.Insert(nodeIndex, replacementNode);
+							rootGrouper.ElementAddedAt(nodeIndex, modificationEvents);
+						}
+						else if (displayChanged)
+						{
+							modificationEvents(this, BranchModificationEventArgs.DeleteItems(this, nodeIndex, 1));
+							nodes.Insert(nodeIndex, replacementNode);
+							modificationEvents(this, BranchModificationEventArgs.InsertItems(this, nodeIndex - 1, 1));
+						}
 					}
-					if (nodeReference != null)
+					else
 					{
-						Debug.Assert(nodeReference.Value.ContextElement == myContextElement);
-						nodeReference.Value = new SurveyNodeReference(replacementNode, myContextElement);
-					}
-					if (myRootGrouper != null)
-					{
-						myRootGrouper.ElementModifiedAt(nodeIndex, nodeIndex, displayChanged, modificationEvents);
-					}
-					else if (displayChanged && modificationEvents != null)
-					{
-						modificationEvents(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, this, nodeIndex, 0, 1)));
+						nodes[nodeIndex] = replacementNode;
+						if (rootGrouper != null)
+						{
+							rootGrouper.ElementModifiedAt(nodeIndex, nodeIndex, displayChanged, modificationEvents);
+						}
+						else if (displayChanged && modificationEvents != null)
+						{
+							modificationEvents(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, this, nodeIndex, 0, 1)));
+						}
 					}
 				}
 				else if (inverseToIndex >= 0)
 				{
-					myNodes.RemoveAt(nodeIndex);
+					nodes.RemoveAt(nodeIndex);
 					if (inverseToIndex > nodeIndex)
 					{
 						--inverseToIndex;
 					}
-					myNodes.Insert(inverseToIndex, replacementNode);
-					object element = replacementNode.Element;
-					ISurveyNodeReference reference;
-					if (null == (reference = element as ISurveyNodeReference) ||
-						0 != (reference.SurveyNodeReferenceOptions & SurveyNodeReferenceOptions.TrackReferenceInstance))
+					if (deleteAndAdd && modificationEvents != null)
 					{
-						mySurveyTree.myNodeDictionary[element] = new NodeLocation(this, replacementNode);
+						if (rootGrouper != null)
+						{
+							rootGrouper.ElementDeletedAt(nodeIndex, modificationEvents);
+							nodes.Insert(inverseToIndex, replacementNode);
+							rootGrouper.ElementAddedAt(inverseToIndex, modificationEvents);
+						}
+						else
+						{
+							modificationEvents(this, BranchModificationEventArgs.DeleteItems(this, nodeIndex, 1));
+							nodes.Insert(inverseToIndex, replacementNode);
+							modificationEvents(this, BranchModificationEventArgs.InsertItems(this, inverseToIndex - 1, 1));
+						}
 					}
-					if (nodeReference != null)
+					else
 					{
-						Debug.Assert(nodeReference.Value.ContextElement == myContextElement);
-						nodeReference.Value = new SurveyNodeReference(replacementNode, myContextElement);
-					}
-					if (myRootGrouper != null)
-					{
-						myRootGrouper.ElementModifiedAt(nodeIndex, inverseToIndex, displayChanged, modificationEvents);
-					}
-					else if (modificationEvents != null)
-					{
-						modificationEvents(this, BranchModificationEventArgs.MoveItem(this, nodeIndex, inverseToIndex));
+						nodes.Insert(inverseToIndex, replacementNode);
+						if (rootGrouper != null)
+						{
+							rootGrouper.ElementModifiedAt(nodeIndex, inverseToIndex, displayChanged, modificationEvents);
+						}
+						else if (modificationEvents != null)
+						{
+							modificationEvents(this, BranchModificationEventArgs.MoveItem(this, nodeIndex, inverseToIndex));
+						}
 					}
 				}
 				else

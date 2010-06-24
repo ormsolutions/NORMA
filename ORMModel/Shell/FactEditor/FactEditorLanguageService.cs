@@ -620,6 +620,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			void INotifyToolWindowActivation<ORMDesignerDocData, DiagramDocView, IORMSelectionContainer>.ActivatorDocumentViewChanged(ToolWindowActivationHelper<ORMDesignerDocData, DiagramDocView, IORMSelectionContainer> activator)
 			{
 			}
+			void INotifyToolWindowActivation<ORMDesignerDocData, DiagramDocView, IORMSelectionContainer>.ActivatorVisibleWindowSessionBeginning(ToolWindowActivationHelper<ORMDesignerDocData, DiagramDocView, IORMSelectionContainer> activator)
+			{
+			}
 			void INotifyToolWindowActivation<ORMDesignerDocData, DiagramDocView, IORMSelectionContainer>.ActivatorAttachEventHandlers(ORMDesignerDocData docData)
 			{
 				ManageEvents(docData.Store, EventHandlerAction.Add);

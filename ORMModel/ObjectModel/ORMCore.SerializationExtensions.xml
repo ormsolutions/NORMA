@@ -1401,7 +1401,7 @@
 	<se:Element Class="PathObjectUnifier" Name="ObjectUnifier" Override="true" SortChildElements="true">
 		<se:Link RelationshipName="PathObjectUnifierUnifiesRolePathRoot" RoleName="PathRoot" Name="PathRoot"/>
 		<se:Link RelationshipName="PathObjectUnifierUnifiesPathedRole" RoleName="PathedRole" Name="PathedRole"/>
-		<se:Link RelationshipName="PathObjectUnifierHasCompatibleObjectTypesError" RoleName="ObjectUnifier" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="PathObjectUnifierHasCompatibleObjectTypesError" RoleName="CompatibilityError" WriteStyle="NotWritten"/>
 	</se:Element>
 
 	<!--Errors-->

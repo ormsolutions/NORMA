@@ -36,7 +36,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static void FactTypeDerivationRuleAddedRule(ElementAddedEventArgs e)
 		{
 			FactTypeHasDerivationRule link = (FactTypeHasDerivationRule)e.ModelElement;
-			if (link.DerivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived)
+			FactTypeDerivationRule derivationRule = link.DerivationRule;
+			if (derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+				!derivationRule.ExternalDerivation)
 			{
 				FrameworkDomainModel.DelayValidateElement(link.FactType, DelayProcessFactTypeForImpliedObjectification);
 			}
@@ -47,7 +49,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static void FactTypeDerivationRuleChangedRule(ElementPropertyChangedEventArgs e)
 		{
 			FactType factType;
-			if (e.DomainProperty.Id == FactTypeDerivationRule.DerivationCompletenessDomainPropertyId &&
+			Guid propertyId = e.DomainProperty.Id;
+			if ((propertyId == FactTypeDerivationRule.DerivationCompletenessDomainPropertyId ||
+				propertyId == FactTypeDerivationRule.ExternalDerivationDomainPropertyId) &&
 				null != (factType = ((FactTypeDerivationRule)e.ModelElement).FactType))
 			{
 				FrameworkDomainModel.DelayValidateElement(factType, DelayProcessFactTypeForImpliedObjectification);
@@ -60,7 +64,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			FactTypeHasDerivationRule link = (FactTypeHasDerivationRule)e.ModelElement;
 			FactType factType;
-			if (link.DerivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+			FactTypeDerivationRule derivationRule = link.DerivationRule;
+			if (derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+				!derivationRule.ExternalDerivation &&
 				!(factType = link.FactType).IsDeleted)
 			{
 				FrameworkDomainModel.DelayValidateElement(factType, DelayProcessFactTypeForImpliedObjectification);
@@ -962,7 +968,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			// Fully derived fact types are not implicitly objectified
 			FactTypeDerivationRule derivationRule;
 			if (null != (derivationRule = factType.DerivationRule) &&
-				derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived)
+				derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+				!derivationRule.ExternalDerivation)
 			{
 				return false;
 			}
@@ -1255,11 +1262,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			FactTypeDerivationRule derivationRule = factType.DerivationRule;
 			string objectTypeName;
 			if (null == (derivationRule = factType.DerivationRule) ||
-				// Ignore derivationRule.DerivationCompleteness here, which will not happen with
-				// the factType.Name property. If the objectification is implicitly created
-				// as a result of the DerivationCompleteness being switched to PartiallyDerived,
-				// then this name is preserved by FactType.DerivationRuleChangedRule so that
-				// it can be picked up and used here.
+				// Ignore derivationRule.DerivationCompleteness  and derivationRule.ExternalDerivation
+				// here, unlike the the factType.Name property rules. If the objectification is implicitly
+				// created as a result of DerivationCompleteness being switched to PartiallyDerived,
+				// or ExternalDerivation being switched to false, then this name is preserved by
+				// FactType.DerivationRuleChangedRule so that it can be picked up and used here.
 				string.IsNullOrEmpty(objectTypeName = derivationRule.Name))
 			{
 				objectTypeName = factType.Name;
@@ -2074,7 +2081,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						element.IsImplied = false;
 					}
 					else if (null != (derivationRule = nestedFact.DerivationRule) &&
-						derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived)
+						derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+						!derivationRule.ExternalDerivation)
 					{
 						// Do not support implied objectification for fully derived fact types.
 						for (int i = impliedFacts.Count - 1; i >= 0; --i)
@@ -2547,7 +2555,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					null == element.Objectification &&
 					null == element.ImpliedByObjectification &&
 					(null == (derivationRule = element.DerivationRule) ||
-					derivationRule.DerivationCompleteness != DerivationCompleteness.FullyDerived))
+					derivationRule.DerivationCompleteness != DerivationCompleteness.FullyDerived ||
+					derivationRule.ExternalDerivation))
 				{
 					bool impliedRequired = false;
 					LinkedElementCollection<RoleBase> roles = element.RoleCollection;

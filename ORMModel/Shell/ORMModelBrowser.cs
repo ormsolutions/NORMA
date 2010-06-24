@@ -46,11 +46,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 	/// </summary>
 	[Guid("DD2334C3-AFDB-4FC5-9E8A-17D19A8CC97A")]
 	[CLSCompliant(false)]
-	public partial class ORMModelBrowserToolWindow : ORMToolWindow, IORMSelectionContainer, IProvideFrameVisibility
+	public partial class ORMModelBrowserToolWindow : ORMToolWindow, IORMSelectionContainer, IProvideFrameVisibility, INotifyToolWindowActivation<ORMDesignerDocData, DiagramDocView, IORMSelectionContainer>
 	{
 		#region Member Variables
 		private SurveyTreeContainer myTreeContainer;
 		private object myCommandSet;
+		private int myWindowSessionCookie;
 
 		// Cached command status
 		private ORMDesignerCommands myVisibleCommands;
@@ -869,7 +870,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		#endregion //set command text
 		#endregion //Command handling for window
 		#region LoadWindow method
-
 		/// <summary>
 		/// Loads the SurveyTreeControl from the current document
 		/// </summary>
@@ -888,8 +888,31 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				Frame.SetGuidProperty((int)__VSFPROPID.VSFPROPID_InheritKeyBindings, ref commandSetId);
 			}
 
-			ORMDesignerDocData currentDocument = this.CurrentDocument;
-			treeContainer.Tree = (currentDocument != null) ? currentDocument.SurveyTree : null;
+			ORMDesignerDocData currentDocument;
+			ITree tree;
+			if (null != (currentDocument = this.CurrentDocument) &&
+				null != (tree = currentDocument.SurveyTree))
+			{
+				treeContainer.Tree = tree;
+				if (currentDocument.SurveyTreeWindowSessionCookie == myWindowSessionCookie)
+				{
+					VirtualTreeControl treeControl = treeContainer.TreeControl;
+					int index = currentDocument.SurveyTreeTopIndexCache;
+					if (index >= 0 && index < tree.VisibleItemCount)
+					{
+						treeControl.TopIndex = index;
+					}
+					index = currentDocument.SurveyTreeSelectedRowCache;
+					if (index >= 0 && index < tree.VisibleItemCount)
+					{
+						treeControl.CurrentIndex = index;
+					}
+				}
+			}
+			else
+			{
+				treeContainer.Tree = null;
+			}
 		}
 		private void Tree_DoubleClick(object sender, DoubleClickEventArgs e)
 		{
@@ -953,7 +976,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				tree.DelayRedraw = true;
 			}
 		}
-
 		private void ElementEventsEndedEvent(object sender, ElementEventsEndedEventArgs e)
 		{
 			ITree tree = this.myTreeContainer.Tree;
@@ -970,12 +992,20 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 		}
 		/// <summary>
-		/// called when document current selected document changes
+		/// The current document selection has changed
 		/// </summary>
 		protected override void OnCurrentDocumentChanged()
 		{
 			base.OnCurrentDocumentChanged();
 			LoadWindow();
+		}
+		/// <summary>
+		/// The window is being shown after a period of inactivity. Increment
+		/// a cookie value to verify cached state validity.
+		/// </summary>
+		protected override void OnVisibleWindowSessionBeginning()
+		{
+			myWindowSessionCookie = unchecked(myWindowSessionCookie + 1);
 		}
 		/// <summary>
 		/// returns string to be displayed as window title
@@ -1031,5 +1061,35 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 		}
 		#endregion // IProvideFrameVisibility Implementation
+		#region INotifyToolWindowActivation overrides
+		/// <summary>
+		/// Implements <see cref="INotifyToolWindowActivation{ORMDesignerDocData, DiagramDocView, IORMSelectionContainer}.ActivatorDetachEventHandlers"/>
+		/// Track the current selection properties in the model browser
+		/// </summary>
+		protected new void ActivatorDetachEventHandlers(ORMDesignerDocData docData)
+		{
+			if (docData.Store != null)
+			{
+				int topIndex = -1;
+				int selectedRow = -1;
+				SurveyTreeContainer container;
+				VirtualTreeControl control;
+				if (null != (container = myTreeContainer) &&
+					null != (control = container.TreeControl))
+				{
+					topIndex = control.TopIndex;
+					selectedRow = control.CurrentIndex;
+				}
+				docData.SurveyTreeTopIndexCache = topIndex;
+				docData.SurveyTreeSelectedRowCache = selectedRow;
+				docData.SurveyTreeWindowSessionCookie = myWindowSessionCookie;
+			}
+			base.ActivatorDetachEventHandlers(docData);
+		}
+		void INotifyToolWindowActivation<ORMDesignerDocData, DiagramDocView, IORMSelectionContainer>.ActivatorDetachEventHandlers(ORMDesignerDocData docData)
+		{
+			ActivatorDetachEventHandlers(docData);
+		}
+		#endregion // INotifyToolWindowActivation overrides
 	}
 }

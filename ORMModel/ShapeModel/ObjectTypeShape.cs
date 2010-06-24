@@ -880,22 +880,27 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			ObjectTypePlaysRole link = e.ElementLink as ObjectTypePlaysRole;
 			if (e.DomainRole.Id == ObjectTypePlaysRole.RolePlayerDomainRoleId)
 			{
-				bool newPlayerIsValueType = link.RolePlayer.IsValueType;
-				bool oldPlayerIsValueType = ((ObjectType)e.OldRolePlayer).IsValueType;
-				if ((newPlayerIsValueType || oldPlayerIsValueType) &&
-					(newPlayerIsValueType != oldPlayerIsValueType))
+				ObjectType oldPlayer = (ObjectType)e.OldRolePlayer;
+				ObjectType newPlayer = (ObjectType)e.NewRolePlayer;
+				if (oldPlayer != newPlayer)
 				{
-					LinkedElementCollection<ConstraintRoleSequence> sequences = link.PlayedRole.ConstraintRoleSequenceCollection;
-					int constraintsCount = sequences.Count;
-					for (int i = 0; i < constraintsCount; ++i)
+					bool newPlayerIsValueType = newPlayer.IsValueType;
+					bool oldPlayerIsValueType = oldPlayer.IsValueType;
+					if (newPlayerIsValueType || oldPlayerIsValueType)
 					{
-						UniquenessConstraint iuc = sequences[i] as UniquenessConstraint;
-						if (iuc != null && iuc.IsInternal)
+						bool switchToValueType = newPlayerIsValueType && !oldPlayerIsValueType;
+						LinkedElementCollection<ConstraintRoleSequence> sequences = link.PlayedRole.ConstraintRoleSequenceCollection;
+						int constraintsCount = sequences.Count;
+						for (int i = 0; i < constraintsCount; ++i)
 						{
-							ObjectType preferredFor = iuc.PreferredIdentifierFor;
-							if (preferredFor != null)
+							UniquenessConstraint iuc;
+							ObjectType preferredFor;
+							if (null != (iuc = sequences[i] as UniquenessConstraint) &&
+								iuc.IsInternal &&
+								iuc.Modality == ConstraintModality.Alethic &&
+								null != (preferredFor = iuc.PreferredIdentifierFor))
 							{
-								if (newPlayerIsValueType)
+								if (switchToValueType)
 								{
 									EnsureRefModeExpanded(iuc, preferredFor);
 								}

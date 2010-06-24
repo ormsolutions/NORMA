@@ -194,8 +194,8 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 						FactTypeDerivationExpression expression;
 						if (null != (rule = factType.DerivationRule))
 						{
-							if (rule.DerivationCompleteness == DerivationCompleteness.FullyDerived ||
-								rule.DerivationStorage == DerivationStorage.NotStored)
+							if (rule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+								(!rule.ExternalDerivation || rule.DerivationStorage == DerivationStorage.NotStored))
 							{
 								return false;
 							}
@@ -889,11 +889,15 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				FactTypeDerivationRule derivationRule = (FactTypeDerivationRule)e.ModelElement;
 				if (propertyId == FactTypeDerivationRule.DerivationCompletenessDomainPropertyId)
 				{
-					filterChange = derivationRule.DerivationStorage == DerivationStorage.Stored;
+					filterChange = !derivationRule.ExternalDerivation || derivationRule.DerivationStorage == DerivationStorage.NotStored;
+				}
+				else if (propertyId == FactTypeDerivationRule.ExternalDerivationDomainPropertyId)
+				{
+					filterChange = derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived && derivationRule.DerivationStorage == DerivationStorage.Stored;
 				}
 				else if (propertyId == FactTypeDerivationRule.DerivationStorageDomainPropertyId)
 				{
-					filterChange = derivationRule.DerivationCompleteness == DerivationCompleteness.PartiallyDerived;
+					filterChange = derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived && derivationRule.ExternalDerivation;
 				}
 				if (filterChange)
 				{
@@ -914,8 +918,8 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				FactType factType = link.FactType;
 				FactTypeDerivationRule rule;
 				if (!(factType is SubtypeFact) &&
-					((rule = link.DerivationRule).DerivationCompleteness == DerivationCompleteness.FullyDerived ||
-					rule.DerivationStorage == DerivationStorage.NotStored))
+					((rule = link.DerivationRule).DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+					(!rule.ExternalDerivation || rule.DerivationStorage == DerivationStorage.NotStored)))
 				{
 					FilterModifiedFactType(factType, true);
 				}
@@ -931,8 +935,8 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				FactTypeDerivationRule rule;
 				if (!factType.IsDeleted &&
 					!(factType is SubtypeFact) &&
-					((rule = link.DerivationRule).DerivationCompleteness == DerivationCompleteness.FullyDerived ||
-					rule.DerivationStorage == DerivationStorage.NotStored))
+					((rule = link.DerivationRule).DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+					(!rule.ExternalDerivation || rule.DerivationStorage == DerivationStorage.NotStored)))
 				{
 					FilterModifiedFactType(factType, true);
 				}

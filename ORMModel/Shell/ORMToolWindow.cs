@@ -96,6 +96,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// </summary>
 		protected virtual void OnCurrentDocumentViewChanged() { }
 		/// <summary>
+		/// Provide a notification when the tool window has been in an inactive state
+		/// and is transitioning to a fully visible state.
+		/// </summary>
+		protected virtual void OnVisibleWindowSessionBeginning() { }
+		/// <summary>
 		/// Get the current IORMSelectionContainer. Tracking this separate
 		/// from CurrentDocument allows us to switch between multiple
 		/// different ORM tool windows without changing the current ORM document.
@@ -408,6 +413,17 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		void INotifyToolWindowActivation<ORMDesignerDocData, DiagramDocView, IORMSelectionContainer>.ActivatorDetachEventHandlers(ORMDesignerDocData docData)
 		{
 			ActivatorDetachEventHandlers(docData);
+		}
+		/// <summary>
+		/// Implements <see cref="INotifyToolWindowActivation{ORMDesignerDocData, DiagramDocView, IORMSelectionContainer}.ActivatorVisibleWindowSessionBeginning"/>
+		/// </summary>
+		protected void ActivatorVisibleWindowSessionBeginning(ToolWindowActivationHelper<ORMDesignerDocData, DiagramDocView, IORMSelectionContainer> activator)
+		{
+			OnVisibleWindowSessionBeginning();
+		}
+		void INotifyToolWindowActivation<ORMDesignerDocData, DiagramDocView, IORMSelectionContainer>.ActivatorVisibleWindowSessionBeginning(ToolWindowActivationHelper<ORMDesignerDocData, DiagramDocView, IORMSelectionContainer> activator)
+		{
+			ActivatorVisibleWindowSessionBeginning(activator);
 		}
 		#endregion // INotifyToolWindowActivation<ORMDesignerDocData,DiagramDocView,IORMSelectionContainer> Implementation
 	}

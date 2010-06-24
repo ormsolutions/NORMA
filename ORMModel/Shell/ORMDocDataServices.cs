@@ -50,8 +50,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		#region SurveyTreeSetup
 		private ITree myVirtualTree = null;
 		private SurveyTree<Store> mySurveyTree;
+		private int mySurveyTreeTopIndex = -1;
+		private int mySurveyTreeSelectedRow = -1;
+		private int mySurveyTreeWindowSessionCookie;
 		/// <summary>
-		/// property to return the survey tree associated with this DocData
+		/// Return the survey tree associated with this DocData
 		/// </summary>
 		public ITree SurveyTree
 		{
@@ -66,6 +69,53 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 		}
 		/// <summary>
+		/// Maintain the top displayed index for the survey tree to enable
+		/// reactivation in the same location.
+		/// </summary>
+		public int SurveyTreeTopIndexCache
+		{
+			get
+			{
+				return mySurveyTreeTopIndex;
+			}
+			set
+			{
+				mySurveyTreeTopIndex = value;
+			}
+		}
+		/// <summary>
+		/// Maintain the currently selected roe for the survey tree
+		/// to enable reactivation in the same location.
+		/// </summary>
+		public int SurveyTreeSelectedRowCache
+		{
+			get
+			{
+				return mySurveyTreeSelectedRow;
+			}
+			set
+			{
+				mySurveyTreeSelectedRow = value;
+			}
+		}
+		/// <summary>
+		/// A cookie set with the <see cref="SurveyTreeTopIndexCache"/> and
+		/// <see cref="SurveyTreeSelectedRowCache"/> values used to determine
+		/// if the cached values can be trusted when the survey display is
+		/// reactivated for this document.
+		/// </summary>
+		public int SurveyTreeWindowSessionCookie
+		{
+			get
+			{
+				return mySurveyTreeWindowSessionCookie;
+			}
+			set
+			{
+				mySurveyTreeWindowSessionCookie = value;
+			}
+		}
+		/// <summary>
 		/// Called on a file unload to force the survey tree to recreate
 		/// </summary>
 		private void UnloadSurveyTree()
@@ -75,6 +125,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				tree.Root = null;
 				mySurveyTree = null;
+				mySurveyTreeTopIndex = -1;
+				mySurveyTreeSelectedRow = -1;
 			}
 		}
 		/// <summary>
@@ -104,6 +156,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				SetFlag(PrivateFlags.AddedSurveyQuestionEvents, true);
 				mySurveyTree = rootBranch;
 				tree.Root = rootBranch.CreateRootBranch();
+				mySurveyTreeTopIndex = -1;
+				mySurveyTreeSelectedRow = -1;
 			}
 		}
 		private class ORMSurveyTree : SurveyTree<Store>

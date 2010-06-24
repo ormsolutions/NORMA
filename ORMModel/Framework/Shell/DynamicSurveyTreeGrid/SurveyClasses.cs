@@ -741,14 +741,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 						{
 							if (notifyList != null)
 							{
-								notifyList.NodeRetargeted(elementReference, linkNode, false);
-								// Reattach the node to the new reference list
-								LinkedNode<SurveyNodeReference> existingLink;
-								if (referenceDictionary.TryGetValue(currentReferencedElement, out existingLink))
-								{
-									linkNode.SetNext(existingLink, ref existingLink);
-								}
-								referenceDictionary[currentReferencedElement] = linkNode;
+								notifyList.NodeRetargeted(elementReference, previousReferencedElement, false);
 							}
 						}
 						else if (notifyList != null)
@@ -757,7 +750,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 							// reference. It is currently impossible to accurately reconstruct this node,
 							// so we simply delete it. It is expected that an additional target change request
 							// will eventually be received that allows us to readd this node.
-							notifyList.NodeRetargeted(elementReference, null, true);
+							notifyList.NodeRetargeted(elementReference, previousReferencedElement, true);
 						}
 						addAsNewElement = false;
 						break;

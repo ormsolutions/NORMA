@@ -653,7 +653,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				return nestingType.Name;
 			}
-			else if (null != (derivationRule = DerivationRule) && derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived)
+			else if (null != (derivationRule = DerivationRule) && derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived && !derivationRule.ExternalDerivation)
 			{
 				return derivationRule.Name;
 			}
@@ -754,7 +754,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						objectifyingType.Name = (string)e.NewValue;
 					}
 					else if (null != (derivationRule = factType.DerivationRule) &&
-						derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived)
+						derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+						!derivationRule.ExternalDerivation)
 					{
 						derivationRule.Name = (string)e.NewValue;
 					}
@@ -1102,7 +1103,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				FactTypeDerivationRule derivationRule;
 				bool hasError = RoleCollection.Count > 1 &&
-					(null == (derivationRule = DerivationRule) || derivationRule.DerivationCompleteness != DerivationCompleteness.FullyDerived);
+					(null == (derivationRule = DerivationRule) || derivationRule.DerivationCompleteness != DerivationCompleteness.FullyDerived || derivationRule.ExternalDerivation);
 				Store theStore = Store;
 
 				if (hasError)
@@ -1310,7 +1311,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				if (!element.IsDeleted)
 				{
-					if (element.DerivationCompleteness == DerivationCompleteness.FullyDerived)
+					if (element.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+						!element.ExternalDerivation)
 					{
 						FactType factType = element.FactType;
 						ObjectType objectifyingType = factType.NestingType;
@@ -1360,7 +1362,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				ObjectType objectifyingType;
 				FactTypeDerivationRule derivationRule = null;
 				if (null != (objectifyingType = factType.NestingType) ||
-					null != (derivationRule = factType.DerivationRule) && derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived)
+					(null != (derivationRule = factType.DerivationRule) &&
+					derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+					!derivationRule.ExternalDerivation))
 				{
 					newGeneratedName = factType.GenerateName();
 					haveNewName = true;
@@ -2018,7 +2022,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						nestedFact.OnFactTypeNameChanged();
 					}
 					FactTypeDerivationRule derivationRule = nestedFact.DerivationRule;
-					if (derivationRule != null && derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived)
+					if (derivationRule != null &&
+						derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+						!derivationRule.ExternalDerivation)
 					{
 						derivationRule.Name = newName;
 					}
@@ -2039,6 +2045,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				derivationRule = (FactTypeDerivationRule)e.ModelElement;
 				if (derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+					!derivationRule.ExternalDerivation &&
 					null != (factType = derivationRule.FactType) &&
 					null == factType.NestingType)
 				{
@@ -2060,14 +2067,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					factType.OnFactTypeNameChanged();
 				}
 			}
-			else if (attributeId == FactTypeDerivationRule.DerivationCompletenessDomainPropertyId)
+			else if (attributeId == FactTypeDerivationRule.DerivationCompletenessDomainPropertyId ||
+				attributeId == FactTypeDerivationRule.ExternalDerivationDomainPropertyId)
 			{
 				derivationRule = (FactTypeDerivationRule)e.ModelElement;
 				if (null != (factType = derivationRule.FactType))
 				{
 					FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
 					ObjectType objectifyingType = factType.NestingType;
-					if ((DerivationCompleteness)e.NewValue == DerivationCompleteness.FullyDerived)
+					if (derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+						!derivationRule.ExternalDerivation)
 					{
 						if (objectifyingType != null)
 						{
@@ -2129,7 +2138,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			FactTypeDerivationRule derivationRule;
 			if (!element.IsDeleted &&
-				(derivationRule = (FactTypeDerivationRule)element).DerivationCompleteness != DerivationCompleteness.FullyDerived &&
+				((derivationRule = (FactTypeDerivationRule)element).DerivationCompleteness != DerivationCompleteness.FullyDerived ||
+				derivationRule.ExternalDerivation) &&
 				!string.IsNullOrEmpty(derivationRule.Name))
 			{
 				derivationRule.Name = "";
@@ -2144,7 +2154,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			FactTypeHasDerivationRule link = (FactTypeHasDerivationRule)e.ModelElement;
 			FactTypeDerivationRule derivationRule = link.DerivationRule;
-			if (derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived)
+			if (derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+				!derivationRule.ExternalDerivation)
 			{
 				FactType factType = link.FactType;
 				ObjectType nestingType;
@@ -2174,7 +2185,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			FactTypeDerivationRule derivationRule;
 			string explicitName;
 			if (!(factType = link.FactType).IsDeleted &&
-				(derivationRule = link.DerivationRule).DerivationCompleteness == DerivationCompleteness.FullyDerived)
+				(derivationRule = link.DerivationRule).DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+				!derivationRule.ExternalDerivation)
 			{
 				if (factType.NestingType == null &&
 					!string.IsNullOrEmpty(explicitName = derivationRule.Name) &&
