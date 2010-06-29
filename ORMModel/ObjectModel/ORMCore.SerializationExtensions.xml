@@ -265,28 +265,28 @@
 				<plx:callThis name="IsValueType" type="property"/>
 			</se:Condition>
 		</se:Attribute>
-		<se:Attribute ID="IsIndependent">
+		<se:Attribute ID="IsIndependent" WriteCustomStorage="true">
 			<se:Condition WriteStyle="NotWritten">
 				<plx:unaryOperator type="booleanNot">
 					<plx:callThis name="IsIndependent" type="property"/>
 				</plx:unaryOperator>
 			</se:Condition>
 		</se:Attribute>
-		<se:Attribute ID="IsExternal">
+		<se:Attribute ID="IsExternal" WriteCustomStorage="true">
 			<se:Condition WriteStyle="NotWritten">
 				<plx:unaryOperator type="booleanNot">
 					<plx:callThis name="IsExternal" type="property"/>
 				</plx:unaryOperator>
 			</se:Condition>
 		</se:Attribute>
-		<se:Attribute ID="IsPersonal">
+		<se:Attribute ID="IsPersonal" WriteCustomStorage="true">
 			<se:Condition WriteStyle="NotWritten">
 				<plx:unaryOperator type="booleanNot">
 					<plx:callThis name="IsPersonal" type="property"/>
 				</plx:unaryOperator>
 			</se:Condition>
 		</se:Attribute>
-		<se:Attribute ID="IsImplicitBooleanValue">
+		<se:Attribute ID="IsImplicitBooleanValue" WriteCustomStorage="true">
 			<se:Condition WriteStyle="NotWritten">
 				<plx:unaryOperator type="booleanNot">
 					<plx:callThis name="IsImplicitBooleanValue" type="property"/>
@@ -790,6 +790,30 @@
 								<plx:value data="0" type="i4"/>
 							</plx:right>
 						</plx:binaryOperator>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="DerivationCompleteness">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callStatic name="FullyDerived" type="field" dataTypeName="DerivationCompleteness"/>
+					</plx:left>
+					<plx:right>
+						<plx:callThis name="DerivationCompleteness" type="property"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="DerivationStorage">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callStatic name="NotStored" type="field" dataTypeName="DerivationStorage"/>
+					</plx:left>
+					<plx:right>
+						<plx:callThis name="DerivationStorage" type="property"/>
 					</plx:right>
 				</plx:binaryOperator>
 			</se:Condition>

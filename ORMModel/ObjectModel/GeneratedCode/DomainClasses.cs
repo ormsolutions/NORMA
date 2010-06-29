@@ -3567,23 +3567,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public static readonly global::System.Guid IsExternalDomainPropertyId = new global::System.Guid(0xd03828fd, 0x1da7, 0x4804, 0xa1, 0x6b, 0xcc, 0x27, 0xf2, 0x04, 0x6f, 0x57);
 		
 		/// <summary>
-		/// Storage for IsExternal
-		/// </summary>
-		private global::System.Boolean isExternalPropertyStorage;
-		
-		/// <summary>
 		/// Gets or sets the value of IsExternal domain property.
 		/// Is this ObjectType defined in an external model?
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/IsExternal.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/IsExternal.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("d03828fd-1da7-4804-a16b-cc27f2046f57")]
 		public global::System.Boolean IsExternal
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return isExternalPropertyStorage;
+				return IsExternalPropertyHandler.Instance.GetValue(this);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -3623,7 +3619,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			public override sealed global::System.Boolean GetValue(ObjectType element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.isExternalPropertyStorage;
+				// There is no storage for IsExternal because its Kind is
+				// set to CustomStorage. Please provide the GetIsExternalValue()
+				// method on the domain class.
+				return element.GetIsExternalValue();
 			}
 		
 			/// <summary>
@@ -3639,7 +3638,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (newValue != oldValue)
 				{
 					ValueChanging(element, oldValue, newValue);
-					element.isExternalPropertyStorage = newValue;
+					// There is no storage for IsExternal because its Kind is
+					// set to CustomStorage. Please provide the SetIsExternalValue()
+					// method on the domain class.
+					element.SetIsExternalValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
@@ -3842,23 +3845,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public static readonly global::System.Guid IsIndependentDomainPropertyId = new global::System.Guid(0xd52257ef, 0xd76a, 0x404d, 0xaa, 0xc5, 0x74, 0x50, 0xba, 0x5c, 0xc7, 0x90);
 		
 		/// <summary>
-		/// Storage for IsIndependent
-		/// </summary>
-		private global::System.Boolean isIndependentPropertyStorage;
-		
-		/// <summary>
 		/// Gets or sets the value of IsIndependent domain property.
 		/// Can an instance of this ObjectType exist if that instance plays no roles?
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/IsIndependent.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/IsIndependent.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("d52257ef-d76a-404d-aac5-7450ba5cc790")]
 		public global::System.Boolean IsIndependent
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return isIndependentPropertyStorage;
+				return IsIndependentPropertyHandler.Instance.GetValue(this);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -3898,7 +3897,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			public override sealed global::System.Boolean GetValue(ObjectType element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.isIndependentPropertyStorage;
+				// There is no storage for IsIndependent because its Kind is
+				// set to CustomStorage. Please provide the GetIsIndependentValue()
+				// method on the domain class.
+				return element.GetIsIndependentValue();
 			}
 		
 			/// <summary>
@@ -3914,7 +3916,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (newValue != oldValue)
 				{
 					ValueChanging(element, oldValue, newValue);
-					element.isIndependentPropertyStorage = newValue;
+					// There is no storage for IsIndependent because its Kind is
+					// set to CustomStorage. Please provide the SetIsIndependentValue()
+					// method on the domain class.
+					element.SetIsIndependentValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
@@ -4859,25 +4865,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public static readonly global::System.Guid IsPersonalDomainPropertyId = new global::System.Guid(0xef9ae461, 0x4327, 0x46dc, 0x8f, 0xe0, 0xd1, 0x38, 0x8f, 0x06, 0x1b, 0x30);
 		
 		/// <summary>
-		/// Storage for IsPersonal
-		/// </summary>
-		private global::System.Boolean isPersonalPropertyStorage;
-		
-		/// <summary>
 		/// Gets or sets the value of IsPersonal domain property.
-		/// Does this ObjectType represent a person instead of a thing?
-		///     Used as a verbalization directive to render references to this type using a
-		/// personal pronoun ('who' instead of 'that').
+		/// Does this ObjectType represent a person instead of a thing? This value is
+		/// ignored if any direct or indirect supertype is personal.
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/IsPersonal.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/IsPersonal.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("ef9ae461-4327-46dc-8fe0-d1388f061b30")]
 		public global::System.Boolean IsPersonal
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return isPersonalPropertyStorage;
+				return IsPersonalPropertyHandler.Instance.GetValue(this);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -4917,7 +4919,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			public override sealed global::System.Boolean GetValue(ObjectType element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.isPersonalPropertyStorage;
+				// There is no storage for IsPersonal because its Kind is
+				// set to CustomStorage. Please provide the GetIsPersonalValue()
+				// method on the domain class.
+				return element.GetIsPersonalValue();
 			}
 		
 			/// <summary>
@@ -4933,7 +4938,194 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (newValue != oldValue)
 				{
 					ValueChanging(element, oldValue, newValue);
-					element.isPersonalPropertyStorage = newValue;
+					// There is no storage for IsPersonal because its Kind is
+					// set to CustomStorage. Please provide the SetIsPersonalValue()
+					// method on the domain class.
+					element.SetIsPersonalValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region IsSupertypePersonal domain property code
+		
+		/// <summary>
+		/// IsSupertypePersonal domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid IsSupertypePersonalDomainPropertyId = new global::System.Guid(0xe7f4fc9d, 0x2dba, 0x4273, 0xaa, 0xc4, 0xf2, 0xaa, 0x76, 0x2d, 0xb5, 0x39);
+		
+		/// <summary>
+		/// Gets or sets the value of IsSupertypePersonal domain property.
+		/// Cache if IsPersonal is set for one or more supertypes.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/IsSupertypePersonal.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/IsSupertypePersonal.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("e7f4fc9d-2dba-4273-aac4-f2aa762db539")]
+		public global::System.Boolean IsSupertypePersonal
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return IsSupertypePersonalPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				IsSupertypePersonalPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ObjectType.IsSupertypePersonal domain property.
+		/// </summary>
+		internal sealed partial class IsSupertypePersonalPropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, global::System.Boolean>
+		{
+			private IsSupertypePersonalPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ObjectType.IsSupertypePersonal domain property value handler.
+			/// </summary>
+			public static readonly IsSupertypePersonalPropertyHandler Instance = new IsSupertypePersonalPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ObjectType.IsSupertypePersonal domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return IsSupertypePersonalDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(ObjectType element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for IsSupertypePersonal because its Kind is
+				// set to CustomStorage. Please provide the GetIsSupertypePersonalValue()
+				// method on the domain class.
+				return element.GetIsSupertypePersonalValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ObjectType element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for IsSupertypePersonal because its Kind is
+					// set to CustomStorage. Please provide the SetIsSupertypePersonalValue()
+					// method on the domain class.
+					element.SetIsSupertypePersonalValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region TreatAsPersonal domain property code
+		
+		/// <summary>
+		/// TreatAsPersonal domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid TreatAsPersonalDomainPropertyId = new global::System.Guid(0x114d5af4, 0xee4a, 0x4baa, 0x9f, 0x07, 0x16, 0x1c, 0x3b, 0x70, 0x8e, 0x1f);
+		
+		/// <summary>
+		/// Gets or sets the value of TreatAsPersonal domain property.
+		/// Does this ObjectType represent a person instead of a thing?
+		///     Used as a verbalization directive to render references to this type using a
+		/// personal pronoun ('who' instead of 'that').
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/TreatAsPersonal.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/TreatAsPersonal.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("114d5af4-ee4a-4baa-9f07-161c3b708e1f")]
+		public global::System.Boolean TreatAsPersonal
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return TreatAsPersonalPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				TreatAsPersonalPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ObjectType.TreatAsPersonal domain property.
+		/// </summary>
+		internal sealed partial class TreatAsPersonalPropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, global::System.Boolean>
+		{
+			private TreatAsPersonalPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ObjectType.TreatAsPersonal domain property value handler.
+			/// </summary>
+			public static readonly TreatAsPersonalPropertyHandler Instance = new TreatAsPersonalPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ObjectType.TreatAsPersonal domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return TreatAsPersonalDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(ObjectType element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for TreatAsPersonal because its Kind is
+				// set to CustomStorage. Please provide the GetTreatAsPersonalValue()
+				// method on the domain class.
+				return element.GetTreatAsPersonalValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ObjectType element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for TreatAsPersonal because its Kind is
+					// set to CustomStorage. Please provide the SetTreatAsPersonalValue()
+					// method on the domain class.
+					element.SetTreatAsPersonalValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
@@ -4948,11 +5140,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public static readonly global::System.Guid IsImplicitBooleanValueDomainPropertyId = new global::System.Guid(0xae665fcf, 0xb90a, 0x41bd, 0xb3, 0xe9, 0x86, 0x11, 0xb4, 0x2e, 0x66, 0x8c);
 		
 		/// <summary>
-		/// Storage for IsImplicitBooleanValue
-		/// </summary>
-		private global::System.Boolean isImplicitBooleanValuePropertyStorage;
-		
-		/// <summary>
 		/// Gets or sets the value of IsImplicitBooleanValue domain property.
 		/// Description for
 		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.IsImplicitBooleanValue
@@ -4960,13 +5147,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/IsImplicitBooleanValue.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/IsImplicitBooleanValue.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("ae665fcf-b90a-41bd-b3e9-8611b42e668c")]
 		public global::System.Boolean IsImplicitBooleanValue
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return isImplicitBooleanValuePropertyStorage;
+				return IsImplicitBooleanValuePropertyHandler.Instance.GetValue(this);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -5006,7 +5194,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			public override sealed global::System.Boolean GetValue(ObjectType element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.isImplicitBooleanValuePropertyStorage;
+				// There is no storage for IsImplicitBooleanValue because its Kind is
+				// set to CustomStorage. Please provide the GetIsImplicitBooleanValueValue()
+				// method on the domain class.
+				return element.GetIsImplicitBooleanValueValue();
 			}
 		
 			/// <summary>
@@ -5022,7 +5213,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (newValue != oldValue)
 				{
 					ValueChanging(element, oldValue, newValue);
-					element.isImplicitBooleanValuePropertyStorage = newValue;
+					// There is no storage for IsImplicitBooleanValue because its Kind is
+					// set to CustomStorage. Please provide the SetIsImplicitBooleanValueValue()
+					// method on the domain class.
+					element.SetIsImplicitBooleanValueValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
@@ -5115,6 +5310,96 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					// set to CustomStorage. Please provide the SetDerivationNoteDisplayValue()
 					// method on the domain class.
 					element.SetDerivationNoteDisplayValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region DerivationStorageDisplay domain property code
+		
+		/// <summary>
+		/// DerivationStorageDisplay domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DerivationStorageDisplayDomainPropertyId = new global::System.Guid(0xc68ed183, 0x1908, 0x444b, 0xb2, 0x1a, 0xdb, 0xfc, 0xe6, 0xe3, 0xe4, 0xea);
+		
+		/// <summary>
+		/// Gets or sets the value of DerivationStorageDisplay domain property.
+		/// Storage options for a derived subtype.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/DerivationStorageDisplay.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/DerivationStorageDisplay.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("c68ed183-1908-444b-b21a-dbfce6e3e4ea")]
+		public DerivationExpressionStorageType DerivationStorageDisplay
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DerivationStorageDisplayPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DerivationStorageDisplayPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ObjectType.DerivationStorageDisplay domain property.
+		/// </summary>
+		internal sealed partial class DerivationStorageDisplayPropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, DerivationExpressionStorageType>
+		{
+			private DerivationStorageDisplayPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ObjectType.DerivationStorageDisplay domain property value handler.
+			/// </summary>
+			public static readonly DerivationStorageDisplayPropertyHandler Instance = new DerivationStorageDisplayPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ObjectType.DerivationStorageDisplay domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DerivationStorageDisplayDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed DerivationExpressionStorageType GetValue(ObjectType element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for DerivationStorageDisplay because its Kind is
+				// set to CustomStorage. Please provide the GetDerivationStorageDisplayValue()
+				// method on the domain class.
+				return element.GetDerivationStorageDisplayValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ObjectType element, DerivationExpressionStorageType newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				DerivationExpressionStorageType oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for DerivationStorageDisplay because its Kind is
+					// set to CustomStorage. Please provide the SetDerivationStorageDisplayValue()
+					// method on the domain class.
+					element.SetDerivationStorageDisplayValue(newValue);
 					//ValueChanged(element, oldValue, GetValue(element));
 					ValueChanged(element, oldValue, newValue);
 				}
@@ -13514,7 +13799,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of DerivationCompleteness domain property.
-		/// Specify if a fact can be populated without satisfying the derivation path.
+		/// Specify if a fact can be explicitly populated without satisfying the derivation
+		/// path.
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/DerivationCompleteness.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/DerivationCompleteness.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
@@ -14092,6 +14378,184 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			: base(partition, propertyAssignments)
 		{
 		}
+		#endregion
+		#region DerivationCompleteness domain property code
+		
+		/// <summary>
+		/// DerivationCompleteness domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DerivationCompletenessDomainPropertyId = new global::System.Guid(0xeef36119, 0xcd07, 0x414b, 0xae, 0x29, 0x50, 0xb9, 0x3f, 0x11, 0x39, 0x3b);
+		
+		/// <summary>
+		/// Storage for DerivationCompleteness
+		/// </summary>
+		private DerivationCompleteness derivationCompletenessPropertyStorage = ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationCompleteness.FullyDerived;
+		
+		/// <summary>
+		/// Gets or sets the value of DerivationCompleteness domain property.
+		/// Specify if a subtype can be explicitly populated without satisfying the
+		/// derivation path.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule/DerivationCompleteness.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule/DerivationCompleteness.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationCompleteness.FullyDerived)]
+		[DslModeling::DomainObjectId("eef36119-cd07-414b-ae29-50b93f11393b")]
+		public DerivationCompleteness DerivationCompleteness
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return derivationCompletenessPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DerivationCompletenessPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the SubtypeDerivationRule.DerivationCompleteness domain property.
+		/// </summary>
+		internal sealed partial class DerivationCompletenessPropertyHandler : DslModeling::DomainPropertyValueHandler<SubtypeDerivationRule, DerivationCompleteness>
+		{
+			private DerivationCompletenessPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the SubtypeDerivationRule.DerivationCompleteness domain property value handler.
+			/// </summary>
+			public static readonly DerivationCompletenessPropertyHandler Instance = new DerivationCompletenessPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the SubtypeDerivationRule.DerivationCompleteness domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DerivationCompletenessDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed DerivationCompleteness GetValue(SubtypeDerivationRule element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.derivationCompletenessPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(SubtypeDerivationRule element, DerivationCompleteness newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				DerivationCompleteness oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.derivationCompletenessPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region DerivationStorage domain property code
+		
+		/// <summary>
+		/// DerivationStorage domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DerivationStorageDomainPropertyId = new global::System.Guid(0xaf358b6f, 0x5791, 0x442a, 0x8e, 0x15, 0x35, 0x7f, 0x99, 0x0f, 0x96, 0x5f);
+		
+		/// <summary>
+		/// Storage for DerivationStorage
+		/// </summary>
+		private DerivationStorage derivationStoragePropertyStorage = ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationStorage.NotStored;
+		
+		/// <summary>
+		/// Gets or sets the value of DerivationStorage domain property.
+		/// Specify if the derivation results are determined on demand or stored when
+		/// derivation path components are changed.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule/DerivationStorage.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule/DerivationStorage.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationStorage.NotStored)]
+		[DslModeling::DomainObjectId("af358b6f-5791-442a-8e15-357f990f965f")]
+		public DerivationStorage DerivationStorage
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return derivationStoragePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DerivationStoragePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the SubtypeDerivationRule.DerivationStorage domain property.
+		/// </summary>
+		internal sealed partial class DerivationStoragePropertyHandler : DslModeling::DomainPropertyValueHandler<SubtypeDerivationRule, DerivationStorage>
+		{
+			private DerivationStoragePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the SubtypeDerivationRule.DerivationStorage domain property value handler.
+			/// </summary>
+			public static readonly DerivationStoragePropertyHandler Instance = new DerivationStoragePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the SubtypeDerivationRule.DerivationStorage domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DerivationStorageDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed DerivationStorage GetValue(SubtypeDerivationRule element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.derivationStoragePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(SubtypeDerivationRule element, DerivationStorage newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				DerivationStorage oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.derivationStoragePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
 		#endregion
 		#region ExternalDerivation domain property code
 		

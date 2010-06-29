@@ -620,13 +620,29 @@
     <comment>DisplayName for DomainProperty &apos;ValueTypeValueRangeText&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/IsPersonal.Description" xml:space="preserve">
-    <value>Does this ObjectType represent a person instead of a thing?
-    Used as a verbalization directive to render references to this type using a personal pronoun (&apos;who&apos; instead of &apos;that&apos;).</value>
+    <value>Does this ObjectType represent a person instead of a thing? This value is ignored if any direct or indirect supertype is personal.</value>
     <comment>Description for DomainProperty &apos;IsPersonal&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/IsPersonal.DisplayName" xml:space="preserve">
     <value>IsPersonal</value>
     <comment>DisplayName for DomainProperty &apos;IsPersonal&apos; on DomainClass &apos;ObjectType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/IsSupertypePersonal.Description" xml:space="preserve">
+    <value>Cache if IsPersonal is set for one or more supertypes.</value>
+    <comment>Description for DomainProperty &apos;IsSupertypePersonal&apos; on DomainClass &apos;ObjectType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/IsSupertypePersonal.DisplayName" xml:space="preserve">
+    <value>IsSupertypePersonal</value>
+    <comment>DisplayName for DomainProperty &apos;IsSupertypePersonal&apos; on DomainClass &apos;ObjectType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/TreatAsPersonal.Description" xml:space="preserve">
+    <value>Does this ObjectType represent a person instead of a thing?
+    Used as a verbalization directive to render references to this type using a personal pronoun (&apos;who&apos; instead of &apos;that&apos;).</value>
+    <comment>Description for DomainProperty &apos;TreatAsPersonal&apos; on DomainClass &apos;ObjectType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/TreatAsPersonal.DisplayName" xml:space="preserve">
+    <value>IsPersonal</value>
+    <comment>DisplayName for DomainProperty &apos;TreatAsPersonal&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/IsImplicitBooleanValue.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.IsImplicitBooleanValue</value>
@@ -643,6 +659,14 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/DerivationNoteDisplay.DisplayName" xml:space="preserve">
     <value>DerivationNote</value>
     <comment>DisplayName for DomainProperty &apos;DerivationNoteDisplay&apos; on DomainClass &apos;ObjectType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/DerivationStorageDisplay.Description" xml:space="preserve">
+    <value>Storage options for a derived subtype.</value>
+    <comment>Description for DomainProperty &apos;DerivationStorageDisplay&apos; on DomainClass &apos;ObjectType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/DerivationStorageDisplay.DisplayName" xml:space="preserve">
+    <value>DerivationStorage</value>
+    <comment>DisplayName for DomainProperty &apos;DerivationStorageDisplay&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.Description" xml:space="preserve">
     <value></value>
@@ -1255,7 +1279,7 @@
     <comment>DisplayName for DomainClass &apos;FactTypeDerivationRule&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/DerivationCompleteness.Description" xml:space="preserve">
-    <value>Specify if a fact can be populated without satisfying the derivation path.</value>
+    <value>Specify if a fact can be explicitly populated without satisfying the derivation path.</value>
     <comment>Description for DomainProperty &apos;DerivationCompleteness&apos; on DomainClass &apos;FactTypeDerivationRule&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/DerivationCompleteness.DisplayName" xml:space="preserve">
@@ -1301,6 +1325,22 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule.DisplayName" xml:space="preserve">
     <value>SubtypeDerivationRule</value>
     <comment>DisplayName for DomainClass &apos;SubtypeDerivationRule&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule/DerivationCompleteness.Description" xml:space="preserve">
+    <value>Specify if a subtype can be explicitly populated without satisfying the derivation path.</value>
+    <comment>Description for DomainProperty &apos;DerivationCompleteness&apos; on DomainClass &apos;SubtypeDerivationRule&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule/DerivationCompleteness.DisplayName" xml:space="preserve">
+    <value>Completeness</value>
+    <comment>DisplayName for DomainProperty &apos;DerivationCompleteness&apos; on DomainClass &apos;SubtypeDerivationRule&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule/DerivationStorage.Description" xml:space="preserve">
+    <value>Specify if the derivation results are determined on demand or stored when derivation path components are changed.</value>
+    <comment>Description for DomainProperty &apos;DerivationStorage&apos; on DomainClass &apos;SubtypeDerivationRule&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule/DerivationStorage.DisplayName" xml:space="preserve">
+    <value>Storage</value>
+    <comment>DisplayName for DomainProperty &apos;DerivationStorage&apos; on DomainClass &apos;SubtypeDerivationRule&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule/ExternalDerivation.Description" xml:space="preserve">
     <value>An empty path is a placeholder for an externally defined derivation rule and is not validated.</value>

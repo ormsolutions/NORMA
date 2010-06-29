@@ -416,7 +416,7 @@
 				<DomainClassMoniker Name="ORMNamedElement"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="IsExternal" DefaultValue="false" DisplayName="IsExternal" Id="D03828FD-1DA7-4804-A16B-CC27F2046F57" Description="Is this ObjectType defined in an external model?">
+				<DomainProperty Name="IsExternal" DefaultValue="false" DisplayName="IsExternal" Kind="CustomStorage" Id="D03828FD-1DA7-4804-A16B-CC27F2046F57" Description="Is this ObjectType defined in an external model?">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
@@ -457,7 +457,7 @@
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="IsIndependent" DefaultValue="false" DisplayName="IsIndependent" Id="D52257EF-D76A-404D-AAC5-7450BA5CC790" Description="Can an instance of this ObjectType exist if that instance plays no roles?">
+				<DomainProperty Name="IsIndependent" DefaultValue="false" DisplayName="IsIndependent" Kind="CustomStorage" Id="D52257EF-D76A-404D-AAC5-7450BA5CC790" Description="Can an instance of this ObjectType exist if that instance plays no roles?">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
@@ -540,12 +540,22 @@
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="IsPersonal" DefaultValue="false" DisplayName="IsPersonal" Id="EF9AE461-4327-46DC-8FE0-D1388F061B30" Description="Does this ObjectType represent a person instead of a thing?&#xd;&#xa;    Used as a verbalization directive to render references to this type using a personal pronoun ('who' instead of 'that').">
+				<DomainProperty Name="IsPersonal" DefaultValue="false" DisplayName="IsPersonal" Kind="CustomStorage" IsBrowsable="false" Id="EF9AE461-4327-46DC-8FE0-D1388F061B30" Description="Does this ObjectType represent a person instead of a thing? This value is ignored if any direct or indirect supertype is personal.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="IsImplicitBooleanValue" DefaultValue="false" DisplayName="IsImplicitBooleanValue" Id="AE665FCF-B90A-41BD-B3E9-8611B42E668C" IsBrowsable="false">
+				<DomainProperty Name="IsSupertypePersonal" DefaultValue="false" DisplayName="IsSupertypePersonal" Kind="CustomStorage" IsBrowsable="false" Id="E7F4FC9D-2DBA-4273-AAC4-F2AA762DB539" Description="Cache if IsPersonal is set for one or more supertypes.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="TreatAsPersonal" DefaultValue="false" DisplayName="IsPersonal" Kind="CustomStorage" Id="114D5AF4-EE4A-4BAA-9F07-161C3B708E1F" Description="Does this ObjectType represent a person instead of a thing?&#xd;&#xa;    Used as a verbalization directive to render references to this type using a personal pronoun ('who' instead of 'that').">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="IsImplicitBooleanValue" DefaultValue="false" DisplayName="IsImplicitBooleanValue" Kind="CustomStorage" Id="AE665FCF-B90A-41BD-B3E9-8611B42E668C" IsBrowsable="false">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
@@ -566,6 +576,11 @@
 					</Attributes>
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="DerivationStorageDisplay" DefaultValue="" DisplayName="DerivationStorage" Id="C68ED183-1908-444B-B21A-DBFCE6E3E4EA" Kind="CustomStorage" Description="Storage options for a derived subtype.">
+					<Type>
+						<DomainEnumerationMoniker Name="DerivationExpressionStorageType"/>
 					</Type>
 				</DomainProperty>
 			</Properties>
@@ -1211,7 +1226,7 @@
 				<DomainClassMoniker Name="RolePathOwner"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="DerivationCompleteness" DefaultValue="FullyDerived" DisplayName="Completeness" Id="F254F0A7-E37E-4FDA-AC96-DEEEB8828FEC" Description="Specify if a fact can be populated without satisfying the derivation path.">
+				<DomainProperty Name="DerivationCompleteness" DefaultValue="FullyDerived" DisplayName="Completeness" Id="F254F0A7-E37E-4FDA-AC96-DEEEB8828FEC" Description="Specify if a fact can be explicitly populated without satisfying the derivation path.">
 					<Type>
 						<DomainEnumerationMoniker Name="DerivationCompleteness"/>
 					</Type>
@@ -1250,6 +1265,16 @@
 				<DomainClassMoniker Name="RolePathOwner"/>
 			</BaseClass>
 			<Properties>
+				<DomainProperty Name="DerivationCompleteness" DefaultValue="FullyDerived" DisplayName="Completeness" Id="EEF36119-CD07-414B-AE29-50B93F11393B" Description="Specify if a subtype can be explicitly populated without satisfying the derivation path.">
+					<Type>
+						<DomainEnumerationMoniker Name="DerivationCompleteness"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="DerivationStorage" DefaultValue="NotStored" DisplayName="Storage" Id="AF358B6F-5791-442A-8E15-357F990F965F" Description="Specify if the derivation results are determined on demand or stored when derivation path components are changed.">
+					<Type>
+						<DomainEnumerationMoniker Name="DerivationStorage"/>
+					</Type>
+				</DomainProperty>
 				<DomainProperty Name="ExternalDerivation" Id="975022FC-C9E1-441B-BC0B-C939172C3340" DisplayName="ExternalDerivation" Description="An empty path is a placeholder for an externally defined derivation rule and is not validated.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>

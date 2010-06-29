@@ -101,6 +101,89 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public static readonly ObjectType[] EmptyArray = new ObjectType[0];
 		#endregion // Public static fields
 		#region CustomStorage handlers
+		#region Compacted Boolean Values
+		[Flags]
+		private enum PropertyFlags
+		{
+			None = 0,
+			IsExternal = 1,
+			IsIndependent = 2,
+			IsImplicitBooleanValue = 4,
+			IsPersonal = 8,
+			IsSupertypePersonal = 0x10,
+			// Other flags here, add instead of lots of bool variables
+		}
+		private PropertyFlags myFlags;
+		private bool GetFlag(PropertyFlags flags)
+		{
+			return 0 != (myFlags & flags);
+		}
+		private void SetFlag(PropertyFlags flags, bool value)
+		{
+			if (value)
+			{
+				myFlags |= flags;
+			}
+			else
+			{
+				myFlags &= ~flags;
+			}
+		}
+		private bool GetIsExternalValue()
+		{
+			return GetFlag(PropertyFlags.IsExternal);
+		}
+		private void SetIsExternalValue(bool value)
+		{
+			SetFlag(PropertyFlags.IsExternal, value);
+		}
+		private bool GetIsIndependentValue()
+		{
+			return GetFlag(PropertyFlags.IsIndependent);
+		}
+		private void SetIsIndependentValue(bool value)
+		{
+			SetFlag(PropertyFlags.IsIndependent, value);
+		}
+		private bool GetIsPersonalValue()
+		{
+			return GetFlag(PropertyFlags.IsPersonal);
+		}
+		private void SetIsPersonalValue(bool value)
+		{
+			SetFlag(PropertyFlags.IsPersonal, value);
+		}
+		private bool GetIsSupertypePersonalValue()
+		{
+			return GetFlag(PropertyFlags.IsSupertypePersonal);
+		}
+		private void SetIsSupertypePersonalValue(bool value)
+		{
+			SetFlag(PropertyFlags.IsSupertypePersonal, value);
+		}
+		private bool GetTreatAsPersonalValue()
+		{
+			return 0 != (myFlags & (PropertyFlags.IsSupertypePersonal | PropertyFlags.IsPersonal));
+		}
+		private void SetTreatAsPersonalValue(bool value)
+		{
+			if (!Store.InUndoRedoOrRollback)
+			{
+				// Note that this is read-only in the UI if IsSupertypePersonal is true, so this
+				// will generally not be called in this case. However, allowing the value to be
+				// set in this case is harmless.
+				IsPersonal = value;
+			}
+		}
+		private bool GetIsImplicitBooleanValueValue()
+		{
+			return GetFlag(PropertyFlags.IsImplicitBooleanValue);
+		}
+		private void SetIsImplicitBooleanValueValue(bool value)
+		{
+			SetFlag(PropertyFlags.IsImplicitBooleanValue, value);
+		}
+		#endregion // Compacted Boolean Values
 		private bool GetIsValueTypeValue()
 		{
 			return this.DataType != null;
@@ -192,6 +275,49 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					targetObjectType = refModeRolePlayer;
 				}
 				targetObjectType.DataType = newValue;
+			}
+		}
+		private DerivationExpressionStorageType GetDerivationStorageDisplayValue()
+		{
+			SubtypeDerivationRule rule;
+			if (null != (rule = DerivationRule))
+			{
+				switch (rule.DerivationCompleteness)
+				{
+					case DerivationCompleteness.FullyDerived:
+						return (rule.DerivationStorage == DerivationStorage.Stored) ? DerivationExpressionStorageType.DerivedAndStored : DerivationExpressionStorageType.Derived;
+					case DerivationCompleteness.PartiallyDerived:
+						return (rule.DerivationStorage == DerivationStorage.Stored) ? DerivationExpressionStorageType.PartiallyDerivedAndStored : DerivationExpressionStorageType.PartiallyDerived;
+				}
+			}
+			return DerivationExpressionStorageType.Derived;
+		}
+		private void SetDerivationStorageDisplayValue(DerivationExpressionStorageType newValue)
+		{
+			if (!Store.InUndoRedoOrRollback)
+			{
+				SubtypeDerivationRule rule;
+				if (null != (rule = DerivationRule))
+				{
+					DerivationCompleteness completeness = DerivationCompleteness.FullyDerived;
+					DerivationStorage storage = DerivationStorage.NotStored;
+					switch (newValue)
+					{
+						//case DerivationExpressionStorageType.Derived:
+						case DerivationExpressionStorageType.DerivedAndStored:
+							storage = DerivationStorage.Stored;
+							break;
+						case DerivationExpressionStorageType.PartiallyDerived:
+							completeness = DerivationCompleteness.PartiallyDerived;
+							break;
+						case DerivationExpressionStorageType.PartiallyDerivedAndStored:
+							completeness = DerivationCompleteness.PartiallyDerived;
+							storage = DerivationStorage.Stored;
+							break;
+					}
+					rule.DerivationCompleteness = completeness;
+					rule.DerivationStorage = storage;
+				}
 			}
 		}
 		private object GetReferenceModeDisplayValue()
@@ -1785,6 +1911,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					FrameworkDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
 				}
 			}
+			else if (attributeGuid == ObjectType.IsPersonalDomainPropertyId)
+			{
+				ObjectType.WalkSubtypes(
+					objectType,
+					delegate(ObjectType subtype, int depth, bool isPrimary)
+					{
+						if (depth != 0)
+						{
+							FrameworkDomainModel.DelayValidateElement(subtype, DelayValidateIsSupertypePersonal);
+						}
+						return ObjectTypeVisitorResult.Continue;
+					});
+			}
 			else if (attributeGuid == ObjectType.IsImplicitBooleanValueDomainPropertyId)
 			{
 				throw new InvalidOperationException(ResourceStrings.ImplicitBooleanValueTypePropertyRestriction);
@@ -2004,7 +2143,28 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					for (int i = 0; i < objectTypeCount; ++i)
 					{
-						objectTypes[i].ValidateIsIndependent(notifyAdded);
+						ObjectType objectType = objectTypes[i];
+						objectType.ValidateIsIndependent(notifyAdded);
+
+						// Piggyback IsPersonal state, which is not worth its own fixup listener
+						if (objectType.IsPersonal && !objectType.IsSupertypePersonal)
+						{
+							ObjectType.WalkSubtypes(
+								objectType,
+								delegate(ObjectType subtype, int depth, bool isPrimary)
+								{
+									if (depth != 0)
+									{
+										if (subtype.IsSupertypePersonal)
+										{
+											// We've already been here
+											return ObjectTypeVisitorResult.SkipChildren;
+										}
+										subtype.IsSupertypePersonal = true;
+									}
+									return ObjectTypeVisitorResult.Continue;
+								});
+						}
 					}
 				}
 			}
@@ -3355,6 +3515,32 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // CompatibleSupertypesError Validation
+		#region IsPersonal Tracking
+		/// <summary>
+		/// Verify the cached <see cref="IsSupertypePersonal"/> setting
+		/// of the given <see cref="ObjectType"/>
+		/// </summary>
+		private static void DelayValidateIsSupertypePersonal(ModelElement element)
+		{
+			if (!element.IsDeleted)
+			{
+				ObjectType subtype = (ObjectType)element;
+				bool isSupertypePersonal = false;
+				ObjectType.WalkSupertypes(
+					subtype,
+					delegate(ObjectType type, int depth, bool isPrimary)
+					{
+						if (depth != 0 && type.IsPersonal)
+						{
+							isSupertypePersonal = true;
+							return ObjectTypeVisitorResult.Stop;
+						}
+						return ObjectTypeVisitorResult.Continue;
+					});
+				subtype.IsSupertypePersonal = isSupertypePersonal;
+			}
+		}
+		#endregion // IsPersonal Tracking
 		#region EntityTypeRequiresReferenceSchemeError Rules
 		/// <summary>
 		/// AddRule: typeof(EntityTypeHasPreferredIdentifier)
@@ -3514,6 +3700,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						FrameworkDomainModel.DelayValidateElement(subtype, DelayValidateEntityTypeRequiresReferenceSchemeError);
 						FrameworkDomainModel.DelayValidateElement(subtype, DelayValidateCompatibleSupertypesError);
+						FrameworkDomainModel.DelayValidateElement(subtype, DelayValidateIsSupertypePersonal);
 						if (hierarchyChangeCallback != null)
 						{
 							hierarchyChangeCallback(subtype);
@@ -3524,6 +3711,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					WalkSubtypes(subtype, delegate(ObjectType subtype2, int depth2, bool isPrimary2)
 					{
 						FrameworkDomainModel.DelayValidateElement(subtype2, DelayValidateCompatibleSupertypesError);
+						FrameworkDomainModel.DelayValidateElement(subtype2, DelayValidateIsSupertypePersonal);
 						if (hierarchyChangeCallback != null)
 						{
 							hierarchyChangeCallback(subtype2);
@@ -3612,6 +3800,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				WalkSubtypes(role.RolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
 				{
 					FrameworkDomainModel.DelayValidateElement(type, DelayValidateCompatibleSupertypesError);
+					FrameworkDomainModel.DelayValidateElement(type, DelayValidateIsSupertypePersonal);
 					if (hierarchyChangeCallback != null)
 					{
 						hierarchyChangeCallback(type);

@@ -1749,34 +1749,34 @@
 	</xs:complexType>
 	<xs:simpleType name="DerivationCompletenessValues">
 		<xs:annotation>
-			<xs:documentation>Specify if instances of a derived fact can also be directly asserted.</xs:documentation>
+			<xs:documentation>Specify if instances of a derived fact or object type can also be directly asserted.</xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="FullyDerived">
 				<xs:annotation>
-					<xs:documentation>The fact instance population is calculated on demand (default).</xs:documentation>
+					<xs:documentation>The instance population is calculated on demand (default).</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="PartiallyDerived">
 				<xs:annotation>
-					<xs:documentation>The fact instance population can be both calculated and asserted.</xs:documentation>
+					<xs:documentation>The instance population can be both calculated and asserted.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="DerivationStorageValues">
 		<xs:annotation>
-			<xs:documentation>Specify if derived fact instances should be recalculated on demand, or calculated on change and stored.</xs:documentation>
+			<xs:documentation>Specify if derived fact or object instances should be recalculated on demand, or calculated on change and stored.</xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="NotStored">
 				<xs:annotation>
-					<xs:documentation>Fact instances are recalculated on demand (default).</xs:documentation>
+					<xs:documentation>Instances are recalculated on demand (default).</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="Stored">
 				<xs:annotation>
-					<xs:documentation>Fact instances are calculated on change and stored.</xs:documentation>
+					<xs:documentation>Instances are calculated on change and stored.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 		</xs:restriction>
@@ -1795,6 +1795,8 @@
 						<xs:documentation>An empty derivation rule is externally defined.</xs:documentation>
 					</xs:annotation>
 				</xs:attribute>
+				<xs:attribute name="DerivationCompleteness" type="DerivationCompletenessValues" default="FullyDerived"/>
+				<xs:attribute name="DerivationStorage" type="DerivationStorageValues" default="NotStored"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>

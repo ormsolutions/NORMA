@@ -1543,7 +1543,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
 				}
-				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+				return new CustomSerializedPropertyInfo(null, null, null, true, CustomSerializedAttributeWriteStyle.Attribute, null);
 			}
 			if (domainPropertyInfo.Id == ObjectType.IsExternalDomainPropertyId)
 			{
@@ -1551,7 +1551,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
 				}
-				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+				return new CustomSerializedPropertyInfo(null, null, null, true, CustomSerializedAttributeWriteStyle.Attribute, null);
 			}
 			if (domainPropertyInfo.Id == ObjectType.IsPersonalDomainPropertyId)
 			{
@@ -1559,7 +1559,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
 				}
-				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+				return new CustomSerializedPropertyInfo(null, null, null, true, CustomSerializedAttributeWriteStyle.Attribute, null);
 			}
 			if (domainPropertyInfo.Id == ObjectType.IsImplicitBooleanValueDomainPropertyId)
 			{
@@ -1567,7 +1567,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
 				}
-				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+				return new CustomSerializedPropertyInfo(null, null, null, true, CustomSerializedAttributeWriteStyle.Attribute, null);
 			}
 			if (0 != (CustomSerializedElementSupportedOperations.PropertyInfo & base.SupportedCustomSerializedOperations))
 			{
@@ -4595,6 +4595,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
 			}
+			if (domainPropertyInfo.Id == SubtypeDerivationRule.DerivationCompletenessDomainPropertyId)
+			{
+				if (DerivationCompleteness.FullyDerived == this.DerivationCompleteness)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (domainPropertyInfo.Id == SubtypeDerivationRule.DerivationStorageDomainPropertyId)
+			{
+				if (DerivationStorage.NotStored == this.DerivationStorage)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
 			if (0 != (CustomSerializedElementSupportedOperations.PropertyInfo & base.SupportedCustomSerializedOperations))
 			{
 				return base.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
@@ -4638,6 +4654,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				customSerializedAttributes = new Dictionary<string, Guid>();
 				customSerializedAttributes.Add("ExternalDerivation", SubtypeDerivationRule.ExternalDerivationDomainPropertyId);
+				customSerializedAttributes.Add("DerivationCompleteness", SubtypeDerivationRule.DerivationCompletenessDomainPropertyId);
+				customSerializedAttributes.Add("DerivationStorage", SubtypeDerivationRule.DerivationStorageDomainPropertyId);
 				SubtypeDerivationRule.myCustomSerializedAttributes = customSerializedAttributes;
 			}
 			Guid rVal;

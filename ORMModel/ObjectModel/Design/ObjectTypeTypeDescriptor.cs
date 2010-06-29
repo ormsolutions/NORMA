@@ -138,6 +138,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			{
 				return objectType.IsSubtype;
 			}
+			else if (propertyId == ObjectType.DerivationStorageDisplayDomainPropertyId)
+			{
+				return objectType.DerivationRule != null && objectType.IsSubtype;
+			}
 			else if (propertyId == ObjectType.IsExternalDomainPropertyId)
 			{
 				// UNDONE: Support IsExternal
@@ -298,6 +302,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			{
 				Objectification objectification = objectType.Objectification;
 				return objectification != null && objectification.IsImplied;
+			}
+			else if (propertyId == ObjectType.TreatAsPersonalDomainPropertyId)
+			{
+				return objectType.IsSupertypePersonal;
 			}
 			else
 			{

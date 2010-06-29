@@ -7863,7 +7863,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										
 										// We'll use the lead (im)personal pronoun regardless, get it first
 										rolePlayer = backReferenceVariable.RolePlayer;
-										replacement = renderer.ResolveVerbalizerSnippet(rolePlayer != null && rolePlayer.IsPersonal ? RolePathVerbalizerSnippetType.PersonalPronoun : RolePathVerbalizerSnippetType.ImpersonalPronoun);
+										replacement = renderer.ResolveVerbalizerSnippet(rolePlayer != null && rolePlayer.TreatAsPersonal ? RolePathVerbalizerSnippetType.PersonalPronoun : RolePathVerbalizerSnippetType.ImpersonalPronoun);
 
 										// Figure out if we need to the variables as well
 										Dictionary<CorrelatedVariablePairing, int> pairings = myCorrelatedVariablePairing;
@@ -7877,7 +7877,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 											rolePlayer = pathedRole.Role.RolePlayer;
 											replacement = string.Format(
 												renderer.FormatProvider,
-												renderer.ResolveVerbalizerSnippet(rolePlayer != null && rolePlayer.IsPersonal ? RolePathVerbalizerSnippetType.PersonalLeadIdentityCorrelation : RolePathVerbalizerSnippetType.ImpersonalLeadIdentityCorrelation),
+												renderer.ResolveVerbalizerSnippet(rolePlayer != null && rolePlayer.TreatAsPersonal ? RolePathVerbalizerSnippetType.PersonalLeadIdentityCorrelation : RolePathVerbalizerSnippetType.ImpersonalLeadIdentityCorrelation),
 												QuantifyRolePlayerName(GetSubscriptedRolePlayerName(primaryVariable), primaryVariable.Use(CurrentQuantificationUsePhase, true), false),
 												replacement);
 											if (pairings == null)
@@ -7890,7 +7890,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									else
 									{
 										rolePlayer = pathedRole.Role.RolePlayer;
-										replacement = renderer.ResolveVerbalizerSnippet(rolePlayer != null && rolePlayer.IsPersonal ? RolePathVerbalizerSnippetType.PersonalPronoun : RolePathVerbalizerSnippetType.ImpersonalPronoun);
+										replacement = renderer.ResolveVerbalizerSnippet(rolePlayer != null && rolePlayer.TreatAsPersonal ? RolePathVerbalizerSnippetType.PersonalPronoun : RolePathVerbalizerSnippetType.ImpersonalPronoun);
 									}
 								}
 								else if (0 != (readingOptions & VerbalizationPlanReadingOptions.FullyCollapseFirstRole))
@@ -8432,7 +8432,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			Dictionary<CorrelatedVariablePairing, int> pairings = myCorrelatedVariablePairing;
 			string retVal = string.Format(
 				renderer.FormatProvider,
-				renderer.ResolveVerbalizerSnippet(leftRolePlayer != null && leftRolePlayer.IsPersonal ? (leadRolePattern ? RolePathVerbalizerSnippetType.PersonalLeadIdentityCorrelation : RolePathVerbalizerSnippetType.PersonalIdentityCorrelation) : (leadRolePattern ? RolePathVerbalizerSnippetType.ImpersonalLeadIdentityCorrelation : RolePathVerbalizerSnippetType.ImpersonalIdentityCorrelation)),
+				renderer.ResolveVerbalizerSnippet(leftRolePlayer != null && leftRolePlayer.TreatAsPersonal ? (leadRolePattern ? RolePathVerbalizerSnippetType.PersonalLeadIdentityCorrelation : RolePathVerbalizerSnippetType.PersonalIdentityCorrelation) : (leadRolePattern ? RolePathVerbalizerSnippetType.ImpersonalLeadIdentityCorrelation : RolePathVerbalizerSnippetType.ImpersonalIdentityCorrelation)),
 				preRenderedPrimary,
 				QuantifyRolePlayerName(preRenderedPartner, partnerWithVariable.Use(CurrentQuantificationUsePhase, true), false));
 			if (pairings == null)
