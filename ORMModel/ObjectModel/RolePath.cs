@@ -2241,6 +2241,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			CalculatedPathValue calculation = ((CalculatedPathValueIsCalculatedWithFunction)e.ModelElement).CalculatedValue;
 			if (!calculation.IsDeleted)
 			{
+				// None of the old parameter errors will be valid, help the error validation by clearing these now.
+				calculation.ParameterBindingErrorCollection.Clear();
 				FrameworkDomainModel.DelayValidateElement(calculation, DelayValidateCalculatedPathValue);
 			}
 		}
@@ -2251,7 +2253,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			if (e.DomainRole.Id == CalculatedPathValueIsCalculatedWithFunction.FunctionDomainRoleId)
 			{
-				FrameworkDomainModel.DelayValidateElement(((CalculatedPathValueIsCalculatedWithFunction)e.ElementLink).CalculatedValue, DelayValidateCalculatedPathValue);
+				CalculatedPathValue calculation = ((CalculatedPathValueIsCalculatedWithFunction)e.ElementLink).CalculatedValue;
+
+				// None of the old parameter errors will be valid, help the error validation by clearing these now.
+				calculation.ParameterBindingErrorCollection.Clear();
+				FrameworkDomainModel.DelayValidateElement(calculation, DelayValidateCalculatedPathValue);
 			}
 		}
 		/// <summary>
@@ -3276,8 +3282,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			CalculatedPathValueRequiresAggregationContextError aggregationContextRequiredError = calculation.AggregationContextRequiredError;
 			if (function == null)
 			{
-				calculation.ParameterBindingErrorCollection.Clear();
-				calculation.InputCollection.Clear(); // Doesn't make sense without a function
+				if (notifyAdded != null)
+				{
+					// Initial check only. These are enforced in rules.
+					calculation.ParameterBindingErrorCollection.Clear();
+					calculation.InputCollection.Clear();
+					calculation.RequiredForLeadRolePath = null;
+				}
 				if (functionRequiredError == null &&
 					(null != contextModel || null != (contextModel = calculation.Model)))
 				{
@@ -3301,6 +3312,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					functionRequiredError.Delete();
 				}
+
+				ReadOnlyCollection<CalculatedPathValueHasUnboundParameterError> bindingErrorLinks = CalculatedPathValueHasUnboundParameterError.GetLinksToParameterBindingErrorCollection(calculation);
+				int originalBindingErrorCount = bindingErrorLinks.Count;
+				if (notifyAdded != null)
+				{
+					// Make sure the existing binding errors target the correct function. Load check only,
+					// this collection is cleared in calculated value rules on function deletion and change.
+					foreach (CalculatedPathValueHasUnboundParameterError bindingErrorLink in bindingErrorLinks)
+					{
+						if (bindingErrorLink.Parameter.Function != function)
+						{
+							--originalBindingErrorCount;
+							bindingErrorLink.Delete();
+						}
+					}
+				}
 				LinkedElementCollection<FunctionParameter> parameters = function.ParameterCollection;
 				LinkedElementCollection<CalculatedPathValueInput> inputs = calculation.InputCollection;
 				int inputCount = inputs.Count;
@@ -3314,8 +3341,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					// Jumping from the parameters to all inputs is easier code, but the
 					// sets involved are not bounded in any way. Nesting the parameters
 					// and defined inputs will be the cleanest approach.
-					ReadOnlyCollection<CalculatedPathValueHasUnboundParameterError> bindingErrorLinks = CalculatedPathValueHasUnboundParameterError.GetLinksToParameterBindingErrorCollection(calculation);
-					int originalBindingErrorCount = bindingErrorLinks.Count;
 					foreach (FunctionParameter parameter in parameters)
 					{
 						bool hasError = true;

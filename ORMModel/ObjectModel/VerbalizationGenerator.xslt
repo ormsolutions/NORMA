@@ -1132,7 +1132,11 @@
 								<plx:nameRef name="derivationRule"/>
 							</xsl:when>
 							<xsl:when test="$rolePlayerKey='SingleLeadRolePath'">
-								<plx:nameRef name="singleLeadRolePath"/>
+								<plx:callInstance name="PathRoot" type="property">
+									<plx:callObject>
+										<plx:nameRef name="singleLeadRolePath"/>
+									</plx:callObject>
+								</plx:callInstance>
 							</xsl:when>
 							<xsl:when test="$rolePlayerKey='ConstraintRole'">
 								<xsl:call-template name="ReferenceIteratorRole">

@@ -1093,7 +1093,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							{
 								// Single role reading for a unary FactType. The roleReplacement will always have a single
 								// element. However, the unary role can come second in the default order. The safest approach
-								// is to simple ignore defaultOrder in this case
+								// is to simply ignore defaultOrder in this case
 								return roleReplacements[0];
 							} :
 							delegate(int fieldIndex)
@@ -2784,8 +2784,27 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// !Or, !Xor, !Chain}. The !Chain directive here applies
 		/// to the long form of negation, not the inlined form
 		/// where the verbose negation constructs are not used.
+		/// A collapsed lead completely eliminates a lead role
+		/// player. For example, '... Person has FirstName and
+		/// has LastName', with Person eliminated from the second
+		/// fact type rendering.
 		/// </summary>
 		CollapsibleLeadDirective,
+		/// <summary>
+		/// Specify a space-separated list of items to determine
+		/// if the first item in a list style supports collapsing
+		/// to allow a back reference. The allowed values here
+		/// are the same as the <see cref="CollapsibleLeadDirective"/>
+		/// and should not intersect the values used for the
+		/// <see cref="HeaderListDirective"/>. A back reference uses
+		/// a personal or impersonal pronoun in place of a restatement
+		/// of the lead role player. The back reference must immediately
+		/// follow the preceding noun. This directive allows a backreference
+		/// to be used by replacing the *[Tail|Nested]ListOpen snippets
+		/// with the *[Tail|Nested]ListCollapsedOpen snippets. Lead
+		/// list types do not support back referencing.
+		/// </summary>
+		CollapsibleListOpenForBackReferenceDirective,
 		/// <summary>
 		/// An impersonal pronoun used as a replacement for
 		/// a role player with an immediate back reference: 'that'.
@@ -2860,7 +2879,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		AggregateParameterComplexAggregationContextListClose,
 		/// <summary>
-		/// Limit values from an aggregate parameter input to distinct values: distinct {0}
+		/// Leave aggregate parameter inputs as a bag of values: each {0}
+		/// </summary>
+		AggregateBagProjection,
+		/// <summary>
+		/// Limit values from an aggregate parameter input to distinct values: each distinct {0}
 		/// </summary>
 		AggregateSetProjection,
 		/// <summary>
@@ -2880,6 +2903,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		ChainedListLocalRestrictionSeparator,
 		/// <summary>
 		/// A separator for a chained list where the chained restriction
+		/// applies only to elements contained in the preceding fact statement
+		/// and the start of the next statement is a back reference.
+		/// </summary>
+		ChainedListLocalRestrictionBackReferenceSeparator,
+		/// <summary>
+		/// A separator for a chained list where the chained restriction
 		/// introduces additional fact statements. Note that the complex
 		/// restriction separator is not used before a TailListOpen of
 		/// an operator separated list, which is any split list not specific
@@ -2887,12 +2916,41 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		ChainedListComplexRestrictionSeparator,
 		/// <summary>
-		/// Used in place of the ChainedListComplexRestrictionSeparator if the
+		/// The same as <see cref="ChainedListComplexRestrictionSeparator"/>,
+		/// except used for a top-level restriction. If the non-top-level
+		/// separator includes an indentation, then should separator should
+		/// omit the indent.
+		/// </summary>
+		ChainedListTopLevelComplexRestrictionSeparator,
+		/// <summary>
+		/// A separator for a chained list where the chained restriction
+		/// introduces additional fact statements and the start of the
+		/// next statement is a back reference.
+		/// See <see cref="ChainedListComplexRestrictionSeparator"/>
+		/// for additional comments.
+		/// </summary>
+		ChainedListComplexRestrictionBackReferenceSeparator,
+		/// <summary>
+		/// The same as <see cref="ChainedListComplexRestrictionBackReferenceSeparator"/>,
+		/// except used for a top-level restriction. If the non-top-level
+		/// separator includes an indentation, then should separator should
+		/// omit the indent.
+		/// </summary>
+		ChainedListTopLevelComplexRestrictionBackReferenceSeparator,
+		/// <summary>
+		/// Used in place of the <see cref="ChainedListComplexRestrictionSeparator"/> if the
 		/// lead role player of a chained list is the same as the previous statement.
 		/// Chained lists can collapse the lead role if the list type is listed
 		/// in the CollapsibleLeadDirective snippet.
 		/// </summary>
 		ChainedListComplexRestrictionCollapsedLeadSeparator,
+		/// <summary>
+		/// The same as <see cref="ChainedListComplexRestrictionCollapsedLeadSeparator"/>,
+		/// except used for a top-level restriction. If the non-top-level
+		/// separator includes an indentation, then should separator should
+		/// omit the indent.
+		/// </summary>
+		ChainedListTopLevelComplexRestrictionCollapsedLeadSeparator,
 		/// <summary>
 		/// The text for a collapsed separator in a chained list. Generally
 		/// just a space.
@@ -2921,6 +2979,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		AndTailListOpen,
 		/// <summary>
 		/// </summary>
+		AndTailListCollapsedOpen,
+		/// <summary>
+		/// </summary>
 		AndTailListSeparator,
 		/// <summary>
 		/// </summary>
@@ -2928,6 +2989,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// </summary>
 		AndNestedListOpen,
+		/// <summary>
+		/// </summary>
+		AndNestedListCollapsedOpen,
 		/// <summary>
 		/// </summary>
 		AndNestedListSeparator,
@@ -2948,6 +3012,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		NegatedAndTailListOpen,
 		/// <summary>
 		/// </summary>
+		NegatedAndTailListCollapsedOpen,
+		/// <summary>
+		/// </summary>
 		NegatedAndTailListSeparator,
 		/// <summary>
 		/// </summary>
@@ -2955,6 +3022,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// </summary>
 		NegatedAndNestedListOpen,
+		/// <summary>
+		/// </summary>
+		NegatedAndNestedListCollapsedOpen,
 		/// <summary>
 		/// </summary>
 		NegatedAndNestedListSeparator,
@@ -2975,6 +3045,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		OrTailListOpen,
 		/// <summary>
 		/// </summary>
+		OrTailListCollapsedOpen,
+		/// <summary>
+		/// </summary>
 		OrTailListSeparator,
 		/// <summary>
 		/// </summary>
@@ -2982,6 +3055,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// </summary>
 		OrNestedListOpen,
+		/// <summary>
+		/// </summary>
+		OrNestedListCollapsedOpen,
 		/// <summary>
 		/// </summary>
 		OrNestedListSeparator,
@@ -3002,6 +3078,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		NegatedOrTailListOpen,
 		/// <summary>
 		/// </summary>
+		NegatedOrTailListCollapsedOpen,
+		/// <summary>
+		/// </summary>
 		NegatedOrTailListSeparator,
 		/// <summary>
 		/// </summary>
@@ -3009,6 +3088,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// </summary>
 		NegatedOrNestedListOpen,
+		/// <summary>
+		/// </summary>
+		NegatedOrNestedListCollapsedOpen,
 		/// <summary>
 		/// </summary>
 		NegatedOrNestedListSeparator,
@@ -3029,6 +3111,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		XorTailListOpen,
 		/// <summary>
 		/// </summary>
+		XorTailListCollapsedOpen,
+		/// <summary>
+		/// </summary>
 		XorTailListSeparator,
 		/// <summary>
 		/// </summary>
@@ -3036,6 +3121,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// </summary>
 		XorNestedListOpen,
+		/// <summary>
+		/// </summary>
+		XorNestedListCollapsedOpen,
 		/// <summary>
 		/// </summary>
 		XorNestedListSeparator,
@@ -3056,6 +3144,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		NegatedXorTailListOpen,
 		/// <summary>
 		/// </summary>
+		NegatedXorTailListCollapsedOpen,
+		/// <summary>
+		/// </summary>
 		NegatedXorTailListSeparator,
 		/// <summary>
 		/// </summary>
@@ -3063,6 +3154,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// </summary>
 		NegatedXorNestedListOpen,
+		/// <summary>
+		/// </summary>
+		NegatedXorNestedListCollapsedOpen,
 		/// <summary>
 		/// </summary>
 		NegatedXorNestedListSeparator,
@@ -3228,6 +3322,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					return "!And !Or Xor !Xor";
 				case RolePathVerbalizerSnippetType.CollapsibleLeadDirective:
 					return "And Or Chain";
+				case RolePathVerbalizerSnippetType.CollapsibleListOpenForBackReferenceDirective:
+					return "And Or Chain";
 				case RolePathVerbalizerSnippetType.ImpersonalPronoun:
 					return snippets.GetSnippet(CoreVerbalizationSnippetType.ImpersonalPronoun);
 				case RolePathVerbalizerSnippetType.PersonalPronoun:
@@ -3251,33 +3347,45 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				case RolePathVerbalizerSnippetType.HeadVariableProjection:
 					return @"{0} <span class=""logicalOperator"">=</span> {1}";
 				case RolePathVerbalizerSnippetType.AggregateParameterDecorator:
-					return @"{0} <span class=""quantifier"">of </span> {1}";
+					return @"{0} <span class=""quantifier"">for </span> {1}";
 				case RolePathVerbalizerSnippetType.AggregateParameterSimpleAggregationContext:
-					return @"<span class=""quantifier"">each</span> {0}";
+					return @"<span class=""quantifier"">that</span> {0}";
 				case RolePathVerbalizerSnippetType.AggregateParameterComplexAggregationContextListOpen:
-					return @"<span class=""quantifier"">each </span>";
+					return @"<span class=""quantifier"">each unique </span>";
 				case RolePathVerbalizerSnippetType.AggregateParameterComplexAggregationContextListSeparator:
 					return @"<span class=""listSeparator"">, </span>";
 				case RolePathVerbalizerSnippetType.AggregateParameterComplexAggregationContextListClose:
 					return @"<span class=""quantifier""> combination</span>";
+				case RolePathVerbalizerSnippetType.AggregateBagProjection:
+					return @"<span class=""quantifier"">each</span> {0}";
 				case RolePathVerbalizerSnippetType.AggregateSetProjection:
-					return @"<span class=""quantifier"">distinct</span> {0}";
+					return @"<span class=""quantifier"">each distinct</span> {0}";
 
 				// List management
 				case RolePathVerbalizerSnippetType.ListCloseOutdentSnippets:
-					return @"NegatedChainedListClose AndTailListClose AndNestedListClose NegatedAndLeadListClose NegatedAndTailListClose NegatedAndNestedListClose OrTailListClose OrNestedListClose NegatedOrLeadListClose NegatedOrTailListClose NegatedOrNestedListClose XorLeadListClose XorTailListClose XorNestedListClose NegatedXorLeadListClose NegatedXorTailListClose NegatedXorNestedListClose";
+					return @"ChainedListClose NegatedChainedListClose AndTailListClose AndNestedListClose NegatedAndLeadListClose NegatedAndTailListClose NegatedAndNestedListClose OrTailListClose OrNestedListClose NegatedOrLeadListClose NegatedOrTailListClose NegatedOrNestedListClose XorLeadListClose XorTailListClose XorNestedListClose NegatedXorLeadListClose NegatedXorTailListClose NegatedXorNestedListClose";
 				case RolePathVerbalizerSnippetType.ChainedListOpen:
-					return "";
+					return "<span>";
 				case RolePathVerbalizerSnippetType.ChainedListLocalRestrictionSeparator:
 					return @" <span class=""quantifier"">where</span> ";
+				case RolePathVerbalizerSnippetType.ChainedListLocalRestrictionBackReferenceSeparator:
+					return @" ";
 				case RolePathVerbalizerSnippetType.ChainedListComplexRestrictionSeparator:
+					return @"<br/></span><span class=""smallIndent""><span class=""quantifier"">where</span> ";
+				case RolePathVerbalizerSnippetType.ChainedListTopLevelComplexRestrictionSeparator:
 					return @"<br/><span class=""quantifier"">where</span> ";
+				case RolePathVerbalizerSnippetType.ChainedListComplexRestrictionBackReferenceSeparator:
+					return @"<br/></span><span class=""smallIndent"">";
+				case RolePathVerbalizerSnippetType.ChainedListTopLevelComplexRestrictionBackReferenceSeparator:
+					return @"<br/>";
 				case RolePathVerbalizerSnippetType.ChainedListComplexRestrictionCollapsedLeadSeparator:
+					return @"<br/></span><span class=""smallIndent""><span class=""quantifier"">and</span> ";
+				case RolePathVerbalizerSnippetType.ChainedListTopLevelComplexRestrictionCollapsedLeadSeparator:
 					return @"<br/><span class=""quantifier"">and</span> ";
 				case RolePathVerbalizerSnippetType.ChainedListCollapsedSeparator:
 					return @" ";
 				case RolePathVerbalizerSnippetType.ChainedListClose:
-					return @"";
+					return @"</span>";
 				case RolePathVerbalizerSnippetType.NegatedChainedListOpen:
 					return @"<span class=""quantifier"">it is not true that </span>";
 				case RolePathVerbalizerSnippetType.NegatedChainedListClose:
@@ -3290,11 +3398,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					return @"";
 				case RolePathVerbalizerSnippetType.AndTailListOpen:
 					return @"<br/><span class=""smallIndent""><span class=""quantifier"">and</span> ";
+				case RolePathVerbalizerSnippetType.AndTailListCollapsedOpen:
+					return @"<br/><span class=""smallIndent"">";
 				case RolePathVerbalizerSnippetType.AndTailListSeparator:
 					return @"<br/><span class=""quantifier"">and</span> ";
 				case RolePathVerbalizerSnippetType.AndTailListClose:
 					return @"</span>";
 				case RolePathVerbalizerSnippetType.AndNestedListOpen:
+				case RolePathVerbalizerSnippetType.AndNestedListCollapsedOpen:
 					return @"<span>";
 				case RolePathVerbalizerSnippetType.AndNestedListSeparator:
 					return @"</span><br/><span class=""smallIndent""><span class=""quantifier"">and</span> ";
@@ -3307,12 +3418,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				case RolePathVerbalizerSnippetType.NegatedAndLeadListClose:
 					return @"</span>";
 				case RolePathVerbalizerSnippetType.NegatedAndTailListOpen:
+				case RolePathVerbalizerSnippetType.NegatedAndTailListCollapsedOpen:
 					return @"<span class=""quantifier"">at least one of the following is <em>false:</em></span><br/><span class=""smallIndent"">";
 				case RolePathVerbalizerSnippetType.NegatedAndTailListSeparator:
 					return @"<span class=""listSeparator"">;</span><br/>";
 				case RolePathVerbalizerSnippetType.NegatedAndTailListClose:
 					return @"</span>";
 				case RolePathVerbalizerSnippetType.NegatedAndNestedListOpen:
+				case RolePathVerbalizerSnippetType.NegatedAndNestedListCollapsedOpen:
 					return @"<span class=""quantifier"">at least one of the following is <em>false:</em></span><br/><span class=""smallIndent"">";
 				case RolePathVerbalizerSnippetType.NegatedAndNestedListSeparator:
 					return @"<span class=""listSeparator"">;</span><br/>";
@@ -3326,11 +3439,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					return @"";
 				case RolePathVerbalizerSnippetType.OrTailListOpen:
 					return @"<br/><span class=""smallIndent""><span class=""quantifier"">and</span> ";
+				case RolePathVerbalizerSnippetType.OrTailListCollapsedOpen:
+					return @"<br/><span class=""smallIndent"">";
 				case RolePathVerbalizerSnippetType.OrTailListSeparator:
 					return @"<br/><span class=""quantifier"">or</span> ";
 				case RolePathVerbalizerSnippetType.OrTailListClose:
 					return @"</span>";
 				case RolePathVerbalizerSnippetType.OrNestedListOpen:
+				case RolePathVerbalizerSnippetType.OrNestedListCollapsedOpen:
 					return @"<span>";
 				case RolePathVerbalizerSnippetType.OrNestedListSeparator:
 					return @"</span><br/><span class=""smallIndent""><span class=""quantifier"">or</span> ";
@@ -3343,12 +3459,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				case RolePathVerbalizerSnippetType.NegatedOrLeadListClose:
 					return @"</span>";
 				case RolePathVerbalizerSnippetType.NegatedOrTailListOpen:
+				case RolePathVerbalizerSnippetType.NegatedOrTailListCollapsedOpen:
 					return @"<span class=""quantifier"">all of the following are <em>false:</em></span><br/><span class=""smallIndent"">";
 				case RolePathVerbalizerSnippetType.NegatedOrTailListSeparator:
 					return @"<span class=""listSeparator"">;</span><br/>";
 				case RolePathVerbalizerSnippetType.NegatedOrTailListClose:
 					return @"</span>";
 				case RolePathVerbalizerSnippetType.NegatedOrNestedListOpen:
+				case RolePathVerbalizerSnippetType.NegatedOrNestedListCollapsedOpen:
 					return @"<span class=""quantifier"">all of the following are <em>false:</em></span><br/><span class=""smallIndent"">";
 				case RolePathVerbalizerSnippetType.NegatedOrNestedListSeparator:
 					return @"<span class=""listSeparator"">;</span><br/>";
@@ -3361,12 +3479,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				case RolePathVerbalizerSnippetType.XorLeadListClose:
 					return @"</span>";
 				case RolePathVerbalizerSnippetType.XorTailListOpen:
+				case RolePathVerbalizerSnippetType.XorTailListCollapsedOpen:
 					return @"<span class=""quantifier"">exactly one of the following is <em>true:</em></span><br/><span class=""smallIndent"">";
 				case RolePathVerbalizerSnippetType.XorTailListSeparator:
 					return @"<span class=""listSeparator"">;</span><br/>";
 				case RolePathVerbalizerSnippetType.XorTailListClose:
 					return @"</span>";
 				case RolePathVerbalizerSnippetType.XorNestedListOpen:
+				case RolePathVerbalizerSnippetType.XorNestedListCollapsedOpen:
 					return @"<span class=""quantifier"">exactly one of the following is <em>true:</em></span><br/><span class=""smallIndent"">";
 				case RolePathVerbalizerSnippetType.XorNestedListSeparator:
 					return @"<span class=""listSeparator"">;</span><br/>";
@@ -3379,12 +3499,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				case RolePathVerbalizerSnippetType.NegatedXorLeadListClose:
 					return @"</span>";
 				case RolePathVerbalizerSnippetType.NegatedXorTailListOpen:
+				case RolePathVerbalizerSnippetType.NegatedXorTailListCollapsedOpen:
 					return @"<span class=""quantifier"">either none or many of the following are <em>true:</em></span><br/><span class=""smallIndent"">";
 				case RolePathVerbalizerSnippetType.NegatedXorTailListSeparator:
 					return @"<span class=""listSeparator"">;</span><br/>";
 				case RolePathVerbalizerSnippetType.NegatedXorTailListClose:
 					return @"</span>";
 				case RolePathVerbalizerSnippetType.NegatedXorNestedListOpen:
+				case RolePathVerbalizerSnippetType.NegatedXorNestedListCollapsedOpen:
 					return @"<span class=""quantifier"">either none or many of the following are <em>true:</em></span><br/><span class=""smallIndent"">";
 				case RolePathVerbalizerSnippetType.NegatedXorNestedListSeparator:
 					return @"<span class=""listSeparator"">;</span><br/>";
@@ -3795,10 +3917,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 					}
 				}
-				if (calculatedValueInput.DistinctValues)
-				{
-					result = string.Format(myFormatProvider, ResolveVerbalizerSnippet(RolePathVerbalizerSnippetType.AggregateSetProjection), result);
-				}
+				result = string.Format(myFormatProvider, ResolveVerbalizerSnippet(calculatedValueInput.DistinctValues ? RolePathVerbalizerSnippetType.AggregateSetProjection : RolePathVerbalizerSnippetType.AggregateBagProjection), result);
 			}
 			return result;
 		}
@@ -4362,29 +4481,30 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			private IEnumerable<RolePathNode> GetPrecedingPathNodes(RolePathNode startNode, bool visitStartNode)
 			{
 				PathedRole startRole = startNode;
-				RolePath rolePath;
-				RolePathObjectTypeRoot pathRoot;
 				PathInfo pathInfo;
 				ReadOnlyCollection<PathedRole> pathedRoles;
+				RolePath parentPath;
 				int pathedRoleIndex;
 				if (startRole != null)
 				{
-					rolePath = startRole.RolePath;
-					pathInfo = GetPathInfo(rolePath);
+					pathInfo = GetPathInfo(startRole.RolePath);
 					pathedRoles = pathInfo.PathedRoles;
 					pathedRoleIndex = (pathedRoles.Count == 1 ? 0 : pathedRoles.IndexOf(startRole)) - (visitStartNode ? 0 : 1);
 				}
 				else
 				{
-					pathRoot = startNode;
-					rolePath = pathRoot.RolePath;
-					pathInfo = GetPathInfo(rolePath);
-					pathedRoles = null;
-					pathedRoleIndex = -1;
 					if (visitStartNode)
 					{
 						yield return startNode;
 					}
+					parentPath = GetPathInfo(startNode.PathRoot.RolePath).ParentPath;
+					if (parentPath == null)
+					{
+						yield break;
+					}
+					pathInfo = GetPathInfo(parentPath);
+					pathedRoles = pathInfo.PathedRoles;
+					pathedRoleIndex = pathedRoles.Count - 1;
 				}
 				for (; ; )
 				{
@@ -4392,16 +4512,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						yield return pathedRoles[i];
 					}
-					RolePath parentPath = pathInfo.ParentPath;
+					RolePathObjectTypeRoot pathRoot;
+					if (null != (pathRoot = pathInfo.RootObjectTypeLink))
+					{
+						yield return pathRoot;
+					}
+					parentPath = pathInfo.ParentPath;
 					if (parentPath == null)
 					{
 						break;
 					}
 					pathInfo = GetPathInfo(parentPath);
-					if (null != (pathRoot = pathInfo.RootObjectTypeLink))
-					{
-						yield return pathRoot;
-					}
 					pathedRoles = pathInfo.PathedRoles;
 					pathedRoleIndex = pathedRoles.Count - 1;
 				}
@@ -4685,6 +4806,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// when the readings are bound.
 			/// </summary>
 			DynamicNegatedExitRole = 0x10,
+			/// <summary>
+			/// Set during rendering so that we do not repeat analysis of the
+			/// negated exit role status.
+			/// </summary>
+			DynamicNegatedExitRoleEvaluated = 0x20,
 		}
 		#endregion // VerbalizationPlanReadingOptions enum
 		#region VerbalizationPlanBranchCorrelationStyle enum
@@ -5552,10 +5678,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private int myHeaderListBranchingBits;
 		/// <summary>
-		/// A bit per branch type to determine which branch types
-		/// render allow collapsing lead roles. Initialized on demand.
+		/// A bit per branch type to determine which branch type
+		/// rendering allows collapsing lead roles. Initialized on demand.
 		/// </summary>
 		private int myCollapsibleLeadBranchingBits;
+		/// <summary>
+		/// A bit per branch type to determine which branch type
+		/// rendering allows the list open snippet to be collapsed
+		/// for a back reference. Initialized on demand.
+		/// </summary>
+		private int myCollapsibleListOpenForBackReferenceBranchingBits;
 		/// <summary>
 		/// Bits to track which snippets result in an outdent operation.
 		/// Enables trailing outdent tracking so that text on the same
@@ -5579,6 +5711,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			myRenderer = rolePathRenderer;
 			myHeaderListBranchingBits = -1;
 			myCollapsibleLeadBranchingBits = -1;
+			myCollapsibleListOpenForBackReferenceBranchingBits = -1;
 			myOutdentSnippetBits = new BitTracker(0);
 			// A use phase of 1 instead of 0 eliminates the need for an
 			// explicit call to BeginVerbalization for the first verbalization pass
@@ -6060,50 +6193,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			int headerListBits = myHeaderListBranchingBits;
 			if (headerListBits == -1)
 			{
-				#region Translate directive snippet to bits
-				headerListBits = 0;
-				string[] headerSplitStrings = myRenderer.ResolveVerbalizerSnippet(RolePathVerbalizerSnippetType.HeaderListDirective).Split((char[])null, StringSplitOptions.RemoveEmptyEntries);
-				if (headerSplitStrings != null)
-				{
-					Type enumType = typeof(VerbalizationPlanBranchType);
-					for (int i = 0; i < headerSplitStrings.Length; ++i)
-					{
-						string directiveString = headerSplitStrings[i];
-						if (directiveString[0] == '!')
-						{
-							directiveString = "Negated" + directiveString.Substring(1) + "Split";
-						}
-						else
-						{
-							directiveString += "Split";
-						}
-						object result = null;
-						try
-						{
-							result = Enum.Parse(enumType, directiveString, true);
-						}
-						catch (ArgumentException)
-						{
-							// Swallow it
-						}
-						if (result != null)
-						{
-							headerListBits |= (1 << ((int)(VerbalizationPlanBranchType)result - 1));
-						}
-					}
-				}
-				myHeaderListBranchingBits = headerListBits;
-				#endregion // Translate directive snippet to bits
+				myHeaderListBranchingBits = headerListBits = TranslateBranchTypeDirective(RolePathVerbalizerSnippetType.HeaderListDirective);
 			}
 			return (0 != (headerListBits & (1 << ((int)branchType - 1)))) ? VerbalizationPlanBranchRenderingStyle.HeaderList : VerbalizationPlanBranchRenderingStyle.OperatorSeparated;
 		}
 		/// <summary>
-		/// Determine the <see cref="VerbalizationPlanBranchRenderingStyle"/> from a
-		/// <see cref="VerbalizationPlanBranchType"/> branch type. The settings here
-		/// are based on context-provided snippet to enable different renderings of
-		/// the same branching operation. Note that <see cref="VerbalizationPlanBranchType.Chain">Chain</see>
-		/// and <see cref="VerbalizationPlanBranchType.NegatedChain">NegatedChain</see> branch types
-		/// are not dynamic and are always given a rendering style of <see cref="VerbalizationPlanBranchRenderingStyle.OperatorSeparated"/>.
+		/// Determine whether a <see cref="VerbalizationPlanBranchType"/> branch style allows
+		/// a lead role player to be collapsed in a non-lead list item.
 		/// </summary>
 		private bool GetCollapsibleLeadAllowedFromBranchType(VerbalizationPlanBranchType branchType)
 		{
@@ -6114,49 +6210,73 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			int collapsibleLeadBits = myCollapsibleLeadBranchingBits;
 			if (collapsibleLeadBits == -1)
 			{
-				#region Translate directive snippet to bits
-				collapsibleLeadBits = 0;
-				string[] collapsibleLeadStrings = myRenderer.ResolveVerbalizerSnippet(RolePathVerbalizerSnippetType.CollapsibleLeadDirective).Split((char[])null, StringSplitOptions.RemoveEmptyEntries);
-				if (collapsibleLeadStrings != null)
-				{
-					Type enumType = typeof(VerbalizationPlanBranchType);
-					for (int i = 0; i < collapsibleLeadStrings.Length; ++i)
-					{
-						string directiveString = collapsibleLeadStrings[i];
-						if (directiveString[0] == '!')
-						{
-							if (0 == string.Compare(directiveString, "!Chain", StringComparison.InvariantCultureIgnoreCase))
-							{
-								directiveString = "NegatedChain";
-							}
-							else
-							{
-								directiveString = "Negated" + directiveString.Substring(1) + "Split";
-							}
-						}
-						else if (0 != string.Compare(directiveString, "Chain", StringComparison.InvariantCultureIgnoreCase))
-						{
-							directiveString += "Split";
-						}
-						object result = null;
-						try
-						{
-							result = Enum.Parse(enumType, directiveString, true);
-						}
-						catch (ArgumentException)
-						{
-							// Swallow it
-						}
-						if (result != null)
-						{
-							collapsibleLeadBits |= (1 << ((int)(VerbalizationPlanBranchType)result - 1));
-						}
-					}
-				}
-				myCollapsibleLeadBranchingBits = collapsibleLeadBits;
-				#endregion // Translate directive snippet to bits
+				myCollapsibleLeadBranchingBits = collapsibleLeadBits = TranslateBranchTypeDirective(RolePathVerbalizerSnippetType.CollapsibleLeadDirective);
 			}
 			return 0 != (collapsibleLeadBits & (1 << ((int)branchType - 1)));
+		}
+		/// <summary>
+		/// Determine whether a <see cref="VerbalizationPlanBranchType"/> branch style allows
+		/// the list open text to be collapsed to allow a direct back reference.
+		/// </summary>
+		private bool GetCollapsibleListOpenForBackReferenceAllowedFromBranchType(VerbalizationPlanBranchType branchType)
+		{
+			if (branchType == VerbalizationPlanBranchType.None)
+			{
+				return false;
+			}
+			int collapsibleLeadBits = myCollapsibleListOpenForBackReferenceBranchingBits;
+			if (collapsibleLeadBits == -1)
+			{
+				myCollapsibleListOpenForBackReferenceBranchingBits = collapsibleLeadBits = TranslateBranchTypeDirective(RolePathVerbalizerSnippetType.CollapsibleListOpenForBackReferenceDirective);
+			}
+			return 0 != (collapsibleLeadBits & (1 << ((int)branchType - 1)));
+		}
+		/// <summary>
+		/// Translate a directive snippet consisting of a space-separated string
+		/// of branch type directives into bits, with bits corresponding to the
+		/// numeric values of <see cref="VerbalizationPlanBranchType"/>
+		/// </summary>
+		private int TranslateBranchTypeDirective(RolePathVerbalizerSnippetType branchDirectiveSnippet)
+		{
+			int directiveBits = 0;
+			string[] directiveStrings = myRenderer.ResolveVerbalizerSnippet(branchDirectiveSnippet).Split((char[])null, StringSplitOptions.RemoveEmptyEntries);
+			if (directiveStrings != null)
+			{
+				Type enumType = typeof(VerbalizationPlanBranchType);
+				for (int i = 0; i < directiveStrings.Length; ++i)
+				{
+					string directiveString = directiveStrings[i];
+					if (directiveString[0] == '!')
+					{
+						if (0 == string.Compare(directiveString, "!Chain", StringComparison.InvariantCultureIgnoreCase))
+						{
+							directiveString = "NegatedChain";
+						}
+						else
+						{
+							directiveString = "Negated" + directiveString.Substring(1) + "Split";
+						}
+					}
+					else if (0 != string.Compare(directiveString, "Chain", StringComparison.InvariantCultureIgnoreCase))
+					{
+						directiveString += "Split";
+					}
+					object result = null;
+					try
+					{
+						result = Enum.Parse(enumType, directiveString, true);
+					}
+					catch (ArgumentException)
+					{
+						// Swallow it
+					}
+					if (result != null)
+					{
+						directiveBits |= (1 << ((int)(VerbalizationPlanBranchType)result - 1));
+					}
+				}
+			}
+			return directiveBits;
 		}
 		/// <summary>
 		/// Return true if this is a splitting branch as opposed to a chained branch.
@@ -6344,9 +6464,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					localContextTrailingVariable = null;
 					PathedRole oppositePathedRole = null;
 					VerbalizationPlanNode parentNode;
+					bool reverseReading = false;
+					Role entryRole;
 					bool checkOppositeNegation =
 						roleCount == 2 &&
-						roles[0] == factTypeEntry.Role &&
+						(roles[0] == (entryRole = factTypeEntry.Role) ||
+						(reverseReading = (roles[1] == entryRole))) &&
 						verbalizationNodeLink != null &&
 						verbalizationNodeLink.Previous == null &&
 						null != (parentNode = verbalizationNode.ParentNode) &&
@@ -6354,19 +6477,29 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					bool hasTrailingRolePlayer = roleCount > 1 && readingText.EndsWith("{" + (roleCount - 1).ToString(CultureInfo.InvariantCulture) + "}");
 					if (checkOppositeNegation || hasTrailingRolePlayer)
 					{
-						Role findRole = roles[roleCount - 1].Role;
+						Role findTrailingRole = (hasTrailingRolePlayer || !reverseReading) ? roles[roleCount - 1].Role : null;
+						Role findLeadRole = (reverseReading && checkOppositeNegation) ? roles[0].Role : null;
 						VisitPathedRolesForFactTypeEntry(
 							factTypeEntry,
 							delegate(PathedRole testPathedRole)
 							{
-								if (testPathedRole.Role == findRole)
+								Role testRole = testPathedRole.Role;
+								if (testRole == findTrailingRole)
 								{
-									oppositePathedRole = testPathedRole;
+									if (!reverseReading)
+									{
+										oppositePathedRole = testPathedRole;
+									}
 									if (hasTrailingRolePlayer)
 									{
 										localContextTrailingVariable = GetRolePlayerVariableUse(testPathedRole).Value.PrimaryRolePlayerVariable;
 									}
 									return false;
+								}
+								if (testRole == findLeadRole &&
+									reverseReading)
+								{
+									oppositePathedRole = testPathedRole;
 								}
 								return true;
 							});
@@ -6395,42 +6528,82 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					break;
 				case VerbalizationPlanNodeType.Branch:
 					VerbalizationPlanBranchType branchType = verbalizationNode.BranchType;
-					bool childCanCollapseLead = GetCollapsibleLeadAllowedFromBranchType(branchType);
-					if (!childCanCollapseLead && branchType == VerbalizationPlanBranchType.NegatedChain && canCollapseLead)
-					{
-						// Dynamic negation inlining means that we may not know until rendering
-						// the path if a construct can be inlined or not, so we recheck the collapsible
-						// lead permissions for a negated chain dynamically based on whether or
-						// not the negation is inlined. We need to calculate collapsed lead settings
-						// just in case we use them, so we always mark collapsing as possible
-						// irrespective of the directive settings for the negated chain.
-						childCanCollapseLead = true;
-					}
-					bool splitBlocksTrailingVariable = BranchSplits(branchType);
-					contextTrailingVariable = null;
-					RolePlayerVariable startContextLeadVariable;
+
+					// Check role collapsing constructs based on branch type.
+					// Dynamic negation inlining means that we may not know until rendering
+					// the path if a construct can be inlined or not, so we recheck the collapsible
+					// lead permissions for a negated chain dynamically based on whether or
+					// not the negation is inlined. We need to calculate collapsed lead settings
+					// just in case we use them, so we always mark collapsing as possible
+					// irrespective of the directive settings for the negated chain.
+					bool childCanCollapseLead = branchType == VerbalizationPlanBranchType.NegatedChain ? canCollapseLead : GetCollapsibleLeadAllowedFromBranchType(branchType);
+					RolePlayerVariable blockContextLeadVariable; // Either the context lead variable, or the lead variable for the first child if no context is provided
+					bool blockContextLeadVariableIsStable = true; // Switch to false if the block context variable changes for different nodes. The only stable change is a shift from null for the first node.
 					if (childCanCollapseLead)
 					{
-						startContextLeadVariable = contextLeadVariable;
+						blockContextLeadVariable = contextLeadVariable;
 					}
 					else
 					{
-						contextLeadVariable = startContextLeadVariable = null;
+						contextLeadVariable = blockContextLeadVariable = null;
 					}
+
+					// Handle back reference constructs based on branch type, with similar
+					// special handling for negated chains as employed role collapsing.
+					// Back references are supported on the first node in a branch only, but
+					// can be nested, with a nested branch providing the first back reference.
+					if (contextTrailingVariable != null &&
+						branchType != VerbalizationPlanBranchType.NegatedChain &&
+						!GetCollapsibleListOpenForBackReferenceAllowedFromBranchType(branchType))
+					{
+						contextTrailingVariable = null;
+					}
+
+					// If this is a splitting branch instead of a chaining branch, then the
+					// trailing variable (providing the anchor for a possible future back reference)
+					// must be cleared after each step. Verify this with the branch type up front.
+					bool isSplittingBranch = BranchSplits(branchType);
+
 					childNodeLink = verbalizationNode.FirstChildNode;
+					bool first = true;
 					while (childNodeLink != null)
 					{
-						if (splitBlocksTrailingVariable)
+						VerbalizationPlanNode childNode = childNodeLink.Value;
+						ResolveReadings(childNode, childNodeLink, childCanCollapseLead, ref contextLeadVariable, ref contextTrailingVariable);
+						switch (GetLeadContextChange(childNode, false))
+						{
+							case LeadContextChange.Cleared:
+							case LeadContextChange.NestedChange:
+								blockContextLeadVariableIsStable = false;
+								contextLeadVariable = blockContextLeadVariable = null;
+								break;
+							case LeadContextChange.InitialChange:
+								if (first)
+								{
+									if (blockContextLeadVariable == null || !isSplittingBranch)
+									{
+										blockContextLeadVariable = contextLeadVariable;
+									}
+									else if (blockContextLeadVariable != contextLeadVariable)
+									{
+										blockContextLeadVariableIsStable = false;
+									}
+								}
+								else if (blockContextLeadVariable != contextLeadVariable || !isSplittingBranch)
+								{
+									blockContextLeadVariableIsStable = false;
+								}
+								break;
+						}
+						first = false;
+						if (isSplittingBranch)
 						{
 							contextTrailingVariable = null;
 						}
-						ResolveReadings(childNodeLink.Value, childNodeLink, childCanCollapseLead, ref contextLeadVariable, ref contextTrailingVariable);
 						childNodeLink = childNodeLink.Next;
 					}
-					if (startContextLeadVariable != contextLeadVariable)
-					{
-						contextLeadVariable = null;
-					}
+					contextLeadVariable = (canCollapseLead && blockContextLeadVariableIsStable) ? blockContextLeadVariable : null;
+					contextTrailingVariable = null;
 					break;
 				case VerbalizationPlanNodeType.HeadCalculatedValueProjection:
 				case VerbalizationPlanNodeType.HeadConstantProjection:
@@ -6439,6 +6612,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					if (!verbalizationNode.RestrictsPreviousFactType)
 					{
 						// Allow restriction conditions without losing the lead
+						// If this is changed, synchronize the corresponding case in GetLeadContextChange
 						contextLeadVariable = null;
 					}
 					contextTrailingVariable = null;
@@ -6453,6 +6627,119 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					ResolveReadings(childNodeLink.Value, childNodeLink, canCollapseLead, ref contextLeadVariable, ref contextTrailingVariable);
 					break;
 			}
+		}
+		/// <summary>
+		/// Return values for <see cref="GetLeadContextChange"/>
+		/// </summary>
+		private enum LeadContextChange
+		{
+			/// <summary>
+			/// The lead context did not change
+			/// </summary>
+			None,
+			/// <summary>
+			/// The context was cleared by a nested node
+			/// </summary>
+			Cleared,
+			/// <summary>
+			/// The first node that affects context changed the context
+			/// </summary>
+			InitialChange,
+			/// <summary>
+			/// The lead context changes at a nested node
+			/// </summary>
+			NestedChange,
+		}
+		/// <summary>
+		/// Test whether rendering of a node will change or clear the current lead context.
+		/// If this is a <paramref name="dynamicCheck"/>, then this method should be called after
+		/// the node has been rendered. This method determines when we can safely collapse lead
+		/// roles, which must restate the role player if the previous verbalization clears or modifies
+		/// the context. Normally this can be done during static analysis, but variable introduction
+		/// and dynamic inline negation means that collapsed roles may need to be restated based
+		/// on head variable conditions and other issues that are unknown when the tree is produced.
+		/// </summary>
+		/// <param name="verbalizationNode">The verbalization node to verify.</param>
+		/// <param name="dynamicCheck"><see langword="true"/> if this is being called while the path
+		/// is being rendered. A static treats all inline nodes that may be negated as nodes that
+		/// will be inlined.</param>
+		private LeadContextChange GetLeadContextChange(VerbalizationPlanNode verbalizationNode, bool dynamicCheck)
+		{
+			LinkedNode<VerbalizationPlanNode> childNodeLink;
+			switch (verbalizationNode.NodeType)
+			{
+				case VerbalizationPlanNodeType.FactType:
+					// Note that a negated fact type options are handled inline with a NegatedChain branch
+					return (0 != (verbalizationNode.ReadingOptions & VerbalizationPlanReadingOptions.FullyCollapseFirstRole)) ? LeadContextChange.None : LeadContextChange.InitialChange;
+				case VerbalizationPlanNodeType.Branch:
+					VerbalizationPlanBranchType branchType = verbalizationNode.BranchType;
+					childNodeLink = null;
+					switch (branchType)
+					{
+						case VerbalizationPlanBranchType.Chain:
+							childNodeLink = verbalizationNode.FirstChildNode;
+							break;
+						case VerbalizationPlanBranchType.NegatedChain:
+							childNodeLink = verbalizationNode.FirstChildNode;
+							if (childNodeLink != null &&
+								0 == (childNodeLink.Value.ReadingOptions & (dynamicCheck ? VerbalizationPlanReadingOptions.NegatedExitRole : (VerbalizationPlanReadingOptions.NegatedExitRole | VerbalizationPlanReadingOptions.DynamicNegatedExitRole))) &&
+								!GetCollapsibleLeadAllowedFromBranchType(VerbalizationPlanBranchType.NegatedChain))
+							{
+								// If the negation is not inlined and the negation snippet does not allow collapsing,
+								// then we 'clear' at this point instead of registering an initial change because
+								// regardless of whether or not the negated chain branch type allows collapsing,
+								// the lead variable is being introduced inside negation.
+								return LeadContextChange.Cleared;
+							}
+							// The lead negated fact type is treated as a normal fact type, continue normal processing
+							break;
+						default:
+							if (GetRenderingStyleFromBranchType(branchType) != VerbalizationPlanBranchRenderingStyle.OperatorSeparated)
+							{
+								return LeadContextChange.Cleared;
+							}
+							childNodeLink = verbalizationNode.FirstChildNode;
+							break;
+					}
+					bool first = true;
+					while (childNodeLink != null)
+					{
+						switch (GetLeadContextChange(childNodeLink.Value, dynamicCheck))
+						{
+							case LeadContextChange.Cleared:
+								return LeadContextChange.Cleared;
+							case LeadContextChange.InitialChange:
+								return first ? LeadContextChange.InitialChange : LeadContextChange.NestedChange;
+							case LeadContextChange.NestedChange:
+								return LeadContextChange.NestedChange;
+						}
+						first = false;
+						childNodeLink = childNodeLink.Next;
+					}
+					break;
+				case VerbalizationPlanNodeType.HeadCalculatedValueProjection:
+				case VerbalizationPlanNodeType.HeadConstantProjection:
+				case VerbalizationPlanNodeType.CalculatedCondition:
+				case VerbalizationPlanNodeType.ValueConstraint:
+					if (!verbalizationNode.RestrictsPreviousFactType)
+					{
+						// Allow restriction conditions without losing the lead
+						// If this is changed, synchronize the corresponding case in ResolveReadings
+						return LeadContextChange.Cleared;
+					}
+					break;
+				case VerbalizationPlanNodeType.ChainedRootVariable:
+					return LeadContextChange.Cleared;
+				case VerbalizationPlanNodeType.FloatingRootVariableContext:
+					// This is a directive node, pass through the children
+					childNodeLink = verbalizationNode.FirstChildNode;
+					if (childNodeLink != null)
+					{
+						return GetLeadContextChange(childNodeLink.Value, dynamicCheck);
+					}
+					break;
+			}
+			return LeadContextChange.None;
 		}
 		/// <summary>
 		/// Determine the index of a <see cref="Role"/> in a list of fact type
@@ -7711,7 +7998,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				builder = new StringBuilder();
 			}
 			int outdentPosition;
-			return RenderVerbalizationPlanNode(builder, planNode, null, out outdentPosition);
+			bool blockNextLeadRoleCollapse = false;
+			return RenderVerbalizationPlanNode(builder, planNode, null, ref blockNextLeadRoleCollapse, out outdentPosition);
 		}
 		/// <summary>
 		/// Render a role player for use outside in an external predicate replacement.
@@ -7780,7 +8068,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			return "";
 		}
-		private string RenderVerbalizationPlanNode(StringBuilder builder, VerbalizationPlanNode node, LinkedNode<VerbalizationPlanNode> nodeLink, out int outdentPosition)
+		private string RenderVerbalizationPlanNode(StringBuilder builder, VerbalizationPlanNode node, LinkedNode<VerbalizationPlanNode> nodeLink, ref bool blockNextLeadRoleCollapse, out int outdentPosition)
 		{
 			outdentPosition = -1;
 			if (node == null)
@@ -7895,17 +8183,35 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								}
 								else if (0 != (readingOptions & VerbalizationPlanReadingOptions.FullyCollapseFirstRole))
 								{
-									// The collapsed first role settings for the lead role in a negated chain
-									// are dependent on whether the negation is inlined and, if not inlined, whether
-									// the negated chain branching snippets allow a lead collapse. This was deferred
-									// until this point the ability to inline a negation is not known until it is
-									// rendered.
-									VerbalizationPlanNode parentNode;
-									if (0 != (readingOptions & VerbalizationPlanReadingOptions.NegatedExitRole) || // Inline negation supported, can collapse as set is based on the containing branch, not the negation
-										null != nodeLink.Previous || // Inline negation applies only to the lead fact type in a negated chain
-										(null != (parentNode = node.ParentNode) && parentNode.BranchType == VerbalizationPlanBranchType.NegatedChain && GetCollapsibleLeadAllowedFromBranchType(VerbalizationPlanBranchType.NegatedChain)))
+									if (blockNextLeadRoleCollapse)
 									{
-										replacement = "";
+										blockNextLeadRoleCollapse = false;
+									}
+									else
+									{
+										// Note that dynamic inline negation settings are resolve by the parent node, so
+										// we do not need to check if NegatedExitRole is resolved at this point. However,
+										// if we are not collapsed for inline negation, then we do need to check if the
+										// non-inlined negation snippet supports collapsing. This is done much earlier for
+										// other branch types.
+										VerbalizationPlanNode parentNode;
+										VerbalizationPlanReadingOptions inlineNegationOptions = readingOptions & (VerbalizationPlanReadingOptions.DynamicNegatedExitRole | VerbalizationPlanReadingOptions.NegatedExitRole);
+										if (0 != inlineNegationOptions)
+										{
+											if (0 != (inlineNegationOptions & VerbalizationPlanReadingOptions.NegatedExitRole))
+											{
+												replacement = "";
+											}
+											else if (null != (parentNode = node.ParentNode) &&
+												GetCollapsibleLeadAllowedFromBranchType(parentNode.BranchType))
+											{
+												replacement = "";
+											}
+										}
+										else
+										{
+											replacement = "";
+										}
 									}
 								}
 							}
@@ -7922,6 +8228,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 						roleReplacements[i] = replacement;
 					}
+					blockNextLeadRoleCollapse = false; // Rendering a fact type will always reuse or introduce a new context
 					return hyphenBinder.PopulatePredicateText(reading, renderer.FormatProvider, predicatePartDecorator, factRoles, roleReplacements, false);
 				case VerbalizationPlanNodeType.Branch:
 					int restoreBuilder = builder.Length;
@@ -7936,6 +8243,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					RolePathVerbalizerSnippetType snippet;
 					VerbalizationPlanBranchType childBranchType;
 					VerbalizationPlanNodeType previousChildNodeType = (VerbalizationPlanNodeType)(-1);
+					VerbalizationPlanNode previousChildNode = null;
 					while (childNodeLink != null)
 					{
 						snippet = (RolePathVerbalizerSnippetType)(-1);
@@ -7970,10 +8278,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										break;
 								}
 							}
+							bool testForBackReferenceOpen = true;
 							switch (branchType)
 							{
 								case VerbalizationPlanBranchType.Chain:
 									snippet = RolePathVerbalizerSnippetType.ChainedListOpen;
+									testForBackReferenceOpen = false;
 									break;
 								case VerbalizationPlanBranchType.AndSplit:
 									snippet = isTailBranch ? RolePathVerbalizerSnippetType.AndTailListOpen : (isNestedBranch ? RolePathVerbalizerSnippetType.AndNestedListOpen : RolePathVerbalizerSnippetType.AndLeadListOpen);
@@ -7994,26 +8304,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									snippet = isTailBranch ? RolePathVerbalizerSnippetType.NegatedXorTailListOpen : (isNestedBranch ? RolePathVerbalizerSnippetType.NegatedXorNestedListOpen : RolePathVerbalizerSnippetType.NegatedXorLeadListOpen);
 									break;
 								case VerbalizationPlanBranchType.NegatedChain:
-									// See if we can inline the negation. Negation is inlined
-									// if the lead fact type is binary and the opposite role is
-									// either fully existential (not referenced) or has not
-									// yet been referenced.
-									readingOptions = VerbalizationPlanReadingOptions.None;
-									if (0 != ((readingOptions = childNode.ReadingOptions) & VerbalizationPlanReadingOptions.DynamicNegatedExitRole) &&
-										null != (entryPathedRole = childNode.FactTypeEntry))
-									{
-										// The dynamic flag is set if there is a trailing pathed role on the
-										// binary in the same role path. We can use the collapsed negated form
-										// if the variable has not been introduced yet.
-										ReadOnlyCollection<PathedRole> childPathedRoles = myRolePathCache.PathedRoleCollection(entryPathedRole.RolePath);
-										int testChildIndex = childPathedRoles.IndexOf(entryPathedRole) + 1;
-										if (testChildIndex < childPathedRoles.Count &&
-											!GetRolePlayerVariableUse(childPathedRoles[testChildIndex]).Value.PrimaryRolePlayerVariable.HasBeenUsed(CurrentQuantificationUsePhase, true))
-										{
-											readingOptions |= VerbalizationPlanReadingOptions.NegatedExitRole;
-											childNode.ReadingOptions = readingOptions;
-										}
-									}
+									// Check for inline negation
+									readingOptions = ResolveDynamicNegatedExitRole(childNode);
 									if (0 == (readingOptions & VerbalizationPlanReadingOptions.NegatedExitRole))
 									{
 										snippet = RolePathVerbalizerSnippetType.NegatedChainedListOpen;
@@ -8023,11 +8315,29 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										inlineNegatedChain = true;
 										snippet = RolePathVerbalizerSnippetType.ChainedListOpen;
 									}
+									testForBackReferenceOpen = false;
 									break;
+							}
+							if (testForBackReferenceOpen &&
+								snippet != (RolePathVerbalizerSnippetType)(-1) &&
+								(isTailBranch || isNestedBranch) &&
+								LeadTextIsBackReference(childNode))
+							{
+								snippet = (RolePathVerbalizerSnippetType)((int)snippet + 1);
 							}
 						}
 						else
 						{
+							switch (GetLeadContextChange(previousChildNode, true))
+							{
+								case LeadContextChange.InitialChange:
+									blockNextLeadRoleCollapse = false;
+									break;
+								case LeadContextChange.Cleared:
+								case LeadContextChange.NestedChange:
+									blockNextLeadRoleCollapse = true;
+									break;
+							}
 							switch (branchType)
 							{
 								case VerbalizationPlanBranchType.Chain:
@@ -8042,10 +8352,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										GetRenderingStyleFromBranchType(childBranchType) == VerbalizationPlanBranchRenderingStyle.OperatorSeparated))
 									{
 										snippet = (0 != (readingOptions & VerbalizationPlanReadingOptions.FullyCollapseFirstRole)) ?
-											RolePathVerbalizerSnippetType.ChainedListComplexRestrictionCollapsedLeadSeparator :
-											((childNode.RestrictsPreviousFactType || previousChildNodeType == VerbalizationPlanNodeType.ChainedRootVariable) ?
-												RolePathVerbalizerSnippetType.ChainedListLocalRestrictionSeparator :
-												RolePathVerbalizerSnippetType.ChainedListComplexRestrictionSeparator);
+											((isTailBranch || isNestedBranch) ? RolePathVerbalizerSnippetType.ChainedListComplexRestrictionCollapsedLeadSeparator : RolePathVerbalizerSnippetType.ChainedListTopLevelComplexRestrictionCollapsedLeadSeparator) :
+											((childNode.RestrictsPreviousFactType ||
+											previousChildNodeType == VerbalizationPlanNodeType.ChainedRootVariable) ?
+												(LeadTextIsBackReference(childNode) ? RolePathVerbalizerSnippetType.ChainedListLocalRestrictionBackReferenceSeparator : RolePathVerbalizerSnippetType.ChainedListLocalRestrictionSeparator) :
+												((isTailBranch || isNestedBranch) ?
+													(LeadTextIsBackReference(childNode) ? RolePathVerbalizerSnippetType.ChainedListComplexRestrictionBackReferenceSeparator : RolePathVerbalizerSnippetType.ChainedListComplexRestrictionSeparator) :
+													(LeadTextIsBackReference(childNode) ? RolePathVerbalizerSnippetType.ChainedListTopLevelComplexRestrictionBackReferenceSeparator : RolePathVerbalizerSnippetType.ChainedListTopLevelComplexRestrictionSeparator)));
 									}
 									break;
 								case VerbalizationPlanBranchType.AndSplit:
@@ -8073,7 +8386,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							builder.Append(renderer.ResolveVerbalizerSnippet(snippet));
 						}
 						nestedOutdent = -1;
-						string childText = RenderVerbalizationPlanNode(builder, childNode, childNodeLink, out nestedOutdent);
+						string childText = RenderVerbalizationPlanNode(builder, childNode, childNodeLink, ref blockNextLeadRoleCollapse, out nestedOutdent);
 						if (!string.IsNullOrEmpty(childText))
 						{
 							if (nestedOutdent != -1)
@@ -8082,6 +8395,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							}
 							builder.Append(childText);
 						}
+						previousChildNode = childNode;
 						previousChildNodeType = childNode.NodeType;
 						childNodeLink = childNodeLink.Next;
 					}
@@ -8170,11 +8484,74 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					childNodeLink = node.FirstChildNode;
 					rootVariable = myFloatingRootVariable; // Push existing (should be null, but doesn't hurt)
 					myFloatingRootVariable = node.RootVariable;
-					result = RenderVerbalizationPlanNode(builder, childNodeLink.Value, childNodeLink, out outdentPosition);
+					result = RenderVerbalizationPlanNode(builder, childNodeLink.Value, childNodeLink, ref blockNextLeadRoleCollapse, out outdentPosition);
 					myFloatingRootVariable = rootVariable;
 					return result;
 			}
 			return null;
+		}
+		/// <summary>
+		/// Test if the first non-formatting text for a node is a back reference construct.
+		/// </summary>
+		private bool LeadTextIsBackReference(VerbalizationPlanNode node)
+		{
+			LinkedNode<VerbalizationPlanNode> childNodeLink;
+			VerbalizationPlanBranchType branchType;
+			switch (branchType = node.BranchType)
+			{
+				case VerbalizationPlanBranchType.None:
+					return VerbalizationPlanReadingOptions.BackReferenceFirstRole == (node.ReadingOptions & (VerbalizationPlanReadingOptions.BackReferenceFirstRole | VerbalizationPlanReadingOptions.FullyCollapseFirstRole));
+				case VerbalizationPlanBranchType.NegatedChain:
+					if (null != (childNodeLink = node.FirstChildNode))
+					{
+						VerbalizationPlanReadingOptions nestedReadingOptions = ResolveDynamicNegatedExitRole(childNodeLink.Value);
+						if ((VerbalizationPlanReadingOptions.NegatedExitRole | VerbalizationPlanReadingOptions.BackReferenceFirstRole) == (nestedReadingOptions & (VerbalizationPlanReadingOptions.NegatedExitRole | VerbalizationPlanReadingOptions.BackReferenceFirstRole | VerbalizationPlanReadingOptions.FullyCollapseFirstRole)))
+						{
+							return true;
+						}
+						goto default;
+					}
+					break;
+				default:
+					if (GetCollapsibleListOpenForBackReferenceAllowedFromBranchType(branchType) &&
+						null != (childNodeLink = node.FirstChildNode))
+					{
+						return LeadTextIsBackReference(childNodeLink.Value);
+					}
+					break;
+			}
+			return false;
+		}
+		/// <summary>
+		/// Test if negation can be inline for the node. Negation is inlined
+		/// if the fact type is binary and the non-entry role is either
+		/// fully existential (not reference) or has not yet been referenced.
+		/// This should be called before rendering.
+		/// </summary>
+		private VerbalizationPlanReadingOptions ResolveDynamicNegatedExitRole(VerbalizationPlanNode node)
+		{
+			VerbalizationPlanReadingOptions readingOptions = node.ReadingOptions;
+			if (VerbalizationPlanReadingOptions.DynamicNegatedExitRole == (readingOptions & (VerbalizationPlanReadingOptions.DynamicNegatedExitRole | VerbalizationPlanReadingOptions.DynamicNegatedExitRoleEvaluated)))
+			{
+				readingOptions |= VerbalizationPlanReadingOptions.DynamicNegatedExitRoleEvaluated;
+				PathedRole entryPathedRole;
+				if (null != (entryPathedRole = node.FactTypeEntry))
+				{
+					// The dynamic flag is set if there is a trailing pathed role on the
+					// binary in the same role path. We can use the collapsed negated form
+					// if the variable has not been introduced yet.
+					ReadOnlyCollection<PathedRole> childPathedRoles = myRolePathCache.PathedRoleCollection(entryPathedRole.RolePath);
+					int testChildIndex = childPathedRoles.IndexOf(entryPathedRole);
+					testChildIndex = testChildIndex == 0 ? 1 : 0;
+					if (testChildIndex < childPathedRoles.Count &&
+						!GetRolePlayerVariableUse(childPathedRoles[testChildIndex]).Value.PrimaryRolePlayerVariable.HasBeenUsed(CurrentQuantificationUsePhase, true))
+					{
+						readingOptions |= VerbalizationPlanReadingOptions.NegatedExitRole;
+					}
+				}
+				node.ReadingOptions = readingOptions;
+			}
+			return readingOptions;
 		}
 		private string QuantifyRolePlayer(PathedRole pathedRole, bool negateExistentialQuantifier, bool basicLeadRole, VerbalizationHyphenBinder hyphenBinder, int hyphenBinderRoleIndex)
 		{

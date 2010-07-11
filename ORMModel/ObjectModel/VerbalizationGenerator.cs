@@ -6955,7 +6955,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					string snippet2Replace1Replace1Replace1Replace2 = null;
 					string snippet2Replace1Replace1Replace1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.OneQuantifier, isDeontic, isNegative);
 					string snippet2Replace1Replace1Replace1Replace2Replace1 = null;
-					snippet2Replace1Replace1Replace1Replace2Replace1 = pathVerbalizer.RenderAssociatedRolePlayer(singleLeadRolePath, null, RolePathRolePlayerRenderingOptions.None);
+					snippet2Replace1Replace1Replace1Replace2Replace1 = pathVerbalizer.RenderAssociatedRolePlayer(singleLeadRolePath.PathRoot, null, RolePathRolePlayerRenderingOptions.None);
 					snippet2Replace1Replace1Replace1Replace2 = string.Format(writer.FormatProvider, snippet2Replace1Replace1Replace1ReplaceFormat2, snippet2Replace1Replace1Replace1Replace2Replace1);
 					snippet2Replace1Replace1Replace1 = string.Format(writer.FormatProvider, snippet2Replace1Replace1ReplaceFormat1, snippet2Replace1Replace1Replace1Replace1, snippet2Replace1Replace1Replace1Replace2);
 					snippet2Replace1Replace1 = string.Format(writer.FormatProvider, snippet2Replace1ReplaceFormat1, snippet2Replace1Replace1Replace1);
@@ -7258,7 +7258,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					string snippet2Replace1Replace1Replace2 = null;
 					string snippet2Replace1Replace1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.MoreThanOneQuantifier, isDeontic, isNegative);
 					string snippet2Replace1Replace1Replace2Replace1 = null;
-					snippet2Replace1Replace1Replace2Replace1 = pathVerbalizer.RenderAssociatedRolePlayer(singleLeadRolePath, null, RolePathRolePlayerRenderingOptions.None);
+					snippet2Replace1Replace1Replace2Replace1 = pathVerbalizer.RenderAssociatedRolePlayer(singleLeadRolePath.PathRoot, null, RolePathRolePlayerRenderingOptions.None);
 					snippet2Replace1Replace1Replace2 = string.Format(writer.FormatProvider, snippet2Replace1Replace1ReplaceFormat2, snippet2Replace1Replace1Replace2Replace1);
 					snippet2Replace1Replace1 = string.Format(writer.FormatProvider, snippet2Replace1ReplaceFormat1, snippet2Replace1Replace1Replace1, snippet2Replace1Replace1Replace2);
 					snippet2Replace1 = string.Format(writer.FormatProvider, snippet2ReplaceFormat1, snippet2Replace1Replace1);
@@ -8177,7 +8177,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				string snippet2Replace1Replace1Replace1Replace2 = null;
 				string snippet2Replace1Replace1Replace1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.FrequencyTypedOccurrences, isDeontic, isNegative);
 				string snippet2Replace1Replace1Replace1Replace2Replace1 = null;
-				snippet2Replace1Replace1Replace1Replace2Replace1 = pathVerbalizer.RenderAssociatedRolePlayer(singleLeadRolePath, null, RolePathRolePlayerRenderingOptions.None);
+				snippet2Replace1Replace1Replace1Replace2Replace1 = pathVerbalizer.RenderAssociatedRolePlayer(singleLeadRolePath.PathRoot, null, RolePathRolePlayerRenderingOptions.None);
 				string snippet2Replace1Replace1Replace1Replace2Replace2 = null;
 				CoreVerbalizationSnippetType snippet2Replace1Replace1Replace1Replace2ReplaceSnippetType2 = 0;
 				if (this.MinFrequency == this.MaxFrequency)
