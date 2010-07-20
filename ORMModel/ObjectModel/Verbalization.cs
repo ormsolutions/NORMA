@@ -2887,6 +2887,29 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		AggregateSetProjection,
 		/// <summary>
+		/// Introduce variables inline in the verbalization phrase. The replacement
+		/// is either a single value or a list, and the quantifiers (some, no, that) are
+		/// already included in the replacement list: for {0},
+		/// </summary>
+		VariableIntroductionClause,
+		/// <summary>
+		/// The list separator for introducing multiple variables in a single clause.
+		/// </summary>
+		VariableIntroductionSeparator,
+		/// <summary>
+		/// Assert variable existence as a complete statement, as opposed to the
+		/// <see cref="VariableIntroductionClause"/> used to introduce a variable
+		/// using a prefix: {0} exists.
+		/// </summary>
+		VariableExistence,
+		/// <summary>
+		/// Assert variable non-existence for an a previous declared variable in
+		/// an existence statement. Note that <see cref="VariableExistence"/> can
+		/// be used with a negated quantifier if the negated variable has not been
+		/// previously introduced: {0} does not exist.
+		/// </summary>
+		NegatedVariableExistence,
+		/// <summary>
 		/// A space separated list of list closure snippet names from this
 		/// enum that reverse an indentation. Trailing outdents can be tracked
 		/// specially during formatting so that external text on the same line
@@ -3360,6 +3383,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					return @"<span class=""quantifier"">each</span> {0}";
 				case RolePathVerbalizerSnippetType.AggregateSetProjection:
 					return @"<span class=""quantifier"">each distinct</span> {0}";
+				case RolePathVerbalizerSnippetType.VariableIntroductionClause:
+					return @"<span class=""quantifier"">for</span> {0}<span class=""listSeparator"">, </span> ";
+				case RolePathVerbalizerSnippetType.VariableIntroductionSeparator:
+					return @"<span class=""listSeparator"">, </span>";
+				case RolePathVerbalizerSnippetType.VariableExistence:
+					return @"{0} <span class=""quantifier"">exists</span>";
+				case RolePathVerbalizerSnippetType.NegatedVariableExistence:
+					return @"{0} <span class=""quantifier"">does not exist</span>";
 
 				// List management
 				case RolePathVerbalizerSnippetType.ListCloseOutdentSnippets:
@@ -4599,6 +4630,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return null; // Fallback
 			}
 			/// <summary>
+			/// Cache-assisted version of <see cref="PathedRole.PreviousPathNode"/>
+			/// and <see cref="RolePathObjectTypeRoot.PreviousPathNode"/>
+			/// </summary>
+			public RolePathNode GetPreviousPathNode(RolePathNode pathNode)
+			{
+				foreach (RolePathNode previousNode in GetPrecedingPathNodes(pathNode, false))
+				{
+					return previousNode;
+				}
+				return RolePathNode.Empty;
+			}
+			/// <summary>
 			/// True if the cache is initialized
 			/// </summary>
 			public bool IsInitialized
@@ -4714,6 +4757,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// fact type nodes.
 			/// </summary>
 			ChainedRootVariable,
+			/// <summary>
+			/// An explicit existence statement. This node is always
+			/// rendered, unlike required context variables, which
+			/// are used as a backup.
+			/// </summary>
+			VariableExistence,
 		}
 		#endregion // VerbalizationPlanNodeType enum
 		#region VerbalizationPlanBranchType enum
@@ -4811,6 +4860,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// negated exit role status.
 			/// </summary>
 			DynamicNegatedExitRoleEvaluated = 0x20,
+			/// <summary>
+			/// Ignore the <see cref="FullyCollapseFirstRole"/> setting.
+			/// Added dynamically during rendering if required variables
+			/// are listed before the fact statement, thereby changing,
+			/// or if dynamic negation inlining is blocked and the negation
+			/// snippet does not support back referencing.
+			/// </summary>
+			BlockFullyCollapseFirstRole = 0x40,
+			/// <summary>
+			/// Ignore the <see cref="BackReferenceFirstRole"/> setting.
+			/// Added dynamically during rendering if required variables
+			/// are listed before the fact statement, thereby changing,
+			/// or if dynamic negation inlining is blocked and the negation
+			/// snippet does not support back referencing.
+			/// </summary>
+			BlockBackReferenceFirstRole = 0x80,
 		}
 		#endregion // VerbalizationPlanReadingOptions enum
 		#region VerbalizationPlanBranchCorrelationStyle enum
@@ -4973,6 +5038,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					parentNode = AddBranchNode(VerbalizationPlanBranchType.Chain, VerbalizationPlanBranchRenderingStyle.OperatorSeparated, null, ref rootNode);
 				}
 				return new ProjectedConstantNode(parentNode, headVariableKey, constant);
+			}
+			/// <summary>
+			/// Create and attach a new variable existence node. Variable existence is always
+			/// created with positive semantics, but may be changed later if a negated chain
+			/// begins with a positive existence node.
+			/// </summary>
+			/// <param name="requiredVariableKey">The key for the variable to declare.</param>
+			/// <param name="parentNode">The parent <see cref="VerbalizationPlanNode"/> for the new node.</param>
+			/// <param name="rootNode">A reference to the root node of the chain.</param>
+			/// <returns>New <see cref="VerbalizationPlanNode"/></returns>
+			public static VerbalizationPlanNode AddVariableExistenceNode(object requiredVariableKey, VerbalizationPlanNode parentNode, ref VerbalizationPlanNode rootNode)
+			{
+				if (parentNode == null)
+				{
+					parentNode = AddBranchNode(VerbalizationPlanBranchType.Chain, VerbalizationPlanBranchRenderingStyle.OperatorSeparated, null, ref rootNode);
+				}
+				return new VariableExistenceNode(parentNode, requiredVariableKey);
 			}
 			/// <summary>
 			/// Create and attach a new chained root variable node.
@@ -5205,6 +5287,62 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					return null;
 				}
 			}
+			/// <summary>
+			/// Get the head node of variable keys that are required to render this node.
+			/// </summary>
+			public virtual LinkedNode<object> RequiredContextVariableUseKeys
+			{
+				get
+				{
+					return null;
+				}
+			}
+			/// <summary>
+			/// Add a context variable key. The associated variable needs to be
+			/// declared before this node is stated.
+			/// </summary>
+			/// <param name="contextVariableKeys">A list of context variable nodes.</param>
+			public virtual void RequireContextVariables(LinkedNode<object> contextVariableKeys)
+			{
+				Debug.Fail("RequireContextVariables not implemented for this node type");
+			}
+			/// <summary>
+			/// Set to true by the rendering engine if a required context variable was
+			/// rendered.
+			/// </summary>
+			public virtual bool RenderedRequiredContextVariable
+			{
+				get
+				{
+					return false;
+				}
+				set
+				{
+				}
+			}
+			/// <summary>
+			/// Set to use a negated existential on a VariableExistence node
+			/// </summary>
+			public virtual bool NegateExistence
+			{
+				get
+				{
+					return false;
+				}
+				set
+				{
+				}
+			}
+			/// <summary>
+			/// The variable key used with a VariableExistence node
+			/// </summary>
+			public virtual object VariableKey
+			{
+				get
+				{
+					return null;
+				}
+			}
 			#endregion // Accessor Properties
 			#region Node Management Methods
 			/// <summary>
@@ -5224,13 +5362,52 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				// Empty implementation, implemented in BranchNode
 			}
 			#endregion // Node Management Methods
+			#region Helper Intermediate Types
+			/// <summary>
+			/// Implementation of <see cref="RequiredContextVariableUseKeys"/> and <see cref="RequireContextVariables"/>.
+			/// Does not implement <see cref="RenderedRequiredContextVariable"/>
+			/// </summary>
+			private abstract class RequireContextVariableNode : VerbalizationPlanNode
+			{
+				private LinkedNode<object> myRequiredContextVariableUseKeys;
+				protected RequireContextVariableNode(VerbalizationPlanNode parentNode)
+					: base(parentNode)
+				{
+				}
+				public override void RequireContextVariables(LinkedNode<object> contextVariableUseKeys)
+				{
+					LinkedNode<object> existingVarKeys = myRequiredContextVariableUseKeys;
+					if (existingVarKeys == null)
+					{
+						myRequiredContextVariableUseKeys = contextVariableUseKeys;
+					}
+					else
+					{
+						existingVarKeys.GetTail().SetNext(contextVariableUseKeys, ref existingVarKeys);
+					}
+				}
+				public override LinkedNode<object> RequiredContextVariableUseKeys
+				{
+					get
+					{
+						return myRequiredContextVariableUseKeys;
+					}
+				}
+				public abstract override bool RenderedRequiredContextVariable
+				{
+					get;
+					set;
+				}
+			}
+			#endregion // Helper Intermediate Types
 			#region Node type specific types
-			private sealed class FactTypeNode : VerbalizationPlanNode
+			private sealed class FactTypeNode : RequireContextVariableNode
 			{
 				private readonly FactType myFactType;
 				private readonly PathedRole myEntryPathedRole;
 				private IReading myReading;
-				private VerbalizationPlanReadingOptions myOptions;
+				private const int RenderedRequiredContextVariableBit = 0x10000;
+				private int myOptions; // VerbalizationPlanReadingOptions and the RenderedRequiredContextVariableBit
 				private RolePlayerVariable myBackReferencedVariable;
 				public FactTypeNode(VerbalizationPlanNode parentNode, FactType factType, PathedRole factTypeEntryRole)
 					: base(parentNode)
@@ -5282,20 +5459,47 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					get
 					{
-						return myOptions;
+						return (VerbalizationPlanReadingOptions)(myOptions & ~RenderedRequiredContextVariableBit);
 					}
 					set
 					{
-						myOptions = value;
+						int options = myOptions;
+						if (0 != (myOptions & RenderedRequiredContextVariableBit))
+						{
+							myOptions = (int)value | RenderedRequiredContextVariableBit;
+						}
+						else
+						{
+							myOptions = (int)value;
+						}
+					}
+				}
+				public override bool RenderedRequiredContextVariable
+				{
+					get
+					{
+						return 0 != (myOptions & RenderedRequiredContextVariableBit);
+					}
+					set
+					{
+						if (value)
+						{
+							myOptions |= RenderedRequiredContextVariableBit;
+						}
+						else
+						{
+							myOptions &= ~RenderedRequiredContextVariableBit;
+						}
 					}
 				}
 			}
-			private sealed class BranchNode : VerbalizationPlanNode
+			private sealed class BranchNode : RequireContextVariableNode
 			{
 				private const int BranchTypeMask = 0xffff;
 				private const int IsolatedRenderingBit = 0x10000;
 				private const int HeaderListRenderingBit = 0x20000;
-				private readonly int mySettings;
+				private const int RenderedRequiredContextVariablesBit = 0x40000;
+				private int mySettings;
 				private LinkedNode<VerbalizationPlanNode> myChildNodes;
 				public BranchNode(VerbalizationPlanNode parentNode, VerbalizationPlanBranchType branchType, VerbalizationPlanBranchRenderingStyle renderingStyle)
 					: base(parentNode)
@@ -5397,6 +5601,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							return VerbalizationPlanBranchRenderingStyle.IsolatedList;
 						}
 						return VerbalizationPlanBranchRenderingStyle.OperatorSeparated;
+					}
+				}
+				public override bool RenderedRequiredContextVariable
+				{
+					get
+					{
+						return 0 != (mySettings & RenderedRequiredContextVariablesBit);
+					}
+					set
+					{
+						if (value)
+						{
+							mySettings |= RenderedRequiredContextVariablesBit;
+						}
+						else
+						{
+							mySettings &= ~RenderedRequiredContextVariablesBit;
+						}
 					}
 				}
 			}
@@ -5587,6 +5809,68 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					get
 					{
 						return myRootVariable;
+					}
+				}
+			}
+			private sealed class VariableExistenceNode : RequireContextVariableNode
+			{
+				private object myExistentialVariableKey;
+				private const int NegateExistenceBit = 0x1;
+				private const int RenderedRequiredContextVariablesBit = 0x2;
+				private int myFlags;
+				public VariableExistenceNode(VerbalizationPlanNode parentNode, object existentialVariableKey)
+					: base(parentNode)
+				{
+					myExistentialVariableKey = existentialVariableKey;
+				}
+				public override VerbalizationPlanNodeType NodeType
+				{
+					get
+					{
+						return VerbalizationPlanNodeType.VariableExistence;
+					}
+				}
+				public override object VariableKey
+				{
+					get
+					{
+						return myExistentialVariableKey;
+					}
+				}
+				public override bool NegateExistence
+				{
+					get
+					{
+						return 0 != (myFlags & NegateExistenceBit);
+					}
+					set
+					{
+						if (value)
+						{
+							myFlags |= NegateExistenceBit;
+						}
+						else
+						{
+							myFlags &= ~NegateExistenceBit;
+						}
+					}
+				}
+				public override bool RenderedRequiredContextVariable
+				{
+					get
+					{
+						return 0 != (myFlags & RenderedRequiredContextVariablesBit);
+					}
+					set
+					{
+						if (value)
+						{
+							myFlags |= RenderedRequiredContextVariablesBit;
+						}
+						else
+						{
+							myFlags &= ~RenderedRequiredContextVariablesBit;
+						}
 					}
 				}
 			}
@@ -5855,12 +6139,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				rootObjectTypeVariable = RegisterRolePlayerUse(pathRoot.RootObjectType, null, pathRoot, pathRoot);
 			}
 			++myLatestUsePhase;
-			RolePathNode pendingContext = RolePathNode.Empty; // UNDONE: IntraPathRoot Verify which of the pending variables are used
 			ReadOnlyCollection<PathedRole> pendingPathedRoles = null;
 			int pendingPathedRoleIndex = -1;
 			PathedRole pendingForSameFactType = null;
+			LinkedNode<object> pendingRequiredVariableKeys = null;
 			// A list (acting like a stack) to get the full history of the parent pathed roles.
 			List<ReadOnlyCollection<PathedRole>> contextPathedRoles = null;
+			List<RolePathObjectTypeRoot> contextPathRoots = null;
 			VerbalizationPlanNode startingBranchNode = myCurrentBranchNode;
 			LinkedNode<VerbalizationPlanNode> startingBranchTailLink = startingBranchNode != null ? startingBranchNode.FirstChildNode : null;
 			if (startingBranchTailLink != null)
@@ -5876,7 +6161,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			VisitRolePathParts(
 				leadRolePath,
 				RolePathNode.Empty,
-				delegate(PathedRole currentPathedRole, RolePath currentPath, bool splitNotification, ReadOnlyCollection<PathedRole> currentPathedRoles, int currentPathedRoleIndex, RolePathNode contextPathNode, bool unwinding)
+				delegate(PathedRole currentPathedRole, RolePathObjectTypeRoot currentPathRoot, RolePath currentPath, ReadOnlyCollection<PathedRole> currentPathedRoles, int currentPathedRoleIndex, RolePathNode contextPathNode, bool unwinding)
 				{
 					if (currentPathedRole != null)
 					{
@@ -5891,7 +6176,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								// We reached a leaf same fact type node. Treat it as fully existential
 								// if it is not used for any other purpose.
 								pendingForSameFactType = null;
-								pendingContext = RolePathNode.Empty;
 								pendingPathedRoles = null;
 								currentRole = currentPathedRole.Role;
 								if (IsPathedRoleReferencedOutsidePath(currentPathedRole))
@@ -5963,6 +6247,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									if (pathConditionCount != 0)
 									{
 										int contextSectionsCount = contextPathedRoles != null ? contextPathedRoles.Count : 0;
+										int contextRootsCount = contextPathRoots != null ? contextPathRoots.Count : 0;
 										for (int i = 0; i < pathConditionCount; ++i)
 										{
 											if (!processedPathConditions[i])
@@ -5970,39 +6255,60 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 												CalculatedPathValue calculation = pathConditions[i];
 												bool? isLocal = IsLocalCalculatedValue(
 													calculation,
-													delegate(PathedRole testPathedRole)
+													delegate(RolePathNode testPathNode)
 													{
-														// Look in this section
-														for (int j = 0; j < currentRoleCount; ++j)
+														PathedRole testPathedRole;
+														RolePathObjectTypeRoot testPathRoot;
+														if (null != (testPathedRole = testPathNode))
 														{
-															if (currentPathedRoles[j] == testPathedRole)
+															// Look in this section
+															for (int j = 0; j < currentRoleCount; ++j)
 															{
-																return true;
-															}
-														}
-														// Look in context sections
-														for (int j = contextSectionsCount - 1; j >= 0; --j)
-														{
-															ReadOnlyCollection<PathedRole> contextRoles = contextPathedRoles[j];
-															int k = contextRoles.Count - 1;
-															for (; k >= 0; --k)
-															{
-																PathedRole checkPathedRole = contextRoles[k];
-																if (checkPathedRole == testPathedRole)
+																if (currentPathedRoles[j] == testPathedRole)
 																{
-																	// Note that we include entry roles in the check,
-																	// we just don't go any further.
 																	return true;
 																}
-																if (checkPathedRole.PathedRolePurpose != PathedRolePurpose.SameFactType)
+															}
+															// Look in context sections
+															for (int j = contextSectionsCount - 1; j >= 0; --j)
+															{
+																ReadOnlyCollection<PathedRole> contextRoles = contextPathedRoles[j];
+																int k = contextRoles.Count - 1;
+																for (; k >= 0; --k)
 																{
+																	PathedRole checkPathedRole = contextRoles[k];
+																	if (checkPathedRole == testPathedRole)
+																	{
+																		// Note that we include entry roles in the check,
+																		// we just don't go any further.
+																		return true;
+																	}
+																	if (checkPathedRole.PathedRolePurpose != PathedRolePurpose.SameFactType)
+																	{
+																		break;
+																	}
+																}
+																if (k >= 0)
+																{
+																	// We broke before the beginning of the context section, stop looking
 																	break;
 																}
 															}
-															if (k >= 0)
+														}
+														else if (null != (testPathRoot = testPathNode))
+														{
+															// Check the current node
+															if (testPathRoot == currentPathRoot)
 															{
-																// We broke before the beginning of the context section, stop looking
-																break;
+																return true;
+															}
+															// Look at the context roots
+															for (int j = contextRootsCount - 1; j >= 0; --j)
+															{
+																if (testPathRoot == contextPathRoots[j])
+																{
+																	return true;
+																}
 															}
 														}
 														return false;
@@ -6036,7 +6342,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									}
 								}
 								pendingForSameFactType = currentPathedRole;
-								pendingContext = contextPathNode;
 								pendingPathedRoles = currentPathedRoles;
 								pendingPathedRoleIndex = currentPathedRoleIndex;
 							}
@@ -6057,15 +6362,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									}
 									pendingForSameFactType = null;
 									pendingPathedRoles = null;
-									pendingContext = RolePathNode.Empty;
 								}
 								currentRole = currentPathedRole.Role;
 								RegisterFactTypeEntryRolePlayerUse(currentPathedRole, contextPathNode);
 								if (currentPathedRole.IsNegated)
 								{
-									PushNegatedChainNode();
+									PushNegatedChainNode(currentPathedRole, ref pendingRequiredVariableKeys);
 								}
-								roleUseBaseIndex = PushFactType(ResolvePathedEntryRoleFactType(currentPathedRole, currentPath, currentPathedRoles, currentPathedRoleIndex), currentPathedRole, currentPathedRoles, currentPathedRoleIndex, factTypeRolesStack, ref roleUseTracker, pathConditions, ref processedPathConditions);
+								roleUseBaseIndex = PushFactType(ResolvePathedEntryRoleFactType(currentPathedRole, currentPath, currentPathedRoles, currentPathedRoleIndex), currentPathedRole, currentPathedRoles, currentPathedRoleIndex, factTypeRolesStack, ref roleUseTracker, pathConditions, ref processedPathConditions, ref pendingRequiredVariableKeys);
 								resolvedRoleIndex = ResolveRoleIndex(factTypeRolesStack.Peek(), currentRole);
 								if (resolvedRoleIndex != -1) // Defensive, guard against bogus path
 								{
@@ -6074,41 +6378,83 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							}
 						}
 					}
-					else if (currentPath != null)
+					else if (currentPathRoot != null)
 					{
-						if (splitNotification)
+						if (unwinding)
 						{
-							// Note that we ignore any pending same fact type role here. These
-							// roles affect variables, but not the verbalization plan, so we
-							// can branch the verbalization plan without processing pending
-							// same fact type roles.
-							if (unwinding)
+							contextPathRoots.RemoveAt(contextPathRoots.Count - 1);
+							while (pendingRequiredVariableKeys != null)
 							{
-								contextPathedRoles.RemoveAt(contextPathedRoles.Count - 1);
-								PopSplit(currentPath);
+								myCurrentBranchNode = VerbalizationPlanNode.AddVariableExistenceNode(pendingRequiredVariableKeys.Value, myCurrentBranchNode, ref myRootPlanNode).ParentNode;
+								pendingRequiredVariableKeys = pendingRequiredVariableKeys.Next;
+							}
+							if (currentPathRoot.IsNegated)
+							{
+								PopNegatedChainNode();
+							}
+						}
+						else
+						{
+							(contextPathRoots ?? (contextPathRoots = new List<RolePathObjectTypeRoot>())).Add(currentPathRoot);
+							if (pendingForSameFactType != null)
+							{
+								// We reached a leaf same fact type node. Treat it as fully existential
+								// if it is not used for any other purpose.
+								Role currentRole = pendingForSameFactType.Role;
+								if (IsPathedRoleReferencedOutsidePath(pendingForSameFactType))
+								{
+									RegisterRolePlayerUse(currentRole.RolePlayer, null, pendingForSameFactType, pendingForSameFactType);
+									resolvedRoleIndex = ResolveRoleIndex(factTypeRolesStack.Peek(), currentRole);
+									if (resolvedRoleIndex != -1) // Defensive, guard against bogus path
+									{
+										roleUseTracker[roleUseBaseIndex + resolvedRoleIndex] = true;
+									}
+								}
+								pendingForSameFactType = null;
+								pendingPathedRoles = null;
+							}
+							if (currentPath != leadRolePath) // Handled earlier, see notes above
+							{
+								RegisterRolePlayerUse(currentPathRoot.RootObjectType, null, currentPathRoot, currentPathRoot);
+							}
+
+							if (currentPathRoot.IsNegated)
+							{
+								// We need existence nodes for previous nodes instead of required context variables,
+								// which will end up collapsing if the variables are in the head, resulting in an
+								// incomplete rule body with no existence assertion.
+								while (pendingRequiredVariableKeys != null)
+								{
+									myCurrentBranchNode = VerbalizationPlanNode.AddVariableExistenceNode(pendingRequiredVariableKeys.Value, myCurrentBranchNode, ref myRootPlanNode).ParentNode;
+									pendingRequiredVariableKeys = pendingRequiredVariableKeys.Next;
+								}
+								PushNegatedChainNode(null, ref pendingRequiredVariableKeys);
+							}
+							if (pendingRequiredVariableKeys == null)
+							{
+								pendingRequiredVariableKeys = new LinkedNode<object>(currentPathRoot);
 							}
 							else
 							{
-								(contextPathedRoles ?? (contextPathedRoles = new List<ReadOnlyCollection<PathedRole>>())).Add(currentPathedRoles);
-								PushSplit(currentPath);
+								pendingRequiredVariableKeys.GetTail().SetNext(new LinkedNode<object>(currentPathRoot), ref pendingRequiredVariableKeys);
 							}
 						}
-						else if (!unwinding)
+					}
+					else if (currentPath != null)
+					{
+						// Note that we ignore any pending same fact type role here. These
+						// roles affect variables, but not the verbalization plan, so we
+						// can branch the verbalization plan without processing pending
+						// same fact type roles.
+						if (unwinding)
 						{
-							// UNDONE: IntraPathRoot Add variable introduction nodes to support 'is paired with' verbalization
-							// and/or introduction of variable lists. For example, Person X Car with no projection
-							// should say something like:
-							// For some Person, that Person is paired with some Car
-							// For some Person and Car, that Person is paired with that Car
-							// some Person is paired with every Car
-							if (currentPath != leadRolePath) // Handled earlier, see notes above
-							{
-								// UNDONE: IntraPathRoot There is a lot more work to do here to support variable introduction
-								// and floating root variables. We also need to determine when we need to explicitly state
-								// the 'is paired with' pseudo predicate.
-								pathRoot = currentPath.PathRoot;
-								RegisterRolePlayerUse(currentPath.RootObjectType, null, pathRoot, pathRoot);
-							}
+							contextPathedRoles.RemoveAt(contextPathedRoles.Count - 1);
+							PopSplit(currentPath);
+						}
+						else
+						{
+							(contextPathedRoles ?? (contextPathedRoles = new List<ReadOnlyCollection<PathedRole>>())).Add(currentPathedRoles);
+							PushSplit(currentPath, ref pendingRequiredVariableKeys);
 						}
 					}
 				});
@@ -6517,9 +6863,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								options |= VerbalizationPlanReadingOptions.DynamicNegatedExitRole;
 							}
 						}
+						// Always use the negated article for the fully existential case unless
+						// the type changed for the lead role, in which case both the variable
+						// pairing and the fact statement need to be inside the same negation
+						// and not inlined.
+						else if (myRolePathCache.GetPreviousPathNode(factTypeEntry).ObjectType != factTypeEntry.Role.RolePlayer)
+						{
+							// Resolve the variable pairing during rendering
+							options |= VerbalizationPlanReadingOptions.DynamicNegatedExitRole;
+						}
 						else
 						{
-							// Fully existential case, always use the negated article
 							options |= VerbalizationPlanReadingOptions.NegatedExitRole;
 						}
 					}
@@ -6621,6 +6975,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					contextLeadVariable = null;
 					contextTrailingVariable = verbalizationNode.RootVariable;
 					break;
+				case VerbalizationPlanNodeType.VariableExistence:
+					// These should be leaf nodes, so the settings here should not matter.
+					contextLeadVariable = null;
+					contextTrailingVariable = null;
+					break;
 				case VerbalizationPlanNodeType.FloatingRootVariableContext:
 					childNodeLink = verbalizationNode.FirstChildNode;
 					// There will always be exactly one child node link at this point
@@ -6666,6 +7025,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private LeadContextChange GetLeadContextChange(VerbalizationPlanNode verbalizationNode, bool dynamicCheck)
 		{
 			LinkedNode<VerbalizationPlanNode> childNodeLink;
+			if (dynamicCheck && verbalizationNode.RenderedRequiredContextVariable)
+			{
+				return LeadContextChange.Cleared;
+			}
 			switch (verbalizationNode.NodeType)
 			{
 				case VerbalizationPlanNodeType.FactType:
@@ -6729,6 +7092,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					break;
 				case VerbalizationPlanNodeType.ChainedRootVariable:
+				case VerbalizationPlanNodeType.VariableExistence:
 					return LeadContextChange.Cleared;
 				case VerbalizationPlanNodeType.FloatingRootVariableContext:
 					// This is a directive node, pass through the children
@@ -6897,6 +7261,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// in a condition are satisfied by this part of the fact type, then process it with the fact type.</param>
 		/// <param name="processedConditions">A <see cref="BitTracker"/> with one bit for each of the <paramref name="pathConditions"/>.
 		/// Used to track which conditions have been processed.</param>
+		/// <param name="pendingRequiredVariableKeys">Current required variable keys that will be required for the fact type.</param>
 		/// <returns>The base index in the <paramref name="usedRoles"/> tracker corresponding
 		/// to the first role in the new top of the <paramref name="baseRolesStack"/></returns>
 		private int PushFactType(
@@ -6907,7 +7272,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			Stack<LinkedElementCollection<RoleBase>> baseRolesStack,
 			ref BitTracker usedRoles,
 			LinkedElementCollection<CalculatedPathValue> pathConditions,
-			ref BitTracker processedConditions)
+			ref BitTracker processedConditions,
+			ref LinkedNode<object> pendingRequiredVariableKeys)
 		{
 			// Manage the role and fact type stacks
 			int retVal = usedRoles.Count;
@@ -6941,7 +7307,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					if (!addedFactTypeEntry)
 					{
 						addedFactTypeEntry = true;
-						contextChainNode = EnsureChainNodeForFactTypeConditions(factType, factTypeEntry);
+						contextChainNode = EnsureChainNodeForFactTypeConditions(factType, factTypeEntry, ref pendingRequiredVariableKeys);
 					}
 					VerbalizationPlanNode.AddValueConstraintNode(valueConstraint, contextChainNode, ref myRootPlanNode);
 				}
@@ -6951,6 +7317,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			int conditionCount = pathConditions.Count;
 			if (conditionCount != 0)
 			{
+				object[] pathedRoleCorrelationRoots = null;
+				RolePathCache rolePathCache = default(RolePathCache);
 				for (int i = 0; i < conditionCount; ++i)
 				{
 					if (!processedConditions[i])
@@ -6958,11 +7326,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						CalculatedPathValue calculation = pathConditions[i];
 						bool? isLocal = IsLocalCalculatedValue(
 							calculation,
-							delegate(PathedRole testPathedRole)
+							delegate(RolePathNode testPathNode)
 							{
+								if (pathedRoleCorrelationRoots == null)
+								{
+									rolePathCache = EnsureRolePathCache();
+									pathedRoleCorrelationRoots = new object[roleCount - factTypeEntryIndex];
+									for (int j = factTypeEntryIndex; j < roleCount; ++j)
+									{
+										pathedRoleCorrelationRoots[j - factTypeEntryIndex] = rolePathCache.GetCorrelationRoot(pathedRoles[j]);	
+									}
+								}
+								object testCorrelationRoot = rolePathCache.GetCorrelationRoot(testPathNode);
 								for (int j = factTypeEntryIndex; j < roleCount; ++j)
 								{
-									if (pathedRoles[j] == testPathedRole)
+									if (pathedRoleCorrelationRoots[j - factTypeEntryIndex] == testCorrelationRoot)
 									{
 										return true;
 									}
@@ -6974,7 +7352,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							if (!addedFactTypeEntry)
 							{
 								addedFactTypeEntry = true;
-								contextChainNode = EnsureChainNodeForFactTypeConditions(factType, factTypeEntry);
+								contextChainNode = EnsureChainNodeForFactTypeConditions(factType, factTypeEntry, ref pendingRequiredVariableKeys);
 							}
 							processedConditions[i] = true;
 							VerbalizationPlanNode.AddCalculatedConditionNode(calculation, true, contextChainNode, ref myRootPlanNode);
@@ -6985,19 +7363,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 			if (!addedFactTypeEntry)
 			{
-				myCurrentBranchNode = VerbalizationPlanNode.AddFactTypeEntryNode(factType, factTypeEntry, myCurrentBranchNode, ref myRootPlanNode).ParentNode;
+				VerbalizationPlanNode newFactTypeNode;
+				myCurrentBranchNode = (newFactTypeNode = VerbalizationPlanNode.AddFactTypeEntryNode(factType, factTypeEntry, myCurrentBranchNode, ref myRootPlanNode)).ParentNode;
+				if (pendingRequiredVariableKeys != null)
+				{
+					newFactTypeNode.RequireContextVariables(pendingRequiredVariableKeys);
+					pendingRequiredVariableKeys = null;
+				}
 			}
 			return retVal;
 		}
 		/// <summary>
 		/// Helper method for <see cref="PushFactType"/>
 		/// </summary>
-		private VerbalizationPlanNode EnsureChainNodeForFactTypeConditions(FactType factType, PathedRole factTypeEntry)
+		private VerbalizationPlanNode EnsureChainNodeForFactTypeConditions(FactType factType, PathedRole factTypeEntry, ref LinkedNode<object> pendingRequiredVariableKeys)
 		{
 			VerbalizationPlanNode contextChainNode = myCurrentBranchNode;
+			VerbalizationPlanNode newFactTypeNode;
 			if (contextChainNode == null)
 			{
-				myCurrentBranchNode = contextChainNode = VerbalizationPlanNode.AddFactTypeEntryNode(factType, factTypeEntry, myCurrentBranchNode, ref myRootPlanNode).ParentNode;
+				myCurrentBranchNode = contextChainNode = (newFactTypeNode = VerbalizationPlanNode.AddFactTypeEntryNode(factType, factTypeEntry, myCurrentBranchNode, ref myRootPlanNode)).ParentNode;
 			}
 			else
 			{
@@ -7005,7 +7390,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					contextChainNode = VerbalizationPlanNode.AddBranchNode(VerbalizationPlanBranchType.Chain, VerbalizationPlanBranchRenderingStyle.OperatorSeparated, contextChainNode, ref myRootPlanNode);
 				}
-				VerbalizationPlanNode.AddFactTypeEntryNode(factType, factTypeEntry, contextChainNode, ref myRootPlanNode);
+				newFactTypeNode = VerbalizationPlanNode.AddFactTypeEntryNode(factType, factTypeEntry, contextChainNode, ref myRootPlanNode);
+			}
+			if (pendingRequiredVariableKeys != null)
+			{
+				newFactTypeNode.RequireContextVariables(pendingRequiredVariableKeys);
+				pendingRequiredVariableKeys = null;
 			}
 			return contextChainNode;
 		}
@@ -7013,21 +7403,33 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Determine if a calculated value is based solely on local inputs.
 		/// </summary>
 		/// <param name="calculatedValue">The calculation to test.</param>
-		/// <param name="isLocalPathedRole">A callback to determine if a <see cref="PathedRole"/> is local.</param>
-		/// <returns>true if all parts of the calculation depend on local pathed roles, false if a non-local pathed
+		/// <param name="isLocalPathNode">A callback to determine if a <see cref="PathedRole"/> is local.</param>
+		/// <returns>true if all parts of the calculation depend on local path nodes, false if a non-local pathed
 		/// role is used, and null if no pathed roles are used.</returns>
-		private static bool? IsLocalCalculatedValue(CalculatedPathValue calculatedValue, Predicate<PathedRole> isLocalPathedRole)
+		private static bool? IsLocalCalculatedValue(CalculatedPathValue calculatedValue, Predicate<RolePathNode> isLocalPathNode)
 		{
-			bool seenLocalPathedRole = false;
+			bool seenLocalPathedNode = false;
 			foreach (CalculatedPathValueInput input in calculatedValue.InputCollection)
 			{
 				PathedRole sourcePathedRole;
+				RolePathObjectTypeRoot sourcePathRoot;
 				CalculatedPathValue sourceCalculation;
 				if (null != (sourcePathedRole = input.SourcePathedRole))
 				{
-					if (isLocalPathedRole(sourcePathedRole))
+					if (isLocalPathNode(sourcePathedRole))
 					{
-						seenLocalPathedRole = true;
+						seenLocalPathedNode = true;
+					}
+					else
+					{
+						return false;
+					}
+				}
+				else if (null != (sourcePathRoot = input.SourcePathRoot))
+				{
+					if (isLocalPathNode(sourcePathRoot))
+					{
+						seenLocalPathedNode = true;
 					}
 					else
 					{
@@ -7037,12 +7439,39 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				else if (null != (sourceCalculation = input.SourceCalculatedValue))
 				{
 					// Recurse
-					bool? recursiveResult = IsLocalCalculatedValue(sourceCalculation, isLocalPathedRole);
+					bool? recursiveResult = IsLocalCalculatedValue(sourceCalculation, isLocalPathNode);
 					if (recursiveResult.HasValue)
 					{
 						if (recursiveResult.Value)
 						{
-							seenLocalPathedRole = true;
+							seenLocalPathedNode = true;
+						}
+						else
+						{
+							return false;
+						}
+					}
+				}
+
+				if (input.Parameter.BagInput)
+				{
+					// Any aggregation context needs to be local along with other inputs
+					foreach (RolePathObjectTypeRoot pathRoot in calculatedValue.AggregationContextPathRootCollection)
+					{
+						if (isLocalPathNode(pathRoot))
+						{
+							seenLocalPathedNode = true;
+						}
+						else
+						{
+							return false;
+						}
+					}
+					foreach (PathedRole pathedRole in calculatedValue.AggregationContextPathedRoleCollection)
+					{
+						if (isLocalPathNode(pathedRole))
+						{
+							seenLocalPathedNode = true;
 						}
 						else
 						{
@@ -7051,7 +7480,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 				}
 			}
-			return seenLocalPathedRole ? (bool?)true : null;
+			return seenLocalPathedNode ? (bool?)true : null;
 		}
 		/// <summary>
 		/// Pop a <see cref="FactType"/> added with <see cref="PushFactType"/>. Registers
@@ -7084,7 +7513,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="splitFrom">The <see cref="RolePath"/> being split from. All
 		/// pre-split fact types have been handled at this point.</param>
-		private void PushSplit(RolePath splitFrom)
+		/// <param name="pendingRequiredVariables">Required pending variables.</param>
+		private void PushSplit(RolePath splitFrom, ref LinkedNode<object> pendingRequiredVariables)
 		{
 			VerbalizationPlanBranchType branchType = GetBranchType(splitFrom);
 			if (branchType != VerbalizationPlanBranchType.None)
@@ -7095,7 +7525,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					parentNode = VerbalizationPlanNode.AddBranchNode(VerbalizationPlanBranchType.Chain, VerbalizationPlanBranchRenderingStyle.OperatorSeparated, null, ref myRootPlanNode);
 				}
-				myCurrentBranchNode = VerbalizationPlanNode.AddBranchNode(branchType, GetRenderingStyleFromBranchType(branchType), parentNode, ref myRootPlanNode);
+				VerbalizationPlanNode newNode;
+				myCurrentBranchNode = newNode = VerbalizationPlanNode.AddBranchNode(branchType, GetRenderingStyleFromBranchType(branchType), parentNode, ref myRootPlanNode);
+				if (pendingRequiredVariables != null)
+				{
+					newNode.RequireContextVariables(pendingRequiredVariables);
+					pendingRequiredVariables = null;
+				}
 			}
 		}
 		/// <summary>
@@ -7253,22 +7689,50 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Push a new negated chain node.
 		/// </summary>
-		private void PushNegatedChainNode()
+		private void PushNegatedChainNode(PathedRole negatedEntryRole, ref LinkedNode<object> pendingRequiredVariableKeys)
 		{
-			VerbalizationPlanNode parentNode = myCurrentBranchNode;
 			// Make sure that we have a permanent parent node
-			if (parentNode == null)
+			VerbalizationPlanNode parentNode = myCurrentBranchNode ?? VerbalizationPlanNode.AddBranchNode(VerbalizationPlanBranchType.Chain, VerbalizationPlanBranchRenderingStyle.OperatorSeparated, null, ref myRootPlanNode);
+			VerbalizationPlanNode newNode = VerbalizationPlanNode.AddBranchNode(VerbalizationPlanBranchType.NegatedChain, VerbalizationPlanBranchRenderingStyle.OperatorSeparated, parentNode, ref myRootPlanNode);
+			if (pendingRequiredVariableKeys != null)
 			{
-				parentNode = VerbalizationPlanNode.AddBranchNode(VerbalizationPlanBranchType.Chain, VerbalizationPlanBranchRenderingStyle.OperatorSeparated, null, ref myRootPlanNode);
+				newNode.RequireContextVariables(pendingRequiredVariableKeys);
+				pendingRequiredVariableKeys = null;
 			}
-			myCurrentBranchNode = VerbalizationPlanNode.AddBranchNode(VerbalizationPlanBranchType.NegatedChain, VerbalizationPlanBranchRenderingStyle.OperatorSeparated, parentNode, ref myRootPlanNode);
+			if (negatedEntryRole != null)
+			{
+				newNode.RequireContextVariables(new LinkedNode<object>(negatedEntryRole));
+			}
+			myCurrentBranchNode = newNode;
 		}
 		/// <summary>
 		/// Pop a negated chain node pushed with <see cref="PushNegatedChainNode"/>
 		/// </summary>
 		private void PopNegatedChainNode()
 		{
-			myCurrentBranchNode = myCurrentBranchNode.ParentNode;
+			VerbalizationPlanNode negatedChainNode = myCurrentBranchNode;
+			LinkedNode<VerbalizationPlanNode> childNodeLink;
+			VerbalizationPlanNode childNode;
+			if (null != (childNodeLink = negatedChainNode.FirstChildNode) &&
+				childNodeLink.Next == null &&
+				(childNode = childNodeLink.Value).NodeType == VerbalizationPlanNodeType.VariableExistence &&
+				childNode.RequiredContextVariableUseKeys == null)
+			{
+				// Remove the wrapped existential negation in favor of a single negated statement
+				VerbalizationPlanNode parentNode = negatedChainNode.ParentNode;
+				childNode.NegateExistence = !childNode.NegateExistence;
+				LinkedNode<object> transferRequiredContextKeys = negatedChainNode.RequiredContextVariableUseKeys;
+				if (transferRequiredContextKeys != null)
+				{
+					childNode.RequireContextVariables(transferRequiredContextKeys);
+				}
+				parentNode.CollapseChildNode(negatedChainNode);
+				myCurrentBranchNode = parentNode;
+			}
+			else
+			{
+				myCurrentBranchNode = negatedChainNode.ParentNode;
+			}
 		}
 		private VerbalizationPlanBranchType GetBranchType(RolePath contextPath)
 		{
@@ -7284,7 +7748,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return VerbalizationPlanBranchType.None;
 		}
 		/// <summary>
-		/// Test if a <see cref="PathedRole"/> is reference.
+		/// Test if a <see cref="PathedRole"/> is referenced by something other
+		/// than its inclusion in the role path.
 		/// </summary>
 		private bool IsPathedRoleReferencedOutsidePath(PathedRole pathedRole)
 		{
@@ -7294,16 +7759,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Used with <see cref="VisitRolePathParts"/> as the callback for walking a role path.
 		/// Walks the path both forward and backwards, allowing for stack-based node analysis.
 		/// </summary>
-		/// <param name="currentPathedRole">The current pathed role. Set unless this is a notification of a split.</param>
-		/// <param name="currentPath">The current path. If <paramref name="currentPathedRole"/> is not set, then this is
-		/// either a rooted path, with a callback before the pathed roles for this path, or a split notification if
-		/// <paramref name="splitNotification"/> is set, in which case the currentPath provides the split settings.</param>
-		/// <param name="splitNotification">The <paramref name="currentPath"/> is splitting into multiple subpaths.</param>
+		/// <param name="currentPathedRole">The current pathed role. Set unless <paramref name="currentPathRoot"/> is set or this is a notification of a split.</param>
+		/// <param name="currentPathRoot">The current path root. Set unless <paramref name="currentPathedRole"/> is set or this is a notification of a split</param>
+		/// <param name="currentPath">The current path. If <paramref name="currentPathedRole"/> and <paramref name="currentPathRoot"/> are not set, then this is
+		/// either a split notification where the path provides the split settings.</param>
 		/// <param name="currentPathedRoles">All pathed roles for the current path.</param>
 		/// <param name="currentPathedRoleIndex">The index of <paramref name="currentPathedRole"/> in <paramref name="currentPathedRoles"/></param>
 		/// <param name="contextPathNode">The <see cref="RolePathNode"/> prior to the <paramref name="currentPathedRole"/> or root <paramref name="currentPath"/></param>
 		/// <param name="unwinding">The path is being walked in reverse.</param>
-		private delegate void RolePathNodeVisitor(PathedRole currentPathedRole, RolePath currentPath, bool splitNotification, ReadOnlyCollection<PathedRole> currentPathedRoles, int currentPathedRoleIndex, RolePathNode contextPathNode, bool unwinding);
+		private delegate void RolePathNodeVisitor(PathedRole currentPathedRole, RolePathObjectTypeRoot currentPathRoot, RolePath currentPath, ReadOnlyCollection<PathedRole> currentPathedRoles, int currentPathedRoleIndex, RolePathNode contextPathNode, bool unwinding);
 		private void VisitRolePathParts(RolePath rolePath, RolePathNode contextPathNode, RolePathNodeVisitor visitor)
 		{
 			RolePathNode splitContext = contextPathNode;
@@ -7315,37 +7779,41 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (pathRoot != null)
 			{
 				rootContext = pathRoot;
-				visitor(null, rolePath, false, pathedRoles, -1, splitContext, false);
+				visitor(null, pathRoot, rolePath, pathedRoles, -1, splitContext, false);
 				splitContext = rootContext;
 			}
 			for (int i = 0; i < pathedRoleCount; ++i)
 			{
 				PathedRole pathedRole = pathedRoles[i];
-				visitor(pathedRole, rolePath, false, pathedRoles, i, splitContext, false);
+				visitor(pathedRole, null, rolePath, pathedRoles, i, splitContext, false);
 				splitContext = pathedRole;
 			}
 			bool notifiedSplit = false;
-			foreach (RoleSubPath subPath in cache.SubPathCollection(rolePath))
+			LinkedElementCollection<RoleSubPath> subPaths = cache.SubPathCollection(rolePath);
+			foreach (RoleSubPath subPath in subPaths)
 			{
 				if (!notifiedSplit)
 				{
-					notifiedSplit = true;
-					visitor(null, rolePath, true, pathedRoles, -1, splitContext, false);
+					if (subPaths.Count != 1)
+					{
+						notifiedSplit = true;
+						visitor(null, null, rolePath, pathedRoles, -1, splitContext, false);
+					}
 				}
 				VisitRolePathParts(subPath, splitContext, visitor);
 			}
 			// Unwind the path
 			if (notifiedSplit)
 			{
-				visitor(null, rolePath, true, pathedRoles, -1, splitContext, true);
+				visitor(null, null, rolePath, pathedRoles, -1, splitContext, true);
 			}
 			for (int i = pathedRoleCount - 1; i >= 0; --i)
 			{
-				visitor(pathedRoles[i], rolePath, false, pathedRoles, i, i == 0 ? (pathRoot != null ? rootContext : contextPathNode) : (RolePathNode)pathedRoles[i - 1], true);
+				visitor(pathedRoles[i], null, rolePath, pathedRoles, i, i == 0 ? (pathRoot != null ? rootContext : contextPathNode) : (RolePathNode)pathedRoles[i - 1], true);
 			}
 			if (pathRoot != null)
 			{
-				visitor(null, rolePath, false, pathedRoles, -1, contextPathNode, true);
+				visitor(null, pathRoot, rolePath, pathedRoles, -1, contextPathNode, true);
 			}
 		}
 		/// <summary>
@@ -8085,6 +8553,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			VerbalizationPlanReadingOptions readingOptions;
 			string result;
 			RolePlayerVariable rootVariable;
+			RolePlayerVariableUse variableUse;
 			IRolePathRenderer renderer = myRenderer;
 			switch (node.NodeType)
 			{
@@ -8103,7 +8572,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					int negatedExitRoleIndex = -1;
 
 					// Iterate and cache the pathed roles in one pass through the
-					// fact type use in the path. Delay calling QuantifyRolePlayer
+					// fact type use in the path. Delay calling QuantifyVariableUse
 					// so that subscript ordering occurs in reading order, not role
 					// path order.
 					VisitPathedRolesForFactTypeEntry(
@@ -8133,7 +8602,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							if (i == 0)
 							{
-								if (0 != (readingOptions & VerbalizationPlanReadingOptions.BackReferenceFirstRole))
+								if (VerbalizationPlanReadingOptions.BackReferenceFirstRole == (readingOptions & (VerbalizationPlanReadingOptions.BackReferenceFirstRole | VerbalizationPlanReadingOptions.BlockBackReferenceFirstRole)))
 								{
 									RolePlayerVariable backReferenceVariable = node.CorrelateWithBackReferencedVariable;
 									ObjectType rolePlayer;
@@ -8181,7 +8650,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										replacement = renderer.ResolveVerbalizerSnippet(rolePlayer != null && rolePlayer.TreatAsPersonal ? RolePathVerbalizerSnippetType.PersonalPronoun : RolePathVerbalizerSnippetType.ImpersonalPronoun);
 									}
 								}
-								else if (0 != (readingOptions & VerbalizationPlanReadingOptions.FullyCollapseFirstRole))
+								else if (VerbalizationPlanReadingOptions.FullyCollapseFirstRole == (readingOptions & (VerbalizationPlanReadingOptions.FullyCollapseFirstRole | VerbalizationPlanReadingOptions.BlockFullyCollapseFirstRole)))
 								{
 									if (blockNextLeadRoleCollapse)
 									{
@@ -8217,7 +8686,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							}
 							if (replacement == null)
 							{
-								replacement = QuantifyRolePlayer(pathedRole, i == negatedExitRoleIndex, i == 0 && 0 != (readingOptions & VerbalizationPlanReadingOptions.BasicLeadRole), hyphenBinder, i);
+								replacement = QuantifyVariableUse(GetRolePlayerVariableUse(pathedRole).Value, i == negatedExitRoleIndex, i == 0 && 0 != (readingOptions & VerbalizationPlanReadingOptions.BasicLeadRole), hyphenBinder, i);
 							}
 						}
 						else
@@ -8260,6 +8729,61 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							case VerbalizationPlanBranchRenderingStyle.IsolatedList:
 								BeginQuantificationUsePhase();
 								break;
+						}
+						string requiredVariableContextPhrase = null;
+						LinkedNode<object> requiredVariableUseKeyLink = childNode.RequiredContextVariableUseKeys;
+						if (requiredVariableUseKeyLink != null)
+						{
+							int usePhase = CurrentQuantificationUsePhase;
+							while (requiredVariableUseKeyLink != null)
+							{
+								variableUse = GetRolePlayerVariableUse(requiredVariableUseKeyLink.Value).Value;
+								if (!IsCorrelatedInstanceDeclared(variableUse) &&
+									!NodeStartsWithVariable(childNode, variableUse.PrimaryRolePlayerVariable))
+								{
+									childNode.RenderedRequiredContextVariable = true;
+									LinkedNode<VerbalizationPlanNode> blockLeadRoleModificationNodeLink = childNode.FirstChildNode;
+									while (blockLeadRoleModificationNodeLink != null)
+									{
+										VerbalizationPlanNode blockLeadRoleModificationNode = blockLeadRoleModificationNodeLink.Value;
+										switch (blockLeadRoleModificationNode.NodeType)
+										{
+											case VerbalizationPlanNodeType.Branch:
+												blockLeadRoleModificationNodeLink = blockLeadRoleModificationNodeLink.Value.FirstChildNode;
+												break;
+											case VerbalizationPlanNodeType.FactType:
+												readingOptions = blockLeadRoleModificationNode.ReadingOptions;
+												if (0 != (readingOptions & (VerbalizationPlanReadingOptions.FullyCollapseFirstRole | VerbalizationPlanReadingOptions.BackReferenceFirstRole)))
+												{
+													blockLeadRoleModificationNode.ReadingOptions = readingOptions | VerbalizationPlanReadingOptions.BlockFullyCollapseFirstRole | VerbalizationPlanReadingOptions.BlockBackReferenceFirstRole;
+												}
+												blockLeadRoleModificationNodeLink = null;
+												break;
+											default:
+												blockLeadRoleModificationNodeLink = null;
+												break;
+										}
+									}
+									requiredVariableContextPhrase = QuantifyVariableUse(variableUse, false, false, default(VerbalizationHyphenBinder), -1);
+									requiredVariableUseKeyLink = requiredVariableUseKeyLink.Next;
+									while (requiredVariableUseKeyLink != null)
+									{
+										variableUse = GetRolePlayerVariableUse(requiredVariableUseKeyLink.Value).Value;
+										if (!IsCorrelatedInstanceDeclared(variableUse) &&
+											!NodeStartsWithVariable(childNode, variableUse.PrimaryRolePlayerVariable))
+										{
+											requiredVariableContextPhrase = requiredVariableContextPhrase + renderer.ResolveVerbalizerSnippet(RolePathVerbalizerSnippetType.VariableIntroductionSeparator) + QuantifyVariableUse(variableUse, false, false, default(VerbalizationHyphenBinder), -1);
+										}
+										requiredVariableUseKeyLink = requiredVariableUseKeyLink.Next;
+									}
+									requiredVariableContextPhrase = string.Format(
+										renderer.FormatProvider,
+										renderer.ResolveVerbalizerSnippet(RolePathVerbalizerSnippetType.VariableIntroductionClause),
+										requiredVariableContextPhrase);
+									break;
+								}
+								requiredVariableUseKeyLink = requiredVariableUseKeyLink.Next;
+							}
 						}
 						if (first)
 						{
@@ -8342,7 +8866,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							{
 								case VerbalizationPlanBranchType.Chain:
 								case VerbalizationPlanBranchType.NegatedChain:
-									if (0 != ((readingOptions = childNode.ReadingOptions) & VerbalizationPlanReadingOptions.BackReferenceFirstRole))
+									if (VerbalizationPlanReadingOptions.BackReferenceFirstRole == ((readingOptions = childNode.ReadingOptions) & (VerbalizationPlanReadingOptions.BackReferenceFirstRole | VerbalizationPlanReadingOptions.BlockBackReferenceFirstRole)))
 									{
 										snippet = RolePathVerbalizerSnippetType.ChainedListCollapsedSeparator;
 									}
@@ -8354,7 +8878,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										snippet = (0 != (readingOptions & VerbalizationPlanReadingOptions.FullyCollapseFirstRole)) ?
 											((isTailBranch || isNestedBranch) ? RolePathVerbalizerSnippetType.ChainedListComplexRestrictionCollapsedLeadSeparator : RolePathVerbalizerSnippetType.ChainedListTopLevelComplexRestrictionCollapsedLeadSeparator) :
 											((childNode.RestrictsPreviousFactType ||
-											previousChildNodeType == VerbalizationPlanNodeType.ChainedRootVariable) ?
+											previousChildNodeType == VerbalizationPlanNodeType.ChainedRootVariable ||
+											previousChildNode.RenderedRequiredContextVariable) ?
 												(LeadTextIsBackReference(childNode) ? RolePathVerbalizerSnippetType.ChainedListLocalRestrictionBackReferenceSeparator : RolePathVerbalizerSnippetType.ChainedListLocalRestrictionSeparator) :
 												((isTailBranch || isNestedBranch) ?
 													(LeadTextIsBackReference(childNode) ? RolePathVerbalizerSnippetType.ChainedListComplexRestrictionBackReferenceSeparator : RolePathVerbalizerSnippetType.ChainedListComplexRestrictionSeparator) :
@@ -8384,6 +8909,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						if (snippet != (RolePathVerbalizerSnippetType)(-1))
 						{
 							builder.Append(renderer.ResolveVerbalizerSnippet(snippet));
+						}
+						if (requiredVariableContextPhrase != null)
+						{
+							builder.Append(requiredVariableContextPhrase);
 						}
 						nestedOutdent = -1;
 						string childText = RenderVerbalizationPlanNode(builder, childNode, childNodeLink, ref blockNextLeadRoleCollapse, out nestedOutdent);
@@ -8479,6 +9008,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				case VerbalizationPlanNodeType.ChainedRootVariable:
 					rootVariable = node.RootVariable;
 					return QuantifyRolePlayerName(GetSubscriptedRolePlayerName(rootVariable), rootVariable.Use(CurrentQuantificationUsePhase, true), false);
+				case VerbalizationPlanNodeType.VariableExistence:
+					variableUse = GetRolePlayerVariableUse(node.VariableKey).Value;
+					bool negateExistence = node.NegateExistence;
+					return string.Format(
+						renderer.FormatProvider,
+						renderer.ResolveVerbalizerSnippet((negateExistence && variableUse.PrimaryRolePlayerVariable.HasBeenUsed(CurrentQuantificationUsePhase, true)) ? RolePathVerbalizerSnippetType.NegatedVariableExistence : RolePathVerbalizerSnippetType.VariableExistence),
+						QuantifyVariableUse(variableUse, negateExistence, false, default(VerbalizationHyphenBinder), -1));
 				case VerbalizationPlanNodeType.FloatingRootVariableContext:
 					// There will always be exactly one child node link at this point
 					childNodeLink = node.FirstChildNode;
@@ -8497,6 +9033,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			LinkedNode<VerbalizationPlanNode> childNodeLink;
 			VerbalizationPlanBranchType branchType;
+			if (node.RenderedRequiredContextVariable)
+			{
+				return false;
+			}
 			switch (branchType = node.BranchType)
 			{
 				case VerbalizationPlanBranchType.None:
@@ -8505,7 +9045,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					if (null != (childNodeLink = node.FirstChildNode))
 					{
 						VerbalizationPlanReadingOptions nestedReadingOptions = ResolveDynamicNegatedExitRole(childNodeLink.Value);
-						if ((VerbalizationPlanReadingOptions.NegatedExitRole | VerbalizationPlanReadingOptions.BackReferenceFirstRole) == (nestedReadingOptions & (VerbalizationPlanReadingOptions.NegatedExitRole | VerbalizationPlanReadingOptions.BackReferenceFirstRole | VerbalizationPlanReadingOptions.FullyCollapseFirstRole)))
+						if ((VerbalizationPlanReadingOptions.NegatedExitRole | VerbalizationPlanReadingOptions.BackReferenceFirstRole) == (nestedReadingOptions & (VerbalizationPlanReadingOptions.NegatedExitRole | VerbalizationPlanReadingOptions.BackReferenceFirstRole | VerbalizationPlanReadingOptions.FullyCollapseFirstRole | VerbalizationPlanReadingOptions.BlockBackReferenceFirstRole)))
 						{
 							return true;
 						}
@@ -8543,20 +9083,43 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					ReadOnlyCollection<PathedRole> childPathedRoles = myRolePathCache.PathedRoleCollection(entryPathedRole.RolePath);
 					int testChildIndex = childPathedRoles.IndexOf(entryPathedRole);
 					testChildIndex = testChildIndex == 0 ? 1 : 0;
-					if (testChildIndex < childPathedRoles.Count &&
-						!GetRolePlayerVariableUse(childPathedRoles[testChildIndex]).Value.PrimaryRolePlayerVariable.HasBeenUsed(CurrentQuantificationUsePhase, true))
+					int usePhase = CurrentQuantificationUsePhase;
+					bool inlineNegation = false;
+					if (testChildIndex >= childPathedRoles.Count || // Indicates a pure existential, we're here because the entry role can possibly be partnered.
+						!GetRolePlayerVariableUse(childPathedRoles[testChildIndex]).Value.PrimaryRolePlayerVariable.HasBeenUsed(usePhase, true))
 					{
-						readingOptions |= VerbalizationPlanReadingOptions.NegatedExitRole;
+						RolePlayerVariableUse variableUse = GetRolePlayerVariableUse(entryPathedRole).Value;
+						object correlationRoot = variableUse.CorrelationRoot;
+						RolePlayerVariable primaryVariable = variableUse.PrimaryRolePlayerVariable;
+						if (null == GetUnpairedPartnerVariable(
+							primaryVariable,
+							!primaryVariable.HasBeenUsed(usePhase, true),
+							correlationRoot != null ? GetRolePlayerVariableUse(correlationRoot).Value.GetCorrelatedVariables(true) : variableUse.GetCorrelatedVariables(false)))
+						{
+							inlineNegation = true;
+							readingOptions |= VerbalizationPlanReadingOptions.NegatedExitRole;
+						}
+					}
+					if (!inlineNegation)
+					{
+						if (0 != (readingOptions & VerbalizationPlanReadingOptions.FullyCollapseFirstRole) &&
+							!GetCollapsibleLeadAllowedFromBranchType(VerbalizationPlanBranchType.NegatedChain))
+						{
+							readingOptions |= VerbalizationPlanReadingOptions.BlockFullyCollapseFirstRole;
+						}
+						if (0 != (readingOptions & VerbalizationPlanReadingOptions.BackReferenceFirstRole) &&
+							!GetCollapsibleListOpenForBackReferenceAllowedFromBranchType(VerbalizationPlanBranchType.NegatedChain))
+						{
+							readingOptions |= VerbalizationPlanReadingOptions.BlockBackReferenceFirstRole;
+						}
 					}
 				}
 				node.ReadingOptions = readingOptions;
 			}
 			return readingOptions;
 		}
-		private string QuantifyRolePlayer(PathedRole pathedRole, bool negateExistentialQuantifier, bool basicLeadRole, VerbalizationHyphenBinder hyphenBinder, int hyphenBinderRoleIndex)
+		private string QuantifyVariableUse(RolePlayerVariableUse variableUse, bool negateExistentialQuantifier, bool basicLeadRole, VerbalizationHyphenBinder hyphenBinder, int hyphenBinderRoleIndex)
 		{
-			Role role = pathedRole.Role;
-			RolePlayerVariableUse variableUse = GetRolePlayerVariableUse(pathedRole).Value;
 			RolePlayerVariable primaryVariable = variableUse.PrimaryRolePlayerVariable;
 			int quantificationUsePhase = CurrentQuantificationUsePhase;
 			bool firstUseOfPrimaryVariable = !primaryVariable.HasBeenUsed(quantificationUsePhase, false);
@@ -8656,10 +9219,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				// Note that we never chain with the optimized lead form
 				result = PartnerVariables(primaryVariable, result, partnerWithVariable, preRenderedPartnerWith, false);
 			}
-			return QuantifyRolePlayerName(hyphenBinder.HyphenBindRoleReplacement(result, hyphenBinderRoleIndex), primaryVariable.Use(quantificationUsePhase, true), negateExistentialQuantifier);
+			return QuantifyRolePlayerName(hyphenBinderRoleIndex >= 0 ? hyphenBinder.HyphenBindRoleReplacement(result, hyphenBinderRoleIndex) : result, primaryVariable.Use(quantificationUsePhase, true), negateExistentialQuantifier);
 		}
 		/// <summary>
-		/// Test if two variables can be partnered, meanign that they represent different types
+		/// Test if two variables can be partnered, meaning that they represent different types
 		/// of the same underlying instance.
 		/// </summary>
 		/// <param name="useKey">Key for the variable use to partner with</param>
@@ -8781,6 +9344,79 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return firstUnpairedHeadVariable ?? firstUnpairedNormalVariable ?? (unusedFloatingRootVariable ? floatingRootVariable : null);
 			}
 			return null;
+		}
+		/// <summary>
+		/// Check if the instance represented by <paramref name="variableUse"/>
+		/// has been declared by testing if this or any other correlated variable
+		/// has already been declared.
+		/// </summary>
+		/// <param name="variableUse">The variable to test</param>
+		/// <returns>True if any variable corresponding to this variable has been declared.</returns>
+		private bool IsCorrelatedInstanceDeclared(RolePlayerVariableUse variableUse)
+		{
+			int quantificationUsePhase = CurrentQuantificationUsePhase;
+			RolePlayerVariable primaryVariable = variableUse.PrimaryRolePlayerVariable;
+			if (primaryVariable.HasBeenUsed(quantificationUsePhase, true))
+			{
+				return true;
+			}
+			object correlationRoot = variableUse.CorrelationRoot;
+			foreach (RolePlayerVariable correlatedVariable in (correlationRoot != null) ? GetRolePlayerVariableUse(correlationRoot).Value.GetCorrelatedVariables(true) : variableUse.GetCorrelatedVariables(false))
+			{
+				if (correlatedVariable != primaryVariable &&
+					correlatedVariable.HasBeenUsed(quantificationUsePhase, true))
+				{
+					return true;
+				}
+			}
+			Dictionary<RolePlayerVariable, LinkedNode<RolePlayerVariable>> externalCorrelations;
+			LinkedNode<RolePlayerVariable> externalCorrelationNode;
+
+			// Look for partnering with another used external variable
+			if (null != (externalCorrelations = myCorrelatedExternalVariables) &&
+				externalCorrelations.TryGetValue(primaryVariable, out externalCorrelationNode))
+			{
+				// Treat an external correlation as an instance use
+				foreach (RolePlayerVariable correlatedVariable in externalCorrelationNode)
+				{
+					if (correlatedVariable.HasBeenUsed(quantificationUsePhase, true))
+					{
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+		/// <summary>
+		/// Test if a node starts with a given variable. Front text is allowed.
+		/// </summary>
+		private bool NodeStartsWithVariable(VerbalizationPlanNode node, RolePlayerVariable variable)
+		{
+			switch (node.NodeType)
+			{
+				case VerbalizationPlanNodeType.FactType:
+					PathedRole entryPathedRole;
+					return 0 != (node.ReadingOptions & VerbalizationPlanReadingOptions.BasicLeadRole) &&
+						variable == GetRolePlayerVariableUse(entryPathedRole = node.FactTypeEntry).Value.PrimaryRolePlayerVariable &&
+						entryPathedRole.Role == node.Reading.RoleCollection[0].Role;
+				case VerbalizationPlanNodeType.Branch:
+					switch (node.BranchType)
+					{
+						case VerbalizationPlanBranchType.NegatedChain:
+							VerbalizationPlanNode negatedChildNode = node.FirstChildNode.Value;
+							if (0 != (negatedChildNode.ReadingOptions & VerbalizationPlanReadingOptions.BasicLeadRole))
+							{
+								if (0 != (ResolveDynamicNegatedExitRole(negatedChildNode) & VerbalizationPlanReadingOptions.NegatedExitRole) ||
+									GetCollapsibleLeadAllowedFromBranchType(VerbalizationPlanBranchType.NegatedChain))
+								{
+									return NodeStartsWithVariable(negatedChildNode, variable);
+								}
+							}
+							break;
+					}
+					break;
+			}
+			return false;
 		}
 		/// <summary>
 		/// Partner two unpartnered variables using the current pairing phase.
@@ -8998,7 +9634,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Helper method to get a correlation objection from a fact type derivation role projection
+		/// Helper method to get a correlation object from a fact type derivation role projection
 		/// </summary>
 		private static RolePathNode ResolveCorrelationNode(FactTypeRoleProjection roleProjection)
 		{
@@ -9015,7 +9651,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return RolePathNode.Empty;
 		}
 		/// <summary>
-		/// Helper method to get a correlation objection from a constraint role projection
+		/// Helper method to get a correlation object from a constraint role projection
 		/// </summary>
 		private static RolePathNode ResolveCorrelationNode(ConstraintRoleProjection constraintRoleProjection)
 		{
