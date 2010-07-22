@@ -2912,10 +2912,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// A space separated list of list closure snippet names from this
 		/// enum that reverse an indentation. Trailing outdents can be tracked
-		/// specially during formatting so that external text on the same line
-		/// as the outdent keeps the same indentation level.
+		/// specially during formatting so that external text or outer list
+		/// separator and close elements on the same line as the outdent keeps
+		/// the same indentation level.
 		/// </summary>
 		ListCloseOutdentSnippets,
+		/// <summary>
+		/// A space separated list of list separators and close elements that
+		/// must be placed before any active trailing outdent snippets.
+		/// </summary>
+		OutdentAwareTrailingListSnippets,
 		/// <summary>
 		/// </summary>
 		ChainedListOpen,
@@ -3384,9 +3390,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				case RolePathVerbalizerSnippetType.AggregateSetProjection:
 					return @"<span class=""quantifier"">each distinct</span> {0}";
 				case RolePathVerbalizerSnippetType.VariableIntroductionClause:
-					return @"<span class=""quantifier"">for</span> {0}<span class=""listSeparator"">, </span> ";
+					return @"<span class=""quantifier"">for</span> {0}<span class=""listSeparator"">, </span>";
 				case RolePathVerbalizerSnippetType.VariableIntroductionSeparator:
-					return @"<span class=""listSeparator"">, </span>";
+					return @"<span class=""logicalOperator""> and </span>";
 				case RolePathVerbalizerSnippetType.VariableExistence:
 					return @"{0} <span class=""quantifier"">exists</span>";
 				case RolePathVerbalizerSnippetType.NegatedVariableExistence:
@@ -3395,6 +3401,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				// List management
 				case RolePathVerbalizerSnippetType.ListCloseOutdentSnippets:
 					return @"ChainedListClose NegatedChainedListClose AndTailListClose AndNestedListClose NegatedAndLeadListClose NegatedAndTailListClose NegatedAndNestedListClose OrTailListClose OrNestedListClose NegatedOrLeadListClose NegatedOrTailListClose NegatedOrNestedListClose XorLeadListClose XorTailListClose XorNestedListClose NegatedXorLeadListClose NegatedXorTailListClose NegatedXorNestedListClose";
+				case RolePathVerbalizerSnippetType.OutdentAwareTrailingListSnippets:
+					return @"NegatedAndLeadListSeparator NegatedAndNestedListSeparator NegatedAndTailListSeparator NegatedOrLeadListSeparator NegatedOrNestedListSeparator NegatedOrTailListSeparator XorLeadListSeparator XorNestedListSeparator XorTailListSeparator NegatedXorLeadListSeparator NegatedXorNestedListSeparator NegatedXorTailListSeparator";
 				case RolePathVerbalizerSnippetType.ChainedListOpen:
 					return "<span>";
 				case RolePathVerbalizerSnippetType.ChainedListLocalRestrictionSeparator:
@@ -5979,6 +5987,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// the correct outdent level. Initialized on demand.
 		/// </summary>
 		private BitTracker myOutdentSnippetBits;
+		/// <summary>
+		/// Bits to track which trailing list snippets need to be placed
+		/// before an active outdent position. Initialized on demand.
+		/// </summary>
+		private BitTracker myOutdentAwareSnippetBits;
 		#endregion // Member Variables
 		#region Constructor
 		/// <summary>
@@ -6642,42 +6655,62 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		/// <summary>
 		/// Determine if a specific <see cref="RolePathVerbalizerSnippetType"/>
-		/// value is marked as an outdent bit by the dyamic <see cref="RolePathVerbalizerSnippetType.ListCloseOutdentSnippets"/>
-		/// snippet.
+		/// value is marked as an outdent snippet by the dyamic
+		/// <see cref="RolePathVerbalizerSnippetType.ListCloseOutdentSnippets"/> snippet.
 		/// </summary>
 		private bool IsOutdentSnippet(RolePathVerbalizerSnippetType snippetType)
 		{
 			BitTracker tracker = myOutdentSnippetBits;
 			if (tracker.Count == 0)
 			{
-				#region Translate outdent snippet to bits
-				tracker.Resize((int)RolePathVerbalizerSnippetType.Last + 1);
-				string[] outdentSnippets = myRenderer.ResolveVerbalizerSnippet(RolePathVerbalizerSnippetType.ListCloseOutdentSnippets).Split((char[])null, StringSplitOptions.RemoveEmptyEntries);
-				if (outdentSnippets != null)
-				{
-					Type enumType = typeof(RolePathVerbalizerSnippetType);
-					for (int i = 0; i < outdentSnippets.Length; ++i)
-					{
-						string outdentSnippetName = outdentSnippets[i];
-						object result = null;
-						try
-						{
-							result = Enum.Parse(enumType, outdentSnippets[i], true);
-						}
-						catch (ArgumentException)
-						{
-							// Swallow it
-						}
-						if (result != null)
-						{
-							tracker[(int)(RolePathVerbalizerSnippetType)result] = true;
-						}
-					}
-				}
-				myOutdentSnippetBits = tracker;
-				#endregion // Translate outdent snippet to bits
+				myOutdentSnippetBits = tracker = TranslateSnippetTypeDirective(RolePathVerbalizerSnippetType.ListCloseOutdentSnippets);
 			}
 			return tracker[(int)snippetType];
+		}
+		/// <summary>
+		/// Determine if a specific <see cref="RolePathVerbalizerSnippetType"/>
+		/// value is marked as an outdent aware snippet by the dyamic
+		/// <see cref="RolePathVerbalizerSnippetType.OutdentAwareTrailingListSnippets"/> snippet.
+		/// </summary>
+		private bool IsOutdentAwareSnippet(RolePathVerbalizerSnippetType snippetType)
+		{
+			BitTracker tracker = myOutdentAwareSnippetBits;
+			if (tracker.Count == 0)
+			{
+				myOutdentAwareSnippetBits = tracker = TranslateSnippetTypeDirective(RolePathVerbalizerSnippetType.OutdentAwareTrailingListSnippets);
+			}
+			return tracker[(int)snippetType];
+		}
+		/// <summary>
+		/// Helper method to return a bit tracker with true values for
+		/// any snippet type in the space separated string.
+		/// </summary>
+		private BitTracker TranslateSnippetTypeDirective(RolePathVerbalizerSnippetType snippetType)
+		{
+			BitTracker retVal = new BitTracker((int)RolePathVerbalizerSnippetType.Last + 1);
+			string[] outdentSnippets = myRenderer.ResolveVerbalizerSnippet(snippetType).Split((char[])null, StringSplitOptions.RemoveEmptyEntries);
+			if (outdentSnippets != null)
+			{
+				Type enumType = typeof(RolePathVerbalizerSnippetType);
+				for (int i = 0; i < outdentSnippets.Length; ++i)
+				{
+					string outdentSnippetName = outdentSnippets[i];
+					object result = null;
+					try
+					{
+						result = Enum.Parse(enumType, outdentSnippets[i], true);
+					}
+					catch (ArgumentException)
+					{
+						// Swallow it
+					}
+					if (result != null)
+					{
+						retVal[(int)(RolePathVerbalizerSnippetType)result] = true;
+					}
+				}
+			}
+			return retVal;
 		}
 		private void ResolveReadings(VerbalizationPlanNode verbalizationNode, LinkedNode<VerbalizationPlanNode> verbalizationNodeLink, bool canCollapseLead, ref RolePlayerVariable contextLeadVariable, ref RolePlayerVariable contextTrailingVariable)
 		{
@@ -8742,26 +8775,54 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									!NodeStartsWithVariable(childNode, variableUse.PrimaryRolePlayerVariable))
 								{
 									childNode.RenderedRequiredContextVariable = true;
-									LinkedNode<VerbalizationPlanNode> blockLeadRoleModificationNodeLink = childNode.FirstChildNode;
-									while (blockLeadRoleModificationNodeLink != null)
+									LinkedNode<VerbalizationPlanNode> modifyNodeLink = childNode.FirstChildNode;
+									if (modifyNodeLink != null)
 									{
-										VerbalizationPlanNode blockLeadRoleModificationNode = blockLeadRoleModificationNodeLink.Value;
-										switch (blockLeadRoleModificationNode.NodeType)
+										LinkedNode<VerbalizationPlanNode> blockLeadRoleModificationNodeLink = modifyNodeLink;
+										while (blockLeadRoleModificationNodeLink != null)
 										{
-											case VerbalizationPlanNodeType.Branch:
-												blockLeadRoleModificationNodeLink = blockLeadRoleModificationNodeLink.Value.FirstChildNode;
-												break;
-											case VerbalizationPlanNodeType.FactType:
-												readingOptions = blockLeadRoleModificationNode.ReadingOptions;
-												if (0 != (readingOptions & (VerbalizationPlanReadingOptions.FullyCollapseFirstRole | VerbalizationPlanReadingOptions.BackReferenceFirstRole)))
-												{
-													blockLeadRoleModificationNode.ReadingOptions = readingOptions | VerbalizationPlanReadingOptions.BlockFullyCollapseFirstRole | VerbalizationPlanReadingOptions.BlockBackReferenceFirstRole;
-												}
-												blockLeadRoleModificationNodeLink = null;
-												break;
-											default:
-												blockLeadRoleModificationNodeLink = null;
-												break;
+											VerbalizationPlanNode blockLeadRoleModificationNode = blockLeadRoleModificationNodeLink.Value;
+											switch (blockLeadRoleModificationNode.NodeType)
+											{
+												case VerbalizationPlanNodeType.Branch:
+													blockLeadRoleModificationNodeLink = blockLeadRoleModificationNodeLink.Value.FirstChildNode;
+													break;
+												case VerbalizationPlanNodeType.FactType:
+													readingOptions = blockLeadRoleModificationNode.ReadingOptions;
+													if (0 != (readingOptions & (VerbalizationPlanReadingOptions.FullyCollapseFirstRole | VerbalizationPlanReadingOptions.BackReferenceFirstRole)))
+													{
+														blockLeadRoleModificationNode.ReadingOptions = readingOptions | VerbalizationPlanReadingOptions.BlockFullyCollapseFirstRole | VerbalizationPlanReadingOptions.BlockBackReferenceFirstRole;
+													}
+													blockLeadRoleModificationNodeLink = null;
+													break;
+												default:
+													blockLeadRoleModificationNodeLink = null;
+													break;
+											}
+										}
+
+										// Also turn off lead role collapsing on a subsequent child node. Backreferencing is still valid.
+										blockLeadRoleModificationNodeLink = modifyNodeLink.Next;
+										while (blockLeadRoleModificationNodeLink != null)
+										{
+											VerbalizationPlanNode blockLeadRoleModificationNode = blockLeadRoleModificationNodeLink.Value;
+											switch (blockLeadRoleModificationNode.NodeType)
+											{
+												case VerbalizationPlanNodeType.Branch:
+													blockLeadRoleModificationNodeLink = blockLeadRoleModificationNodeLink.Value.FirstChildNode;
+													break;
+												case VerbalizationPlanNodeType.FactType:
+													readingOptions = blockLeadRoleModificationNode.ReadingOptions;
+													if (0 != (readingOptions & VerbalizationPlanReadingOptions.FullyCollapseFirstRole))
+													{
+														blockLeadRoleModificationNode.ReadingOptions = readingOptions | VerbalizationPlanReadingOptions.BlockFullyCollapseFirstRole;
+													}
+													blockLeadRoleModificationNodeLink = null;
+													break;
+												default:
+													blockLeadRoleModificationNodeLink = null;
+													break;
+											}
 										}
 									}
 									requiredVariableContextPhrase = QuantifyVariableUse(variableUse, false, false, default(VerbalizationHyphenBinder), -1);
@@ -8795,7 +8856,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								{
 									case VerbalizationPlanBranchType.Chain:
 									case VerbalizationPlanBranchType.NegatedChain:
-										isTailBranch = nodeLink.Previous != null;
+										if (node.RenderedRequiredContextVariable)
+										{
+											isNestedBranch = true;
+										}
+										else
+										{
+											isTailBranch = nodeLink.Previous != null;
+										}
 										break;
 									default:
 										isNestedBranch = true;
@@ -8849,6 +8917,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							{
 								snippet = (RolePathVerbalizerSnippetType)((int)snippet + 1);
 							}
+							nestedOutdent = -1; // Ignore previous nested outdents for lead snippets
 						}
 						else
 						{
@@ -8871,15 +8940,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										snippet = RolePathVerbalizerSnippetType.ChainedListCollapsedSeparator;
 									}
 									// Check for a 'TailList', which will render its own lead separator in place of the chain separator.
-									else if (!(childNode.NodeType == VerbalizationPlanNodeType.Branch &&
+									else if (!(!childNode.RenderedRequiredContextVariable &&
+										childNode.NodeType == VerbalizationPlanNodeType.Branch &&
 										BranchSplits(childBranchType = childNode.BranchType) &&
 										GetRenderingStyleFromBranchType(childBranchType) == VerbalizationPlanBranchRenderingStyle.OperatorSeparated))
 									{
 										snippet = (0 != (readingOptions & VerbalizationPlanReadingOptions.FullyCollapseFirstRole)) ?
 											((isTailBranch || isNestedBranch) ? RolePathVerbalizerSnippetType.ChainedListComplexRestrictionCollapsedLeadSeparator : RolePathVerbalizerSnippetType.ChainedListTopLevelComplexRestrictionCollapsedLeadSeparator) :
 											((childNode.RestrictsPreviousFactType ||
-											previousChildNodeType == VerbalizationPlanNodeType.ChainedRootVariable ||
-											previousChildNode.RenderedRequiredContextVariable) ?
+											previousChildNodeType == VerbalizationPlanNodeType.ChainedRootVariable) ?
 												(LeadTextIsBackReference(childNode) ? RolePathVerbalizerSnippetType.ChainedListLocalRestrictionBackReferenceSeparator : RolePathVerbalizerSnippetType.ChainedListLocalRestrictionSeparator) :
 												((isTailBranch || isNestedBranch) ?
 													(LeadTextIsBackReference(childNode) ? RolePathVerbalizerSnippetType.ChainedListComplexRestrictionBackReferenceSeparator : RolePathVerbalizerSnippetType.ChainedListComplexRestrictionSeparator) :
@@ -8906,9 +8975,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									break;
 							}
 						}
-						if (snippet != (RolePathVerbalizerSnippetType)(-1))
+						string separatorText;
+						if (snippet != (RolePathVerbalizerSnippetType)(-1) &&
+							!string.IsNullOrEmpty(separatorText = renderer.ResolveVerbalizerSnippet(snippet)))
 						{
-							builder.Append(renderer.ResolveVerbalizerSnippet(snippet));
+							if (nestedOutdent != -1 &&
+								IsOutdentAwareSnippet(snippet) &&
+								(nestedOutdent + restoreBuilder) < builder.Length)
+							{
+								builder.Insert(nestedOutdent + restoreBuilder, separatorText);
+								nestedOutdent += separatorText.Length;
+							}
+							else
+							{
+								builder.Append(separatorText);
+							}
 						}
 						if (requiredVariableContextPhrase != null)
 						{
@@ -8965,12 +9046,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							string closeSnippet = renderer.ResolveVerbalizerSnippet(snippet);
 							if (!string.IsNullOrEmpty(closeSnippet))
 							{
-								if (0 != (myOptions & RolePathVerbalizerOptions.MarkTrailingOutdentStart) &&
-									IsOutdentSnippet(snippet))
+								if (nestedOutdent != -1 &&
+									IsOutdentAwareSnippet(snippet) &&
+									(nestedOutdent + restoreBuilder) < builder.Length)
 								{
-									outdentPosition = nestedOutdent != -1 ? nestedOutdent : (builder.Length - restoreBuilder);
+									builder.Insert(nestedOutdent + restoreBuilder, closeSnippet);
+									outdentPosition = IsOutdentSnippet(snippet) ?
+										nestedOutdent : // Nested outdent snippets, the position does not move
+										nestedOutdent + closeSnippet.Length; // Current node nested, outdent moves after it
 								}
-								builder.Append(closeSnippet);
+								else
+								{
+									if (IsOutdentSnippet(snippet))
+									{
+										outdentPosition = nestedOutdent != -1 ? nestedOutdent : (builder.Length - restoreBuilder);
+									}
+									builder.Append(closeSnippet);
+								}
 							}
 							else if (nestedOutdent != -1)
 							{
@@ -8982,7 +9074,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							PopPairingUsePhase();
 						}
 					}
-					if (nodeLink == null && outdentPosition != -1 && outdentPosition < (builder.Length - restoreBuilder))
+					if (nodeLink == null && // Outermost
+						0 != (myOptions & RolePathVerbalizerOptions.MarkTrailingOutdentStart) && // Options require an outdent mark
+						outdentPosition != -1 && // Have a trailing outdent with no visible text after it
+						outdentPosition < (builder.Length - restoreBuilder)) // Outdent has some text after it
 					{
 						builder.Insert(restoreBuilder + outdentPosition, "{0}");
 					}
@@ -9392,6 +9487,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private bool NodeStartsWithVariable(VerbalizationPlanNode node, RolePlayerVariable variable)
 		{
+			LinkedNode<VerbalizationPlanNode> childNodeLink;
 			switch (node.NodeType)
 			{
 				case VerbalizationPlanNodeType.FactType:
@@ -9400,17 +9496,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						variable == GetRolePlayerVariableUse(entryPathedRole = node.FactTypeEntry).Value.PrimaryRolePlayerVariable &&
 						entryPathedRole.Role == node.Reading.RoleCollection[0].Role;
 				case VerbalizationPlanNodeType.Branch:
-					switch (node.BranchType)
+					VerbalizationPlanBranchType branchType = node.BranchType;
+					switch (branchType)
 					{
 						case VerbalizationPlanBranchType.NegatedChain:
-							VerbalizationPlanNode negatedChildNode = node.FirstChildNode.Value;
-							if (0 != (negatedChildNode.ReadingOptions & VerbalizationPlanReadingOptions.BasicLeadRole))
+							VerbalizationPlanNode negatedChildNode;
+							if (null != (childNodeLink = node.FirstChildNode) &&
+								0 != ((negatedChildNode = childNodeLink.Value).ReadingOptions & VerbalizationPlanReadingOptions.BasicLeadRole))
 							{
 								if (0 != (ResolveDynamicNegatedExitRole(negatedChildNode) & VerbalizationPlanReadingOptions.NegatedExitRole) ||
 									GetCollapsibleLeadAllowedFromBranchType(VerbalizationPlanBranchType.NegatedChain))
 								{
 									return NodeStartsWithVariable(negatedChildNode, variable);
 								}
+							}
+							break;
+						default:
+							if (null != (childNodeLink = node.FirstChildNode) &&
+								GetCollapsibleLeadAllowedFromBranchType(branchType))
+							{
+								return NodeStartsWithVariable(childNodeLink.Value, variable);
 							}
 							break;
 					}

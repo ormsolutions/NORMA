@@ -4635,7 +4635,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 #if BLOCK_TRIVIAL_JOINPATHS
 											usesOppositeObjectification = true;
 #endif // BLOCK_TRIVIAL_JOINPATHS
+											// All roles from the same objectified fact type will
+											// have the same opposite role player. They all need to
+											// be moved to the opposite role.
 											usedObjectifyingRole[0] = true;
+											for (int j = 1; j < constraintRoleCount; ++j)
+											{
+												if (j != i && constraintRoles[j].Role.FactType == firstFactType)
+												{
+													usedObjectifyingRole[j] = true;
+												}
+											}
 										}
 										else
 										{
@@ -4661,7 +4671,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 #if BLOCK_TRIVIAL_JOINPATHS
 											usesOppositeObjectification = true;
 #endif // BLOCK_TRIVIAL_JOINPATHS
+											// Use objectification for all roles on the original fact type
 											usedObjectifyingRole[0] = true;
+											for (int j = 1; j < constraintRoleCount; ++j)
+											{
+												if (j != i && constraintRoles[j].Role.FactType == firstFactType)
+												{
+													usedObjectifyingRole[j] = true;
+												}
+											}
 											continue;
 										}
 									}
@@ -4710,7 +4728,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										{
 											resolvedOppositeRolePlayer = compatibleSupertype;
 											resolvedOppositeRolePlayerAlternate = null;
+
+											// Use objectification for all roles on the original fact type
 											usedObjectifyingRole[0] = true;
+											for (int j = 1; j < constraintRoleCount; ++j)
+											{
+												if (j != i && constraintRoles[j].Role.FactType == firstFactType)
+												{
+													usedObjectifyingRole[j] = true;
+												}
+											}
 #if BLOCK_TRIVIAL_JOINPATHS
 											usesOppositeObjectification = true;
 											multipleCompatibleOppositeRolePlayers = true;
