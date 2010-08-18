@@ -228,29 +228,32 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					{
 						// The single-column constraint is its own role set, just add the roles.
 						modifyRoleSequence = scConstraint;
-						if (constraint.ConstraintType == ConstraintType.ExternalUniqueness)
+						switch (constraint.ConstraintType)
 						{
-							// Translate selected unary roles back to the implied role
-							bool duplicatedSelectedRoles = false;
-							for (int i = 0; i < rolesCount; ++i)
-							{
-								Role testRole = selectedRoles[i];
-								Role oppositeRole;
-								ObjectType oppositeRolePlayer;
-								if (null != (oppositeRole = testRole.OppositeRole as Role) &&
-									null != (oppositeRolePlayer = oppositeRole.RolePlayer) &&
-									oppositeRolePlayer.IsImplicitBooleanValue)
+							case ConstraintType.ExternalUniqueness:
+							case ConstraintType.Frequency:
+								// Translate selected unary roles back to the implied role
+								bool duplicatedSelectedRoles = false;
+								for (int i = 0; i < rolesCount; ++i)
 								{
-									if (!duplicatedSelectedRoles)
+									Role testRole = selectedRoles[i];
+									Role oppositeRole;
+									ObjectType oppositeRolePlayer;
+									if (null != (oppositeRole = testRole.OppositeRole as Role) &&
+										null != (oppositeRolePlayer = oppositeRole.RolePlayer) &&
+										oppositeRolePlayer.IsImplicitBooleanValue)
 									{
-										duplicatedSelectedRoles = true;
-										Role[] dupRoles = new Role[rolesCount];
-										selectedRoles.CopyTo(dupRoles, 0);
-										selectedRoles = dupRoles;
+										if (!duplicatedSelectedRoles)
+										{
+											duplicatedSelectedRoles = true;
+											Role[] dupRoles = new Role[rolesCount];
+											selectedRoles.CopyTo(dupRoles, 0);
+											selectedRoles = dupRoles;
+										}
+										selectedRoles[i] = oppositeRole;
 									}
-									selectedRoles[i] = oppositeRole;
 								}
-							}
+								break;
 						}
 					}
 					if (modifyRoleSequence != null)

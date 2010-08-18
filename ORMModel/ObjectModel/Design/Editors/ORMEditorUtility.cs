@@ -192,6 +192,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 						{
 							((FrequencyConstraint)selectedElement).ConvertToUniquenessConstraint();
 						}
+						else if (error is FrequencyConstraintNonRestrictiveRangeError)
+						{
+							EditorUtility.ActivatePropertyEditor(
+								services.ServiceProvider,
+								DomainTypeDescriptor.CreatePropertyDescriptor(selectedElement, FrequencyConstraint.MinFrequencyDomainPropertyId),
+								false);
+						}
 						else
 						{
 							retVal = false;

@@ -1541,6 +1541,12 @@
 			</BaseClass>
 		</DomainClass>
 
+		<DomainClass Name="FrequencyConstraintNonRestrictiveRangeError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="0F5D1CDC-DD98-41CF-9FA8-5328B6F7B8A6" DisplayName="One to Unbounded Frequency Range Never Violated" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+
 		<DomainClass Name="ReadingRequiresUserModificationError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="56D0B016-EAF3-4E4F-B17A-7F7987EBC0CB" DisplayName="Reading Text Automatically Modified" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
@@ -3787,6 +3793,26 @@
 				<DomainRole Name="FrequencyConstraintExactlyOneError" PropertyName="FrequencyConstraint" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="FrequencyConstraintExactlyOneError" Id="05D223BC-A180-44EF-9E87-E4BB3C3F4B03">
 					<RolePlayer>
 						<DomainClassMoniker Name="FrequencyConstraintExactlyOneError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="7BA83D76-F96E-4659-8F74-55FAF6C529BE">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="FrequencyConstraint" PropertyName="FrequencyConstraintNonRestrictiveRangeError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FrequencyConstraint" Id="7B2B3732-4291-4B13-B6BC-B3962AE20E5B">
+					<RolePlayer>
+						<DomainClassMoniker Name="FrequencyConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="FrequencyConstraintNonRestrictiveRangeError" PropertyName="FrequencyConstraint" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="FrequencyConstraintNonRestrictiveRangeError" Id="3416B110-9A99-4939-B7E3-A0D3DF83C657">
+					<RolePlayer>
+						<DomainClassMoniker Name="FrequencyConstraintNonRestrictiveRangeError"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>

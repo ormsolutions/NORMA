@@ -261,6 +261,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				classNameMap.Add("FactTypeRequiresInternalUniquenessConstraintError", FactTypeRequiresInternalUniquenessConstraintError.DomainClassId);
 				classNameMap.Add("FactTypeRequiresReadingError", FactTypeRequiresReadingError.DomainClassId);
 				classNameMap.Add("FrequencyConstraintExactlyOneError", FrequencyConstraintExactlyOneError.DomainClassId);
+				classNameMap.Add("FrequencyConstraintNonRestrictiveRangeError", FrequencyConstraintNonRestrictiveRangeError.DomainClassId);
 				classNameMap.Add("FrequencyConstraintMinMaxError", FrequencyConstraintMinMaxError.DomainClassId);
 				classNameMap.Add("MinValueMismatchError", MinValueMismatchError.DomainClassId);
 				classNameMap.Add("MaxValueMismatchError", MaxValueMismatchError.DomainClassId);
@@ -7139,6 +7140,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
 			}
+			if (roleId == FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError.FrequencyConstraintNonRestrictiveRangeErrorDomainRoleId)
+			{
+				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
+			}
 			if (roleId == FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMinMaxErrorDomainRoleId)
 			{
 				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
@@ -10647,6 +10652,68 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // FrequencyConstraintExactlyOneError serialization
+	#region FrequencyConstraintNonRestrictiveRangeError serialization
+	partial class FrequencyConstraintNonRestrictiveRangeError : ICustomSerializedElement
+	{
+		/// <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
+		protected new CustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.LinkInfo;
+			}
+		}
+		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedLinkInfo</summary>
+		protected new CustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError.FrequencyConstraintDomainRoleId)
+			{
+				return new CustomSerializedElementInfo(null, "FrequencyConstraint", null, CustomSerializedElementWriteStyle.Element, null);
+			}
+			if (0 != (CustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
+			{
+				return base.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+			}
+			return CustomSerializedElementInfo.Default;
+		}
+		CustomSerializedElementInfo ICustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+		}
+		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;
+		/// <summary>Implements ICustomSerializedElement.MapChildElement</summary>
+		protected new CustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			Dictionary<string, CustomSerializedElementMatch> childElementMappings = FrequencyConstraintNonRestrictiveRangeError.myChildElementMappings;
+			if (childElementMappings == null)
+			{
+				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
+				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
+				match.InitializeRoles(FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError.FrequencyConstraintDomainRoleId);
+				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/2006-04/ORMCore|FrequencyConstraint", match);
+				FrequencyConstraintNonRestrictiveRangeError.myChildElementMappings = childElementMappings;
+			}
+			CustomSerializedElementMatch rVal;
+			if (!childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", (object)containerNamespace != (object)outerContainerNamespace ? containerNamespace : null, "|", containerName, "|", (object)elementNamespace != (object)containerNamespace ? elementNamespace : null, "|", elementName), out rVal))
+			{
+				rVal = base.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+			}
+			return rVal;
+		}
+		CustomSerializedElementMatch ICustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+		}
+	}
+	#endregion // FrequencyConstraintNonRestrictiveRangeError serialization
 	#region FrequencyConstraintMinMaxError serialization
 	partial class FrequencyConstraintMinMaxError : ICustomSerializedElement
 	{

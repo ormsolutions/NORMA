@@ -2272,6 +2272,7 @@
 			<xs:element name="EntityTypeRequiresReferenceSchemeError" type="EntityTypeRequiresReferenceSchemeErrorType"/>
 			<xs:element name="FrequencyConstraintMinMaxError" type="FrequencyConstraintMinMaxErrorType"/>
 			<xs:element name="FrequencyConstraintExactlyOneError" type="FrequencyConstraintExactlyOneErrorType"/>
+			<xs:element name="FrequencyConstraintNonRestrictiveRangeError" type="FrequencyConstraintNonRestrictiveRangeErrorType"/>
 			<!-- UNDONE: Remove FrequencyConstraintContradictsInternalUniquenessConstraintError when file format is officially updated -->
 			<xs:element name="FrequencyConstraintContradictsInternalUniquenessConstraintError" type="FrequencyConstraintContradictsInternalUniquenessConstraintErrorType"/>
 			<xs:element name="FrequencyConstraintViolatedByUniquenessConstraintError" type="FrequencyConstraintViolatedByUniquenessConstraintErrorType"/>
@@ -2567,6 +2568,18 @@
 	<xs:complexType name="FrequencyConstraintExactlyOneErrorType">
 		<xs:annotation>
 			<xs:documentation>A frequency constraint with a minimum and maximum range of 1 should be represented by a uniqueness constraint.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="FrequencyConstraint" type="FrequencyConstraintRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="FrequencyConstraintNonRestrictiveRangeErrorType">
+		<xs:annotation>
+			<xs:documentation>A frequency constraint with a minimum of 1 and an unbounded maximum is always true and should not be specified.</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">

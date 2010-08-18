@@ -19115,6 +19115,310 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("7ba83d76-f96e-4659-8f74-55faf6c529be")]
+	public partial class FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError : ElementAssociatedWithModelError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x7ba83d76, 0xf96e, 0x4659, 0x8f, 0x74, 0x55, 0xfa, 0xf6, 0xc5, 0x29, 0xbe);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError link in the same Partition as the given FrequencyConstraint
+		/// </summary>
+		/// <param name="source">FrequencyConstraint to use as the source of the relationship.</param>
+		/// <param name="target">FrequencyConstraintNonRestrictiveRangeError to use as the target of the relationship.</param>
+		public FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError(FrequencyConstraint source, FrequencyConstraintNonRestrictiveRangeError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError.FrequencyConstraintDomainRoleId, source), new DslModeling::RoleAssignment(FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError.FrequencyConstraintNonRestrictiveRangeErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region FrequencyConstraint domain role code
+		
+		/// <summary>
+		/// FrequencyConstraint domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid FrequencyConstraintDomainRoleId = new global::System.Guid(0x7b2b3732, 0x4291, 0x4b13, 0xb6, 0xbc, 0xb3, 0x96, 0x2a, 0xe2, 0x0e, 0x5b);
+		
+		/// <summary>
+		/// DomainRole FrequencyConstraint
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError.FrequencyConstraint
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError/FrequencyConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError/FrequencyConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "FrequencyConstraintNonRestrictiveRangeError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError/FrequencyConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("7b2b3732-4291-4b13-b6bc-b3962ae20e5b")]
+		public virtual FrequencyConstraint FrequencyConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (FrequencyConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, FrequencyConstraintDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, FrequencyConstraintDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access FrequencyConstraint of a FrequencyConstraintNonRestrictiveRangeError
+		/// <summary>
+		/// Gets FrequencyConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static FrequencyConstraint GetFrequencyConstraint(FrequencyConstraintNonRestrictiveRangeError element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, FrequencyConstraintNonRestrictiveRangeErrorDomainRoleId) as FrequencyConstraint;
+		}
+		
+		/// <summary>
+		/// Sets FrequencyConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetFrequencyConstraint(FrequencyConstraintNonRestrictiveRangeError element, FrequencyConstraint newFrequencyConstraint)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, FrequencyConstraintNonRestrictiveRangeErrorDomainRoleId, newFrequencyConstraint);
+		}
+		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing FrequencyConstraint domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.FrequencyConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.FrequencyConstraint = (FrequencyConstraint)value;
+			}
+		}
+		
+		#endregion
+		#region FrequencyConstraintNonRestrictiveRangeError domain role code
+		
+		/// <summary>
+		/// FrequencyConstraintNonRestrictiveRangeError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid FrequencyConstraintNonRestrictiveRangeErrorDomainRoleId = new global::System.Guid(0x3416b110, 0x9a99, 0x4939, 0xb7, 0xe3, 0xa0, 0xd3, 0xdf, 0x83, 0xc6, 0x57);
+		
+		/// <summary>
+		/// DomainRole FrequencyConstraintNonRestrictiveRangeError
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError.FrequencyConstraintNonRestrictiveRangeError
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError/FrequencyConstraintNonRestrictiveRangeError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError/FrequencyConstraintNonRestrictiveRangeError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FrequencyConstraint", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError/FrequencyConstraintNonRestrictiveRangeError.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("3416b110-9a99-4939-b7e3-a0d3df83c657")]
+		public virtual FrequencyConstraintNonRestrictiveRangeError FrequencyConstraintNonRestrictiveRangeError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (FrequencyConstraintNonRestrictiveRangeError)DslModeling::DomainRoleInfo.GetRolePlayer(this, FrequencyConstraintNonRestrictiveRangeErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, FrequencyConstraintNonRestrictiveRangeErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access FrequencyConstraintNonRestrictiveRangeError of a FrequencyConstraint
+		/// <summary>
+		/// Gets FrequencyConstraintNonRestrictiveRangeError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static FrequencyConstraintNonRestrictiveRangeError GetFrequencyConstraintNonRestrictiveRangeError(FrequencyConstraint element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, FrequencyConstraintDomainRoleId) as FrequencyConstraintNonRestrictiveRangeError;
+		}
+		
+		/// <summary>
+		/// Sets FrequencyConstraintNonRestrictiveRangeError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetFrequencyConstraintNonRestrictiveRangeError(FrequencyConstraint element, FrequencyConstraintNonRestrictiveRangeError newFrequencyConstraintNonRestrictiveRangeError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, FrequencyConstraintDomainRoleId, newFrequencyConstraintNonRestrictiveRangeError);
+		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing FrequencyConstraintNonRestrictiveRangeError domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.FrequencyConstraintNonRestrictiveRangeError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.FrequencyConstraintNonRestrictiveRangeError = (FrequencyConstraintNonRestrictiveRangeError)value;
+			}
+		}
+		
+		#endregion
+		#region FrequencyConstraint link accessor
+		/// <summary>
+		/// Get the FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError link to a FrequencyConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError GetLinkToFrequencyConstraintNonRestrictiveRangeError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraint frequencyConstraintInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError>(frequencyConstraintInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError.FrequencyConstraintDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of FrequencyConstraint not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region FrequencyConstraintNonRestrictiveRangeError link accessor
+		/// <summary>
+		/// Get the FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError link to a FrequencyConstraintNonRestrictiveRangeError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError GetLinkToFrequencyConstraint (global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintNonRestrictiveRangeError frequencyConstraintNonRestrictiveRangeErrorInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError>(frequencyConstraintNonRestrictiveRangeErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError.FrequencyConstraintNonRestrictiveRangeErrorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of FrequencyConstraintNonRestrictiveRangeError not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError instance accessors
+		
+		/// <summary>
+		/// Get any FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError links between a given FrequencyConstraint and a FrequencyConstraintNonRestrictiveRangeError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintNonRestrictiveRangeError target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError.FrequencyConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError link in links )
+			{
+				if ( target.Equals(link.FrequencyConstraintNonRestrictiveRangeError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError link between a given FrequencyConstraintand a FrequencyConstraintNonRestrictiveRangeError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintNonRestrictiveRangeError target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError.FrequencyConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError link in links )
+			{
+				if ( target.Equals(link.FrequencyConstraintNonRestrictiveRangeError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship ObjectificationImpliesFactType
 	/// Description for
 	/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationImpliesFactType

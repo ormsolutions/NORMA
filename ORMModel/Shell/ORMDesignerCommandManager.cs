@@ -807,8 +807,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						{
 							case ConstraintStorageStyle.SetConstraint:
 								LinkedElementCollection<Role> constraintRoles = ((SetConstraint)constraint).RoleCollection;
+								ConstraintType constraintType;
 								if (constraintRoles.Contains(role) ||
-									(constraint.ConstraintType == ConstraintType.ExternalUniqueness &&
+									(((constraintType = constraint.ConstraintType) == ConstraintType.ExternalUniqueness || constraintType == ConstraintType.Frequency) &&
 									role.Role == unaryRole &&
 									constraintRoles.Contains(role.OppositeRole as Role)))
 								{
@@ -3129,14 +3130,19 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				ExternalConstraintConnectAction connectAction = ormDiagram.ExternalConstraintConnectAction;
 
 				Role role = view.SelectedElements[0] as Role;
-				Role oppositeRole;
-				ObjectType oppositeRolePlayer;
-				if (constraint.ConstraintType == ConstraintType.ExternalUniqueness &&
-					null != (oppositeRole = role.OppositeRole as Role) &&
-					null != (oppositeRolePlayer = oppositeRole.RolePlayer) &&
-					oppositeRolePlayer.IsImplicitBooleanValue)
+				switch (constraint.ConstraintType)
 				{
-					role = oppositeRole;
+					case ConstraintType.ExternalUniqueness:
+					case ConstraintType.Frequency:
+						Role oppositeRole;
+						ObjectType oppositeRolePlayer;
+						if (null != (oppositeRole = role.OppositeRole as Role) &&
+							null != (oppositeRolePlayer = oppositeRole.RolePlayer) &&
+							oppositeRolePlayer.IsImplicitBooleanValue)
+						{
+							role = oppositeRole;
+						}
+						break;
 				}
 				ConstraintRoleSequence selectedSequence = null;
 				foreach (ConstraintRoleSequence sequence in role.ConstraintRoleSequenceCollection)

@@ -93,14 +93,19 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						{
 							IConstraint constraint = constraintShape.AssociatedConstraint;
 							Role constraintRole = role;
-							Role oppositeRole;
-							ObjectType oppositeRolePlayer;
-							if (constraint.ConstraintType == ConstraintType.ExternalUniqueness &&
-								null != (oppositeRole = role.OppositeRole as Role) &&
-								null != (oppositeRolePlayer = oppositeRole.RolePlayer) &&
-								oppositeRolePlayer.IsImplicitBooleanValue)
+							switch (constraint.ConstraintType)
 							{
-								constraintRole = oppositeRole;
+								case ConstraintType.ExternalUniqueness:
+								case ConstraintType.Frequency:
+									Role oppositeRole;
+									ObjectType oppositeRolePlayer;
+									if (null != (oppositeRole = role.OppositeRole as Role) &&
+										null != (oppositeRolePlayer = oppositeRole.RolePlayer) &&
+										oppositeRolePlayer.IsImplicitBooleanValue)
+									{
+										constraintRole = oppositeRole;
+									}
+									break;
 							}
 							foreach (ConstraintRoleSequence sequence in constraintRole.ConstraintRoleSequenceCollection)
 							{

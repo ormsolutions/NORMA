@@ -2837,6 +2837,14 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.FrequencyConstraintExactlyOneError.Text");
 			}
 		}
+		/// <summary>A frequency constraint with a minimum of 1 and an unbounded maximum is always true and should not be specified. {0}=constraint name {1}=model name</summary>
+		public static string ModelErrorFrequencyConstraintNonRestrictiveRangeError
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.FrequencyConstraintNonRestrictiveRangeError.Text");
+			}
+		}
 		/// <summary>Text to place in the title of the verbalization tool window.</summary>
 		public static string ModelVerbalizationWindowTitle
 		{

@@ -414,7 +414,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						case ConstraintType.SimpleMandatory:
 						case ConstraintType.Subset:
 						case ConstraintType.InternalUniqueness:
-						case ConstraintType.Frequency:
 							// The implicit boolean role has a constraint attached to it that it shouldn't
 							return false;
 					}

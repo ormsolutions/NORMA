@@ -2970,12 +2970,26 @@
 	<xsl:template match="@frequencyRangePattern" mode="ConstraintConditionOperator">
 		<xsl:choose>
 			<xsl:when test=".='MinUnbounded'">
-				<plx:binaryOperator type="equality">
+				<plx:binaryOperator type="booleanAnd">
 					<plx:left>
-						<plx:callThis name="MinFrequency" type="property"/>
+						<plx:binaryOperator type="equality">
+							<plx:left>
+								<plx:callThis name="MinFrequency" type="property"/>
+							</plx:left>
+							<plx:right>
+								<plx:value data="1" type="i4"/>
+							</plx:right>
+						</plx:binaryOperator>
 					</plx:left>
 					<plx:right>
-						<plx:value data="1" type="i4"/>
+						<plx:binaryOperator type="inequality">
+							<plx:left>
+								<plx:callThis name="MaxFrequency" type="property"/>
+							</plx:left>
+							<plx:right>
+								<plx:value data="0" type="i4"/>
+							</plx:right>
+						</plx:binaryOperator>
 					</plx:right>
 				</plx:binaryOperator>
 			</xsl:when>

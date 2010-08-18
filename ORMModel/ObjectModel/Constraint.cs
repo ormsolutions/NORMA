@@ -8131,15 +8131,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			if (0 != (filter & (ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary)))
 			{
-				FrequencyConstraintMinMaxError minMaxError = FrequencyConstraintMinMaxError;
-				if (minMaxError != null)
+				FrequencyConstraintMinMaxError minMaxError;
+				FrequencyConstraintExactlyOneError exactlyOneError;
+				FrequencyConstraintNonRestrictiveRangeError nonRestrictiveRangeError;
+				if (null != (minMaxError = FrequencyConstraintMinMaxError))
 				{
 					yield return minMaxError;
 				}
-				FrequencyConstraintExactlyOneError exactlyOneError = FrequencyConstraintExactlyOneError;
-				if (exactlyOneError != null)
+				else if (null != (exactlyOneError = FrequencyConstraintExactlyOneError))
 				{
 					yield return exactlyOneError;
+				}
+				else if (null != (nonRestrictiveRangeError = FrequencyConstraintNonRestrictiveRangeError))
+				{
+					yield return nonRestrictiveRangeError;
 				}
 				FrequencyConstraintViolatedByUniquenessConstraintError uniquenessViolationError = FrequencyConstraintViolatedByUniquenessConstraintError;
 				if (uniquenessViolationError != null)
@@ -8200,6 +8205,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 			FrequencyConstraintMinMaxError minMaxError = FrequencyConstraintMinMaxError;
 			FrequencyConstraintExactlyOneError exactlyOneError = FrequencyConstraintExactlyOneError;
+			FrequencyConstraintNonRestrictiveRangeError nonRestrictiveError = FrequencyConstraintNonRestrictiveRangeError; 
 			int min = MinFrequency;
 			int max = MaxFrequency;
 			if (max > 0 && min > max)
@@ -8220,6 +8226,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					exactlyOneError.Delete();
 				}
+				if (nonRestrictiveError != null)
+				{
+					nonRestrictiveError.Delete();
+				}
 			}
 			else 
 			{
@@ -8227,23 +8237,55 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					minMaxError.Delete();
 				}
-				if (min == 1 && max == 1)
+				if (min == 1 && max <= 1)
 				{
-					if (exactlyOneError == null)
+					if (max == 1)
 					{
-						exactlyOneError = new FrequencyConstraintExactlyOneError(Store);
-						exactlyOneError.FrequencyConstraint = this;
-						exactlyOneError.Model = Model;
-						exactlyOneError.GenerateErrorText();
-						if (notifyAdded != null)
+						if (exactlyOneError == null)
 						{
-							notifyAdded.ElementAdded(exactlyOneError, true);
+							exactlyOneError = new FrequencyConstraintExactlyOneError(Store);
+							exactlyOneError.FrequencyConstraint = this;
+							exactlyOneError.Model = Model;
+							exactlyOneError.GenerateErrorText();
+							if (notifyAdded != null)
+							{
+								notifyAdded.ElementAdded(exactlyOneError, true);
+							}
+						}
+						if (nonRestrictiveError != null)
+						{
+							nonRestrictiveError.Delete();
+						}
+					}
+					else if (max == 0)
+					{
+						if (nonRestrictiveError == null)
+						{
+							nonRestrictiveError = new FrequencyConstraintNonRestrictiveRangeError(Store);
+							nonRestrictiveError.FrequencyConstraint = this;
+							nonRestrictiveError.Model = Model;
+							nonRestrictiveError.GenerateErrorText();
+							if (notifyAdded != null)
+							{
+								notifyAdded.ElementAdded(nonRestrictiveError, true);
+							}
+						}
+						if (exactlyOneError != null)
+						{
+							exactlyOneError.Delete();
 						}
 					}
 				}
-				else if (exactlyOneError != null)
+				else
 				{
-					exactlyOneError.Delete();
+					if (exactlyOneError != null)
+					{
+						exactlyOneError.Delete();
+					}
+					if (nonRestrictiveError != null)
+					{
+						nonRestrictiveError.Delete();
+					}
 				}
 			}
 		}
@@ -8804,6 +8846,32 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // Base overrides
 	}
 	#endregion // FrequencyConstraintExactlyOneError class
+	#region FrequencyConstraintNonRestrictiveRangeError class
+	[ModelErrorDisplayFilter(typeof(ConstraintStructureErrorCategory))]
+	public partial class FrequencyConstraintNonRestrictiveRangeError
+	{
+		#region Base overrides
+		/// <summary>
+		/// Generate text for the error
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			FrequencyConstraint parent = this.FrequencyConstraint;
+			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorFrequencyConstraintNonRestrictiveRangeError, (parent != null) ? parent.Name : "", Model.Name);
+		}
+		/// <summary>
+		/// Regenerate the error text when the constraint name changes
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange;
+			}
+		}
+		#endregion // Base overrides
+	}
+	#endregion // FrequencyConstraintNonRestrictiveRangeError class
 	#region FrequencyConstraintViolatedByUniquenessConstraintError class
 	[ModelErrorDisplayFilter(typeof(ConstraintImplicationAndContradictionErrorCategory))]
 	public partial class FrequencyConstraintViolatedByUniquenessConstraintError : IRepresentModelElements

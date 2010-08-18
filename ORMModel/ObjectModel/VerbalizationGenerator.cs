@@ -7809,7 +7809,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			VerbalizationHyphenBinder hyphenBinder;
 			#endregion // Preliminary
 			#region Pattern Matches
-			if (allFactsCount == 1 && factArity == 2 && constraintRoleArity == 1 && !isNegative && this.MinFrequency == 1)
+			if (allFactsCount == 1 && factArity == 2 && constraintRoleArity == 1 && !isNegative && this.MinFrequency == 1 && this.MaxFrequency != 0)
 			{
 				parentFact = allFacts[0];
 				predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));

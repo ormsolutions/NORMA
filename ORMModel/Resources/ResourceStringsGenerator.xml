@@ -403,6 +403,7 @@
 	<ResourceString name="RingConstraintTypeNotSpecifiedError" model ="Model" resourceName="ModelError.Constraint.RingConstraintTypeNotSpecifiedError.Message"/>
 	<ResourceString name="ModelErrorFrequencyConstraintMinMaxError" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintMinMaxError.Text"/>
 	<ResourceString name="ModelErrorFrequencyConstraintExactlyOneError" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintExactlyOneError.Text"/>
+	<ResourceString name="ModelErrorFrequencyConstraintNonRestrictiveRangeError" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintNonRestrictiveRangeError.Text"/>
 	<ResourceString name="ModelVerbalizationWindowTitle" model="Model" resourceName="ModelVerbalization.WindowTitle"/>
 	<ResourceString name="ModelErrorImpliedInternalUniquenessConstraintError" model="Model" resourceName="ModelError.FactType.ImpliedInternalUniquenessConstraintError.Text"/>
 	<ResourceString name="ElementNotInModelBrowserMessage" model="Diagram" resourceName="MessageBox.ElementNotInModelBrowser.Message"/>

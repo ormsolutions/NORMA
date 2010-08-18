@@ -9166,47 +9166,50 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private VerbalizationPlanReadingOptions ResolveDynamicNegatedExitRole(VerbalizationPlanNode node)
 		{
 			VerbalizationPlanReadingOptions readingOptions = node.ReadingOptions;
-			if (VerbalizationPlanReadingOptions.DynamicNegatedExitRole == (readingOptions & (VerbalizationPlanReadingOptions.DynamicNegatedExitRole | VerbalizationPlanReadingOptions.DynamicNegatedExitRoleEvaluated)))
+			if (0 == (readingOptions & VerbalizationPlanReadingOptions.DynamicNegatedExitRoleEvaluated))
 			{
 				readingOptions |= VerbalizationPlanReadingOptions.DynamicNegatedExitRoleEvaluated;
-				PathedRole entryPathedRole;
-				if (null != (entryPathedRole = node.FactTypeEntry))
+				bool inlineNegation = false;
+				if (0 != (readingOptions & VerbalizationPlanReadingOptions.DynamicNegatedExitRole))
 				{
-					// The dynamic flag is set if there is a trailing pathed role on the
-					// binary in the same role path. We can use the collapsed negated form
-					// if the variable has not been introduced yet.
-					ReadOnlyCollection<PathedRole> childPathedRoles = myRolePathCache.PathedRoleCollection(entryPathedRole.RolePath);
-					int testChildIndex = childPathedRoles.IndexOf(entryPathedRole);
-					testChildIndex = testChildIndex == 0 ? 1 : 0;
-					int usePhase = CurrentQuantificationUsePhase;
-					bool inlineNegation = false;
-					if (testChildIndex >= childPathedRoles.Count || // Indicates a pure existential, we're here because the entry role can possibly be partnered.
-						!GetRolePlayerVariableUse(childPathedRoles[testChildIndex]).Value.PrimaryRolePlayerVariable.HasBeenUsed(usePhase, true))
+					PathedRole entryPathedRole;
+					if (null != (entryPathedRole = node.FactTypeEntry))
 					{
-						RolePlayerVariableUse variableUse = GetRolePlayerVariableUse(entryPathedRole).Value;
-						object correlationRoot = variableUse.CorrelationRoot;
-						RolePlayerVariable primaryVariable = variableUse.PrimaryRolePlayerVariable;
-						if (null == GetUnpairedPartnerVariable(
-							primaryVariable,
-							!primaryVariable.HasBeenUsed(usePhase, true),
-							correlationRoot != null ? GetRolePlayerVariableUse(correlationRoot).Value.GetCorrelatedVariables(true) : variableUse.GetCorrelatedVariables(false)))
+						// The dynamic flag is set if there is a trailing pathed role on the
+						// binary in the same role path. We can use the collapsed negated form
+						// if the variable has not been introduced yet.
+						ReadOnlyCollection<PathedRole> childPathedRoles = myRolePathCache.PathedRoleCollection(entryPathedRole.RolePath);
+						int testChildIndex = childPathedRoles.IndexOf(entryPathedRole);
+						testChildIndex = testChildIndex == 0 ? 1 : 0;
+						int usePhase = CurrentQuantificationUsePhase;
+						if (testChildIndex >= childPathedRoles.Count || // Indicates a pure existential, we're here because the entry role can possibly be partnered.
+							!GetRolePlayerVariableUse(childPathedRoles[testChildIndex]).Value.PrimaryRolePlayerVariable.HasBeenUsed(usePhase, true))
 						{
-							inlineNegation = true;
-							readingOptions |= VerbalizationPlanReadingOptions.NegatedExitRole;
+							RolePlayerVariableUse variableUse = GetRolePlayerVariableUse(entryPathedRole).Value;
+							object correlationRoot = variableUse.CorrelationRoot;
+							RolePlayerVariable primaryVariable = variableUse.PrimaryRolePlayerVariable;
+							if (null == GetUnpairedPartnerVariable(
+								primaryVariable,
+								!primaryVariable.HasBeenUsed(usePhase, true),
+								correlationRoot != null ? GetRolePlayerVariableUse(correlationRoot).Value.GetCorrelatedVariables(true) : variableUse.GetCorrelatedVariables(false)))
+							{
+								inlineNegation = true;
+								readingOptions |= VerbalizationPlanReadingOptions.NegatedExitRole;
+							}
 						}
 					}
-					if (!inlineNegation)
+				}
+				if (!inlineNegation)
+				{
+					if (0 != (readingOptions & VerbalizationPlanReadingOptions.FullyCollapseFirstRole) &&
+						!GetCollapsibleLeadAllowedFromBranchType(VerbalizationPlanBranchType.NegatedChain))
 					{
-						if (0 != (readingOptions & VerbalizationPlanReadingOptions.FullyCollapseFirstRole) &&
-							!GetCollapsibleLeadAllowedFromBranchType(VerbalizationPlanBranchType.NegatedChain))
-						{
-							readingOptions |= VerbalizationPlanReadingOptions.BlockFullyCollapseFirstRole;
-						}
-						if (0 != (readingOptions & VerbalizationPlanReadingOptions.BackReferenceFirstRole) &&
-							!GetCollapsibleListOpenForBackReferenceAllowedFromBranchType(VerbalizationPlanBranchType.NegatedChain))
-						{
-							readingOptions |= VerbalizationPlanReadingOptions.BlockBackReferenceFirstRole;
-						}
+						readingOptions |= VerbalizationPlanReadingOptions.BlockFullyCollapseFirstRole;
+					}
+					if (0 != (readingOptions & VerbalizationPlanReadingOptions.BackReferenceFirstRole) &&
+						!GetCollapsibleListOpenForBackReferenceAllowedFromBranchType(VerbalizationPlanBranchType.NegatedChain))
+					{
+						readingOptions |= VerbalizationPlanReadingOptions.BlockBackReferenceFirstRole;
 					}
 				}
 				node.ReadingOptions = readingOptions;

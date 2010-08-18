@@ -2548,9 +2548,12 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 									// of the currently selected constraint.
 									if (stickyObject.StickySelectable(currentRole))
 									{
-										Role constraintRole = (impliedUnaryRole != null && stickyConstraint.ConstraintType == ConstraintType.ExternalUniqueness) ?
-											impliedUnaryRole :
-											currentRole;
+										ConstraintType constraintType;
+										Role constraintRole = (impliedUnaryRole != null &&
+											((constraintType = stickyConstraint.ConstraintType) == ConstraintType.ExternalUniqueness ||
+											constraintType == ConstraintType.Frequency)) ?
+												impliedUnaryRole :
+												currentRole;
 										// We need to find out if this role is in one of the role sequences being edited, or if it's just selected.
 										backgroundHighlighted = highlightThisRole;
 										SetComparisonConstraint mcec;

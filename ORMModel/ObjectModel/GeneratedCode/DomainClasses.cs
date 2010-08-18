@@ -10325,6 +10325,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
+		#region FrequencyConstraintNonRestrictiveRangeError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets FrequencyConstraintNonRestrictiveRangeError.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError.FrequencyConstraint
+		/// </summary>
+		public virtual FrequencyConstraintNonRestrictiveRangeError FrequencyConstraintNonRestrictiveRangeError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError.FrequencyConstraintDomainRoleId) as FrequencyConstraintNonRestrictiveRangeError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError.FrequencyConstraintNonRestrictiveRangeErrorDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError.FrequencyConstraintNonRestrictiveRangeErrorDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError.FrequencyConstraintDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
 		#region FrequencyConstraintViolatedByUniquenessConstraintError opposite domain role accessor
 		/// <summary>
 		/// Gets or sets FrequencyConstraintViolatedByUniquenessConstraintError.
@@ -17986,6 +18018,77 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				else
 				{
 					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintExactlyOneError.FrequencyConstraintExactlyOneErrorDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainClass FrequencyConstraintNonRestrictiveRangeError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintNonRestrictiveRangeError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintNonRestrictiveRangeError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("0f5d1cdc-dd98-41cf-9fa8-5328b6f7b8a6")]
+	public partial class FrequencyConstraintNonRestrictiveRangeError : ModelError
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// FrequencyConstraintNonRestrictiveRangeError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x0f5d1cdc, 0xdd98, 0x41cf, 0x9f, 0xa8, 0x53, 0x28, 0xb6, 0xf7, 0xb8, 0xa6);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public FrequencyConstraintNonRestrictiveRangeError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public FrequencyConstraintNonRestrictiveRangeError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region FrequencyConstraint opposite domain role accessor
+		/// <summary>
+		/// Gets or sets FrequencyConstraint.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError.FrequencyConstraintNonRestrictiveRangeError
+		/// </summary>
+		public virtual FrequencyConstraint FrequencyConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError.FrequencyConstraintNonRestrictiveRangeErrorDomainRoleId) as FrequencyConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError.FrequencyConstraintDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError.FrequencyConstraintDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError.FrequencyConstraintNonRestrictiveRangeErrorDomainRoleId, value);
 				}
 			}
 		}

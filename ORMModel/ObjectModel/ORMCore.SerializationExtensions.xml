@@ -1038,6 +1038,7 @@
 	</se:Element>
 	<se:Element Class="FrequencyConstraint" Override="true">
 		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintExactlyOneError" RoleName="FrequencyConstraintExactlyOneError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError" RoleName="FrequencyConstraintNonRestrictiveRangeError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintMinMaxError" RoleName="FrequencyConstraintMinMaxError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError" RoleName="FrequencyConstraintViolatedByUniquenessConstraintError" WriteStyle="NotWritten"/>
 	</se:Element>
@@ -1474,6 +1475,9 @@
 	</se:Element>
 	<se:Element Class="FrequencyConstraintExactlyOneError" Override="true">
 		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintExactlyOneError" RoleName="FrequencyConstraint" Name="FrequencyConstraint"/>
+	</se:Element>
+	<se:Element Class="FrequencyConstraintNonRestrictiveRangeError" Override="true">
+		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintNonRestrictiveRangeError" RoleName="FrequencyConstraint" Name="FrequencyConstraint"/>
 	</se:Element>
 	<se:Element Class="FrequencyConstraintMinMaxError" Override="true">
 		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintMinMaxError" RoleName="FrequencyConstraint" Name="FrequencyConstraint"/>
