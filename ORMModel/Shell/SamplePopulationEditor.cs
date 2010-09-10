@@ -1703,7 +1703,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				return;
 			}
-			TestRepopulateForIdentifierPart(((UniquenessConstraint)e.SourceElement).PreferredIdentifierFor);
+			UniquenessConstraint uniqueness;
+			if (null != (uniqueness = e.SourceElement as UniquenessConstraint))
+			{
+				TestRepopulateForIdentifierPart(uniqueness.PreferredIdentifierFor);
+			}
 		}
 		#endregion // Entity Type Instance Event Handlers
 		#region Misc Event Handlers

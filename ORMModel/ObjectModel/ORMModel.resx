@@ -309,7 +309,7 @@
 		<comment>The frequency constraint minimum must be less than or equal to the maximum. {0}=constraint name {1}=model name</comment>
 	</data>
 	<data name="ModelError.Constraint.FrequencyConstraintNonRestrictiveRangeError.Text" xml:space="preserve">
-		<value>Constraint '{0}' in model '{1}' has an unbounded range with a minimum of one. This frequency pattern is never violated.</value>
+		<value>Constraint '{0}' in model '{1}' has an unbounded range with a minimum of one. This frequency pattern is always satisfied.</value>
 		<comment>A frequency constraint with a minimum of 1 and an unbounded maximum is always true and should not be specified. {0}=constraint name {1}=model name</comment>
 	</data>
 	<data name="ModelError.Constraint.FrequencyConstraintViolatedByUniquenessConstraintError.Text" xml:space="preserve">

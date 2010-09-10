@@ -1715,7 +1715,7 @@
     <comment>Description for DomainClass &apos;FrequencyConstraintNonRestrictiveRangeError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraintNonRestrictiveRangeError.DisplayName" xml:space="preserve">
-    <value>One to Unbounded Frequency Range Never Violated</value>
+    <value>One to Unbounded Frequency Range Always Satisfied</value>
     <comment>DisplayName for DomainClass &apos;FrequencyConstraintNonRestrictiveRangeError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingRequiresUserModificationError.Description" xml:space="preserve">

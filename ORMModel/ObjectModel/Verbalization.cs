@@ -3880,11 +3880,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			int restoreBuilder = builder.Length;
 			PathedRole sourceRole;
+			RolePathObjectTypeRoot sourceRoot;
 			CalculatedPathValue sourceCalculation;
 			PathConstant sourceConstant;
 			if (null != (sourceRole = calculatedValueInput.SourcePathedRole))
 			{
 				builder.Append(rendererContext.RenderAssociatedRolePlayer(sourceRole, null, RolePathRolePlayerRenderingOptions.None));
+			}
+			else if (null != (sourceRoot = calculatedValueInput.SourcePathRoot))
+			{
+				builder.Append(rendererContext.RenderAssociatedRolePlayer(sourceRoot, null, RolePathRolePlayerRenderingOptions.None));
 			}
 			else if (null != (sourceCalculation = calculatedValueInput.SourceCalculatedValue))
 			{

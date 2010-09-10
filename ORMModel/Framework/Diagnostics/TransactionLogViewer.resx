@@ -343,8 +343,8 @@
     <value>100</value>
   </data>
   <data name="FilterLabel.ToolTip" xml:space="preserve">
-    <value>Double-click on an item in the grid to apply a filter that includes only similar item.
-Multiple filters can be applied simultaneously with additional clicks on other fields.
+    <value>Double-click on an item in the grid to apply a filter that includes only similar items.
+Multiple filters can be applied simultaneously with additional double-clicks in other fields.
 
 Press the Escape key to clear a current filter.</value>
   </data>

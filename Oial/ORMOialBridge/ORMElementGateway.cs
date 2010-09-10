@@ -298,6 +298,15 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 									FilterModifiedObjectType(preferredFor);
 								}
 							}
+							Objectification objectification;
+							if (null != (objectification = factType.ImpliedByObjectification))
+							{
+								ObjectType objectifyingType = objectification.NestingType;
+								if (IsElementExcluded(objectifyingType))
+								{
+									FilterModifiedObjectType(objectifyingType);
+								}
+							}
 						}
 					}
 					else if (exclusionLink == null)
@@ -415,6 +424,11 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 						{
 							ExcludeObjectType(preferredFor, model, false, notifyExcluded);
 						}
+					}
+					Objectification objectification;
+					if (null != (objectification = factType.ImpliedByObjectification))
+					{
+						ExcludeObjectType(objectification.NestingType, model, false, notifyExcluded);
 					}
 				}
 			}

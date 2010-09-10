@@ -1541,7 +1541,7 @@
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="FrequencyConstraintNonRestrictiveRangeError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="0F5D1CDC-DD98-41CF-9FA8-5328B6F7B8A6" DisplayName="One to Unbounded Frequency Range Never Violated" Description="">
+		<DomainClass Name="FrequencyConstraintNonRestrictiveRangeError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="0F5D1CDC-DD98-41CF-9FA8-5328B6F7B8A6" DisplayName="One to Unbounded Frequency Range Always Satisfied" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
