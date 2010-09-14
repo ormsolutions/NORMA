@@ -1,0 +1,428 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="XSDtoHTML.xslt"?>
+<xs:schema
+	id="CopyMergeClosureGenerator"
+	targetNamespace="http://schemas.ormsolutions.com/ORM/SDK/CopyMergeClosureGenerator"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified"
+	xmlns="http://schemas.ormsolutions.com/ORM/SDK/CopyMergeClosureGenerator"
+	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:annotation>
+		<xs:appinfo source="Common Public License Copyright Notice">
+			Natural Object-Role Modeling Architect for Visual Studio
+
+			Copyright © ORM Solutions, LLC. All rights reserved.
+
+			The use and distribution terms for this software are covered by the
+			Common Public License 1.0 (http://opensource.org/licenses/cpl) which
+			can be found in the file CPL.txt at the root of this distribution.
+			By using this software in any fashion, you are agreeing to be bound by
+			the terms of this license.
+
+			You must not remove this notice, or any other, from this software.
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:import namespace="http://schemas.neumont.edu/CodeGeneration/PLiX"/>
+
+	<xs:element name="CopyMergeClosure" type="CopyMergeClosureType"/>
+	<xs:complexType name="CopyMergeClosureType">
+		<xs:annotation>
+			<xs:documentation>The root node. Contains information for generating copy and merge closure information.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Copyright" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Copyright notice which applies to both the source document and anything generated from it.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="CopyrightLine" type="xs:string" maxOccurs="unbounded"/>
+					</xs:sequence>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Model" type="ModelType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ModelType">
+		<xs:annotation>
+			<xs:documentation>The meta model to generate copy and merge closures for.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="ModelReferences" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A container for ModelReference elements.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="ModelReference" type="ModelReferenceType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ClosureRoles" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A container for ClosureRole elements.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="ClosureRole" type="ClosureRoleType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RootElements" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A container for RootElement elements.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="RootElement" type="RootElementType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="EmbeddingDirectives" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A container for EmbeddingDirective elements.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="EmbeddingDirective" type="EmbeddingDirectiveType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="IgnoredProperties" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A container for IgnoredProperty elements.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="IgnoredProperty" type="IgnoredPropertyType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ConditionalProperties" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A container for ConditionalProperty elements.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="ConditionalProperty" type="ConditionalPropertyType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ImpliedReferences" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A container for ImpliedReference elements.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="ImpliedReference" type="ImpliedReferenceType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:all>
+		<xs:attributeGroup ref="ModelFileAttribute"/>
+	</xs:complexType>
+	<xs:attributeGroup name="ModelFileAttribute">
+		<xs:attribute name="modelFile" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>The relative path from this file to the .dsl file that defines elements referenced in this file.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:complexType name="EmbeddingDirectiveType">
+		<xs:annotation>
+			<xs:documentation>Options controlling automatic generation of embedded relationships. Directives are needed to completely ignore an embedding, control element equivalence generation for the children of 1-1 embeddings, and control ordering directives for embedded relationships. The defaults noted here are applied automatically if this directive is not specified.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="AfterAutomaticEquivalence" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Provide custom code to run immediately after an automatic 1-1 element equivalence relationship has been established. Enables child elements to be marked for equivalence. A nameRef element to OTHER will be replaced with the appropriate generated variable name before processing.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:any namespace="http://schemas.neumont.edu/CodeGeneration/PLiX" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Code to run after element equivalence is established. A nameRef to OTHER will be replaced with the correct variable name. The elementTracker parameter should be used to add additional equivalent elements.</xs:documentation>
+							</xs:annotation>
+						</xs:any>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="relationship" type="plx:simpleNameType" use="required">
+			<xs:annotation>
+				<xs:documentation>The embedding relationship to control options for.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ignore" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>(Default: false) Do not provide any automatic behavior for this embedding relationship.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="automaticEquivalence" type="xs:boolean" default="true">
+			<xs:annotation>
+				<xs:documentation>(Default: true) Do not provide automatic equivalence matching for 1-1 embeddings of this type.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="order" type="MergeIntegrationOrder" default="AfterLeading">
+			<xs:annotation>
+				<xs:documentation>(Default: AfterLeading) Specify ordering options for embedded collections.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ModelReferenceType">
+		<xs:annotation>
+			<xs:documentation>A reference to a secondary model file. Elements are referenced by model namespace.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="ModelFileAttribute"/>
+	</xs:complexType>
+	<xs:simpleType name="MergeIntegrationOrder">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="Unordered">
+				<xs:annotation>
+					<xs:documentation>Newly merged elements will be at the end of the collection in random order (possibly different from the source order), existing element order will not be changed.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AfterLeading">
+				<xs:annotation>
+					<xs:documentation>Newly merged elements will placed as far down in the collection as possible relative to other previously merged elements. If there are unrecognized elements between the recognized elements, then place an earlier element after all leading elements (immediately before the recognized element) and after all trailing elements at the end of the collection. If there are no recognized elements, this places newly merged elements at the end of the collection.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AfterLeadingBeforeTrailing">
+				<xs:annotation>
+					<xs:documentation>Newly merged elements will placed as near as possible to other previously merged elements. If there are unrecognized elements between the recognized elements, then place an earlier element after all leading elements (immediately before the recognized element) and after all trailing immediately after the preceding existing match. If there are no recognized elements, this places newly merged elements at the end of the collection.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BeforeLeading">
+				<xs:annotation>
+					<xs:documentation>Newly merged elements will placed as high in the collection as possible relative to other previously merged elements. If there are unrecognized elements between the recognized elements, then place an earlier element before all leading elements (as far away as possible from the next recognized element) and immediately after the last recognized element. If there are no recognized elements, then this places newly merged elements at the beginning of the collection.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="ClosureRoleType">
+		<xs:annotation>
+			<xs:documentation>Closure semantics for the role opposite a copied ModelElement.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CustomBehavior" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Determine custom closure behavior. Child elements form the body of a delegate that takes an ElementLink parameter called 'link' and returns a CopyClosureBehavior.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:any namespace="http://schemas.neumont.edu/CodeGeneration/PLiX" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Delegate body code.</xs:documentation>
+							</xs:annotation>
+						</xs:any>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="relationship" type="plx:simpleNameType" use="required">
+			<xs:annotation>
+				<xs:documentation>The relationship navigated to establish a closure.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="relationshipNamespace" type="plx:qualifierNameType" use="optional">
+			<xs:annotation>
+				<xs:documentation>A namespace for a referenced relationship. The namespace must correspond to a referenced model file.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="role" type="plx:simpleNameType" use="required">
+			<xs:annotation>
+				<xs:documentation>The 'to' role opposite the copied element.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="closureBehavior" use="required">
+			<xs:annotation>
+				<xs:documentation>Possible copy closure behaviors.</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="Custom">
+						<xs:annotation>
+							<xs:documentation>Determining the closure result requires instance information, use the CustomBehavior element to get the closure result.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="Ignored">
+						<xs:annotation>
+							<xs:documentation>The relationship is not included in a copy closure. Use to explicitly ignore an embedding relationship, but generates no code.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="Container">
+						<xs:annotation>
+							<xs:documentation>The role player reached through this relationship is a direct container of the opposite role player.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="ContainedPart">
+						<xs:annotation>
+							<xs:documentation>The role player reached through this relationship is a contained part of the opposite role player.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="InternalReferencedPart">
+						<xs:annotation>
+							<xs:documentation>The role player reached through this relationship is part that is contained in a shared direct or indirect ancestor container.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="ExternalCompositePart">
+						<xs:annotation>
+							<xs:documentation>The role player reached through this relationship is an external part of the opposite role player. If the opposite role player is duplicated, then the composite part must be duplicated.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="ExternalReferencedPart">
+						<xs:annotation>
+							<xs:documentation>The role player reached through this relationship is a required but an external part of the opposite role player. Duplicating the opposite role player does not require duplication of this element.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="rootElementOnly" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>The directive applies when the source role player is part of a primary selection. (default: false)</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="explicitFromRoleClass" type="plx:simpleNameType">
+			<xs:annotation>
+				<xs:documentation>This directive applies to relationships with a near role player of the given type. Must correspond to a class or relationship in the model file.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="explicitFromRoleNamespace" type="plx:qualifierNameType" use="optional">
+			<xs:annotation>
+				<xs:documentation>A namespace for a reference 'from' role class. The namespace must correspond to a referenced model file.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="includeFromRoleClassDescendants" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>Apply an explicitFromRoleClass to descendants of the class. (default: false)</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="explicitToRoleClass" type="plx:simpleNameType">
+			<xs:annotation>
+				<xs:documentation>This directive applies to relationships with a far role player of the given type. Must correspond to a class or relationship in the model file.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="explicitToRoleNamespace" type="plx:qualifierNameType" use="optional">
+			<xs:annotation>
+				<xs:documentation>A namespace for a reference 'to' role class. The namespace must correspond to a referenced model file.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="includeToRoleClassDescendants" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>Apply an explicitToRoleClass to descendants of the class. (default: false)</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="order" default="Neither">
+			<xs:annotation>
+				<xs:documentation>Specify the roles for which this relationship needs to be strictly ordered.</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="Neither">
+						<xs:annotation>
+							<xs:documentation>The elements in the relationship are not ordered.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="From">
+						<xs:annotation>
+							<xs:documentation>The relationships are ordered from the perspective of the 'from' role player.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="To">
+						<xs:annotation>
+							<xs:documentation>The relationships are ordered from the perspective of the 'to' role player.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="Both">
+						<xs:annotation>
+							<xs:documentation>The relationships are ordered from the perspective of both the 'to' and 'from' role players.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="fromIntegrationOrder" type="MergeIntegrationOrder" default="AfterLeading">
+			<xs:annotation>
+				<xs:documentation>An override for the merge integration order on the 'from' role. Used if @order is 'From' or 'Both'.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="toIntegrationOrder" type="MergeIntegrationOrder" default="AfterLeading">
+			<xs:annotation>
+				<xs:documentation>An override for the merge integration order on the 'to' role. Used if @order is 'To' or 'Both'.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="RootElementType">
+		<xs:annotation>
+			<xs:documentation>Indicate elements that are directly merged into the target document instead of copied from the source. Copy closures are not registered for embedding elements from this closure.</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="class" type="plx:simpleNameType" use="required">
+			<xs:annotation>
+				<xs:documentation>The name of the root class.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="IgnoredPropertyType">
+		<xs:annotation>
+			<xs:documentation>Specify a property that is ignored on a copy. Calculated properties are automatically treated as ignored properties. This allows for passthrough properties, which are custom properties that make changes in other parts of the object model.</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="class" type="plx:simpleNameType" use="required">
+			<xs:annotation>
+				<xs:documentation>The class or relationship with this property.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="property" type="plx:simpleNameType" use="required">
+			<xs:annotation>
+				<xs:documentation>The name of the property.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ConditionalPropertyType">
+		<xs:annotation>
+			<xs:documentation>Specify a property that is conditionally copy, depending on source and target states. Child elements form the body of a delegate that takes a sourceElement parameter and an optional targetElement parameter, indicating a merge of the property with the target element. The delegate should return true to copy the property, false otherwise.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:any namespace="http://schemas.neumont.edu/CodeGeneration/PLiX" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Delegate body code.</xs:documentation>
+				</xs:annotation>
+			</xs:any>
+		</xs:sequence>
+		<xs:attribute name="class" type="plx:simpleNameType" use="required">
+			<xs:annotation>
+				<xs:documentation>The class or relationship with this property.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="property" type="plx:simpleNameType" use="required">
+			<xs:annotation>
+				<xs:documentation>The name of the property.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ImpliedReferenceType">
+		<xs:annotation>
+			<xs:documentation>Add related elements to an element type that are implied by patterns as opposed to direct element links. These elements are assumed to be external reference parts. The element contents are the body of a delegate that takes an element parameter of type ModelElement and a notifyImpliedReference parameter of type Action&lt;ModelElement&gt;.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:any namespace="http://schemas.neumont.edu/CodeGeneration/PLiX" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The body of a delegate body of a delegate that takes an element parameter of type ModelElement and a notifyImpliedReference parameter of type Action&lt;ModelElement&gt;.</xs:documentation>
+				</xs:annotation>
+			</xs:any>
+		</xs:sequence>
+		<xs:attribute name="class" type="plx:simpleNameType" use="required">
+			<xs:annotation>
+				<xs:documentation>The class of relationship with implied relationships.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="includeClassDescendants" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>The implied elements should apply to classes derived from the specified class.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+</xs:schema>
+

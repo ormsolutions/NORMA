@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<cmc:CopyMergeClosure xmlns:cmc="http://schemas.ormsolutions.com/ORM/SDK/CopyMergeClosureGenerator">
+	<cmc:Copyright name="Common Public License Copyright Notice">
+		<cmc:CopyrightLine>/**************************************************************************\</cmc:CopyrightLine>
+		<cmc:CopyrightLine>* Natural Object-Role Modeling Architect for Visual Studio                 *</cmc:CopyrightLine>
+		<cmc:CopyrightLine>*                                                                          *</cmc:CopyrightLine>
+		<cmc:CopyrightLine>* Copyright © ORM Solutions, LLC. All rights reserved.                     *</cmc:CopyrightLine>
+		<cmc:CopyrightLine>*                                                                          *</cmc:CopyrightLine>
+		<cmc:CopyrightLine>* The use and distribution terms for this software are covered by the      *</cmc:CopyrightLine>
+		<cmc:CopyrightLine>* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *</cmc:CopyrightLine>
+		<cmc:CopyrightLine>* can be found in the file CPL.txt at the root of this distribution.       *</cmc:CopyrightLine>
+		<cmc:CopyrightLine>* By using this software in any fashion, you are agreeing to be bound by   *</cmc:CopyrightLine>
+		<cmc:CopyrightLine>* the terms of this license.                                               *</cmc:CopyrightLine>
+		<cmc:CopyrightLine>*                                                                          *</cmc:CopyrightLine>
+		<cmc:CopyrightLine>* You must not remove this notice, or any other, from this software.       *</cmc:CopyrightLine>
+		<cmc:CopyrightLine>\**************************************************************************/</cmc:CopyrightLine>
+	</cmc:Copyright>
+	<cmc:Model modelFile="CustomProperties.dsl">
+		<cmc:ModelReferences>
+			<cmc:ModelReference modelFile="../ORMModel/ObjectModel/ORMCore.dsl"/>
+		</cmc:ModelReferences>
+		<cmc:EmbeddingDirectives>
+			<cmc:EmbeddingDirective relationship="CustomPropertyGroupContainsCustomPropertyDefinition" order="Unordered"/>
+		</cmc:EmbeddingDirectives>
+		<cmc:ClosureRoles>
+			<cmc:ClosureRole relationship="ORMModelElementHasExtensionElement" relationshipNamespace="ORMSolutions.ORMArchitect.Core.ObjectModel" role="Extension" explicitToRoleClass="CustomProperty" closureBehavior="ContainedPart"/>
+			<cmc:ClosureRole relationship="CustomPropertyHasCustomPropertyDefinition" role="CustomPropertyDefinition" closureBehavior="ExternalReferencedPart"/>
+			<cmc:ClosureRole relationship="CustomPropertyGroupContainsCustomPropertyDefinition" role="CustomPropertyGroup" closureBehavior="ContainedPart">
+				<!-- Override the default embedding behavior. We only need property definitions that we're currently referencing, not the full group. -->
+			</cmc:ClosureRole>
+		</cmc:ClosureRoles>
+	</cmc:Model>
+</cmc:CopyMergeClosure>

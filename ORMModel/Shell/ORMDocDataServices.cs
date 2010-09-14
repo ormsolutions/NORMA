@@ -240,6 +240,23 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				return GetTypedDomainModelProviders<T>();
 			}
 			/// <summary>
+			/// Defer to <see cref="IFrameworkServices.CopyClosureManager"/> on the document.
+			/// </summary>
+			protected ICopyClosureManager CopyClosureManager
+			{
+				get
+				{
+					return myServices.CopyClosureManager;
+				}
+			}
+			ICopyClosureManager IFrameworkServices.CopyClosureManager
+			{
+				get
+				{
+					return CopyClosureManager;
+				}
+			}
+			/// <summary>
 			/// Defer to <see cref="IORMToolServices.ModelErrorActivationService"/> on the document.
 			/// </summary>
 			protected IORMModelErrorActivationService ModelErrorActivationService
@@ -1386,6 +1403,29 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		T[] IFrameworkServices.GetTypedDomainModelProviders<T>()
 		{
 			return GetTypedDomainModelProviders<T>();
+		}
+		private CopyClosureManager myCopyClosureManager;
+		/// <summary>
+		/// Implements <see cref="IFrameworkServices.CopyClosureManager"/>
+		/// </summary>
+		protected ICopyClosureManager CopyClosureManager
+		{
+			get
+			{
+				CopyClosureManager retVal = myCopyClosureManager;
+				if (retVal == null)
+				{
+					myCopyClosureManager = retVal = new CopyClosureManager(Store);
+				}
+				return retVal;
+			}
+		}
+		ICopyClosureManager IFrameworkServices.CopyClosureManager
+		{
+			get
+			{
+				return CopyClosureManager;
+			}
 		}
 		/// <summary>
 		/// Retrieve the <see cref="IORMModelErrorActivationService"/> for this document.

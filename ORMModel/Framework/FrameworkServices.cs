@@ -51,6 +51,12 @@ namespace ORMSolutions.ORMArchitect.Framework
 		/// <typeparam name="T">The interface to test</typeparam>
 		/// <returns>An array of instances, or null</returns>
 		T[] GetTypedDomainModelProviders<T>() where T : class;
+		/// <summary>
+		/// Retrieve the <see cref="ICopyClosureManager"/> interface for this store.
+		/// Can be implemented using an instance of the <see cref="CopyClosureManager"/>
+		/// class that implements this interface.
+		/// </summary>
+		ICopyClosureManager CopyClosureManager { get;}
 	}
 	#endregion // IFrameworkServices interface
 	#region IRepresentedModelElements interface
@@ -223,4 +229,20 @@ namespace ORMSolutions.ORMArchitect.Framework
 		void DeleteCustomElement();
 	}
 	#endregion // ICustomElementDeletion interface
+	#region IPersistentSessionKeys interface
+	/// <summary>
+	/// Allow a <see cref="DomainModel"/> to provide a set
+	/// of keys used in the <see cref="Store.PropertyBag"/>
+	/// that need to be maintained across a store reload.
+	/// </summary>
+	public interface IPersistentSessionKeys
+	{
+		/// <summary>
+		/// Retrieve keys used with this domain model
+		/// that need to be copied into the <see cref="Store.PropertyBag"/>
+		/// of a reloaded <see cref="Store"/>
+		/// </summary>
+		IEnumerable<object> GetPersistentSessionKeys();
+	}
+	#endregion // IPersistentSessionKeys interface
 }

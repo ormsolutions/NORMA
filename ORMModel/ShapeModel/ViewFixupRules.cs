@@ -39,9 +39,12 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		private static void ObjectTypedAddedRule(ElementAddedEventArgs e)
 		{
+			ModelElement element = e.ModelElement;
 			ModelHasObjectType link = e.ModelElement as ModelHasObjectType;
 			ObjectType objectType = link.ObjectType;
-			if (objectType.NestedFactType == null) // Otherwise, fix up with the fact type
+			if (!element.IsDeleted &&
+				!MergeContext.HasContext(element.Store.TransactionManager.CurrentTransaction.TopLevelTransaction) &&
+				(objectType = (link = (ModelHasObjectType)element).ObjectType).NestedFactType == null) // Otherwise, fix up with the fact type
 			{
 				Diagram.FixUpDiagram(link.Model, objectType);
 			}
@@ -242,9 +245,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		private static void FactTypedAddedRule(ElementAddedEventArgs e)
 		{
-			ModelHasFactType link = e.ModelElement as ModelHasFactType;
-			if (link != null)
+			ModelElement element = e.ModelElement;
+			if (!element.IsDeleted &&
+				!MergeContext.HasContext(element.Store.TransactionManager.CurrentTransaction.TopLevelTransaction))
 			{
+				ModelHasFactType link = (ModelHasFactType)e.ModelElement;
 				Diagram.FixUpDiagram(link.Model, link.FactType);
 			}
 		}
@@ -290,10 +295,17 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		private static void SetConstraintAddedRule(ElementAddedEventArgs e)
 		{
-			ModelHasSetConstraint link = e.ModelElement as ModelHasSetConstraint;
-			if (link != null)
+			ModelElement element = e.ModelElement;
+			if (!element.IsDeleted &&
+				!MergeContext.HasContext(element.Store.TransactionManager.CurrentTransaction.TopLevelTransaction))
 			{
-				Diagram.FixUpDiagram(link.Model, link.SetConstraint);
+				ModelHasSetConstraint link = (ModelHasSetConstraint)e.ModelElement;
+				SetConstraint constraint = link.SetConstraint;
+				// Shapes are never added for internal constraints, so there is no point in attempting a fixup
+				if (!((IConstraint)constraint).ConstraintIsInternal)
+				{
+					Diagram.FixUpDiagram(link.Model, constraint);
+				}
 			}
 		}
 		#endregion // SetConstraintAddedRule
@@ -448,7 +460,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						}
 						return;
 					}
-					if (roles.Count != 0)
+					if (roles.Count != 0 && !roles.Contains(newRole))
 					{
 						Store store = shape.Store;
 						Dictionary<object, object> contextInfo = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
@@ -593,6 +605,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			ObjectType rolePlayer;
 			ORMModel model;
 			if (!link.IsDeleted &&
+				!MergeContext.HasContext(link.Store.TransactionManager.CurrentTransaction.TopLevelTransaction) &&
 				null != (associatedFact = link.PlayedRole.FactType) &&
 				null == associatedFact.ImpliedByObjectification &&
 				null != (model = (rolePlayer = link.RolePlayer).Model))
@@ -785,6 +798,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			// Make sure the object type, fact type, and link
 			// are displayed on the diagram
+			if (notifyAdded == null &&
+				MergeContext.HasContext(link.Store.TransactionManager.CurrentTransaction.TopLevelTransaction))
+			{
+				return;
+			}
 			ValueTypeValueConstraint valueTypeValueConstraint = link.ValueConstraint;
 			ObjectType objectType = valueTypeValueConstraint.ValueType;
 			if (objectType != null)
@@ -806,16 +824,24 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			// Make sure the object type, fact type, and link
 			// are displayed on the diagram
+			if (notifyAdded == null &&
+				MergeContext.HasContext(link.Store.TransactionManager.CurrentTransaction.TopLevelTransaction))
+			{
+				return;
+			}
 			RoleValueConstraint roleValueConstraint = link.ValueConstraint;
 			Role role = roleValueConstraint.Role;
 			FactType factType = role.FactType;
 			ObjectType objectType = null;
-			foreach (RoleBase rBase in factType.RoleCollection)
+			// UNDONE: COPYMERGE This is total garbage code. This should apply
+			// only if there is an opposite role with a role player
+			// identified by the uniqueness constraint on the constrained role.
+			foreach (RoleBase roleBase in factType.RoleCollection)
 			{
-				Role r = rBase.Role;
-				if (r != role)
+				Role testRole = roleBase.Role;
+				if (testRole != role)
 				{
-					objectType = r.RolePlayer;
+					objectType = testRole.RolePlayer;
 				}
 			}
 			if (objectType != null)
@@ -954,7 +980,17 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							//add a link shape for each constraint shape
 							foreach (ExternalConstraintShape shapeElement in MultiShapeUtility.FindAllShapesForElement<ExternalConstraintShape>(diagram, constraint as ModelElement))
 							{
-								if (null == diagram.FixUpLocalDiagram(link))
+								bool haveExistingShape = false;
+								foreach (ExternalConstraintLink attachedLink in MultiShapeUtility.GetEffectiveAttachedLinkShapes<ExternalConstraintLink>(shapeElement))
+								{
+									if (attachedLink.AssociatedFactConstraint == link)
+									{
+										haveExistingShape = true;
+										break;
+									}
+								}
+								if (!haveExistingShape &&
+									null == diagram.FixUpLocalDiagram(link))
 								{
 									shapeElement.Delete();
 								}
@@ -975,15 +1011,16 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// Add shape elements for reading orders. Used during deserialization fixup
 		/// and rules.
 		/// </summary>
-		/// <param name="link"></param>
 		private static void FixupReadingOrderLink(FactTypeHasReadingOrder link)
 		{
-			ReadingOrder readingOrd = link.ReadingOrder;
-			FactType fact = link.FactType;
-			ORMModel model = fact.Model;
-			if (!fact.IsDeleted && !(fact is SubtypeFact) && model != null)
+			FactType factType;
+			ORMModel model;
+			if (!link.IsDeleted &&
+				!((factType = link.FactType) is SubtypeFact) &&
+				!MergeContext.HasContext(link.Store.TransactionManager.CurrentTransaction.TopLevelTransaction) &&
+				null != (model = factType.Model))
 			{
-				Diagram.FixUpDiagram(model, fact); // Make sure the fact is already there
+				Diagram.FixUpDiagram(model, factType); // Make sure the fact type is already there
 
 				object AllowMultipleShapes;
 				Dictionary<object, object> topLevelContextInfo;
@@ -993,7 +1030,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					topLevelContextInfo.Add(AllowMultipleShapes, null);
 				}
 
-				Diagram.FixUpDiagram(fact, readingOrd);
+				Diagram.FixUpDiagram(factType, link.ReadingOrder);
 
 				if (!containedAllowMultipleShapes)
 				{
@@ -1069,9 +1106,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		private static void ModelNoteAddedRule(ElementAddedEventArgs e)
 		{
-			ModelHasModelNote link = e.ModelElement as ModelHasModelNote;
-			if (link != null)
+			ModelElement element = e.ModelElement;
+			if (!element.IsDeleted &&
+				!MergeContext.HasContext(element.Store.TransactionManager.CurrentTransaction.TopLevelTransaction))
 			{
+				ModelHasModelNote link = (ModelHasModelNote)e.ModelElement;
 				Diagram.FixUpDiagram(link.Model, link.Note);
 			}
 		}

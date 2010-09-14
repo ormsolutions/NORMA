@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -577,6 +578,28 @@ namespace ORMSolutions.ORMArchitect.Framework
 				});
 		}
 		#endregion // UpperCaseFirstLetter method
+		#region IsNumberDecoratedName method
+		/// <summary>
+		/// Test if a name is a number decorated form of a name decoration pattern
+		/// </summary>
+		/// <param name="name">The name to test.</param>
+		/// <param name="decoratedNamePattern">The name decoration pattern. If a
+		/// {0} replacement field is not provided, then the number is assumed to
+		/// be appended to the name.</param>
+		/// <returns><see langword="true"/> if both parameters are set and the
+		/// <paramref name="name"/> can be generated from the <paramref name="decoratedNamePattern"/>.</returns>
+		public static bool IsNumberDecoratedName(string name, string decoratedNamePattern)
+		{
+			return !string.IsNullOrEmpty(name) &&
+				!string.IsNullOrEmpty(decoratedNamePattern) &&
+				Regex.IsMatch(
+					name,
+					decoratedNamePattern.Contains("{0}") ?
+						@"\A" + string.Format(CultureInfo.InvariantCulture, decoratedNamePattern, @"\d+") + @"\z" :
+						@"\A" + decoratedNamePattern + @"\d+\z",
+					RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+		}
+		#endregion // IsNumberDecoratedName method
 	}
 	#region LinkedNode class
 	/// <summary>

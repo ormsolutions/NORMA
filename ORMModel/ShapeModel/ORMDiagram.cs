@@ -28,6 +28,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Design;
 using System.Drawing.Drawing2D;
+using System.IO;
 using System.Globalization;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
@@ -35,6 +36,9 @@ using Microsoft.VisualStudio.Modeling.Design;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
 using Microsoft.VisualStudio.Modeling.Shell;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
+using ORMSolutions.ORMArchitect.Core.Load;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using ORMSolutions.ORMArchitect.Core.Shell;
 using ORMSolutions.ORMArchitect.Framework;
@@ -118,9 +122,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			base.OnDragOver(e);
 		}
 		/// <summary>
-		/// check to see if dragged object is a type that can be dropped on the diagram, if so allow it to be added to form by calling FixUpDiagram
+		/// Check to see if dragged object is a type that can be dropped on the diagram, if so allow it to be
+		/// dropped by calling <see cref="PlaceORMElementOnDiagram"/> to support direct additions of elements from
+		/// non-diagram sources, then deferring to the base to do a drag-drop from another element.
 		/// </summary>
-		/// <param name="e"></param>
 		public override void OnDragDrop(DiagramDragEventArgs e)
 		{
 			IDataObject dataObject = e.Data;
@@ -128,6 +133,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				return;
 			}
+			Store store = Store;
+			Guid startTransactionId = store.UndoManager.TopmostUndoableTransaction;
 			if (PlaceORMElementOnDiagram(dataObject, null, e.MousePosition, ORMPlacementOption.AllowMultipleShapes, null, null))
 			{
 				e.Effect = DragDropEffects.All;
@@ -145,6 +152,91 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				}
 			}
 			base.OnDragDrop(e);
+
+			// Check for missing extensions
+			Dictionary<object, object> propertyBag = store.PropertyBag;
+			object missingExtensionsObject;
+			Guid[] missingExtensions;
+			if (propertyBag.TryGetValue("ORMDiagram.MergeMissingExtensions", out missingExtensionsObject) &&
+				null != (missingExtensions = missingExtensionsObject as Guid[]))
+			{
+				propertyBag.Remove("ORMDiagram.MergeMissingExtensions");
+				if (null != (missingExtensions = CopyMergeUtility.GetNonIgnoredMissingExtensions(store, missingExtensions)))
+				{
+					// Ask the user what should be done in this case
+					ExtensionLoader loader = ORMDesignerPackage.ExtensionLoader;
+					// Note that we know the extensions are available or they would not elements
+					// available in the other store.
+					int missingExtensionCount = missingExtensions.Length;
+					string[] missingExtensionNamepaces = new string[missingExtensionCount];
+					ExtensionModelBinding[] missingExtensionBindings = new ExtensionModelBinding[missingExtensionCount];
+					string[] displayNames = new string[missingExtensionCount];
+					for (int i = 0; i < missingExtensionCount; ++i)
+					{
+						displayNames[i] = DomainTypeDescriptor.GetDisplayName((missingExtensionBindings[i] = loader.GetExtensionDomainModel(missingExtensionNamepaces[i] = loader.MapExtensionDomainModelToName(missingExtensions[i])).Value).Type);
+					}
+					switch ((DialogResult)VsShellUtilities.ShowMessageBox(
+						((IORMToolServices)store).ServiceProvider,
+						string.Format(
+							CultureInfo.CurrentCulture,
+							ResourceStrings.CopyMergeExtensionRequiredMessage,
+							string.Join(ResourceStrings.CopyMergeExtensionRequiredMessageJoinSeparator, displayNames)),
+						ResourceStrings.PackageOfficialName,
+						OLEMSGICON.OLEMSGICON_QUERY,
+						OLEMSGBUTTON.OLEMSGBUTTON_YESNOCANCEL,
+						OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST))
+					{
+						case DialogResult.Yes:
+							VSDiagramView diagramView;
+							ORMDesignerDocData docData;
+							if (null != (diagramView = ActiveDiagramView as VSDiagramView) &&
+								null != (docData = diagramView.DocData as ORMDesignerDocData))
+							{
+								ExtensionLoader extensionLoader = ORMDesignerPackage.ExtensionLoader;
+								Dictionary<string, ExtensionModelBinding> bindings = new Dictionary<string, ExtensionModelBinding>();
+								for (int i = 0; i < missingExtensionCount; ++i)
+								{
+									bindings[missingExtensionNamepaces[i]] = missingExtensionBindings[i];
+								}
+								extensionLoader.AddRequiredExtensions(store, ref bindings);
+
+								if (store.UndoManager.TopmostUndoableTransaction != startTransactionId)
+								{
+									store.UndoManager.Undo();
+								}
+
+								Stream currentStream = null;
+								Stream newStream = null;
+								try
+								{
+									MemoryStream fallbackStream = new MemoryStream();
+									(new ORMSerializationEngine(store)).Save(fallbackStream);
+									fallbackStream.Position = 0;
+									currentStream = fallbackStream;
+
+									newStream = ExtensionLoader.CleanupStream(currentStream, extensionLoader.StandardDomainModels, bindings.Values, null);
+									docData.ReloadFromStream(newStream, currentStream);
+								}
+								finally
+								{
+									if (currentStream != null)
+									{
+										currentStream.Dispose();
+									}
+									if (newStream != null)
+									{
+										newStream.Dispose();
+									}
+								}
+							}
+							break;
+						case DialogResult.No:
+							// Cache the modified missing extensions
+							CopyMergeUtility.CacheIgnoredMissingExtensions(store, missingExtensions);
+							break;
+					}
+				}
+			}
 		}
 		/// <summary>
 		/// Place a new shape for an existing element onto this diagram
@@ -204,6 +296,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 			if (verifyFactTypeList != null)
 			{
+				// UNDONE: COPYMERGE This will need to be checked across stores. Consider calling VerifyCorrespondingFactTypes.
 				int factCount = verifyFactTypeList.Count;
 				for (int i = 0; i < factCount; ++i)
 				{
@@ -2055,31 +2148,61 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		private bool VerifyCorrespondingFactTypes(IList<FactType> verifyFactTypes, ElementGroupPrototype elementGroupPrototype)
 		{
 			int factCount = verifyFactTypes.Count;
+			if (factCount == 0)
+			{
+				// Nothing required, trivial success
+				return true;
+			}
 			bool searchedPrototypes = elementGroupPrototype == null;
 			FactType[] verifyFactTypes_Editable = null;
-			IElementDirectory elementDirectory = null;
+			IElementDirectory sourceElementDirectory = null;
 			ReadOnlyCollection<ProtoElement> rootElements = null;
+			Store targetStore = Store;
+			Store sourceStore = verifyFactTypes[0].Store;
+			bool foreignSource = targetStore != sourceStore;
+			IEquivalentElementTracker elementTracker = null;
+			bool newTracker = true;
+			if (foreignSource &&
+				elementGroupPrototype != null)
+			{
+				object trackerCache;
+				newTracker = !elementGroupPrototype.TargetContext.ContextInfo.TryGetValue("EquivalentElementTracker", out trackerCache) ||
+					null == (elementTracker = trackerCache as IEquivalentElementTracker);
+			}
+			bool retVal = true;
 			for (int i = 0; i < factCount; ++i)
 			{
-				FactType verifyFact = verifyFactTypes[i];
-				if (null != verifyFact &&
-					null == FindShapeForElement(verifyFact))
+				FactType verifySourceFactType = verifyFactTypes[i];
+				if (verifySourceFactType == null)
 				{
-					SubtypeFact subtypeFact = verifyFact as SubtypeFact;
+					// This can be nulled out below
+					continue;
+				}
+				FactType verifyTargetFactType = foreignSource ? CopyMergeUtility.GetEquivalentElement(verifySourceFactType, targetStore, elementTracker ?? (elementTracker = CopyMergeUtility.CreateEquivalentElementTracker())) : verifySourceFactType;
+				if (null == verifyTargetFactType ||
+					null == FindShapeForElement(verifyTargetFactType))
+				{
+					SubtypeFact subtypeFact = verifySourceFactType as SubtypeFact;
 					if (subtypeFact != null)
 					{
 						// Subtypes links are not directly prototyped. If the shape does not yet it exist,
 						// then it will be created automatically if both the subtype and supertype already
 						// exist are or available in the prototypes.
-						ObjectType supertype = subtypeFact.Supertype;
-						ObjectType subtype = subtypeFact.Subtype;
-						bool haveSupertypeRepresentation = FindShapeForElement(supertype) != null;
-						bool haveSubtypeRepresentation = FindShapeForElement(subtype) != null;
-						if (!haveSupertypeRepresentation || !haveSubtypeRepresentation)
+						ObjectType sourceSupertype = subtypeFact.Supertype;
+						ObjectType sourceSubtype = subtypeFact.Subtype;
+						ObjectType targetObjectType;
+						bool haveSupertypeRepresentation = foreignSource ?
+							(null != (targetObjectType = CopyMergeUtility.GetEquivalentElement(sourceSupertype, targetStore, elementTracker)) && FindShapeForElement(targetObjectType) != null) :
+							(FindShapeForElement(sourceSupertype) != null);
+						bool haveSubtypeRepresentation = foreignSource ?
+							(null != (targetObjectType = CopyMergeUtility.GetEquivalentElement(sourceSubtype, targetStore, elementTracker)) && FindShapeForElement(targetObjectType) != null) :
+							(FindShapeForElement(sourceSubtype) != null);
+						if ((!haveSupertypeRepresentation || !haveSubtypeRepresentation) &&
+							elementGroupPrototype != null)
 						{
 							if (rootElements == null)
 							{
-								elementDirectory = Store.ElementDirectory;
+								sourceElementDirectory = sourceStore.ElementDirectory;
 								rootElements = elementGroupPrototype.RootProtoElements;
 							}
 							foreach (ProtoElement protoElement in rootElements)
@@ -2087,7 +2210,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 								PresentationElement testPel;
 								FactType testFactType;
 								ObjectType testObjectType;
-								if (null != (testPel = elementDirectory.FindElement(protoElement.ElementId) as PresentationElement))
+								if (null != (testPel = sourceElementDirectory.FindElement(protoElement.ElementId) as PresentationElement))
 								{
 									ModelElement testElement = testPel.ModelElement;
 									if (null != (testObjectType = testElement as ObjectType) ||
@@ -2096,7 +2219,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 									{
 										if (!haveSupertypeRepresentation)
 										{
-											if (testObjectType == supertype)
+											if (testObjectType == sourceSupertype)
 											{
 												haveSupertypeRepresentation = true;
 												if (haveSubtypeRepresentation)
@@ -2107,7 +2230,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 										}
 										if (!haveSubtypeRepresentation)
 										{
-											if (testObjectType == subtype)
+											if (testObjectType == sourceSubtype)
 											{
 												haveSubtypeRepresentation = true;
 												if (haveSupertypeRepresentation)
@@ -2124,25 +2247,27 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						{
 							continue;
 						}
-						return false;
+						retVal = false;
+						break;
 					}
 					if (searchedPrototypes)
 					{
-						return false;
+						retVal = false;
+						break;
 					}
 					searchedPrototypes = true;
 					// See which prototype facts are being added. Create an editable list so
 					// we can walk this once only.
 					if (rootElements == null)
 					{
-						elementDirectory = Store.ElementDirectory;
+						sourceElementDirectory = sourceStore.ElementDirectory;
 						rootElements = elementGroupPrototype.RootProtoElements;
 					}
 					foreach (ProtoElement protoElement in rootElements)
 					{
 						PresentationElement testPel;
 						FactType testFactType;
-						if (null != (testPel = elementDirectory.FindElement(protoElement.ElementId) as PresentationElement) &&
+						if (null != (testPel = sourceElementDirectory.FindElement(protoElement.ElementId) as PresentationElement) &&
 							null != (testFactType = testPel.ModelElement as FactType))
 						{
 							int verifyIndex = verifyFactTypes.IndexOf(testFactType);
@@ -2164,11 +2289,16 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					}
 					if (verifyFactTypes[i] != null)
 					{
-						return false;
+						retVal = false;
+						break;
 					}
 				}
 			}
-			return true;
+			if (newTracker && elementTracker != null)
+			{
+				elementGroupPrototype.TargetContext.ContextInfo["EquivalentElementTracker"] = elementTracker;
+			}
+			return retVal;
 		}
 		/// <summary>
 		/// Extend CanMerge to allow duplication of shapes across diagrams in the same model
@@ -2176,18 +2306,23 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		protected override bool CanMerge(ProtoElementBase rootElement, ElementGroupPrototype elementGroupPrototype)
 		{
 			Store store = Store;
-			PresentationElement pel;
-			ModelElement element;
-			object storeId;
+			object storeIdObject;
 			if (Partition == store.DefaultPartition &&
-				elementGroupPrototype.SourceContext.ContextInfo.TryGetValue("SourceStore", out storeId) &&
-				storeId != null &&
-				(Guid)storeId == store.Id &&
-				null != (pel = store.ElementDirectory.FindElement(rootElement.ElementId) as PresentationElement) &&
-				null != (element = pel.ModelElement) &&
-				(ShouldAddShapeForElement(element)))
+				elementGroupPrototype.SourceContext.ContextInfo.TryGetValue("SourceStore", out storeIdObject) &&
+				storeIdObject != null &&
+				storeIdObject is Guid)
 			{
-				return CanMergeElement(element, elementGroupPrototype);
+				Guid sourceStoreId = (Guid)storeIdObject;
+				PresentationElement pel;
+				ModelElement element;
+				Store sourceStore = sourceStoreId == store.Id ? store : FrameworkShellUtility.ResolveLoadedStore<ORMDesignerDocData>(((IORMToolServices)store).ServiceProvider, sourceStoreId);
+				if (sourceStore != null &&
+					null != (pel = sourceStore.ElementDirectory.FindElement(rootElement.ElementId) as PresentationElement) &&
+					null != (element = pel.ModelElement) &&
+					(ShouldAddShapeForElement(element)))
+				{
+					return CanMergeElement(element, elementGroupPrototype);
+				}
 			}
 			return base.CanMerge(rootElement, elementGroupPrototype);
 		}
@@ -2239,7 +2374,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		/// <param name="mergedShape">The new shape being merged</param>
 		/// <param name="prototypeShape">The shape the new shape is based on</param>
-		protected virtual void ReconstituteMergedShape(PresentationElement mergedShape, PresentationElement prototypeShape)
+		/// <param name="identityMap">A map from elements in the native <see cref="Store"/>
+		/// for <paramref name="prototypeShape"/> to elements in the <see cref="Store"/> for
+		/// the <paramref name="mergedShape"/>. Not set if the Store is the same for both shapes.</param>
+		protected virtual void ReconstituteMergedShape(PresentationElement mergedShape, PresentationElement prototypeShape, IDictionary<Guid, ModelElement> identityMap)
 		{
 			FactTypeShape factTypeShape;
 			if (null != (factTypeShape = mergedShape as FactTypeShape))
@@ -2255,7 +2393,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					LinkedElementCollection<RoleBase> displayRoles = factTypeShape.RoleDisplayOrderCollection;
 					for (int j = 0; j < displayRoleCount; ++j)
 					{
-						displayRoles.Add(protoDisplayRoles[j]);
+						displayRoles.Add(identityMap == null ? protoDisplayRoles[j] : (RoleBase)identityMap[protoDisplayRoles[j].Id]);
 					}
 				}
 			}
@@ -2398,34 +2536,128 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			protected override void OnElementsReconstituted(MergeElementGroupEventArgs e)
 			{
 				ORMDiagram diagram;
-				Store store;
+				Store targetStore;
 				if (null != (diagram = e.TargetElement as ORMDiagram) &&
-					diagram.Partition == (store = diagram.Store).DefaultPartition)
+					diagram.Partition == (targetStore = diagram.Store).DefaultPartition)
 				{
-					ElementGroup group = e.ElementGroup;
-					ReadOnlyCollection<ModelElement> elements = group.ModelElements;
-					ReadOnlyCollection<ProtoElement> protoElements = e.ElementGroupPrototype.ProtoElements;
-					DomainDataDirectory dataDirectory = store.DomainDataDirectory;
-					IElementDirectory elementDirectory = store.ElementDirectory;
-					DomainClassInfo baseShapeClassInfo = dataDirectory.FindDomainClass(ORMBaseShape.DomainClassId);
-					int elementCount = elements.Count;
-					Debug.Assert(elementCount == protoElements.Count);
-					for (int i = 0; i < elementCount; ++i)
+					ElementGroupPrototype groupPrototype = e.ElementGroupPrototype;
+					object sourceStoreIdObject;
+					Guid sourceStoreId;
+					Store sourceStore;
+					if (groupPrototype.SourceContext.ContextInfo.TryGetValue("SourceStore", out sourceStoreIdObject) &&
+						sourceStoreIdObject is Guid &&
+						null != (sourceStore = (targetStore.Id == (sourceStoreId = (Guid)sourceStoreIdObject) ? targetStore : FrameworkShellUtility.ResolveLoadedStore<ORMDesignerDocData>(((IORMToolServices)targetStore).ServiceProvider, sourceStoreId))))
 					{
-						PresentationElement pel;
-						PresentationElement protoShape;
-						ModelElement backingElement;
-						if (null != (pel = elements[i] as PresentationElement) &&
-							null != (protoShape = elementDirectory.FindElement(protoElements[i].ElementId) as PresentationElement) &&
-							null != (backingElement = protoShape.ModelElement))
+						ElementGroup group = e.ElementGroup;
+						ReadOnlyCollection<ModelElement> elements = group.ModelElements;
+						ReadOnlyCollection<ProtoElement> protoElements = groupPrototype.ProtoElements;
+						IElementDirectory elementDirectory = sourceStore.ElementDirectory;
+						int elementCount = elements.Count;
+						Debug.Assert(elementCount == protoElements.Count);
+						if (sourceStore == targetStore)
 						{
-							pel.Associate(backingElement);
-							// Defer to an overridable callback for additional shape-specific fixup
-							diagram.ReconstituteMergedShape(pel, protoShape);
+							for (int i = 0; i < elementCount; ++i)
+							{
+								PresentationElement pel;
+								PresentationElement protoShape;
+								ModelElement backingElement;
+								if (null != (pel = elements[i] as PresentationElement) &&
+									null != (protoShape = elementDirectory.FindElement(protoElements[i].ElementId) as PresentationElement) &&
+									null != (backingElement = protoShape.ModelElement))
+								{
+									pel.Associate(backingElement);
+									// Defer to an overridable callback for additional shape-specific fixup
+									diagram.ReconstituteMergedShape(pel, protoShape, null);
+								}
+							}
+						}
+						else
+						{
+							object copiedElementsObject;
+							IDictionary<Guid, ModelElement> copiedElements;
+							if (groupPrototype.TargetContext.ContextInfo.TryGetValue("BackingElementIntegratedCopyClosure", out copiedElementsObject) &&
+								null != (copiedElements = copiedElementsObject as IDictionary<Guid, ModelElement>))
+							{
+								for (int i = 0; i < elementCount; ++i)
+								{
+									PresentationElement pel;
+									PresentationElement protoShape;
+									ModelElement sourceBackingElement;
+									if (null != (pel = elements[i] as PresentationElement) &&
+										null != (protoShape = elementDirectory.FindElement(protoElements[i].ElementId) as PresentationElement) &&
+										null != (sourceBackingElement = protoShape.ModelElement) &&
+										copiedElements.TryGetValue(sourceBackingElement.Id, out sourceBackingElement))
+									{
+										pel.Associate(sourceBackingElement);
+										// Defer to an overridable callback for additional shape-specific fixup
+										diagram.ReconstituteMergedShape(pel, protoShape, copiedElements);
+									}
+								}
+							}
 						}
 					}
 				}
 				base.OnElementsReconstituted(e);
+			}
+			/// <summary>
+			/// For an external store, create an element copy closure in a
+			/// separate nested transaction so that all elements are properly
+			/// constructed before any presentation elements are created.
+			/// </summary>
+			protected override void OnMerging(MergeElementGroupEventArgs e)
+			{
+				if (!e.MergeCompleted && e.ElementGroup == null)
+				{
+					ORMDiagram diagram;
+					Store targetStore;
+					if (null != (diagram = e.TargetElement as ORMDiagram) &&
+						diagram.Partition == (targetStore = diagram.Store).DefaultPartition)
+					{
+						ElementGroupPrototype groupPrototype = e.ElementGroupPrototype;
+						object sourceStoreIdObject;
+						Guid sourceStoreId;
+						Store sourceStore;
+						IDictionary<object, object> sourceContextInfo;
+						IDictionary<object, object> targetContextInfo = groupPrototype.TargetContext.ContextInfo;
+						if (!targetContextInfo.ContainsKey("BackingElementIntegratedCopyClosure") &&
+							(sourceContextInfo = groupPrototype.SourceContext.ContextInfo).TryGetValue("SourceStore", out sourceStoreIdObject) &&
+							sourceStoreIdObject is Guid &&
+							null != (sourceStore = (targetStore.Id == (sourceStoreId = (Guid)sourceStoreIdObject) ? null : FrameworkShellUtility.ResolveLoadedStore<ORMDesignerDocData>(((IORMToolServices)targetStore).ServiceProvider, sourceStoreId))))
+						{
+							IDictionary<Guid, IClosureElement> closure;
+							object closureObject;
+							ICopyClosureManager closureManager = ((IFrameworkServices)sourceStore).CopyClosureManager;
+							if (!sourceContextInfo.TryGetValue("BackingElementCopyClosure", out closureObject) ||
+								null == (closure = closureObject as IDictionary<Guid, IClosureElement>))
+							{
+								ReadOnlyCollection<ProtoElement> protoElements = groupPrototype.ProtoElements;
+								IElementDirectory elementDirectory = sourceStore.ElementDirectory;
+								int elementCount = protoElements.Count;
+								List<ModelElement> sourceBackingElements = new List<ModelElement>(elementCount);
+								for (int i = 0; i < elementCount; ++i)
+								{
+									PresentationElement protoShape;
+									ModelElement sourceBackingElement;
+									if (null != (protoShape = elementDirectory.FindElement(protoElements[i].ElementId) as PresentationElement) &&
+										null != (sourceBackingElement = protoShape.ModelElement))
+									{
+										sourceBackingElements.Add(sourceBackingElement);
+									}
+								}
+								closure = closureManager.GetCopyClosure(sourceBackingElements);
+								sourceContextInfo["BackingElementCopyClosure"] = closure;
+							}
+							CopyClosureIntegrationResult integrationResult = closureManager.IntegrateCopyClosure(closure, sourceStore, targetStore, new ModelElement[] { diagram.ModelElement }, true);
+							targetContextInfo["BackingElementIntegratedCopyClosure"] = integrationResult.CopiedElements;
+							Guid[] missingExtensions = integrationResult.MissingExtensionModels;
+							if (missingExtensions != null)
+							{
+								Store.PropertyBag["ORMDiagram.MergeMissingExtensions"] = missingExtensions;
+							}
+						}
+					}
+				}
+				base.OnMerging(e);
 			}
 		}
 		#endregion // ORMDesignerElementOperations class

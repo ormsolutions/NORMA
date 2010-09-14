@@ -98,7 +98,7 @@
 				<arg:RuleOn targetType="ObjectTypeShape" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>
 			</arg:ChangeRule>
 			<arg:AddRule methodName="DataTypeAddedRule">
-				<arg:RuleOn targetType="ValueTypeHasDataType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+				<arg:RuleOn targetType="ValueTypeHasDataType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="LocalCommit"/>
 			</arg:AddRule>
 			<arg:DeleteRule methodName="DataTypeDeleteRule">
 				<arg:RuleOn targetType="ValueTypeHasDataType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
@@ -110,7 +110,7 @@
 				<arg:RuleOn targetType="ObjectTypeShape" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:ChangeRule>
 			<arg:AddRule methodName="PreferredIdentifierAddedRule">
-				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="LocalCommit"/>
 			</arg:AddRule>
 			<arg:DeleteRule methodName="PreferredIdentifierDeleteRule">
 				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
@@ -119,7 +119,7 @@
 				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:AddRule>
 			<arg:RolePlayerChangeRule methodName="PreferredIdentifierRolePlayerChangeRule">
-				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="LocalCommit"/>
 			</arg:RolePlayerChangeRule>
 			<arg:RolePlayerChangeRule methodName="PreferredIdentifierRolePlayerChangeRuleForResizeRule">
 				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
@@ -128,13 +128,13 @@
 				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:DeleteRule>
 			<arg:AddRule methodName="RolePlayerAddedRule">
-				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="LocalCommit"/>
 			</arg:AddRule>
 			<arg:DeleteRule methodName="RolePlayerDeleteRule">
 				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:DeleteRule>
 			<arg:RolePlayerChangeRule methodName="RolePlayerRolePlayerChangedRule">
-				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="LocalCommit"/>
 			</arg:RolePlayerChangeRule>
 			<arg:AddRule methodName="SubtypeDerivationRuleAddedRule">
 				<arg:RuleOn targetType="SubtypeHasDerivationRule" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AutoLayoutShapesRulePriority"/>

@@ -73,12 +73,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // FactTypeDerivationRule rule methods
-		#region ImpliedObjectificationConstraintRoleSequenceHasRoleAddRule
+		#region ImpliedObjectificationConstraintRoleSequenceHasRoleAddedRule
 		/// <summary>
 		/// AddRule: typeof(ConstraintRoleSequenceHasRole)
 		/// Creates a new implied Objectification if the implied objectification pattern is now present.
 		/// </summary>
-		private static void ImpliedObjectificationConstraintRoleSequenceHasRoleAddRule(ElementAddedEventArgs e)
+		private static void ImpliedObjectificationConstraintRoleSequenceHasRoleAddedRule(ElementAddedEventArgs e)
 		{
 			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
 			UniquenessConstraint constraint;
@@ -95,7 +95,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 		}
-		#endregion // ImpliedObjectificationConstraintRoleSequenceHasRoleAddRule
+		#endregion // ImpliedObjectificationConstraintRoleSequenceHasRoleAddedRule
 		#region ImpliedObjectificationConstraintRoleSequenceHasRoleDeletingRule
 		/// <summary>
 		/// DeletingRule: typeof(ConstraintRoleSequenceHasRole)
@@ -114,19 +114,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // ImpliedObjectificationConstraintRoleSequenceHasRoleDeletingRule
-		#region ImpliedObjectificationFactTypeHasRoleAddRule
+		#region ImpliedObjectificationFactTypeHasRoleAddedRule
 		/// <summary>
 		/// AddRule: typeof(FactTypeHasRole)
 		/// 1) Creates a new implied Objectification if the implied objectification pattern is now present.
 		/// 2) Changes an implied Objectification to being explicit if a Role in a non-implied FactType is played.
 		/// </summary>
-		private static void ImpliedObjectificationFactTypeHasRoleAddRule(ElementAddedEventArgs e)
+		private static void ImpliedObjectificationFactTypeHasRoleAddedRule(ElementAddedEventArgs e)
 		{
 			FactTypeHasRole factTypeHasRole = e.ModelElement as FactTypeHasRole;
 			FrameworkDomainModel.DelayValidateElement(factTypeHasRole.FactType, DelayProcessFactTypeForImpliedObjectification);
 			ProcessNewPlayedRoleForImpliedObjectification(factTypeHasRole.Role as Role);
 		}
-		#endregion // ImpliedObjectificationFactTypeHasRoleAddRule
+		#endregion // ImpliedObjectificationFactTypeHasRoleAddedRule
 		#region ImpliedObjectificationFactTypeHasRoleDeletingRule
 		/// <summary>
 		/// DeletingRule: typeof(FactTypeHasRole)
@@ -147,14 +147,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // ImpliedObjectificationFactTypeHasRoleDeletingRule
-		#region ImpliedObjectificationUniquenessConstraintChangeRule
+		#region ImpliedObjectificationUniquenessConstraintChangedRule
 		/// <summary>
 		/// ChangeRule: typeof(UniquenessConstraint)
 		/// Adds or removes an implied Objectification if necessary as well as ensuring
 		/// that an objectifying type with a single candidate internal uniqueness
 		/// constraint on the objectified fact uses that constraint as its preferred identifier.
 		/// </summary>
-		private static void ImpliedObjectificationUniquenessConstraintChangeRule(ElementPropertyChangedEventArgs e)
+		private static void ImpliedObjectificationUniquenessConstraintChangedRule(ElementPropertyChangedEventArgs e)
 		{
 			UniquenessConstraint constraint = e.ModelElement as UniquenessConstraint;
 			if (!constraint.IsDeleted)
@@ -173,14 +173,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 		}
-		#endregion // ImpliedObjectificationUniquenessConstraintChangeRule
-		#region UniquenessConstraintAddRule
+		#endregion // ImpliedObjectificationUniquenessConstraintChangedRule
+		#region UniquenessConstraintAddedRule
 		/// <summary>
 		/// AddRule: typeof(ModelHasSetConstraint)
 		/// Ensure that an objectifying type with a single candidate internal uniqueness
 		/// constraint on the objectified fact uses that constraint as its preferred identifier.
 		/// </summary>
-		private static void UniquenessConstraintAddRule(ElementAddedEventArgs e)
+		private static void UniquenessConstraintAddedRule(ElementAddedEventArgs e)
 		{
 			UniquenessConstraint constraint = (e.ModelElement as ModelHasSetConstraint).SetConstraint as UniquenessConstraint;
 			if (constraint != null && constraint.IsInternal)
@@ -196,7 +196,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 		}
-		#endregion // UniquenessConstraintAddRule
+		#endregion // UniquenessConstraintAddedRule
 		#region UniquessConstraintDeletingRule
 		/// <summary>
 		/// DeletingRule: typeof(ModelHasSetConstraint)
@@ -250,12 +250,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // PreferredIdentifierDeletingRule
-		#region PreferredIdentifierRolePlayerChangeRule
+		#region PreferredIdentifierRolePlayerChangedRule
 		/// <summary>
 		/// RolePlayerChangeRule: typeof(EntityTypeHasPreferredIdentifier)
 		/// RolePlayerChangeRule corresponding to <see cref="PreferredIdentifierDeletingRule"/>
 		/// </summary>
-		private static void PreferredIdentifierRolePlayerChangeRule(RolePlayerChangedEventArgs e)
+		private static void PreferredIdentifierRolePlayerChangedRule(RolePlayerChangedEventArgs e)
 		{
 			Guid changedRoleGuid = e.DomainRole.Id;
 			ObjectType oldObjectType = null;
@@ -265,13 +265,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			ProcessPreferredIdentifierDeleting(e.ElementLink as EntityTypeHasPreferredIdentifier, oldObjectType);
 		}
-		#endregion // PreferredIdentifierRolePlayerChangeRule
-		#region ImpliedObjectificationIsImpliedChangeRule
+		#endregion // PreferredIdentifierRolePlayerChangedRule
+		#region ImpliedObjectificationIsImpliedChangedRule
 		/// <summary>
 		/// ChangeRule: typeof(Objectification)
 		/// Validates that an objectification that is implied matches the implied objectification pattern.
 		/// </summary>
-		private static void ImpliedObjectificationIsImpliedChangeRule(ElementPropertyChangedEventArgs e)
+		private static void ImpliedObjectificationIsImpliedChangedRule(ElementPropertyChangedEventArgs e)
 		{
 			if (e.DomainProperty.Id == Objectification.IsImpliedDomainPropertyId && (bool)e.NewValue)
 			{
@@ -291,13 +291,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 		}
-		#endregion // ImpliedObjectificationIsImpliedChangeRule
-		#region ImpliedObjectificationObjectifyingTypeIsIndependentChangeRule
+		#endregion // ImpliedObjectificationIsImpliedChangedRule
+		#region ImpliedObjectificationObjectifyingTypeIsIndependentChangedRule
 		/// <summary>
 		/// ChangeRule: typeof(ObjectType)
 		/// Changes an implied Objectification to being explicit if IsIndependent is changed.
 		/// </summary>
-		private static void ImpliedObjectificationObjectifyingTypeIsIndependentChangeRule(ElementPropertyChangedEventArgs e)
+		private static void ImpliedObjectificationObjectifyingTypeIsIndependentChangedRule(ElementPropertyChangedEventArgs e)
 		{
 			if (e.DomainProperty.Id == ObjectType.IsIndependentDomainPropertyId && !(bool)e.NewValue)
 			{
@@ -314,27 +314,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 		}
-		#endregion // ImpliedObjectificationObjectifyingTypeIsIndependentChangeRule
-		#region ImpliedObjectificationObjectifyingTypePlaysRoleAddRule
+		#endregion // ImpliedObjectificationObjectifyingTypeIsIndependentChangedRule
+		#region ImpliedObjectificationObjectifyingTypePlaysRoleAddedRule
 		/// <summary>
 		/// AddRule: typeof(ObjectTypePlaysRole)
 		/// Changes an implied Objectification to being explicit if a Role in a non-implied FactType is played.
 		/// </summary>
-		private static void ImpliedObjectificationObjectifyingTypePlaysRoleAddRule(ElementAddedEventArgs e)
+		private static void ImpliedObjectificationObjectifyingTypePlaysRoleAddedRule(ElementAddedEventArgs e)
 		{
 			ProcessNewPlayedRoleForImpliedObjectification((e.ModelElement as ObjectTypePlaysRole).PlayedRole);
 		}
-		#endregion // ImpliedObjectificationObjectifyingTypePlaysRoleAddRule
+		#endregion // ImpliedObjectificationObjectifyingTypePlaysRoleAddedRule
 		#endregion // Implied Objectification creation, removal, and pattern enforcement
 		#region Objectification implied facts and constraints pattern enforcement
-		#region ObjectificationAddRule
+		#region ObjectificationAddedRule
 		/// <summary>
 		/// AddRule: typeof(Objectification)
 		/// Create implied facts and constraints when an item is objectified
 		/// </summary>
-		private static void ObjectificationAddRule(ElementAddedEventArgs e)
+		private static void ObjectificationAddedRule(ElementAddedEventArgs e)
 		{
-			ProcessObjectificationAdded(e.ModelElement as Objectification, null, null);
+			ProcessObjectificationAdded((Objectification)e.ModelElement, null, null);
+		}
+		/// <summary>
+		/// AddRule: typeof(Objectification), FireTime=LocalCommit, Priority=FrameworkDomainModel.CopyClosureExpansionCompletedRulePriority;
+		/// </summary>
+		private static void ObjectificationAddedClosureRule(ElementAddedEventArgs e)
+		{
+			ProcessObjectificationAdded((Objectification)e.ModelElement, null, null);
 		}
 		/// <summary>
 		/// Create implied facts and constraints as needed
@@ -344,6 +351,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="nestingType">The nesting object type to process. Pulled from objectification.NestingType if null.</param>
 		private static void ProcessObjectificationAdded(Objectification objectification, FactType nestedFactType, ObjectType nestingType)
 		{
+			Store store = objectification.Store;
+			if (objectification.IsDeleted ||
+				CopyMergeUtility.GetIntegrationPhase(store) == CopyClosureIntegrationPhase.Integrating)
+			{
+				return;
+			}
 			if (nestedFactType == null)
 			{
 				nestedFactType = objectification.NestedFactType;
@@ -357,7 +370,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				nestingType = objectification.NestingType;
 			}
 			FrameworkDomainModel.DelayValidateElement(nestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
-			Store store = nestedFactType.Store;
 			ORMModel model = nestedFactType.Model;
 
 			// Comments in this and other related procedures will refer to
@@ -407,7 +419,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								// Move an existing proxy fact to the correct nesting type
 								if (!ruleDisabled)
 								{
-									store.RuleManager.DisableRule(typeof(RolePlayerAddRuleClass));
+									store.RuleManager.DisableRule(typeof(RolePlayerAddedRuleClass));
 									ruleDisabled = true;
 								}
 								oppositeRole.RolePlayer = nestingType;
@@ -419,12 +431,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					if (ruleDisabled)
 					{
-						store.RuleManager.EnableRule(typeof(RolePlayerAddRuleClass));
+						store.RuleManager.EnableRule(typeof(RolePlayerAddedRuleClass));
 					}
 				}
 			}
 		}
-		#endregion // ObjectificationAddRule
+		#endregion // ObjectificationAddedRule
 		#region ObjectificationDeleteRule
 		/// <summary>
 		/// DeletingRule: typeof(Objectification)
@@ -503,12 +515,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // ObjectificationDeletingRule
-		#region ObjectificationRolePlayerChangeRule
+		#region ObjectificationRolePlayerChangedRule
 		/// <summary>
 		/// RolePlayerChangeRule: typeof(Objectification)
 		/// Process Objectification role player changes
 		/// </summary>
-		private static void ObjectificationRolePlayerChangeRule(RolePlayerChangedEventArgs e)
+		private static void ObjectificationRolePlayerChangedRule(RolePlayerChangedEventArgs e)
 		{
 			Objectification link = e.ElementLink as Objectification;
 			if (link.IsDeleted)
@@ -539,13 +551,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ProcessObjectificationDeleting(link, oldFactType, oldObjectType);
 			ProcessObjectificationAdded(link, null, null);
 		}
-		#endregion // ObjectificationRolePlayerChangeRule
-		#region ImpliedFactTypeAddRule
+		#endregion // ObjectificationRolePlayerChangedRule
+		#region ImpliedFactTypeAddedRule
 		/// <summary>
 		/// AddRule: typeof(ObjectificationImpliesFactType)
 		/// Rule to block objectification of implied facts
 		/// </summary>
-		private static void ImpliedFactTypeAddRule(ElementAddedEventArgs e)
+		private static void ImpliedFactTypeAddedRule(ElementAddedEventArgs e)
 		{
 			ObjectificationImpliesFactType link = e.ModelElement as ObjectificationImpliesFactType;
 			if (link.ImpliedFactType.Objectification != null)
@@ -553,8 +565,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				throw new InvalidOperationException(ResourceStrings.ModelExceptionObjectificationImpliedFactObjectified);
 			}
 		}
-		#endregion // ImpliedFactTypeAddRule
-		#region RoleAddRule
+		#endregion // ImpliedFactTypeAddedRule
+		#region RoleAddedRule
 		/// <summary>
 		/// AddRule: typeof(FactTypeHasRole)
 		/// AddRule: typeof(ConstraintRoleSequenceHasRole)
@@ -562,9 +574,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Synchronize implied fact types when a role is added
 		/// to the nested fact type or an attached constraint.
 		/// </summary>
-		private static void RoleAddRule(ElementAddedEventArgs e)
+		private static void RoleAddedRule(ElementAddedEventArgs e)
 		{
 			ModelElement element = e.ModelElement;
+			if (CopyMergeUtility.GetIntegrationPhase(element.Store) == CopyClosureIntegrationPhase.Integrating)
+			{
+				return;
+			}
 			ConstraintRoleSequenceHasRole sequenceRoleLink;
 			FactSetConstraint internalConstraintLink;
 			FactType fact;
@@ -636,7 +652,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				throw BlockedByObjectificationPatternException();
 			}
 		}
-		#endregion // RoleAddRule
+		#endregion // RoleAddedRule
 		#region RoleDeletingRule
 		partial class RoleDeletingRuleClass
 		{
@@ -742,15 +758,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // RoleDeletingRule
-		#region RolePlayerAddRule
+		#region RolePlayerAddedRule
 		/// <summary>
 		/// AddRule: typeof(ObjectTypePlaysRole)
 		/// Synchronize implied fact types when a role player is
 		/// set on an objectified role
 		/// </summary>
-		private static void RolePlayerAddRule(ElementAddedEventArgs e)
+		private static void RolePlayerAddedRule(ElementAddedEventArgs e)
 		{
-			ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
+			ModelElement element = e.ModelElement;
+			if (CopyMergeUtility.GetIntegrationPhase(element.Store) == CopyClosureIntegrationPhase.Integrating)
+			{
+				return;
+			}
+			ObjectTypePlaysRole link = (ObjectTypePlaysRole)element;
 			Role role = link.PlayedRole;
 			FactType factType = role.FactType;
 			if (factType != null)
@@ -771,7 +792,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 		}
-		#endregion // RolePlayerAddRule
+		#endregion // RolePlayerAddedRule
 		#region RolePlayerDeletingRule
 		/// <summary>
 		/// DeletingRule: typeof(ObjectTypePlaysRole)
@@ -865,11 +886,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // RolePlayerDeletingRule
-		#region RolePlayerRolePlayerChangeRule
+		#region RolePlayerRolePlayerChangedRule
 		/// <summary>
 		/// RolePlayerChangeRule: typeof(ObjectTypePlaysRole)
 		/// </summary>
-		private static void RolePlayerRolePlayerChangeRule(RolePlayerChangedEventArgs e)
+		private static void RolePlayerRolePlayerChangedRule(RolePlayerChangedEventArgs e)
 		{
 			ObjectTypePlaysRole link = e.ElementLink as ObjectTypePlaysRole;
 			Role role = link.PlayedRole;
@@ -928,13 +949,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 		}
-		#endregion // RolePlayerRolePlayerChangeRule
-		#region InternalConstraintChangeRule
+		#endregion // RolePlayerRolePlayerChangedRule
+		#region InternalConstraintChangedRule
 		/// <summary>
 		/// ChangeRule: typeof(SetConstraint)
 		/// Ensure that implied internal constraints cannot change the Modality property
 		/// </summary>
-		private static void InternalConstraintChangeRule(ElementPropertyChangedEventArgs e)
+		private static void InternalConstraintChangedRule(ElementPropertyChangedEventArgs e)
 		{
 			Guid attributeId = e.DomainProperty.Id;
 			if (attributeId == SetConstraint.ModalityDomainPropertyId)
@@ -951,7 +972,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 		}
-		#endregion // InternalConstraintChangeRule
+		#endregion // InternalConstraintChangedRule
 		#endregion // Objectification implied facts and constraints pattern enforcement
 		#region Helper functions
 		/// <summary>
@@ -1436,7 +1457,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					bool removingRuleDisabled = false;
 					try
 					{
-						ruleManager.DisableRule(typeof(RolePlayerAddRuleClass));
+						ruleManager.DisableRule(typeof(RolePlayerAddedRuleClass));
 						addRuleDisabled = true;
 						ruleManager.DisableRule(typeof(RolePlayerDeletingRuleClass));
 						removingRuleDisabled = true;
@@ -1458,7 +1479,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						if (addRuleDisabled)
 						{
-							ruleManager.EnableRule(typeof(RolePlayerAddRuleClass));
+							ruleManager.EnableRule(typeof(RolePlayerAddedRuleClass));
 						}
 						if (removingRuleDisabled)
 						{
@@ -1564,7 +1585,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 							if (disabledRolePlayerChangeRuleType == null)
 							{
-								disabledRolePlayerChangeRuleType = typeof(RolePlayerRolePlayerChangeRuleClass);
+								disabledRolePlayerChangeRuleType = typeof(RolePlayerRolePlayerChangedRuleClass);
 								explicitObjectification.Store.RuleManager.DisableRule(disabledRolePlayerChangeRuleType);
 							}
 							role.RolePlayer = newObjectifyingType;

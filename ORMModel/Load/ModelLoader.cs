@@ -285,6 +285,29 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		{
 			return GetTypedDomainModelProviders<T>();
 		}
+		private CopyClosureManager myCopyClosureManager;
+		/// <summary>
+		/// Implements <see cref="IFrameworkServices.CopyClosureManager"/>
+		/// </summary>
+		protected ICopyClosureManager CopyClosureManager
+		{
+			get
+			{
+				CopyClosureManager retVal = myCopyClosureManager;
+				if (retVal == null)
+				{
+					myCopyClosureManager = retVal = new CopyClosureManager(this);
+				}
+				return retVal;
+			}
+		}
+		ICopyClosureManager IFrameworkServices.CopyClosureManager
+		{
+			get
+			{
+				return CopyClosureManager;
+			}
+		}
 		/// <summary>
 		/// Implements <see cref="IORMToolServices.ModelErrorActivationService"/>
 		/// </summary>

@@ -4354,14 +4354,20 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					if (ic.ConstraintIsInternal &&
 						setConstraint.FactTypeCollection.Contains(factType))
 					{
+						// The appropriate role (for a mandatory constraint) or
+						// an internal uniqueness constraint will be selected by
+						// the proxy display provider. Activate the correct name field.
 						switch (ic.ConstraintType)
 						{
 							case ConstraintType.InternalUniqueness:
-							case ConstraintType.SimpleMandatory:
-								// The appropriate role (for a mandatory constraint) or
-								// an internal uniqueness constraint will be selected by
-								// the proxy display provider
 								ActivateNameProperty(setConstraint);
+								break;
+							case ConstraintType.SimpleMandatory:
+								Store store = Store;
+								EditorUtility.ActivatePropertyEditor(
+									(Store as IORMToolServices).ServiceProvider,
+									DomainTypeDescriptor.CreatePropertyDescriptor(setConstraint.RoleCollection[0], Role.MandatoryConstraintNameDomainPropertyId),
+									false);
 								break;
 						}
 						break;
@@ -5078,6 +5084,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <param name="nestingType">The nestingType to change. If this is null, then use the NestingType from the link argument.</param>
 		private static void ProcessObjectificationAdd(Objectification link, FactType nestedFactType, ObjectType nestingType)
 		{
+			if (link.IsDeleted ||
+				MergeContext.HasContext(link.Store.TransactionManager.CurrentTransaction.TopLevelTransaction))
+			{
+				return;
+			}
 			if (nestedFactType == null)
 			{
 				nestedFactType = link.NestedFactType;

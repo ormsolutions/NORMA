@@ -462,22 +462,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#region SetConstraint Specific
 		/// <summary>
 		/// Ensure that an FactConstraint exists between the
-		/// fact type owning the passed in role and this constraint.
+		/// provided fact type and this constraint.
 		/// FactConstraint links are generated automatically
 		/// and should never be directly created.
 		/// </summary>
-		/// <param name="role">The role to attach</param>
+		/// <param name="factType">The fact type to attach</param>
 		/// <param name="createdAndInitialized">Returns true if creating the
 		/// relationship initialized it indirectly.</param>
 		/// <returns>The associated FactConstraint relationship.</returns>
-		private FactConstraint EnsureFactConstraintForRole(Role role, out bool createdAndInitialized)
+		private FactConstraint EnsureFactConstraintForFactType(FactType factType, out bool createdAndInitialized)
 		{
 			createdAndInitialized = false;
 			FactConstraint retVal = null;
-			FactType fact = role.FactType;
-			if (fact != null)
+			if (factType != null)
 			{
-				ReadOnlyCollection<FactSetConstraint> existingFactConstraints = DomainRoleInfo.GetElementLinks<FactSetConstraint>(fact, FactSetConstraint.FactTypeDomainRoleId);
+				ReadOnlyCollection<FactSetConstraint> existingFactConstraints = DomainRoleInfo.GetElementLinks<FactSetConstraint>(factType, FactSetConstraint.FactTypeDomainRoleId);
 				int listCount = existingFactConstraints.Count;
 				for (int i = 0; i < listCount; ++i)
 				{
@@ -490,7 +489,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				if (retVal == null)
 				{
-					retVal = new FactSetConstraint(fact, this);
+					retVal = new FactSetConstraint(factType, this);
 					createdAndInitialized = retVal.ConstrainedRoleCollection.Count != 0;
 				}
 			}
@@ -610,6 +609,37 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
+		/// AddRule: typeof(FactTypeHasRole)
+		/// Ensure a role added during closure integration has
+		/// a consistent constraint model.
+		/// </summary>
+		private static void FactTypeRoleAddedClosureRule(ElementAddedEventArgs e)
+		{
+			ModelElement element = e.ModelElement;
+			if (CopyMergeUtility.GetIntegrationPhase(element.Store) == CopyClosureIntegrationPhase.Integrating)
+			{
+				FactTypeHasRole link = (FactTypeHasRole)element;
+				Role role = link.Role as Role;
+				if (role != null)
+				{
+					FactType factType = null;
+					foreach (ConstraintRoleSequenceHasRole sequenceLink in ConstraintRoleSequenceHasRole.GetLinksToConstraintRoleSequenceCollection(role))
+					{
+						SetConstraint constraint = sequenceLink.ConstraintRoleSequence as SetConstraint;
+						if (constraint != null)
+						{
+							bool createdAndInitialized;
+							FactConstraint factConstraint = constraint.EnsureFactConstraintForFactType(factType ?? (factType = role.FactType), out createdAndInitialized);
+							if (factConstraint != null && !createdAndInitialized)
+							{
+								new ExternalRoleConstraint(sequenceLink, factConstraint);
+							}
+						}
+					}
+				}
+			}
+		}
+		/// <summary>
 		/// AddRule: typeof(ConstraintRoleSequenceHasRole)
 		/// Add Rule for arity and compatibility checking when Single Column ExternalConstraints roles are added
 		/// </summary>
@@ -649,10 +679,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (constraint != null)
 			{
 				bool createdAndInitialized;
-				FactConstraint factConstraint = constraint.EnsureFactConstraintForRole(link.Role, out createdAndInitialized);
+				FactConstraint factConstraint = constraint.EnsureFactConstraintForFactType(link.Role.FactType, out createdAndInitialized);
 				if (factConstraint != null && !createdAndInitialized)
 				{
-					factConstraint.ConstrainedRoleCollection.Add(link);
+					new ExternalRoleConstraint(link, factConstraint);
 				}
 			}
 		}
@@ -694,7 +724,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					ConstraintRoleSequenceHasRole roleLink = (ConstraintRoleSequenceHasRole)roleLinks[i];
 					bool createdAndInitialized;
-					FactConstraint factConstraint = roleSequence.EnsureFactConstraintForRole(roleLink.Role, out createdAndInitialized);
+					FactConstraint factConstraint = roleSequence.EnsureFactConstraintForFactType(roleLink.Role.FactType, out createdAndInitialized);
 					if (factConstraint != null && !createdAndInitialized)
 					{
 						LinkedElementCollection<ConstraintRoleSequenceHasRole> constrainedRoles = factConstraint.ConstrainedRoleCollection;
@@ -1216,7 +1246,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // IModelErrorDisplayContext Implementation
 	}
-	public partial class SetConstraint : IConstraint
+	public partial class SetConstraint : IConstraint, IDefaultNamePattern
 	{
 		#region IConstraint Implementation
 		ORMModel IConstraint.Model
@@ -1518,6 +1548,44 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
+		#region IDefaultNamePattern Implementation
+		/// <summary>
+		/// Implements <see cref="IDefaultNamePattern.DefaultNamePattern"/>
+		/// Get the standard (empty) default name pattern
+		/// </summary>
+		protected static string DefaultNamePattern
+		{
+			get
+			{
+				return null;
+			}
+		}
+		string IDefaultNamePattern.DefaultNamePattern
+		{
+			get
+			{
+				return DefaultNamePattern;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="IDefaultNamePattern.DefaultNameResettable"/> by
+		/// marking constraint names as resettable.
+		/// </summary>
+		protected static bool DefaultNameResettable
+		{
+			get
+			{
+				return true;
+			}
+		}
+		bool IDefaultNamePattern.DefaultNameResettable
+		{
+			get
+			{
+				return DefaultNameResettable;
+			}
+		}
+		#endregion // IDefaultNamePattern Implementation
 	}
 	public partial class SetConstraint : IHierarchyContextEnabled
 	{
@@ -1622,22 +1690,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		/// <summary>
 		/// Ensure that an FactConstraint exists between the
-		/// fact type owning the passed in role and this constraint.
+		/// provided fact type and this constraint.
 		/// FactConstraint links are generated automatically
 		/// and should never be directly created.
 		/// </summary>
-		/// <param name="role">The role to attach</param>
+		/// <param name="factType">The fact type to attach</param>
 		/// <param name="createdAndInitialized">Returns true if creating the
 		/// relationship initialized it indirectly.</param>
 		/// <returns>The associated FactConstraint relationship.</returns>
-		private FactConstraint EnsureFactConstraintForRole(Role role, out bool createdAndInitialized)
+		private FactConstraint EnsureFactConstraintForFactType(FactType factType, out bool createdAndInitialized)
 		{
 			createdAndInitialized = false;
 			FactConstraint retVal = null;
-			FactType fact = role.FactType;
-			if (fact != null)
+			if (factType != null)
 			{
-				ReadOnlyCollection<FactSetComparisonConstraint> existingFactConstraints = DomainRoleInfo.GetElementLinks<FactSetComparisonConstraint>(fact, FactSetComparisonConstraint.FactTypeDomainRoleId);
+				ReadOnlyCollection<FactSetComparisonConstraint> existingFactConstraints = DomainRoleInfo.GetElementLinks<FactSetComparisonConstraint>(factType, FactSetComparisonConstraint.FactTypeDomainRoleId);
 				int listCount = existingFactConstraints.Count;
 				for (int i = 0; i < listCount; ++i)
 				{
@@ -1650,7 +1717,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				if (retVal == null)
 				{
-					retVal = new FactSetComparisonConstraint(fact, this);
+					retVal = new FactSetComparisonConstraint(factType, this);
 					createdAndInitialized = retVal.ConstrainedRoleCollection.Count != 0;
 				}
 			}
@@ -1749,6 +1816,39 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
+		/// AddRule: typeof(FactTypeHasRole)
+		/// Ensure a role added during closure integration has
+		/// a consistent constraint model.
+		/// </summary>
+		private static void FactTypeRoleAddedClosureRule(ElementAddedEventArgs e)
+		{
+			ModelElement element = e.ModelElement;
+			if (CopyMergeUtility.GetIntegrationPhase(element.Store) == CopyClosureIntegrationPhase.Integrating)
+			{
+				FactTypeHasRole link = (FactTypeHasRole)element;
+				Role role = link.Role as Role;
+				if (role != null)
+				{
+					FactType factType = null;
+					foreach (ConstraintRoleSequenceHasRole sequenceLink in ConstraintRoleSequenceHasRole.GetLinksToConstraintRoleSequenceCollection(role))
+					{
+						SetComparisonConstraintRoleSequence constraintSequence;
+						SetComparisonConstraint constraint;
+						if (null != (constraintSequence = sequenceLink.ConstraintRoleSequence as SetComparisonConstraintRoleSequence) &&
+							null != (constraint = constraintSequence.ExternalConstraint))
+						{
+							bool createdAndInitialized;
+							FactConstraint factConstraint = constraint.EnsureFactConstraintForFactType(factType ?? (factType = role.FactType), out createdAndInitialized);
+							if (factConstraint != null && !createdAndInitialized)
+							{
+								new ExternalRoleConstraint(sequenceLink, factConstraint);
+							}
+						}
+					}
+				}
+			}
+		}
+		/// <summary>
 		/// AddRule: typeof(ConstraintRoleSequenceHasRole)
 		/// If a role is added after the role sequence is already attached,
 		/// then create the corresponding FactConstraint and ExternalRoleConstraint
@@ -1760,10 +1860,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (constraint != null && constraint.Model != null)
 			{
 				bool createdAndInitialized;
-				FactConstraint factConstraint = constraint.EnsureFactConstraintForRole(link.Role, out createdAndInitialized);
+				FactConstraint factConstraint = constraint.EnsureFactConstraintForFactType(link.Role.FactType, out createdAndInitialized);
 				if (factConstraint != null && !createdAndInitialized)
 				{
-					factConstraint.ConstrainedRoleCollection.Add(link);
+					new ExternalRoleConstraint(link, factConstraint);
 				}
 			}
 		}
@@ -1812,7 +1912,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					ConstraintRoleSequenceHasRole roleLink = roleLinks[i];
 					bool createdAndInitialized;
-					FactConstraint factConstraint = constraint.EnsureFactConstraintForRole(roleLink.Role, out createdAndInitialized);
+					FactConstraint factConstraint = constraint.EnsureFactConstraintForFactType(roleLink.Role.FactType, out createdAndInitialized);
 					if (factConstraint != null && !createdAndInitialized)
 					{
 						LinkedElementCollection<ConstraintRoleSequenceHasRole> constrainedRoles = factConstraint.ConstrainedRoleCollection;
@@ -2667,7 +2767,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // IModelErrorOwner Implementation
 	}
-	public partial class SetComparisonConstraint : IConstraint
+	public partial class SetComparisonConstraint : IConstraint, IDefaultNamePattern
 	{
 		#region IConstraint Implementation
 		/// <summary>
@@ -2781,6 +2881,44 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ValidateColumnCompatibility();
 		}
 		#endregion // IConstraint Implementation
+		#region IDefaultNamePattern Implementation
+		/// <summary>
+		/// Implements <see cref="IDefaultNamePattern.DefaultNamePattern"/>
+		/// Get the standard (empty) default name pattern
+		/// </summary>
+		protected static string DefaultNamePattern
+		{
+			get
+			{
+				return null;
+			}
+		}
+		string IDefaultNamePattern.DefaultNamePattern
+		{
+			get
+			{
+				return DefaultNamePattern;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="IDefaultNamePattern.DefaultNameResettable"/> by
+		/// marking constraint names as resettable.
+		/// </summary>
+		protected static bool DefaultNameResettable
+		{
+			get
+			{
+				return true;
+			}
+		}
+		bool IDefaultNamePattern.DefaultNameResettable
+		{
+			get
+			{
+				return DefaultNameResettable;
+			}
+		}
+		#endregion // IDefaultNamePattern Implementation
 	}
 	public partial class SetComparisonConstraint : IHierarchyContextEnabled
 	{
@@ -6454,9 +6592,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void TestRemovePreferredIdentifierRoleAddRule(ElementAddedEventArgs e)
 		{
-			FactTypeHasRole roleLink = e.ModelElement as FactTypeHasRole;
-			FactType fact = roleLink.FactType;
-			foreach (IFactConstraint factConstraint in fact.FactConstraintCollection)
+			FactTypeHasRole roleLink = (FactTypeHasRole)e.ModelElement;
+			if (CopyMergeUtility.GetIntegrationPhase(roleLink.Store) == CopyClosureIntegrationPhase.Integrating)
+			{
+				return;
+				// UNDONE: COPYMERGE Do we need a closure completion equivalent rule?
+			}
+			FactType factType = roleLink.FactType;
+			foreach (IFactConstraint factConstraint in factType.FactConstraintCollection)
 			{
 				UniquenessConstraint constraint = factConstraint.Constraint as UniquenessConstraint;
 				if (constraint != null)
@@ -6466,7 +6609,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						Objectification objectification;
 						if (!(null != (objectification = forType.Objectification) &&
-							fact == objectification.NestedFactType))
+							factType == objectification.NestedFactType))
 						{
 							// If the preferred identifier is already there, then
 							// the fact is binary and removing the role will
@@ -6489,11 +6632,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void TestRemovePreferredIdentifierConstraintRoleAddRule(ElementAddedEventArgs e)
 		{
-			ConstraintRoleSequenceHasRole constraintLink = e.ModelElement as ConstraintRoleSequenceHasRole;
+			ConstraintRoleSequenceHasRole constraintLink = (ConstraintRoleSequenceHasRole)e.ModelElement;
 			ConstraintRoleSequence sequence = constraintLink.ConstraintRoleSequence;
 			IConstraint constraint = sequence.Constraint;
-			if (constraint != null)
+			if (constraint != null &&
+				CopyMergeUtility.GetIntegrationPhase(sequence.Store) != CopyClosureIntegrationPhase.Integrating)
 			{
+				// UNDONE: COPYMERGE Do we need to have a backup closure rule? We might need one for external uniqueness.
 				switch (constraint.ConstraintType)
 				{
 					case ConstraintType.InternalUniqueness:
@@ -6642,6 +6787,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void TestRemovePreferredIdentifiersForObjectificationAdded(FactType factType)
 		{
+			if (CopyMergeUtility.GetIntegrationPhase(factType.Store) == CopyClosureIntegrationPhase.Integrating)
+			{
+				// UNDONE: COPYMERGE We might need a corresponding copy closure rule
+				return;
+			}
 			LinkedElementCollection<RoleBase> roles = factType.RoleCollection;
 			int roleCount = roles.Count;
 			for (int i = 0; i < roleCount; ++i)
@@ -6683,18 +6833,48 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#region PreferredIdentifierAddedRule
 		/// <summary>
 		/// AddRule: typeof(EntityTypeHasPreferredIdentifier)
-		/// Verify that all preconditions hold for adding a primary
+		/// Verify that all preconditions hold for adding a preferred
 		/// identifier and extend modifiable conditions as needed.
 		/// </summary>
 		private static void PreferredIdentifierAddedRule(ElementAddedEventArgs e)
 		{
-			ProcessPreferredIdentifierAdded(e.ModelElement as EntityTypeHasPreferredIdentifier);
+			ProcessPreferredIdentifierAdded((EntityTypeHasPreferredIdentifier)e.ModelElement, false);
+		}
+		/// <summary>
+		/// AddRule: typeof(EntityTypeHasPreferredIdentifier), FireTime=LocalCommit, Priority=FrameworkDomainModel.CopyClosureExpansionCompletedRulePriority;
+		/// Verify that all preconditions hold for preferred
+		/// identifier and extend modifiable conditions as needed.
+		/// Applied after copy closure completion.
+		/// </summary>
+		private static void PreferredIdentifierAddedClosureRule(ElementAddedEventArgs e)
+		{
+			ProcessPreferredIdentifierAdded((EntityTypeHasPreferredIdentifier)e.ModelElement, true);
 		}
 		/// <summary>
 		/// Check preconditions on an internal or external uniqueness constraint.
 		/// </summary>
-		private static void ProcessPreferredIdentifierAdded(EntityTypeHasPreferredIdentifier link)
+		private static void ProcessPreferredIdentifierAdded(EntityTypeHasPreferredIdentifier link, bool forClosure)
 		{
+			bool deleteIfNotAllowed;
+			switch (CopyMergeUtility.GetIntegrationPhase(link.Store))
+			{
+				case CopyClosureIntegrationPhase.Integrating:
+					return;
+				case CopyClosureIntegrationPhase.IntegrationComplete:
+					if (link.IsDeleted)
+					{
+						return;
+					}
+					deleteIfNotAllowed = true;
+					break;
+				default: // CopyClosureIntegrationPhase.None
+					if (forClosure)
+					{
+						return;
+					}
+					deleteIfNotAllowed = false;
+					break;
+			}
 			// Enforce that a preferred identifier is set only for unobjectified
 			// entity types. The other parts of this (don't allow this to be set
 			// for object types with preferred identifiers) is enforced in
@@ -6711,7 +6891,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				case ConstraintType.InternalUniqueness:
 					{
 						UniquenessConstraint iuc = constraint as UniquenessConstraint;
-						iuc.TestAllowPreferred(entityType, true);
+						if (!iuc.TestAllowPreferred(entityType, !deleteIfNotAllowed))
+						{
+							iuc.Delete();
+							return;
+						}
 
 						// TestAllowPreferred verifies role player types, fact arities, and that
 						// no constraints need to be deleted to make this happen. Additional
@@ -6762,7 +6946,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				case ConstraintType.ExternalUniqueness:
 					{
 						UniquenessConstraint euc = constraint as UniquenessConstraint;
-						euc.TestAllowPreferred(entityType, true);
+						if (!euc.TestAllowPreferred(entityType, !deleteIfNotAllowed))
+						{
+							euc.Delete();
+							return;
+						}
 						Objectification objectification = entityType.Objectification;
 
 						// TestAllowPreferred verifies role player types and fact arities of the
@@ -6830,13 +7018,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#region PreferredIdentifierRolePlayerChangeRule
 		/// <summary>
 		/// RolePlayerChangeRule: typeof(EntityTypeHasPreferredIdentifier)
-		/// Verify that all preconditions hold for adding a primary
+		/// Verify that all preconditions hold for adding a preferred
 		/// identifier and extend modifiable conditions as needed.
 		/// Defers to <see cref="ProcessPreferredIdentifierAdded"/>.
 		/// </summary>
-		private static void PreferredIdentifierRolePlayerChangeRule(RolePlayerChangedEventArgs e)
+		private static void PreferredIdentifierRolePlayerChangedRule(RolePlayerChangedEventArgs e)
 		{
-			ProcessPreferredIdentifierAdded(e.ElementLink as EntityTypeHasPreferredIdentifier);
+			ProcessPreferredIdentifierAdded((EntityTypeHasPreferredIdentifier)e.ElementLink, false);
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(EntityTypeHasPreferredIdentifier), FireTime=LocalCommit, Priority=FrameworkDomainModel.CopyClosureExpansionCompletedRulePriority;
+		/// Verify that all preconditions hold for preferred
+		/// identifier and extend modifiable conditions as needed.
+		/// Applied after copy closure completion.
+		/// Defers to <see cref="ProcessPreferredIdentifierAdded"/>.
+		/// </summary>
+		private static void PreferredIdentifierRolePlayerChangedClosureRule(RolePlayerChangedEventArgs e)
+		{
+			ProcessPreferredIdentifierAdded((EntityTypeHasPreferredIdentifier)e.ElementLink, true);
 		}
 		#endregion // PreferredIdentifierRolePlayerChangeRule
 		#region ModalityChangeRule
@@ -7903,14 +8102,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void RoleAddRule(ElementAddedEventArgs e)
 		{
-			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+			ConstraintRoleSequenceHasRole link = (ConstraintRoleSequenceHasRole)e.ModelElement;
 			ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
 			MandatoryConstraint mandatoryConstraint;
 			ExclusionConstraint exclusionConstraint;
 			SetComparisonConstraintRoleSequence comparisonConstraintSequence;
 			if (null != (mandatoryConstraint = sequence as MandatoryConstraint))
 			{
-				if (null != (exclusionConstraint = mandatoryConstraint.ExclusiveOrExclusionConstraint))
+				if (null != (exclusionConstraint = mandatoryConstraint.ExclusiveOrExclusionConstraint) &&
+					CopyMergeUtility.GetIntegrationPhase(exclusionConstraint.Store) == CopyClosureIntegrationPhase.None)
 				{
 					// We need to add a new sequence with a single role in it to the corresponding exclusion constraint.
 					// Add rules can fire due to either add or insert commands, so we need to find the
@@ -7941,7 +8141,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			else if (null != (comparisonConstraintSequence = sequence as SetComparisonConstraintRoleSequence) &&
 				null != (exclusionConstraint = comparisonConstraintSequence.ExternalConstraint as ExclusionConstraint) &&
-				null != exclusionConstraint.ExclusiveOrMandatoryConstraint)
+				null != exclusionConstraint.ExclusiveOrMandatoryConstraint &&
+				CopyMergeUtility.GetIntegrationPhase(exclusionConstraint.Store) == CopyClosureIntegrationPhase.None)
 			{
 				// Note that this will not fire from the code earlier in this routine because
 				// the sequence is populated before it is added to the constraint, so we can
@@ -7989,7 +8190,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ExclusionConstraint exclusionConstraint;
 			if (e.SourceDomainRole.Id == SetComparisonConstraintHasRoleSequence.ExternalConstraintDomainRoleId &&
 				null != (exclusionConstraint = e.SourceElement as ExclusionConstraint) &&
-				null != exclusionConstraint.ExclusiveOrMandatoryConstraint)
+				null != exclusionConstraint.ExclusiveOrMandatoryConstraint &&
+				CopyMergeUtility.GetIntegrationPhase(exclusionConstraint.Store) == CopyClosureIntegrationPhase.None)
 			{
 				ThrowDirectExclusionConstraintEditException();
 			}
@@ -8002,8 +8204,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void RoleSequenceAddRule(ElementAddedEventArgs e)
 		{
-			ExclusionConstraint exclusionConstraint = ((SetComparisonConstraintHasRoleSequence)e.ModelElement).ExternalConstraint as ExclusionConstraint;
-			if (null != exclusionConstraint && null != exclusionConstraint.ExclusiveOrMandatoryConstraint)
+			ExclusionConstraint exclusionConstraint;
+			if (null != (exclusionConstraint = ((SetComparisonConstraintHasRoleSequence)e.ModelElement).ExternalConstraint as ExclusionConstraint) &&
+				null != exclusionConstraint.ExclusiveOrMandatoryConstraint &&
+				CopyMergeUtility.GetIntegrationPhase(exclusionConstraint.Store) == CopyClosureIntegrationPhase.None)
 			{
 				ThrowDirectExclusionConstraintEditException();
 			}
@@ -9806,7 +10010,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // IConstraint Implementation
 	}
-	public partial class MandatoryConstraint : IConstraint
+	public partial class MandatoryConstraint : IConstraint, IDefaultNamePattern
 	{
 		#region IConstraint Implementation
 		private static readonly IntersectingConstraintValidation[] myIntersectingValidationInfo = new IntersectingConstraintValidation[]
@@ -9946,6 +10150,31 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // IConstraint Implementation
+		#region IDefaultNamePattern Implementation
+		/// <summary>
+		/// Implements <see cref="IDefaultNamePattern.DefaultNamePattern"/>
+		/// Get an alternate name pattern depending on simple mandatory or
+		/// implied mandatory states.
+		/// </summary>
+		protected new string DefaultNamePattern
+		{
+			get
+			{
+				return IsSimple ?
+					ResourceStrings.SimpleMandatoryConstraint :
+					IsImplied ?
+						ResourceStrings.ImpliedMandatoryConstraint :
+						ResourceStrings.DisjunctiveMandatoryConstraint;
+			}
+		}
+		string IDefaultNamePattern.DefaultNamePattern
+		{
+			get
+			{
+				return DefaultNamePattern;
+			}
+		}
+		#endregion // IDefaultNamePattern Implementation
 	}
 	public partial class SubsetConstraint : IConstraint, IModelErrorOwner
 	{

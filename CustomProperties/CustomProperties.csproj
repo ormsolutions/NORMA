@@ -49,7 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomProperty.CopyMergeClosure.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CustomProperty.CopyMergeClosure.xml</DependentUpon>
+    </Compile>
     <Compile Include="CustomProperty.DeserializationFixupListeners.cs" />
+    <Compile Include="CustomProperty.ElementEquivalence.cs" />
     <Compile Include="CustomPropertyDescriptor.cs" />
     <Compile Include="CustomPropertiesManager.cs">
       <SubType>Form</SubType>
@@ -147,6 +152,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CustomProperty.CopyMergeClosure.xml">
+      <Generator>NUPlixLoader</Generator>
+      <LastGenOutput>CustomProperty.CopyMergeClosure.cs</LastGenOutput>
+    </Content>
     <Content Include="CustomProperty.SerializationExtensions.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>CustomProperty.SerializationExtensions.cs</LastGenOutput>

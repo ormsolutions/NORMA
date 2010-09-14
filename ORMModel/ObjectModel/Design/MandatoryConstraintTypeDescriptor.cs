@@ -22,8 +22,9 @@ using System.Globalization;
 using System.Security.Permissions;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Design;
-using ORMSolutions.ORMArchitect.Framework.Design;
+using ORMSolutions.ORMArchitect.Framework;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Framework.Design;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 {
@@ -59,14 +60,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		/// </summary>
 		public override string GetClassName()
 		{
-			MandatoryConstraint mandatoryConstraint = ModelElement;
-			return mandatoryConstraint.IsSimple ?
-				ResourceStrings.SimpleMandatoryConstraint :
-				mandatoryConstraint.IsImplied ?
-					ResourceStrings.ImpliedMandatoryConstraint :
-					(mandatoryConstraint.ExclusiveOrExclusionConstraint == null) ?
-						ResourceStrings.DisjunctiveMandatoryConstraint :
-						ResourceStrings.ExclusiveOrConstraint;
+			return ((IDefaultNamePattern)ModelElement).DefaultNamePattern;
 		}
 
 		/// <summary>

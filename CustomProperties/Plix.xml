@@ -2,5 +2,6 @@
 <plixLoader:sourceFiles xmlns:plixLoader="http://schemas.neumont.edu/CodeGeneration/PLiXLoader">
 	<plixLoader:sourceFile file="CustomProperty.AttachRules.xml" transformFile="..\ORMModel\Transforms\AttachRulesGenerator.xslt"/>
 	<plixLoader:sourceFile file="CustomProperty.SerializationExtensions.xml" transformFile="..\ORMModel\Transforms\SerializationExtensions.xslt"/>
+	<plixLoader:sourceFile file="CustomProperty.CopyMergeClosure.xml" transformFile="..\ORMModel\Transforms\CopyMergeClosureGenerator.xslt"/>
 	<plixLoader:sourceFile file="Resources\ResourceStringsGenerator.xml" transformFile="..\ORMModel\Transforms\ResourceStringsGenerator.xslt"/>
 </plixLoader:sourceFiles>

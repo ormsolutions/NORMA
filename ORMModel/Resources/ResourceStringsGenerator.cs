@@ -2861,6 +2861,22 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactType.ImpliedInternalUniquenessConstraintError.Text");
 			}
 		}
+		/// <summary>The message displayed if a merge operation is attempted but not all extensions are enabled.</summary>
+		public static string CopyMergeExtensionRequiredMessage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "MessageBox.CopyMergeExtensionRequired.Message");
+			}
+		}
+		/// <summary>The join separator to combine multiple missing extension names in the MessageBox.CopyMergeExtensionRequired.Message.</summary>
+		public static string CopyMergeExtensionRequiredMessageJoinSeparator
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "MessageBox.CopyMergeExtensionRequired.Message.JoinSeparator");
+			}
+		}
 		/// <summary>The message displayed if a selected item cannot be located in the model browser.</summary>
 		public static string ElementNotInModelBrowserMessage
 		{

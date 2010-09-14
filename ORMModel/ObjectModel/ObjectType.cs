@@ -82,7 +82,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	/// </summary>
 	public delegate void SubtypeHierarchyChange(ObjectType objectType);
 	#endregion // SubtypeHierarchyChange delegate definition
-	partial class ObjectType : INamedElementDictionaryChild, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent, IModelErrorOwner, IHasIndirectModelErrorOwner, IModelErrorDisplayContext, IVerbalizeCustomChildren, IHierarchyContextEnabled
+	partial class ObjectType : INamedElementDictionaryChild, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent, IDefaultNamePattern, IModelErrorOwner, IHasIndirectModelErrorOwner, IModelErrorDisplayContext, IVerbalizeCustomChildren, IHierarchyContextEnabled
 	{
 		#region Public token values
 		/// <summary>
@@ -2080,6 +2080,44 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return GetAllowDuplicateNamesContextKey(parentDomainRoleId, childDomainRoleId);
 		}
 		#endregion // INamedElementDictionaryParent implementation
+		#region IDefaultNamePattern Implementation
+		/// <summary>
+		/// Implements <see cref="IDefaultNamePattern.DefaultNamePattern"/>
+		/// The default name depends on the element type.
+		/// </summary>
+		protected string DefaultNamePattern
+		{
+			get
+			{
+				return IsValueType ? ResourceStrings.ValueTypeDefaultNamePattern : ResourceStrings.EntityTypeDefaultNamePattern;
+			}
+		}
+		string IDefaultNamePattern.DefaultNamePattern
+		{
+			get
+			{
+				return DefaultNamePattern;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="IDefaultNamePattern.DefaultNameResettable"/> by
+		/// marking object type names as non-resettable.
+		/// </summary>
+		protected static bool DefaultNameResettable
+		{
+			get
+			{
+				return false;
+			}
+		}
+		bool IDefaultNamePattern.DefaultNameResettable
+		{
+			get
+			{
+				return DefaultNameResettable;
+			}
+		}
+		#endregion // IDefaultNamePattern Implementation
 		#region IsIndependent Validation
 		/// <summary>
 		/// ChangeRule: typeof(MandatoryConstraint)
@@ -4471,8 +4509,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			else if (null != (newRole = element as FactTypeHasRole))
 			{
-				ObjectType player = newRole.Role.Role.RolePlayer;
-				if (player != null)
+				Role role;
+				ObjectType player;
+				if (null != (role = newRole.Role.Role) &&
+					null != (player = role.RolePlayer))
 				{
 					incompatibleNestingAndRoleCombination = player == newRole.FactType.NestingType;
 				}

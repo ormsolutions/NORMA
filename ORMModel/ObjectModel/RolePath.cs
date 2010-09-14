@@ -2686,9 +2686,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		[DelayValidatePriority(-1)] // Run before the owner validation
 		private static void DelayValidateLeadRolePath(ModelElement element)
 		{
-			if (!element.IsDeleted)
+			RolePathOwner pathOwner;
+			if (!element.IsDeleted &&
+				null != (pathOwner = ((LeadRolePath)element).PathOwner))
 			{
-				FrameworkDomainModel.DelayValidateElement(((LeadRolePath)element).PathOwner, DelayValidateLeadRolePaths);
+				FrameworkDomainModel.DelayValidateElement(pathOwner, DelayValidateLeadRolePaths);
 			}
 		}
 		/// <summary>
@@ -4869,7 +4871,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	{
 		#region Base overrides
 		/// <summary>
-		/// Recursive find the path root
+		/// Recursively find the path root
 		/// </summary>
 		public override LeadRolePath RootRolePath
 		{

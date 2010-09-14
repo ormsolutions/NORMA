@@ -406,6 +406,8 @@
 	<ResourceString name="ModelErrorFrequencyConstraintNonRestrictiveRangeError" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintNonRestrictiveRangeError.Text"/>
 	<ResourceString name="ModelVerbalizationWindowTitle" model="Model" resourceName="ModelVerbalization.WindowTitle"/>
 	<ResourceString name="ModelErrorImpliedInternalUniquenessConstraintError" model="Model" resourceName="ModelError.FactType.ImpliedInternalUniquenessConstraintError.Text"/>
+	<ResourceString name="CopyMergeExtensionRequiredMessage" model="Diagram" resourceName="MessageBox.CopyMergeExtensionRequired.Message"/>
+	<ResourceString name="CopyMergeExtensionRequiredMessageJoinSeparator" model="Diagram" resourceName="MessageBox.CopyMergeExtensionRequired.Message.JoinSeparator"/>
 	<ResourceString name="ElementNotInModelBrowserMessage" model="Diagram" resourceName="MessageBox.ElementNotInModelBrowser.Message"/>
 	<ResourceString name="ImpliedInternalConstraintFixMessage" model="Diagram" resourceName="MessageBox.ImpliedInternalUniquenessConstraint.Message"/>
 	<ResourceString name="FinalShapeDeletionMessage" model="Diagram" resourceName="MessageBox.FinalShapeDeletion.Message"/>

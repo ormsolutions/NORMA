@@ -241,6 +241,11 @@
 							<xs:union memberTypes="xs:int">
 								<xs:simpleType>
 									<xs:restriction base="xs:token">
+										<xs:enumeration value="CopyClosureExpansionCompletedRulePriority">
+											<xs:annotation>
+												<xs:documentation>The rule is run as soon as a copy closure is fully expanded. There is plenty of space between this value and BeforeDelayValidateRulePriority for small adjustements.</xs:documentation>
+											</xs:annotation>
+										</xs:enumeration>
 										<xs:enumeration value="BeforeDelayValidateRulePriority">
 											<xs:annotation>
 												<xs:documentation>The rule is run before delay validation. There is plenty of space between this value and DelayValidateRulePriority for small adjustments.</xs:documentation>

@@ -370,8 +370,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void FactTypeHasRoleAddedRule(ElementAddedEventArgs e)
 		{
-			FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
-			ValidateReadingOrdersRoleCollection(link.FactType, link.Role);
+			FactTypeHasRole link = (FactTypeHasRole)e.ModelElement;
+			if (CopyMergeUtility.GetIntegrationPhase(link.Store) != CopyClosureIntegrationPhase.Integrating)
+			{
+				// UNDONE: COPYMERGE Do we need to run a similar rule on integration complete
+				// to handle merge cases where roles are added to a model with additional
+				// readings on the merged fact type.
+				ValidateReadingOrdersRoleCollection(link.FactType, link.Role);
+			}
 		}
 		#endregion // FactTypeHasRoleAddedRule
 		#region IRedirectVerbalization Implementation

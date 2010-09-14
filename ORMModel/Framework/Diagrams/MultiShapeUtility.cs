@@ -214,6 +214,10 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 				if ((newChildShape = CreateChildShape(existingParentShape, childElement)) != null)
 				{
 					ConfigureAndPlaceChildShape(existingParentShape, newChildShape, childElement, true);
+					if (newChildShape.IsDeleted)
+					{
+						newChildShape = null;
+					}
 				}
 				return newChildShape;
 			}

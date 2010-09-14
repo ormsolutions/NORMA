@@ -762,7 +762,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape.ConnectionPropertyChangeRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDataType), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDataType), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit)]
 		private sealed class DataTypeAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -774,7 +774,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// Provide the following method in class: 
 			/// ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape
 			/// /// <summary>
-			/// /// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDataType)
+			/// /// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDataType), FireTime=LocalCommit
 			/// /// </summary>
 			/// private static void DataTypeAddedRule(ElementAddedEventArgs e)
 			/// {
@@ -866,7 +866,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape.ObjectTypeShapeChangeRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit)]
 		private sealed class PreferredIdentifierAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -878,7 +878,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// Provide the following method in class: 
 			/// ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape
 			/// /// <summary>
-			/// /// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier)
+			/// /// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier), FireTime=LocalCommit
 			/// /// </summary>
 			/// private static void PreferredIdentifierAddedRule(ElementAddedEventArgs e)
 			/// {
@@ -944,7 +944,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape.PreferredIdentifierLengthenedRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit)]
 		private sealed class PreferredIdentifierRolePlayerChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -956,7 +956,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// Provide the following method in class: 
 			/// ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape
 			/// /// <summary>
-			/// /// RolePlayerChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier)
+			/// /// RolePlayerChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier), FireTime=LocalCommit
 			/// /// </summary>
 			/// private static void PreferredIdentifierRolePlayerChangeRule(RolePlayerChangedEventArgs e)
 			/// {
@@ -1022,7 +1022,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape.PreferredIdentifierShortenedRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit)]
 		private sealed class RolePlayerAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -1034,7 +1034,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// Provide the following method in class: 
 			/// ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape
 			/// /// <summary>
-			/// /// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole)
+			/// /// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole), FireTime=LocalCommit
 			/// /// </summary>
 			/// private static void RolePlayerAddedRule(ElementAddedEventArgs e)
 			/// {
@@ -1074,7 +1074,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape.RolePlayerDeleteRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit)]
 		private sealed class RolePlayerRolePlayerChangedRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -1086,7 +1086,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// Provide the following method in class: 
 			/// ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape
 			/// /// <summary>
-			/// /// RolePlayerChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole)
+			/// /// RolePlayerChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole), FireTime=LocalCommit
 			/// /// </summary>
 			/// private static void RolePlayerRolePlayerChangedRule(RolePlayerChangedEventArgs e)
 			/// {

@@ -139,7 +139,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 		}
 	}
 	#endregion // DelayValidatePriorityAttribute class
-	partial class FrameworkDomainModel
+	partial class FrameworkDomainModel : IPersistentSessionKeys
 	{
 		#region InitializingToolboxItems property
 		private static bool myInitializingToolboxItems;
@@ -184,6 +184,16 @@ namespace ORMSolutions.ORMArchitect.Framework
 		/// for additional information.
 		/// </summary>
 		public const int BeforeDelayValidateRulePriority = DelayValidateRulePriority - 500;
+		/// <summary>
+		/// A rule priority for <see cref="TimeToFire.TopLevelCommit"/> and <see cref="TimeToFire.LocalCommit"/>
+		/// rules to run when copy closure expansion is complete. At this point, closure elements have been
+		/// fully expanded, so elements are no longer in a partial state. This rule priority runs prior to
+		/// <see cref="BeforeDelayValidateRulePriority"/> and <see cref="DelayValidateRulePriority"/>. Inline
+		/// rules that assume full state before validation should create multiple rules at different priorities
+		/// and check the <see cref="CopyMergeUtility.GetIntegrationPhase"/> to determine if the rule should
+		/// be processed.
+		/// </summary>
+		public const int CopyClosureExpansionCompletedRulePriority = BeforeDelayValidateRulePriority - 500;
 		private static readonly object DelayedValidationContextKey = new object();
 		/// <summary>
 		/// Class to delay validate rules when a transaction is committing.
@@ -198,7 +208,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 			ModelElement element = e.ModelElement;
 			Store store = element.Store;
 			element.Delete();
-			Dictionary<object, object> contextInfo = store.TransactionManager.CurrentTransaction.Context.ContextInfo;
+			Dictionary<object, object> contextInfo = GetContextInfo(store.TransactionManager.CurrentTransaction);
 			object validatorsObject;
 			if (contextInfo.TryGetValue(DelayedValidationContextKey, out validatorsObject)) // Let's do a while in case a new validator is added by the other validators
 			{
@@ -648,7 +658,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 			}
 #endif // DEBUG
 
-			Dictionary<object, object> contextDictionary = store.TransactionManager.CurrentTransaction.Context.ContextInfo;
+			Dictionary<object, object> contextDictionary = GetContextInfo(store.TransactionManager.CurrentTransaction);
 			object dictionaryObject;
 			Dictionary<ElementValidator, object> dictionary;
 			ElementValidator key = new ElementValidator(element, validation);
@@ -677,6 +687,24 @@ namespace ORMSolutions.ORMArchitect.Framework
 			}
 			dictionary[key] = null;
 			return true;
+		}
+		/// <summary>
+		/// Get the appropriate context dictionary to use for these objects.
+		/// </summary>
+		/// <param name="currentTransaction">The current <see cref="Transaction"/></param>
+		/// <returns>The context dictionary of this transaction unless the parent transaction
+		/// forces all rules to commit time, in which case we use the context from the first
+		/// ancestor transaction without a parent that forces rules to commit time.</returns>
+		private static Dictionary<object, object> GetContextInfo(Transaction currentTransaction)
+		{
+			Transaction parentTransaction = currentTransaction.Parent;;
+			while (parentTransaction != null &&
+				parentTransaction.ForceAllRulesToCommitTime)
+			{
+				currentTransaction = parentTransaction;
+				parentTransaction = currentTransaction.Parent;
+			}
+			return currentTransaction.Context.ContextInfo;
 		}
 		#endregion // Delayed Model Validation
 		#region TransactionRulesFixupHack class
@@ -787,5 +815,20 @@ namespace ORMSolutions.ORMArchitect.Framework
 			#endregion // RulePriorityComparer class
 		}
 		#endregion // TransactionRulesFixupHack class
+		#region IPersistentSessionKeys Implementation
+		/// <summary>
+		/// Implements <see cref="IPersistentSessionKeys.GetPersistentSessionKeys"/>
+		/// Returns <see cref="CopyMergeUtility.IgnoredSourceExtensionsKey"/>
+		/// </summary>
+		/// <returns></returns>
+		protected IEnumerable<object> GetPersistentSessionKeys()
+		{
+			yield return CopyMergeUtility.IgnoredSourceExtensionsKey;
+		}
+		IEnumerable<object> IPersistentSessionKeys.GetPersistentSessionKeys()
+		{
+			return GetPersistentSessionKeys();
+		}
+		#endregion // IPersistentSessionKeys Implementation
 	}
 }

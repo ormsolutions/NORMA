@@ -11,4 +11,5 @@
 	<plixLoader:sourceFile file="Framework\Shell\DiagramDisplay.SerializationExtensions.xml" transformFile="Transforms\SerializationExtensions.xslt"/>
 	<plixLoader:sourceFile file="Framework\Resources\ResourceStringsGenerator.xml" transformFile="Transforms\ResourceStringsGenerator.xslt"/>
 	<plixLoader:sourceFile file="Resources\ResourceStringsGenerator.xml" transformFile="Transforms\ResourceStringsGenerator.xslt"/>
+	<plixLoader:sourceFile file="ObjectModel\ORMCore.CopyMergeClosure.xml" transformFile="Transforms\CopyMergeClosureGenerator.xslt"/>
 </plixLoader:sourceFiles>

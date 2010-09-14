@@ -634,6 +634,33 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 			}
 		}
 		/// <summary>
+		/// Combine extension models already in a <see cref="Store"/> with additional
+		/// extension model <see cref="ExtensionModelBinding">bindings</see>.
+		/// </summary>
+		/// <param name="store">The <see cref="Store"/> to get existing extensions from.</param>
+		/// <param name="bindings">A dictionary starting with additional extensions. This is extended
+		/// to include additional extensions loaded in the store.</param>
+		public void AddRequiredExtensions(Store store, ref Dictionary<string, ExtensionModelBinding> bindings)
+		{
+			VerifyRequiredExtensions(ref bindings);
+			IDictionary<Guid, string> idToExtensionNameMap = myExtensionIdToExtensionNameMap;
+			IDictionary<Guid, Type> standardModelsMap = myStandardDomainModelsMap;
+			IDictionary<string, ExtensionModelBinding> availableExtensions = myAvailableExtensions;
+			foreach (DomainModelInfo modelInfo in store.DomainDataDirectory.DomainModels)
+			{
+				Guid domainModelId = modelInfo.Id;
+				string extensionNamespace;
+				ExtensionModelBinding binding;
+				if (!standardModelsMap.ContainsKey(domainModelId) &&
+					idToExtensionNameMap.TryGetValue(domainModelId, out extensionNamespace) &&
+					!bindings.ContainsKey(extensionNamespace) &&
+					availableExtensions.TryGetValue(extensionNamespace, out binding))
+				{
+					bindings.Add(extensionNamespace, binding);
+				}
+			}
+		}
+		/// <summary>
 		/// Recursively add additional extension models. Helper function for <see cref="VerifyRequiredExtensions"/>
 		/// </summary>
 		private static void VerifyExtensions(string extensionNamespace, IDictionary<string, ExtensionModelBinding> targetExtensions, IDictionary<string, ExtensionModelBinding> availableExtensions, IDictionary<Guid, string> extensionModelMap, IDictionary<Guid, Type> standardModelMap)

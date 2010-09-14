@@ -742,6 +742,9 @@
 																<xsl:when test="$standardPriority">
 																	<xsl:variable name="standardPriorityFragment">
 																		<xsl:choose>
+																			<xsl:when test="$standardPriority='CopyClosureExpansionCompletedRulePriority'">
+																				<plx:callStatic name="CopyClosureExpansionCompletedRulePriority" dataTypeName="FrameworkDomainModel" dataTypeQualifier="ORMSolutions.ORMArchitect.Framework" type="field"/>
+																			</xsl:when>
 																			<xsl:when test="$standardPriority='BeforeDelayValidateRulePriority'">
 																				<plx:callStatic name="BeforeDelayValidateRulePriority" dataTypeName="FrameworkDomainModel" dataTypeQualifier="ORMSolutions.ORMArchitect.Framework" type="field"/>
 																			</xsl:when>
@@ -898,6 +901,9 @@
 																			<xsl:when test="$standardPriority">
 																				<xsl:variable name="standardPriorityFragment">
 																					<xsl:choose>
+																						<xsl:when test="$standardPriority='CopyClosureExpansionCompletedRulePriority'">
+																							<plx:callStatic name="CopyClosureExpansionCompletedRulePriority" dataTypeName="FrameworkDomainModel" type="field"/>
+																						</xsl:when>
 																						<xsl:when test="$standardPriority='BeforeDelayValidateRulePriority'">
 																							<plx:callStatic name="BeforeDelayValidateRulePriority" dataTypeName="FrameworkDomainModel" type="field"/>
 																						</xsl:when>

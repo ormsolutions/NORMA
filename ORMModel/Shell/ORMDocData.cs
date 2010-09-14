@@ -171,6 +171,23 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		public void ReloadFromStream(Stream newStream, Stream fallbackStream)
 		{
 			myFileStream = newStream;
+			Dictionary<object, object> sessionKeys = null;
+			Store store = Store;
+			if (store != null)
+			{
+				Dictionary<object, object> bag = store.PropertyBag;
+				foreach (IPersistentSessionKeys persistKeys in Utility.GetTypedDomainModels<IPersistentSessionKeys>(store.DomainModels))
+				{
+					foreach (object key in persistKeys.GetPersistentSessionKeys())
+					{
+						object keepValue;
+						if (bag.TryGetValue(key, out keepValue))
+						{
+							(sessionKeys ?? (sessionKeys = new Dictionary<object, object>()))[key] = keepValue;
+						}
+					}
+				}
+			}
 			// This calls into LoadDocData(string, bool) after doing necessary cleanup
 			IServiceProvider serviceProvider;
 			if (fallbackStream == null)
@@ -232,6 +249,17 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				null != (shell = serviceProvider.GetService(typeof(IVsUIShell)) as IVsUIShell))
 			{
 				shell.UpdateDocDataIsDirtyFeedback(cookie, 1);
+			}
+
+			// Restore session keys from the previous store
+			if (sessionKeys != null &&
+				null != (store = Utility.ValidateStore(Store)))
+			{
+				Dictionary<object, object> bag = store.PropertyBag;
+				foreach (KeyValuePair<object, object> pair in sessionKeys)
+				{
+					bag[pair.Key] = pair.Value;
+				}
 			}
 		}
 		/// <summary>
@@ -385,7 +413,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 
 					try
 					{
-						 retVal = base.LoadDocData(fileName, isReload);
+						retVal = base.LoadDocData(fileName, isReload);
 					}
 					catch (TypeInitializationException ex)
 					{

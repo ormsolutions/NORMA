@@ -340,7 +340,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // Helper Methods
 	}
-	partial class ValueConstraint : IModelErrorOwner
+	partial class ValueConstraint : IModelErrorOwner, IDefaultNamePattern
 	{
 		#region CustomStorage Handling
 		private void SetDefinitionTextValue(string newValue)
@@ -463,6 +463,44 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			DelayValidateErrors();
 		}
 		#endregion // IModelErrorOwner implementation
+		#region IDefaultNamePattern Implementation
+		/// <summary>
+		/// Implements <see cref="IDefaultNamePattern.DefaultNamePattern"/>
+		/// Get the standard (empty) default name pattern
+		/// </summary>
+		protected static string DefaultNamePattern
+		{
+			get
+			{
+				return null;
+			}
+		}
+		string IDefaultNamePattern.DefaultNamePattern
+		{
+			get
+			{
+				return DefaultNamePattern;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="IDefaultNamePattern.DefaultNameResettable"/> by
+		/// marking constraint names as resettable.
+		/// </summary>
+		protected static bool DefaultNameResettable
+		{
+			get
+			{
+				return true;
+			}
+		}
+		bool IDefaultNamePattern.DefaultNameResettable
+		{
+			get
+			{
+				return DefaultNameResettable;
+			}
+		}
+		#endregion // IDefaultNamePattern Implementation
 		#region ValueMatch Validation
 		private static void VerifyValueMatch(ValueRange range, DataType dataType, INotifyElementAdded notifyAdded)
 		{
@@ -1049,7 +1087,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					null != (oppositeRoleBase = (null != (proxyRole = originalRole.Proxy)) ? proxyRole.OppositeRole : originalRole.OppositeRole) &&
 					null != (oppositeRole = oppositeRoleBase.Role))
 				{
-					Debug.Assert((proxyRole != null) ? (oppositeRole.RolePlayer == originalRole.FactType.NestingType) : oppositeRole.RolePlayer == identifiedObject);
+					// This assert can fail incorrectly during element merge
+					// Debug.Assert((proxyRole != null) ? (oppositeRole.RolePlayer == originalRole.FactType.NestingType) : oppositeRole.RolePlayer == identifiedObject);
 					LinkedElementCollection<Role> playedRoles = identifiedObject.PlayedRoleCollection;
 					int playedRolesCount = playedRoles.Count;
 					for (int i = 0; i < playedRolesCount; ++i)
@@ -1640,6 +1679,62 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						ValueRange.ParseValueRangeText(this, null, rangeData);
 					}
 					match = match.NextMatch();
+				}
+			}
+		}
+		/// <summary>
+		/// Helper method for matching value ranges. Called after an
+		/// <see cref="IElementEquivalence"/> implementation has determined
+		/// that this <see cref="ValueConstraint"/> and <paramref name="otherValueConstraint"/>
+		/// correspond to the same instance.
+		/// </summary>
+		/// <param name="otherValueConstraint">The equivalent value constraint.</param>
+		/// <param name="elementTracker">The <see cref="IEquivalentElementTracker"/> used
+		/// to equate value ranges.</param>
+		protected void MatchValueRanges(ValueConstraint otherValueConstraint, IEquivalentElementTracker elementTracker)
+		{
+			LinkedElementCollection<ValueRange> ranges = ValueRangeCollection;
+			int rangeCount = ranges.Count;
+			if (rangeCount != 0)
+			{
+				LinkedElementCollection<ValueRange> otherRanges = otherValueConstraint.ValueRangeCollection;
+				int otherRangeCount = otherRanges.Count;
+				if (otherRangeCount != 0)
+				{
+					BitTracker otherMatches = new BitTracker(otherRangeCount);
+					DataType dataType = DataType;
+					bool canCompare = dataType.CanCompare;
+					for (int i = 0; i < rangeCount; ++i)
+					{
+						ValueRange range = ranges[i];
+						for (int j = 0; j < otherRangeCount; ++j)
+						{
+							if (!otherMatches[j])
+							{
+								ValueRange otherRange = otherRanges[j];
+								// If the data types for the two elements are different, then
+								// there is very little we can do at this point because we don't
+								// know what the final data type resolution will be after merge
+								// integration is complete. We use the current data type to
+								// compare values, and leave it up to rules to sort out the
+								// remaining issues after data type information is complete.
+								string normalizedValue;
+								string otherNormalizedValue;
+								if (dataType.ParseNormalizeValue(range.MinValue, range.InvariantMinValue, out normalizedValue) &&
+									dataType.ParseNormalizeValue(otherRange.MinValue, otherRange.InvariantMinValue, out otherNormalizedValue) &&
+									(canCompare ? (dataType.Compare(normalizedValue, otherNormalizedValue) == 0) : (normalizedValue == otherNormalizedValue)) &&
+									dataType.ParseNormalizeValue(range.MaxValue, range.InvariantMaxValue, out normalizedValue) &&
+									dataType.ParseNormalizeValue(otherRange.MaxValue, otherRange.InvariantMaxValue, out otherNormalizedValue) &&
+									(canCompare ? (dataType.Compare(normalizedValue, otherNormalizedValue) == 0) : (normalizedValue == otherNormalizedValue)))
+								{
+									// Ignore endpoint inclusion properties for merging, consider these sufficient equivalent ranges to match.
+									elementTracker.AddEquivalentElement(range, otherRange);
+									otherMatches[j] = true;
+									break;
+								}
+							}
+						}
+					}
 				}
 			}
 		}

@@ -32,6 +32,8 @@ using Microsoft.VisualStudio.Shell.Interop;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using ORMSolutions.ORMArchitect.Core.ObjectModel.Design;
 using ORMSolutions.ORMArchitect.Core.ShapeModel;
+using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Framework.Shell;
 
 namespace ORMSolutions.ORMArchitect.Core.Shell
 {
@@ -616,51 +618,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// <param name="changeCallback">Delegate callback</param>
 		public static void NotifySettingsChange(IServiceProvider serviceProvider, NotifyDocument changeCallback)
 		{
-			// Walk all the documents and invalidate ORM diagrams if the options have changed
-			IVsRunningDocumentTable docTable = (IVsRunningDocumentTable)serviceProvider.GetService(typeof(IVsRunningDocumentTable));
-			IEnumRunningDocuments docIter;
-			ErrorHandler.ThrowOnFailure(docTable.GetRunningDocumentsEnum(out docIter));
-			int hrIter;
-			uint[] currentDocs = new uint[1];
-			uint fetched = 0;
-			do
+			// Fire the change callback for all loaded ORM diagrams
+			foreach (ORMDesignerDocData docData in FrameworkShellUtility.GetLoadedDocuments<ORMDesignerDocData>(serviceProvider))
 			{
-				ErrorHandler.ThrowOnFailure(hrIter = docIter.Next(1, currentDocs, out fetched));
-				if (hrIter == 0)
-				{
-					uint grfRDTFlags;
-					uint dwReadLocks;
-					uint dwEditLocks;
-					string bstrMkDocument;
-					IVsHierarchy pHier;
-					uint itemId;
-					IntPtr punkDocData = IntPtr.Zero;
-					ErrorHandler.ThrowOnFailure(docTable.GetDocumentInfo(
-						currentDocs[0],
-						out grfRDTFlags,
-						out dwReadLocks,
-						out dwEditLocks,
-						out bstrMkDocument,
-						out pHier,
-						out itemId,
-						out punkDocData));
-					try
-					{
-						ORMDesignerDocData docData = Marshal.GetObjectForIUnknown(punkDocData) as ORMDesignerDocData;
-						if (docData != null)
-						{
-							changeCallback(docData);
-						}
-					}
-					finally
-					{
-						if (punkDocData != IntPtr.Zero)
-						{
-							Marshal.Release(punkDocData);
-						}
-					}
-				}
-			} while (fetched != 0);
+				changeCallback(docData);
+			}
 		}
 		#endregion Change Notification Functions
 		#region Accessor properties

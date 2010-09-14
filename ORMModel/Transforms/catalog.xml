@@ -4,4 +4,5 @@
 	<Schema targetNamespace="http://schemas.neumont.edu/ORM/SDK/ResourceStringsGenerator" href="ResourceStringsGenerator.xsd"/>
 	<Schema targetNamespace="http://schemas.neumont.edu/ORM/SDK/SerializationExtensions" href="SerializationExtensions.xsd"/>
 	<Schema targetNamespace="http://schemas.neumont.edu/ORM/SDK/SurveyQuestionProvider" href="SurveyQuestionProvider.xsd"/>
+	<Schema targetNamespace="http://schemas.ormsolutions.com/ORM/SDK/CopyMergeClosureGenerator" href="CopyMergeClosureGenerator.xsd"/>
 </SchemaCatalog>

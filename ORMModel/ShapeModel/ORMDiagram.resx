@@ -511,6 +511,14 @@
     <value xml:space="preserve">Interpret Fact Editor Line</value>
     <comment xml:space="preserve">The transaction name used for changes made in response to committing a modified line in the fact editor. The text appears in the undo dropdown in the VS IDE.</comment>
   </data>
+  <data name="MessageBox.CopyMergeExtensionRequired.Message">
+    <value xml:space="preserve">The completed copy/merge operation ignored elements from extensions not enabled in this model.&#xd;&#xa;&#xd;&#xa;Would you like to enable the following extensions?&#xd;&#xa;&#xd;&#xa; — {0}&#xd;&#xa;&#xd;&#xa;Yes: Undo the operation and load the extensions. You will need to manually repeat the merge operation after the document reloads.&#xd;&#xa;No: Do not load the extensions and do not ask again for these extensions in this document in this session of NORMA.&#xd;&#xa;Cancel: Keep the current state and continue to ask this question.</value>
+    <comment xml:space="preserve">The message displayed if a merge operation is attempted but not all extensions are enabled.</comment>
+  </data>
+  <data name="MessageBox.CopyMergeExtensionRequired.Message.JoinSeparator">
+    <value xml:space="preserve">&#xd;&#xa; — </value>
+    <comment xml:space="preserve">The join separator to combine multiple missing extension names in the MessageBox.CopyMergeExtensionRequired.Message.</comment>
+  </data>
   <data name="MessageBox.ElementNotInModelBrowser.Message">
     <value xml:space="preserve">The selected item is not represented in the ORM Model Browser.</value>
     <comment xml:space="preserve">The message displayed if a selected item cannot be located in the model browser.</comment>

@@ -19,6 +19,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
@@ -416,12 +417,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// instead of throwing an exception.
 		/// </summary>
 		public static readonly object AllowDuplicateNamesKey = new object();
-		/// <summary>
-		/// A key to set in the top-level transaction context to indicate that
-		/// we should generate duplicate name errors for like-named objects instead of
-		/// throwing an exception.
-		/// </summary>
-		public static readonly object AllowDuplicateConstraintNamesKey = new object();
 		#endregion // Public token values
 		#region INamedElementDictionaryParent implementation
 		[NonSerialized]
@@ -817,15 +812,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#endregion // Constructors
 			#region Base overrides
 			/// <summary>
-			/// Provide different base names for entity types and value types
-			/// </summary>
-			/// <param name="element">The element to test</param>
-			/// <returns>A base name string pattern</returns>
-			protected override string GetRootNamePattern(ModelElement element)
-			{
-				return ((ObjectType)element).IsValueType ? ResourceStrings.ValueTypeDefaultNamePattern : ResourceStrings.EntityTypeDefaultNamePattern;
-			}
-			/// <summary>
 			/// Return a default name and allow duplicates for auto-generated names on objectifying types
 			/// </summary>
 			protected override string GetDefaultName(ModelElement element)
@@ -1065,37 +1051,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			#endregion // Constructors
 			#region Base overrides
-			/// <summary>
-			/// Provide a localized base name pattern for a new Constraint
-			/// </summary>
-			/// <param name="element">Ignored. Should be a FactType</param>
-			/// <returns>A base name string pattern</returns>
-			protected override string GetRootNamePattern(ModelElement element)
-			{
-				Debug.Assert(element is SetComparisonConstraint || element is SetConstraint || element is ValueConstraint);
-				MandatoryConstraint mandatoryConstraint;
-				if (null != (mandatoryConstraint = element as MandatoryConstraint))
-				{
-					if (mandatoryConstraint.ExclusiveOrExclusionConstraint != null)
-					{
-						// Use the normal class name, not the one modified for the property grid.
-						// Note that we let the normal one (ExclusiveOrConstraint) go through
-						// for the exclusion constraint.
-						return ResourceStrings.DisjunctiveMandatoryConstraint;
-					}
-				}
-				// UNDONE: How explicit do we want to be on constraint naming? Note that if this is changed, then
-				// we also need to update the ValueRange.DataTypeDeleting rule, which assumes the base implementation.
-				return base.GetRootNamePattern(element);
-			}
-			/// <summary>
-			/// Duplicate automatically generated constraint names should regenerate on load.
-			/// Caters for common merging scenario.
-			/// </summary>
-			protected override bool ShouldResetDuplicateName(ModelElement element, string elementName)
-			{
-				return IsDecoratedRootName(element, elementName);
-			}
 			/// <summary>
 			/// Raise an exception with text specific to a name in a model
 			/// </summary>

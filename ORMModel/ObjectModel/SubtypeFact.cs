@@ -189,19 +189,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void InitializeSubtypeAddRule(ElementAddedEventArgs e)
 		{
-			FactType fact = e.ModelElement as FactType;
-			Store store = fact.Store;
+			FactType factType = (FactType)e.ModelElement;
+			Store store = factType.Store;
+			if (CopyMergeUtility.GetIntegrationPhase(store) == CopyClosureIntegrationPhase.None)
+			{
+				// Establish role collecton
+				LinkedElementCollection<RoleBase> roles = factType.RoleCollection;
+				SubtypeMetaRole subTypeMetaRole = new SubtypeMetaRole(store);
+				SupertypeMetaRole superTypeMetaRole = new SupertypeMetaRole(store);
+				roles.Add(subTypeMetaRole);
+				roles.Add(superTypeMetaRole);
 
-			// Establish role collecton
-			LinkedElementCollection<RoleBase> roles = fact.RoleCollection;
-			SubtypeMetaRole subTypeMetaRole = new SubtypeMetaRole(store);
-			SupertypeMetaRole superTypeMetaRole = new SupertypeMetaRole(store);
-			roles.Add(subTypeMetaRole);
-			roles.Add(superTypeMetaRole);
-
-			// Add injection constraints
-			superTypeMetaRole.Multiplicity = RoleMultiplicity.ExactlyOne;
-			subTypeMetaRole.Multiplicity = RoleMultiplicity.ZeroToOne;
+				// Add injection constraints
+				superTypeMetaRole.Multiplicity = RoleMultiplicity.ExactlyOne;
+				subTypeMetaRole.Multiplicity = RoleMultiplicity.ZeroToOne;
+			}
 		}
 		#endregion Initialize pattern rules
 		#region Role and constraint pattern locking rules
@@ -232,18 +234,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void LimitSubtypeConstraintsAddRule(ElementAddedEventArgs e)
 		{
-			FactSetConstraint link = e.ModelElement as FactSetConstraint;
-			if (link.SetConstraint.Constraint.ConstraintIsInternal)
+			FactSetConstraint link = (FactSetConstraint)e.ModelElement;
+			SubtypeFact subtypeFact;
+			if (link.SetConstraint.Constraint.ConstraintIsInternal &&
+				null != (subtypeFact = link.FactType as SubtypeFact) &&
+				subtypeFact.Model != null &&
+				CopyMergeUtility.GetIntegrationPhase(link.Store) == CopyClosureIntegrationPhase.None)
 			{
-				SubtypeFact subtypeFact = link.FactType as SubtypeFact;
-				if (subtypeFact != null)
-				{
-					if (subtypeFact.Model != null)
-					{
-						// Allow before adding to model, not afterwards
-						ThrowPatternModifiedException();
-					}
-				}
+				// Allow before adding to model, not afterwards,
+				// unless there is an active copy operation.
+				ThrowPatternModifiedException();
 			}
 		}
 		/// <summary>
@@ -253,18 +253,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void LimitSubtypeConstraintsDeleteRule(ElementDeletedEventArgs e)
 		{
-			FactSetConstraint link = e.ModelElement as FactSetConstraint;
-			if (link.SetConstraint.Constraint.ConstraintIsInternal)
+			FactSetConstraint link = (FactSetConstraint)e.ModelElement;
+			SubtypeFact subtypeFact;
+			if (link.SetConstraint.Constraint.ConstraintIsInternal &&
+				null != (subtypeFact = link.FactType as SubtypeFact) &&
+				!subtypeFact.IsDeleted &&
+				subtypeFact.Model != null)
 			{
-				SubtypeFact subtypeFact = link.FactType as SubtypeFact;
-				if (subtypeFact != null && !subtypeFact.IsDeleted)
-				{
-					if (subtypeFact.Model != null)
-					{
-						// Allow before adding to model, not afterwards
-						ThrowPatternModifiedException();
-					}
-				}
+				// Allow before adding to model, not afterwards
+				ThrowPatternModifiedException();
 			}
 		}
 		/// <summary>
@@ -274,11 +271,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void LimitSubtypeRolesAddRule(ElementAddedEventArgs e)
 		{
-			FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
-			SubtypeFact subtypeFact = link.FactType as SubtypeFact;
-			if (subtypeFact != null)
+			FactTypeHasRole link = (FactTypeHasRole)e.ModelElement;
+			SubtypeFact subtypeFact;
+			if (null != (subtypeFact = link.FactType as SubtypeFact))
 			{
-				if (subtypeFact.Model != null)
+				if (subtypeFact.Model != null &&
+					CopyMergeUtility.GetIntegrationPhase(link.Store) == CopyClosureIntegrationPhase.None)
 				{
 					// Allow before adding to model, not afterwards
 					ThrowPatternModifiedException();
@@ -300,15 +298,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void LimitSubtypeRolesDeleteRule(ElementDeletedEventArgs e)
 		{
-			FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
+			FactTypeHasRole link = (FactTypeHasRole)e.ModelElement;
 			SubtypeFact subtypeFact = link.FactType as SubtypeFact;
-			if (subtypeFact != null && !subtypeFact.IsDeleted)
+			if (null != (subtypeFact = link.FactType as SubtypeFact) &&
+				!subtypeFact.IsDeleted &&
+				subtypeFact.Model != null)
 			{
-				if (subtypeFact.Model != null)
-				{
-					// Allow before adding to model, not afterwards
-					ThrowPatternModifiedException();
-				}
+				// Allow before adding to model, not afterwards
+				ThrowPatternModifiedException();
 			}
 		}
 		/// <summary>
@@ -336,8 +333,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					constraint = ic.Constraint;
 					if (constraint.ConstraintIsInternal)
 					{
-						SubtypeFact subtypeFact = untypedRole.FactType as SubtypeFact;
-						if (subtypeFact != null && subtypeFact.Model != null)
+						SubtypeFact subtypeFact;
+						if (null != (subtypeFact = untypedRole.FactType as SubtypeFact) &&
+							subtypeFact.Model != null &&
+							CopyMergeUtility.GetIntegrationPhase(subtypeFact.Store) == CopyClosureIntegrationPhase.None)
 						{
 							// Allow before adding to model, not afterwards
 							ThrowPatternModifiedException();
@@ -522,13 +521,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				1 == (facts = ic.FactTypeCollection).Count)
 			{
 				SubtypeFact subtypeFact = facts[0] as SubtypeFact;
-				if (subtypeFact != null && !subtypeFact.IsDeleted)
+				if (null != (subtypeFact = facts[0] as SubtypeFact) &&
+					!subtypeFact.IsDeleted &&
+					subtypeFact.Model != null)
 				{
-					if (subtypeFact.Model != null)
-					{
-						// Allow before adding to model, not afterwards
-						ThrowPatternModifiedException();
-					}
+					// Allow before adding to model, not afterwards
+					ThrowPatternModifiedException();
 				}
 			}
 		}

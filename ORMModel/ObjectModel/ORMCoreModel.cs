@@ -32,7 +32,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	[VerbalizationTargetProvider("VerbalizationTargets")]
 	[VerbalizationSnippetsProvider("VerbalizationSnippets")]
-	public partial class ORMCoreDomainModel : IModelingEventSubscriber, ISurveyNodeProvider, INotifyCultureChange
+	public partial class ORMCoreDomainModel : IModelingEventSubscriber, ISurveyNodeProvider, INotifyCultureChange, ICopyClosureIntegrationListener
 	{
 		#region Static Survey Data
 		private static readonly Type[] SurveyErrorQuestionTypes = new Type[] { typeof(SurveyErrorState) };
@@ -578,12 +578,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							eventNotify.ElementAdded(constraint, factTypes[0]);
 						}
 						return;
-					case ConstraintType.DisjunctiveMandatory:
-						if ((constraint as MandatoryConstraint).ExclusiveOrExclusionConstraint != null)
-						{
-							return;
-						}
-						break;
 					case ConstraintType.ImpliedMandatory:
 						return;
 				}
@@ -1259,6 +1253,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			CultureChanged();
 		}
 		#endregion // INotifyCultureChange implementation
+		#region ICopyClosureIntegrationListener Implementation
+		/// <summary>
+		/// Implements <see cref="ICopyClosureIntegrationListener.BeginCopyClosureIntegration"/>
+		/// </summary>
+		protected void BeginCopyClosureIntegration(Transaction closureTransaction)
+		{
+			Dictionary<object, object> contextInfo = closureTransaction.TopLevelTransaction.Context.ContextInfo;
+			contextInfo[ORMModel.AllowDuplicateNamesKey] = null;
+			contextInfo[NamedElementDictionary.DefaultAllowDuplicateNamesKey] = null;
+		}
+		void ICopyClosureIntegrationListener.BeginCopyClosureIntegration(Transaction closureTransaction)
+		{
+			BeginCopyClosureIntegration(closureTransaction);
+		}
+		/// <summary>
+		/// Implements <see cref="ICopyClosureIntegrationListener.EndCopyClosureIntegration"/>
+		/// </summary>
+		protected void EndCopyClosureIntegration(Transaction closureTransaction)
+		{
+			Dictionary<object, object> contextInfo = closureTransaction.TopLevelTransaction.Context.ContextInfo;
+			contextInfo.Remove(ORMModel.AllowDuplicateNamesKey);
+			contextInfo.Remove(NamedElementDictionary.DefaultAllowDuplicateNamesKey);
+		}
+		void ICopyClosureIntegrationListener.EndCopyClosureIntegration(Transaction closureTransaction)
+		{
+			EndCopyClosureIntegration(closureTransaction);
+		}
+		#endregion // ICopyClosureIntegrationListener Implementation
 	}
 	#region IModelErrorOwner Implementations
 	partial class FactTypeHasFactTypeInstance : IModelErrorOwnerPath

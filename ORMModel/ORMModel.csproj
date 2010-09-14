@@ -370,6 +370,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreSnippets.xml" />
+    <Compile Include="Framework\CopyMergeServices.cs" />
     <Compile Include="Framework\Diagrams\Design\ModelingToolboxItemProvider.cs" />
     <Compile Include="Framework\Diagrams\ShapeExtension.cs" />
     <Compile Include="Framework\FrameworkServices.cs" />
@@ -455,6 +456,7 @@
       <DependentUpon>Framework.AttachRules.xml</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="Framework\Shell\ShellUtility.cs" />
     <Compile Include="Framework\Shell\ToolWindowDiagramView.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -472,8 +474,13 @@
     <Compile Include="Load\ExtensionLoader.cs" />
     <Compile Include="Load\ModelLoader.cs" />
     <Compile Include="Load\ORMSerializationEngine.cs" />
+    <Compile Include="ObjectModel\ORMCore.ElementEquivalence.cs" />
     <Compile Include="ObjectModel\Design\SubtypeDerivationRuleTypeDescriptor.cs" />
     <Compile Include="ObjectModel\Design\FactTypeDerivationRuleTypeDescriptor.cs" />
+    <Compile Include="ObjectModel\ORMCore.CopyMergeClosure.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ORMCore.CopyMergeClosure.xml</DependentUpon>
+    </Compile>
     <Compile Include="ObjectModel\RolePath.cs" />
     <Compile Include="ObjectModel\Design\BlockAutomatedElementsPropertyDescriptor.cs" />
     <Compile Include="ObjectModel\Design\ReferenceModeTypeDescriptor.cs" />
@@ -579,6 +586,10 @@
       <LogicalName>ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid.LinkOverlay.png</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="Load\ExtensionStripper.xslt" />
+    <Content Include="ObjectModel\ORMCore.CopyMergeClosure.xml">
+      <Generator>NUPlixLoader</Generator>
+      <LastGenOutput>ORMCore.CopyMergeClosure.cs</LastGenOutput>
+    </Content>
     <Content Include="ObjectModel\ORMCore.SurveyQuestionProvider.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ORMCore.SurveyQuestionProvider.cs</LastGenOutput>
@@ -659,6 +670,7 @@
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>VerbalizationReportGenerator.cs</LastGenOutput>
     </Content>
+    <None Include="Transforms\CopyMergeClosureGenerator.xslt" />
     <None Include="ShapeModel\ORMShape.SerializationExtensions.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ORMShape.SerializationExtensions.cs</LastGenOutput>
@@ -845,6 +857,9 @@
     <None Include="Resources\ORM.ico" />
     <None Include="Shell\ProjectItems\VS2005\General.zip" />
     <None Include="Shell\ProjectItems\VS2008\General.zip" />
+    <None Include="Transforms\CopyMergeClosureGenerator.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Transforms\ResourceStringsGenerator.xsd">
       <SubType>Designer</SubType>
     </None>

@@ -1326,23 +1326,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#endregion // Constructors
 			#region Base overrides
 			/// <summary>
-			/// Provide a base name for Group elements
-			/// </summary>
-			/// <param name="element">The element to test</param>
-			/// <returns>A base name string pattern</returns>
-			protected override string GetRootNamePattern(ModelElement element)
-			{
-				return ResourceStrings.ElementGroupingDefaultNamePattern;
-			}
-			/// <summary>
-			/// Duplicate automatically generated group names should regenerate on load.
-			/// Caters for common merging scenario.
-			/// </summary>
-			protected override bool ShouldResetDuplicateName(ModelElement element, string elementName)
-			{
-				return IsDecoratedRootName(element, elementName);
-			}
-			/// <summary>
 			/// Raise an exception with text specific to a name in a model
 			/// </summary>
 			/// <param name="element">Element we're attempting to name</param>
@@ -1372,7 +1355,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
-	partial class ElementGrouping : INamedElementDictionaryChild
+	partial class ElementGrouping : INamedElementDictionaryChild, IDefaultNamePattern
 	{
 		#region INamedElementDictionaryChild Implementation
 		/// <summary>
@@ -1388,6 +1371,44 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			GetRoleGuids(out parentDomainRoleId, out childDomainRoleId);
 		}
 		#endregion // Implementation
+		#region IDefaultNamePattern Implementation
+		/// <summary>
+		/// Implements <see cref="IDefaultNamePattern.DefaultNamePattern"/>
+		/// Uses a simpler name than the default class name.
+		/// </summary>
+		protected static string DefaultNamePattern
+		{
+			get
+			{
+				return ResourceStrings.ElementGroupingDefaultNamePattern;
+			}
+		}
+		string IDefaultNamePattern.DefaultNamePattern
+		{
+			get
+			{
+				return DefaultNamePattern;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="IDefaultNamePattern.DefaultNameResettable"/> by
+		/// marking constraint names as resettable.
+		/// </summary>
+		protected static bool DefaultNameResettable
+		{
+			get
+			{
+				return true;
+			}
+		}
+		bool IDefaultNamePattern.DefaultNameResettable
+		{
+			get
+			{
+				return DefaultNameResettable;
+			}
+		}
+		#endregion // IDefaultNamePattern Implementation
 	}
 	#endregion // NamedElementDictionary Integration
 }

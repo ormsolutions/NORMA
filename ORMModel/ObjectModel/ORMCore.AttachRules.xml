@@ -167,13 +167,17 @@
 			<arg:ChangeRule methodName="ModalityChangeRule">
 				<arg:RuleOn targetType="SetConstraint"/>
 			</arg:ChangeRule>
-			<arg:AddRule methodName="PreferredIdentifierAddedRule" fireBefore="true">
-				<!-- This rule checkes preconditions for adding a primary identifier link.
-				Fire it before the link is added to the transaction log.-->
+			<arg:AddRule methodName="PreferredIdentifierAddedRule" >
 				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier"/>
 			</arg:AddRule>
-			<arg:RolePlayerChangeRule methodName="PreferredIdentifierRolePlayerChangeRule">
+			<arg:AddRule methodName="PreferredIdentifierAddedClosureRule" >
+				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier" fireTime="LocalCommit" priority="CopyClosureExpansionCompletedRulePriority"/>
+			</arg:AddRule>
+			<arg:RolePlayerChangeRule methodName="PreferredIdentifierRolePlayerChangedRule">
 				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier"/>
+			</arg:RolePlayerChangeRule>
+			<arg:RolePlayerChangeRule methodName="PreferredIdentifierRolePlayerChangedClosureRule">
+				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier" fireTime="LocalCommit" priority="CopyClosureExpansionCompletedRulePriority"/>
 			</arg:RolePlayerChangeRule>
 			<arg:AddRule methodName="TestRemovePreferredIdentifierConstraintRoleAddRule">
 				<!-- Note that Priority=0 (the default) is assumed by ValueConstraint.PreferredIdentifierRoleAddRule -->
@@ -609,52 +613,55 @@
 			<arg:DeleteRule methodName="FactTypeDerivationRuleDeletedRule">
 				<arg:RuleOn targetType="FactTypeHasDerivationRule"/>
 			</arg:DeleteRule>
-			<arg:AddRule methodName="ImpliedFactTypeAddRule">
+			<arg:AddRule methodName="ImpliedFactTypeAddedRule">
 				<arg:RuleOn targetType="ObjectificationImpliesFactType"/>
 			</arg:AddRule>
-			<arg:AddRule methodName="ImpliedObjectificationConstraintRoleSequenceHasRoleAddRule">
+			<arg:AddRule methodName="ImpliedObjectificationConstraintRoleSequenceHasRoleAddedRule">
 				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
 			</arg:AddRule>
 			<arg:DeletingRule methodName="ImpliedObjectificationConstraintRoleSequenceHasRoleDeletingRule">
 				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
 			</arg:DeletingRule>
-			<arg:AddRule methodName="ImpliedObjectificationFactTypeHasRoleAddRule">
+			<arg:AddRule methodName="ImpliedObjectificationFactTypeHasRoleAddedRule">
 				<arg:RuleOn targetType="FactTypeHasRole"/>
 			</arg:AddRule>
 			<arg:DeletingRule methodName="ImpliedObjectificationFactTypeHasRoleDeletingRule">
 				<arg:RuleOn targetType="FactTypeHasRole"/>
 			</arg:DeletingRule>
-			<arg:ChangeRule methodName="ImpliedObjectificationIsImpliedChangeRule">
+			<arg:ChangeRule methodName="ImpliedObjectificationIsImpliedChangedRule">
 				<arg:RuleOn targetType="Objectification"/>
 			</arg:ChangeRule>
-			<arg:ChangeRule methodName="ImpliedObjectificationObjectifyingTypeIsIndependentChangeRule">
+			<arg:ChangeRule methodName="ImpliedObjectificationObjectifyingTypeIsIndependentChangedRule">
 				<arg:RuleOn targetType="ObjectType"/>
 			</arg:ChangeRule>
-			<arg:AddRule methodName="ImpliedObjectificationObjectifyingTypePlaysRoleAddRule">
+			<arg:AddRule methodName="ImpliedObjectificationObjectifyingTypePlaysRoleAddedRule">
 				<arg:RuleOn targetType="ObjectTypePlaysRole"/>
 			</arg:AddRule>
-			<arg:ChangeRule methodName="ImpliedObjectificationUniquenessConstraintChangeRule">
+			<arg:ChangeRule methodName="ImpliedObjectificationUniquenessConstraintChangedRule">
 				<arg:RuleOn targetType="UniquenessConstraint"/>
 			</arg:ChangeRule>
-			<arg:ChangeRule methodName="InternalConstraintChangeRule">
+			<arg:ChangeRule methodName="InternalConstraintChangedRule">
 				<arg:RuleOn targetType="SetConstraint"/>
 			</arg:ChangeRule>
-			<arg:AddRule methodName="ObjectificationAddRule">
+			<arg:AddRule methodName="ObjectificationAddedRule">
 				<arg:RuleOn targetType="Objectification"/>
+			</arg:AddRule>
+			<arg:AddRule methodName="ObjectificationAddedClosureRule" >
+				<arg:RuleOn targetType="Objectification" fireTime="LocalCommit" priority="CopyClosureExpansionCompletedRulePriority"/>
 			</arg:AddRule>
 			<arg:DeletingRule methodName="ObjectificationDeletingRule">
 				<arg:RuleOn targetType="Objectification"/>
 			</arg:DeletingRule>
-			<arg:RolePlayerChangeRule methodName="ObjectificationRolePlayerChangeRule">
+			<arg:RolePlayerChangeRule methodName="ObjectificationRolePlayerChangedRule">
 				<arg:RuleOn targetType="Objectification"/>
 			</arg:RolePlayerChangeRule>
 			<arg:DeletingRule methodName="PreferredIdentifierDeletingRule">
 				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier"/>
 			</arg:DeletingRule>
-			<arg:RolePlayerChangeRule methodName="PreferredIdentifierRolePlayerChangeRule">
+			<arg:RolePlayerChangeRule methodName="PreferredIdentifierRolePlayerChangedRule">
 				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier"/>
 			</arg:RolePlayerChangeRule>
-			<arg:AddRule methodName="RoleAddRule">
+			<arg:AddRule methodName="RoleAddedRule">
 				<arg:RuleOn targetType="FactTypeHasRole"/>
 				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
 				<arg:RuleOn targetType="FactSetConstraint"/>
@@ -663,16 +670,16 @@
 				<arg:RuleOn targetType="FactTypeHasRole"/>
 				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
 			</arg:DeletingRule>
-			<arg:AddRule methodName="RolePlayerAddRule">
+			<arg:AddRule methodName="RolePlayerAddedRule">
 				<arg:RuleOn targetType="ObjectTypePlaysRole"/>
 			</arg:AddRule>
 			<arg:DeletingRule methodName="RolePlayerDeletingRule">
 				<arg:RuleOn targetType="ObjectTypePlaysRole"/>
 			</arg:DeletingRule>
-			<arg:RolePlayerChangeRule methodName="RolePlayerRolePlayerChangeRule">
+			<arg:RolePlayerChangeRule methodName="RolePlayerRolePlayerChangedRule">
 				<arg:RuleOn targetType="ObjectTypePlaysRole"/>
 			</arg:RolePlayerChangeRule>
-			<arg:AddRule methodName="UniquenessConstraintAddRule">
+			<arg:AddRule methodName="UniquenessConstraintAddedRule">
 				<arg:RuleOn targetType="ModelHasSetConstraint"/>
 			</arg:AddRule>
 			<arg:DeletingRule methodName="UniquenessConstraintDeletingRule">
@@ -1185,6 +1192,9 @@
 			<arg:AddRule methodName="FactTypeAddedRule">
 				<arg:RuleOn targetType="ModelHasFactType"/>
 			</arg:AddRule>
+			<arg:AddRule methodName="FactTypeRoleAddedClosureRule">
+				<arg:RuleOn targetType="FactTypeHasRole"/>
+			</arg:AddRule>
 			<arg:AddRule methodName="FactSetComparisonConstraintAddedRule">
 				<arg:RuleOn targetType="FactSetComparisonConstraint"/>
 			</arg:AddRule>
@@ -1226,6 +1236,9 @@
 			</arg:DeleteRule>
 			<arg:AddRule methodName="FactTypeAddedRule">
 				<arg:RuleOn targetType="ModelHasFactType"/>
+			</arg:AddRule>
+			<arg:AddRule methodName="FactTypeRoleAddedClosureRule">
+				<arg:RuleOn targetType="FactTypeHasRole"/>
 			</arg:AddRule>
 			<arg:ChangeRule methodName="ModalityChangeRule">
 				<arg:RuleOn targetType="SetConstraint"/>

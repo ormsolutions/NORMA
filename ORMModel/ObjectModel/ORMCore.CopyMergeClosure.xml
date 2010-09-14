@@ -1,0 +1,695 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cmc:CopyMergeClosure xmlns:cmc="http://schemas.ormsolutions.com/ORM/SDK/CopyMergeClosureGenerator" xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
+	<cmc:Copyright name="Common Public License Copyright Notice">
+		<cmc:CopyrightLine>/**************************************************************************\</cmc:CopyrightLine>
+		<cmc:CopyrightLine>* Natural Object-Role Modeling Architect for Visual Studio                 *</cmc:CopyrightLine>
+		<cmc:CopyrightLine>*                                                                          *</cmc:CopyrightLine>
+		<cmc:CopyrightLine>* Copyright © ORM Solutions, LLC. All rights reserved.                     *</cmc:CopyrightLine>
+		<cmc:CopyrightLine>*                                                                          *</cmc:CopyrightLine>
+		<cmc:CopyrightLine>* The use and distribution terms for this software are covered by the      *</cmc:CopyrightLine>
+		<cmc:CopyrightLine>* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *</cmc:CopyrightLine>
+		<cmc:CopyrightLine>* can be found in the file CPL.txt at the root of this distribution.       *</cmc:CopyrightLine>
+		<cmc:CopyrightLine>* By using this software in any fashion, you are agreeing to be bound by   *</cmc:CopyrightLine>
+		<cmc:CopyrightLine>* the terms of this license.                                               *</cmc:CopyrightLine>
+		<cmc:CopyrightLine>*                                                                          *</cmc:CopyrightLine>
+		<cmc:CopyrightLine>* You must not remove this notice, or any other, from this software.       *</cmc:CopyrightLine>
+		<cmc:CopyrightLine>\**************************************************************************/</cmc:CopyrightLine>
+	</cmc:Copyright>
+	<cmc:Model modelFile="ORMCore.dsl">
+		<cmc:RootElements>
+			<!-- Elements that form a root element and are not copied from a source model to a target model. -->
+			<cmc:RootElement class="ORMModel"/>
+			<cmc:RootElement class="ElementGroupingSet"/>
+			<cmc:RootElement class="GenerationState"/>
+		</cmc:RootElements>
+		<cmc:EmbeddingDirectives>
+			<!-- Ignored embeddings. These are deprecated on load and do not appear in a live model. -->
+			<cmc:EmbeddingDirective relationship="ConstraintRoleProjectedFromPathConstant_Deprecated" ignore="true"/>
+			<cmc:EmbeddingDirective relationship="FactTypeHasDerivationExpression" ignore="true"/>
+			<cmc:EmbeddingDirective relationship="RoleDerivesFromPathConstant_Deprecated" ignore="true"/>
+			<cmc:EmbeddingDirective relationship="RolePathOwnerCalculatesCalculatedPathValue_Deprecated" ignore="true"/>
+			<cmc:EmbeddingDirective relationship="RolePathOwnerHasPathComponent_Deprecated" ignore="true"/>
+			<cmc:EmbeddingDirective relationship="SubtypeHasDerivationExpression" ignore="true"/>
+			
+			<!-- Extension point handled outside the model. -->
+			<cmc:EmbeddingDirective relationship="ORMModelElementHasExtensionElement" ignore="true"/>
+			<cmc:EmbeddingDirective relationship="ModelHasError" ignore="true"/>
+
+			<!-- Unordered top-level relationships -->
+			<cmc:EmbeddingDirective relationship="ModelHasFactType" order="Unordered"/>
+			<cmc:EmbeddingDirective relationship="ModelHasObjectType" order="Unordered"/>
+			<cmc:EmbeddingDirective relationship="ModelHasSetConstraint" order="Unordered"/>
+			<cmc:EmbeddingDirective relationship="ModelHasSetComparisonConstraint" order="Unordered"/>
+			<cmc:EmbeddingDirective relationship="ModelHasModelNote" order="Unordered"/>
+			<cmc:EmbeddingDirective relationship="ModelHasReferenceMode" order="Unordered"/>
+			<cmc:EmbeddingDirective relationship="ModelHasReferenceModeKind" order="Unordered"/>
+			<cmc:EmbeddingDirective relationship="ObjectTypeHasAbbreviation" order="Unordered"/>
+			<cmc:EmbeddingDirective relationship="RecognizedPhraseHasAbbreviation" order="Unordered"/>
+			<cmc:EmbeddingDirective relationship="ElementGroupingSetContainsElementGrouping" order="Unordered"/>
+			<cmc:EmbeddingDirective relationship="ElementGroupingIsOfElementGroupingType" order="Unordered"/>
+			<cmc:EmbeddingDirective relationship="GenerationStateHasGenerationSetting" order="Unordered"/>
+			<cmc:EmbeddingDirective relationship="ModelContainsRecognizedPhrase" order="Unordered"/>
+			<cmc:EmbeddingDirective relationship="ModelDefinesFunction" order="Unordered"/>
+			<cmc:EmbeddingDirective relationship="ModelHasDataType" order="Unordered"/>
+			<cmc:EmbeddingDirective relationship="ValueTypeHasValueConstraint">
+				<cmc:AfterAutomaticEquivalence>
+					<plx:callThis name="MatchValueRanges">
+						<plx:passParam>
+							<plx:nameRef name="OTHER"/>
+						</plx:passParam>
+						<plx:passParam>
+							<plx:nameRef name="elementTracker" type="parameter"/>
+						</plx:passParam>
+					</plx:callThis>
+				</cmc:AfterAutomaticEquivalence>
+			</cmc:EmbeddingDirective>
+			<cmc:EmbeddingDirective relationship="RoleHasValueConstraint">
+				<cmc:AfterAutomaticEquivalence>
+					<plx:callThis name="MatchValueRanges">
+						<plx:passParam>
+							<plx:nameRef name="OTHER"/>
+						</plx:passParam>
+						<plx:passParam>
+							<plx:nameRef name="elementTracker" type="parameter"/>
+						</plx:passParam>
+					</plx:callThis>
+				</cmc:AfterAutomaticEquivalence>
+			</cmc:EmbeddingDirective>
+			<cmc:EmbeddingDirective relationship="PathedRoleHasValueConstraint">
+				<cmc:AfterAutomaticEquivalence>
+					<plx:callThis name="MatchValueRanges">
+						<plx:passParam>
+							<plx:nameRef name="OTHER"/>
+						</plx:passParam>
+						<plx:passParam>
+							<plx:nameRef name="elementTracker" type="parameter"/>
+						</plx:passParam>
+					</plx:callThis>
+				</cmc:AfterAutomaticEquivalence>
+			</cmc:EmbeddingDirective>
+			<cmc:EmbeddingDirective relationship="RolePathRootHasValueConstraint">
+				<cmc:AfterAutomaticEquivalence>
+					<plx:callThis name="MatchValueRanges">
+						<plx:passParam>
+							<plx:nameRef name="OTHER"/>
+						</plx:passParam>
+						<plx:passParam>
+							<plx:nameRef name="elementTracker" type="parameter"/>
+						</plx:passParam>
+					</plx:callThis>
+				</cmc:AfterAutomaticEquivalence>
+			</cmc:EmbeddingDirective>
+
+			<!-- UNDONE: COPYMERGE Temporarily turn off sample population copying for a preliminary checkin -->
+			<cmc:EmbeddingDirective relationship="ObjectTypeHasObjectTypeInstance" ignore="true"/>
+			<cmc:EmbeddingDirective relationship="ValueTypeHasValueTypeInstance" ignore="true"/>
+			<cmc:EmbeddingDirective relationship="EntityTypeHasEntityTypeInstance" ignore="true"/>
+			<cmc:EmbeddingDirective relationship="FactTypeHasFactTypeInstance" ignore="true"/>
+			<cmc:EmbeddingDirective relationship="EntityTypeSubtypeHasEntityTypeSubtypeInstance" ignore="true"/>
+		</cmc:EmbeddingDirectives>
+		<cmc:ClosureRoles>
+			<!-- Other closures -->
+			<cmc:ClosureRole relationship="Objectification" role="NestingType" closureBehavior="ExternalCompositePart"/>
+			<cmc:ClosureRole relationship="Objectification" role="NestedFactType" closureBehavior="ExternalCompositePart"/>
+			<cmc:ClosureRole relationship="ObjectTypePlaysRole" role="RolePlayer" closureBehavior="ExternalReferencedPart"/>
+			<cmc:ClosureRole relationship="ExclusiveOrConstraintCoupler" role="MandatoryConstraint" closureBehavior="ExternalCompositePart"/>
+			<cmc:ClosureRole relationship="ExclusiveOrConstraintCoupler" role="ExclusionConstraint" closureBehavior="ExternalCompositePart"/>
+			<cmc:ClosureRole relationship="ConstraintRoleSequenceHasRole" role="Role" closureBehavior="ExternalReferencedPart" order="From"/>
+			<cmc:ClosureRole relationship="ConstraintRoleSequenceHasRole" role="ConstraintRoleSequence" closureBehavior="Custom">
+				<cmc:CustomBehavior>
+					<plx:local name="constraint" dataTypeName="IConstraint">
+						<plx:initialize>
+							<plx:cast dataTypeName="IConstraint" type="testCast">
+								<plx:callInstance name="ConstraintRoleSequence" type="property">
+									<plx:callObject>
+										<plx:cast type="exceptionCast" dataTypeName="ConstraintRoleSequenceHasRole">
+											<plx:nameRef name="link" type="parameter"/>
+										</plx:cast>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:cast>
+						</plx:initialize>
+					</plx:local>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="booleanAnd">
+								<plx:left>
+									<plx:binaryOperator type="identityInequality">
+										<plx:left>
+											<plx:nameRef name="constraint"/>
+										</plx:left>
+										<plx:right>
+											<plx:nullKeyword/>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:left>
+								<plx:right>
+									<plx:callInstance name="ConstraintIsInternal" type="property">
+										<plx:callObject>
+											<plx:nameRef name="constraint"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:return>
+							<plx:callStatic name="ExternalReferencedPart" dataTypeName="CopyClosureBehavior" type="field"/>
+						</plx:return>
+					</plx:branch>
+					<plx:return>
+						<plx:callStatic name="Ignored" dataTypeName="CopyClosureBehavior" type="field"/>
+					</plx:return>
+				</cmc:CustomBehavior>
+			</cmc:ClosureRole>
+			<cmc:ClosureRole relationship="EntityTypeHasPreferredIdentifier" role="PreferredIdentifier" closureBehavior="ExternalCompositePart">
+				<!-- Make the preferred identifier a composite part instead of an external reference to
+				enforce the 1-1	nature of the relationship. -->
+			</cmc:ClosureRole>
+			<cmc:ClosureRole relationship="ObjectificationImpliesFactType" role="ImpliedFactType" closureBehavior="ExternalCompositePart"/>
+			<cmc:ClosureRole relationship="ObjectificationImpliesFactType" role="ImpliedByObjectification" closureBehavior="ExternalCompositePart"/>
+			<cmc:ClosureRole relationship="RoleProxyHasRole" role="TargetRole" closureBehavior="ExternalCompositePart"/>
+			<cmc:ClosureRole relationship="ObjectifiedUnaryRoleHasRole" role="TargetRole" closureBehavior="ExternalCompositePart"/>
+			<cmc:ClosureRole relationship="ObjectTypePlaysRole" role="PlayedRole" explicitToRoleClass="SubtypeMetaRole" closureBehavior="Custom">
+				<cmc:CustomBehavior>
+					<plx:branch>
+						<plx:condition>
+							<plx:callInstance name="ProvidesPreferredIdentifier" type="property">
+								<plx:callObject>
+									<plx:cast dataTypeName="SubtypeFact" type="exceptionCast">
+										<plx:callInstance name="FactType" type="property">
+											<plx:callObject>
+												<plx:callInstance name="PlayedRole" type="property">
+													<plx:callObject>
+														<plx:cast dataTypeName="ObjectTypePlaysRole">
+															<plx:nameRef name="link" type="parameter"/>
+														</plx:cast>
+													</plx:callObject>
+												</plx:callInstance>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:cast>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:condition>
+						<plx:return>
+							<plx:callStatic name="ExternalReferencedPart" dataTypeName="CopyClosureBehavior" type="field"/>
+						</plx:return>
+					</plx:branch>
+					<plx:return>
+						<plx:callStatic name="Ignored" dataTypeName="CopyClosureBehavior" type="field"/>
+					</plx:return>
+				</cmc:CustomBehavior>
+			</cmc:ClosureRole>
+			<cmc:ClosureRole relationship="GroupingElementRelationship" role="Element" closureBehavior="ExternalReferencedPart" rootElementOnly="true"/>
+			<cmc:ClosureRole relationship="GroupingElementRelationship" role="Grouping" closureBehavior="ExternalReferencedPart"/>
+			<cmc:ClosureRole relationship="ValueTypeHasDataType" role="DataType" closureBehavior="ExternalReferencedPart"/>
+			<cmc:ClosureRole relationship="ReferenceModeHasReferenceModeKind" role="Kind" closureBehavior="ExternalReferencedPart"/>
+			<cmc:ClosureRole relationship="ReadingOrderHasRole" role="Role" closureBehavior="InternalReferencedPart" order="From"/>
+
+			<!-- Role path closures -->
+			<cmc:ClosureRole relationship="LeadRolePathSatisfiesCalculatedCondition" role="CalculatedCondition" closureBehavior="InternalReferencedPart"/>
+			<cmc:ClosureRole relationship="PathedRole" role="Role" closureBehavior="ExternalReferencedPart" order="From"/>
+			<cmc:ClosureRole relationship="RolePathObjectTypeRoot" role="RootObjectType" closureBehavior="ExternalReferencedPart"/>
+			<cmc:ClosureRole relationship="LeadRolePathSatisfiesCalculatedCondition" role="CalculatedCondition" closureBehavior="InternalReferencedPart"/>
+			<cmc:ClosureRole relationship="RolePathOwnerUsesSharedLeadRolePath" role="RolePath" closureBehavior="ExternalReferencedPart"/>
+			<cmc:ClosureRole relationship="CalculatedPathValueIsCalculatedWithFunction" role="Function" closureBehavior="ExternalReferencedPart"/>
+			<cmc:ClosureRole relationship="CalculatedPathValueInputCorrespondsToFunctionParameter" role="Parameter" closureBehavior="ExternalReferencedPart"/>
+			<cmc:ClosureRole relationship="CalculatedPathValueInputBindsToRolePathRoot" role="Source" closureBehavior="InternalReferencedPart"/>
+			<cmc:ClosureRole relationship="CalculatedPathValueInputBindsToPathedRole" role="Source" closureBehavior="InternalReferencedPart"/>
+			<cmc:ClosureRole relationship="CalculatedPathValueInputBindsToCalculatedPathValue" role="Source" closureBehavior="InternalReferencedPart"/>
+			<cmc:ClosureRole relationship="CalculatedPathValueAggregationContextIncludesPathedRole" role="PathedRole" closureBehavior="InternalReferencedPart" order="From"/>
+			<cmc:ClosureRole relationship="CalculatedPathValueAggregationContextIncludesRolePathRoot" role="PathRoot" closureBehavior="InternalReferencedPart" order="From"/>
+			<cmc:ClosureRole relationship="PathObjectUnifierUnifiesRolePathRoot" role="PathRoot" closureBehavior="InternalReferencedPart" order="From"/>
+			<cmc:ClosureRole relationship="PathObjectUnifierUnifiesPathedRole" role="PathedRole" closureBehavior="InternalReferencedPart" order="From"/>
+
+			<!-- FactType derivation projection -->
+			<cmc:ClosureRole relationship="FactTypeDerivationProjection" role="RolePath" closureBehavior="Custom">
+				<cmc:CustomBehavior>
+					<plx:local name="projection" dataTypeName="FactTypeDerivationProjection">
+						<plx:initialize>
+							<plx:cast dataTypeName="FactTypeDerivationProjection" type="exceptionCast">
+								<plx:nameRef name="link" type="parameter"/>
+							</plx:cast>
+						</plx:initialize>
+					</plx:local>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:callInstance name="DerivationRule" type="property">
+										<plx:callObject>
+											<plx:nameRef name="projection"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:left>
+								<plx:right>
+									<plx:callInstance name="PathOwner" type="property">
+										<plx:callObject>
+											<plx:callInstance name="RolePath" type="property">
+												<plx:callObject>
+													<plx:nameRef name="projection"/>
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:return>
+							<plx:callStatic dataTypeName="CopyClosureBehavior" name="InternalReferencedPart" type="field"/>
+						</plx:return>
+					</plx:branch>
+					<plx:return>
+						<plx:callStatic dataTypeName="CopyClosureBehavior" name="ExternalReferencedPart" type="field"/>
+					</plx:return>
+				</cmc:CustomBehavior>
+			</cmc:ClosureRole>
+			<cmc:ClosureRole relationship="FactTypeRoleProjection" role="ProjectedRole" closureBehavior="InternalReferencedPart"/>
+			<cmc:ClosureRole relationship="FactTypeRoleProjectedFromRolePathRoot" role="Source" closureBehavior="ExternalReferencedPart"/>
+			<cmc:ClosureRole relationship="FactTypeRoleProjectedFromPathedRole" role="Source" closureBehavior="ExternalReferencedPart"/>
+			<cmc:ClosureRole relationship="FactTypeRoleProjectedFromCalculatedPathValue" role="Source" closureBehavior="ExternalReferencedPart"/>
+
+			<!-- Join path projection -->
+			<cmc:ClosureRole relationship="ConstraintRoleSequenceJoinPathProjection" role="RolePath" closureBehavior="Custom">
+				<cmc:CustomBehavior>
+					<plx:local name="projection" dataTypeName="ConstraintRoleSequenceJoinPathProjection">
+						<plx:initialize>
+							<plx:cast dataTypeName="ConstraintRoleSequenceJoinPathProjection" type="exceptionCast">
+								<plx:nameRef name="link" type="parameter"/>
+							</plx:cast>
+						</plx:initialize>
+					</plx:local>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:callInstance name="JoinPath" type="property">
+										<plx:callObject>
+											<plx:nameRef name="projection"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:left>
+								<plx:right>
+									<plx:callInstance name="PathOwner" type="property">
+										<plx:callObject>
+											<plx:callInstance name="RolePath" type="property">
+												<plx:callObject>
+													<plx:nameRef name="projection"/>
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:return>
+							<plx:callStatic dataTypeName="CopyClosureBehavior" name="InternalReferencedPart" type="field"/>
+						</plx:return>
+					</plx:branch>
+					<plx:return>
+						<plx:callStatic dataTypeName="CopyClosureBehavior" name="ExternalReferencedPart" type="field"/>
+					</plx:return>
+				</cmc:CustomBehavior>
+			</cmc:ClosureRole>
+			<cmc:ClosureRole relationship="ConstraintRoleProjection" role="ProjectedConstraintRole" closureBehavior="InternalReferencedPart"/>
+			<cmc:ClosureRole relationship="ConstraintRoleProjectedFromRolePathRoot" role="Source" closureBehavior="ExternalReferencedPart"/>
+			<cmc:ClosureRole relationship="ConstraintRoleProjectedFromPathedRole" role="Source" closureBehavior="ExternalReferencedPart"/>
+			<cmc:ClosureRole relationship="ConstraintRoleProjectedFromCalculatedPathValue" role="Source" closureBehavior="ExternalReferencedPart"/>
+		</cmc:ClosureRoles>
+		<cmc:ImpliedReferences>
+			<cmc:ImpliedReference class="ObjectType" includeClassDescendants="true">
+				<plx:local name="referenceMode" dataTypeName="CustomReferenceMode">
+					<plx:initialize>
+						<plx:cast type="testCast" dataTypeName="CustomReferenceMode">
+							<plx:callInstance name="ReferenceMode" type="property">
+								<plx:callObject>
+									<plx:cast dataTypeName="ObjectType">
+										<plx:nameRef name="element" type="parameter"/>
+									</plx:cast>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:cast>
+					</plx:initialize>
+				</plx:local>
+				<plx:branch>
+					<plx:condition>
+						<plx:binaryOperator type="identityInequality">
+							<plx:left>
+								<plx:nameRef name="referenceMode"/>
+							</plx:left>
+							<plx:right>
+								<plx:nullKeyword/>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:callInstance name=".implied" type="delegateCall">
+						<plx:callObject>
+							<plx:nameRef name="notifyImpliedReference" type="parameter"/>
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="referenceMode"/>
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:branch>
+			</cmc:ImpliedReference>
+		</cmc:ImpliedReferences>
+		<cmc:IgnoredProperties>
+			<cmc:IgnoredProperty class="ElementGrouping" property="DefinitionText"/>
+			<cmc:IgnoredProperty class="ElementGrouping" property="NoteText"/>
+			<cmc:IgnoredProperty class="ORMModel" property="ModelErrorDisplayFilterDisplay"/>
+			<cmc:IgnoredProperty class="ORMModel" property="DefinitionText"/>
+			<cmc:IgnoredProperty class="ORMModel" property="NoteText"/>
+			<cmc:IgnoredProperty class="ObjectType" property="DefinitionText"/>
+			<cmc:IgnoredProperty class="ObjectType" property="NoteText"/>
+			<cmc:IgnoredProperty class="ObjectType" property="IsValueType"/>
+			<cmc:IgnoredProperty class="ObjectType" property="DataTypeScale"/>
+			<cmc:IgnoredProperty class="ObjectType" property="DataTypeLength"/>
+			<cmc:IgnoredProperty class="ObjectType" property="ReferenceModeDisplay"/>
+			<cmc:IgnoredProperty class="ObjectType" property="DataTypeDisplay"/>
+			<cmc:IgnoredProperty class="ObjectType" property="DataTypeLength"/>
+			<cmc:IgnoredProperty class="ObjectType" property="DataTypeScale"/>
+			<cmc:IgnoredProperty class="ObjectType" property="ReferenceModeDisplay"/>
+			<cmc:IgnoredProperty class="ObjectType" property="ReferenceModeString"/>
+			<cmc:IgnoredProperty class="ObjectType" property="ReferenceModeDecoratedString"/>
+			<cmc:IgnoredProperty class="ObjectType" property="ReferenceMode"/>
+			<cmc:IgnoredProperty class="ObjectType" property="ValueRangeText"/>
+			<cmc:IgnoredProperty class="ObjectType" property="ValueTypeValueRangeText"/>
+			<cmc:IgnoredProperty class="ObjectType" property="IsSupertypePersonal"/>
+			<cmc:IgnoredProperty class="ObjectType" property="TreatAsPersonal"/>
+			<cmc:IgnoredProperty class="ObjectType" property="DerivationNoteDisplay"/>
+			<cmc:IgnoredProperty class="ObjectType" property="DerivationStorageDisplay"/>
+			<cmc:IgnoredProperty class="FactType" property="DefinitionText"/>
+			<cmc:IgnoredProperty class="FactType" property="NoteText"/>
+			<cmc:IgnoredProperty class="FactType" property="Name"/>
+			<cmc:IgnoredProperty class="FactType" property="GeneratedName"/>
+			<cmc:IgnoredProperty class="FactType" property="NameChanged"/>
+			<cmc:IgnoredProperty class="FactType" property="DerivationNoteDisplay"/>
+			<cmc:IgnoredProperty class="FactType" property="DerivationStorageDisplay"/>
+			<cmc:IgnoredProperty class="Role" property="RolePlayerDisplay"/>
+			<cmc:IgnoredProperty class="Role" property="IsMandatory"/>
+			<cmc:IgnoredProperty class="Role" property="Multiplicity"/>
+			<cmc:IgnoredProperty class="Role" property="ValueRangeText"/>
+			<cmc:IgnoredProperty class="Role" property="MandatoryConstraintName"/>
+			<cmc:IgnoredProperty class="Role" property="MandatoryConstraintModality"/>
+			<cmc:IgnoredProperty class="Role" property="ObjectificationOppositeRoleName"/>
+			<cmc:IgnoredProperty class="SetComparisonConstraint" property="DefinitionText"/>
+			<cmc:IgnoredProperty class="SetComparisonConstraint" property="NoteText"/>
+			<cmc:IgnoredProperty class="UniquenessConstraint" property="IsPreferred"/>
+			<cmc:IgnoredProperty class="SetConstraint" property="NoteText"/>
+			<cmc:IgnoredProperty class="SetConstraint" property="DefinitionText"/>
+			<cmc:IgnoredProperty class="ReferenceMode" property="KindDisplay"/>
+			<cmc:IgnoredProperty class="Reading" property="IsPrimaryForReadingOrder"/>
+			<cmc:IgnoredProperty class="Reading" property="IsPrimaryForFactType"/>
+			<cmc:IgnoredProperty class="ReadingOrder" property="ReadingText"/>
+			<cmc:IgnoredProperty class="ValueConstraint" property="DefinitionText"/>
+			<cmc:IgnoredProperty class="ValueConstraint" property="NoteText"/>
+			<cmc:IgnoredProperty class="ValueConstraint" property="Text"/>
+			<cmc:IgnoredProperty class="ValueConstraint" property="TextChanged"/>
+			<cmc:IgnoredProperty class="ObjectTypeInstance" property="Name"/>
+			<cmc:IgnoredProperty class="ObjectTypeInstance" property="IdentifierName"/>
+			<cmc:IgnoredProperty class="ObjectTypeInstance" property="NameChanged"/>
+			<cmc:IgnoredProperty class="FactTypeInstance" property="Name"/>
+			<cmc:IgnoredProperty class="FactTypeInstance" property="NameChanged"/>
+		</cmc:IgnoredProperties>
+		<cmc:ConditionalProperties>
+			<cmc:ConditionalProperty class="ORMNamedElement" property="Name">
+				<plx:local name="defaultName" dataTypeName="IDefaultNamePattern"/>
+				<plx:local name="pattern" dataTypeName=".string"/>
+				<plx:branch>
+					<plx:condition>
+						<plx:binaryOperator type="booleanAnd">
+							<plx:left>
+								<plx:binaryOperator type="booleanAnd">
+									<plx:left>
+										<plx:binaryOperator type="identityInequality">
+											<plx:left>
+												<plx:inlineStatement dataTypeName="IDefaultNamePattern">
+													<plx:assign>
+														<plx:left>
+															<plx:nameRef name="defaultName"/>
+														</plx:left>
+														<plx:right>
+															<plx:cast type="testCast" dataTypeName="IDefaultNamePattern">
+																<plx:nameRef name="sourceElement" type="parameter"/>
+															</plx:cast>
+														</plx:right>
+													</plx:assign>
+												</plx:inlineStatement>
+											</plx:left>
+											<plx:right>
+												<plx:nullKeyword/>
+											</plx:right>
+										</plx:binaryOperator>
+									</plx:left>
+									<plx:right>
+										<plx:callInstance name="DefaultNameResettable" type="property">
+											<plx:callObject>
+												<plx:nameRef name="defaultName"/>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:left>
+							<plx:right>
+								<plx:callStatic name="IsNumberDecoratedName" dataTypeName="Utility">
+									<plx:passParam>
+										<plx:callInstance name="Name" type="property">
+											<plx:callObject>
+												<plx:cast dataTypeName="ORMNamedElement">
+													<plx:nameRef name="sourceElement" type="parameter"/>
+												</plx:cast>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:inlineStatement dataTypeName=".string">
+											<plx:conditionalOperator>
+												<plx:condition>
+													<plx:callStatic name="IsNullOrEmpty" dataTypeName=".string">
+														<plx:passParam>
+															<plx:inlineStatement dataTypeName=".string">
+																<plx:assign>
+																	<plx:left>
+																		<plx:nameRef name="pattern"/>
+																	</plx:left>
+																	<plx:right>
+																		<plx:callInstance name="DefaultNamePattern" type="property">
+																			<plx:callObject>
+																				<plx:nameRef name="defaultName"/>
+																			</plx:callObject>
+																		</plx:callInstance>
+																	</plx:right>
+																</plx:assign>
+															</plx:inlineStatement>
+														</plx:passParam>
+													</plx:callStatic>
+												</plx:condition>
+												<plx:left>
+													<plx:callStatic name="GetClassName" dataTypeName="TypeDescriptor" dataTypeQualifier="System.ComponentModel">
+														<plx:passParam>
+															<plx:nameRef name="sourceElement" type="parameter"/>
+														</plx:passParam>
+													</plx:callStatic>
+												</plx:left>
+												<plx:right>
+													<plx:nameRef name="pattern"/>
+												</plx:right>
+											</plx:conditionalOperator>
+										</plx:inlineStatement>
+									</plx:passParam>
+								</plx:callStatic>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:return>
+						<plx:falseKeyword/>
+					</plx:return>
+				</plx:branch>
+				<plx:alternateBranch>
+					<plx:condition>
+						<plx:binaryOperator type="identityInequality">
+							<plx:left>
+								<plx:nameRef name="targetElement" type="parameter"/>
+							</plx:left>
+							<plx:right>
+								<plx:nullKeyword/>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:local name="targetName" dataTypeName=".string">
+						<plx:initialize>
+							<plx:callInstance name="Name" type="property">
+								<plx:callObject>
+									<plx:cast dataTypeName="ORMNamedElement">
+										<plx:nameRef name="targetElement" type="parameter"/>
+									</plx:cast>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="booleanAnd">
+								<plx:left>
+									<plx:binaryOperator type="booleanAnd">
+										<plx:left>
+											<plx:binaryOperator type="identityInequality">
+												<plx:left>
+													<plx:inlineStatement dataTypeName="IDefaultNamePattern">
+														<plx:assign>
+															<plx:left>
+																<plx:nameRef name="defaultName"/>
+															</plx:left>
+															<plx:right>
+																<plx:cast type="testCast" dataTypeName="IDefaultNamePattern">
+																	<plx:nameRef name="sourceElement" type="parameter"/>
+																</plx:cast>
+															</plx:right>
+														</plx:assign>
+													</plx:inlineStatement>
+												</plx:left>
+												<plx:right>
+													<plx:nullKeyword/>
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:left>
+										<plx:right>
+											<plx:callInstance name="DefaultNameResettable" type="property">
+												<plx:callObject>
+													<plx:nameRef name="defaultName"/>
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:left>
+								<plx:right>
+									<plx:callStatic name="IsNumberDecoratedName" dataTypeName="Utility">
+										<plx:passParam>
+											<plx:nameRef name="targetName"/>
+										</plx:passParam>
+										<plx:passParam>
+											<plx:inlineStatement dataTypeName=".string">
+												<plx:conditionalOperator>
+													<plx:condition>
+														<plx:callStatic name="IsNullOrEmpty" dataTypeName=".string">
+															<plx:passParam>
+																<plx:inlineStatement dataTypeName=".string">
+																	<plx:assign>
+																		<plx:left>
+																			<plx:nameRef name="pattern"/>
+																		</plx:left>
+																		<plx:right>
+																			<plx:callInstance name="DefaultNamePattern" type="property">
+																				<plx:callObject>
+																					<plx:nameRef name="defaultName"/>
+																				</plx:callObject>
+																			</plx:callInstance>
+																		</plx:right>
+																	</plx:assign>
+																</plx:inlineStatement>
+															</plx:passParam>
+														</plx:callStatic>
+													</plx:condition>
+													<plx:left>
+														<plx:callStatic name="GetClassName" dataTypeName="TypeDescriptor" dataTypeQualifier="System.ComponentModel">
+															<plx:passParam>
+																<plx:nameRef name="targetElement" type="parameter"/>
+															</plx:passParam>
+														</plx:callStatic>
+													</plx:left>
+													<plx:right>
+														<plx:nameRef name="pattern"/>
+													</plx:right>
+												</plx:conditionalOperator>
+											</plx:inlineStatement>
+										</plx:passParam>
+									</plx:callStatic>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:comment>Use a non-generated source name over a generated target name.</plx:comment>
+						<plx:return>
+							<plx:trueKeyword/>
+						</plx:return>
+					</plx:branch>
+					<plx:comment>Override an empty target name with a non-empty source name.</plx:comment>
+					<plx:return>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callStatic name="IsNullOrEmpty" dataTypeName=".string">
+								<plx:passParam>
+									<plx:nameRef name="targetName"/>
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:unaryOperator>
+					</plx:return>
+				</plx:alternateBranch>
+				<plx:return>
+					<plx:trueKeyword/>
+				</plx:return>
+			</cmc:ConditionalProperty>
+			<cmc:ConditionalProperty class="ObjectType" property="IsIndependent">
+				<plx:local name="sourceObjectType" dataTypeName="ObjectType">
+					<plx:initialize>
+						<plx:cast dataTypeName="ObjectType" type="exceptionCast">
+							<plx:nameRef name="sourceElement" type="parameter"/>
+						</plx:cast>
+					</plx:initialize>
+				</plx:local>
+				<plx:local name="targetObjectType" dataTypeName="ObjectType"/>
+				<plx:branch>
+					<plx:condition>
+						<plx:binaryOperator type="booleanAnd">
+							<plx:left>
+								<plx:callInstance name="IsIndependent" type="property">
+									<plx:callObject>
+										<plx:nameRef name="sourceObjectType"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:binaryOperator type="booleanAnd">
+									<plx:left>
+										<plx:binaryOperator type="identityInequality">
+											<plx:left>
+												<plx:nullKeyword/>
+											</plx:left>
+											<plx:right>
+												<plx:inlineStatement dataTypeName="ObjectType">
+													<plx:assign>
+														<plx:left>
+															<plx:nameRef name="targetObjectType"/>
+														</plx:left>
+														<plx:right>
+															<plx:cast dataTypeName="ObjectType" type="exceptionCast">
+																<plx:nameRef name="targetElement" type="parameter"/>
+															</plx:cast>
+														</plx:right>
+													</plx:assign>
+												</plx:inlineStatement>
+											</plx:right>
+										</plx:binaryOperator>
+									</plx:left>
+									<plx:right>
+										<plx:unaryOperator type="booleanNot">
+											<plx:callInstance name="AllowIsIndependent">
+												<plx:callObject>
+													<plx:nameRef name="targetObjectType"/>
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:unaryOperator>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:return>
+						<plx:falseKeyword/>
+					</plx:return>
+				</plx:branch>
+				<plx:return>
+					<plx:trueKeyword/>
+				</plx:return>
+			</cmc:ConditionalProperty>
+		</cmc:ConditionalProperties>
+	</cmc:Model>
+</cmc:CopyMergeClosure>
