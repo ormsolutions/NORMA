@@ -110,31 +110,52 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
 			protected sealed override void ProcessElement(NameAlias element, Store store, INotifyElementAdded notifyAdded)
 			{
-				Type consumer;
-				Type usage;
-				object[] attributes = null;
-				DomainClassInfo consumerDomainClass;
-				if (null == (consumerDomainClass = element.myConsumerDomainClass) ||
-					null == (consumer = consumerDomainClass.ImplementationClass) ||
-					(null != (usage = element.NameUsageType) &&
-					null == (attributes = consumer.GetCustomAttributes(typeof(NameUsageAttribute), true))))
+				element.DeleteIfTypeBindingFailed();
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(NameAlias), FireTime=LocalCommit, Priority=FrameworkDomainModel.CopyClosureExpansionCompletedRulePriority;
+		/// </summary>
+		private static void AliasAddedClosureRule(ElementAddedEventArgs e)
+		{
+			ModelElement element = e.ModelElement;
+			if (!element.IsDeleted &&
+				CopyMergeUtility.GetIntegrationPhase(element.Store) == CopyClosureIntegrationPhase.IntegrationComplete)
+			{
+				((NameAlias)element).DeleteIfTypeBindingFailed();
+			}
+		}
+		/// <summary>
+		/// Shared helper for merge integration and deserialization. Deletes
+		/// the element if the types referenced by the consumer and usage
+		/// are not loaded in the store.
+		/// </summary>
+		private void DeleteIfTypeBindingFailed()
+		{
+			Type consumer;
+			Type usage;
+			object[] attributes = null;
+			DomainClassInfo consumerDomainClass;
+			if (null == (consumerDomainClass = myConsumerDomainClass) ||
+				null == (consumer = consumerDomainClass.ImplementationClass) ||
+				(null != (usage = NameUsageType) &&
+				null == (attributes = consumer.GetCustomAttributes(typeof(NameUsageAttribute), true))))
+			{
+				Delete();
+			}
+			else if (usage != null)
+			{
+				int i = 0;
+				for (; i < attributes.Length; ++i)
 				{
-					element.Delete();
+					if (((NameUsageAttribute)attributes[i]).Type == usage)
+					{
+						break;
+					}
 				}
-				else if (usage != null)
+				if (i == attributes.Length)
 				{
-					int i = 0;
-					for (; i < attributes.Length; ++i)
-					{
-						if (((NameUsageAttribute)attributes[i]).Type == usage)
-						{
-							break;
-						}
-					}
-					if (i == attributes.Length)
-					{
-						element.Delete();
-					}
+					Delete();
 				}
 			}
 		}

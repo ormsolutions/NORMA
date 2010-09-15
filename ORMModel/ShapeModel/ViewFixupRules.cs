@@ -43,8 +43,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			ModelHasObjectType link = e.ModelElement as ModelHasObjectType;
 			ObjectType objectType = link.ObjectType;
 			if (!element.IsDeleted &&
-				!MergeContext.HasContext(element.Store.TransactionManager.CurrentTransaction.TopLevelTransaction) &&
-				(objectType = (link = (ModelHasObjectType)element).ObjectType).NestedFactType == null) // Otherwise, fix up with the fact type
+				(objectType = (link = (ModelHasObjectType)element).ObjectType).NestedFactType == null && // Otherwise, fix up with the fact type
+				ElementRequiresFixup(objectType))
 			{
 				Diagram.FixUpDiagram(link.Model, objectType);
 			}
@@ -246,11 +246,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		private static void FactTypedAddedRule(ElementAddedEventArgs e)
 		{
 			ModelElement element = e.ModelElement;
-			if (!element.IsDeleted &&
-				!MergeContext.HasContext(element.Store.TransactionManager.CurrentTransaction.TopLevelTransaction))
+			if (!element.IsDeleted)
 			{
 				ModelHasFactType link = (ModelHasFactType)e.ModelElement;
-				Diagram.FixUpDiagram(link.Model, link.FactType);
+				FactType factType = link.FactType;
+				if (ElementRequiresFixup(factType))
+				{
+					Diagram.FixUpDiagram(link.Model, factType);
+				}
 			}
 		}
 		#endregion // FactTypeAddedRule
@@ -296,13 +299,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		private static void SetConstraintAddedRule(ElementAddedEventArgs e)
 		{
 			ModelElement element = e.ModelElement;
-			if (!element.IsDeleted &&
-				!MergeContext.HasContext(element.Store.TransactionManager.CurrentTransaction.TopLevelTransaction))
+			if (!element.IsDeleted)
 			{
 				ModelHasSetConstraint link = (ModelHasSetConstraint)e.ModelElement;
 				SetConstraint constraint = link.SetConstraint;
 				// Shapes are never added for internal constraints, so there is no point in attempting a fixup
-				if (!((IConstraint)constraint).ConstraintIsInternal)
+				if (!((IConstraint)constraint).ConstraintIsInternal &&
+					ElementRequiresFixup(constraint))
 				{
 					Diagram.FixUpDiagram(link.Model, constraint);
 				}
@@ -605,22 +608,35 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			ObjectType rolePlayer;
 			ORMModel model;
 			if (!link.IsDeleted &&
-				!MergeContext.HasContext(link.Store.TransactionManager.CurrentTransaction.TopLevelTransaction) &&
 				null != (associatedFact = link.PlayedRole.FactType) &&
 				null == associatedFact.ImpliedByObjectification &&
 				null != (model = (rolePlayer = link.RolePlayer).Model))
 			{
 				FactType nestedFact;
+				bool continueFixup = false;
 				if (FactTypeShape.ShouldDrawObjectification(nestedFact = rolePlayer.NestedFactType))
 				{
-					Diagram.FixUpDiagram(model, nestedFact);
-					Diagram.FixUpDiagram(nestedFact, rolePlayer);
+					if (ElementRequiresFixup(nestedFact))
+					{
+						Diagram.FixUpDiagram(model, nestedFact);
+						Diagram.FixUpDiagram(nestedFact, rolePlayer);
+						continueFixup = true;
+					}
 				}
-				else
+				else if (ElementRequiresFixup(rolePlayer))
 				{
 					Diagram.FixUpDiagram(model, rolePlayer);
+					continueFixup = true;
 				}
-				Diagram.FixUpDiagram(model, associatedFact);
+				if (ElementRequiresFixup(associatedFact))
+				{
+					Diagram.FixUpDiagram(model, associatedFact);
+					continueFixup = true;
+				}
+				if (!continueFixup)
+				{
+					return;
+				}
 
 				object AllowMultipleShapes;
 				Dictionary<object, object> topLevelContextInfo;
@@ -1017,9 +1033,12 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			ORMModel model;
 			if (!link.IsDeleted &&
 				!((factType = link.FactType) is SubtypeFact) &&
-				!MergeContext.HasContext(link.Store.TransactionManager.CurrentTransaction.TopLevelTransaction) &&
 				null != (model = factType.Model))
 			{
+				if (!ElementRequiresFixup(factType))
+				{
+					return;
+				}
 				Diagram.FixUpDiagram(model, factType); // Make sure the fact type is already there
 
 				object AllowMultipleShapes;
@@ -1107,11 +1126,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		private static void ModelNoteAddedRule(ElementAddedEventArgs e)
 		{
 			ModelElement element = e.ModelElement;
-			if (!element.IsDeleted &&
-				!MergeContext.HasContext(element.Store.TransactionManager.CurrentTransaction.TopLevelTransaction))
+			if (!element.IsDeleted)
 			{
 				ModelHasModelNote link = (ModelHasModelNote)e.ModelElement;
-				Diagram.FixUpDiagram(link.Model, link.Note);
+				ModelNote note = link.Note;
+				if (ElementRequiresFixup(note))
+				{
+					Diagram.FixUpDiagram(link.Model, note);
+				}
 			}
 		}
 		#endregion // ModelNoteAddedRule
@@ -1331,6 +1353,28 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 		}
 		#endregion // Shape Invalidation Routines
+		#region Merge context validation rules
+		/// <summary>
+		/// Helper method to determine if a fixup operation
+		/// should be attempted for an added element. Fixup
+		/// is not needed if presentation elements are dropped,
+		/// but it is needed if non-presentation elements are dropped
+		/// directly.
+		/// </summary>
+		/// <param name="element">An element that might require a shape.</param>
+		/// <returns><see langword="true"/> to continue with fixup.</returns>
+		public static bool ElementRequiresFixup(ModelElement element)
+		{
+			Transaction transaction = element.Store.TransactionManager.CurrentTransaction.TopLevelTransaction;
+			if (DesignSurfaceMergeContext.GetRootPresentationElements(transaction).Count == 0)
+			{
+				IList rootElements = DesignSurfaceMergeContext.GetRootModelElements(transaction);
+				// Merge if no context is given
+				return rootElements.Count == 0 || rootElements.Contains(element);
+			}
+			return false;
+		}
+		#endregion // Merge context validation rules
 		#endregion // View Fixup Rules
 	}
 }

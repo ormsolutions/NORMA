@@ -205,6 +205,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						typeof(MandatoryConstraint).GetNestedType("MandatoryConstraintChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ModelError).GetNestedType("SynchronizeErrorTextForModelRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ModelError).GetNestedType("SynchronizeErrorTextForOwnerRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(NameAlias).GetNestedType("AliasAddedClosureRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ORMSolutions.ORMArchitect.Framework.NamedElementDictionary).GetNestedType("ElementLinkAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ORMSolutions.ORMArchitect.Framework.NamedElementDictionary).GetNestedType("ElementLinkDeletingRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ORMSolutions.ORMArchitect.Framework.NamedElementDictionary).GetNestedType("NamedElementChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -489,7 +490,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMCoreDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 421; ++i)
+			for (int i = 0; i < 422; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -5030,6 +5031,37 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // Rule classes for ModelError
+	#region Rule classes for NameAlias
+	partial class NameAlias
+	{
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(NameAlias), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit, Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.CopyClosureExpansionCompletedRulePriority)]
+		private sealed class AliasAddedClosureRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public AliasAddedClosureRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.NameAlias
+			/// /// <summary>
+			/// /// AddRule: typeof(NameAlias), FireTime=LocalCommit, Priority=FrameworkDomainModel.CopyClosureExpansionCompletedRulePriority;
+			/// /// </summary>
+			/// private static void AliasAddedClosureRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.NameAlias.AliasAddedClosureRule");
+				NameAlias.AliasAddedClosureRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.NameAlias.AliasAddedClosureRule");
+			}
+		}
+	}
+	#endregion // Rule classes for NameAlias
 	#region Rule classes for NameGenerator
 	partial class NameGenerator
 	{

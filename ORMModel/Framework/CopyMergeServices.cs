@@ -16,7 +16,7 @@
 
 // Temporarily uncomment this line to enable helper
 // routines useful during copy closure debugging.
- #define DEBUGHELPERS
+// #define DEBUGHELPERS
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -1485,29 +1485,80 @@ namespace ORMSolutions.ORMArchitect.Framework
 							DomainRoleInfo sourceRoleInfo;
 							DomainRoleInfo targetRoleInfo;
 							LinkedElementCollection<ModelElement> targetLinkedElements;
-							LinkedElementCollection<ModelElement> sourceLinkedElements;
+							int targetLinkCount;
 							if (null != (sourceRoleInfo = sourceDataDirectory.FindDomainRole(roleId)) &&
 								null != (targetRoleInfo = targetDataDirectory.FindDomainRole(roleId)) &&
-								1 < (targetLinkedElements = targetRoleInfo.GetLinkedElements(pair.Value)).Count &&
-								0 != (sourceLinkedElements = sourceRoleInfo.GetLinkedElements(key.Element)).Count)
+								1 < (targetLinkCount = (targetLinkedElements = targetRoleInfo.GetLinkedElements(pair.Value)).Count))
 							{
-								// UNDONE: COPYMERGE Use MergeIntegrationOrder to more accurately
-								// place elements in an existing collection. This moves all merged
-								// elements to the front.
-								MergeIntegrationOrder order = orderedRoles[roleId];
-								int resolvedIndex = 0;
-								foreach (ModelElement sourceLinkedElement in sourceLinkedElements)
+								if (sourceRoleInfo.DomainRelationship.AllowsDuplicates)
 								{
-									CopiedElement copy;
-									int targetIndex;
-									if (resolvedElements.TryGetValue(sourceLinkedElement.Id, out copy) &&
-										-1 != (targetIndex = targetLinkedElements.IndexOf(copy.Element)))
+									// We have to be very careful in this situation because we can
+									// based on the order on the location of the source links, but
+									// not the source elements (which can be duplicated). From the
+									// target side, we need the LinkedElementCollection for the Move
+									// method plus the ElementLink collection for order comparison.
+									ReadOnlyCollection<ElementLink> sourceLinks = sourceRoleInfo.GetElementLinks(key.Element);
+									if (0 != sourceLinks.Count)
 									{
-										if (targetIndex != resolvedIndex)
+										ReadOnlyCollection<ElementLink> targetLinks = targetRoleInfo.GetElementLinks(pair.Value);
+										// Note that count and order directly correspond to the linked elements.
+										// Assert the count for minimal sanity, assume the order.
+										Debug.Assert(targetLinks.Count == targetLinkCount);
+										// Record the index in original collection now residing in a given slot
+										int[] originalIndexMap = new int[targetLinkCount];
+										for (int i = 0; i < targetLinkCount; ++i)
 										{
-											targetLinkedElements.Move(targetIndex, resolvedIndex);
+											originalIndexMap[i] = i;
 										}
-										++resolvedIndex;
+										int resolvedIndex = 0;
+										foreach (ElementLink sourceLink in sourceLinks)
+										{
+											CopiedElement copy;
+											int originalTargetIndex;
+											if (resolvedElements.TryGetValue(sourceLink.Id, out copy) &&
+												-1 != (originalTargetIndex = targetLinks.IndexOf((ElementLink)copy.Element)))
+											{
+												int targetIndex = Array.IndexOf<int>(originalIndexMap, originalTargetIndex);
+												if (targetIndex != resolvedIndex)
+												{
+													Debug.Assert(targetIndex > resolvedIndex); // Otherwise the links do not form a set
+													targetLinkedElements.Move(targetIndex, resolvedIndex);
+													int keepTargetIndex = originalIndexMap[targetIndex];
+													for (int i = targetIndex; i > resolvedIndex; --i)
+													{
+														originalIndexMap[i] = originalIndexMap[i - 1];
+													}
+													originalIndexMap[resolvedIndex] = keepTargetIndex;
+												}
+												++resolvedIndex;
+											}
+										}
+									}
+								}
+								else
+								{
+									LinkedElementCollection<ModelElement> sourceLinkedElements = sourceRoleInfo.GetLinkedElements(key.Element);
+									if (0 != sourceLinkedElements.Count)
+									{
+										// UNDONE: COPYMERGE Use MergeIntegrationOrder to more accurately
+										// place elements in an existing collection. This moves all merged
+										// elements to the front. Also apply to AllowsDuplicates case.
+										// MergeIntegrationOrder order = orderedRoles[roleId];
+										int resolvedIndex = 0;
+										foreach (ModelElement sourceLinkedElement in sourceLinkedElements)
+										{
+											CopiedElement copy;
+											int targetIndex;
+											if (resolvedElements.TryGetValue(sourceLinkedElement.Id, out copy) &&
+												-1 != (targetIndex = targetLinkedElements.IndexOf(copy.Element)))
+											{
+												if (targetIndex != resolvedIndex)
+												{
+													targetLinkedElements.Move(targetIndex, resolvedIndex);
+												}
+												++resolvedIndex;
+											}
+										}
 									}
 								}
 							}
@@ -1853,34 +1904,26 @@ namespace ORMSolutions.ORMArchitect.Framework
 			if (null != (embeddedRoles = myEmbeddedRoles) &&
 				embeddedRoles.TryGetValue(newElement.GetDomainClass().ImplementationClass, out roleNode))
 			{
-				DomainRoleInfo embeddedRoleInfo = null;
-				if (roleNode.Next == null)
+				// Get available embedding roles and verify that the basedOnElement is attached
+				// via that relationship. Note that we do this even if exactly one root embedding
+				// relationship is available because we do not know if there are other non-root
+				// embedding relationships in this code.
+				DomainRoleInfo sourceEmbeddedRoleInfo = null;
+				while (roleNode != null)
 				{
-					// We have only one choice, short circuit tie breakers
-					// Use Find instead of Get to handle source/target situations
-					// where the extension models may be different.
-					embeddedRoleInfo = targetDataDirectory.FindDomainRole(roleNode.Value);
-				}
-				else
-				{
-					while (roleNode != null)
+					sourceEmbeddedRoleInfo = sourceDataDirectory.GetDomainRole(roleNode.Value);
+					if (sourceEmbeddedRoleInfo.GetElementLinks(basedOnElement).Count != 0)
 					{
-						if (null != (embeddedRoleInfo = sourceDataDirectory.FindDomainRole(roleNode.Value)))
 						{
-							if (embeddedRoleInfo.GetElementLinks(basedOnElement).Count != 0)
-							{
-								{
-									break;
-								}
-							}
-							embeddedRoleInfo = null;
+							break;
 						}
-						roleNode = roleNode.Next;
 					}
+					sourceEmbeddedRoleInfo = null;
+					roleNode = roleNode.Next;
 				}
-				if (embeddedRoleInfo != null)
+				if (sourceEmbeddedRoleInfo != null)
 				{
-					DomainRelationshipInfo sourceRelationshipInfo = embeddedRoleInfo.DomainRelationship;
+					DomainRelationshipInfo sourceRelationshipInfo = sourceEmbeddedRoleInfo.DomainRelationship;
 					DomainRelationshipInfo targetRelationshipInfo = targetDataDirectory.FindDomainRelationship(sourceRelationshipInfo.Id);
 					if (targetRelationshipInfo == null)
 					{
@@ -1888,7 +1931,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 					}
 					else
 					{
-						DomainRoleInfo embeddingRoleInfo = embeddedRoleInfo.OppositeDomainRole;
+						DomainRoleInfo embeddingRoleInfo = sourceEmbeddedRoleInfo.OppositeDomainRole;
 						DomainClassInfo parentClassInfo = embeddingRoleInfo.RolePlayer;
 						Type implementationClass = parentClassInfo.ImplementationClass;
 						ModelElement rootElement = null;
@@ -1926,7 +1969,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 						if (rootElement != null)
 						{
 							Guid embeddingRoleId = embeddingRoleInfo.Id;
-							Guid embeddedRoleId = embeddedRoleInfo.Id;
+							Guid embeddedRoleId = sourceEmbeddedRoleInfo.Id;
 							targetElementFactory.CreateElementLink(
 								targetRelationshipInfo,
 								new RoleAssignment(embeddingRoleId, rootElement),
@@ -1936,7 +1979,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 							{
 								if (orderedRoles.ContainsKey(embeddingRoleId)) // Pre check so we don't fetch elements we don't need
 								{
-									foreach (ModelElement basedOnRootElement in embeddedRoleInfo.GetLinkedElements(basedOnElement))
+									foreach (ModelElement basedOnRootElement in sourceEmbeddedRoleInfo.GetLinkedElements(basedOnElement))
 									{
 										TrackOrdering(orderedRoles, embeddingRoleId, basedOnRootElement, rootElement, ref requiresOrdering);
 										break;

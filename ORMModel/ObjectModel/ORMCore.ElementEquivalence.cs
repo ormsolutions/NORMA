@@ -1799,4 +1799,75 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // CalculatedPathValue class
+	#region RecognizedPhrase class
+	partial class RecognizedPhrase : IElementEquivalence
+	{
+		/// <summary>
+		/// Implements <see cref="IElementEquivalence.MapEquivalentElements"/>
+		/// Match phrases by name.
+		/// </summary>
+		protected bool MapEquivalentElements(Store foreignStore, IEquivalentElementTracker elementTracker)
+		{
+			foreach (ORMModel otherModel in foreignStore.ElementDirectory.FindElements<ORMModel>(false))
+			{
+				RecognizedPhrase otherPhrase = otherModel.RecognizedPhrasesDictionary.GetElement(Name).FirstElement as RecognizedPhrase;
+				if (otherPhrase != null)
+				{
+					elementTracker.AddEquivalentElement(this, otherPhrase);
+					return true;
+				}
+				break;
+			}
+			return false;
+		}
+		bool IElementEquivalence.MapEquivalentElements(Store foreignStore, IEquivalentElementTracker elementTracker)
+		{
+			return MapEquivalentElements(foreignStore, elementTracker);
+		}
+	}
+	#endregion // RecognizedPhrase class
+	#region NameAlias class
+	partial class NameAlias : IElementEquivalence
+	{
+		/// <summary>
+		/// Implements <see cref="IElementEquivalence.MapEquivalentElements"/>
+		/// </summary>
+		protected bool MapEquivalentElements(Store foreignStore, IEquivalentElementTracker elementTracker)
+		{
+			ModelElement aliasOwner;
+			ModelElement otherAliasOwner;
+			if (null != (aliasOwner = Element) &&
+				null != (otherAliasOwner = CopyMergeUtility.GetEquivalentElement(aliasOwner, foreignStore, elementTracker)))
+			{
+				// Match by consumer and usage classes. Use the internal class information
+				// instead of the serialized string forms. If we end up copying one of these
+				// with no matching class information then we'll delete it at the end of
+				// the merge integration phase. Note that we match by id because the meta
+				// information is in a different store.
+				// UNDONE: COPYMERGE We need a way for an element to add domain model requirements
+				// without referencing elements in that model.
+				DomainClassInfo classInfo = myConsumerDomainClass;
+				bool hasConsumer = classInfo != null;
+				Guid consumerId = hasConsumer ? classInfo.Id : Guid.Empty;
+				classInfo = myUsageDomainClass;
+				bool hasUsage = classInfo != null;
+				Guid usageId = hasUsage ? classInfo.Id : Guid.Empty;
+				foreach (NameAlias otherAlias in ElementHasAlias.GetAliasCollection(otherAliasOwner))
+				{
+					if (consumerId == (null != (classInfo = otherAlias.myConsumerDomainClass) ? classInfo.Id : Guid.Empty) &&
+						usageId == (null != (classInfo = otherAlias.myUsageDomainClass) ? classInfo.Id : Guid.Empty))
+					{
+						elementTracker.AddEquivalentElement(this, otherAlias);
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+		bool IElementEquivalence.MapEquivalentElements(Store foreignStore, IEquivalentElementTracker elementTracker)
+		{
+			return MapEquivalentElements(foreignStore, elementTracker);
+		}
+	}
+	#endregion // NameAlias class
 }

@@ -895,11 +895,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			private ArrowDirection GetDirection(ShapeElement parentShape)
 			{
 				ArrowDirection retVal = ArrowDirection.None;
-				FactTypeShape factTypeShape = (FactTypeShape)parentShape.ParentShape;
-				FactType factType = factTypeShape.AssociatedFactType;
-				LinkedElementCollection<RoleBase> roles = factType.RoleCollection;
-				int roleCount = roles.Count;
-				if (roleCount > 1)
+				FactTypeShape factTypeShape;
+				FactType factType;
+				LinkedElementCollection<RoleBase> roles;
+				int roleCount;
+				if (null != (factTypeShape = (FactTypeShape)parentShape.ParentShape) &&
+					null != (factType = factTypeShape.AssociatedFactType) &&
+					(roleCount = (roles = factType.RoleCollection).Count) > 1)
 				{
 					DisplayOrientation orientation = factTypeShape.DisplayOrientation;
 					bool isVertical = orientation != DisplayOrientation.Horizontal;

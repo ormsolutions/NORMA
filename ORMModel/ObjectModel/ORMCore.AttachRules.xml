@@ -570,6 +570,11 @@
 				<arg:RuleOn targetType="ORMNamedElement"/>
 			</arg:ChangeRule>
 		</arg:RuleContainer>
+		<arg:RuleContainer class="NameAlias">
+			<arg:AddRule methodName="AliasAddedClosureRule">
+				<arg:RuleOn targetType="NameAlias" fireTime="LocalCommit" priority="CopyClosureExpansionCompletedRulePriority"/>
+			</arg:AddRule>
+		</arg:RuleContainer>
 		<arg:RuleContainer class="NamedElementDictionary" namespace="ORMSolutions.ORMArchitect.Framework">
 			<arg:AddRule methodName="ElementLinkAddedRule">
 				<arg:RuleOn targetType="ElementLink" targetTypeQualifier="Microsoft.VisualStudio.Modeling">
