@@ -488,7 +488,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 		/// Add an element equivalence relationship.
 		/// </summary>
 		/// <param name="nativeElement">The native element, from the <see cref="Store"/> of
-		/// the instance called the the <see cref="IElementEquivalence"/> interface.</param>
+		/// the instance called via the <see cref="IElementEquivalence"/> interface.</param>
 		/// <param name="equivalentElement">An equivalent element in the foreign store.</param>
 		/// <remarks>An implementation of this interface should ignore any call with one or
 		/// more values <see langword="null"/></remarks>
@@ -496,9 +496,22 @@ namespace ORMSolutions.ORMArchitect.Framework
 		/// <summary>
 		/// Get an equivalent mapping previously added with <see cref="AddEquivalentElement"/>
 		/// </summary>
-		/// <param name="element">The element to find a match for.</param>
+		/// <param name="nativeElement">The element to find a match for.</param>
 		/// <returns>The equivalent element, if any.</returns>
-		ModelElement GetEquivalentElement(ModelElement element);
+		ModelElement GetEquivalentElement(ModelElement nativeElement);
+		/// <summary>
+		/// An equivalence test has been attempted for this element
+		/// but has failed. Track it so another attempt to test
+		/// equivalence is not made.
+		/// </summary>
+		/// <param name="nativeElement">The native element, from the <see cref="Store"/> of
+		/// the instance called via the <see cref="IElementEquivalence"/> interface.</param>
+		void AddFailedEquivalentElement(ModelElement nativeElement);
+		/// <summary>
+		/// Check if <see cref="AddFailedEquivalentElement"/> has been
+		/// called for this element.
+		/// </summary>
+		bool IsFailedEquivalentElement(ModelElement nativeElement);
 	}
 	#endregion // IElementEquivalence interface
 	#region CopyClosureIntegrationPhase enum
@@ -572,12 +585,66 @@ namespace ORMSolutions.ORMArchitect.Framework
 		public static T GetEquivalentElement<T>(T element, Store foreignStore, IEquivalentElementTracker elementTracker) where T : ModelElement
 		{
 			T otherElement = elementTracker.GetEquivalentElement(element) as T;
-			IElementEquivalence testEquivalence;
 			if (otherElement == null &&
-				null != (testEquivalence = element as IElementEquivalence) &&
-				testEquivalence.MapEquivalentElements(foreignStore, elementTracker))
+				!elementTracker.IsFailedEquivalentElement(element))
 			{
-				otherElement = elementTracker.GetEquivalentElement(element) as T;
+				IElementEquivalence testEquivalence;
+				ElementLink link;
+				DomainRelationshipInfo relationshipInfo;
+				ReadOnlyCollection<DomainRoleInfo> domainRoles;
+				DomainRoleInfo firstRole;
+				DomainRoleInfo secondRole;
+				ModelElement otherFirstRolePlayer;
+				ModelElement otherSecondRolePlayer;
+				if (null != (testEquivalence = element as IElementEquivalence))
+				{
+					if (testEquivalence.MapEquivalentElements(foreignStore, elementTracker))
+					{
+						otherElement = elementTracker.GetEquivalentElement(element) as T;
+					}
+				}
+				else if (null != (link = element as ElementLink) &&
+					!(relationshipInfo = link.GetDomainRelationship()).AllowsDuplicates &&
+					null != (otherFirstRolePlayer = GetEquivalentElement((firstRole = (domainRoles = relationshipInfo.DomainRoles)[0]).GetRolePlayer(link), foreignStore, elementTracker)) &&
+					null != (otherSecondRolePlayer = GetEquivalentElement((secondRole = domainRoles[1]).GetRolePlayer(link), foreignStore, elementTracker)))
+				{
+					// See notes on GetElementLinksToElement in ResolveExistingLink
+					DomainDataDirectory dataDirectory = foreignStore.DomainDataDirectory;
+					DomainRoleInfo fromOtherRoleInfo;
+					DomainRoleInfo toOtherRoleInfo;
+					ModelElement fromOtherElement;
+					ModelElement toOtherElement;
+					if (firstRole.IsOne || !secondRole.IsOne)
+					{
+						fromOtherRoleInfo = dataDirectory.FindDomainRole(firstRole.Id);
+						toOtherRoleInfo = dataDirectory.FindDomainRole(secondRole.Id);
+						fromOtherElement = otherFirstRolePlayer;
+						toOtherElement = otherSecondRolePlayer;
+					}
+					else
+					{
+						fromOtherRoleInfo = dataDirectory.FindDomainRole(secondRole.Id);
+						toOtherRoleInfo = dataDirectory.FindDomainRole(firstRole.Id);
+						fromOtherElement = otherSecondRolePlayer;
+						toOtherElement = otherFirstRolePlayer;
+					}
+					if (fromOtherRoleInfo != null) // These will be null together, checking one is sufficient
+					{
+						foreach (ElementLink otherLink in fromOtherRoleInfo.GetElementLinks(fromOtherElement))
+						{
+							if (toOtherRoleInfo.GetRolePlayer(otherLink) == toOtherElement &&
+								null != (otherElement = otherLink as T))
+							{
+								elementTracker.AddEquivalentElement(element, otherElement);
+								break;
+							}
+						}
+					}
+				}
+				if (otherElement == null)
+				{
+					elementTracker.AddFailedEquivalentElement(element);
+				}
 			}
 			return otherElement;
 		}
@@ -597,10 +664,10 @@ namespace ORMSolutions.ORMArchitect.Framework
 			}
 			#endregion // Member Variables and Constructor
 			#region IEquivalentElementTracker Implementation
-			ModelElement IEquivalentElementTracker.GetEquivalentElement(ModelElement element)
+			ModelElement IEquivalentElementTracker.GetEquivalentElement(ModelElement nativeElement)
 			{
 				ModelElement retVal;
-				return myElementDictionary.TryGetValue(element, out retVal) ? retVal : null;
+				return myElementDictionary.TryGetValue(nativeElement, out retVal) ? retVal : null;
 			}
 			void IEquivalentElementTracker.AddEquivalentElement(ModelElement nativeElement, ModelElement equivalentElement)
 			{
@@ -608,6 +675,15 @@ namespace ORMSolutions.ORMArchitect.Framework
 				{
 					myElementDictionary[nativeElement] = equivalentElement;
 				}
+			}
+			void IEquivalentElementTracker.AddFailedEquivalentElement(ModelElement nativeElement)
+			{
+				myElementDictionary[nativeElement] = null;
+			}
+			bool IEquivalentElementTracker.IsFailedEquivalentElement(ModelElement nativeElement)
+			{
+				ModelElement checkForNull;
+				return myElementDictionary.TryGetValue(nativeElement, out checkForNull) && checkForNull == null;
 			}
 			#endregion // IEquivalentElementTracker Implementation
 		}
@@ -1237,6 +1313,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 			private readonly Dictionary<Guid, MergeIntegrationOrder> myOrderedRoles;
 			private readonly DomainDataDirectory myTargetDataDirectory;
 			private Dictionary<RoleAndElement, ModelElement> myRequiresOrdering;
+			private Dictionary<Guid, object> myFailedEquivalence;
 			public EquivalenceTracker(Dictionary<Guid, CopiedElement> equivalenceMap, Dictionary<Guid, MergeIntegrationOrder> orderedRoles, DomainDataDirectory targetDataDirectory, Dictionary<RoleAndElement, ModelElement> requiresOrdering)
 			{
 				myEquivalentElementMap = equivalenceMap;
@@ -1246,6 +1323,9 @@ namespace ORMSolutions.ORMArchitect.Framework
 			}
 			#endregion // Member Variables and Constructor
 			#region EquivalenceTracker specific
+			/// <summary>
+			/// Get back the original or on-demand-created ordering dictionary
+			/// </summary>
 			public Dictionary<RoleAndElement, ModelElement> RequiresOrdering
 			{
 				get
@@ -1253,12 +1333,22 @@ namespace ORMSolutions.ORMArchitect.Framework
 					return myRequiresOrdering;
 				}
 			}
+			/// <summary>
+			/// Test if an identifier is tracked as either a successful
+			/// or failed equivalence mapping.
+			/// </summary>
+			public bool IsKnownIdentifier(Guid elementId)
+			{
+				Dictionary<Guid, object> failures;
+				return myEquivalentElementMap.ContainsKey(elementId) ||
+					(null != (failures = myFailedEquivalence) && failures.ContainsKey(elementId));
+			}
 			#endregion // EquivalenceTracker specific
 			#region IEquivalentElementTracker Implementation
-			ModelElement IEquivalentElementTracker.GetEquivalentElement(ModelElement element)
+			ModelElement IEquivalentElementTracker.GetEquivalentElement(ModelElement nativeElement)
 			{
 				CopiedElement copiedElement;
-				return myEquivalentElementMap.TryGetValue(element.Id, out copiedElement) ? copiedElement.Element : null;
+				return myEquivalentElementMap.TryGetValue(nativeElement.Id, out copiedElement) ? copiedElement.Element : null;
 			}
 			void IEquivalentElementTracker.AddEquivalentElement(ModelElement nativeElement, ModelElement equivalentElement)
 			{
@@ -1287,6 +1377,16 @@ namespace ORMSolutions.ORMArchitect.Framework
 						}
 					}
 				}
+			}
+			void IEquivalentElementTracker.AddFailedEquivalentElement(ModelElement nativeElement)
+			{
+				(myFailedEquivalence ?? (myFailedEquivalence = new Dictionary<Guid, object>()))[nativeElement.Id] = null;
+			}
+			bool IEquivalentElementTracker.IsFailedEquivalentElement(ModelElement nativeElement)
+			{
+				Dictionary<Guid, object> failedElements;
+				return null != (failedElements = myFailedEquivalence) &&
+					failedElements.ContainsKey(nativeElement.Id);
 			}
 			#endregion // IEquivalentElementTracker Implementation
 		}
@@ -1388,6 +1488,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 					DomainDataDirectory targetDataDirectory = targetStore.DomainDataDirectory;
 					DomainDataDirectory sourceDataDirectory = sourceStore.DomainDataDirectory;
 					EquivalenceTracker tracker = new EquivalenceTracker(resolvedElements, myOrderedRoles, targetDataDirectory, requiresOrdering);
+					IEquivalentElementTracker trackerAsInterface = tracker;
 					foreach (KeyValuePair<Guid, IClosureElement> pair in copyClosure)
 					{
 						IClosureElement closureElement = pair.Value;
@@ -1401,10 +1502,15 @@ namespace ORMSolutions.ORMArchitect.Framework
 								break; // Do not attempt to merge duplicate elements
 							case CopyMergeAction.Match:
 								IElementEquivalence equivalence;
-								if (null != (equivalence = closureElement.Element as IElementEquivalence) &&
-									!resolvedElements.ContainsKey(pair.Key))
+								ModelElement element;
+								if (!tracker.IsKnownIdentifier(pair.Key) &&
+									null != (equivalence = (element = closureElement.Element) as IElementEquivalence))
 								{
-									equivalence.MapEquivalentElements(targetStore, tracker);
+									if (!equivalence.MapEquivalentElements(targetStore, trackerAsInterface) ||
+										null == trackerAsInterface.GetEquivalentElement(element))
+									{
+										trackerAsInterface.AddFailedEquivalentElement(element);
+									}
 								}
 								break;
 							case CopyMergeAction.Link:

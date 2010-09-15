@@ -205,6 +205,10 @@
 			<cmc:ClosureRole relationship="ValueTypeHasDataType" role="DataType" closureBehavior="ExternalReferencedPart"/>
 			<cmc:ClosureRole relationship="ReferenceModeHasReferenceModeKind" role="Kind" closureBehavior="ExternalReferencedPart"/>
 			<cmc:ClosureRole relationship="ReadingOrderHasRole" role="Role" closureBehavior="InternalReferencedPart" order="From"/>
+			<!-- UNDONE: COPYMERGE This is temporary for notes (bring in the note with a referencing element). We actually
+			want a weak relationship, where the ModelNote reference is pulled in only if both role players are pulled in for other
+			reasons. We need a notion of a MatchOnly element (match, but do not create) and a non-propagating relationship. -->
+			<cmc:ClosureRole relationship="ModelNoteReferencesModelElement" role="Note" closureBehavior="ExternalReferencedPart"/>
 
 			<!-- Role path closures -->
 			<cmc:ClosureRole relationship="LeadRolePathSatisfiesCalculatedCondition" role="CalculatedCondition" closureBehavior="InternalReferencedPart"/>

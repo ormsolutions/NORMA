@@ -1707,6 +1707,28 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					for (int i = 0; i < rangeCount; ++i)
 					{
 						ValueRange range = ranges[i];
+						string rangeMin = range.MinValue;
+						bool minParsed;
+						if (string.IsNullOrEmpty(rangeMin))
+						{
+							rangeMin = null;
+							minParsed = false;
+						}
+						else
+						{
+							minParsed = dataType.ParseNormalizeValue(rangeMin, range.InvariantMinValue, out rangeMin);
+						}
+						string rangeMax = range.MaxValue;
+						bool maxParsed;
+						if (string.IsNullOrEmpty(rangeMax))
+						{
+							rangeMax = null;
+							maxParsed = false;
+						}
+						else
+						{
+							maxParsed = dataType.ParseNormalizeValue(rangeMax, range.InvariantMaxValue, out rangeMax);
+						}
 						for (int j = 0; j < otherRangeCount; ++j)
 						{
 							if (!otherMatches[j])
@@ -1718,20 +1740,43 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								// integration is complete. We use the current data type to
 								// compare values, and leave it up to rules to sort out the
 								// remaining issues after data type information is complete.
-								string normalizedValue;
-								string otherNormalizedValue;
-								if (dataType.ParseNormalizeValue(range.MinValue, range.InvariantMinValue, out normalizedValue) &&
-									dataType.ParseNormalizeValue(otherRange.MinValue, otherRange.InvariantMinValue, out otherNormalizedValue) &&
-									(canCompare ? (dataType.Compare(normalizedValue, otherNormalizedValue) == 0) : (normalizedValue == otherNormalizedValue)) &&
-									dataType.ParseNormalizeValue(range.MaxValue, range.InvariantMaxValue, out normalizedValue) &&
-									dataType.ParseNormalizeValue(otherRange.MaxValue, otherRange.InvariantMaxValue, out otherNormalizedValue) &&
-									(canCompare ? (dataType.Compare(normalizedValue, otherNormalizedValue) == 0) : (normalizedValue == otherNormalizedValue)))
+								string otherRangeBound = otherRange.MinValue;
+								if (string.IsNullOrEmpty(otherRangeBound))
 								{
-									// Ignore endpoint inclusion properties for merging, consider these sufficient equivalent ranges to match.
-									elementTracker.AddEquivalentElement(range, otherRange);
-									otherMatches[j] = true;
-									break;
+									if (rangeMin != null)
+									{
+										continue;
+									}
 								}
+								else if (minParsed != dataType.ParseNormalizeValue(otherRangeBound, otherRange.InvariantMinValue, out otherRangeBound))
+								{
+									continue;
+								}
+								else if (!((canCompare && minParsed) ? (dataType.Compare(rangeMin, otherRangeBound) == 0) : (rangeMin == otherRangeBound)))
+								{
+									continue;
+								}
+								otherRangeBound = otherRange.MaxValue;
+								if (string.IsNullOrEmpty(otherRangeBound))
+								{
+									if (rangeMax != null)
+									{
+										continue;
+									}
+								}
+								else if (maxParsed != dataType.ParseNormalizeValue(otherRangeBound, otherRange.InvariantMaxValue, out otherRangeBound))
+								{
+									continue;
+								}
+								else if (!((canCompare && maxParsed) ? (dataType.Compare(rangeMax, otherRangeBound) == 0) : (rangeMax == otherRangeBound)))
+								{
+									continue;
+								}
+
+								// Ignore endpoint inclusion properties for merging, consider these sufficient equivalent ranges to match.
+								elementTracker.AddEquivalentElement(range, otherRange);
+								otherMatches[j] = true;
+								break;
 							}
 						}
 					}

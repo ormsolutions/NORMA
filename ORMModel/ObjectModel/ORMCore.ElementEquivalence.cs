@@ -1212,8 +1212,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		protected bool MapEquivalentElements(Store foreignStore, IEquivalentElementTracker elementTracker)
 		{
+			RolePathOwner pathOwner = PathOwner;
 			RolePathOwner otherPathOwner;
-			if (null != (otherPathOwner = CopyMergeUtility.GetEquivalentElement(PathOwner, foreignStore, elementTracker)))
+			if (null != (otherPathOwner = CopyMergeUtility.GetEquivalentElement(pathOwner, foreignStore, elementTracker)))
 			{
 				LinkedElementCollection<PathObjectUnifier> unifiers = null;
 				LinkedElementCollection<CalculatedPathValue> conditions = null;
@@ -1225,8 +1226,37 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				int[] matchingOtherUnifiers = null; // Array indexed into other unifiers (index +1, zero means empty)
 				BitTracker matchedOthers = default(BitTracker);
 				Dictionary<ModelElement, ModelElement> preMatchedElements = null;
+				LinkedElementCollection<LeadRolePath> allOwnedPaths = pathOwner.OwnedLeadRolePathCollection;
+				if (allOwnedPaths.Count == 1)
+				{
+					allOwnedPaths = null;
+				}
 				foreach (LeadRolePath otherLeadRolePath in otherPathOwner.OwnedLeadRolePathCollection)
 				{
+					if (allOwnedPaths != null)
+					{
+						bool previouslyMatched = false;
+						foreach (LeadRolePath ownedPath in allOwnedPaths)
+						{
+							if (ownedPath != this &&
+								elementTracker.GetEquivalentElement(ownedPath) == otherLeadRolePath)
+							{
+								// Do a sanity check before we continue. It is possible for one owner
+								// to have two equivalent paths (possibly with alternate projections, etc).
+								// The merge framework does not track reverse elements, so we need to make
+								// sure that we don't match with two different things. Without this check,
+								// two projections can end up mapping the same lead role path. For the more
+								// common case of a relatively small number of different paths, this also
+								// avoids repetitions of the matching code below.
+								previouslyMatched = true;
+								break;
+							}
+						}
+						if (previouslyMatched)
+						{
+							continue;
+						}
+					}
 					if (preMatchedElements == null)
 					{
 						preMatchedElements = new Dictionary<ModelElement,ModelElement>();
@@ -1392,6 +1422,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 							// All conditions match, the paths are equivalent.
 							// Now try top pair up any remaining unmapped functions.
+							if (calculations == null)
+							{
+								calculations = CalculatedValueCollection;
+								calculationCount = calculations.Count;
+							}
 							if (calculationCount != 0)
 							{
 								int otherCalculationCount;
@@ -1799,6 +1834,33 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // CalculatedPathValue class
+	#region CalculatedPathValueInput class
+	partial class CalculatedPathValueInput : IElementEquivalence
+	{
+		/// <summary>
+		/// Implements <see cref="IElementEquivalence.MapEquivalentElements"/>
+		/// Match the calculation input based on the associated lead role path.
+		/// IElementEquivalence is implemented on path components that are referenced from
+		/// outside the path structure or nest 1-1 mapped elements.
+		/// </summary>
+		protected bool MapEquivalentElements(Store foreignStore, IEquivalentElementTracker elementTracker)
+		{
+			CalculatedPathValue calculation;
+			LeadRolePath rolePath;
+			if (null != (calculation = CalculatedValue) &&
+				null != (rolePath = calculation.LeadRolePath) &&
+				CopyMergeUtility.GetEquivalentElement(rolePath, foreignStore, elementTracker) != null)
+			{
+				return elementTracker.GetEquivalentElement(this) != null;
+			}
+			return false;
+		}
+		bool IElementEquivalence.MapEquivalentElements(Store foreignStore, IEquivalentElementTracker elementTracker)
+		{
+			return MapEquivalentElements(foreignStore, elementTracker);
+		}
+	}
+	#endregion // CalculatedPathValueInput class
 	#region RecognizedPhrase class
 	partial class RecognizedPhrase : IElementEquivalence
 	{
@@ -1870,4 +1932,33 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // NameAlias class
+	#region ModelNote class
+	partial class ModelNote : IElementEquivalence
+	{
+		/// <summary>
+		/// Implements <see cref="IElementEquivalence.MapEquivalentElements"/>
+		/// </summary>
+		protected new bool MapEquivalentElements(Store foreignStore, IEquivalentElementTracker elementTracker)
+		{
+			foreach (ORMModel otherModel in foreignStore.ElementDirectory.FindElements<ORMModel>(false))
+			{
+				string matchText = Text;
+				foreach (ModelNote otherNote in otherModel.NoteCollection)
+				{
+					if (otherNote.Text == matchText)
+					{
+						elementTracker.AddEquivalentElement(this, otherNote);
+						return true;
+					}
+				}
+				break;
+			}
+			return false;
+		}
+		bool IElementEquivalence.MapEquivalentElements(Store foreignStore, IEquivalentElementTracker elementTracker)
+		{
+			return MapEquivalentElements(foreignStore, elementTracker);
+		}
+	}
+	#endregion // ModelNote class
 }
