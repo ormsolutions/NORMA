@@ -76,6 +76,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(FunctionOperatesOnParameter.FunctionDomainRoleId), new DomainRoleClosureRestriction(FunctionOperatesOnParameter.ParameterDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ContainedPart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(LeadRolePathCalculatesCalculatedPathValue.CalculatedValueDomainRoleId), new DomainRoleClosureRestriction(LeadRolePathCalculatesCalculatedPathValue.LeadRolePathDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.Container);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(LeadRolePathCalculatesCalculatedPathValue.LeadRolePathDomainRoleId), new DomainRoleClosureRestriction(LeadRolePathCalculatesCalculatedPathValue.CalculatedValueDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ContainedPart);
+			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(LeadRolePathHasNote.NoteDomainRoleId), new DomainRoleClosureRestriction(LeadRolePathHasNote.LeadRolePathDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.Container);
+			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(LeadRolePathHasNote.LeadRolePathDomainRoleId), new DomainRoleClosureRestriction(LeadRolePathHasNote.NoteDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ContainedPart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(LeadRolePathHasObjectUnifier.ObjectUnifierDomainRoleId), new DomainRoleClosureRestriction(LeadRolePathHasObjectUnifier.LeadRolePathDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.Container);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(LeadRolePathHasObjectUnifier.LeadRolePathDomainRoleId), new DomainRoleClosureRestriction(LeadRolePathHasObjectUnifier.ObjectUnifierDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ContainedPart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(NameGeneratorRefinesNameGenerator.RefinementDomainRoleId), new DomainRoleClosureRestriction(NameGeneratorRefinesNameGenerator.ParentDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.Container);
@@ -243,6 +245,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			closureManager.AddIgnoredProperty(FactType.NoteTextDomainPropertyId);
 			closureManager.AddIgnoredProperty(FactTypeInstance.NameDomainPropertyId);
 			closureManager.AddIgnoredProperty(FactTypeInstance.NameChangedDomainPropertyId);
+			closureManager.AddIgnoredProperty(LeadRolePath.NoteTextDomainPropertyId);
 			closureManager.AddIgnoredProperty(ObjectType.DataTypeDisplayDomainPropertyId);
 			closureManager.AddIgnoredProperty(ObjectType.DataTypeLengthDomainPropertyId);
 			closureManager.AddIgnoredProperty(ObjectType.DataTypeLengthDomainPropertyId);
@@ -547,6 +550,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			ElementGrouping parentElementGrouping;
 			FactType parentFactType;
+			LeadRolePath parentLeadRolePath;
 			ObjectType parentObjectType;
 			ORMModel parentORMModel;
 			SetComparisonConstraint parentSetComparisonConstraint;
@@ -569,6 +573,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				FactType otherParentFactType;
 				Note otherNote;
 				if (null != (otherParentFactType = CopyMergeUtility.GetEquivalentElement(parentFactType, foreignStore, elementTracker)) && null != (otherNote = otherParentFactType.Note))
+				{
+					elementTracker.AddEquivalentElement(this, otherNote);
+					return true;
+				}
+			}
+			else if (null != (parentLeadRolePath = this.RolePath))
+			{
+				// Embedded through the LeadRolePathHasNote relationship
+				LeadRolePath otherParentLeadRolePath;
+				Note otherNote;
+				if (null != (otherParentLeadRolePath = CopyMergeUtility.GetEquivalentElement(parentLeadRolePath, foreignStore, elementTracker)) && null != (otherNote = otherParentLeadRolePath.Note))
 				{
 					elementTracker.AddEquivalentElement(this, otherNote);
 					return true;

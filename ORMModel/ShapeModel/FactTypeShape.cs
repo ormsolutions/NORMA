@@ -5084,8 +5084,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <param name="nestingType">The nestingType to change. If this is null, then use the NestingType from the link argument.</param>
 		private static void ProcessObjectificationAdd(Objectification link, FactType nestedFactType, ObjectType nestingType)
 		{
-			if (link.IsDeleted ||
-				MergeContext.HasContext(link.Store.TransactionManager.CurrentTransaction.TopLevelTransaction))
+			if (link.IsDeleted)
 			{
 				return;
 			}
@@ -5245,7 +5244,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 #endif // TRACKNEWSHAPES
 
 			// Make sure we have name shapes for all fact type shapes
-			if (!hasShape)
+			if (!hasShape &&
+				ORMShapeDomainModel.AllowElementFixup(nestedFactType))
 			{
 				Diagram.FixUpDiagram(nestedFactType.Model, nestedFactType);
 				missingNameShapes = true;
@@ -5735,16 +5735,20 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 			else
 			{
-				Diagram.FixUpDiagram(role.FactType, role);
+				FactType factType = role.FactType;
+				if (ORMShapeDomainModel.AllowElementFixup(factType))
+				{
+					Diagram.FixUpDiagram(factType, role);
+				}
 				if (OptionsPage.CurrentRoleNameDisplay == RoleNameDisplay.Off)
 				{
-					foreach (PresentationElement element in PresentationViewsSubject.GetPresentation(role.FactType))
+					foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
 					{
-						FactTypeShape fts = element as FactTypeShape;
-						if (fts != null
-							&& fts.DisplayRoleNames == DisplayRoleNames.UserDefault)
+						FactTypeShape factTypeShape;
+						if (null != (factTypeShape = pel as FactTypeShape) &&
+							factTypeShape.DisplayRoleNames == DisplayRoleNames.UserDefault)
 						{
-							RoleNameShape.SetRoleNameDisplay(role.FactType);
+							RoleNameShape.SetRoleNameDisplay(factType);
 						}
 					}
 				}

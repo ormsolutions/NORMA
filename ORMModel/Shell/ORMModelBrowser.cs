@@ -803,8 +803,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							visibleCommands |= ORMDesignerCommands.DiagramList;
 							enabledCommands |= ORMDesignerCommands.DiagramList;
 						}
-						// UNDONE: NestedGrouping
-						if (selectedParts.ReferenceElement == null && !(selectedElement is ElementGrouping) && !(selectedElement is ElementGroupingType))
+						if (selectedParts.ReferenceElement == null &&
+							!(selectedElement is ElementGrouping) && // UNDONE: NestedGrouping
+							!(selectedElement is ElementGroupingType) &&
+							!(selectedElement is ElementLink)) // UNDONE: ElementLinkInGroup
 						{
 							visibleCommands |= ORMDesignerCommands.IncludeInNewGroup | ORMDesignerCommands.IncludeInGroupList | ORMDesignerCommands.DeleteFromGroupList;
 							enabledCommands |= ORMDesignerCommands.IncludeInNewGroup | ORMDesignerCommands.IncludeInGroupList | ORMDesignerCommands.DeleteFromGroupList;

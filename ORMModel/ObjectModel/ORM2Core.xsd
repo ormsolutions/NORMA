@@ -100,7 +100,7 @@
 	</xs:complexType>
 	<xs:complexType name="DefinitionType">
 		<xs:annotation>
-			<xs:documentation>An information description for the containing element.</xs:documentation>
+			<xs:documentation>An informal description for the containing element.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
 			<xs:element name="Text" type="xs:string" minOccurs="0">
@@ -1540,6 +1540,7 @@
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
+					<xs:element name="Notes" type="NotesType" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>

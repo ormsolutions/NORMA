@@ -1852,7 +1852,8 @@ namespace ORMSolutions.ORMArchitect.Framework
 				return false;
 			}
 
-			DomainRelationshipInfo sourceRelationshipInfo = (DomainRelationshipInfo)closureLink.Element.GetDomainClass();
+			ModelElement basedOnElement = closureLink.Element;
+			DomainRelationshipInfo sourceRelationshipInfo = (DomainRelationshipInfo)basedOnElement.GetDomainClass();
 			DomainRelationshipInfo targetRelationshipInfo = targetDataDirectory.FindDomainRelationship(sourceRelationshipInfo.Id);
 			if (targetRelationshipInfo == null)
 			{
@@ -1897,7 +1898,6 @@ namespace ORMSolutions.ORMArchitect.Framework
 						{
 							break;
 						}
-						// UNDONE: COPYMERGE Add order tracker for role player changes
 						newStoreTargetRoleInfo.SetRolePlayer(testLink, newTargetElement);
 						break;
 					}
@@ -1919,7 +1919,6 @@ namespace ORMSolutions.ORMArchitect.Framework
 						{
 							break;
 						}
-						// UNDONE: COPYMERGE Add order tracker for role player changes
 						newStoreSourceRoleInfo.SetRolePlayer(testLink, newSourceElement);
 						break;
 					}
@@ -1943,7 +1942,8 @@ namespace ORMSolutions.ORMArchitect.Framework
 				}
 			}
 
-			ModelElement basedOnElement = closureLink.Element;
+			Guid sourceId = sourceRoleInfo.Id;
+			Guid targetId = targetRoleInfo.Id;
 			CopiedElementType copyType;
 			if (copiedLink != null)
 			{
@@ -1954,8 +1954,6 @@ namespace ORMSolutions.ORMArchitect.Framework
 			{
 				PropertyAssignment[] propertyAssignments = GetCopiedPropertyAssignments(basedOnElement, copiedLink);
 				copyType = CopiedElementType.New;
-				Guid sourceId = sourceRoleInfo.Id;
-				Guid targetId = targetRoleInfo.Id;
 				copiedLink = propertyAssignments != null ?
 					targetElementFactory.CreateElementLink(
 						targetRelationshipInfo,
@@ -1970,12 +1968,12 @@ namespace ORMSolutions.ORMArchitect.Framework
 				{
 					return false;
 				}
-				Dictionary<Guid, MergeIntegrationOrder> orderedRoles = myOrderedRoles;
-				if (orderedRoles != null)
-				{
-					TrackOrdering(orderedRoles, sourceId, sourceElement, newSourceElement, ref requiresOrdering);
-					TrackOrdering(orderedRoles, targetId, targetElement, newTargetElement, ref requiresOrdering);
-				}
+			}
+			Dictionary<Guid, MergeIntegrationOrder> orderedRoles = myOrderedRoles;
+			if (orderedRoles != null)
+			{
+				TrackOrdering(orderedRoles, sourceId, sourceElement, newSourceElement, ref requiresOrdering);
+				TrackOrdering(orderedRoles, targetId, targetElement, newTargetElement, ref requiresOrdering);
 			}
 			resolvedElements[basedOnElement.Id] = new CopiedElement(copiedLink, copyType);
 			return true;

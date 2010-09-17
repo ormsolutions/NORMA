@@ -955,8 +955,19 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			else if (!(presentationElement is Diagram))
 			{
-				visibleCommands |= ORMDesignerCommands.IncludeInNewGroup | ORMDesignerCommands.IncludeInGroupList | ORMDesignerCommands.DeleteFromGroupList;
-				enabledCommands |= ORMDesignerCommands.IncludeInNewGroup | ORMDesignerCommands.IncludeInGroupList | ORMDesignerCommands.DeleteFromGroupList;
+				if (element is ElementLink)
+				{
+					// UNDONE: ElementLinkInGroup If a link is serialized with an identifier then we can add it. Otherwise,
+					// adding the link will save with a bogus reference. We could extract the serialization
+					// info from the role players (on this and any base links) to determine this, but this
+					// is a lot of work given that we have no current use case for it.
+					toleratedCommands |= ORMDesignerCommands.IncludeInNewGroup | ORMDesignerCommands.IncludeInGroupList | ORMDesignerCommands.DeleteFromGroupList;
+				}
+				else
+				{
+					visibleCommands |= ORMDesignerCommands.IncludeInNewGroup | ORMDesignerCommands.IncludeInGroupList | ORMDesignerCommands.DeleteFromGroupList;
+					enabledCommands |= ORMDesignerCommands.IncludeInNewGroup | ORMDesignerCommands.IncludeInGroupList | ORMDesignerCommands.DeleteFromGroupList;
+				}
 			}
 			// Turn on standard commands for all selections
 			visibleCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.CopyImage | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList | ORMDesignerCommands.ReportGeneratorList | ORMDesignerCommands.FreeFormCommandList | ORMDesignerCommands.SelectInModelBrowser;
@@ -1390,13 +1401,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								for (int i = 0; i < selectedElementCount; ++i)
 								{
 									ModelElement normalizedElement = EditorUtility.ResolveContextInstance(selectedElementList[i], false) as ModelElement;
-									if (normalizedElement != null)
+									if (normalizedElement != null &&
+										!(normalizedElement is ElementLink)) // UNDONE: ElementLinkInGroup
 									{
 										normalizedElements[normalizedIndex] = normalizedElement;
 										++normalizedIndex;
 									}
 								}
-								selectedElementCount -= selectedElementCount - normalizedIndex;
+								selectedElementCount = normalizedIndex;
 								if (selectedElementCount == 0)
 								{
 									cachedGroupings = new ElementGrouping[0];
@@ -1478,13 +1490,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								for (int i = 0; i < selectedElementCount; ++i)
 								{
 									ModelElement normalizedElement = EditorUtility.ResolveContextInstance(selectedElementList[i], false) as ModelElement;
-									if (normalizedElement != null)
+									if (normalizedElement != null &&
+										!(normalizedElement is ElementLink)) // UNDONE: ElementLinkInGroup
 									{
 										normalizedElements[normalizedIndex] = normalizedElement;
 										++normalizedIndex;
 									}
 								}
-								selectedElementCount -= selectedElementCount - normalizedIndex;
+								selectedElementCount = normalizedIndex;
 								if (selectedElementCount == 0)
 								{
 									cachedGroupings = new ElementGrouping[0];
@@ -3760,7 +3773,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					foreach (object element in view.SelectedElements)
 					{
 						ModelElement normalizedElement = EditorUtility.ResolveContextInstance(element, false) as ModelElement;
-						if (null != normalizedElement)
+						if (null != normalizedElement &&
+							!(normalizedElement is ElementLink)) // UNDONE: ElementLinkInGroup
 						{
 							new GroupingElementInclusion(grouping, normalizedElement);
 						}
@@ -3792,6 +3806,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					{
 						ModelElement normalizedElement = EditorUtility.ResolveContextInstance(element, false) as ModelElement;
 						if (normalizedElement != null &&
+							!(normalizedElement is ElementLink) && // UNDONE: ElementLinkInGroup
 							grouping.GetElementInclusion(normalizedElement, groupingTypes) == GroupingMembershipInclusion.AddAllowed)
 						{
 							GroupingElementExclusion exclusion = GroupingElementExclusion.GetLink(grouping, normalizedElement);

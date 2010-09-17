@@ -25706,6 +25706,265 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship LeadRolePathHasNote
+	/// Description for ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("1b654748-7209-4bb8-866d-d2593cd95a27")]
+	public partial class LeadRolePathHasNote : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// LeadRolePathHasNote domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x1b654748, 0x7209, 0x4bb8, 0x86, 0x6d, 0xd2, 0x59, 0x3c, 0xd9, 0x5a, 0x27);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a LeadRolePathHasNote link in the same Partition as the given LeadRolePath
+		/// </summary>
+		/// <param name="source">LeadRolePath to use as the source of the relationship.</param>
+		/// <param name="target">Note to use as the target of the relationship.</param>
+		public LeadRolePathHasNote(LeadRolePath source, Note target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(LeadRolePathHasNote.LeadRolePathDomainRoleId, source), new DslModeling::RoleAssignment(LeadRolePathHasNote.NoteDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public LeadRolePathHasNote(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public LeadRolePathHasNote(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public LeadRolePathHasNote(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public LeadRolePathHasNote(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region LeadRolePath domain role code
+		
+		/// <summary>
+		/// LeadRolePath domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid LeadRolePathDomainRoleId = new global::System.Guid(0x73b90abc, 0xb3e2, 0x4d13, 0x9a, 0x73, 0x5f, 0xb8, 0x05, 0x12, 0x23, 0x3e);
+		
+		/// <summary>
+		/// DomainRole LeadRolePath
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote.LeadRolePath
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote/LeadRolePath.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote/LeadRolePath.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Note", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote/LeadRolePath.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("73b90abc-b3e2-4d13-9a73-5fb80512233e")]
+		public virtual LeadRolePath LeadRolePath
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (LeadRolePath)DslModeling::DomainRoleInfo.GetRolePlayer(this, LeadRolePathDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, LeadRolePathDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access RolePath of a Note
+		/// <summary>
+		/// Gets RolePath.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static LeadRolePath GetRolePath(Note element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, NoteDomainRoleId) as LeadRolePath;
+		}
+		
+		/// <summary>
+		/// Sets RolePath.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetRolePath(Note element, LeadRolePath newLeadRolePath)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, NoteDomainRoleId, newLeadRolePath);
+		}
+		#endregion
+		#region Note domain role code
+		
+		/// <summary>
+		/// Note domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid NoteDomainRoleId = new global::System.Guid(0x0313e1b6, 0x9508, 0x4715, 0xbc, 0xf3, 0xc7, 0x9e, 0x3a, 0x03, 0x47, 0xb0);
+		
+		/// <summary>
+		/// DomainRole Note
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote.Note
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote/Note.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote/Note.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "RolePath", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote/Note.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("0313e1b6-9508-4715-bcf3-c79e3a0347b0")]
+		public virtual Note Note
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (Note)DslModeling::DomainRoleInfo.GetRolePlayer(this, NoteDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, NoteDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Note of a LeadRolePath
+		/// <summary>
+		/// Gets Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static Note GetNote(LeadRolePath element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, LeadRolePathDomainRoleId) as Note;
+		}
+		
+		/// <summary>
+		/// Sets Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetNote(LeadRolePath element, Note newNote)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, LeadRolePathDomainRoleId, newNote);
+		}
+		#endregion
+		#region LeadRolePath link accessor
+		/// <summary>
+		/// Get the LeadRolePathHasNote link to a LeadRolePath.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote GetLinkToNote (global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath leadRolePathInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote>(leadRolePathInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote.LeadRolePathDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of LeadRolePath not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region Note link accessor
+		/// <summary>
+		/// Get the LeadRolePathHasNote link to a Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote GetLinkToRolePath (global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note noteInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote>(noteInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote.NoteDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Note not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region LeadRolePathHasNote instance accessors
+		
+		/// <summary>
+		/// Get any LeadRolePathHasNote links between a given LeadRolePath and a Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote.LeadRolePathDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote link in links )
+			{
+				if ( target.Equals(link.Note) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one LeadRolePathHasNote link between a given LeadRolePathand a Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote.LeadRolePathDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote link in links )
+			{
+				if ( target.Equals(link.Note) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship ModelHasModelNote
 	/// Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasModelNote
 	/// </summary>

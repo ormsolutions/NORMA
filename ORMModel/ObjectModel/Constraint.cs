@@ -7101,10 +7101,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						Role role = roles[i];
 						ObjectType objectType;
 						UniquenessConstraint pid;
+						FactType factType;
 						if (null != (objectType = role.RolePlayer) &&
 							null != (pid = objectType.PreferredIdentifier) &&
 							!pid.IsInternal &&
-							pid.FactTypeCollection.Contains(role.FactType))
+							null != (factType = role.FactType) &&
+							pid.FactTypeCollection.Contains(factType))
 						{
 							objectType.ValidateMandatoryRolesForPreferredIdentifier();
 						}

@@ -12159,6 +12159,132 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 		}
 		#endregion
+		#region NoteText domain property code
+		
+		/// <summary>
+		/// NoteText domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid NoteTextDomainPropertyId = new global::System.Guid(0xd6949829, 0xf14b, 0x467f, 0xab, 0x02, 0x04, 0x76, 0x19, 0x57, 0x81, 0x1c);
+		
+		/// <summary>
+		/// Gets or sets the value of NoteText domain property.
+		/// A note to associate with this path.
+		///     To insert new lines, use Control-Enter in the dropdown editor, or open the
+		/// 'ORM Notes Editor' tool window.
+		/// </summary>
+		[global::System.ComponentModel.Editor(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.MultilineTextEditor<global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note>), typeof(global::System.Drawing.Design.UITypeEditor))]
+		[global::System.ComponentModel.MergableProperty(false)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath/NoteText.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath/NoteText.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("d6949829-f14b-467f-ab02-04761957811c")]
+		public global::System.String NoteText
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return NoteTextPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				NoteTextPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the LeadRolePath.NoteText domain property.
+		/// </summary>
+		internal sealed partial class NoteTextPropertyHandler : DslModeling::DomainPropertyValueHandler<LeadRolePath, global::System.String>
+		{
+			private NoteTextPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the LeadRolePath.NoteText domain property value handler.
+			/// </summary>
+			public static readonly NoteTextPropertyHandler Instance = new NoteTextPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the LeadRolePath.NoteText domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return NoteTextDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(LeadRolePath element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for NoteText because its Kind is
+				// set to CustomStorage. Please provide the GetNoteTextValue()
+				// method on the domain class.
+				return element.GetNoteTextValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(LeadRolePath element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for NoteText because its Kind is
+					// set to CustomStorage. Please provide the SetNoteTextValue()
+					// method on the domain class.
+					element.SetNoteTextValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region Note opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Note.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote.LeadRolePath
+		/// </summary>
+		public virtual Note Note
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote.LeadRolePathDomainRoleId) as Note;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote.NoteDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote.NoteDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote.LeadRolePathDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
 		#region PathOwner opposite domain role accessor
 		/// <summary>
 		/// Gets or sets PathOwner.
@@ -23678,6 +23804,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				else
 				{
 					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasPrimaryNote.NoteDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region RolePath opposite domain role accessor
+		/// <summary>
+		/// Gets or sets RolePath.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote.Note
+		/// </summary>
+		public virtual LeadRolePath RolePath
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote.NoteDomainRoleId) as LeadRolePath;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote.LeadRolePathDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote.LeadRolePathDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasNote.NoteDomainRoleId, value);
 				}
 			}
 		}

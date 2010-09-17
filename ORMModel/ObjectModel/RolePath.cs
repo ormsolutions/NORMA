@@ -584,6 +584,28 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // Base overrides
+		#region CustomStorage Handlers
+		private string GetNoteTextValue()
+		{
+			Note currentNote = Note;
+			return (currentNote != null) ? currentNote.Text : String.Empty;
+		}
+		private void SetNoteTextValue(string newValue)
+		{
+			if (!Store.InUndoRedoOrRollback)
+			{
+				Note note = Note;
+				if (note != null)
+				{
+					note.Text = newValue;
+				}
+				else if (!string.IsNullOrEmpty(newValue))
+				{
+					Note = new Note(Store, new PropertyAssignment(Note.TextDomainPropertyId, newValue));
+				}
+			}
+		}
+		#endregion // CustomStorage Handlers
 		#region IHasIndirectModelErrorOwner Implementation
 		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
 		/// <summary>

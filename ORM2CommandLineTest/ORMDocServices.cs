@@ -51,6 +51,14 @@ namespace ORMSolutions.ORMArchitectSDK.TestEngine
 				// This is implemented on a per-store basis, we don't implement it on the document services
 				return null;
 			}
+			ICopyClosureManager IFrameworkServices.CopyClosureManager
+			{
+				get
+				{
+					// This is implemented on a per-store basis, we don't implement it on the document services
+					return null;
+				}
+			}
 			IORMModelErrorActivationService IORMToolServices.ModelErrorActivationService
 			{
 				get

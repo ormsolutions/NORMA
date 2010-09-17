@@ -1147,6 +1147,9 @@
 		<se:Container Name="Conditions">
 			<se:Link RelationshipName="LeadRolePathSatisfiesCalculatedCondition" RoleName="CalculatedCondition"/>
 		</se:Container>
+		<se:Container Name="Notes">
+			<se:Embed RelationshipName="LeadRolePathHasNote" RoleName="Note"/>
+		</se:Container>
 		<se:Link RelationshipName="LeadRolePathSatisfiesCalculatedCondition" RoleName="CalculatedCondition" Name="CalculatedCondition"/>
 		<se:Link RelationshipName="FactTypeDerivationProjection" RoleName="DerivationRule" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ConstraintRoleSequenceJoinPathProjection" RoleName="JoinPath" WriteStyle="NotWritten"/>

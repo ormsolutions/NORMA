@@ -98,13 +98,24 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		public override void OnDragOver(DiagramDragEventArgs e)
 		{
-			string[] dataFormats = e.Data.GetFormats();
+			IDataObject data = e.Data;
+			string[] dataFormats = data.GetFormats();
+			ElementGrouping grouping;
 			if (Array.IndexOf(dataFormats, typeof(ObjectType).FullName) >= 0 ||
 				Array.IndexOf(dataFormats, typeof(FactType).FullName) >= 0 ||
 				Array.IndexOf(dataFormats, typeof(SetComparisonConstraint).FullName) >= 0 ||
 				Array.IndexOf(dataFormats, typeof(SetConstraint).FullName) >= 0 ||
 				Array.IndexOf(dataFormats, typeof(ModelNote).FullName) >= 0)
 			{
+				e.Effect = DragDropEffects.All;
+				e.Handled = true;
+			}
+			else if (Array.IndexOf(dataFormats, typeof(ElementGrouping).FullName) >= 0 &&
+				null != (grouping = data.GetData(typeof(ElementGrouping)) as ElementGrouping) &&
+				grouping.Store != Store)
+			{
+				// Allow a group to be dragged across stores. This does not create shapes, it
+				// just duplicates all of the elements.
 				e.Effect = DragDropEffects.All;
 				e.Handled = true;
 			}
@@ -258,7 +269,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			SetConstraint setConstraint = null;
 			ModelNote modelNote = null;
 			ModelElement element = null;
+			ElementGrouping grouping = null;
 			LinkedElementCollection<FactType> verifyFactTypeList = null;
+			Store store = Store;
 			if (null != (objectType = (dataObject == null) ? elementToPlace as ObjectType : dataObject.GetData(typeof(ObjectType)) as ObjectType))
 			{
 				factType = objectType.NestedFactType;
@@ -294,25 +307,37 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				element = modelNote;
 			}
+			else if (null != (grouping = (dataObject == null) ? elementToPlace as ElementGrouping : dataObject.GetData(typeof(ElementGrouping)) as ElementGrouping))
+			{
+				if (store != grouping.Store)
+				{
+					// Support cross-store group drag. Shapes are not created.
+					element = grouping;
+				}
+			}
 			if (verifyFactTypeList != null)
 			{
-				// UNDONE: COPYMERGE This will need to be checked across stores. Consider calling VerifyCorrespondingFactTypes.
-				int factCount = verifyFactTypeList.Count;
-				for (int i = 0; i < factCount; ++i)
+				if (!VerifyCorrespondingFactTypes(verifyFactTypeList, null))
 				{
-					if (!ElementHasShape(verifyFactTypeList[i]))
-					{
-						element = null;
-						break;
-					}
+					element = null;
 				}
 			}
 			if (element != null)
 			{
+				Store sourceStore = element.Store;
+				IDictionary<Guid, IClosureElement> copyClosure = null;
+				ICopyClosureManager closureManager = null;
+				bool crossStoreCopy;
+				if ((crossStoreCopy = store != sourceStore) &&
+					(null == (closureManager = ((IFrameworkServices)sourceStore).CopyClosureManager) ||
+					null == (copyClosure = closureManager.GetCopyClosure(new ModelElement[] { element }))))
+				{
+					return false;
+				}
 				retVal = true;
 				bool storeChange = false;
 
-				using (Transaction transaction = Store.TransactionManager.BeginTransaction(ResourceStrings.DropShapeTransactionName))
+				using (Transaction transaction = store.TransactionManager.BeginTransaction(ResourceStrings.DropShapeTransactionName))
 				{
 					bool clearContext;
 					if (clearContext = !elementPosition.IsEmpty)
@@ -323,6 +348,33 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					if (placementOptions == ORMPlacementOption.AllowMultipleShapes)
 					{
 						topLevelContextInfo.Add(MultiShapeUtility.AllowMultipleShapes, null);
+					}
+					IDictionary<Guid, ModelElement> integratedElements = null;
+					if (crossStoreCopy)
+					{
+						// Integrate elements and translate to the target store
+						ORMModel model = (ORMModel)ModelElement;
+						CopyClosureIntegrationResult integrationResult = closureManager.IntegrateCopyClosure(copyClosure, sourceStore, store, new ModelElement[] { model }, true);
+						integratedElements = integrationResult.CopiedElements;
+
+						// Translate the element to the equivalent element in the other store
+						if (!integratedElements.TryGetValue(element.Id, out element))
+						{
+							return false; // Transaction rolls back on dispose
+						}
+
+						// Track missing references for a message after integration is complete
+						Guid[] missingExtensions = integrationResult.MissingExtensionModels;
+						if (missingExtensions != null)
+						{
+							store.PropertyBag["ORMDiagram.MergeMissingExtensions"] = missingExtensions;
+						}
+
+						// Add some context information for view fixup
+						ElementGroup elementGroup = new ElementGroup(store);
+						elementGroup.Add(element);
+						elementGroup.MarkAsRoot(element);
+						DesignSurfaceMergeContext.Set(transaction, model, elementGroup);
 					}
 					ShapeElement shapeElement = FixUpLocalDiagram(element);
 					if (clearContext)
@@ -338,23 +390,23 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						}
 						if (factType != null)
 						{
-							FixupFactType(factType, (FactTypeShape)shapeElement, false);
+							FixupFactType(crossStoreCopy ? (FactType)element : factType, (FactTypeShape)shapeElement, false);
 						}
 						else if (objectType != null)
 						{
-							FixupObjectType(objectType, shapeElement as ObjectTypeShape, false);
+							FixupObjectType(crossStoreCopy ? (ObjectType)element : objectType, shapeElement as ObjectTypeShape, false);
 						}
 						else if (setConstraint != null)
 						{
-							FixupConstraint(setConstraint, (ExternalConstraintShape)shapeElement);
+							FixupConstraint(crossStoreCopy ? (SetConstraint)element : setConstraint, (ExternalConstraintShape)shapeElement);
 						}
 						else if (setComparisonConstraint != null)
 						{
-							FixupConstraint(setComparisonConstraint, (ExternalConstraintShape)shapeElement);
+							FixupConstraint(crossStoreCopy ? (SetComparisonConstraint)element : setComparisonConstraint, (ExternalConstraintShape)shapeElement);
 						}
 						else if (modelNote != null)
 						{
-							FixupModelNote(modelNote, (ModelNoteShape)shapeElement);
+							FixupModelNote(crossStoreCopy ? (ModelNote)element : modelNote, (ModelNoteShape)shapeElement);
 						}
 						
 						// Perform additional fixup
@@ -2294,7 +2346,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					}
 				}
 			}
-			if (newTracker && elementTracker != null)
+			if (newTracker &&
+				elementTracker != null &&
+				elementGroupPrototype != null)
 			{
 				elementGroupPrototype.TargetContext.ContextInfo["EquivalentElementTracker"] = elementTracker;
 			}
@@ -2652,7 +2706,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							Guid[] missingExtensions = integrationResult.MissingExtensionModels;
 							if (missingExtensions != null)
 							{
-								Store.PropertyBag["ORMDiagram.MergeMissingExtensions"] = missingExtensions;
+								targetStore.PropertyBag["ORMDiagram.MergeMissingExtensions"] = missingExtensions;
 							}
 						}
 					}

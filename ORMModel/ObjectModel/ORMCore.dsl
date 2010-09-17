@@ -1133,6 +1133,26 @@
 			<BaseClass>
 				<DomainClassMoniker Name="RolePath"/>
 			</BaseClass>
+			<Properties>
+				<DomainProperty Name="NoteText" DefaultValue="" DisplayName="Note" Description="A note to associate with this path.&#xd;&#xa;    To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Notes Editor' tool window." Id="D6949829-F14B-467F-AB02-04761957811C" Kind="CustomStorage">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.Editor">
+							<Parameters>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.MultilineTextEditor&lt;global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note&gt;)"/>
+								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
+							</Parameters>
+						</ClrAttribute>
+						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
+							<Parameters>
+								<AttributeParameter Value="false"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
 		</DomainClass>
 		<DomainClass Name="RoleSubPath" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="AA7B4894-C286-45C3-A95F-09D04E286038" DisplayName="RoleSubPath" Description="A branched path split from the end of another path.">
 			<BaseClass>
@@ -4271,6 +4291,26 @@
 			</Source>
 			<Target>
 				<DomainRole Name="Note" PropertyName="PrimaryForModel" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Note" Id="9F33E7CB-A993-451F-A60E-2BE8E21B9AC3">
+					<RolePlayer>
+						<DomainClassMoniker Name="Note"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="LeadRolePathHasNote" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="1B654748-7209-4BB8-866D-D2593CD95A27">
+			<!--<BaseRelationship>
+				<DomainRelationshipMoniker Name="ORMElementLink"/>
+			</BaseRelationship>-->
+			<Source>
+				<DomainRole Name="LeadRolePath" PropertyName="Note" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="RolePath" Id="73B90ABC-B3E2-4D13-9A73-5FB80512233E">
+					<RolePlayer>
+						<DomainClassMoniker Name="LeadRolePath"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Note" PropertyName="RolePath" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Note" Id="0313E1B6-9508-4715-BCF3-C79E3A0347B0">
 					<RolePlayer>
 						<DomainClassMoniker Name="Note"/>
 					</RolePlayer>

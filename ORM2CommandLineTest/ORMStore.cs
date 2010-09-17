@@ -127,6 +127,20 @@ namespace ORMSolutions.ORMArchitectSDK.TestEngine
 				}
 				return cache.GetTypedDomainModelProviders<T>();
 			}
+			private CopyClosureManager myCopyClosureManager;
+			ICopyClosureManager IFrameworkServices.CopyClosureManager
+			{
+				get
+				{
+					// Implemented on a per-store basis, do not defer to myServices
+					CopyClosureManager retVal = myCopyClosureManager;
+					if (retVal == null)
+					{
+						myCopyClosureManager = retVal = new CopyClosureManager(this);
+					}
+					return retVal;
+				}
+			}
 			private ORMModelErrorActivationService myActivationService;
 			IORMModelErrorActivationService IORMToolServices.ModelErrorActivationService
 			{

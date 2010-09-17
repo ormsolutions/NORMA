@@ -3967,10 +3967,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						Role role = roles[i];
 						UniquenessConstraint pid;
+						FactType factType;
 						if (null != (objectType = role.RolePlayer) &&
 							null != (pid = objectType.PreferredIdentifier) &&
 							!pid.IsInternal &&
-							pid.FactTypeCollection.Contains(role.FactType))
+							null != (factType = role.FactType) &&
+							pid.FactTypeCollection.Contains(factType))
 						{
 							FrameworkDomainModel.DelayValidateElement(objectType, DelayValidatePreferredIdentifierRequiresMandatoryError);
 						}
@@ -4020,13 +4022,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						Role role = roles[i];
 						UniquenessConstraint pid;
+						FactType factType;
 						if (null != (objectType = role.RolePlayer) && !objectType.IsDeleting)
 						{
 							FrameworkDomainModel.DelayValidateElement(objectType, DelayValidateIsIndependent);
 							if (null != (pid = objectType.PreferredIdentifier) &&
 								!pid.IsDeleting &&
 								!pid.IsInternal &&
-								pid.FactTypeCollection.Contains(role.FactType))
+								null != (factType = role.FactType) &&
+								pid.FactTypeCollection.Contains(factType))
 							{
 								FrameworkDomainModel.DelayValidateElement(objectType, DelayValidatePreferredIdentifierRequiresMandatoryError);
 							}

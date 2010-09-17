@@ -44,7 +44,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			ObjectType objectType = link.ObjectType;
 			if (!element.IsDeleted &&
 				(objectType = (link = (ModelHasObjectType)element).ObjectType).NestedFactType == null && // Otherwise, fix up with the fact type
-				ElementRequiresFixup(objectType))
+				AllowElementFixup(objectType))
 			{
 				Diagram.FixUpDiagram(link.Model, objectType);
 			}
@@ -121,7 +121,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 
 						if (!parentDiagram.ElementHasShape(factType))
 						{
-							Diagram.FixUpDiagram(objectType.Model, factType);
+							if (AllowElementFixup(factType))
+							{
+								Diagram.FixUpDiagram(objectType.Model, factType);
+							}
 
 							foreach (ShapeElement shapeOnDiagram in MultiShapeUtility.FindAllShapesForElement<ShapeElement>(parentDiagram, factType))
 							{
@@ -143,7 +146,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						{
 							if (!parentDiagram.ElementHasShape(valueType))
 							{
-								Diagram.FixUpDiagram(objectType.Model, valueType);
+								if (AllowElementFixup(valueType))
+								{
+									Diagram.FixUpDiagram(objectType.Model, valueType);
+								}
 
 								foreach (ShapeElement shapeOnDiagram in MultiShapeUtility.FindAllShapesForElement<ShapeElement>(parentDiagram, valueType))
 								{
@@ -189,7 +195,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							}
 							else
 							{
-								FixupValueTypeValueConstraintLink(link, null);
+								FixupRoleValueConstraintLinkForIdentifiedEntityType(link, null);
 								RemoveShapesFromDiagram(link, parentDiagram);
 							}
 						}
@@ -250,7 +256,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				ModelHasFactType link = (ModelHasFactType)e.ModelElement;
 				FactType factType = link.FactType;
-				if (ElementRequiresFixup(factType))
+				if (AllowElementFixup(factType))
 				{
 					Diagram.FixUpDiagram(link.Model, factType);
 				}
@@ -288,7 +294,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			ModelHasSetComparisonConstraint link = e.ModelElement as ModelHasSetComparisonConstraint;
 			if (link != null)
 			{
-				Diagram.FixUpDiagram(link.Model, link.SetComparisonConstraint);
+				SetComparisonConstraint constraint = link.SetComparisonConstraint;
+				if (AllowElementFixup(constraint))
+				{
+					Diagram.FixUpDiagram(link.Model, constraint);
+				}
 			}
 		}
 		#endregion // SetComparisonConstraintAddedRule
@@ -305,7 +315,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				SetConstraint constraint = link.SetConstraint;
 				// Shapes are never added for internal constraints, so there is no point in attempting a fixup
 				if (!((IConstraint)constraint).ConstraintIsInternal &&
-					ElementRequiresFixup(constraint))
+					AllowElementFixup(constraint))
 				{
 					Diagram.FixUpDiagram(link.Model, constraint);
 				}
@@ -613,29 +623,21 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				null != (model = (rolePlayer = link.RolePlayer).Model))
 			{
 				FactType nestedFact;
-				bool continueFixup = false;
 				if (FactTypeShape.ShouldDrawObjectification(nestedFact = rolePlayer.NestedFactType))
 				{
-					if (ElementRequiresFixup(nestedFact))
+					if (AllowElementFixup(nestedFact))
 					{
 						Diagram.FixUpDiagram(model, nestedFact);
-						Diagram.FixUpDiagram(nestedFact, rolePlayer);
-						continueFixup = true;
 					}
+					Diagram.FixUpDiagram(nestedFact, rolePlayer);
 				}
-				else if (ElementRequiresFixup(rolePlayer))
+				else if (AllowElementFixup(rolePlayer))
 				{
 					Diagram.FixUpDiagram(model, rolePlayer);
-					continueFixup = true;
 				}
-				if (ElementRequiresFixup(associatedFact))
+				if (AllowElementFixup(associatedFact))
 				{
 					Diagram.FixUpDiagram(model, associatedFact);
-					continueFixup = true;
-				}
-				if (!continueFixup)
-				{
-					return;
 				}
 
 				object AllowMultipleShapes;
@@ -687,7 +689,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				}
 				else
 				{
-					FixupValueTypeValueConstraintLink(link, null);
+					FixupRoleValueConstraintLinkForIdentifiedEntityType(link, null);
 				}
 			}
 		}
@@ -734,7 +736,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				ORMModel model = factType.Model;
 				if (model != null)
 				{
-					Diagram.FixUpDiagram(model, factType);
+					if (AllowElementFixup(factType))
+					{
+						Diagram.FixUpDiagram(model, factType);
+					}
 					Diagram.FixUpDiagram(factType, roleValueConstraint);
 
 					object AllowMultipleShapes;
@@ -814,21 +819,17 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			// Make sure the object type, fact type, and link
 			// are displayed on the diagram
-			if (notifyAdded == null &&
-				MergeContext.HasContext(link.Store.TransactionManager.CurrentTransaction.TopLevelTransaction))
+			ValueTypeValueConstraint valueConstraint = link.ValueConstraint;
+			ObjectType objectType;
+			ORMModel model;
+			if (null != (objectType = valueConstraint.ValueType) &&
+				null != (model = objectType.Model))
 			{
-				return;
-			}
-			ValueTypeValueConstraint valueTypeValueConstraint = link.ValueConstraint;
-			ObjectType objectType = valueTypeValueConstraint.ValueType;
-			if (objectType != null)
-			{
-				ORMModel model = objectType.Model;
-				if (model != null)
+				if (AllowElementFixup(objectType))
 				{
 					Diagram.FixUpDiagram(model, objectType);
-					Diagram.FixUpDiagram(objectType, valueTypeValueConstraint);
 				}
+				Diagram.FixUpDiagram(objectType, valueConstraint);
 			}
 		}
 		/// <summary>
@@ -836,55 +837,46 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		/// <param name="link">A RoleHasValueConstraint element</param>
 		/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
-		private static void FixupValueTypeValueConstraintLink(RoleHasValueConstraint link, INotifyElementAdded notifyAdded)
+		private static void FixupRoleValueConstraintLinkForIdentifiedEntityType(RoleHasValueConstraint link, INotifyElementAdded notifyAdded)
 		{
 			// Make sure the object type, fact type, and link
 			// are displayed on the diagram
-			if (notifyAdded == null &&
-				MergeContext.HasContext(link.Store.TransactionManager.CurrentTransaction.TopLevelTransaction))
-			{
-				return;
-			}
 			RoleValueConstraint roleValueConstraint = link.ValueConstraint;
 			Role role = roleValueConstraint.Role;
-			FactType factType = role.FactType;
-			ObjectType objectType = null;
-			// UNDONE: COPYMERGE This is total garbage code. This should apply
-			// only if there is an opposite role with a role player
-			// identified by the uniqueness constraint on the constrained role.
-			foreach (RoleBase roleBase in factType.RoleCollection)
+			UniquenessConstraint uniquenessConstraint;
+			ObjectType objectType;
+			ORMModel model;
+			if (null != (uniquenessConstraint = role.SingleRoleAlethicUniquenessConstraint) &&
+				null != (objectType = uniquenessConstraint.PreferredIdentifierFor) &&
+				null != (model = objectType.Model))
 			{
-				Role testRole = roleBase.Role;
-				if (testRole != role)
+				FactType nestedFactType;
+				if (null != (nestedFactType = objectType.NestedFactType))
 				{
-					objectType = testRole.RolePlayer;
+					if (AllowElementFixup(nestedFactType))
+					{
+						Diagram.FixUpDiagram(model, nestedFactType);
+					}
 				}
-			}
-			if (objectType != null)
-			{
-				ORMModel model = objectType.Model;
-				if (model != null)
+				else if (AllowElementFixup(objectType))
 				{
-					if (null == objectType.NestedFactType)
-					{
-						Diagram.FixUpDiagram(model, objectType);
-					}
-					Diagram.FixUpDiagram(objectType, roleValueConstraint);
+					Diagram.FixUpDiagram(model, objectType);
+				}
+				Diagram.FixUpDiagram(objectType, roleValueConstraint);
 
-					object AllowMultipleShapes;
-					Dictionary<object, object> topLevelContextInfo;
-					bool containedAllowMultipleShapes;
-					if (!(containedAllowMultipleShapes = (topLevelContextInfo = link.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo).ContainsKey(AllowMultipleShapes = MultiShapeUtility.AllowMultipleShapes)))
-					{
-						topLevelContextInfo.Add(AllowMultipleShapes, null);
-					}
+				object AllowMultipleShapes;
+				Dictionary<object, object> topLevelContextInfo;
+				bool containedAllowMultipleShapes;
+				if (!(containedAllowMultipleShapes = (topLevelContextInfo = link.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo).ContainsKey(AllowMultipleShapes = MultiShapeUtility.AllowMultipleShapes)))
+				{
+					topLevelContextInfo.Add(AllowMultipleShapes, null);
+				}
 
-					Diagram.FixUpDiagram(model, link);
+				Diagram.FixUpDiagram(model, link);
 
-					if (!containedAllowMultipleShapes)
-					{
-						topLevelContextInfo.Remove(AllowMultipleShapes);
-					}
+				if (!containedAllowMultipleShapes)
+				{
+					topLevelContextInfo.Remove(AllowMultipleShapes);
 				}
 			}
 		}
@@ -975,10 +967,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				}
 				else if (null != (model = factType.Model))
 				{
-					Debug.Assert(model == constraint.Model);
-
-					Diagram.FixUpDiagram(model, constraint as ModelElement);
-					Diagram.FixUpDiagram(model, factType);
+					if (AllowElementFixup(constraintElement))
+					{
+						Diagram.FixUpDiagram(model, constraintElement);
+					}
+					if (AllowElementFixup(factType))
+					{
+						Diagram.FixUpDiagram(model, factType);
+					}
 
 					object AllowMultipleShapes;
 					Dictionary<object, object> topLevelContextInfo;
@@ -1035,11 +1031,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				!((factType = link.FactType) is SubtypeFact) &&
 				null != (model = factType.Model))
 			{
-				if (!ElementRequiresFixup(factType))
+				if (AllowElementFixup(factType))
 				{
-					return;
+					Diagram.FixUpDiagram(model, factType); // Make sure the fact type is already there
 				}
-				Diagram.FixUpDiagram(model, factType); // Make sure the fact type is already there
 
 				object AllowMultipleShapes;
 				Dictionary<object, object> topLevelContextInfo;
@@ -1130,7 +1125,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				ModelHasModelNote link = (ModelHasModelNote)e.ModelElement;
 				ModelNote note = link.Note;
-				if (ElementRequiresFixup(note))
+				if (AllowElementFixup(note))
 				{
 					Diagram.FixUpDiagram(link.Model, note);
 				}
@@ -1356,20 +1351,24 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		#region Merge context validation rules
 		/// <summary>
 		/// Helper method to determine if a fixup operation
-		/// should be attempted for an added element. Fixup
+		/// should be attempted for a top-level added element. Fixup
 		/// is not needed if presentation elements are dropped,
 		/// but it is needed if non-presentation elements are dropped
 		/// directly.
 		/// </summary>
 		/// <param name="element">An element that might require a shape.</param>
 		/// <returns><see langword="true"/> to continue with fixup.</returns>
-		public static bool ElementRequiresFixup(ModelElement element)
+		public static bool AllowElementFixup(ModelElement element)
 		{
 			Transaction transaction = element.Store.TransactionManager.CurrentTransaction.TopLevelTransaction;
+			if (!DesignSurfaceMergeContext.HasContext(transaction))
+			{
+				return true;
+			}
 			if (DesignSurfaceMergeContext.GetRootPresentationElements(transaction).Count == 0)
 			{
 				IList rootElements = DesignSurfaceMergeContext.GetRootModelElements(transaction);
-				// Merge if no context is given
+				// Merge if no context is given or no root elements are available
 				return rootElements.Count == 0 || rootElements.Contains(element);
 			}
 			return false;

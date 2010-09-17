@@ -389,6 +389,7 @@
 			<cmc:IgnoredProperty class="FactType" property="NameChanged"/>
 			<cmc:IgnoredProperty class="FactType" property="DerivationNoteDisplay"/>
 			<cmc:IgnoredProperty class="FactType" property="DerivationStorageDisplay"/>
+			<cmc:IgnoredProperty class="LeadRolePath" property="NoteText"/>
 			<cmc:IgnoredProperty class="Role" property="RolePlayerDisplay"/>
 			<cmc:IgnoredProperty class="Role" property="IsMandatory"/>
 			<cmc:IgnoredProperty class="Role" property="Multiplicity"/>
