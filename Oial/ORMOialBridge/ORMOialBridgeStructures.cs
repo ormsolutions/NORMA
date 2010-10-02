@@ -84,7 +84,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 		/// This type is the non-transacted counterpart to <see cref="FactTypeMapsTowardsRole"/>.
 		/// </remarks>
 		[Serializable]
-		[DebuggerDisplay("FactTypeMapping (TowardsRole={FactType.RoleCollection.IndexOf((RoleBase)towardsRole.Proxy ?? towardsRole)}, Depth={MappingDepth}, FactType={FactType.Name})")]
+		[DebuggerDisplay("FactTypeMapping (TowardsRole={FactType.RoleCollection.IndexOf((ORMSolutions.ORMArchitect.Core.ObjectModel.RoleBase)TowardsRole.Proxy ?? TowardsRole)}, Depth={MappingDepth}, FactType={FactType.Name})")]
 		private sealed class FactTypeMapping
 		{
 			private readonly FactType myFactType;
@@ -403,6 +403,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			[Serializable]
 			private sealed class Chain
 			{
+				private const double MaxReasonablePermutations = 2048;
 				private readonly List<ObjectType> myObjectTypes;
 				private readonly FactTypeMappingList myPredecidedManyToOneFactTypeMappings;
 				private readonly FactTypeMappingList myPredecidedOneToOneFactTypeMappings;
@@ -487,6 +488,135 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				public IList<Permutation> SmallestPermutationsInTermsOfConceptTypes
 				{
 					get { return mySmallestPermutationsInTermsOfConceptTypes; }
+				}
+
+				// Cached array with predicates returning true if a FactTypeMapping should
+				// be reduced from the set of mappings to consider.
+				private static Predicate<FactTypeMapping>[] ReductionConditions;
+				// Bits used with ReductionConditions to indicate if a condition
+				// should be applied when later filters are tested.
+				private static BitTracker CumulativeReductionConditions;
+				/// <summary>
+				/// If the number of undecided elements is unreasonably high,
+				/// then apply incrementally more stringent requirements for
+				/// deciding fact type mappings until we have a reasonable number.
+				/// </summary>
+				public void EnsureReasonablePermutations(FactTypeMappingListDictionary allUndecidedMappings, FactTypeMappingDictionary allPredecidedMappings, FactTypeMappingDictionary allDecidedMappings)
+				{
+					FactTypeMappingListList undecidedMappings = myUndecidedOneToOneFactTypeMappings;
+					double maxPermutations = CalculateMaxNumberOfPermutations(undecidedMappings);
+					if (maxPermutations > MaxReasonablePermutations)
+					{
+						int undecidedMappingCount = undecidedMappings.Count;
+						Predicate<FactTypeMapping>[] reductionConditions = ReductionConditions;
+						BitTracker cumulativeConditions = CumulativeReductionConditions;
+						if (reductionConditions == null)
+						{
+							reductionConditions = new Predicate<FactTypeMapping>[]{
+								delegate(FactTypeMapping mapping)
+								{
+									// If the fact type has a single non-mandatory value type
+									// then do not map towards the value type.
+									FactTypeMappingFlags mappingFlags = mapping.Flags;
+									if ((mappingFlags & (FactTypeMappingFlags.TowardsValueType | FactTypeMappingFlags.FromValueType)) == (FactTypeMappingFlags.TowardsValueType))
+									{
+										if (0 != (mappingFlags & FactTypeMappingFlags.TowardsRoleMandatory))
+										{
+											return 0 != (mappingFlags & FactTypeMappingFlags.TowardsRoleImpliedMandatory);
+										}
+										return true;
+									}
+									return false;
+								},
+								delegate(FactTypeMapping mapping)
+								{
+									// If the fact type has an unbalanced mandatory and is not a subtype,
+									// then map towards the mandatory.
+									FactTypeMappingFlags mappingFlags = mapping.Flags;
+									return FactTypeMappingFlags.FromRoleMandatory == (mappingFlags & (FactTypeMappingFlags.FromRoleMandatory | FactTypeMappingFlags.FromRoleImpliedMandatory)) &&
+										0 == (mappingFlags & FactTypeMappingFlags.Subtype) &&
+										FactTypeMappingFlags.TowardsRoleMandatory != (mappingFlags & (FactTypeMappingFlags.TowardsRoleMandatory | FactTypeMappingFlags.TowardsRoleImpliedMandatory));
+								},
+								delegate(FactTypeMapping mapping)
+								{
+									// Map away from a preferred identifier. This is not a cumulative test, and is ignored for later conditions.
+									return 0 == (mapping.Flags & FactTypeMappingFlags.FromPreferredIdentifier);
+								},
+								delegate(FactTypeMapping mapping)
+								{
+									// Prefer a shallow mapping.
+									return 0 == (mapping.Flags & FactTypeMappingFlags.DeepMapping);
+								},
+								delegate(FactTypeMapping mapping)
+								{
+									// If we have too many permutations then just map towards the first role.
+									// Yes, this is completely arbitrary, but getting anywhere past item 2 on
+									// this list will be extremely rarely and represents truly pathological cases.
+									Role role = mapping.TowardsRole;
+									return 0 != mapping.FactType.RoleCollection.IndexOf((RoleBase)role.Proxy ?? role);
+								},
+							};
+							ReductionConditions = reductionConditions;
+							cumulativeConditions.Reset(reductionConditions.Length - 1);
+							cumulativeConditions[0] = true; // Away from non-mandatory value type
+							cumulativeConditions[1] = true; // Towards unbalanced mandatory
+							cumulativeConditions[2] = false; // Away from identifier
+							cumulativeConditions[3] = true; // Prefer shallow
+							CumulativeReductionConditions = cumulativeConditions;
+						}
+						FactTypeMappingList decidedMappings = myPredecidedOneToOneFactTypeMappings;
+						for (int maxReduction = 0; maxReduction < reductionConditions.Length; ++maxReduction)
+						{
+							for (int undecidedMappingIndex = undecidedMappingCount - 1; undecidedMappingIndex >= 0; --undecidedMappingIndex)
+							{
+								FactTypeMappingList testMappings = undecidedMappings[undecidedMappingIndex];
+								int testMappingCount = testMappings.Count;
+								// Note that the max length of this list is four (shallow and deep both directions)
+								FactTypeMapping singleMapping = null;
+								for (int i = 0; i < testMappingCount; ++i)
+								{
+									FactTypeMapping testMapping = testMappings[i];
+									int j = 0;
+									for (; j <= maxReduction; ++j)
+									{
+										if ((j == maxReduction || cumulativeConditions[j]) &&
+											reductionConditions[j](testMapping))
+										{
+											break;
+										}
+									}
+									if (j > maxReduction)
+									{
+										// This test mapping is not filtered, allow it
+										if (singleMapping == null)
+										{
+											singleMapping = testMapping;
+										}
+										else
+										{
+											singleMapping = null;
+											break;
+										}
+									}
+								}
+								if (singleMapping != null)
+								{
+									decidedMappings.Add(singleMapping);
+									undecidedMappings.RemoveAt(undecidedMappingIndex);
+									--undecidedMappingCount;
+									maxPermutations /= testMappingCount;
+									FactType factTypeKey = singleMapping.FactType;
+									allUndecidedMappings.Remove(factTypeKey);
+									allPredecidedMappings.Add(factTypeKey, singleMapping);
+									allDecidedMappings.Add(factTypeKey, singleMapping);
+								}
+							}
+							if (maxPermutations <= MaxReasonablePermutations)
+							{
+								break;
+							}
+						}
+					}
 				}
 			}
 		}

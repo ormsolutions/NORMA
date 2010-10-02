@@ -70,6 +70,9 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		ExplicitCasing = 1,
 		/// <summary>
 		/// Stop a name part that was added as a single-word expansion
+		/// from being split again into multiple parts. Used to
+		/// block recursive expansion of a phrase containing a single
+		/// word it was expanded from.
 		/// </summary>
 		ReplacementOfSelf = 2,
 	}
@@ -553,48 +556,25 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				}
 				#endregion // Accessor properties
 				#region Regex patterns
-				private static Regex myEmbeddedCapsRegex;
+				private static Regex myEmbeddedCapsOrNumberRegex;
 				/// <summary>
 				/// The regular expression used to determine if a string contains
-				/// an embedded capital
+				/// an embedded capital or number
 				/// </summary>
-				private Regex EmbeddedCapsRegex
+				private Regex EmbeddedCapsOrNumberRegex
 				{
 					get
 					{
-						Regex retVal = myEmbeddedCapsRegex;
+						Regex retVal = myEmbeddedCapsOrNumberRegex;
 						if (retVal == null)
 						{
 							System.Threading.Interlocked.CompareExchange<Regex>(
-								ref myEmbeddedCapsRegex,
+								ref myEmbeddedCapsOrNumberRegex,
 								new Regex(
-									@"(\s|.)+\p{Lu}",
+									@"(?n)(?(\s*\S+?\p{Lu})|\P{Nd}*\p{Nd})",
 									RegexOptions.Compiled),
 								null);
-							retVal = myEmbeddedCapsRegex;
-						}
-						return retVal;
-					}
-				}
-				private static Regex myAdjacentCapsRegex;
-				/// <summary>
-				/// The regular expression used to determine if a string contains
-				/// two adjacent upper case characters.
-				/// </summary>
-				private static Regex AdjacentCapsRegex
-				{
-					get
-					{
-						Regex retVal = myAdjacentCapsRegex;
-						if (retVal == null)
-						{
-							System.Threading.Interlocked.CompareExchange<Regex>(
-								ref myAdjacentCapsRegex,
-								new Regex(
-									@"\p{Lu}(?=\p{Lu})",
-									RegexOptions.Compiled),
-								null);
-							retVal = myAdjacentCapsRegex;
+							retVal = myEmbeddedCapsOrNumberRegex;
 						}
 						return retVal;
 					}
@@ -606,6 +586,22 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				/// pascal cased string into pieces. Assumes spaces
 				/// are previously stripped.
 				/// </summary>
+				/// <remarks>This regex groups all adjacent upper case
+				/// letters into a single group, unless there are trailing
+				/// non-upper case and non-numeric characters, which are
+				/// then grouped with the final capital. Numbers are handled
+				/// specially and come back in their own group, allowing
+				/// number-decorated names to participate in phrase matching.
+				/// 
+				/// If one or more non-upper case characters follow one or
+				/// more sequential numbers, then those characters remain
+				/// part of the number. The goal is to treat character-decorated
+				/// numbers as a unit, so Rule1aDetails breaks down into {Rule,1a,Details}
+				/// whereas Rule1ADetails breaks down into {Rule, 1, A, Details}.
+				/// 
+				/// If a match has multiple adjacent caps, then the named 'TrailingUpper'
+				/// group will be populated. If a number is represented (including
+				/// trailing lower-case markup), then the 'Numeric' group is populated.</remarks>
 				private static Regex SplitOnUpperRegex
 				{
 					get
@@ -616,7 +612,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 							System.Threading.Interlocked.CompareExchange<Regex>(
 								ref mySplitOnUpperRegex,
 								new Regex(
-									@"(?n)\G(?<name>((^(\s|.))|\p{Lu})\P{Lu}*)",
+									@"(?n)\G(?(\p{Nd})((?<Numeric>\p{Nd}+)(?(((?!\p{Nd})\P{Lu})+\p{Nd})|((?!\p{Nd})\P{Lu})+)?)|(?(\P{Lu})((?!\p{Nd})\P{Lu})+|(\p{Lu}(?(\P{Lu})((?!\p{Nd})\P{Lu})+|(?<TrailingUpper>((?!\p{Lu}((?!\p{Nd})\P{Lu}))\p{Lu})*)))))",
 									RegexOptions.Compiled),
 								null);
 							retVal = mySplitOnUpperRegex;
@@ -640,7 +636,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 						nameGenerator,
 						delegate(NamePart newPart, int? insertIndex)
 						{
-							AddToNameCollection(ref singleName, ref nameCollection, newPart, insertIndex.HasValue ? insertIndex.Value : -1);
+							AddToNameCollection(ref singleName, ref nameCollection, newPart, insertIndex.HasValue ? insertIndex.Value : -1, true);
 						});
 
 					string finalName = GetFinalName(singleName, nameCollection, nameGenerator);
@@ -668,7 +664,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 					List<NamePart> nameCollection = null;
 					AddNamePart addPart = delegate(NamePart newPart, int? insertIndex)
 						{
-							AddToNameCollection(ref singleName, ref nameCollection, newPart, insertIndex.HasValue ? insertIndex.Value : -1);
+							AddToNameCollection(ref singleName, ref nameCollection, newPart, insertIndex.HasValue ? insertIndex.Value : -1, true);
 						};
 					ObjectType previousResolvedSupertype = null;
 					ObjectType previousResolvedObjectType = null;
@@ -963,12 +959,8 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 							if (ormUniqueness != null)
 							{
 								string currentName = ormUniqueness.Name;
-								string defaultName = TypeDescriptor.GetClassName(ormUniqueness);
-								int dummyInt;
-								// UNDONE: Should probably be a callback to determine if this is a generated name
-								if (!(currentName.Length > defaultName.Length &&
-									currentName.StartsWith(defaultName) &&
-									int.TryParse(currentName.Substring(defaultName.Length), out dummyInt)))
+								string defaultNamePattern = ((IDefaultNamePattern)ormUniqueness).DefaultNamePattern;
+								if (!(Utility.IsNumberDecoratedName(currentName, string.IsNullOrEmpty(defaultNamePattern) ? TypeDescriptor.GetClassName(ormUniqueness) : defaultNamePattern)))
 								{
 									return (phase == 1 ? uniquenessConstraint.Table.Name + "_" : "") + currentName + (uniquenessConstraint.IsPrimary ? "_PK" : "_UC");
 								}
@@ -992,112 +984,168 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				}
 				#endregion // Name generation methods
 				#region NameCollection helpers
-				private void AddToNameCollection(ref NamePart singleName, ref List<NamePart> nameCollection, string newName)
+				private void AddToNameCollection(ref NamePart singleName, ref List<NamePart> nameCollection, NamePart newNamePart)
 				{
-					AddToNameCollection(ref singleName, ref  nameCollection, new NamePart(newName), -1);
-				}
-				private void AddToNameCollection(ref NamePart singleName, ref List<NamePart> nameCollection, string newName, int index)
-				{
-					AddToNameCollection(ref singleName, ref nameCollection, new NamePart(newName), index);
+					AddToNameCollection(ref singleName, ref  nameCollection, newNamePart, -1, true);
 				}
 				private static readonly char[] NameDelimiterArray = new char[] { ' ', '-' };
-				private void AddToNameCollection(ref NamePart singleName, ref List<NamePart> nameCollection, NamePart newNamePart, int index)
+				private void AddToNameCollection(ref NamePart singleName, ref List<NamePart> nameCollection, NamePart newNamePart, int index, bool collapseAdjacentName)
 				{
 					string newName = newNamePart;
 					newName = newName.Trim();
 					NamePartOptions options = newNamePart.Options;
+					int startNameCount = GetNameCount(ref singleName, ref nameCollection);
+					int endNameCount;
+					// Test for space separated and pattern based multi-part names
 					if (newName.IndexOfAny(NameDelimiterArray) != -1)
 					{
 						string[] individualEntries = newName.Split(NameDelimiterArray, StringSplitOptions.RemoveEmptyEntries);
+						// We don't know at this point if the names are single or will split further with
+						// the next call. Test how many items are added by tracking the count at each stage.
 						for (int i = 0; i < individualEntries.Length; ++i)
 						{
-							//add each space separated name individually
-							AddToNameCollection(ref singleName, ref nameCollection, individualEntries[i], index == -1 ? -1 : index + i);
+							// Add each space separated name individually
+							AddToNameCollection(ref singleName, ref nameCollection, new NamePart(individualEntries[i], options), index == -1 ? -1 : index + (i == 0 ? 0 : GetNameCount(ref singleName, ref nameCollection) - startNameCount), false);
 						}
-						return;
+						endNameCount = GetNameCount(ref singleName, ref nameCollection);
 					}
-
-					// Test for multi-part names
-					if (0 == (options & NamePartOptions.ExplicitCasing) &&
-						EmbeddedCapsRegex.IsMatch(newName) &&
-						!AdjacentCapsRegex.IsMatch(newName))
+					else if (0 == (options & NamePartOptions.ExplicitCasing) &&
+						EmbeddedCapsOrNumberRegex.IsMatch(newName))
 					{
 						Match match = SplitOnUpperRegex.Match(newName);
 						int matchIndex = 0;
 						while (match.Success)
 						{
-							AddToNameCollection(ref singleName, ref nameCollection, match.Value, index == -1 ? -1 : index + matchIndex);
+							// Using the match index as an increment is sufficient
+							// because we know the names will not split further and
+							// adjacent names will not collapse.
+							GroupCollection groups = match.Groups;
+							AddToNameCollection(ref singleName, ref nameCollection, new NamePart(match.Value, groups["TrailingUpper"].Success || groups["Numeric"].Success ? NamePartOptions.ExplicitCasing : NamePartOptions.None), index == -1 ? -1 : index + matchIndex, false);
 							++matchIndex;
 							match = match.NextMatch();
 						}
-						return;
+						endNameCount = startNameCount + matchIndex;
 					}
-
-					if (singleName.IsEmpty)
+					else if (singleName.IsEmpty)
 					{
-						//we only have one name so far, so just use the string
+						// We only have one name so far, so just use the string
 						singleName = new NamePart(newName, options);
+						endNameCount = 1;
 					}
 					else
 					{
-						//we need to now use the collection
+						// We need to now use the collection
 						if (null == nameCollection)
 						{
 							nameCollection = new List<NamePart>();
-							//first add to the actual collection the element that had previosly been added
+							// First add the previously added element
 							nameCollection.Add(singleName);
 						}
-						int count;
 						if (index == -1)
 						{
-							index = nameCollection.Count;
-							count = index + 1;
 							nameCollection.Add(new NamePart(newName, options));
 						}
 						else
 						{
 							nameCollection.Insert(index, new NamePart(newName, options));
-							count = nameCollection.Count;
 						}
-						//remove duplicate information
-						int nextIndex;
-						if ((index > 0 && ((string)nameCollection[index - 1]).Equals(newName, StringComparison.CurrentCultureIgnoreCase))
-							|| ((nextIndex = index + 1) < count && ((string)nameCollection[nextIndex]).Equals(newName, StringComparison.CurrentCultureIgnoreCase)))
+						endNameCount = startNameCount + 1;
+					}
+
+					int newNameCount;
+					if (collapseAdjacentName &&
+						0 != (newNameCount = (endNameCount - startNameCount))) // A name was added
+					{
+						// Remove duplicate names, treating the multiple parts as a split
+						// name as a single name.
+						if (index == -1)
 						{
-							//we don't need the name that was just added
-							// UNDONE: Possiblye kill this check? Name scrubbing should be handled by the current algorithm
-							nameCollection.RemoveAt(index);
+							index = startNameCount;
 						}
-						else
+
+						NamePart firstPart;
+						NamePart secondPart;
+						if (newNameCount <= startNameCount) // There are sufficient adjacent names to collapse a single or multi-part name
 						{
-							//check if we need the following name
-							while (nextIndex < count)
+							// Check for preceding name matches on all parts of the name
+							while (index >= newNameCount)
 							{
-								if (newName.Equals(nameCollection[nextIndex], StringComparison.CurrentCultureIgnoreCase))
+								int i = 0;
+								for (; i < newNameCount; ++i)
 								{
-									nameCollection.RemoveAt(nextIndex);
-									--count;
+									firstPart = nameCollection[index + i];
+									secondPart = nameCollection[index - newNameCount + i];
+									if (!((string)firstPart).Equals((string)secondPart, firstPart.ExplicitCasing || secondPart.ExplicitCasing ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase))
+									{
+										break;
+									}
 								}
-								else
+								if (i < newNameCount)
 								{
 									break;
 								}
+								nameCollection.RemoveRange(index, newNameCount);
+								index -= newNameCount;
+								endNameCount -= newNameCount;
 							}
-							//check the preceding name
-							nextIndex = index - 1;
-							while (nextIndex > -1)
+
+							// Check for following name matches on all parts of the name
+							while ((endNameCount - (index + newNameCount)) >= newNameCount)
 							{
-								if (newName.Equals(nameCollection[nextIndex], StringComparison.CurrentCultureIgnoreCase))
+								int i = 0;
+								for (; i < newNameCount; ++i)
 								{
-									nameCollection.RemoveAt(nextIndex--);
+									firstPart = nameCollection[index + i];
+									secondPart = nameCollection[index + newNameCount + i];
+									if (!((string)firstPart).Equals((string)secondPart, firstPart.ExplicitCasing || secondPart.ExplicitCasing ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase))
+									{
+										break;
+									}
 								}
-								else
+								if (i < newNameCount)
 								{
 									break;
 								}
+								nameCollection.RemoveRange(index + newNameCount, newNameCount);
+								index -= newNameCount;
+								endNameCount -= newNameCount;
+							}
+						}
+
+						if (newNameCount != 1)
+						{
+							// Enhance the multi-part collapse semantics by checking the
+							// leading and trailing name parts.
+
+							// Compare the parts preceding the first word
+							while (index > 0 && ((string)(firstPart = nameCollection[index])).Equals((string)(secondPart = nameCollection[index - 1]), firstPart.ExplicitCasing || secondPart.ExplicitCasing ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase))
+							{
+								nameCollection.RemoveAt(index);
+								--index;
+								--endNameCount;
+							}
+
+							// Compare the parts following the last word
+							while ((index + newNameCount) < endNameCount &&
+								((string)(firstPart = nameCollection[index + newNameCount - 1])).Equals((string)(secondPart = nameCollection[index + newNameCount]), firstPart.ExplicitCasing || secondPart.ExplicitCasing ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase))
+							{
+								nameCollection.RemoveAt(index + newNameCount - 1);
+								--endNameCount;
 							}
 						}
 					}
+				}
+				private static int GetNameCount(ref NamePart singleName, ref List<NamePart> nameCollection)
+				{
+					if (singleName.IsEmpty)
+					{
+						return 0;
+					}
+					else if (nameCollection == null)
+					{
+						return 1;
+					}
+					return nameCollection.Count;
 				}
 				private string GetFinalName(NamePart singleName, List<NamePart> nameCollection, NameGenerator generator)
 				{
@@ -1440,7 +1488,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 							{
 								options |= NamePartOptions.ExplicitCasing;
 							}
-							AddToNameCollection(ref singleName, ref nameCollection, new NamePart(replacement, options), collectionIndex + nameCollection.Count - startingCollectionSize);
+							AddToNameCollection(ref singleName, ref nameCollection, new NamePart(replacement, options), collectionIndex + nameCollection.Count - startingCollectionSize, true);
 						}
 						ResolveRecognizedPhrases(ref singleName, ref nameCollection, generator);
 						return true;

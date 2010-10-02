@@ -46,16 +46,17 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 					myUndecidedOneToOneFactTypeMappings = undecidedOneToOneFactTypeMappings;
 				}
 
-				public int Run()
+				public int Run(FactTypeMappingDictionary allDecidedMappings)
 				{
 					BuildChains();
+					ReduceChains(allDecidedMappings);
 
 					// Delete empty chains and find the largest chain.
 					int largestChainCount = 0;
 					for (int i = myChains.Count - 1; i >= 0; --i)
 					{
 						Chain chain = myChains[i];
-						if (chain.UndecidedOneToOneFactTypeMappings.Count <= 0)
+						if (chain.UndecidedOneToOneFactTypeMappings.Count == 0)
 						{
 							myChains.RemoveAt(i);
 							continue;
@@ -81,7 +82,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 					Dictionary<FactType, object> visitedFactTypes = new Dictionary<FactType, object>(factTypesCount);
 					Dictionary<ObjectType, object> visitedObjectTypes = new Dictionary<ObjectType, object>(factTypesCount * 2);
 
-
+					ChainList chains = myChains;
 					FactTypeMappingDictionary.Enumerator predecidedEnumerator = myPredecidedOneToOneFactTypeMappings.GetEnumerator();
 					FactTypeMappingListDictionary.Enumerator undecidedEnumerator = myUndecidedOneToOneFactTypeMappings.GetEnumerator();
 					while (true)
@@ -116,7 +117,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 
 						// We've found a new path, so create a chain for it.
 						Chain chain = new Chain();
-						myChains.Add(chain);
+						chains.Add(chain);
 
 						// Assuming ProcessObjectType works correctly, we will never hit an object type a second time,
 						// so we can clear the Dictionary here and then use it as a record of all object types in the chain.
@@ -126,6 +127,20 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 
 						// Record all object types that are in the chain.
 						chain.ObjectTypes.AddRange(visitedObjectTypes.Keys);
+					}
+				}
+				/// <summary>
+				/// Apply more stringent criteria to unusually long chains to ensure that
+				/// the permutation process will not explode.
+				/// </summary>
+				private void ReduceChains(FactTypeMappingDictionary allDecidedMappings)
+				{
+					// Make sure all of the chains are of a size that we can actually permute
+					FactTypeMappingDictionary predecidedMappings = myPredecidedOneToOneFactTypeMappings;
+					FactTypeMappingListDictionary undecidedMappings = myUndecidedOneToOneFactTypeMappings;
+					foreach (Chain chain in myChains)
+					{
+						chain.EnsureReasonablePermutations(undecidedMappings, predecidedMappings, allDecidedMappings);
 					}
 				}
 				private void ProcessObjectType(ObjectType objectType, Chain chain, Dictionary<FactType, object> visitedFactTypes, Dictionary<ObjectType, object> visitedObjectTypes)
@@ -248,9 +263,15 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				// whether the mappings away from it are shallow or deep; they both result in the same output.)
 
 				int largestChainCount;
+				FactTypeMappingDictionary allDecidedMappings = myDecidedFactTypeMappings;
 				// Break up the chains of contiguous one-to-one fact types
 				FactTypeChainer chainer = new FactTypeChainer(myPredecidedManyToOneFactTypeMappings, myPredecidedOneToOneFactTypeMappings, myUndecidedOneToOneFactTypeMappings);
-				largestChainCount = chainer.Run();
+
+				// If some chains end up at a size we cannot process, then running
+				// the chainer can move some mappings from undecided to predecided.
+				// We pass in the decided mappings so that we do not lose track
+				// of these entries.
+				largestChainCount = chainer.Run(allDecidedMappings);
 
 				// Perform one-time pass of top-level types for the decided mappings
 				//PrecalculateDecidedConceptTypes();
@@ -276,10 +297,6 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 						}
 					}
 
-					// UNDONE: Eventually we should actually check this and warn the user if it would take too long on their machine.
-					// This would need to be calculated, though. A hard-coded limit wouldn't be appropriate here.
-					//int maxPermutations = CalculateMaxNumberOfPermutations(chain.UndecidedOneToOneFactTypeMappings);
-
 					PermuteFactTypeMappings(chain.PossiblePermutations, chain.UndecidedOneToOneFactTypeMappings, newlyDecidedFactTypeMappings, deeplyMappedObjectTypes, 0);
 					EliminateInvalidPermutations(chain, nonPreferredFunctionalObjectTypesCache);
 					FindSmallestPermutationsInTermsOfConceptTypes(chain, permutationStateHelper);
@@ -291,7 +308,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 					// Add each mapping from the optimal permutation to the "global" set of decided mappings.
 					foreach (FactTypeMapping optimalMapping in ChooseOptimalPermutation(chain).Mappings)
 					{
-						myDecidedFactTypeMappings.Add(optimalMapping.FactType, optimalMapping);
+						allDecidedMappings.Add(optimalMapping.FactType, optimalMapping);
 					}
 
 					// Clear the set of object types that have some deep mapping away from them (they will be different for the next chain).
@@ -851,9 +868,9 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			/// <summary>
 			/// Returns the maximum number of <see cref="Permutation"/>s that could result for the specified set of undecided <see cref="FactTypeMapping"/>s.
 			/// </summary>
-			private static int CalculateMaxNumberOfPermutations(FactTypeMappingListList undecidedMappings)
+			private static double CalculateMaxNumberOfPermutations(FactTypeMappingListList undecidedMappings)
 			{
-				int maxPermutations = 1;
+				double maxPermutations = 1;
 				foreach (FactTypeMappingList mappingList in undecidedMappings)
 				{
 					maxPermutations *= mappingList.Count;
