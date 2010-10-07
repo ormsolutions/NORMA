@@ -17,7 +17,7 @@
 	xmlns:ormtooial="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction"
 	xmlns:oial="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core"
 	xmlns:odt="http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core"
-	xmlns:cdb="http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase"
+	xmlns:rcd="http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase"
 	xmlns:oialtocdb="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase"
 	xmlns:dcl="http://schemas.orm.net/DIL/DCIL"
 	xmlns:dil="http://schemas.orm.net/DIL/DIL"
@@ -27,7 +27,7 @@
 	xmlns:ddl="http://schemas.orm.net/DIL/DDIL"
 	xmlns:loc="urn:local-cache"
 	extension-element-prefixes="exsl dsf"
-	exclude-result-prefixes="orm ormRoot ormtooial oial odt cdb oialtocdb loc">
+	exclude-result-prefixes="orm ormRoot ormtooial oial odt rcd oialtocdb loc">
 
 	<xsl:import href="../../DIL/Transforms/DILSupportFunctions.xslt"/>
 
@@ -42,15 +42,18 @@
 	<xsl:param name="BIGINT_MinValue" select="number(-9223372036854775808)"/>
 	<xsl:param name="BIGINT_MaxValue" select="number(9223372036854775807)"/>
 
+	<xsl:variable name="Document" select="."/>
+	<xsl:key name="KeyedConceptTypes" match="ormRoot:ORM2/oial:model/oial:conceptTypes/oial:conceptType" use="@id"/>
+	<xsl:key name="KeyedConceptTypeChildren" match="ormRoot:ORM2/oial:model/oial:conceptTypes/oial:conceptType/oial:children/oial:*" use="@id"/>
 	<xsl:template match="ormRoot:ORM2">
-		<xsl:apply-templates select=".//cdb:Schema"/>
+		<xsl:apply-templates select="rcd:Catalog/rcd:Schemas/rcd:Schema"/>
 	</xsl:template>
-	<xsl:template match="cdb:Schema">
-
-		<xsl:variable name="oialDcilBridge" select="//oialtocdb:Bridge"/>
-		<xsl:variable name="ormOialBridge" select="//ormtooial:Bridge"/>
-		<xsl:variable name="oialModel" select="//oial:model[@id = $oialDcilBridge/oialtocdb:SchemaIsForAbstractionModel[@Schema = current()/@id]/@AbstractionModel]"/>
-		<xsl:variable name="ormModel" select="//orm:ORMModel[@id = $ormOialBridge/ormtooial:AbstractionModelIsForORMModel[@AbstractionModel = $oialModel/@id]/@ORMModel]"/>
+	<xsl:template match="rcd:Schema">
+		<xsl:variable name="root" select="/ormRoot:ORM2"/>
+		<xsl:variable name="oialDcilBridge" select="$root/oialtocdb:Bridge"/>
+		<xsl:variable name="ormOialBridge" select="$root/ormtooial:Bridge"/>
+		<xsl:variable name="oialModel" select="$root/oial:model[@id = $oialDcilBridge/oialtocdb:SchemaIsForAbstractionModel[@Schema = current()/@id]/@AbstractionModel]"/>
+		<xsl:variable name="ormModel" select="$root/orm:ORMModel[@id = $ormOialBridge/ormtooial:AbstractionModelIsForORMModel[@AbstractionModel = $oialModel/@id]/@ORMModel]"/>
 		<xsl:variable name="mappedValueTypes" select="$ormModel/orm:Objects/orm:ValueType[@id = $ormOialBridge/ormtooial:InformationTypeFormatIsForValueType[@InformationTypeFormat = $oialModel/oial:informationTypeFormats/child::*/@id]/@ValueType]"/>
 		<xsl:variable name="initialDataTypeMappingsFragment">
 			<xsl:for-each select="$mappedValueTypes">
@@ -82,7 +85,7 @@
 		<dcl:schema>
 			<xsl:call-template name="AddNameAttributes"/>
 			<xsl:copy-of select="$initialDataTypeMappings/dcl:domain"/>
-			<xsl:apply-templates mode="GenerateSchemaContent" select="cdb:Tables/cdb:Table">
+			<xsl:apply-templates mode="GenerateSchemaContent" select="rcd:Tables/rcd:Table">
 				<xsl:with-param name="oialDcilBridge" select="$oialDcilBridge"/>
 				<xsl:with-param name="ormOialBridge" select="$ormOialBridge"/>
 				<xsl:with-param name="oialModel" select="$oialModel"/>
@@ -92,7 +95,7 @@
 			</xsl:apply-templates>
 		</dcl:schema>
 	</xsl:template>
-	<xsl:template match="cdb:Table" mode="GenerateSchemaContent">
+	<xsl:template match="rcd:Table" mode="GenerateSchemaContent">
 		<xsl:param name="oialDcilBridge"/>
 		<xsl:param name="ormOialBridge"/>
 		<xsl:param name="oialModel"/>
@@ -104,11 +107,11 @@
 			<xsl:call-template name="AddNameAttributes">
 				<xsl:with-param name="requestedName" select="$rawTableName"/>
 			</xsl:call-template>
-			<xsl:variable name="uniquenessConstraints" select="cdb:Constraints/cdb:UniquenessConstraint"/>
-			<xsl:apply-templates mode="GenerateTableContent" select="cdb:Columns/cdb:Column">
-				<xsl:sort data-type="number" select="number(not(boolean(@id = $uniquenessConstraints[@IsPrimary='true' or @IsPrimary=1]/cdb:Columns/cdb:Column/@ref)))"/>
+			<xsl:variable name="uniquenessConstraints" select="rcd:Constraints/rcd:UniquenessConstraint"/>
+			<xsl:apply-templates mode="GenerateTableContent" select="rcd:Columns/rcd:Column">
+				<xsl:sort data-type="number" select="number(not(boolean(@id = $uniquenessConstraints[@IsPrimary='true' or @IsPrimary=1]/rcd:Columns/rcd:Column/@ref)))"/>
 				<xsl:sort data-type="number" select="number(boolean(@IsNullable='true' or @IsNullable=1))"/>
-				<xsl:sort data-type="number" select="number(not(boolean(@id = $uniquenessConstraints[not(@IsPrimary='true' or @IsPrimary=1)]/cdb:Columns/cdb:Column/@ref)))"/>
+				<xsl:sort data-type="number" select="number(not(boolean(@id = $uniquenessConstraints[not(@IsPrimary='true' or @IsPrimary=1)]/rcd:Columns/rcd:Column/@ref)))"/>
 				<xsl:with-param name="oialDcilBridge" select="$oialDcilBridge"/>
 				<xsl:with-param name="ormOialBridge" select="$ormOialBridge"/>
 				<xsl:with-param name="oialModel" select="$oialModel"/>
@@ -117,14 +120,14 @@
 				<xsl:with-param name="initialDataTypeMappings" select="$initialDataTypeMappings"/>
 				<xsl:with-param name="rawTableName" select="$rawTableName"/>
 			</xsl:apply-templates>
-			<xsl:apply-templates mode="GenerateTableContent" select="cdb:Constraints/cdb:*"/>
+			<xsl:apply-templates mode="GenerateTableContent" select="rcd:Constraints/rcd:*"/>
 			<xsl:apply-templates mode="GenerateAbsorptionConstraints" select=".">
 				<xsl:with-param name="oialDcilBridge" select="$oialDcilBridge"/>
 				<xsl:with-param name="oialModel" select="$oialModel"/>
 			</xsl:apply-templates>
 		</dcl:table>
 	</xsl:template>
-	<xsl:template match="cdb:Column" mode="GenerateTableContent">
+	<xsl:template match="rcd:Column" mode="GenerateTableContent">
 		<xsl:param name="oialDcilBridge"/>
 		<xsl:param name="ormOialBridge"/>
 		<xsl:param name="oialModel"/>
@@ -163,7 +166,7 @@
 							<xsl:text>SANITY CHECK: Found no or multiple roles for column "</xsl:text>
 							<xsl:value-of select="@Name"/>
 							<xsl:text>" in table "</xsl:text>
-							<xsl:value-of select="parent::cdb:Columns/parent::cdb:Table/@Name"/>
+							<xsl:value-of select="parent::rcd:Columns/parent::rcd:Table/@Name"/>
 							<xsl:text>".</xsl:text>
 						</xsl:message>
 					</xsl:if>
@@ -191,7 +194,7 @@
 							<xsl:text>SANITY CHECK: Found no roles and no value type for column "</xsl:text>
 							<xsl:value-of select="@Name"/>
 							<xsl:text>" in table "</xsl:text>
-							<xsl:value-of select="parent::cdb:Columns/parent::cdb:Table/@Name"/>
+							<xsl:value-of select="parent::rcd:Columns/parent::rcd:Table/@Name"/>
 							<xsl:text>".</xsl:text>
 						</xsl:message>
 					</xsl:if>
@@ -220,7 +223,7 @@
 			<xsl:if test="
 				count($conceptTypeChildPath) = 1 or
 				(not($oialModel/oial:conceptTypes/oial:conceptType/oial:children/oial:*[@id = $conceptTypeChildPath/@ConceptTypeChild and self::oial:relatedConceptType]) and
-				not(parent::cdb:Columns/parent::cdb:Table/cdb:Constraints/cdb:ReferenceConstraint/cdb:ColumnReferences/cdb:ColumnReference[@SourceColumn = current()/@id]))">
+				not(parent::rcd:Columns/parent::rcd:Table/rcd:Constraints/rcd:ReferenceConstraint/rcd:ColumnReferences/rcd:ColumnReference[@SourceColumn = current()/@id]))">
 				<!--
 					Only set the column as being an identity column if we have a single entry in the concept type child path,
 					or (we have no concept type relations in the path, and no reference constraints coming from this column).
@@ -327,37 +330,35 @@
 
 	</xsl:template>
 
-	<xsl:template match="cdb:UniquenessConstraint" mode="GenerateTableContent">
-		<xsl:variable name="sourceTable" select="parent::cdb:Constraints/parent::cdb:Table"/>
+	<xsl:template match="rcd:UniquenessConstraint" mode="GenerateTableContent">
+		<xsl:variable name="sourceTable" select="parent::rcd:Constraints/parent::rcd:Table"/>
 		<dcl:uniquenessConstraint>
 			<xsl:call-template name="AddNameAttributes"/>
 			<xsl:attribute name="isPrimary">
 				<xsl:value-of select="@IsPrimary='true' or @IsPrimary=1"/>
 			</xsl:attribute>
-			<xsl:for-each select="cdb:Columns/cdb:Column">
-				<dcl:columnRef name="{dsf:makeValidIdentifier($sourceTable/cdb:Columns/cdb:Column[@id = current()/@ref]/@Name)}"/>
+			<xsl:for-each select="rcd:Columns/rcd:Column">
+				<dcl:columnRef name="{dsf:makeValidIdentifier($sourceTable/rcd:Columns/rcd:Column[@id = current()/@ref]/@Name)}"/>
 			</xsl:for-each>
 		</dcl:uniquenessConstraint>
 	</xsl:template>
 
-	<xsl:template match="cdb:ReferenceConstraint" mode="GenerateTableContent">
-		<xsl:variable name="sourceTable" select="parent::cdb:Constraints/parent::cdb:Table"/>
-		<xsl:variable name="targetTable" select="$sourceTable/parent::cdb:Tables/cdb:Table[@id = current()/cdb:TargetTable/@ref]"/>
+	<xsl:template match="rcd:ReferenceConstraint" mode="GenerateTableContent">
+		<xsl:variable name="sourceTable" select="parent::rcd:Constraints/parent::rcd:Table"/>
+		<xsl:variable name="targetTable" select="$sourceTable/parent::rcd:Tables/rcd:Table[@id = current()/rcd:TargetTable/@ref]"/>
 		<dcl:referenceConstraint>
 			<xsl:call-template name="AddNameAttributes"/>
 			<xsl:attribute name="targetTable">
 				<xsl:value-of select="dsf:makeValidIdentifier($targetTable/@Name)"/>
 			</xsl:attribute>
-			<xsl:for-each select="cdb:ColumnReferences/cdb:ColumnReference">
-				<dcl:columnRef sourceName="{dsf:makeValidIdentifier($sourceTable/cdb:Columns/cdb:Column[@id = current()/@SourceColumn]/@Name)}" targetName="{dsf:makeValidIdentifier($targetTable/cdb:Columns/cdb:Column[@id = current()/@TargetColumn]/@Name)}"/>
+			<xsl:for-each select="rcd:ColumnReferences/rcd:ColumnReference">
+				<dcl:columnRef sourceName="{dsf:makeValidIdentifier($sourceTable/rcd:Columns/rcd:Column[@id = current()/@SourceColumn]/@Name)}" targetName="{dsf:makeValidIdentifier($targetTable/rcd:Columns/rcd:Column[@id = current()/@TargetColumn]/@Name)}"/>
 			</xsl:for-each>
 		</dcl:referenceConstraint>
 	</xsl:template>
 
 	<xsl:template name="BuildChildAndLeafHierarchy">
 		<xsl:param name="startLinks"/>
-		<xsl:param name="allConceptTypes"/>
-		<xsl:param name="allConceptTypeChildren"/>
 		<xsl:param name="columns"/>
 		<xsl:param name="contextConceptType"/>
 		<xsl:param name="startingMandatoryDepth"/>
@@ -376,109 +377,104 @@
 		</xsl:variable>
 
 		<xsl:for-each select="exsl:node-set($uniqueLeadConceptTypeChildFragment)/child::*">
-			<xsl:variable name="currentConceptTypeChild" select="$allConceptTypeChildren[@id=current()]"/>
-			<xsl:variable name="currentAssimilation" select="$currentConceptTypeChild/self::oial:assimilatedConceptType"/>
-			<xsl:variable name="parentConceptTypeId" select="$currentConceptTypeChild/parent::oial:children/parent::oial:conceptType/@id"/>
-			<xsl:variable name="currentMandatoryAndNextFragment">
-				<loc:dummy isMandatory="{$currentConceptTypeChild/@isMandatory}" nextComingFrom="{$currentConceptTypeChild/@ref}">
-					<!-- For most cases, the mandatory state corresponds directly to the isMandatory property on the
+			<xsl:variable name="currentChildId" select="string(.)"/>
+			<xsl:for-each select="$Document">
+				<!-- Push context so that keyed lookups work correctly -->
+				<xsl:variable name="currentConceptTypeChild" select="key('KeyedConceptTypeChildren',$currentChildId)"/>
+				<xsl:variable name="currentAssimilation" select="$currentConceptTypeChild/self::oial:assimilatedConceptType"/>
+				<xsl:variable name="parentConceptTypeId" select="$currentConceptTypeChild/parent::oial:children/parent::oial:conceptType/@id"/>
+				<xsl:variable name="currentMandatoryAndNextFragment">
+					<loc:dummy isMandatory="{$currentConceptTypeChild/@isMandatory}" nextComingFrom="{$currentConceptTypeChild/@ref}">
+						<!-- For most cases, the mandatory state corresponds directly to the isMandatory property on the
 					current concept type child. However, if the place we're coming from does not match the parent
 					of a current assimilation, then we're walking in reverse and we always treat it as mandatory. Also,
 					in this case, the next node maps to the assimilation parent. -->
-					<xsl:if test="$currentAssimilation and not($contextConceptType=$parentConceptTypeId)">
-						<xsl:attribute name="isMandatory">
-							<xsl:text>true</xsl:text>
-						</xsl:attribute>
-						<xsl:attribute name="nextComingFrom">
-							<xsl:value-of select="$parentConceptTypeId"/>
-						</xsl:attribute>
-					</xsl:if>
-				</loc:dummy>
-			</xsl:variable>
-			<xsl:variable name="currentMandatoryAndNext" select="exsl:node-set($currentMandatoryAndNextFragment)/child::*"/>
-			<xsl:variable name="mandatoryDepthFragment">
-				<xsl:choose>
-					<xsl:when test="$currentMandatoryAndNext/@isMandatory='true'">
-						<xsl:choose>
-							<xsl:when test="$startingMandatoryDepth!=0">
-								<xsl:value-of select="$startingMandatoryDepth" />
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:value-of select="$depth"/>
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:value-of select="0"/>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:variable>
-			<xsl:variable name="mandatoryDepth" select="number($mandatoryDepthFragment)"/>
-			<xsl:variable name="childLinksFragment">
-				<xsl:for-each select="$startLinks[not(preceding-sibling::*[1]/@Column=@Column)][@ConceptTypeChild=current()]">
-					<xsl:variable name="linksForColumn" select="$startLinks[@Column=current()/@Column]"/>
+						<xsl:if test="$currentAssimilation and not($contextConceptType=$parentConceptTypeId)">
+							<xsl:attribute name="isMandatory">
+								<xsl:text>true</xsl:text>
+							</xsl:attribute>
+							<xsl:attribute name="nextComingFrom">
+								<xsl:value-of select="$parentConceptTypeId"/>
+							</xsl:attribute>
+						</xsl:if>
+					</loc:dummy>
+				</xsl:variable>
+				<xsl:variable name="currentMandatoryAndNext" select="exsl:node-set($currentMandatoryAndNextFragment)/child::*"/>
+				<xsl:variable name="mandatoryDepthFragment">
 					<xsl:choose>
-						<xsl:when test="count($linksForColumn)=1">
-							<xsl:if test="$generateLeafNodes">
-								<loc:leaf>
-									<xsl:copy-of select="@*"/>
-									<xsl:variable name="resolvedColumn" select="$columns[@id=current()/@Column]"/>
-									<xsl:copy-of select="$resolvedColumn/@Name"/>
-									<xsl:if test="not($resolvedColumn/@IsNullable='true' or $resolvedColumn/@IsNullable=1)">
-										<xsl:attribute name="alwaysMandatory">
-											<xsl:value-of select="true()"/>
-										</xsl:attribute>
-									</xsl:if>
-									<xsl:if test="$mandatoryDepth!=0">
-										<xsl:attribute name="isMandatoryStartingAt">
-											<xsl:value-of select="$mandatoryDepth"/>
-										</xsl:attribute>
-									</xsl:if>
-								</loc:leaf>
-							</xsl:if>
+						<xsl:when test="$currentMandatoryAndNext/@isMandatory='true'">
+							<xsl:choose>
+								<xsl:when test="$startingMandatoryDepth!=0">
+									<xsl:value-of select="$startingMandatoryDepth" />
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="$depth"/>
+								</xsl:otherwise>
+							</xsl:choose>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:copy-of select="$linksForColumn[position()!=1]"/>
+							<xsl:value-of select="0"/>
 						</xsl:otherwise>
 					</xsl:choose>
-				</xsl:for-each>
-			</xsl:variable>
-			<xsl:variable name="childLinks" select="exsl:node-set($childLinksFragment)/child::*"/>
-			<xsl:copy-of select="$childLinks/self::loc:leaf"/>
+				</xsl:variable>
+				<xsl:variable name="mandatoryDepth" select="number($mandatoryDepthFragment)"/>
+				<xsl:variable name="childLinksFragment">
+					<xsl:for-each select="$startLinks[not(preceding-sibling::*[1]/@Column=@Column)][@ConceptTypeChild=$currentChildId]">
+						<xsl:variable name="linksForColumn" select="$startLinks[@Column=current()/@Column]"/>
+						<xsl:choose>
+							<xsl:when test="count($linksForColumn)=1">
+								<xsl:if test="$generateLeafNodes">
+									<loc:leaf>
+										<xsl:copy-of select="@*"/>
+										<xsl:variable name="resolvedColumn" select="$columns[@id=current()/@Column]"/>
+										<xsl:copy-of select="$resolvedColumn/@Name"/>
+										<xsl:if test="not($resolvedColumn/@IsNullable='true' or $resolvedColumn/@IsNullable=1)">
+											<xsl:attribute name="alwaysMandatory">
+												<xsl:value-of select="true()"/>
+											</xsl:attribute>
+										</xsl:if>
+										<xsl:if test="$mandatoryDepth!=0">
+											<xsl:attribute name="isMandatoryStartingAt">
+												<xsl:value-of select="$mandatoryDepth"/>
+											</xsl:attribute>
+										</xsl:if>
+									</loc:leaf>
+								</xsl:if>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:copy-of select="$linksForColumn[position()!=1]"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:for-each>
+				</xsl:variable>
+				<xsl:variable name="childLinks" select="exsl:node-set($childLinksFragment)/child::*"/>
+				<xsl:copy-of select="$childLinks/self::loc:leaf"/>
 
-			<xsl:variable name="nextLinks" select="$childLinks/self::oialtocdb:ColumnHasConceptTypeChild"/>
-			<xsl:if test="$nextLinks">
-				<loc:child ConceptTypeChild="{.}" ConceptTypeChildName="{$allConceptTypes[@id=$allConceptTypeChildren[@id=current()]/@ref]/@name}" IsMandatory="{$mandatoryDepth!=0}">
-					<xsl:call-template name="BuildChildAndLeafHierarchy">
-						<xsl:with-param name="startLinks" select="$nextLinks"/>
-						<xsl:with-param name="allConceptTypes" select="$allConceptTypes"/>
-						<xsl:with-param name="allConceptTypeChildren" select="$allConceptTypeChildren"/>
-						<xsl:with-param name="columns" select="$columns"/>
-						<xsl:with-param name="contextConceptType" select="string($currentMandatoryAndNext/@nextComingFrom)"/>
-						<xsl:with-param name="startingMandatoryDepth" select="$mandatoryDepth"/>
-						<xsl:with-param name="generateLeafNodes" select="true()"/>
-						<xsl:with-param name="depth" select="$depth+1"/>
-					</xsl:call-template>
-				</loc:child>
-			</xsl:if>
+				<xsl:variable name="nextLinks" select="$childLinks/self::oialtocdb:ColumnHasConceptTypeChild"/>
+				<xsl:if test="$nextLinks">
+					<loc:child ConceptTypeChild="{$currentChildId}" ConceptTypeChildName="{key('KeyedConceptTypes',$currentConceptTypeChild/@ref)/@name}" IsMandatory="{$mandatoryDepth!=0}">
+						<xsl:call-template name="BuildChildAndLeafHierarchy">
+							<xsl:with-param name="startLinks" select="$nextLinks"/>
+							<xsl:with-param name="columns" select="$columns"/>
+							<xsl:with-param name="contextConceptType" select="string($currentMandatoryAndNext/@nextComingFrom)"/>
+							<xsl:with-param name="startingMandatoryDepth" select="$mandatoryDepth"/>
+							<xsl:with-param name="generateLeafNodes" select="true()"/>
+							<xsl:with-param name="depth" select="$depth+1"/>
+						</xsl:call-template>
+					</loc:child>
+				</xsl:if>
+			</xsl:for-each>
 		</xsl:for-each>
 	</xsl:template>
 
-	<xsl:template match="cdb:Table" mode="GenerateAbsorptionConstraints">
+	<xsl:template match="rcd:Table" mode="GenerateAbsorptionConstraints">
 		<xsl:param name="oialDcilBridge"/>
 		<xsl:param name="oialModel"/>
-
-		<xsl:variable name="allConceptTypes" select="$oialModel/oial:conceptTypes/oial:conceptType"/>
-		<xsl:variable name="allConceptTypeChildren" select="$allConceptTypes/oial:children/oial:*"/>
-
-		<xsl:variable name="columns" select="cdb:Columns/cdb:Column"/>
-
+		<xsl:variable name="columns" select="rcd:Columns/rcd:Column"/>
 
 		<xsl:variable name="nestedChildFragment">
 			<xsl:call-template name="BuildChildAndLeafHierarchy">
 				<xsl:with-param name="startLinks" select="$oialDcilBridge/oialtocdb:ColumnHasConceptTypeChild[@Column = $columns/@id]"/>
-				<xsl:with-param name="allConceptTypes" select="$allConceptTypes"/>
-				<xsl:with-param name="allConceptTypeChildren" select="$allConceptTypeChildren"/>
 				<xsl:with-param name="columns" select="$columns"/>
 				<xsl:with-param name="contextConceptType" select="string($oialDcilBridge/oialtocdb:TableIsPrimarilyForConceptType[@Table=current()/@id]/@ConceptType)"/>
 				<xsl:with-param name="startingMandatoryDepth" select="0"/>

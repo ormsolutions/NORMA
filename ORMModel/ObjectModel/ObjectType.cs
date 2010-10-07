@@ -2142,9 +2142,84 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
+		/// AddRule: typeof(FactTypeHasDerivationRule)
+		/// Implied mandatory semantics ignore fully derived fact types.
+		/// Reverify role players when a fact type derivation rule is added.
+		/// </summary>
+		private static void FactTypeDerivationRuleAddedRule(ElementAddedEventArgs e)
+		{
+			FactTypeHasDerivationRule link = (FactTypeHasDerivationRule)e.ModelElement;
+			FactTypeDerivationRule derivationRule = link.DerivationRule;
+			if (derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+				!derivationRule.ExternalDerivation)
+			{
+				foreach (RoleBase roleBase in link.FactType.RoleCollection)
+				{
+					Role role;
+					ObjectType rolePlayer;
+					if (null != (role = roleBase as Role) &&
+						null != (rolePlayer = role.RolePlayer))
+					{
+						DelayValidateIsIndependent(rolePlayer);
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// ChangeRule: typeof(FactTypeDerivationRule)
+		/// Implied mandatory semantics ignore fully derived fact types.
+		/// Reverify role players when a fact type derivation rule is changed.
+		/// </summary>
+		private static void FactTypeDerivationRuleChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			FactType factType;
+			Guid domainPropertyId = e.DomainProperty.Id;
+			if ((domainPropertyId == FactTypeDerivationRule.DerivationCompletenessDomainPropertyId ||
+				domainPropertyId == FactTypeDerivationRule.ExternalDerivationDomainPropertyId) &&
+				null != (factType = ((FactTypeDerivationRule)e.ModelElement).FactType))
+			{
+				foreach (RoleBase roleBase in factType.RoleCollection)
+				{
+					Role role;
+					ObjectType rolePlayer;
+					if (null != (role = roleBase as Role) &&
+						null != (rolePlayer = role.RolePlayer))
+					{
+						DelayValidateIsIndependent(rolePlayer);
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// DeleteRule: typeof(FactTypeHasDerivationRule)
+		/// Implied mandatory semantics ignore fully derived fact types.
+		/// Reverify role players when a fact type derivation rule is deleted.
+		/// </summary>
+		private static void FactTypeDerivationRuleDeletedRule(ElementDeletedEventArgs e)
+		{
+			FactTypeHasDerivationRule link = (FactTypeHasDerivationRule)e.ModelElement;
+			FactTypeDerivationRule derivationRule;
+			FactType factType;
+			if (!(factType = link.FactType).IsDeleted &&
+				(derivationRule = link.DerivationRule).DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+				!derivationRule.ExternalDerivation)
+			{
+				foreach (RoleBase roleBase in factType.RoleCollection)
+				{
+					Role role;
+					ObjectType rolePlayer;
+					if (null != (role = roleBase as Role) &&
+						null != (rolePlayer = role.RolePlayer))
+					{
+						DelayValidateIsIndependent(rolePlayer);
+					}
+				}
+			}
+		}
+		/// <summary>
 		/// Return a deserialization fixup listener. The listener
-		/// verifies that all facts that should have implied objectifications
-		/// have implied objectifications
+		/// verifies independent and implied mandatory state for
+		/// all object types.
 		/// </summary>
 		public static IDeserializationFixupListener IsIndependentFixupListener
 		{
@@ -2235,6 +2310,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			MandatoryConstraint impliedMandatory = ImpliedMandatoryConstraint;
 			LinkedElementCollection<Role> impliedMandatoryRoles = (impliedMandatory != null) ? impliedMandatory.RoleCollection : null;
 			bool seenNonMandatoryRole = false;
+			FactTypeDerivationRule derivationRule;
+			FactType factType;
 			for (int i = 0; i < playedRoleCount; ++i)
 			{
 				Role playedRole = playedRoles[i];
@@ -2313,8 +2390,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 					}
 				}
+				bool currentRoleOnFullyDerivedFactType = false;
+				bool checkedCurrentRoleDerivation = false;
 				if (!currentRoleIsMandatory && canBeIndependent)
 				{
+					checkedCurrentRoleDerivation = true;
+					currentRoleOnFullyDerivedFactType = null != (factType = playedRole.FactType) &&
+						null != (derivationRule = factType.DerivationRule) &&
+						derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+						!derivationRule.ExternalDerivation;
 					if (!checkedPreferredRoles)
 					{
 						checkedPreferredRoles = true;
@@ -2331,14 +2415,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							null != oppositeRole &&
 							preferredIdentifierRoles.Contains(oppositeRole.Role);
 					}
-					if (!currentRoleIsWithPreferredIdentifier)
+					if (!currentRoleIsWithPreferredIdentifier && !currentRoleOnFullyDerivedFactType)
 					{
 						seenNonMandatoryRole = true;
 					}
 				}
 				if (impliedMandatory != null &&	canBeIndependent)
 				{
-					if (currentRoleIsWithPreferredIdentifier)
+					if (!checkedCurrentRoleDerivation)
+					{
+						checkedCurrentRoleDerivation = true;
+						currentRoleOnFullyDerivedFactType = null != (factType = playedRole.FactType) &&
+							null != (derivationRule = factType.DerivationRule) &&
+							derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+							!derivationRule.ExternalDerivation;
+					}
+					if (currentRoleIsWithPreferredIdentifier || currentRoleOnFullyDerivedFactType)
 					{
 						if (currentRoleIsAlreadyImplied)
 						{
@@ -2390,7 +2482,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									break;
 								}
 							}
-							if (!roleIsMandatory)
+							if (!roleIsMandatory &&
+								!(null != (factType = playedRole.FactType) &&
+								null != (derivationRule = factType.DerivationRule) &&
+								derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+								!derivationRule.ExternalDerivation))
 							{
 								impliedMandatoryRoles.Add(playedRole);
 							}
@@ -2425,17 +2521,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			// Finally, turn off IsIndependent if it is no longer needed
 			if (!canBeIndependent && currentIsIndependent)
 			{
-				RuleManager ruleManager = Store.RuleManager;
-				Type ruleType = typeof(ObjectTypeChangeRuleClass);
-				try
+				if (notifyAdded == null)
 				{
-					// Disable the rule so this does not recurse to this routine
-					ruleManager.DisableRule(ruleType);
-					IsIndependent = false;
+					RuleManager ruleManager = Store.RuleManager;
+					Type ruleType = typeof(ObjectTypeChangeRuleClass);
+					try
+					{
+						// Disable the rule so this does not recurse to this routine
+						ruleManager.DisableRule(ruleType);
+						IsIndependent = false;
+					}
+					finally
+					{
+						ruleManager.EnableRule(ruleType);
+					}
 				}
-				finally
+				else
 				{
-					ruleManager.EnableRule(ruleType);
+					// The rule is not enabled, just clear the property
+					IsIndependent = false;
 				}
 			}
 		}
@@ -2472,6 +2576,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			for (int i = 0; i < playedRoleCount && retVal; ++i)
 			{
 				Role playedRole = playedRoles[i];
+				FactType factType;
+				FactTypeDerivationRule derivationRule;
+				if (null != (factType = playedRole.FactType) &&
+					null != (derivationRule = factType.DerivationRule) &&
+					derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+					!derivationRule.ExternalDerivation)
+				{
+					// Completely ignore mandatory roles on derived fact types.
+					// UNDONE: Reconsider this in the future. Non-implied mandatory
+					// roles on derived fact types that traverse non-existential
+					// roles on this object type can imply a mandatory on one
+					// or more of the non-existential roles. This would be an
+					// unusual way to model the mandatory constraint, however.
+					continue;
+				}
 				LinkedElementCollection<ConstraintRoleSequence> constraints = playedRole.ConstraintRoleSequenceCollection;
 				int constraintCount = constraints.Count;
 				for (int j = 0; j < constraintCount; ++j)

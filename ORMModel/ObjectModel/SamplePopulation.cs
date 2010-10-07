@@ -2403,9 +2403,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void EntityTypeInstanceAddedRule(ElementAddedEventArgs e)
 		{
-			EntityTypeHasEntityTypeInstance link = e.ModelElement as EntityTypeHasEntityTypeInstance;
+			EntityTypeHasEntityTypeInstance link = (EntityTypeHasEntityTypeInstance)e.ModelElement;
 			ObjectType entity = link.EntityType;
-			if (entity.IsValueType)
+			if (entity.IsValueType &&
+				CopyMergeUtility.GetIntegrationPhase(link.Store) != CopyClosureIntegrationPhase.Integrating)
 			{
 				throw new InvalidOperationException(ResourceStrings.ModelExceptionEntityTypeInstanceInvalidEntityTypeParent);
 			}
@@ -2775,9 +2776,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void ValueTypeHasValueTypeInstanceAddedRule(ElementAddedEventArgs e)
 		{
-			ValueTypeHasValueTypeInstance link = e.ModelElement as ValueTypeHasValueTypeInstance;
+			ValueTypeHasValueTypeInstance link = (ValueTypeHasValueTypeInstance)e.ModelElement;
 			ObjectType valueType = link.ValueType;
-			if (!valueType.IsValueType)
+			if (!valueType.IsValueType &&
+				CopyMergeUtility.GetIntegrationPhase(link.Store) != CopyClosureIntegrationPhase.Integrating)
 			{
 				throw new InvalidOperationException(ResourceStrings.ModelExceptionValueTypeInstanceInvalidValueTypeParent);
 			}
@@ -4785,12 +4787,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static void RoleInstanceAddedRule(ElementAddedEventArgs e)
 		{
 			RoleInstance roleInstance = (RoleInstance)e.ModelElement;
-			ObjectType rolePlayer = roleInstance.Role.RolePlayer;
-			ObjectTypeInstance instance;
-			if (rolePlayer != null && rolePlayer != (instance = roleInstance.ObjectTypeInstance).ObjectType)
+			if (CopyMergeUtility.GetIntegrationPhase(roleInstance.Store) != CopyClosureIntegrationPhase.Integrating)
 			{
-				// Note that this will throw in ObjectTypeInstanceRolePlayerChangedRule if the current ObjectType is not null
-				instance.ObjectType = rolePlayer;
+				ObjectType rolePlayer = roleInstance.Role.RolePlayer;
+				ObjectTypeInstance instance;
+				if (rolePlayer != null && rolePlayer != (instance = roleInstance.ObjectTypeInstance).ObjectType)
+				{
+					// Note that this will throw in ObjectTypeInstanceRolePlayerChangedRule if the current ObjectType is not null
+					instance.ObjectType = rolePlayer;
+				}
 			}
 			FrameworkDomainModel.DelayValidateElement(roleInstance, DelayValidateRemovePopulationMandatoryError);
 		}
@@ -4809,7 +4814,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			RoleInstance roleInstance = (RoleInstance)e.ElementLink;
 			ObjectType rolePlayer = roleInstance.Role.RolePlayer;
 			ObjectTypeInstance instance = roleInstance.ObjectTypeInstance;
-			if (rolePlayer != null && rolePlayer != instance.ObjectType)
+			if (rolePlayer != null &&
+				rolePlayer != instance.ObjectType &&
+				CopyMergeUtility.GetIntegrationPhase(roleInstance.Store) != CopyClosureIntegrationPhase.Integrating)
 			{
 				// Note that this will throw in ObjectTypeInstanceRolePlayerChangedRule the current ObjectType is not null
 				instance.ObjectType = rolePlayer;

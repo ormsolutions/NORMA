@@ -4698,6 +4698,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			bool checkBinaryOppositeRolePlayerPattern = false;
 			bool joinNotNeeded = false;
+			bool allowStepOverRolePlayer = true;
 			IConstraint constraint = Constraint;
 			// Check the constraint patterns to shortcircuit requirements
 			if (constraint != null)
@@ -4718,9 +4719,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							break;
 						}
 						return;
+					case ConstraintType.Ring:
+						allowStepOverRolePlayer = false;
+						break;
 					case ConstraintType.Frequency:
 					case ConstraintType.ExternalUniqueness:
 						checkBinaryOppositeRolePlayerPattern = true;
+						allowStepOverRolePlayer = false;
 						break;
 				}
 			}
@@ -4953,7 +4958,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					else if (verifyAutomaticPath && (joinPath == null || joinPath.IsAutomatic))
 					{
-						joinPath = VerifyAutomaticJoinPath(joinPath, constraintRoles, notifyAdded);
+						joinPath = VerifyAutomaticJoinPath(joinPath, constraintRoles, allowStepOverRolePlayer, notifyAdded);
 					}
 				}
 			}
@@ -5039,8 +5044,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="existingJoinPath">An existing automatic join path to verify.</param>
 		/// <param name="constraintRoles">The constraint roles to bind to.</param>
+		/// <param name="allowStepOverRolePlayer">Allow a step to the next constraint role
+		/// directly over a role player instead of over another role in the fact type.</param>
 		/// <param name="notifyAdded">Initial load notification callback.</param>
-		private ConstraintRoleSequenceJoinPath VerifyAutomaticJoinPath(ConstraintRoleSequenceJoinPath existingJoinPath, ReadOnlyCollection<ConstraintRoleSequenceHasRole> constraintRoles, INotifyElementAdded notifyAdded)
+		private ConstraintRoleSequenceJoinPath VerifyAutomaticJoinPath(ConstraintRoleSequenceJoinPath existingJoinPath, ReadOnlyCollection<ConstraintRoleSequenceHasRole> constraintRoles, bool allowStepOverRolePlayer, INotifyElementAdded notifyAdded)
 		{
 			// Get current information
 			int constraintRoleCount = constraintRoles.Count;
@@ -5063,8 +5070,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			pathData.Add(new AutomaticJoinPathData(constraintRole, previousRole, PathedRolePurpose.PostInnerJoin));
 			int lastFactTypeEntryIndex = 0;
 			bool incompleteOrAmbiguousPath = false;
+			BitTracker processedConstraintRoles = new BitTracker(constraintRoleCount);
 			for (int i = 1; i < constraintRoleCount; ++i)
 			{
+				if (processedConstraintRoles[i])
+				{
+					continue;
+				}
 				constraintRole = constraintRoles[i];
 				Role currentRole = constraintRole.Role;
 				FactType currentFactType = currentRole.FactType;
@@ -5263,18 +5275,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									}
 									else
 									{
-										pathData.Add(new AutomaticJoinPathData(null, currentRole.OppositeRoleAlwaysResolveProxy.Role, PathedRolePurpose.PostInnerJoin));
-										if (constrainedRoleCountInCurrentFactType > 1)
+										// Step over the link fact type to get out of the objectification, then
+										// into this fact type with the matched role.
+										if (constrainedInPreviousFactTypeCount > 1)
 										{
-											// Step across the link fact type then join into the objectified fact type
-											pathData.Add(new AutomaticJoinPathData(null, currentRole, PathedRolePurpose.SameFactType));
-											pathData.Add(new AutomaticJoinPathData(constraintRole, currentRole, PathedRolePurpose.PostInnerJoin));
+											// If only one role was used in the objectified fact type, then not adding an additional
+											// join step switches the path to use the link fact type.
+											pathData.Add(new AutomaticJoinPathData(null, previousRole, PathedRolePurpose.PostInnerJoin));
 										}
-										else
-										{
-											// Project directly on the link fact type
-											pathData.Add(new AutomaticJoinPathData(constraintRole, currentRole, PathedRolePurpose.SameFactType));
-										}
+										// Prepare to step into the next fact type and distinguish a step
+										// in the link fact type from the objectified fact type by stepping
+										// over the objectified role.
+										pathData.Add(new AutomaticJoinPathData(null, previousRole.OppositeRoleAlwaysResolveProxy.Role, PathedRolePurpose.SameFactType));
+										// Join with the current fact type
+										pathData.Add(new AutomaticJoinPathData(null, matchedRole, PathedRolePurpose.PostInnerJoin));
+										// Project on the current role
+										pathData.Add(new AutomaticJoinPathData(constraintRole, currentRole, PathedRolePurpose.SameFactType));
 									}
 								}
 								else
@@ -5299,6 +5315,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					// there are multiple roles played in the current fact type.
 					Role matchedLeftRole = null;
 					Role matchedRightRole = null;
+					int matchedRightRoleAlternateEntryConstraintRoleIndex = -1;
 					if (previousFactTypeObjectifiedBy != null)
 					{
 						if (currentFactTypeRoles == null)
@@ -5310,6 +5327,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						for (int rightRoleIndex = 0; rightRoleIndex < currentFactTypeRoleCount; ++rightRoleIndex)
 						{
 							Role testRightRole;
+							int testRightRoleAlternateEntryConstraintRoleIndex = -1;
 							if (currentFactTypeUnaryRoleIndex.HasValue)
 							{
 								if (currentFactTypeUnaryRoleIndex.Value != rightRoleIndex)
@@ -5321,20 +5339,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							else
 							{
 								testRightRole = currentFactTypeRoles[rightRoleIndex].Role;
-								if (constrainedRoleCountInCurrentFactType == 1 ||
+								if (constrainedRoleCountInCurrentFactType != 1 &&
 									testRightRole != currentRole)
 								{
-									int j = 0;
-									for (; j < constrainedRoleCountInCurrentFactType; ++j)
+									// We always allow stepping over an objectification
+									// directly to an included constraint role. We allow
+									// stepping to any of the constrained roles on the
+									// current fact type.
+									for (int j = 0; j < constrainedRoleCountInCurrentFactType; ++j)
 									{
 										if (constraintRoles[i + j].Role == testRightRole)
 										{
-											break;
+											testRightRoleAlternateEntryConstraintRoleIndex = i + j;
 										}
-									}
-									if (j != constrainedRoleCountInCurrentFactType)
-									{
-										continue;
 									}
 								}
 							}
@@ -5351,6 +5368,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									// The matching left role null indicates
 									// an objectification join on the left.
 									matchedRightRole = testRightRole;
+									matchedRightRoleAlternateEntryConstraintRoleIndex = testRightRoleAlternateEntryConstraintRoleIndex;
 								}
 								else
 								{
@@ -5373,6 +5391,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							for (int leftRoleIndex = 0; leftRoleIndex < previousFactTypeRoleCount; ++leftRoleIndex)
 							{
 								Role testLeftRole;
+								bool testObjectificationOnly = false;
 								if (previousFactTypeUnaryRoleIndex.HasValue)
 								{
 									if (leftRoleIndex != previousFactTypeUnaryRoleIndex.Value)
@@ -5389,9 +5408,29 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									int j = 0;
 									for (; j < constrainedInPreviousFactTypeCount; ++j)
 									{
+										// We don't test for constraint inclusion here
+										// on the final role. Stepping over the objectification
+										// directly to an included constraint role is always allowed.
 										if (constraintRoles[lastFactTypeEntryIndex + j].Role == testLeftRole)
 										{
-											break;
+											if (j == (constrainedInPreviousFactTypeCount - 1))
+											{
+												if (!allowStepOverRolePlayer)
+												{
+													if (currentFactTypeObjectifiedBy != null)
+													{
+														testObjectificationOnly = true;
+													}
+													else
+													{
+														break;
+													}
+												}
+											}
+											else
+											{
+												break;
+											}
 										}
 									}
 									if (j != constrainedInPreviousFactTypeCount)
@@ -5419,7 +5458,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										incompleteOrAmbiguousPath = true;
 									}
 								}
-								else
+								else if (!testObjectificationOnly)
 								{
 									if (currentFactTypeRoles == null)
 									{
@@ -5430,6 +5469,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									for (int rightRoleIndex = 0; rightRoleIndex < currentFactTypeRoleCount; ++rightRoleIndex)
 									{
 										Role testRightRole;
+										int testRightRoleAlternateEntryConstraintRoleIndex = -1;
 										if (currentFactTypeUnaryRoleIndex.HasValue)
 										{
 											if (currentFactTypeUnaryRoleIndex.Value != rightRoleIndex)
@@ -5441,7 +5481,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										else
 										{
 											testRightRole = currentFactTypeRoles[rightRoleIndex].Role;
-											if (constrainedRoleCountInCurrentFactType == 1 ||
+											if (allowStepOverRolePlayer ||
+												constrainedRoleCountInCurrentFactType == 1 ||
 												testRightRole != currentRole)
 											{
 												int j = 0;
@@ -5449,7 +5490,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 												{
 													if (constraintRoles[i + j].Role == testRightRole)
 													{
-														break;
+														if (allowStepOverRolePlayer)
+														{
+															testRightRoleAlternateEntryConstraintRoleIndex = i + j;
+														}
+														else
+														{
+															break;
+														}
 													}
 												}
 												if (j != constrainedRoleCountInCurrentFactType)
@@ -5470,6 +5518,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 											{
 												matchedLeftRole = testLeftRole;
 												matchedRightRole = testRightRole;
+												matchedRightRoleAlternateEntryConstraintRoleIndex = testRightRoleAlternateEntryConstraintRoleIndex;
 											}
 											else
 											{
@@ -5510,7 +5559,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 						else
 						{
-							// Only one role was used in the objectified fact type, then not adding an additional
+							// If only one role was used in the objectified fact type, then not adding an additional
 							// join step switches the path to use the link fact type.
 							if (constrainedInPreviousFactTypeCount > 1)
 							{
@@ -5519,7 +5568,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							pathData.Add(new AutomaticJoinPathData(null, previousRole.OppositeRoleAlwaysResolveProxy.Role, PathedRolePurpose.SameFactType));
 						}
 					}
-					else if (!previousFactTypeUnaryRoleIndex.HasValue)
+					else if (!previousFactTypeUnaryRoleIndex.HasValue &&
+						matchedLeftRole != previousRole)
 					{
 						pathData.Add(new AutomaticJoinPathData(null, matchedLeftRole, PathedRolePurpose.SameFactType));
 					}
@@ -5529,7 +5579,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					else if (matchedRightRole != null)
 					{
-						pathData.Add(new AutomaticJoinPathData(null, matchedRightRole, PathedRolePurpose.PostInnerJoin));
+						if (matchedRightRoleAlternateEntryConstraintRoleIndex != -1)
+						{
+							processedConstraintRoles[matchedRightRoleAlternateEntryConstraintRoleIndex] = true;
+							pathData.Add(new AutomaticJoinPathData(constraintRoles[matchedRightRoleAlternateEntryConstraintRoleIndex], matchedRightRole, PathedRolePurpose.PostInnerJoin));
+						}
+						else
+						{
+							pathData.Add(new AutomaticJoinPathData(null, matchedRightRole, PathedRolePurpose.PostInnerJoin));
+						}
 						pathData.Add(new AutomaticJoinPathData(constraintRole, currentRole, PathedRolePurpose.SameFactType));
 					}
 					else

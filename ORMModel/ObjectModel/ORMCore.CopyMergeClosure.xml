@@ -100,12 +100,10 @@
 				</cmc:AfterAutomaticEquivalence>
 			</cmc:EmbeddingDirective>
 
-			<!-- UNDONE: COPYMERGE Temporarily turn off sample population copying for a preliminary checkin -->
+			<!-- Handle ObjectTypeHasObjectTypeInstance through the derived relationships -->
 			<cmc:EmbeddingDirective relationship="ObjectTypeHasObjectTypeInstance" ignore="true"/>
+			<!-- Handle value type instances with custom relationship code -->
 			<cmc:EmbeddingDirective relationship="ValueTypeHasValueTypeInstance" ignore="true"/>
-			<cmc:EmbeddingDirective relationship="EntityTypeHasEntityTypeInstance" ignore="true"/>
-			<cmc:EmbeddingDirective relationship="FactTypeHasFactTypeInstance" ignore="true"/>
-			<cmc:EmbeddingDirective relationship="EntityTypeSubtypeHasEntityTypeSubtypeInstance" ignore="true"/>
 		</cmc:EmbeddingDirectives>
 		<cmc:ClosureRoles>
 			<!-- Other closures -->
@@ -319,6 +317,15 @@
 			<cmc:ClosureRole relationship="ConstraintRoleProjectedFromRolePathRoot" role="Source" closureBehavior="ExternalReferencedPart"/>
 			<cmc:ClosureRole relationship="ConstraintRoleProjectedFromPathedRole" role="Source" closureBehavior="ExternalReferencedPart"/>
 			<cmc:ClosureRole relationship="ConstraintRoleProjectedFromCalculatedPathValue" role="Source" closureBehavior="ExternalReferencedPart"/>
+
+			<!-- Sample population closures -->
+			<cmc:ClosureRole relationship="ValueTypeHasValueTypeInstance" role="ValueTypeInstance" closureBehavior="ContainedPart" rootElementOnly="true" order="From"/>
+			<cmc:ClosureRole relationship="ValueTypeHasValueTypeInstance" role="ValueType" closureBehavior="Container"/>
+			<cmc:ClosureRole relationship="EntityTypeRoleInstance" role="ObjectTypeInstance" closureBehavior="ExternalReferencedPart"/>
+			<cmc:ClosureRole relationship="EntityTypeInstanceHasRoleInstance" role="RoleInstance" closureBehavior="ExternalReferencedPart"/>
+			<cmc:ClosureRole relationship="FactTypeRoleInstance" role="ObjectTypeInstance" closureBehavior="ExternalReferencedPart"/>
+			<cmc:ClosureRole relationship="FactTypeInstanceHasRoleInstance" role="RoleInstance" closureBehavior="InternalReferencedPart"/>
+			<cmc:ClosureRole relationship="EntityTypeSubtypeInstanceHasSupertypeInstance" role="SupertypeInstance" closureBehavior="ExternalReferencedPart"/>
 		</cmc:ClosureRoles>
 		<cmc:ImpliedReferences>
 			<cmc:ImpliedReference class="ObjectType" includeClassDescendants="true">
@@ -382,6 +389,9 @@
 			<cmc:IgnoredProperty class="ObjectType" property="TreatAsPersonal"/>
 			<cmc:IgnoredProperty class="ObjectType" property="DerivationNoteDisplay"/>
 			<cmc:IgnoredProperty class="ObjectType" property="DerivationStorageDisplay"/>
+			<cmc:IgnoredProperty class="ObjectTypeInstance" property="Name"/>
+			<cmc:IgnoredProperty class="ObjectTypeInstance" property="IdentifierName"/>
+			<cmc:IgnoredProperty class="ObjectTypeInstance" property="NameChanged"/>
 			<cmc:IgnoredProperty class="FactType" property="DefinitionText"/>
 			<cmc:IgnoredProperty class="FactType" property="NoteText"/>
 			<cmc:IgnoredProperty class="FactType" property="Name"/>
@@ -389,6 +399,8 @@
 			<cmc:IgnoredProperty class="FactType" property="NameChanged"/>
 			<cmc:IgnoredProperty class="FactType" property="DerivationNoteDisplay"/>
 			<cmc:IgnoredProperty class="FactType" property="DerivationStorageDisplay"/>
+			<cmc:IgnoredProperty class="FactTypeInstance" property="Name"/>
+			<cmc:IgnoredProperty class="FactTypeInstance" property="NameChanged"/>
 			<cmc:IgnoredProperty class="LeadRolePath" property="NoteText"/>
 			<cmc:IgnoredProperty class="Role" property="RolePlayerDisplay"/>
 			<cmc:IgnoredProperty class="Role" property="IsMandatory"/>

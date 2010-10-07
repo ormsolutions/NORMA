@@ -248,6 +248,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						typeof(ObjectType).GetNestedType("ConstraintRoleDeletingRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectType).GetNestedType("ExclusionModalityChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectType).GetNestedType("ExclusionSequenceAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectType).GetNestedType("FactTypeDerivationRuleAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectType).GetNestedType("FactTypeDerivationRuleChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectType).GetNestedType("FactTypeDerivationRuleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectType).GetNestedType("MandatoryModalityChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectType).GetNestedType("ObjectTypeAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectType).GetNestedType("ObjectTypeChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -490,7 +493,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMCoreDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 422; ++i)
+			for (int i = 0; i < 425; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -6140,6 +6143,84 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.ExclusionSequenceAddedRule");
 				ObjectType.ExclusionSequenceAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.ExclusionSequenceAddedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeHasDerivationRule), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class FactTypeDerivationRuleAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public FactTypeDerivationRuleAddedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType
+			/// /// <summary>
+			/// /// AddRule: typeof(FactTypeHasDerivationRule)
+			/// /// </summary>
+			/// private static void FactTypeDerivationRuleAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.FactTypeDerivationRuleAddedRule");
+				ObjectType.FactTypeDerivationRuleAddedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.FactTypeDerivationRuleAddedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeDerivationRule), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class FactTypeDerivationRuleChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public FactTypeDerivationRuleChangedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType
+			/// /// <summary>
+			/// /// ChangeRule: typeof(FactTypeDerivationRule)
+			/// /// </summary>
+			/// private static void FactTypeDerivationRuleChangedRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.FactTypeDerivationRuleChangedRule");
+				ObjectType.FactTypeDerivationRuleChangedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.FactTypeDerivationRuleChangedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeHasDerivationRule), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class FactTypeDerivationRuleDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public FactTypeDerivationRuleDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType
+			/// /// <summary>
+			/// /// DeleteRule: typeof(FactTypeHasDerivationRule)
+			/// /// </summary>
+			/// private static void FactTypeDerivationRuleDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.FactTypeDerivationRuleDeletedRule");
+				ObjectType.FactTypeDerivationRuleDeletedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.FactTypeDerivationRuleDeletedRule");
 			}
 		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(MandatoryConstraint), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]

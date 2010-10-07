@@ -493,9 +493,6 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				// Cached array with predicates returning true if a FactTypeMapping should
 				// be reduced from the set of mappings to consider.
 				private static Predicate<FactTypeMapping>[] ReductionConditions;
-				// Bits used with ReductionConditions to indicate if a condition
-				// should be applied when later filters are tested.
-				private static BitTracker CumulativeReductionConditions;
 				/// <summary>
 				/// If the number of undecided elements is unreasonably high,
 				/// then apply incrementally more stringent requirements for
@@ -509,9 +506,14 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 					{
 						int undecidedMappingCount = undecidedMappings.Count;
 						Predicate<FactTypeMapping>[] reductionConditions = ReductionConditions;
-						BitTracker cumulativeConditions = CumulativeReductionConditions;
 						if (reductionConditions == null)
 						{
+							// Note that there is intentionally a lot of duplication in
+							// these routines. An earlier design attempted to call previous
+							// conditions along with later ones, but this resulted in a much
+							// more complicated algorithm and multiple calls. The algorithm
+							// was simplified in exchange for making these condition routines
+							// more complicated.
 							reductionConditions = new Predicate<FactTypeMapping>[]{
 								delegate(FactTypeMapping mapping)
 								{
@@ -533,36 +535,107 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 									// If the fact type has an unbalanced mandatory and is not a subtype,
 									// then map towards the mandatory.
 									FactTypeMappingFlags mappingFlags = mapping.Flags;
-									return FactTypeMappingFlags.FromRoleMandatory == (mappingFlags & (FactTypeMappingFlags.FromRoleMandatory | FactTypeMappingFlags.FromRoleImpliedMandatory)) &&
+									if (FactTypeMappingFlags.FromRoleMandatory == (mappingFlags & (FactTypeMappingFlags.FromRoleMandatory | FactTypeMappingFlags.FromRoleImpliedMandatory)) &&
 										0 == (mappingFlags & FactTypeMappingFlags.Subtype) &&
-										FactTypeMappingFlags.TowardsRoleMandatory != (mappingFlags & (FactTypeMappingFlags.TowardsRoleMandatory | FactTypeMappingFlags.TowardsRoleImpliedMandatory));
+										FactTypeMappingFlags.TowardsRoleMandatory != (mappingFlags & (FactTypeMappingFlags.TowardsRoleMandatory | FactTypeMappingFlags.TowardsRoleImpliedMandatory)))
+									{
+										return true;
+									}
+									
+									// Duplicate previous ValueType check
+									if ((mappingFlags & (FactTypeMappingFlags.TowardsValueType | FactTypeMappingFlags.FromValueType)) == (FactTypeMappingFlags.TowardsValueType))
+									{
+										if (0 != (mappingFlags & FactTypeMappingFlags.TowardsRoleMandatory))
+										{
+											return 0 != (mappingFlags & FactTypeMappingFlags.TowardsRoleImpliedMandatory);
+										}
+										return true;
+									}
+									return false;
 								},
 								delegate(FactTypeMapping mapping)
 								{
 									// Map away from a preferred identifier. This is not a cumulative test, and is ignored for later conditions.
-									return 0 == (mapping.Flags & FactTypeMappingFlags.FromPreferredIdentifier);
+									FactTypeMappingFlags mappingFlags = mapping.Flags;
+									if (0 == (mappingFlags & FactTypeMappingFlags.FromPreferredIdentifier))
+									{
+										return true;
+									}
+									
+									// Duplicate unbalanced ValueType and unbalanced mandatory checks
+									if (FactTypeMappingFlags.FromRoleMandatory == (mappingFlags & (FactTypeMappingFlags.FromRoleMandatory | FactTypeMappingFlags.FromRoleImpliedMandatory)) &&
+										0 == (mappingFlags & FactTypeMappingFlags.Subtype) &&
+										FactTypeMappingFlags.TowardsRoleMandatory != (mappingFlags & (FactTypeMappingFlags.TowardsRoleMandatory | FactTypeMappingFlags.TowardsRoleImpliedMandatory)))
+									{
+										return true;
+									}
+									if ((mappingFlags & (FactTypeMappingFlags.TowardsValueType | FactTypeMappingFlags.FromValueType)) == (FactTypeMappingFlags.TowardsValueType))
+									{
+										if (0 != (mappingFlags & FactTypeMappingFlags.TowardsRoleMandatory))
+										{
+											return 0 != (mappingFlags & FactTypeMappingFlags.TowardsRoleImpliedMandatory);
+										}
+										return true;
+									}
+									return false;
 								},
 								delegate(FactTypeMapping mapping)
 								{
 									// Prefer a shallow mapping.
-									return 0 == (mapping.Flags & FactTypeMappingFlags.DeepMapping);
+									FactTypeMappingFlags mappingFlags = mapping.Flags;
+									if (0 != (mappingFlags & FactTypeMappingFlags.DeepMapping))
+									{
+										return true;
+									}
+
+									// Duplicate unbalanced ValueType and unbalanced mandatory checks
+									if (FactTypeMappingFlags.FromRoleMandatory == (mappingFlags & (FactTypeMappingFlags.FromRoleMandatory | FactTypeMappingFlags.FromRoleImpliedMandatory)) &&
+										0 == (mappingFlags & FactTypeMappingFlags.Subtype) &&
+										FactTypeMappingFlags.TowardsRoleMandatory != (mappingFlags & (FactTypeMappingFlags.TowardsRoleMandatory | FactTypeMappingFlags.TowardsRoleImpliedMandatory)))
+									{
+										return true;
+									}
+									if ((mappingFlags & (FactTypeMappingFlags.TowardsValueType | FactTypeMappingFlags.FromValueType)) == (FactTypeMappingFlags.TowardsValueType))
+									{
+										if (0 != (mappingFlags & FactTypeMappingFlags.TowardsRoleMandatory))
+										{
+											return 0 != (mappingFlags & FactTypeMappingFlags.TowardsRoleImpliedMandatory);
+										}
+										return true;
+									}
+									return false;
 								},
 								delegate(FactTypeMapping mapping)
 								{
 									// If we have too many permutations then just map towards the first role.
 									// Yes, this is completely arbitrary, but getting anywhere past item 2 on
 									// this list will be extremely rarely and represents truly pathological cases.
+									
+									// Perform previous flag-based checks first.
+									FactTypeMappingFlags mappingFlags = mapping.Flags;
+									if (0 != (mappingFlags & FactTypeMappingFlags.DeepMapping))
+									{
+										return true;
+									}
+									if (FactTypeMappingFlags.FromRoleMandatory == (mappingFlags & (FactTypeMappingFlags.FromRoleMandatory | FactTypeMappingFlags.FromRoleImpliedMandatory)) &&
+										0 == (mappingFlags & FactTypeMappingFlags.Subtype) &&
+										FactTypeMappingFlags.TowardsRoleMandatory != (mappingFlags & (FactTypeMappingFlags.TowardsRoleMandatory | FactTypeMappingFlags.TowardsRoleImpliedMandatory)))
+									{
+										return true;
+									}
+									if ((mappingFlags & (FactTypeMappingFlags.TowardsValueType | FactTypeMappingFlags.FromValueType)) == (FactTypeMappingFlags.TowardsValueType))
+									{
+										if (0 != (mappingFlags & FactTypeMappingFlags.TowardsRoleMandatory))
+										{
+											return 0 != (mappingFlags & FactTypeMappingFlags.TowardsRoleImpliedMandatory);
+										}
+										return true;
+									}
 									Role role = mapping.TowardsRole;
 									return 0 != mapping.FactType.RoleCollection.IndexOf((RoleBase)role.Proxy ?? role);
 								},
 							};
 							ReductionConditions = reductionConditions;
-							cumulativeConditions.Reset(reductionConditions.Length - 1);
-							cumulativeConditions[0] = true; // Away from non-mandatory value type
-							cumulativeConditions[1] = true; // Towards unbalanced mandatory
-							cumulativeConditions[2] = false; // Away from identifier
-							cumulativeConditions[3] = true; // Prefer shallow
-							CumulativeReductionConditions = cumulativeConditions;
 						}
 						FactTypeMappingList decidedMappings = myPredecidedOneToOneFactTypeMappings;
 						for (int maxReduction = 0; maxReduction < reductionConditions.Length; ++maxReduction)
@@ -576,16 +649,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 								for (int i = 0; i < testMappingCount; ++i)
 								{
 									FactTypeMapping testMapping = testMappings[i];
-									int j = 0;
-									for (; j <= maxReduction; ++j)
-									{
-										if ((j == maxReduction || cumulativeConditions[j]) &&
-											reductionConditions[j](testMapping))
-										{
-											break;
-										}
-									}
-									if (j > maxReduction)
+									if (!reductionConditions[maxReduction](testMapping))
 									{
 										// This test mapping is not filtered, allow it
 										if (singleMapping == null)

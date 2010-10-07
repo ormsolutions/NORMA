@@ -120,13 +120,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			UniquenessConstraint singleRoleUniqueness;
 			ObjectType simpleIdentifierFor = null;
 			FactType objectifiedFactType = null;
+			DataType dataType = null;
 			bool isValueType = false;
 			if (IsImplicitBooleanValue)
 			{
 				// Match through the unary fact type, the name is of minimal use here
 				foreach (Role playedRole in PlayedRoleCollection)
 				{
-					return null != CopyMergeUtility.GetEquivalentElement(playedRole.FactType, foreignStore, elementTracker);
+					if (null != CopyMergeUtility.GetEquivalentElement(playedRole.FactType, foreignStore, elementTracker))
+					{
+						otherObjectType = (ObjectType)elementTracker.GetEquivalentElement(this);
+						dataType = DataType;
+						isValueType = true;
+					}
+					break;
 				}
 			}
 			else if (null != (objectifiedFactType = NestedFactType))
@@ -138,7 +145,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					otherObjectType = otherFactType.NestingType;
 				}
 			}
-			else if ((isValueType = IsValueType) &&
+			else if ((isValueType = null != (dataType = DataType)) &&
 				null != (impliedMandatory = ImpliedMandatoryConstraint) &&
 				1 == (impliedMandatoryRoles = impliedMandatory.RoleCollection).Count &&
 				null != (singleRoleUniqueness = impliedMandatoryRoles[0].SingleRoleAlethicUniquenessConstraint) &&
@@ -206,6 +213,156 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (otherObjectType != null)
 			{
 				elementTracker.AddEquivalentElement(this, otherObjectType);
+				if (dataType != null)
+				{
+					// Compare all instances with one pass
+					LinkedElementCollection<ValueTypeInstance> instances;
+					int instanceCount;
+					LinkedElementCollection<ValueTypeInstance> otherInstances;
+					int otherInstanceCount;
+					if (0 != (instanceCount = (instances = ValueTypeInstanceCollection).Count) &&
+						0 != (otherInstanceCount = (otherInstances = otherObjectType.ValueTypeInstanceCollection).Count))
+					{
+						// See comments on data type in ValueConstraint.MatchValueRanges
+						// Although it is a model error, there is not guarantee that there
+						// will be no duplicate values in this model. If the duplicate is in
+						// both places, this algorithm will match earliest-to-earliest.
+
+						// Determine the smallest collection to optimize processing
+						bool reverseProcessing = otherInstanceCount > instanceCount;
+						if (reverseProcessing)
+						{
+							int swapCount = instanceCount;
+							instanceCount = otherInstanceCount;
+							otherInstanceCount = swapCount;
+							LinkedElementCollection<ValueTypeInstance> swapInstances = instances;
+							instances = otherInstances;
+							otherInstances = swapInstances;
+						}
+						ValueTypeInstance instance;
+						string normalizedValue;
+						if (otherInstanceCount == 1)
+						{
+							ValueTypeInstance otherInstance = otherInstances[0];
+							string otherNormalizedValue;
+							if (dataType.ParseNormalizeValue(otherInstance.Value, otherInstance.InvariantValue, out otherNormalizedValue))
+							{
+								int i = 0;
+								for (; i < instanceCount; ++i)
+								{
+									instance = instances[i];
+									if (dataType.ParseNormalizeValue(instance.Value, instance.InvariantValue, out normalizedValue) &&
+										normalizedValue == otherNormalizedValue)
+									{
+										if (reverseProcessing)
+										{
+											elementTracker.AddEquivalentElement(otherInstance, instance);
+										}
+										else
+										{
+											elementTracker.AddEquivalentElement(instance, otherInstance);
+											for (int j = i + 1; j < instanceCount; ++j)
+											{
+												elementTracker.AddFailedEquivalentElement(instances[j]);
+											}
+										}
+										break;
+									}
+									else if (!reverseProcessing)
+									{
+										elementTracker.AddFailedEquivalentElement(instance);
+									}
+								}
+								if (reverseProcessing && i == instanceCount)
+								{
+									elementTracker.AddFailedEquivalentElement(otherInstance);
+								}
+							}
+						}
+						else
+						{
+							Dictionary<string, int> otherInstanceDictionary = new Dictionary<string, int>(otherInstanceCount);
+							int[] duplicatedAt = null;
+							int existingIndex;
+							for (int i = 0; i < otherInstanceCount; ++i)
+							{
+								instance = otherInstances[i];
+								if (dataType.ParseNormalizeValue(instance.Value, instance.InvariantValue, out normalizedValue))
+								{
+									if (otherInstanceDictionary.TryGetValue(normalizedValue, out existingIndex))
+									{
+										// Track duplicates. The duplicated at value for existing index
+										// points to the duplicate index, which points to the next duplicate, etc.
+										// Note that 0 is the default value and means 'not duplicated'.
+										if (duplicatedAt == null)
+										{
+											duplicatedAt = new int[otherInstanceCount];
+										}
+										else
+										{
+											int duplicateIndex;
+											while (0 != (duplicateIndex = duplicatedAt[existingIndex]))
+											{
+												existingIndex = duplicateIndex;
+											}
+										}
+										duplicatedAt[existingIndex] = i;
+									}
+									else
+									{
+										otherInstanceDictionary[normalizedValue] = i;
+									}
+								}
+							}
+							for (int i = 0; i < instanceCount; ++i)
+							{
+								instance = instances[i];
+								if (dataType.ParseNormalizeValue(instance.Value, instance.InvariantValue, out normalizedValue) &&
+									otherInstanceDictionary.TryGetValue(normalizedValue, out existingIndex) &&
+									existingIndex != -1)
+								{
+									if (reverseProcessing)
+									{
+										elementTracker.AddEquivalentElement(otherInstances[existingIndex], instance);
+									}
+									else
+									{
+										elementTracker.AddEquivalentElement(instance, otherInstances[existingIndex]);
+									}
+									if (null == duplicatedAt ||
+										0 == (existingIndex = duplicatedAt[existingIndex]))
+									{
+										existingIndex = -1;
+									}
+									otherInstanceDictionary[normalizedValue] = existingIndex;
+								}
+								else if (!reverseProcessing)
+								{
+									elementTracker.AddFailedEquivalentElement(instance);
+								}
+							}
+							if (reverseProcessing)
+							{
+								// Mark remaining items as not processed
+								foreach (int index in otherInstanceDictionary.Values)
+								{
+									if (index != -1)
+									{
+										elementTracker.AddFailedEquivalentElement(otherInstances[index]);
+										if (duplicatedAt != null)
+										{
+											int duplicateIndex = index;
+											while (0 != (duplicateIndex = duplicatedAt[duplicateIndex]))
+											{
+												elementTracker.AddFailedEquivalentElement(otherInstances[duplicateIndex]);
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
 				return true;
 			}
 			return false;
@@ -216,6 +373,175 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // ObjectType class
+	#region ValueTypeInstance class
+	partial class ValueTypeInstance : IElementEquivalence
+	{
+		/// <summary>
+		/// Implements <see cref="IElementEquivalence.MapEquivalentElements"/>
+		/// Match an instance based on the parent <see cref="ValueTypeInstance"/>.
+		/// </summary>
+		protected bool MapEquivalentElements(Store foreignStore, IEquivalentElementTracker elementTracker)
+		{
+			return CopyMergeUtility.GetEquivalentElement(ObjectType, foreignStore, elementTracker) != null &&
+				null != elementTracker.GetEquivalentElement(this);
+		}
+		bool IElementEquivalence.MapEquivalentElements(Store foreignStore, IEquivalentElementTracker elementTracker)
+		{
+			return MapEquivalentElements(foreignStore, elementTracker);
+		}
+	}
+	#endregion // ValueTypeInstance class
+	#region EntityTypeInstance class
+	partial class EntityTypeInstance : IElementEquivalence
+	{
+		/// <summary>
+		/// Implements <see cref="IElementEquivalence.MapEquivalentElements"/>
+		/// </summary>
+		protected bool MapEquivalentElements(Store foreignStore, IEquivalentElementTracker elementTracker)
+		{
+			// UNDONE: EntityTypeInstance merge is more complicated than ValueTypeInstance or FactTypeInstance
+			// because it is possibly cyclic on the instance type, so we cannot always map these in a block during
+			// ObjectType merge. In practice, this condition is rare, and mapping these indivdually is less efficient
+			// than mapping them altogether, so we should be able to detect this condition and apply a block
+			// processing algorithm in ObjectType.
+			ObjectType entityType = EntityType;
+			ObjectType otherEntityType;
+			LinkedElementCollection<Role> roles;
+			LinkedElementCollection<Role> otherRoles;
+			int roleCount;
+			UniquenessConstraint pid;
+			UniquenessConstraint otherPid;
+			if (null != (otherEntityType = CopyMergeUtility.GetEquivalentElement(entityType, foreignStore, elementTracker)) &&
+				null != (pid = entityType.PreferredIdentifier) &&
+				null != (otherPid = CopyMergeUtility.GetEquivalentElement(pid, foreignStore, elementTracker)) &&
+				(roleCount = (roles = pid.RoleCollection).Count) == (otherRoles = otherPid.RoleCollection).Count)
+			{
+				Role[] sortedOtherRoles = new Role[roleCount];
+				for (int i = 0; i < roleCount; ++i)
+				{
+					sortedOtherRoles[i] = (Role)elementTracker.GetEquivalentElement(roles[i]); // This has to succeed or the constraints would not have matched
+				}
+				LinkedElementCollection<EntityTypeInstance> allInstances = null;
+				LinkedElementCollection<EntityTypeRoleInstance> roleInstances = RoleInstanceCollection;
+				int roleInstanceCount = roleInstances.Count;
+				foreach (EntityTypeInstance testOtherInstance in otherEntityType.EntityTypeInstanceCollection)
+				{
+					LinkedElementCollection<EntityTypeRoleInstance> otherRoleInstances = testOtherInstance.RoleInstanceCollection;
+					if (otherRoleInstances.Count == roleInstanceCount)
+					{
+						int i = 0;
+						for (; i < roleInstanceCount; ++i)
+						{
+							EntityTypeRoleInstance roleInstance = roleInstances[i];
+							bool matchedRoleInstance = false;
+							ObjectTypeInstance otherTargetInstance;
+							if (null != (otherTargetInstance = CopyMergeUtility.GetEquivalentElement(roleInstance.ObjectTypeInstance, foreignStore, elementTracker)))
+							{
+								Role findOtherRole = sortedOtherRoles[roles.IndexOf(roleInstance.Role)];
+								foreach (EntityTypeRoleInstance otherRoleInstance in otherRoleInstances)
+								{
+									if (otherRoleInstance.Role == findOtherRole)
+									{
+										matchedRoleInstance = otherRoleInstance.ObjectTypeInstance == otherTargetInstance;
+										break;
+									}
+								}
+							}
+							if (!matchedRoleInstance)
+							{
+								break;
+							}
+						}
+						if (i == roleInstanceCount)
+						{
+							// We matched on all populated role instances. Match them up
+							// The mapping framework does not store reverse mappings, so
+							// we cannot easily check if the other item has already been
+							// matched. Perform a previously matched check as a final
+							// check before stating equivalence.
+							EntityTypeInstance otherInstance = testOtherInstance;
+							foreach (EntityTypeInstance siblingInstance in (allInstances ?? (allInstances = entityType.EntityTypeInstanceCollection)))
+							{
+								if (siblingInstance != this &&
+									elementTracker.GetEquivalentElement(siblingInstance) == otherInstance)
+								{
+									otherInstance = null;
+									break;
+								}
+							}
+							if (otherInstance != null)
+							{
+								elementTracker.AddEquivalentElement(this, otherInstance);
+								// Role instances allow duplicates and will not map automatically,
+								// add them explicitly for this instance.
+								for (i = 0; i < roleInstanceCount; ++i)
+								{
+									EntityTypeRoleInstance roleInstance = roleInstances[i];
+									Role findOtherRole = sortedOtherRoles[roles.IndexOf(roleInstance.Role)];
+									foreach (EntityTypeRoleInstance otherRoleInstance in otherRoleInstances)
+									{
+										if (otherRoleInstance.Role == findOtherRole)
+										{
+											elementTracker.AddEquivalentElement(roleInstance, otherRoleInstance);
+											break;
+										}
+									}
+								}
+								return true;
+							}
+						}
+					}
+				}
+			}
+			elementTracker.AddFailedEquivalentElement(this);
+			return false;
+		}
+		bool IElementEquivalence.MapEquivalentElements(Store foreignStore, IEquivalentElementTracker elementTracker)
+		{
+			return MapEquivalentElements(foreignStore, elementTracker);
+		}
+	}
+	#endregion // EntityTypeInstance class
+	#region EntityTypeSubtypeInstance class
+	partial class EntityTypeSubtypeInstance : IElementEquivalence
+	{
+		/// <summary>
+		/// Implements <see cref="IElementEquivalence.MapEquivalentElements"/>
+		/// </summary>
+		protected bool MapEquivalentElements(Store foreignStore, IEquivalentElementTracker elementTracker)
+		{
+			ObjectType entityType = EntityTypeSubtype;
+			ObjectType otherEntityType;
+			EntityTypeSubtypeInstanceHasSupertypeInstance supertypeInstanceLink;
+			EntityTypeInstance otherSupertypeInstance;
+			if (null != (otherEntityType = CopyMergeUtility.GetEquivalentElement(entityType, foreignStore, elementTracker)) &&
+				null != (supertypeInstanceLink = EntityTypeSubtypeInstanceHasSupertypeInstance.GetLinkToSupertypeInstance(this)) &&
+				null != (otherSupertypeInstance = CopyMergeUtility.GetEquivalentElement(supertypeInstanceLink.SupertypeInstance, foreignStore, elementTracker)))
+			{
+				// The supertype instance collection is limited in size to the total number of
+				// potential subtypes, whereas the full instance collections are unlimited, so
+				// we key off this collection.
+				foreach (EntityTypeSubtypeInstanceHasSupertypeInstance otherSupertypeInstanceLink in EntityTypeSubtypeInstanceHasSupertypeInstance.GetLinksToEntityTypeSubtypeInstanceCollection(otherSupertypeInstance))
+				{
+					EntityTypeSubtypeInstance otherSubtypeInstance = otherSupertypeInstanceLink.EntityTypeSubtypeInstance;
+					if (otherEntityType == otherSubtypeInstance.EntityTypeSubtype)
+					{
+						elementTracker.AddEquivalentElement(this, otherSubtypeInstance);
+						// This will link automatically, but we already have the information, so we might as well use it.
+						elementTracker.AddEquivalentElement(supertypeInstanceLink, otherSupertypeInstanceLink);
+						return true;
+					}
+				}
+			}
+			elementTracker.AddFailedEquivalentElement(this);
+			return false;
+		}
+		bool IElementEquivalence.MapEquivalentElements(Store foreignStore, IEquivalentElementTracker elementTracker)
+		{
+			return MapEquivalentElements(foreignStore, elementTracker);
+		}
+	}
+	#endregion // EntityTypeSubtypeInstance class
 	#region Function class
 	partial class Function : IElementEquivalence
 	{
@@ -342,6 +668,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	#region FactType class
 	partial class FactType : IElementEquivalence
 	{
+		#region FactTypeAndRole struct
 		/// <summary>
 		/// Helper struct for <see cref="MapEquivalentElements"/>
 		/// Tracks a role and its parent fact type.
@@ -356,6 +683,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				Role = role;
 			}
 		}
+		#endregion // FactTypeAndRole struct
+		#region PopulatedReadingTextWithRoleOrder struct
 		/// <summary>
 		/// Helper struct for <see cref="MapEquivalentElements"/>.
 		/// Tracks a populated reading text with its role order.
@@ -378,6 +707,56 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 		}
+		#endregion // PopulatedReadingTextWithRoleOrder struct
+		#region ObjectTypeInstanceArrayEqualityComparer class
+		private sealed class ObjectTypeInstanceArrayEqualityComparer : IEqualityComparer<ObjectTypeInstance[]>
+		{
+			#region Singleton and Constructor
+			public static readonly IEqualityComparer<ObjectTypeInstance[]> Instance = new ObjectTypeInstanceArrayEqualityComparer();
+			private ObjectTypeInstanceArrayEqualityComparer()
+			{
+			}
+			#endregion // Singleton and Constructor
+			#region IEqualityComparer<ObjectTypeInstance[]> Implementation
+			bool IEqualityComparer<ObjectTypeInstance[]>.Equals(ObjectTypeInstance[] x, ObjectTypeInstance[] y)
+			{
+				for (int i = 0; i < x.Length; ++i)
+				{
+					if (x[i] != y[i])
+					{
+						return false;
+					}
+				}
+				return true;
+			}
+			int IEqualityComparer<ObjectTypeInstance[]>.GetHashCode(ObjectTypeInstance[] obj)
+			{
+				unchecked
+				{
+					uint hashCode = 0;
+					bool seenValue = false;
+					for (int i = 0; i < obj.Length; ++i)
+					{
+						ObjectTypeInstance instance = obj[i];
+						if (instance != null)
+						{
+							if (seenValue)
+							{
+								hashCode ^= (uint)Utility.RotateRight(instance.GetHashCode(), i);
+							}
+							else
+							{
+								seenValue = true;
+								hashCode = i == 0 ? (uint)instance.GetHashCode() : (uint)Utility.RotateRight(instance.GetHashCode(), i);
+							}
+						}
+					}
+					return (int)hashCode;
+				}
+			}
+			#endregion // IEqualityComparer<ObjectTypeInstance[]> Implementation
+		}
+		#endregion // ObjectTypeInstanceArrayEqualityComparer class
 		/// <summary>
 		/// Implements <see cref="IElementEquivalence.MapEquivalentElements"/>
 		/// Match a fact type based on entity and predicate names.
@@ -393,6 +772,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			LinkedElementCollection<ReadingOrder> otherReadingOrders = null;
 			RoleBase implicitBooleanRole = null;
 			RoleBase otherImplicitBooleanRole = null;
+			bool impliedPopulation = false;
 			if (roleCount == 2 &&
 				null != ImpliedByObjectification)
 			{
@@ -449,6 +829,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 					}
 				}
+				impliedPopulation = true;
 			}
 			else
 			{
@@ -720,6 +1101,148 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 					}
 				}
+
+				// Add fact type instances
+				if (!impliedPopulation)
+				{
+					LinkedElementCollection<FactTypeInstance> instances;
+					int instanceCount;
+					LinkedElementCollection<FactTypeInstance> otherInstances;
+					int otherInstanceCount;
+					if (0 != (instanceCount = (instances = FactTypeInstanceCollection).Count) &&
+						0 != (otherInstanceCount = (otherInstances = otherFactType.FactTypeInstanceCollection).Count))
+					{
+						ObjectTypeInstance[] mappedInstances = null;
+						Dictionary<ObjectTypeInstance[], int> instanceMap = null;
+						int[] duplicatedAt = null;
+						for (int i = 0; i < instanceCount; ++i)
+						{
+							FactTypeInstance instance = instances[i];
+							foreach (FactTypeRoleInstance roleInstance in instance.RoleInstanceCollection)
+							{
+								ObjectTypeInstance objectTypeInstance = roleInstance.ObjectTypeInstance;
+								ObjectTypeInstance otherObjectTypeInstance;
+								int roleIndex;
+								if (null != (otherObjectTypeInstance = CopyMergeUtility.GetEquivalentElement(objectTypeInstance, foreignStore, elementTracker)) &&
+									-1 != (roleIndex = roleOrder.IndexOf(roleInstance.Role)))
+								{
+									(mappedInstances ?? (mappedInstances = new ObjectTypeInstance[roleCount]))[roleIndex] = otherObjectTypeInstance;
+								}
+								else
+								{
+									mappedInstances = null;
+									break;
+								}
+							}
+							if (mappedInstances != null)
+							{
+								int existingIndex;
+								if (instanceMap == null)
+								{
+									instanceMap = new Dictionary<ObjectTypeInstance[], int>(ObjectTypeInstanceArrayEqualityComparer.Instance);
+									instanceMap.Add(mappedInstances, i);
+								}
+								else if (instanceMap.TryGetValue(mappedInstances, out existingIndex))
+								{
+									// Track duplicates. The duplicated at value for existing index
+									// points to the duplicate index, which points to the next duplicate, etc.
+									// Note that 0 is the default value and means 'not duplicated'.
+									if (duplicatedAt == null)
+									{
+										duplicatedAt = new int[instanceCount];
+									}
+									else
+									{
+										int duplicateIndex;
+										while (0 != (duplicateIndex = duplicatedAt[existingIndex]))
+										{
+											existingIndex = duplicateIndex;
+										}
+									}
+									duplicatedAt[existingIndex] = i;
+								}
+								else
+								{
+									instanceMap.Add(mappedInstances, i);
+								}
+								mappedInstances = null;
+							}
+							else
+							{
+								elementTracker.AddFailedEquivalentElement(instance);
+							}
+						}
+						if (instanceMap != null)
+						{
+							// UNDONE: CLOSEDWORLDUNARY Closed world unary population will need
+							// to store a value for the implied boolean role, which will mean that
+							// the trivial unary role order here will fail. Currently, only the
+							// unary role is populated, so this is sufficient.
+							mappedInstances = new ObjectTypeInstance[roleCount];
+							for (int i = 0; i < otherInstanceCount; ++i)
+							{
+								FactTypeInstance otherInstance = otherInstances[i];
+								Array.Clear(mappedInstances, 0, roleCount);
+								bool matchedAll = true;
+								LinkedElementCollection<FactTypeRoleInstance> otherRoleInstances = otherInstance.RoleInstanceCollection;
+								foreach (FactTypeRoleInstance otherRoleInstance in otherRoleInstances)
+								{
+									ObjectTypeInstance objectTypeInstance = otherRoleInstance.ObjectTypeInstance;
+									int roleIndex;
+									if (-1 == (roleIndex = otherRoleOrder.IndexOf(otherRoleInstance.Role)))
+									{
+										matchedAll = false;
+										break;
+									}
+									mappedInstances[roleIndex] = otherRoleInstance.ObjectTypeInstance;
+								}
+								int existingIndex;
+								if (matchedAll &&
+									instanceMap.TryGetValue(mappedInstances, out existingIndex) &&
+									existingIndex != -1)
+								{
+									FactTypeInstance instance = instances[existingIndex];
+									elementTracker.AddEquivalentElement(instance, otherInstance);
+									// Role instances allow duplicates and will not bind.
+									foreach (FactTypeRoleInstance roleInstance in instance.RoleInstanceCollection)
+									{
+										Role findRole = (Role)otherRoleOrder[roleOrder.IndexOf(roleInstance.Role)];
+										foreach (FactTypeRoleInstance otherRoleInstance in otherRoleInstances)
+										{
+											if (otherRoleInstance.Role == findRole)
+											{
+												elementTracker.AddEquivalentElement(roleInstance, otherRoleInstance);
+												break;
+											}
+										}
+									}
+									if (null == duplicatedAt ||
+										0 == (existingIndex = duplicatedAt[existingIndex]))
+									{
+										existingIndex = -1;
+									}
+									instanceMap[mappedInstances] = existingIndex;
+								}
+							}
+							// Mark remaining items as unmatched
+							foreach (int index in instanceMap.Values)
+							{
+								if (index != -1)
+								{
+									elementTracker.AddFailedEquivalentElement(instances[index]);
+									if (duplicatedAt != null)
+									{
+										int duplicateIndex = index;
+										while (0 != (duplicateIndex = duplicatedAt[duplicateIndex]))
+										{
+											elementTracker.AddFailedEquivalentElement(instances[duplicateIndex]);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
 				return true;
 			}
 			return false;
@@ -829,6 +1352,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // SubtypeFact class
+	#region FactTypeInstance class
+	partial class FactTypeInstance : IElementEquivalence
+	{
+		/// <summary>
+		/// Implements <see cref="IElementEquivalence.MapEquivalentElements"/>
+		/// Match an instance based on the parent <see cref="FactType"/>.
+		/// </summary>
+		protected bool MapEquivalentElements(Store foreignStore, IEquivalentElementTracker elementTracker)
+		{
+			return CopyMergeUtility.GetEquivalentElement(FactType, foreignStore, elementTracker) != null &&
+				null != elementTracker.GetEquivalentElement(this);
+		}
+		bool IElementEquivalence.MapEquivalentElements(Store foreignStore, IEquivalentElementTracker elementTracker)
+		{
+			return MapEquivalentElements(foreignStore, elementTracker);
+		}
+	}
+	#endregion // FactTypeInstance class
 	#region SetConstraint class
 	partial class SetConstraint : IElementEquivalence
 	{
