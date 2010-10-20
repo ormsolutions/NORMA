@@ -48,6 +48,9 @@
 						<orm:Readings>
 							<orm:Reading id="_0E49AFF2-D3AA-4C8B-AA4C-CED7DF95D9C4">
 								<orm:Data>{0} has {1}</orm:Data>
+								<orm:ExpandedData>
+									<orm:RoleText FollowingText="has" RoleIndex="0" />
+								</orm:ExpandedData>
 							</orm:Reading>
 						</orm:Readings>
 						<orm:RoleSequence>
@@ -59,6 +62,9 @@
 						<orm:Readings>
 							<orm:Reading id="_35422D64-3682-4FD3-9451-72BE26A37152">
 								<orm:Data>{0} is of {1}</orm:Data>
+								<orm:ExpandedData>
+									<orm:RoleText FollowingText="is of" RoleIndex="0" />
+								</orm:ExpandedData>
 							</orm:Reading>
 						</orm:Readings>
 						<orm:RoleSequence>
@@ -87,6 +93,9 @@
 						<orm:Readings>
 							<orm:Reading id="_07412559-5A8B-4F71-82EB-D4C99036BF4C">
 								<orm:Data>{0} has {1}</orm:Data>
+								<orm:ExpandedData>
+									<orm:RoleText FollowingText="has" RoleIndex="0" />
+								</orm:ExpandedData>
 							</orm:Reading>
 						</orm:Readings>
 						<orm:RoleSequence>
@@ -98,6 +107,9 @@
 						<orm:Readings>
 							<orm:Reading id="_6AA87BE7-2688-4DDF-BCF3-6FD7DED53525">
 								<orm:Data>{0} is of {1}</orm:Data>
+								<orm:ExpandedData>
+									<orm:RoleText FollowingText="is of" RoleIndex="0" />
+								</orm:ExpandedData>
 							</orm:Reading>
 						</orm:Readings>
 						<orm:RoleSequence>
@@ -126,6 +138,9 @@
 						<orm:Readings>
 							<orm:Reading id="_B418568C-8785-4952-A433-1DE2E8BFC29D">
 								<orm:Data>{0} is {1}</orm:Data>
+								<orm:ExpandedData>
+									<orm:RoleText FollowingText="is" RoleIndex="0" />
+								</orm:ExpandedData>
 							</orm:Reading>
 						</orm:Readings>
 						<orm:RoleSequence>
@@ -152,6 +167,9 @@
 						<orm:Readings>
 							<orm:Reading id="_A6D32AFD-F5AD-4658-9896-4151B9F9A704">
 								<orm:Data>{0} was {1}</orm:Data>
+								<orm:ExpandedData>
+									<orm:RoleText FollowingText="was" RoleIndex="0" />
+								</orm:ExpandedData>
 							</orm:Reading>
 						</orm:Readings>
 						<orm:RoleSequence>
@@ -178,6 +196,9 @@
 						<orm:Readings>
 							<orm:Reading id="_12EC663D-B7E7-4DBF-AE2D-42C46705CA0C">
 								<orm:Data>{0} will be {1}</orm:Data>
+								<orm:ExpandedData>
+									<orm:RoleText FollowingText="will be" RoleIndex="0" />
+								</orm:ExpandedData>
 							</orm:Reading>
 						</orm:Readings>
 						<orm:RoleSequence>

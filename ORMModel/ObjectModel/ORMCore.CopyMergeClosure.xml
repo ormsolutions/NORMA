@@ -167,37 +167,7 @@
 			<cmc:ClosureRole relationship="ObjectificationImpliesFactType" role="ImpliedByObjectification" closureBehavior="ExternalCompositePart"/>
 			<cmc:ClosureRole relationship="RoleProxyHasRole" role="TargetRole" closureBehavior="ExternalCompositePart"/>
 			<cmc:ClosureRole relationship="ObjectifiedUnaryRoleHasRole" role="TargetRole" closureBehavior="ExternalCompositePart"/>
-			<cmc:ClosureRole relationship="ObjectTypePlaysRole" role="PlayedRole" explicitToRoleClass="SubtypeMetaRole" closureBehavior="Custom">
-				<cmc:CustomBehavior>
-					<plx:branch>
-						<plx:condition>
-							<plx:callInstance name="ProvidesPreferredIdentifier" type="property">
-								<plx:callObject>
-									<plx:cast dataTypeName="SubtypeFact" type="exceptionCast">
-										<plx:callInstance name="FactType" type="property">
-											<plx:callObject>
-												<plx:callInstance name="PlayedRole" type="property">
-													<plx:callObject>
-														<plx:cast dataTypeName="ObjectTypePlaysRole">
-															<plx:nameRef name="link" type="parameter"/>
-														</plx:cast>
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:cast>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:condition>
-						<plx:return>
-							<plx:callStatic name="ExternalReferencedPart" dataTypeName="CopyClosureBehavior" type="field"/>
-						</plx:return>
-					</plx:branch>
-					<plx:return>
-						<plx:callStatic name="Ignored" dataTypeName="CopyClosureBehavior" type="field"/>
-					</plx:return>
-				</cmc:CustomBehavior>
-			</cmc:ClosureRole>
+			<cmc:ClosureRole relationship="ObjectTypePlaysRole" role="PlayedRole" explicitToRoleClass="SubtypeMetaRole" closureBehavior="ExternalReferencedPart"/>
 			<cmc:ClosureRole relationship="GroupingElementRelationship" role="Element" closureBehavior="ExternalReferencedPart" rootElementOnly="true"/>
 			<cmc:ClosureRole relationship="GroupingElementRelationship" role="Grouping" closureBehavior="ExternalReferencedPart"/>
 			<cmc:ClosureRole relationship="ValueTypeHasDataType" role="DataType" closureBehavior="ExternalReferencedPart"/>

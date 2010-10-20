@@ -1381,7 +1381,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="reading">The reading to test.</param>
 		/// <param name="formatProvider">A <see cref="IFormatProvider"/>, or null to use the current culture</param>
-		/// <param name="defaultOrder">The roles from the parent fact type. Provides the order of the expected replacement fields.</param>
+		/// <param name="defaultOrder">The roles from the parent fact type. Provides the order of the expected replacement fields.
+		/// If this is <see langword="null"/>, then the order of the <paramref name="reading"/> roles is used directly.</param>
 		/// <param name="unaryRoleIndex">Treat as a unary role if this index is set.</param>
 		/// <param name="replacementFormatString">The string used to format replacement fields. The format string is used to build another
 		/// format string with one replacement field. It must consist of a {{0}} representing the eventual replacement field, a {0} for the leading
@@ -1411,37 +1412,47 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				// Now see the reading has the same order as the fact. If not,
 				// create an indexMap array that maps the reading role order to
 				// the fact role order.
-				roleCount = defaultOrder.Count;
 				IList<RoleBase> readingRoles = reading.RoleCollection;
-				Debug.Assert(readingRoles.Count == roleCount);
-				int firstIndexChange = -1;
-				for (int i = 0; i < roleCount; ++i)
+				roleCount = readingRoles.Count;
+				if (defaultOrder == null)
 				{
-					RoleBase readingRole = readingRoles[i];
-					if (readingRole == defaultOrder[i])
+					defaultOrder = readingRoles;
+				}
+				else
+				{
+					Debug.Assert(defaultOrder.Count == roleCount);
+					if ((object)readingRoles != defaultOrder)
 					{
-						if (indexMap != null)
+						int firstIndexChange = -1;
+						for (int i = 0; i < roleCount; ++i)
 						{
-							indexMap[i] = i;
-						}
-						continue;
-					}
-					if (indexMap == null)
-					{
-						indexMap = new int[roleCount];
-						// Catch up to where we are now
-						for (int j = 0; j < i; ++j)
-						{
-							indexMap[j] = j;
-						}
-						firstIndexChange = i;
-					}
-					for (int j = firstIndexChange; j < roleCount; ++j)
-					{
-						if (readingRole == defaultOrder[j])
-						{
-							indexMap[i] = j;
-							break;
+							RoleBase readingRole = readingRoles[i];
+							if (readingRole == defaultOrder[i])
+							{
+								if (indexMap != null)
+								{
+									indexMap[i] = i;
+								}
+								continue;
+							}
+							if (indexMap == null)
+							{
+								indexMap = new int[roleCount];
+								// Catch up to where we are now
+								for (int j = 0; j < i; ++j)
+								{
+									indexMap[j] = j;
+								}
+								firstIndexChange = i;
+							}
+							for (int j = firstIndexChange; j < roleCount; ++j)
+							{
+								if (readingRole == defaultOrder[j])
+								{
+									indexMap[i] = j;
+									break;
+								}
+							}
 						}
 					}
 				}
@@ -1556,6 +1567,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			string[] formatFields = myFormatReplacementFields;
 			return (formatFields != null && roleIndex < formatFields.Length) ? formatFields[roleIndex] : null;
+		}
+		/// <summary>
+		/// Get the modified reading text with the hyphen-bound parts removed and the replacement fields
+		/// reindexed to match the default role order.
+		/// </summary>
+		/// <returns>Returns <see langword="null"/> if there is no hyphen binding in the reading.</returns>
+		public string ModifiedReadingText
+		{
+			get
+			{
+				return myModifiedReadingText;
+			}
 		}
 		/// <summary>
 		/// Populate the predicate text with the supplied replacement fields. Defers to

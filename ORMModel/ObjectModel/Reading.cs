@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -16,13 +17,16 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml;
+using System.Xml.Serialization;
 using Microsoft.VisualStudio.Modeling;
-using System.ComponentModel;
-using System.Globalization;
 using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Framework.Shell;
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	#region IReading interface
@@ -82,7 +86,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	public delegate bool ReadingTextFieldVisit(int index);
 	#endregion // Reading text utility delegates
 	#region Reading class
-	public partial class Reading : IModelErrorOwner, IHasIndirectModelErrorOwner, IReading
+	public partial class Reading : IModelErrorOwner, IHasIndirectModelErrorOwner, IReading, IXmlSerializable
 	{
 		#region Base overrides
 		/// <summary>
@@ -817,6 +821,198 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // Reading text utility fields and methods
+		#region IXmlSerializable Implementation
+		System.Xml.Schema.XmlSchema IXmlSerializable.GetSchema()
+		{
+			// Schema is already validated in ORMCore.xsd
+			return null;
+		}
+		void IXmlSerializable.ReadXml(XmlReader reader)
+		{
+			string XmlNamespace = ORMCoreDomainModel.XmlNamespace;
+			ISerializationContext serializationContext = ((ISerializationContextHost)Store).SerializationContext;
+
+			while (reader.Read())
+			{
+				XmlNodeType nodeType = reader.NodeType;
+				if (nodeType == XmlNodeType.Element)
+				{
+					if (!reader.IsEmptyElement)
+					{
+						if (reader.LocalName == "Reading" && reader.NamespaceURI == XmlNamespace)
+						{
+							while (reader.Read())
+							{
+								XmlNodeType childNodeType = reader.NodeType;
+								if (childNodeType == XmlNodeType.Element)
+								{
+									if (!reader.IsEmptyElement)
+									{
+										if (reader.LocalName == "Data" && reader.NamespaceURI == XmlNamespace)
+										{
+											Text = reader.ReadElementString();
+										}
+										else
+										{
+											PassEndElement(reader);
+										}
+									}
+								}
+								else if (childNodeType == XmlNodeType.EndElement)
+								{
+									break;
+								}
+							}
+						}
+						else
+						{
+							PassEndElement(reader);
+						}
+					}
+				}
+				else if (nodeType == XmlNodeType.EndElement)
+				{
+					break;
+				}
+			}
+		}
+		void IXmlSerializable.WriteXml(XmlWriter writer)
+		{
+			string namespaceUri = ORMCoreDomainModel.XmlNamespace;
+			writer.WriteStartElement("orm", "Reading", namespaceUri);
+			writer.WriteAttributeString("id", '_' + XmlConvert.ToString(Id).ToUpperInvariant());
+			string readingText = Text;
+			writer.WriteElementString("orm", "Data", namespaceUri, readingText);
+			IList<RoleBase> roles = RoleCollection;
+			int roleCount = roles.Count;
+
+			VerbalizationHyphenBinder hyphenBinder = new VerbalizationHyphenBinder(this, null, null, null, "{0}\x0{1}", null);
+			string alternateReadingText = hyphenBinder.ModifiedReadingText;
+			if (alternateReadingText != null)
+			{
+				readingText = alternateReadingText;
+			}
+			int precedingIndex = -1;
+			string pendingPredicateText = null;
+			bool wroteExpandedData = false;
+			int lastIndex = 0;
+			// The regex gives leading text, not trailing, so postpone processing until
+			// we have full data.
+			bool testHyphenBinding = alternateReadingText != null;
+			if (testHyphenBinding)
+			{
+				readingText = alternateReadingText;
+			}
+			Match visitMatch = FieldAndPredicatePartRegex.Match(readingText);
+			while (visitMatch.Success)
+			{
+				GroupCollection groups = visitMatch.Groups;
+				string currentIndexString = groups[ReplaceFieldsMatchIndexGroupName].Value;
+				pendingPredicateText += groups[ReplaceFieldsMatchPredicatePartGroupName].Value;
+				int currentIndex;
+				if (int.TryParse(currentIndexString, NumberStyles.None, CultureInfo.InvariantCulture, out currentIndex) &&
+					currentIndex >= 0 &&
+					currentIndex < roleCount)
+				{
+					WriteRoleText(writer, precedingIndex, testHyphenBinding, ref hyphenBinder, ref pendingPredicateText, ref wroteExpandedData);
+					precedingIndex = currentIndex;
+				}
+				else
+				{
+					// Error condition, just append the field text untouched to the predicate text
+					pendingPredicateText += groups[ReplaceFieldsMatchFieldGroupName].Value;
+				}
+				lastIndex += visitMatch.Length;
+				visitMatch = visitMatch.NextMatch();
+			}
+			bool hasTrailingText = lastIndex < readingText.Length;
+			if (lastIndex < readingText.Length)
+			{
+				pendingPredicateText += readingText.Substring(lastIndex);
+			}
+			if (precedingIndex != -1 ||
+				!string.IsNullOrEmpty(pendingPredicateText))
+			{
+				WriteRoleText(writer, precedingIndex, testHyphenBinding, ref hyphenBinder, ref pendingPredicateText, ref wroteExpandedData);
+			}
+			if (wroteExpandedData)
+			{
+				writer.WriteEndElement(); // Matches ExpandedData element
+			}
+			writer.WriteEndElement(); // Matches Reading element
+		}
+		private static void WriteRoleText(XmlWriter writer, int roleIndex, bool testHyphenBinding, ref VerbalizationHyphenBinder hyphenBinder, ref string pendingPredicateText, ref bool wroteExpandedData)
+		{
+			if (roleIndex == -1)
+			{
+				writer.WriteStartElement("orm", "ExpandedData", ORMCoreDomainModel.XmlNamespace);
+				if (!string.IsNullOrEmpty(pendingPredicateText))
+				{
+					writer.WriteAttributeString("FrontText", pendingPredicateText);
+					pendingPredicateText = null;
+				}
+				wroteExpandedData = true;
+			}
+			else
+			{
+				string hyphenBindingFormatString;
+				if (testHyphenBinding &&
+					null != (hyphenBindingFormatString = hyphenBinder.GetRoleFormatString(roleIndex)) &&
+					hyphenBindingFormatString.Length > 1)
+				{
+					writer.WriteStartElement("orm", "RoleText", ORMCoreDomainModel.XmlNamespace);
+					writer.WriteAttributeString("RoleIndex", roleIndex.ToString(CultureInfo.InvariantCulture));
+					int separatorIndex = hyphenBindingFormatString.IndexOf('\0');
+					if (separatorIndex > 0)
+					{
+						writer.WriteAttributeString("PreBoundText", hyphenBindingFormatString.Substring(0, separatorIndex));
+					}
+					if ((hyphenBindingFormatString.Length - separatorIndex) > 1)
+					{
+						writer.WriteAttributeString("PostBoundText", hyphenBindingFormatString.Substring(separatorIndex + 1));
+					}
+					if (!string.IsNullOrEmpty(pendingPredicateText))
+					{
+						writer.WriteAttributeString("FollowingText", pendingPredicateText);
+						pendingPredicateText = null;
+					}
+					writer.WriteEndElement();
+				}
+				else if (!string.IsNullOrEmpty(pendingPredicateText))
+				{
+					writer.WriteStartElement("orm", "RoleText", ORMCoreDomainModel.XmlNamespace);
+					writer.WriteAttributeString("RoleIndex", roleIndex.ToString(CultureInfo.InvariantCulture));
+					writer.WriteAttributeString("FollowingText", pendingPredicateText);
+					pendingPredicateText = null;
+					writer.WriteEndElement();
+				}
+			}
+		}
+		/// <summary>
+		/// Move the reader to the node immediately after the end element corresponding to the current open element
+		/// </summary>
+		/// <param name="reader">The XmlReader to advance</param>
+		private static void PassEndElement(XmlReader reader)
+		{
+			if (!reader.IsEmptyElement)
+			{
+				bool finished = false;
+				while (!finished && reader.Read())
+				{
+					switch (reader.NodeType)
+					{
+						case XmlNodeType.Element:
+							PassEndElement(reader);
+							break;
+
+						case XmlNodeType.EndElement:
+							finished = true;
+							break;
+					}
+				}
+			}
+		}
+		#endregion // IXmlSerializable Implementation
 	}
 	#endregion // Reading class
 	#region TooFewReadingRolesError class

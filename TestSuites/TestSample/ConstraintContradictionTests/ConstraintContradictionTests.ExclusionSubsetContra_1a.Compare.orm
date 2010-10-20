@@ -58,6 +58,9 @@
 						<orm:Readings>
 							<orm:Reading id="_6F480727-E8C1-4B5A-9FB1-734EBA8761A9">
 								<orm:Data>{0} has {1}</orm:Data>
+								<orm:ExpandedData>
+									<orm:RoleText FollowingText="has" RoleIndex="0" />
+								</orm:ExpandedData>
 							</orm:Reading>
 						</orm:Readings>
 						<orm:RoleSequence>
@@ -84,6 +87,9 @@
 						<orm:Readings>
 							<orm:Reading id="_5C3E1141-4655-472B-8AFB-BB7393FDD904">
 								<orm:Data>{0} has {1}</orm:Data>
+								<orm:ExpandedData>
+									<orm:RoleText FollowingText="has" RoleIndex="0" />
+								</orm:ExpandedData>
 							</orm:Reading>
 						</orm:Readings>
 						<orm:RoleSequence>
@@ -95,6 +101,9 @@
 						<orm:Readings>
 							<orm:Reading id="_1DD6FB3D-FD19-4641-A33A-2487773A0EBD">
 								<orm:Data>{0} is of {1}</orm:Data>
+								<orm:ExpandedData>
+									<orm:RoleText FollowingText="is of" RoleIndex="0" />
+								</orm:ExpandedData>
 							</orm:Reading>
 						</orm:Readings>
 						<orm:RoleSequence>
@@ -123,6 +132,9 @@
 						<orm:Readings>
 							<orm:Reading id="_1CD4D24D-B3E3-4ACA-87D9-D6471FBA8F23">
 								<orm:Data>{0} has {1}</orm:Data>
+								<orm:ExpandedData>
+									<orm:RoleText FollowingText="has" RoleIndex="0" />
+								</orm:ExpandedData>
 							</orm:Reading>
 						</orm:Readings>
 						<orm:RoleSequence>
@@ -134,6 +146,9 @@
 						<orm:Readings>
 							<orm:Reading id="_20B605E7-01B4-4A4E-BD94-315812F952C6">
 								<orm:Data>{0} is of {1}</orm:Data>
+								<orm:ExpandedData>
+									<orm:RoleText FollowingText="is of" RoleIndex="0" />
+								</orm:ExpandedData>
 							</orm:Reading>
 						</orm:Readings>
 						<orm:RoleSequence>
@@ -162,6 +177,9 @@
 						<orm:Readings>
 							<orm:Reading id="_B2D0B202-5A0E-444F-843B-3F76974914D8">
 								<orm:Data>{0} is from {1}</orm:Data>
+								<orm:ExpandedData>
+									<orm:RoleText FollowingText="is from" RoleIndex="0" />
+								</orm:ExpandedData>
 							</orm:Reading>
 						</orm:Readings>
 						<orm:RoleSequence>
@@ -188,6 +206,9 @@
 						<orm:Readings>
 							<orm:Reading id="_38580BA4-731D-405A-BE74-9FADE002A099">
 								<orm:Data>{0} has {1}</orm:Data>
+								<orm:ExpandedData>
+									<orm:RoleText FollowingText="has" RoleIndex="0" />
+								</orm:ExpandedData>
 							</orm:Reading>
 						</orm:Readings>
 						<orm:RoleSequence>
@@ -199,6 +220,9 @@
 						<orm:Readings>
 							<orm:Reading id="_773AF895-2E2C-4361-AB00-9306F98AB720">
 								<orm:Data>{0} is of {1}</orm:Data>
+								<orm:ExpandedData>
+									<orm:RoleText FollowingText="is of" RoleIndex="0" />
+								</orm:ExpandedData>
 							</orm:Reading>
 						</orm:Readings>
 						<orm:RoleSequence>

@@ -2232,8 +2232,49 @@
 		<xs:sequence>
 			<xs:element name="Data" type="xs:string">
 				<xs:annotation>
-					<xs:documentation>Reading text with numbered replacemented fields in the format {n}, where n is a zero-based index into the corresponding role traversal order. n is also strictly increasing, so the first replacement field corresponds to the first role, etc. Reading text also includes hyphen-binding specifications, where 'WORD- ' (or ' -WORD') binds WORD and all intermediate words to the nearest right (left) placeholder.</xs:documentation>
+					<xs:documentation>Reading text with numbered replacemented fields in the format {n}, where n is a zero-based index into the corresponding role traversal order. n is also strictly increasing, so the first replacement field corresponds to the first role, etc. Reading text also includes hyphen-binding specifications, where 'WORD- ' (or ' -WORD') binds WORD and all intermediate words to the nearest right (left) placeholder. To enable hyphen binding with no space before the role player, 'WORD-- ROLEPLAYER' collapses the trailing space, resulting in 'WORD-ROLEPLAYER'. 'WORD- ROLEPLAYER' can be achived with two hyphens and two spaces.</xs:documentation>
 				</xs:annotation>
+			</xs:element>
+			<xs:element name="ExpandedData" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>An expanded form of the Data element with text decoration broken down on a per-role basis. Hyphen binding constructs are fully resolved with hyphens removed.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="RoleText" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Text bound to or occurring after a given role. Roles with no text are not represented.</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:attribute name="RoleIndex" type="xs:nonNegativeInteger" use="required">
+									<xs:annotation>
+										<xs:documentation>The zero-based index of the role.</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+								<xs:attribute name="PreBoundText" type="xs:string" use="optional">
+									<xs:annotation>
+										<xs:documentation>Text that is bound to the role as leading text through hyphen binding semantics in the full reading text.</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+								<xs:attribute name="PostBoundText" type="xs:string" use="optional">
+									<xs:annotation>
+										<xs:documentation>Text that is bound to the role as trailing text through hyphen binding semantics in the full reading text.</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+								<xs:attribute name="FollowingText" type="xs:string" use="optional">
+									<xs:annotation>
+										<xs:documentation>Text following a role replacement field and associated bound text.</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="FrontText" type="xs:string" use="optional">
+						<xs:annotation>
+							<xs:documentation>Text that occurs before the lead role, including prebound text associated with that role.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
 			</xs:element>
 		</xs:sequence>
 		<xs:attributeGroup ref="idAttribute"/>

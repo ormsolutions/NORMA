@@ -214,14 +214,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(ObjectificationImpliesFactType.ImpliedFactTypeDomainRoleId), new DomainRoleClosureRestriction(ObjectificationImpliesFactType.ImpliedByObjectificationDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ExternalCompositePart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(ObjectificationImpliesFactType.ImpliedByObjectificationDomainRoleId), new DomainRoleClosureRestriction(ObjectificationImpliesFactType.ImpliedFactTypeDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ExternalCompositePart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(ObjectifiedUnaryRoleHasRole.ObjectifiedUnaryRoleDomainRoleId), new DomainRoleClosureRestriction(ObjectifiedUnaryRoleHasRole.TargetRoleDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ExternalCompositePart);
-			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(ObjectTypePlaysRole.RolePlayerDomainRoleId), new DomainRoleClosureRestriction(ObjectTypePlaysRole.PlayedRoleDomainRoleId, SubtypeMetaRole.DomainClassId, false), CopyClosureDirectiveOptions.None, delegate(ElementLink link)
-				{
-					if (((SubtypeFact)((ObjectTypePlaysRole)link).PlayedRole.FactType).ProvidesPreferredIdentifier)
-					{
-						return CopyClosureBehavior.ExternalReferencedPart;
-					}
-					return CopyClosureBehavior.Ignored;
-				});
+			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(ObjectTypePlaysRole.RolePlayerDomainRoleId), new DomainRoleClosureRestriction(ObjectTypePlaysRole.PlayedRoleDomainRoleId, SubtypeMetaRole.DomainClassId, false), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ExternalReferencedPart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(ObjectTypePlaysRole.PlayedRoleDomainRoleId), new DomainRoleClosureRestriction(ObjectTypePlaysRole.RolePlayerDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ExternalReferencedPart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(PathedRole.RolePathDomainRoleId), new DomainRoleClosureRestriction(PathedRole.RoleDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ExternalReferencedPart);
 			closureManager.AddOrderedRole(PathedRole.RolePathDomainRoleId, MergeIntegrationOrder.AfterLeading);
