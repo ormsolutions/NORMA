@@ -6229,7 +6229,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									}
 								}
 							}
-							if (!sameFactType)
+							if (!sameFactType || contextPathNode.PathedRole == null)
 							{
 								// Unwind the stack
 								roleUseBaseIndex = PopFactType(factTypeRolesStack, ref roleUseTracker);
@@ -6254,7 +6254,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							}
 							if (sameFactType)
 							{
-								if (currentPathedRoleIndex == 0)
+								if (contextPathNode.PathedRole == null)
+								{
+									// Error condition, missing an entry role, push the fact type
+									// so the stack does not get out of balance.
+									currentRole = currentPathedRole.Role;
+									roleUseBaseIndex = PushFactType(currentRole.FactType, currentPathedRole, currentPathedRoles, currentPathedRoleIndex, factTypeRolesStack, ref roleUseTracker, pathConditions, ref processedPathConditions, ref pendingRequiredVariableKeys);
+									resolvedRoleIndex = ResolveRoleIndex(factTypeRolesStack.Peek(), currentRole);
+									if (resolvedRoleIndex != -1) // Defensive, guard against bogus path
+									{
+										roleUseTracker[roleUseBaseIndex + resolvedRoleIndex] = true;
+									}
+								}
+								else if (currentPathedRoleIndex == 0)
 								{
 									#region Lead same fact type condition processing
 									// Get the chain node we just pushed

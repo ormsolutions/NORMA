@@ -64,7 +64,7 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="OneQuantifier" sign="negative"><![CDATA[<span class="quantifier">more than one</span> {0}]]></Snippet>
 
 
-			<Snippet type="OccursInPopulation" sign="positive"><![CDATA[<span class="quantifier">in each population of</span> {1}<span class="quantifier">, </span>{0} <span class="quantifier">occurs at most once</span>]]></Snippet>
+			<Snippet type="OccursInPopulation" sign="positive"><![CDATA[<span class="quantifier">in each population of</span> {1}<span class="listSeparator">, </span>{0} <span class="quantifier">occurs at most once</span>]]></Snippet>
 			<Snippet type="OccursInPopulation" sign="negative"><![CDATA[{0} <span class="quantifier">occurs more than once in the same population of</span> {1}]]></Snippet>
 
 			<Snippet type="ModalPossibilityOperator" modality="alethic" sign="positive"><![CDATA[<span class="quantifier">it is possible that</span> {0}]]></Snippet>

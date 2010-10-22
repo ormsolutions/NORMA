@@ -2932,6 +2932,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 												if (previousPathedRole == null)
 												{
 													pushFactType = currentFactType;
+													hasSameFactTypeWithoutJoinError = true;
 												}
 												else
 												{

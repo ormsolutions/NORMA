@@ -2675,7 +2675,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				bool lookForCombined = !isNegative && Shell.OptionsPage.CurrentCombineMandatoryAndUniqueVerbalization;
 
 				LinkedElementCollection<RoleBase> factRoles = RoleCollection;
-				bool isUnaryFactType = FactType.GetUnaryRoleIndex(factRoles).HasValue;
+				int? unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
+				bool isUnaryFactType = unaryRoleIndex.HasValue;
 				if (!isUnaryFactType && 2 == factRoles.Count)
 				{
 					Role[] roles = new Role[2];
@@ -2902,6 +2903,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							yield return CustomChildVerbalizer.VerbalizeInstance((IVerbalize)constraint);
 						}
+					}
+				}
+				else
+				{
+					// Verbalize the uniqueness constraint on the unary role
+					UniquenessConstraint constraint;
+					if (null != (constraint = factRoles[unaryRoleIndex.Value].Role.SingleRoleAlethicUniquenessConstraint) &&
+						(filter == null || !filter.FilterChildVerbalizer(constraint, sign).IsBlocked))
+					{
+						yield return CustomChildVerbalizer.VerbalizeInstance((IVerbalize)constraint);
 					}
 				}
 			}
