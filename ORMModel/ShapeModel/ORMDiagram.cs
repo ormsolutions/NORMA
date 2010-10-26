@@ -380,6 +380,19 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					if (clearContext)
 					{
 						DropTargetContext.Remove(transaction.TopLevelTransaction);
+						NodeShape nodeShape;
+						if (null != (nodeShape = shapeElement as NodeShape) &&
+							nodeShape.Location.IsEmpty)
+						{
+							// Backup plan if the location doesn't take. This can
+							// happen if an element is being automatically created
+							// during the drop of another shape element, such as
+							// during cross-model drops. In this case, the design
+							// surface merge context is set, this shape is not
+							// considered root element, and the drop target context
+							// location is ignored by ShapeElement.PlaceChildShapeUsingContext
+							nodeShape.Location = elementPosition;
+						}
 					}
 					if (shapeElement != null)
 					{

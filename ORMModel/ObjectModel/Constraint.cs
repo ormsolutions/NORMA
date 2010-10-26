@@ -5370,7 +5370,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									matchedRightRole = testRightRole;
 									matchedRightRoleAlternateEntryConstraintRoleIndex = testRightRoleAlternateEntryConstraintRoleIndex;
 								}
-								else
+								else if (matchedRightRoleAlternateEntryConstraintRoleIndex != -1 && matchedLeftRole == null)
+								{
+									// Prefer the opposite role over the alternate entry through the constraint role
+									matchedRightRole = testRightRole;
+									matchedRightRoleAlternateEntryConstraintRoleIndex = -1;
+								}
+								else if (testRightRoleAlternateEntryConstraintRoleIndex == -1)
 								{
 									incompleteOrAmbiguousPath = true;
 									break;
@@ -5520,7 +5526,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 												matchedRightRole = testRightRole;
 												matchedRightRoleAlternateEntryConstraintRoleIndex = testRightRoleAlternateEntryConstraintRoleIndex;
 											}
-											else
+											else if (matchedRightRoleAlternateEntryConstraintRoleIndex != -1)
+											{
+												// Always prefer the opposite role over the near role
+												matchedLeftRole = testLeftRole;
+												matchedRightRole = testRightRole;
+												matchedRightRoleAlternateEntryConstraintRoleIndex = -1;
+											}
+											else if (testRightRoleAlternateEntryConstraintRoleIndex == -1)
 											{
 												incompleteOrAmbiguousPath = true;
 												break;

@@ -1678,14 +1678,17 @@ namespace ORMSolutions.ORMArchitect.Framework
 						if (copy.CopyType == CopiedElementType.Existing)
 						{
 							ModelElement copyElement = copy.Element;
-							PropertyAssignment[] propertyAssignments = GetCopiedPropertyAssignments(copyClosure[pair.Key].Element, copyElement);
-							if (propertyAssignments != null)
+							if (!copyElement.IsDeleted)
 							{
-								// Update the element with new property assignments
-								for (int i = 0; i < propertyAssignments.Length; ++i)
+								PropertyAssignment[] propertyAssignments = GetCopiedPropertyAssignments(copyClosure[pair.Key].Element, copyElement);
+								if (propertyAssignments != null)
 								{
-									PropertyAssignment assignment = propertyAssignments[i];
-									targetDataDirectory.GetDomainProperty(assignment.PropertyId).SetValue(copyElement, assignment.Value);
+									// Update the element with new property assignments
+									for (int i = 0; i < propertyAssignments.Length; ++i)
+									{
+										PropertyAssignment assignment = propertyAssignments[i];
+										targetDataDirectory.GetDomainProperty(assignment.PropertyId).SetValue(copyElement, assignment.Value);
+									}
 								}
 							}
 						}

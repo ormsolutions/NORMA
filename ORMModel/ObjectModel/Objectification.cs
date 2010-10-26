@@ -334,14 +334,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void ObjectificationAddedRule(ElementAddedEventArgs e)
 		{
-			ProcessObjectificationAdded((Objectification)e.ModelElement, null, null);
+			ModelElement element = e.ModelElement;
+			if (CopyMergeUtility.GetIntegrationPhase(element.Store) == CopyClosureIntegrationPhase.Integrating)
+			{
+				return;
+			}
+			ProcessObjectificationAdded((Objectification)element, null, null);
 		}
 		/// <summary>
 		/// AddRule: typeof(Objectification), FireTime=LocalCommit, Priority=FrameworkDomainModel.CopyClosureExpansionCompletedRulePriority;
 		/// </summary>
 		private static void ObjectificationAddedClosureRule(ElementAddedEventArgs e)
 		{
-			ProcessObjectificationAdded((Objectification)e.ModelElement, null, null);
+			ModelElement element = e.ModelElement;
+			if (element.IsDeleted ||
+				CopyMergeUtility.GetIntegrationPhase(element.Store) != CopyClosureIntegrationPhase.IntegrationComplete)
+			{
+				return;
+			}
+			ProcessObjectificationAdded((Objectification)element, null, null);
 		}
 		/// <summary>
 		/// Create implied facts and constraints as needed
@@ -352,11 +363,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static void ProcessObjectificationAdded(Objectification objectification, FactType nestedFactType, ObjectType nestingType)
 		{
 			Store store = objectification.Store;
-			if (objectification.IsDeleted ||
-				CopyMergeUtility.GetIntegrationPhase(store) == CopyClosureIntegrationPhase.Integrating)
-			{
-				return;
-			}
 			if (nestedFactType == null)
 			{
 				nestedFactType = objectification.NestedFactType;
@@ -400,19 +406,31 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					for (int i = 0; i < roleCount; ++i)
 					{
 						Role role = roles[i].Role;
-						RoleProxy proxy = role.Proxy;
-						if (proxy == null)
+						RoleProxy proxy;
+						ObjectifiedUnaryRole objectifiedUnaryRole;
+						if (unaryRole == null)
 						{
-							if (unaryRole == null || role == unaryRole)
+							objectifiedUnaryRole = null;
+							proxy = role.Proxy;
+						}
+						else
+						{
+							if (unaryRole != role)
 							{
-								CreateImpliedFactTypeForRole(model, nestingType, role, objectification, unaryRole != null);
+								continue;
 							}
+							objectifiedUnaryRole = unaryRole.ObjectifiedUnaryRole;
+							proxy = null;
+						}
+						if (proxy == null && objectifiedUnaryRole == null)
+						{
+							CreateImpliedFactTypeForRole(model, nestingType, role, objectification, unaryRole != null);
 						}
 						else
 						{
 							RoleBase oppositeRoleBase;
 							Role oppositeRole;
-							if (null != (oppositeRoleBase = proxy.OppositeRole) &&
+							if (null != (oppositeRoleBase = ((RoleBase)proxy ?? objectifiedUnaryRole).OppositeRole) &&
 								null != (oppositeRole = oppositeRoleBase as Role) &&
 								(nestingType != oppositeRole.RolePlayer))
 							{
@@ -538,7 +556,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				oldFactType = (FactType)e.OldRolePlayer;
 			}
-			RuleManager ruleManager = link.Store.RuleManager;
+			Store store = link.Store;
+			RuleManager ruleManager = store.RuleManager;
 			try
 			{
 				ruleManager.DisableRule(typeof(RoleDeletingRuleClass));
@@ -549,6 +568,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				ruleManager.EnableRule(typeof(RoleDeletingRuleClass));
 			}
 			ProcessObjectificationDeleting(link, oldFactType, oldObjectType);
+			// UNDONE: COPYMERGE Element equivalence does not produce an
+			// objectification role player change, it just equates the old
+			// object type with the new one. If this changes (as it probably
+			// should to handle objectification change scenarios) then we will
+			// need to check merge state here.
 			ProcessObjectificationAdded(link, null, null);
 		}
 		#endregion // ObjectificationRolePlayerChangedRule
