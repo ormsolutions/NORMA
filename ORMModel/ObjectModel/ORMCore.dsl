@@ -301,7 +301,7 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;ORMModel, Design.ORMModelTypeDescriptor&lt;ORMModel&gt;&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;ORMModel, Design.ORMModelTypeDescriptor&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -309,19 +309,6 @@
 				<DomainClassMoniker Name="ORMNamedElement"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="ModelErrorDisplayFilterDisplay" DefaultValue="" DisplayName="ErrorDisplay" Id="C5A66492-0FFA-46F9-A64B-361E62D696B0" Kind="CustomStorage" Description="Validation error display options for this model. Control error display by category and individually.">
-					<Attributes>
-						<ClrAttribute Name="global::System.ComponentModel.Editor">
-							<Parameters>
-								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.ModelErrorDisplayFilterEditor)"/>
-								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
-							</Parameters>
-						</ClrAttribute>
-					</Attributes>
-					<Type>
-						<ExternalTypeMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/ModelErrorDisplayFilter"/>
-					</Type>
-				</DomainProperty>
 				<DomainProperty Name="DefinitionText" DefaultValue="" DisplayName="InformalDescription" Description="An informal description of this Model.&#xd;&#xa;    To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Informal Description Editor' tool window." Id="E86A38C9-2F8E-4066-8114-384184C5E3C3" Kind="CustomStorage">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
@@ -408,7 +395,7 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;ObjectType, Design.ObjectTypeTypeDescriptor&lt;ObjectType&gt;&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;ObjectType, Design.ObjectTypeTypeDescriptor&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -510,24 +497,6 @@
 				<DomainProperty Name="ReferenceModeDecoratedString" DefaultValue="" DisplayName="ReferenceModeDecoratedString" Id="E139F1E3-DC42-498F-BB70-890C3B1FDD13" IsBrowsable="false" Kind="CustomStorage">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
-					</Type>
-				</DomainProperty>
-				<DomainProperty Name="ReferenceMode" DefaultValue="" DisplayName="ReferenceMode" Id="E2049BA3-F50D-4E1C-9ABD-8A7EBECFEDF5" IsBrowsable="false" Kind="CustomStorage">
-					<Type>
-						<ExternalTypeMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/ReferenceMode"/>
-					</Type>
-				</DomainProperty>
-				<DomainProperty Name="DataTypeDisplay" DefaultValue="" DisplayName="DataType" Id="3E8893A7-5985-4200-A595-CB1E9EC9ADA7" Kind="CustomStorage" Description="The DataType for this ValueType, or the DataType for the identifying ValueType if this is an EntityType.&#xd;&#xa;    This is a portable DataType. The final physical DataType is dependent on the generation target.">
-					<Attributes>
-						<ClrAttribute Name="global::System.ComponentModel.Editor">
-							<Parameters>
-								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.DataTypePicker)"/>
-								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
-							</Parameters>
-						</ClrAttribute>
-					</Attributes>
-					<Type>
-						<ExternalTypeMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/DataType"/>
 					</Type>
 				</DomainProperty>
 				<DomainProperty Name="ValueRangeText" DefaultValue="" DisplayName="ValueRange" Id="F0662C59-700B-435C-B57B-93E5FD84B71F" Kind="CustomStorage" Description="Restrict the range of possible values for instances of this ObjectType.&#xd;&#xa;    To specify a range, use '..' between the range endpoints, square brackets to specify a closed endpoint, and parentheses to specify an open endpoint. Commas are used to entered multiple ranges or discrete values.&#xd;&#xa;    Example: {[10..20), 30} specifies all values between 10 and 20 (but not including 20) and the value 30.">
@@ -735,7 +704,7 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;Role, Design.RoleTypeDescriptor&lt;Role&gt;&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;Role, Design.RoleTypeDescriptor&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -743,19 +712,6 @@
 				<DomainClassMoniker Name="RoleBase"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="RolePlayerDisplay" DefaultValue="" DisplayName="RolePlayer" Id="B66FCA99-E6EC-46C9-B445-D549F6D7ABE1" Kind="CustomStorage" Description="The ObjectType that plays this Role.">
-					<Attributes>
-						<ClrAttribute Name="global::System.ComponentModel.Editor">
-							<Parameters>
-								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.RolePlayerPicker)"/>
-								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
-							</Parameters>
-						</ClrAttribute>
-					</Attributes>
-					<Type>
-						<ExternalTypeMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/ObjectType"/>
-					</Type>
-				</DomainProperty>
 				<DomainProperty Name="IsMandatory" DefaultValue="false" DisplayName="IsMandatory" Id="0F5EED7E-7584-413A-9250-BD4624DC164E" Kind="CustomStorage" Description="Does this Role have a simple mandatory constraint?">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>
@@ -1636,28 +1592,13 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;ReferenceMode, Design.ReferenceModeTypeDescriptor&lt;ReferenceMode&gt;&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;ReferenceMode, Design.ReferenceModeTypeDescriptor&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
 			<BaseClass>
 				<DomainClassMoniker Name="ORMNamedElement"/>
 			</BaseClass>
-			<Properties>
-				<DomainProperty Name="KindDisplay" DefaultValue="" DisplayName="Kind" Id="BBC452CA-0454-4047-9143-B11E065556FB" Kind="CustomStorage" Description="The kind of the reference mode pattern. One of Popular, UnitBase, or General.">
-					<Attributes>
-						<ClrAttribute Name="global::System.ComponentModel.Editor">
-							<Parameters>
-								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.ReferenceModeKindPicker)"/>
-								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
-							</Parameters>
-						</ClrAttribute>
-					</Attributes>
-					<Type>
-						<ExternalTypeMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/ReferenceModeKind"/>
-					</Type>
-				</DomainProperty>
-			</Properties>
 		</DomainClass>
 
 		<DomainClass Name="UnspecifiedDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="B7DDA0A4-C18A-4E85-8259-F529FC45F72E" DisplayName="UnspecifiedDataType" Description="">
@@ -6407,12 +6348,6 @@
 	</Relationships>
 
 	<Types>
-		<ExternalType Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="FactType"/>
-		<ExternalType Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="ReferenceMode"/>
-		<ExternalType Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="DataType"/>
-		<ExternalType Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="ModelErrorDisplayFilter"/>
-		<ExternalType Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="ObjectType"/>
-		<ExternalType Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="ReferenceModeKind"/>
 		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="DerivationExpressionStorageType" Description="Specify how/whether the contents of the fact should be stored by generated systems.">
 			<Literals>
 				<EnumerationLiteral Name="Derived" Value="0" Description="The fact instance population is calculated on demand."/>
@@ -6676,5 +6611,10 @@
 	</Types>
 
 	<XmlSerializationBehavior Name="ORMCoreDomainModelSerializationBehavior" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+
+	<DslLibraryImports>
+		<DslLibraryImport FilePath="..\Framework\SystemCore.dsl" />
+		<DslLibraryImport FilePath="..\Framework\Framework.dsl" />
+	</DslLibraryImports>
 
 </Dsl>

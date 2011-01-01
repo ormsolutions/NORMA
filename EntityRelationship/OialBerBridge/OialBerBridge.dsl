@@ -177,5 +177,15 @@
 	<Types>
 	</Types>
 
-	<XmlSerializationBehavior Name="ORMAbstractionToBarkerERBridgeSerializationBehavior" Namespace="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge"/>	
+	<XmlSerializationBehavior Name="ORMAbstractionToBarkerERBridgeSerializationBehavior" Namespace="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge"/>
+
+	<DslLibraryImports>
+		<DslLibraryImport FilePath="..\BarkerErModel\BerModel.dsl"/>
+		<DslLibraryImport FilePath="..\..\Oial\ORMOialBridge\ORMOialBridge.dsl"/>
+		<DslLibraryImport FilePath="..\..\Oial\OialModel\OialModel.dsl"/>
+		<DslLibraryImport FilePath="..\..\ORMModel\Framework\Framework.dsl"/>
+		<DslLibraryImport FilePath="..\..\ORMModel\Framework\SystemCore.dsl"/>
+		<DslLibraryImport FilePath="..\..\ORMModel\ObjectModel\ORMCore.dsl"/>
+	</DslLibraryImports>
+
 </Dsl>

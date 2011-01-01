@@ -90,4 +90,9 @@
 
 	<XmlSerializationBehavior Name="DiagramDisplayModelSerializationBehavior" Namespace=""/>
 
+	<DslLibraryImports>
+		<DslLibraryImport FilePath="..\SystemCore.dsl"/>
+		<DslLibraryImport FilePath="..\CoreDesignSurfaceDummy.dsl"/>
+	</DslLibraryImports>
+
 </Dsl>

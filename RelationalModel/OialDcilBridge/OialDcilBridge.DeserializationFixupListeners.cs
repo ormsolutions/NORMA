@@ -797,7 +797,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// Generates a <see cref="ReferenceConstraint"/> from <paramref name="sourceTable"/>
 		/// to the <see cref="Table"/> that is for <paramref name="targetConceptType"/>, based
-		/// on <paramref name="sourceTableStartPath"/>.
+		/// on <paramref name="sourceTableStartingPath"/>.
 		/// </summary>
 		/// <param name="sourceTable">
 		/// The <see cref="ReferenceConstraint.SourceTable"/> of the new <see cref="ReferenceConstraint"/>.

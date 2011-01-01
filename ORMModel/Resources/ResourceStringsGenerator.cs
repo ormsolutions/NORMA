@@ -101,6 +101,22 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.Constraint.Name.Description");
 			}
 		}
+		/// <summary>Description for <see cref="P:ObjectModel.ORMModel.ModelErrorDisplayFilterDisplay"/></summary>
+		public static string ModelModelErrorDisplayFilterDisplayDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.Model.ModelErrorDisplayFilterDisplay.Description");
+			}
+		}
+		/// <summary>Display name for <see cref="P:ObjectModel.ORMModel.ModelErrorDisplayFilterDisplay"/></summary>
+		public static string ModelModelErrorDisplayFilterDisplayDisplayName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.Model.ModelErrorDisplayFilterDisplay.DisplayName");
+			}
+		}
 		/// <summary>The description for the Name property of an ORMModel.</summary>
 		public static string ModelNameDescription
 		{
@@ -109,12 +125,60 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.Model.Name.Description");
 			}
 		}
+		/// <summary>Description for <see cref="ObjectModel.ObjectType.DataTypeDisplay"/></summary>
+		public static string ObjectTypeDataTypeDisplayDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ObjectType.DataTypeDisplay.Description");
+			}
+		}
+		/// <summary>Display name for <see cref="ObjectModel.ObjectType.DataTypeDisplay"/></summary>
+		public static string ObjectTypeDataTypeDisplayDisplayName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ObjectType.DataTypeDisplay.DisplayName");
+			}
+		}
 		/// <summary>The description for the Name property of an ObjectType.</summary>
 		public static string ObjectTypeNameDescription
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ObjectType.Name.Description");
+			}
+		}
+		/// <summary>Description for <see cref="ObjectModel.ReferenceMode.KindDisplay"/></summary>
+		public static string ReferenceModeKindDisplayDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ReferenceMode.KindDisplay.Description");
+			}
+		}
+		/// <summary>Display name for <see cref="ObjectModel.ReferenceMode.KindDisplay"/></summary>
+		public static string ReferenceModeKindDisplayDisplayName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ReferenceMode.KindDisplay.DisplayName");
+			}
+		}
+		/// <summary>Description for <see cref="ObjectModel.Role.RolePlayerDisplay"/></summary>
+		public static string RoleRolePlayerDisplayDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.Role.RolePlayerDisplay.Description");
+			}
+		}
+		/// <summary>Display name for <see cref="ObjectModel.Role.RolePlayerDisplay"/></summary>
+		public static string RoleRolePlayerDisplayDisplayName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.Role.RolePlayerDisplay.DisplayName");
 			}
 		}
 		/// <summary>The description for the Name property of a SubtypeFact.</summary>
@@ -1682,14 +1746,6 @@ namespace ORMSolutions.ORMArchitect.Core
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.SwapRoleOrder.Text");
-			}
-		}
-		/// <summary>This text appears on the 'Select on Diagram' menu if there is more than one shape for the selected element on the current diagram.</summary>
-		public static string CommandNextOnThisDiagramText
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.NextOnThisDiagram.Text");
 			}
 		}
 		/// <summary>The window title for the ORM diagram spy window</summary>

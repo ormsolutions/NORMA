@@ -96,7 +96,7 @@
 					</Type>
 				</DomainProperty>
 				
-<DomainProperty Id="7F5E4C3E-7020-4664-B4B6-FD2EBBDCCDC5" Name="IsPrimaryIdComponent" DisplayName="IsPrimaryIdComponent" Description="Is this attribute part of primary identifier for its entity type?">
+				<DomainProperty Id="7F5E4C3E-7020-4664-B4B6-FD2EBBDCCDC5" Name="IsPrimaryIdComponent" DisplayName="IsPrimaryIdComponent" Description="Is this attribute part of primary identifier for its entity type?">
 					<Attributes>
 						<ClrAttribute Name="global::System.Xml.Serialization.XmlAttribute">
 							<Parameters>
@@ -591,4 +591,10 @@
 
 	<XmlSerializationBehavior Name="BerDomainModelSerializationBehavior" Namespace="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker"/>
 
+	<DslLibraryImports>
+		<DslLibraryImport FilePath="..\..\ORMModel\Framework\SystemCore.dsl"/>
+		<!-- UNDONE: This is a temporary hack to get a reasonable order in the .orm file. The NORMA framework needs to add a
+		LoadPriority attribute to enable these to be explicitly controlled. -->
+		<DslLibraryImport FilePath="..\..\Oial\ORMOialBridge\ORMOialBridge.dsl"/>
+	</DslLibraryImports>
 </Dsl>

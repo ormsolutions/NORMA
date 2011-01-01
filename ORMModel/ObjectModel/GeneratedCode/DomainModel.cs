@@ -3,7 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © ORM Solutions, LLC. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -480,7 +480,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				new DomainMemberInfo(typeof(ElementGrouping), "TypeCompliance", ElementGrouping.TypeComplianceDomainPropertyId, typeof(ElementGrouping.TypeCompliancePropertyHandler)),
 				new DomainMemberInfo(typeof(ElementGrouping), "Priority", ElementGrouping.PriorityDomainPropertyId, typeof(ElementGrouping.PriorityPropertyHandler)),
 				new DomainMemberInfo(typeof(ORMNamedElement), "Name", ORMNamedElement.NameDomainPropertyId, typeof(ORMNamedElement.NamePropertyHandler)),
-				new DomainMemberInfo(typeof(ORMModel), "ModelErrorDisplayFilterDisplay", ORMModel.ModelErrorDisplayFilterDisplayDomainPropertyId, typeof(ORMModel.ModelErrorDisplayFilterDisplayPropertyHandler)),
 				new DomainMemberInfo(typeof(ORMModel), "DefinitionText", ORMModel.DefinitionTextDomainPropertyId, typeof(ORMModel.DefinitionTextPropertyHandler)),
 				new DomainMemberInfo(typeof(ORMModel), "NoteText", ORMModel.NoteTextDomainPropertyId, typeof(ORMModel.NoteTextPropertyHandler)),
 				new DomainMemberInfo(typeof(ObjectType), "IsExternal", ObjectType.IsExternalDomainPropertyId, typeof(ObjectType.IsExternalPropertyHandler)),
@@ -493,8 +492,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				new DomainMemberInfo(typeof(ObjectType), "ReferenceModeDisplay", ObjectType.ReferenceModeDisplayDomainPropertyId, typeof(ObjectType.ReferenceModeDisplayPropertyHandler)),
 				new DomainMemberInfo(typeof(ObjectType), "ReferenceModeString", ObjectType.ReferenceModeStringDomainPropertyId, typeof(ObjectType.ReferenceModeStringPropertyHandler)),
 				new DomainMemberInfo(typeof(ObjectType), "ReferenceModeDecoratedString", ObjectType.ReferenceModeDecoratedStringDomainPropertyId, typeof(ObjectType.ReferenceModeDecoratedStringPropertyHandler)),
-				new DomainMemberInfo(typeof(ObjectType), "ReferenceMode", ObjectType.ReferenceModeDomainPropertyId, typeof(ObjectType.ReferenceModePropertyHandler)),
-				new DomainMemberInfo(typeof(ObjectType), "DataTypeDisplay", ObjectType.DataTypeDisplayDomainPropertyId, typeof(ObjectType.DataTypeDisplayPropertyHandler)),
 				new DomainMemberInfo(typeof(ObjectType), "ValueRangeText", ObjectType.ValueRangeTextDomainPropertyId, typeof(ObjectType.ValueRangeTextPropertyHandler)),
 				new DomainMemberInfo(typeof(ObjectType), "ValueTypeValueRangeText", ObjectType.ValueTypeValueRangeTextDomainPropertyId, typeof(ObjectType.ValueTypeValueRangeTextPropertyHandler)),
 				new DomainMemberInfo(typeof(ObjectType), "IsPersonal", ObjectType.IsPersonalDomainPropertyId, typeof(ObjectType.IsPersonalPropertyHandler)),
@@ -513,7 +510,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				new DomainMemberInfo(typeof(FactType), "DerivationStorageDisplay", FactType.DerivationStorageDisplayDomainPropertyId, typeof(FactType.DerivationStorageDisplayPropertyHandler)),
 				new DomainMemberInfo(typeof(SubtypeFact), "IsPrimary", SubtypeFact.IsPrimaryDomainPropertyId, typeof(SubtypeFact.IsPrimaryPropertyHandler)),
 				new DomainMemberInfo(typeof(SubtypeFact), "ProvidesPreferredIdentifier", SubtypeFact.ProvidesPreferredIdentifierDomainPropertyId, typeof(SubtypeFact.ProvidesPreferredIdentifierPropertyHandler)),
-				new DomainMemberInfo(typeof(Role), "RolePlayerDisplay", Role.RolePlayerDisplayDomainPropertyId, typeof(Role.RolePlayerDisplayPropertyHandler)),
 				new DomainMemberInfo(typeof(Role), "IsMandatory", Role.IsMandatoryDomainPropertyId, typeof(Role.IsMandatoryPropertyHandler)),
 				new DomainMemberInfo(typeof(Role), "Multiplicity", Role.MultiplicityDomainPropertyId, typeof(Role.MultiplicityPropertyHandler)),
 				new DomainMemberInfo(typeof(Role), "ValueRangeText", Role.ValueRangeTextDomainPropertyId, typeof(Role.ValueRangeTextPropertyHandler)),
@@ -562,7 +558,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				new DomainMemberInfo(typeof(ReferenceModeKind), "FormatString", ReferenceModeKind.FormatStringDomainPropertyId, typeof(ReferenceModeKind.FormatStringPropertyHandler)),
 				new DomainMemberInfo(typeof(ReferenceModeKind), "ReferenceModeType", ReferenceModeKind.ReferenceModeTypeDomainPropertyId, typeof(ReferenceModeKind.ReferenceModeTypePropertyHandler)),
 				new DomainMemberInfo(typeof(CustomReferenceMode), "CustomFormatString", CustomReferenceMode.CustomFormatStringDomainPropertyId, typeof(CustomReferenceMode.CustomFormatStringPropertyHandler)),
-				new DomainMemberInfo(typeof(ReferenceMode), "KindDisplay", ReferenceMode.KindDisplayDomainPropertyId, typeof(ReferenceMode.KindDisplayPropertyHandler)),
 				new DomainMemberInfo(typeof(Reading), "Text", Reading.TextDomainPropertyId, typeof(Reading.TextPropertyHandler)),
 				new DomainMemberInfo(typeof(Reading), "IsPrimaryForReadingOrder", Reading.IsPrimaryForReadingOrderDomainPropertyId, typeof(Reading.IsPrimaryForReadingOrderPropertyHandler)),
 				new DomainMemberInfo(typeof(Reading), "Language", Reading.LanguageDomainPropertyId, typeof(Reading.LanguagePropertyHandler)),

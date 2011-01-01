@@ -4,7 +4,7 @@ SET RootDir=%~dp0.
 IF NOT "%~2"=="" (SET TargetVisualStudioVersion=%~2)
 CALL "%RootDir%\..\..\SetupEnvironment.bat" %*
 
-SET NORMAGenerators=HKLM\SOFTWARE\Neumont\ORM Architect for %TargetVisualStudioLongProductName%\Generators
+SET NORMAGenerators=HKLM\SOFTWARE%WOWRegistryAdjust%\Neumont\ORM Architect for %TargetVisualStudioLongProductName%\Generators
 
 :: Install Custom Tool DLL
 CALL:_AddCustomToolReg "%TargetVisualStudioMajorMinorVersion%"

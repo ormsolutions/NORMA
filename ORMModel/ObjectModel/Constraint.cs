@@ -3948,24 +3948,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 		}
-
-		/// <summary>
-		/// Callback function for <see cref="CheckIfAnyRolesInCollectionCanConflict"/> and <see cref="ProcessSetComparisonConstraintPattern"/>
-		/// </summary>
-		/// <param name="constraint">Matching <see cref="IConstraint"/> to add</param>
-		/// <returns><see langword="true"/> to continue iteration</returns>
-		private delegate bool ConstraintMatch(IConstraint constraint);
-
 		/// <summary>
 		/// Checks if any role is attached to a potentially conflicting constraint
 		/// </summary>
 		/// <param name="relatedRoles">RoleCollection for roles that can be attached to conflicting constraints</param>
 		/// <param name="constraintTypesInPotentialConflict">Constraint types that can be conflicting</param>
-		/// <param name="matchCallback">Callback delegate of type <see cref="ConstraintMatch"/></param>
+		/// <param name="matchCallback">Callback delegate of type <see cref="Predicate{IConstraint}"/>.
+		/// Return <see langword="true"/> to continue iteration.</param>
 		private static void CheckIfAnyRolesInCollectionCanConflict(
 			LinkedElementCollection<Role> relatedRoles,
 			IList<ConstraintType> constraintTypesInPotentialConflict,
-			ConstraintMatch matchCallback)
+			Predicate<IConstraint> matchCallback)
 		{
 			int roleCount = relatedRoles.Count;
 			for (int i = 0; i < roleCount; ++i)
@@ -4462,8 +4455,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="validationOfInterest">if specified - only constraints relevant to conflicting with thise validation
 		/// will be returned</param>
 		/// <param name="modalityChange">true if only modality changes should be considered</param>
-		/// <param name="matchCallback">Callback delegate of type <see cref="ConstraintMatch"/></param>
-		private static void ProcessSetComparisonConstraintPattern(SetComparisonConstraint setComparisonConstraint, Role role, IntersectingConstraintValidation? validationOfInterest, bool modalityChange, ConstraintMatch matchCallback)
+		/// <param name="matchCallback">Callback delegate of type <see cref="Predicate{IConstraint}"/>.
+		/// Return <see langword="true"/> to continue iteration.</param>
+		private static void ProcessSetComparisonConstraintPattern(SetComparisonConstraint setComparisonConstraint, Role role, IntersectingConstraintValidation? validationOfInterest, bool modalityChange, Predicate<IConstraint> matchCallback)
 		{
 			if (setComparisonConstraint != null)
 			{

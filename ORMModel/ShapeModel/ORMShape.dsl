@@ -352,6 +352,10 @@
 	</Connectors>
 
 	<XmlSerializationBehavior Name="ORMShapeDomainModelSerializationBehavior" Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel"/>
+	<DslLibraryImports>
+		<DslLibraryImport FilePath="..\Framework\SystemCore.dsl"/>
+		<DslLibraryImport FilePath="..\ObjectModel\ORMCore.dsl"/>
+	</DslLibraryImports>
 
 	<!-- Diagram is double-derived so that we can override ShouldAddShapeForElement and OnChildConfiguring. -->
 	<!-- Diagram has custom constructor so that we can turn off snap-to-grid and set the initial name. -->

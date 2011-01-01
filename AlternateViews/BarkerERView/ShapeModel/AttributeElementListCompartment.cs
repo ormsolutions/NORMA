@@ -312,12 +312,28 @@ namespace ORMSolutions.ORMArchitect.Views.BarkerERView
 			: base(name, title, titleFill, allowCustomTitleFillColor, compartmentFill, allowCustomCompartmentFillColor, titleFontSettings, itemFontSettings, isDefaultCollapsed)
 		{
 		}
+#if VISUALSTUDIO_10_0
+		/// <summary>
+		/// Creates a new <see cref="AttributeElementListCompartment"/>.
+		/// </summary>
+		/// <param name="partition">The current <see cref="Partition"/> of the diagram.</param>
+		/// <returns>AttributeElementListCompartment</returns>
+		public override Compartment CreateCompartment(Partition partition)
+		{
+			AttributeElementListCompartment AttributeElementListCompartment = new AttributeElementListCompartment(partition, null);
+			if (base.IsDefaultCollapsed)
+			{
+				AttributeElementListCompartment.IsExpanded = false;
+			}
+			return AttributeElementListCompartment;
+		}
+#else // ViSUALSTUDIO_10_0
 		/// <summary>
 		/// Creates a new <see cref="AttributeElementListCompartment"/>.
 		/// </summary>
 		/// <param name="store">The current <see cref="Store"/> of the model.</param>
 		/// <returns>AttributeElementListCompartment</returns>
-		public override Compartment CreateCompartment(Microsoft.VisualStudio.Modeling.Store store)
+		public override Compartment CreateCompartment(Store store)
 		{
 			AttributeElementListCompartment AttributeElementListCompartment = new AttributeElementListCompartment(store, null);
 			if (base.IsDefaultCollapsed)
@@ -326,6 +342,7 @@ namespace ORMSolutions.ORMArchitect.Views.BarkerERView
 			}
 			return AttributeElementListCompartment;
 		}
+#endif // VISUALSTUDIO_10_0
 	}
 
 	partial class BarkerEntityShape

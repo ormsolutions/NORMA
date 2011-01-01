@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -23,10 +24,16 @@ using System.Reflection.Emit;
 using System.Xml;
 using System.Xml.XPath;
 using System.Xml.Xsl;
-using Microsoft.Build.BuildEngine;
 using Microsoft.Win32;
 
 using Debug = System.Diagnostics.Debug;
+
+#if VISUALSTUDIO_10_0
+using Microsoft.Build.Construction;
+#else
+using Microsoft.Build.BuildEngine;
+#endif
+
 
 namespace ORMSolutions.ORMArchitect.ORMCustomTool
 {
@@ -268,7 +275,31 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			}
 
 			private readonly bool _compilable;
-			public BuildItem AddGeneratedFileBuildItem(BuildItemGroup buildItemGroup, string sourceFileName, string outputFileName)
+#if VISUALSTUDIO_10_0
+			public ProjectItemElement AddGeneratedFileItem(ProjectItemGroupElement itemGroup, string sourceFileName, string outputFileName)
+			{
+				if (outputFileName == null || outputFileName.Length == 0)
+				{
+					outputFileName = GetOutputFileDefaultName(sourceFileName);
+				}
+				bool compilable = this._compilable;
+				ProjectItemElement itemElement = itemGroup.AddItem(compilable ? "Compile" : "None", outputFileName);
+				itemElement.AddMetadata(ITEMMETADATA_AUTOGEN, "True");
+				if (compilable)
+				{
+					itemElement.AddMetadata(ITEMMETADATA_DESIGNTIME, "True");
+				}
+				string customTool = this._customTool;
+				if (!string.IsNullOrEmpty(customTool))
+				{
+					itemElement.AddMetadata(ITEMMETADATA_GENERATOR, customTool);
+				}
+				itemElement.AddMetadata(ITEMMETADATA_DEPENDENTUPON, sourceFileName);
+				itemElement.AddMetadata(ITEMMETADATA_ORMGENERATOR, this.OfficialName);
+				return itemElement;
+			}
+#else // VISUALSTUDIO_10_0
+			public BuildItem AddGeneratedFileItem(BuildItemGroup buildItemGroup, string sourceFileName, string outputFileName)
 			{
 				if (outputFileName == null || outputFileName.Length == 0)
 				{
@@ -290,8 +321,18 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				buildItem.SetMetadata(ITEMMETADATA_ORMGENERATOR, this.OfficialName);
 				return buildItem;
 			}
+#endif // VISUALSTUDIO_10_0
 
-			public void GenerateOutput(BuildItem buildItem, Stream outputStream, IDictionary<string, Stream> inputFormatStreams, string defaultNamespace, IORMGeneratorItemProperties itemProperties)
+			public void GenerateOutput(
+#if VISUALSTUDIO_10_0
+				ProjectItemElement itemElement,
+#else
+				BuildItem buildItem,
+#endif
+				Stream outputStream,
+				IDictionary<string, Stream> inputFormatStreams,
+				string defaultNamespace,
+				IORMGeneratorItemProperties itemProperties)
 			{
 				this.EnsureTransform();
 				Stream inputStream = inputFormatStreams[this._sourceInputFormat];

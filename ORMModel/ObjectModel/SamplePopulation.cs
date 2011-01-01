@@ -3533,8 +3533,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 
 		/// <summary>
-		/// Returns the display string for the given <paramref name="objectInstance"/>, or the
-		/// nested tuple structure for the <paramref name="parentObjectType"/> if the instance is not provided.
+		/// Returns the display string for the given <paramref name="factInstance"/>, or the
+		/// nested tuple structure for the <paramref name="parentFactType"/> if the instance is not provided.
 		/// </summary>
 		/// <param name="factInstance">Instance to format into a display string. Can be null.</param>
 		/// <param name="parentFactType">Parent Type of the instance.</param>
@@ -4107,11 +4107,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		/// <summary>
 		/// Make sure there is an <see cref="EntityTypeInstance"/> associated with the
-		/// <paramref name="entityType"/> for each instance associated with the role player
+		/// <paramref name="identifiedEntityType"/> for each instance associated with the role player
 		/// of <paramref name="identifierRole"/>.
 		/// </summary>
 		/// <param name="identifiedEntityType">The <see cref="ObjectType">entity type</see> being identified</param>
-		/// <param name="identifierRole">The role from the preferred identifier constraint associated with the <paramref name="entityType"/></param>
+		/// <param name="identifierRole">The role from the preferred identifier constraint associated with the <paramref name="identifiedEntityType"/></param>
 		protected static void EnsureImpliedEntityTypeInstances(ObjectType identifiedEntityType, Role identifierRole)
 		{
 			ObjectType identifierObjectType = identifierRole.RolePlayer;
@@ -4126,14 +4126,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		/// <summary>
 		/// Verify that there is an <see cref="EntityTypeInstance"/> associated with the
-		/// <paramref name="entityType"/> that references the specified <paramref name="instance"/>
+		/// <paramref name="identifiedEntityType"/> that references the specified <paramref name="instance"/>
 		/// through the provided <paramref name="identifierRole"/>. Used to create consistent
 		/// implicit populations for any <see cref="FactType"/> matching the reference scheme
 		/// pattern.
 		/// </summary>
 		/// <param name="instance">The <see cref="ObjectTypeInstance"/> from the identifier role</param>
 		/// <param name="identifiedEntityType">The <see cref="ObjectType">entity type</see> being identified</param>
-		/// <param name="identifierRole">The role from the preferred identifier constraint associated with the <paramref name="entityType"/></param>
+		/// <param name="identifierRole">The role from the preferred identifier constraint associated with the <paramref name="identifiedEntityType"/></param>
 		private static void EnsureImpliedEntityTypeInstance(ObjectTypeInstance instance, ObjectType identifiedEntityType, Role identifierRole)
 		{
 			bool existingInstance = false;

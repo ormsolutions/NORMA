@@ -94,10 +94,12 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Design
 			}
 			return retVal;
 		}
-		private static readonly Size DefaultInitialControlSize = SetupDefaultInitialControlSize();
-		private static Size SetupDefaultInitialControlSize()
+		/// <summary>
+		/// Set initial control size
+		/// </summary>
+		static ColumnDataTypePicker()
 		{
-			return LastControlSizeStorage = new Size(192, 144);
+			LastControlSizeStorage = new Size(192, 144);
 		}
 	}
 }

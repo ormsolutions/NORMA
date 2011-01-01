@@ -20,7 +20,7 @@ Microsoft Visual Studio SDK
 
 Additional components used by other portions of this software include:
 
-Windows Installer XML (WiX) toolset (v3.0 or later, tested successfully through 4318, 4805 had issues with build property redefinitions)
+Windows Installer XML (WiX) toolset (v3.5, tested successfully through 2415)
 	Homepage: http://wix.sourceforge.net
 
 NUnit (v2.4.7 or later)
@@ -75,4 +75,7 @@ To build from the command line for VS2008:
 After getting a new drop, we recommend you use 'Build /t:Rebuild' (or BuildVS2008 /t:Rebuild) to update your files.
 
 You can build the VS2005 pieces using a VS2008 SDK installation (plus a handful of files) by defining the TargetVisualStudioVersion=v8.0 environment variable before running a *VS2008 batch file. The exact details of this approach are still being worked out, but you should only need to do this if you are building installation packages.
+
+Notes on building and debugging with VS2010:
+The general directions are the same as for the VS2008 approach (open a Visual Studio 2010 Command Prompt, navigate to the NORMA directory, set TargetVisualStudioVersion=v10.0, and use the *VS2010* solutions and batch files).
 

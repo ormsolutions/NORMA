@@ -618,6 +618,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// </summary>
 		private sealed class SafeLinkLabel : LinkLabel
 		{
+			[System.Diagnostics.DebuggerStepThrough()]
 			protected override void OnPaint(PaintEventArgs e)
 			{
 				try
@@ -630,6 +631,19 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					// if the is too much text in the LinkLabel. If I could turn UseCompatibleTextRendering
 					// off for this one control then this would work, but this is controlled
 					// at the application level.
+					Links.Clear();
+				}
+			}
+			[System.Diagnostics.DebuggerStepThrough()]
+			protected override void OnMouseMove(MouseEventArgs e)
+			{
+				try
+				{
+					base.OnMouseMove(e);
+				}
+				catch (OverflowException)
+				{
+					// See comments in OnPaint
 					Links.Clear();
 				}
 			}

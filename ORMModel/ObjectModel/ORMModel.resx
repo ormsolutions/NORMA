@@ -1309,9 +1309,26 @@
 		<value>InternalUniquenessConstraint</value>
 		<comment>The display name used for an internal uniqueness constraint</comment>
 	</data>
+	<data name="ObjectModel.Model.ModelErrorDisplayFilterDisplay.Description" xml:space="preserve">
+    <value>Validation error display options for this model. Control error display by category and individually.</value>
+		<comment>Description for &lt;see cref=&quot;P:ObjectModel.ORMModel.ModelErrorDisplayFilterDisplay&quot;/&gt;</comment>
+  </data>
+	<data name="ObjectModel.Model.ModelErrorDisplayFilterDisplay.DisplayName" xml:space="preserve">
+    <value>ErrorDisplay</value>
+		<comment>Display name for &lt;see cref=&quot;P:ObjectModel.ORMModel.ModelErrorDisplayFilterDisplay&quot;/&gt;</comment>
+  </data>
 	<data name="ObjectModel.Model.Name.Description" xml:space="preserve">
 		<value>The name of the ORM model.</value>
 		<comment>The description for the Name property of an ORMModel.</comment>
+	</data>
+	<data name="ObjectModel.ObjectType.DataTypeDisplay.Description" xml:space="preserve">
+		<value>The DataType for this ValueType, or the DataType for the identifying ValueType if this is an EntityType.
+    This is a portable DataType. The final physical DataType is dependent on the generation target.</value>
+		<comment>Description for &lt;see cref=&quot;ObjectModel.ObjectType.DataTypeDisplay&quot;/&gt;</comment>
+	</data>
+	<data name="ObjectModel.ObjectType.DataTypeDisplay.DisplayName" xml:space="preserve">
+		<value>DataType</value>
+		<comment>Display name for &lt;see cref=&quot;ObjectModel.ObjectType.DataTypeDisplay&quot;/&gt;</comment>
 	</data>
 	<data name="ObjectModel.ObjectType.Name.Description" xml:space="preserve">
 		<value>The name of the ObjectType. ObjectType names must be unique within the ORM model.</value>
@@ -1321,6 +1338,22 @@
 		<value>ObjectifiedFactType</value>
 		<comment>The display name used for an objectified (nested) FactType</comment>
 	</data>
+	<data name="ObjectModel.ReferenceMode.KindDisplay.Description" xml:space="preserve">
+		<value>The kind of the reference mode pattern. One of Popular, UnitBase, or General.</value>
+		<comment>Description for &lt;see cref=&quot;ObjectModel.ReferenceMode.KindDisplay&quot;/&gt;</comment>
+	</data>
+	<data name="ObjectModel.ReferenceMode.KindDisplay.DisplayName" xml:space="preserve">
+		<value>Kind</value>
+		<comment>Display name for &lt;see cref=&quot;ObjectModel.ReferenceMode.KindDisplay&quot;/&gt;</comment>
+	</data>
+	<data name="ObjectModel.Role.RolePlayerDisplay.Description" xml:space="preserve">
+    <value>The ObjectType that plays this Role.</value>
+		<comment>Description for &lt;see cref=&quot;ObjectModel.Role.RolePlayerDisplay&quot;/&gt;</comment>
+  </data>
+	<data name="ObjectModel.Role.RolePlayerDisplay.DisplayName" xml:space="preserve">
+    <value>RolePlayer</value>
+		<comment>Display name for &lt;see cref=&quot;ObjectModel.Role.RolePlayerDisplay&quot;/&gt;</comment>
+  </data>
 	<data name="ObjectModel.SimpleMandatoryConstraint" xml:space="preserve">
 		<value>SimpleMandatoryConstraint</value>
 		<comment>The display name used for a simple mandatory constraint</comment>

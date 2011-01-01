@@ -398,7 +398,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			int roleCount = roles.Count;
 			if (roleCount != 0)
 			{
-				bool ruleDisabled = false;
+				RuleManager ruleManager = null;
 				try
 				{
 					int? unaryRoleIndex = FactType.GetUnaryRoleIndex(roles);
@@ -435,10 +435,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								(nestingType != oppositeRole.RolePlayer))
 							{
 								// Move an existing proxy fact to the correct nesting type
-								if (!ruleDisabled)
+								if (ruleManager == null)
 								{
-									store.RuleManager.DisableRule(typeof(RolePlayerAddedRuleClass));
-									ruleDisabled = true;
+									ruleManager = store.RuleManager;
+									ruleManager.DisableRule(typeof(RolePlayerAddedRuleClass));
+									ruleManager.DisableRule(typeof(RolePlayerRolePlayerChangedRuleClass));
 								}
 								oppositeRole.RolePlayer = nestingType;
 							}
@@ -447,9 +448,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				finally
 				{
-					if (ruleDisabled)
+					if (ruleManager != null)
 					{
-						store.RuleManager.EnableRule(typeof(RolePlayerAddedRuleClass));
+						ruleManager.EnableRule(typeof(RolePlayerAddedRuleClass));
+						ruleManager.EnableRule(typeof(RolePlayerRolePlayerChangedRuleClass));
 					}
 				}
 			}
@@ -1478,11 +1480,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					objectification.NestingType = nestingType;
 					bool addRuleDisabled = false;
+					bool rolePlayerChangedRuleDisabled = false;
 					bool removingRuleDisabled = false;
 					try
 					{
 						ruleManager.DisableRule(typeof(RolePlayerAddedRuleClass));
 						addRuleDisabled = true;
+						ruleManager.DisableRule(typeof(RolePlayerRolePlayerChangedRuleClass));
+						rolePlayerChangedRuleDisabled = true;
 						ruleManager.DisableRule(typeof(RolePlayerDeletingRuleClass));
 						removingRuleDisabled = true;
 						foreach (FactType impliedFactType in objectification.ImpliedFactTypeCollection)
@@ -1504,6 +1509,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						if (addRuleDisabled)
 						{
 							ruleManager.EnableRule(typeof(RolePlayerAddedRuleClass));
+						}
+						if (rolePlayerChangedRuleDisabled)
+						{
+							ruleManager.EnableRule(typeof(RolePlayerRolePlayerChangedRuleClass));
 						}
 						if (removingRuleDisabled)
 						{

@@ -5,12 +5,7 @@ IF NOT "%~2"=="" (SET TargetVisualStudioVersion=%~2)
 CALL "%RootDir%\..\..\SetupEnvironment.bat" %*
 SET XMLDir=%TrunkDir%\XML
 SET NetTiersDir=%TrunkDir%\CodeSmith\NetTiersPort
-SET NORMAGenerators=HKLM\SOFTWARE\ORM Solutions\Natural ORM Architect for %TargetVisualStudioLongProductName%\Generators
-
-:: Generate a native image for System.Data.SqlXml.dll if one does not already exist (this greatly improves the XSLT compilation speed).
-:: Note that this method of determining whether a native image already exists is an undocumented hack that is subject to change. It should not be used for anything where reliability matters.
-REG QUERY "HKLM\SOFTWARE\Microsoft\.NETFramework\%FrameworkVersion%\NGENService\Roots\System.Data.SqlXml, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" /v "Status" 1>NUL 2>&1
-IF ERRORLEVEL 1 (ngen.exe install "System.Data.SqlXml, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" /nologo /verbose)
+SET NORMAGenerators=HKLM\SOFTWARE%WOWRegistryAdjust%\ORM Solutions\Natural ORM Architect for %TargetVisualStudioLongProductName%\Generators
 
 :: Delete old dlls
 DEL /F /Q "%NORMADir%\bin\ORMSolutions.ORMArchitect.ORMCustomTool.dll.delete.*" 1>NUL 2>&1
@@ -33,8 +28,8 @@ IF NOT "%VSRegistryRootSuffix%"=="" (CALL:_InstallCustomToolReg "%VSRegistryRoot
 IF NOT "%VSRegistryRootSuffix%"=="" (CALL:_InstallExtenderReg "%VSRegistryRootVersion%%VSRegistryRootSuffix%")
 
 :: Get rid of old transform registrations
-REG DELETE "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio" /f 1>NUL 2>&1
-REG DELETE "HKLM\SOFTWARE\Neumont\ORM Architect for %TargetVisualStudioLongProductName%" /f 1>NUL 2>&1
+REG DELETE "HKLM\SOFTWARE%WOWRegistryAdjust%\Neumont\ORM Architect for Visual Studio" /f 1>NUL 2>&1
+REG DELETE "HKLM\SOFTWARE%WOWRegistryAdjust%\Neumont\ORM Architect for %TargetVisualStudioLongProductName%" /f 1>NUL 2>&1
 REG DELETE "%NORMAGenerators%" /f 1>NUL 2>&1
 
 :: Install and register ORM Transforms

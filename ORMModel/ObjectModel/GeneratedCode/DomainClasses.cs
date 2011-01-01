@@ -3,7 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © ORM Solutions, LLC. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -2746,7 +2746,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	/// <summary>
 	/// Double-derived base class for DomainClass ORMModel
 	/// </summary>
-	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider<ORMModel, Design.ORMModelTypeDescriptor<ORMModel>>))]
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider<ORMModel, Design.ORMModelTypeDescriptor>))]
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
@@ -2768,98 +2768,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			: base(partition, propertyAssignments)
 		{
 		}
-		#endregion
-		#region ModelErrorDisplayFilterDisplay domain property code
-		
-		/// <summary>
-		/// ModelErrorDisplayFilterDisplay domain property Id.
-		/// </summary>
-		public static readonly global::System.Guid ModelErrorDisplayFilterDisplayDomainPropertyId = new global::System.Guid(0xc5a66492, 0x0ffa, 0x46f9, 0xa6, 0x4b, 0x36, 0x1e, 0x62, 0xd6, 0x96, 0xb0);
-		
-		/// <summary>
-		/// Gets or sets the value of ModelErrorDisplayFilterDisplay domain property.
-		/// Validation error display options for this model. Control error display by
-		/// category and individually.
-		/// </summary>
-		[global::System.ComponentModel.Editor(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.ModelErrorDisplayFilterEditor), typeof(global::System.Drawing.Design.UITypeEditor))]
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel/ModelErrorDisplayFilterDisplay.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel/ModelErrorDisplayFilterDisplay.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
-		[DslModeling::DomainObjectId("c5a66492-0ffa-46f9-a64b-361e62d696b0")]
-		public ModelErrorDisplayFilter ModelErrorDisplayFilterDisplay
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return ModelErrorDisplayFilterDisplayPropertyHandler.Instance.GetValue(this);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				ModelErrorDisplayFilterDisplayPropertyHandler.Instance.SetValue(this, value);
-			}
-		}
-		/// <summary>
-		/// Value handler for the ORMModel.ModelErrorDisplayFilterDisplay domain property.
-		/// </summary>
-		internal sealed partial class ModelErrorDisplayFilterDisplayPropertyHandler : DslModeling::DomainPropertyValueHandler<ORMModelBase, ModelErrorDisplayFilter>
-		{
-			private ModelErrorDisplayFilterDisplayPropertyHandler() { }
-		
-			/// <summary>
-			/// Gets the singleton instance of the ORMModel.ModelErrorDisplayFilterDisplay domain property value handler.
-			/// </summary>
-			public static readonly ModelErrorDisplayFilterDisplayPropertyHandler Instance = new ModelErrorDisplayFilterDisplayPropertyHandler();
-		
-			/// <summary>
-			/// Gets the Id of the ORMModel.ModelErrorDisplayFilterDisplay domain property.
-			/// </summary>
-			public sealed override global::System.Guid DomainPropertyId
-			{
-				[global::System.Diagnostics.DebuggerStepThrough]
-				get
-				{
-					return ModelErrorDisplayFilterDisplayDomainPropertyId;
-				}
-			}
-			
-			/// <summary>
-			/// Gets a strongly-typed value of the property on specified element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <returns>Property value.</returns>
-			public override sealed ModelErrorDisplayFilter GetValue(ORMModelBase element)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-				// There is no storage for ModelErrorDisplayFilterDisplay because its Kind is
-				// set to CustomStorage. Please provide the GetModelErrorDisplayFilterDisplayValue()
-				// method on the domain class.
-				return element.GetModelErrorDisplayFilterDisplayValue();
-			}
-		
-			/// <summary>
-			/// Sets property value on an element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(ORMModelBase element, ModelErrorDisplayFilter newValue)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-		
-				ModelErrorDisplayFilter oldValue = GetValue(element);
-				if (newValue != oldValue)
-				{
-					ValueChanging(element, oldValue, newValue);
-					// There is no storage for ModelErrorDisplayFilterDisplay because its Kind is
-					// set to CustomStorage. Please provide the SetModelErrorDisplayFilterDisplayValue()
-					// method on the domain class.
-					element.SetModelErrorDisplayFilterDisplayValue(newValue);
-					//ValueChanged(element, oldValue, GetValue(element));
-					ValueChanged(element, oldValue, newValue);
-				}
-			}
-		}
-		
 		#endregion
 		#region DefinitionText domain property code
 		
@@ -3526,7 +3434,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	/// <summary>
 	/// DomainClass ObjectType
 	/// </summary>
-	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider<ObjectType, Design.ObjectTypeTypeDescriptor<ObjectType>>))]
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider<ObjectType, Design.ObjectTypeTypeDescriptor>))]
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
@@ -4475,192 +4383,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					// set to CustomStorage. Please provide the SetReferenceModeDecoratedStringValue()
 					// method on the domain class.
 					element.SetReferenceModeDecoratedStringValue(newValue);
-					//ValueChanged(element, oldValue, GetValue(element));
-					ValueChanged(element, oldValue, newValue);
-				}
-			}
-		}
-		
-		#endregion
-		#region ReferenceMode domain property code
-		
-		/// <summary>
-		/// ReferenceMode domain property Id.
-		/// </summary>
-		public static readonly global::System.Guid ReferenceModeDomainPropertyId = new global::System.Guid(0xe2049ba3, 0xf50d, 0x4e1c, 0x9a, 0xbd, 0x8a, 0x7e, 0xbe, 0xcf, 0xed, 0xf5);
-		
-		/// <summary>
-		/// Gets or sets the value of ReferenceMode domain property.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.ReferenceMode
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/ReferenceMode.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/ReferenceMode.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[global::System.ComponentModel.Browsable(false)]
-		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
-		[DslModeling::DomainObjectId("e2049ba3-f50d-4e1c-9abd-8a7ebecfedf5")]
-		public ReferenceMode ReferenceMode
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return ReferenceModePropertyHandler.Instance.GetValue(this);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				ReferenceModePropertyHandler.Instance.SetValue(this, value);
-			}
-		}
-		/// <summary>
-		/// Value handler for the ObjectType.ReferenceMode domain property.
-		/// </summary>
-		internal sealed partial class ReferenceModePropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, ReferenceMode>
-		{
-			private ReferenceModePropertyHandler() { }
-		
-			/// <summary>
-			/// Gets the singleton instance of the ObjectType.ReferenceMode domain property value handler.
-			/// </summary>
-			public static readonly ReferenceModePropertyHandler Instance = new ReferenceModePropertyHandler();
-		
-			/// <summary>
-			/// Gets the Id of the ObjectType.ReferenceMode domain property.
-			/// </summary>
-			public sealed override global::System.Guid DomainPropertyId
-			{
-				[global::System.Diagnostics.DebuggerStepThrough]
-				get
-				{
-					return ReferenceModeDomainPropertyId;
-				}
-			}
-			
-			/// <summary>
-			/// Gets a strongly-typed value of the property on specified element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <returns>Property value.</returns>
-			public override sealed ReferenceMode GetValue(ObjectType element)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-				// There is no storage for ReferenceMode because its Kind is
-				// set to CustomStorage. Please provide the GetReferenceModeValue()
-				// method on the domain class.
-				return element.GetReferenceModeValue();
-			}
-		
-			/// <summary>
-			/// Sets property value on an element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(ObjectType element, ReferenceMode newValue)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-		
-				ReferenceMode oldValue = GetValue(element);
-				if (newValue != oldValue)
-				{
-					ValueChanging(element, oldValue, newValue);
-					// There is no storage for ReferenceMode because its Kind is
-					// set to CustomStorage. Please provide the SetReferenceModeValue()
-					// method on the domain class.
-					element.SetReferenceModeValue(newValue);
-					//ValueChanged(element, oldValue, GetValue(element));
-					ValueChanged(element, oldValue, newValue);
-				}
-			}
-		}
-		
-		#endregion
-		#region DataTypeDisplay domain property code
-		
-		/// <summary>
-		/// DataTypeDisplay domain property Id.
-		/// </summary>
-		public static readonly global::System.Guid DataTypeDisplayDomainPropertyId = new global::System.Guid(0x3e8893a7, 0x5985, 0x4200, 0xa5, 0x95, 0xcb, 0x1e, 0x9e, 0xc9, 0xad, 0xa7);
-		
-		/// <summary>
-		/// Gets or sets the value of DataTypeDisplay domain property.
-		/// The DataType for this ValueType, or the DataType for the identifying ValueType
-		/// if this is an EntityType.
-		///     This is a portable DataType. The final physical DataType is dependent on the
-		/// generation target.
-		/// </summary>
-		[global::System.ComponentModel.Editor(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.DataTypePicker), typeof(global::System.Drawing.Design.UITypeEditor))]
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/DataTypeDisplay.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/DataTypeDisplay.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
-		[DslModeling::DomainObjectId("3e8893a7-5985-4200-a595-cb1e9ec9ada7")]
-		public DataType DataTypeDisplay
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return DataTypeDisplayPropertyHandler.Instance.GetValue(this);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DataTypeDisplayPropertyHandler.Instance.SetValue(this, value);
-			}
-		}
-		/// <summary>
-		/// Value handler for the ObjectType.DataTypeDisplay domain property.
-		/// </summary>
-		internal sealed partial class DataTypeDisplayPropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, DataType>
-		{
-			private DataTypeDisplayPropertyHandler() { }
-		
-			/// <summary>
-			/// Gets the singleton instance of the ObjectType.DataTypeDisplay domain property value handler.
-			/// </summary>
-			public static readonly DataTypeDisplayPropertyHandler Instance = new DataTypeDisplayPropertyHandler();
-		
-			/// <summary>
-			/// Gets the Id of the ObjectType.DataTypeDisplay domain property.
-			/// </summary>
-			public sealed override global::System.Guid DomainPropertyId
-			{
-				[global::System.Diagnostics.DebuggerStepThrough]
-				get
-				{
-					return DataTypeDisplayDomainPropertyId;
-				}
-			}
-			
-			/// <summary>
-			/// Gets a strongly-typed value of the property on specified element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <returns>Property value.</returns>
-			public override sealed DataType GetValue(ObjectType element)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-				// There is no storage for DataTypeDisplay because its Kind is
-				// set to CustomStorage. Please provide the GetDataTypeDisplayValue()
-				// method on the domain class.
-				return element.GetDataTypeDisplayValue();
-			}
-		
-			/// <summary>
-			/// Sets property value on an element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(ObjectType element, DataType newValue)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-		
-				DataType oldValue = GetValue(element);
-				if (newValue != oldValue)
-				{
-					ValueChanging(element, oldValue, newValue);
-					// There is no storage for DataTypeDisplay because its Kind is
-					// set to CustomStorage. Please provide the SetDataTypeDisplayValue()
-					// method on the domain class.
-					element.SetDataTypeDisplayValue(newValue);
 					//ValueChanged(element, oldValue, GetValue(element));
 					ValueChanged(element, oldValue, newValue);
 				}
@@ -7446,7 +7168,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	/// <summary>
 	/// DomainClass Role
 	/// </summary>
-	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider<Role, Design.RoleTypeDescriptor<Role>>))]
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider<Role, Design.RoleTypeDescriptor>))]
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.Role.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.Role.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
@@ -7478,97 +7200,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			: base(partition, propertyAssignments)
 		{
 		}
-		#endregion
-		#region RolePlayerDisplay domain property code
-		
-		/// <summary>
-		/// RolePlayerDisplay domain property Id.
-		/// </summary>
-		public static readonly global::System.Guid RolePlayerDisplayDomainPropertyId = new global::System.Guid(0xb66fca99, 0xe6ec, 0x46c9, 0xb4, 0x45, 0xd5, 0x49, 0xf6, 0xd7, 0xab, 0xe1);
-		
-		/// <summary>
-		/// Gets or sets the value of RolePlayerDisplay domain property.
-		/// The ObjectType that plays this Role.
-		/// </summary>
-		[global::System.ComponentModel.Editor(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.RolePlayerPicker), typeof(global::System.Drawing.Design.UITypeEditor))]
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.Role/RolePlayerDisplay.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.Role/RolePlayerDisplay.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
-		[DslModeling::DomainObjectId("b66fca99-e6ec-46c9-b445-d549f6d7abe1")]
-		public ObjectType RolePlayerDisplay
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return RolePlayerDisplayPropertyHandler.Instance.GetValue(this);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				RolePlayerDisplayPropertyHandler.Instance.SetValue(this, value);
-			}
-		}
-		/// <summary>
-		/// Value handler for the Role.RolePlayerDisplay domain property.
-		/// </summary>
-		internal sealed partial class RolePlayerDisplayPropertyHandler : DslModeling::DomainPropertyValueHandler<Role, ObjectType>
-		{
-			private RolePlayerDisplayPropertyHandler() { }
-		
-			/// <summary>
-			/// Gets the singleton instance of the Role.RolePlayerDisplay domain property value handler.
-			/// </summary>
-			public static readonly RolePlayerDisplayPropertyHandler Instance = new RolePlayerDisplayPropertyHandler();
-		
-			/// <summary>
-			/// Gets the Id of the Role.RolePlayerDisplay domain property.
-			/// </summary>
-			public sealed override global::System.Guid DomainPropertyId
-			{
-				[global::System.Diagnostics.DebuggerStepThrough]
-				get
-				{
-					return RolePlayerDisplayDomainPropertyId;
-				}
-			}
-			
-			/// <summary>
-			/// Gets a strongly-typed value of the property on specified element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <returns>Property value.</returns>
-			public override sealed ObjectType GetValue(Role element)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-				// There is no storage for RolePlayerDisplay because its Kind is
-				// set to CustomStorage. Please provide the GetRolePlayerDisplayValue()
-				// method on the domain class.
-				return element.GetRolePlayerDisplayValue();
-			}
-		
-			/// <summary>
-			/// Sets property value on an element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(Role element, ObjectType newValue)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-		
-				ObjectType oldValue = GetValue(element);
-				if (newValue != oldValue)
-				{
-					ValueChanging(element, oldValue, newValue);
-					// There is no storage for RolePlayerDisplay because its Kind is
-					// set to CustomStorage. Please provide the SetRolePlayerDisplayValue()
-					// method on the domain class.
-					element.SetRolePlayerDisplayValue(newValue);
-					//ValueChanged(element, oldValue, GetValue(element));
-					ValueChanged(element, oldValue, newValue);
-				}
-			}
-		}
-		
 		#endregion
 		#region IsMandatory domain property code
 		
@@ -18867,7 +18498,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	/// <summary>
 	/// DomainClass ReferenceMode
 	/// </summary>
-	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider<ReferenceMode, Design.ReferenceModeTypeDescriptor<ReferenceMode>>))]
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider<ReferenceMode, Design.ReferenceModeTypeDescriptor>))]
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceMode.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceMode.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
@@ -18889,97 +18520,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			: base(partition, propertyAssignments)
 		{
 		}
-		#endregion
-		#region KindDisplay domain property code
-		
-		/// <summary>
-		/// KindDisplay domain property Id.
-		/// </summary>
-		public static readonly global::System.Guid KindDisplayDomainPropertyId = new global::System.Guid(0xbbc452ca, 0x0454, 0x4047, 0x91, 0x43, 0xb1, 0x1e, 0x06, 0x55, 0x56, 0xfb);
-		
-		/// <summary>
-		/// Gets or sets the value of KindDisplay domain property.
-		/// The kind of the reference mode pattern. One of Popular, UnitBase, or General.
-		/// </summary>
-		[global::System.ComponentModel.Editor(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.ReferenceModeKindPicker), typeof(global::System.Drawing.Design.UITypeEditor))]
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceMode/KindDisplay.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceMode/KindDisplay.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
-		[DslModeling::DomainObjectId("bbc452ca-0454-4047-9143-b11e065556fb")]
-		public ReferenceModeKind KindDisplay
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return KindDisplayPropertyHandler.Instance.GetValue(this);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				KindDisplayPropertyHandler.Instance.SetValue(this, value);
-			}
-		}
-		/// <summary>
-		/// Value handler for the ReferenceMode.KindDisplay domain property.
-		/// </summary>
-		internal sealed partial class KindDisplayPropertyHandler : DslModeling::DomainPropertyValueHandler<ReferenceMode, ReferenceModeKind>
-		{
-			private KindDisplayPropertyHandler() { }
-		
-			/// <summary>
-			/// Gets the singleton instance of the ReferenceMode.KindDisplay domain property value handler.
-			/// </summary>
-			public static readonly KindDisplayPropertyHandler Instance = new KindDisplayPropertyHandler();
-		
-			/// <summary>
-			/// Gets the Id of the ReferenceMode.KindDisplay domain property.
-			/// </summary>
-			public sealed override global::System.Guid DomainPropertyId
-			{
-				[global::System.Diagnostics.DebuggerStepThrough]
-				get
-				{
-					return KindDisplayDomainPropertyId;
-				}
-			}
-			
-			/// <summary>
-			/// Gets a strongly-typed value of the property on specified element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <returns>Property value.</returns>
-			public override sealed ReferenceModeKind GetValue(ReferenceMode element)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-				// There is no storage for KindDisplay because its Kind is
-				// set to CustomStorage. Please provide the GetKindDisplayValue()
-				// method on the domain class.
-				return element.GetKindDisplayValue();
-			}
-		
-			/// <summary>
-			/// Sets property value on an element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(ReferenceMode element, ReferenceModeKind newValue)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-		
-				ReferenceModeKind oldValue = GetValue(element);
-				if (newValue != oldValue)
-				{
-					ValueChanging(element, oldValue, newValue);
-					// There is no storage for KindDisplay because its Kind is
-					// set to CustomStorage. Please provide the SetKindDisplayValue()
-					// method on the domain class.
-					element.SetKindDisplayValue(newValue);
-					//ValueChanged(element, oldValue, GetValue(element));
-					ValueChanged(element, oldValue, newValue);
-				}
-			}
-		}
-		
 		#endregion
 		#region Model opposite domain role accessor
 		/// <summary>

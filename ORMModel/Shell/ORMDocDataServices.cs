@@ -204,7 +204,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// <param name="services">IORMToolServices to defer to</param>
 			/// <param name="serviceProvider">Global service provider</param>
 			public ORMStore(IORMToolServices services, IServiceProvider serviceProvider)
-				: base(serviceProvider, null)
+				: base(serviceProvider, (Type[])null)
 			{
 				myServices = services;
 				myModelingEventManager = new UIModelingEventManager(this, serviceProvider);

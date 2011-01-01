@@ -147,8 +147,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// <param name="currentWindow">the currently selected window</param>
 		protected static void OnStatusCommand(object sender, ORMDesignerCommands commandFlags, ORMModelBrowserToolWindow currentWindow)
 		{
-			MenuCommand command = sender as MenuCommand;
-			Debug.Assert(command != null);
+			MenuCommand command = (MenuCommand)sender;
 			if (currentWindow != null)
 			{
 				currentWindow.EnsureCommandStatusCache();
@@ -164,7 +163,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 					else if (0 != (commandFlags & (ORMDesignerCommands.DiagramList)))
 					{
-						OleMenuCommand cmd = command as OleMenuCommand;
+						OleMenuCommand cmd = (OleMenuCommand)command;
 						object selectedNode = currentWindow.SelectedNode;
 						IElementReference elementReference;
 						ModelElement element;
@@ -199,6 +198,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						else
 						{
 							cmd.Supported = false;
+							cmd.Enabled = false;
+							cmd.Visible = false;
 						}
 					}
 					else if (0 != (commandFlags & ORMDesignerCommands.FreeFormCommandList))
@@ -265,6 +266,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						if (!haveStatus)
 						{
 							command.Supported = false;
+							command.Enabled = false;
+							command.Visible = false;
 						}
 					}
 					else if (0 != (commandFlags & ORMDesignerCommands.IncludeInGroupList))
@@ -333,6 +336,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							else
 							{
 								cmd.Supported = false;
+								cmd.Enabled = false;
+								cmd.Visible = false;
 							}
 						}
 					}
@@ -405,6 +410,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							else
 							{
 								cmd.Supported = false;
+								cmd.Enabled = false;
+								cmd.Visible = false;
 							}
 						}
 					}

@@ -11,7 +11,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 
 			public const int ORMFileDisplayName = 102;
 			public const int ORMFileDescription = 103;
-			// 104 is available
+			public const int ORMFileBaseName = 104;
 			public const int OptionsCategory = 105;
 			public const int OptionsGeneral = 106;
 			// 107 is available

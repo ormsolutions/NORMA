@@ -31,6 +31,7 @@ namespace ORMSolutions.ORMArchitect.Views.BarkerERView
 	/// <summary>
 	/// Double-derived base class for DomainClass BarkerERDiagram
 	/// </summary>
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::ORMSolutions.ORMArchitect.Framework.Diagrams.Design.PresentationElementTypeDescriptionProvider<BarkerERDiagram, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel, global::ORMSolutions.ORMArchitect.Framework.Diagrams.Design.PresentationElementTypeDescriptor<BarkerERDiagram, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel>>))]
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel), "ORMSolutions.ORMArchitect.Views.BarkerERView.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.Description", typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel), "ORMSolutions.ORMArchitect.Views.BarkerERView.GeneratedCode.DomainModelResx")]
 	[DslModeling::DomainObjectId("144546c5-db5e-4a4c-b1bc-4b7c6c0612f2")]

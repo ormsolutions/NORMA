@@ -1,5 +1,13 @@
 @echo off
 setlocal
+
+IF "%ProgramFiles(X86)%"=="" (
+	SET ResolvedProgramFiles=%ProgramFiles%
+	SET WOWRegistryAdjust=
+) ELSE (
+	CALL:SET6432
+)
+
 if '%1'=='' (
 set rootPath=%~dp0
 ) else (
@@ -11,7 +19,7 @@ set outDir=bin\Debug\
 set outDir=%~2
 )
 if '%3'=='' (
-set envPath=C:\Program Files\Microsoft Visual Studio 8\
+set envPath=%ResolvedProgramFiles%\Microsoft Visual Studio 8\
 ) else (
 set envPath=%~dp3
 )
@@ -26,7 +34,7 @@ set VSLongProduct=Visual Studio 2005
 set VSLongProduct=%~5
 )
 
-SET NORMADir=%ProgramFiles%\ORM Solutions\ORM Architect for %VSLongProduct%
+SET NORMADir=%ResolvedProgramFiles%\ORM Solutions\ORM Architect for %VSLongProduct%
 
 xcopy /Y /D /Q "%rootPath%%outDir%TestEngine\ORMSolutions.ORMArchitectSDK.TestEngine.%VSProduct%.dll" "%NORMADir%\bin\"
 xcopy /Y /D /Q "%rootPath%%outDir%TestEngine\ORMSolutions.ORMArchitectSDK.TestEngine.%VSProduct%.XML" "%NORMADir%\bin\"
@@ -70,4 +78,10 @@ GOTO:EOF
 
 :_CleanupFile
 IF EXIST "%~1" (DEL /F /Q "%~1")
+GOTO:EOF
+
+:SET6432
+::Do this somewhere the resolved parens will not cause problems.
+SET ResolvedProgramFiles=%ProgramFiles(X86)%
+SET WOWRegistryAdjust=\Wow6432Node
 GOTO:EOF

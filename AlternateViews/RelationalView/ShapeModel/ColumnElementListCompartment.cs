@@ -472,6 +472,23 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 			: base(name, title, titleFill, allowCustomTitleFillColor, compartmentFill, allowCustomCompartmentFillColor, titleFontSettings, itemFontSettings, isDefaultCollapsed)
 		{
 		}
+#if VISUALSTUDIO_10_0
+		/// <summary>
+		/// Creates a new <see cref="ColumnElementListCompartment"/>.
+		/// </summary>
+		/// <param name="partition">The current <see cref="Partition"/> of the diagram.</param>
+		/// <returns>ColumnElementListCompartment</returns>
+		public override Compartment CreateCompartment(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			ColumnElementListCompartment columnElementListCompartment = new ColumnElementListCompartment(partition, null);
+			if (base.IsDefaultCollapsed)
+			{
+				columnElementListCompartment.IsExpanded = false;
+			}
+			return columnElementListCompartment;
+		}
+	}
+#else // VISUALSTUDIO_10_0
 		/// <summary>
 		/// Creates a new <see cref="ColumnElementListCompartment"/>.
 		/// </summary>
@@ -487,6 +504,7 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 			return columnElementListCompartment;
 		}
 	}
+#endif // VISUALSTUDIO_10_0
 
 	partial class TableShape
 	{

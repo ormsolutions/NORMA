@@ -45,7 +45,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams.Design
 		where TModelElement : ModelElement
 	{
 		// NOTE: Keep in sync with ElementTypeDescriptor<TModelElement> and DiagramTypeDescriptor<TPresentationElement,TModelElement>
-
 		#region Constructor
 		/// <summary>
 		/// Initializes a new instance of <see cref="PresentationElementTypeDescriptor{TPresentationElement,TModelElement}"/> for
@@ -53,15 +52,22 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams.Design
 		/// that is associated with the instance of <typeparamref name="TModelElement"/> specified by <paramref name="selectedElement"/>.
 		/// </summary>
 		public PresentationElementTypeDescriptor(ICustomTypeDescriptor parent, TPresentationElement presentationElement, TModelElement selectedElement)
+#if VISUALSTUDIO_10_0
+			: base(parent, presentationElement)
+#else
 			: base(parent, presentationElement, selectedElement)
+#endif
 		{
 			// The PresentationElementTypeDescriptor constructor already checked presentationElement for null.
-			this.myPresentationElement = presentationElement;
+			myPresentationElement = presentationElement;
 			// The ElementTypeDescriptor constructor already checked selectedElement for null.
-			this.myModelElement = selectedElement;
+#if VISUALSTUDIO_10_0
+			myModelElement = (TModelElement)presentationElement.ModelElement;
+#else
+			myModelElement = selectedElement;
+#endif
 		}
 		#endregion // Constructor
-
 		#region PresentationElement property
 		private readonly TPresentationElement myPresentationElement;
 		/// <summary>
@@ -76,7 +82,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams.Design
 			}
 		}
 		#endregion // PresentationElement property
-
 		#region ModelElement property
 		private readonly TModelElement myModelElement;
 		/// <summary>
@@ -91,7 +96,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams.Design
 			}
 		}
 		#endregion // ModelElement property
-
 		#region GetClassName method
 		/// <summary>
 		/// Returns the class name of <see cref="PresentationElementTypeDescriptor{TPresentationElement,TModelElement}.ModelElement"/>
@@ -100,10 +104,10 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams.Design
 		/// </summary>
 		public override string GetClassName()
 		{
-			return TypeDescriptor.GetClassName(this.ModelElement);
+			ModelElement modelElement = this.ModelElement;
+			return modelElement != null ? TypeDescriptor.GetClassName(modelElement) : "";
 		}
 		#endregion // GetClassName method
-
 		#region GetComponentName method
 		/// <summary>
 		/// Returns the component name of <see cref="PresentationElementTypeDescriptor{TPresentationElement,TModelElement}.ModelElement"/>
@@ -112,13 +116,13 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams.Design
 		/// </summary>
 		public override string GetComponentName()
 		{
-			return TypeDescriptor.GetComponentName(this.ModelElement);
+			ModelElement modelElement = this.ModelElement;
+			return modelElement != null ? TypeDescriptor.GetComponentName(modelElement) : "";
 		}
 		#endregion // GetComponentName method
-
 		#region GetDisplayProperties method
 		/// <summary>
-		/// Blocks editor access to <see cref="ElementTypeDescriptor.GetDisplayProperties"/>.
+		/// Blocks editor access to <see cref="ElementTypeDescriptor.GetDisplayProperties(ModelElement,ref PropertyDescriptor)"/>.
 		/// </summary>
 		[EditorBrowsable(EditorBrowsableState.Never)]
 		[Obsolete("This method is not supported.", true)]
@@ -126,8 +130,18 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams.Design
 		{
 			throw new NotSupportedException();
 		}
+#if VISUALSTUDIO_10_0
+		/// <summary>
+		/// Blocks editor access to <see cref="ElementTypeDescriptor.GetDisplayProperties(ModelElement,Store,ref PropertyDescriptor)"/>.
+		/// </summary>
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		[Obsolete("This method is not supported.", true)]
+		protected new PropertyDescriptorCollection GetDisplayProperties(ModelElement requestor, Store store, ref PropertyDescriptor defaultPropertyDescriptor)
+		{
+			throw new NotSupportedException();
+		}
+#endif // VISUALSTUDIO_10_0
 		#endregion // GetDisplayProperties method
-
 		#region GetDomainPropertyAttributes method
 		/// <summary>
 		/// Replaces <see cref="ElementTypeDescriptor.GetDomainPropertyAttributes"/>.
@@ -139,10 +153,9 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams.Design
 			{
 				throw new ArgumentNullException("domainPropertyInfo");
 			}
-			return DomainTypeDescriptor.AttributeCollectionToArray(DomainTypeDescriptor.GetRawAttributes(domainPropertyInfo.PropertyInfo));
+			return EditorUtility.GetAttributeArray(DomainTypeDescriptor.GetRawAttributes(domainPropertyInfo.PropertyInfo));
 		}
 		#endregion // GetDomainPropertyAttributes method
-
 		#region GetRolePlayerPropertyAttributes method
 		/// <summary>
 		/// Replaces <see cref="ElementTypeDescriptor.GetRolePlayerPropertyAttributes"/>.
@@ -154,10 +167,9 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams.Design
 			{
 				throw new ArgumentNullException("domainRole");
 			}
-			return DomainTypeDescriptor.AttributeCollectionToArray(DomainTypeDescriptor.GetRawAttributes(domainRole.LinkPropertyInfo));
+			return EditorUtility.GetAttributeArray(DomainTypeDescriptor.GetRawAttributes(domainRole.LinkPropertyInfo));
 		}
 		#endregion // GetRolePlayerPropertyAttributes method
-
 		#region ShouldCreatePropertyDescriptor method
 		/// <summary>
 		/// Replaces <see cref="ElementTypeDescriptor.ShouldCreatePropertyDescriptor"/>.
@@ -172,7 +184,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams.Design
 			return ((BrowsableAttribute)DomainTypeDescriptor.GetRawAttributes(domainProperty.PropertyInfo)[typeof(BrowsableAttribute)]).Browsable;
 		}
 		#endregion // ShouldCreatePropertyDescriptor method
-
 		#region GetEvents method
 		/// <summary>
 		/// Calls <see cref="ICustomTypeDescriptor.GetEvents(Attribute[])"/>,
@@ -183,7 +194,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams.Design
 			return this.GetEvents(null);
 		}
 		#endregion // GetEvents method
-
 		#region GetProperties methods
 		/// <summary>
 		/// Calls <see cref="GetProperties(Attribute[])"/>,
@@ -203,9 +213,19 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams.Design
 			// Get the properties from the associated ModelElement to start off with.
 			PropertyDescriptorCollection propertyDescriptors;
 			TModelElement modelElement = this.ModelElement;
-			if (!modelElement.IsDeleted && !modelElement.IsDeleting)
+			if (modelElement != null && !modelElement.IsDeleted && !modelElement.IsDeleting)
 			{
 				propertyDescriptors = TypeDescriptor.GetProperties(modelElement);
+				int descriptorCount = propertyDescriptors.Count;
+				if (0 != descriptorCount)
+				{
+					PropertyDescriptor[] wrappedDescriptors = new PropertyDescriptor[descriptorCount];
+					for (int i = 0; i < descriptorCount; ++i)
+					{
+						wrappedDescriptors[i] = EditorUtility.RedirectPropertyDescriptor(modelElement, propertyDescriptors[i], typeof(TPresentationElement));
+					}
+					propertyDescriptors = new PropertyDescriptorCollection(wrappedDescriptors, false);
+				}
 			}
 			else
 			{
@@ -224,8 +244,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams.Design
 					{
 						continue;
 					}
-					ElementPropertyDescriptor propertyDescriptor =
-						this.CreatePropertyDescriptor(requestor, domainPropertyInfo, this.GetDomainPropertyAttributes(domainPropertyInfo));
+					ElementPropertyDescriptor propertyDescriptor = this.CreatePropertyDescriptor(requestor, domainPropertyInfo, this.GetDomainPropertyAttributes(domainPropertyInfo));
 					if (propertyDescriptor != null)
 					{
 						propertyDescriptors.Add(propertyDescriptor);
@@ -238,8 +257,8 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams.Design
 				// Get the property descriptors for the DomainRoles we play.
 				if (includeOppositeRolePlayerProperties || includeEmbeddingRelationshipProperties)
 				{
-					HashSet<string, string> oppositePropertyNames =
-						new HashSet<string, string>(KeyProvider<string, string>.Default, StringComparer.Ordinal, StringComparer.Ordinal);
+					// UNDONE: NOW VS2010 Add wrappers for role-based properties similar to the wrapped property descriptors on the backing element.
+					HashSet<string, string> oppositePropertyNames = new HashSet<string, string>(KeyProvider<string, string>.Default, StringComparer.Ordinal, StringComparer.Ordinal);
 
 					foreach (DomainRoleInfo playedRole in requestor.GetDomainClass().AllDomainRolesPlayed)
 					{
@@ -292,5 +311,30 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams.Design
 			return propertyDescriptors;
 		}
 		#endregion // GetProperties methods
+		#region Relationship property overrides
+		/// <summary>
+		/// Block embedding relationship property display
+		/// </summary>
+		protected override bool IncludeEmbeddingRelationshipProperties(ModelElement requestor)
+		{
+			return false;
+		}
+		/// <summary>
+		/// Block opposite role player property display
+		/// </summary>
+		protected override bool IncludeOppositeRolePlayerProperties(ModelElement requestor)
+		{
+			return false;
+		}
+#if VISUALSTUDIO_10_0
+		/// <summary>
+		/// Block collection property display
+		/// </summary>
+		protected override bool IncludeCollectionRoleProperties(ModelElement requestor)
+		{
+			return false;
+		}
+#endif // VISUALSTUDIO_10_0
+		#endregion // Relationship property overrides
 	}
 }

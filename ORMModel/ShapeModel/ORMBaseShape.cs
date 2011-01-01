@@ -125,19 +125,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			return false;
 		}
 		/// <summary>
-		/// A callback delegate for the <see cref="VisitAssociatedShapes"/> method
-		/// </summary>
-		/// <param name="shape">The shape element to visit</param>
-		/// <returns>Return <see langword="true"/> to continue iteration</returns>
-		public delegate bool VisitShape(ShapeElement shape);
-		/// <summary>
 		/// Iterate shapes associated with a given element
 		/// </summary>
 		/// <param name="modelElement">The parent element to iterate. Can be <see langword="null"/> if <paramref name="shapeElement"/> is specified.</param>
 		/// <param name="shapeElement">The shape to reference. Can be <see langword="null"/> if <paramref name="modelElement"/> is specified.</param>
 		/// <param name="onePerDiagram">True to filter the shapes to one per diagram</param>
-		/// <param name="visitor">A <see cref="VisitShape"/> callback delegate</param>
-		public static void VisitAssociatedShapes(ModelElement modelElement, ShapeElement shapeElement, bool onePerDiagram, VisitShape visitor)
+		/// <param name="visitor">A <see cref="Predicate{ShapeElement}"/> callback.
+		/// Return <see langword="true"/> to continue iteration.</param>
+		public static void VisitAssociatedShapes(ModelElement modelElement, ShapeElement shapeElement, bool onePerDiagram, Predicate<ShapeElement> visitor)
 		{
 			if (modelElement == null && shapeElement != null)
 			{
@@ -278,10 +273,24 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						return ORMDiagram.ErrorBackgroundResource;
 					}
 				}
+				else if (HasTransparentBackground)
+				{
+					return ORMDiagram.TransparentBrushResource;
+				}
 				else
 				{
 					return DiagramBrushes.DiagramBackground;
 				}
+			}
+		}
+		/// <summary>
+		/// Allow a transparent background for non error states.
+		/// </summary>
+		protected virtual bool HasTransparentBackground
+		{
+			get
+			{
+				return false;
 			}
 		}
 		/// <summary>
@@ -860,4 +869,39 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		}
 	}
 	#endregion // ORMShapeDeleteClosure for multiple shapes
+	#region ORMShapeCopyClosure for parented shapes
+#if VISUALSTUDIO_10_0
+	partial class ORMShapeCopyClosure
+	{
+		/// <summary>
+		/// Included relative and nested shapes in a default copy closure.
+		/// The core design surface model does not do this in VS2010.
+		/// </summary>
+		public override VisitorFilterResult ShouldVisitRelationship(ElementWalker walker, ModelElement sourceElement, DomainRoleInfo sourceRoleInfo, DomainRelationshipInfo domainRelationshipInfo, ElementLink targetRelationship)
+		{
+			Guid roleId = sourceRoleInfo.Id;
+			if (roleId == ParentShapeHasRelativeChildShapes.ParentShapeDomainRoleId ||
+				roleId == ParentShapeContainsNestedChildShapes.ParentShapeDomainRoleId)
+			{
+				return VisitorFilterResult.Yes;
+			}
+			return base.ShouldVisitRelationship(walker, sourceElement, sourceRoleInfo, domainRelationshipInfo, targetRelationship);
+		}
+		/// <summary>
+		/// Included relative and nested shapes in a default copy closure.
+		/// The core design surface model does not do this in VS2010.
+		/// </summary>
+		public override VisitorFilterResult ShouldVisitRolePlayer(ElementWalker walker, ModelElement sourceElement, ElementLink elementLink, DomainRoleInfo targetDomainRole, ModelElement targetRolePlayer)
+		{
+			Guid roleId = targetDomainRole.Id;
+			if (roleId == ParentShapeHasRelativeChildShapes.RelativeChildShapesDomainRoleId ||
+				roleId == ParentShapeContainsNestedChildShapes.NestedChildShapesDomainRoleId)
+			{
+				return VisitorFilterResult.Yes;
+			}
+			return base.ShouldVisitRolePlayer(walker, sourceElement, elementLink, targetDomainRole, targetRolePlayer);
+		}
+	}
+#endif // VISUALSTUDIO_10_0
+	#endregion // ORMShapeCopyClosure for parented shapes
 }

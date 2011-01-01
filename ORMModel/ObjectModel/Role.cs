@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing.Design;
 using System.IO;
 using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
@@ -140,7 +141,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#region ReplaceRole method
 		/// <summary>
 		/// Replaces <paramref name="existingRole"/> with <paramref name="replacementRole"/>, including altering all relationships
-		/// in which <paramref name="exisitngRole"/> participates.
+		/// in which <paramref name="existingRole"/> participates.
 		/// </summary>
 		public static void ReplaceRole(Role existingRole, Role replacementRole)
 		{
@@ -252,10 +253,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // Helper methods
 		#region CustomStorage handlers
 		#region CustomStorage setters
-		private void SetRolePlayerDisplayValue(ObjectType newValue)
-		{
-			// Handled by RoleChangeRule
-		}
 		private void SetIsMandatoryValue(bool newValue)
 		{
 			// Handled by RoleChangeRule
@@ -366,10 +363,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 
-		private ObjectType GetRolePlayerDisplayValue()
-		{
-			return RolePlayer;
-		}
 		private bool GetIsMandatoryValue()
 		{
 			return SimpleMandatoryConstraint != null;
@@ -481,6 +474,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return (roleProxy != null && (proxyOppositeRole = roleProxy.OppositeRole as Role) != null) ? proxyOppositeRole.Name : String.Empty;
 		}
 		#endregion // CustomStorage handlers
+		#region Non-DSL Custom Properties
+		/// <summary>
+		/// The ObjectType that plays this Role.
+		/// </summary>
+		[Editor(typeof(Design.RolePlayerPicker), typeof(UITypeEditor))]
+		public ObjectType RolePlayerDisplay
+		{
+			get
+			{
+				return RolePlayer;
+			}
+			set
+			{
+				RolePlayer = value;
+			}
+		}
+		#endregion // Non-DSL Custom Properties
 		#region ValueRole methods
 		/// <summary>
 		/// Retrieve an array of roles starting with a role
@@ -765,11 +775,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static void RoleChangeRule(ElementPropertyChangedEventArgs e)
 		{
 			Guid attributeGuid = e.DomainProperty.Id;
-			if (attributeGuid == Role.RolePlayerDisplayDomainPropertyId)
-			{
-				(e.ModelElement as Role).RolePlayer = e.NewValue as ObjectType;
-			}
-			else if (attributeGuid == Role.ValueRangeTextDomainPropertyId)
+			if (attributeGuid == Role.ValueRangeTextDomainPropertyId)
 			{
 				Role role = e.ModelElement as Role;
 				RoleValueConstraint valueConstraint = role.ValueConstraint;

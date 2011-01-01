@@ -20,11 +20,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing.Design;
 using System.Globalization;
+using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Design;
 using ORMSolutions.ORMArchitect.Framework;
-using System.Text.RegularExpressions;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
@@ -583,19 +584,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return retVal;
 		}
 		#endregion //Reference Mode Name Generation
-		#region CustomStorage handlers
-		private ReferenceModeKind GetKindDisplayValue()
+		#region Non-DSL Custom Properties
+		/// <summary>
+		/// The kind of the reference mode pattern. One of Popular, UnitBase, or General.
+		/// </summary>
+		[Editor(typeof(Design.ReferenceModeKindPicker), typeof(UITypeEditor))]
+		public ReferenceModeKind KindDisplay
 		{
-			return Kind;
-		}
-		private void SetKindDisplayValue(ReferenceModeKind newValue)
-		{
-			if (!Store.InUndoRedoOrRollback)
+			get
 			{
-				Kind = newValue;
+				return Kind;
+			}
+			set
+			{
+				Kind = value;
 			}
 		}
-		#endregion // CustomStorage handlers
+		#endregion // Non-DSL Custom Properties
 		#region FixedValueTypeName cache
 		private string myFixedValueTypeName;
 		/// <summary>

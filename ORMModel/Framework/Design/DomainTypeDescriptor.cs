@@ -481,33 +481,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		#endregion // GetRawAttributes(PropertyInfo) support
 		#endregion // GetRawAttributes support
 
-		#region AttributeCollectionToArray method
-		/// <summary>
-		/// Converts the <see cref="AttributeCollection"/> specified by <paramref name="attributeCollection"/>
-		/// to an array of type <see cref="Attribute"/>.
-		/// </summary>
-		/// <param name="attributeCollection">
-		/// The <see cref="AttributeCollection"/> which should be converted to an array of type <see cref="Attribute"/>.
-		/// </param>
-		/// <returns>
-		/// An array of type <see cref="Attribute"/> for the <see cref="AttributeCollection"/> specified by
-		/// <paramref name="attributeCollection"/>.
-		/// </returns>
-		/// <exception cref="ArgumentNullException">
-		/// <paramref name="attributeCollection"/> is <see langword="null"/>.
-		/// </exception>
-		public static Attribute[] AttributeCollectionToArray(AttributeCollection attributeCollection)
-		{
-			if (attributeCollection == null)
-			{
-				throw new ArgumentNullException("attributeCollection");
-			}
-			Attribute[] attributeArray = new Attribute[attributeCollection.Count];
-			attributeCollection.CopyTo(attributeArray, 0);
-			return attributeArray;
-		}
-		#endregion // AttributeCollectionToArray method
-
 		#region CreateNamePropertyDescriptor method
 		/// <summary>
 		/// Creates a <see cref="PropertyDescriptor"/> for the <c>Name</c> property of <paramref name="element"/>.
@@ -646,7 +619,13 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 			}
 
 			// Try the default type descriptor for the Type of the element.
-			propertyDescriptor = DomainTypeDescriptor.FindPropertyDescriptorInternal(TypeDescriptor.GetProperties(elementType), propertyType, propertyName, domainPropertyId);
+
+			// The following line is never returning in VS2010 (ValueRange.MinInclusion as
+			// as a sample, but others are likely to experience the same behavior). This
+			// will skip custom descriptors and return reflected property descriptors anyway,
+			// so we just create the specific property descriptor directly.
+			// propertyDescriptor = DomainTypeDescriptor.FindPropertyDescriptorInternal(TypeDescriptor.GetProperties(elementType), propertyType, propertyName, domainPropertyId);
+			propertyDescriptor = TypeDescriptor.CreateProperty(elementType, propertyName, propertyType);
 			if (propertyDescriptor != null)
 			{
 				return propertyDescriptor;
@@ -659,8 +638,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 			new ReflectionPermission(ReflectionPermissionFlag.MemberAccess).Demand();
 
 			// Since we couldn't find a PropertyDescriptor, we'll have to construct one ourselves.
-			return new ElementPropertyDescriptor(element, domainPropertyInfo,
-				DomainTypeDescriptor.AttributeCollectionToArray(DomainTypeDescriptor.GetRawAttributes(domainPropertyInfo.PropertyInfo)));
+			return new ElementPropertyDescriptor(element, domainPropertyInfo, EditorUtility.GetAttributeArray(DomainTypeDescriptor.GetRawAttributes(domainPropertyInfo.PropertyInfo)));
 		}
 		/// <summary>
 		/// Creates a <see cref="PropertyDescriptor"/> for the <see cref="DomainRoleInfo"/> specified
@@ -727,8 +705,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 			new ReflectionPermission(ReflectionPermissionFlag.MemberAccess).Demand();
 
 			// Since we couldn't find a PropertyDescriptor, we'll have to construct one ourselves.
-			return new RolePlayerPropertyDescriptor(element, oppositeDomainRoleInfo,
-				DomainTypeDescriptor.AttributeCollectionToArray(DomainTypeDescriptor.GetRawAttributes(linkPropertyInfo)));
+			return new RolePlayerPropertyDescriptor(element, oppositeDomainRoleInfo, EditorUtility.GetAttributeArray(DomainTypeDescriptor.GetRawAttributes(linkPropertyInfo)));
 		}
 		#endregion // CreatePropertyDescriptor methods
 
@@ -769,8 +746,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		/// specified by <paramref name="propertyDescriptors"/>.
 		/// </summary>
 		/// <param name="propertyDescriptors">
-		/// The <see cref="PropertyDescriptorCollection"/> in which to search for a <see cref="PropertyDescriptor"/>
-		/// for the <see cref="DomainPropertyInfo"/> specified by <paramref name="domainPropertyInfo"/>.
+		/// The <see cref="PropertyDescriptorCollection"/> in which to search.
 		/// </param>
 		/// <param name="domainRoleInfo">
 		/// The <see cref="DomainRoleInfo"/> for which a <see cref="PropertyDescriptor"/> should be searched for

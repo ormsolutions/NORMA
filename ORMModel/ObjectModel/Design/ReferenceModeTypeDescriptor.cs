@@ -34,28 +34,46 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 	/// <see cref="ElementTypeDescriptor"/> for <see cref="ReferenceMode"/>s.
 	/// </summary>
 	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
-	public class ReferenceModeTypeDescriptor<TModelElement> : ORMModelElementTypeDescriptor<TModelElement>
-		where TModelElement : ReferenceMode
+	public class ReferenceModeTypeDescriptor : ORMModelElementTypeDescriptor<ReferenceMode>
 	{
+		#region Constructor
 		/// <summary>
-		/// Initializes a new instance of <see cref="ReferenceModeTypeDescriptor{TModelElement}"/>
+		/// Initializes a new instance of <see cref="ReferenceModeTypeDescriptor"/>
 		/// for <paramref name="selectedElement"/>.
 		/// </summary>
-		public ReferenceModeTypeDescriptor(ICustomTypeDescriptor parent, TModelElement selectedElement)
+		public ReferenceModeTypeDescriptor(ICustomTypeDescriptor parent, ReferenceMode selectedElement)
 			: base(parent, selectedElement)
 		{
 		}
+		#endregion // Constructor
+		#region Base overrides
 		/// <summary>
-		/// Create a custom descriptor for the <see cref="P:ReferenceMode.KindDisplay"/> property
-		/// and a normal descriptor for other properties.
+		/// Add custom display properties
 		/// </summary>
-		protected override ElementPropertyDescriptor CreatePropertyDescriptor(ModelElement requestor, DomainPropertyInfo domainPropertyInfo, Attribute[] attributes)
+		public override PropertyDescriptorCollection GetProperties(Attribute[] attributes)
 		{
-			if (domainPropertyInfo.Id == ReferenceMode.KindDisplayDomainPropertyId)
-			{
-				return new AutomatedElementFilterPropertyDescriptor(this, requestor, domainPropertyInfo, attributes);
-			}
-			return base.CreatePropertyDescriptor(requestor, domainPropertyInfo, attributes);
+			PropertyDescriptorCollection properties = EditorUtility.GetEditablePropertyDescriptors(base.GetProperties(attributes));
+			properties.Add(KindDisplayPropertyDescriptor);
+			return properties;
 		}
+		#endregion // Base overrides
+		#region Non-DSL Custom Property Descriptors
+		private static PropertyDescriptor myKindDisplayPropertyDescriptor;
+		/// <summary>
+		/// Get a <see cref="PropertyDescriptor"/> for the <see cref="P:ReferenceMode.KindDisplay"/> property
+		/// </summary>
+		public static PropertyDescriptor KindDisplayPropertyDescriptor
+		{
+			get
+			{
+				PropertyDescriptor retVal = myKindDisplayPropertyDescriptor;
+				if (retVal == null)
+				{
+					myKindDisplayPropertyDescriptor = retVal = new AutomatedElementFilterCustomPropertyDescriptor(TypeDescriptor.CreateProperty(typeof(ReferenceMode), "KindDisplay", typeof(ReferenceModeKind)), ResourceStrings.ReferenceModeKindDisplayDisplayName, ResourceStrings.ReferenceModeKindDisplayDescription, null);
+				}
+				return retVal;
+			}
+		}
+		#endregion // Non-DSL Custom Property Descriptors
 	}
 }

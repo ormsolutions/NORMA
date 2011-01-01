@@ -37,23 +37,46 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 	///		// ...
 	/// }
 	/// </code>
+	/// This class fully replace the DSL-provided class of the same name. On Visual Studio 2010, this
+	/// has been extended to reduce the number of created type descriptors. However, there are major
+	/// problems (TypeDescriptor.GetProvider(typeof(TModelElement)).GetTypeDescriptor(typeof(TModelElement)).GetProperties()
+	/// blows the stack). Therefore, we provide a full replacement for this class and do not inherit from it.
 	/// </remarks>
 	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
-	public sealed class ElementTypeDescriptionProvider<TModelElement, TTypeDescriptor> : ElementTypeDescriptionProvider
+	public sealed class ElementTypeDescriptionProvider<TModelElement, TTypeDescriptor> : TypeDescriptionProvider
 		where TModelElement : ModelElement
 		where TTypeDescriptor : ElementTypeDescriptor
 	{
+		/// <summary>
+		/// Create a new <see cref="ElementTypeDescriptionProvider"/>
+		/// </summary>
+		public ElementTypeDescriptionProvider()
+			: base(TypeDescriptor.GetProvider(typeof(object)))
+		{
+		}
 		private static readonly RuntimeTypeHandle TypeDescriptorTypeHandle = typeof(TTypeDescriptor).TypeHandle;
 		private static readonly RuntimeMethodHandle TypeDescriptorConstructorHandle = Type.GetTypeFromHandle(TypeDescriptorTypeHandle).GetConstructor(
 			BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.ExactBinding,
 			null, new Type[] { typeof(ICustomTypeDescriptor), typeof(TModelElement) }, null).MethodHandle;
 
-		/// <summary>See <see cref="ElementTypeDescriptionProvider.CreateTypeDescriptor"/>.</summary>
-		protected sealed override ElementTypeDescriptor CreateTypeDescriptor(ICustomTypeDescriptor parent, ModelElement element)
+		/// <summary>
+		/// Create a type descriptor
+		/// </summary>
+		public sealed override ICustomTypeDescriptor GetTypeDescriptor(Type objectType, object instance)
 		{
+			ICustomTypeDescriptor typeDescriptor = base.GetTypeDescriptor(objectType, instance);
+			if (instance == null)
+			{
+				return typeDescriptor;
+			}
+			TModelElement element = instance as TModelElement;
+			if (element == null)
+			{
+				throw new ArgumentException("instance");
+			}
 			return (ElementTypeDescriptor)((ConstructorInfo)ConstructorInfo.GetMethodFromHandle(TypeDescriptorConstructorHandle, TypeDescriptorTypeHandle)).Invoke(
 				BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.ExactBinding,
-				null, new object[] { parent, element as TModelElement }, null);
+				null, new object[] { typeDescriptor, element }, null);
 		}
 	}
 }

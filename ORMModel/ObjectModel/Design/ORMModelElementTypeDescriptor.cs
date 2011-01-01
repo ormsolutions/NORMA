@@ -53,7 +53,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		public override PropertyDescriptorCollection GetProperties(Attribute[] attributes)
 		{
 			PropertyDescriptorCollection properties = base.GetProperties(attributes);
-			ExtendableElementUtility.GetExtensionProperties(ModelElement, properties);
+			ExtendableElementUtility.GetExtensionProperties(ModelElement, properties, typeof(TModelElement));
 			return properties;
 		}
 	}

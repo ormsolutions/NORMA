@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -79,10 +80,12 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			RoleHasValueConstraint link;
 			RoleValueConstraint constraint;
 			IDynamicShapeColorProvider<ORMDiagramDynamicColor, ValueRangeLink, RoleValueConstraint>[] providers;
+			Store store;
 			if (penId == DiagramPens.ConnectionLine &&
 				null != (link = ModelElement as RoleHasValueConstraint) &&
 				null != (constraint = link.ValueConstraint) &&
-				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ValueRangeLink, RoleValueConstraint>>()))
+				null != (store = Utility.ValidateStore(Store)) &&
+				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ValueRangeLink, RoleValueConstraint>>()))
 			{
 				for (int i = 0; i < providers.Length; ++i)
 				{

@@ -1,11 +1,28 @@
+#region Common Public License Copyright Notice
+/**************************************************************************\
+* Natural Object-Role Modeling Architect for Visual Studio                 *
+*                                                                          *
+* Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
+*                                                                          *
+* The use and distribution terms for this software are covered by the      *
+* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
+* can be found in the file CPL.txt at the root of this distribution.       *
+* By using this software in any fashion, you are agreeing to be bound by   *
+* the terms of this license.                                               *
+*                                                                          *
+* You must not remove this notice, or any other, from this software.       *
+\**************************************************************************/
+#endregion
+
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Diagnostics;
 using System.Collections.ObjectModel;
-using ORMSolutions.ORMArchitect.Core.Shell;
-using Microsoft.VisualStudio.Modeling.Diagrams;
+using System.Diagnostics;
+using System.Text;
 using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.Modeling.Diagrams;
+using ORMSolutions.ORMArchitect.Core.Shell;
 
 namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 {
@@ -100,11 +117,12 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 			return retVal;
 		}
 		/// <summary>
-		/// Creates the dictionary list of layout engines based on results from <paramref name="providers"/>
+		/// Creates the dictionary list of layout engines based on <see cref="DomainModel"/>s that
+		/// implement <see cref="ILayoutEngineProvider"/> in the provided <see cref="Store"/>
 		/// </summary>
-		/// <param name="store">An instance of <seealso cref="Microsoft.VisualStudio.Modeling.Store"/></param>
+		/// <param name="store">An instance of <seealso cref="Store"/></param>
 		/// <returns>A key/value list, with LayoutEnginData.KeyType as the key, and an instance as the value</returns>
-		public static IDictionary<Type, LayoutEngineData> CreateLayoutEngineDictionary(Microsoft.VisualStudio.Modeling.Store store)
+		public static IDictionary<Type, LayoutEngineData> CreateLayoutEngineDictionary(Store store)
 		{
 			if (store == null)
 			{
@@ -290,7 +308,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 
 	#region RadialLayoutEngine - actual implementation
 	/// <summary>
-	/// Performs a standard radial layout, starting at <paramref name="rootShape"/>.
+	/// Performs a standard radial layout, starting at a root shape.
 	/// 
 	/// The general logic is fairly simple: the density of a shape is the number of
 	/// shapes that it talks to; higher-density shapes throw their related shapes out

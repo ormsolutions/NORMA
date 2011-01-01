@@ -14,6 +14,9 @@
 \**************************************************************************/
 #endregion
 
+#if !VISUALSTUDIO_10_0
+// I'd prefer to use the .vsdir approach here on all systems, but the file new glyph is
+// corrupted
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -198,3 +201,4 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		#endregion // Empty methods
 	}
 }
+#endif // !VISUALSTUDIO_10_0

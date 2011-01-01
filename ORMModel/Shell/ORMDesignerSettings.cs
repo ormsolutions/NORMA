@@ -179,8 +179,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		private const string REGISTRYVALUE_CONVERTERSDIR = "ConvertersDir";
 		#endregion // Constraints
 		#region Member Variables
-		private Package myPackage;
-		private string myRootRegistryKey; // Relative to the package application root
+		private ORMDesignerPackage myPackage;
+		private string myDesignerSettingsRegistryKey; // Relative to the package settings root
 		private bool myIsLoaded;
 		private Dictionary<XmlElementIdentifier, LinkedList<TransformNode>> myXmlConverters;
 		#endregion // Member Variables
@@ -192,11 +192,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// Construct new designer settings
 		/// </summary>
 		/// <param name="package">The context package</param>
-		/// <param name="rootKey">The root key for designer settings, relative to the package registry root.</param>
-		public ORMDesignerSettings(Package package, string rootKey)
+		/// <param name="designerSettingsRegistryKey">The root key for designer settings, relative to the package registry settings key.</param>
+		public ORMDesignerSettings(ORMDesignerPackage package, string designerSettingsRegistryKey)
 		{
 			myPackage = package;
-			myRootRegistryKey = rootKey;
+			myDesignerSettingsRegistryKey = designerSettingsRegistryKey;
 		}
 		#endregion // Constructors
 		#region ConvertStream method
@@ -328,19 +328,18 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// Enumerate all registered settings files
 			/// </summary>
 			/// <param name="package">The context package, provides a starting key for registry information</param>
-			/// <param name="registryRoot">The root key relative to the package root</param>
+			/// <param name="designerSettingsKey">The root key relative to the package root</param>
 			/// <returns>Enumeration of settings files</returns>
-			public static IEnumerable<SettingsLocation> SettingsLocations(Package package, string registryRoot)
+			public static IEnumerable<SettingsLocation> SettingsLocations(ORMDesignerPackage package, string designerSettingsKey)
 			{
-				RegistryKey applicationRegistryRoot = null;
 				RegistryKey settingsRegistryRoot = null;
+				RegistryKey designerSettingsRegistryRoot = null;
 				try
 				{
-					applicationRegistryRoot = package.ApplicationRegistryRoot;
-					settingsRegistryRoot = applicationRegistryRoot.OpenSubKey(registryRoot, RegistryKeyPermissionCheck.ReadSubTree);
-					if (settingsRegistryRoot != null)
+					if (null != (settingsRegistryRoot = package.PackageSettingsRegistryRoot) &&
+						null != (designerSettingsRegistryRoot = settingsRegistryRoot.OpenSubKey(designerSettingsKey, RegistryKeyPermissionCheck.ReadSubTree)))
 					{
-						string[] settingsKeyNames = settingsRegistryRoot.GetSubKeyNames();
+						string[] settingsKeyNames = designerSettingsRegistryRoot.GetSubKeyNames();
 						int settingsCount = (settingsKeyNames == null) ? 0 : settingsKeyNames.Length;
 						if (settingsCount > 1)
 						{
@@ -358,7 +357,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							string defaultConvertersDirectory = null;
 							for (int i = 0; i < settingsCount; ++i)
 							{
-								using (RegistryKey settingsKey = settingsRegistryRoot.OpenSubKey(settingsKeyNames[i], RegistryKeyPermissionCheck.ReadSubTree))
+								using (RegistryKey settingsKey = designerSettingsRegistryRoot.OpenSubKey(settingsKeyNames[i], RegistryKeyPermissionCheck.ReadSubTree))
 								{
 									string settingsFile = settingsKey.GetValue(REGISTRYVALUE_SETTINGSFILE, "", RegistryValueOptions.None) as string;
 									if (settingsFile != null && File.Exists(settingsFile))
@@ -392,13 +391,13 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 				finally
 				{
-					if (applicationRegistryRoot != null)
-					{
-						applicationRegistryRoot.Close();
-					}
 					if (settingsRegistryRoot != null)
 					{
 						settingsRegistryRoot.Close();
+					}
+					if (designerSettingsRegistryRoot != null)
+					{
+						designerSettingsRegistryRoot.Close();
 					}
 				}
 			}
@@ -411,7 +410,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			myIsLoaded = true;
 			ORMDesignerNameTable names = ORMDesignerSchema.Names;
-			foreach (SettingsLocation location in SettingsLocation.SettingsLocations(myPackage, myRootRegistryKey))
+			foreach (SettingsLocation location in SettingsLocation.SettingsLocations(myPackage, myDesignerSettingsRegistryKey))
 			{
 				string convertersDirectory = location.ConvertersDirectory;
 				using (FileStream designerSettingsStream = new FileStream(location.SettingsFile, FileMode.Open, FileAccess.Read))

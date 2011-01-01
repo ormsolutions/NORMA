@@ -42,28 +42,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 		}
 		/// <summary>
-		/// Set up our background pen to be transparent. Combining this with
-		/// HasFilledBackground of true enables errors to draw on floating text shapes.
-		/// </summary>
-		protected override void InitializeResources(StyleSet classStyleSet)
-		{
-			base.InitializeResources(classStyleSet);
-			if (HasTransparentBackground)
-			{
-				BrushSettings brushSettings = new BrushSettings();
-				// ORMBaseShape sets the background to DiagramBackground, not ShapeBackground
-				SolidBrush baseOnBrush = classStyleSet.GetBrush(DiagramBrushes.DiagramBackground) as SolidBrush;
-				brushSettings.ForeColor = (baseOnBrush != null) ? Color.FromArgb(0, baseOnBrush.Color) : Color.Transparent;
-				classStyleSet.OverrideBrush(DiagramBrushes.DiagramBackground, brushSettings);
-			}
-		}
-		/// <summary>
 		/// Allow the floating shape to both display errors
 		/// and appear transparent when there are no associated errors.
-		/// An element can be transparent all the time if HasFilledBackground
-		/// returns false.
 		/// </summary>
-		protected virtual bool HasTransparentBackground
+		protected override bool HasTransparentBackground
 		{
 			get
 			{

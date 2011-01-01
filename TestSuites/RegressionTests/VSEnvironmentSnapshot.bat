@@ -7,9 +7,15 @@ if exist "%~dp0%BaseName%.hiv" del /f "%~dp0%BaseName%.hiv"
 if exist "%~dp0%BaseName%.vssettings" del /f "%~dp0%BaseName%.vssettings"
 if exist "%~dp0%BaseName%" rd /s /q "%~dp0%BaseName%"
 
-FOR /F "usebackq eol=! tokens=2*" %%A IN (`REG QUERY "HKCU\SOFTWARE\Microsoft\VisualStudio\8.0%RootSuffix%" /v "VisualStudioLocation"`) DO call set VSFileLocation=%%B
-reg save HKCU\Software\Microsoft\VisualStudio\8.0%RootSuffix% "%~dp0%BaseName%.hiv" 1>NUL
-FOR /F "usebackq eol=! tokens=2* delims=%%" %%A IN (`REG QUERY "HKCU\SOFTWARE\Microsoft\VisualStudio\8.0%RootSuffix%\Profile" /v "AutoSaveFile"`) DO (
+IF "%ProgramFiles(X86)%"=="" (
+	SET WOWRegistryAdjust=
+) ELSE (
+	SET WOWRegistryAdjust=\Wow6432Node
+)
+
+FOR /F "usebackq eol=! tokens=2*" %%A IN (`REG QUERY "HKCU\SOFTWARE%WOWRegistryAdjust%\Microsoft\VisualStudio\8.0%RootSuffix%" /v "VisualStudioLocation"`) DO call set VSFileLocation=%%B
+reg save HKCU\Software%WOWRegistryAdjust%\Microsoft\VisualStudio\8.0%RootSuffix% "%~dp0%BaseName%.hiv" 1>NUL
+FOR /F "usebackq eol=! tokens=2* delims=%%" %%A IN (`REG QUERY "HKCU\SOFTWARE%WOWRegistryAdjust%\Microsoft\VisualStudio\8.0%RootSuffix%\Profile" /v "AutoSaveFile"`) DO (
         copy /y "%VSFileLocation%%%B" "%~dp0%BaseName%.vssettings" 1>NUL
         )
         xcopy /y /q /e /d "%AppData%\Microsoft\VisualStudio\8.0%RootSuffix%" "%~dp0%BaseName%\" 1>NUL

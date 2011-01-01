@@ -276,6 +276,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						new EventHandler(OnStatusErrorList),
 						new EventHandler(OnMenuErrorList),
 						ORMDesignerCommandIds.ErrorList)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusSelectNextInCurrentDiagram),
+						new EventHandler(OnMenuSelectNextInCurrentDiagram),
+						ORMDesignerCommandIds.SelectNextInCurrentDiagram)
 						,new DynamicDiagramCommand(
 						new EventHandler(OnStatusDiagramList),
 						new EventHandler(OnMenuDiagramList),
@@ -1149,6 +1153,24 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// <summary>
 			/// Status callback
 			/// </summary>
+			protected void OnStatusSelectNextInCurrentDiagram(object sender, EventArgs e)
+			{
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.SelectNextInCurrentDiagram);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuSelectNextInCurrentDiagram(object sender, EventArgs e)
+			{
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
+				{
+					designerView.CommandManager.OnMenuSelectNextInCurrentDiagram();
+				}
+			}
+			/// <summary>
+			/// Status callback
+			/// </summary>
 			protected void OnStatusDiagramList(object sender, EventArgs e)
 			{
 				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DiagramList);
@@ -1765,6 +1787,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// </summary>
 			public const int ErrorListLength = cmdIdErrorListEnd - cmdIdErrorList + 1;
 			/// <summary>
+			/// Activate the next shape in the same diagram corresponding the current backing element.
+			/// </summary>
+			public static readonly CommandID SelectNextInCurrentDiagram = new CommandID(guidORMDesignerCommandSet, cmdIdSelectNextInCurrentDiagram);
+			/// <summary>
 			/// Available to any element that is displayed on multiple diagrams
 			/// </summary>
 			public static readonly CommandID DiagramList = new CommandID(guidORMDesignerCommandSet, cmdIdDiagramList);
@@ -1942,7 +1968,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// <summary>
 			/// The last allowed id for an error list
 			/// </summary>
-			private const int cmdIdErrorListEnd = 0x2aff;
+			private const int cmdIdErrorListEnd = 0x2afe;
 			/// <summary>
 			/// The context menu item for related diagrams
 			/// </summary>
@@ -1950,7 +1976,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// <summary>
 			/// The last allowed id for a diagram list
 			/// </summary>
-			private const int cmdIdDiagramListEnd = 0x2bff;
+			private const int cmdIdDiagramListEnd = 0x2bfe;
 			/// <summary>
 			/// The context menu item for available report generators
 			/// </summary>
@@ -1958,7 +1984,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// <summary>
 			/// The last allowed id for a report generator list
 			/// </summary>
-			private const int cmdIdReportGeneratorListEnd = 0x2cff;
+			private const int cmdIdReportGeneratorListEnd = 0x2cfe;
 			/// <summary>
 			/// The context menu for the diagram
 			/// </summary>
@@ -2088,6 +2114,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// </summary>
 			private const int cmdIdSelectInModelBrowser = 0x2932;
 			/// <summary>
+			/// Activate the next shape in the same diagram corresponding the current backing element.
+			/// </summary>
+			private const int cmdIdSelectNextInCurrentDiagram = 0x2933;
+			/// <summary>
 			/// The context menu item for related diagrams, targeted to the diagram spy
 			/// </summary>
 			private const int cmdIdDiagramSpyDiagramList = 0x2d00;
@@ -2096,9 +2126,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// </summary>
 			private const int cmdIdFreeFormCommandList = 0x2e00;
 			/// <summary>
-			/// The last allowed id for a free form list
+			/// The last allowed id for a free form list.
+			/// This is a relatively short range because it is heavily requested
+			/// on a top-level menu and is meant to correspond to limit extension-provided
+			/// menu items, not items based on user data.
 			/// </summary>
-			private const int cmdIdFreeFormCommandListEnd = 0x2eff;
+			private const int cmdIdFreeFormCommandListEnd = 0x2e20;
 			/// <summary>
 			/// The list of available groups to add to
 			/// </summary>
@@ -2106,7 +2139,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// <summary>
 			/// The last allowed id for an add to group list
 			/// </summary>
-			private const int cmdIdIncludeInGroupListEnd = 0x2fff;
+			private const int cmdIdIncludeInGroupListEnd = 0x2ffe;
 			/// <summary>
 			/// The list of available groups to remove from
 			/// </summary>
@@ -2114,7 +2147,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// <summary>
 			/// The last allowed id for a remove from group list
 			/// </summary>
-			private const int cmdIdDeleteFromGroupListEnd = 0x30ff;
+			private const int cmdIdDeleteFromGroupListEnd = 0x30fe;
 			#endregion
 		}
 	}

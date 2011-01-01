@@ -30,18 +30,28 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 	/// <see cref="ElementTypeDescriptor"/> for <see cref="Role"/>s.
 	/// </summary>
 	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
-	public class RoleTypeDescriptor<TModelElement> : ORMModelElementTypeDescriptor<TModelElement>
-		where TModelElement : Role
+	public class RoleTypeDescriptor : ORMModelElementTypeDescriptor<Role>
 	{
+		#region Constructor
 		/// <summary>
-		/// Initializes a new instance of <see cref="RoleTypeDescriptor{TModelElement}"/>
+		/// Initializes a new instance of <see cref="RoleTypeDescriptor"/>
 		/// for <paramref name="selectedElement"/>.
 		/// </summary>
-		public RoleTypeDescriptor(ICustomTypeDescriptor parent, TModelElement selectedElement)
+		public RoleTypeDescriptor(ICustomTypeDescriptor parent, Role selectedElement)
 			: base(parent, selectedElement)
 		{
 		}
-
+		#endregion // Constructor
+		#region Base overrides
+		/// <summary>
+		/// Add custom display properties
+		/// </summary>
+		public override PropertyDescriptorCollection GetProperties(Attribute[] attributes)
+		{
+			PropertyDescriptorCollection properties = EditorUtility.GetEditablePropertyDescriptors(base.GetProperties(attributes));
+			properties.Add(GetRolePlayerDisplayPropertyDescriptor(ModelElement));
+			return properties;
+		}
 		/// <summary>See <see cref="ElementTypeDescriptor.ShouldCreatePropertyDescriptor"/>.</summary>
 		protected override bool ShouldCreatePropertyDescriptor(ModelElement requestor, DomainPropertyInfo domainProperty)
 		{
@@ -94,21 +104,40 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 					return true;
 				}
 			}
-			else if (propertyId == Role.RolePlayerDisplayDomainPropertyId)
-			{
-				Role role = ModelElement;
-				ObjectType rolePlayer;
-				FactType factType;
-				if (role is SubtypeMetaRole ||
-					role is SupertypeMetaRole ||
-					(null != (factType = role.FactType) &&
-					null != factType.ImpliedByObjectification) ||
-					(null != (rolePlayer = role.RolePlayer) && rolePlayer.IsImplicitBooleanValue))
-				{
-					return true;
-				}
-			}
 			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
 		}
+		#endregion // Base overrides
+		#region Non-DSL Custom Property Descriptors
+		private static PropertyDescriptor myRolePlayerDisplayPropertyDescriptor;
+		private static PropertyDescriptor myRolePlayerDisplayReadOnlyPropertyDescriptor;
+		/// <summary>
+		/// Get a <see cref="PropertyDescriptor"/> for the <see cref="P:ORMModel.ModelErrorDisplayFilterDisplay"/> property
+		/// </summary>
+		public static PropertyDescriptor GetRolePlayerDisplayPropertyDescriptor(Role role)
+		{
+			bool isReadOnly = false;
+			ObjectType rolePlayer;
+			FactType factType;
+			if (role is SubtypeMetaRole ||
+				role is SupertypeMetaRole ||
+				(null != (factType = role.FactType) &&
+				null != factType.ImpliedByObjectification) ||
+				(null != (rolePlayer = role.RolePlayer) && rolePlayer.IsImplicitBooleanValue))
+			{
+				isReadOnly = true;
+			}
+			PropertyDescriptor retVal = isReadOnly ? myRolePlayerDisplayReadOnlyPropertyDescriptor : myRolePlayerDisplayPropertyDescriptor;
+			if (retVal == null)
+			{
+				PropertyDescriptor reflectedDescriptor = TypeDescriptor.CreateProperty(typeof(Role), "RolePlayerDisplay", typeof(ObjectType));
+				string displayName = ResourceStrings.RoleRolePlayerDisplayDisplayName;
+				string description = ResourceStrings.RoleRolePlayerDisplayDescription;
+				myRolePlayerDisplayPropertyDescriptor = new StoreEnabledPropertyDescriptor(reflectedDescriptor, displayName, description, null);
+				myRolePlayerDisplayReadOnlyPropertyDescriptor = new StoreEnabledReadOnlyPropertyDescriptor(reflectedDescriptor, displayName, description, null);
+				retVal = isReadOnly ? myRolePlayerDisplayReadOnlyPropertyDescriptor : myRolePlayerDisplayPropertyDescriptor;
+			}
+			return retVal;
+		}
+		#endregion // Non-DSL Custom Property Descriptors
 	}
 }

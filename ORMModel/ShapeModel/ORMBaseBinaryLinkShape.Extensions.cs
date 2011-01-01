@@ -104,20 +104,36 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				if (edgePointCount > 1)
 				{
 					LinkDecorator decorator;
+#if VISUALSTUDIO_10_0
+					IBinaryLinkGeometryData geometryData = (IBinaryLinkGeometryData)this;
+#endif
 					if (null != (decorator = DecoratorFrom))
 					{
-						ExcludeDecorator(g, geometry, decorator, edgePoints[0].Point, edgePoints[1].Point);
+						ExcludeDecorator(g, geometry, decorator, edgePoints[0].Point, edgePoints[1].Point
+#if VISUALSTUDIO_10_0
+							, geometryData.GeometryDecoratorFromSize
+#endif
+							);
 					}
 					if (null != (decorator = DecoratorTo))
 					{
-						ExcludeDecorator(g, geometry, decorator, edgePoints[edgePointCount - 1].Point, edgePoints[edgePointCount - 2].Point);
+						ExcludeDecorator(g, geometry, decorator, edgePoints[edgePointCount - 1].Point, edgePoints[edgePointCount - 2].Point
+#if VISUALSTUDIO_10_0
+							, geometryData.GeometryDecoratorToSize
+#endif
+							);
 					}
 				}
 			}
 		}
+#if VISUALSTUDIO_10_0
+		private static void ExcludeDecorator(Graphics g, ObliqueBinaryLinkShapeGeometry geometry, LinkDecorator decorator, PointD fromPoint, PointD toPoint, SizeD size)
+		{
+#else
 		private static void ExcludeDecorator(Graphics g, ObliqueBinaryLinkShapeGeometry geometry, LinkDecorator decorator, PointD fromPoint, PointD toPoint)
 		{
 			SizeD size = LinkShapeGeometry.SizeDecorator;
+#endif
 			ILinkDecoratorSettings settings = decorator as ILinkDecoratorSettings;
 			double offsetBy = double.NaN;
 			if (settings != null)
@@ -228,12 +244,20 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					if (null != (decorator = hostData.GeometryDecoratorFrom))
 					{
 						rotationAngle = CalculateRotationAngle(edgePoints[0].Point, edgePoints[1].Point);
-						DrawDecorator(e, geometryHost, rotationAngle, edgePoints[0].Point, decorator);
+						DrawDecorator(e, geometryHost, rotationAngle, edgePoints[0].Point, decorator
+#if VISUALSTUDIO_10_0
+							, hostData.GeometryDecoratorFromSize
+#endif
+						);
 					}
 					if (null != (decorator = hostData.GeometryDecoratorTo))
 					{
 						rotationAngle = CalculateRotationAngle(edgePoints[edgePointCount - 1].Point, edgePoints[edgePointCount - 2].Point);
-						DrawDecorator(e, geometryHost, rotationAngle, edgePoints[edgePointCount - 1].Point, decorator);
+						DrawDecorator(e, geometryHost, rotationAngle, edgePoints[edgePointCount - 1].Point, decorator
+#if VISUALSTUDIO_10_0
+							, hostData.GeometryDecoratorToSize
+#endif
+							);
 					}
 				}
 			}
@@ -241,9 +265,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <summary>
 		/// Replacement for LinkShapeGeometry.DrawDecorator
 		/// </summary>
+#if VISUALSTUDIO_10_0
+		protected static new void DrawDecorator(DiagramPaintEventArgs e, IGeometryHost geometryHost, float rotation, PointD centerRight, LinkDecorator decorator, SizeD size)
+		{
+#else
 		protected static new void DrawDecorator(DiagramPaintEventArgs e, IGeometryHost geometryHost, float rotation, PointD centerRight, LinkDecorator decorator)
 		{
 			SizeD size = LinkShapeGeometry.SizeDecorator;
+#endif
 			double offsetBy = 0d;
 			bool doOffset = false;
 			ILinkDecoratorSettings settings = decorator as ILinkDecoratorSettings;

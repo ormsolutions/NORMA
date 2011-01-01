@@ -322,4 +322,9 @@
 
 	<XmlSerializationBehavior Name="AbstractionDomainModelSerializationBehavior" Namespace="ORMSolutions.ORMArchitect.ORMAbstraction"/>
 
+	<DslLibraryImports>
+		<DslLibraryImport FilePath="..\..\ORMModel\ObjectModel\ORMCore.dsl"/>
+		<DslLibraryImport FilePath="..\..\ORMModel\Framework\SystemCore.dsl"/>
+	</DslLibraryImports>
+
 </Dsl>

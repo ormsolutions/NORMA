@@ -60,11 +60,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			PropertyDescriptorCollection retVal = base.GetProperties(attributes);
 			EditorUtility.ModifyPropertyDescriptorDisplay(retVal, "Name", null, null, ResourceStrings.ElementGroupingPropertyCategory);
 			retVal.Add(GroupingTypesPropertyDescriptor.Instance);
+			Type groupType = typeof(TModelElement);
 			foreach (ElementGroupingType groupingType in ModelElement.GroupingTypeCollection)
 			{
 				foreach (PropertyDescriptor groupTypeDescriptor in TypeDescriptor.GetProperties(groupingType, attributes))
 				{
-					retVal.Add(groupTypeDescriptor);
+					retVal.Add(EditorUtility.RedirectPropertyDescriptor(groupingType, groupTypeDescriptor, groupType));
 				}
 			}
 			return retVal;

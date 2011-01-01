@@ -3,6 +3,7 @@
 	Natural Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
+	Copyright © ORM Solutions, LLC. All rights reserved.
 
 	The use and distribution terms for this software are covered by the
 	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
@@ -16,6 +17,7 @@
 	<String Id="Manufacturer">ORM Solutions, LLC</String>
 	<String Id="ProductNameVS2005">Natural ORM Architect for Visual Studio 2005</String>
 	<String Id="ProductNameVS2008">Natural ORM Architect for Visual Studio 2008</String>
+	<String Id="ProductNameVS2010">Natural ORM Architect for Visual Studio 2010</String>
 	<String Id="PackageCommentsPrefix">This installer database contains the logic and data required to install&#x20;</String>
 	<String Id="PackageCommentsSuffix">.</String>
 
@@ -45,6 +47,7 @@
 	<String Id="NetFrameworkRequired">This setup requires the Microsoft .NET Framework 2.0. Please install the .NET Framework and run this setup again.</String>
 	<String Id="VisualStudio2005Required">This setup requires Microsoft Visual Studio 2005. Please install Microsoft Visual Studio 2005 and run this setup again.</String>
 	<String Id="VisualStudio2008Required">This setup requires Microsoft Visual Studio 2008. Please install Microsoft Visual Studio 2008 and run this setup again.</String>
+	<String Id="VisualStudio2010Required">This setup requires Microsoft Visual Studio 2010. Please install Microsoft Visual Studio 2010 and run this setup again.</String>
 	<String Id="DSLToolsRequired">This setup requires Microsoft Domain Specific Language Tools. Please install Microsoft Domain Specific Language Tools and run this setup again.</String>
 	<String Id="PLiXRequired">This setup requires Programming Language in XML for Visual Studio. Please install Programming Language in XML for Visual Studio (available from https://sourceforge.net/projects/plix) and run this setup again.</String>
 	<String Id="ExistingVersionInstalled">Unable to install because an existing version of this product is already installed. You must uninstall this version before installing the product.</String>

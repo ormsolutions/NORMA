@@ -3,7 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © ORM Solutions, LLC. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -32,16 +32,32 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 	/// <see cref="ElementTypeDescriptor"/> for <see cref="ObjectType"/>s.
 	/// </summary>
 	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
-	public class ObjectTypeTypeDescriptor<TModelElement> : ORMModelElementTypeDescriptor<TModelElement>
-		where TModelElement : ObjectType
+	public class ObjectTypeTypeDescriptor : ORMModelElementTypeDescriptor<ObjectType>
 	{
+		#region Constructor
 		/// <summary>
-		/// Initializes a new instance of <see cref="ObjectTypeTypeDescriptor{TModelElement}"/>
+		/// Initializes a new instance of <see cref="ObjectTypeTypeDescriptor"/>
 		/// for <paramref name="selectedElement"/>.
 		/// </summary>
-		public ObjectTypeTypeDescriptor(ICustomTypeDescriptor parent, TModelElement selectedElement)
+		public ObjectTypeTypeDescriptor(ICustomTypeDescriptor parent, ObjectType selectedElement)
 			: base(parent, selectedElement)
 		{
+		}
+		#endregion // Constructor
+		#region Base overrides
+		/// <summary>
+		/// Add custom display properties
+		/// </summary>
+		public override PropertyDescriptorCollection GetProperties(Attribute[] attributes)
+		{
+			PropertyDescriptorCollection properties = base.GetProperties(attributes);
+			ObjectType objectType = ModelElement;
+			if (objectType.IsValueType || objectType.HasReferenceMode)
+			{
+				properties = EditorUtility.GetEditablePropertyDescriptors(properties);
+				properties.Add(DataTypeDisplayPropertyDescriptor);
+			}
+			return properties;
 		}
 		/// <summary>
 		/// Create property descriptors that only allow merging of DataType facet properties
@@ -111,8 +127,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		{
 			ObjectType objectType = ModelElement;
 			Guid propertyId = domainProperty.Id;
-			if (propertyId == ObjectType.DataTypeDisplayDomainPropertyId ||
-				propertyId == ObjectType.ValueRangeTextDomainPropertyId)
+			if (propertyId == ObjectType.ValueRangeTextDomainPropertyId)
 			{
 				return objectType.IsValueType || objectType.HasReferenceMode;
 			}
@@ -235,13 +250,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		}
 
 		/// <summary>
-		/// Returns an instance of <see cref="ObjectificationRolePlayerPropertyDescriptor"/> for <see cref="Objectification.NestedFactType"/>.
+		/// Returns an instance of <see cref="ObjectifiedFactTypePropertyDescriptor"/> for <see cref="Objectification.NestedFactType"/>.
 		/// </summary>
 		protected override RolePlayerPropertyDescriptor CreateRolePlayerPropertyDescriptor(ModelElement sourceRolePlayer, DomainRoleInfo targetRoleInfo, Attribute[] sourceDomainRoleInfoAttributes)
 		{
 			if (Utility.IsDescendantOrSelf(targetRoleInfo, Objectification.NestedFactTypeDomainRoleId))
 			{
-				return new ObjectificationRolePlayerPropertyDescriptor(sourceRolePlayer, targetRoleInfo, sourceDomainRoleInfoAttributes);
+				return new ObjectifiedFactTypePropertyDescriptor((ObjectType)sourceRolePlayer, targetRoleInfo, sourceDomainRoleInfoAttributes);
 			}
 			return base.CreateRolePlayerPropertyDescriptor(sourceRolePlayer, targetRoleInfo, sourceDomainRoleInfoAttributes);
 		}
@@ -312,5 +327,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 				return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
 			}
 		}
+		#endregion // Base overrides
+		#region Non-DSL Custom Property Descriptors
+		private static PropertyDescriptor myDataTypeDisplayPropertyDescriptor;
+		/// <summary>
+		/// Get a <see cref="PropertyDescriptor"/> for the <see cref="ObjectType.DataTypeDisplay"/> property
+		/// </summary>
+		public static PropertyDescriptor DataTypeDisplayPropertyDescriptor
+		{
+			get
+			{
+				PropertyDescriptor retVal = myDataTypeDisplayPropertyDescriptor;
+				if (retVal == null)
+				{
+					myDataTypeDisplayPropertyDescriptor = retVal = EditorUtility.ReflectStoreEnabledPropertyDescriptor(typeof(ObjectType), "DataTypeDisplay", typeof(DataType), ResourceStrings.ObjectTypeDataTypeDisplayDisplayName, ResourceStrings.ObjectTypeDataTypeDisplayDescription, null);
+				}
+				return retVal;
+			}
+		}
+		#endregion // Non-DSL Custom Property Descriptors
 	}
 }

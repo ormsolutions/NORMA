@@ -18,6 +18,10 @@
 		<ComponentGroup Id="MainFeatureComponents">
 			<ComponentRef Id="LicenseFilesComponent"/>
 			<ComponentRef Id="DocumentationComponent"/>
+			<?ifdef VSIXInstall?>
+			<ComponentRef Id="VSIXExtensionComponent"/>
+			<ComponentRef Id="NORMAVSNewFileItemsComponent"/>
+			<?endif?>
 			<ComponentRef Id="NORMAVSPackageComponent"/>
 			<ComponentRef Id="NORMAVSPackageGACComponent"/>
 			<ComponentRef Id="NORMAVSSchemaCatalogComponent"/>
@@ -26,7 +30,9 @@
 			<ComponentRef Id="NORMAVSSettingsComponent"/>
 			<ComponentRef Id="NORMAVSConvertersComponent"/>
 			<ComponentRef Id="NORMAVSDiagramDisplaySchemaComponent"/>
+			<?ifndef VSIXInstall?>
 			<ComponentRef Id="NORMAVSProjectItemsGeneralComponent"/>
+			<?endif?>
 			<ComponentRef Id="NORMAVSProjectItemsVBasicComponent"/>
 			<ComponentRef Id="NORMAVSProjectItemsVCSharpComponent"/>
 			<?ifdef JSharpSupport?>

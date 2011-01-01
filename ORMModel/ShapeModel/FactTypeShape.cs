@@ -4531,9 +4531,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, FactType>[] providers;
 			bool isRoleBox;
 			FactType element;
+			Store store;
 			if (((isRoleBox = penId == RoleBoxResource) ||
 				penId == DiagramPens.ShapeOutline) &&
-				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, FactType>>()) &&
+				null != (store = Utility.ValidateStore(Store)) &&
+				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, FactType>>()) &&
 				null != (element = (FactType)ModelElement))
 			{
 				ORMDiagramDynamicColor requestColor = isRoleBox ? ORMDiagramDynamicColor.ForegroundGraphics : ORMDiagramDynamicColor.Outline;
@@ -4562,10 +4564,12 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			Color retVal = Color.Empty;
 			SolidBrush solidBrush;
 			FactType element;
+			Store store;
 			IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, FactType>[] providers;
 			if ((brushId == DiagramBrushes.DiagramBackground || brushId == DiagramBrushes.ShapeBackground) &&
 				null != (solidBrush = brush as SolidBrush) &&
-				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, FactType>>()) &&
+				null != (store = Utility.ValidateStore(Store)) &&
+				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, FactType>>()) &&
 				null != (element = (FactType)ModelElement))
 			{
 				for (int i = 0; i < providers.Length; ++i)
@@ -4596,7 +4600,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				foreach (ShapeElement childShape in RelativeChildShapes)
 				{
-					if (childShape is ReadingShape)
+					if (childShape is ReadingShape || childShape is ObjectifiedFactTypeNameShape)	
 					{
 						yield return childShape;
 					}
@@ -5964,7 +5968,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 	/// A specialized display of the nesting type as a relative
 	/// child element of an objectified fact type
 	/// </summary>
-	public partial class ObjectifiedFactTypeNameShape : IModelErrorActivation, ISelectionContainerFilter, IConfigureAsChildShape
+	public partial class ObjectifiedFactTypeNameShape : IModelErrorActivation, ISelectionContainerFilter, IConfigureAsChildShape, IDynamicColorGeometryHost
 	{
 		#region ObjectifiedFactTypeNameShape specific
 		/// <summary>
@@ -6086,6 +6090,63 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			return retVal;
 		}
 		#endregion // Customize appearance
+		#region IDynamicColorGeometryHost Implementation
+		/// <summary>
+		/// Implements <see cref="IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId,Pen)"/>
+		/// </summary>
+		protected Color UpdateDynamicColor(StyleSetResourceId penId, Pen pen)
+		{
+			return Color.Empty;
+		}
+		Color IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId penId, Pen pen)
+		{
+			return UpdateDynamicColor(penId, pen);
+		}
+		/// <summary>
+		/// Implements <see cref="IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId,Brush)"/>
+		/// </summary>
+		protected Color UpdateDynamicColor(StyleSetResourceId brushId, Brush brush)
+		{
+			// There are two options here for getting shape text. The first is to
+			// use the foreground color for the object type and let the color providers
+			// recognize the ObjectifiedFactTypeNameShape. The problem with this approach
+			// is that the text color for an object type is generally shown on top of the
+			// background color, but this is a transparent shape so the color displays
+			// against the diagram background, not the paired background color. The second
+			// option (which we use) is to get the foreground text color for the fact type
+			// shape. This color is also rendered for the reading shape and gives a consistent
+			// use of foreground text.
+			Color retVal = Color.Empty;
+			SolidBrush solidBrush;
+			Store store;
+			IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, FactType>[] providers;
+			FactTypeShape factTypeShape;
+			FactType factType;
+			if (brushId == DiagramBrushes.ShapeText &&
+				null != (solidBrush = brush as SolidBrush) &&
+				null != (store = Utility.ValidateStore(Store)) &&
+				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, FactType>>()) &&
+				null != (factTypeShape = ParentShape as FactTypeShape) &&
+				null != (factType = factTypeShape.AssociatedFactType))
+			{
+				for (int i = 0; i < providers.Length; ++i)
+				{
+					Color alternateColor = providers[i].GetDynamicColor(ORMDiagramDynamicColor.ForegroundText, factTypeShape, factType);
+					if (alternateColor != Color.Empty)
+					{
+						retVal = solidBrush.Color;
+						solidBrush.Color = alternateColor;
+						break;
+					}
+				}
+			}
+			return retVal;
+		}
+		Color IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId brushId, Brush brush)
+		{
+			return UpdateDynamicColor(brushId, brush);
+		}
+		#endregion // IDynamicColorGeometryHost Implementation
 		#region IModelErrorActivation Implementation
 		/// <summary>
 		/// Implements IModelErrorActivation.ActivateModelError for activatable displayed errors

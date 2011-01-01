@@ -1,0 +1,965 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.Description" xml:space="preserve">
+    <value>Bridge ORM Abstraction Model and Relational Database Model</value>
+    <comment>Description for DslLibrary &apos;ORMAbstractionToConceptualDatabaseBridge&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.DisplayName" xml:space="preserve">
+    <value>Map to Relational Model</value>
+    <comment>DisplayName for DslLibrary &apos;ORMAbstractionToConceptualDatabaseBridge&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;MappingCustomizationModel&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel.DisplayName" xml:space="preserve">
+    <value>MappingCustomizationModel</value>
+    <comment>DisplayName for DomainClass &apos;MappingCustomizationModel&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;AssimilationMapping&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping.DisplayName" xml:space="preserve">
+    <value>AssimilationMapping</value>
+    <comment>DisplayName for DomainClass &apos;AssimilationMapping&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping/AbsorptionChoice.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping.AbsorptionChoice</value>
+    <comment>Description for DomainProperty &apos;AbsorptionChoice&apos; on DomainClass &apos;AssimilationMapping&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.AssimilationMapping/AbsorptionChoice.DisplayName" xml:space="preserve">
+    <value>AbsorptionChoice</value>
+    <comment>DisplayName for DomainProperty &apos;AbsorptionChoice&apos; on DomainClass &apos;AssimilationMapping&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming.DisplayName" xml:space="preserve">
+    <value>ReferenceModeNaming</value>
+    <comment>DisplayName for DomainClass &apos;ReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/NamingChoice.Description" xml:space="preserve">
+    <value>The naming pattern used for references to this EntityType.</value>
+    <comment>Description for DomainProperty &apos;NamingChoice&apos; on DomainClass &apos;ReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/NamingChoice.DisplayName" xml:space="preserve">
+    <value>NamingChoice</value>
+    <comment>DisplayName for DomainProperty &apos;NamingChoice&apos; on DomainClass &apos;ReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/CustomFormat.Description" xml:space="preserve">
+    <value>The custom naming format used for references to this EntityType.</value>
+    <comment>Description for DomainProperty &apos;CustomFormat&apos; on DomainClass &apos;ReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/CustomFormat.DisplayName" xml:space="preserve">
+    <value>CustomFormat</value>
+    <comment>DisplayName for DomainProperty &apos;CustomFormat&apos; on DomainClass &apos;ReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/PrimaryIdentifierNamingChoice.Description" xml:space="preserve">
+    <value>The naming pattern used for simple primary identification of this EntityType.</value>
+    <comment>Description for DomainProperty &apos;PrimaryIdentifierNamingChoice&apos; on DomainClass &apos;ReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/PrimaryIdentifierNamingChoice.DisplayName" xml:space="preserve">
+    <value>PrimaryIdentifierNamingChoice</value>
+    <comment>DisplayName for DomainProperty &apos;PrimaryIdentifierNamingChoice&apos; on DomainClass &apos;ReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/PrimaryIdentifierCustomFormat.Description" xml:space="preserve">
+    <value>The custom naming format used for simple primary identification of this EntityType.</value>
+    <comment>Description for DomainProperty &apos;PrimaryIdentifierCustomFormat&apos; on DomainClass &apos;ReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/PrimaryIdentifierCustomFormat.DisplayName" xml:space="preserve">
+    <value>PrimaryIdentifierCustomFormat</value>
+    <comment>DisplayName for DomainProperty &apos;PrimaryIdentifierCustomFormat&apos; on DomainClass &apos;ReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming.DisplayName" xml:space="preserve">
+    <value>DefaultReferenceModeNaming</value>
+    <comment>DisplayName for DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/NamingChoice.Description" xml:space="preserve">
+    <value>The default naming pattern used for references to EntityTypes with this kind of reference mode.</value>
+    <comment>Description for DomainProperty &apos;NamingChoice&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/NamingChoice.DisplayName" xml:space="preserve">
+    <value>DefaultReferenceModeNaming</value>
+    <comment>DisplayName for DomainProperty &apos;NamingChoice&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/CustomFormat.Description" xml:space="preserve">
+    <value>The default custom naming format used for references to EntityTypes with custom naming formats.</value>
+    <comment>Description for DomainProperty &apos;CustomFormat&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/CustomFormat.DisplayName" xml:space="preserve">
+    <value>NamingChoice</value>
+    <comment>DisplayName for DomainProperty &apos;CustomFormat&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/PrimaryIdentifierNamingChoice.Description" xml:space="preserve">
+    <value>The default naming pattern used for simple primary identification of EntityTypes with this kind of reference mode.</value>
+    <comment>Description for DomainProperty &apos;PrimaryIdentifierNamingChoice&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/PrimaryIdentifierNamingChoice.DisplayName" xml:space="preserve">
+    <value>DefaultPrimaryIdentifierReferenceModeNaming</value>
+    <comment>DisplayName for DomainProperty &apos;PrimaryIdentifierNamingChoice&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/PrimaryIdentifierCustomFormat.Description" xml:space="preserve">
+    <value>The default custom naming format used for simple primary identification of EntityTypes with custom naming formats.</value>
+    <comment>Description for DomainProperty &apos;PrimaryIdentifierCustomFormat&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/PrimaryIdentifierCustomFormat.DisplayName" xml:space="preserve">
+    <value>DefaultPrimaryIdentifierReferenceModeCustomFormat</value>
+    <comment>DisplayName for DomainProperty &apos;PrimaryIdentifierCustomFormat&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/ReferenceModeTargetKind.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming.ReferenceModeTargetKind</value>
+    <comment>Description for DomainProperty &apos;ReferenceModeTargetKind&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/ReferenceModeTargetKind.DisplayName" xml:space="preserve">
+    <value>ReferenceModeTargetKind</value>
+    <comment>DisplayName for DomainProperty &apos;ReferenceModeTargetKind&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.RelationalNameGenerator.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;RelationalNameGenerator&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.RelationalNameGenerator.DisplayName" xml:space="preserve">
+    <value>Relational Names</value>
+    <comment>DisplayName for DomainClass &apos;RelationalNameGenerator&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnNameUsage.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ColumnNameUsage&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnNameUsage.DisplayName" xml:space="preserve">
+    <value>Column Specific</value>
+    <comment>DisplayName for DomainClass &apos;ColumnNameUsage&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableNameUsage.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;TableNameUsage&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableNameUsage.DisplayName" xml:space="preserve">
+    <value>Table Specific</value>
+    <comment>DisplayName for DomainClass &apos;TableNameUsage&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;SchemaGenerationSetting&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting.DisplayName" xml:space="preserve">
+    <value>SchemaGenerationSetting</value>
+    <comment>DisplayName for DomainClass &apos;SchemaGenerationSetting&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting/CoreAlgorithmVersion.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting.Depth</value>
+    <comment>Description for DomainProperty &apos;CoreAlgorithmVersion&apos; on DomainClass &apos;SchemaGenerationSetting&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting/CoreAlgorithmVersion.DisplayName" xml:space="preserve">
+    <value>Depth</value>
+    <comment>DisplayName for DomainProperty &apos;CoreAlgorithmVersion&apos; on DomainClass &apos;SchemaGenerationSetting&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting/NameAlgorithmVersion.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting.Depth</value>
+    <comment>Description for DomainProperty &apos;NameAlgorithmVersion&apos; on DomainClass &apos;SchemaGenerationSetting&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.SchemaGenerationSetting/NameAlgorithmVersion.DisplayName" xml:space="preserve">
+    <value>Depth</value>
+    <comment>DisplayName for DomainProperty &apos;NameAlgorithmVersion&apos; on DomainClass &apos;SchemaGenerationSetting&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType</value>
+    <comment>Description for DomainClass &apos;AssimilationMappingCustomizesFactType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType.DisplayName" xml:space="preserve">
+    <value>Assimilation Mapping Customizes Fact Type</value>
+    <comment>DisplayName for DomainClass &apos;AssimilationMappingCustomizesFactType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType/AssimilationMapping.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainRole &apos;AssimilationMapping&apos; on DomainRelationship &apos;AssimilationMappingCustomizesFactType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType/AssimilationMapping.DisplayName" xml:space="preserve">
+    <value>Assimilation Mapping</value>
+    <comment>DisplayName for DomainRole &apos;AssimilationMapping&apos; on DomainRelationship &apos;AssimilationMappingCustomizesFactType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType/AssimilationMapping.PropertyDisplayName" xml:space="preserve">
+    <value>Fact Type</value>
+    <comment>PropertyDisplayName for DomainRole &apos;AssimilationMapping&apos; on DomainRelationship &apos;AssimilationMappingCustomizesFactType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType/FactType.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainRole &apos;FactType&apos; on DomainRelationship &apos;AssimilationMappingCustomizesFactType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType/FactType.DisplayName" xml:space="preserve">
+    <value>Fact Type</value>
+    <comment>DisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;AssimilationMappingCustomizesFactType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.AssimilationMappingCustomizesFactType/FactType.PropertyDisplayName" xml:space="preserve">
+    <value>Assimilation Mapping</value>
+    <comment>PropertyDisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;AssimilationMappingCustomizesFactType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasAssimilationMapping.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasAssimilationMapping</value>
+    <comment>Description for DomainClass &apos;MappingCustomizationModelHasAssimilationMapping&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasAssimilationMapping.DisplayName" xml:space="preserve">
+    <value>Mapping Customization Model Has Assimilation Mapping</value>
+    <comment>DisplayName for DomainClass &apos;MappingCustomizationModelHasAssimilationMapping&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasAssimilationMapping/Model.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainRole &apos;Model&apos; on DomainRelationship &apos;MappingCustomizationModelHasAssimilationMapping&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasAssimilationMapping/Model.DisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>DisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;MappingCustomizationModelHasAssimilationMapping&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasAssimilationMapping/Model.PropertyDisplayName" xml:space="preserve">
+    <value>Assimilation Mapping Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;MappingCustomizationModelHasAssimilationMapping&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasAssimilationMapping/AssimilationMapping.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainRole &apos;AssimilationMapping&apos; on DomainRelationship &apos;MappingCustomizationModelHasAssimilationMapping&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasAssimilationMapping/AssimilationMapping.DisplayName" xml:space="preserve">
+    <value>Assimilation Mapping</value>
+    <comment>DisplayName for DomainRole &apos;AssimilationMapping&apos; on DomainRelationship &apos;MappingCustomizationModelHasAssimilationMapping&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasAssimilationMapping/AssimilationMapping.PropertyDisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>PropertyDisplayName for DomainRole &apos;AssimilationMapping&apos; on DomainRelationship &apos;MappingCustomizationModelHasAssimilationMapping&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType</value>
+    <comment>Description for DomainClass &apos;ReferenceModeNamingCustomizesObjectType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType.DisplayName" xml:space="preserve">
+    <value>Reference Mode Naming Customizes Object Type</value>
+    <comment>DisplayName for DomainClass &apos;ReferenceModeNamingCustomizesObjectType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType/ReferenceModeNaming.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainRole &apos;ReferenceModeNaming&apos; on DomainRelationship &apos;ReferenceModeNamingCustomizesObjectType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType/ReferenceModeNaming.DisplayName" xml:space="preserve">
+    <value>Reference Mode Naming</value>
+    <comment>DisplayName for DomainRole &apos;ReferenceModeNaming&apos; on DomainRelationship &apos;ReferenceModeNamingCustomizesObjectType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType/ReferenceModeNaming.PropertyDisplayName" xml:space="preserve">
+    <value>Object Type</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ReferenceModeNaming&apos; on DomainRelationship &apos;ReferenceModeNamingCustomizesObjectType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType/ObjectType.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ReferenceModeNamingCustomizesObjectType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType/ObjectType.DisplayName" xml:space="preserve">
+    <value>Object Type</value>
+    <comment>DisplayName for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ReferenceModeNamingCustomizesObjectType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType/ObjectType.PropertyDisplayName" xml:space="preserve">
+    <value>Reference Mode Naming</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ReferenceModeNamingCustomizesObjectType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming</value>
+    <comment>Description for DomainClass &apos;MappingCustomizationModelHasReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming.DisplayName" xml:space="preserve">
+    <value>Mapping Customization Model Has Reference Mode Naming</value>
+    <comment>DisplayName for DomainClass &apos;MappingCustomizationModelHasReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming/Model.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainRole &apos;Model&apos; on DomainRelationship &apos;MappingCustomizationModelHasReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming/Model.DisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>DisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;MappingCustomizationModelHasReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming/Model.PropertyDisplayName" xml:space="preserve">
+    <value>Reference Mode Naming Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;MappingCustomizationModelHasReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming/ReferenceModeNaming.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainRole &apos;ReferenceModeNaming&apos; on DomainRelationship &apos;MappingCustomizationModelHasReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming/ReferenceModeNaming.DisplayName" xml:space="preserve">
+    <value>Reference Mode Naming</value>
+    <comment>DisplayName for DomainRole &apos;ReferenceModeNaming&apos; on DomainRelationship &apos;MappingCustomizationModelHasReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming/ReferenceModeNaming.PropertyDisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ReferenceModeNaming&apos; on DomainRelationship &apos;MappingCustomizationModelHasReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel</value>
+    <comment>Description for DomainClass &apos;DefaultReferenceModeNamingCustomizesORMModel&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel.DisplayName" xml:space="preserve">
+    <value>Default Reference Mode Naming Customizes ORMModel</value>
+    <comment>DisplayName for DomainClass &apos;DefaultReferenceModeNamingCustomizesORMModel&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel/DefaultReferenceModeNaming.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainRole &apos;DefaultReferenceModeNaming&apos; on DomainRelationship &apos;DefaultReferenceModeNamingCustomizesORMModel&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel/DefaultReferenceModeNaming.DisplayName" xml:space="preserve">
+    <value>Default Reference Mode Naming</value>
+    <comment>DisplayName for DomainRole &apos;DefaultReferenceModeNaming&apos; on DomainRelationship &apos;DefaultReferenceModeNamingCustomizesORMModel&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel/DefaultReferenceModeNaming.PropertyDisplayName" xml:space="preserve">
+    <value>ORMModel</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DefaultReferenceModeNaming&apos; on DomainRelationship &apos;DefaultReferenceModeNamingCustomizesORMModel&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel/ORMModel.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainRole &apos;ORMModel&apos; on DomainRelationship &apos;DefaultReferenceModeNamingCustomizesORMModel&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel/ORMModel.DisplayName" xml:space="preserve">
+    <value>ORMModel</value>
+    <comment>DisplayName for DomainRole &apos;ORMModel&apos; on DomainRelationship &apos;DefaultReferenceModeNamingCustomizesORMModel&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel/ORMModel.PropertyDisplayName" xml:space="preserve">
+    <value>Default Reference Mode Naming Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ORMModel&apos; on DomainRelationship &apos;DefaultReferenceModeNamingCustomizesORMModel&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming</value>
+    <comment>Description for DomainClass &apos;MappingCustomizationModelHasDefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming.DisplayName" xml:space="preserve">
+    <value>Mapping Customization Model Has Default Reference Mode Naming</value>
+    <comment>DisplayName for DomainClass &apos;MappingCustomizationModelHasDefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming/Model.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainRole &apos;Model&apos; on DomainRelationship &apos;MappingCustomizationModelHasDefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming/Model.DisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>DisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;MappingCustomizationModelHasDefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming/Model.PropertyDisplayName" xml:space="preserve">
+    <value>Default Reference Mode Naming Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;MappingCustomizationModelHasDefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming/DefaultReferenceModeNaming.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainRole &apos;DefaultReferenceModeNaming&apos; on DomainRelationship &apos;MappingCustomizationModelHasDefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming/DefaultReferenceModeNaming.DisplayName" xml:space="preserve">
+    <value>Default Reference Mode Naming</value>
+    <comment>DisplayName for DomainRole &apos;DefaultReferenceModeNaming&apos; on DomainRelationship &apos;MappingCustomizationModelHasDefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming/DefaultReferenceModeNaming.PropertyDisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DefaultReferenceModeNaming&apos; on DomainRelationship &apos;MappingCustomizationModelHasDefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel</value>
+    <comment>Description for DomainClass &apos;SchemaIsForAbstractionModel&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel.DisplayName" xml:space="preserve">
+    <value>Schema Is For Abstraction Model</value>
+    <comment>DisplayName for DomainClass &apos;SchemaIsForAbstractionModel&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel/Schema.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainRole &apos;Schema&apos; on DomainRelationship &apos;SchemaIsForAbstractionModel&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel/Schema.DisplayName" xml:space="preserve">
+    <value>Schema</value>
+    <comment>DisplayName for DomainRole &apos;Schema&apos; on DomainRelationship &apos;SchemaIsForAbstractionModel&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel/Schema.PropertyDisplayName" xml:space="preserve">
+    <value>Abstraction Model</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Schema&apos; on DomainRelationship &apos;SchemaIsForAbstractionModel&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel/AbstractionModel.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainRole &apos;AbstractionModel&apos; on DomainRelationship &apos;SchemaIsForAbstractionModel&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel/AbstractionModel.DisplayName" xml:space="preserve">
+    <value>Abstraction Model</value>
+    <comment>DisplayName for DomainRole &apos;AbstractionModel&apos; on DomainRelationship &apos;SchemaIsForAbstractionModel&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.SchemaIsForAbstractionModel/AbstractionModel.PropertyDisplayName" xml:space="preserve">
+    <value>Schema</value>
+    <comment>PropertyDisplayName for DomainRole &apos;AbstractionModel&apos; on DomainRelationship &apos;SchemaIsForAbstractionModel&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType</value>
+    <comment>Description for DomainClass &apos;TableIsPrimarilyForConceptType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType.DisplayName" xml:space="preserve">
+    <value>Table Is Primarily For Concept Type</value>
+    <comment>DisplayName for DomainClass &apos;TableIsPrimarilyForConceptType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType/Table.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableIsPrimarilyForConceptType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType/Table.DisplayName" xml:space="preserve">
+    <value>Table</value>
+    <comment>DisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableIsPrimarilyForConceptType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType/Table.PropertyDisplayName" xml:space="preserve">
+    <value>Concept Type</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableIsPrimarilyForConceptType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType/ConceptType.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;TableIsPrimarilyForConceptType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType/ConceptType.DisplayName" xml:space="preserve">
+    <value>Concept Type</value>
+    <comment>DisplayName for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;TableIsPrimarilyForConceptType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType/ConceptType.PropertyDisplayName" xml:space="preserve">
+    <value>Table</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;TableIsPrimarilyForConceptType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType</value>
+    <comment>Description for DomainClass &apos;TableIsAlsoForConceptType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType.DisplayName" xml:space="preserve">
+    <value>Table Is Also For Concept Type</value>
+    <comment>DisplayName for DomainClass &apos;TableIsAlsoForConceptType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType/Table.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableIsAlsoForConceptType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType/Table.DisplayName" xml:space="preserve">
+    <value>Table</value>
+    <comment>DisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableIsAlsoForConceptType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType/Table.PropertyDisplayName" xml:space="preserve">
+    <value>Concept Type</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableIsAlsoForConceptType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType/ConceptType.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;TableIsAlsoForConceptType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType/ConceptType.DisplayName" xml:space="preserve">
+    <value>Concept Type</value>
+    <comment>DisplayName for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;TableIsAlsoForConceptType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptType/ConceptType.PropertyDisplayName" xml:space="preserve">
+    <value>Table</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;TableIsAlsoForConceptType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath</value>
+    <comment>Description for DomainClass &apos;TableIsAlsoForConceptTypeHasAssimilationPath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath.DisplayName" xml:space="preserve">
+    <value>Table Is Also For Concept Type Has Assimilation Path</value>
+    <comment>DisplayName for DomainClass &apos;TableIsAlsoForConceptTypeHasAssimilationPath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath/TableIsAlsoForConceptType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath.TableIsAlsoForConceptType</value>
+    <comment>Description for DomainRole &apos;TableIsAlsoForConceptType&apos; on DomainRelationship &apos;TableIsAlsoForConceptTypeHasAssimilationPath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath/TableIsAlsoForConceptType.DisplayName" xml:space="preserve">
+    <value>Table Is Also For Concept Type</value>
+    <comment>DisplayName for DomainRole &apos;TableIsAlsoForConceptType&apos; on DomainRelationship &apos;TableIsAlsoForConceptTypeHasAssimilationPath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath/TableIsAlsoForConceptType.PropertyDisplayName" xml:space="preserve">
+    <value>Assimilation Path</value>
+    <comment>PropertyDisplayName for DomainRole &apos;TableIsAlsoForConceptType&apos; on DomainRelationship &apos;TableIsAlsoForConceptTypeHasAssimilationPath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath/Assimilation.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath.Assimilation</value>
+    <comment>Description for DomainRole &apos;Assimilation&apos; on DomainRelationship &apos;TableIsAlsoForConceptTypeHasAssimilationPath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath/Assimilation.DisplayName" xml:space="preserve">
+    <value>Assimilation</value>
+    <comment>DisplayName for DomainRole &apos;Assimilation&apos; on DomainRelationship &apos;TableIsAlsoForConceptTypeHasAssimilationPath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableIsAlsoForConceptTypeHasAssimilationPath/Assimilation.PropertyDisplayName" xml:space="preserve">
+    <value>Table Is Also For Concept Type</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Assimilation&apos; on DomainRelationship &apos;TableIsAlsoForConceptTypeHasAssimilationPath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild</value>
+    <comment>Description for DomainClass &apos;ColumnHasConceptTypeChild&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild.DisplayName" xml:space="preserve">
+    <value>Column Has Concept Type Child</value>
+    <comment>DisplayName for DomainClass &apos;ColumnHasConceptTypeChild&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild/Column.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainRole &apos;Column&apos; on DomainRelationship &apos;ColumnHasConceptTypeChild&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild/Column.DisplayName" xml:space="preserve">
+    <value>Column</value>
+    <comment>DisplayName for DomainRole &apos;Column&apos; on DomainRelationship &apos;ColumnHasConceptTypeChild&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild/Column.PropertyDisplayName" xml:space="preserve">
+    <value>Concept Type Child Path</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Column&apos; on DomainRelationship &apos;ColumnHasConceptTypeChild&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild/ConceptTypeChild.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainRole &apos;ConceptTypeChild&apos; on DomainRelationship &apos;ColumnHasConceptTypeChild&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild/ConceptTypeChild.DisplayName" xml:space="preserve">
+    <value>Concept Type Child</value>
+    <comment>DisplayName for DomainRole &apos;ConceptTypeChild&apos; on DomainRelationship &apos;ColumnHasConceptTypeChild&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild/ConceptTypeChild.PropertyDisplayName" xml:space="preserve">
+    <value>Column</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ConceptTypeChild&apos; on DomainRelationship &apos;ColumnHasConceptTypeChild&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness</value>
+    <comment>Description for DomainClass &apos;UniquenessConstraintIsForUniqueness&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness.DisplayName" xml:space="preserve">
+    <value>Uniqueness Constraint Is For Uniqueness</value>
+    <comment>DisplayName for DomainClass &apos;UniquenessConstraintIsForUniqueness&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness/UniquenessConstraint.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainRole &apos;UniquenessConstraint&apos; on DomainRelationship &apos;UniquenessConstraintIsForUniqueness&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness/UniquenessConstraint.DisplayName" xml:space="preserve">
+    <value>Uniqueness Constraint</value>
+    <comment>DisplayName for DomainRole &apos;UniquenessConstraint&apos; on DomainRelationship &apos;UniquenessConstraintIsForUniqueness&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness/UniquenessConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Uniqueness</value>
+    <comment>PropertyDisplayName for DomainRole &apos;UniquenessConstraint&apos; on DomainRelationship &apos;UniquenessConstraintIsForUniqueness&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness/Uniqueness.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainRole &apos;Uniqueness&apos; on DomainRelationship &apos;UniquenessConstraintIsForUniqueness&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness/Uniqueness.DisplayName" xml:space="preserve">
+    <value>Uniqueness</value>
+    <comment>DisplayName for DomainRole &apos;Uniqueness&apos; on DomainRelationship &apos;UniquenessConstraintIsForUniqueness&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness/Uniqueness.PropertyDisplayName" xml:space="preserve">
+    <value>Uniqueness Constraint</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Uniqueness&apos; on DomainRelationship &apos;UniquenessConstraintIsForUniqueness&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat</value>
+    <comment>Description for DomainClass &apos;DomainIsForInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat.DisplayName" xml:space="preserve">
+    <value>Domain Is For Information Type Format</value>
+    <comment>DisplayName for DomainClass &apos;DomainIsForInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat/Domain.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainRole &apos;Domain&apos; on DomainRelationship &apos;DomainIsForInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat/Domain.DisplayName" xml:space="preserve">
+    <value>Domain</value>
+    <comment>DisplayName for DomainRole &apos;Domain&apos; on DomainRelationship &apos;DomainIsForInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat/Domain.PropertyDisplayName" xml:space="preserve">
+    <value>Information Type Format</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Domain&apos; on DomainRelationship &apos;DomainIsForInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat/InformationTypeFormat.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;DomainIsForInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat/InformationTypeFormat.DisplayName" xml:space="preserve">
+    <value>Information Type Format</value>
+    <comment>DisplayName for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;DomainIsForInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DomainIsForInformationTypeFormat/InformationTypeFormat.PropertyDisplayName" xml:space="preserve">
+    <value>Domain</value>
+    <comment>PropertyDisplayName for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;DomainIsForInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema</value>
+    <comment>Description for DomainClass &apos;GenerationSettingTargetsSchema&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema.DisplayName" xml:space="preserve">
+    <value>Generation Setting Targets Schema</value>
+    <comment>DisplayName for DomainClass &apos;GenerationSettingTargetsSchema&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema/GenerationSetting.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema.GenerationSetting</value>
+    <comment>Description for DomainRole &apos;GenerationSetting&apos; on DomainRelationship &apos;GenerationSettingTargetsSchema&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema/GenerationSetting.DisplayName" xml:space="preserve">
+    <value>GenerationSetting</value>
+    <comment>DisplayName for DomainRole &apos;GenerationSetting&apos; on DomainRelationship &apos;GenerationSettingTargetsSchema&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema/GenerationSetting.PropertyDisplayName" xml:space="preserve">
+    <value>Generated Schema</value>
+    <comment>PropertyDisplayName for DomainRole &apos;GenerationSetting&apos; on DomainRelationship &apos;GenerationSettingTargetsSchema&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema/GeneratedSchema.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema.GeneratedSchema</value>
+    <comment>Description for DomainRole &apos;GeneratedSchema&apos; on DomainRelationship &apos;GenerationSettingTargetsSchema&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema/GeneratedSchema.DisplayName" xml:space="preserve">
+    <value>GeneratedSchema</value>
+    <comment>DisplayName for DomainRole &apos;GeneratedSchema&apos; on DomainRelationship &apos;GenerationSettingTargetsSchema&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GenerationSettingTargetsSchema/GeneratedSchema.PropertyDisplayName" xml:space="preserve">
+    <value>Generation Setting</value>
+    <comment>PropertyDisplayName for DomainRole &apos;GeneratedSchema&apos; on DomainRelationship &apos;GenerationSettingTargetsSchema&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.AssimilationAbsorptionChoice/Absorb.DisplayName" xml:space="preserve">
+    <value>Absorb</value>
+    <comment>Display name for EnumerationLiteral &apos;Absorb&apos; on DomainEnumeration &apos;AssimilationAbsorptionChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.AssimilationAbsorptionChoice/Absorb.Description" xml:space="preserve">
+    <value>All assimilations are pulled into the same table as the supertype.</value>
+    <comment>Description for EnumerationLiteral &apos;Absorb&apos; on DomainEnumeration &apos;AssimilationAbsorptionChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.AssimilationAbsorptionChoice/Partition.DisplayName" xml:space="preserve">
+    <value>Partition</value>
+    <comment>Display name for EnumerationLiteral &apos;Partition&apos; on DomainEnumeration &apos;AssimilationAbsorptionChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.AssimilationAbsorptionChoice/Partition.Description" xml:space="preserve">
+    <value>Each subtype is given its own table. Data from the supertype is duplicated.</value>
+    <comment>Description for EnumerationLiteral &apos;Partition&apos; on DomainEnumeration &apos;AssimilationAbsorptionChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.AssimilationAbsorptionChoice/Separate.DisplayName" xml:space="preserve">
+    <value>Separate</value>
+    <comment>Display name for EnumerationLiteral &apos;Separate&apos; on DomainEnumeration &apos;AssimilationAbsorptionChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.AssimilationAbsorptionChoice/Separate.Description" xml:space="preserve">
+    <value>Each subtype is given its own table, data from the supertype is stored in a separate referenced table.</value>
+    <comment>Description for EnumerationLiteral &apos;Separate&apos; on DomainEnumeration &apos;AssimilationAbsorptionChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice/ValueTypeName.DisplayName" xml:space="preserve">
+    <value>ValueTypeName</value>
+    <comment>Display name for EnumerationLiteral &apos;ValueTypeName&apos; on DomainEnumeration &apos;ReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice/ValueTypeName.Description" xml:space="preserve">
+    <value>Use the name of the identifying value type for the column.</value>
+    <comment>Description for EnumerationLiteral &apos;ValueTypeName&apos; on DomainEnumeration &apos;ReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice/EntityTypeName.DisplayName" xml:space="preserve">
+    <value>EntityTypeName</value>
+    <comment>Display name for EnumerationLiteral &apos;EntityTypeName&apos; on DomainEnumeration &apos;ReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice/EntityTypeName.Description" xml:space="preserve">
+    <value>Use the name of the entity type for the related column.</value>
+    <comment>Description for EnumerationLiteral &apos;EntityTypeName&apos; on DomainEnumeration &apos;ReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice/ReferenceModeName.DisplayName" xml:space="preserve">
+    <value>ReferenceModeName</value>
+    <comment>Display name for EnumerationLiteral &apos;ReferenceModeName&apos; on DomainEnumeration &apos;ReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice/ReferenceModeName.Description" xml:space="preserve">
+    <value>Use the name of the reference mode for the related column.</value>
+    <comment>Description for EnumerationLiteral &apos;ReferenceModeName&apos; on DomainEnumeration &apos;ReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice/CustomFormat.DisplayName" xml:space="preserve">
+    <value>CustomFormat</value>
+    <comment>Display name for EnumerationLiteral &apos;CustomFormat&apos; on DomainEnumeration &apos;ReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice/CustomFormat.Description" xml:space="preserve">
+    <value>Use a custom format string using the other three values as replacement fields.</value>
+    <comment>Description for EnumerationLiteral &apos;CustomFormat&apos; on DomainEnumeration &apos;ReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice/ModelDefault.DisplayName" xml:space="preserve">
+    <value>ModelDefault</value>
+    <comment>Display name for EnumerationLiteral &apos;ModelDefault&apos; on DomainEnumeration &apos;ReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice/ModelDefault.Description" xml:space="preserve">
+    <value>Use the default setting from the model.</value>
+    <comment>Description for EnumerationLiteral &apos;ModelDefault&apos; on DomainEnumeration &apos;ReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice/ValueTypeName.DisplayName" xml:space="preserve">
+    <value>ValueTypeName</value>
+    <comment>Display name for EnumerationLiteral &apos;ValueTypeName&apos; on DomainEnumeration &apos;EffectiveReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice/ValueTypeName.Description" xml:space="preserve">
+    <value>Use the name of the identifying value type for the column.</value>
+    <comment>Description for EnumerationLiteral &apos;ValueTypeName&apos; on DomainEnumeration &apos;EffectiveReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice/EntityTypeName.DisplayName" xml:space="preserve">
+    <value>EntityTypeName</value>
+    <comment>Display name for EnumerationLiteral &apos;EntityTypeName&apos; on DomainEnumeration &apos;EffectiveReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice/EntityTypeName.Description" xml:space="preserve">
+    <value>Use the name of the entity type for the related column.</value>
+    <comment>Description for EnumerationLiteral &apos;EntityTypeName&apos; on DomainEnumeration &apos;EffectiveReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice/ReferenceModeName.DisplayName" xml:space="preserve">
+    <value>ReferenceModeName</value>
+    <comment>Display name for EnumerationLiteral &apos;ReferenceModeName&apos; on DomainEnumeration &apos;EffectiveReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice/ReferenceModeName.Description" xml:space="preserve">
+    <value>Use a custom format string using the other three values as replacement fields.</value>
+    <comment>Description for EnumerationLiteral &apos;ReferenceModeName&apos; on DomainEnumeration &apos;EffectiveReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice/CustomFormat.DisplayName" xml:space="preserve">
+    <value>CustomFormat</value>
+    <comment>Display name for EnumerationLiteral &apos;CustomFormat&apos; on DomainEnumeration &apos;EffectiveReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice/CustomFormat.Description" xml:space="preserve">
+    <value>Use a custom format with the other three values as replacement fields.</value>
+    <comment>Description for EnumerationLiteral &apos;CustomFormat&apos; on DomainEnumeration &apos;EffectiveReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="UnrecognizedElementType" xml:space="preserve">
+    <value>ElementType {0} is not recognized as a type of domain class which belongs to this domain model.</value>
+    <comment>Incorrect ElementType passed in to Model.CreateElement method</comment>
+  </data>
+  <data name="UnrecognizedElementLinkType" xml:space="preserve">
+    <value>ElementLinkType {0} is not recognized as a type of domain relationship which belongs to this domain model.</value>
+    <comment>Incorrect ElementLinkType passed in to Model.CreateElementLink method</comment>
+  </data>
+  <data name="AmbiguousSchema" xml:space="preserve">
+    <value>More than one schema found for target namespace &apos;{0}&apos;, use the first one at &apos;{1}&apos;.</value>
+    <comment>Serialization Warning: AmbiguousSchema</comment>
+  </data>
+  <data name="ExpectingFullFormRelationship" xml:space="preserve">
+    <value>Element &apos;{0}&apos; is treated as the target role-player of a relationship &apos;{1}&apos; instance, which should be serialized in full-form.</value>
+    <comment>Serialization Warning: ExpectingFullFormRelationship</comment>
+  </data>
+  <data name="ExpectingShortFormRelationship" xml:space="preserve">
+    <value>Instances of relationship &apos;{0}&apos; should be serialized in short-form.</value>
+    <comment>Serialization Warning: ExpectingShortFormRelationship</comment>
+  </data>
+  <data name="IgnoredPropertyValue" xml:space="preserve">
+    <value>Invalid property value &apos;{0}&apos; for property &apos;{1}&apos; with type &apos;{2}&apos;, ignored.</value>
+    <comment>Serialization Warning: IgnoredPropertyValue</comment>
+  </data>
+  <data name="MissingId" xml:space="preserve">
+    <value>Missing &apos;Id&apos; attribute, a new Guid &apos;{0}&apos; is auto-generated.</value>
+    <comment>Serialization Warning: MissingId</comment>
+  </data>
+  <data name="MonikerResolvedToDuplicateLink" xml:space="preserve">
+    <value>Resolving moniker &apos;{0}&apos; causes a duplicate link to be created, so the link and the moniker are ignored.</value>
+    <comment>Serialization Warning: MonikerResolvedToDuplicateLink</comment>
+  </data>
+  <data name="NoSchema" xml:space="preserve">
+    <value>Cannot find a schema that defines target namespace &apos;{0}&apos;, schema validation skipped.</value>
+    <comment>Serialization Warning: NoSchema</comment>
+  </data>
+  <data name="UnexpectedXmlElement" xml:space="preserve">
+    <value>Unexpected XML element &apos;{0}&apos;, ignored.</value>
+    <comment>Serialization Warning: UnexpectedXmlElement</comment>
+  </data>
+  <data name="AmbiguousMoniker" xml:space="preserve">
+    <value>Ambiguous moniker &apos;{0}&apos; encountered. It is used for both &apos;{1}&apos; and &apos;{2}&apos;.</value>
+    <comment>Serialization Error: AmbiguousMoniker</comment>
+  </data>
+  <data name="CannotMonikerizeElement" xml:space="preserve">
+    <value>Instances of DomainClass &apos;{0}&apos; cannot be serialized as a moniker.
+A DomainClass can be serialized as a moniker only if 
+1) it has a defined/inherited DomainProperty marked as IsMonikerKey=true, or 
+2) it is marked/inherited with SerializeId=true.</value>
+    <comment>Serialization Error: CannotMonikerizeElement</comment>
+  </data>
+  <data name="CannotOpenDocument" xml:space="preserve">
+    <value>Error encountered, check Error List window for details.</value>
+    <comment>Serialization Error: CannotOpenDocument</comment>
+  </data>
+  <data name="CannotSaveDocument" xml:space="preserve">
+    <value>Error encountered, check Error List window for details.</value>
+    <comment>Serialization Error: CannotSaveDocument</comment>
+  </data>
+  <data name="DanglingRelationship" xml:space="preserve">
+    <value>Relationship &apos;{0}&apos; instance is missing target role-player.</value>
+    <comment>Serialization Error: DanglingRelationship</comment>
+  </data>
+  <data name="InvalidPropertyValue" xml:space="preserve">
+    <value>Invalid property value &apos;{0}&apos; for property &apos;{1}&apos; with type &apos;{2}&apos;.</value>
+    <comment>Serialization Error: InvalidPropertyValue</comment>
+  </data>
+  <data name="MissingMoniker" xml:space="preserve">
+    <value>Missing moniker. A moniker is expected in attribute &apos;{0}&apos;.</value>
+    <comment>Serialization Error: MissingMoniker</comment>
+  </data>
+  <data name="MissingTransaction" xml:space="preserve">
+    <value>This must be called within the context of an active transaction.</value>
+    <comment>Serialization Error: MissingTransaction</comment>
+  </data>
+  <data name="UnresolvedMoniker" xml:space="preserve">
+    <value>Cannot resolve moniker &apos;{0}&apos;.</value>
+    <comment>Serialization Error: UnresolvedMoniker</comment>
+  </data>
+  <data name="VersionMismatch" xml:space="preserve">
+    <value>Unsupported version &apos;{0}&apos;, can only support &apos;{1}&apos;.</value>
+    <comment>Serialization Error: VersionMismatch</comment>
+  </data>
+  <data name="CannotCloseExistingDiagramDocument" xml:space="preserve">
+    <value>Diagram file &apos;{0}&apos; cannot be closed.</value>
+    <comment>User cancel closing diagram file. Hence, the DSL model file cannot be opened</comment>
+  </data>
+  <data name="BindingErrorOccurred" xml:space="preserve">
+    <value>Extensions for this designer may not be found as a MEF binding error has occurred. The error that occurred was:
+{0}</value>
+    <comment>MEF binding error occurred - exception message being logged in the error window so the user is aware.</comment>
+  </data>
+  <data name="InvalidSaveRootElementType" xml:space="preserve">
+    <value>&apos;{0}&apos; is not a valid root element type.</value>
+    <comment>Exception message used if an invalid root element type is passed to IDomainModelSerializer.SaveModel / SaveModelAndDiagram</comment>
+  </data>
+  <data name="InvalidSaveDiagramType" xml:space="preserve">
+    <value>&apos;{0}&apos; is not a valid diagram type.</value>
+    <comment>Exception message used if an invalid diagram type is passed to IDomainModelSerializer.SaveModelAndDiagram</comment>
+  </data>
+  <data name="MinimumMultiplicityMissingLink" xml:space="preserve">
+    <value>{0} {1} has no {2}.</value>
+    <comment>Multiplicity underflow validation.</comment>
+  </data>
+  <data name="SaveOperationCancelled" xml:space="preserve">
+    <value>Save operation cancelled.</value>
+    <comment>Message when save is cancelled on validation errors</comment>
+  </data>
+  <data name="SaveValidationFailed" xml:space="preserve">
+    <value>There were validation errors, continue save?</value>
+    <comment>Message when validation errors are found on save</comment>
+  </data>
+  <data name="UnloadableSaveValidationFailed" xml:space="preserve">
+    <value>There were validation errors. Continuing to save may cause the file to become unloadable, do you want to continue?</value>
+    <comment>Message when validation errors are found on save that will cause file to become unloadable</comment>
+  </data>
+</root>
+
+
+<!-- Common Public License Copyright Notice -->
+<!--
+	Natural Object-Role Modeling Architect for Visual Studio
+
+	Copyright © Neumont University. All rights reserved.
+	Copyright © ORM Solutions, LLC. All rights reserved.
+
+	The use and distribution terms for this software are covered by the
+	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
+	can be found in the file CPL.txt at the root of this distribution.
+	By using this software in any fashion, you are agreeing to be bound by
+	the terms of this license.
+
+	You must not remove this notice, or any other, from this software.
+-->

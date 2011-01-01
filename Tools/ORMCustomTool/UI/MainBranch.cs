@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -19,9 +20,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.VirtualTreeGrid;
-using Microsoft.Build.BuildEngine;
 using EnvDTE;
 using System.IO;
+#if VISUALSTUDIO_10_0
+using Microsoft.Build.Construction;
+#else
+using Microsoft.Build.BuildEngine;
+#endif
 
 namespace ORMSolutions.ORMArchitect.ORMCustomTool
 {
@@ -275,7 +280,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 							}
 							if (selectedORMGenerator != null)
 							{
-								retVal = _parent.BuildItemsByGenerator[selectedORMGenerator.OfficialName].FinalItemSpec;
+								retVal = ORMCustomToolUtility.GetItemInclude(_parent.BuildItemsByGenerator[selectedORMGenerator.OfficialName]);
 							}
 						}
 						break;
@@ -399,12 +404,15 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				}
 				else if (formatBranch.SelectedORMGenerator == null)
 				{
-					Microsoft.Build.BuildEngine.Project project = Parent._project;
+#if VISUALSTUDIO_10_0
+					string projectPath = Parent._project.FullPath;
+#else
+					string projectPath = Parent._project.FullFileName;
+#endif
 					EnvDTE.ProjectItem projectItem = Parent._projectItem;
 
 					string sourceFileName = _parent._sourceFileName;
 					string projectItemPath = (string)projectItem.Properties.Item("LocalPath").Value;
-					string projectPath = project.FullFileName;
 					string newItemDirectory = (new Uri(projectPath)).MakeRelativeUri(new Uri(projectItemPath)).ToString();
 					newItemDirectory = Path.GetDirectoryName(newItemDirectory);
 
@@ -412,7 +420,12 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 					IORMGenerator useGenerator = formatBranch.ORMGenerators[branchGeneratorIndex];
 					string outputFileName = useGenerator.GetOutputFileDefaultName(sourceFileName);
 					outputFileName = Path.Combine(newItemDirectory, outputFileName);
-					BuildItem newBuildItem = useGenerator.AddGeneratedFileBuildItem(_parent._buildItemGroup, sourceFileName, outputFileName); //string.Concat(newItemPath, Path.DirectorySeparatorChar, _parent._sourceFileName));
+#if VISUALSTUDIO_10_0
+					ProjectItemElement newBuildItem;
+#else
+					BuildItem newBuildItem;
+#endif
+					newBuildItem = useGenerator.AddGeneratedFileItem(_parent._itemGroup, sourceFileName, outputFileName); //string.Concat(newItemPath, Path.DirectorySeparatorChar, _parent._sourceFileName));
 					_parent.BuildItemsByGenerator[useGenerator.OfficialName] = newBuildItem;
 					_parent.RemoveRemovedItem(newBuildItem);
 					formatBranch.SelectedORMGenerator = useGenerator;
@@ -451,14 +464,24 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			private void RemoveGenerator(OutputFormatBranch formatBranch)
 			{
 				IORMGenerator removeGenerator = formatBranch.SelectedORMGenerator;
-				IDictionary<string, BuildItem> buildItemsByGeneratorName = _parent.BuildItemsByGenerator;
+#if VISUALSTUDIO_10_0
+				IDictionary<string, ProjectItemElement> buildItemsByGeneratorName
+#else
+				IDictionary<string, BuildItem> buildItemsByGeneratorName
+#endif
+				 = _parent.BuildItemsByGenerator;
 				if (removeGenerator.IsFormatModifier)
 				{
 					OutputFormatBranch primaryBranch = _branches[removeGenerator.ProvidesOutputFormat];
 					IORMGenerator primaryGenerator = primaryBranch.SelectedORMGenerator;
 					if (primaryGenerator != null)
 					{
-						BuildItem updateBuildItem = buildItemsByGeneratorName[primaryGenerator.OfficialName];
+#if VISUALSTUDIO_10_0
+						ProjectItemElement updateBuildItem
+#else
+						BuildItem updateBuildItem
+#endif
+						 = buildItemsByGeneratorName[primaryGenerator.OfficialName];
 						formatBranch.SelectedORMGenerator = null;
 						updateBuildItem.SetMetadata(ITEMMETADATA_ORMGENERATOR, primaryBranch.SelectedGeneratorOfficialNames);
 					}
@@ -467,9 +490,18 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				{
 					string generatorKey = removeGenerator.OfficialName;
 					formatBranch.SelectedORMGenerator = null;
-					BuildItem removeBuildItem = buildItemsByGeneratorName[generatorKey];
+#if VISUALSTUDIO_10_0
+					ProjectItemElement removeBuildItem
+#else
+					BuildItem removeBuildItem
+#endif
+					 = buildItemsByGeneratorName[generatorKey];
 					buildItemsByGeneratorName.Remove(generatorKey);
-					_parent._buildItemGroup.RemoveItem(removeBuildItem);
+#if VISUALSTUDIO_10_0
+					_parent._itemGroup.RemoveChild(removeBuildItem);
+#else
+					_parent._itemGroup.RemoveItem(removeBuildItem);
+#endif
 					_parent.AddRemovedItem(removeBuildItem);
 				}
 			}

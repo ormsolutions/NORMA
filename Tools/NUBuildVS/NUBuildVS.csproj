@@ -1,5 +1,7 @@
-﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<!-- Load multi-targeting support directly to bootstrap the build process. -->
+	<Import Project="Neumont.Build.VisualStudio.Multitargeting.targets" />
+	<PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">NUBuildVS</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
@@ -21,7 +23,7 @@
     <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NO_ASSEMBLYCONFIGURATIONATTRIBUTE</DefineConstants>
+    <DefineConstants>$(DefineConstants);TRACE;DEBUG;NO_ASSEMBLYCONFIGURATIONATTRIBUTE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -31,7 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Build.Framework" />
-    <Reference Include="Microsoft.Build.Utilities" />
+    <Reference Include="Microsoft.Build.Utilities$(TargetFrameworkVersionSuffix)" />
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>

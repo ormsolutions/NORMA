@@ -1222,4 +1222,8 @@
 
 	<XmlSerializationBehavior Name="DcilDomainModelSerializationBehavior" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase"/>
 
+	<DslLibraryImports>
+		<DslLibraryImport FilePath="..\..\ORMModel\Framework\SystemCore.dsl"/>
+	</DslLibraryImports>
+
 </Dsl>

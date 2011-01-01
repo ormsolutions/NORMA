@@ -905,10 +905,10 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 			/// <summary>
 			/// public constructor
 			/// </summary>
-			/// <param name="surveyContext">The <typeparamref name="SurveyNodeContext"/> thisis created in. This value is not store with the new Survey.</param>
+			/// <param name="surveyContext">The <typeparamref name="SurveyContextType"/> this is created in. This value is not store with the new Survey.</param>
 			/// <param name="questionProviders">Array of <see cref="ISurveyQuestionProvider{SurveyContextType}"/> instances</param>
 			/// <param name="providerImageOffsets">Array of offsets into the global image list with indices corresponding to each provider</param>
-			/// <param name="expansionKey">Key to identify the set of questions being retrieved from the <paramref name="questionProviderList"/></param>
+			/// <param name="expansionKey">Key to identify the set of questions being retrieved from the <paramref name="questionProviders"/></param>
 			public Survey(SurveyContextType surveyContext, ISurveyQuestionProvider<SurveyContextType>[] questionProviders, int[] providerImageOffsets, object expansionKey)
 			{
 				int providerCount = questionProviders.Length;

@@ -77,7 +77,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// <param name="hierarchy">The project/solution <see cref="VsShell.IVsHierarchy"/> to include the file in.</param>
 		/// <param name="itemId">The identifier for the new item.</param>
 		/// <returns>A new instance of <see cref="ORMDesignerDocData"/>.</returns>
-		protected override ModelingDocData CreateDocData(string fileName, VsShell.IVsHierarchy hierarchy, uint itemId)
+#if VISUALSTUDIO_10_0
+		public
+#else
+		protected
+#endif
+		override ModelingDocData CreateDocData(string fileName, VsShell.IVsHierarchy hierarchy, uint itemId)
 		{
 			return new ORMDesignerDocData(this.ServiceProvider, ORMDesignerEditorFactory.Id);
 		}

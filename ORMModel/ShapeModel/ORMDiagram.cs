@@ -1162,13 +1162,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		public bool ShouldDisplayObjectType(ObjectType typeElement)
 		{
 			// We don't ever display a nesting ObjectType, even if the Objectification is not drawn.
-            // This also applies to Implicit Boolean ValueTypes (those that are part of a binarized unary).
+			// This also applies to Implicit Boolean ValueTypes (those that are part of a binarized unary).
 			if (typeElement.NestedFactType == null && !typeElement.IsImplicitBooleanValue)
 			{
 				return ShouldDisplayPartOfReferenceMode(typeElement);
 			}
-            return false;
-        }
+			return false;
+		}
 		/// <summary>
 		/// Function to determine if a fact type, which may be participating
 		/// in a reference mode pattern, should be displayed.
@@ -1580,18 +1580,18 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		/// <param name="activeView">DiagramView</param>
 		/// <param name="itemId">Name of the item id</param>
+		[Conditional("FALSE")] // The end result of this does nothing, block the calls but keep the concept in the code
 		public static void SelectToolboxItem(DiagramView activeView, string itemId)
 		{
 			SelectToolboxItem(activeView, itemId, ResourceStrings.ToolboxDefaultTabName);
 		}
 		/// <summary>
 		/// Select the given item on the specified toolbox tab
-		/// UNDONE: The critical point of this routine crashes VS, so
-		/// it is currently a noop
 		/// </summary>
 		/// <param name="activeView">DiagramView</param>
 		/// <param name="itemId">Name of the item id</param>
 		/// <param name="tabName">The tab name to select</param>
+		[Conditional("FALSE")] // The end result of this does nothing, block the calls but keep the concept in the code
 		public static void SelectToolboxItem(DiagramView activeView, string itemId, string tabName)
 		{
 			IToolboxService toolbox = activeView.Toolbox;
@@ -1611,6 +1611,54 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				}
 			}
 		}
+		#region Standard toolbox action
+#if VISUALSTUDIO_10_0
+		[NonSerialized]
+		private ToolboxAction myStandardToolboxAction;
+		/// <summary>
+		/// A replacement for the standard toolbox action.
+		/// Fixes issue with toolbox action not deactivating.
+		/// </summary>
+		public new ToolboxAction ToolboxAction
+		{
+			get
+			{
+				ToolboxAction retVal = myStandardToolboxAction;
+				if (retVal == null)
+				{
+					myStandardToolboxAction = retVal = new StandardToolboxAction(this); 
+				}
+				return retVal;
+			}
+		}
+		/// <summary>
+		/// Modify the standard toolbox action in VS2010 to deactivate
+		/// after a click is completed. Otherwise, we remain in a hover
+		/// state and do not cancel the drag tool
+		/// </summary>
+		private class StandardToolboxAction : ToolboxAction
+		{
+			/// <summary>
+			/// Constructor for <see cref="StandardToolboxAction"/>
+			/// </summary>
+			public StandardToolboxAction(Diagram diagram)
+				: base(diagram)
+			{
+			}
+			/// <summary>
+			/// Make sure we deactivate on click
+			/// </summary>
+			protected override void OnClicked(MouseActionEventArgs e)
+			{
+				base.OnClicked(e);
+				if (IsActive)
+				{
+					Cancel(e.DiagramClientView);
+				}
+			}
+		}
+#endif // VISUALSTUDIO_10_0
+		#endregion // Standard toolbox action
 		#region External constraint action
 		[NonSerialized]
 		private ExternalConstraintConnectAction myExternalConstraintConnectAction;
@@ -2430,7 +2478,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				ORMDesignerElementOperations elementOperations = myElementOperations;
 				if (elementOperations == null)
 				{
+#if VISUALSTUDIO_10_0
+					myElementOperations = elementOperations = new ORMDesignerElementOperations(this);
+#else
 					myElementOperations = elementOperations = new ORMDesignerElementOperations(Store);
+#endif
 				}
 				return elementOperations;
 			}
@@ -2471,6 +2523,17 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		protected class ORMDesignerElementOperations : DesignSurfaceElementOperations
 		{
+#if VISUALSTUDIO_10_0
+			/// <summary>
+			/// Create custom operations to allow copying of shapes between
+			/// diagrams in the same model
+			/// </summary>
+			/// <param name="diagram">The context <see cref="Diagram"/></param>
+			public ORMDesignerElementOperations(Diagram diagram)
+				: base((IServiceProvider)diagram.Store, diagram)
+			{
+			}
+#else
 			/// <summary>
 			/// Create custom operations to allow copying of shapes between
 			/// diagrams in the same model
@@ -2480,6 +2543,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				: base((IServiceProvider)store, store)
 			{
 			}
+#endif
 			/// <summary>
 			/// Mark all non-parented shape elements as root elements before propagating element group
 			/// </summary>

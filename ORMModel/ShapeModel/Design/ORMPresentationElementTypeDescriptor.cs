@@ -71,5 +71,15 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 			// generated property.
 			return false;
 		}
+
+#if VISUALSTUDIO_10_0
+		/// <summary>
+		/// Block collection property display
+		/// </summary>
+		protected override bool IncludeCollectionRoleProperties(ModelElement requestor)
+		{
+			return false;
+		}
+#endif // VISUALSTUDIO_10_0
 	}
 }

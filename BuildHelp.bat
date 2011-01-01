@@ -3,7 +3,7 @@ SETLOCAL
 SET RootDir=%~dp0.
 CALL "%RootDir%\SetupEnvironment.bat" %*
 
-CALL "%TrunkDir%\SetFromRegistry.bat" "HSLiteInstallDir" "HKLM\SOFTWARE\Innovasys\HelpStudio2" "LiteInstallDir" "f"
+CALL "%TrunkDir%\SetFromRegistry.bat" "HSLiteInstallDir" "HKLM\SOFTWARE%WOWRegistryRoot%\Innovasys\HelpStudio2" "LiteInstallDir" "f"
 
 ECHO Building help project. This may take several minutes...
 PUSHD "%TrunkDir%\Documentation\Help Project"

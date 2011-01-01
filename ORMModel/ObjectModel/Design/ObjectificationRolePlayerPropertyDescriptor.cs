@@ -29,29 +29,28 @@ using ORMSolutions.ORMArchitect.Core.ObjectModel;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 {
-	#region ObjectificationRolePlayerPropertyDescriptor class
+	#region ObjectifiedFactTypePropertyDescriptor class
 	/// <summary>
 	/// <see cref="RolePlayerElementPropertyDescriptor"/> for <see cref="ObjectType.NestedFactType"/>
-	/// (<see cref="ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.NestedFactType"/>) and
-	/// <see cref="FactType.NestingType"/> (<see cref="ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.NestingType"/>).
 	/// </summary>
 	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
-	public class ObjectificationRolePlayerPropertyDescriptor : RolePlayerElementPropertyDescriptor
+	public class ObjectifiedFactTypePropertyDescriptor : RolePlayerElementPropertyDescriptor
 	{
 		#region Constructor
-		private static readonly Guid[] ObjectificationDomainRoleIds =
-			new Guid[] { Objectification.NestedFactTypeDomainRoleId, Objectification.NestingTypeDomainRoleId };
+		private readonly bool myIsReadOnly;
 		/// <summary>
-		/// Initializes a new instance of <see cref="ObjectificationRolePlayerPropertyDescriptor"/>.
+		/// Initializes a new instance of <see cref="ObjectifiedFactTypePropertyDescriptor"/>.
 		/// </summary>
-		public ObjectificationRolePlayerPropertyDescriptor(ModelElement sourcePlayer, DomainRoleInfo domainRole, Attribute[] sourceDomainRoleInfoAttributes)
+		public ObjectifiedFactTypePropertyDescriptor(ObjectType sourcePlayer, DomainRoleInfo domainRole, Attribute[] sourceDomainRoleInfoAttributes)
 			: base(sourcePlayer, domainRole, sourceDomainRoleInfoAttributes)
 		{
 			// The base class constructor has already checked domainRole for null.
-			if (!Utility.IsDescendantOrSelf(domainRole, ObjectificationDomainRoleIds))
+			if (domainRole.Id != Objectification.NestedFactTypeDomainRoleId)
 			{
 				throw new ArgumentException();
 			}
+			Objectification objectification;
+			myIsReadOnly = null != (objectification = sourcePlayer.Objectification) && objectification.IsImplied;
 		}
 		#endregion // Constructor
 		#region IsReadOnly property
@@ -64,21 +63,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		{
 			get
 			{
-				ObjectType objectType = this.SourcePlayer as ObjectType;
-				if (objectType != null)
-				{
-					Objectification objectification = objectType.Objectification;
-					if (objectification != null)
-					{
-						return objectification.IsImplied;
-					}
-				}
-				return base.IsReadOnly;
+				return myIsReadOnly;
 			}
 		}
 		#endregion // IsReadOnly property
 		#region ResetValue method
-		/// <summary>See <see cref="RolePlayerElementPropertyDescriptor.ResetValue"/>.</summary>
+		/// <summary>Delete the objectification relationship.</summary>
 		public override void ResetValue(object component)
 		{
 			this.SetValue(component, null);
@@ -88,15 +78,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		/// <summary>See <see cref="RolePlayerElementPropertyDescriptor.SetValue"/>.</summary>
 		public override void SetValue(object component, object value)
 		{
-			if (this.IsReadOnly)
+			ObjectType objectType;
+			if (myIsReadOnly ||
+				null == (objectType = EditorUtility.ResolveContextInstance(component, false) as ObjectType))
 			{
 				return;
 			}
-			IORMToolServices toolServices = null;
-			ModelElement element;
+			IORMToolServices toolServices;
 			AutomatedElementFilterCallback callback = null;
-			if (null != (element = component as ModelElement) &&
-				null != (toolServices = element.Store as IORMToolServices))
+			Store store = objectType.Store;
+			if (null != (toolServices = store as IORMToolServices))
 			{
 				callback = delegate(ModelElement filterElement)
 				{
@@ -109,26 +100,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			}
 			try
 			{
-				using (Transaction transaction = this.BeginTransaction())
+				using (Transaction transaction = BeginTransaction(store))
 				{
-					ObjectType objectType = this.SourcePlayer as ObjectType;
-					if (objectType != null)
+					FactType factType = value as FactType;
+					if (factType != null)
 					{
-						FactType factType = value as FactType;
-						if (factType != null)
-						{
-							Objectification.CreateExplicitObjectification(factType, objectType);
-						}
-						else
-						{
-							objectType.NestedFactType = null;
-						}
+						Objectification.CreateExplicitObjectification(factType, objectType);
 					}
 					else
 					{
-						FactType factType = this.SourcePlayer as FactType;
-						Debug.Assert(factType != null, "SourcePlayer should only ever be an ObjectType or a FactType.");
-						Objectification.CreateExplicitObjectification(factType, value as ObjectType);
+						objectType.NestedFactType = null;
 					}
 					if (transaction.HasPendingChanges)
 					{
@@ -146,5 +127,78 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		}
 		#endregion // SetValue method
 	}
-	#endregion // ObjectificationRolePlayerPropertyDescriptor class
+	#endregion // ObjectifiedFactTypePropertyDescriptor class
+	#region ObjectifyingEntityTypePropertyDescriptor class
+	/// <summary>
+	/// <see cref="RolePlayerElementPropertyDescriptor"/> for <see cref="FactType.NestingType"/>
+	/// </summary>
+	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
+	public class ObjectifyingEntityTypePropertyDescriptor : RolePlayerElementPropertyDescriptor
+	{
+		#region Constructor
+		/// <summary>
+		/// Initializes a new instance of <see cref="ObjectifyingEntityTypePropertyDescriptor"/>.
+		/// </summary>
+		public ObjectifyingEntityTypePropertyDescriptor(FactType sourcePlayer, DomainRoleInfo domainRole, Attribute[] sourceDomainRoleInfoAttributes)
+			: base(sourcePlayer, domainRole, sourceDomainRoleInfoAttributes)
+		{
+			// The base class constructor has already checked domainRole for null.
+			if (domainRole.Id != Objectification.NestingTypeDomainRoleId)
+			{
+				throw new ArgumentException();
+			}
+		}
+		#endregion // Constructor
+		#region ResetValue method
+		/// <summary>Delete the objectification relationship.</summary>
+		public override void ResetValue(object component)
+		{
+			this.SetValue(component, null);
+		}
+		#endregion // ResetValue method
+		#region SetValue method
+		/// <summary>See <see cref="RolePlayerElementPropertyDescriptor.SetValue"/>.</summary>
+		public override void SetValue(object component, object value)
+		{
+			FactType factType;
+			if (null == (factType = EditorUtility.ResolveContextInstance(component, false) as FactType))
+			{
+				return;
+			}
+			IORMToolServices toolServices = null;
+			AutomatedElementFilterCallback callback = null;
+			Store store = factType.Store;
+			if (null != (toolServices = store as IORMToolServices))
+			{
+				callback = delegate(ModelElement filterElement)
+				{
+					FactType filterFactType;
+					return filterElement is ObjectType || (null != (filterFactType = filterElement as FactType) && null == filterFactType.ImpliedByObjectification) ?
+						AutomatedElementDirective.NeverIgnore :
+						AutomatedElementDirective.None;
+				};
+				toolServices.AutomatedElementFilter += callback;
+			}
+			try
+			{
+				using (Transaction transaction = BeginTransaction(store))
+				{
+					Objectification.CreateExplicitObjectification(factType, value as ObjectType);
+					if (transaction.HasPendingChanges)
+					{
+						transaction.Commit();
+					}
+				}
+			}
+			finally
+			{
+				if (toolServices != null)
+				{
+					toolServices.AutomatedElementFilter -= callback;
+				}
+			}
+		}
+		#endregion // SetValue method
+	}
+	#endregion // ObjectifyingEntityTypePropertyDescriptor class
 }

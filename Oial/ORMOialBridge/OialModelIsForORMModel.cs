@@ -238,6 +238,10 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 		/// <returns><see langword="true"/> if the requested rebuild will occur.</returns>
 		private static bool TestRebuildAbstractionModel(AbstractionModel model)
 		{
+			if (model == null)
+			{
+				return false;
+			}
 			AbstractionModelIsForORMModel link = AbstractionModelIsForORMModel.GetLinkToORMModel(model);
 			bool allow = !(link != null && link.myRebuildingAbstractionModel);
 			if (allow)

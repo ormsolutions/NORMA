@@ -18,6 +18,7 @@
 using System;
 using System.Collections;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Design;
@@ -27,11 +28,11 @@ using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.Modeling.Design;
 using Microsoft.VisualStudio.Modeling.Diagrams;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.VirtualTreeGrid;
-using Microsoft.VisualStudio.Shell;
-using System.ComponentModel.Design;
 
 namespace ORMSolutions.ORMArchitect.Framework.Design
 {
@@ -360,6 +361,43 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 			}
 		}
 		#endregion // ActivatePropertyEditor
+		#region GetAttributeArray
+		/// <summary>
+		/// Convert an <see cref="AttributeCollection"/> to an <see cref="Attribute"/> array.
+		/// </summary>
+		public static Attribute[] GetAttributeArray(AttributeCollection attributes)
+		{
+			int attributeCount;
+			if (attributes == null || 0 == (attributeCount = attributes.Count))
+			{
+				return null;
+			}
+			Attribute[] retVal = new Attribute[attributeCount];
+			attributes.CopyTo(retVal, 0);
+			return retVal;
+		}
+		#endregion // GetAttributeArray
+		#region GetEditablePropertyDescriptors method
+		/// <summary>
+		/// Get an editable <see cref="PropertyDescriptorCollection"/>
+		/// </summary>
+		/// <param name="properties">The properties to extend. Can be <see langword="null"/></param>
+		/// <returns>An editable <see cref="PropertyDescriptorCollection"/></returns>
+		public static PropertyDescriptorCollection GetEditablePropertyDescriptors(PropertyDescriptorCollection properties)
+		{
+			if (properties == null)
+			{
+				properties = new PropertyDescriptorCollection(null);
+			}
+			else if (((IList)properties).IsReadOnly)
+			{
+				PropertyDescriptor[] descriptorArray = new PropertyDescriptor[properties.Count];
+				properties.CopyTo(descriptorArray, 0);
+				properties = new PropertyDescriptorCollection(descriptorArray);
+			}
+			return properties;
+		}
+		#endregion // GetEditablePropertyDescriptors method
 		#region ModifyPropertyDescriptorDisplay
 		/// <summary>
 		/// Modify the display settings for a <see cref="PropertyDescriptor"/> by
@@ -400,37 +438,26 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		private sealed class DisplayModifiedPropertyDescriptor : PropertyDescriptor
 		{
 			#region Member Variables
-			private PropertyDescriptor myInner;
-			private string myDisplayName;
-			private string myDescription;
-			private string myCategory;
+			private readonly PropertyDescriptor myInner;
+			private readonly string myDisplayName;
+			private readonly string myDescription;
+			private readonly string myCategory;
 			#endregion // Member Variables
 			#region Constructor
 			/// <summary>
 			/// Create a wrapped descriptor
 			/// </summary>
-			/// <param name="modifyDescriptor"></param>
+			/// <param name="modifyDescriptor">The descriptor to wrap.</param>
 			/// <param name="displayName">The modified display name. If this is <see langword="null"/>, then the original display name is used.</param>
 			/// <param name="description">The modified description. If this is <see langword="null"/>, then the original description is used.</param>
 			/// <param name="category">The modified category. If this is <see langword="null"/>, then the original category is used.</param>
 			public DisplayModifiedPropertyDescriptor(PropertyDescriptor modifyDescriptor, string displayName, string description, string category)
-				: base(modifyDescriptor.Name, GetAttributeArray(modifyDescriptor.Attributes))
+				: base(modifyDescriptor.Name, EditorUtility.GetAttributeArray(modifyDescriptor.Attributes))
 			{
 				myInner = modifyDescriptor;
 				myDisplayName = displayName;
 				myDescription = description;
 				myCategory = category;
-			}
-			private static Attribute[] GetAttributeArray(AttributeCollection attributes)
-			{
-				int attributeCount;
-				if (attributes == null || 0 == (attributeCount = attributes.Count))
-				{
-					return null;
-				}
-				Attribute[] retVal = new Attribute[attributeCount];
-				attributes.CopyTo(retVal, 0);
-				return retVal;
 			}
 			#endregion // Constructor
 			#region Display overrides
@@ -536,6 +563,326 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 			#endregion // Other overrides
 		}
 		#endregion // ModifyPropertyDescriptorDisplay
+		#region ReflectStoreEnabledPropertyDescriptor
+		/// <summary>
+		/// Create a property descriptor based on reflection
+		/// for a property on an element that is not defined
+		/// in the domain model.
+		/// </summary>
+		/// <param name="componentType">The type of the component. This must
+		/// be a subtype of <see cref="ModelElement"/></param>
+		/// <param name="propertyName">The name of the property in the class.</param>
+		/// <param name="propertyType">The type of the property.</param>
+		/// <param name="displayName">The display name for the property. If this is <see langword="null"/>,
+		/// then the normal property descriptor display name mechanism is used to retrieve the property name.
+		/// This provides a simpler approach than setting <see cref="DisplayNameAttribute"/> attributes
+		/// for each property.</param>
+		/// <param name="description">The description for the property. If this is <see langword="null"/>,
+		/// then the normal property descriptor description mechanism is used to retrieve the description.
+		/// This provides a simpler approach than setting <see cref="DescriptionAttribute"/> attributes
+		/// for each property.</param>
+		/// <param name="category">The category for the property. If this is <see langword="null"/>,
+		/// then the normal property descriptor category mechanism is used to retrieve the category.
+		/// This provides a simpler approach than setting <see cref="CategoryAttribute"/> attributes
+		/// for each property.</param>
+		/// <returns>A <see cref="PropertyDescriptor"/> that can be used similarly to an <see cref="ElementPropertyDescriptor"/>.
+		/// Setting and resetting values with this descriptor will automatically create the appropriate <see cref="Transaction"/>.</returns>
+		public static PropertyDescriptor ReflectStoreEnabledPropertyDescriptor(Type componentType, string propertyName, Type propertyType, string displayName, string description, string category)
+		{
+			return new StoreEnabledPropertyDescriptor(TypeDescriptor.CreateProperty(componentType, propertyName, propertyType), displayName, description, category);
+		}
+		#endregion // ReflectStoreEnabledPropertyDescriptor
+		#region RedirectPropertyDescriptor
+		/// <summary>
+		/// Create a wrapped descriptor that presents a direct property of
+		/// <paramref name="wrappedComponent"/> as a direct property of
+		/// a component with <paramref name="componentType"/>.
+		/// </summary>
+		/// <param name="wrappedComponent">The target component.</param>
+		/// <param name="wrappedDescriptor">The property descriptor for a specific property on the <paramref name="wrappedComponent"/>.</param>
+		/// <param name="componentType">The type of the presented component.</param>
+		/// <returns>A wrapped descriptor with the <see cref="PropertyDescriptor.ComponentType"/> modified.</returns>
+		/// <remarks>If <paramref name="wrappedDescriptor"/> is itself redirected, then the redirection is collapsed.</remarks>
+		public static PropertyDescriptor RedirectPropertyDescriptor(object wrappedComponent, PropertyDescriptor wrappedDescriptor, Type componentType)
+		{
+			return RedirectedPropertyDescriptor.Create(wrappedComponent, wrappedDescriptor, componentType);
+		}
+		#region RedirectedPropertyDescriptor class
+		/// <summary>
+		/// A <see cref="PropertyDescriptor"/> wrapper used to present
+		/// properties of related components directly as properties
+		/// of another element with a different component type.
+		/// </summary>
+		private sealed class RedirectedPropertyDescriptor : PropertyDescriptor
+		{
+			#region Member Variables
+			private readonly PropertyDescriptor myInnerDescriptor;
+			private readonly object myInnerComponent;
+			private readonly Type myComponentType;
+			#endregion // Member Variables
+			#region Constructor
+			/// <summary>
+			/// Create a wrapped descriptor that presents a direct property of
+			/// <paramref name="wrappedComponent"/> as a direct property of
+			/// a component with <paramref name="componentType"/>.
+			/// </summary>
+			/// <param name="wrappedComponent">The target component.</param>
+			/// <param name="wrappedDescriptor">The property descriptor for a specific property on the <paramref name="wrappedComponent"/>.</param>
+			/// <param name="componentType">The type of the presented component.</param>
+			public static RedirectedPropertyDescriptor Create(object wrappedComponent, PropertyDescriptor wrappedDescriptor, Type componentType)
+			{
+				RedirectedPropertyDescriptor nestedRedirect = wrappedDescriptor as RedirectedPropertyDescriptor;
+				if (nestedRedirect != null)
+				{
+					return new RedirectedPropertyDescriptor(nestedRedirect.myInnerComponent, nestedRedirect.myInnerDescriptor, componentType);
+				}
+				return new RedirectedPropertyDescriptor(wrappedComponent, wrappedDescriptor, componentType);
+			}
+			/// <summary>
+			/// Create a wrapped descriptor that presents a direct property of
+			/// <paramref name="wrappedComponent"/> as a direct property of
+			/// a component with <paramref name="componentType"/>.
+			/// </summary>
+			/// <param name="wrappedComponent">The target component.</param>
+			/// <param name="wrappedDescriptor">The property descriptor for a specific property on the <paramref name="wrappedComponent"/>.</param>
+			/// <param name="componentType">The type of the presented component.</param>
+			private RedirectedPropertyDescriptor(object wrappedComponent, PropertyDescriptor wrappedDescriptor, Type componentType)
+				: base(wrappedDescriptor.Name, EditorUtility.GetAttributeArray(wrappedDescriptor.Attributes))
+			{
+				myInnerDescriptor = wrappedDescriptor;
+				myInnerComponent = wrappedComponent;
+				myComponentType = componentType;
+			}
+			#endregion // Constructor
+			#region Accessor Properties
+			/// <summary>
+			/// Get the inner descriptor
+			/// </summary>
+			public PropertyDescriptor WrappedDescriptor
+			{
+				get
+				{
+					return myInnerDescriptor;
+				}
+			}
+			#endregion // Accessor Properties
+			#region Other overrides
+			/// <summary>
+			/// Standard override. Defer to the wrapped descriptor.
+			/// </summary>
+			public override string Category
+			{
+				get
+				{
+					return myInnerDescriptor.Category;
+				}
+			}
+			/// <summary>
+			/// Standard override. Defer to the wrapped descriptor.
+			/// </summary>
+			public override string DisplayName
+			{
+				get
+				{
+					return myInnerDescriptor.DisplayName;
+				}
+			}
+			/// <summary>
+			/// Standard override. Defer to the wrapped descriptor.
+			/// </summary>
+			public override string Description
+			{
+				get
+				{
+					return myInnerDescriptor.Description;
+				}
+			}
+			/// <summary>
+			/// Standard override. Defer to the wrapped descriptor.
+			/// </summary>
+			public override bool CanResetValue(object component)
+			{
+				if (null != (component = myInnerComponent))
+				{
+					return myInnerDescriptor.CanResetValue(component);
+				}
+				return false;
+			}
+			/// <summary>
+			/// Standard override. Defer to the wrapped descriptor.
+			/// </summary>
+			public override Type ComponentType
+			{
+				get { return myComponentType; }
+			}
+			/// <summary>
+			/// Standard override. Defer to the wrapped descriptor.
+			/// </summary>
+			public override object GetValue(object component)
+			{
+				if (null != (component = myInnerComponent))
+				{
+					return myInnerDescriptor.GetValue(component);
+				}
+				return null;
+			}
+			/// <summary>
+			/// Standard override. Defer to the wrapped descriptor.
+			/// </summary>
+			public override bool IsReadOnly
+			{
+				get { return myInnerDescriptor.IsReadOnly; }
+			}
+			/// <summary>
+			/// Standard override. Defer to the wrapped descriptor.
+			/// </summary>
+			public override Type PropertyType
+			{
+				get { return myInnerDescriptor.PropertyType; }
+			}
+			/// <summary>
+			/// Standard override. Defer to the wrapped descriptor.
+			/// </summary>
+			public override void ResetValue(object component)
+			{
+				if (null != (component = myInnerComponent))
+				{
+					myInnerDescriptor.ResetValue(component);
+				}
+			}
+			/// <summary>
+			/// Standard override. Defer to the wrapped descriptor.
+			/// </summary>
+			public override void SetValue(object component, object value)
+			{
+				if (null != (component = myInnerComponent))
+				{
+					myInnerDescriptor.SetValue(component, value);
+				}
+			}
+			/// <summary>
+			/// Standard override. Defer to the wrapped descriptor.
+			/// </summary>
+			public override bool ShouldSerializeValue(object component)
+			{
+				if (null != (component = myInnerComponent))
+				{
+					return myInnerDescriptor.ShouldSerializeValue(component);
+				}
+				return false;
+			}
+			/// <summary>
+			/// Standard override. Defer to the wrapped descriptor.
+			/// </summary>
+			public override void AddValueChanged(object component, EventHandler handler)
+			{
+				if (null != (component = myInnerComponent))
+				{
+					myInnerDescriptor.AddValueChanged(component, handler);
+				}
+			}
+			/// <summary>
+			/// Standard override. Defer to the wrapped descriptor.
+			/// </summary>
+			public override AttributeCollection Attributes
+			{
+				get { return myInnerDescriptor.Attributes; }
+			}
+			/// <summary>
+			/// Standard override. Defer to the wrapped descriptor.
+			/// </summary>
+			public override TypeConverter Converter
+			{
+				get { return myInnerDescriptor.Converter; }
+			}
+			/// <summary>
+			/// Standard override. Defer to the wrapped descriptor.
+			/// </summary>
+			public override bool DesignTimeOnly
+			{
+				get { return myInnerDescriptor.DesignTimeOnly; }
+			}
+			/// <summary>
+			/// Standard override. Defer to the wrapped descriptor.
+			/// </summary>
+			public override PropertyDescriptorCollection GetChildProperties(object instance, Attribute[] filter)
+			{
+				if (null != (instance = myInnerComponent))
+				{
+					return myInnerDescriptor.GetChildProperties(instance, filter);
+				}
+				return null;
+			}
+			/// <summary>
+			/// Standard override. Defer to the wrapped descriptor.
+			/// </summary>
+			public override object GetEditor(Type editorBaseType)
+			{
+				return myInnerDescriptor.GetEditor(editorBaseType);
+			}
+			/// <summary>
+			/// Standard override. Defer to the wrapped descriptor.
+			/// </summary>
+			public override bool IsBrowsable
+			{
+				get { return myInnerDescriptor.IsBrowsable; }
+			}
+			/// <summary>
+			/// Standard override. Defer to the wrapped descriptor.
+			/// </summary>
+			public override bool IsLocalizable
+			{
+				get { return myInnerDescriptor.IsLocalizable; }
+			}
+			/// <summary>
+			/// Standard override. Defer to the wrapped descriptor.
+			/// </summary>
+			public override void RemoveValueChanged(object component, EventHandler handler)
+			{
+				if (null != (component = myInnerComponent))
+				{
+					myInnerDescriptor.RemoveValueChanged(component, handler);
+				}
+			}
+			/// <summary>
+			/// Standard override. Defer to the wrapped descriptor.
+			/// </summary>
+			public override bool SupportsChangeEvents
+			{
+				get { return myInnerDescriptor.SupportsChangeEvents; }
+			}
+			/// <summary>
+			/// Standard override. Defer to the wrapped descriptor.
+			/// </summary>
+			public override string ToString()
+			{
+				return myInnerDescriptor.ToString();
+			}
+			#endregion // Other overrides
+		}
+		#endregion // RedirectedPropertyDescriptor class
+		#endregion // RedirectPropertyDescriptor
+		#region PropertyDescriptorAs
+		/// <summary>
+		/// See if a property descriptor is of a given type, including resolution of
+		/// any wrapped descriptors returned by <see cref="RedirectPropertyDescriptor"/>.
+		/// </summary>
+		/// <typeparam name="DescriptorType">A type assignable to <see cref="PropertyDescriptor"/></typeparam>
+		/// <param name="descriptor">The (possibly redirection) property descriptor.</param>
+		/// <returns>An instance of the given type, or <see langword="null"/></returns>
+		public static DescriptorType PropertyDescriptorAs<DescriptorType>(PropertyDescriptor descriptor)
+			where DescriptorType : PropertyDescriptor
+		{
+			DescriptorType retVal;
+			RedirectedPropertyDescriptor redirectedDescriptor;
+			if (null == (retVal = descriptor as DescriptorType) &&
+				null != (redirectedDescriptor = descriptor as RedirectedPropertyDescriptor))
+			{
+				retVal = redirectedDescriptor.WrappedDescriptor as DescriptorType;
+			}
+			return retVal;
+		}
+		#endregion // PropertyDescriptorAs
 		#region AttachEscapeKeyPressedEventHandler
 		/// <summary>
 		/// Recursively test if a <paramref name="control"/> or its contained
@@ -557,4 +904,269 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		#endregion // AttachEscapeKeyPressedEventHandler
 	}
 	#endregion // EditorUtility class
+	#region StoreEnabledPropertyDescriptor class
+	/// <summary>
+	/// A helper class to provide property descriptors that are easily
+	/// merged with DSL-provided property descriptors.
+	/// </summary>
+	public class StoreEnabledPropertyDescriptor : PropertyDescriptor
+	{
+		#region Member Variables
+		private readonly PropertyDescriptor myInner;
+		private readonly string myDisplayName;
+		private readonly string myDescription;
+		private readonly string myCategory;
+		#endregion // Member Variables
+		#region Constructor
+		/// <summary>
+		/// Create a wrapped descriptor that automatically resolves and forwards
+		/// <see cref="ModelElement"/> components to the provided descriptor.
+		/// </summary>
+		/// <param name="modifyDescriptor">A standard property descriptor to wrap.</param>
+		/// <param name="displayName">A customized display name. If this is <see langword="null"/>, then the original display name is used.</param>
+		/// <param name="description">A customized description. If this is <see langword="null"/>, then the original description is used.</param>
+		/// <param name="category">A customized category. If this is <see langword="null"/>, then the original category is used.</param>
+		public StoreEnabledPropertyDescriptor(PropertyDescriptor modifyDescriptor, string displayName, string description, string category)
+			: base(modifyDescriptor.Name, EditorUtility.GetAttributeArray(modifyDescriptor.Attributes))
+		{
+			myInner = modifyDescriptor;
+			myDisplayName = displayName;
+			myDescription = description;
+			myCategory = category;
+		}
+		#endregion // Constructor
+		#region Other overrides
+		/// <summary>
+		/// Return the custom category if provided in the constructor, or
+		/// the default category from the wrapped descriptor.
+		/// </summary>
+		public override string Category
+		{
+			get
+			{
+				return myCategory ?? myInner.Category;
+			}
+		}
+		/// <summary>
+		/// Return the custom display name if provided in the constructor, or
+		/// the default display name from the wrapped descriptor.
+		/// </summary>
+		public override string DisplayName
+		{
+			get
+			{
+				return myDisplayName ?? myInner.DisplayName;
+			}
+		}
+		/// <summary>
+		/// Return the custom description if provided in the constructor, or
+		/// the default description from the wrapped descriptor.
+		/// </summary>
+		public override string Description
+		{
+			get
+			{
+				return myDescription ?? myInner.Description;
+			}
+		}
+		/// <summary>
+		/// Standard override. Defer to the wrapped descriptor.
+		/// </summary>
+		public override bool CanResetValue(object component)
+		{
+			return myInner.CanResetValue(component);
+		}
+		/// <summary>
+		/// Standard override. Defer to the wrapped descriptor.
+		/// </summary>
+		public override Type ComponentType
+		{
+			get { return myInner.ComponentType; }
+		}
+		/// <summary>
+		/// Standard override. Defer to the wrapped descriptor.
+		/// </summary>
+		public override object GetValue(object component)
+		{
+			return myInner.GetValue(component);
+		}
+		/// <summary>
+		/// Standard override. Defer to the wrapped descriptor.
+		/// </summary>
+		public override bool IsReadOnly
+		{
+			get { return myInner.IsReadOnly; }
+		}
+		/// <summary>
+		/// Standard override. Defer to the wrapped descriptor.
+		/// </summary>
+		public override Type PropertyType
+		{
+			get { return myInner.PropertyType; }
+		}
+		/// <summary>
+		/// Standard override. Defer to the wrapped descriptor
+		/// inside a transaction.
+		/// </summary>
+		public override void ResetValue(object component)
+		{
+			ModelElement element;
+			Store store;
+			if (null == (element = component as ModelElement) ||
+				null == (store = Utility.ValidateStore(element.Store)))
+			{
+				return;
+			}
+			using (Transaction t = store.TransactionManager.BeginTransaction(ElementPropertyDescriptor.GetSetValueTransactionName(myInner.DisplayName)))
+			{
+				myInner.ResetValue(element);
+				if (t.HasPendingChanges)
+				{
+					t.Commit();
+				}
+			}
+		}
+		/// <summary>
+		/// Standard override. Defer to the wrapped descriptor
+		/// inside a transaction.
+		/// </summary>
+		public override void SetValue(object component, object value)
+		{
+			ModelElement element;
+			Store store;
+			if (null == (element = component as ModelElement) ||
+				null == (store = Utility.ValidateStore(element.Store)))
+			{
+				return;
+			}
+			using (Transaction t = store.TransactionManager.BeginTransaction(ElementPropertyDescriptor.GetSetValueTransactionName(myInner.DisplayName)))
+			{
+				myInner.SetValue(element, value);
+				if (t.HasPendingChanges)
+				{
+					t.Commit();
+				}
+			}
+		}
+		/// <summary>
+		/// Standard override. Defer to the wrapped descriptor.
+		/// </summary>
+		public override bool ShouldSerializeValue(object component)
+		{
+			return myInner.ShouldSerializeValue(component);
+		}
+		/// <summary>
+		/// Standard override. Defer to the wrapped descriptor.
+		/// </summary>
+		public override void AddValueChanged(object component, EventHandler handler)
+		{
+			myInner.AddValueChanged(component, handler);
+		}
+		/// <summary>
+		/// Standard override. Defer to the wrapped descriptor.
+		/// </summary>
+		public override AttributeCollection Attributes
+		{
+			get { return myInner.Attributes; }
+		}
+		/// <summary>
+		/// Standard override. Defer to the wrapped descriptor.
+		/// </summary>
+		public override TypeConverter Converter
+		{
+			get { return myInner.Converter; }
+		}
+		/// <summary>
+		/// Standard override. Defer to the wrapped descriptor.
+		/// </summary>
+		public override bool DesignTimeOnly
+		{
+			get { return myInner.DesignTimeOnly; }
+		}
+		/// <summary>
+		/// Standard override. Defer to the wrapped descriptor.
+		/// </summary>
+		public override PropertyDescriptorCollection GetChildProperties(object instance, Attribute[] filter)
+		{
+			return myInner.GetChildProperties(instance, filter);
+		}
+		/// <summary>
+		/// Standard override. Defer to the wrapped descriptor.
+		/// </summary>
+		public override object GetEditor(Type editorBaseType)
+		{
+			return myInner.GetEditor(editorBaseType);
+		}
+		/// <summary>
+		/// Standard override. Defer to the wrapped descriptor.
+		/// </summary>
+		public override bool IsBrowsable
+		{
+			get { return myInner.IsBrowsable; }
+		}
+		/// <summary>
+		/// Standard override. Defer to the wrapped descriptor.
+		/// </summary>
+		public override bool IsLocalizable
+		{
+			get { return myInner.IsLocalizable; }
+		}
+		/// <summary>
+		/// Standard override. Defer to the wrapped descriptor.
+		/// </summary>
+		public override void RemoveValueChanged(object component, EventHandler handler)
+		{
+			myInner.RemoveValueChanged(component, handler);
+		}
+		/// <summary>
+		/// Standard override. Defer to the wrapped descriptor.
+		/// </summary>
+		public override bool SupportsChangeEvents
+		{
+			get { return myInner.SupportsChangeEvents; }
+		}
+		/// <summary>
+		/// Standard override. Defer to the wrapped descriptor.
+		/// </summary>
+		public override string ToString()
+		{
+			return myInner.ToString();
+		}
+		#endregion // Other overrides
+	}
+	#endregion // StoreEnabledPropertyDescriptor class
+	#region StoreEnabledReadOnlyPropertyDescriptor class
+	/// <summary>
+	/// A read-only version of <see cref="StoreEnabledPropertyDescriptor"/>
+	/// </summary>
+	public class StoreEnabledReadOnlyPropertyDescriptor : StoreEnabledPropertyDescriptor
+	{
+		#region Constructor
+		/// <summary>
+		/// Create a wrapped read-only descriptor that automatically resolves and forwards
+		/// <see cref="ModelElement"/> components to the provided descriptor.
+		/// </summary>
+		/// <param name="modifyDescriptor">A standard property descriptor to wrap.</param>
+		/// <param name="displayName">A customized display name. If this is <see langword="null"/>, then the original display name is used.</param>
+		/// <param name="description">A customized description. If this is <see langword="null"/>, then the original description is used.</param>
+		/// <param name="category">A customized category. If this is <see langword="null"/>, then the original category is used.</param>
+		public StoreEnabledReadOnlyPropertyDescriptor(PropertyDescriptor modifyDescriptor, string displayName, string description, string category)
+			: base(modifyDescriptor, displayName, description, category)
+		{
+		}
+		#endregion // Constructor
+		#region Base overrides
+		/// <summary>
+		/// Force a read-only state regardless of settings on the modified descriptor
+		/// </summary>
+		public override bool IsReadOnly
+		{
+			get
+			{
+				return true;
+			}
+		}
+		#endregion // Base overrides
+	}
+	#endregion // StoreEnabledReadOnlyPropertyDescriptor class
 }

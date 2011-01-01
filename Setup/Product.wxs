@@ -3,6 +3,7 @@
 	Natural Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
+	Copyright © ORM Solutions, LLC. All rights reserved.
 
 	The use and distribution terms for this software are covered by the
 	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
@@ -46,15 +47,25 @@
 		<Property Id="VSPRODUCTDIR">
 			<RegistrySearch Id="VSProductDirRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\Setup\VS" Name="ProductDir" Type="directory" Win64="$(var.Win64)"/>
 		</Property>
-		<Property Id="VSTEMPLATEITEMDIR">
-			<RegistrySearch Id="VSTemplateItemDirRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\VSTemplate\Item" Name="UserFolder" Type="directory" Win64="$(var.Win64)"/>
-		</Property>
+		<?ifdef VSIXInstall?>
+			<Property Id="VSENVIRONMENTDIR">
+				<RegistrySearch Id="VSTemplateItemDirRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\Setup\VS" Name="EnvironmentDirectory" Type="directory" Win64="$(var.Win64)"/>
+			</Property>
+		<?else?>
+			<Property Id="VSTEMPLATEITEMDIR">
+				<RegistrySearch Id="VSTemplateItemDirRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\VSTemplate\Item" Name="UserFolder" Type="directory" Win64="$(var.Win64)"/>
+			</Property>
+		<?endif?>
 		<Property Id="VSENVIRONMENTPATH">
 			<RegistrySearch Id="VSEnvironmentPathRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\Setup\VS" Name="EnvironmentPath" Type="raw" Win64="$(var.Win64)"/>
 		</Property>
 		<!-- Make sure Visual Studio 2005 is installed. Since VS requires .NET, we don't need to check for it separately. -->
 		<!-- Technically, since DSL Tools requires VS, we don't even need to do this check, but since we have to get the properties anyway, we might as well. It gives the user a more appropriate error message, anyway. -->
-		<Condition Message="!(loc.VisualStudio$(var.VSLongProductYear)Required)">(VSPRODUCTDIR AND VSTEMPLATEITEMDIR AND VSENVIRONMENTPATH) OR Installed</Condition>
+		<?ifdef VSIXInstall?>
+			<Condition Message="!(loc.VisualStudio$(var.VSLongProductYear)Required)">(VSPRODUCTDIR AND VSENVIRONMENTPATH) OR Installed</Condition>
+		<?else?>
+			<Condition Message="!(loc.VisualStudio$(var.VSLongProductYear)Required)">(VSPRODUCTDIR AND VSTEMPLATEITEMDIR AND VSENVIRONMENTPATH) OR Installed</Condition>
+		<?endif?>
 
 		<?ifdef RequireDSLRedist?>
 			<Property Id="DSLTOOLSREDISTINSTALL">
@@ -119,7 +130,9 @@
 		<InstallExecuteSequence>
 			<RemoveExistingProducts Before="ArpInstallLocationCustomAction"/>
 			<Custom Before="InstallInitialize" Action="ArpInstallLocationCustomAction"/>
+			<?ifndef VSIXInstall?>
 			<Custom Before="InstallFinalize" Action="DevEnvSetupCustomAction"/>
+			<?endif?>
 			<!-- We need to move InstallFinalize back from its normal point in the sequence, since the MSHelp2 merge modules expect it to occur later. -->
 			<InstallFinalize Sequence="8000"/>
 		</InstallExecuteSequence>

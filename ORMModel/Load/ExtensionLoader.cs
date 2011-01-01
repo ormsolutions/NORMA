@@ -269,11 +269,25 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 			}
 			this.myNamespaceUri = namespaceUri;
 			this.myType = type;
+#if VISUALSTUDIO_10_0
+			object[] extendsAttributes = type.GetCustomAttributes(typeof(DependsOnDomainModelAttribute), false);
+#else
 			object[] extendsAttributes = type.GetCustomAttributes(typeof(ExtendsDomainModelAttribute), false);
+#endif
 			Guid[] extendsIds = new Guid[extendsAttributes.Length];
 			for (int i = 0; i < extendsAttributes.Length; ++i)
 			{
+#if VISUALSTUDIO_10_0
+				// UNDONE: VS2010 This maps from the type to the identifier so that
+				// we can retrieve the type from the identifier later on. Consider
+				// branching the loader for VS2010 so that it runs directly off types
+				// instead of domain model identifiers.
+				Type extendedModelType = ((DependsOnDomainModelAttribute)extendsAttributes[i]).ExtendedDomainModelType;
+				object[] extensionIdAttributes = extendedModelType.GetCustomAttributes(typeof(DomainObjectIdAttribute), false);
+				extendsIds[i] = (extensionIdAttributes.Length != 0) ? ((DomainObjectIdAttribute)extensionIdAttributes[0]).Id : Guid.Empty;
+#else
 				extendsIds[i] = ((ExtendsDomainModelAttribute)extendsAttributes[i]).ExtendedModelId;
+#endif
 			}
 			myExtendsIds = Array.AsReadOnly(extendsIds);
 			object[] domainObjectIdAttributes = type.GetCustomAttributes(typeof(DomainObjectIdAttribute), false);

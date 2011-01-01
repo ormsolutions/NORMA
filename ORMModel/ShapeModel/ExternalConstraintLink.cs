@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -302,11 +303,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintLink, IConstraint>[] providers;
 			IFactConstraint factConstraint;
 			IConstraint constraint;
+			Store store;
 			if ((penId == DiagramPens.ConnectionLine ||
 				penId == DiagramPens.ConnectionLineDecorator) &&
 				null != (factConstraint = ModelElement as IFactConstraint) &&
 				null != (constraint = factConstraint.Constraint) &&
-				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintLink, IConstraint>>()))
+				null != (store = Utility.ValidateStore(Store)) &&
+				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintLink, IConstraint>>()))
 			{
 				ORMDiagramDynamicColor requestColor = constraint.Modality == ConstraintModality.Deontic ? ORMDiagramDynamicColor.DeonticConstraint : ORMDiagramDynamicColor.Constraint;
 				for (int i = 0; i < providers.Length; ++i)
@@ -336,11 +339,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintLink, IConstraint>[] providers;
 			IFactConstraint factConstraint;
 			IConstraint constraint;
+			Store store;
 			if (brushId == DiagramBrushes.ConnectionLineDecorator &&
 				null != (factConstraint = ModelElement as IFactConstraint) &&
 				null != (constraint = factConstraint.Constraint) &&
 				null != (solidBrush = brush as SolidBrush) &&
-				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintLink, IConstraint>>()))
+				null != (store = Utility.ValidateStore(Store)) &&
+				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintLink, IConstraint>>()))
 			{
 				ORMDiagramDynamicColor requestColor = constraint.Modality == ConstraintModality.Deontic ? ORMDiagramDynamicColor.DeonticConstraint : ORMDiagramDynamicColor.Constraint;
 				for (int i = 0; i < providers.Length; ++i)

@@ -1,4 +1,5 @@
-﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\Neumont\VisualStudio\Neumont.Build.VisualStudio.Multitargeting.targets" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -22,7 +23,7 @@
     <DefineConstants>$(DefineConstants);DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <NoWarn>1607</NoWarn>
     <DocumentationFile>bin\ORMSolutions.ORMArchitect.ORMCustomTool.$(TargetVisualStudioShortProductName).xml</DocumentationFile>
@@ -34,7 +35,7 @@
     <DefineConstants>$(DefineConstants);TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <NoWarn>1607</NoWarn>
     <DocumentationFile>bin\ORMSolutions.ORMArchitect.ORMCustomTool.$(TargetVisualStudioShortProductName).xml</DocumentationFile>
@@ -46,7 +47,8 @@
     <Reference Include="EnvDTE80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="Microsoft.Build.Engine" />
+    <Reference Condition=" '$(TargetVisualStudioVersion)' == 'v10.0' " Include="Microsoft.Build" />
+    <Reference Condition=" '$(TargetVisualStudioVersion)' == 'v8.0' Or '$(TargetVisualStudioVersion)' == 'v9.0' " Include="Microsoft.Build.Engine" />
     <Reference Include="Microsoft.VisualStudio.Designer.Interfaces, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
@@ -113,7 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\ORMPackage.snk">
-      <Link>ORMPackage.snk</Link>
+      <Link>Properties\ORMPackage.snk</Link>
     </None>
     <None Include="Install.bat" />
   </ItemGroup>

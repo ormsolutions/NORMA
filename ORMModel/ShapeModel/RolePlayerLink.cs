@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -371,8 +372,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			ObjectTypePlaysRole link;
 			Role playedRole;
 			MandatoryConstraint mandatory;
+			Store store;
 			if (penId == DiagramPens.ConnectionLineDecorator &&
-				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, RolePlayerLink, MandatoryConstraint>>()) &&
+				null != (store = Utility.ValidateStore(Store)) &&
+				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, RolePlayerLink, MandatoryConstraint>>()) &&
 				null != (link = ModelElement as ObjectTypePlaysRole) &&
 				null != (playedRole = link.PlayedRole) &&
 				null != (mandatory = playedRole.SimpleMandatoryConstraint))
@@ -406,8 +409,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			ObjectTypePlaysRole link;
 			Role playedRole;
 			MandatoryConstraint mandatory;
+			Store store;
 			if (brushId == DiagramBrushes.ConnectionLineDecorator &&
-				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, RolePlayerLink, MandatoryConstraint>>()) &&
+				null != (store = Utility.ValidateStore(Store)) &&
+				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, RolePlayerLink, MandatoryConstraint>>()) &&
 				null != (solidBrush = brush as SolidBrush) &&
 				null != (link = ModelElement as ObjectTypePlaysRole) &&
 				null != (playedRole = link.PlayedRole) &&

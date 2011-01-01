@@ -112,7 +112,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <summary>
 		/// Stop the user from manually routing link lines
 		/// </summary>
-		/// <value>false</value>
 		public override bool CanManuallyRoute
 		{
 			get
@@ -120,6 +119,18 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				return false;
 			}
 		}
+#if VISUALSTUDIO_10_0
+		/// <summary>
+		/// Stop the user from manually moving link end points
+		/// </summary>
+		public override bool CanMoveAnchorPoints
+		{
+			get
+			{
+				return false;
+			}
+		}
+#endif // VISUALSTUDIO_10_0
 		/// <summary>
 		/// Implements <see cref="IConfigureAsChildShape.ConfiguringAsChildOf"/>
 		/// </summary>

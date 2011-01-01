@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Microsoft.Build.BuildEngine;
 using Microsoft.VisualStudio.VirtualTreeGrid;
 using System.Drawing;
 using System.Diagnostics;

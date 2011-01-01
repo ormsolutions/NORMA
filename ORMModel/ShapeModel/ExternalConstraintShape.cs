@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -99,20 +100,34 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				{
 					// Set up an alternate style set for drawing deontic constraints
 					retVal = new StyleSet(ClassStyleSet);
-					IORMFontAndColorService colorService = (Store as IORMToolServices).FontAndColorService;
-					Color constraintColor = colorService.GetForeColor(ORMDesignerColor.DeonticConstraint);
-					PenSettings penSettings = new PenSettings();
-					penSettings.Color = constraintColor;
-					retVal.OverridePen(DiagramPens.ShapeOutline, penSettings);
-					BrushSettings brushSettings = new BrushSettings();
-					brushSettings.Color = constraintColor;
-					retVal.OverrideBrush(ExternalConstraintBrush, brushSettings);
+					InitializeDeonticClassStyleSet(retVal);
 					myDeonticClassStyleSet = retVal;
 				}
 				return retVal;
 			}
 		}
-
+		/// <summary>
+		/// Initialize a <see cref="StyleSet"/> for rendering deontic constraints.
+		/// The style set is created in <see cref="DeonticClassStyleSet"/> and
+		/// initialized here.
+		/// </summary>
+		/// <remarks>If a derived class does not modify additional resources in the
+		/// default style set, then this method is not required and any derived deontic
+		/// style set can be based on the deontic style set for this base class. However,
+		/// if new resources are introduced, then the derived class should base a
+		/// deontic style set on the derived class style set and reinitialize the
+		/// deontic settings in that style set.</remarks>
+		protected virtual void InitializeDeonticClassStyleSet(StyleSet styleSet)
+		{
+			IORMFontAndColorService colorService = (Store as IORMToolServices).FontAndColorService;
+			Color constraintColor = colorService.GetForeColor(ORMDesignerColor.DeonticConstraint);
+			PenSettings penSettings = new PenSettings();
+			penSettings.Color = constraintColor;
+			styleSet.OverridePen(DiagramPens.ShapeOutline, penSettings);
+			BrushSettings brushSettings = new BrushSettings();
+			brushSettings.Color = constraintColor;
+			styleSet.OverrideBrush(ExternalConstraintBrush, brushSettings);
+		}
 		#region Setup Paint Tools
 		// Warning: This will break horribly if this code is ever run on multiple threads simultaneously.
 		private Color myPaintPenStartColor;
@@ -215,9 +230,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <param name="e">DiagramPaintEventArgs</param>
 		public override void OnPaintShape(DiagramPaintEventArgs e)
 		{
+			if (null == Utility.ValidateStore(Store))
+			{
+				return;
+			}
+
 			// In this method, and this method only, don't call base.OnPaintShape,
 			// since this.InitializePaintTools does it for us
-			this.InitializePaintTools(e);
+			InitializePaintTools(e);
 
 			IConstraint constraint = AssociatedConstraint;
 			RectangleD bounds = AbsoluteBounds;
@@ -396,8 +416,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			Color retVal = Color.Empty;
 			IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintShape, IConstraint>[] providers;
 			IConstraint element;
+			Store store;
 			if (penId == DiagramPens.ShapeOutline &&
-				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintShape, IConstraint>>()) &&
+				null != (store = Utility.ValidateStore(Store)) &&
+				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintShape, IConstraint>>()) &&
 				null != (element = (IConstraint)ModelElement))
 			{
 				ORMDiagramDynamicColor requestColor = element.Modality == ConstraintModality.Deontic ? ORMDiagramDynamicColor.DeonticConstraint : ORMDiagramDynamicColor.Constraint;
@@ -427,6 +449,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			SolidBrush solidBrush;
 			IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintShape, IConstraint>[] providers;
 			IConstraint element;
+			Store store;
 			// We could check for a background brush request here with
 			// DiagramBrushes.DiagramBackground. However, given the small
 			// amount of background showing in most constraints and the
@@ -437,7 +460,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			if ((brushId == ExternalConstraintBrush ||
 				brushId == DiagramBrushes.ShapeText) &&
 				null != (solidBrush = brush as SolidBrush) &&
-				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintShape, IConstraint>>()) &&
+				null != (store = Utility.ValidateStore(Store)) &&
+				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintShape, IConstraint>>()) &&
 				null != (element = (IConstraint)ModelElement))
 			{
 				ORMDiagramDynamicColor requestColor = element.Modality == ConstraintModality.Deontic ? ORMDiagramDynamicColor.DeonticConstraint : ORMDiagramDynamicColor.Constraint;

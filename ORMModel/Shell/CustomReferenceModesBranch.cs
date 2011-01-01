@@ -26,6 +26,7 @@ using Microsoft.VisualStudio.VirtualTreeGrid;
 using ORMSolutions.ORMArchitect.Framework;
 using ORMSolutions.ORMArchitect.Framework.Design;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.ObjectModel.Design;
 using ORMSolutions.ORMArchitect.Framework.Shell;
 
 #if VISUALSTUDIO_9_0
@@ -308,7 +309,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								// Teardown scenario
 								return VirtualTreeLabelEditData.Invalid;
 							}
-							PropertyDescriptor descriptor = DomainTypeDescriptor.CreatePropertyDescriptor(element, ReferenceMode.KindDisplayDomainPropertyId);
+							PropertyDescriptor descriptor = ReferenceModeTypeDescriptor.KindDisplayPropertyDescriptor;
 							TypeEditorHost hostControl = OnScreenTypeEditorHost.Create(descriptor, element, TypeEditorHostEditControlStyle.TransparentEditRegion);
 							hostControl.Flags = VirtualTreeInPlaceControlFlags.DisposeControl | VirtualTreeInPlaceControlFlags.SizeToText | VirtualTreeInPlaceControlFlags.DrawItemText | VirtualTreeInPlaceControlFlags.ForwardKeyEvents;
 							return new VirtualTreeLabelEditData(hostControl);

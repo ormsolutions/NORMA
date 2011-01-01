@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -227,6 +228,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					foreach (ObjectType objectType in store.ElementDirectory.FindElements<ObjectType>())
 					{
+						Objectification objectification;
+						if (objectType.IsImplicitBooleanValue ||
+							(objectType.IsIndependent && // Preliminary check before pulling objectification
+							null != (objectification = objectType.Objectification) &&
+							objectification.IsImplied))
+						{
+							continue;
+						}
 						objectEntries.Add(new ObjectTypeDeclaration(objectType));
 					}
 					objectEntries.Sort(ObjectTypeDeclaration.Comparer);

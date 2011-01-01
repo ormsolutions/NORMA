@@ -103,15 +103,26 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 	[ProvideToolboxItems(1, true)]
 	[ProvideToolboxFormat("Microsoft.VisualStudio.Modeling.ElementGroupPrototype")]
 	[PackageRegistration(UseManagedResourcesOnly=true, RegisterUsing=RegistrationMethod.Assembly)]
-	[InstalledProductRegistration(true, null, null, null, LanguageIndependentName="Natural ORM Architect")]
+#if !VISUALSTUDIO_10_0
+	// This gives build warnings in VS2010, but there does not appear to be an alternative. The
+	// settings for this attribute are maintained by hand in the pkgdef file.
+	[InstalledProductRegistration(true, null, null, null, LanguageIndependentName = "Natural ORM Architect")]
+#endif
 	[ProvideLoadKey("Standard", "1.0", "Natural Object-Role Modeling Architect for Visual Studio", "ORM Solutions, LLC", PackageResources.Id.PackageLoadKey)]
 	#endregion // Attributes
 	public sealed class ORMDesignerPackage : ModelingPackage, IVsInstalledProduct, IVsToolWindowFactory
 	{
 		#region Constants
-		private const string REGISTRYROOT_PACKAGE = @"ORM Solutions\Natural ORM Architect";
-		private const string REGISTRYROOT_EXTENSIONS = REGISTRYROOT_PACKAGE + @"\Extensions\";
-		private const string REGISTRYROOT_DESIGNERSETTINGS = REGISTRYROOT_PACKAGE + @"\DesignerSettings\";
+		private const string REGISTRYROOT_PACKAGE_USER = @"ORM Solutions\Natural ORM Architect";
+#if VISUALSTUDIO_10_0
+		// Key relative to the root local-machine key
+		private const string REGISTRYROOT_PACKAGE_SETTINGS = @"Software\ORM Solutions\Natural ORM Architect for Visual Studio 2010\Designer";
+#else
+		// Key relative to the VS-provided application registry root
+		private const string REGISTRYROOT_PACKAGE_SETTINGS = @"ORM Solutions\Natural ORM Architect";
+#endif
+		private const string REGISTRYKEY_EXTENSIONS = @"Extensions";
+		private const string REGISTRYKEY_DESIGNERSETTINGS = @"DesignerSettings";
 		private const string REGISTRYVALUE_VERBALIZATIONDIR = "VerbalizationDir";
 		private const string REGISTRYVALUE_TOOLBOXREVISION_OBSOLETESINGLEVALUE = "ToolboxRevision";
 		private const string REGISTRYKEY_TOOLBOXREVISIONS = "ToolboxRevisions";
@@ -174,7 +185,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					ORMDesignerSettings retVal = package.myDesignerSettings;
 					if (retVal == null)
 					{
-						package.myDesignerSettings = retVal = new ORMDesignerSettings(package, REGISTRYROOT_DESIGNERSETTINGS);
+						package.myDesignerSettings = retVal = new ORMDesignerSettings(package, REGISTRYKEY_DESIGNERSETTINGS);
 					}
 					return retVal;
 				}
@@ -194,28 +205,54 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					string retVal = package.myVerbalizationDirectory;
 					if (retVal == null)
 					{
-						RegistryKey applicationRegistryRoot = null;
-						RegistryKey normaRegistryRoot = null;
-						try
+						using (RegistryKey key = package.PackageSettingsRegistryRoot)
 						{
-							applicationRegistryRoot = package.ApplicationRegistryRoot;
-							normaRegistryRoot = applicationRegistryRoot.OpenSubKey(REGISTRYROOT_PACKAGE, RegistryKeyPermissionCheck.ReadSubTree);
-							retVal = (string)normaRegistryRoot.GetValue(REGISTRYVALUE_VERBALIZATIONDIR, String.Empty);
-							package.myVerbalizationDirectory = retVal;
-						}
-						finally
-						{
-							if (applicationRegistryRoot != null)
+							if (key != null)
 							{
-								applicationRegistryRoot.Close();
-							}
-							if (normaRegistryRoot != null)
-							{
-								normaRegistryRoot.Close();
+								package.myVerbalizationDirectory = retVal = (string)key.GetValue(REGISTRYVALUE_VERBALIZATIONDIR, String.Empty);
 							}
 						}
 					}
 					return retVal;
+				}
+				return null;
+			}
+		}
+		/// <summary>
+		/// Retrieve the registry root for settings installed in the product directory.
+		/// </summary>
+		public RegistryKey PackageSettingsRegistryRoot
+		{
+			get
+			{
+
+#if VISUALSTUDIO_10_0
+				return Registry.LocalMachine.OpenSubKey(REGISTRYROOT_PACKAGE_SETTINGS);
+#else
+				using (RegistryKey rootKey = ApplicationRegistryRoot)
+				{
+					if (rootKey != null)
+					{
+						return rootKey.OpenSubKey(REGISTRYROOT_PACKAGE_SETTINGS, RegistryKeyPermissionCheck.ReadSubTree);
+					}
+				}
+				return null;
+#endif
+			}
+		}
+		/// <summary>
+		/// Get the user registry root as a writable registry key.
+		/// </summary>
+		public RegistryKey PackageUserRegistryRoot
+		{
+			get
+			{
+				using (RegistryKey rootKey = UserRegistryRoot)
+				{
+					if (rootKey != null)
+					{
+						return rootKey.OpenSubKey(REGISTRYROOT_PACKAGE_USER, true);
+					}
 				}
 				return null;
 			}
@@ -311,7 +348,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						// Note that we could do this twice, once to verify in read mode and a second time to write the
 						// values back out, but it isn't work the extra hassle to do this twice simply to avoid a write
 						// permission check on a user registry key.
-						packageRegistryRoot = userRegistryRoot.OpenSubKey(REGISTRYROOT_PACKAGE, RegistryKeyPermissionCheck.ReadWriteSubTree);
+						packageRegistryRoot = userRegistryRoot.OpenSubKey(REGISTRYROOT_PACKAGE_USER, RegistryKeyPermissionCheck.ReadWriteSubTree);
 						bool hadRegistryRoot = packageRegistryRoot != null;
 						bool hadRevisionsKey = false;
 
@@ -328,7 +365,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						}
 						if (!hadRegistryRoot)
 						{
-							packageRegistryRoot = userRegistryRoot.CreateSubKey(REGISTRYROOT_PACKAGE, RegistryKeyPermissionCheck.ReadWriteSubTree);
+							packageRegistryRoot = userRegistryRoot.CreateSubKey(REGISTRYROOT_PACKAGE_USER, RegistryKeyPermissionCheck.ReadWriteSubTree);
 						}
 						if (!hadRevisionsKey)
 						{
@@ -731,11 +768,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				ExtensionLoader retVal = package.myExtensionLoader;
 				if (retVal == null)
 				{
-					using (RegistryKey applicationRegistryRoot = package.ApplicationRegistryRoot)
+					using (RegistryKey settingsRegistryRoot = package.PackageSettingsRegistryRoot)
 					{
-						using (RegistryKey userRegistryRoot = package.UserRegistryRoot)
+						using (RegistryKey userRegistryRoot = package.PackageUserRegistryRoot)
 						{
-							package.myExtensionLoader = retVal = new ExtensionLoader(ExtensionModelData.LoadFromRegistry(REGISTRYROOT_EXTENSIONS, applicationRegistryRoot, userRegistryRoot));
+							package.myExtensionLoader = retVal = new ExtensionLoader(ExtensionModelData.LoadFromRegistry(REGISTRYKEY_EXTENSIONS, settingsRegistryRoot, userRegistryRoot));
 						}
 					}
 				}
@@ -816,11 +853,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 
 					// Get revision information from the registry. The revision information is written to
 					// the registry to enable toolbox maintenance without unnecessarily loading extension assemblies.
-					using (RegistryKey applicationRegistryRoot = package.ApplicationRegistryRoot)
+					using (RegistryKey settingsRegistryRoot = package.PackageSettingsRegistryRoot)
 					{
-						LoadExtensionToolboxProviders(applicationRegistryRoot, retVal);
+						LoadExtensionToolboxProviders(settingsRegistryRoot, retVal);
 					}
-					using (RegistryKey userRegistryRoot = package.UserRegistryRoot)
+					using (RegistryKey userRegistryRoot = package.PackageUserRegistryRoot)
 					{
 						LoadExtensionToolboxProviders(userRegistryRoot, retVal);
 					}
@@ -834,7 +871,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// </summary>
 		private static void LoadExtensionToolboxProviders(RegistryKey rootKey, IDictionary<string, ToolboxProviderInfo> providerMap)
 		{
-			using (RegistryKey hkeyExtensions = rootKey.OpenSubKey(REGISTRYROOT_EXTENSIONS, RegistryKeyPermissionCheck.ReadSubTree))
+			if (null == rootKey)
+			{
+				return;
+			}
+			using (RegistryKey hkeyExtensions = rootKey.OpenSubKey(REGISTRYKEY_EXTENSIONS, RegistryKeyPermissionCheck.ReadSubTree))
 			{
 				if (hkeyExtensions != null)
 				{

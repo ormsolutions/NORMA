@@ -40,8 +40,9 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 		private EnvDTE.Document myDocument;
 		private EnvDTE.ProjectItem myProjectItem;
 		private Stream myStream;
-		public ORMExtensionManager(EnvDTE.Document document, Stream stream)
+		public ORMExtensionManager(EnvDTE.ProjectItem projectItem, EnvDTE.Document document, Stream stream)
 		{
+			myProjectItem = projectItem;
 			myDocument = document;
 			myStream = stream;
 		}
@@ -52,7 +53,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 		/// <summary>
 		/// Return a sorted array of loaded extensions
 		/// </summary>
-		public string[] GetLoadedExtensions()
+		public string[] GetLoadedExtensions(IServiceProvider serviceProvider)
 		{
 			string[] retVal = myLoadedExtensions;
 			if (retVal == null)
@@ -64,8 +65,9 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 
 				object documentExtensionManager;
 				MethodInfo methodInfo;
+				string itemPath = null;
 				if (null != myDocument &&
-					null != (documentExtensionManager = myDocument.Object("ORMExtensionManager")) &&
+					null != (documentExtensionManager = ORMCustomToolUtility.GetDocumentExtension<object>(myDocument, "ORMExtensionManager", itemPath = myProjectItem.get_FileNames(0), serviceProvider)) &&
 					null != (methodInfo = documentExtensionManager.GetType().GetMethod("GetLoadedExtensions", Type.EmptyTypes)))
 				{
 					retVal = methodInfo.Invoke(documentExtensionManager, null) as string[];
@@ -81,7 +83,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 					// an extension manager if this is an open ORM designer
 					if (stream == null && myDocument != null)
 					{
-						EnvDTE.TextDocument textDoc = myDocument.Object("TextDocument") as EnvDTE.TextDocument;
+						EnvDTE.TextDocument textDoc = ORMCustomToolUtility.GetDocumentExtension<EnvDTE.TextDocument>(myDocument, "TextDocument", itemPath ?? (itemPath = myProjectItem.get_FileNames(0)), serviceProvider);
 						if (textDoc != null)
 						{
 							// Note that the stream will be closed with the default reader settings of the XmlReader below
@@ -175,8 +177,9 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 		/// not satisfy the requirements.
 		/// </summary>
 		/// <param name="projectItem">The <see cref="EnvDTE.ProjectItem"/> to modify</param>
+		/// <param name="serviceProvider">The <see cref="IServiceProvider"/> for document tracking.</param>
 		/// <param name="extensions">An <see cref="T:ICollection{System.String}"/> of additional required extensions</param>
-		public static bool EnsureExtensions(EnvDTE.ProjectItem projectItem, ICollection<string> extensions)
+		public static bool EnsureExtensions(EnvDTE.ProjectItem projectItem, IServiceProvider serviceProvider, ICollection<string> extensions)
 		{
 			ServiceProvider provider = new ServiceProvider((Microsoft.VisualStudio.OLE.Interop.IServiceProvider)projectItem.DTE);
 			// UNDONE: Localize message strings in here
@@ -193,12 +196,13 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			EnvDTE.Document document = projectItem.Document;
 			bool secondPass = false;
 			bool tryDocument = true;
+			string itemPath = null;
 			while (tryDocument)
 			{
 				object documentExtensionManager;
 				MethodInfo methodInfo;
 				if (null != document &&
-					null != (documentExtensionManager = document.Object("ORMExtensionManager")) &&
+					null != (documentExtensionManager = ORMCustomToolUtility.GetDocumentExtension<object>(document, "ORMExtensionManager", itemPath ?? (itemPath = projectItem.get_FileNames(0)), serviceProvider)) &&
 					null != (methodInfo = documentExtensionManager.GetType().GetMethod("EnsureExtensions", new Type[] { typeof(string[]) })))
 				{
 					string[] extensionsArray = new string[extensions.Count];

@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -16,9 +17,11 @@
 
 using System;
 using System.Diagnostics;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Design;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Framework.Diagrams.Design;
 
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
@@ -131,5 +134,44 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 			return factType;
 		}
+#if VISUALSTUDIO_10_0
+		/// <summary>
+		/// Provide dynamic toolbox items. Note that we do not use the
+		/// static toolbox provide semantics provided with the DSL 2010
+		/// generators because the list of toolbox items is considered
+		/// variable based on the <see cref="IModelingToolboxItemProvider"/>
+		/// extension interface.
+		/// </summary>
+		public override IList<ModelingToolboxItem> CreateToolboxItems()
+		{
+			IList<ModelingToolboxItem> retVal = base.CreateToolboxItems();
+			Store store = ToolboxStore;
+			using (Transaction t = store.TransactionManager.BeginTransaction("CreateToolboxItems"))
+			{
+				// Retrieve the specified ToolboxItem from the DSL
+				retVal.Add(GetToolboxItem("EntityTypeToolboxItem", store));
+				retVal.Add(GetToolboxItem("ValueTypeToolboxItem", store));
+				retVal.Add(GetToolboxItem("ObjectifiedFactTypeToolboxItem", store));
+				retVal.Add(GetToolboxItem("UnaryFactTypeToolboxItem", store));
+				retVal.Add(GetToolboxItem("BinaryFactTypeToolboxItem", store));
+				retVal.Add(GetToolboxItem("TernaryFactTypeToolboxItem", store));
+				retVal.Add(GetToolboxItem("RoleConnectorToolboxItem", store));
+				retVal.Add(GetToolboxItem("SubtypeConnectorToolboxItem", store));
+				retVal.Add(GetToolboxItem("InternalUniquenessConstraintToolboxItem", store));
+				retVal.Add(GetToolboxItem("ExternalUniquenessConstraintToolboxItem", store));
+				retVal.Add(GetToolboxItem("EqualityConstraintToolboxItem", store));
+				retVal.Add(GetToolboxItem("ExclusionConstraintToolboxItem", store));
+				retVal.Add(GetToolboxItem("InclusiveOrConstraintToolboxItem", store));
+				retVal.Add(GetToolboxItem("ExclusiveOrConstraintToolboxItem", store));
+				retVal.Add(GetToolboxItem("SubsetConstraintToolboxItem", store));
+				retVal.Add(GetToolboxItem("FrequencyConstraintToolboxItem", store));
+				retVal.Add(GetToolboxItem("RingConstraintToolboxItem", store));
+				retVal.Add(GetToolboxItem("ExternalConstraintConnectorToolboxItem", store));
+				retVal.Add(GetToolboxItem("ModelNoteToolboxItem", store));
+				retVal.Add(GetToolboxItem("ModelNoteConnectorToolboxItem", store));
+			}
+			return retVal;
+		}
+#endif // VISUALSTUDIO_10_0
 	}
 }

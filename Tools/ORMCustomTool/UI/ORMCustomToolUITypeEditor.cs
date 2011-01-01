@@ -22,7 +22,6 @@ using System.Drawing.Design;
 using System.Text;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using Microsoft.Build.BuildEngine;
 using Microsoft.VisualStudio.VirtualTreeGrid;
 using VSLangProj;
 using Microsoft.VisualStudio;
@@ -67,11 +66,13 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 							IMoniker moniker;
 							ErrorHandler.ThrowOnFailure(CreateItemMoniker(
 								"!",
-#if VISUALSTUDIO_9_0
+#if VISUALSTUDIO_10_0
+								"VisualStudio.DTE.10.0:" +
+#elif VISUALSTUDIO_9_0
 								"VisualStudio.DTE.9.0:" +
-#else //!VISUALSTUDIO_9_0
+#else
 								"VisualStudio.DTE.8.0:" + 
-#endif //!VISUALSTUDIO_9_0
+#endif
 								procId.ToString(),
 								out moniker));
 							object objDTE;
@@ -83,7 +84,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 								ProjectItem projectItem = items.Item(1).ProjectItem;
 								if (projectItem != null)
 								{
-									windowsFormsEditorService.ShowDialog(new ORMGeneratorSelectionControl(projectItem));
+									windowsFormsEditorService.ShowDialog(new ORMGeneratorSelectionControl(projectItem, provider));
 								}
 							}
 						}

@@ -24,11 +24,17 @@ if not exist "%~dp0%~5" (
 	if not exist "%~dp0%~5.bat" goto:usage
 )
 
+IF "%ProgramFiles(X86)%"=="" (
+	SET WOWRegistryAdjust=
+) ELSE (
+	SET WOWRegistryAdjust=\Wow6432Node
+)
+
 REM Get the Visual Studio environment install location
-FOR /F "usebackq eol=! tokens=2*" %%A IN (`REG QUERY "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0%RootSuffix%" /v "InstallDir"`) DO call set LaunchDevenv=%%~dpsBdevenv
+FOR /F "usebackq eol=! tokens=2*" %%A IN (`REG QUERY "HKLM\SOFTWARE%WOWRegistryAdjust%\Microsoft\VisualStudio\8.0%RootSuffix%" /v "InstallDir"`) DO call set LaunchDevenv=%%~dpsBdevenv
 
 REM Clear the current add-in file, it may not load
-FOR /F "usebackq eol=! tokens=2*" %%A IN (`REG QUERY "HKCU\SOFTWARE\Microsoft\VisualStudio\8.0%RootSuffix%" /v "VisualStudioLocation"`) DO call set VSFileLocation=%%B
+FOR /F "usebackq eol=! tokens=2*" %%A IN (`REG QUERY "HKCU\SOFTWARE%WOWRegistryAdjust%\Microsoft\VisualStudio\8.0%RootSuffix%" /v "VisualStudioLocation"`) DO call set VSFileLocation=%%B
 if not exist "%VSFileLocation%\Addins" (md "%VSFileLocation%\Addins")
 del /F "%VSFileLocation%\Addins\%TestAddin%.Addin" 1>NUL 2>&1
 
@@ -42,22 +48,22 @@ if ERRORLEVEL 1 (
 	call:RestoreDir %UserSettingsDir%" "Backup"
 	goto:eof
 )
-reg save HKCU\Software\Microsoft\VisualStudio\8.0%RootSuffix% "%~dp0CurrentUserSettings.hiv" 1>NUL
+reg save HKCU\Software%WOWRegistryAdjust%\Microsoft\VisualStudio\8.0%RootSuffix% "%~dp0CurrentUserSettings.hiv" 1>NUL
 
 REM Establish the test environment
 xcopy /y /q /e /d "%~dp0%CachedSettings%" "%UserSettingsDir%\" 1>NUL
-reg delete HKCU\Software\Microsoft\VisualStudio\8.0%RootSuffix% /f 1>NUL 2>&1
-reg add HKCU\Software\Microsoft\VisualStudio\8.0%RootSuffix% 1>NUL
-reg restore HKCU\Software\Microsoft\VisualStudio\8.0%RootSuffix% "%~dp0%CachedSettings%.hiv" 1>NUL
+reg delete HKCU\Software%WOWRegistryAdjust%\Microsoft\VisualStudio\8.0%RootSuffix% /f 1>NUL 2>&1
+reg add HKCU\Software%WOWRegistryAdjust%\Microsoft\VisualStudio\8.0%RootSuffix% 1>NUL
+reg restore HKCU\Software%WOWRegistryAdjust%\Microsoft\VisualStudio\8.0%RootSuffix% "%~dp0%CachedSettings%.hiv" 1>NUL
 del /f "%~dp0%CachedSettings%.copy.vssettings" 1>NUL 2>&1
 copy /y "%~dp0%CachedSettings%.vssettings" "%~dp0%CachedSettings%.copy.vssettings" 1>NUL
-reg add HKCU\Software\Microsoft\VisualStudio\8.0%RootSuffix%\Profile /v AutoSaveFile /t REG_SZ /f /d "%~dp0%CachedSettings%.copy.vssettings" 1>NUL
+reg add HKCU\Software%WOWRegistryAdjust%\Microsoft\VisualStudio\8.0%RootSuffix%\Profile /v AutoSaveFile /t REG_SZ /f /d "%~dp0%CachedSettings%.copy.vssettings" 1>NUL
 
 REM Run VS once to make sure all directories are in line
 start /wait /min %LaunchDevenv%.exe /Command File.Exit /RootSuffix %RootSuffix%
 
 REM Install the add-in file so VS knows its there
-FOR /F "usebackq eol=! tokens=2*" %%A IN (`REG QUERY "HKCU\SOFTWARE\Microsoft\VisualStudio\8.0%RootSuffix%" /v "VisualStudioLocation"`) DO call set VSFileLocation=%%B
+FOR /F "usebackq eol=! tokens=2*" %%A IN (`REG QUERY "HKCU\SOFTWARE%WOWRegistryAdjust%\Microsoft\VisualStudio\8.0%RootSuffix%" /v "VisualStudioLocation"`) DO call set VSFileLocation=%%B
 SET InstallAddin="%VSFileLocation%\Addins\%TestAddin%.AddIn"
 type "%~dp0%TestAddin%\%TestAddin%.AddIn.start" > %InstallAddin%
 echo %~dp0%TestAddin%\bin\%TestAddin%.dll >> %InstallAddin%
@@ -76,9 +82,9 @@ if not '%~5'=='' (
 REM type "%TestLog%"
 
 REM Restore registry settings, application data, and .vssettings files
-reg delete HKCU\Software\Microsoft\VisualStudio\8.0%RootSuffix% /f 1>NUL 2>&1
-reg add HKCU\Software\Microsoft\VisualStudio\8.0%RootSuffix% 1>NUL
-reg restore HKCU\Software\Microsoft\VisualStudio\8.0%RootSuffix% "%~dp0CurrentUserSettings.hiv" 1>NUL
+reg delete HKCU\Software%WOWRegistryAdjust%\Microsoft\VisualStudio\8.0%RootSuffix% /f 1>NUL 2>&1
+reg add HKCU\Software%WOWRegistryAdjust%\Microsoft\VisualStudio\8.0%RootSuffix% 1>NUL
+reg restore HKCU\Software%WOWRegistryAdjust%\Microsoft\VisualStudio\8.0%RootSuffix% "%~dp0CurrentUserSettings.hiv" 1>NUL
 del /f "%~dp0CurrentUserSettings.hiv"
 del /f "%~dp0%CachedSettings%.copy.vssettings" 1>NUL 2>&1
 call:RestoreDir "%UserSettingsDir%" "Backup"

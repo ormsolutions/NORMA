@@ -3,6 +3,7 @@
 	Natural Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
+	Copyright © ORM Solutions, LLC. All rights reserved.
 
 	The use and distribution terms for this software are covered by the
 	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
@@ -18,9 +19,8 @@
 	<?define Architecture="32"?>
 	<!-- Possible values (without quotes) are '0' for Release build or '1' for Debug build. -->
 	<?ifdef Debug?>
-		<?if $(var.Debug)!=0?>
-			<?define Debug="1"?>
-		<?endif?>
+		<?undef Debug ?>
+		<?define Debug="1"?>
 	<?else?>
 		<?define Debug="0"?>
 	<?endif?>
@@ -38,6 +38,7 @@
 	<!- - VersionGuidSuffix should be distinct for every MSI. The last section of the GUID should match the product version (two hexits for MAJOR, two hexits for MINOR, two hexits for RELEASEYER, two hexits for RELEASEMONTH, four hexits for BUILD). The version number should NOT be translated into hexadecimal; that is, digits 10 should become hexits 10, not hexits 0A. - ->
 	<?define VersionGuidSuffix="$(var.Debug)$(var.ExperimentalHive)$(var.Architecture)-010006020130"?>
 	-->
+	<?include ../Version.wxi?>
 	<?if $(var.VSVer) = v8.0?>
 		<?define PackageGuidStart="EFDDC549-0000-5653"?>
 		<?define RootSuffixVersion="8.0"?>
@@ -49,8 +50,13 @@
 		<?define RootSuffixVersion="9.0"?>
 		<?define LinqSupport=1 ?>
 		<?define HelpFileTargetCollection="MS.VSIPCC.v90"?>
+	<?elseif $(var.VSVer) = v10.0?>
+		<?define PackageGuidStart="BB66440D-0000-4413"?>
+		<?define RootSuffixVersion="10.0"?>
+		<?define LinqSupport=1 ?>
+		<?define HelpFileTargetCollection="MS.VSIPCC.v100"?>
+		<?define VSIXInstall?>
 	<?endif?>
-	<?include ../Version.wxi?>
 	<?define PackageCode="$(var.PackageGuidStart)-$(var.VersionGuidSuffix)"?>
 	<!-- ProductCode should be changed for each MAJOR version. Specifically, the first and second hexits of the last section of the GUID should match the two digits of the major version.-->
 	<?define ProductCode="$(var.PackageGuidStart)-$(var.Debug)$(var.ExperimentalHive)$(var.Architecture)-$(var.MajorVersionHexits)0000000000"?>
@@ -107,11 +113,15 @@
 	<?endif?>
 	<?define VSRegRoot="$(var.VSBaseRegRoot)\$(var.RootSuffix)"?>
 	<?define VSClsidRoot="$(var.VSRegRoot)\CLSID"?>
-	<?define NORMAVSRegRoot="$(var.VSRegRoot)\ORM Solutions\Natural ORM Architect"?>
-	<?define NORMAVSExtensionsRegRoot="$(var.NORMAVSRegRoot)\Extensions"?>
 	<?define NeumontRegRoot="SOFTWARE\Neumont"?>
 	<?define ORMSolutionsRegRoot="SOFTWARE\ORM Solutions"?>
 	<?define NORMARegRoot="$(var.ORMSolutionsRegRoot)\Natural ORM Architect for $(var.VSLongName)"?>
+	<?ifdef VSIXInstall?>
+		<?define NORMADesignerRegRoot="$(var.NORMARegRoot)\Designer"?>
+	<?else?>
+		<?define NORMADesignerRegRoot="$(var.VSRegRoot)\ORM Solutions\Natural ORM Architect"?>
+	<?endif?>
+	<?define NORMAExtensionsRegRoot="$(var.NORMADesignerRegRoot)\Extensions"?>
 	<?define PLiXRegRoot="$(var.NeumontRegRoot)\PLiX for Visual Studio"?>
 	<?define PLiXMinimumSchemaVersion="4"?>
 	<!-- The default target directory for installation (under ProgramFilesFolder). -->
@@ -130,7 +140,10 @@
 	<?define VSOutputWindowGuid="34E76E81-EE4A-11D0-AE2E-00A0C90FFFC3"?>
 	<?define VSSolutionExplorerWindowGuid="3AE79031-E1BC-11D0-8F78-00A0C9110057"?>
 
+	<!-- Define "MergeMSHelpRegistration" to include custom actions that merge the help registration. -->
+	<!-- This is giving conflicting custom table action errors with Wix3.5, so it might be done automatically now. -->
+	<!--<?define MergeMSHelpRegistration=1?>-->
 	<!-- Define "HxMergeVSHelpCollection" in order to include custom actions that merge the VS Combined Help Collection. -->
 	<!-- Commenting this define bypasses the "Help is updating to reflect your recent changes" message the next time Document Explorer is opened, but it also significantly increaseses install time. -->
-	<?define HxMergeVSHelpCollection=1?>
+	<!--<?define HxMergeVSHelpCollection=1?>-->
 </Include>

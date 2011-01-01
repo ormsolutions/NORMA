@@ -28,9 +28,11 @@ using Microsoft.VisualStudio.Shell.Interop;
 using ORMSolutions.ORMArchitect.Framework.Design;
 using ORMSolutions.ORMArchitect.Core;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.ObjectModel.Design;
 using ORMSolutions.ORMArchitect.Framework;
 using ORMSolutions.ORMArchitect.Framework.Diagrams;
 using ORMSolutions.ORMArchitect.Core.Shell;
+
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	public partial class ObjectTypeShape : IModelErrorActivation, IDynamicColorGeometryHost, IConfigureableLinkEndpoint
@@ -134,8 +136,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			Color retVal = Color.Empty;
 			IDynamicShapeColorProvider<ORMDiagramDynamicColor, ObjectTypeShape, ObjectType>[] providers;
 			ObjectType element;
+			Store store;
 			if ((penId == DashedShapeOutlinePen || penId == DiagramPens.ShapeOutline) &&
-				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ObjectTypeShape, ObjectType>>()) &&
+				null != (store = Utility.ValidateStore(Store)) &&
+				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ObjectTypeShape, ObjectType>>()) &&
 				null != (element = (ObjectType)ModelElement))
 			{
 				for (int i = 0; i < providers.Length; ++i)
@@ -163,12 +167,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			Color retVal = Color.Empty;
 			SolidBrush solidBrush;
 			ObjectType element;
+			Store store;
 			IDynamicShapeColorProvider<ORMDiagramDynamicColor, ObjectTypeShape, ObjectType>[] providers;
 			bool isBackgroundBrush;
 			if (((isBackgroundBrush = brushId == DiagramBrushes.DiagramBackground) ||
 				brushId == DiagramBrushes.ShapeTitleText) &&
 				null != (solidBrush = brush as SolidBrush) &&
-				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ObjectTypeShape, ObjectType>>()) &&
+				null != (store = Utility.ValidateStore(Store)) &&
+				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ObjectTypeShape, ObjectType>>()) &&
 				null != (element = (ObjectType)ModelElement))
 			{
 				ORMDiagramDynamicColor requestColor = isBackgroundBrush ? ORMDiagramDynamicColor.Background : ORMDiagramDynamicColor.ForegroundText;
@@ -453,7 +459,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				ObjectType valueType = dataTypeError.ValueTypeHasDataType.ValueType;
 				EditorUtility.ActivatePropertyEditor(
 					(store as IORMToolServices).ServiceProvider,
-					DomainTypeDescriptor.CreatePropertyDescriptor(valueType, ObjectType.DataTypeDisplayDomainPropertyId),
+					ObjectTypeTypeDescriptor.DataTypeDisplayPropertyDescriptor,
 					true);
 			}
 			else if (null != (requiresReferenceSchemeError = error as EntityTypeRequiresReferenceSchemeError))

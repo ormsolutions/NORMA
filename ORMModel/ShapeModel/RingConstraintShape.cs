@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -18,16 +19,18 @@ using System;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
-using System.Text;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Globalization;
+using System.Text;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using ORMSolutions.ORMArchitect.Framework.Design;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using ORMSolutions.ORMArchitect.Core.Shell;
+using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Framework.Design;
 using ORMSolutions.ORMArchitect.Framework.Diagrams;
+
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	public partial class RingConstraintShape : ExternalConstraintShape, IModelErrorActivation
@@ -156,7 +159,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		public override void OnPaintShape(DiagramPaintEventArgs e)
 		{
-			this.InitializePaintTools(e);
+			if (null == Utility.ValidateStore(Store))
+			{
+				return;
+			}
+			InitializePaintTools(e);
 			base.OnPaintShape(e);
 
 			RingConstraint ringConstraint = this.AssociatedRingConstraint;

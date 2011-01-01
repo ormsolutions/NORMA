@@ -69,10 +69,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			}
 			return dataTypes;
 		}
-		private static readonly Size DefaultInitialControlSize = SetupDefaultInitialControlSize();
-		private static Size SetupDefaultInitialControlSize()
+		/// <summary>
+		/// Choose an initial size
+		/// </summary>
+		static DataTypePicker()
 		{
-			return LastControlSizeStorage = new Size(192, 144);
+			LastControlSizeStorage = new Size(192, 144);
 		}
 	}
 }

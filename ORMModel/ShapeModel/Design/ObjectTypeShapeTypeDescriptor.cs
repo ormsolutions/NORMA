@@ -49,7 +49,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 		{
 			if (domainProperty.Id == ObjectTypeShape.DisplayRelatedTypesDomainPropertyId)
 			{
-				return ModelElement.IsSubtypeOrSupertype;
+				ObjectType objectType;
+				return null != (objectType = ModelElement) && objectType.IsSubtypeOrSupertype;
 			}
 			return base.ShouldCreatePropertyDescriptor(requestor, domainProperty);
 		}

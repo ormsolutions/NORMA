@@ -97,6 +97,8 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 			#endregion // ParentControl
 			#region Constructor
 			public readonly MultiDiagramDocView DocView;
+			private readonly Timer myDragActivateTimer;
+			private int myDragActivateTabIndex;
 			public MultiDiagramDocViewControl(MultiDiagramDocView docView)
 			{
 				DocView = docView;
@@ -119,6 +121,13 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 				Microsoft.Win32.SystemEvents.UserPreferenceChanged += SetFonts;
 				SetFonts(null, null);
 
+				base.AllowDrop = true;
+				Timer activateTimer = new Timer();
+				activateTimer.Interval = SystemInformation.DoubleClickTime;
+				activateTimer.Tick += new EventHandler(ActivateTimer_Tick);
+				myDragActivateTabIndex = -1;
+				myDragActivateTimer = activateTimer;
+	
 				base.ResumeLayout(false);
 				parentControl.ResumeLayout(false);
 			}
@@ -368,6 +377,73 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 				base.OnMouseDoubleClick(e);
 			}
 			#endregion // OnMouseDoubleClick method
+			#region Tab Drag Activation
+			private void ActivateTimer_Tick(object sender, EventArgs e)
+			{
+				int activateTabIndex = myDragActivateTabIndex;
+				if (activateTabIndex != -1)
+				{
+					SetDragActivateTimer(-1);
+					if (!Disposing &&
+						!IsDisposed &&
+						activateTabIndex < TabPages.Count)
+					{
+						SelectedIndex = activateTabIndex;
+					}
+				}
+			}
+			private void SetDragActivateTimer(int tabIndex)
+			{
+				if (tabIndex == -1 || tabIndex >= TabPages.Count)
+				{
+					if (myDragActivateTabIndex != -1)
+					{
+						myDragActivateTimer.Stop();
+						myDragActivateTabIndex = -1;
+					}
+				}
+				else if (myDragActivateTabIndex != tabIndex)
+				{
+					Timer timer = myDragActivateTimer;
+					if (tabIndex == SelectedIndex)
+					{
+						if (myDragActivateTabIndex != -1)
+						{
+							timer.Stop();
+							myDragActivateTabIndex = -1;
+						}
+					}
+					else if (timer.Enabled)
+					{
+						timer.Stop();
+						myDragActivateTabIndex = tabIndex;
+						timer.Start();
+					}
+					else
+					{
+						myDragActivateTabIndex = tabIndex;
+						timer.Start();
+					}
+				}
+			}
+			protected override void OnDragLeave(EventArgs e)
+			{
+				SetDragActivateTimer(-1);
+				base.OnDragLeave(e);
+			}
+			protected override void OnDragOver(DragEventArgs drgevent)
+			{
+				Point point = PointToClient(new Point(drgevent.X, drgevent.Y));
+				int tabIndex = !DisplayRectangle.Contains(point) ? GetTabIndexAtPoint(point) : -1;
+				if (tabIndex > 0 && point.X < (DiagramImageWidth / 2))
+				{
+					// We're on the left edge, activate the previous tab
+					--tabIndex;
+				}
+				SetDragActivateTimer(tabIndex);
+				base.OnDragOver(drgevent);
+			}
+			#endregion // Tab Drag Activation
 			#region RenameTab method
 			private void RenameTab(DiagramTabPage tabPage)
 			{
@@ -508,7 +584,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 			}
 			#endregion // UnsafeNativeMethods
 			#region GetTabAtPoint method
-			private DiagramTabPage GetTabAtPoint(Point point)
+			private int GetTabIndexAtPoint(Point point)
 			{
 				const uint TCM_HITTEST = 0x130D;
 				UnsafeNativeMethods.TCHITTESTINFO hitTestInfo = new UnsafeNativeMethods.TCHITTESTINFO(point);
@@ -520,10 +596,15 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 					tabRect.Inflate(-TabOutsideBorderLength, -TabOutsideBorderLength);
 					if (tabRect.Contains(point))
 					{
-						return ((DiagramTabPage)base.TabPages[index]);
+						return index;
 					}
 				}
-				return null;
+				return -1;
+			}
+			private DiagramTabPage GetTabAtPoint(Point point)
+			{
+				int tabIndex = GetTabIndexAtPoint(point);
+				return (tabIndex != -1) ? (DiagramTabPage)TabPages[tabIndex] : null;
 			}
 			#endregion // GetTabAtPoint method
 			#region OnPaint method

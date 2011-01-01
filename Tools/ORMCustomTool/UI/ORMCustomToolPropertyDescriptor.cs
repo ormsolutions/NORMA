@@ -22,7 +22,6 @@ using System.Drawing.Design;
 using System.Text;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using Microsoft.Build.BuildEngine;
 using Microsoft.VisualStudio.VirtualTreeGrid;
 
 namespace ORMSolutions.ORMArchitect.ORMCustomTool

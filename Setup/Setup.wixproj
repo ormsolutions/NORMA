@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\Neumont\VisualStudio\Neumont.Build.VisualStudio.Multitargeting.targets" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <ProductVersion>3.0</ProductVersion>
+    <ProductVersion>3.5</ProductVersion>
     <ProjectGuid>{efddc549-1646-4451-8aff-ffffffffffff}</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
     <OutputName>Natural ORM Architect for $(TargetVisualStudioLongProductName)</OutputName>
@@ -14,11 +14,16 @@
     <DefineSolutionProperties>false</DefineSolutionProperties>
     <SuppressSpecificWarnings>1091</SuppressSpecificWarnings>
     <SuppressIces>ICE03;ICE82</SuppressIces>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DefineConstants>$(DefineConstants);Debug</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Bitmaps\" />
@@ -65,13 +70,18 @@
     <Compile Include="UI\WaitForCostingDlg.wxs" />
     <Compile Include="UI\WelcomeDlg.wxs" />
   </ItemGroup>
+  <Import Project="$(WixTargetsPath)" />
   <ItemGroup>
-    <WixExtension Include="WixVSExtension, Culture=neutral">
+    <WixExtension Include="WixVSExtension.dll">
       <Class>Microsoft.Tools.WindowsInstallerXml.Extensions.VSExtension</Class>
       <Private>False</Private>
+      <HintPath>WixVSExtension.dll</HintPath>
+      <Name>WixVSExtension, Culture=neutral</Name>
     </WixExtension>
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WiX\v3.0\Wix.targets" />
+  <ItemGroup>
+    <Content Include="NORMAItemTemplates.wxi" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Neumont\VisualStudio\Neumont.Build.VisualStudio.targets" />
   <PropertyGroup>
     <CompileAndLinkDependsOn>LocateVisualStudioSDKRedistributablesDir;$(CompileAndLinkDependsOn)</CompileAndLinkDependsOn>

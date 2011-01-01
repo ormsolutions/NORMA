@@ -466,14 +466,6 @@
     <value>ORMModel</value>
     <comment>DisplayName for DomainClass &apos;ORMModel&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel/ModelErrorDisplayFilterDisplay.Description" xml:space="preserve">
-    <value>Validation error display options for this model. Control error display by category and individually.</value>
-    <comment>Description for DomainProperty &apos;ModelErrorDisplayFilterDisplay&apos; on DomainClass &apos;ORMModel&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel/ModelErrorDisplayFilterDisplay.DisplayName" xml:space="preserve">
-    <value>ErrorDisplay</value>
-    <comment>DisplayName for DomainProperty &apos;ModelErrorDisplayFilterDisplay&apos; on DomainClass &apos;ORMModel&apos;</comment>
-  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel/DefinitionText.Description" xml:space="preserve">
     <value>An informal description of this Model.
     To insert new lines, use Control-Enter in the dropdown editor, or open the &apos;ORM Informal Description Editor&apos; tool window.</value>
@@ -582,23 +574,6 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/ReferenceModeDecoratedString.DisplayName" xml:space="preserve">
     <value>ReferenceModeDecoratedString</value>
     <comment>DisplayName for DomainProperty &apos;ReferenceModeDecoratedString&apos; on DomainClass &apos;ObjectType&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/ReferenceMode.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.ReferenceMode</value>
-    <comment>Description for DomainProperty &apos;ReferenceMode&apos; on DomainClass &apos;ObjectType&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/ReferenceMode.DisplayName" xml:space="preserve">
-    <value>ReferenceMode</value>
-    <comment>DisplayName for DomainProperty &apos;ReferenceMode&apos; on DomainClass &apos;ObjectType&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/DataTypeDisplay.Description" xml:space="preserve">
-    <value>The DataType for this ValueType, or the DataType for the identifying ValueType if this is an EntityType.
-    This is a portable DataType. The final physical DataType is dependent on the generation target.</value>
-    <comment>Description for DomainProperty &apos;DataTypeDisplay&apos; on DomainClass &apos;ObjectType&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/DataTypeDisplay.DisplayName" xml:space="preserve">
-    <value>DataType</value>
-    <comment>DisplayName for DomainProperty &apos;DataTypeDisplay&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/ValueRangeText.Description" xml:space="preserve">
     <value>Restrict the range of possible values for instances of this ObjectType.
@@ -791,14 +766,6 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.Role.DisplayName" xml:space="preserve">
     <value>Role</value>
     <comment>DisplayName for DomainClass &apos;Role&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.Role/RolePlayerDisplay.Description" xml:space="preserve">
-    <value>The ObjectType that plays this Role.</value>
-    <comment>Description for DomainProperty &apos;RolePlayerDisplay&apos; on DomainClass &apos;Role&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.Role/RolePlayerDisplay.DisplayName" xml:space="preserve">
-    <value>RolePlayer</value>
-    <comment>DisplayName for DomainProperty &apos;RolePlayerDisplay&apos; on DomainClass &apos;Role&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.Role/IsMandatory.Description" xml:space="preserve">
     <value>Does this Role have a simple mandatory constraint?</value>
@@ -1806,14 +1773,6 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceMode.DisplayName" xml:space="preserve">
     <value>ReferenceMode</value>
     <comment>DisplayName for DomainClass &apos;ReferenceMode&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceMode/KindDisplay.Description" xml:space="preserve">
-    <value>The kind of the reference mode pattern. One of Popular, UnitBase, or General.</value>
-    <comment>Description for DomainProperty &apos;KindDisplay&apos; on DomainClass &apos;ReferenceMode&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceMode/KindDisplay.DisplayName" xml:space="preserve">
-    <value>Kind</value>
-    <comment>DisplayName for DomainProperty &apos;KindDisplay&apos; on DomainClass &apos;ReferenceMode&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnspecifiedDataType.Description" xml:space="preserve">
     <value></value>

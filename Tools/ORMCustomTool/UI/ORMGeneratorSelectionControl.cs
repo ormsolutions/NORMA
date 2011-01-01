@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -18,11 +19,15 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
-using Microsoft.Build.BuildEngine;
 using Microsoft.VisualStudio.VirtualTreeGrid;
-using System.IO;
+#if VISUALSTUDIO_10_0
+using Microsoft.Build.Construction;
+#else
+using Microsoft.Build.BuildEngine;
+#endif
 
 namespace ORMSolutions.ORMArchitect.ORMCustomTool
 {
@@ -37,53 +42,92 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 
 		private readonly MainBranch _mainBranch;
 		private readonly EnvDTE.ProjectItem _projectItem;
-		private readonly Project _project;
-		private readonly BuildItemGroup _originalBuildItemGroup;
 		private bool _savedChanges;
 		private readonly string _sourceFileName;
-		private readonly BuildItemGroup _buildItemGroup;
-		private readonly Dictionary<string, BuildItem> _buildItemsByGenerator;
 		private Dictionary<string, string> _removedItems;
 		private readonly string _projectItemRelativePath;
+		private readonly IServiceProvider _serviceProvider;
+#if VISUALSTUDIO_10_0
+		private readonly ProjectRootElement _project;
+		private readonly ProjectItemGroupElement _originalItemGroup;
+		private readonly ProjectItemGroupElement _itemGroup;
+		private readonly Dictionary<string, ProjectItemElement> _itemsByGenerator;
+#else // VISUALSTUDIO_10_0
+		private readonly Project _project;
+		private readonly BuildItemGroup _originalItemGroup;
+		private readonly BuildItemGroup _itemGroup;
+		private readonly Dictionary<string, BuildItem> _itemsByGenerator;
+#endif // VISUALSTUDIO_10_0
 		private ORMGeneratorSelectionControl()
 		{
 			this.InitializeComponent();
+			textBox_ORMFileName.Left = label_GeneratedFilesFor.Right + textBox_ORMFileName.Margin.Left;
 		}
 
-		public ORMGeneratorSelectionControl(EnvDTE.ProjectItem projectItem)
+		public ORMGeneratorSelectionControl(EnvDTE.ProjectItem projectItem, IServiceProvider serviceProvider)
 			: this()
 		{
+			_projectItem = projectItem;
+			_serviceProvider = serviceProvider;
+#if VISUALSTUDIO_10_0
+			ProjectRootElement project = ProjectRootElement.TryOpen(projectItem.ContainingProject.FullName);
+			string projectFullPath = project.FullPath;
+#else // VISUALSTUDIO_10_0
 			Project project = Engine.GlobalEngine.GetLoadedProject(projectItem.ContainingProject.FullName);
 			string projectFullPath = project.FullFileName;
+#endif // VISUALSTUDIO_10_0
+			_project = project;
+
 			string projectItemRelativePath = (string)projectItem.Properties.Item("LocalPath").Value;
 			projectItemRelativePath = (new Uri(projectFullPath)).MakeRelativeUri(new Uri(projectItemRelativePath)).ToString();
-			this._projectItemRelativePath = projectItemRelativePath;
+			_projectItemRelativePath = projectItemRelativePath;
 
-			BuildItemGroup originalBuildItemGroup = ORMCustomTool.GetBuildItemGroup(project, projectItemRelativePath);
-			_projectItem = projectItem;
-			this._project = project;
-			this._originalBuildItemGroup = originalBuildItemGroup;
-
-			BuildItemGroup buildItemGroup;
-			if (originalBuildItemGroup == null)
+#if VISUALSTUDIO_10_0
+			ProjectItemGroupElement originalItemGroup = ORMCustomTool.GetItemGroup(project, projectItemRelativePath);
+			ProjectItemGroupElement itemGroup;
+			if (originalItemGroup == null)
 			{
-				buildItemGroup = project.AddNewItemGroup();
-				buildItemGroup.Condition = string.Concat(ITEMGROUP_CONDITIONSTART, projectItemRelativePath, ITEMGROUP_CONDITIONEND);
+				itemGroup = project.AddItemGroup();
+				itemGroup.Condition = string.Concat(ITEMGROUP_CONDITIONSTART, projectItemRelativePath, ITEMGROUP_CONDITIONEND);
 			}
 			else
 			{
-				buildItemGroup = project.AddNewItemGroup();
-				buildItemGroup.Condition = originalBuildItemGroup.Condition;
-				foreach (BuildItem item in originalBuildItemGroup)
+				itemGroup = project.AddItemGroup();
+				itemGroup.Condition = originalItemGroup.Condition;
+				foreach (ProjectItemElement item in originalItemGroup.Items)
 				{
-					BuildItem newItem = buildItemGroup.AddNewItem(item.Name, item.Include, false);
+					ProjectItemElement newItem = itemGroup.AddItem(item.ItemType, item.Include);
+					newItem.Condition = item.Condition;
+					foreach (ProjectMetadataElement metadataElement in item.Metadata)
+					{
+						newItem.AddMetadata(metadataElement.Name, metadataElement.Value);
+					}
+				}
+			}
+#else // VISUALSTUDIO_10_0
+			BuildItemGroup originalItemGroup = ORMCustomTool.GetItemGroup(project, projectItemRelativePath);
+			BuildItemGroup itemGroup;
+			if (originalItemGroup == null)
+			{
+				itemGroup = project.AddNewItemGroup();
+				itemGroup.Condition = string.Concat(ITEMGROUP_CONDITIONSTART, projectItemRelativePath, ITEMGROUP_CONDITIONEND);
+			}
+			else
+			{
+				itemGroup = project.AddNewItemGroup();
+				itemGroup.Condition = originalItemGroup.Condition;
+				foreach (BuildItem item in originalItemGroup)
+				{
+					BuildItem newItem = itemGroup.AddNewItem(item.Name, item.Include, false);
 					newItem.Condition = item.Condition;
 					item.CopyCustomMetadataTo(newItem);
 				}
 			}
-			this._buildItemGroup = buildItemGroup;
+#endif // VISUALSTUDIO_10_0
+			_originalItemGroup = originalItemGroup;
+			_itemGroup = itemGroup;
 
-			string condition = buildItemGroup.Condition.Trim();
+			string condition = itemGroup.Condition.Trim();
 
 			string sourceFileName = this._sourceFileName = projectItem.Name;
 
@@ -141,8 +185,13 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			this.virtualTreeControl.ShowToolTips = true;
 			this.virtualTreeControl.FullCellSelect = true;
 
-			Dictionary<string, BuildItem> buildItemsByGenerator = this._buildItemsByGenerator = new Dictionary<string, BuildItem>(buildItemGroup.Count, StringComparer.OrdinalIgnoreCase);
-			foreach (BuildItem buildItem in buildItemGroup)
+#if VISUALSTUDIO_10_0
+			Dictionary<string, ProjectItemElement> buildItemsByGenerator = this._itemsByGenerator = new Dictionary<string, ProjectItemElement>(itemGroup.Count, StringComparer.OrdinalIgnoreCase);
+			foreach (ProjectItemElement buildItem in itemGroup.Items)
+#else // VISUALSTUDIO_10_0
+			Dictionary<string, BuildItem> buildItemsByGenerator = this._itemsByGenerator = new Dictionary<string, BuildItem>(itemGroup.Count, StringComparer.OrdinalIgnoreCase);
+			foreach (BuildItem buildItem in itemGroup)
+#endif // VISUALSTUDIO_10_0
 			{
 				// Do this very defensively so that the dialog can still be opened if a project is out
 				// of step with the generators registered on a specific machine.
@@ -190,27 +239,27 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			}
 		}
 
-		private BuildItemGroup BuildItemGroup
-		{
-			get
-			{
-				return this._buildItemGroup;
-			}
-		}
-
+#if VISUALSTUDIO_10_0
+		private IDictionary<string, ProjectItemElement> BuildItemsByGenerator
+#else
 		private IDictionary<string, BuildItem> BuildItemsByGenerator
+#endif
 		{
 			get
 			{
-				return this._buildItemsByGenerator;
+				return this._itemsByGenerator;
 			}
 		}
 
+#if VISUALSTUDIO_10_0
+		private void RemoveRemovedItem(ProjectItemElement buildItem)
+#else
 		private void RemoveRemovedItem(BuildItem buildItem)
+#endif
 		{
 			if (_removedItems != null)
 			{
-				string key = buildItem.FinalItemSpec;
+				string key = ORMCustomToolUtility.GetItemInclude(buildItem);
 				if (_removedItems.ContainsKey(key))
 				{
 					_removedItems.Remove(key);
@@ -218,7 +267,11 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			}
 		}
 
+#if VISUALSTUDIO_10_0
+		private void AddRemovedItem(ProjectItemElement buildItem)
+#else
 		private void AddRemovedItem(BuildItem buildItem)
+#endif
 		{
 			Dictionary<string, string> items = _removedItems;
 			if (items == null)
@@ -226,7 +279,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				items = new Dictionary<string, string>();
 				_removedItems = items;
 			}
-			string key = buildItem.FinalItemSpec;
+			string key = ORMCustomToolUtility.GetItemInclude(buildItem);
 			items[key] = key;
 		}
 
@@ -247,7 +300,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 					{
 						if (loadedExtensions == null)
 						{
-							loadedExtensions = (new ORMExtensionManager(_projectItem)).GetLoadedExtensions();
+							loadedExtensions = (new ORMExtensionManager(_projectItem)).GetLoadedExtensions(_serviceProvider);
 						}
 						if (Array.BinarySearch<string>(loadedExtensions, requiredExtension) < 0)
 						{
@@ -265,7 +318,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				}
 				if (requiredExtensions != null)
 				{
-					_savedChanges = ORMExtensionManager.EnsureExtensions(_projectItem, requiredExtensions.Values);
+					_savedChanges = ORMExtensionManager.EnsureExtensions(_projectItem, _serviceProvider, requiredExtensions.Values);
 				}
 			}
 			if (_savedChanges)
@@ -291,18 +344,31 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 					}
 				}
 				// throw away the original build item group
-				if (_originalBuildItemGroup != null)
+				if (_originalItemGroup != null)
 				{
-					_project.RemoveItemGroup(_originalBuildItemGroup);
+#if VISUALSTUDIO_10_0
+					_project.RemoveChild(_originalItemGroup);
+#else
+					_project.RemoveItemGroup(_originalItemGroup);
+#endif
 				}
 
+#if VISUALSTUDIO_10_0
+				Dictionary<string, ProjectItemElement> removeItems = new Dictionary<string, ProjectItemElement>();
+#else
 				Dictionary<string, BuildItem> removeItems = new Dictionary<string, BuildItem>();
+#endif
 				string tmpFile = null;
 				try
 				{
 					EnvDTE.ProjectItems projectItems = _projectItem.ProjectItems;
+#if VISUALSTUDIO_10_0
+					string itemDirectory = (new FileInfo((string)_project.FullPath)).DirectoryName;
+					foreach (ProjectItemElement item in _itemGroup.Items)
+#else
 					string itemDirectory = (new FileInfo((string)_project.FullFileName)).DirectoryName;
-					foreach (BuildItem item in this._buildItemGroup)
+					foreach (BuildItem item in this._itemGroup)
+#endif
 					{
 						string filePath = string.Concat(itemDirectory, Path.DirectorySeparatorChar, item.Include);
 						string fileName = (new FileInfo(item.Include)).Name;
@@ -341,13 +407,21 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 					}
 				}
 
+#if VISUALSTUDIO_10_0
+				foreach (ProjectItemGroupElement group in this._project.ItemGroups)
+#else
 				foreach (BuildItemGroup group in this._project.ItemGroups)
+#endif
 				{
-					if (group.Condition.Trim() == this._buildItemGroup.Condition.Trim())
+					if (group.Condition.Trim() == this._itemGroup.Condition.Trim())
 					{
 						continue;
 					}
+#if VISUALSTUDIO_10_0
+					foreach (ProjectItemElement item in group.Items)
+#else
 					foreach (BuildItem item in group)
+#endif
 					{
 						if (removeItems.ContainsKey(item.Include))
 						{
@@ -357,10 +431,21 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				}
 				foreach (string key in removeItems.Keys)
 				{
-					if (removeItems[key] != null)
+#if VISUALSTUDIO_10_0
+					ProjectItemElement removeItem;
+					ProjectElementContainer removeFrom;
+					if (null != (removeItem =removeItems[key]) &&
+						null != (removeFrom = removeItem.Parent))
 					{
-						this._project.RemoveItem(removeItems[key]);
+						removeFrom.RemoveChild(removeItem);
 					}
+#else
+					BuildItem removeItem = removeItems[key];
+					if (removeItem != null)
+					{
+						_project.RemoveItem(removeItem);
+					}
+#endif
 				}
 
 				VSLangProj.VSProjectItem vsProjectItem = _projectItem.Object as VSLangProj.VSProjectItem;
@@ -371,7 +456,11 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			}
 			else
 			{
-				_project.RemoveItemGroup(_buildItemGroup);
+#if VISUALSTUDIO_10_0
+				_project.RemoveChild(_itemGroup);
+#else
+				_project.RemoveItemGroup(_itemGroup);
+#endif
 			}
 			base.OnClosed(e);
 		}

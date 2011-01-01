@@ -96,13 +96,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		}
 
 		/// <summary>
-		/// Returns an instance of <see cref="ObjectificationRolePlayerPropertyDescriptor"/> for <see cref="Objectification.NestingType"/>.
+		/// Returns an instance of <see cref="ObjectifyingEntityTypePropertyDescriptor"/> for <see cref="Objectification.NestingType"/>.
 		/// </summary>
 		protected override RolePlayerPropertyDescriptor CreateRolePlayerPropertyDescriptor(ModelElement sourceRolePlayer, DomainRoleInfo targetRoleInfo, Attribute[] sourceDomainRoleInfoAttributes)
 		{
 			if (Utility.IsDescendantOrSelf(targetRoleInfo, Objectification.NestingTypeDomainRoleId))
 			{
-				return new ObjectificationRolePlayerPropertyDescriptor(sourceRolePlayer, targetRoleInfo, sourceDomainRoleInfoAttributes);
+				return new ObjectifyingEntityTypePropertyDescriptor((FactType)sourceRolePlayer, targetRoleInfo, sourceDomainRoleInfoAttributes);
 			}
 			return base.CreateRolePlayerPropertyDescriptor(sourceRolePlayer, targetRoleInfo, sourceDomainRoleInfoAttributes);
 		}

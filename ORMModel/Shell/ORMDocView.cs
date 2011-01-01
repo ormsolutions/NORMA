@@ -271,6 +271,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// </summary>
 		SelectInModelBrowser = 1L << 53,
 		/// <summary>
+		/// Activate the next shape in the same diagram corresponding the current backing element
+		/// </summary>
+		SelectNextInCurrentDiagram = 1L << 54,
+		/// <summary>
 		/// Mask field representing individual delete commands
 		/// </summary>
 		Delete = DeleteObjectType | DeleteFactType | DeleteConstraint | DeleteRole | DeleteModelNote | DeleteModelNoteReference | DeleteGroup | RemoveFromGroup,

@@ -31,6 +31,7 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 	/// <summary>
 	/// Double-derived base class for DomainClass TableShape
 	/// </summary>
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::ORMSolutions.ORMArchitect.Framework.Diagrams.Design.PresentationElementTypeDescriptionProvider<TableShape, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table, global::ORMSolutions.ORMArchitect.Framework.Diagrams.Design.PresentationElementTypeDescriptor<TableShape, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table>>))]
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Views.RelationalView.TableShape.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel), "ORMSolutions.ORMArchitect.Views.RelationalView.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Views.RelationalView.TableShape.Description", typeof(global::ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel), "ORMSolutions.ORMArchitect.Views.RelationalView.GeneratedCode.DomainModelResx")]
 	[DslModeling::DomainObjectId("50dabfcd-909c-418a-8895-172aadaad4fb")]

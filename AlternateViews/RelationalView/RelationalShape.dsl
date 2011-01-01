@@ -35,6 +35,13 @@
 
 	<Shapes>
 		<CompartmentShape Name="TableShape" Id="50DABFCD-909C-418A-8895-172AADAAD4FB" Namespace="ORMSolutions.ORMArchitect.Views.RelationalView" GeneratesDoubleDerived="true" InitialHeight="0.3" InitialWidth="1" OutlineThickness="0.015625" AccessModifier="Assembly">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Diagrams.Design.PresentationElementTypeDescriptionProvider&lt;TableShape, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table, global::ORMSolutions.ORMArchitect.Framework.Diagrams.Design.PresentationElementTypeDescriptor&lt;TableShape, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
 			<Properties>
 				<DomainProperty Name="UpdateCounter" Id="9D49FFBB-3BB3-4711-B88E-9DBBD984C63D" GetterAccessModifier="Private" SetterAccessModifier="Private" Kind="CustomStorage" IsBrowsable="false">
 					<Type>
@@ -54,6 +61,14 @@
 	</Connectors>
 	
 	<XmlSerializationBehavior Name="RelationalShapeModelSerializationBehavior" Namespace="ORMSolutions.ORMArchitect.Views.RelationalView"/>
+
+	<DslLibraryImports>
+		<DslLibraryImport FilePath="..\..\Oial\ORMOialBridge\ORMOialBridge.dsl"/>
+		<DslLibraryImport FilePath="..\..\RelationalModel\DcilModel\DcilModel.dsl"/>
+		<DslLibraryImport FilePath="..\..\RelationalModel\OialDcilBridge\OialDcilBridge.dsl"/>
+		<DslLibraryImport FilePath="..\..\ORMModel\ObjectModel\ORMCore.dsl"/>
+		<DslLibraryImport FilePath="..\..\ORMModel\Framework\SystemCore.dsl"/>
+	</DslLibraryImports>
 
 	<!-- Diagram is double-derived so that we can override CreateChildShape. -->
 	<Diagram Name="RelationalDiagram" Namespace="ORMSolutions.ORMArchitect.Views.RelationalView" Id="9DD5AFCE-2B3C-4854-AE9F-8FF5D5B7BF08" AccessModifier="Assembly" GeneratesDoubleDerived="true" HasCustomConstructor="true">

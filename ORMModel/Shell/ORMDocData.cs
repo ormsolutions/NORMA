@@ -56,15 +56,55 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		[Flags]
 		private enum PrivateFlags
 		{
+			/// <summary>
+			/// No flags are set
+			/// </summary>
 			None = 0,
+			/// <summary>
+			/// Post load events have been registered with the store.
+			/// </summary>
 			AddedPostLoadEvents = 1,
+			/// <summary>
+			/// Pre load events have been registered with the store.
+			/// </summary>
 			AddedPreLoadEvents = 2,
+			/// <summary>
+			/// Survey events have been registered with the store.
+			/// </summary>
 			AddedSurveyQuestionEvents = 4,
+			/// <summary>
+			/// The file was imported with format modifications from
+			/// a previous format, and the user has chosen to disallow
+			/// the save command.
+			/// </summary>
 			SaveDisabled = 8,
+			/// <summary>
+			/// The error display was modified during a transaction. Update
+			/// the task list and corresponding diagram display to show
+			/// the current display settings.
+			/// </summary>
 			ErrorDisplayModified = 0x10,
+			/// <summary>
+			/// The file has been reloaded and the undo stack cleared. The
+			/// file should be shown as dirty even with an empty stack.
+			/// </summary>
 			UndoStackRemoved = 0x20,
+			/// <summary>
+			/// An attempt to load with modified extensions has failed. Reload
+			/// the old state then show the exception.
+			/// </summary>
 			RethrowLoadDocDataException = 0x40,
+			/// <summary>
+			/// Do not forward the OnDocumentReloading method to the base
+			/// during a reload of a failed extension modification.
+			/// </summary>
 			IgnoreDocumentReloading = 0x80,
+			/// <summary>
+			/// The <see cref="ORMModel"/> and <see cref="ORMDiagram"/> names
+			/// replacement fields should be checked and replaced with the
+			/// full file name once it is known if the names are set to '$fileinputname$'.
+			/// </summary>
+			ReplaceFileInputNames = 0x100,
 			// Other flags here, add instead of lots of bool variables
 		}
 		private PrivateFlags myFlags;
@@ -482,61 +522,58 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 				}
 			}
-			if (dontSave)
+			IVsHierarchy hierarchy;
+			uint itemId;
+			object isNewObject;
+			bool newFileItem = null != (hierarchy = this.Hierarchy) &&
+				VSConstants.VSITEMID_NIL != (itemId = this.ItemId) &&
+				ErrorHandler.Succeeded(hierarchy.GetProperty(itemId, (int)__VSHPROPID.VSHPROPID_IsNewUnsavedItem, out isNewObject)) &&
+				(bool)isNewObject;
+			if (dontSave && !newFileItem)
 			{
-				// If this is a new file then do not disable the save button
-				IVsHierarchy hierarchy;
-				uint itemId;
-				object isNewObject;
-				if (null != (hierarchy = this.Hierarchy) &&
-					VSConstants.VSITEMID_NIL != (itemId = this.ItemId) &&
-					ErrorHandler.Succeeded(hierarchy.GetProperty(itemId, (int)__VSHPROPID.VSHPROPID_IsNewUnsavedItem, out isNewObject)) &&
-					(bool)isNewObject)
+				string message;
+				CultureInfo culture = CultureInfo.CurrentCulture;
+				int unrecognizedCount;
+				if (unrecognizedNamespaces != null &&
+					0 != (unrecognizedCount = unrecognizedNamespaces.Count))
 				{
-					dontSave = false;
+					string namespaceReplacement = unrecognizedNamespaces[0];
+					if (unrecognizedCount > 1)
+					{
+						string separator = culture.TextInfo.ListSeparator;
+						if (!char.IsWhiteSpace(separator, separator.Length - 1))
+						{
+							separator += " ";
+						}
+						for (int i = 1; i < unrecognizedCount; ++i)
+						{
+							namespaceReplacement += separator + unrecognizedNamespaces[i];
+						}
+					}
+					message = string.Format(culture, ResourceStrings.UnrecognizedExtensionsStrippedMessage, fileName, namespaceReplacement);
 				}
+				else
+				{
+					message = string.Format(culture, ResourceStrings.FileFormatUpgradeMessage, fileName);
+				}
+				// The disabled save is leading to data loss, prompt the user
+				dontSave = (int)DialogResult.Yes == VsShellUtilities.ShowMessageBox(
+					ServiceProvider,
+					message,
+					ResourceStrings.PackageOfficialName,
+					OLEMSGICON.OLEMSGICON_QUERY,
+					OLEMSGBUTTON.OLEMSGBUTTON_YESNO,
+					OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
 				if (dontSave)
 				{
-					string message;
-					CultureInfo culture = CultureInfo.CurrentCulture;
-					int unrecognizedCount;
-					if (unrecognizedNamespaces != null &&
-						0 != (unrecognizedCount = unrecognizedNamespaces.Count))
-					{
-						string namespaceReplacement = unrecognizedNamespaces[0];
-						if (unrecognizedCount > 1)
-						{
-							string separator = culture.TextInfo.ListSeparator;
-							if (!char.IsWhiteSpace(separator, separator.Length - 1))
-							{
-								separator += " ";
-							}
-							for (int i = 1; i < unrecognizedCount; ++i)
-							{
-								namespaceReplacement += separator + unrecognizedNamespaces[i];
-							}
-						}
-						message = string.Format(culture, ResourceStrings.UnrecognizedExtensionsStrippedMessage, fileName, namespaceReplacement);
-					}
-					else
-					{
-						message = string.Format(culture, ResourceStrings.FileFormatUpgradeMessage, fileName);
-					}
-					// The disabled save is leading to data loss, prompt the user
-					dontSave = (int)DialogResult.Yes == VsShellUtilities.ShowMessageBox(
-						ServiceProvider,
-						message,
-						ResourceStrings.PackageOfficialName,
-						OLEMSGICON.OLEMSGICON_QUERY,
-						OLEMSGBUTTON.OLEMSGBUTTON_YESNO,
-						OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
-					if (dontSave)
-					{
-						IVsRunningDocumentTable docTable = (IVsRunningDocumentTable)ServiceProvider.GetService(typeof(IVsRunningDocumentTable));
-						SetFlag(PrivateFlags.SaveDisabled, true);
-						docTable.ModifyDocumentFlags(Cookie, (uint)_VSRDTFLAGS.RDT_DontSave, 1);
-					}
+					IVsRunningDocumentTable docTable = (IVsRunningDocumentTable)ServiceProvider.GetService(typeof(IVsRunningDocumentTable));
+					SetFlag(PrivateFlags.SaveDisabled, true);
+					docTable.ModifyDocumentFlags(Cookie, (uint)_VSRDTFLAGS.RDT_DontSave, 1);
 				}
+			}
+			else if (newFileItem)
+			{
+				SetFlag(PrivateFlags.ReplaceFileInputNames, true);
 			}
 			this.AddPostLoadModelingEventHandlers(isReload);
 			SetFlag(PrivateFlags.UndoStackRemoved, false);
@@ -677,11 +714,65 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// Override the default implementation, which attempts
 		/// to set the fileName to a path, which doesn't exist.
 		/// UNDONE: MSBUG, FDBK32824, we shouldn't need to do this
+		/// Also backs up normal file name replacement for the 'NewFileItem'
+		/// case so that we do not need a special wizard to do file name
+		/// replacement. Look for the standard '$fileinputname$' replacement
+		/// using in VS templates in the <see cref="ORMModel"/> and <see cref="ORMDiagram"/>
+		/// elements.
 		/// </summary>
 		/// <param name="pszDocDataPath">Ignored per SDK directions</param>
 		/// <returns>S_OK</returns>
 		public override int SetUntitledDocPath(string pszDocDataPath)
 		{
+			if (GetFlag(PrivateFlags.ReplaceFileInputNames))
+			{
+				SetFlag(PrivateFlags.ReplaceFileInputNames, false);
+				string fileName;
+				if (!string.IsNullOrEmpty(fileName = Path.GetFileNameWithoutExtension(pszDocDataPath)))
+				{
+					Transaction t = null;
+					Store store = Store;
+					try
+					{
+						foreach (ORMModel model in store.ElementDirectory.FindElements<ORMModel>())
+						{
+							if (model.Name == "$fileinputname$")
+							{
+								if (t == null)
+								{
+									store.UndoManager.UndoState = UndoState.Disabled;
+									t = store.TransactionManager.BeginTransaction("");
+								}
+								model.Name = fileName;
+							}
+						}
+						foreach (ORMDiagram diagram in store.ElementDirectory.FindElements<ORMDiagram>())
+						{
+							if (diagram.Name == "$fileinputname$")
+							{
+								if (t == null)
+								{
+									store.UndoManager.UndoState = UndoState.Disabled;
+									t = store.TransactionManager.BeginTransaction("");
+								}
+								diagram.Name = fileName;
+							}
+						}
+						if (t != null && t.HasPendingChanges)
+						{
+							t.Commit();
+						}
+					}
+					finally
+					{
+						if (t != null)
+						{
+							t.Dispose();
+							store.UndoManager.UndoState = UndoState.Enabled;
+						}
+					}
+				}
+			}
 			return VSConstants.S_OK;
 		}
 		/// <summary>

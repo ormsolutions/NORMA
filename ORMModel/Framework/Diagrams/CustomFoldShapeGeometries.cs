@@ -158,7 +158,12 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 			// easier. For CenterToCenter routing, subtracting the vectorEndPoint from the
 			// lower right corner gives the correct value.
 			RectangleD absoluteBoundingBox = geometryHost.TranslateGeometryToAbsoluteBounds(geometryHost.GeometryBoundingBox);
+#if VISUALSTUDIO_10_0
+			PointD absoluteCenter = absoluteBoundingBox.Center;
+			vectorEndPoint = new PointD(absoluteCenter.X - vectorEndPoint.X, absoluteCenter.Y - vectorEndPoint.Y);
+#else
 			vectorEndPoint = new PointD(absoluteBoundingBox.Right - vectorEndPoint.X, absoluteBoundingBox.Bottom - vectorEndPoint.Y);
+#endif
 
 			NodeShape shape = geometryHost as NodeShape;
 			if (shape != null)
@@ -213,7 +218,12 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 		public static PointD VectorEndPointForBase(IGeometryHost geometryHost, PointD vectorEndPoint)
 		{
 			RectangleD absoluteBoundingBox = geometryHost.TranslateGeometryToAbsoluteBounds(geometryHost.GeometryBoundingBox);
+#if VISUALSTUDIO_10_0
+			PointD absoluteCenter = absoluteBoundingBox.Center;
+			return new PointD(absoluteCenter.X - vectorEndPoint.X, absoluteCenter.X - vectorEndPoint.Y);
+#else
 			return new PointD(absoluteBoundingBox.Right - vectorEndPoint.X, absoluteBoundingBox.Bottom - vectorEndPoint.Y);
+#endif
 		}
 		#region GeometryHostWrapper class
 		/// <summary>

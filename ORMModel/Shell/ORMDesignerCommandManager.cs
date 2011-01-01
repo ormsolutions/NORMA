@@ -393,11 +393,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		#endregion // Member variables
 		#region Constructor
 		/// <summary>
-		/// Create a <see cref="ORMDesignerCommandManager"/> for the specified <paramref name="designerPane"/>
+		/// Create a <see cref="ORMDesignerCommandManager"/> for the specified <paramref name="designerView"/>
 		/// and <paramref name="designerView"/>
 		/// </summary>
 		/// <param name="designerView">A <see cref="IORMDesignerView"/> instance. Generally, this will
-		/// be the same instance as the <paramref name="designerPane"/>.</param>
+		/// be the same instance as the <paramref name="designerView"/>.</param>
 		public ORMDesignerCommandManager(IORMDesignerView designerView)
 		{
 			myDesignerView = designerView;
@@ -918,6 +918,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				visibleCommands |= ORMDesignerCommands.DiagramList;
 				enabledCommands |= ORMDesignerCommands.DiagramList;
+				if (GetNextShapeOnCurrentDiagram(shape) != null)
+				{
+					visibleCommands |= ORMDesignerCommands.SelectNextInCurrentDiagram;
+					enabledCommands |= ORMDesignerCommands.SelectNextInCurrentDiagram;
+				}
 			}
 			if (myDesignerView is DiagramDocView)
 			{
@@ -1007,8 +1012,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// <param name="commandFlag">The command to check for enabled</param>
 		public static void OnStatusCommand(object sender, IORMDesignerView designerView, ORMDesignerCommands commandFlag)
 		{
-			MenuCommand command = sender as MenuCommand;
-			Debug.Assert(command != null);
+			MenuCommand command = (MenuCommand)sender;
 			ORMDesignerCommandManager mgr;
 			if (null != designerView &&
 				null != designerView.CurrentDesigner &&
@@ -1210,7 +1214,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					if (isEnabled)
 					{
-						OleMenuCommand cmd = sender as OleMenuCommand;
+						OleMenuCommand cmd = (OleMenuCommand)command;
 						string errorText = null;
 						int errorIndex = cmd.MatchedCommandId;
 						foreach (ModelElement mel in designerView.SelectedElements)
@@ -1250,6 +1254,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						else
 						{
 							cmd.Supported = false;
+							cmd.Enabled = false;
+							cmd.Visible = false;
 						}
 					}
 				}
@@ -1257,28 +1263,21 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					if (isEnabled)
 					{
-						OleMenuCommand cmd = sender as OleMenuCommand;
+						OleMenuCommand cmd = (OleMenuCommand)command;
 						int diagramIndex = cmd.MatchedCommandId;
-						bool thisDiagram = (diagramIndex == 0);
-
-						ShapeElement sel = mgr.GetShapeForDiagramList(diagramIndex);
+						ShapeElement sel = mgr.GetShapeForOtherDiagramList(diagramIndex);
 						if (sel != null)
 						{
 							cmd.Enabled = true;
 							cmd.Visible = true;
 							cmd.Supported = true;
-							if (thisDiagram)
-							{
-								cmd.Text = ResourceStrings.CommandNextOnThisDiagramText;
-							}
-							else
-							{
-								cmd.Text = sel.Diagram.Name;
-							}
+							cmd.Text = sel.Diagram.Name;
 						}
-						else if (!thisDiagram)
+						else
 						{
 							cmd.Supported = false;
+							cmd.Enabled = false;
+							cmd.Visible = false;
 						}
 					}
 				}
@@ -1286,7 +1285,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					if (isEnabled)
 					{
-						OleMenuCommand cmd = sender as OleMenuCommand;
+						OleMenuCommand cmd = (OleMenuCommand)command;
 						string reportGeneratorText = null;
 						int reportGeneratorIndex = cmd.MatchedCommandId;
 						foreach (VerbalizationTargetData targetData in ((IORMToolServices)designerView.Store).VerbalizationTargets.Values)
@@ -1311,6 +1310,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						else
 						{
 							cmd.Supported = false;
+							cmd.Enabled = false;
+							cmd.Visible = false;
 						}
 					}
 				}
@@ -1370,6 +1371,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						if (!haveStatus)
 						{
 							command.Supported = false;
+							command.Enabled = false;
+							command.Visible = false;
 						}
 					}
 				}
@@ -1459,6 +1462,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						else
 						{
 							cmd.Supported = false;
+							cmd.Enabled = false;
+							cmd.Visible = false;
 						}
 					}
 				}
@@ -1558,6 +1563,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						else
 						{
 							cmd.Supported = false;
+							cmd.Enabled = false;
+							cmd.Visible = false;
 						}
 					}
 				}
@@ -2576,12 +2583,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 		}
 		/// <summary>
-		/// Expandable submenu to display associated diagrams
+		/// Select the next shape with the same backing element
+		/// as the currently selected shape.
 		/// </summary>
-		/// <param name="diagramIndex">Index of the diagram in the list of diagrams</param>
-		public virtual void OnMenuDiagramList(int diagramIndex)
+		public virtual void OnMenuSelectNextInCurrentDiagram()
 		{
-			ShapeElement activate = GetShapeForDiagramList(diagramIndex);
+			ShapeElement activate = GetNextShapeOnCurrentDiagram(null);
 			if (activate != null)
 			{
 				IORMDesignerView designerView = myDesignerView;
@@ -2592,7 +2599,28 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 				else
 				{
-					(myDesignerView.DocData as IORMToolServices).ActivateShape(activate, NavigateToWindow.Document);
+					((IORMToolServices)myDesignerView.DocData).ActivateShape(activate, NavigateToWindow.Document);
+				}
+			}
+		}
+		/// <summary>
+		/// Expandable submenu to display associated diagrams
+		/// </summary>
+		/// <param name="diagramIndex">Index of the diagram in the list of diagrams</param>
+		public virtual void OnMenuDiagramList(int diagramIndex)
+		{
+			ShapeElement activate = GetShapeForOtherDiagramList(diagramIndex);
+			if (activate != null)
+			{
+				IORMDesignerView designerView = myDesignerView;
+				ORMDiagramSpyWindow spyWindow = designerView as ORMDiagramSpyWindow;
+				if (spyWindow != null)
+				{
+					spyWindow.ActivateShape(activate);
+				}
+				else
+				{
+					((IORMToolServices)myDesignerView.DocData).ActivateShape(activate, NavigateToWindow.Document);
 				}
 			}
 		}
@@ -2660,11 +2688,67 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 		}
 		/// <summary>
-		/// Gets the shape associated with the specified diagram index in the diagram list
+		/// Find the next shape with the same backing element as
+		/// the currently select shape, limiting the search to
+		/// the current diagram.
+		/// </summary>
+		/// <param name="shape">The currently selected shape, or <see langword="null"/>
+		/// to determine the shape from the current selection.</param>
+		/// <returns>The next shape, if any</returns>
+		protected ShapeElement GetNextShapeOnCurrentDiagram(ShapeElement shape)
+		{
+			IList selectedElements;
+			if (shape == null &&
+				(selectedElements = myDesignerView.SelectedElements).Count >= 1 &&
+				null == (shape = selectedElements[0] as ShapeElement)) // Single-select command
+			{
+				return null;
+			}
+			ShapeElement retVal = null;
+			Diagram shapeDiagram = shape.Diagram;
+			// for the first diagram, find the next shape on the same diagram
+			// The first command is recognized, it is just hidden if there are no
+			// other shapes on the first diagram
+			ShapeElement firstShape = null;
+			bool seenCurrent = false;
+			ORMBaseShape.VisitAssociatedShapes(
+				null,
+				shape,
+				false,
+				delegate(ShapeElement testShape)
+				{
+					if (testShape == shape)
+					{
+						seenCurrent = true;
+					}
+					else if (testShape.Diagram == shapeDiagram)
+					{
+						if (seenCurrent)
+						{
+							retVal = testShape;
+							return false;
+						}
+						else if (firstShape == null)
+						{
+							firstShape = testShape;
+						}
+					}
+					return true;
+				}
+			);
+			if (retVal == null && seenCurrent)
+			{
+				retVal = firstShape;
+			}
+			return retVal;
+		}
+		/// <summary>
+		/// Gets the shape associated with the specified diagram index in a
+		/// diagram list containing diagrams other than the current diagram.
 		/// </summary>
 		/// <param name="diagramIndex">The diagram index for which to get the associated shape</param>
 		/// <returns>The shape, if any</returns>
-		protected ShapeElement GetShapeForDiagramList(int diagramIndex)
+		protected ShapeElement GetShapeForOtherDiagramList(int diagramIndex)
 		{
 			ShapeElement retVal = null;
 
@@ -2675,60 +2759,24 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				if (shape != null)
 				{
 					Diagram shapeDiagram = shape.Diagram;
-					// for the first diagram, find the next shape on the same diagram
-					// The first command is recognized, it is just hidden if there are no
-					// other shapes on the first diagram
-					if (diagramIndex == 0)
-					{
-						ShapeElement firstShape = null;
-						bool seenCurrent = false;
-						ORMBaseShape.VisitAssociatedShapes(null, shape, false,
-							delegate(ShapeElement testShape)
-							{
-								if (testShape == shape)
-								{
-									seenCurrent = true;
-								}
-								else if (testShape.Diagram == shapeDiagram)
-								{
-									if (seenCurrent)
-									{
-										retVal = testShape;
-										return false;
-									}
-									else if (firstShape == null)
-									{
-										firstShape = testShape;
-									}
-								}
-								return true;
-							}
-						);
-						if (retVal == null && seenCurrent)
+					ORMBaseShape.VisitAssociatedShapes(
+						null,
+						shape,
+						true,
+						delegate(ShapeElement testShape)
 						{
-							retVal = firstShape;
-						}
-					}
-					else
-					{
-						--diagramIndex;
-
-						ORMBaseShape.VisitAssociatedShapes(null, shape, true,
-							delegate(ShapeElement testShape)
+							if (testShape.Diagram != shapeDiagram)
 							{
-								if (testShape.Diagram != shapeDiagram)
+								if (diagramIndex == 0)
 								{
-									if (diagramIndex == 0)
-									{
-										retVal = testShape;
-										return false;
-									}
-									--diagramIndex;
+									retVal = testShape;
+									return false;
 								}
-								return true;
+								--diagramIndex;
 							}
-						);
-					}
+							return true;
+						}
+					);
 				}
 			}
 

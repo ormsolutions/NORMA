@@ -16,10 +16,16 @@ gacutil.exe /nologo /f /i "%VsSDKVsctDir%\VSCTCompress.dll"
 gacutil.exe /nologo /f /i "%VsSDKVsctDir%\VSCTLibrary.dll"
 gacutil.exe /nologo /f /i "%VsSDKVsctDir%\VSCT.exe"
 
-:: As of the August 2007 release of the VsSDK, the VSCTCompress assembly is still versioned as 8.0.0.0.
-ngen.exe install "VSCTCompress, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" /NoDependencies /nologo
-ngen.exe install "VSCTLibrary, Version=%TargetVisualStudioAssemblyVersion%, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" /NoDependencies /nologo
-ngen.exe install "VSCT, Version=%TargetVisualStudioFrameworkAssemblyVersion%, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" /NoDependencies /nologo
+IF /I "%TargetVisualStudioVersion%"=="v10.0" (
+	ngen.exe install "VSCTCompress, Version=%TargetVisualStudioAssemblyVersion%, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" /NoDependencies /nologo
+	ngen.exe install "VSCTLibrary, Version=%TargetVisualStudioAssemblyVersion%, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" /NoDependencies /nologo
+	ngen.exe install "VSCT, Version=%TargetVisualStudioAssemblyVersion%, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" /NoDependencies /nologo
+) ELSE (
+	:: As of the August 2007 release of the VsSDK, the VSCTCompress assembly is still versioned as 8.0.0.0.
+	ngen.exe install "VSCTCompress, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" /NoDependencies /nologo
+	ngen.exe install "VSCTLibrary, Version=%TargetVisualStudioAssemblyVersion%, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" /NoDependencies /nologo
+	ngen.exe install "VSCT, Version=%TargetVisualStudioFrameworkAssemblyVersion%, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" /NoDependencies /nologo
+)
 
 
 IF NOT EXIST "%MSBuildExtensionsPath%\Neumont\VisualStudio" (MKDIR "%MSBuildExtensionsPath%\Neumont\VisualStudio")

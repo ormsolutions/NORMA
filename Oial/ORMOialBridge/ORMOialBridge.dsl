@@ -261,4 +261,10 @@
 
 	<XmlSerializationBehavior Name="ORMToORMAbstractionBridgeDomainModelSerializationBehavior" Namespace="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge"/>
 
+	<DslLibraryImports>
+		<DslLibraryImport FilePath="..\..\ORMModel\ObjectModel\ORMCore.dsl"/>
+		<DslLibraryImport FilePath="..\..\ORMModel\Framework\SystemCore.dsl"/>
+		<DslLibraryImport FilePath="..\OialModel\OialModel.dsl"/>
+	</DslLibraryImports>
+
 </Dsl>

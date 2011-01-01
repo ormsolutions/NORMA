@@ -36,7 +36,11 @@ namespace Neumont.Xml
 			schemaReaderSettings.IgnoreComments = true;
 			schemaReaderSettings.IgnoreWhitespace = true;
 			schemaReaderSettings.NameTable = XmlSchemaCatalog.XmlNameTable;
+#if VISUALSTUDIO_10_0
+			schemaReaderSettings.DtdProcessing = DtdProcessing.Ignore;
+#else
 			schemaReaderSettings.ProhibitDtd = false;
+#endif
 			schemaReaderSettings.XmlResolver = XmlSchemaCatalog.XmlResolver;
 			return schemaReaderSettings;
 		}

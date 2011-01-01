@@ -84,4 +84,9 @@
 
 	<XmlSerializationBehavior Name="ExtensionDomainModelSerializationBehavior" Namespace="ORMSolutions.ORMArchitect.ExtensionExample"/>
 
+	<DslLibraryImports>
+		<DslLibraryImport FilePath="..\ORMModel\ObjectModel\ORMCore.dsl"/>
+		<DslLibraryImport FilePath="..\ORMModel\Framework\SystemCore.dsl"/>
+	</DslLibraryImports>
+
 </Dsl>

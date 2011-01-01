@@ -74,8 +74,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			if (exclusionConstraint != null)
 			{
 				DomainPropertyInfo exclusionConstraintNameDomainProperty = exclusionConstraint.GetDomainClass().NameDomainProperty;
-				properties.Add(new ElementPropertyDescriptor(this, exclusionConstraint, exclusionConstraintNameDomainProperty,
-					base.GetDomainPropertyAttributes(exclusionConstraintNameDomainProperty)));
+				properties.Add(EditorUtility.RedirectPropertyDescriptor(
+					exclusionConstraint,
+					new ElementPropertyDescriptor(
+						exclusionConstraint,
+						exclusionConstraintNameDomainProperty,
+						base.GetDomainPropertyAttributes(exclusionConstraintNameDomainProperty)),
+					typeof(MandatoryConstraint)));
 			}
 			return properties;
 		}

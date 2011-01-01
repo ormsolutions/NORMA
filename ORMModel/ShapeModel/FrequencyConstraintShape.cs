@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -15,24 +16,26 @@
 #endregion
 
 using System;
-using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
-using System.Text;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Globalization;
+using System.Runtime.InteropServices;
+using System.Text;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using ORMSolutions.ORMArchitect.Framework.Diagrams;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using ORMSolutions.ORMArchitect.Core.Shell;
+using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Framework.Diagrams;
 
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	public partial class FrequencyConstraintShape : ExternalConstraintShape, IModelErrorActivation
 	{
 		#region Customize appearance
+		private static readonly StyleSetResourceId FrequencyConstraintTextResource = new StyleSetResourceId("ORMArchitect", "FrequencyConstraintText");
 		[DllImport("user32.dll", ExactSpelling = true, CharSet = CharSet.Auto)]
 		private static extern IntPtr GetDesktopWindow();
 		/// <summary>
@@ -47,7 +50,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				SizeF textSize = SizeF.Empty;
 				if (text != null && text.Length != 0)
 				{
-					using (Font font = StyleSet.GetFont(DiagramFonts.CommentText))
+					using (Font font = StyleSet.GetFont(FrequencyConstraintTextResource))
 					{
 						using (Graphics g = Graphics.FromHwnd(GetDesktopWindow()))
 						{
@@ -102,14 +105,18 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <param name="e">DiagramPaintEventArgs</param>
 		public override void OnPaintShape(DiagramPaintEventArgs e)
 		{
-			this.InitializePaintTools(e);
+			if (null == Utility.ValidateStore(Store))
+			{
+				return;
+			}
+			InitializePaintTools(e);
 			base.OnPaintShape(e);
 			RectangleD bounds = AbsoluteBounds;
 			Graphics g = e.Graphics;
 			StringFormat stringFormat = new StringFormat();
 			stringFormat.LineAlignment = StringAlignment.Center;
 			stringFormat.Alignment = StringAlignment.Center;
-			Font font = StyleSet.GetFont(DiagramFonts.CommentText);
+			Font font = StyleSet.GetFont(FrequencyConstraintTextResource);
 			Brush brush = this.PaintBrush;
 			g.DrawString(GetFrequencyString(), font, brush, RectangleD.ToRectangleF(bounds), stringFormat);
 			this.DisposePaintTools();
@@ -152,14 +159,49 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			return freqString;
 		}
 		/// <summary>
-		/// Make the frequency constraint background transparent
+		/// Set the font size
 		/// </summary>
 		protected override void InitializeResources(StyleSet classStyleSet)
 		{
 			base.InitializeResources(classStyleSet);
-			BrushSettings brushSettings = new BrushSettings();
-			brushSettings.Color = Color.FromArgb(0, (classStyleSet.GetBrush(DiagramBrushes.DiagramBackground) as SolidBrush).Color);
-			classStyleSet.OverrideBrush(DiagramBrushes.DiagramBackground, brushSettings);
+			FontSettings textSettings = new FontSettings();
+			classStyleSet.AddFont(FrequencyConstraintTextResource, DiagramFonts.CommentText, textSettings);
+		}
+		/// <summary>
+		/// A style set used for drawing deontic constraints
+		/// </summary>
+		private static StyleSet myDeonticClassStyleSet;
+		/// <summary>
+		/// Create an alternate style set for deontic constraints
+		/// </summary>
+		protected override StyleSet DeonticClassStyleSet
+		{
+			get
+			{
+				// This class introduces additional resources, so we
+				// need to create our own deontic class style set
+				// based on our own class set instead of the deontic
+				// class style set of the base.
+				StyleSet retVal = myDeonticClassStyleSet;
+				if (retVal == null)
+				{
+					retVal = new StyleSet(ClassStyleSet);
+					InitializeDeonticClassStyleSet(retVal);
+					myDeonticClassStyleSet = retVal;
+				}
+				return retVal;
+			}
+		}
+		/// <summary>
+		/// Draw frequency constraints with a transparent background
+		/// in non-error states.
+		/// </summary>
+		protected override bool HasTransparentBackground
+		{
+			get
+			{
+				return true;
+			}
 		}
 		#endregion // Customize appearance
 		#region Shape display update rules

@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing.Design;
 using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Design;
@@ -256,27 +257,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				link.Length = newValue;
 			}
 		}
-		private DataType GetDataTypeDisplayValue()
-		{
-			// If this ObjecType has a reference mode, return its DataType.
-			ObjectType refModeRolePlayer = GetValueTypeForPreferredConstraint();
-			return (refModeRolePlayer != null) ? refModeRolePlayer.DataType : this.DataType;
-		}
-		private void SetDataTypeDisplayValue(DataType newValue)
-		{
-			if (!Store.InUndoRedoOrRollback)
-			{
-				//If this objectype has a reference mode, return the datatype corresponding
-				//to the ref mode's datatype.
-				ObjectType targetObjectType = this;
-				ObjectType refModeRolePlayer = GetValueTypeForPreferredConstraint();
-				if (refModeRolePlayer != null)
-				{
-					targetObjectType = refModeRolePlayer;
-				}
-				targetObjectType.DataType = newValue;
-			}
-		}
 		private DerivationExpressionStorageType GetDerivationStorageDisplayValue()
 		{
 			SubtypeDerivationRule rule;
@@ -338,10 +318,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			this.GetReferenceMode(out refMode, out referenceModeString);
 			return referenceModeString;
 		}
-		private void SetReferenceModeValue(ReferenceMode newValue)
-		{
-			// Handled by ObjectTypeChangeRule
-		}
 		private string GetReferenceModeDecoratedStringValue()
 		{
 			ReferenceMode refMode;
@@ -356,13 +332,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private void SetReferenceModeStringValue(string newValue)
 		{
 			// Handled by ObjectTypeChangeRule
-		}
-		private ReferenceMode GetReferenceModeValue()
-		{
-			ReferenceMode refMode;
-			string referenceModeString;
-			GetReferenceMode(out refMode, out referenceModeString);
-			return refMode;
 		}
 		private void SetReferenceModeDecoratedStringValue(string newValue)
 		{
@@ -508,6 +477,52 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return ValueTypeHasDataType.GetLinkToDataType(this);
 		}
 		#endregion // CustomStorage handlers
+		#region Non-DSL Custom Properties
+		/// <summary>
+		/// A display property for the <see cref="DataType"/> relationship
+		/// The DataType for this ValueType, or the DataType for the identifying ValueType if this is an EntityType.
+		/// This is a portable DataType. The final physical DataType is dependent on the generation target.
+		/// </summary>
+		[Editor(typeof(Design.DataTypePicker), typeof(UITypeEditor))]
+		public DataType DataTypeDisplay
+		{
+			get
+			{
+				// If this ObjecType has a reference mode, return its DataType.
+				ObjectType refModeRolePlayer = GetValueTypeForPreferredConstraint();
+				return (refModeRolePlayer != null) ? refModeRolePlayer.DataType : this.DataType;
+			}
+			set
+			{
+				//If this objectype has a reference mode, return the datatype corresponding
+				//to the ref mode's datatype.
+				ObjectType targetObjectType = this;
+				ObjectType refModeRolePlayer = GetValueTypeForPreferredConstraint();
+				if (refModeRolePlayer != null)
+				{
+					targetObjectType = refModeRolePlayer;
+				}
+				targetObjectType.DataType = value;
+			}
+		}
+		/// <summary>
+		/// Control the <see cref="ReferenceMode"/> associated with this <see cref="ObjectType"/>
+		/// </summary>
+		public ReferenceMode ReferenceMode
+		{
+			get
+			{
+				ReferenceMode refMode;
+				string referenceModeString;
+				GetReferenceMode(out refMode, out referenceModeString);
+				return refMode;
+			}
+			set
+			{
+				SetReferenceMode(this, value, ReferenceMode, null, null, false);
+			}
+		}
+		#endregion // Non-DSL Custom Properties
 		#region Abbreviation Helpers
 		/// <summary>
 		/// Return the abbreviated name that is the best match for the associated <paramref name="nameGenerator"/>
@@ -1894,10 +1909,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					throw new InvalidOperationException(ResourceStrings.ModelExceptionReferenceModeAmbiguousName);
 				}
 				SetReferenceMode(objectType, singleMode, null, newName, e.OldValue as string, false);
-			}
-			else if (attributeGuid == ObjectType.ReferenceModeDomainPropertyId)
-			{
-				SetReferenceMode(objectType, (ReferenceMode)e.NewValue, (ReferenceMode)e.OldValue, null, null, false);
 			}
 			else if (attributeGuid == ObjectType.IsIndependentDomainPropertyId)
 			{

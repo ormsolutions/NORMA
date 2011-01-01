@@ -337,7 +337,6 @@
 		<cmc:IgnoredProperties>
 			<cmc:IgnoredProperty class="ElementGrouping" property="DefinitionText"/>
 			<cmc:IgnoredProperty class="ElementGrouping" property="NoteText"/>
-			<cmc:IgnoredProperty class="ORMModel" property="ModelErrorDisplayFilterDisplay"/>
 			<cmc:IgnoredProperty class="ORMModel" property="DefinitionText"/>
 			<cmc:IgnoredProperty class="ORMModel" property="NoteText"/>
 			<cmc:IgnoredProperty class="ObjectType" property="DefinitionText"/>
@@ -346,13 +345,11 @@
 			<cmc:IgnoredProperty class="ObjectType" property="DataTypeScale"/>
 			<cmc:IgnoredProperty class="ObjectType" property="DataTypeLength"/>
 			<cmc:IgnoredProperty class="ObjectType" property="ReferenceModeDisplay"/>
-			<cmc:IgnoredProperty class="ObjectType" property="DataTypeDisplay"/>
 			<cmc:IgnoredProperty class="ObjectType" property="DataTypeLength"/>
 			<cmc:IgnoredProperty class="ObjectType" property="DataTypeScale"/>
 			<cmc:IgnoredProperty class="ObjectType" property="ReferenceModeDisplay"/>
 			<cmc:IgnoredProperty class="ObjectType" property="ReferenceModeString"/>
 			<cmc:IgnoredProperty class="ObjectType" property="ReferenceModeDecoratedString"/>
-			<cmc:IgnoredProperty class="ObjectType" property="ReferenceMode"/>
 			<cmc:IgnoredProperty class="ObjectType" property="ValueRangeText"/>
 			<cmc:IgnoredProperty class="ObjectType" property="ValueTypeValueRangeText"/>
 			<cmc:IgnoredProperty class="ObjectType" property="IsSupertypePersonal"/>
@@ -372,7 +369,6 @@
 			<cmc:IgnoredProperty class="FactTypeInstance" property="Name"/>
 			<cmc:IgnoredProperty class="FactTypeInstance" property="NameChanged"/>
 			<cmc:IgnoredProperty class="LeadRolePath" property="NoteText"/>
-			<cmc:IgnoredProperty class="Role" property="RolePlayerDisplay"/>
 			<cmc:IgnoredProperty class="Role" property="IsMandatory"/>
 			<cmc:IgnoredProperty class="Role" property="Multiplicity"/>
 			<cmc:IgnoredProperty class="Role" property="ValueRangeText"/>
@@ -384,7 +380,6 @@
 			<cmc:IgnoredProperty class="UniquenessConstraint" property="IsPreferred"/>
 			<cmc:IgnoredProperty class="SetConstraint" property="NoteText"/>
 			<cmc:IgnoredProperty class="SetConstraint" property="DefinitionText"/>
-			<cmc:IgnoredProperty class="ReferenceMode" property="KindDisplay"/>
 			<cmc:IgnoredProperty class="Reading" property="IsPrimaryForReadingOrder"/>
 			<cmc:IgnoredProperty class="Reading" property="IsPrimaryForFactType"/>
 			<cmc:IgnoredProperty class="ReadingOrder" property="ReadingText"/>

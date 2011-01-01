@@ -2,7 +2,7 @@
 /**************************************************************************\
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
-* Copyright © ORM Solutions, LLC. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -30,16 +30,27 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 	/// <see cref="ElementTypeDescriptor"/> for <see cref="ORMModel"/>s.
 	/// </summary>
 	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
-	public class ORMModelTypeDescriptor<TModelElement> : ORMModelElementTypeDescriptor<TModelElement>
-		where TModelElement : ORMModel
+	public class ORMModelTypeDescriptor : ORMModelElementTypeDescriptor<ORMModel>
 	{
+		#region Constructor
 		/// <summary>
-		/// Initializes a new instance of <see cref="ORMModelTypeDescriptor{TModelElement}"/>
+		/// Initializes a new instance of <see cref="ORMModelTypeDescriptor"/>
 		/// for <paramref name="selectedElement"/>.
 		/// </summary>
-		public ORMModelTypeDescriptor(ICustomTypeDescriptor parent, TModelElement selectedElement)
+		public ORMModelTypeDescriptor(ICustomTypeDescriptor parent, ORMModel selectedElement)
 			: base(parent, selectedElement)
 		{
+		}
+		#endregion // Constructor
+		#region Base overrides
+		/// <summary>
+		/// Add custom display properties
+		/// </summary>
+		public override PropertyDescriptorCollection GetProperties(Attribute[] attributes)
+		{
+			PropertyDescriptorCollection properties = EditorUtility.GetEditablePropertyDescriptors(base.GetProperties(attributes));
+			properties.Add(ModelErrorDisplayFilterDisplayPropertyDescriptor);
+			return properties;
 		}
 		/// <summary>
 		/// Customize the description of the Name property
@@ -52,5 +63,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			}
 			return base.GetDescription(propertyDescriptor);
 		}
+		#endregion // Base overrides
+		#region Non-DSL Custom Property Descriptors
+		private static PropertyDescriptor myModelErrorDisplayFilterDisplayPropertyDescriptor;
+		/// <summary>
+		/// Get a <see cref="PropertyDescriptor"/> for the <see cref="P:ORMModel.ModelErrorDisplayFilterDisplay"/> property
+		/// </summary>
+		public static PropertyDescriptor ModelErrorDisplayFilterDisplayPropertyDescriptor
+		{
+			get
+			{
+				PropertyDescriptor retVal = myModelErrorDisplayFilterDisplayPropertyDescriptor;
+				if (retVal == null)
+				{
+					myModelErrorDisplayFilterDisplayPropertyDescriptor = retVal = EditorUtility.ReflectStoreEnabledPropertyDescriptor(typeof(ORMModel), "ModelErrorDisplayFilterDisplay", typeof(ModelErrorDisplayFilter), ResourceStrings.ModelModelErrorDisplayFilterDisplayDisplayName, ResourceStrings.ModelModelErrorDisplayFilterDisplayDescription, null);
+				}
+				return retVal;
+			}
+		}
+		#endregion // Non-DSL Custom Property Descriptors
 	}
 }

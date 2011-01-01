@@ -207,7 +207,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 			/// <summary>
 			/// Reverses the binarization process performed by <see cref="BinarizeUnary"/>. Typically used when
-			/// <paramref name="binarizedUnaryFactType"/> no longer qualifies to be a binarized unary <see cref="FactType"/>.
+			/// <paramref name="binarizedUnaryFactRoleCollection"/> no longer qualifies as the roles for a
+			/// binarized unary <see cref="FactType"/>.
 			/// </summary>
 			private static void DebinarizeUnary(LinkedElementCollection<RoleBase> binarizedUnaryFactRoleCollection, bool deleteImplicitBooleanRole, INotifyElementAdded notifyAdded)
 			{

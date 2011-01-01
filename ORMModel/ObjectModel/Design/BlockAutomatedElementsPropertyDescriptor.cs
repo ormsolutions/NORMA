@@ -75,4 +75,63 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		}
 	}
 	#endregion // AutomatedElementFilterPropertyDescriptor class
+	#region AutomatedElementFilterPropertyDescriptor class
+	/// <summary>
+	/// An <see cref="PropertyDescriptor"/> that can be used to
+	/// filter side-effect elements creating while setting the property
+	/// by adding a filter to the <see cref="IORMToolServices.AutomatedElementFilter"/>.
+	/// Unlike <see cref="AutomatedElementFilterPropertyDescriptor"/>, this descriptor
+	/// is designed to be used with properties that are not specified in the domain library
+	/// but should appear alongside the domain properties.
+	/// </summary>
+	public class AutomatedElementFilterCustomPropertyDescriptor : StoreEnabledPropertyDescriptor
+	{
+		/// <summary>
+		/// Create a new <see cref="AutomatedElementFilterCustomPropertyDescriptor"/>
+		/// </summary>
+		/// <param name="modifyDescriptor">A standard property descriptor to wrap.</param>
+		/// <param name="displayName">A customized display name. If this is <see langword="null"/>, then the original display name is used.</param>
+		/// <param name="description">A customized description. If this is <see langword="null"/>, then the original description is used.</param>
+		/// <param name="category">A customized category. If this is <see langword="null"/>, then the original category is used.</param>
+		public AutomatedElementFilterCustomPropertyDescriptor(PropertyDescriptor modifyDescriptor, string displayName, string description, string category)
+			: base(modifyDescriptor, displayName, description, category)
+		{
+		}
+		/// <summary>
+		/// Set a value with a filter in place
+		/// </summary>
+		public override void SetValue(object component, object value)
+		{
+			IORMToolServices toolServices = null;
+			ModelElement element;
+			AutomatedElementFilterCallback callback = null;
+			if (null != (element = component as ModelElement) &&
+				null != (toolServices = element.Store as IORMToolServices))
+			{
+				callback = FilterAutomatedElement;
+				toolServices.AutomatedElementFilter += callback;
+			}
+			try
+			{
+				base.SetValue(component, value);
+			}
+			finally
+			{
+				if (toolServices != null)
+				{
+					toolServices.AutomatedElementFilter -= callback;
+				}
+			}
+		}
+		/// <summary>
+		/// Return <see cref="AutomatedElementDirective.Ignore"/> to classify the provided <see cref="ModelElement"/>
+		/// as an automated element.
+		/// The default implementation classifies all elements as automated.
+		/// </summary>
+		protected virtual AutomatedElementDirective FilterAutomatedElement(ModelElement element)
+		{
+			return AutomatedElementDirective.Ignore;
+		}
+	}
+	#endregion // AutomatedElementFilterPropertyDescriptor class
 }

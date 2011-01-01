@@ -493,6 +493,12 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				myInOnClicked = true;
 				myDeactivatedDuringOnClick = false;
 				base.OnClicked(e);
+#if VISUALSTUDIO_10_0
+				if (IsActive)
+				{
+					Cancel(e.DiagramClientView);
+				}
+#endif
 				myInOnClicked = false;
 				if (myDeactivatedDuringOnClick)
 				{

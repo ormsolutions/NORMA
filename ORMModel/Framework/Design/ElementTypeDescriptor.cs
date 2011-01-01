@@ -84,7 +84,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 
 		#region GetDisplayProperties method
 		/// <summary>
-		/// Blocks editor access to <see cref="ElementTypeDescriptor.GetDisplayProperties"/>.
+		/// Blocks editor access to <see cref="ElementTypeDescriptor.GetDisplayProperties(ModelElement,ref PropertyDescriptor)"/>.
 		/// </summary>
 		[EditorBrowsable(EditorBrowsableState.Never)]
 		[Obsolete("This method is not supported.", true)]
@@ -92,6 +92,17 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		{
 			throw new NotSupportedException();
 		}
+#if VISUALSTUDIO_10_0
+		/// <summary>
+		/// Blocks editor access to <see cref="ElementTypeDescriptor.GetDisplayProperties(ModelElement,Store,ref PropertyDescriptor)"/>.
+		/// </summary>
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		[Obsolete("This method is not supported.", true)]
+		protected new PropertyDescriptorCollection GetDisplayProperties(ModelElement requestor, Store store, ref PropertyDescriptor defaultPropertyDescriptor)
+		{
+			throw new NotSupportedException();
+		}
+#endif // VISUALSTUDIO_10_0
 		#endregion // GetDisplayProperties method
 
 		#region GetDomainPropertyAttributes method
@@ -105,7 +116,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 			{
 				throw new ArgumentNullException("domainPropertyInfo");
 			}
-			return DomainTypeDescriptor.AttributeCollectionToArray(DomainTypeDescriptor.GetRawAttributes(domainPropertyInfo.PropertyInfo));
+			return EditorUtility.GetAttributeArray(DomainTypeDescriptor.GetRawAttributes(domainPropertyInfo.PropertyInfo));
 		}
 		#endregion // GetDomainPropertyAttributes method
 
@@ -120,7 +131,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 			{
 				throw new ArgumentNullException("domainRole");
 			}
-			return DomainTypeDescriptor.AttributeCollectionToArray(DomainTypeDescriptor.GetRawAttributes(domainRole.LinkPropertyInfo));
+			return EditorUtility.GetAttributeArray(DomainTypeDescriptor.GetRawAttributes(domainRole.LinkPropertyInfo));
 		}
 		#endregion // GetRolePlayerPropertyAttributes method
 
@@ -272,19 +283,28 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		#endregion // Constructor
 		#region Relationship property overrides
 		/// <summary>
-		/// Block role player property display
+		/// Block embedding relationship property display
 		/// </summary>
 		protected override bool IncludeEmbeddingRelationshipProperties(ModelElement requestor)
 		{
 			return false;
 		}
 		/// <summary>
-		/// Block role player property display
+		/// Block opposite role player property display
 		/// </summary>
 		protected override bool IncludeOppositeRolePlayerProperties(ModelElement requestor)
 		{
 			return false;
 		}
+#if VISUALSTUDIO_10_0
+		/// <summary>
+		/// Block collection property display
+		/// </summary>
+		protected override bool IncludeCollectionRoleProperties(ModelElement requestor)
+		{
+			return false;
+		}
+#endif // VISUALSTUDIO_10_0
 		#endregion // Relationship property overrides
 	}
 	#endregion // BlockRelationshipPropertiesElementTypeDescriptor class

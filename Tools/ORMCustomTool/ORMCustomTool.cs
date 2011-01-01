@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -23,7 +24,6 @@ using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
-using Microsoft.Build.BuildEngine;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -39,9 +39,15 @@ using ErrorHandler = Microsoft.VisualStudio.ErrorHandler;
 using IOleServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 using IVsTextLines = Microsoft.VisualStudio.TextManager.Interop.IVsTextLines;
 using IVsTextView = Microsoft.VisualStudio.TextManager.Interop.IVsTextView;
+#if VISUALSTUDIO_10_0
+using Microsoft.Build.Construction;
+#else
+using Microsoft.Build.BuildEngine;
+#endif
 
 namespace ORMSolutions.ORMArchitect.ORMCustomTool
 {
+	#region ORMCustomTool class
 	/// <summary>
 	/// <see cref="ORMCustomTool"/> coordinates generation activities between various <see cref="IORMGenerator"/>s, and
 	/// interfaces with Visual Studio and other tools.
@@ -107,10 +113,27 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			Debug.WriteLine(ex);
 			Debug.Unindent();
 		}
+#if VISUALSTUDIO_10_0
+		/// <summary>
+		/// Retrieve an item group for the specified project and item
+		/// </summary>
+		public static ProjectItemGroupElement GetItemGroup(ProjectRootElement rootElement, string projectItemName)
+		{
+			foreach (ProjectItemGroupElement itemGroup in rootElement.ItemGroups)
+			{
+				// We don't want to process BuildItemGroups that are from outside this project
+				if (String.Equals(itemGroup.Condition.Trim(), string.Concat(ITEMGROUP_CONDITIONSTART, projectItemName, ITEMGROUP_CONDITIONEND), StringComparison.OrdinalIgnoreCase))
+				{
+					return itemGroup;
+				}
+			}
+			return null;
+		}
+#else // VISUALSTUDIO_10_0
 		/// <summary>
 		/// Retrieve a build item group for the specified project and item
 		/// </summary>
-		public static BuildItemGroup GetBuildItemGroup(Project project, string projectItemName)
+		public static BuildItemGroup GetItemGroup(Project project, string projectItemName)
 		{
 			foreach (BuildItemGroup buildItemGroup in project.ItemGroups)
 			{
@@ -122,6 +145,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			}
 			return null;
 		}
+#endif // VISUALSTUDIO_10_0
 
 		/// <summary>
 		/// Get the IVsTextLines from the DocData for the current document.
@@ -519,7 +543,14 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			/// <summary>
 			/// Create a new <see cref="BoundBuildItem"/>
 			/// </summary>
-			public BoundBuildItem(BuildItem item, IORMGenerator generator, int step)
+			public BoundBuildItem(
+#if VISUALSTUDIO_10_0
+				ProjectItemElement item,
+#else
+				BuildItem item,
+#endif
+				IORMGenerator generator,
+				int step)
 			{
 				BuildItem = item;
 				ORMGenerator = generator;
@@ -545,11 +576,19 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 					return (testFormatStep - lastFormatStep) == 1;
 				}
 			}
+#if VISUALSTUDIO_10_0
+			/// <summary>
+			/// The <see cref="ProjectItemElement"/> that corresponds to
+			/// the generated file.
+			/// </summary>
+			public ProjectItemElement BuildItem;
+#else // VISUALSTUDIO_10_0
 			/// <summary>
 			/// The <see cref="Microsoft.Build.BuildEngine.BuildItem"/> that corresponds to
 			/// the generated file.
 			/// </summary>
 			public BuildItem BuildItem;
+#endif // VISUALSTUDIO_10_0
 			/// <summary>
 			/// The <see cref="IORMGenerator"/> used to generate this step
 			/// </summary>
@@ -598,18 +637,23 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 
 			// This is actually the full project path for the next couple of lines, and then it is changed to the project directory.
 			string projectPath = envProject.FullName;
-			Project project = Engine.GlobalEngine.GetLoadedProject(projectPath);
-			Debug.Assert(project != null);
-			pGenerateProgress.Progress(1, 20);
 
 			// Get the relative path of the project item.
 			string projectItemFullPath = (string)projectItem.Properties.Item("LocalPath").Value;
 			string projectItemRelPath = (new Uri(projectPath)).MakeRelativeUri(new Uri(projectItemFullPath)).ToString();
+#if VISUALSTUDIO_10_0
+			ProjectRootElement project = ProjectRootElement.TryOpen(projectPath);
+			ProjectItemGroupElement ormItemGroup = GetItemGroup(project, projectItemRelPath);
+#else // VISUALSTUDIO_10_0
+			Project project = Engine.GlobalEngine.GetLoadedProject(projectPath);
+			BuildItemGroup ormItemGroup = GetItemGroup(project, projectItemRelPath);
+#endif // VISUALSTUDIO_10_0
+			Debug.Assert(project != null);
+			pGenerateProgress.Progress(1, 20);
 
-			BuildItemGroup ormBuildItemGroup = GetBuildItemGroup(project, projectItemRelPath);
 			pGenerateProgress.Progress(1, 10);
 
-			if (ormBuildItemGroup == null || ormBuildItemGroup.Count <= 0)
+			if (ormItemGroup == null || ormItemGroup.Count <= 0)
 			{
 				// UNDONE: Localize message.
 				report(
@@ -621,9 +665,13 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			else
 			{
 				IORMGeneratorItemProperties itemProperties = new ItemPropertiesImpl(envProject, projectItem);
-				List<BoundBuildItem> boundBuildItems = new List<BoundBuildItem>(ormBuildItemGroup.Count);
+				List<BoundBuildItem> boundBuildItems = new List<BoundBuildItem>(ormItemGroup.Count);
 				IDictionary<string, IORMGenerator> generators = ORMCustomTool.ORMGenerators;
-				foreach (BuildItem buildItem in ormBuildItemGroup)
+#if VISUALSTUDIO_10_0
+				foreach (ProjectItemElement buildItem in ormItemGroup.Items)
+#else
+				foreach (BuildItem buildItem in ormItemGroup)
+#endif
 				{
 					string generatorNameData = buildItem.GetEvaluatedMetadata(ITEMMETADATA_ORMGENERATOR);
 					string[] generatorNames;
@@ -653,7 +701,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 							{
 								// UNDONE: Localize error message.
 								report(
-									string.Format(CultureInfo.InvariantCulture, "#error Skipping generation of '{0}' because generator '{1}' is not installed.", buildItem.FinalItemSpec, generatorName),
+									string.Format(CultureInfo.InvariantCulture, "#error Skipping generation of '{0}' because generator '{1}' is not installed.", ORMCustomToolUtility.GetItemInclude(buildItem), generatorName),
 									ReportType.Error,
 									null);
 								// We can't keep going with the primary generator for the item
@@ -663,7 +711,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 							{
 								// UNDONE: Localize error message.
 								report(
-									string.Format(CultureInfo.InvariantCulture, "#error Generation of '{0}' is incomplete because modifier generator '{1}' is not installed.", buildItem.FinalItemSpec, generatorName),
+									string.Format(CultureInfo.InvariantCulture, "#error Generation of '{0}' is incomplete because modifier generator '{1}' is not installed.", ORMCustomToolUtility.GetItemInclude(buildItem), generatorName),
 									ReportType.Error,
 									null);
 							}
@@ -683,11 +731,12 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				// Get a Stream for the input ORM file...
 				Stream ormStream = null;
 				EnvDTE.Document projectItemDocument = projectItem.Document;
+				string itemPath;
 				if (projectItemDocument != null)
 				{
-					if ((ormStream = projectItemDocument.Object("ORMXmlStream") as Stream) == null)
+					if (null == (ormStream = ORMCustomToolUtility.GetDocumentExtension<Stream>(projectItemDocument, "ORMXmlStream", itemPath = projectItem.get_FileNames(0), _serviceProvider)))
 					{
-						EnvDTE.TextDocument projectItemTextDocument = projectItemDocument.Object("TextDocument") as EnvDTE.TextDocument;
+						EnvDTE.TextDocument projectItemTextDocument = ORMCustomToolUtility.GetDocumentExtension<EnvDTE.TextDocument>(projectItemDocument, "TextDocument", itemPath, _serviceProvider);
 						if (projectItemTextDocument != null)
 						{
 							ormStream = new MemoryStream(Encoding.UTF8.GetBytes(projectItemTextDocument.StartPoint.CreateEditPoint().GetText(projectItemTextDocument.EndPoint)), false);
@@ -706,7 +755,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				outputFormatStreams.Add(ORM_OUTPUT_FORMAT, ormStream);
 				lastFormatSteps.Add(ORM_OUTPUT_FORMAT, -1);
 
-				ORMExtensionManager ormExtensionManager = new ORMExtensionManager(projectItemDocument, ormStream);
+				ORMExtensionManager ormExtensionManager = new ORMExtensionManager(projectItem, projectItemDocument, ormStream);
 				string[] ormExtensions = null; // Delay populated if a requires is made
 
 				// Null out bstrInputFileContents to prevent its usage beyond this point.
@@ -729,7 +778,11 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 					while (i < boundBuildItems.Count)
 					{
 						BoundBuildItem boundBuildItem = boundBuildItems[i];
+#if VISUALSTUDIO_10_0
+						ProjectItemElement buildItem = boundBuildItem.BuildItem;
+#else
 						BuildItem buildItem = boundBuildItem.BuildItem;
+#endif
 						IORMGenerator ormGenerator = boundBuildItem.ORMGenerator;
 						try
 						{
@@ -755,7 +808,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 							}
 							else
 							{
-								string fullItemPath = Path.Combine(projectDirectory ?? (projectDirectory = Path.GetDirectoryName(projectPath)), buildItem.FinalItemSpec);
+								string fullItemPath = Path.Combine(projectDirectory ?? (projectDirectory = Path.GetDirectoryName(projectPath)), ORMCustomToolUtility.GetItemInclude(buildItem));
 								FileInfo checkExisting;
 								bool useExisting = ormGenerator.GeneratesOnce && (checkExisting = new FileInfo(fullItemPath)).Exists && checkExisting.Length != 0;
 								Stream readonlyOutputStream = null;
@@ -775,14 +828,14 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 										{
 											if (null == ormExtensions)
 											{
-												ormExtensions = ormExtensionManager.GetLoadedExtensions();
+												ormExtensions = ormExtensionManager.GetLoadedExtensions(_serviceProvider);
 											}
 											if (Array.BinarySearch<string>(ormExtensions, extension) < 0)
 											{
 												extensionsSatisfied = false;
 												// UNDONE: Localize error messages.
 												report(
-													string.Format(CultureInfo.InvariantCulture, "The extension '{0}' in the '{1}' is required for generation of the '{2}' file. The existing contents of '{3}' will not be modified. Open the 'ORM Generator Selection' dialog and choose 'Save Changes' to automatically add required extensions.", extension, ORM_OUTPUT_FORMAT, ormGenerator.OfficialName, buildItem.FinalItemSpec),
+													string.Format(CultureInfo.InvariantCulture, "The extension '{0}' in the '{1}' is required for generation of the '{2}' file. The existing contents of '{3}' will not be modified. Open the 'ORM Generator Selection' dialog and choose 'Save Changes' to automatically add required extensions.", extension, ORM_OUTPUT_FORMAT, ormGenerator.OfficialName, ORMCustomToolUtility.GetItemInclude(buildItem)),
 													ReportType.Error,
 													null);
 											}
@@ -797,7 +850,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 									{
 										// UNDONE: Localize error messages.
 										report(
-											string.Format(CultureInfo.InvariantCulture, "Exception occurred while executing transform '{0}'. The existing contents of '{1}' will not be modified.", ormGenerator.OfficialName, buildItem.FinalItemSpec),
+											string.Format(CultureInfo.InvariantCulture, "Exception occurred while executing transform '{0}'. The existing contents of '{1}' will not be modified.", ormGenerator.OfficialName, ORMCustomToolUtility.GetItemInclude(buildItem)),
 											ReportType.Error,
 											ex);
 									}
@@ -940,7 +993,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 						{
 							// UNDONE: Localize error message.
 							report(
-								string.Format(CultureInfo.InvariantCulture, "Error occurred during generation of '{0}' via IORMGenerator '{1}'.", buildItem.FinalItemSpec, ormGenerator.OfficialName),
+								string.Format(CultureInfo.InvariantCulture, "Error occurred during generation of '{0}' via IORMGenerator '{1}'.", ORMCustomToolUtility.GetItemInclude(buildItem), ormGenerator.OfficialName),
 								ReportType.Error,
 								ex);
 							boundBuildItems.RemoveAt(i);
@@ -981,4 +1034,131 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 		}
 		#endregion // IVsSingleFileGenerator Members
 	}
+	#endregion // ORMCustomTool class
+	#region ORMCustomToolUtility class
+	/// <summary>
+	/// Miscellaneous extension methods matching older methods
+	/// </summary>
+	internal static class ORMCustomToolUtility
+	{
+		/// <summary>
+		/// Get an extension property directly from <see cref="M:EnvDTE.Document.Object"/>
+		/// with a direct query to <see cref="EnvDTE.IExtensibleObject"/> as a backup.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="document">The document.</param>
+		/// <param name="extensionName">The name of the extension.</param>
+		/// <param name="documentPath">The document path (fallback if document is partially constructed).</param>
+		/// <param name="serviceProvider">The <see cref="IServiceProvider"/> (for document search)</param>
+		/// <returns>Extension object of given type.</returns>
+		public static T GetDocumentExtension<T>(EnvDTE.Document document, string extensionName, string documentPath, IServiceProvider serviceProvider) where T : class
+		{
+			object retVal = document.Object(extensionName);
+#if VISUALSTUDIO_10_0
+			// VS2010 is isolating the document significantly more than in the
+			// earlier versions. If the extension information is not available
+			// through the DTE document then use the running document table to
+			// access it directly.
+			if (null == retVal)
+			{
+				IVsRunningDocumentTable docTable;
+				IVsHierarchy pHier;
+				uint itemId;
+				uint docCookie;
+				IntPtr punkDocData = IntPtr.Zero;
+				if (null != (docTable = serviceProvider.GetService(typeof(IVsRunningDocumentTable)) as IVsRunningDocumentTable) &&
+					ErrorHandler.Succeeded(docTable.FindAndLockDocument(
+						(uint)_VSRDTFLAGS.RDT_NoLock,
+						documentPath,
+						out pHier,
+						out itemId,
+						out punkDocData,
+						out docCookie)))
+				{
+					try
+					{
+						EnvDTE.IExtensibleObject extensibleObject = Marshal.GetObjectForIUnknown(punkDocData) as EnvDTE.IExtensibleObject;
+						if (extensibleObject != null)
+						{
+							extensibleObject.GetAutomationObject(extensionName, null, out retVal);
+						}
+					}
+					finally
+					{
+						if (punkDocData != IntPtr.Zero)
+						{
+							Marshal.Release(punkDocData);
+						}
+					}
+				}
+			}
+#endif // VISUALSTUDIO_10_0
+			return retVal as T;
+		}
+#if VISUALSTUDIO_10_0
+		/// <summary>
+		/// Replacement for BuildItem method
+		/// </summary>
+		public static string GetEvaluatedMetadata(this ProjectItemElement item, string metadataName)
+		{
+			foreach (ProjectMetadataElement metadataElement in item.Metadata)
+			{
+				if (metadataElement.Name == metadataName)
+				{
+					// UNDONE: VS2010 This returns an unescaped value instead of an escaped
+					// value so property expansions are not done. However, none of the metadata
+					// we're requesting should be escaped, so in practice there is essentially
+					// no impact here. We would need Evaluation.ProjectItem instead of Construction.ProjectItemElement
+					// to get the escaped form.
+					return metadataElement.Value;
+				}
+			}
+			return null;
+		}
+		/// <summary>
+		/// Replacement for BuildItem method
+		/// </summary>
+		public static string GetMetadata(this ProjectItemElement item, string metadataName)
+		{
+			foreach (ProjectMetadataElement metadataElement in item.Metadata)
+			{
+				if (metadataElement.Name == metadataName)
+				{
+					return metadataElement.Value;
+				}
+			}
+			return null;
+		}
+		/// <summary>
+		/// Replacement for BuildItem method
+		/// </summary>
+		public static void SetMetadata(this ProjectItemElement item, string metadataName, string metadataValue)
+		{
+			item.AddMetadata(metadataName, metadataValue);
+		}
+		/// <summary>
+		/// Replacement for BuildItem.FinalItemSpec property
+		/// </summary>
+		public static string GetItemInclude(ProjectItemElement item)
+		{
+			// UNDONE: VS2010 This returns the equivalent of Construction.ProjectItemElement.Include
+			// instead of Evaluation.ProjectItem.EvaluatedInclude, which corresponds to
+			// BuildEngine.BuildItem.FinalItemSpec. However, in the vast majority of cases
+			// these are the same (a hand project file edit is required otherwise), so this
+			// is not generally an issue. All uses of this should also be examined to determine
+			// if Include or EvaluatedInclude is the correct property to use. For example, the
+			// ItemGroup key should probably be Include, not EvaluatedInclude.
+			return item.Include;
+		}
+#else // VISUALSTUDIO_10_0
+		/// <summary>
+		/// Replacement for BuildItem.FinalItemSpec property
+		/// </summary>
+		public static string GetItemInclude(BuildItem item)
+		{
+			return item.FinalItemSpec;
+		}
+#endif // VISUALSTUDIO_10_0
+	}
+	#endregion // ORMCustomToolUtility class
 }

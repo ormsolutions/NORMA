@@ -28,10 +28,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 	[PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
 	public sealed class DerivationNoteEditor : MultilineTextEditor<DerivationNoteEditor>
 	{
-		private static readonly Size InitialControlSize = SetupInitialControlSize();
-		private static Size SetupInitialControlSize()
+		/// <summary>
+		/// Choose an initial size
+		/// </summary>
+		static DerivationNoteEditor()
 		{
-			return LastControlSizeStorage = new Size(DefaultInitialControlWidth, DefaultInitialControlHeight / 2);
+			LastControlSizeStorage = new Size(DefaultInitialControlWidth, DefaultInitialControlHeight / 2);
 		}
 	}
 }

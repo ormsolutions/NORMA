@@ -513,8 +513,8 @@ namespace ORMSolutions.ORMArchitect.Framework
 	/// value for <typeparamref name="TKey"/> instances (via <see cref="IEqualityComparer{TKey}.GetHashCode"/>). Instances of
 	/// <see cref="HashSet{TKey,TValue}"/> also require an <see cref="IEqualityComparer{TValue}"/> implementation to determine whether
 	/// <typeparamref name="TValue"/> instances are equal (via <see cref="IEqualityComparer{TValue}.Equals"/>). You can specify an
-	/// implementation of <see cref="IEqualityComparer{T}"/> for keys and values by using a constructor that accepts
-	/// <paramref name="keyEqualityComparer"/> and/or <paramref name="valueEqualityComparer"/> parameters, respectively; if you do not specify
+	/// implementation of <see cref="IEqualityComparer{T}"/> for keys and values by using a constructor that accepts a
+	/// <see cref="IEqualityComparer{TKey}"/> and/or <see cref="IEqualityComparer{TValue}"/> parameters, respectively; if you do not specify
 	/// an implementation, the default generic equality comparer <see cref="EqualityComparer{T}.Default"/> is used. The default equality comparer
 	/// will use the <see cref="IEquatable{T}"/> implementation of the type being compared, if possible.
 	/// </para>

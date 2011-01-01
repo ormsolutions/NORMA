@@ -1,0 +1,918 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShape</value>
+    <comment>Description for DslLibrary &apos;ORMShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel.DisplayName" xml:space="preserve">
+    <value>ORM Shape Domain Model</value>
+    <comment>DisplayName for DslLibrary &apos;ORMShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShapeHasRoleDisplayOrder.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShapeHasRoleDisplayOrder</value>
+    <comment>Description for DomainClass &apos;FactTypeShapeHasRoleDisplayOrder&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShapeHasRoleDisplayOrder.DisplayName" xml:space="preserve">
+    <value>Fact Type Shape Has Role Display Order</value>
+    <comment>DisplayName for DomainClass &apos;FactTypeShapeHasRoleDisplayOrder&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShapeHasRoleDisplayOrder/FactTypeShape.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShapeHasRoleDisplayOrder.FactTypeShape</value>
+    <comment>Description for DomainRole &apos;FactTypeShape&apos; on DomainRelationship &apos;FactTypeShapeHasRoleDisplayOrder&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShapeHasRoleDisplayOrder/FactTypeShape.DisplayName" xml:space="preserve">
+    <value>FactTypeShape</value>
+    <comment>DisplayName for DomainRole &apos;FactTypeShape&apos; on DomainRelationship &apos;FactTypeShapeHasRoleDisplayOrder&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShapeHasRoleDisplayOrder/FactTypeShape.PropertyDisplayName" xml:space="preserve">
+    <value>Role Display Order Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;FactTypeShape&apos; on DomainRelationship &apos;FactTypeShapeHasRoleDisplayOrder&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShapeHasRoleDisplayOrder/RoleDisplayOrder.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShapeHasRoleDisplayOrder.RoleDisplayOrder</value>
+    <comment>Description for DomainRole &apos;RoleDisplayOrder&apos; on DomainRelationship &apos;FactTypeShapeHasRoleDisplayOrder&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShapeHasRoleDisplayOrder/RoleDisplayOrder.DisplayName" xml:space="preserve">
+    <value>RoleDisplayOrder</value>
+    <comment>DisplayName for DomainRole &apos;RoleDisplayOrder&apos; on DomainRelationship &apos;FactTypeShapeHasRoleDisplayOrder&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShapeHasRoleDisplayOrder/RoleDisplayOrder.PropertyDisplayName" xml:space="preserve">
+    <value>Fact Type Shape Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;RoleDisplayOrder&apos; on DomainRelationship &apos;FactTypeShapeHasRoleDisplayOrder&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ConstraintDisplayPosition/Top.DisplayName" xml:space="preserve">
+    <value>Top</value>
+    <comment>Display name for EnumerationLiteral &apos;Top&apos; on DomainEnumeration &apos;ConstraintDisplayPosition&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ConstraintDisplayPosition/Top.Description" xml:space="preserve">
+    <value>Draw the constraints above the top of the role boxes.</value>
+    <comment>Description for EnumerationLiteral &apos;Top&apos; on DomainEnumeration &apos;ConstraintDisplayPosition&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ConstraintDisplayPosition/Bottom.DisplayName" xml:space="preserve">
+    <value>Bottom</value>
+    <comment>Display name for EnumerationLiteral &apos;Bottom&apos; on DomainEnumeration &apos;ConstraintDisplayPosition&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ConstraintDisplayPosition/Bottom.Description" xml:space="preserve">
+    <value>Draw the constraints below the bottom of the role boxes.</value>
+    <comment>Description for EnumerationLiteral &apos;Bottom&apos; on DomainEnumeration &apos;ConstraintDisplayPosition&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayRoleNames/UserDefault.DisplayName" xml:space="preserve">
+    <value>UserDefault</value>
+    <comment>Display name for EnumerationLiteral &apos;UserDefault&apos; on DomainEnumeration &apos;DisplayRoleNames&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayRoleNames/UserDefault.Description" xml:space="preserve">
+    <value>Use the global setting.</value>
+    <comment>Description for EnumerationLiteral &apos;UserDefault&apos; on DomainEnumeration &apos;DisplayRoleNames&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayRoleNames/On.DisplayName" xml:space="preserve">
+    <value>On</value>
+    <comment>Display name for EnumerationLiteral &apos;On&apos; on DomainEnumeration &apos;DisplayRoleNames&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayRoleNames/On.Description" xml:space="preserve">
+    <value>Always draw the RoleNameShapes.</value>
+    <comment>Description for EnumerationLiteral &apos;On&apos; on DomainEnumeration &apos;DisplayRoleNames&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayRoleNames/Off.DisplayName" xml:space="preserve">
+    <value>Off</value>
+    <comment>Display name for EnumerationLiteral &apos;Off&apos; on DomainEnumeration &apos;DisplayRoleNames&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayRoleNames/Off.Description" xml:space="preserve">
+    <value>Never draw the RoleNameShapes.</value>
+    <comment>Description for EnumerationLiteral &apos;Off&apos; on DomainEnumeration &apos;DisplayRoleNames&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayOrientation/Horizontal.DisplayName" xml:space="preserve">
+    <value>Horizontal</value>
+    <comment>Display name for EnumerationLiteral &apos;Horizontal&apos; on DomainEnumeration &apos;DisplayOrientation&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayOrientation/Horizontal.Description" xml:space="preserve">
+    <value>The fact type is drawn with a horizontal orientation.</value>
+    <comment>Description for EnumerationLiteral &apos;Horizontal&apos; on DomainEnumeration &apos;DisplayOrientation&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayOrientation/VerticalRotatedRight.DisplayName" xml:space="preserve">
+    <value>VerticalRotatedRight</value>
+    <comment>Display name for EnumerationLiteral &apos;VerticalRotatedRight&apos; on DomainEnumeration &apos;DisplayOrientation&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayOrientation/VerticalRotatedRight.Description" xml:space="preserve">
+    <value>The fact type is drawn with a vertical orientation rotated to the right.</value>
+    <comment>Description for EnumerationLiteral &apos;VerticalRotatedRight&apos; on DomainEnumeration &apos;DisplayOrientation&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayOrientation/VerticalRotatedLeft.DisplayName" xml:space="preserve">
+    <value>VerticalRotatedLeft</value>
+    <comment>Display name for EnumerationLiteral &apos;VerticalRotatedLeft&apos; on DomainEnumeration &apos;DisplayOrientation&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayOrientation/VerticalRotatedLeft.Description" xml:space="preserve">
+    <value>The fact type is drawn with a vertical orientation rotated to the left.</value>
+    <comment>Description for EnumerationLiteral &apos;VerticalRotatedLeft&apos; on DomainEnumeration &apos;DisplayOrientation&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RelatedTypesDisplay/AttachAllTypes.DisplayName" xml:space="preserve">
+    <value>AttachAllTypes</value>
+    <comment>Display name for EnumerationLiteral &apos;AttachAllTypes&apos; on DomainEnumeration &apos;RelatedTypesDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RelatedTypesDisplay/AttachAllTypes.Description" xml:space="preserve">
+    <value>The shape attaches to both its supertypes and its subtypes.</value>
+    <comment>Description for EnumerationLiteral &apos;AttachAllTypes&apos; on DomainEnumeration &apos;RelatedTypesDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RelatedTypesDisplay/AttachSubtypes.DisplayName" xml:space="preserve">
+    <value>AttachSubtypes</value>
+    <comment>Display name for EnumerationLiteral &apos;AttachSubtypes&apos; on DomainEnumeration &apos;RelatedTypesDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RelatedTypesDisplay/AttachSubtypes.Description" xml:space="preserve">
+    <value>The shape attaches to its subtypes, but not its supertypes.</value>
+    <comment>Description for EnumerationLiteral &apos;AttachSubtypes&apos; on DomainEnumeration &apos;RelatedTypesDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RelatedTypesDisplay/AttachSupertypes.DisplayName" xml:space="preserve">
+    <value>AttachSupertypes</value>
+    <comment>Display name for EnumerationLiteral &apos;AttachSupertypes&apos; on DomainEnumeration &apos;RelatedTypesDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RelatedTypesDisplay/AttachSupertypes.Description" xml:space="preserve">
+    <value>The shape attaches to its supertypes, but not its subtypes.</value>
+    <comment>Description for EnumerationLiteral &apos;AttachSupertypes&apos; on DomainEnumeration &apos;RelatedTypesDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RelatedTypesDisplay/AttachNoTypes.DisplayName" xml:space="preserve">
+    <value>AttachNoTypes</value>
+    <comment>Display name for EnumerationLiteral &apos;AttachNoTypes&apos; on DomainEnumeration &apos;RelatedTypesDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RelatedTypesDisplay/AttachNoTypes.Description" xml:space="preserve">
+    <value>The shape attaches to neither its subtypes nor its supertypes.</value>
+    <comment>Description for EnumerationLiteral &apos;AttachNoTypes&apos; on DomainEnumeration &apos;RelatedTypesDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShape.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShape</value>
+    <comment>Description for DomainClass &apos;ORMBaseShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShape.DisplayName" xml:space="preserve">
+    <value>ORMBase Shape</value>
+    <comment>DisplayName for DomainClass &apos;ORMBaseShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShape/UpdateCounter.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShape.Update Counter</value>
+    <comment>Description for DomainProperty &apos;UpdateCounter&apos; on DomainClass &apos;ORMBaseShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShape/UpdateCounter.DisplayName" xml:space="preserve">
+    <value>Update Counter</value>
+    <comment>DisplayName for DomainProperty &apos;UpdateCounter&apos; on DomainClass &apos;ORMBaseShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape</value>
+    <comment>Description for DomainClass &apos;ObjectTypeShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape.DisplayName" xml:space="preserve">
+    <value>Object Type Shape</value>
+    <comment>DisplayName for DomainClass &apos;ObjectTypeShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape/ExpandRefMode.Description" xml:space="preserve">
+    <value>Should shapes for the FactType and ValueType corresponding to this ReferenceMode pattern be displayed on the diagram?</value>
+    <comment>Description for DomainProperty &apos;ExpandRefMode&apos; on DomainClass &apos;ObjectTypeShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape/ExpandRefMode.DisplayName" xml:space="preserve">
+    <value>ExpandRefMode</value>
+    <comment>DisplayName for DomainProperty &apos;ExpandRefMode&apos; on DomainClass &apos;ObjectTypeShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape/DisplayRelatedTypes.Description" xml:space="preserve">
+    <value>Should links to subtypes and supertypes be attached to this shape?</value>
+    <comment>Description for DomainProperty &apos;DisplayRelatedTypes&apos; on DomainClass &apos;ObjectTypeShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape/DisplayRelatedTypes.DisplayName" xml:space="preserve">
+    <value>DisplayRelatedTypes</value>
+    <comment>DisplayName for DomainProperty &apos;DisplayRelatedTypes&apos; on DomainClass &apos;ObjectTypeShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape</value>
+    <comment>Description for DomainClass &apos;FactTypeShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape.DisplayName" xml:space="preserve">
+    <value>Fact Type Shape</value>
+    <comment>DisplayName for DomainClass &apos;FactTypeShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/ConstraintDisplayPosition.Description" xml:space="preserve">
+    <value>Determines where internal constraints are drawn on this FactTypeShape.</value>
+    <comment>Description for DomainProperty &apos;ConstraintDisplayPosition&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/ConstraintDisplayPosition.DisplayName" xml:space="preserve">
+    <value>ConstraintDisplayPosition</value>
+    <comment>DisplayName for DomainProperty &apos;ConstraintDisplayPosition&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayRoleNames.Description" xml:space="preserve">
+    <value>Determines whether RoleNameShapes will be drawn for the Roles in the FactType represented by this FactTypeShape, overriding the global setting.</value>
+    <comment>Description for DomainProperty &apos;DisplayRoleNames&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayRoleNames.DisplayName" xml:space="preserve">
+    <value>DisplayRoleNames</value>
+    <comment>DisplayName for DomainProperty &apos;DisplayRoleNames&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayOrientation.Description" xml:space="preserve">
+    <value>Determines if the fact type is shown horizontally or vertically.</value>
+    <comment>Description for DomainProperty &apos;DisplayOrientation&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayOrientation.DisplayName" xml:space="preserve">
+    <value>DisplayOrientation</value>
+    <comment>DisplayName for DomainProperty &apos;DisplayOrientation&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayRelatedTypes.Description" xml:space="preserve">
+    <value>Should links to subtypes and supertypes be attached to this shape?</value>
+    <comment>Description for DomainProperty &apos;DisplayRelatedTypes&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayRelatedTypes.DisplayName" xml:space="preserve">
+    <value>DisplayRelatedTypes</value>
+    <comment>DisplayName for DomainProperty &apos;DisplayRelatedTypes&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/RolesPosition.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape.Roles Position</value>
+    <comment>Description for DomainProperty &apos;RolesPosition&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/RolesPosition.DisplayName" xml:space="preserve">
+    <value>Roles Position</value>
+    <comment>DisplayName for DomainProperty &apos;RolesPosition&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.SubtypeLink.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.SubtypeLink</value>
+    <comment>Description for DomainClass &apos;SubtypeLink&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.SubtypeLink.DisplayName" xml:space="preserve">
+    <value>Subtype Link</value>
+    <comment>DisplayName for DomainClass &apos;SubtypeLink&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintShape.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintShape</value>
+    <comment>Description for DomainClass &apos;ExternalConstraintShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintShape.DisplayName" xml:space="preserve">
+    <value>External Constraint Shape</value>
+    <comment>DisplayName for DomainClass &apos;ExternalConstraintShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FrequencyConstraintShape.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.FrequencyConstraintShape</value>
+    <comment>Description for DomainClass &apos;FrequencyConstraintShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FrequencyConstraintShape.DisplayName" xml:space="preserve">
+    <value>Frequency Constraint Shape</value>
+    <comment>DisplayName for DomainClass &apos;FrequencyConstraintShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RingConstraintShape.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.RingConstraintShape</value>
+    <comment>Description for DomainClass &apos;RingConstraintShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RingConstraintShape.DisplayName" xml:space="preserve">
+    <value>Ring Constraint Shape</value>
+    <comment>DisplayName for DomainClass &apos;RingConstraintShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FloatingTextShape.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.FloatingTextShape</value>
+    <comment>Description for DomainClass &apos;FloatingTextShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FloatingTextShape.DisplayName" xml:space="preserve">
+    <value>Floating Text Shape</value>
+    <comment>DisplayName for DomainClass &apos;FloatingTextShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectifiedFactTypeNameShape.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectifiedFactTypeNameShape</value>
+    <comment>Description for DomainClass &apos;ObjectifiedFactTypeNameShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectifiedFactTypeNameShape.DisplayName" xml:space="preserve">
+    <value>Objectified Fact Type Name Shape</value>
+    <comment>DisplayName for DomainClass &apos;ObjectifiedFactTypeNameShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectifiedFactTypeNameShape/ExpandRefMode.Description" xml:space="preserve">
+    <value>Should shapes for the FactType and ValueType corresponding to this ReferenceMode pattern be displayed on the diagram?</value>
+    <comment>Description for DomainProperty &apos;ExpandRefMode&apos; on DomainClass &apos;ObjectifiedFactTypeNameShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectifiedFactTypeNameShape/ExpandRefMode.DisplayName" xml:space="preserve">
+    <value>ExpandRefMode</value>
+    <comment>DisplayName for DomainProperty &apos;ExpandRefMode&apos; on DomainClass &apos;ObjectifiedFactTypeNameShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape</value>
+    <comment>Description for DomainClass &apos;ReadingShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape.DisplayName" xml:space="preserve">
+    <value>Reading Shape</value>
+    <comment>DisplayName for DomainClass &apos;ReadingShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ValueConstraintShape.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ValueConstraintShape</value>
+    <comment>Description for DomainClass &apos;ValueConstraintShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ValueConstraintShape.DisplayName" xml:space="preserve">
+    <value>Value Constraint Shape</value>
+    <comment>DisplayName for DomainClass &apos;ValueConstraintShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ValueConstraintShape/MaximumDisplayedValues.Description" xml:space="preserve">
+    <value>The maximum total number of values and ranges to be displayed with this shape.</value>
+    <comment>Description for DomainProperty &apos;MaximumDisplayedValues&apos; on DomainClass &apos;ValueConstraintShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ValueConstraintShape/MaximumDisplayedValues.DisplayName" xml:space="preserve">
+    <value>MaxValues</value>
+    <comment>DisplayName for DomainProperty &apos;MaximumDisplayedValues&apos; on DomainClass &apos;ValueConstraintShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ValueConstraintShape/MaximumDisplayedColumns.Description" xml:space="preserve">
+    <value>The maximum number of columns to be used to display the values and ranges in this shape.</value>
+    <comment>Description for DomainProperty &apos;MaximumDisplayedColumns&apos; on DomainClass &apos;ValueConstraintShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ValueConstraintShape/MaximumDisplayedColumns.DisplayName" xml:space="preserve">
+    <value>MaxColumns</value>
+    <comment>DisplayName for DomainProperty &apos;MaximumDisplayedColumns&apos; on DomainClass &apos;ValueConstraintShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RoleNameShape.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.RoleNameShape</value>
+    <comment>Description for DomainClass &apos;RoleNameShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RoleNameShape.DisplayName" xml:space="preserve">
+    <value>Role Name Shape</value>
+    <comment>DisplayName for DomainClass &apos;RoleNameShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteShape.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteShape</value>
+    <comment>Description for DomainClass &apos;ModelNoteShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteShape.DisplayName" xml:space="preserve">
+    <value>Model Note Shape</value>
+    <comment>DisplayName for DomainClass &apos;ModelNoteShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.LinkConnectorShape.Description" xml:space="preserve">
+    <value>Zero-size relative shape used as a proxy connection point for other shapes and links.</value>
+    <comment>Description for DomainClass &apos;LinkConnectorShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.LinkConnectorShape.DisplayName" xml:space="preserve">
+    <value>Link Connector Shape</value>
+    <comment>DisplayName for DomainClass &apos;LinkConnectorShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeLinkConnectorShape.Description" xml:space="preserve">
+    <value>Zero-size relative shape used to disambiguate multiple duplicate links between FactTypeShape and other shape types.</value>
+    <comment>Description for DomainClass &apos;FactTypeLinkConnectorShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeLinkConnectorShape.DisplayName" xml:space="preserve">
+    <value>Fact Type Link Connector Shape</value>
+    <comment>DisplayName for DomainClass &apos;FactTypeLinkConnectorShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseBinaryLinkShape.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseBinaryLinkShape</value>
+    <comment>Description for DomainClass &apos;ORMBaseBinaryLinkShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseBinaryLinkShape.DisplayName" xml:space="preserve">
+    <value>ORMBase Binary Link Shape</value>
+    <comment>DisplayName for DomainClass &apos;ORMBaseBinaryLinkShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseBinaryLinkShape/UpdateCounter.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseBinaryLinkShape.Update Counter</value>
+    <comment>Description for DomainProperty &apos;UpdateCounter&apos; on DomainClass &apos;ORMBaseBinaryLinkShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseBinaryLinkShape/UpdateCounter.DisplayName" xml:space="preserve">
+    <value>Update Counter</value>
+    <comment>DisplayName for DomainProperty &apos;UpdateCounter&apos; on DomainClass &apos;ORMBaseBinaryLinkShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RolePlayerLink.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.RolePlayerLink</value>
+    <comment>Description for DomainClass &apos;RolePlayerLink&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RolePlayerLink.DisplayName" xml:space="preserve">
+    <value>Role Player Link</value>
+    <comment>DisplayName for DomainClass &apos;RolePlayerLink&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink</value>
+    <comment>Description for DomainClass &apos;ExternalConstraintLink&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink.DisplayName" xml:space="preserve">
+    <value>External Constraint Link</value>
+    <comment>DisplayName for DomainClass &apos;ExternalConstraintLink&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ValueRangeLink.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ValueRangeLink</value>
+    <comment>Description for DomainClass &apos;ValueRangeLink&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ValueRangeLink.DisplayName" xml:space="preserve">
+    <value>Value Range Link</value>
+    <comment>DisplayName for DomainClass &apos;ValueRangeLink&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteLink.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteLink</value>
+    <comment>Description for DomainClass &apos;ModelNoteLink&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteLink.DisplayName" xml:space="preserve">
+    <value>ModelNoteReference</value>
+    <comment>DisplayName for DomainClass &apos;ModelNoteLink&apos;</comment>
+  </data>
+  <data name="ModelExplorerTitle" xml:space="preserve">
+    <value>ORM Shape Domain Model Explorer</value>
+    <comment>Model Explorer Toolwindow title</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram</value>
+    <comment>Description for DomainClass &apos;ORMDiagram&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram.DisplayName" xml:space="preserve">
+    <value>ORMDiagram</value>
+    <comment>DisplayName for DomainClass &apos;ORMDiagram&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram/AutoPopulateShapes.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram.Auto Populate Shapes</value>
+    <comment>Description for DomainProperty &apos;AutoPopulateShapes&apos; on DomainClass &apos;ORMDiagram&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram/AutoPopulateShapes.DisplayName" xml:space="preserve">
+    <value>Auto Populate Shapes</value>
+    <comment>DisplayName for DomainProperty &apos;AutoPopulateShapes&apos; on DomainClass &apos;ORMDiagram&apos;</comment>
+  </data>
+  <data name="ORM DesignerToolboxTab" xml:space="preserve">
+    <value>ORM Designer</value>
+    <comment>Toolbox item tab name</comment>
+  </data>
+  <data name="EntityTypeToolboxItem" xml:space="preserve">
+    <value>Entity Type</value>
+    <comment>Toolbox item name</comment>
+  </data>
+  <data name="EntityTypeToolboxTooltip" xml:space="preserve">
+    <value>New Entity Type</value>
+    <comment>Toolbox tooltip text</comment>
+  </data>
+  <data name="ValueTypeToolboxItem" xml:space="preserve">
+    <value>Value Type</value>
+    <comment>Toolbox item name</comment>
+  </data>
+  <data name="ValueTypeToolboxTooltip" xml:space="preserve">
+    <value>New Value Type</value>
+    <comment>Toolbox tooltip text</comment>
+  </data>
+  <data name="ObjectifiedFactTypeToolboxItem" xml:space="preserve">
+    <value>Objectified Fact Type</value>
+    <comment>Toolbox item name</comment>
+  </data>
+  <data name="ObjectifiedFactTypeToolboxTooltip" xml:space="preserve">
+    <value>New Objectified Fact Type</value>
+    <comment>Toolbox tooltip text</comment>
+  </data>
+  <data name="UnaryFactTypeToolboxItem" xml:space="preserve">
+    <value>Unary Fact Type</value>
+    <comment>Toolbox item name</comment>
+  </data>
+  <data name="UnaryFactTypeToolboxTooltip" xml:space="preserve">
+    <value>New Unary Fact Type</value>
+    <comment>Toolbox tooltip text</comment>
+  </data>
+  <data name="BinaryFactTypeToolboxItem" xml:space="preserve">
+    <value>Binary Fact Type</value>
+    <comment>Toolbox item name</comment>
+  </data>
+  <data name="BinaryFactTypeToolboxTooltip" xml:space="preserve">
+    <value>New Binary Fact Type</value>
+    <comment>Toolbox tooltip text</comment>
+  </data>
+  <data name="TernaryFactTypeToolboxItem" xml:space="preserve">
+    <value>Ternary Fact Type</value>
+    <comment>Toolbox item name</comment>
+  </data>
+  <data name="TernaryFactTypeToolboxTooltip" xml:space="preserve">
+    <value>New Ternary Fact Type</value>
+    <comment>Toolbox tooltip text</comment>
+  </data>
+  <data name="RoleConnectorToolboxItem" xml:space="preserve">
+    <value>Role Connector</value>
+    <comment>Toolbox item name</comment>
+  </data>
+  <data name="RoleConnectorToolboxTooltip" xml:space="preserve">
+    <value>Role Connector Tool</value>
+    <comment>Toolbox tooltip text</comment>
+  </data>
+  <data name="SubtypeConnectorToolboxItem" xml:space="preserve">
+    <value>Subtype Connector</value>
+    <comment>Toolbox item name</comment>
+  </data>
+  <data name="SubtypeConnectorToolboxTooltip" xml:space="preserve">
+    <value>Subtype Connector Tool</value>
+    <comment>Toolbox tooltip text</comment>
+  </data>
+  <data name="InternalUniquenessConstraintToolboxItem" xml:space="preserve">
+    <value>Internal Uniqueness Constraint</value>
+    <comment>Toolbox item name</comment>
+  </data>
+  <data name="InternalUniquenessConstraintToolboxTooltip" xml:space="preserve">
+    <value>New Internal Uniqueness Constraint</value>
+    <comment>Toolbox tooltip text</comment>
+  </data>
+  <data name="ExternalUniquenessConstraintToolboxItem" xml:space="preserve">
+    <value>External Uniqueness Constraint</value>
+    <comment>Toolbox item name</comment>
+  </data>
+  <data name="ExternalUniquenessConstraintToolboxTooltip" xml:space="preserve">
+    <value>New External Uniqueness Constraint</value>
+    <comment>Toolbox tooltip text</comment>
+  </data>
+  <data name="EqualityConstraintToolboxItem" xml:space="preserve">
+    <value>Equality Constraint</value>
+    <comment>Toolbox item name</comment>
+  </data>
+  <data name="EqualityConstraintToolboxTooltip" xml:space="preserve">
+    <value>New Equality Constraint</value>
+    <comment>Toolbox tooltip text</comment>
+  </data>
+  <data name="ExclusionConstraintToolboxItem" xml:space="preserve">
+    <value>Exclusion Constraint</value>
+    <comment>Toolbox item name</comment>
+  </data>
+  <data name="ExclusionConstraintToolboxTooltip" xml:space="preserve">
+    <value>New Exclusion Constraint</value>
+    <comment>Toolbox tooltip text</comment>
+  </data>
+  <data name="InclusiveOrConstraintToolboxItem" xml:space="preserve">
+    <value>Inclusive Or Constraint</value>
+    <comment>Toolbox item name</comment>
+  </data>
+  <data name="InclusiveOrConstraintToolboxTooltip" xml:space="preserve">
+    <value>New Inclusive Or Constraint</value>
+    <comment>Toolbox tooltip text</comment>
+  </data>
+  <data name="ExclusiveOrConstraintToolboxItem" xml:space="preserve">
+    <value>Exclusive Or Constraint</value>
+    <comment>Toolbox item name</comment>
+  </data>
+  <data name="ExclusiveOrConstraintToolboxTooltip" xml:space="preserve">
+    <value>New Exclusive Or Constraint</value>
+    <comment>Toolbox tooltip text</comment>
+  </data>
+  <data name="SubsetConstraintToolboxItem" xml:space="preserve">
+    <value>Subset Constraint</value>
+    <comment>Toolbox item name</comment>
+  </data>
+  <data name="SubsetConstraintToolboxTooltip" xml:space="preserve">
+    <value>New Subset Constraint</value>
+    <comment>Toolbox tooltip text</comment>
+  </data>
+  <data name="FrequencyConstraintToolboxItem" xml:space="preserve">
+    <value>Frequency Constraint</value>
+    <comment>Toolbox item name</comment>
+  </data>
+  <data name="FrequencyConstraintToolboxTooltip" xml:space="preserve">
+    <value>New Frequency Constraint</value>
+    <comment>Toolbox tooltip text</comment>
+  </data>
+  <data name="RingConstraintToolboxItem" xml:space="preserve">
+    <value>Ring Constraint</value>
+    <comment>Toolbox item name</comment>
+  </data>
+  <data name="RingConstraintToolboxTooltip" xml:space="preserve">
+    <value>New Ring Constraint</value>
+    <comment>Toolbox tooltip text</comment>
+  </data>
+  <data name="ExternalConstraintConnectorToolboxItem" xml:space="preserve">
+    <value>Constraint Connector</value>
+    <comment>Toolbox item name</comment>
+  </data>
+  <data name="ExternalConstraintConnectorToolboxTooltip" xml:space="preserve">
+    <value>Constraint Connector Tool</value>
+    <comment>Toolbox tooltip text</comment>
+  </data>
+  <data name="ModelNoteToolboxItem" xml:space="preserve">
+    <value>Model Note</value>
+    <comment>Toolbox item name</comment>
+  </data>
+  <data name="ModelNoteToolboxTooltip" xml:space="preserve">
+    <value>New Model Note</value>
+    <comment>Toolbox tooltip text</comment>
+  </data>
+  <data name="ModelNoteConnectorToolboxItem" xml:space="preserve">
+    <value>Model Note Connector</value>
+    <comment>Toolbox item name</comment>
+  </data>
+  <data name="ModelNoteConnectorToolboxTooltip" xml:space="preserve">
+    <value>Model Note Connector Tool</value>
+    <comment>Toolbox tooltip text</comment>
+  </data>
+  <data name="UnresolvedToolboxItem" xml:space="preserve">
+    <value>ToolboxItem {0} was not found</value>
+    <comment>Invalid toolId</comment>
+  </data>
+  <data name="UnsupportedToolboxFormat" xml:space="preserve">
+    <value>Unsupported toolbox format: {0}</value>
+    <comment>Unsupported format Id</comment>
+  </data>
+  <data name="UnrecognizedElementType" xml:space="preserve">
+    <value>ElementType {0} is not recognized as a type of domain class which belongs to this domain model.</value>
+    <comment>Incorrect ElementType passed in to Model.CreateElement method</comment>
+  </data>
+  <data name="UnrecognizedElementLinkType" xml:space="preserve">
+    <value>ElementLinkType {0} is not recognized as a type of domain relationship which belongs to this domain model.</value>
+    <comment>Incorrect ElementLinkType passed in to Model.CreateElementLink method</comment>
+  </data>
+  <data name="AmbiguousSchema" xml:space="preserve">
+    <value>More than one schema found for target namespace &apos;{0}&apos;, use the first one at &apos;{1}&apos;.</value>
+    <comment>Serialization Warning: AmbiguousSchema</comment>
+  </data>
+  <data name="ExpectingFullFormRelationship" xml:space="preserve">
+    <value>Element &apos;{0}&apos; is treated as the target role-player of a relationship &apos;{1}&apos; instance, which should be serialized in full-form.</value>
+    <comment>Serialization Warning: ExpectingFullFormRelationship</comment>
+  </data>
+  <data name="ExpectingShortFormRelationship" xml:space="preserve">
+    <value>Instances of relationship &apos;{0}&apos; should be serialized in short-form.</value>
+    <comment>Serialization Warning: ExpectingShortFormRelationship</comment>
+  </data>
+  <data name="IgnoredPropertyValue" xml:space="preserve">
+    <value>Invalid property value &apos;{0}&apos; for property &apos;{1}&apos; with type &apos;{2}&apos;, ignored.</value>
+    <comment>Serialization Warning: IgnoredPropertyValue</comment>
+  </data>
+  <data name="MissingId" xml:space="preserve">
+    <value>Missing &apos;Id&apos; attribute, a new Guid &apos;{0}&apos; is auto-generated.</value>
+    <comment>Serialization Warning: MissingId</comment>
+  </data>
+  <data name="MonikerResolvedToDuplicateLink" xml:space="preserve">
+    <value>Resolving moniker &apos;{0}&apos; causes a duplicate link to be created, so the link and the moniker are ignored.</value>
+    <comment>Serialization Warning: MonikerResolvedToDuplicateLink</comment>
+  </data>
+  <data name="NoSchema" xml:space="preserve">
+    <value>Cannot find a schema that defines target namespace &apos;{0}&apos;, schema validation skipped.</value>
+    <comment>Serialization Warning: NoSchema</comment>
+  </data>
+  <data name="UnexpectedXmlElement" xml:space="preserve">
+    <value>Unexpected XML element &apos;{0}&apos;, ignored.</value>
+    <comment>Serialization Warning: UnexpectedXmlElement</comment>
+  </data>
+  <data name="AmbiguousMoniker" xml:space="preserve">
+    <value>Ambiguous moniker &apos;{0}&apos; encountered. It is used for both &apos;{1}&apos; and &apos;{2}&apos;.</value>
+    <comment>Serialization Error: AmbiguousMoniker</comment>
+  </data>
+  <data name="CannotMonikerizeElement" xml:space="preserve">
+    <value>Instances of DomainClass &apos;{0}&apos; cannot be serialized as a moniker.
+A DomainClass can be serialized as a moniker only if 
+1) it has a defined/inherited DomainProperty marked as IsMonikerKey=true, or 
+2) it is marked/inherited with SerializeId=true.</value>
+    <comment>Serialization Error: CannotMonikerizeElement</comment>
+  </data>
+  <data name="CannotOpenDocument" xml:space="preserve">
+    <value>Error encountered, check Error List window for details.</value>
+    <comment>Serialization Error: CannotOpenDocument</comment>
+  </data>
+  <data name="CannotSaveDocument" xml:space="preserve">
+    <value>Error encountered, check Error List window for details.</value>
+    <comment>Serialization Error: CannotSaveDocument</comment>
+  </data>
+  <data name="DanglingRelationship" xml:space="preserve">
+    <value>Relationship &apos;{0}&apos; instance is missing target role-player.</value>
+    <comment>Serialization Error: DanglingRelationship</comment>
+  </data>
+  <data name="InvalidPropertyValue" xml:space="preserve">
+    <value>Invalid property value &apos;{0}&apos; for property &apos;{1}&apos; with type &apos;{2}&apos;.</value>
+    <comment>Serialization Error: InvalidPropertyValue</comment>
+  </data>
+  <data name="MissingMoniker" xml:space="preserve">
+    <value>Missing moniker. A moniker is expected in attribute &apos;{0}&apos;.</value>
+    <comment>Serialization Error: MissingMoniker</comment>
+  </data>
+  <data name="MissingTransaction" xml:space="preserve">
+    <value>This must be called within the context of an active transaction.</value>
+    <comment>Serialization Error: MissingTransaction</comment>
+  </data>
+  <data name="UnresolvedMoniker" xml:space="preserve">
+    <value>Cannot resolve moniker &apos;{0}&apos;.</value>
+    <comment>Serialization Error: UnresolvedMoniker</comment>
+  </data>
+  <data name="VersionMismatch" xml:space="preserve">
+    <value>Unsupported version &apos;{0}&apos;, can only support &apos;{1}&apos;.</value>
+    <comment>Serialization Error: VersionMismatch</comment>
+  </data>
+  <data name="CannotCloseExistingDiagramDocument" xml:space="preserve">
+    <value>Diagram file &apos;{0}&apos; cannot be closed.</value>
+    <comment>User cancel closing diagram file. Hence, the DSL model file cannot be opened</comment>
+  </data>
+  <data name="BindingErrorOccurred" xml:space="preserve">
+    <value>Extensions for this designer may not be found as a MEF binding error has occurred. The error that occurred was:
+{0}</value>
+    <comment>MEF binding error occurred - exception message being logged in the error window so the user is aware.</comment>
+  </data>
+  <data name="InvalidSaveRootElementType" xml:space="preserve">
+    <value>&apos;{0}&apos; is not a valid root element type.</value>
+    <comment>Exception message used if an invalid root element type is passed to IDomainModelSerializer.SaveModel / SaveModelAndDiagram</comment>
+  </data>
+  <data name="InvalidSaveDiagramType" xml:space="preserve">
+    <value>&apos;{0}&apos; is not a valid diagram type.</value>
+    <comment>Exception message used if an invalid diagram type is passed to IDomainModelSerializer.SaveModelAndDiagram</comment>
+  </data>
+  <data name="MinimumMultiplicityMissingLink" xml:space="preserve">
+    <value>{0} {1} has no {2}.</value>
+    <comment>Multiplicity underflow validation.</comment>
+  </data>
+  <data name="SaveOperationCancelled" xml:space="preserve">
+    <value>Save operation cancelled.</value>
+    <comment>Message when save is cancelled on validation errors</comment>
+  </data>
+  <data name="SaveValidationFailed" xml:space="preserve">
+    <value>There were validation errors, continue save?</value>
+    <comment>Message when validation errors are found on save</comment>
+  </data>
+  <data name="UnloadableSaveValidationFailed" xml:space="preserve">
+    <value>There were validation errors. Continuing to save may cause the file to become unloadable, do you want to continue?</value>
+    <comment>Message when validation errors are found on save that will cause file to become unloadable</comment>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="EntityTypeToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
+    <value>..\..\Resources\Toolbox.EntityType.Bitmap.Id.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>Toolbox item image</comment>
+  </data>
+  <data name="ValueTypeToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
+    <value>..\..\Resources\Toolbox.ValueType.Bitmap.Id.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>Toolbox item image</comment>
+  </data>
+  <data name="ObjectifiedFactTypeToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
+    <value>..\..\Resources\Toolbox.ObjectifiedFactType.Bitmap.Id.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>Toolbox item image</comment>
+  </data>
+  <data name="UnaryFactTypeToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
+    <value>..\..\Resources\Toolbox.UnaryFactType.Bitmap.Id.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>Toolbox item image</comment>
+  </data>
+  <data name="BinaryFactTypeToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
+    <value>..\..\Resources\Toolbox.BinaryFactType.Bitmap.Id.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>Toolbox item image</comment>
+  </data>
+  <data name="TernaryFactTypeToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
+    <value>..\..\Resources\Toolbox.TernaryFactType.Bitmap.Id.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>Toolbox item image</comment>
+  </data>
+  <data name="RoleConnectorToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
+    <value>..\..\Resources\Toolbox.RoleConnector.Bitmap.Id.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>Toolbox item image</comment>
+  </data>
+  <data name="SubtypeConnectorToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
+    <value>..\..\Resources\Toolbox.SubtypeConnector.Bitmap.Id.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>Toolbox item image</comment>
+  </data>
+  <data name="InternalUniquenessConstraintToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
+    <value>..\..\Resources\Toolbox.InternalUniquenessConstraint.Bitmap.Id.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>Toolbox item image</comment>
+  </data>
+  <data name="ExternalUniquenessConstraintToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
+    <value>..\..\Resources\Toolbox.ExternalUniquenessConstraint.Bitmap.Id.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>Toolbox item image</comment>
+  </data>
+  <data name="EqualityConstraintToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
+    <value>..\..\Resources\Toolbox.EqualityConstraint.Bitmap.Id.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>Toolbox item image</comment>
+  </data>
+  <data name="ExclusionConstraintToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
+    <value>..\..\Resources\Toolbox.ExclusionConstraint.Bitmap.Id.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>Toolbox item image</comment>
+  </data>
+  <data name="InclusiveOrConstraintToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
+    <value>..\..\Resources\Toolbox.InclusiveOrConstraint.Bitmap.Id.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>Toolbox item image</comment>
+  </data>
+  <data name="ExclusiveOrConstraintToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
+    <value>..\..\Resources\Toolbox.ExclusiveOrConstraint.Bitmap.Id.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>Toolbox item image</comment>
+  </data>
+  <data name="SubsetConstraintToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
+    <value>..\..\Resources\Toolbox.SubsetConstraint.Bitmap.Id.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>Toolbox item image</comment>
+  </data>
+  <data name="FrequencyConstraintToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
+    <value>..\..\Resources\Toolbox.FrequencyConstraint.Bitmap.Id.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>Toolbox item image</comment>
+  </data>
+  <data name="RingConstraintToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
+    <value>..\..\Resources\Toolbox.RingConstraint.Bitmap.Id.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>Toolbox item image</comment>
+  </data>
+  <data name="ExternalConstraintConnectorToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
+    <value>..\..\Resources\Toolbox.ExternalConstraintConnector.Bitmap.Id.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>Toolbox item image</comment>
+  </data>
+  <data name="ModelNoteToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
+    <value>..\..\Resources\Toolbox.ModelNote.Bitmap.Id.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>Toolbox item image</comment>
+  </data>
+  <data name="ModelNoteConnectorToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
+    <value>..\..\Resources\Toolbox.ModelNoteConnector.Bitmap.Id.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>Toolbox item image</comment>
+  </data>
+</root>
+
+
+<!-- Common Public License Copyright Notice -->
+<!--
+	Natural Object-Role Modeling Architect for Visual Studio
+
+	Copyright © Neumont University. All rights reserved.
+	Copyright © ORM Solutions, LLC. All rights reserved.
+
+	The use and distribution terms for this software are covered by the
+	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
+	can be found in the file CPL.txt at the root of this distribution.
+	By using this software in any fashion, you are agreeing to be bound by
+	the terms of this license.
+
+	You must not remove this notice, or any other, from this software.
+-->

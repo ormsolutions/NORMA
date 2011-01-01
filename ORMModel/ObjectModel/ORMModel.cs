@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing.Design;
 using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
 using ORMSolutions.ORMArchitect.Framework;
@@ -123,18 +124,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 		}
-		private ModelErrorDisplayFilter GetModelErrorDisplayFilterDisplayValue()
+		#endregion // CustomStorage handlers
+		#region Non-DSL Custom Properties
+		/// <summary>
+		/// Validation error display options for this model. Control error display by
+		/// category and individually.
+		/// </summary>
+		[Editor(typeof(Design.ModelErrorDisplayFilterEditor), typeof(UITypeEditor))]
+		public ModelErrorDisplayFilter ModelErrorDisplayFilterDisplay
 		{
-			return ModelErrorDisplayFilter;
-		}
-		private void SetModelErrorDisplayFilterDisplayValue(ModelErrorDisplayFilter newValue)
-		{
-			if (!Store.InUndoRedoOrRollback)
+			get
 			{
-				ModelErrorDisplayFilter = newValue;
+				return ModelErrorDisplayFilter;
+			}
+			set
+			{
+				ModelErrorDisplayFilter = value;
 			}
 		}
-		#endregion // CustomStorage handlers
+		#endregion // Non-DSL Custom Properties
 		#region MergeContext functions
 		private void MergeRelateObjectType(ModelElement sourceElement, ElementGroup elementGroup)
 		{

@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -51,15 +52,22 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams.Design
 		/// that is associated with the instance of <typeparamref name="TModelElement"/> specified by <paramref name="selectedElement"/>.
 		/// </summary>
 		public DiagramTypeDescriptor(ICustomTypeDescriptor parent, TPresentationElement presentationElement, TModelElement selectedElement)
+#if VISUALSTUDIO_10_0
+			: base(parent, presentationElement)
+#else
 			: base(parent, presentationElement, selectedElement)
+#endif
 		{
 			// The PresentationElementTypeDescriptor constructor already checked presentationElement for null.
 			this.myPresentationElement = presentationElement;
 			// The ElementTypeDescriptor constructor already checked selectedElement for null.
-			this.myModelElement = selectedElement;
+#if VISUALSTUDIO_10_0
+			myModelElement = (TModelElement)presentationElement.ModelElement;
+#else
+			myModelElement = selectedElement;
+#endif
 		}
 		#endregion // Constructor
-
 		#region PresentationElement property
 		private readonly TPresentationElement myPresentationElement;
 		/// <summary>
@@ -74,7 +82,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams.Design
 			}
 		}
 		#endregion // PresentationElement property
-
 		#region ModelElement property
 		private readonly TModelElement myModelElement;
 		/// <summary>
@@ -89,7 +96,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams.Design
 			}
 		}
 		#endregion // ModelElement property
-
 		#region GetClassName method
 		/// <summary>
 		/// Returns the class name of <see cref="DiagramTypeDescriptor{TPresentationElement,TModelElement}.ModelElement"/>
@@ -101,7 +107,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams.Design
 			return TypeDescriptor.GetClassName(this.ModelElement);
 		}
 		#endregion // GetClassName method
-
 		#region GetComponentName method
 		/// <summary>
 		/// Returns the component name of <see cref="DiagramTypeDescriptor{TPresentationElement,TModelElement}.ModelElement"/>
@@ -113,10 +118,9 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams.Design
 			return TypeDescriptor.GetComponentName(this.ModelElement);
 		}
 		#endregion // GetComponentName method
-
 		#region GetDisplayProperties method
 		/// <summary>
-		/// Blocks editor access to <see cref="ElementTypeDescriptor.GetDisplayProperties"/>.
+		/// Blocks editor access to <see cref="ElementTypeDescriptor.GetDisplayProperties(ModelElement,ref PropertyDescriptor)"/>.
 		/// </summary>
 		[EditorBrowsable(EditorBrowsableState.Never)]
 		[Obsolete("This method is not supported.", true)]
@@ -124,8 +128,18 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams.Design
 		{
 			throw new NotSupportedException();
 		}
+#if VISUALSTUDIO_10_0
+		/// <summary>
+		/// Blocks editor access to <see cref="ElementTypeDescriptor.GetDisplayProperties(ModelElement,Store,ref PropertyDescriptor)"/>.
+		/// </summary>
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		[Obsolete("This method is not supported.", true)]
+		protected new PropertyDescriptorCollection GetDisplayProperties(ModelElement requestor, Store store, ref PropertyDescriptor defaultPropertyDescriptor)
+		{
+			throw new NotSupportedException();
+		}
+#endif
 		#endregion // GetDisplayProperties method
-
 		#region GetDomainPropertyAttributes method
 		/// <summary>
 		/// Replaces <see cref="ElementTypeDescriptor.GetDomainPropertyAttributes"/>.
@@ -137,10 +151,9 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams.Design
 			{
 				throw new ArgumentNullException("domainPropertyInfo");
 			}
-			return DomainTypeDescriptor.AttributeCollectionToArray(DomainTypeDescriptor.GetRawAttributes(domainPropertyInfo.PropertyInfo));
+			return EditorUtility.GetAttributeArray(DomainTypeDescriptor.GetRawAttributes(domainPropertyInfo.PropertyInfo));
 		}
 		#endregion // GetDomainPropertyAttributes method
-
 		#region GetRolePlayerPropertyAttributes method
 		/// <summary>
 		/// Replaces <see cref="ElementTypeDescriptor.GetRolePlayerPropertyAttributes"/>.
@@ -152,10 +165,9 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams.Design
 			{
 				throw new ArgumentNullException("domainRole");
 			}
-			return DomainTypeDescriptor.AttributeCollectionToArray(DomainTypeDescriptor.GetRawAttributes(domainRole.LinkPropertyInfo));
+			return EditorUtility.GetAttributeArray(DomainTypeDescriptor.GetRawAttributes(domainRole.LinkPropertyInfo));
 		}
 		#endregion // GetRolePlayerPropertyAttributes method
-
 		#region ShouldCreatePropertyDescriptor method
 		/// <summary>
 		/// Replaces <see cref="ElementTypeDescriptor.ShouldCreatePropertyDescriptor"/>.
@@ -170,7 +182,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams.Design
 			return ((BrowsableAttribute)DomainTypeDescriptor.GetRawAttributes(domainProperty.PropertyInfo)[typeof(BrowsableAttribute)]).Browsable;
 		}
 		#endregion // ShouldCreatePropertyDescriptor method
-
 		#region GetEvents method
 		/// <summary>
 		/// Calls <see cref="ICustomTypeDescriptor.GetEvents(Attribute[])"/>,
@@ -181,7 +192,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams.Design
 			return this.GetEvents(null);
 		}
 		#endregion // GetEvents method
-
 		#region GetProperties methods
 		/// <summary>
 		/// Calls <see cref="GetProperties(Attribute[])"/>,
@@ -199,15 +209,15 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams.Design
 		public override PropertyDescriptorCollection GetProperties(Attribute[] attributes)
 		{
 			// Get the properties from the associated ModelElement to start off with.
-			PropertyDescriptorCollection propertyDescriptors;
+			PropertyDescriptorCollection propertyDescriptors = new PropertyDescriptorCollection(null);
 			TModelElement modelElement = this.ModelElement;
-			if (!modelElement.IsDeleted && !modelElement.IsDeleting)
+			Type diagramType = typeof(TPresentationElement);
+			if (modelElement != null && !modelElement.IsDeleted && !modelElement.IsDeleting)
 			{
-				propertyDescriptors = TypeDescriptor.GetProperties(modelElement);
-			}
-			else
-			{
-				propertyDescriptors = new PropertyDescriptorCollection(null);
+				foreach (PropertyDescriptor wrapDescriptor in TypeDescriptor.GetProperties(modelElement))
+				{
+					propertyDescriptors.Add(EditorUtility.RedirectPropertyDescriptor(modelElement, wrapDescriptor, diagramType));
+				}
 			}
 
 			// Add the properties for this PresentationElement.
@@ -222,8 +232,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams.Design
 					{
 						continue;
 					}
-					ElementPropertyDescriptor propertyDescriptor =
-						this.CreatePropertyDescriptor(requestor, domainPropertyInfo, this.GetDomainPropertyAttributes(domainPropertyInfo));
+					ElementPropertyDescriptor propertyDescriptor = this.CreatePropertyDescriptor(requestor, domainPropertyInfo, this.GetDomainPropertyAttributes(domainPropertyInfo));
 					if (propertyDescriptor != null)
 					{
 						propertyDescriptors.Add(propertyDescriptor);
@@ -236,9 +245,8 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams.Design
 				// Get the property descriptors for the DomainRoles we play.
 				if (includeOppositeRolePlayerProperties || includeEmbeddingRelationshipProperties)
 				{
-					HashSet<string, string> oppositePropertyNames =
-						new HashSet<string, string>(KeyProvider<string, string>.Default, StringComparer.Ordinal, StringComparer.Ordinal);
-
+					// UNDONE: NOW VS2010 Add wrappers for opposite role players similar to the property wrappers above.
+					HashSet<string, string> oppositePropertyNames =	new HashSet<string, string>(KeyProvider<string, string>.Default, StringComparer.Ordinal, StringComparer.Ordinal);
 					foreach (DomainRoleInfo playedRole in requestor.GetDomainClass().AllDomainRolesPlayed)
 					{
 						// We only want to get property descriptors for DomainRoles when any derived types

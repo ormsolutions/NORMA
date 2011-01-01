@@ -19,7 +19,7 @@
 	Id="F18BEFB1-F3CE-4B27-8F9E-F2E5AA77B74C"
 	Namespace=""
 	PackageNamespace=""
-	Name="SystemCore"
+	Name="_SystemCore"
 	DisplayName="System Core Domain Model"
 	CompanyName="ORM Solutions, LLC"
 	ProductName="Natural Object-Role Modeling Architect for Visual Studio"

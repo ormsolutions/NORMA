@@ -5961,7 +5961,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// </summary>
 			/// <param name="editInstance">The <see cref="EntityTypeInstance"/> or <see cref="EntityTypeSubtypeInstance"/> which will be edited</param>
 			/// <param name="editRole">Role from the parent Entity type which is being edited</param>
-			/// <param name="objectifyingType">The objectifying type associated with the <paramref name="parentFactType"/>. Used in place of <paramref name="editRole"/> to edit the objectification relationship.</param>
+			/// <param name="objectifyingType">The objectifying type associated with the <paramref name="editInstance"/>. Used in place of <paramref name="editRole"/> to edit the objectification relationship.</param>
 			/// <param name="parentBranch">Reference to the parent editing branch</param>
 			private EntityEditorBranch(ObjectTypeInstance editInstance, Role editRole, ObjectType objectifyingType, BaseBranch parentBranch) : base(2, (editRole != null) ? editRole.Store : objectifyingType.Store)
 			{

@@ -362,7 +362,16 @@
 				</Strings>
 			</Button>
 
-			<Button guid="guidORMDesignerCommandSet" id="cmdIdDiagramList" priority="0x0010" type="Button">
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdSelectNextInCurrentDiagram" priority="0x0010" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdDiagramListTest"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Next on this Dia&amp;gram</ButtonText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdDiagramList" priority="0x0020" type="Button">
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdDiagramListTest"/>
 				<CommandFlag>DynamicItemStart</CommandFlag>
 				<CommandFlag>DefaultInvisible</CommandFlag>
@@ -1024,6 +1033,7 @@
 			<IDSymbol value="0x2930" name="cmdIdIncludeInGroup"/>
 			<IDSymbol value="0x2931" name="cmdIdIncludeInNewGroup"/>
 			<IDSymbol value="0x2932" name="cmdIdSelectInModelBrowser"/>
+			<IDSymbol value="0x2933" name="cmdIdSelectNextInCurrentDiagram"/>
 
 			<!-- Large ranges for dynamic commands, keep single commands in the 0x29__ range -->
 			<IDSymbol value="0x2A00" name="cmdIdErrorList"/>

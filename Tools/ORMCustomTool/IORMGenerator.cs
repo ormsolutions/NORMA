@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -19,7 +20,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+#if VISUALSTUDIO_10_0
+using Microsoft.Build.Construction;
+using BuildItem = Microsoft.Build.Construction.ProjectItemElement;
+using BuildItemGroup = Microsoft.Build.Construction.ProjectItemGroupElement;
+#else // VISUALSTUDIO_10_0
 using Microsoft.Build.BuildEngine;
+#endif // VISUALSTUDIO_10_0
 
 namespace ORMSolutions.ORMArchitect.ORMCustomTool
 {
@@ -143,6 +150,43 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 		/// <param name="sourceFileName">A <see cref="String"/> containing the name (without file extension) of the source ORM file.</param>
 		string GetOutputFileDefaultName(string sourceFileName);
 
+#if VISUALSTUDIO_10_0
+		/// <summary>
+		/// Adds a <see cref="ProjectItemElement"/> for the generated file to <paramref name="itemGroup"/>.
+		/// </summary>
+		/// <param name="itemGroup">The <see cref="ProjectItemGroupElement"/> to which the <see cref="ProjectItemElement"/> for the generated file should be added.</param>
+		/// <param name="sourceFileName">The name of the source ORM file. This will usually be used as the value for the &lt;DependentUpon&gt; item metadata.</param>
+		/// <param name="outputFileName">The name of the generated file. This will usually be used as the value for the Include attribute of the <see cref="ProjectItemElement"/> for the generated file.</param>
+		/// <returns>The <see cref="ProjectItemElement"/> for the generated file.</returns>
+		/// <remarks>
+		/// If this <see cref="IORMGenerator"/> generates compilable output that is useful at design time, the &lt;DesignTime&gt;
+		/// item metadata should be set to the value "True" (without the quotes).
+		/// </remarks>
+		ProjectItemElement AddGeneratedFileItem(ProjectItemGroupElement itemGroup, string sourceFileName, string outputFileName);
+
+		/// <summary>
+		/// Generates the output for <paramref name="itemElement"/> to <paramref name="outputStream"/>, using the read-only <see cref="Stream"/>s
+		/// contained in <paramref name="inputFormatStreams"/> as input.
+		/// </summary>
+		/// <param name="itemElement">The <see cref="ProjectItemElement"/> for which output is to be generated.</param>
+		/// <param name="outputStream">The <see cref="Stream"/> to which output is to be generated.</param>
+		/// <param name="inputFormatStreams">A read-only <see cref="IDictionary{String,Stream}"/> containing pairs of official output format names and read-only <see cref="Stream"/>s containing the output in that format.</param>
+		/// <param name="defaultNamespace">A <see cref="String"/> containing the default namespace that should be used in the generated output, as appropriate.</param>
+		/// <param name="itemProperties">An implementation of <see cref="IORMGeneratorItemProperties"/> to allow retrieval of additional properties</param>
+		/// <remarks>
+		/// <para><paramref name="inputFormatStreams"/> is guaranteed to contain the output <see cref="Stream"/>s for
+		/// the "ORM" format and any formats returned by this <see cref="IORMGenerator"/>'s implementation of
+		/// <see cref="IORMGenerator.RequiresInputFormats"/>.</para>
+		/// <para>Implementations of this method are responsible for resetting the <see cref="Stream.Position"/> of any
+		/// <see cref="Stream"/> obtained from <paramref name="inputFormatStreams"/> to the beginning of that <see cref="Stream"/>
+		/// if they directly or indirectly alter that <see cref="Stream.Position"/>. This does not apply to <paramref name="outputStream"/>.
+		/// See below for an example of how to reset the position of a <see cref="Stream"/> in C#.</para>
+		/// <para><example>Stream oialStream = inputFormatStreams[ORMOutputFormat.OIAL];
+		/// ...
+		/// oialStream.Seek(0, SeekOrigin.Begin);</example></para>
+		/// </remarks>
+		void GenerateOutput(ProjectItemElement itemElement, Stream outputStream, IDictionary<string, Stream> inputFormatStreams, string defaultNamespace, IORMGeneratorItemProperties itemProperties);
+#else // VISUALSTUDIO_10_0
 		/// <summary>
 		/// Adds a <see cref="BuildItem"/> for the generated file to <paramref name="buildItemGroup"/>.
 		/// </summary>
@@ -154,11 +198,11 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 		/// If this <see cref="IORMGenerator"/> generates compilable output that is useful at design time, the &lt;DesignTime&gt;
 		/// item metadata should be set to the value "True" (without the quotes).
 		/// </remarks>
-		BuildItem AddGeneratedFileBuildItem(BuildItemGroup buildItemGroup, string sourceFileName, string outputFileName);
+		BuildItem AddGeneratedFileItem(BuildItemGroup buildItemGroup, string sourceFileName, string outputFileName);
 
 		/// <summary>
 		/// Generates the output for <paramref name="buildItem"/> to <paramref name="outputStream"/>, using the read-only <see cref="Stream"/>s
-		/// contained in <paramref name="inputFormatSteams"/> as input.
+		/// contained in <paramref name="inputFormatStreams"/> as input.
 		/// </summary>
 		/// <param name="buildItem">The <see cref="BuildItem"/> for which output is to be generated.</param>
 		/// <param name="outputStream">The <see cref="Stream"/> to which output is to be generated.</param>
@@ -178,6 +222,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 		/// oialStream.Seek(0, SeekOrigin.Begin);</example></para>
 		/// </remarks>
 		void GenerateOutput(BuildItem buildItem, Stream outputStream, IDictionary<string, Stream> inputFormatStreams, string defaultNamespace, IORMGeneratorItemProperties itemProperties);
+#endif // VISUALSTUDIO_10_0
 	}
 	/// <summary>
 	/// An interface used for generators to retrieve additional properties about the orm item

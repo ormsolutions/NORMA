@@ -461,5 +461,15 @@
 		</DomainEnumeration>
 	</Types>
 
-	<XmlSerializationBehavior Name="ORMAbstractionToConceptualDatabaseBridgeSerializationBehavior" Namespace="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge"/>	
+	<XmlSerializationBehavior Name="ORMAbstractionToConceptualDatabaseBridgeSerializationBehavior" Namespace="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge"/>
+
+	<DslLibraryImports>
+		<DslLibraryImport FilePath="..\DcilModel\DcilModel.dsl"/>
+		<DslLibraryImport FilePath="..\..\Oial\OialModel\OialModel.dsl"/>
+		<DslLibraryImport FilePath="..\..\Oial\ORMOialBridge\ORMOialBridge.dsl"/>
+		<DslLibraryImport FilePath="..\..\ORMModel\Framework\Framework.dsl"/>
+		<DslLibraryImport FilePath="..\..\ORMModel\Framework\SystemCore.dsl"/>
+		<DslLibraryImport FilePath="..\..\ORMModel\ObjectModel\ORMCore.dsl"/>
+	</DslLibraryImports>
+
 </Dsl>

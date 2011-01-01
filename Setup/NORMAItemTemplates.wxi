@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Natural Object-Role Modeling Architect for Visual Studio
+
+	Copyright © Neumont University. All rights reserved.
+	Copyright © ORM Solutions, LLC. All rights reserved.
+
+	The use and distribution terms for this software are covered by the
+	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
+	can be found in the file CPL.txt at the root of this distribution.
+	By using this software in any fashion, you are agreeing to be bound by
+	the terms of this license.
+
+	You must not remove this notice, or any other, from this software.
+-->
+<Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Directory Id="General" Name="General">
+		<?ifndef VSIXInstall?>
+			<Component Id="NORMAVSProjectItemsGeneralComponent" Guid="26D96FE1-69F2-46ED-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+				<File Id="General.zip" Name="ORMModel.zip" Source="..\ORMModel\Shell\ProjectItems\$(var.VSShortName)\General.zip"
+					DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
+			</Component>
+		<?endif?>
+		<Component Id="NORMADBImportProjectItemsGeneralComponent" Guid="1890A3E6-8C17-478C-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+			<File Id="DBImportGeneral.zip" Name="ORMModelFromDatabase.zip" ShortName="DBImpGen.zip" Source="..\Tools\DatabaseImport\ProjectItems\$(var.VSShortName)\General.zip"
+				DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).dll"/>
+		</Component>
+	</Directory>
+	<Directory Id="VisualBasic" ShortName="VBasic" Name="VisualBasic">
+		<Component Id="NORMAVSProjectItemsVBasicComponent" Guid="5D140A94-9C4A-4B60-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+			<Condition>VBASICPACKAGEGUID OR Installed</Condition>
+			<File Id="VisualBasic.zip" Name="ORMModel.zip" Source="..\ORMModel\Shell\ProjectItems\VisualBasic.zip"
+				DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
+		</Component>
+		<Component Id="NORMADBImportProjectItemsVBasicComponent" Guid="8C45B394-60D1-433C-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+			<Condition>VBASICPACKAGEGUID OR Installed</Condition>
+			<File Id="DBImportVisualBasic.zip" Name="ORMModelFromDatabase.zip" ShortName="DBImpVB.zip" Source="..\Tools\DatabaseImport\ProjectItems\$(var.VSShortName)\VisualBasic.zip"
+				DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).dll"/>
+		</Component>
+	</Directory>
+	<Directory Id="CSharp" Name="CSharp">
+		<Component Id="NORMAVSProjectItemsVCSharpComponent" Guid="C1AAAF79-FA94-45C0-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+			<Condition>VCSHARPPACKAGEGUID OR Installed</Condition>
+			<File Id="CSharp.zip" Name="ORMModel.zip" Source="..\ORMModel\Shell\ProjectItems\CSharp.zip"
+				DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
+		</Component>
+		<Component Id="NORMADBImportProjectItemsVCSharpComponent" Guid="08F0D621-59B8-46D1-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+			<Condition>VCSHARPPACKAGEGUID OR Installed</Condition>
+			<File Id="DBImportCSharp.zip" Name="ORMModelFromDatabase.zip" ShortName="DBImpCS.zip" Source="..\Tools\DatabaseImport\ProjectItems\$(var.VSShortName)\CSharp.zip"
+				DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).dll"/>
+		</Component>
+	</Directory>
+	<?ifdef JSharpSupport?>
+	<Directory Id="JSharp" Name="JSharp">
+		<Component Id="NORMAVSProjectItemsVJSharpComponent" Guid="B6ACBD38-3FAD-4C24-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+			<Condition>VJSHARPPACKAGEGUID OR Installed</Condition>
+			<File Id="JSharp.zip" Name="ORMModel.zip" Source="..\ORMModel\Shell\ProjectItems\JSharp.zip"
+				DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
+		</Component>
+		<Component Id="NORMADBImportProjectItemsVJSharpComponent" Guid="B6711598-65C5-4E23-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+			<Condition>VJSHARPPACKAGEGUID OR Installed</Condition>
+			<File Id="DBImportJSharp.zip" Name="ORMModelFromDatabase.zip" ShortName="DBImpJS.zip" Source="..\Tools\DatabaseImport\ProjectItems\$(var.VSShortName)\JSharp.zip"
+				DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).dll"/>
+		</Component>
+	</Directory>
+	<?endif?>
+	<Directory Id="VisualC" Name="VisualC">
+		<Component Id="NORMAVSProjectItemsVCPlusPlusComponent" Guid="16B28893-FE72-4BBF-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+			<Condition>VCPLUSPLUSPACKAGEGUID OR Installed</Condition>
+			<File Id="VisualC.zip" Name="ORMModel.zip" Source="..\ORMModel\Shell\ProjectItems\VisualC.zip"
+				DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
+		</Component>
+		<Component Id="NORMADBImportProjectItemsVCPlusPlusComponent" Guid="5BC18298-68CE-46F2-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+			<Condition>VCPLUSPLUSPACKAGEGUID OR Installed</Condition>
+			<File Id="DBImportVisualC.zip" Name="ORMModelFromDatabase.zip" ShortName="DBImpVC.zip" Source="..\Tools\DatabaseImport\ProjectItems\$(var.VSShortName)\VisualC.zip"
+				DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).dll"/>
+		</Component>
+	</Directory>
+	<Directory Id="Web" Name="Web">
+		<Directory Id="WebVisualBasic" ShortName="VBasic" Name="VisualBasic">
+			<Component Id="NORMAVSProjectItemsVWebDevVBasicComponent" Guid="4EC6EE56-3F04-4F0F-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+				<Condition>VWEBDEVPACKAGEGUID OR Installed</Condition>
+				<File Id="WebVisualBasic.zip" Name="ORMModel.zip" Source="..\ORMModel\Shell\ProjectItems\Web\VisualBasic.zip"
+					DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
+			</Component>
+			<Component Id="NORMADBImportProjectItemsVWebDevVBasicComponent" Guid="34C69005-11CA-4F9E-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+				<Condition>VWEBDEVPACKAGEGUID OR Installed</Condition>
+				<File Id="DBImportWebVisualBasic.zip" Name="ORMModelFromDatabase.zip" ShortName="DBImpWVB.zip" Source="..\Tools\DatabaseImport\ProjectItems\$(var.VSShortName)\Web\VisualBasic.zip"
+					DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).dll"/>
+			</Component>
+		</Directory>
+		<Directory Id="WebCSharp" Name="CSharp">
+			<Component Id="NORMAVSProjectItemsVWebDevCSharpComponent" Guid="7E4BA3AB-3831-4520-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+				<Condition>VWEBDEVPACKAGEGUID OR Installed</Condition>
+				<File Id="WebCSharp.zip" Name="ORMModel.zip" Source="..\ORMModel\Shell\ProjectItems\Web\CSharp.zip"
+					DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
+			</Component>
+			<Component Id="NORMADBImportProjectItemsVWebDevCSharpComponent" Guid="46832808-DF7F-43B1-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+				<Condition>VWEBDEVPACKAGEGUID OR Installed</Condition>
+				<File Id="DBImportWebCSharp.zip" Name="ORMModelFromDatabase.zip" ShortName="DBImpWCS.zip" Source="..\Tools\DatabaseImport\ProjectItems\$(var.VSShortName)\Web\CSharp.zip"
+					DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).dll"/>
+			</Component>
+		</Directory>
+		<?ifdef JSharpSupport?>
+		<Directory Id="WebJSharp" Name="JSharp">
+			<Component Id="NORMAVSProjectItemsVWebDevJSharpComponent" Guid="E68504E4-D956-4A87-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+				<Condition>VWEBDEVPACKAGEGUID OR Installed</Condition>
+				<File Id="WebJSharp.zip" Name="ORMModel.zip" Source="..\ORMModel\Shell\ProjectItems\Web\JSharp.zip"
+					DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
+			</Component>
+			<Component Id="NORMADBImportProjectItemsVWebDevJSharpComponent" Guid="4AC8EFAD-DCE3-4509-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+				<Condition>VWEBDEVPACKAGEGUID OR Installed</Condition>
+				<File Id="DBImportWebJSharp.zip" Name="ORMModelFromDatabase.zip" ShortName="DBImpWJS.zip" Source="..\Tools\DatabaseImport\ProjectItems\$(var.VSShortName)\Web\JSharp.zip"
+					DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).dll"/>
+			</Component>
+		</Directory>
+		<?endif?>
+	</Directory>
+</Include>

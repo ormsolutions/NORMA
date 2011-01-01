@@ -203,10 +203,6 @@
     <value xml:space="preserve">Delete Reading</value>
     <comment xml:space="preserve">This text appears on the undo/redo menu when a reading is deleted.</comment>
   </data>
-  <data name="Command.NextOnThisDiagram.Text">
-    <value xml:space="preserve">Next on this Dia&amp;gram</value>
-    <comment xml:space="preserve">This text appears on the 'Select on Diagram' menu if there is more than one shape for the selected element on the current diagram.</comment>
-  </data>
   <data name="Command.SwapRoleOrder.Text">
     <value xml:space="preserve">Re&amp;verse Role Order</value>
     <comment xml:space="preserve">This text appears on the move role left/right when the fact type is binary.</comment>
@@ -528,7 +524,7 @@
     <comment xml:space="preserve">The header for the message displayed if a set of extensions fails to correctly reload.</comment>
   </data>
   <data name="MessageBox.ImpliedInternalUniquenessConstraint.Message">
-    <value xml:space="preserve">One or more of the internal uniqueness constraints are implied by other internal uniqueness constraints. Do you wish to remove the implied constraints?</value>
+    <value xml:space="preserve">One or more of the internal uniqueness constraints are implied by other internal uniqueness constraints. Would you like to remove the implied constraints?</value>
     <comment xml:space="preserve">The message for the auto-fix implied internal uniqueness constraint message box.</comment>
   </data>
   <data name="MessageBox.FileFormatUpgrade.Message">
@@ -740,7 +736,7 @@
     <comment xml:space="preserve">Description of the external constraint role bar display option.</comment>
   </data>
   <data name="OptionsPage.Property.MandatoryDot.Description">
-    <value xml:space="preserve">Specify which end of the role connector you wish to place mandatory dots.</value>
+    <value xml:space="preserve">Specify an end of the role connector to place dots for simple mandatory constraints. This option is ignored if an Entity Relationship Learning Mode multiplicity display option is enabled for binary fact types.</value>
     <comment xml:space="preserve">The description for the mandatory dot property.</comment>
   </data>
   <data name="OptionsPage.Property.MandatoryDot.DisplayName">

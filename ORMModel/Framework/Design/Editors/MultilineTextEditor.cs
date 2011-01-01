@@ -88,13 +88,12 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		/// </summary>
 		protected const int DefaultInitialControlHeight = 128;
 		/// <summary>
-		/// The default <see cref="Size"/> used for the <see cref="SizePreservingEditor{T}.LastControlSize"/>
+		/// Set the default <see cref="Size"/> used for the <see cref="SizePreservingEditor{T}.LastControlSize"/>
 		/// property the first time the control is shown.
 		/// </summary>
-		protected static readonly Size DefaultInitialControlSize = SetupDefaultInitialControlSize();
-		private static Size SetupDefaultInitialControlSize()
+		static MultilineTextEditor()
 		{
-			return LastControlSizeStorage = new Size(DefaultInitialControlWidth, DefaultInitialControlHeight);
+			LastControlSizeStorage = new Size(DefaultInitialControlWidth, DefaultInitialControlHeight);
 		}
 		/// <summary>
 		/// Required UITypeEditor override. Opens dropdown modally

@@ -215,4 +215,9 @@
 
 	<XmlSerializationBehavior Name="CustomPropertyDomainModelSerializationBehavior" Namespace="ORMSolutions.ORMArchitect.CustomProperties"/>
 
+	<DslLibraryImports>
+		<DslLibraryImport FilePath="..\ORMModel\ObjectModel\ORMCore.dsl"/>
+		<DslLibraryImport FilePath="..\ORMModel\Framework\SystemCore.dsl"/>
+	</DslLibraryImports>
+
 </Dsl>

@@ -121,7 +121,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 						{
 							EditorUtility.ActivatePropertyEditor(
 								services.ServiceProvider,
-								DomainTypeDescriptor.CreatePropertyDescriptor(selectedElement, Role.RolePlayerDisplayDomainPropertyId),
+								RoleTypeDescriptor.GetRolePlayerDisplayPropertyDescriptor((Role)selectedElement),
 								true);
 						}
 						else if (error is ValueConstraintError)
@@ -258,7 +258,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 						{
 							EditorUtility.ActivatePropertyEditor(
 								services.ServiceProvider,
-								DomainTypeDescriptor.CreatePropertyDescriptor(selectedElement, ObjectType.DataTypeDisplayDomainPropertyId),
+								ObjectTypeTypeDescriptor.DataTypeDisplayPropertyDescriptor,
 								true);
 						}
 						else if (error is EntityTypeRequiresReferenceSchemeError)

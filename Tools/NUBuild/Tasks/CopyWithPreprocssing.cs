@@ -146,7 +146,11 @@ namespace Neumont.Build.Tasks
 			xmlReaderSettings.NameTable = XmlSchemaCatalog.XmlNameTable;
 			xmlReaderSettings.Schemas = XmlSchemaCatalog.XmlSchemaSet;
 			xmlReaderSettings.XmlResolver = XmlSchemaCatalog.XmlResolver;
+#if VISUALSTUDIO_10_0
+			xmlReaderSettings.DtdProcessing = DtdProcessing.Ignore;
+#else
 			xmlReaderSettings.ProhibitDtd = false;
+#endif
 			xmlReaderSettings.ValidationFlags =
 				XmlSchemaValidationFlags.AllowXmlAttributes |
 				XmlSchemaValidationFlags.ProcessIdentityConstraints |

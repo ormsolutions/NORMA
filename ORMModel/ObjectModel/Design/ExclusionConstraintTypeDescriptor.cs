@@ -63,8 +63,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			if (mandatoryConstraint != null)
 			{
 				DomainPropertyInfo mandatoryConstraintNameDomainProperty = mandatoryConstraint.GetDomainClass().NameDomainProperty;
-				properties.Add(new ElementPropertyDescriptor(this, mandatoryConstraint, mandatoryConstraintNameDomainProperty,
-					base.GetDomainPropertyAttributes(mandatoryConstraintNameDomainProperty)));
+				properties.Add(EditorUtility.RedirectPropertyDescriptor(
+					mandatoryConstraint,
+					new ElementPropertyDescriptor(
+						mandatoryConstraint,
+						mandatoryConstraintNameDomainProperty,
+						base.GetDomainPropertyAttributes(mandatoryConstraintNameDomainProperty)),
+					typeof(ExclusionConstraint)));
 			}
 			return properties;
 		}

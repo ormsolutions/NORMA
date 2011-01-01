@@ -283,6 +283,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				myPendingOnClickedAction = OnClickedAction.Commit;
 			}
+			base.OnMouseDown(e);
 		}
 		[DllImport("user32.dll", ExactSpelling = true, CharSet = CharSet.Auto)]
 		private static extern short GetKeyState(Keys nVirtKey);
@@ -675,6 +676,12 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				myInOnClicked = true;
 				myDeactivatedDuringOnClick = false;
 				base.OnClicked(e);
+#if VISUALSTUDIO_10_0
+				if (IsActive)
+				{
+					Cancel(e.DiagramClientView);
+				}
+#endif
 				myInOnClicked = false;
 				if (myDeactivatedDuringOnClick)
 				{

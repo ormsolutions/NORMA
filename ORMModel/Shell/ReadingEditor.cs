@@ -973,7 +973,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					myExpandImpliedBranch = tree.IsExpanded(coordinate.Row, coordinate.Column);
 				}
 
-				// Get the new infomration
+				// Get the new information
 				myFactType = factType = value.FactType;
 				mySecondaryFactType = value.ImpliedFactType;
 				myDisplayRoleOrder = value.DisplayOrder;

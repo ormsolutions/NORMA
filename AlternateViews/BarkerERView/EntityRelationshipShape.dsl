@@ -42,6 +42,13 @@
 		<CompartmentShape Name="BarkerEntityShape" Id="3AD5BD5C-F5A1-46C1-9F82-2110DBFC69EB" Namespace="ORMSolutions.ORMArchitect.Views.BarkerERView" 
 										GeneratesDoubleDerived="true" InitialHeight="0.3" InitialWidth="1" OutlineThickness="0.015625" 
 										AccessModifier="Assembly" Geometry="RoundedRectangle" IsSingleCompartmentHeaderVisible="false">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Diagrams.Design.PresentationElementTypeDescriptionProvider&lt;BarkerEntityShape, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType, global::ORMSolutions.ORMArchitect.Framework.Diagrams.Design.PresentationElementTypeDescriptor&lt;BarkerEntityShape, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
 			<Properties>
 				<DomainProperty Name="UpdateCounter" Id="E0BCB4FF-7C01-431A-8178-583E733D13AE" GetterAccessModifier="Private" SetterAccessModifier="Private" Kind="CustomStorage" IsBrowsable="false">
 					<Type>
@@ -67,8 +74,23 @@
 	
 	<XmlSerializationBehavior Name="BarkerEntityShapeModelSerializationBehavior" Namespace="ORMSolutions.ORMArchitect.Views.BarkerERView"/>
 
+	<DslLibraryImports>
+		<DslLibraryImport FilePath="..\..\EntityRelationship\BarkerErModel\BerModel.dsl"/>
+		<DslLibraryImport FilePath="..\..\EntityRelationship\OialBerBridge\OialBerBridge.dsl"/>
+		<DslLibraryImport FilePath="..\..\ORMModel\ShapeModel\ORMShape.dsl"/>
+		<DslLibraryImport FilePath="..\..\ORMModel\ObjectModel\ORMCore.dsl"/>
+		<DslLibraryImport FilePath="..\..\ORMModel\Framework\SystemCore.dsl"/>
+	</DslLibraryImports>
+
 	<!-- Diagram is double-derived so that we can override CreateChildShape. -->
 	<Diagram Name="BarkerERDiagram" Namespace="ORMSolutions.ORMArchitect.Views.BarkerERView" Id="144546C5-DB5E-4A4C-B1BC-4B7C6C0612F2" AccessModifier="Assembly" GeneratesDoubleDerived="true" HasCustomConstructor="true">
+		<Attributes>
+			<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+				<Parameters>
+					<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Diagrams.Design.PresentationElementTypeDescriptionProvider&lt;BarkerERDiagram, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel, global::ORMSolutions.ORMArchitect.Framework.Diagrams.Design.PresentationElementTypeDescriptor&lt;BarkerERDiagram, global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel&gt;&gt;)"/>
+				</Parameters>
+			</ClrAttribute>
+		</Attributes>
 		<Class>
 			<DomainClassMoniker Name="/ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker/BarkerErModel"/>
 		</Class>

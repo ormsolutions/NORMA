@@ -99,13 +99,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <see cref="IORMExtendableElement"/> specified by <paramref name="extendableElement"/>
 		/// to the <see cref="PropertyDescriptorCollection"/> specified by <paramref name="properties"/>.
 		/// </summary>
-		/// <param name="extendableElement">
-		/// The <see cref="IORMExtendableElement"/> from which the extension properties should be retrieved.
-		/// </param>
-		/// <param name="properties">
-		/// The <see cref="PropertyDescriptorCollection"/> to which the extension properties should be added.
-		/// </param>
-		public static void GetExtensionProperties(IORMExtendableElement extendableElement, PropertyDescriptorCollection properties)
+		/// <param name="extendableElement">The <see cref="IORMExtendableElement"/> from which the extension properties should be retrieved.</param>
+		/// <param name="properties">The <see cref="PropertyDescriptorCollection"/> to which the extension properties should be added.</param>
+		/// <param name="displayedWithComponentType">The <see cref="Type"/> of the element the extensions will be displayed with.</param>
+		public static void GetExtensionProperties(IORMExtendableElement extendableElement, PropertyDescriptorCollection properties, Type displayedWithComponentType)
 		{
 			if (extendableElement == null)
 			{
@@ -121,13 +118,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				ORMExtensionPropertySettings settings = (customPropertyExtension != null) ? customPropertyExtension.ExtensionPropertySettings : ORMExtensionPropertySettings.MergeAsTopLevelProperty;
 				if (0 != (settings & ORMExtensionPropertySettings.MergeAsExpandableProperty))
 				{
-					properties.Add(ExpandableExtensionPropertyDescriptor.CreateExtensionDescriptor(customPropertyExtension));
+					PropertyDescriptor descriptor = ExpandableExtensionPropertyDescriptor.CreateExtensionDescriptor(customPropertyExtension);
+					properties.Add(displayedWithComponentType != null ? EditorUtility.RedirectPropertyDescriptor(extension, descriptor, displayedWithComponentType) : descriptor);
 				}
 				if (0 != (settings & ORMExtensionPropertySettings.MergeAsTopLevelProperty))
 				{
 					foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(extension))
 					{
-						properties.Add(descriptor);
+						properties.Add(displayedWithComponentType != null ? EditorUtility.RedirectPropertyDescriptor(extension, descriptor, displayedWithComponentType) : descriptor);
 					}
 				}
 			}

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
 	Neumont Object-Role Modeling Architect for Visual Studio
 
@@ -605,4 +605,8 @@
 
 	<XmlSerializationBehavior Name="OIALMetaModelSerializationBehavior" Namespace="Neumont.Tools.ORM.OIALModel"/>
 	
+	<DslLibraryImports>
+		<DslLibraryImport FilePath="..\ORMModel\ObjectModel\ORMCore.dsl"/>
+		<DslLibraryImport FilePath="..\ORMModel\Framework\SystemCore.dsl"/>
+	</DslLibraryImports>
 </Dsl>

@@ -98,5 +98,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 				return ResourceStrings.RolePlayerPickerNullItemText;
 			}
 		}
+		/// <summary>
+		/// Choose an initial size
+		/// </summary>
+		static RolePlayerPicker()
+		{
+			LastControlSizeStorage = new Size(192, 144);
+		}
 	}
 }

@@ -1,4 +1,5 @@
-﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\Neumont\VisualStudio\Neumont.Build.VisualStudio.Multitargeting.targets" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -42,7 +43,7 @@
     <Reference Include="ORMSolutions.ORMArchitect.Core.$(TargetVisualStudioShortProductName), Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk, Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk$(TargetDslToolsVersionSuffix), Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -64,7 +65,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Plix.xml" />
-    <Content Include="DcilModel.dsl" />
+    <Content Include="DcilModel.dsl">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\..\XML\DIL\DILDT.xsd">
@@ -74,42 +77,43 @@
     <EmbeddedResource Include="ConceptualDatabase.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="GeneratedCode\DomainClasses.tt">
+    <None Include="GeneratedCode\DomainClasses$(GeneratedDslFileSuffix).tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DomainClasses.cs</LastGenOutput>
+      <LastGenOutput>DomainClasses$(GeneratedDslFileSuffix).cs</LastGenOutput>
     </None>
-    <None Include="GeneratedCode\DomainModel.tt">
+    <None Include="GeneratedCode\DomainModel$(GeneratedDslFileSuffix).tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DomainModel.cs</LastGenOutput>
+      <LastGenOutput>DomainModel$(GeneratedDslFileSuffix).cs</LastGenOutput>
     </None>
-    <None Include="GeneratedCode\DomainModelResx.tt">
+    <None Include="GeneratedCode\DomainModelResx$(GeneratedDslFileSuffix).tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DomainModelResx.resx</LastGenOutput>
+      <LastGenOutput>DomainModelResx$(GeneratedDslFileSuffix).resx</LastGenOutput>
     </None>
-    <None Include="GeneratedCode\DomainRelationships.tt">
+    <None Include="GeneratedCode\DomainRelationships$(GeneratedDslFileSuffix).tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DomainRelationships.cs</LastGenOutput>
+      <LastGenOutput>DomainRelationships$(GeneratedDslFileSuffix).cs</LastGenOutput>
     </None>
-    <Compile Include="GeneratedCode\DomainModel.cs">
+    <Compile Include="GeneratedCode\DomainModel$(GeneratedDslFileSuffix).cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DomainModel.tt</DependentUpon>
+      <DependentUpon>DomainModel$(GeneratedDslFileSuffix).tt</DependentUpon>
     </Compile>
-    <Compile Include="GeneratedCode\DomainClasses.cs">
+    <Compile Include="GeneratedCode\DomainClasses$(GeneratedDslFileSuffix).cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DomainClasses.tt</DependentUpon>
+      <DependentUpon>DomainClasses$(GeneratedDslFileSuffix).tt</DependentUpon>
     </Compile>
-    <Compile Include="GeneratedCode\DomainRelationships.cs">
+    <Compile Include="GeneratedCode\DomainRelationships$(GeneratedDslFileSuffix).cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DomainRelationships.tt</DependentUpon>
+      <DependentUpon>DomainRelationships$(GeneratedDslFileSuffix).tt</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="GeneratedCode\DomainModelResx.resx">
+    <EmbeddedResource Include="GeneratedCode\DomainModelResx$(GeneratedDslFileSuffix).resx">
+      <LogicalName>ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx.resources</LogicalName>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <SubType>Designer</SubType>
-      <DependentUpon>DomainModelResx.tt</DependentUpon>
+      <DependentUpon>DomainModelResx$(GeneratedDslFileSuffix).tt</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -164,6 +168,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

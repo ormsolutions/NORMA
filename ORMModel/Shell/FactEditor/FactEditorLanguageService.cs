@@ -1540,6 +1540,17 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							TextViewInitFlags2.VIF_SUPPRESS_STATUS_BAR_UPDATE |
 							TextViewInitFlags2.VIF_SUPPRESSTRACKCHANGES),
 						new INITVIEW[] { initView });
+#if VISUALSTUDIO_10_0
+					objectWithSite = codeWindow as IObjectWithSite;
+					if (objectWithSite != null)
+					{
+						// The new VS2010 WPF adapters need the global site to pick
+						// up the IComponentModel service.
+						objectWithSite.SetSite(Microsoft.VisualStudio.Shell.ServiceProvider.GlobalProvider.GetService(typeof(IOleServiceProvider)));
+						// Required to avoid a blank window if there is no initial selection.
+						lines.InitializeContent("", 0);
+					}
+#endif // VISUALSTUDIO_10_0
 					ErrorHandler.ThrowOnFailure(codeWindow.SetBuffer(lines));
 
 					IVsUIShell shell = (IVsUIShell)GetService(typeof(IVsUIShell));
@@ -1557,7 +1568,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					// 8- int[] for position (empty array)
 					// 9- out IVsWindowFrame
 					ErrorHandler.ThrowOnFailure(shell.CreateToolWindow(
-						(uint)__VSCREATETOOLWIN.CTW_fInitNew, // tool window flags, default to init new
+						// ForceCreate is the standard for other tool windows, but does not appear
+						// to make any difference in VS2005 or VS2008. However, in VS2010, the window
+						// will not reappear with the editor if this is not set.
+						(uint)(__VSCREATETOOLWIN.CTW_fInitNew | __VSCREATETOOLWIN.CTW_fForceCreate),
 						0,
 						(IVsWindowPane)codeWindow,
 						ref emptyGuid,

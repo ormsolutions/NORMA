@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -145,9 +146,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			Color retVal = Color.Empty;
 			ModelNote element;
+			Store store;
 			IDynamicShapeColorProvider<ORMDiagramDynamicColor, ModelNoteShape, ModelNote>[] providers;
 			if (penId == DiagramPens.ShapeOutline &&
-				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ModelNoteShape, ModelNote>>()) &&
+				null != (store = Utility.ValidateStore(Store)) &&
+				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ModelNoteShape, ModelNote>>()) &&
 				null != (element = (ModelNote)ModelElement))
 			{
 				for (int i = 0; i < providers.Length; ++i)
@@ -175,12 +178,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			Color retVal = Color.Empty;
 			SolidBrush solidBrush;
 			ModelNote element;
+			Store store;
 			IDynamicShapeColorProvider<ORMDiagramDynamicColor, ModelNoteShape, ModelNote>[] providers;
 			bool isBackgroundBrush;
-			if (((isBackgroundBrush = brushId == DiagramBrushes.DiagramBackground) ||
+			if (((isBackgroundBrush = brushId == DiagramBrushes.DiagramBackground || brushId == ORMDiagram.TransparentBrushResource) ||
 				brushId == DiagramBrushes.ShapeText) &&
 				null != (solidBrush = brush as SolidBrush) &&
-				null != (providers = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ModelNoteShape, ModelNote>>()) &&
+				null != (store = Utility.ValidateStore(Store)) &&
+				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ModelNoteShape, ModelNote>>()) &&
 				null != (element = (ModelNote)ModelElement))
 			{
 				ORMDiagramDynamicColor requestColor = isBackgroundBrush ? ORMDiagramDynamicColor.Background : ORMDiagramDynamicColor.ForegroundText;

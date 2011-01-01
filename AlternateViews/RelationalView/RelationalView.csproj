@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\Neumont\VisualStudio\Neumont.Build.VisualStudio.Multitargeting.targets" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -40,9 +40,9 @@
     <DocumentationFile>bin\Release\ORMSolutions.ORMArchitect.Views.RelationalView.$(TargetVisualStudioShortProductName).xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk, Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams, Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams.GraphObject, Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=x86">
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk$(TargetDslToolsVersionSuffix), Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams$(TargetDslToolsVersionSuffix), Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams.GraphObject$(TargetDslToolsVersionSuffix), Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=x86">
       <Private>False</Private>
     </Reference>
     <Reference Include="ORMSolutions.ORMArchitect.Core.$(TargetVisualStudioShortProductName), Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
@@ -77,8 +77,9 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="GeneratedCode\DomainModelResx.resx">
-      <DependentUpon>DomainModelResx.tt</DependentUpon>
+    <EmbeddedResource Include="GeneratedCode\DomainModelResx$(GeneratedDslFileSuffix).resx">
+      <LogicalName>ORMSolutions.ORMArchitect.Views.RelationalView.GeneratedCode.DomainModelResx.resources</LogicalName>
+      <DependentUpon>DomainModelResx$(GeneratedDslFileSuffix).tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <SubType>Designer</SubType>
       <DesignTime>True</DesignTime>
@@ -95,43 +96,33 @@
     <None Include="..\..\ORMPackage.snk">
       <Link>Properties\ORMPackage.snk</Link>
     </None>
-    <None Include="GeneratedCode\ConnectionBuilders.tt">
+    <None Include="GeneratedCode\Connectors$(GeneratedDslFileSuffix).tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ConnectionBuilders.cs</LastGenOutput>
+      <LastGenOutput>Connectors$(GeneratedDslFileSuffix).cs</LastGenOutput>
     </None>
-    <None Include="GeneratedCode\Connectors.tt">
+    <None Include="GeneratedCode\Diagram$(GeneratedDslFileSuffix).tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Connectors.cs</LastGenOutput>
+      <LastGenOutput>Diagram$(GeneratedDslFileSuffix).cs</LastGenOutput>
     </None>
-    <None Include="GeneratedCode\Diagram.tt">
+    <None Include="GeneratedCode\DomainModel$(GeneratedDslFileSuffix).tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Diagram.cs</LastGenOutput>
+      <LastGenOutput>DomainModel$(GeneratedDslFileSuffix).cs</LastGenOutput>
     </None>
-    <None Include="GeneratedCode\DomainClasses.tt">
+    <None Include="GeneratedCode\DomainModelResx$(GeneratedDslFileSuffix).tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DomainClasses.cs</LastGenOutput>
+      <LastGenOutput>DomainModelResx$(GeneratedDslFileSuffix).resx</LastGenOutput>
     </None>
-    <None Include="GeneratedCode\DomainModel.tt">
+    <None Include="GeneratedCode\Shapes$(GeneratedDslFileSuffix).tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DomainModel.cs</LastGenOutput>
+      <LastGenOutput>Shapes$(GeneratedDslFileSuffix).cs</LastGenOutput>
     </None>
-    <None Include="GeneratedCode\DomainModelResx.tt">
+    <None Include="GeneratedCode\ToolboxHelper$(GeneratedDslFileSuffix).tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DomainModelResx.resx</LastGenOutput>
+      <LastGenOutput>ToolboxHelper$(GeneratedDslFileSuffix).cs</LastGenOutput>
     </None>
-    <None Include="GeneratedCode\DomainRelationships.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DomainRelationships.cs</LastGenOutput>
+    <None Include="RelationalShape.dsl">
+      <SubType>Designer</SubType>
     </None>
-    <None Include="GeneratedCode\Shapes.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Shapes.cs</LastGenOutput>
-    </None>
-    <None Include="GeneratedCode\ToolboxHelper.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ToolboxHelper.cs</LastGenOutput>
-    </None>
-    <None Include="RelationalShape.dsl" />
     <None Include="Plix.xml">
     </None>
     <Content Include="RelationalShape.AttachRules.xml">
@@ -150,45 +141,30 @@
       <Link>Properties\Version.cs</Link>
     </Compile>
     <Compile Include="ShapeModel\ColumnElementListCompartment.cs" />
-    <Compile Include="GeneratedCode\ConnectionBuilders.cs">
+    <Compile Include="GeneratedCode\Connectors$(GeneratedDslFileSuffix).cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ConnectionBuilders.tt</DependentUpon>
+      <DependentUpon>Connectors$(GeneratedDslFileSuffix).tt</DependentUpon>
     </Compile>
-    <Compile Include="GeneratedCode\Connectors.cs">
+    <Compile Include="GeneratedCode\Diagram$(GeneratedDslFileSuffix).cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Connectors.tt</DependentUpon>
+      <DependentUpon>Diagram$(GeneratedDslFileSuffix).tt</DependentUpon>
     </Compile>
-    <Compile Include="GeneratedCode\Diagram.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Diagram.tt</DependentUpon>
-    </Compile>
-    <Compile Include="GeneratedCode\DomainClasses.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DomainClasses.tt</DependentUpon>
-    </Compile>
-    <Compile Include="GeneratedCode\DomainModel.cs">
-      <DependentUpon>DomainModel.tt</DependentUpon>
+    <Compile Include="GeneratedCode\DomainModel$(GeneratedDslFileSuffix).cs">
+      <DependentUpon>DomainModel$(GeneratedDslFileSuffix).tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="GeneratedCode\DomainRelationships.cs">
+    <Compile Include="GeneratedCode\Shapes$(GeneratedDslFileSuffix).cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DomainRelationships.tt</DependentUpon>
+      <DependentUpon>Shapes$(GeneratedDslFileSuffix).tt</DependentUpon>
     </Compile>
-    <Compile Include="GeneratedCode\Shapes.cs">
+    <Compile Include="GeneratedCode\ToolboxHelper$(GeneratedDslFileSuffix).cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Shapes.tt</DependentUpon>
-    </Compile>
-    <Compile Include="GeneratedCode\ToolboxHelper.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ToolboxHelper.tt</DependentUpon>
+      <DependentUpon>ToolboxHelper$(GeneratedDslFileSuffix).tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\..\CommonAssemblyInfo.cs">
@@ -211,6 +187,7 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Neumont\Neumont.Build.targets" />
   <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <PropertyGroup>

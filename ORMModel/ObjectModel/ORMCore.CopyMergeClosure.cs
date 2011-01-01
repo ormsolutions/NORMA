@@ -258,7 +258,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			closureManager.AddIgnoredProperty(FactTypeInstance.NameChangedDomainPropertyId);
 			closureManager.AddIgnoredProperty(FactTypeInstance.NameChangedDomainPropertyId);
 			closureManager.AddIgnoredProperty(LeadRolePath.NoteTextDomainPropertyId);
-			closureManager.AddIgnoredProperty(ObjectType.DataTypeDisplayDomainPropertyId);
 			closureManager.AddIgnoredProperty(ObjectType.DataTypeLengthDomainPropertyId);
 			closureManager.AddIgnoredProperty(ObjectType.DataTypeLengthDomainPropertyId);
 			closureManager.AddIgnoredProperty(ObjectType.DataTypeScaleDomainPropertyId);
@@ -269,7 +268,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			closureManager.AddIgnoredProperty(ObjectType.IsSupertypePersonalDomainPropertyId);
 			closureManager.AddIgnoredProperty(ObjectType.IsValueTypeDomainPropertyId);
 			closureManager.AddIgnoredProperty(ObjectType.NoteTextDomainPropertyId);
-			closureManager.AddIgnoredProperty(ObjectType.ReferenceModeDomainPropertyId);
 			closureManager.AddIgnoredProperty(ObjectType.ReferenceModeDecoratedStringDomainPropertyId);
 			closureManager.AddIgnoredProperty(ObjectType.ReferenceModeDisplayDomainPropertyId);
 			closureManager.AddIgnoredProperty(ObjectType.ReferenceModeDisplayDomainPropertyId);
@@ -284,18 +282,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			closureManager.AddIgnoredProperty(ObjectTypeInstance.NameChangedDomainPropertyId);
 			closureManager.AddIgnoredProperty(ObjectTypeInstance.NameChangedDomainPropertyId);
 			closureManager.AddIgnoredProperty(ORMModel.DefinitionTextDomainPropertyId);
-			closureManager.AddIgnoredProperty(ORMModel.ModelErrorDisplayFilterDisplayDomainPropertyId);
 			closureManager.AddIgnoredProperty(ORMModel.NoteTextDomainPropertyId);
 			closureManager.AddIgnoredProperty(Reading.IsPrimaryForFactTypeDomainPropertyId);
 			closureManager.AddIgnoredProperty(Reading.IsPrimaryForReadingOrderDomainPropertyId);
 			closureManager.AddIgnoredProperty(ReadingOrder.ReadingTextDomainPropertyId);
-			closureManager.AddIgnoredProperty(ReferenceMode.KindDisplayDomainPropertyId);
 			closureManager.AddIgnoredProperty(Role.IsMandatoryDomainPropertyId);
 			closureManager.AddIgnoredProperty(Role.MandatoryConstraintModalityDomainPropertyId);
 			closureManager.AddIgnoredProperty(Role.MandatoryConstraintNameDomainPropertyId);
 			closureManager.AddIgnoredProperty(Role.MultiplicityDomainPropertyId);
 			closureManager.AddIgnoredProperty(Role.ObjectificationOppositeRoleNameDomainPropertyId);
-			closureManager.AddIgnoredProperty(Role.RolePlayerDisplayDomainPropertyId);
 			closureManager.AddIgnoredProperty(Role.ValueRangeTextDomainPropertyId);
 			closureManager.AddIgnoredProperty(SetComparisonConstraint.DefinitionTextDomainPropertyId);
 			closureManager.AddIgnoredProperty(SetComparisonConstraint.NoteTextDomainPropertyId);

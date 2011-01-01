@@ -340,7 +340,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 			/// Create a new ElementValidatorOrder structure with a default priority and explicit order
 			/// </summary>
 			/// <param name="domainModel">The <see cref="DomainModel"/> the validator runs with.</param>
-			/// <param name="order">The <see cref="DelayValidatePriorityOrder"/> the validator runs in relative to the <paramref name="DomainModel"/>.</param>
+			/// <param name="order">The <see cref="DelayValidatePriorityOrder"/> the validator runs in relative to the <paramref name="domainModel"/>.</param>
 			public ElementValidatorOrder(DomainModel domainModel, DelayValidatePriorityOrder order)
 			{
 				myDomainModel = domainModel;
@@ -351,7 +351,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 			/// Create a new ElementValidatorOrder structure with explicit order and priority
 			/// </summary>
 			/// <param name="domainModel">The <see cref="DomainModel"/> the validator runs with.</param>
-			/// <param name="order">The <see cref="DelayValidatePriorityOrder"/> the validator runs in relative to the <paramref name="DomainModel"/>.</param>
+			/// <param name="order">The <see cref="DelayValidatePriorityOrder"/> the validator runs in relative to the <paramref name="domainModel"/>.</param>
 			/// <param name="priority">A custom priority. The default priority is 0. Anything less runs before, anything higher afterwards</param>
 			public ElementValidatorOrder(DomainModel domainModel, DelayValidatePriorityOrder order, int priority)
 			{
@@ -440,7 +440,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 			/// Create a new ElementValidatorOrder structure with a default priority and explicit order
 			/// </summary>
 			/// <param name="domainModelId">The id for the <see cref="DomainModel"/> the validator runs with.</param>
-			/// <param name="order">The <see cref="DelayValidatePriorityOrder"/> the validator runs in relative to the <paramref name="DomainModel"/>.</param>
+			/// <param name="order">The <see cref="DelayValidatePriorityOrder"/> the validator runs in relative to the <paramref name="domainModelId"/>.</param>
 			public ElementValidatorOrderCache(Guid domainModelId, DelayValidatePriorityOrder order)
 			{
 				myDomainModelId = domainModelId;
@@ -451,7 +451,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 			/// Create a new ElementValidatorOrder structure with explicit order and priority
 			/// </summary>
 			/// <param name="domainModelId">The id for the <see cref="DomainModel"/> the validator runs with.</param>
-			/// <param name="order">The <see cref="DelayValidatePriorityOrder"/> the validator runs in relative to the <paramref name="DomainModel"/>.</param>
+			/// <param name="order">The <see cref="DelayValidatePriorityOrder"/> the validator runs in relative to the <paramref name="domainModelId"/>.</param>
 			/// <param name="priority">A custom priority. The default priority is 0. Anything less runs before, anything higher afterwards</param>
 			public ElementValidatorOrderCache(Guid domainModelId, DelayValidatePriorityOrder order, int priority)
 			{

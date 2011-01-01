@@ -45,21 +45,20 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			System.Windows.Forms.Label label_GeneratedFilesFor;
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ORMGeneratorSelectionControl));
+			this.label_GeneratedFilesFor = new System.Windows.Forms.Label();
 			this.virtualTreeControl = new Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeControl();
 			this.imageList1 = new System.Windows.Forms.ImageList(this.components);
 			this.textBox_ORMFileName = new System.Windows.Forms.TextBox();
 			this.button_Cancel = new System.Windows.Forms.Button();
 			this.button_SaveChanges = new System.Windows.Forms.Button();
-			label_GeneratedFilesFor = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// label_GeneratedFilesFor
 			// 
-			resources.ApplyResources(label_GeneratedFilesFor, "label_GeneratedFilesFor");
-			label_GeneratedFilesFor.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			label_GeneratedFilesFor.Name = "label_GeneratedFilesFor";
+			resources.ApplyResources(this.label_GeneratedFilesFor, "label_GeneratedFilesFor");
+			this.label_GeneratedFilesFor.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.label_GeneratedFilesFor.Name = "label_GeneratedFilesFor";
 			// 
 			// virtualTreeControl
 			// 
@@ -105,7 +104,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			this.Controls.Add(this.button_SaveChanges);
 			this.Controls.Add(this.button_Cancel);
 			this.Controls.Add(this.textBox_ORMFileName);
-			this.Controls.Add(label_GeneratedFilesFor);
+			this.Controls.Add(this.label_GeneratedFilesFor);
 			this.Controls.Add(this.virtualTreeControl);
 			this.DoubleBuffered = true;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
@@ -123,6 +122,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 		private System.Windows.Forms.Button button_Cancel;
 		private System.Windows.Forms.Button button_SaveChanges;
 		private System.Windows.Forms.ImageList imageList1;
+		private System.Windows.Forms.Label label_GeneratedFilesFor;
 
 
 	}
