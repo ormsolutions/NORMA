@@ -57,6 +57,18 @@ namespace ORMSolutions.ORMArchitect.Views.BarkerERView
 				return false;
 			}
 		}
+#if VISUALSTUDIO_10_0
+		/// <summary>
+		/// Stop the user from manually moving link end points
+		/// </summary>
+		public override bool CanMoveAnchorPoints
+		{
+			get
+			{
+				return false;
+			}
+		}
+#endif // VISUALSTUDIO_10_0
 		/// <summary>
 		/// Turn on tooltips to show column relationships
 		/// </summary>

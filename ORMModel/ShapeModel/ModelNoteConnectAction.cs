@@ -24,6 +24,7 @@ using Microsoft.VisualStudio.Modeling.Diagrams;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using ORMSolutions.ORMArchitect.Core.ShapeModel;
 using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Framework.Diagrams;
 
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
@@ -361,7 +362,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 	/// A toolbox action to add a model note and activate
 	/// the new note shape for editing when the item is first added
 	/// </summary>
-	public class ModelNoteAction : ToolboxAction
+	public class ModelNoteAction : ElementPrototypeToolboxAction
 	{
 		#region Member variables
 		/// <summary>
@@ -379,8 +380,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// deactivating it.
 		/// </summary>
 		/// <param name="diagram">The owning diagram</param>
-		public ModelNoteAction(Diagram diagram)
-			: base(diagram)
+		/// <param name="prototype">The prototype of the current toolbox item.</param>
+		public ModelNoteAction(Diagram diagram, ElementGroupPrototype prototype)
+			: base(diagram, prototype)
 		{
 			Reset();
 		}

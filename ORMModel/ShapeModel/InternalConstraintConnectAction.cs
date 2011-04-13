@@ -26,6 +26,7 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Framework.Diagrams;
 
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
@@ -520,7 +521,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 	/// <summary>
 	/// A toolbox action to add an Internal constraint
 	/// </summary>
-	public class InternalUniquenessConstraintAction : ToolboxAction
+	public class InternalUniquenessConstraintAction : ElementPrototypeToolboxAction
 	{
 		#region Member variables
 		/// <summary>
@@ -539,7 +540,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// deactivating it.
 		/// </summary>
 		/// <param name="diagram">The owning diagram</param>
-		public InternalUniquenessConstraintAction(Diagram diagram) : base(diagram)
+		/// <param name="prototype">The prototype of the current toolbox item.</param>
+		public InternalUniquenessConstraintAction(Diagram diagram, ElementGroupPrototype prototype)
+			: base(diagram, prototype)
 		{
 			Reset();
 		}

@@ -170,12 +170,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			RectangleF boundsF = RectangleD.ToRectangleF(this.AbsoluteBounds);
 			Graphics g = e.Graphics;
 
-			PointF midpoint = new PointF(boundsF.Width / 2, boundsF.Height / 2);
-			float midpointLeft = boundsF.Left + midpoint.X;
-			float midpointTop = boundsF.Top + midpoint.Y;
-			float sideLength = boundsF.Width * SMALL_LENGTH_FACTOR;
-			float halfSideLength = sideLength / 2;
-
 			switch (ringConstraint.RingType)
 			{
 				case RingConstraintType.Undefined:

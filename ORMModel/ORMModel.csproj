@@ -373,6 +373,7 @@
     <Compile Include="Framework\CopyMergeServices.cs" />
     <Compile Include="Framework\Diagrams\Design\ModelingToolboxItemProvider.cs" />
     <Compile Include="Framework\Diagrams\ShapeExtension.cs" />
+    <Compile Include="Framework\Diagrams\ToolboxUtility.cs" />
     <Compile Include="Framework\FrameworkServices.cs" />
     <Compile Include="Framework\Design\PropertyProvider.cs" />
     <Compile Include="Framework\Resources\ResourceStrings.cs" />

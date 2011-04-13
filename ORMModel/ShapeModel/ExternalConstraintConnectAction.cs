@@ -27,6 +27,7 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Framework.Diagrams;
 
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
@@ -838,7 +839,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 	/// A toolbox action to add an external constraint and activate
 	/// the external constraint connect action
 	/// </summary>
-	public class ExternalConstraintAction : ToolboxAction
+	public class ExternalConstraintAction : ElementPrototypeToolboxAction
 	{
 		#region Member variables
 		/// <summary>
@@ -856,8 +857,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// deactivating it.
 		/// </summary>
 		/// <param name="diagram">The owning diagram</param>
-		public ExternalConstraintAction(Diagram diagram)
-			: base(diagram)
+		/// <param name="prototype">The prototype of the current toolbox item.</param>
+		public ExternalConstraintAction(Diagram diagram, ElementGroupPrototype prototype)
+			: base(diagram, prototype)
 		{
 			Reset();
 		}

@@ -7240,12 +7240,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					(!(objectified = (1 == (constraintFactCount = (constraintFacts = FactTypeCollection).Count) &&
 					null != forType &&
 					constraintFacts[0] == forType.NestedFactType)) ||
-					(constraintFactCount == constraintRoleCount))) // Condition 1 and 2 (bail if 2a
+					(constraintFactCount == constraintRoleCount))) // Condition 1 and 2 (bail if 2a)
 				{
 					int constraintRoleIndex = 0;
 					ObjectType prevRolePlayer = null;
 					ObjectType prevImpliedRolePlayer = null;
 					bool havePreviousRolePlayer = false;
+					bool isInternal = this.IsInternal;
 					for (; constraintRoleIndex < constraintRoleCount; ++constraintRoleIndex)
 					{
 						bool patternOK = false;
@@ -7256,7 +7257,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						bool directBinary;
 						patternOK = false;
 						if (!(factType is SubtypeFact) && 
-							((directBinary = (!objectified && (factRoles = factType.RoleCollection).Count == 2)) ||
+							((directBinary = (!objectified && (factRoles = factType.RoleCollection).Count == 2 && (!isInternal || constraintRoleCount == 1))) ||
 							proxy != null)) // Condition 3 (RoleProxy can only be attached to a binary fact)
 						{
 							ObjectType rolePlayer = null;

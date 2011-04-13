@@ -1266,11 +1266,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
 			protected sealed override void ProcessElement(Objectification element, Store store, INotifyElementAdded notifyAdded)
 			{
-				if (!element.IsDeleted)
+				SynchronizeGeneratedName(element);
+			}
+			/// <summary>
+			/// Share the name synchronization for use during element merge.
+			/// </summary>
+			public static void SynchronizeGeneratedName(Objectification objectification)
+			{
+				if (!objectification.IsDeleted)
 				{
-					FactType factType = element.NestedFactType;
+					FactType factType = objectification.NestedFactType;
 					string generatedName = factType.GenerateName();
-					if (generatedName == element.NestingType.Name)
+					if (generatedName == objectification.NestingType.Name)
 					{
 						factType.myGeneratedName = generatedName;
 					}
@@ -1309,27 +1316,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
 			protected sealed override void ProcessElement(FactTypeDerivationRule element, Store store, INotifyElementAdded notifyAdded)
 			{
-				if (!element.IsDeleted)
+				SynchronizeGeneratedName(element);
+			}
+			/// <summary>
+			/// Share the name synchronization for use during element merge.
+			/// </summary>
+			public static void SynchronizeGeneratedName(FactTypeDerivationRule derivationRule)
+			{
+				if (!derivationRule.IsDeleted)
 				{
-					if (element.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
-						!element.ExternalDerivation)
+					if (derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+						!derivationRule.ExternalDerivation)
 					{
-						FactType factType = element.FactType;
+						FactType factType = derivationRule.FactType;
 						ObjectType objectifyingType = factType.NestingType;
 						if (objectifyingType != null)
 						{
 							// If an objectification is present, then let the other
 							// fixup listener do the name generation.
-							element.Name = objectifyingType.Name;
+							derivationRule.Name = objectifyingType.Name;
 						}
 						else
 						{
 							string generatedName = factType.GenerateName();
-							string currentName = element.Name;
+							string currentName = derivationRule.Name;
 							if (string.IsNullOrEmpty(currentName))
 							{
 								factType.myGeneratedName = generatedName;
-								element.Name = generatedName;
+								derivationRule.Name = generatedName;
 							}
 							else if (generatedName == currentName)
 							{
@@ -1339,7 +1353,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					else
 					{
-						element.Name = "";
+						derivationRule.Name = "";
 					}
 				}
 			}
@@ -2175,6 +2189,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
+		/// AddRule: typeof(FactTypeDerivationRule), FireTime=LocalCommit, Priority=FrameworkDomainModel.CopyClosureExpansionCompletedRulePriority;
+		/// Synchronize the generated fact type name on merge completion
+		/// </summary>
+		private static void DerivationRuleAddedClosureRule(ElementAddedEventArgs e)
+		{
+			ModelElement element = e.ModelElement;
+			if (!element.IsDeleted &&
+				CopyMergeUtility.GetIntegrationPhase(element.Store) == CopyClosureIntegrationPhase.IntegrationComplete)
+			{
+				GeneratedNameDerivationFixupListener.SynchronizeGeneratedName((FactTypeDerivationRule)element);
+			}
+		}
+		/// <summary>
 		/// DeleteRule: typeof(FactTypeHasDerivationRule)
 		/// Verify naming and constraint patterns for derivation rule deletion
 		/// </summary>
@@ -2209,6 +2236,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					error.GenerateErrorText();
 				}
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(Objectification), FireTime=LocalCommit, Priority=FrameworkDomainModel.CopyClosureExpansionCompletedRulePriority;
+		/// Fixup the generated name when closure is complete
+		/// </summary>
+		private static void ValidateFactTypeNameForObjectificationAddedClosureRule(ElementAddedEventArgs e)
+		{
+			ModelElement link = e.ModelElement;
+			if (!link.IsDeleted &&
+				CopyMergeUtility.GetIntegrationPhase(link.Store) == CopyClosureIntegrationPhase.IntegrationComplete)
+			{
+				GeneratedNameObjectificationFixupListener.SynchronizeGeneratedName((Objectification)link);
 			}
 		}
 		/// <summary>

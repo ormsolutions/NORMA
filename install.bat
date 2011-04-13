@@ -152,7 +152,7 @@ SETLOCAL ENABLEDELAYEDEXPANSION
 		XCOPY /Y /D /V /Q "%RootDir%\VSIXInstall\ORMDesignerPreview.png" "%VSIXInstallDir%\"
 	)
 
-	REG ADD "%DesignerRegistryRoot%" /v "SettingsFile" /d "%NORMADir%\Xml\ORMDesignerSettings.xml" /f 1>NUL
+	REG ADD "%DesignerRegistryRoot%\DesignerSettings\Core" /v "SettingsFile" /d "%NORMADir%\Xml\ORMDesignerSettings.xml" /f 1>NUL
 	REG ADD "%DesignerRegistryRoot%\DesignerSettings\Core" /v "ConvertersDir" /d "%NORMADir%\Xml\Transforms\Converters\\" /f 1>NUL
 	REG ADD "%DesignerRegistryRoot%" /v "VerbalizationDir" /d "%NORMADir%\Xml\Verbalization\\" /f 1>NUL
 	REG ADD "%DesignerRegistryRoot%\Extensions\http://schemas.neumont.edu/ORM/2008-11/DiagramDisplay" /v "Class" /d "ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayDomainModel" /f 1>NUL

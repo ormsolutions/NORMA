@@ -1500,6 +1500,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		}
 		#endregion // Customize appearance
 		#region Toolbox support
+		[NonSerialized]
+		private Dictionary<string, ElementPrototypeToolboxAction> myPrototypedToolboxActions;
 		/// <summary>
 		/// Enable our toolbox actions. Additional filters recognized in this
 		/// routine are added in ORMDesignerPackage.CreateToolboxItems.
@@ -1517,7 +1519,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				}
 				else if (activeView.SelectedToolboxItemSupportsFilterString(ORMDiagram.ORMDiagramExternalConstraintFilterString))
 				{
-					action = ExternalConstraintAction;
+					action = GetExternalConstraintAction(activeView.Toolbox.GetSelectedToolboxItem() as ModelingToolboxItem);
 				}
 				else if (activeView.SelectedToolboxItemSupportsFilterString(ORMDiagram.ORMDiagramConnectInternalUniquenessConstraintFilterString))
 				{
@@ -1525,7 +1527,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				}
 				else if (activeView.SelectedToolboxItemSupportsFilterString(ORMDiagram.ORMDiagramInternalUniquenessConstraintFilterString))
 				{
-					action = InternalUniquenessConstraintAction;
+					action = GetInternalUniquenessConstraintAction(activeView.Toolbox.GetSelectedToolboxItem() as ModelingToolboxItem);
 				}
 				else if (activeView.SelectedToolboxItemSupportsFilterString(ORMDiagram.ORMDiagramConnectRoleFilterString))
 				{
@@ -1537,7 +1539,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				}
 				else if (activeView.SelectedToolboxItemSupportsFilterString(ORMDiagram.ORMDiagramModelNoteFilterString))
 				{
-					action = ModelNoteAction;
+					action = GetModelNoteAction(activeView.Toolbox.GetSelectedToolboxItem() as ModelingToolboxItem);
 				}
 				else if (activeView.SelectedToolboxItemSupportsFilterString(ORMDiagram.ORMDiagramConnectModelNoteFilterString))
 				{
@@ -1553,10 +1555,25 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							action = extenders[i].GetMouseAction(this, activeView);
 						}
 					}
+					ModelingToolboxItem currentItem;
+					ElementGroupPrototype prototype;
 					if (action == null &&
-						activeView.SelectedToolboxItemSupportsFilterString(ORMDiagram.ORMDiagramDefaultFilterString))
+						activeView.SelectedToolboxItemSupportsFilterString(ORMDiagram.ORMDiagramDefaultFilterString) &&
+						null != (currentItem = activeView.Toolbox.GetSelectedToolboxItem() as ModelingToolboxItem) &&
+						null != (prototype = currentItem.Prototype))
 					{
-						action = ToolboxAction;
+						Dictionary<string, ElementPrototypeToolboxAction> actionCache = myPrototypedToolboxActions;
+						ElementPrototypeToolboxAction prototypeAction = null;
+						if (actionCache == null)
+						{
+							myPrototypedToolboxActions = actionCache = new Dictionary<string, ElementPrototypeToolboxAction>();
+						}
+						if (!actionCache.TryGetValue(currentItem.Id, out prototypeAction))
+						{
+							prototypeAction = new ElementPrototypeToolboxAction(this, prototype);
+							actionCache[currentItem.Id] = prototypeAction;
+						}
+						action = prototypeAction;
 					}
 				}
 			}
@@ -1572,7 +1589,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				// InternalUniquenessConstraintConnectAction.ChainMouseAction.
 				(action != null || (activeView != null && activeView.Toolbox.GetSelectedToolboxItem() != null)))
 			{
-				clientView.ActiveMouseAction = action;
+				ToolboxUtility.ActivateMouseAction(action, clientView, ((IORMToolServices)this.Store).ServiceProvider);
 			}
 		}
 		/// <summary>
@@ -1662,8 +1679,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		#region External constraint action
 		[NonSerialized]
 		private ExternalConstraintConnectAction myExternalConstraintConnectAction;
-		[NonSerialized]
-		private ExternalConstraintAction myExternalConstraintAction;
 		/// <summary>
 		/// The connect action used to connect an external constraint to its role sequences
 		/// </summary>
@@ -1689,34 +1704,45 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <summary>
 		/// The action used to drop an external constraint from the toolbox
 		/// </summary>
-		public ExternalConstraintAction ExternalConstraintAction
+		public ExternalConstraintAction GetExternalConstraintAction(ModelingToolboxItem toolboxItem)
 		{
-			get
+			Dictionary<string, ElementPrototypeToolboxAction> actionCache = myPrototypedToolboxActions;
+			ElementPrototypeToolboxAction prototypeAction = null;
+			ExternalConstraintAction constraintAction = null;
+			string itemId = toolboxItem.Id;
+			if (actionCache == null)
 			{
-				if (myExternalConstraintAction == null)
-				{
-					myExternalConstraintAction = CreateExternalConstraintAction();
-					myExternalConstraintAction.AfterMouseActionDeactivated += delegate(object sender, DiagramEventArgs e)
-					{
-						ExternalConstraintAction action = sender as ExternalConstraintAction;
-						if (action.ActionCompleted)
-						{
-							ExternalConstraintShape addedShape = action.AddedConstraintShape;
-							Debug.Assert(addedShape != null); // ActionCompleted should be false otherwise
-							ExternalConstraintConnectAction.ChainMouseAction(addedShape, e.DiagramClientView);
-						}
-					};
-				}
-				return myExternalConstraintAction;
+				myPrototypedToolboxActions = actionCache = new Dictionary<string, ElementPrototypeToolboxAction>();
 			}
+			if (actionCache.TryGetValue(itemId, out prototypeAction))
+			{
+				constraintAction = (ExternalConstraintAction)prototypeAction;
+			}
+			else
+			{
+				constraintAction = CreateExternalConstraintAction(toolboxItem.Prototype);
+				constraintAction.AfterMouseActionDeactivated += delegate(object sender, DiagramEventArgs e)
+				{
+					ExternalConstraintAction action = sender as ExternalConstraintAction;
+					if (action.ActionCompleted)
+					{
+						ExternalConstraintShape addedShape = action.AddedConstraintShape;
+						Debug.Assert(addedShape != null); // ActionCompleted should be false otherwise
+						ExternalConstraintConnectAction.ChainMouseAction(addedShape, e.DiagramClientView);
+					}
+				};
+				actionCache[itemId] = constraintAction;
+			}
+			return constraintAction;
 		}
 		/// <summary>
 		/// Create the action used to add an external constraint from the toolbox
 		/// </summary>
+		/// <param name="prototype">The prototype associated with this action.</param>
 		/// <returns>ExternalConstraintAction instance</returns>
-		protected virtual ExternalConstraintAction CreateExternalConstraintAction()
+		protected virtual ExternalConstraintAction CreateExternalConstraintAction(ElementGroupPrototype prototype)
 		{
-			return new ExternalConstraintAction(this);
+			return new ExternalConstraintAction(this, prototype);
 		}
 		#endregion // External constraint action
 		#region Internal uniqueness constraint action
@@ -1750,37 +1776,38 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <summary>
 		/// The action used to add an internal uniqueness constraint from the toolbox
 		/// </summary>
-		public InternalUniquenessConstraintAction InternalUniquenessConstraintAction
+		public InternalUniquenessConstraintAction GetInternalUniquenessConstraintAction(ModelingToolboxItem toolboxItem)
 		{
-			get
+			InternalUniquenessConstraintAction constraintAction = myInternalUniquenessConstraintAction;
+			ElementGroupPrototype prototype;
+			if (constraintAction == null &&
+				null != (prototype = toolboxItem.Prototype))
 			{
-				if (myInternalUniquenessConstraintAction == null)
+				myInternalUniquenessConstraintAction = constraintAction = CreateInternalUniquenessConstraintAction(prototype);
+				constraintAction.AfterMouseActionDeactivated += delegate(object sender, DiagramEventArgs e)
 				{
-					myInternalUniquenessConstraintAction = CreateInternalUniquenessConstraintAction();
-					myInternalUniquenessConstraintAction.AfterMouseActionDeactivated += delegate(object sender, DiagramEventArgs e)
+					InternalUniquenessConstraintAction action = sender as InternalUniquenessConstraintAction;
+					if (action.ActionCompleted)
 					{
-						InternalUniquenessConstraintAction action = sender as InternalUniquenessConstraintAction;
-						if (action.ActionCompleted)
-						{
-							UniquenessConstraint constraint = action.AddedConstraint;
-							FactTypeShape addedToShape = action.DropTargetShape;
-							DiagramClientView view = e.DiagramClientView;
-							Debug.Assert(constraint != null); // ActionCompleted should be false otherwise
-							view.Selection.Set(addedToShape.GetDiagramItem(constraint));
-							InternalUniquenessConstraintConnectAction.ChainMouseAction(addedToShape, constraint, view);
-						}
-					};
-				}
-				return myInternalUniquenessConstraintAction;
+						UniquenessConstraint constraint = action.AddedConstraint;
+						FactTypeShape addedToShape = action.DropTargetShape;
+						DiagramClientView view = e.DiagramClientView;
+						Debug.Assert(constraint != null); // ActionCompleted should be false otherwise
+						view.Selection.Set(addedToShape.GetDiagramItem(constraint));
+						InternalUniquenessConstraintConnectAction.ChainMouseAction(addedToShape, constraint, view);
+					}
+				};
 			}
+			return constraintAction;
 		}
 		/// <summary>
 		/// Create the connect action used to connect internal uniqueness constrant roles
 		/// </summary>
+		/// <param name="prototype">The prototype associated with this action.</param>
 		/// <returns>InternalUniquenssConstraintAction instance</returns>
-		protected virtual InternalUniquenessConstraintAction CreateInternalUniquenessConstraintAction()
+		protected virtual InternalUniquenessConstraintAction CreateInternalUniquenessConstraintAction(ElementGroupPrototype prototype)
 		{
-			return new InternalUniquenessConstraintAction(this);
+			return new InternalUniquenessConstraintAction(this, prototype);
 		}
 		#endregion Internal uniqueness constraint action
 		#region Role drag action
@@ -1871,38 +1898,37 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <summary>
 		/// The action used to drop a model note from the toolbox
 		/// </summary>
-		public ModelNoteAction ModelNoteAction
+		public ModelNoteAction GetModelNoteAction(ModelingToolboxItem toolboxItem)
 		{
-			get
+			ModelNoteAction noteAction = myModelNoteAction;
+			if (noteAction == null)
 			{
-				if (myModelNoteAction == null)
+				myModelNoteAction = noteAction = CreateModelNoteAction(toolboxItem.Prototype);
+				noteAction.AfterMouseActionDeactivated += delegate(object sender, DiagramEventArgs e)
 				{
-					myModelNoteAction = CreateModelNoteAction();
-					myModelNoteAction.AfterMouseActionDeactivated += delegate(object sender, DiagramEventArgs e)
+					ModelNoteAction action = sender as ModelNoteAction;
+					if (action.ActionCompleted)
 					{
-						ModelNoteAction action = sender as ModelNoteAction;
-						if (action.ActionCompleted)
-						{
-							ModelNoteShape addedShape = action.AddedNoteShape;
-							Debug.Assert(addedShape != null); // ActionCompleted should be false otherwise
-							Store store = Store;
-							EditorUtility.ActivatePropertyEditor(
-								(store as IORMToolServices).ServiceProvider,
-								DomainTypeDescriptor.CreatePropertyDescriptor(addedShape.ModelElement, Note.TextDomainPropertyId),
-								true);
-						}
-					};
-				}
-				return myModelNoteAction;
+						ModelNoteShape addedShape = action.AddedNoteShape;
+						Debug.Assert(addedShape != null); // ActionCompleted should be false otherwise
+						Store store = Store;
+						EditorUtility.ActivatePropertyEditor(
+							(store as IORMToolServices).ServiceProvider,
+							DomainTypeDescriptor.CreatePropertyDescriptor(addedShape.ModelElement, Note.TextDomainPropertyId),
+							true);
+					}
+				};
 			}
+			return noteAction;
 		}
 		/// <summary>
 		/// Create the action used to add an external constraint from the toolbox
 		/// </summary>
+		/// <param name="prototype">The prototype associated with this action.</param>
 		/// <returns>ExternalConstraintAction instance</returns>
-		protected virtual ModelNoteAction CreateModelNoteAction()
+		protected virtual ModelNoteAction CreateModelNoteAction(ElementGroupPrototype prototype)
 		{
-			return new ModelNoteAction(this);
+			return new ModelNoteAction(this, prototype);
 		}
 		#endregion // ModelNote connect action
 		#region ModelNote connect action
@@ -1946,13 +1972,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				{
 					// Use a somewhat paranoid pattern here to protect against reentrancy
 					IDisposable disposeMe;
-					disposeMe = myExternalConstraintAction as IDisposable;
-					myExternalConstraintAction = null;
-					if (disposeMe != null)
-					{
-						disposeMe.Dispose();
-					}
-
 					disposeMe = myExternalConstraintConnectAction as IDisposable;
 					myExternalConstraintConnectAction = null;
 					if (disposeMe != null)
@@ -1993,6 +2012,19 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					if (disposeMe != null)
 					{
 						disposeMe.Dispose();
+					}
+
+					Dictionary<string, ElementPrototypeToolboxAction> defaultActions = myPrototypedToolboxActions;
+					if (defaultActions != null)
+					{
+						myPrototypedToolboxActions = null;
+						foreach (ElementPrototypeToolboxAction action in defaultActions.Values)
+						{
+							if (null != (disposeMe = action as IDisposable))
+							{
+								disposeMe.Dispose();
+							}
+						}
 					}
 					Store store = Utility.ValidateStore(Store);
 					if (store != null)

@@ -41,7 +41,31 @@ namespace Neumont.Tools.ORM.SDK
 			DateTime today = DateTime.Today;
 			int build = ((Config.ReleaseYearMonth.Year - 2000) * 100) + Config.ReleaseYearMonth.Month;
 			int month = ((today.Year - Config.RevisionStartYearMonth.Year) * 12) + (today.Month - Config.RevisionStartYearMonth.Month) + 1;
-			int revision = (month * 100) + today.Day;
+			int monthsAsQuarters = ((today.Year - Config.CountQuartersFromYearMonth.Year) * 12) + (today.Month - Config.CountQuartersFromYearMonth.Month) + 1;
+			int revision;
+			if (monthsAsQuarters > 0)
+			{
+				// This revision mechanism was moving much too quickly, so allow the
+				// option to increment by quarter instead of month. For quarter increments,
+				// days 1-31 are the first month, 34-64 are the second month, and 66-96 are
+				// the third month in the quarter. Months before quarter counting began are
+				// added to the quarter count, giving a sequential versions.
+				revision = ((month - monthsAsQuarters) + (monthsAsQuarters + 2) / 3) * 100;
+				switch ((monthsAsQuarters - 1) % 3)
+				{
+					case 1:
+						revision += 33;
+						break;
+					case 2:
+						revision += 66;
+						break;
+				}
+			}
+			else
+			{
+				revision = month * 100;
+			}
+			revision += today.Day;
 
 			string unquotedFileVersion = string.Format("{0}.{1}.{2}.{3}", Config.MajorVersion, Config.MinorVersion, build, revision);
 			string quotedInformationalVersion = string.Format("\"{0} {1:yyyy-MM}{2}\"", unquotedFileVersion, Config.ReleaseYearMonth, Config.ReleaseType);

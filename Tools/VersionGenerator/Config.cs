@@ -30,6 +30,8 @@ namespace Neumont.Tools.ORM.SDK
 			public static readonly DateTime ReleaseYearMonth = DateTime.ParseExact(ConfigurationManager.AppSettings["ReleaseYearMonth"], "yyyy-MM", CultureInfo.InvariantCulture, DateTimeStyles.NoCurrentDateDefault);
 			public static readonly string ReleaseType = ConfigurationManager.AppSettings["ReleaseType"];
 			public static readonly DateTime RevisionStartYearMonth = DateTime.ParseExact(ConfigurationManager.AppSettings["RevisionStartYearMonth"], "yyyy-MM", CultureInfo.InvariantCulture, DateTimeStyles.NoCurrentDateDefault);
+			private static readonly string CountQuartersFromYearMonthString = ConfigurationManager.AppSettings["CountQuartersFromYearMonth"];
+			public static readonly DateTime CountQuartersFromYearMonth = string.IsNullOrEmpty(CountQuartersFromYearMonthString) ? DateTime.Today.AddYears(1) : DateTime.ParseExact(CountQuartersFromYearMonthString, "yyyy-MM", CultureInfo.InvariantCulture, DateTimeStyles.NoCurrentDateDefault);
 		}
 	}
 }

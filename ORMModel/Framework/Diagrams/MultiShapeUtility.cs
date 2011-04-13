@@ -753,113 +753,11 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 					IConfigureableLinkEndpoint configurableFromEndpoint;
 					bool detachFromShape = null != (configurableFromEndpoint = currentFromShape as IConfigureableLinkEndpoint) &&
 						AttachLinkResult.Attach != configurableFromEndpoint.CanAttachLink(backingLink, false);
-
-					// Find the nearest to shape
-					ShapeElement closestToShape = null;
-					double closestToShapeDistance = double.MaxValue;
-					PointD closestToShapeCenter = default(PointD);
-					double distanceX;
-					double distanceY;
-					double currentDistance;
-					PointD center = GetReliableShapeCenter(currentFromShape);
-					double testCenterX = center.X;
-					double testCenterY = center.Y;
-					foreach (ShapeElement currentToShapeIter in FindAllShapesForElement<ShapeElement>(diagram, toElement, true))
+					bool closerFromShapeBlocking;
+					ShapeElement closerFromShape;
+					ShapeElement closestToShape;
+					if (FindNearestShapeForElement(diagram, currentFromShape, toElement, backingLink, discludedShape, detachFromShape, out closestToShape, out closerFromShape, out closerFromShapeBlocking))
 					{
-						ShapeElement currentToShape = ResolvePrimaryShape(currentToShapeIter);
-						if (discludedShape != null && discludedShape == currentToShape)
-						{
-							continue;
-						}
-						bool blockingShape = false;
-						IConfigureableLinkEndpoint configurableToEndpoint = currentToShape as IConfigureableLinkEndpoint;
-						if (configurableToEndpoint != null)
-						{
-							switch (configurableToEndpoint.CanAttachLink(backingLink, true))
-							{
-								//case AttachLinkResult.Attach:
-								//    break;
-								case AttachLinkResult.Defer:
-									// Find a farther one if possible
-									continue;
-								case AttachLinkResult.Block:
-									// If this is closest, pretend we didn't find any
-									blockingShape = true;
-									break;
-							}
-						}
-						center = GetReliableShapeCenter(currentToShape);
-						if ((currentDistance = (distanceX = testCenterX - center.X) * distanceX
-							+ (distanceY = testCenterY - center.Y) * distanceY) < closestToShapeDistance)
-						{
-							closestToShapeDistance = currentDistance;
-							closestToShapeCenter = center;
-							closestToShape = blockingShape ? null : currentToShape;
-						}
-					}
-
-					if (closestToShape != null)
-					{
-						// We have a to shape to connect to, but that does not mean that the
-						// elements are either currently connected or should be connected.
-						// Before connecting, find out up front if we have a closer from shape than the current from shape.
-						// If we do, then the current to/from shapes should not be connected for this link.
-						ShapeElement closerFromShape = null;
-						bool closerFromShapeBlocking = false;
-						bool closerFromShapeDeferred = false;
-						double closerFromShapeDistance = detachFromShape ? double.MaxValue : closestToShapeDistance;
-						testCenterX = closestToShapeCenter.X;
-						testCenterY = closestToShapeCenter.Y;
-						// See if there is another closer fromShape to the closest to shape
-						foreach (ShapeElement currentFromShapeIter2 in FindAllShapesForElement<ShapeElement>(diagram, fromElement, true))
-						{
-							ShapeElement currentFromShape2 = ResolvePrimaryShape(currentFromShapeIter2);
-							if (currentFromShape2 == currentFromShape ||
-								(discludedShape != null && discludedShape == currentFromShape2))
-							{
-								continue;
-							}
-							bool blockingShape = false;
-							bool deferredShape = false;
-							IConfigureableLinkEndpoint configurableCloserFromEndpoint = currentFromShape2 as IConfigureableLinkEndpoint;
-							if (configurableCloserFromEndpoint != null)
-							{
-								switch (configurableCloserFromEndpoint.CanAttachLink(backingLink, false))
-								{
-									//case AttachLinkResult.Attach:
-									//    break;
-									case AttachLinkResult.Defer:
-										// Find a farther one if possible
-										deferredShape = true;
-										break;
-									case AttachLinkResult.Block:
-										// If this is closest, pretend we didn't find any
-										blockingShape = true;
-										break;
-								}
-							}
-							center = GetReliableShapeCenter(currentFromShape2);
-							if ((currentDistance = (distanceX = testCenterX - center.X) * distanceX
-								+ (distanceY = testCenterY - center.Y) * distanceY) < closerFromShapeDistance)
-							{
-								if (deferredShape)
-								{
-									closerFromShapeDeferred = true;
-								}
-								else
-								{
-									closerFromShapeDistance = currentDistance;
-									closerFromShape = currentFromShape2;
-									closerFromShapeDeferred = false;
-									closerFromShapeBlocking = blockingShape;
-								}
-							}
-						}
-						if (closerFromShapeDeferred && closerFromShape == null)
-						{
-							closerFromShapeBlocking = true;
-						}
-
 						BinaryLinkShape connectLink = null;
 						ShapeElement connectFromShape = null;
 						ShapeElement connectToShape = null;
@@ -1145,6 +1043,162 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 				}
 			}
 #endif //LINKS_ALWAYS_CONNECT
+		}
+		/// <summary>
+		/// Find the nearest shape on this diagram relative to another shape.
+		/// </summary>
+		/// <param name="diagram">The <see cref="Diagram"/> to search. Populated automaticatlly
+		/// from <paramref name="fromShape"/> if not set.</param>
+		/// <param name="fromShape">A known shape.</param>
+		/// <param name="toElement">The backing element to find the nearest shape for.</param>
+		/// <param name="forLink">The backing link associated with this type of connection.</param>
+		/// <returns>The nearest shape if one is available, or <see langword="null"/></returns>
+		public static ShapeElement FindNearestShapeForElement(Diagram diagram, ShapeElement fromShape, ModelElement toElement, ModelElement forLink)
+		{
+			ShapeElement closestToShape;
+			ShapeElement closerFromShape;
+			bool closerFromShapeBlocking;
+			IConfigureableLinkEndpoint configurableFromEndpoint;
+			bool detachFromShape = null != (configurableFromEndpoint = fromShape as IConfigureableLinkEndpoint) &&
+				AttachLinkResult.Attach != configurableFromEndpoint.CanAttachLink(forLink, false);
+			return (!detachFromShape &&
+				FindNearestShapeForElement(diagram, fromShape, toElement, forLink, null, false, out closestToShape, out closerFromShape, out closerFromShapeBlocking) &&
+				!closerFromShapeBlocking) ?
+					closestToShape :
+					null;
+		}
+		/// <summary>
+		/// Find the nearest shape on this diagram relative to another shape.
+		/// </summary>
+		/// <param name="diagram">The <see cref="Diagram"/> to search. Populated automaticatlly
+		/// from <paramref name="fromShape"/> if not set.</param>
+		/// <param name="fromShape">A known shape.</param>
+		/// <param name="toElement">The backing element to find the nearest shape for.</param>
+		/// <param name="forLink">The element backing of a link shape associated with this type of connection.</param>
+		/// <param name="discludedShape">A shape that should be ignored</param>
+		/// <param name="detachedFromShape">True if the from shape cannot be attached.</param>
+		/// <param name="closestToShape">The closest matching shape</param>
+		/// <param name="closerFromShape">A shape of the same type as the fromShape that
+		/// is closer to the closestToShape.</param>
+		/// <param name="closerFromShapeBlocking">Set if the closer from shape blocks
+		/// connecting the closestToShape to the fromShape.</param>
+		/// <returns>The nearest shape if one is available, or <see langword="null"/></returns>
+		private static bool FindNearestShapeForElement(Diagram diagram, ShapeElement fromShape, ModelElement toElement, ModelElement forLink, ShapeElement discludedShape, bool detachedFromShape, out ShapeElement closestToShape, out ShapeElement closerFromShape, out bool closerFromShapeBlocking)
+		{
+			ModelElement fromElement;
+			closestToShape = null;
+			closerFromShape = null;
+			closerFromShapeBlocking = false;
+			if ((null == diagram && (null == (diagram = fromShape.Diagram))) ||
+				null == (fromElement = fromShape.ModelElement))
+			{
+				return false;
+			}
+
+			// Find the nearest to shape
+			double closestToShapeDistance = double.MaxValue;
+			PointD closestToShapeCenter = default(PointD);
+			double distanceX;
+			double distanceY;
+			double currentDistance;
+			PointD center = GetReliableShapeCenter(fromShape);
+			double testCenterX = center.X;
+			double testCenterY = center.Y;
+			foreach (ShapeElement currentToShapeIter in FindAllShapesForElement<ShapeElement>(diagram, toElement, true))
+			{
+				ShapeElement currentToShape = ResolvePrimaryShape(currentToShapeIter);
+				if (discludedShape != null && discludedShape == currentToShape)
+				{
+					continue;
+				}
+				bool blockingShape = false;
+				IConfigureableLinkEndpoint configurableToEndpoint = currentToShape as IConfigureableLinkEndpoint;
+				if (configurableToEndpoint != null)
+				{
+					switch (configurableToEndpoint.CanAttachLink(forLink, true))
+					{
+						//case AttachLinkResult.Attach:
+						//    break;
+						case AttachLinkResult.Defer:
+							// Find a farther one if possible
+							continue;
+						case AttachLinkResult.Block:
+							// If this is closest, pretend we didn't find any
+							blockingShape = true;
+							break;
+					}
+				}
+				center = GetReliableShapeCenter(currentToShape);
+				if ((currentDistance = (distanceX = testCenterX - center.X) * distanceX
+					+ (distanceY = testCenterY - center.Y) * distanceY) < closestToShapeDistance)
+				{
+					closestToShapeDistance = currentDistance;
+					closestToShapeCenter = center;
+					closestToShape = blockingShape ? null : currentToShape;
+				}
+			}
+			if (closestToShape != null)
+			{
+				// We have a to shape to connect to, but that does not mean that the
+				// elements are either currently connected or should be connected.
+				// Before connecting, find out up front if we have a closer from shape than the current from shape.
+				// If we do, then the current to/from shapes should not be connected for this link.
+				bool closerFromShapeDeferred = false;
+				double closerFromShapeDistance = detachedFromShape ? double.MaxValue : closestToShapeDistance;
+				testCenterX = closestToShapeCenter.X;
+				testCenterY = closestToShapeCenter.Y;
+				// See if there is another closer fromShape to the closest to shape
+				foreach (ShapeElement currentFromShapeIter2 in FindAllShapesForElement<ShapeElement>(diagram, fromElement, true))
+				{
+					ShapeElement currentFromShape2 = ResolvePrimaryShape(currentFromShapeIter2);
+					if (currentFromShape2 == fromShape ||
+						(discludedShape != null && discludedShape == currentFromShape2))
+					{
+						continue;
+					}
+					bool blockingShape = false;
+					bool deferredShape = false;
+					IConfigureableLinkEndpoint configurableCloserFromEndpoint = currentFromShape2 as IConfigureableLinkEndpoint;
+					if (configurableCloserFromEndpoint != null)
+					{
+						switch (configurableCloserFromEndpoint.CanAttachLink(fromElement, false))
+						{
+							//case AttachLinkResult.Attach:
+							//    break;
+							case AttachLinkResult.Defer:
+								// Find a farther one if possible
+								deferredShape = true;
+								break;
+							case AttachLinkResult.Block:
+								// If this is closest, pretend we didn't find any
+								blockingShape = true;
+								break;
+						}
+					}
+					center = GetReliableShapeCenter(currentFromShape2);
+					if ((currentDistance = (distanceX = testCenterX - center.X) * distanceX
+						+ (distanceY = testCenterY - center.Y) * distanceY) < closerFromShapeDistance)
+					{
+						if (deferredShape)
+						{
+							closerFromShapeDeferred = true;
+						}
+						else
+						{
+							closerFromShapeDistance = currentDistance;
+							closerFromShape = currentFromShape2;
+							closerFromShapeDeferred = false;
+							closerFromShapeBlocking = blockingShape;
+						}
+					}
+				}
+				if (closerFromShapeDeferred && closerFromShape == null)
+				{
+					closerFromShapeBlocking = true;
+				}
+				return true;
+			}
+			return false;
 		}
 #if !LINKS_ALWAYS_CONNECT
 		private static object SecondaryLinkReconfigureKey = new object();

@@ -760,7 +760,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <param name="boxUser">The VisitConstraintBox delegate that will use the ConstraintBoxes produced by WalkConstraintBoxes.</param>
 		protected void WalkConstraintBoxes(ShapeField shapeField, ConstraintAttachPosition attachPosition, VisitConstraintBox boxUser)
 		{
-			WalkConstraintBoxes(shapeField.GetBounds(this), attachPosition, boxUser);
+			WalkConstraintBoxes(shapeField.GetBounds(this), attachPosition, true, boxUser);
 		}
 
 		/// <summary>
@@ -771,9 +771,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		/// <param name="fullBounds">The bounds the rectangles need to fit in.  Pass RectangleD.Empty if unknown.</param>
 		/// <param name="attachPosition">The position the constraints are attached to the role</param>
+		/// <param name="assumeAttached">The links shapes are known, so external constraints can be checked directly.</param>
 		/// <param name="boxUser">The VisitConstraintBox delegate that will use the ConstraintBoxes 
 		/// produced by WalkConstraintBoxes.</param>
-		protected void WalkConstraintBoxes(RectangleD fullBounds, ConstraintAttachPosition attachPosition, VisitConstraintBox boxUser)
+		protected void WalkConstraintBoxes(RectangleD fullBounds, ConstraintAttachPosition attachPosition, bool assumeAttached, VisitConstraintBox boxUser)
 		{
 			ConstraintDisplayPosition displayPosition = ConstraintDisplayPosition.Top;
 			DisplayOrientation orientation = DisplayOrientation;
@@ -1136,7 +1137,28 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						}
 						if (showConstraint)
 						{
-							ShapeElement constraintShape = diagram.FindShapeForElement((ModelElement)constraintBoxes[i].FactConstraint.Constraint, true);
+							// Find ths shape connected to this shape for this constraint
+							ShapeElement constraintShape;
+							IFactConstraint factConstraint = constraintBoxes[i].FactConstraint;
+							ModelElement factConstraintElem = (ModelElement)factConstraint;
+							if (assumeAttached)
+							{
+								constraintShape = null;
+								foreach (LinkConnectsToNode nodeLink in LinkConnectsToNode.GetLinksToLink(this))
+								{
+									ExternalConstraintLink constraintLink;
+									if (!nodeLink.IsDeleting &&
+										null != (constraintLink = nodeLink.Link as ExternalConstraintLink) &&
+										constraintLink.Subject == factConstraintElem)
+									{
+										constraintShape = constraintLink.ToShape;
+									}
+								}
+							}
+							else
+							{
+								constraintShape = MultiShapeUtility.FindNearestShapeForElement(diagram, this, (ModelElement)factConstraint.Constraint, factConstraintElem);
+							}
 							if (constraintShape == null)
 							{
 								// This can happen if the constraint is implied. Implied constraints are not displayed.
@@ -1572,6 +1594,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				factTypeShape.WalkConstraintBoxes(
 					RectangleD.Empty,
 					AttachPosition,
+					!parentShape.Store.TransactionActive,
 					delegate(ref ConstraintBox constraintBox)
 					{
 						wasVisited = true;
@@ -4770,6 +4793,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				WalkConstraintBoxes(
 					constraintShapeField.GetBounds(this),
 					constraintShapeField.AttachPosition,
+					true,
 					delegate(ref ConstraintBox constraintBox)
 					{
 						if (constraintBox.FactConstraint.Constraint == constraint)
@@ -4814,6 +4838,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					WalkConstraintBoxes(
 						constraintShapeField.GetBounds(this),
 						constraintShapeField.AttachPosition,
+						true,
 						delegate(ref ConstraintBox constraintBox)
 						{
 							if (constraintBox.FactConstraint.Constraint == constraint)

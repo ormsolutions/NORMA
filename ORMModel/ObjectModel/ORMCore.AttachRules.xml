@@ -319,6 +319,9 @@
 			<arg:AddRule methodName="DerivationRuleAddedRule">
 				<arg:RuleOn targetType="FactTypeHasDerivationRule"/>
 			</arg:AddRule>
+			<arg:AddRule methodName="DerivationRuleAddedClosureRule">
+				<arg:RuleOn targetType="FactTypeDerivationRule" fireTime="LocalCommit" priority="CopyClosureExpansionCompletedRulePriority"/>
+			</arg:AddRule>
 			<arg:ChangeRule methodName="DerivationRuleChangedRule">
 				<arg:RuleOn targetType="FactTypeDerivationRule"/>
 			</arg:ChangeRule>
@@ -366,6 +369,9 @@
 			</arg:DeleteRule>
 			<arg:AddRule methodName="ValidateFactTypeNameForObjectificationAddedRule">
 				<arg:RuleOn targetType="Objectification" priority="1"/>
+			</arg:AddRule>
+			<arg:AddRule methodName="ValidateFactTypeNameForObjectificationAddedClosureRule" >
+				<arg:RuleOn targetType="Objectification" fireTime="LocalCommit" priority="CopyClosureExpansionCompletedRulePriority"/>
 			</arg:AddRule>
 			<arg:DeleteRule methodName="ValidateFactTypeNameForObjectificationDeleteRule">
 				<arg:RuleOn targetType="Objectification" priority="1"/>

@@ -49,6 +49,18 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 				return false;
 			}
 		}
+#if VISUALSTUDIO_10_0
+		/// <summary>
+		/// Stop the user from manually moving link end points
+		/// </summary>
+		public override bool CanMoveAnchorPoints
+		{
+			get
+			{
+				return false;
+			}
+		}
+#endif // VISUALSTUDIO_10_0
 		/// <summary>
 		/// Turn on tooltips to show column relationships
 		/// </summary>
@@ -66,14 +78,20 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 		{
 			ReferenceConstraint constraint = ((ReferenceConstraintTargetsTable)ModelElement).ReferenceConstraint;
 			StringBuilder sb = new StringBuilder();
+			string sourceTableName = constraint.SourceTable.Name;
+			string targetTableName = constraint.TargetTable.Name;
 			foreach (ColumnReference columRef in constraint.ColumnReferenceCollection)
 			{
 				if (sb.Length != 0)
 				{
 					sb.AppendLine();
 				}
+				sb.Append(sourceTableName);
+				sb.Append(".");
 				sb.Append(columRef.SourceColumn.Name);
 				sb.Append(" -> ");
+				sb.Append(targetTableName);
+				sb.Append(".");
 				sb.Append(columRef.TargetColumn.Name);
 			}
 			return sb.ToString();

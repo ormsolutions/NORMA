@@ -2468,6 +2468,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				/// </summary>
 				private void UpdateInstanceFields(ObjectTypeInstance objectInstance)
 				{
+					if (objectInstance == null)
+					{
+						return; // Ignore when creating a new instance
+					}
 					EntityTypeSubtypeInstance subtypeInstance = objectInstance as EntityTypeSubtypeInstance;
 					EntityTypeInstance entityInstance = (subtypeInstance != null) ? subtypeInstance.SupertypeInstance : (EntityTypeInstance)objectInstance;
 					ObjectType entityTypeSubtype;
