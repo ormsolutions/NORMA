@@ -2069,6 +2069,210 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			return null;
 		}
 		#endregion // Other base overrides
+		#region Selection Rules
+		/// <summary>
+		/// A class to limit the selection of link shapes when
+		/// the connected shapes are also selected. This is specifically
+		/// targeted at subtype connectors, which otherwise become
+		/// the primary selection in a lasso select of the subtype and
+		/// supertype shapes.
+		/// </summary>
+		private class LimitLinkShapeSelectionRules : DiagramSelectionRules
+		{
+			private ORMDiagram myDiagram;
+			private DiagramSelectionRules myDeferToRules;
+			/// <summary>
+			/// Create a new <see cref="LimitLinkShapeSelectionRules"/> object
+			/// </summary>
+			/// <param name="diagram">The context diagram</param>
+			/// <param name="deferToRules">The base rules used for initial collection modification.</param>
+			public LimitLinkShapeSelectionRules(ORMDiagram diagram, DiagramSelectionRules deferToRules)
+			{
+				myDiagram = diagram;
+				myDeferToRules = deferToRules;
+			}
+			/// <summary>
+			/// Limit selection
+			/// </summary>
+			public override bool GetCompliantSelection(SelectedShapesCollection currentSelection, DiagramItemCollection proposedItemsToAdd, DiagramItemCollection proposedItemsToRemove, DiagramItem primaryItem)
+			{
+				bool retVal = myDeferToRules.GetCompliantSelection(currentSelection, proposedItemsToAdd, proposedItemsToRemove, primaryItem);
+				int addCount;
+				if (retVal &&
+					0 != (addCount = proposedItemsToAdd.Count))
+				{
+					Dictionary<ShapeElement, object> endpointTracker = null;
+					Dictionary<LinkShape, int> linkIndices = null; // Positive means in add collection and included, MaxValue indicates in current selection, ~index (negative value) indicates remove required
+					Dictionary<LinkShape, DiagramItem> currentLinks = null; // Selected shapes collection is not indexed, track the DiagramItem for current items that need to be removed.
+					bool firstSet = true;
+					int linkIndex = 0;
+					LinkShape linkShape;
+					ShapeElement selectedShape;
+					object tracked;
+					LinkedNode<DiagramItem> trackedNode;
+					DiagramItem trackedItem;
+					ICollection[] itemCollections = new ICollection[] { proposedItemsToAdd, currentSelection };
+					foreach (ICollection itemSet in itemCollections)
+					{
+						foreach (DiagramItem item in itemSet)
+						{
+							IProxyConnectorShape connectorShape;
+							if (item.SubField == null &&
+								null != (linkShape = item.Shape as LinkShape))
+							{
+								if (linkIndices == null)
+								{
+									linkIndices = new Dictionary<LinkShape, int>();
+								}
+								if (firstSet)
+								{
+									linkIndices[linkShape] = linkIndex;
+								}
+								else
+								{
+									linkIndices[linkShape] = int.MaxValue;
+									(currentLinks ?? (currentLinks = new Dictionary<LinkShape,DiagramItem>()))[linkShape] = item;
+								}
+								foreach (NodeShape nodeShape in LinkConnectsToNode.GetNodes(linkShape))
+								{
+									selectedShape = (null != (connectorShape = nodeShape as IProxyConnectorShape)) ? connectorShape.ProxyConnectorShapeFor : nodeShape;
+									if ((endpointTracker ?? (endpointTracker = new Dictionary<ShapeElement,object>())).TryGetValue(selectedShape, out tracked))
+									{
+										if (null != (trackedItem = tracked as DiagramItem))
+										{
+											trackedNode = new LinkedNode<DiagramItem>(trackedItem);
+											trackedNode.SetNext(new LinkedNode<DiagramItem>(item), ref trackedNode);
+											endpointTracker[selectedShape] = trackedNode;
+										}
+										else
+										{
+											trackedNode = (LinkedNode<DiagramItem>)tracked;
+											trackedNode.GetTail().SetNext(new LinkedNode<DiagramItem>(item), ref trackedNode);
+										}
+									}
+									else
+									{
+										endpointTracker.Add(selectedShape, item);
+									}
+								}
+							}
+							++linkIndex;
+						}
+						firstSet = false;
+					}
+					if (null != endpointTracker)
+					{
+						// Do no further processing to track removed links
+						foreach (DiagramItem item in proposedItemsToRemove)
+						{
+							if (item.SubField == null &&
+								null != (linkShape = item.Shape as LinkShape) &&
+								linkIndices.ContainsKey(linkShape))
+							{
+								linkIndices.Remove(linkShape);
+							}
+						}
+
+						// Walk both collections to see if link endpoints need to be removed
+						int removedCount = 0;
+						foreach (ICollection itemSet in itemCollections)
+						{
+							foreach (DiagramItem item in itemSet)
+							{
+								if (item.SubField == null &&
+									null != (selectedShape = item.Shape) &&
+									endpointTracker.TryGetValue(selectedShape, out tracked))
+								{
+									if (null != (trackedItem = tracked as DiagramItem))
+									{
+										linkShape = (LinkShape)trackedItem.Shape;
+										if (linkIndices.TryGetValue(linkShape, out linkIndex) &&
+											linkIndex >= 0)
+										{
+											++removedCount;
+											linkIndices[linkShape] = ~linkIndex;
+										}
+									}
+									else
+									{
+										trackedNode = (LinkedNode<DiagramItem>)tracked;
+										while (null != trackedNode)
+										{
+											trackedItem = trackedNode.Value;
+											// Same as code for single item above
+											linkShape = (LinkShape)trackedItem.Shape;
+											if (linkIndices.TryGetValue(linkShape, out linkIndex) &&
+												linkIndex >= 0)
+											{
+												++removedCount;
+												linkIndices[linkShape] = ~linkIndex;
+											}
+
+											trackedNode = trackedNode.Next;
+										}
+									}
+								}
+							}
+						}
+						if (removedCount != 0)
+						{
+							List<int> removedIndices = null;
+							foreach (KeyValuePair<LinkShape, int> pair in linkIndices)
+							{
+								int removeIndex = pair.Value;
+								if (removeIndex < 0)
+								{
+									if (removeIndex == int.MinValue)
+									{
+										trackedItem = currentLinks[pair.Key];
+										if (!proposedItemsToRemove.Contains(trackedItem))
+										{
+											proposedItemsToRemove.Add(trackedItem);
+										}
+									}
+									else
+									{
+										(removedIndices ?? (removedIndices = new List<int>())).Add(removeIndex);
+									}
+								}
+							}
+							if (null != removedIndices)
+							{
+								int removeCount = removedIndices.Count;
+								if (removeCount > 1)
+								{
+									removedIndices.Sort();
+								}
+								for (int i = 0; i < removeCount; ++i)
+								{
+									proposedItemsToAdd.RemoveAt(~removedIndices[i]);
+								}
+							}
+						}
+					}
+					retVal = proposedItemsToAdd.Count != 0 || proposedItemsToRemove.Count != 0;
+				}
+				return retVal;
+			}
+		}
+		private DiagramSelectionRules mySelectionRules;
+		/// <summary>
+		/// Modify selection algorithm to automatically deselect connector
+		/// lines when either of the endpoint shapes are also selected.
+		/// </summary>
+		public override DiagramSelectionRules SelectionRules
+		{
+			get
+			{
+				DiagramSelectionRules retVal = mySelectionRules;
+				if (retVal == null)
+				{
+					mySelectionRules = retVal = new LimitLinkShapeSelectionRules(this, base.SelectionRules);
+				}
+				return retVal;
+			}
+		}
+		#endregion // Selection Rules
 		#region Accessibility Properties
 		/// <summary>
 		/// Return the class name as the accessible name
