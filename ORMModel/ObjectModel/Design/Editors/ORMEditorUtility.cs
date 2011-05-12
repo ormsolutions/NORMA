@@ -45,14 +45,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		/// <returns>A FactType, or null if the item is not associated with a FactType.</returns>
 		public static FactType ResolveContextFactType(object instance)
 		{
-			instance = EditorUtility.ResolveContextInstance(instance, false);
+			if (!(instance is RoleProxy))
+			{
+				instance = EditorUtility.ResolveContextInstance(instance, false);
+			}
 			FactType retval = null;
 			ModelElement elem;
 
 			if (null != (elem = instance as ModelElement))
 			{
 				FactType fact;
-				Role role;
+				RoleBase role;
 				SetConstraint internalConstraint;
 				Reading reading;
 				ReadingOrder readingOrder;
@@ -61,7 +64,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 				{
 					retval = fact;
 				}
-				else if (null != (role = elem as Role))
+				else if (null != (role = elem as RoleBase))
 				{
 					//this one coming straight through on the selection so handling
 					//and returning here.

@@ -25,6 +25,35 @@ namespace ORMSolutions.ORMArchitect.Framework
 {
 	#region IFrameworkServices interface
 	/// <summary>
+	/// Specify how an automatically added element should be
+	/// treated by a presentation layer.
+	/// </summary>
+	public enum AutomatedElementDirective
+	{
+		/// <summary>
+		/// No directive is specified for the element
+		/// </summary>
+		None,
+		/// <summary>
+		/// The element was added automatically and should always be ignored
+		/// by the presentation layer.
+		/// </summary>
+		Ignore,
+		/// <summary>
+		/// The element was added intentionally and should never be ignored
+		/// by the presentation layer. If multiple directives are provided,
+		/// this takes precedence over <see cref="Ignore"/>
+		/// </summary>
+		NeverIgnore,
+	}
+	/// <summary>
+	/// A callback used by <see cref="IFrameworkServices.AutomatedElementFilter"/>
+	/// and <see cref="IFrameworkServices.GetAutomatedElementDirective"/>
+	/// </summary>
+	/// <param name="element">The element to test</param>
+	/// <returns><see cref="AutomatedElementDirective"/></returns>
+	public delegate AutomatedElementDirective AutomatedElementFilterCallback(ModelElement element);
+	/// <summary>
 	/// An interface that should be implemented by a <see cref="Store"/> that
 	/// loads the domain models. This is meant to act as a base interface for
 	/// tool-specific interfaces that derive from it.
@@ -57,6 +86,23 @@ namespace ORMSolutions.ORMArchitect.Framework
 		/// class that implements this interface.
 		/// </summary>
 		ICopyClosureManager CopyClosureManager { get;}
+		/// <summary>
+		/// Add callbacks to determine the result of <see cref="GetAutomatedElementDirective"/>.
+		/// Can be implemented by deferring to the <see cref="AutomatedElementFilterService"/> class.
+		/// Callbacks registered with this event are generally removed at the end of
+		/// a transaction. If the callback is not removed, it should be added with an implementation
+		/// of the <see cref="IPermanentAutomatedElementFilterProvider"/> on a domain model.
+		/// </summary>
+		event AutomatedElementFilterCallback AutomatedElementFilter;
+		/// <summary>
+		/// Provided directives regarding automatically added elements based
+		/// on listeners attached to <see cref="AutomatedElementFilter"/>.
+		/// This allows rules and editors to easily notify presentation layers
+		/// to respond differently when new elements are being added in
+		/// an automated fashion. Can be implemented by deferring to the
+		/// <see cref="AutomatedElementFilterService"/> class.
+		/// </summary>
+		AutomatedElementDirective GetAutomatedElementDirective(ModelElement element);
 	}
 	#endregion // IFrameworkServices interface
 	#region IRepresentedModelElements interface
@@ -245,4 +291,91 @@ namespace ORMSolutions.ORMArchitect.Framework
 		IEnumerable<object> GetPersistentSessionKeys();
 	}
 	#endregion // IPersistentSessionKeys interface
+	#region IPermanentAutomatedElementFilterProvider interface
+	/// <summary>
+	/// Allow a domain model to install automated element filters that
+	/// are always active. These filters are automatically included in
+	/// requests to <see cref="IFrameworkServices.GetAutomatedElementDirective"/>.
+	/// Permanent filters apply to all transactions, whereas <see cref="IFrameworkServices.AutomatedElementFilter"/>
+	/// should be used to install filters for a specific transaction.
+	/// </summary>
+	public interface IPermanentAutomatedElementFilterProvider
+	{
+		/// <summary>
+		/// Provided automated element filters to control creation of
+		/// display elements for automatically created model elements.
+		/// </summary>
+		IEnumerable<AutomatedElementFilterCallback> GetAutomatedElementFilters();
+	}
+	#endregion // IPermanentAutomatedElementFilterProvider interface
+	#region AutomatedElementFilterService class
+	/// <summary>
+	/// A helper class to provide a stock implementation of the
+	/// <see cref="IFrameworkServices.AutomatedElementFilter"/> event
+	/// and <see cref="IFrameworkServices.GetAutomatedElementDirective"/> methods.
+	/// </summary>
+	public sealed class AutomatedElementFilterService
+	{
+		private Delegate myAutomatedElementFilter;
+		/// <summary>
+		/// Create an automated element filter with permanent filters automatically installed.
+		/// </summary>
+		/// <param name="services">A <see cref="IFrameworkServices"/> instance.</param>
+		public AutomatedElementFilterService(IFrameworkServices services)
+		{
+			IPermanentAutomatedElementFilterProvider[] providers = services.GetTypedDomainModelProviders<IPermanentAutomatedElementFilterProvider>();
+			if (providers != null)
+			{
+				Delegate filter = null;
+				for (int i = 0; i < providers.Length; ++i)
+				{
+					foreach (AutomatedElementFilterCallback callback in providers[i].GetAutomatedElementFilters())
+					{
+						filter = Delegate.Combine(filter, callback);
+					}
+				}
+				myAutomatedElementFilter = filter;
+			}
+		}
+		/// <summary>
+		/// Implement the <see cref="IFrameworkServices.GetAutomatedElementDirective"/> method
+		/// </summary>
+		public AutomatedElementDirective GetAutomatedElementDirective(ModelElement element)
+		{
+			AutomatedElementDirective retVal = AutomatedElementDirective.None;
+			Delegate filterList = myAutomatedElementFilter;
+			if (filterList != null)
+			{
+				Delegate[] targets = filterList.GetInvocationList();
+				for (int i = 0; i < targets.Length; ++i)
+				{
+					switch (((AutomatedElementFilterCallback)targets[i])(element))
+					{
+						case AutomatedElementDirective.NeverIgnore:
+							// Strongest form, return immediately
+							return AutomatedElementDirective.NeverIgnore;
+						case AutomatedElementDirective.Ignore:
+							retVal = AutomatedElementDirective.Ignore;
+							break;
+					}
+				}
+			}
+			return retVal;
+		}
+		/// <summary>
+		/// Implement the <see cref="IFrameworkServices.AutomatedElementFilter"/> event
+		/// </summary>
+		public event AutomatedElementFilterCallback AutomatedElementFilter
+		{
+			add
+			{
+				myAutomatedElementFilter = Delegate.Combine(myAutomatedElementFilter, value);
+			}
+			remove
+			{
+				myAutomatedElementFilter = Delegate.Remove(myAutomatedElementFilter, value);
+			}
+		}
+	}
+	#endregion // AutomatedElementFilterService class
 }

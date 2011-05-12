@@ -91,7 +91,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				#endregion // Constructor
 				#region Tracking Methods
 				/// <summary>
-				/// <see cref="IORMToolServices.AutomatedElementFilter"/> callback
+				/// <see cref="IFrameworkServices.AutomatedElementFilter"/> callback
 				/// </summary>
 				public AutomatedElementDirective BlockElement(ModelElement element)
 				{

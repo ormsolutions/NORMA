@@ -105,6 +105,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					FrequencyConstraintShape freqShape;
 					FrequencyConstraint constraint;
 					LinkedElementCollection<FactType> relatedFactTypes;
+					int count;
 
 					if (null != (freqShape = nodeShape as FrequencyConstraintShape) &&
 						null != (constraint = freqShape.ModelElement as FrequencyConstraint) &&
@@ -137,7 +138,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						RectangleD shapeBounds = factTypeShape.AbsoluteBounds;
 						SizeD shapeSize = factTypeShape.Size;
 						PointD location = (factTypeLayoutShape != null) ? factTypeLayoutShape.TargetLocation : shapeBounds.Location;
-						int count = constraintRoles.Count;
+						count = constraintRoles.Count;
 						double width = shapeSize.Width;
 						double height = shapeSize.Height;
 
@@ -160,19 +161,35 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						avg.X /= count;
 						avg.Y /= count;
 					}
-					else
+					else if (0 != (count = shape.Count))
 					{
-						int count = shape.Count;
+						double minX = double.MaxValue;
+						double minY = double.MaxValue;
+						double maxX = 0;
+						double maxY = 0;
+						SizeD size;
+						LayoutShapeList relatedShapes = shape.RelatedShapes;
+						// Take the center of farthest bounds as the location.
+						// This is the same as the average for two elements, but
+						// balances more than two elements much better.
 						for (int i = 0; i < count; ++i)
 						{
-							PointD location = shape.RelatedShapes[i].TargetLocation;
-							avg.Offset(location.X, location.Y);
+							LayoutShape relatedShape = relatedShapes[i];
+							PointD location = relatedShape.TargetLocation;
+							size = relatedShape.Shape.Size;
+							double x = location.X + size.Width / 2;
+							double y = location.Y + size.Height / 2;
+							minX = Math.Min(minX, x);
+							minY = Math.Min(minY, y);
+							maxX = Math.Max(maxX, x);
+							maxY = Math.Max(maxY, y);
 						}
-						avg.X /= count;
-						avg.Y /= count;
+						size = nodeShape.Size;
+						avg.X = (maxX + minX) / 2 - size.Width / 2;
+						avg.Y = (maxY + minY) / 2 - size.Height / 2;
 						// Constraints are frequently ending up directly on top of
 						// an ObjectTypeShape, bump them up a bit
-						double bumpAdjust = nodeShape.Size.Height * 2;
+						double bumpAdjust = size.Height * 2;
 						avg.Y -= bumpAdjust;
 						if (avg.Y < minimumPoint.Y)
 						{

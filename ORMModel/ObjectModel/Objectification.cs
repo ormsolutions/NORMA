@@ -579,6 +579,27 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // ObjectificationRolePlayerChangedRule
 		#region ImpliedFactTypeAddedRule
+		private static readonly object AutomateImpliedFactTypesKey = new object();
+		/// <summary>
+		/// Filter method to install in the domain model implementation of
+		/// <see cref="IPermanentAutomatedElementFilterProvider.GetAutomatedElementFilters"/>. This
+		/// filter assumes all link fact types are automatically created elements during the
+		/// transaction in which they are created, but allows presentation elements for
+		/// these elements to be created in a separate transaction.
+		/// </summary>
+		public static AutomatedElementDirective AutomateImpliedFactTypes(ModelElement element)
+		{
+			FactType factType;
+			Transaction t;
+			if (null != (factType = element as FactType) &&
+				null != factType.ImpliedByObjectification &&
+				null != (t = element.Store.TransactionManager.CurrentTransaction) &&
+				t.TopLevelTransaction.Context.ContextInfo.ContainsKey(AutomateImpliedFactTypesKey))
+			{
+				return AutomatedElementDirective.Ignore;
+			}
+			return AutomatedElementDirective.None;
+		}
 		/// <summary>
 		/// AddRule: typeof(ObjectificationImpliesFactType)
 		/// Rule to block objectification of implied facts
@@ -590,6 +611,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				throw new InvalidOperationException(ResourceStrings.ModelExceptionObjectificationImpliedFactObjectified);
 			}
+			link.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo[AutomateImpliedFactTypesKey] = null;
 		}
 		#endregion // ImpliedFactTypeAddedRule
 		#region RoleAddedRule

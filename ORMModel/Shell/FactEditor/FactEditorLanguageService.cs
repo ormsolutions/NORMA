@@ -792,7 +792,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							{
 								object contextInstance = EditorUtility.ResolveContextInstance(element, false);
 								ObjectType currentObjectType = contextInstance as ObjectType;
-								FactType testFactType = (currentObjectType == null) ? ORMEditorUtility.ResolveContextFactType(contextInstance) : null;
+								FactType testFactType = (currentObjectType == null) ? ORMEditorUtility.ResolveContextFactType(element) : null;
 								if (testFactType is SubtypeFact)
 								{
 									// Readings on subtypes are not directly edited

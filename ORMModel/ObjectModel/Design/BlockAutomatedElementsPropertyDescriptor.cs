@@ -18,6 +18,7 @@ using System;
 using System.ComponentModel;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Design;
+using ORMSolutions.ORMArchitect.Framework;
 using ORMSolutions.ORMArchitect.Framework.Design;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
 
@@ -27,7 +28,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 	/// <summary>
 	/// An <see cref="ElementPropertyDescriptor"/> that can be used to
 	/// filter side-effect elements creating while setting the property
-	/// by adding a filter to the <see cref="IORMToolServices.AutomatedElementFilter"/>
+	/// by adding a filter to the <see cref="IFrameworkServices.AutomatedElementFilter"/>
 	/// </summary>
 	public class AutomatedElementFilterPropertyDescriptor : ElementPropertyDescriptor
 	{
@@ -79,7 +80,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 	/// <summary>
 	/// An <see cref="PropertyDescriptor"/> that can be used to
 	/// filter side-effect elements creating while setting the property
-	/// by adding a filter to the <see cref="IORMToolServices.AutomatedElementFilter"/>.
+	/// by adding a filter to the <see cref="IFrameworkServices.AutomatedElementFilter"/>.
 	/// Unlike <see cref="AutomatedElementFilterPropertyDescriptor"/>, this descriptor
 	/// is designed to be used with properties that are not specified in the domain library
 	/// but should appear alongside the domain properties.

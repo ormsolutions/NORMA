@@ -3205,6 +3205,13 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "FrequencyConstraint.UnboundedMaxValueText");
 			}
 		}
+		public static string RoleProxyTypeName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.DisplayName");
+			}
+		}
 		/// <summary>The name of the transaction that converts a frequency constraint to a uniqueness.</summary>
 		public static string ConvertFrequencyToUniquenessTransactionName
 		{

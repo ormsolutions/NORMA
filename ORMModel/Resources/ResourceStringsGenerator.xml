@@ -449,6 +449,7 @@
 	<ResourceString name="ImplicitBooleanValueTypePropertyRestriction" model="Model" resourceName="ImplicitBooleanValueType.PropertyRestriction"/>
 	<ResourceString name="ImplicitBooleanValueTypeNoReadingFormatString" model="Model" resourceName="ImplicitBooleanValueType.NoReadingFormatString"/>
 	<ResourceString name="FrequencyConstraintUnboundedMaxValueText" model="Model" resourceName="FrequencyConstraint.UnboundedMaxValueText"/>
+	<ResourceString name="RoleProxyTypeName" model="ObjectModel" resourceName="ORMSolutions.ORMArchitect.Core.ObjectModel.Role.DisplayName"/>
 	<ResourceString name="ConvertFrequencyToUniquenessTransactionName" model="Model" resourceName="FrequencyConstraint.ConvertToUniquenessConstraint.TransactionName"/>
 	<ResourceString name="VerbalizationTargetHtmlReportDisplayName" model="Model" resourceName="VerbalizationTarget.HtmlReport.DisplayName"/>
 	<ResourceString name="VerbalizationTargetHtmlReportCommandName" model="Model" resourceName="VerbalizationTarget.HtmlReport.CommandName"/>

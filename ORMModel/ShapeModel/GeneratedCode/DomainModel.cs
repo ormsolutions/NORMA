@@ -71,6 +71,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				typeof(ORMDiagram),
 				typeof(ORMBaseBinaryLinkShape),
 				typeof(RolePlayerLink),
+				typeof(RolePlayerProxyLink),
 				typeof(ExternalConstraintLink),
 				typeof(ValueRangeLink),
 				typeof(ModelNoteLink),
@@ -146,25 +147,26 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 	
 			if (createElementMap == null)
 			{
-				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(21);
+				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(22);
 				createElementMap.Add(typeof(ORMDiagram), 0);
 				createElementMap.Add(typeof(RolePlayerLink), 1);
-				createElementMap.Add(typeof(ExternalConstraintLink), 2);
-				createElementMap.Add(typeof(ValueRangeLink), 3);
-				createElementMap.Add(typeof(ModelNoteLink), 4);
-				createElementMap.Add(typeof(ObjectTypeShape), 5);
-				createElementMap.Add(typeof(FactTypeShape), 6);
-				createElementMap.Add(typeof(SubtypeLink), 7);
-				createElementMap.Add(typeof(ExternalConstraintShape), 8);
-				createElementMap.Add(typeof(FrequencyConstraintShape), 9);
-				createElementMap.Add(typeof(RingConstraintShape), 10);
-				createElementMap.Add(typeof(ObjectifiedFactTypeNameShape), 11);
-				createElementMap.Add(typeof(ReadingShape), 12);
-				createElementMap.Add(typeof(ValueConstraintShape), 13);
-				createElementMap.Add(typeof(RoleNameShape), 14);
-				createElementMap.Add(typeof(ModelNoteShape), 15);
-				createElementMap.Add(typeof(LinkConnectorShape), 16);
-				createElementMap.Add(typeof(FactTypeLinkConnectorShape), 17);
+				createElementMap.Add(typeof(RolePlayerProxyLink), 2);
+				createElementMap.Add(typeof(ExternalConstraintLink), 3);
+				createElementMap.Add(typeof(ValueRangeLink), 4);
+				createElementMap.Add(typeof(ModelNoteLink), 5);
+				createElementMap.Add(typeof(ObjectTypeShape), 6);
+				createElementMap.Add(typeof(FactTypeShape), 7);
+				createElementMap.Add(typeof(SubtypeLink), 8);
+				createElementMap.Add(typeof(ExternalConstraintShape), 9);
+				createElementMap.Add(typeof(FrequencyConstraintShape), 10);
+				createElementMap.Add(typeof(RingConstraintShape), 11);
+				createElementMap.Add(typeof(ObjectifiedFactTypeNameShape), 12);
+				createElementMap.Add(typeof(ReadingShape), 13);
+				createElementMap.Add(typeof(ValueConstraintShape), 14);
+				createElementMap.Add(typeof(RoleNameShape), 15);
+				createElementMap.Add(typeof(ModelNoteShape), 16);
+				createElementMap.Add(typeof(LinkConnectorShape), 17);
+				createElementMap.Add(typeof(FactTypeLinkConnectorShape), 18);
 			}
 			int index;
 			if (!createElementMap.TryGetValue(elementType, out index))
@@ -177,22 +179,23 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				// set to true. Please provide the constructor below.
 				case 0: return new ORMDiagram(partition, propertyAssignments);
 				case 1: return new RolePlayerLink(partition, propertyAssignments);
-				case 2: return new ExternalConstraintLink(partition, propertyAssignments);
-				case 3: return new ValueRangeLink(partition, propertyAssignments);
-				case 4: return new ModelNoteLink(partition, propertyAssignments);
-				case 5: return new ObjectTypeShape(partition, propertyAssignments);
-				case 6: return new FactTypeShape(partition, propertyAssignments);
-				case 7: return new SubtypeLink(partition, propertyAssignments);
-				case 8: return new ExternalConstraintShape(partition, propertyAssignments);
-				case 9: return new FrequencyConstraintShape(partition, propertyAssignments);
-				case 10: return new RingConstraintShape(partition, propertyAssignments);
-				case 11: return new ObjectifiedFactTypeNameShape(partition, propertyAssignments);
-				case 12: return new ReadingShape(partition, propertyAssignments);
-				case 13: return new ValueConstraintShape(partition, propertyAssignments);
-				case 14: return new RoleNameShape(partition, propertyAssignments);
-				case 15: return new ModelNoteShape(partition, propertyAssignments);
-				case 16: return new LinkConnectorShape(partition, propertyAssignments);
-				case 17: return new FactTypeLinkConnectorShape(partition, propertyAssignments);
+				case 2: return new RolePlayerProxyLink(partition, propertyAssignments);
+				case 3: return new ExternalConstraintLink(partition, propertyAssignments);
+				case 4: return new ValueRangeLink(partition, propertyAssignments);
+				case 5: return new ModelNoteLink(partition, propertyAssignments);
+				case 6: return new ObjectTypeShape(partition, propertyAssignments);
+				case 7: return new FactTypeShape(partition, propertyAssignments);
+				case 8: return new SubtypeLink(partition, propertyAssignments);
+				case 9: return new ExternalConstraintShape(partition, propertyAssignments);
+				case 10: return new FrequencyConstraintShape(partition, propertyAssignments);
+				case 11: return new RingConstraintShape(partition, propertyAssignments);
+				case 12: return new ObjectifiedFactTypeNameShape(partition, propertyAssignments);
+				case 13: return new ReadingShape(partition, propertyAssignments);
+				case 14: return new ValueConstraintShape(partition, propertyAssignments);
+				case 15: return new RoleNameShape(partition, propertyAssignments);
+				case 16: return new ModelNoteShape(partition, propertyAssignments);
+				case 17: return new LinkConnectorShape(partition, propertyAssignments);
+				case 18: return new FactTypeLinkConnectorShape(partition, propertyAssignments);
 				default: return null;
 			}
 		}

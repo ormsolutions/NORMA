@@ -15,14 +15,6 @@
 \**************************************************************************/
 #endregion
 
-// Defining LINKS_ALWAYS_CONNECT allows multiple links from a single ShapeA to different instances of ShapeB.
-// In this case, the 'anchor' end is always connected if an opposite shape is available.
-// The current behavior is to only create a link if, given an instance of ShapeA, the closest candidate
-// ShapeB instance is not closer to a different instance of ShapeA.
-// Note that LINKS_ALWAYS_CONNECT is also used in other files, so you should turn this on
-// in the project properties if you want to experiment. This is here for reference only.
-//#define LINKS_ALWAYS_CONNECT
-
 using System;
 using System.Diagnostics;
 using System.Reflection;
@@ -93,8 +85,13 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 		/// </summary>
 		/// <param name="existingParentShape">The parent <see cref="ShapeElement"/></param>
 		/// <param name="childElement">The child <see cref="ModelElement"/></param>
+		/// <param name="linkShapeType">The expected type for the generated link. If more than one
+		/// shape element can exist at a given time for the same child element then this should be
+		/// called for each type. Note that this does not affect which type of element is created.
+		/// The type of element to create must be control independently of this call, generally with
+		/// a context key to disambiguate the shape creation routine.</param>
 		/// <returns>The child <see cref="ShapeElement"/>, if any</returns>
-		public static ShapeElement FixUpChildShapes(ShapeElement existingParentShape, ModelElement childElement)
+		public static ShapeElement FixUpChildShapes(ShapeElement existingParentShape, ModelElement childElement, Type linkShapeType)
 		{
 			if (existingParentShape == null)
 			{
@@ -131,7 +128,8 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 			foreach (PresentationElement childPresentationElement in PresentationViewsSubject.GetPresentation(childElement))
 			{
 				ShapeElement childShapeElement;
-				if ((childShapeElement = childPresentationElement as ShapeElement) != null)
+				if ((childShapeElement = childPresentationElement as ShapeElement) != null &&
+					(null == linkShapeType || childShapeElement.GetType() == linkShapeType))
 				{
 					if (unparentedChildShape == null && childShapeElement.ParentShape == null)
 					{
@@ -500,6 +498,43 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 		{
 			CheckLinks(shapeElement, true);
 		}
+		/// <summary>
+		/// Helper for <see cref="CheckLinks"/> to key links off of
+		/// the backing ModelElement and the type of link shape.
+		/// </summary>
+		[DebuggerStepThrough]
+		private struct LinkTypeKey : IEquatable<LinkTypeKey>
+		{
+			private Type myLinkType;
+			private ModelElement myBackingElement;
+			/// <summary>
+			/// Create a new LinkTypeKey structure with a default priority
+			/// </summary>
+			/// <param name="linkType">The type of the link shape.</param>
+			/// <param name="backingElement">The backing element for the link shape.</param>
+			public LinkTypeKey(Type linkType, ModelElement backingElement)
+			{
+				myLinkType = linkType;
+				myBackingElement = backingElement;
+			}
+			/// <summary>See <see cref="Object.GetHashCode()"/>.</summary>
+			public override int GetHashCode()
+			{
+				return Utility.GetCombinedHashCode(
+					myLinkType.GetHashCode(),
+					myBackingElement.GetHashCode());
+			}
+			/// <summary>See <see cref="Object.Equals(Object)"/>.</summary>
+			public override bool Equals(object obj)
+			{
+				return obj is LinkTypeKey && this.Equals((LinkTypeKey)obj);
+			}
+			/// <summary>See <see cref="IEquatable{LinkTypeKey}.Equals"/>.</summary>
+			public bool Equals(LinkTypeKey other)
+			{
+				return myLinkType == other.myLinkType && myBackingElement == other.myBackingElement;
+			}
+		}
 		private static void CheckLinks(ShapeElement checkShape, bool discludeOriginal)
 		{
 
@@ -512,21 +547,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 			{
 				//check the links for each shape for the model element
 				Diagram diagram = originalShape.Diagram;
-#if LINKS_ALWAYS_CONNECT
-				foreach (ShapeElement shape in FindAllShapesForElement<ShapeElement>(diagram, originalShape.ModelElement))
-				{
-					bool shapeIsOriginal = (shape == originalShape);
-					foreach (BinaryLinkShape toLinkShape in GetExistingLinks(shape, true, false, null, true))
-					{
-						CheckLink(toLinkShape, shapeIsOriginal, BinaryLinkAnchor.ToShape, discludedShape);
-					}
-					foreach (BinaryLinkShape fromLinkShape in GetExistingLinks(shape, false, true, null, true))
-					{
-						CheckLink(fromLinkShape, shapeIsOriginal, BinaryLinkAnchor.FromShape, discludedShape);
-					}
-				}
-#else // LINKS_ALWAYS_CONNECT
-				Dictionary<ModelElement, IReconfigureableLink> reconfigureableLinks = null;
+				Dictionary<LinkTypeKey, IReconfigureableLink> reconfigureableLinks = null;
 				foreach (ShapeElement shape in FindAllShapesForElement<ShapeElement>(diagram, element))
 				{
 					foreach (BinaryLinkShape linkShape in GetExistingLinks(shape, true, true, null, true))
@@ -542,9 +563,9 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 						{
 							if (reconfigureableLinks == null)
 							{
-								reconfigureableLinks = new Dictionary<ModelElement, IReconfigureableLink>();
+								reconfigureableLinks = new Dictionary<LinkTypeKey, IReconfigureableLink>();
 							}
-							reconfigureableLinks[linkShape.ModelElement] = reconfigureableLink;
+							reconfigureableLinks[new LinkTypeKey(linkShape.GetType(), linkShape.ModelElement)] = reconfigureableLink;
 						}
 					}
 				}
@@ -560,33 +581,8 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 				{
 					configurableEndpoint.FixupUnattachedLinkElements(diagram);
 				}
-#endif //LINKS_ALWAYS_CONNECT
 			}
 		}
-#if LINKS_ALWAYS_CONNECT
-		private static void CheckLink(ShapeElement linkShape, bool shapeIsOriginal, BinaryLinkAnchor checkAnchor, ShapeElement discludedShape)
-		{
-			BinaryLinkShape toLink;
-			if ((toLink = linkShape as BinaryLinkShape) != null)
-			{
-				if (linkShape is IEnsureConnectorShapeForLink)
-				{
-					//this link may have other links connected to it, so check those links as well
-					CheckLinks(linkShape, false);
-				}
-				IReconfigureableLink reconfigureableLink;
-				if ((reconfigureableLink = toLink as IReconfigureableLink) != null)
-				{
-					IBinaryLinkAnchor linkWithAnchor;
-					//if this is the anchoring side, only the original shape's links need to be checked
-					if (shapeIsOriginal || ((linkWithAnchor = toLink as IBinaryLinkAnchor) != null && linkWithAnchor.Anchor == checkAnchor))
-					{
-						reconfigureableLink.Reconfigure(discludedShape);
-					}
-				}
-			}
-		}
-#endif //LINKS_ALWAYS_CONNECT
 		/// <summary>
 		/// Reconfigure a link to connect the appropriate <see cref="NodeShape"/>
 		/// </summary>
@@ -611,123 +607,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 				return;
 			}
 
-#if LINKS_ALWAYS_CONNECT
-			if (fromElement != null && toElement != null)
-			{
-				Diagram diagram = link.Diagram;
-				if (diagram == null)
-				{
-					throw new NullReferenceException();
-				}
-
-				//get the anchoring side, default to the from shape
-				IBinaryLinkAnchor linkWithAnchor;
-				bool anchorsToFromShape = true;
-				if ((linkWithAnchor = link as IBinaryLinkAnchor) != null)
-				{
-					anchorsToFromShape = (linkWithAnchor.Anchor == BinaryLinkAnchor.FromShape);
-				}
-
-				foreach (ShapeElement currentFromShape in FindAllShapesForElement<ShapeElement>(diagram, anchorsToFromShape ? fromElement : toElement, true))
-				{
-					if (discludedShape != null && discludedShape == ResolvePrimaryShape(currentFromShape)
-						|| AlreadyConnectedTo(currentFromShape, toElement, anchorsToFromShape, link))
-					{
-						continue;
-					}
-					ShapeElement closestToShape = null;
-					double minimumDistance = double.MaxValue;
-
-					foreach (ShapeElement currentToShape in FindAllShapesForElement<ShapeElement>(diagram, anchorsToFromShape ? toElement : fromElement, true))
-					{
-						if (discludedShape != null && discludedShape == ResolvePrimaryShape(currentToShape))
-						{
-							continue;
-						}
-
-						double distanceX;
-						double distanceY;
-						double currentDistance;
-						if ((currentDistance = (distanceX = currentFromShape.Center.X - currentToShape.Center.X) * distanceX
-							+ (distanceY = currentFromShape.Center.Y - currentToShape.Center.Y) * distanceY) < minimumDistance)
-						{
-							minimumDistance = currentDistance;
-							closestToShape = currentToShape;
-						}
-					}
-					if (closestToShape == null)
-					{
-						//there are no potential to shapes
-						break;
-					}
-					ShapeElement closestFromShape = currentFromShape;
-					if (closestFromShape != null && closestToShape != null)
-					{
-						NodeShape toShape = null;
-						NodeShape fromShape = null;
-						IProvideConnectorShape getsUniqueConnectorShape;
-
-						if ((getsUniqueConnectorShape = closestToShape as IProvideConnectorShape) != null)
-						{
-							toShape = getsUniqueConnectorShape.GetUniqueConnectorShape(closestFromShape, backingLink);
-						}
-						if (toShape == null)
-						{
-							toShape = closestToShape as NodeShape;
-						}
-						if ((getsUniqueConnectorShape = closestFromShape as IProvideConnectorShape) != null)
-						{
-							fromShape = getsUniqueConnectorShape.GetUniqueConnectorShape(closestToShape, backingLink);
-						}
-						if (fromShape == null)
-						{
-							fromShape = closestFromShape as NodeShape;
-						}
-
-						if (toShape != null && fromShape != null)
-						{
-							bool changedFromShape = link.FromShape != fromShape;
-							bool changedToShape = link.ToShape != toShape;
-							if (anchorsToFromShape)
-							{
-								if ((changedFromShape = link.FromShape != fromShape) ||
-									(changedToShape = link.ToShape != toShape))
-								{
-									//In order to actually re-connect an already connected link, 
-									// the properties need to be set AND the connect method called.
-									if (changedFromShape)
-									{
-										link.FromShape = fromShape;
-									}
-									if (changedToShape)
-									{
-										link.ToShape = toShape;
-									}
-									link.Connect(fromShape, toShape);
-								}
-							}
-							else if ((changedFromShape = link.FromShape != toShape) ||
-								(changedToShape = link.ToShape != fromShape))
-							{
-								if (changedFromShape)
-								{
-									link.FromShape = toShape;
-								}
-								if (changedToShape)
-								{
-									link.ToShape = fromShape;
-								}
-								link.Connect(toShape, fromShape);
-							}
-							return;
-						}
-					}
-				}
-			}
-
-			//no shapes need to be connected, so delete the link
-			link.Delete();
-#else
 			if (fromElement != null && toElement != null)
 			{
 				ModelElement backingLink;
@@ -742,6 +621,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 				}
 
 				bool originalLinkProcessed = false;
+				Type linkType = link.GetType();
 
 				foreach (ShapeElement currentFromShapeIter in FindAllShapesForElement<ShapeElement>(diagram, fromElement, true))
 				{
@@ -765,7 +645,8 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 						BinaryLinkShape pendingDeleteLinkShape = null;
 						foreach (BinaryLinkShape linkShape in GetEffectiveAttachedLinkShapesTo<BinaryLinkShape>(closestToShape))
 						{
-							if (linkShape.ModelElement == backingLink)
+							if (linkShape.ModelElement == backingLink &&
+								linkShape.GetType() == linkType)
 							{
 								// Note that there can only be one of these satisfying the criteria
 								existingLink = linkShape;
@@ -869,7 +750,8 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 							// to shape.
 							foreach (BinaryLinkShape linkShape in GetEffectiveAttachedLinkShapesFrom<BinaryLinkShape>(currentFromShape))
 							{
-								if (linkShape.ModelElement == backingLink)
+								if (linkShape.ModelElement == backingLink &&
+									linkShape.GetType() == linkType)
 								{
 									// Note that there can only be one of these satisfying the criteria
 									existingLink = linkShape;
@@ -1042,7 +924,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 					link.Delete();
 				}
 			}
-#endif //LINKS_ALWAYS_CONNECT
 		}
 		/// <summary>
 		/// Find the nearest shape on this diagram relative to another shape.
@@ -1200,7 +1081,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 			}
 			return false;
 		}
-#if !LINKS_ALWAYS_CONNECT
 		private static object SecondaryLinkReconfigureKey = new object();
 		private static void BlockSecondaryLinkReconfigure(Dictionary<object, object> contextInfo, BinaryLinkShape linkShape)
 		{
@@ -1286,45 +1166,9 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 			}
 			return shape.AbsoluteCenter;
 		}
-#endif // !LINKS_ALWAYS_CONNECT
-#if LINKS_ALWAYS_CONNECT
-		private static bool AlreadyConnectedTo(ShapeElement currentShape, ModelElement oppositeElement, bool isFromShape, BinaryLinkShape currentLink)
-		{
-			//check each link to see if it connects to the opposite element
-			foreach (BinaryLinkShape linkShape in GetExistingLinks(currentShape, !isFromShape, isFromShape, currentLink.ModelElement, false))
-			{
-				//if the link is the one currently being configured, count it as not connected
-				if (linkShape == currentLink)
-				{
-					continue;
-				}
-
-				ShapeElement checkElement;
-				NodeShape nodeShape;
-
-				if (isFromShape)
-				{
-					nodeShape = linkShape.ToShape;
-				}
-				else
-				{
-					nodeShape = linkShape.FromShape;
-				}
-
-				checkElement = ResolvePrimaryShape(nodeShape);
-
-				if (checkElement != null && checkElement.ModelElement == oppositeElement)
-				{
-					return true;
-				}
-			}
-			return false;
-		}
-#endif // LINKS_ALWAYS_CONNECT
 		/// <summary>
 		/// Gets all existing links for the shape and its proxy connectors.
-		/// This method will check for the IEnsureConnectorShapeForLink
-		/// and IProvideConnectorShape interfaces.
+		/// This method will check for the <see cref="IProvideConnectorShape"/> interface.
 		/// </summary>
 		/// <param name="shape">The shape to check</param>
 		/// <param name="getToLinks">True to collect all to role links</param>
@@ -1462,31 +1306,5 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 		/// <returns>NodeShape</returns>
 		NodeShape GetUniqueConnectorShape(ShapeElement oppositeShape, ModelElement ignoreLinkShapesFor);
 	}
-#if LINKS_ALWAYS_CONNECT
-	/// <summary>
-	/// Controls which side a binary link is anchored to
-	/// </summary>
-	public enum BinaryLinkAnchor
-	{
-		/// <summary>
-		/// Anchor to the FromShape
-		/// </summary>
-		FromShape = 0x0,
-		/// <summary>
-		/// Anchor to the ToShape
-		/// </summary>
-		ToShape = 0x1
-	}
-	/// <summary>
-	/// A binary link that is anchored to one side or the other
-	/// </summary>
-	public interface IBinaryLinkAnchor
-	{
-		/// <summary>
-		/// Gets whether this link is anchored to its ToShape or FromShape
-		/// </summary>
-		BinaryLinkAnchor Anchor { get;}
-	}
-#endif //LINKS_ALWAYS_CONNECT
 	#endregion //Interfaces
 }

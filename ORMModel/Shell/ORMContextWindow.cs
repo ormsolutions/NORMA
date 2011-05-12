@@ -318,7 +318,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				return;
 			}
 			Store store = element.Store;
-			Microsoft.VisualStudio.Modeling.UndoManager undoManager = store.CurrentContext.UndoManager;
+			IORMToolServices toolServices = (IORMToolServices)store;
+			if (!toolServices.CanAddTransaction)
+			{
+				return;
+			}
 			using (Transaction t = store.TransactionManager.BeginTransaction("Draw Context Diagram"))
 			{
 				myDiagram.NestedChildShapes.Clear();
@@ -326,7 +330,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 
 				PlaceObject(hierarchyElement);
 				LinkedElementCollection<ShapeElement> collection = myDiagram.NestedChildShapes;
-				LayoutManager bl = new LayoutManager(myDiagram, (myDiagram.Store as IORMToolServices).GetLayoutEngine(typeof(ORMRadialLayoutEngine)));
+				LayoutManager bl = new LayoutManager(myDiagram, toolServices.GetLayoutEngine(typeof(ORMRadialLayoutEngine)));
 				foreach (ShapeElement shape in collection)
 				{
 					bl.AddShape(shape, false);
@@ -471,22 +475,36 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// <param name="generations">The generations.</param>
 		private static void GetLinkedElements(IHierarchyContextEnabled element, Dictionary<IHierarchyContextEnabled, int> masterDictionary, ref Dictionary<IHierarchyContextEnabled, int> localDictionary, int generations)
 		{
-			ReadOnlyCollection<ElementLink> col = DomainRoleInfo.GetAllElementLinks((ModelElement)element);
-			foreach (ElementLink link in col)
+			ModelElement mel = (ModelElement)element;
+			Type contextType = typeof(IHierarchyContextEnabled);
+			foreach (DomainRoleInfo roleInfo in mel.GetDomainClass().AllDomainRolesPlayed)
 			{
-				foreach (ModelElement modelElement in link.LinkedElements)
+				DomainRoleInfo oppositeRole = roleInfo.OppositeDomainRole;
+				Type oppositeType = oppositeRole.RolePlayer.ImplementationClass;
+				if (!oppositeType.IsAbstract &&
+					contextType.IsAssignableFrom(oppositeType))
 				{
-					IHierarchyContextEnabled contextableElement = modelElement as IHierarchyContextEnabled;
-					if (contextableElement == null || contextableElement == element)
+					foreach (ElementLink link in roleInfo.GetElementLinks(mel, true)) // Exclude derived, these will also be played roles and be picked up.
 					{
-						continue;
+						IHierarchyContextLinkFilter filter = link as IHierarchyContextLinkFilter;
+						if (filter != null &&
+							!filter.ContinueHierachyWalking(roleInfo))
+						{
+							continue;
+						}
+						ModelElement oppositeMel = oppositeRole.GetRolePlayer(link);
+						if (oppositeMel == mel)
+						{
+							continue;
+						}
+						IHierarchyContextEnabled contextableElement = (IHierarchyContextEnabled)oppositeMel; // Cast must work, already checked at the type level
+						int decrement = contextableElement.HierarchyContextDecrementCount;
+						if (masterDictionary.Count == 1 && contextableElement.ForwardHierarchyContextTo != null)
+						{
+							decrement = 0;
+						}
+						GetRelatedContextableElementsHelper(contextableElement, masterDictionary, ref localDictionary, generations - decrement);
 					}
-					int decrement = contextableElement.HierarchyContextDecrementCount;
-					if (masterDictionary.Count == 1 && contextableElement.ForwardHierarchyContextTo != null)
-					{
-						decrement = 0;
-					}
-					GetRelatedContextableElementsHelper(contextableElement, masterDictionary, ref localDictionary, generations - decrement);
 				}
 			}
 		}
@@ -546,11 +564,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					diagram = diagrams[0];
 				}
 			}
-			if (diagram == null)
+			if (diagram == null && ((IORMToolServices)store).CanAddTransaction)
 			{
 				// We can get a partition with no diagram with an undo operation. The
 				// diagram will be removed, but the partition will remain.
-				Microsoft.VisualStudio.Modeling.UndoManager undoManager = store.CurrentContext.UndoManager;
 				using (Transaction t = store.TransactionManager.BeginTransaction("Create Context Diagram"))
 				{
 					diagram = new ORMDiagram(partition);

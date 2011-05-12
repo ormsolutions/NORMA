@@ -459,19 +459,19 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			/// <summary>
 			/// Defer to GetAutomatedElementDirective on the document. Implements
-			/// <see cref="IORMToolServices.GetAutomatedElementDirective"/>
+			/// <see cref="IFrameworkServices.GetAutomatedElementDirective"/>
 			/// </summary>
 			protected AutomatedElementDirective GetAutomatedElementDirective(ModelElement element)
 			{
 				return myServices.GetAutomatedElementDirective(element);
 			}
-			AutomatedElementDirective IORMToolServices.GetAutomatedElementDirective(ModelElement element)
+			AutomatedElementDirective IFrameworkServices.GetAutomatedElementDirective(ModelElement element)
 			{
 				return GetAutomatedElementDirective(element);
 			}
 			/// <summary>
 			/// Defer to AutomatedElementFilter on the document. Implements
-			/// <see cref="IORMToolServices.AutomatedElementFilter"/>
+			/// <see cref="IFrameworkServices.AutomatedElementFilter"/>
 			/// </summary>
 			protected event AutomatedElementFilterCallback AutomatedElementFilter
 			{
@@ -484,7 +484,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					myServices.AutomatedElementFilter -= value;
 				}
 			}
-			event AutomatedElementFilterCallback IORMToolServices.AutomatedElementFilter
+			event AutomatedElementFilterCallback IFrameworkServices.AutomatedElementFilter
 			{
 				add
 				{
@@ -587,7 +587,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			private delegate bool TransactionItemChangesPartitionDelegate(TransactionItem @this, Partition partition);
 #endif
 			/// <summary>
-			/// Microsoft.VisualStudio.Modeling.UndoManager has a TopmostUndableTransaction property,
+			/// Microsoft.VisualStudio.Modeling.UndoManager has a TopmostUndoableTransaction property,
 			/// but not a TopmostRedoableTransaction property. Generate a dynamic method to emulate this functionality.
 			/// </summary>
 			private static readonly TransactionItemChangesPartitionDelegate TransactionItemChangesPartition = CreateTransactionItemChangesPartitionDelegate();
@@ -1346,7 +1346,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		private IPropertyProviderService myPropertyProviderService;
 		private TypedDomainModelProviderCache myTypedDomainModelProviderCache;
 		private IORMModelErrorActivationService myModelErrorActivatorService;
-		private Delegate myAutomedElementFilter;
+		private AutomatedElementFilterService myAutomatedElementFilterService;
 
 		/// <summary>
 		/// Retrieve the <see cref="IPropertyProviderService"/> for this document.
@@ -1763,49 +1763,46 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 		}
 		/// <summary>
-		/// Implements <see cref="IORMToolServices.GetAutomatedElementDirective"/>
+		/// Implements <see cref="IFrameworkServices.GetAutomatedElementDirective"/>
 		/// </summary>
 		protected AutomatedElementDirective GetAutomatedElementDirective(ModelElement element)
 		{
-			AutomatedElementDirective retVal = AutomatedElementDirective.None;
-			Delegate filterList = myAutomedElementFilter;
-			if (filterList != null)
+			AutomatedElementFilterService impl = myAutomatedElementFilterService;
+			if (null == impl)
 			{
-				Delegate[] targets = filterList.GetInvocationList();
-				for (int i = 0; i < targets.Length; ++i)
-				{
-					switch (((AutomatedElementFilterCallback)targets[i])(element))
-					{
-						case AutomatedElementDirective.NeverIgnore:
-							// Strongest form, return immediately
-							return AutomatedElementDirective.NeverIgnore;
-						case AutomatedElementDirective.Ignore:
-							retVal = AutomatedElementDirective.Ignore;
-							break;
-					}
-				}
+				myAutomatedElementFilterService = impl = new AutomatedElementFilterService(this);
 			}
-			return retVal;
+			return impl.GetAutomatedElementDirective(element);
 		}
-		AutomatedElementDirective IORMToolServices.GetAutomatedElementDirective(ModelElement element)
+		AutomatedElementDirective IFrameworkServices.GetAutomatedElementDirective(ModelElement element)
 		{
 			return GetAutomatedElementDirective(element);
 		}
 		/// <summary>
-		/// Implements <see cref="IORMToolServices.AutomatedElementFilter"/>
+		/// Implements <see cref="IFrameworkServices.AutomatedElementFilter"/>
 		/// </summary>
 		protected event AutomatedElementFilterCallback AutomatedElementFilter
 		{
 			add
 			{
-				myAutomedElementFilter = Delegate.Combine(myAutomedElementFilter, value);
+				AutomatedElementFilterService impl = myAutomatedElementFilterService;
+				if (null == impl)
+				{
+					myAutomatedElementFilterService = impl = new AutomatedElementFilterService(this);
+				}
+				impl.AutomatedElementFilter += value;
 			}
 			remove
 			{
-				myAutomedElementFilter = Delegate.Remove(myAutomedElementFilter, value);
+				AutomatedElementFilterService impl = myAutomatedElementFilterService;
+				if (null == impl)
+				{
+					myAutomatedElementFilterService = impl = new AutomatedElementFilterService(this);
+				}
+				impl.AutomatedElementFilter -= value;
 			}
 		}
-		event AutomatedElementFilterCallback IORMToolServices.AutomatedElementFilter
+		event AutomatedElementFilterCallback IFrameworkServices.AutomatedElementFilter
 		{
 			add
 			{

@@ -28,6 +28,7 @@
 			<se:OmitClass Class="ExternalConstraintLink"/>
 			<se:OmitClass Class="ValueRangeLink"/>
 			<se:OmitClass Class="RolePlayerLink"/>
+			<se:OmitClass Class="RolePlayerProxyLink"/>
 			<se:OmitClass Class="SubtypeLink"/>
 			<se:OmitClass Class="ModelNoteLink"/>
 			<se:OmitClass Class="LinkConnectorShape"/>

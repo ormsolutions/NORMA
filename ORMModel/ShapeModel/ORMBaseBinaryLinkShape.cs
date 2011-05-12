@@ -14,14 +14,6 @@
 \**************************************************************************/
 #endregion
 
-// Defining LINKS_ALWAYS_CONNECT allows multiple links from a single ShapeA to different instances of ShapeB.
-// In this case, the 'anchor' end is always connected if an opposite shape is available.
-// The current behavior is to only create a link if, given an instance of ShapeA, the closest candidate
-// ShapeB instance is not closer to a different instance of ShapeA.
-// Note that LINKS_ALWAYS_CONNECT is also used in other files, so you should turn this on
-// in the project properties if you want to experiment. This is here for reference only.
-//#define LINKS_ALWAYS_CONNECT
-
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -42,9 +34,6 @@ using ORMSolutions.ORMArchitect.Framework;
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	public partial class ORMBaseBinaryLinkShape : IReconfigureableLink, IConfigureAsChildShape, IInvalidateDisplay
-#if LINKS_ALWAYS_CONNECT
-		, IBinaryLinkAnchor
-		#endif //LINKS_ALWAYS_CONNECT
 	{
 		#region SubtypeLink Hack
 		/// <summary>
@@ -61,23 +50,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		}
 		#endregion // SubtypeLink Hack
 		#region MultipleShapesSupport
-		#if LINKS_ALWAYS_CONNECT
-		/// <summary>
-		/// Gets whether this link is anchored to its ToShape or FromShape
-		/// </summary>
-		protected abstract BinaryLinkAnchor Anchor { get;}
-		BinaryLinkAnchor IBinaryLinkAnchor.Anchor
-		{
-			get
-			{
-				return Anchor;
-			}
-		}
-		#endif //LINKS_ALWAYS_CONNECT
 		/// <summary>See <see cref="ShapeElement.FixUpChildShapes"/>.</summary>
 		public override ShapeElement FixUpChildShapes(ModelElement childElement)
 		{
-			return MultiShapeUtility.FixUpChildShapes(this, childElement);
+			return MultiShapeUtility.FixUpChildShapes(this, childElement, null);
 		}
 		void IReconfigureableLink.Reconfigure(ShapeElement discludedShape)
 		{
@@ -145,7 +121,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			ConfiguringAsChildOf(parentShape, createdDuringViewFixup);
 		}
-
 		#endregion Customize appearance
 		#region Auto-invalidate tracking, IInvalidateRequired implementation
 		/// <summary>
@@ -381,7 +356,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <summary>See <see cref="ShapeElement.FixUpChildShapes"/>.</summary>
 		public override ShapeElement FixUpChildShapes(ModelElement childElement)
 		{
-			return MultiShapeUtility.FixUpChildShapes(this, childElement);
+			return MultiShapeUtility.FixUpChildShapes(this, childElement, null);
 		}
 		#endregion //MultipleShapesSupport
 		/// <summary>

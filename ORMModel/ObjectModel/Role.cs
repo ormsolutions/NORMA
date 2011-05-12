@@ -363,6 +363,29 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 
+		/// <summary>
+		/// Gets the single role internal <see cref="UniquenessConstraint"/>
+		/// associated with this <see cref="Role"/>, if any.
+		/// </summary>
+		public UniquenessConstraint SingleRoleUniquenessConstraint
+		{
+			get
+			{
+				LinkedElementCollection<ConstraintRoleSequence> constraintRoleSequences = ConstraintRoleSequenceCollection;
+				int roleSequenceCount = constraintRoleSequences.Count;
+				for (int i = 0; i < roleSequenceCount; ++i)
+				{
+					ConstraintRoleSequence roleSequence = constraintRoleSequences[i];
+					IConstraint constraint = roleSequence.Constraint;
+					if (constraint.ConstraintType == ConstraintType.InternalUniqueness && roleSequence.RoleCollection.Count == 1)
+					{
+						return (UniquenessConstraint)roleSequence;
+					}
+				}
+				return null;
+			}
+		}
+
 		private bool GetIsMandatoryValue()
 		{
 			return SimpleMandatoryConstraint != null;
@@ -837,23 +860,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 				if (newMultiplicity != RoleMultiplicity.Unspecified && newMultiplicity != RoleMultiplicity.Indeterminate)
 				{
-					Role role = e.ModelElement as Role;
-					FactType factType = role.FactType;
-					LinkedElementCollection<RoleBase> factRoles = factType.RoleCollection;
-					if (factType == null || factRoles.Count != 2)
+					Role testRole = (Role)e.ModelElement;
+					FactType factType = testRole.FactType;
+					LinkedElementCollection<RoleBase> factRoles;
+					Role role = null;
+					if (factType.ImpliedByObjectification != null)
+					{
+						role = testRole.OppositeRole.Role; // Jumps from proxy to role in objectified fact type
+						factType = role.FactType;
+						factRoles = factType.RoleCollection;
+					}
+					else
+					{
+						factRoles = factType.RoleCollection;
+					}
+					if (factType == null || factRoles.Count != 2 || FactType.GetUnaryRoleIndex(factRoles).HasValue)
 					{
 						return; // Ignore the request
 					}
 
-					// We implemented this backwards, so switch to the opposite role
-					Role testRole = factRoles[0].Role;
-					if (role == testRole)
+					// We implemented this backwards, so switch to the opposite role.
+					// Switch is already done for link fact type case.
+					if (role == null)
 					{
-						role = factRoles[1].Role;
-					}
-					else
-					{
-						role = testRole;
+						role = factRoles[0].Role;
+						if (role == testRole)
+						{
+							role = factRoles[1].Role;
+						}
 					}
 
 					// First take care of the mandatory setting. We

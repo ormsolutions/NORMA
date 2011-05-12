@@ -334,6 +334,11 @@
 				<ConnectorMoniker Name="ORMBaseBinaryLinkShape"/>
 			</BaseConnector>
 		</Connector>
+		<Connector Name="RolePlayerProxyLink" Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel" Id="27D3440F-6CA0-4135-9A1C-2D3259E4A7FF">
+			<BaseConnector>
+				<ConnectorMoniker Name="RolePlayerLink"/>
+			</BaseConnector>
+		</Connector>
 		<Connector Name="ExternalConstraintLink" Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel" Id="8815E6D8-238B-422C-A4B3-29FDC8DE9EA5">
 			<BaseConnector>
 				<ConnectorMoniker Name="ORMBaseBinaryLinkShape"/>
@@ -473,6 +478,10 @@
 		<ConnectorMaps>
 			<ConnectorMap>
 				<ConnectorMoniker Name="RolePlayerLink"/>
+				<DomainRelationshipMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/ObjectTypePlaysRole"/>
+			</ConnectorMap>
+			<ConnectorMap>
+				<ConnectorMoniker Name="RolePlayerProxyLink"/>
 				<DomainRelationshipMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/ObjectTypePlaysRole"/>
 			</ConnectorMap>
 			<ConnectorMap>

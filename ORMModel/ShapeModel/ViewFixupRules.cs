@@ -614,30 +614,38 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			// Make sure the object type, fact type, and link
 			// are displayed on the diagram
-			FactType associatedFact;
+			FactType associatedFactType;
+			FactType associatedProxyFactType;
 			ObjectType rolePlayer;
+			Role role;
+			RoleProxy proxy;
 			ORMModel model;
 			if (!link.IsDeleted &&
-				null != (associatedFact = link.PlayedRole.FactType) &&
-				null == associatedFact.ImpliedByObjectification &&
+				null != (associatedFactType = (role = link.PlayedRole).FactType) &&
 				null != (model = (rolePlayer = link.RolePlayer).Model))
 			{
-				FactType nestedFact;
-				if (FactTypeShape.ShouldDrawObjectification(nestedFact = rolePlayer.NestedFactType))
+				proxy = role.Proxy;
+				associatedProxyFactType = (proxy != null) ? proxy.FactType : null;
+				FactType nestedFactType;
+				if (FactTypeShape.ShouldDrawObjectification(nestedFactType = rolePlayer.NestedFactType))
 				{
-					if (AllowElementFixup(nestedFact))
+					if (AllowElementFixup(nestedFactType))
 					{
-						Diagram.FixUpDiagram(model, nestedFact);
+						Diagram.FixUpDiagram(model, nestedFactType);
 					}
-					Diagram.FixUpDiagram(nestedFact, rolePlayer);
+					Diagram.FixUpDiagram(nestedFactType, rolePlayer);
 				}
 				else if (AllowElementFixup(rolePlayer))
 				{
 					Diagram.FixUpDiagram(model, rolePlayer);
 				}
-				if (AllowElementFixup(associatedFact))
+				if (AllowElementFixup(associatedFactType))
 				{
-					Diagram.FixUpDiagram(model, associatedFact);
+					Diagram.FixUpDiagram(model, associatedFactType);
+				}
+				if (associatedProxyFactType != null && AllowElementFixup(associatedProxyFactType))
+				{
+					Diagram.FixUpDiagram(model, associatedProxyFactType);
 				}
 
 				object AllowMultipleShapes;
@@ -654,9 +662,34 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					if ((diagram = presentationViewsSubject.Presentation as ORMDiagram) != null)
 					{
 						//add a link shape for each fact type shape on the diagram for the played role
-						foreach (FactTypeShape shapeElement in MultiShapeUtility.FindAllShapesForElement<FactTypeShape>(diagram, associatedFact))
+						foreach (FactTypeShape shapeElement in MultiShapeUtility.FindAllShapesForElement<FactTypeShape>(diagram, associatedFactType))
 						{
-							diagram.FixUpLocalDiagram(link);
+							try
+							{
+								topLevelContextInfo[ORMDiagram.CreatingRolePlayerLinkKey] = null; // Stop fixupLocalDiagram from trying both link types
+								diagram.FixUpLocalDiagram(link);
+								break;
+							}
+							finally
+							{
+								topLevelContextInfo.Remove(ORMDiagram.CreatingRolePlayerLinkKey);
+							}
+						}
+						if (associatedProxyFactType != null)
+						{
+							foreach (FactTypeShape shapeElement in MultiShapeUtility.FindAllShapesForElement<FactTypeShape>(diagram, associatedProxyFactType))
+							{
+								try
+								{
+									topLevelContextInfo[ORMDiagram.CreatingRolePlayerProxyLinkKey] = null;
+									diagram.FixUpLocalDiagram(link);
+									break;
+								}
+								finally
+								{
+									topLevelContextInfo.Remove(ORMDiagram.CreatingRolePlayerProxyLinkKey);
+								}
+							}
 						}
 					}
 				}

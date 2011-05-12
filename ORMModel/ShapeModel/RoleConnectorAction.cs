@@ -178,9 +178,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				RoleConnectAction action = diagram.RoleConnectAction;
 				action.myRoleReorderConnector = false;
 				ObjectType objectType;
-				Role sourceRole = action.mySourceRole;
-				Role role;
-				Role targetRole;
+				RoleBase sourceRole = action.mySourceRole;
+				RoleBase role;
+				RoleBase targetRole;
 				Objectification objectification;
 				// Reorder roles in the same shape
 				if (sourceRole != null &&
@@ -195,7 +195,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					(null == (objectification = objectType.Objectification) || !objectification.IsImplied)) ||
 					(null != (objectType = action.mySourceObjectType) && null != (role = action.myLastMouseMoveRole)))
 				{
-					return role.FactType != objectType.NestedFactType;
+					return role.Role.FactType != objectType.NestedFactType;
 				}
 				// Allow the user to drag out an existing role player from a
 				// role on a shape that is not connected.
@@ -235,9 +235,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				ORMDiagram diagram = (ORMDiagram)sourceShapeElement.Diagram;
 				RoleConnectAction action = diagram.RoleConnectAction;
 				ObjectType objectType;
-				Role sourceRole = action.mySourceRole;
-				Role role;
-				Role targetRole;
+				RoleBase sourceRole = action.mySourceRole;
+				RoleBase roleBase;
+				RoleBase targetRole;
 				FactTypeShape factTypeShape;
 				if (sourceRole != null &&
 					sourceShapeElement == targetShapeElement &&
@@ -248,10 +248,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					LinkedElementCollection<RoleBase> displayedRoles = factTypeShape.GetEditableDisplayRoleOrder();
 					displayedRoles.Move(displayedRoles.IndexOf(sourceRole), displayedRoles.IndexOf(targetRole));
 				}
-				else if ((null != (role = sourceRole) && null != (objectType = ObjectTypeFromShape(targetShapeElement))) ||
-					(null != (objectType = action.mySourceObjectType) && null != (role = action.myLastMouseMoveRole)))
+				else if ((null != (roleBase = sourceRole) && null != (objectType = ObjectTypeFromShape(targetShapeElement))) ||
+					(null != (objectType = action.mySourceObjectType) && null != (roleBase = action.myLastMouseMoveRole)))
 				{
 					// Don't trigger a change if none is indicated. Turn this into a noop
+					Role role = roleBase.Role;
 					if (role.RolePlayer != objectType)
 					{
 						role.RolePlayer = objectType;
@@ -260,7 +261,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				else if (targetShapeElement == diagram &&
 					action.mySourceRoleMissingConnector)
 				{
-					diagram.PlaceORMElementOnDiagram(null, role.RolePlayer, paintFeedbackArgs.TargetFeedbackBounds.Location, ORMPlacementOption.AllowMultipleShapes, null, null);
+					diagram.PlaceORMElementOnDiagram(null, roleBase.Role.RolePlayer, paintFeedbackArgs.TargetFeedbackBounds.Location, ORMPlacementOption.AllowMultipleShapes, null, null);
 				}
 			}
 			/// <summary>
@@ -278,9 +279,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		private static Cursor myAllowedReorderCursor = new Cursor(typeof(RoleConnectAction), "ConnectRoleReorderAllowed.cur");
 		private static Cursor mySearchingCursor = new Cursor(typeof(RoleConnectAction), "ConnectRoleSearching.cur");
 		private static readonly ConnectionType[] EmptyConnectionTypes = {};
-		private Role myLastMouseDownRole;
-		private Role myLastMouseMoveRole;
-		private Role mySourceRole;
+		private RoleBase myLastMouseDownRole;
+		private RoleBase myLastMouseMoveRole;
+		private RoleBase mySourceRole;
 		private bool mySourceRoleMissingConnector;
 		private bool myRoleReorderConnector;
 		private ObjectType mySourceObjectType;
@@ -338,10 +339,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			base.OnClicked(e);
 			if (mySourceObjectType == null && mySourceRole == null)
 			{
-				Role role = myLastMouseDownRole;
-				if (role != null)
+				RoleBase roleBase = myLastMouseDownRole;
+				if (roleBase != null)
 				{
-					mySourceRole = role;
+					Role role = roleBase.Role;
+					mySourceRole = roleBase;
 					FactTypeShape factShape;
 					if (null != role.RolePlayer &&
 						null != (factShape = MouseDownHitShape as FactTypeShape))
@@ -479,15 +481,16 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		/// <param name="e"></param>
 		/// <returns>Hit role, or null</returns>
-		private static Role HitRole(DiagramMouseEventArgs e)
+		private static RoleBase HitRole(DiagramMouseEventArgs e)
 		{
-			Role retVal = null;
+			RoleBase retVal = null;
 			DiagramItem item = e.DiagramHitTestInfo.HitDiagramItem;
 			if (item != null)
 			{
 				foreach (ModelElement element in item.RepresentedElements)
 				{
-					retVal = element as Role;
+					retVal = element as RoleBase;
+					break;
 				}
 			}
 			return retVal;

@@ -101,4 +101,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <value>The place priority.</value>
 		HierarchyContextPlacementPriority HierarchyContextPlacementPriority { get;}
 	}
+	/// <summary>
+	/// Implement this interface on an <see cref="ElementLink"/> connected to elements that
+	/// implement <see cref="IHierarchyContextEnabled"/> to limit hierarchy navigation across
+	/// a link.
+	/// </summary>
+	public interface IHierarchyContextLinkFilter
+	{
+		/// <summary>
+		/// Determine if hierarchy navigation should continue from a given element.
+		/// </summary>
+		/// <param name="fromRoleInfo">The domain role the navigation is coming from.</param>
+		/// <returns><see langword="true"/> to continue navigation.</returns>
+		bool ContinueHierachyWalking(DomainRoleInfo fromRoleInfo);
+	}
 }

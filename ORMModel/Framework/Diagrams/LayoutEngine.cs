@@ -1176,7 +1176,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 
 		/// <summary>
 		/// Constructor for <see cref="LayoutShape"/>.  Sets the Pinned and Shape properties, then determines all of the <see cref="NodeShape"/>s that it
-		/// connects to.  Those <see cref="NodeShape"/>s will then be converted to <see cref="LayoutShape"/>s via <see cref="ResolveReferences"/>.
+		/// connects to.  Those <see cref="NodeShape"/>s will then be converted to <see cref="LayoutShape"/>s via <see cref="ResolveReferences(LayoutShapeList)"/>.
 		/// </summary>
 		/// <param name="shape"></param>
 		/// <param name="pinned"></param>
@@ -1207,29 +1207,58 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 		/// <param name="allShapes">An instance of <see cref="LayoutShapeList"/></param>
 		public void ResolveReferences(LayoutShapeList allShapes)
 		{
-			if (RelatedShapes.Count > 0)
+			if (RelatedShapes.Count != 0)
 			{
 				return;
 			}
-
-			foreach (BinaryLinkShape binaryLink in MultiShapeUtility.GetEffectiveAttachedLinkShapes<BinaryLinkShape>(Shape))
+			ResolveReferencesHelper(allShapes, Shape, null);
+			UnplacedCount = Count = RelatedShapes.Count;
+		}
+		/// <summary>
+		/// Helper method for ResolveReferences to handle links attached to links
+		/// </summary>
+		private void ResolveReferencesHelper(LayoutShapeList allShapes, NodeShape testShape, BinaryLinkShape discludeLinkShape)
+		{
+			ShapeElement linkedShape;
+			BinaryLinkShape attachedToLinkShape;
+			NodeShape attachedToNodeShape;
+			foreach (BinaryLinkShape binaryLink in MultiShapeUtility.GetEffectiveAttachedLinkShapes<BinaryLinkShape>(testShape))
 			{
-				NodeShape relation = MultiShapeUtility.ResolvePrimaryShape(binaryLink.FromShape) as NodeShape;
-				if (relation == Shape)
+				if (discludeLinkShape == binaryLink)
 				{
-					relation = MultiShapeUtility.ResolvePrimaryShape(binaryLink.ToShape) as NodeShape;
+					continue;
 				}
-				LayoutShape relative;
-				if (relation != null &&
-					allShapes.TryGetValue(relation, out relative) &&
-					!RelatedShapes.Contains(relative))
+				for (int i = 0; i < 2; ++i)
 				{
-					RelatedShapes.Add(relative);
+					linkedShape = MultiShapeUtility.ResolvePrimaryShape(i == 0 ? binaryLink.FromShape : binaryLink.ToShape);
+					if (linkedShape != Shape)
+					{
+						if (null != (attachedToLinkShape = linkedShape as BinaryLinkShape))
+						{
+							if (Shape != (attachedToNodeShape = attachedToLinkShape.FromShape))
+							{
+								ResolveReferencesHelper(allShapes, attachedToNodeShape, attachedToLinkShape);
+							}
+							if (Shape != (attachedToNodeShape = attachedToLinkShape.ToShape))
+							{
+								ResolveReferencesHelper(allShapes, attachedToNodeShape, attachedToLinkShape);
+							}
+						}
+						else if (null != (attachedToNodeShape = linkedShape as NodeShape))
+						{
+							if (attachedToNodeShape != Shape)
+							{
+								LayoutShape relative;
+								if (allShapes.TryGetValue(attachedToNodeShape, out relative) &&
+									!RelatedShapes.Contains(relative))
+								{
+									RelatedShapes.Add(relative);
+								}
+							}
+						}
+					}
 				}
 			}
-
-			Count = RelatedShapes.Count;
-			UnplacedCount = Count;
 		}
 
 		/// <summary>

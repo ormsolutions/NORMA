@@ -124,14 +124,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get
 			{
-				FactType resolvedFact = this;
+				FactType resolvedFactType = this;
 				Objectification objectification;
-				if (null != (objectification = ImpliedByObjectification))
+				if (null != (objectification = ImpliedByObjectification) &&
+					objectification.IsImplied)
 				{
-					resolvedFact = objectification.NestedFactType;
+					// Don't drag out implied fact types unless there
+					// is an objectifying shape to attach to.
+					//resolvedFactType = objectification.NestedFactType;
 				}
 				DataObject retVal = new DataObject();
-				retVal.SetData(typeof(FactType), resolvedFact);
+				retVal.SetData(typeof(FactType), resolvedFactType);
 				return retVal;
 			}
 		}

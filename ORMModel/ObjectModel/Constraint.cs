@@ -7723,7 +7723,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							RoleBase testRole = factRoles[i];
 							if (role != testRole)
 							{
-								targetRolePlayer = ((Role)testRole).RolePlayer;
+								targetRolePlayer = testRole.Role.RolePlayer;
 								break;
 							}
 						}

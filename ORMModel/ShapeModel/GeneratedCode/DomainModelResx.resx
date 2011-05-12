@@ -485,6 +485,14 @@
     <value>Role Player Link</value>
     <comment>DisplayName for DomainClass &apos;RolePlayerLink&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RolePlayerProxyLink.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.RolePlayerProxyLink</value>
+    <comment>Description for DomainClass &apos;RolePlayerProxyLink&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RolePlayerProxyLink.DisplayName" xml:space="preserve">
+    <value>Role Player Proxy Link</value>
+    <comment>DisplayName for DomainClass &apos;RolePlayerProxyLink&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink</value>
     <comment>Description for DomainClass &apos;ExternalConstraintLink&apos;</comment>

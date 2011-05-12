@@ -695,6 +695,13 @@
 		</DomainClass>
 
 		<DomainClass Name="RoleProxy" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="FF552152-BD43-4731-8EDA-675E68D6C5DB" DisplayName="RoleProxy" Description="">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;RoleProxy, Design.RoleProxyTypeDescriptor&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
 			<BaseClass>
 				<DomainClassMoniker Name="RoleBase"/>
 			</BaseClass>

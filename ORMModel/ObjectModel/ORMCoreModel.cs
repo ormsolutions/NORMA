@@ -20,19 +20,19 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Collections.ObjectModel;
 using System.Reflection;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using ORMSolutions.ORMArchitect.Framework;
 using ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid;
-using System.Collections.ObjectModel;
 using ORMSolutions.ORMArchitect.Framework.Diagnostics;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	[VerbalizationTargetProvider("VerbalizationTargets")]
 	[VerbalizationSnippetsProvider("VerbalizationSnippets")]
-	public partial class ORMCoreDomainModel : IModelingEventSubscriber, ISurveyNodeProvider, INotifyCultureChange, ICopyClosureIntegrationListener
+	public partial class ORMCoreDomainModel : IModelingEventSubscriber, ISurveyNodeProvider, INotifyCultureChange, ICopyClosureIntegrationListener, IPermanentAutomatedElementFilterProvider
 	{
 		#region Static Survey Data
 		private static readonly Type[] SurveyErrorQuestionTypes = new Type[] { typeof(SurveyErrorState) };
@@ -1281,6 +1281,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			EndCopyClosureIntegration(closureTransaction);
 		}
 		#endregion // ICopyClosureIntegrationListener Implementation
+		#region IPermanentAutomatedElementFilterProvider Implementation
+		/// <summary>
+		/// Implements <see cref="IPermanentAutomatedElementFilterProvider.GetAutomatedElementFilters"/>
+		/// </summary>
+		protected IEnumerable<AutomatedElementFilterCallback> GetAutomatedElementFilters()
+		{
+			yield return Objectification.AutomateImpliedFactTypes;
+		}
+		IEnumerable<AutomatedElementFilterCallback> IPermanentAutomatedElementFilterProvider.GetAutomatedElementFilters()
+		{
+			return GetAutomatedElementFilters();
+		}
+		#endregion // IPermanentAutomatedElementFilterProvider Implementation
 	}
 	#region IModelErrorOwner Implementations
 	partial class FactTypeHasFactTypeInstance : IModelErrorOwnerPath

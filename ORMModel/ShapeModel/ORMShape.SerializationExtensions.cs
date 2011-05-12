@@ -65,6 +65,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			retVal[dataDir.FindDomainClass(ExternalConstraintLink.DomainClassId)] = null;
 			retVal[dataDir.FindDomainClass(ValueRangeLink.DomainClassId)] = null;
 			retVal[dataDir.FindDomainClass(RolePlayerLink.DomainClassId)] = null;
+			retVal[dataDir.FindDomainClass(RolePlayerProxyLink.DomainClassId)] = null;
 			retVal[dataDir.FindDomainClass(SubtypeLink.DomainClassId)] = null;
 			retVal[dataDir.FindDomainClass(ModelNoteLink.DomainClassId)] = null;
 			retVal[dataDir.FindDomainClass(LinkConnectorShape.DomainClassId)] = null;

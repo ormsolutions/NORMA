@@ -325,7 +325,16 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole)
 			{
-				global::ORMSolutions.ORMArchitect.Core.ShapeModel.RolePlayerLink newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.RolePlayerLink(this.Partition);
+				// Multiple mappings have been defined for the class ObjectTypePlaysRole.
+				// Either implement a method as described below, or remove the multiple mappings from the DSL definition.
+				//
+				// Method:
+				// private DslDiagrams::LinkShape CreateConnectorForObjectTypePlaysRole(ObjectTypePlaysRole newElement)
+				// {
+				// }
+				// must be implemented in a partial class of ORMDiagramBase.  Given an instance of ObjectTypePlaysRole,
+				// the method should return a new shape or connector instance that should be associated with this element.  If no shape or connector should be created, the method should return null.
+				DslDiagrams::LinkShape newShape = CreateConnectorForObjectTypePlaysRole((global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole)element);
 				return newShape;
 			}
 			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint)

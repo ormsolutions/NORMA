@@ -566,14 +566,33 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 			LinkedElementCollection<RoleBase> roleCollection = factType.RoleCollection;
 			int roleCount = roleCollection.Count;
+			bool impliedFactType = factType.ImpliedByObjectification != null;
 			for (int i = 0; i < roleCount; ++i)
 			{
-				Role role = roleCollection[i].Role;
+				RoleBase roleBase = roleCollection[i];
+				Role role = roleBase.Role;
 
 				if (!duplicateShape)
 				{
 					// Pick up role players
-					FixupRelatedLinks(DomainRoleInfo.GetElementLinks<ElementLink>(role, ObjectTypePlaysRole.PlayedRoleDomainRoleId));
+					ReadOnlyCollection<ElementLink> rolePlayerLinks = DomainRoleInfo.GetElementLinks<ElementLink>(role, ObjectTypePlaysRole.PlayedRoleDomainRoleId);
+					if (roleBase != role)
+					{
+						Dictionary<object, object> topLevelContextInfo = role.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+						try
+						{
+							topLevelContextInfo[ORMDiagram.CreatingRolePlayerProxyLinkKey] = null;
+							FixupRelatedLinks(rolePlayerLinks);
+						}
+						finally
+						{
+							topLevelContextInfo.Remove(ORMDiagram.CreatingRolePlayerProxyLinkKey);
+						}
+					}
+					else
+					{
+						FixupRelatedLinks(rolePlayerLinks);
+					}
 
 					// Pick up attached constraints
 					FixupRelatedLinks(DomainRoleInfo.GetElementLinks<ElementLink>(role, FactSetConstraint.FactTypeDomainRoleId));
@@ -1028,7 +1047,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				TransactionManager transactionManager = store.TransactionManager;
 				if (activeDiagramView == null)
 				{
-					if (!(transactionManager.InTransaction && AutomatedElementDirective.NeverIgnore == ((IORMToolServices)store).GetAutomatedElementDirective(element)))
+					if (!(transactionManager.InTransaction && AutomatedElementDirective.NeverIgnore == ((IFrameworkServices)store).GetAutomatedElementDirective(element)))
 					{
 						return false;
 					}
@@ -1080,7 +1099,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 #if !SHOW_IMPLIED_SHAPES
 				else if (factType.ImpliedByObjectification != null)
 				{
-					return false;
+					return true;
 				}
 #endif // !SHOW_IMPLIED_SHAPES
 				return ShouldDisplayPartOfReferenceMode(factType);
@@ -1103,9 +1122,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				}
 #else
 				FactType fact = objectTypePlaysRole.PlayedRole.FactType;
-				if (fact is SubtypeFact || fact.ImpliedByObjectification != null)
+				if (fact is SubtypeFact)
 				{
 					return false;
+				}
+				else if (fact.ImpliedByObjectification != null)
+				{
+					return true;
 				}
 #endif
 				return ShouldDisplayPartOfReferenceMode(objectTypePlaysRole);
@@ -1425,7 +1448,48 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <summary>See <see cref="ShapeElement.FixUpChildShapes"/>.</summary>
 		public override ShapeElement FixUpChildShapes(ModelElement childElement)
 		{
-			return MultiShapeUtility.FixUpChildShapes(this, childElement);
+			ShapeElement retVal = null;
+			ObjectTypePlaysRole rolePlayerLink = childElement as ObjectTypePlaysRole;
+			if (null != rolePlayerLink)
+			{
+				// Add custom handling for role player link, which is the only backing element
+				// that can have link shapes of different types displayed simultaneously for the
+				// same backing element.
+				Dictionary<object, object> contextInfo = childElement.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+				object key = ORMDiagram.CreatingRolePlayerProxyLinkKey;
+				if (contextInfo.ContainsKey(key))
+				{
+					// Limit to proxy role player link fixup only
+					if (rolePlayerLink.PlayedRole.Proxy != null)
+					{
+						retVal = MultiShapeUtility.FixUpChildShapes(this, childElement, typeof(RolePlayerProxyLink));
+					}
+				}
+				else
+				{
+					retVal = MultiShapeUtility.FixUpChildShapes(this, childElement, typeof(RolePlayerLink));
+					if (rolePlayerLink.PlayedRole.Proxy != null &&
+						!contextInfo.ContainsKey(ORMDiagram.CreatingRolePlayerLinkKey))
+					{
+						ShapeElement alternateRetVal;
+						try
+						{
+							contextInfo[key] = null;
+							alternateRetVal = MultiShapeUtility.FixUpChildShapes(this, childElement, typeof(RolePlayerProxyLink));
+							retVal = retVal ?? alternateRetVal;
+						}
+						finally
+						{
+							contextInfo.Remove(key);
+						}
+					}
+				}
+			}
+			else
+			{
+				retVal = MultiShapeUtility.FixUpChildShapes(this, childElement, null);
+			}
+			return retVal;
 		}
 		#endregion // View Fixup Methods
 		#region Customize appearance
@@ -3290,11 +3354,26 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 	}
 	#endregion // ORMPlacementOption enum
 	#region ORMDiagramBase class
-	public partial class ORMDiagramBase
+	partial class ORMDiagramBase
 	{
+		/// <summary>
+		/// Set during view fixup to create a <see cref="RolePlayerProxyLink"/> instead
+		/// of a <see cref="RolePlayerLink"/> when binding connectors to an <see cref="ObjectTypePlaysRole"/>
+		/// relationship.
+		/// </summary>
+		public static readonly object CreatingRolePlayerProxyLinkKey = new object();
+		/// <summary>
+		/// Set during view fixup to always create a <see cref="RolePlayerLink"/> and not
+		/// attempt to create any <see cref="RolePlayerProxyLink"/> for a role player.
+		/// </summary>
+		public static readonly object CreatingRolePlayerLinkKey = new object();
 		private NodeShape CreateShapeForObjectType(ObjectType newElement)
 		{
 			return FactTypeShape.ShouldDrawObjectification(newElement.NestedFactType) ? (NodeShape)new ObjectifiedFactTypeNameShape(this.Partition) : new ObjectTypeShape(this.Partition);
+		}
+		private LinkShape CreateConnectorForObjectTypePlaysRole(ObjectTypePlaysRole newElement)
+		{
+			return this.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.ContainsKey(CreatingRolePlayerProxyLinkKey) ? (LinkShape)new RolePlayerProxyLink(this.Partition) : new RolePlayerLink(this.Partition);
 		}
 	}
 	#endregion // ORMDiagramBase class

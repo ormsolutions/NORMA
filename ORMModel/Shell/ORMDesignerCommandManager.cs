@@ -622,17 +622,25 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			if (null != (factType = element as FactType) ||
 				(null != (readingOrder = element as ReadingOrder) && null != (factType = readingOrder.FactType)))
 			{
-				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteFactType | ORMDesignerCommands.DeleteAny;
-				Objectification objectification = factType.Objectification;
-				if (objectification == null || objectification.IsImplied)
+				visibleCommands = ORMDesignerCommands.DeleteFactType | ORMDesignerCommands.DeleteAny;
+				if (factType.ImpliedByObjectification == null)
 				{
-					visibleCommands |= ORMDesignerCommands.ObjectifyFactType;
-					enabledCommands |= ORMDesignerCommands.ObjectifyFactType;
+					enabledCommands = visibleCommands;
+					Objectification objectification = factType.Objectification;
+					if (objectification == null || objectification.IsImplied)
+					{
+						visibleCommands |= ORMDesignerCommands.ObjectifyFactType;
+						enabledCommands |= ORMDesignerCommands.ObjectifyFactType;
+					}
+					else
+					{
+						visibleCommands |= ORMDesignerCommands.UnobjectifyFactType;
+						enabledCommands |= ORMDesignerCommands.UnobjectifyFactType;
+					}
 				}
 				else
 				{
-					visibleCommands |= ORMDesignerCommands.UnobjectifyFactType;
-					enabledCommands |= ORMDesignerCommands.UnobjectifyFactType;
+					toleratedCommands |= visibleCommands;
 				}
 				if (presentationElement is FactTypeShape ||
 					(readingOrder != null && presentationElement is ReadingShape))
@@ -688,7 +696,31 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			else if (null != (setConstraint = element as SetConstraint) && setConstraint.Constraint.ConstraintIsInternal)
 			{
-				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteConstraint | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.EditRoleSequenceConstraint;
+				visibleCommands = ORMDesignerCommands.DeleteConstraint | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.EditRoleSequenceConstraint;
+				LinkedElementCollection<FactType> factTypes = setConstraint.FactTypeCollection;
+				if (factTypes.Count != 1 || (factType = factTypes[0]).ImpliedByObjectification == null)
+				{
+					Objectification objectification;
+					bool isLinkFactType = false;
+					if (null != (objectification = factType.Objectification))
+					{
+						foreach (DiagramItem selectedItem in myDesignerView.CurrentDesigner.Selection)
+						{
+							FactTypeShape factTypeShape = selectedItem.Shape as FactTypeShape;
+							if (factTypeShape.AssociatedFactType.ImpliedByObjectification == objectification)
+							{
+								isLinkFactType = true;
+								break;
+							}
+						}
+					}
+					// Don't edit or delete internal uniqueness constraints on the objectifying
+					// role of an implied fact type or a proxy role.
+					if (!isLinkFactType)
+					{
+						enabledCommands = visibleCommands;
+					}
+				}
 				if (presentationElement != null)
 				{
 					toleratedCommands |= ORMDesignerCommands.DeleteShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AutoLayout;
@@ -748,15 +780,46 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			else if (null != (role = element as Role))
 			{
-				FactType fact = role.FactType;
-				if (fact == null)
+				RoleBase roleBase = elementReference as RoleProxy;
+				bool isProxy = roleBase != null;
+				bool impliedFactType;
+				Role unaryRole;
+				if (isProxy)
 				{
-					// This is happening during teardown scenarios
-					return;
+					factType = roleBase.FactType;
+					if (factType == null)
+					{
+						// This is happening during teardown scenarios
+						return;
+					}
+					impliedFactType = true;
+					unaryRole = null;
 				}
-				Role unaryRole = fact.UnaryRole;
+				else
+				{
+					roleBase = role;
+					factType = roleBase.FactType;
+					if (factType == null)
+					{
+						// This is happening during teardown scenarios
+						return;
+					}
+					impliedFactType = factType.ImpliedByObjectification != null;
+					unaryRole = impliedFactType ? null : factType.UnaryRole;
+				}
 
-				visibleCommands = enabledCommands = ORMDesignerCommands.InsertRole | ORMDesignerCommands.DeleteRole | ORMDesignerCommands.ToggleSimpleMandatory | ORMDesignerCommands.AddInternalUniqueness;
+				if (impliedFactType)
+				{
+					visibleCommands = ORMDesignerCommands.ToggleSimpleMandatory | ORMDesignerCommands.DeleteRole;
+					if (isProxy)
+					{
+						enabledCommands = ORMDesignerCommands.ToggleSimpleMandatory;
+					}
+				}
+				else
+				{
+					visibleCommands = enabledCommands = ORMDesignerCommands.InsertRole | ORMDesignerCommands.DeleteRole | ORMDesignerCommands.ToggleSimpleMandatory | ORMDesignerCommands.AddInternalUniqueness;
+				}
 				checkableCommands = ORMDesignerCommands.ToggleSimpleMandatory;
 				toleratedCommands |= ORMDesignerCommands.DeleteShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AutoLayout;
 				if (role.IsMandatory)
@@ -765,7 +828,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 
 				// Disable role deletion if the FactType is a unary
-				visibleCommands |= ORMDesignerCommands.DeleteRole;
 				if (unaryRole != null)
 				{
 					enabledCommands &= ~ORMDesignerCommands.ToggleSimpleMandatory;
@@ -775,16 +837,19 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 				}
 
-				Objectification objectification = fact.Objectification;
-				if (objectification == null || objectification.IsImplied)
+				if (!impliedFactType)
 				{
-					visibleCommands |= ORMDesignerCommands.ObjectifyFactType;
-					enabledCommands |= ORMDesignerCommands.ObjectifyFactType;
-				}
-				else
-				{
-					visibleCommands |= ORMDesignerCommands.UnobjectifyFactType;
-					enabledCommands |= ORMDesignerCommands.UnobjectifyFactType;
+					Objectification objectification = factType.Objectification;
+					if (objectification == null || objectification.IsImplied)
+					{
+						visibleCommands |= ORMDesignerCommands.ObjectifyFactType;
+						enabledCommands |= ORMDesignerCommands.ObjectifyFactType;
+					}
+					else
+					{
+						visibleCommands |= ORMDesignerCommands.UnobjectifyFactType;
+						enabledCommands |= ORMDesignerCommands.UnobjectifyFactType;
+					}
 				}
 
 				// Extra menu commands may be visible if there is a StickyObject active on the diagram.
@@ -795,9 +860,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				if (null != (ormDiagram = myDesignerView.CurrentDiagram as ORMDiagram))
 				{
 					FactTypeShape factShape;
-					if (null != (factShape = ormDiagram.FindShapeForElement<FactTypeShape>(fact)))
+					if (null != (factShape = ormDiagram.FindShapeForElement<FactTypeShape>(factType)))
 					{
-						UpdateMoveRoleCommandStatus(factShape, role, ref visibleCommands, ref enabledCommands);
+						UpdateMoveRoleCommandStatus(factShape, roleBase, ref visibleCommands, ref enabledCommands);
 					}
 
 					if (null != (constraintShape = ormDiagram.StickyObject as ExternalConstraintShape)
@@ -938,8 +1003,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				// Any element reference has essentially allows the same
 				// commands as the target, except that all deletion is redirected
-				// to the reference element, not the target.
-				visibleCommands &= ~(ORMDesignerCommands.Delete | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.DeleteShape | ORMDesignerCommands.DeleteAnyShape);
+				// to the reference element, not the target. If earlier code has
+				// made any of these commands visible but disabled, then leave it
+				// visible.
+				visibleCommands &= ~((ORMDesignerCommands.Delete | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.DeleteShape | ORMDesignerCommands.DeleteAnyShape) & ~(visibleCommands & ~enabledCommands));
 				enabledCommands &= ~(ORMDesignerCommands.Delete | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.DeleteShape | ORMDesignerCommands.DeleteAnyShape);
 				if (elementReference is GroupingElementInclusion ||
 					elementReference is GroupingMembershipContradictionErrorIsForElement)
@@ -978,7 +1045,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			visibleCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.CopyImage | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList | ORMDesignerCommands.ReportGeneratorList | ORMDesignerCommands.FreeFormCommandList | ORMDesignerCommands.SelectInModelBrowser;
 			enabledCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.CopyImage | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList | ORMDesignerCommands.ReportGeneratorList | ORMDesignerCommands.FreeFormCommandList | ORMDesignerCommands.SelectInModelBrowser;
 		}
-		private static void UpdateMoveRoleCommandStatus(FactTypeShape factShape, Role role, ref ORMDesignerCommands visibleCommands, ref ORMDesignerCommands enabledCommands)
+		private static void UpdateMoveRoleCommandStatus(FactTypeShape factShape, RoleBase role, ref ORMDesignerCommands visibleCommands, ref ORMDesignerCommands enabledCommands)
 		{
 			LinkedElementCollection<RoleBase> roles = factShape.DisplayedRoleOrder;
 			enabledCommands &= ~(ORMDesignerCommands.MoveRoleRight | ORMDesignerCommands.MoveRoleLeft);
@@ -1199,7 +1266,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					foreach (ModelElement mel in designerView.SelectedElements)
 					{
-						Role role = mel as Role;
+						RoleBase role = mel as RoleBase;
 						if (role != null)
 						{
 							FactType fact;
@@ -1611,7 +1678,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 									roles[roleCount++] = role;
 								}
 							}
-							if (fact != null && !encounteredNonRole)
+							if (fact != null && fact.ImpliedByObjectification == null && !encounteredNonRole)
 							{
 								foreach (UniquenessConstraint iuc in fact.GetInternalConstraints<UniquenessConstraint>())
 								{
@@ -1807,6 +1874,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								bool testRefModeCollapse = complexSelection || 0 != (enabledCommands & ORMDesignerCommands.DeleteObjectType);
 								ObjectTypeShape objectShape;
 								ObjectifiedFactTypeNameShape objectifiedShape;
+								FactTypeShape factTypeShape;
+								FactType factType;
 								if (testRefModeCollapse &&
 									((null != (objectShape = pel as ObjectTypeShape) &&
 									!objectShape.ExpandRefMode) ||
@@ -1824,6 +1893,16 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								{
 									deleteReferenceModeValueTypeInContext = false;
 									contextInfo.Remove(ObjectType.DeleteReferenceModeValueType);
+								}
+								if (null != (factTypeShape = pel as FactTypeShape))
+								{
+									if (null != (factType = pel.ModelElement as FactType) &&
+										null != factType.ImpliedByObjectification)
+									{
+										// Deletion tolerated by link fact type shapes, but the command is not
+										// enabled individually and is ignored.
+										continue;
+									}
 								}
 
 								// Get rid of the model element. Delete propagation on the PresentationViewsSubject
@@ -1934,7 +2013,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								FactType fact = backingMel as FactType;
 								if (fact != null)
 								{
-									backingObjectifiedType = fact.NestingType;
+									if (fact.ImpliedByObjectification != null)
+									{
+										backingMel = null; // Don't prompt to delete implied fact types
+									}
+									else
+									{
+										backingObjectifiedType = fact.NestingType;
+									}
 								}
 							}
 							pel.Delete();
@@ -2402,9 +2488,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				IList selectedElements = view.SelectedElements;
 				for (int i = selectedElements.Count - 1; i >= 0; i--)
 				{
-					Role role = selectedElements[i] as Role;
-					if (role != null)
+					RoleBase roleBase = selectedElements[i] as RoleBase;
+					if (roleBase != null)
 					{
+						Role role = roleBase.Role;
 						if (!hasNewIsMandatoryValue)
 						{
 							newIsMandatoryValue = !role.IsMandatory;
@@ -2492,15 +2579,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					{
 						IConstraint constraint = ecs.AssociatedConstraint;
 						ExternalConstraintConnectAction connectAction = ormDiagram.ExternalConstraintConnectAction;
-						SetConstraint scec;
-						//SetComparisonConstraint mcec;
-						if (null != (scec = constraint as SetConstraint))
+						SetConstraint setConstraint;
+						if (null != (setConstraint = constraint as SetConstraint))
 						{
-							connectAction.ConstraintRoleSequenceToEdit = scec;
+							connectAction.ConstraintRoleSequenceToEdit = setConstraint;
 						}
-						//else if (null != (mcec = constraint as SetComparisonConstraint))
-						//{
-						//}
 						if (!connectAction.IsActive)
 						{
 							connectAction.ChainMouseAction(ecs, (DiagramClientView)ormDiagram.ClientViews[0]);
@@ -3412,7 +3495,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				IList selectedElements = view.SelectedElements;
 				for (int i = selectedElements.Count - 1; i >= 0; i--)
 				{
-					Role role = selectedElements[i] as Role;
+					RoleBase role = selectedElements[i] as RoleBase;
 					if (role != null)
 					{
 						FactTypeShape factShape = diagram.FindShapeForElement<FactTypeShape>(role.FactType);

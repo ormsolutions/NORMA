@@ -15,14 +15,6 @@
 \**************************************************************************/
 #endregion
 
-// Defining LINKS_ALWAYS_CONNECT allows multiple links from a single ShapeA to different instances of ShapeB.
-// In this case, the 'anchor' end is always connected if an opposite shape is available.
-// The current behavior is to only create a link if, given an instance of ShapeA, the closest candidate
-// ShapeB instance is not closer to a different instance of ShapeA.
-// Note that LINKS_ALWAYS_CONNECT is also used in other files, so you should turn this on
-// in the project properties if you want to experiment. This is here for reference only.
-//#define LINKS_ALWAYS_CONNECT
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -485,18 +477,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			return GetUniqueConnectorShape(oppositeShape, ignoreLinkShapesFor);
 		}
-#if LINKS_ALWAYS_CONNECT
-		/// <summary>
-		/// Gets whether this link is anchored to its ToShape or FromShape
-		/// </summary>
-		protected override BinaryLinkAnchor Anchor
-		{
-			get
-			{
-				return BinaryLinkAnchor.FromShape;
-			}
-		}
-#endif //LINKS_ALWAYS_CONNECT
 		#region HACK: Size property
 		// UNDONE: 2006-06 DSL Tools port: SubtypeLink gets the generated code for a shape even though it is a link,
 		// since links must be related to DomainRelationship elements, not DomainClass elements.

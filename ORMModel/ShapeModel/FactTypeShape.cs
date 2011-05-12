@@ -487,7 +487,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		/// <param name="roleToMove">The role to move to the left.</param>
 		/// <returns>True if it actually moved the role.</returns>
-		public bool MoveRoleLeft(Role roleToMove)
+		public bool MoveRoleLeft(RoleBase roleToMove)
 		{
 			return MoveRole(true, roleToMove);
 		}
@@ -496,11 +496,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		/// <param name="roleToMove">The role to move to the right.</param>
 		/// <returns>True if it actually moved the role.</returns>
-		public bool MoveRoleRight(Role roleToMove)
+		public bool MoveRoleRight(RoleBase roleToMove)
 		{
 			return MoveRole(false, roleToMove);
 		}
-		private bool MoveRole(bool movingLeft, Role roleToMove)
+		private bool MoveRole(bool movingLeft, RoleBase roleToMove)
 		{
 			bool moveOccured = false;
 			using (Transaction t = Store.TransactionManager.BeginTransaction(ResourceStrings.MoveRoleOrderTransactionName))
@@ -561,7 +561,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					int nativeRoleCount = nativeRoles.Count;
 					for (int i = 0; i < nativeRoleCount; ++i)
 					{
-						displayRoles.Add(nativeRoles[i].Role);
+						displayRoles.Add(nativeRoles[i]);
 					}
 				}
 			}
@@ -662,8 +662,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		private static void RoleDisplayOrderChangedRule(RolePlayerOrderChangedEventArgs e)
 		{
-			Role role;
-			if (null != (role = e.CounterpartRolePlayer as Role))
+			RoleBase role;
+			if (null != (role = e.CounterpartRolePlayer as RoleBase))
 			{
 				Partition sourcePartition = e.SourceElement.Partition;
 				foreach (PresentationElement pElem in PresentationViewsSubject.GetPresentation(role.FactType))
@@ -843,12 +843,30 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			//
 			ICollection<IFactConstraint> factConstraints = parentFact.FactConstraintCollection;
 			int fullConstraintCount = factConstraints.Count;
+			UniquenessConstraint proxyUniqueness = null;
+			int proxyIndex = 1;
+			if (parentFact.ImpliedByObjectification != null)
+			{
+				// Display a single role uniqueness constraint from the target
+				// role over a proxy role.
+				RoleProxy proxy = factRoles[proxyIndex] as RoleProxy ?? factRoles[proxyIndex = 0] as RoleProxy;
+				if (proxy != null)
+				{
+					proxyUniqueness = proxy.Role.SingleRoleUniquenessConstraint;
+					++fullConstraintCount;
+				}
+			}
 			ConstraintBox[] constraintBoxes = new ConstraintBox[fullConstraintCount];
 
 			if (fullConstraintCount != 0)
 			{
-				// Constraints hasn't been filled before it's used later in the code.
 				int currentConstraintIndex = 0;
+				if (proxyUniqueness != null)
+				{
+					constraintBoxes[currentConstraintIndex] = new ConstraintBox(FactConstraint.GetLinksToFactTypeCollection(proxyUniqueness)[0], proxyUniqueness.RoleCollection, proxyIndex == 1 ? PreDefinedConstraintBoxRoleActivities_BinaryRight : PreDefinedConstraintBoxRoleActivities_BinaryLeft);
+					++currentConstraintIndex;
+				}
+				// Constraints hasn't been filled before it's used later in the code.
 				foreach (IFactConstraint factConstraint in factConstraints)
 				{
 					IList<Role> constraintRoles = factConstraint.RoleCollection;
@@ -2130,13 +2148,18 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				DiagramClientView clientView = e.DiagramClientView;
 				ORMDiagram diagram = clientView.Diagram as ORMDiagram;
 				UniquenessConstraint iuc = AssociatedConstraint as UniquenessConstraint;
-				if (iuc != null && iuc.IsInternal)
+				FactTypeShape shape;
+				FactType factType;
+				if (null != (iuc = AssociatedConstraint as UniquenessConstraint) &&
+					iuc.IsInternal &&
+					null != (shape = e.DiagramHitTestInfo.HitDiagramItem.Shape as FactTypeShape) &&
+					null != (factType = shape.AssociatedFactType) &&
+					factType.ImpliedByObjectification == null)
 				{
 					// Move on to the selection action
 					InternalUniquenessConstraintConnectAction iucca = diagram.InternalUniquenessConstraintConnectAction;
 					ActiveInternalUniquenessConstraintConnectAction = iucca;
 					LinkedElementCollection<Role> roleColl = iuc.RoleCollection;
-					FactTypeShape factShape = e.DiagramHitTestInfo.HitDiagramItem.Shape as FactTypeShape;
 					if (roleColl.Count != 0)
 					{
 						IList<Role> iuccaRoles = iucca.SelectedRoleCollection;
@@ -2145,8 +2168,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							iuccaRoles.Add(r);
 						}
 					}
-					factShape.Invalidate(true);
-					iucca.ChainMouseAction(factShape, iuc, clientView);
+					shape.Invalidate(true);
+					iucca.ChainMouseAction(shape, iuc, clientView);
 				}
 				// UNDONE: MSBUG Report Microsoft bug DiagramClientView.OnDoubleClick is checking
 				// for an active mouse action after the double click and clearing it if it is set.
@@ -2480,7 +2503,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					Brush constraintSequenceBrush = null;
 					bool highlightThisRole = false;
 					bool reverseRoleOrder = orientation == DisplayOrientation.VerticalRotatedLeft;
-					StyleSetResourceId roleBoxPenId = FactTypeShape.RoleBoxResource;
+					StyleSetResourceId roleBoxPenId = (factType.ImpliedByObjectification == null) ? FactTypeShape.RoleBoxResource : FactTypeShape.LinkFactTypeRoleBoxResource;
 					Pen roleBoxPen = styleSet.GetPen(roleBoxPenId);
 					Color restoreRoleBoxPenColor = Color.Empty;
 					try
@@ -2504,6 +2527,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 
 							// There is an active ExternalConstraintConnectAction, and this role is currently in the action's role set.
 							if ((activeExternalAction != null &&
+								currentRole == currentRoleBase &&
 								-1 != (activeRoleIndex = activeExternalAction.GetActiveRoleIndex(currentRole))) ||
 								(activeInternalAction != null &&
 								-1 != (activeRoleIndex = activeInternalAction.GetActiveRoleIndex(currentRole))) ||
@@ -2551,6 +2575,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							}
 							// There is an active InternalUniquenessConstraintConnectAction, and this role is removed from an existing constraint.
 							else if (activeInternalUniqueness != null &&
+								currentRole == currentRoleBase &&
 								(activeInternalUniquenessRoles ?? (activeInternalUniquenessRoles = activeInternalUniqueness.RoleCollection)).Contains(currentRole))
 							{
 								backgroundSticky = true;
@@ -2563,6 +2588,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 								IStickyObject stickyObject;
 								IConstraint stickyConstraint;
 								if (currentDiagram != null &&
+									currentRole == currentRoleBase &&
 									null != (stickyConstraintShape = (stickyObject = currentDiagram.StickyObject) as ExternalConstraintShape)
 									&& null != (stickyConstraint = stickyConstraintShape.AssociatedConstraint))
 								{
@@ -2906,6 +2932,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		protected static readonly StyleSetResourceId RoleBoxResource = new StyleSetResourceId("ORMArchitect", "RoleBoxResource");
 		/// <summary>
+		/// Pen to draw a role box outline for a link fact type
+		/// </summary>
+		protected static readonly StyleSetResourceId LinkFactTypeRoleBoxResource = new StyleSetResourceId("ORMArchitect", "LinkFactTypeRoleBoxResource");
+		/// <summary>
 		/// Brush to draw the foreground text for a role picker  
 		/// </summary>
 		protected static readonly StyleSetResourceId RolePickerForeground = new StyleSetResourceId("ORMArchitect", "RolePickerForeground");
@@ -3112,6 +3142,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			classStyleSet.AddPen(InternalFactConstraintPen, DiagramPens.ShapeOutline, penSettings);
 			penSettings.Color = deonticConstraintForeColor;
 			classStyleSet.AddPen(DeonticInternalFactConstraintPen, InternalFactConstraintPen, penSettings);
+
+			penSettings.Color = SystemColors.WindowText;
+			penSettings.DashCap = DashCap.Flat;
+			penSettings.DashStyle = DashStyle.Dash;
+			classStyleSet.AddPen(LinkFactTypeRoleBoxResource, DiagramPens.ShapeOutline, penSettings);
 
 			FontSettings fontSettings = new FontSettings();
 			fontSettings.Size = 5f / 72f; // 5 Point.
@@ -3360,12 +3395,28 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		public static void ConstraintSetChanged(FactType factType, IConstraint constraint, bool roleChangeOnly, bool rolePositionChangeOnly)
 		{
 			Debug.Assert(factType.Store.TransactionManager.InTransaction);
+			FactTypeShape factTypeShape;
 			foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
 			{
-				FactTypeShape factShape = pel as FactTypeShape;
-				if (factShape != null)
+				if (null != (factTypeShape = pel as FactTypeShape))
 				{
-					factShape.ConstraintShapeSetChanged(constraint, roleChangeOnly, rolePositionChangeOnly);
+					factTypeShape.ConstraintShapeSetChanged(constraint, roleChangeOnly, rolePositionChangeOnly);
+				}
+			}
+			Objectification objectification;
+			if (constraint.ConstraintType == ConstraintType.InternalUniqueness &&
+				null != (objectification = factType.Objectification))
+			{
+				// Internal uniqueness affects the link fact type display
+				foreach (FactType linkFactType in objectification.ImpliedFactTypeCollection)
+				{
+					foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(linkFactType))
+					{
+						if (null != (factTypeShape = pel as FactTypeShape))
+						{
+							factTypeShape.ConstraintShapeSetChanged(constraint, roleChangeOnly, rolePositionChangeOnly);
+						}
+					}
 				}
 			}
 		}
@@ -3395,7 +3446,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				case ConstraintType.InternalUniqueness:
 					if (rolePositionChangeOnly)
 					{
-						// Nothing to do, role numbers not displayed for internal uniqueness constraints
+						redraw = true;
 					}
 					else if (roleChangeOnly)
 					{
@@ -3894,14 +3945,18 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			else if (null != (rolePlayerLink = linkElement as ObjectTypePlaysRole))
 			{
 				Role role = rolePlayerLink.PlayedRole;
-				factType = role.FactType;
 				LinkedElementCollection<RoleBase> factRoles = DisplayedRoleOrder;
 				factRoleCount = factRoles.Count;
 				roleIndex = factRoles.IndexOf(role);
+				RoleProxy roleProxy;
+				if (roleIndex == -1 &&
+					null != (roleProxy = role.Proxy))
+				{
+					roleIndex = factRoles.IndexOf(roleProxy);
+				}
 			}
 			else if (null != (rangeShape = oppositeShape as ValueConstraintShape))
 			{
-				factType = AssociatedFactType;
 				LinkedElementCollection<RoleBase> factRoles = DisplayedRoleOrder;
 				factRoleCount = factRoles.Count;
 				roleIndex = factRoles.IndexOf(((RoleValueConstraint)rangeShape.AssociatedValueConstraint).Role);
@@ -4555,7 +4610,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			bool isRoleBox;
 			FactType element;
 			Store store;
-			if (((isRoleBox = penId == RoleBoxResource) ||
+			if (((isRoleBox = (penId == RoleBoxResource || penId == LinkFactTypeRoleBoxResource)) ||
 				penId == DiagramPens.ShapeOutline) &&
 				null != (store = Utility.ValidateStore(Store)) &&
 				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, FactType>>()) &&
@@ -5050,7 +5105,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						if (objectification != null)
 						{
 							bool requireMultiple = false;
-							if (objectification.NestedFactType != currentConstraint.FactTypeCollection[0])
+							FactType factType;
+							if ((objectification.NestedFactType != currentConstraint.FactTypeCollection[0]) ||
+								(null != (factType = AssociatedFactType) && factType.ImpliedByObjectification == objectification))
 							{
 								retVal = true;
 							}
@@ -5283,6 +5340,55 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				Diagram.FixUpDiagram(nestedFactType, nestingType);
 			}
+
+			// Link fact types are allowed to display for implied objectification
+			// because it isn't worth the trouble of hiding them and/or removing
+			// attached constraints when the objectification becomes implied.
+			// So, unlike role player links to the objectifying entity type that
+			// cannot exist for implied objectifications, it is possible to have
+			// links from implied fact types to an implied objectifying entity type.
+			Dictionary<object, object> topLevelContextInfo = null;
+			try
+			{
+				foreach (RoleBase roleBase in nestedFactType.RoleCollection)
+				{
+					Role role = roleBase.Role;
+					RoleProxy roleProxy;
+					FactType impliedFactType;
+					ObjectTypePlaysRole roleLink = null;
+					if (null != (roleProxy = role.Proxy) &&
+						null != (impliedFactType = roleProxy.FactType))
+					{
+						foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(impliedFactType))
+						{
+							NodeShape nodeShape;
+							ORMDiagram diagram;
+							if (null != (nodeShape = pel as NodeShape) &&
+								null != (diagram = nodeShape.Diagram as ORMDiagram))
+							{
+								if (null == roleLink &&
+									null == (roleLink = ObjectTypePlaysRole.GetLinkToRolePlayer(roleProxy.OppositeRole.Role)))
+								{
+									break;
+								}
+								if (topLevelContextInfo == null)
+								{
+									topLevelContextInfo = link.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+									topLevelContextInfo[MultiShapeUtility.AllowMultipleShapes] = null;
+								}
+								diagram.FixUpLocalDiagram(roleLink);
+							}
+						}
+					}
+				}
+			}
+			finally
+			{
+				if (topLevelContextInfo != null)
+				{
+					topLevelContextInfo.Remove(MultiShapeUtility.AllowMultipleShapes);
+				}
+			}
 		}
 		/// <summary>
 		/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
@@ -5500,6 +5606,25 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						else
 						{
 							factShape.AutoResize();
+						}
+					}
+				}
+
+				if (nestedFactType.Objectification != null)
+				{
+					// Objectification is now implied, make sure there are no presentation elements
+					// left connecting shapes for implied fact types to this fact type.
+					foreach (RoleBase objectifiedRoleBase in nestedFactType.RoleCollection)
+					{
+						Role objectifiedRole = objectifiedRoleBase.Role;
+						RoleProxy proxy;
+						RoleBase oppositeRoleBase;
+						ObjectTypePlaysRole rolePlayerLink;
+						if (null != (proxy = objectifiedRole.Proxy) &&
+							null != (oppositeRoleBase = proxy.OppositeRole) &&
+							null != (rolePlayerLink = ObjectTypePlaysRole.GetLinkToRolePlayer(oppositeRoleBase.Role)))
+						{
+							PresentationViewsSubject.GetPresentation(rolePlayerLink).Clear();
 						}
 					}
 				}

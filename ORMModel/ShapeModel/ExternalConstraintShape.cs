@@ -673,6 +673,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 			Invalidate(true);
 		}
+		/// <summary>
+		/// Force a redraw of the associated presentation elements on a given diagram.
+		/// This is used when a transaction is not active to update for a temporary
+		/// display change.
+		/// </summary>
 		private static void RedrawPelsOnDiagram(ModelElement element, Diagram diagram)
 		{
 			LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(element);
@@ -683,6 +688,20 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				if (shape != null && shape.Diagram == diagram)
 				{
 					shape.Invalidate(true);
+				}
+			}
+		}
+		/// <summary>
+		/// Invalidate all presentation elements associated with a given <see cref="ModelElement"/>
+		/// </summary>
+		private static void InvalidateAssociatedDisplay(ModelElement element)
+		{
+			foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(element))
+			{
+				IInvalidateDisplay updateDisplay;
+				if (null != (updateDisplay = pel as IInvalidateDisplay))
+				{
+					updateDisplay.InvalidateRequired(true);
 				}
 			}
 		}
@@ -879,8 +898,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			MandatoryConstraint mandatory = link.MandatoryConstraint;
 			ExclusionConstraint exclusion = link.ExclusionConstraint;
 			LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(exclusion);
-			int pelCount = pels.Count;
-			for (int i = pelCount - 1; i >= 0; --i)
+			for (int i = pels.Count - 1; i >= 0; --i)
 			{
 				ExternalConstraintShape shape = pels[i] as ExternalConstraintShape;
 				if (shape != null)
@@ -888,16 +906,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					shape.Delete();
 				}
 			}
-			pels = PresentationViewsSubject.GetPresentation(mandatory);
-			pelCount = pels.Count;
-			for (int i = 0; i < pelCount; ++i)
-			{
-				ExternalConstraintShape shape = pels[i] as ExternalConstraintShape;
-				if (shape != null)
-				{
-					shape.InvalidateRequired(true);
-				}
-			}
+			InvalidateAssociatedDisplay(mandatory);
 		}
 		/// <summary>
 		/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusiveOrConstraintCoupler), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
@@ -950,30 +959,26 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 			if (!preferredIdentifier.IsDeleted)
 			{
-				ModelElement element = preferredIdentifier;
 				if (preferredIdentifier.IsInternal)
 				{
 					LinkedElementCollection<FactType> factTypes = preferredIdentifier.FactTypeCollection;
 					if (factTypes.Count == 1)
 					{
-						element = factTypes[0];
-					}
-					else
-					{
-						return;
+						FactType factType = factTypes[0];
+						Objectification objectification;
+						InvalidateAssociatedDisplay(factType);
+						if (null != (objectification = factType.Objectification))
+						{
+							foreach (FactType linkFactType in objectification.ImpliedFactTypeCollection)
+							{
+								InvalidateAssociatedDisplay(linkFactType);
+							}
+						}
 					}
 				}
-
-				LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(element);
-				int pelCount = pels.Count;
-				for (int i = pelCount - 1; i >= 0; --i)
+				else
 				{
-					// IInvalidateDisplay handles ExternalConstraintShape and FactTypeShape
-					IInvalidateDisplay shape = pels[i] as IInvalidateDisplay;
-					if (shape != null)
-					{
-						shape.InvalidateRequired(true);
-					}
+					InvalidateAssociatedDisplay(preferredIdentifier);
 				}
 			}
 		}

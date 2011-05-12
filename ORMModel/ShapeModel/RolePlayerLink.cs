@@ -15,16 +15,6 @@
 \**************************************************************************/
 #endregion
 
-// Defining LINKS_ALWAYS_CONNECT allows multiple links from a single ShapeA to different instances of ShapeB.
-// In this case, the 'anchor' end is always connected if an opposite shape is available.
-// The current behavior is to only create a link if, given an instance of ShapeA, the closest candidate
-// ShapeB instance is not closer to a different instance of ShapeA.
-// Note that LINKS_ALWAYS_CONNECT is also used in other files, so you should turn this on
-// in the project properties if you want to experiment. This is here for reference only.
-//#define LINKS_ALWAYS_CONNECT
-
-//#define IMPLIEDJOINPATH
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -41,103 +31,8 @@ using ORMSolutions.ORMArchitect.Framework;
 using ORMSolutions.ORMArchitect.Framework.Diagrams;
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
-	public partial class RolePlayerLink : IReconfigureableLink, IConfigureAsChildShape, IDynamicColorGeometryHost
+	partial class RolePlayerLink : IReconfigureableLink, IConfigureAsChildShape, IDynamicColorGeometryHost
 	{
-#if IMPLIEDJOINPATH
-		#region ImpliedFactJoinPathDecorator class
-		/// <summary>
-		/// A decorator used to display the join path role boxes for
-		/// implied facts when we're in join path editing mode. We only
-		/// decorate one end of a role player link, so we are able to use
-		/// the opposite decorator for nefarious purposes such as this.
-		/// </summary>
-		protected class ImpliedFactJoinPathDecorator : LinkDecorator, ILinkDecoratorSettings
-		{
-			// UNDONE: Constants stolen from FactTypeShape, do something about it
-			private const double RoleBoxHeight = 0.11;
-			private const double RoleBoxWidth = 0.16;
-			private RolePlayerLink myLinkShape;
-			/// <summary>
-			/// Create an ImpliedFactJoinPathDecorator
-			/// </summary>
-			/// <param name="linkShape">The associated link shape</param>
-			public ImpliedFactJoinPathDecorator(RolePlayerLink linkShape)
-			{
-				myLinkShape = linkShape;
-			}
-			/// <summary>
-			/// Return a circle slightly smaller than the standard decorator
-			/// as the path
-			/// </summary>
-			/// <param name="bounds">A bounding rectangle for the decorator</param>
-			/// <returns>A circle path</returns>
-			protected override GraphicsPath GetPath(RectangleD bounds)
-			{
-				GraphicsPath path = new GraphicsPath();
-				bounds.Height /= 2;
-				if (IsFlipped)
-				{
-					bounds.Y += bounds.Height;
-				}
-				path.AddRectangle(RectangleD.ToRectangleF(bounds));
-				return path;
-			}
-			private bool IsFlipped
-			{
-				get
-				{
-					PointD fromPoint = myLinkShape.FromEndPoint;
-					PointD toPoint = myLinkShape.ToEndPoint;
-					return toPoint.X < fromPoint.X;
-				}
-			}
-		#region ILinkDecoratorSettings Implementation
-			/// <summary>
-			/// Implements ILinkDecoratorSettings.DecoratorSize.
-			/// </summary>
-			protected static SizeD DecoratorSize
-			{
-				get
-				{
-					return new SizeD(2 * RoleBoxWidth, 2 * RoleBoxHeight);
-				}
-			}
-			SizeD ILinkDecoratorSettings.DecoratorSize
-			{
-				get
-				{
-					return DecoratorSize;
-				}
-			}
-			/// <summary>
-			/// Implements ILinkDecoratorSettings.OffsetBy
-			/// </summary>
-			protected double OffsetBy
-			{
-				get
-				{
-					// Note: FromShape == FactTypeShape, so the endpoint
-					// is inside the shape. The ToShape will always have the
-					// endpoint attaching at the shape, so we do not have to
-					// recalculate our attach point
-					PointD fromPoint = myLinkShape.FromEndPoint;
-					PointD toPoint = myLinkShape.ToEndPoint;
-					double xDif = toPoint.X - fromPoint.X;
-					double yDif = toPoint.Y - fromPoint.Y;
-					return -Math.Sqrt(xDif * xDif + yDif * yDif) / 2 + RoleBoxWidth ;
-				}
-			}
-			double ILinkDecoratorSettings.OffsetBy
-			{
-				get
-				{
-					return OffsetBy;
-				}
-			}
-		#endregion // ILinkDecoratorSettings Implementation
-		}
-		#endregion // ImpliedFactJoinPathDecorator class
-#endif // IMPLIEDJOINPATH
 		#region MandatoryDotDecorator class
 		/// <summary>
 		/// The link decorator used to draw the mandatory
@@ -219,13 +114,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				{
 					return MandatoryDotDecorator.Decorator;
 				}
-#if IMPLIEDJOINPATH
-				else if (OptionsPage.CurrentMandatoryDotPlacement == MandatoryDotPlacement.ObjectShapeEnd &&
-						OptionsPage.CurrentEntityRelationshipBinaryMultiplicityDisplay == EntityRelationshipBinaryMultiplicityDisplay.Off)
-				{
-					return new ImpliedFactJoinPathDecorator(this);
-				}
-#endif // IMPLIEDJOINPATH
 				return base.DecoratorFrom;
 			}
 			set
@@ -246,13 +134,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				{
 					return MandatoryDotDecorator.Decorator;
 				}
-#if IMPLIEDJOINPATH
-				else if (OptionsPage.CurrentMandatoryDotPlacement == MandatoryDotPlacement.RoleBoxEnd ||
-						OptionsPage.CurrentEntityRelationshipBinaryMultiplicityDisplay != EntityRelationshipBinaryMultiplicityDisplay.Off)
-				{
-					return new ImpliedFactJoinPathDecorator(this);
-				}
-#endif // IMPLIEDJOINPATH
 				return base.DecoratorTo;
 			}
 			set
@@ -796,6 +677,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				null != (role = link.PlayedRole) &&
 				RoleMultiplicity.Indeterminate != (multiplicity = role.Multiplicity))
 			{
+				if (this is RolePlayerProxyLink)
+				{
+					multiplicity = RoleMultiplicity.ExactlyOne;
+				}
 				if (displaySetting == EntityRelationshipBinaryMultiplicityDisplay.Barker)
 				{
 					MandatoryConstraint constraint = role.SimpleMandatoryConstraint;
@@ -854,7 +739,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		protected new void ConfiguringAsChildOf(NodeShape parentShape, bool createdDuringViewFixup)
 		{
 			base.ConfiguringAsChildOf(parentShape, createdDuringViewFixup);
-			Reconfigure(null);
+			(this as IReconfigureableLink).Reconfigure(null);
 		}
 		void IConfigureAsChildShape.ConfiguringAsChildOf(NodeShape parentShape, bool createdDuringViewFixup)
 		{
@@ -875,18 +760,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			Reconfigure(discludedShape);
 		}
-		#if LINKS_ALWAYS_CONNECT
-		/// <summary>
-		/// Gets whether this link is anchored to its ToShape or FromShape
-		/// </summary>
-		protected override BinaryLinkAnchor Anchor
-		{
-			get
-			{
-				return BinaryLinkAnchor.FromShape;
-			}
-		}
-		#endif //LINKS_ALWAYS_CONNECT
 		#endregion // RolePlayerLink specific
 		#region Accessibility Properties
 		/// <summary>
@@ -1041,5 +914,23 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 		}
 		#endregion // Store Event Handlers
+	}
+	partial class RolePlayerProxyLink : IReconfigureableLink
+	{
+		/// <summary>
+		/// Implements <see cref="IReconfigureableLink.Reconfigure"/>
+		/// </summary>
+		protected new void Reconfigure(ShapeElement discludedShape)
+		{
+			ObjectTypePlaysRole modelLink = (ObjectTypePlaysRole)ModelElement;
+			ObjectType rolePlayer = modelLink.RolePlayer;
+			FactType nestedFact = rolePlayer.NestedFactType;
+
+			MultiShapeUtility.ReconfigureLink(this, modelLink.PlayedRole.Proxy.FactType, (nestedFact == null) ? rolePlayer as ModelElement : nestedFact, discludedShape);
+		}
+		void IReconfigureableLink.Reconfigure(ShapeElement discludedShape)
+		{
+			Reconfigure(discludedShape);
+		}
 	}
 }

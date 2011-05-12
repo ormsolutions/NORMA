@@ -392,7 +392,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		}
 		private Delegate myAutomedElementFilter;
 		/// <summary>
-		/// Implements <see cref="IORMToolServices.GetAutomatedElementDirective"/>
+		/// Implements <see cref="IFrameworkServices.GetAutomatedElementDirective"/>
 		/// </summary>
 		protected AutomatedElementDirective GetAutomatedElementDirective(ModelElement element)
 		{
@@ -416,12 +416,12 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 			}
 			return retVal;
 		}
-		AutomatedElementDirective IORMToolServices.GetAutomatedElementDirective(ModelElement element)
+		AutomatedElementDirective IFrameworkServices.GetAutomatedElementDirective(ModelElement element)
 		{
 			return GetAutomatedElementDirective(element);
 		}
 		/// <summary>
-		/// Implements <see cref="IORMToolServices.AutomatedElementFilter"/>
+		/// Implements <see cref="IFrameworkServices.AutomatedElementFilter"/>
 		/// </summary>
 		protected event AutomatedElementFilterCallback AutomatedElementFilter
 		{
@@ -434,7 +434,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 				myAutomedElementFilter = Delegate.Remove(myAutomedElementFilter, value);
 			}
 		}
-		event AutomatedElementFilterCallback IORMToolServices.AutomatedElementFilter
+		event AutomatedElementFilterCallback IFrameworkServices.AutomatedElementFilter
 		{
 			add
 			{

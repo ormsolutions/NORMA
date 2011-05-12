@@ -210,6 +210,15 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		protected override void DoPaintGeometry(DiagramPaintEventArgs e, IGeometryHost geometryHost)
 		{
+			LinkShape linkShape = geometryHost as LinkShape;
+			if (linkShape != null &&
+				linkShape.RouteJumpType != VGObjectLineJumpCode.VGObjectJumpCodeNever)
+			{
+				// Backup plan, sometimes we can't set this during configuration, and
+				// it tends to revert in undo/redo scenarios when the backing graph
+				// wrapper is not preserved.
+				linkShape.RouteJumpType = VGObjectLineJumpCode.VGObjectJumpCodeNever;
+			}
 			Graphics g = e.Graphics;
 			GraphicsPath path = this.GetPath(geometryHost);
 			StyleSetResourceId penId = GetOutlinePenId(geometryHost);

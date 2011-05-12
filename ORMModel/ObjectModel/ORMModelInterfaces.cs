@@ -54,35 +54,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		ModelBrowser,
 	}
 	/// <summary>
-	/// Specify how an automatically added element should be
-	/// treated by a presentation layer.
-	/// </summary>
-	public enum AutomatedElementDirective
-	{
-		/// <summary>
-		/// No directive is specified for the element
-		/// </summary>
-		None,
-		/// <summary>
-		/// The element was added automatically and should always be ignored
-		/// by the presentation layer.
-		/// </summary>
-		Ignore,
-		/// <summary>
-		/// The element was added intentionally and should never be ignored
-		/// by the presentation layer. If multiple directives are provided,
-		/// this takes precedence over <see cref="Ignore"/>
-		/// </summary>
-		NeverIgnore,
-	}
-	/// <summary>
-	/// A callback used by <see cref="IORMToolServices.AutomatedElementFilter"/>
-	/// and <see cref="IORMToolServices.GetAutomatedElementDirective"/>
-	/// </summary>
-	/// <param name="element">The element to test</param>
-	/// <returns><see cref="AutomatedElementDirective"/></returns>
-	public delegate AutomatedElementDirective AutomatedElementFilterCallback(ModelElement element);
-	/// <summary>
 	/// An interface that should be implemented by any
 	/// store that hosts ORM-derived object models. This
 	/// can be implemented via pass-through to the host document,
@@ -148,18 +119,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// implementation must explicitly set the property twice. The first call sets the
 		/// expected return value; the second call must be the opposite boolean value.</remarks>
 		bool ProcessingVisibleTransactionItemEvents { get; set;}
-		/// <summary>
-		/// Add callbacks to determine the result of <see cref="GetAutomatedElementDirective"/>
-		/// </summary>
-		event AutomatedElementFilterCallback AutomatedElementFilter;
-		/// <summary>
-		/// Provided directives regarding automatically added elements based
-		/// on listeners attached to <see cref="AutomatedElementFilter"/>.
-		/// This allows rules and editors to easily notify presentation layers
-		/// to respond differently when new elements are being added in
-		/// an automated fashion.
-		/// </summary>
-		AutomatedElementDirective GetAutomatedElementDirective(ModelElement element);
 		/// <summary>
 		/// Activate the specified shape on the most appropriate view
 		/// </summary>

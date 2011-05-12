@@ -24,6 +24,7 @@ using Microsoft.VisualStudio.Modeling.Design;
 using ORMSolutions.ORMArchitect.Framework.Design;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
 
+
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 {
 	/// <summary>
@@ -59,9 +60,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			if (propertyId.Equals(Role.MultiplicityDomainPropertyId))
 			{
 				FactType factType = ModelElement.FactType;
+				Objectification objectification;
 				LinkedElementCollection<RoleBase> roles;
 				// Display for binary fact types
-				return factType != null && (roles = factType.RoleCollection).Count == 2 && !FactType.GetUnaryRoleIndex(roles).HasValue;
+				if (factType != null && (roles = factType.RoleCollection).Count == 2)
+				{
+					if (null != (objectification = factType.ImpliedByObjectification))
+					{
+						roles = objectification.NestedFactType.RoleCollection;
+						if (roles.Count != 2)
+						{
+							return false;
+						}
+					}
+					return !FactType.GetUnaryRoleIndex(roles).HasValue;
+				}
+				return false;
 			}
 			else if (propertyId.Equals(Role.MandatoryConstraintNameDomainPropertyId) ||
 				propertyId.Equals(Role.MandatoryConstraintModalityDomainPropertyId))
@@ -91,15 +105,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 				return ModelElement.ValueConstraint == null && !ModelElement.IsValueRole;
 			}
 			else if (propertyId == Role.IsMandatoryDomainPropertyId ||
-				propertyId == Role.MandatoryConstraintModalityDomainPropertyId ||
-				propertyId == Role.MultiplicityDomainPropertyId)
+				propertyId == Role.MandatoryConstraintModalityDomainPropertyId)
 			{
 				Role role = ModelElement;
 				FactType factType;
 				if (role is SubtypeMetaRole ||
 					role is SupertypeMetaRole ||
-					null != (factType = role.FactType)
-					&& null != factType.UnaryRole)
+					(null != (factType = role.FactType) &&
+					(null != factType.ImpliedByObjectification || null != factType.UnaryRole)))
+				{
+					return true;
+				}
+			}
+			else if (propertyId == Role.MultiplicityDomainPropertyId)
+			{
+				Role role = ModelElement;
+				FactType factType;
+				if (role is SubtypeMetaRole ||
+					role is SupertypeMetaRole ||
+					(null != (factType = role.FactType) &&
+					null != factType.UnaryRole))
 				{
 					return true;
 				}
@@ -139,5 +164,65 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			return retVal;
 		}
 		#endregion // Non-DSL Custom Property Descriptors
+	}
+	/// <summary>
+	/// <see cref="ElementTypeDescriptor"/> for <see cref="RoleProxy"/>s.
+	/// </summary>
+	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
+	public class RoleProxyTypeDescriptor : ORMModelElementTypeDescriptor<RoleProxy>
+	{
+		#region Constructor
+		/// <summary>
+		/// Initializes a new instance of <see cref="RoleProxyTypeDescriptor"/>
+		/// for <paramref name="selectedElement"/>.
+		/// </summary>
+		public RoleProxyTypeDescriptor(ICustomTypeDescriptor parent, RoleProxy selectedElement)
+			: base(parent, selectedElement)
+		{
+		}
+		#endregion // Constructor
+		#region Base overrides
+		private static readonly string[] RemoveRoleProperties = new string[] { "Multiplicity", "ObjectificationOppositeRoleName" };
+		/// <summary>
+		/// Show the same properties as 'Role', except we eliminate the
+		/// confusing 'Multiplicity' property and the 'ImpliedRoleName' property,
+		/// which is now visible on the opposite role.
+		/// </summary>
+		public override PropertyDescriptorCollection GetProperties(Attribute[] attributes)
+		{
+			PropertyDescriptorCollection properties;
+			RoleProxy proxy;
+			Role role;
+			if (null != (proxy = ModelElement) &&
+				null != (role = proxy.TargetRole))
+			{
+				properties = TypeDescriptor.GetProperties(role);
+				bool haveReadOnly = false;
+				for (int i = 0; i < RemoveRoleProperties.Length; ++i)
+				{
+					PropertyDescriptor removeDescriptor = properties.Find(RemoveRoleProperties[i], false);
+					if (removeDescriptor != null)
+					{
+						if (!haveReadOnly)
+						{
+							haveReadOnly = true;
+							properties = EditorUtility.GetEditablePropertyDescriptors(properties);
+						}
+						properties.Remove(removeDescriptor);
+					}
+				}
+				return properties;
+			}
+			return base.GetProperties(attributes);
+		}
+		/// <summary>
+		/// Display the class name the same as a role. This resource redirects to the
+		/// display name for the role.
+		/// </summary>
+		public override string GetClassName()
+		{
+			return ResourceStrings.RoleProxyTypeName;
+		}
+		#endregion // Base overrides
 	}
 }

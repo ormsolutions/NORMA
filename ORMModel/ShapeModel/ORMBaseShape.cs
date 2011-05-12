@@ -83,14 +83,17 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <summary>See <see cref="ShapeElement.FixUpChildShapes"/>.</summary>
 		public override ShapeElement FixUpChildShapes(ModelElement childElement)
 		{
-			return MultiShapeUtility.FixUpChildShapes(this, childElement);
+			return MultiShapeUtility.FixUpChildShapes(this, childElement, null);
 		}
 		/// <summary>
 		/// ChangeRule: typeof(Microsoft.VisualStudio.Modeling.Diagrams.NodeShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
 		/// </summary>
 		private static void AbsoluteBoundsChangedRule(ElementPropertyChangedEventArgs e)
 		{
-			MultiShapeUtility.CheckLinksOnBoundsChange(e);
+			if (e.DomainProperty.Id == NodeShape.AbsoluteBoundsDomainPropertyId)
+			{
+				MultiShapeUtility.CheckLinksOnBoundsChange(e);
+			}
 		}
 		#endregion // MultipleShapesSupport
 		#region Customize appearance

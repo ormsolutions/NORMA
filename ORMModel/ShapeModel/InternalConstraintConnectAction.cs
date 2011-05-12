@@ -329,7 +329,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					break;
 				}
 				UniquenessConstraint internalUniquenessConstraint;
-				Role role;
+				RoleBase roleBase;
 				if (null != (internalUniquenessConstraint = currentElement as UniquenessConstraint) &&
 					internalUniquenessConstraint.IsInternal)
 				{
@@ -343,8 +343,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				}
 				else if (mySourceShape != null)
 				{
-					if (null != (role = currentElement as Role))
+					if (null != (roleBase = currentElement as RoleBase))
 					{
+						Role role = roleBase.Role;
 						if (role.FactType == mySourceShape.AssociatedFactType)
 						{
 							// Add or remove the role

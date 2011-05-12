@@ -253,7 +253,18 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							}
 							if (factShape != null)
 							{
-								displayOrder = new ReadOnlyCollection<RoleBase>(factShape.DisplayedRoleOrder);
+								FactType shapeFactType = factShape.AssociatedFactType;
+								Objectification objectification;
+								if (shapeFactType == theFact)
+								{
+									displayOrder = new ReadOnlyCollection<RoleBase>(factShape.DisplayedRoleOrder);
+								}
+								else if (secondaryFact == null &&
+									null != (objectification = shapeFactType.ImpliedByObjectification) &&
+									objectification.NestedFactType == theFact)
+								{
+									secondaryFact = shapeFactType;
+								}
 							}
 						}
 					}

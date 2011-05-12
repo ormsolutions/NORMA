@@ -420,7 +420,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				DomainClassInfo classInfo = Store.DomainDataDirectory.FindDomainClass(rootElement.DomainClassId);
 				if (classInfo.IsDerivedFrom(UniquenessConstraint.DomainClassId))
 				{
-					return ORMModel.InternalUniquenessConstraintUserDataKey.Equals(elementGroupPrototype.UserData as string);
+					return ORMModel.InternalUniquenessConstraintUserDataKey.Equals(elementGroupPrototype.UserData as string) && this.ImpliedByObjectification == null;
 				}
 			}
 			return false;
@@ -3089,6 +3089,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						SubtypeMetaRole subtypeRole;
 						SupertypeMetaRole supertypeRole;
+						FactType relatedFactType;
 						if (null != (subtypeRole = role as SubtypeMetaRole))
 						{
 							yield return ((SubtypeFact)role.FactType).Supertype;
@@ -3097,9 +3098,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							yield return ((SubtypeFact)role.FactType).Subtype;
 						}
-						else
+						else if (null == (relatedFactType = role.FactType).ImpliedByObjectification)
 						{
-							FactType relatedFactType = role.FactType;
 							yield return relatedFactType;
 							foreach (RoleBase roleBase in relatedFactType.RoleCollection)
 							{
@@ -3210,6 +3210,30 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion
 	}
+	#region RolePlayer Hierarchy Context Navigation
+	partial class ObjectTypePlaysRole : IHierarchyContextLinkFilter
+	{
+		#region IHierarchyContextLinkFilter Implementation
+		/// <summary>
+		/// Implements <see cref="IHierarchyContextLinkFilter.ContinueHierachyWalking"/>
+		/// Block navigation from an object type to a role in a link fact type.
+		/// </summary>
+		protected bool ContinueHierachyWalking(DomainRoleInfo fromRoleInfo)
+		{
+			if (fromRoleInfo.Id == ObjectTypePlaysRole.RolePlayerDomainRoleId)
+			{
+				FactType factType = this.PlayedRole.FactType;
+				return factType != null && factType.ImpliedByObjectification == null;
+			}
+			return true;
+		}
+		bool IHierarchyContextLinkFilter.ContinueHierachyWalking(DomainRoleInfo fromRoleInfo)
+		{
+			return ContinueHierachyWalking(fromRoleInfo);
+		}
+		#endregion // IHierarchyContextLinkFilter Implementation
+	}
+	#endregion // RolePlayer Hierarchy Context Navigation
 	#region FactType Model Validation Errors
 
 	#region class FactTypeRequiresReadingError

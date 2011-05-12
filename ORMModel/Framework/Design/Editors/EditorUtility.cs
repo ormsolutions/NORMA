@@ -935,6 +935,21 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 			myCategory = category;
 		}
 		#endregion // Constructor
+		#region Component Resolution
+		private object ResolveComponent(object component)
+		{
+			Type componentType;
+			IElementReference redirection;
+			if (null != component &&
+				null != (componentType = myInner.ComponentType) &&
+				!componentType.IsAssignableFrom(component.GetType()) &&
+				null != (redirection = component as IElementReference))
+			{
+				return redirection.ReferencedElement;
+			}
+			return component;
+		}
+		#endregion // Component Resolution
 		#region Other overrides
 		/// <summary>
 		/// Return the custom category if provided in the constructor, or
@@ -974,7 +989,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		/// </summary>
 		public override bool CanResetValue(object component)
 		{
-			return myInner.CanResetValue(component);
+			return myInner.CanResetValue(ResolveComponent(component));
 		}
 		/// <summary>
 		/// Standard override. Defer to the wrapped descriptor.
@@ -988,7 +1003,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		/// </summary>
 		public override object GetValue(object component)
 		{
-			return myInner.GetValue(component);
+			return myInner.GetValue(ResolveComponent(component));
 		}
 		/// <summary>
 		/// Standard override. Defer to the wrapped descriptor.
@@ -1012,7 +1027,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		{
 			ModelElement element;
 			Store store;
-			if (null == (element = component as ModelElement) ||
+			if (null == (element = ResolveComponent(component) as ModelElement) ||
 				null == (store = Utility.ValidateStore(element.Store)))
 			{
 				return;
@@ -1034,7 +1049,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		{
 			ModelElement element;
 			Store store;
-			if (null == (element = component as ModelElement) ||
+			if (null == (element = ResolveComponent(component) as ModelElement) ||
 				null == (store = Utility.ValidateStore(element.Store)))
 			{
 				return;
@@ -1053,14 +1068,14 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		/// </summary>
 		public override bool ShouldSerializeValue(object component)
 		{
-			return myInner.ShouldSerializeValue(component);
+			return myInner.ShouldSerializeValue(ResolveComponent(component));
 		}
 		/// <summary>
 		/// Standard override. Defer to the wrapped descriptor.
 		/// </summary>
 		public override void AddValueChanged(object component, EventHandler handler)
 		{
-			myInner.AddValueChanged(component, handler);
+			myInner.AddValueChanged(ResolveComponent(component), handler);
 		}
 		/// <summary>
 		/// Standard override. Defer to the wrapped descriptor.
@@ -1116,7 +1131,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		/// </summary>
 		public override void RemoveValueChanged(object component, EventHandler handler)
 		{
-			myInner.RemoveValueChanged(component, handler);
+			myInner.RemoveValueChanged(ResolveComponent(component), handler);
 		}
 		/// <summary>
 		/// Standard override. Defer to the wrapped descriptor.
