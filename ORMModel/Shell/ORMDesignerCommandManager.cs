@@ -1042,8 +1042,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 			// Turn on standard commands for all selections
-			visibleCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.CopyImage | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList | ORMDesignerCommands.ReportGeneratorList | ORMDesignerCommands.FreeFormCommandList | ORMDesignerCommands.SelectInModelBrowser;
-			enabledCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.CopyImage | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList | ORMDesignerCommands.ReportGeneratorList | ORMDesignerCommands.FreeFormCommandList | ORMDesignerCommands.SelectInModelBrowser;
+			visibleCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.CopyImage | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList | ORMDesignerCommands.ReportGeneratorList | ORMDesignerCommands.FreeFormCommandList | ORMDesignerCommands.SelectInModelBrowser | ORMDesignerCommands.Zoom;
+			enabledCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.CopyImage | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList | ORMDesignerCommands.ReportGeneratorList | ORMDesignerCommands.FreeFormCommandList | ORMDesignerCommands.SelectInModelBrowser | ORMDesignerCommands.Zoom;
 		}
 		private static void UpdateMoveRoleCommandStatus(FactTypeShape factShape, RoleBase role, ref ORMDesignerCommands visibleCommands, ref ORMDesignerCommands enabledCommands)
 		{
@@ -2925,7 +2925,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 
 							// Copy the bitmap to the clipboard
 							// Yes, we're passing null for the 'this' parameter, but the method doesn't use it anyway
+#if VISUALSTUDIO_9_0
+							IntPtr hCompatibleBitmap = GetCompatibleBitmap(bitmap);
+#else
 							IntPtr hCompatibleBitmap = GetCompatibleBitmap(null, bitmap);
+#endif
 							if (hCompatibleBitmap == IntPtr.Zero || SetClipboardData(CF_BITMAP, hCompatibleBitmap) == IntPtr.Zero)
 							{
 								throw new Win32Exception();
@@ -3060,7 +3064,20 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			System.Reflection.MethodInfo getShapesToDrawMethodInfo = typeof(Diagram).GetMethod("GetShapesToDraw", bindingFlags, null, new Type[] { typeof(ICollection), typeof(RectangleD).MakeByRefType() }, null);
 			return getShapesToDrawMethodInfo != null ? (GetShapesToDrawDelegate)Delegate.CreateDelegate(typeof(GetShapesToDrawDelegate), getShapesToDrawMethodInfo, false) : null;
 		}
-
+#if VISUALSTUDIO_9_0
+		private delegate IntPtr GetCompatibleBitmapDelegate(Bitmap bitmap);
+		private static readonly GetCompatibleBitmapDelegate GetCompatibleBitmap = InitializeGetCompatibleBitmap();
+		private static GetCompatibleBitmapDelegate InitializeGetCompatibleBitmap()
+		{
+			const System.Reflection.BindingFlags bindingFlags =
+				System.Reflection.BindingFlags.DeclaredOnly |
+				System.Reflection.BindingFlags.ExactBinding |
+				System.Reflection.BindingFlags.Static |
+				System.Reflection.BindingFlags.NonPublic;
+			System.Reflection.MethodInfo getCompatibleBitmapMethodInfo = typeof(Diagram).GetMethod("GetCompatibleBitmap", bindingFlags, null, new Type[] { typeof(Bitmap) }, null);
+			return getCompatibleBitmapMethodInfo != null ? (GetCompatibleBitmapDelegate)Delegate.CreateDelegate(typeof(GetCompatibleBitmapDelegate), getCompatibleBitmapMethodInfo, false) : null;
+		}
+#else // VISUALSTUDIO_9_0
 		private delegate IntPtr GetCompatibleBitmapDelegate(Diagram @this, Bitmap bitmap);
 		private static readonly GetCompatibleBitmapDelegate GetCompatibleBitmap = InitializeGetCompatibleBitmap();
 		private static GetCompatibleBitmapDelegate InitializeGetCompatibleBitmap()
@@ -3073,6 +3090,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			System.Reflection.MethodInfo getCompatibleBitmapMethodInfo = typeof(Diagram).GetMethod("GetCompatibleBitmap", bindingFlags, null, new Type[] { typeof(Bitmap) }, null);
 			return getCompatibleBitmapMethodInfo != null ? (GetCompatibleBitmapDelegate)Delegate.CreateDelegate(typeof(GetCompatibleBitmapDelegate), getCompatibleBitmapMethodInfo, false) : null;
 		}
+#endif // VISUALSTUDIO_9_0
 		#endregion // Reflected delegates
 
 		private static void DrawDiagramShapesForImage(Image image, ArrayList shapesToDraw, PointD sourceLocation, Rectangle clipRectangle)
@@ -3087,9 +3105,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				graphics.PageUnit = GraphicsUnit.Inch;
 				graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 				graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
-				graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-				graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-				graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+				// These options give a slightly sharper image, but the lines are weaker and look noticeably
+				// different from the designer diagram rendering. Preserve for reference.
+				//graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+				//graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+				//graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
 				// Respect the user's preference for text rendering
 				graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
 

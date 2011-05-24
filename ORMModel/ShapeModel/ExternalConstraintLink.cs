@@ -116,6 +116,22 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		}
 		#endregion // SubsetStickyDecorator class
 		#region Customize appearance
+#if VISUALSTUDIO_10_0
+		// Based on reflecting the code, VS2010 attempts to 'fix' the GDI+ rendering
+		// bug with dotted lines (uninitialized data in the metafile results in blobs or
+		// crashes on some platforms and printers) by not rendering non-solid lines to the
+		// metafile. This is done with the Microsoft.VisualStudio.Modeling.Diagrams.Diagram.MetafileCreationContext
+		// class, which modifies ShapeOutline and ConnectionLine pens before metafile rendering.
+		// This is a lame approach because it isn't comprehensive (non-solid lines can be attached
+		// to other pen identifiers or simply drawn with a temporarily modified pen). The only ways
+		// to fix the issue are to either fix GDI+ or create a meta-file iterator that cleans up the
+		// garbage data in the metafile stream. Constraint lines are the only NORMA pens affected by this
+		// 'fix', so we simply give ours a different resource identifier to avoid the problem altogether.
+		/// <summary>
+		/// Pen to draw dotted connection lines in VS2010
+		/// </summary>
+		private static readonly StyleSetResourceId CustomConnectionLinePen = new StyleSetResourceId("ORMArchitect", "CustomConnectionLine");
+#endif // VISUALSTUDIO_10_0
 		/// <summary>
 		/// Override the connection line pen with a dashed pen
 		/// </summary>
@@ -130,7 +146,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			settings.Color = constraintColor;
 			settings.DashStyle = DashStyle.Dash;
 			settings.Width = 1.0F / 72.0F; // 1 Point. 0 Means 1 pixel, but should only be used for non-printed items
+#if VISUALSTUDIO_10_0
+			classStyleSet.AddPen(CustomConnectionLinePen, DiagramPens.ConnectionLine, settings);
+#else
 			classStyleSet.OverridePen(DiagramPens.ConnectionLine, settings);
+#endif
 			settings.Color = activeColor;
 			classStyleSet.AddPen(ORMDiagram.StickyBackgroundResource, DiagramPens.ConnectionLine, settings);
 
@@ -166,7 +186,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					PenSettings penSettings = new PenSettings();
 					constraintColor = colorService.GetForeColor(ORMDesignerColor.DeonticConstraint);
 					penSettings.Color = constraintColor;
+#if VISUALSTUDIO_10_0
+					retVal.OverridePen(CustomConnectionLinePen, penSettings);
+#else
 					retVal.OverridePen(DiagramPens.ConnectionLine, penSettings);
+#endif
 					retVal.OverridePen(DiagramPens.ConnectionLineDecorator, penSettings);
 					BrushSettings brushSettings = new BrushSettings();
 					brushSettings.Color = constraintColor;
@@ -209,7 +233,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				{
 					return ORMDiagram.StickyBackgroundResource;
 				}
+#if VISUALSTUDIO_10_0
+				return CustomConnectionLinePen;
+#else
 				return DiagramPens.ConnectionLine;
+#endif
 			}
 		}
 		private bool IsSticky()

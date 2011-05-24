@@ -3,7 +3,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
-<title>NORMA December 2010 CTP Readme</title>
+<title>NORMA May 2011 CTP Readme</title>
 <style type="text/css">
 	.new {font-size:x-small; background-color:Gold; color:Blue; }
 	li {padding-bottom: 3px;}
@@ -12,9 +12,9 @@
 
 <body>
 
-<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA December 2010 CTP Readme</a>&nbsp;</b></p>
+<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA May 2011 CTP Readme</a>&nbsp;</b></p>
 <p>This file supersedes the previous readme.txt and older readme.htm files. This readme has parallel indexing mechanisms: by topic, and by release date (starting with the October 2008 (2008-10) release). The file will be extended for future product releases.<br/><br/>
-The December 2010 release has two major features: cross-model element copy with drag-drop gestures, and the first NORMA release for Visual Studio 2010. Significant performance improvements were also made for relational generation of large models. Due to additional expanded data saved with predicate readings, files saved in this version will not save in older versions of the tool. See detailed change notes below for specifics. 
+The May 2011 release is mostly a bug fix release with some minor new features (link fact type display and improved zoom handling). See detailed change notes below for specifics. 
 <br/><br/></p>
 <h2>Contents</h2>
 <ul>
@@ -42,8 +42,37 @@ The December 2010 release has two major features: cross-model element copy with 
 </ul>-->
 
 <hr/>
+<h2>May 2011 CTP Changes</h2>
+<div>The May 2011 CTP release includes all modifications through changeset 1468. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<ul>
+<li><a href="#LinkFactTypeDisplay 2011-05">Link Fact Type Display</a>&nbsp;</li>
+<li><a href="#ZoomCommands 2011-05">Zoom Commands</a>&nbsp;</li>
+<li><a href="#ZoomSensitiveNudge 2011-05">Zoom Sensitive Nudge Distance</a>&nbsp;</li>
+<li>Other Features:
+<ol>
+<li>Simultaneously selecting an object type shapes and a connected subtype connector link is no longer supported: the subtype connector link will be automatically deselected in this case. This makes it much easier to lasso select and align shapes attached to subtype and supertype connectors.</li>
+<li>Tooltips on foreign key lines in the relational view display table names with the column names.</li>
+</ol>
+</li>
+<li>Bug Fixes:
+<ol>
+<li>(VS2005/2008) Most toolbox actions did not work with a floating toolbox.</li>
+<li>(VS2010) VS2010 code generation looked for generation transforms under the VS2008 registry key, resulting in an empty dialog.</li>
+<li>(VS2010) <em>Copy Image</em> generated solid lines for constraint links.</li>
+<li>(VS2010) Customizable attach points displayed on the Relational and Barker ER diagrams crashed if clicked.</li>
+<li>External constraints attached to subtype lines did not display in the Context Window.</li>
+<li>Selecting an ObjectType reference inside a group element crashed the Properties Window.</li>
+<li>Fact type shapes with constraint role bar display failed with multiple shapes for the same fact type on the same diagram.</li>
+<li>Objectified fact types did not synchronize the object type and default fact type name in the target model after a cross-model drag of the objectified fact type.</li>
+<li>Sample population editor crashed adding new supertype instances in an empty inline-expanded subtype cell.</li>
+<li>copy Image meta file did not have a transparent background on all versions, lines rendered visibly than those in the designer.</li>
+</ol>
+</li>
+</ul>
+
+<hr/>
 <h2>December 2010 CTP Changes</h2>
-<div>The December 2010 CTP release includes all modifications through changeset 1464. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<div>The December 2010 CTP release includes all modifications through changeset 1464.</div>
 <ul>
 <li><a href="#CrossModelDrag 2010-12">Cross Model Drag-Drop</a>&nbsp;</li>
 <li><a href="#DiagramTabHoverActivation 2010-12">Diagram Tab Hover Activation</a>&nbsp;</li>
@@ -78,7 +107,7 @@ The December 2010 release has two major features: cross-model element copy with 
 <li>Bug Fixes:
 <ol>
 <li>The <em>Is Mandatory</em> menu was incorrectly enabled for a unary role.</li>
-<li>Value constraints on remote identifying rolesâ€”where an entity type is (possibly recursively) identified by another entity typeâ€”were not correctly revalidated on a preferred identifier change.</li>
+<li>Value constraints on remote identifying roles—where an entity type is (possibly recursively) identified by another entity type—were not correctly revalidated on a preferred identifier change.</li>
 <li>Style specifications used in the core verbalization were not included in the generated report styles. All report styles have now been brought up to date.</li>
 <li>Set comparison constraint verbalization across compatible types was not choosing a shared column supertype for the initial object type list, resulting in verbalizations with different meanings when the constraint sequence order was changed.</li>
 </ol>
@@ -319,6 +348,18 @@ ORM elements can be dragged from one model to another. Cross-model drag is suppo
 <li><a id="DiagramTabHoverActivation 2010-12" class="new" title="December 2010 CTP: Diagram Tab Hover Activation">2010-12</a>&nbsp;
 Hovering over a diagram tab (at the bottom of the designer) during any drag operation will activate that diagram. Hovering over the left edge of the leftmost tab will scroll the diagrams to the left. Combined with the Visual Studio support for activating a file by hovering over the file tabe and bump scrolling within a diagram, this makes it much easier to drag items between models and copy shapes within models. Without this support, cross-diagram drag required both the source and target diagrams to be visible in either multiple document windows or the <em>Diagram Spy</em> tool window.
 </li>
+<li><a id="ZoomCommands 2011-05" class="new" title="May 2011 CTP: Zoom Commands">2011-05</a>&nbsp;
+A Zoom submenu enables zooming to a specific percentage or with incremental zoom in/zoom out commands. There are corresponding mouse gestures and hotkeys cooresponding to these commands. All of these commands work with 'Control-Shift' modifiers. Pressing control-shift will change the designer cursor to a magnifying glass, indicating zoom.<br />Mouse and keyboard zoom commands:
+<ul>
+<li><strong>Zoom In: </strong>Control-Shift-PlusKey, Control-Shift-LeftClick, Control-MouseWheel, Control-Shift-MouseWheel</li>
+<li><strong>Zoom Out: </strong>Control-Shift-MinusKey, Control-Shift-RightClick, Control-MouseWheel, Control-Shift-MouseWheel</li>
+<li><strong>Zoom Restore: </strong>Control-Shift-0 (Zero Key, correspond to Zoom/100%)</li>
+<li><strong>Scroll: </strong>MouseWheel for vertical scroll, Shift-MouseWheel for horizontal scroll.</li>
+</ul>
+</li>
+<li><a id="ZoomSensitiveNudge 2011-05" class="new" title="May 2011 CTP: Zoom Sensitive Nudge Distance">2011-05</a>&nbsp;
+Keyboard nudging of selected shapes depends on the zoom level. At maximum zoom (400%) the keyboard nudge distance is very small with the intent of allowing extremely fine-grained shape alignment. The nudge distance is fixed from 10% to 100% zoom, at which point it linearly decreases to the fine-grained setting at maximum zoom.
+</li>
 </ol>
 <a href="#The Top">Return to top</a>
 <hr/>
@@ -444,7 +485,7 @@ Selecting a fact type that is part of the identification scheme for an entity ty
 <ol>
 <li>The displayed reference mode notation corresponds to notational changes introduced in <em>Information Modeling and Relational Databases</em> (Second Edition by Terry Halpin and Tony Morgan, March 2008). A . (period) is prepended to popular reference modes and a : is appended to unit-based reference modes. We will eventually expand the : notation to formally recognized units of comparable dimension (length, for example). Entering either of these notations will automatically introduce a new recognized reference mode pattern to the model. You can see the reference modes you've added in the 'ORM Reference Mode Editor' tool window.</li>
 <li>A solid subtyping line indicates that the subtyping relationship leads to the preferred identifier directly or indirectly (over other supertypes). The old notation marked a primary supertype even if the subtype had an explicit preferred identifier. If multiple paths lead to the preferred identifier then all paths will be solid. The old 'IsPrimary' notion will be updated when the .orm file is loaded. Loading a modified file on a previous NORMA version will give schema validation errors on load, but the file should load successfully if the Shift key is held down during load (follow the directions in the schema validation error dialog).</li>
-<li>There is an option called <em>Binary FactType Multiplicity Display</em> in the <em>Entity Relationship Learning Mode</em> category on the 'ORM Designer' tab of the Tools/Options diagram. Enabling this options overlays common Entity Relationship (ER) multiplicity notations on binary FactTypes on the ORM diagram. You can choose CrowsFoot only (displays many), Barker notation (crowsfoot plus dotted line on mandatory roles), or Information Engineering (line symbols correspond to the UML-ish derived Multiplicity property in the Properties Window when a Role is selected). The display changes impact binary role player links onlyâ€”the multiplicity concept breaks down badly when applied to non-binary facts. Thanks to Dr. Gordon Everest for the suggestion. The Barker option only applies to multiplicity settings; it does not add the tick on the line indicating a part of the identification scheme. The 'Mandatory Dot Placement' option is ignored when ER learning mode is enabled, so mandatory dots will always be displayed on the Role end of the relationship.</li>
+<li>There is an option called <em>Binary FactType Multiplicity Display</em> in the <em>Entity Relationship Learning Mode</em> category on the 'ORM Designer' tab of the Tools/Options diagram. Enabling this options overlays common Entity Relationship (ER) multiplicity notations on binary FactTypes on the ORM diagram. You can choose CrowsFoot only (displays many), Barker notation (crowsfoot plus dotted line on mandatory roles), or Information Engineering (line symbols correspond to the UML-ish derived Multiplicity property in the Properties Window when a Role is selected). The display changes impact binary role player links only—the multiplicity concept breaks down badly when applied to non-binary facts. Thanks to Dr. Gordon Everest for the suggestion. The Barker option only applies to multiplicity settings; it does not add the tick on the line indicating a part of the identification scheme. The 'Mandatory Dot Placement' option is ignored when ER learning mode is enabled, so mandatory dots will always be displayed on the Role end of the relationship.</li>
 <li><a id="Notation SubtypeDerivation 2008-10" class="new" title="October 2008 CTP: Subtype derivation rules">2008-10</a>&nbsp;
 Although derivation rules in NORMA are still informal, they are displayed in the right place. All derivation rules were originally displayed on the FactType and the SubtypeFact. This convention rapidly breaks down for SubtypeFact relationships because one subtype can have multiple supertypes, and because there is no good way to indicate the presence of a subtype derivation rule on the diagram.
 <ul>
@@ -470,6 +511,18 @@ If the user-entered form of a number cannot be interpreted as the same number in
 </li>
 <li><a id="Value Constraint Special String Characters 2010-02" class="new" title="February 2010 CTP: Value constraint special string characters">2010-02</a>&nbsp;
 Special delimiter characters used in value constraint definitions can be specified inside single-quotation characters. For example, <em>a,b,c</em> for a string data type is parsed and listed back as <em>{'a', 'b', 'c'}</em>, while <em>'a,b,c'</em> is treated as a single string value. Use two adjacent single quotes to represent a single quote in a string (<em>'''abc'''</em> represents the string <em>'abc'</em>), and use <em>''</em> to represent the empty string.
+</li>
+<li><a id="LinkFactTypeDisplay 2011-05" class="new" title="May 2011 CTP: Link Fact Type Display">2011-05</a>&nbsp;
+<em>Link fact types</em> represent the relationship between an objectifying entity type and each of the role players of its objectified fact type. A link fact type is implied and automatically create by NORMA for each role in an objectified fact type. Readings for these fact types can be modified in the 'Implied Fact Types' branch of the 'ORM Reading Editor' tool window when a single role is selected in an objectified fact type. Readings can also be modified by selecting the fact type in the 'ORM Model Browser' tool window and expanding the 'Implied Fact Types' child node. In most cases there is no need to display these fact types. However, it is not uncommon for the objectifying-entity-type-attached role to participate in a set comparison constraint. Shapes are never automatically generated for link fact types, but an explicit shape can be added by dragging an implied fact type node from the model browser.<br />
+Notes on link fact type shapes:
+<ul>
+<li>Link fact type shapes are displayed with dashed lines on the role boxes.</li>
+<li>The link fact type role attached to the objectifying entity type will always have single role uniqueness and mandatory constraints. These constraints are part of the objectification pattern and cannot be deleted or edited.</li>
+<li>The far role (opposite the objectifying entity type) will show an internal uniqueness constraint for unary and many-to-one (internal uniqueness on one role in a binary fact type) objectification patterns. If the far constraint is the preferred identifier for the objectifying entity then it will display with a double line. This is a duplicate display of the constraint on the objectified fact type, but cannot be edited from a link fact type selection.</li>
+<li>Apart from simple mandatory and uniqueness constraint display, no other constraints will be shown as attached to the far role.</li>
+<li>Role names and value constraints are not shown on the fact role of a link fact type. These are the same as the corresponding role on the objectifed fact type and are not duplicated.</li>
+<li>Some other editing actions are unavailable for far roles on link fact types (group operations, for example). The primary reason to show these is to attach constraints to the objectified roles, and this scenario is satisfied without full editing capabilities on the far roles.</li>
+</ul>
 </li>
 </ol>
 <a href="#The Top">Return to top</a>
@@ -554,9 +607,8 @@ The settings file for the LinqToSqlAttributeMapping layer has been updated. This
 <h3><a id="VS2010 Bugs">Unresolved issues in Visual Studio 2010</a></h3>
 <p>These are areas that are incomplete and known issues with Visual Studio 2010.</p>
 <ol>
-<li>If an .orm file is opened simultaneously with more than one other file (such as when opening a solution) and is the active file immediately after load, then the ORM designer tool windows and menu items will not activate properly. Activating a second document (of any type) and reactivating the ORM designer will fix the properly. [I have seen similar issues with other types of documents and believe this to be a Visual Studio problem.]</li>
-<li>The <em>ORM Diagram Spy</em> window will occasionally go blank after extended use with multiple open ORM files. A restart of the environment is required to recover the window. If you can reliable reproduce this issue please report the scenario.</li>
-<li>Copy Image of dashed constraint lines results pastes lightweight solid lines of the correct color.</li>
+<li>If an .orm file is opened simultaneously with more than one other file (such as when opening a solution) and is the active file immediately after load, then the ORM designer tool windows and menu items will not activate properly. Activating a second document (of any type) and reactivating the ORM designer will fix the problem. <em>This is a Visual Studio 2010 bug</em> (I can reproduce similar behavior with missing menus with one XML and one Text file).</li>
+<li>The <em>ORM Diagram Spy</em> window will occasionally go blank after extended use with multiple open ORM files. A restart of the environment is required to recover the window. If you can reliably reproduce this issue please report the scenario.</li>
 <li>The NORMA help files are not installed or integrated with Visual Studio 2010. [The installer merge modules used for help integration in VS2005 and VS2008 are not included with the VS2010 SDK.]</li>
 <li>The FrequencyConstraint and Reading shapes are larger in Visual Studio 2010.</li>
 </ol>

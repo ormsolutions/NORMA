@@ -340,6 +340,76 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						new EventHandler(OnStatusReadingEditorDemoteReadingOrder),
 						new EventHandler(OnMenuReadingEditorDemoteReadingOrder),
 						ORMDesignerCommandIds.ReadingEditorDemoteReadingOrder)
+						,new ZoomMenuCommand(
+						new EventHandler(OnStatusZoom),
+						new EventHandler(OnMenuZoom),
+						ORMDesignerCommandIds.Zoom10,
+						.1f)
+						,new ZoomMenuCommand(
+						new EventHandler(OnStatusZoom),
+						new EventHandler(OnMenuZoom),
+						ORMDesignerCommandIds.Zoom25,
+						.25f)
+						,new ZoomMenuCommand(
+						new EventHandler(OnStatusZoom),
+						new EventHandler(OnMenuZoom),
+						ORMDesignerCommandIds.Zoom33,
+						1f/3)
+						,new ZoomMenuCommand(
+						new EventHandler(OnStatusZoom),
+						new EventHandler(OnMenuZoom),
+						ORMDesignerCommandIds.Zoom50,
+						.5f)
+						,new ZoomMenuCommand(
+						new EventHandler(OnStatusZoom),
+						new EventHandler(OnMenuZoom),
+						ORMDesignerCommandIds.Zoom66,
+						2f/3)
+						,new ZoomMenuCommand(
+						new EventHandler(OnStatusZoom),
+						new EventHandler(OnMenuZoom),
+						ORMDesignerCommandIds.Zoom75,
+						.75f)
+						,new ZoomMenuCommand(
+						new EventHandler(OnStatusZoom),
+						new EventHandler(OnMenuZoom),
+						ORMDesignerCommandIds.Zoom100,
+						1f)
+						,new ZoomMenuCommand(
+						new EventHandler(OnStatusZoom),
+						new EventHandler(OnMenuZoom),
+						ORMDesignerCommandIds.Zoom125,
+						1.25f)
+						,new ZoomMenuCommand(
+						new EventHandler(OnStatusZoom),
+						new EventHandler(OnMenuZoom),
+						ORMDesignerCommandIds.Zoom150,
+						1.5f)
+						,new ZoomMenuCommand(
+						new EventHandler(OnStatusZoom),
+						new EventHandler(OnMenuZoom),
+						ORMDesignerCommandIds.Zoom200,
+						2f)
+						,new ZoomMenuCommand(
+						new EventHandler(OnStatusZoom),
+						new EventHandler(OnMenuZoom),
+						ORMDesignerCommandIds.Zoom300,
+						3f)
+						,new ZoomMenuCommand(
+						new EventHandler(OnStatusZoom),
+						new EventHandler(OnMenuZoom),
+						ORMDesignerCommandIds.Zoom400,
+						4f)
+						,new ZoomMenuCommand(
+						new EventHandler(OnStatusZoom),
+						new EventHandler(OnMenuZoom),
+						ORMDesignerCommandIds.ZoomIn,
+						float.MaxValue)
+						,new ZoomMenuCommand(
+						new EventHandler(OnStatusZoom),
+						new EventHandler(OnMenuZoom),
+						ORMDesignerCommandIds.ZoomOut,
+						float.MinValue)
 					}
 					#endregion
 				);
@@ -932,7 +1002,58 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					designerView.CommandManager.OnMenuAlignShapes((sender as MenuCommand).CommandID.ID);
 				}
 			}
+			private sealed class ZoomMenuCommand : DynamicStatusMenuCommand
+			{
+				/// <summary>
+				/// The zoom factor for this command
+				/// </summary>
+				public readonly float ZoomFactor;
+				/// <summary>
+				/// Create a zoom command
+				/// </summary>
+				public ZoomMenuCommand(EventHandler statusHandler, EventHandler invokeHandler, CommandID id, float zoomFactor)
+					: base(statusHandler, invokeHandler, id)
+				{
+					ZoomFactor = zoomFactor;
+				}
+			}
 
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			private void OnStatusZoom(object sender, EventArgs e)
+			{
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.Zoom);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuZoom(object sender, EventArgs e)
+			{
+				IORMDesignerView designerView = CurrentORMView;
+				DiagramView diagramView;
+				DiagramClientView clientView;
+				ZoomMenuCommand command;
+				if (null != (designerView = CurrentORMView) &&
+					null != (diagramView = designerView.CurrentDesigner) &&
+					null != (clientView = diagramView.DiagramClientView) &&
+					null != (command = sender as ZoomMenuCommand))
+				{
+					float zoomFactor = command.ZoomFactor;
+					if (zoomFactor == float.MinValue)
+					{
+						clientView.ZoomOut();
+					}
+					else if (zoomFactor == float.MaxValue)
+					{
+						clientView.ZoomIn();
+					}
+					else
+					{
+						clientView.ZoomAtViewCenter(zoomFactor);
+					}
+				}
+			}
 			#region ReadingEditor context menu handlers
 			/// <summary>
 			/// Status callback
@@ -1855,6 +1976,62 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// Indicates the number of command ids reserved for removing an element from a group
 			/// </summary>
 			public const int DeleteFromGroupListLength = cmdIdDeleteFromGroupListEnd - cmdIdDeleteFromGroupList + 1;
+			/// <summary>
+			/// Zoom 10 percent.
+			/// </summary>
+			public static readonly CommandID Zoom10 = new CommandID(guidORMDesignerCommandSet, cmdIdZoom10);
+			/// <summary>
+			/// Zoom 25 percent.
+			/// </summary>
+			public static readonly CommandID Zoom25 = new CommandID(guidORMDesignerCommandSet, cmdIdZoom25);
+			/// <summary>
+			/// Zoom 33 percent.
+			/// </summary>
+			public static readonly CommandID Zoom33 = new CommandID(guidORMDesignerCommandSet, cmdIdZoom33);
+			/// <summary>
+			/// Zoom 50 percent.
+			/// </summary>
+			public static readonly CommandID Zoom50 = new CommandID(guidORMDesignerCommandSet, cmdIdZoom50);
+			/// <summary>
+			/// Zoom 66 percent.
+			/// </summary>
+			public static readonly CommandID Zoom66 = new CommandID(guidORMDesignerCommandSet, cmdIdZoom66);
+			/// <summary>
+			/// Zoom 75 percent.
+			/// </summary>
+			public static readonly CommandID Zoom75 = new CommandID(guidORMDesignerCommandSet, cmdIdZoom75);
+			/// <summary>
+			/// Zoom 100 percent.
+			/// </summary>
+			public static readonly CommandID Zoom100 = new CommandID(guidORMDesignerCommandSet, cmdIdZoom100);
+			/// <summary>
+			/// Zoom 125 percent.
+			/// </summary>
+			public static readonly CommandID Zoom125 = new CommandID(guidORMDesignerCommandSet, cmdIdZoom125);
+			/// <summary>
+			/// Zoom 150 percent.
+			/// </summary>
+			public static readonly CommandID Zoom150 = new CommandID(guidORMDesignerCommandSet, cmdIdZoom150);
+			/// <summary>
+			/// Zoom 200 percent.
+			/// </summary>
+			public static readonly CommandID Zoom200 = new CommandID(guidORMDesignerCommandSet, cmdIdZoom200);
+			/// <summary>
+			/// Zoom 300 percent.
+			/// </summary>
+			public static readonly CommandID Zoom300 = new CommandID(guidORMDesignerCommandSet, cmdIdZoom300);
+			/// <summary>
+			/// Zoom 400 percent.
+			/// </summary>
+			public static readonly CommandID Zoom400 = new CommandID(guidORMDesignerCommandSet, cmdIdZoom400);
+			/// <summary>
+			/// Zoom In.
+			/// </summary>
+			public static readonly CommandID ZoomIn = new CommandID(guidORMDesignerCommandSet, cmdIdZoomIn);
+			/// <summary>
+			/// Zoom Out.
+			/// </summary>
+			public static readonly CommandID ZoomOut = new CommandID(guidORMDesignerCommandSet, cmdIdZoomOut);
 			#endregion //CommandID objects for menus
 			#region cmdIds
 			// IMPORTANT: keep these constants in sync with PkgCmd.vsct
@@ -2117,6 +2294,62 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// Activate the next shape in the same diagram corresponding the current backing element.
 			/// </summary>
 			private const int cmdIdSelectNextInCurrentDiagram = 0x2933;
+			/// <summary>
+			/// Zoom 10 percent.
+			/// </summary>
+			private const int cmdIdZoom10 = 0x2934;
+			/// <summary>
+			/// Zoom 25 percent.
+			/// </summary>
+			private const int cmdIdZoom25 = 0x2935;
+			/// <summary>
+			/// Zoom 33 percent.
+			/// </summary>
+			private const int cmdIdZoom33 = 0x2936;
+			/// <summary>
+			/// Zoom 50 percent.
+			/// </summary>
+			private const int cmdIdZoom50 = 0x2937;
+			/// <summary>
+			/// Zoom 66 percent.
+			/// </summary>
+			private const int cmdIdZoom66 = 0x2938;
+			/// <summary>
+			/// Zoom 75 percent.
+			/// </summary>
+			private const int cmdIdZoom75 = 0x2939;
+			/// <summary>
+			/// Zoom 100 percent.
+			/// </summary>
+			private const int cmdIdZoom100 = 0x293a;
+			/// <summary>
+			/// Zoom 125 percent.
+			/// </summary>
+			private const int cmdIdZoom125 = 0x293b;
+			/// <summary>
+			/// Zoom 150 percent.
+			/// </summary>
+			private const int cmdIdZoom150 = 0x293c;
+			/// <summary>
+			/// Zoom 200 percent.
+			/// </summary>
+			private const int cmdIdZoom200 = 0x293d;
+			/// <summary>
+			/// Zoom 300 percent.
+			/// </summary>
+			private const int cmdIdZoom300 = 0x293e;
+			/// <summary>
+			/// Zoom 400 percent.
+			/// </summary>
+			private const int cmdIdZoom400 = 0x293f;
+			/// <summary>
+			/// Zoom In.
+			/// </summary>
+			private const int cmdIdZoomIn = 0x2940;
+			/// <summary>
+			/// Zoom Out.
+			/// </summary>
+			private const int cmdIdZoomOut = 0x2941;
 			/// <summary>
 			/// The context menu item for related diagrams, targeted to the diagram spy
 			/// </summary>

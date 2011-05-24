@@ -1562,6 +1562,33 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				return .05;
 			}
 		}
+		private const double FineGridSize = 1d / (72 * 8); // 1/8 point, small enough so smooth out just about any line
+		/// <summary>
+		/// Adjust grid size based on zoom of active view
+		/// </summary>
+		public override double GridSize
+		{
+			get
+			{
+				double gridSize = base.GridSize;
+				DiagramView diagramView;
+				DiagramClientView clientView;
+				double zoomFactor;
+				if (null != (diagramView = ActiveDiagramView) &&
+					null != (clientView = diagramView.DiagramClientView) &&
+					(zoomFactor = clientView.ZoomFactor) > 1 &&
+					!VGConstants.FuzzEqual(zoomFactor, 1, VGConstants.FuzzGeneral))
+				{
+					// Linearly adjust to fine grid size at max zoom
+					gridSize += (zoomFactor - 1) * (FineGridSize - gridSize) / (clientView.MaximumZoom - 1);
+				}
+				return gridSize;
+			}
+			set
+			{
+				base.GridSize = value;
+			}
+		}
 		#endregion // Customize appearance
 		#region Toolbox support
 		[NonSerialized]

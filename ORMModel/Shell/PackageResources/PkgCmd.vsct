@@ -88,6 +88,13 @@
 					<CommandName>&amp;Groups</CommandName>
 				</Strings>
 			</Menu>
+			<Menu guid="guidORMDesignerCommandSet" id="menuIdZoomCommands" priority="0x0600" type="Context">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdSelectCommands"/>
+				<Strings>
+					<ButtonText>Zoom</ButtonText>
+					<CommandName>&amp;Zoom</CommandName>
+				</Strings>
+			</Menu>
 			<Menu guid="guidORMDesignerCommandSet" id="menuIdIncludeInGroup" priority="0x0100" type="Context">
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdGroupCommands"/>
 				<Strings>
@@ -217,6 +224,12 @@
 				<Parent guid="guidORMDesignerCommandSet" id="menuIdDisplayOrientation"/>
 			</Group>
 
+			<Group guid="guidORMDesignerCommandSet" id="groupIdNumberedZoomCommands" priority="0x0100">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdZoomCommands"/>
+			</Group>
+			<Group guid="guidORMDesignerCommandSet" id="groupIdInOutZoomCommands" priority="0x0200">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdZoomCommands"/>
+			</Group>
 			<Group guid="guidORMDesignerCommandSet" id="groupIdORMToolWindows" priority="0x0010">
 				<Parent guid="guidORMDesignerCommandSet" id="menuIdToolWindows"/>
 			</Group>
@@ -785,6 +798,119 @@
 					<ButtonText>&amp;Commit FactType Definition</ButtonText>
 				</Strings>
 			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdZoomIn" priority="0x0010" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdInOutZoomCommands"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Zoom &amp;In</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdZoomOut" priority="0x0020" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdInOutZoomCommands"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Zoom &amp;Out</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdZoom10" priority="0x0010" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdNumberedZoomCommands"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>10%</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdZoom25" priority="0x0020" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdNumberedZoomCommands"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>25%</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdZoom33" priority="0x0030" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdNumberedZoomCommands"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>33%</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdZoom50" priority="0x0040" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdNumberedZoomCommands"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>50%</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdZoom66" priority="0x0050" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdNumberedZoomCommands"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>66%</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdZoom75" priority="0x0060" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdNumberedZoomCommands"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>75%</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdZoom100" priority="0x0070" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdNumberedZoomCommands"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>100%</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdZoom125" priority="0x0080" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdNumberedZoomCommands"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>125%</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdZoom150" priority="0x0090" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdNumberedZoomCommands"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>150%</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdZoom200" priority="0x00a0" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdNumberedZoomCommands"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>200%</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdZoom300" priority="0x00b0" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdNumberedZoomCommands"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>300%</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdZoom400" priority="0x00c0" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdNumberedZoomCommands"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>400%</ButtonText>
+				</Strings>
+			</Button>
+
 		</Buttons>
 
 		<!--<Combos/>-->
@@ -820,6 +946,9 @@
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewReferenceModeEditor" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="E" mod2="Control"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewContextWindow" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="C" mod2="Control"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewDiagramSpyWindow" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="D" mod2="Control"/>
+		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdZoom100" editor="guidORMDesignerEditor" key1="48" mod1="Control Shift"/>
+		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdZoomIn" editor="guidORMDesignerEditor" key1="187" mod1="Control Shift"/>
+		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdZoomOut" editor="guidORMDesignerEditor" key1="189" mod1="Control Shift"/>
 
 		<!-- Fact editor key bindings-->
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdFactEditorCommitLine" editor="guidFactEditorFactory" key1="VK_RETURN" mod1="Control"/>
@@ -946,6 +1075,7 @@
 			<IDSymbol value="0x010A" name="menuIdGroupCommands"/>
 			<IDSymbol value="0x010B" name="menuIdIncludeInGroup"/>
 			<IDSymbol value="0x010C" name="menuIdDeleteFromGroup"/>
+			<IDSymbol value="0x010D" name="menuIdZoomCommands"/>
 
 			<!-- Groups (0x10__) -->
 			<IDSymbol value="0x0FFF" name="groupIdDebugCommands"/>
@@ -978,6 +1108,8 @@
 			<IDSymbol value="0x101A" name="groupIdIncludeInGroupListTest"/>
 			<IDSymbol value="0x101B" name="groupIdIncludeInNewGroup"/>
 			<IDSymbol value="0x101C" name="groupIdDeleteFromGroupListTest"/>
+			<IDSymbol value="0x101D" name="groupIdNumberedZoomCommands"/>
+			<IDSymbol value="0x101E" name="groupIdInOutZoomCommands"/>
 
 			<!-- Commands (0x2___) -->
 			<IDSymbol value="0x28FE" name="cmdIdDebugViewTransactionLogs"/>
@@ -1034,6 +1166,20 @@
 			<IDSymbol value="0x2931" name="cmdIdIncludeInNewGroup"/>
 			<IDSymbol value="0x2932" name="cmdIdSelectInModelBrowser"/>
 			<IDSymbol value="0x2933" name="cmdIdSelectNextInCurrentDiagram"/>
+			<IDSymbol value="0x2934" name="cmdIdZoom10"/>
+			<IDSymbol value="0x2935" name="cmdIdZoom25"/>
+			<IDSymbol value="0x2936" name="cmdIdZoom33"/>
+			<IDSymbol value="0x2937" name="cmdIdZoom50"/>
+			<IDSymbol value="0x2938" name="cmdIdZoom66"/>
+			<IDSymbol value="0x2939" name="cmdIdZoom75"/>
+			<IDSymbol value="0x293a" name="cmdIdZoom100"/>
+			<IDSymbol value="0x293b" name="cmdIdZoom125"/>
+			<IDSymbol value="0x293c" name="cmdIdZoom150"/>
+			<IDSymbol value="0x293d" name="cmdIdZoom200"/>
+			<IDSymbol value="0x293e" name="cmdIdZoom300"/>
+			<IDSymbol value="0x293f" name="cmdIdZoom400"/>
+			<IDSymbol value="0x2940" name="cmdIdZoomIn"/>
+			<IDSymbol value="0x2941" name="cmdIdZoomOut"/>
 
 			<!-- Large ranges for dynamic commands, keep single commands in the 0x29__ range -->
 			<IDSymbol value="0x2A00" name="cmdIdErrorList"/>

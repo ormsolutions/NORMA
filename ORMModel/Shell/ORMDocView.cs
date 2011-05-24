@@ -59,9 +59,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// Deletion of one or more constraints is enabled
 		/// </summary>
 		DeleteConstraint = 1L << 2,
-
-		// 1L << 3 is available
-
+		/// <summary>
+		/// Support all zoom commands
+		/// </summary>
+		Zoom = 1L << 3,
 		/// <summary>
 		/// Check the selected object for the <see cref="IFreeFormCommandProvider{Store}"/> interface
 		/// </summary>

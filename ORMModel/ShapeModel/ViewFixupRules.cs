@@ -643,10 +643,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				{
 					Diagram.FixUpDiagram(model, associatedFactType);
 				}
-				if (associatedProxyFactType != null && AllowElementFixup(associatedProxyFactType))
-				{
-					Diagram.FixUpDiagram(model, associatedProxyFactType);
-				}
+				// Do no fix up the link fact type (associatedProxyFactType). We never
+				// want to force link fact type element creation.
 
 				object AllowMultipleShapes;
 				Dictionary<object, object> topLevelContextInfo;
