@@ -305,6 +305,155 @@
 				</plx:binaryOperator>
 			</se:Condition>
 		</se:Attribute>
+		<se:Attribute ID="ExpandRefMode" WriteCustomStorage="true">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:local name="factType" dataTypeName="FactType" dataTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+				<plx:local name="objectification" dataTypeName="Objectification" dataTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+				<plx:binaryOperator type="booleanOr">
+					<plx:left>
+						<plx:binaryOperator type="booleanOr">
+							<plx:left>
+								<plx:unaryOperator type="booleanNot">
+									<plx:callThis name="ExpandRefMode" type="property"/>
+								</plx:unaryOperator>
+							</plx:left>
+							<plx:right>
+								<plx:unaryOperator type="booleanNot">
+									<plx:callThis name="DisplayAsObjectType" type="property"/>
+								</plx:unaryOperator>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:left>
+					<plx:right>
+						<plx:binaryOperator type="booleanOr">
+							<plx:left>
+								<plx:binaryOperator type="booleanOr">
+									<plx:left>
+										<plx:binaryOperator type="identityEquality">
+											<plx:left>
+												<plx:nullKeyword/>
+											</plx:left>
+											<plx:right>
+												<plx:inlineStatement dataTypeName="ObjectType" dataTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel">
+													<plx:assign>
+														<plx:left>
+															<plx:nameRef name="factType"/>
+														</plx:left>
+														<plx:right>
+															<plx:callThis name="AssociatedFactType" type="property"/>
+														</plx:right>
+													</plx:assign>
+												</plx:inlineStatement>
+											</plx:right>
+										</plx:binaryOperator>
+									</plx:left>
+									<plx:right>
+										<plx:binaryOperator type="identityEquality">
+											<plx:left>
+												<plx:nullKeyword/>
+											</plx:left>
+											<plx:right>
+												<plx:inlineStatement dataTypeName="Objectification" dataTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel">
+													<plx:assign>
+														<plx:left>
+															<plx:nameRef name="objectification"/>
+														</plx:left>
+														<plx:right>
+															<plx:callInstance name="Objectification" type="property">
+																<plx:callObject>
+																	<plx:nameRef name="factType"/>
+																</plx:callObject>
+															</plx:callInstance>
+														</plx:right>
+													</plx:assign>
+												</plx:inlineStatement>
+											</plx:right>
+										</plx:binaryOperator>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:left>
+							<plx:right>
+								<plx:callInstance name="IsImplied" type="property">
+									<plx:callObject>
+										<plx:nameRef name="objectification"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="DisplayAsObjectType" WriteCustomStorage="true">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:local name="factType" dataTypeName="FactType" dataTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+				<plx:local name="objectification" dataTypeName="Objectification" dataTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+				<plx:binaryOperator type="booleanOr">
+					<plx:left>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callThis name="DisplayAsObjectType" type="property"/>
+						</plx:unaryOperator>
+					</plx:left>
+					<plx:right>
+						<plx:binaryOperator type="booleanOr">
+							<plx:left>
+								<plx:binaryOperator type="booleanOr">
+									<plx:left>
+										<plx:binaryOperator type="identityEquality">
+											<plx:left>
+												<plx:nullKeyword/>
+											</plx:left>
+											<plx:right>
+												<plx:inlineStatement dataTypeName="ObjectType" dataTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel">
+													<plx:assign>
+														<plx:left>
+															<plx:nameRef name="factType"/>
+														</plx:left>
+														<plx:right>
+															<plx:callThis name="AssociatedFactType" type="property"/>
+														</plx:right>
+													</plx:assign>
+												</plx:inlineStatement>
+											</plx:right>
+										</plx:binaryOperator>
+									</plx:left>
+									<plx:right>
+										<plx:binaryOperator type="identityEquality">
+											<plx:left>
+												<plx:nullKeyword/>
+											</plx:left>
+											<plx:right>
+												<plx:inlineStatement dataTypeName="Objectification" dataTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel">
+													<plx:assign>
+														<plx:left>
+															<plx:nameRef name="objectification"/>
+														</plx:left>
+														<plx:right>
+															<plx:callInstance name="Objectification" type="property">
+																<plx:callObject>
+																	<plx:nameRef name="factType"/>
+																</plx:callObject>
+															</plx:callInstance>
+														</plx:right>
+													</plx:assign>
+												</plx:inlineStatement>
+											</plx:right>
+										</plx:binaryOperator>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:left>
+							<plx:right>
+								<plx:callInstance name="IsImplied" type="property">
+									<plx:callObject>
+										<plx:nameRef name="objectification"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
 		<se:Container Name="RoleDisplayOrder">
 			<se:Link RelationshipName="FactTypeShapeHasRoleDisplayOrder" RoleName="RoleDisplayOrder"/>
 		</se:Container>

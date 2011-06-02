@@ -912,6 +912,26 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				}
 				return new CustomSerializedPropertyInfo(null, null, null, true, CustomSerializedAttributeWriteStyle.Attribute, null);
 			}
+			if (domainPropertyInfo.Id == FactTypeShape.ExpandRefModeDomainPropertyId)
+			{
+				ORMSolutions.ORMArchitect.Core.ObjectModel.FactType factType;
+				ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification objectification;
+				if (!this.ExpandRefMode || !this.DisplayAsObjectType || null == (factType = this.AssociatedFactType) || null == (objectification = factType.Objectification) || objectification.IsImplied)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, true, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (domainPropertyInfo.Id == FactTypeShape.DisplayAsObjectTypeDomainPropertyId)
+			{
+				ORMSolutions.ORMArchitect.Core.ObjectModel.FactType factType;
+				ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification objectification;
+				if (!this.DisplayAsObjectType || null == (factType = this.AssociatedFactType) || null == (objectification = factType.Objectification) || objectification.IsImplied)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, true, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
 			if (0 != (CustomSerializedElementSupportedOperations.PropertyInfo & base.SupportedCustomSerializedOperations))
 			{
 				return base.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
@@ -1040,6 +1060,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				customSerializedAttributes.Add("DisplayOrientation", FactTypeShape.DisplayOrientationDomainPropertyId);
 				customSerializedAttributes.Add("ConstraintDisplayPosition", FactTypeShape.ConstraintDisplayPositionDomainPropertyId);
 				customSerializedAttributes.Add("DisplayRelatedTypes", FactTypeShape.DisplayRelatedTypesDomainPropertyId);
+				customSerializedAttributes.Add("ExpandRefMode", FactTypeShape.ExpandRefModeDomainPropertyId);
+				customSerializedAttributes.Add("DisplayAsObjectType", FactTypeShape.DisplayAsObjectTypeDomainPropertyId);
 				FactTypeShape.myCustomSerializedAttributes = customSerializedAttributes;
 			}
 			Guid rVal;

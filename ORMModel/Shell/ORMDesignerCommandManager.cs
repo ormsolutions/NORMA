@@ -3742,17 +3742,19 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								Objectification objectification = factType.Objectification;
 								if (objectification != null)
 								{
-									Debug.Assert(objectification.IsImplied);
-									// Set the objectifying type to not be independent, which breaks the implication pattern and makes
-									// the objectification change to be explicit
-									ObjectType nestingType = objectification.NestingType;
-									if (nestingType.IsIndependent)
+									if (objectification.IsImplied) // Should always be true for single select. Can get here with multi-select cases.
 									{
-										nestingType.IsIndependent = false;
-									}
-									else
-									{
-										objectification.IsImplied = false;
+										// Set the objectifying type to not be independent, which breaks the implication pattern and makes
+										// the objectification change to be explicit
+										ObjectType nestingType = objectification.NestingType;
+										if (nestingType.IsIndependent)
+										{
+											nestingType.IsIndependent = false;
+										}
+										else
+										{
+											objectification.IsImplied = false;
+										}
 									}
 								}
 								else

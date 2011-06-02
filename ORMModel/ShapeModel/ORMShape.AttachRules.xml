@@ -212,6 +212,7 @@
 			<arg:ChangeRule methodName="ObjectTypeShapeChangeRule">
 				<arg:RuleOn targetType="ObjectTypeShape" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 				<arg:RuleOn targetType="ObjectifiedFactTypeNameShape" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
+				<arg:RuleOn targetType="FactTypeShape" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:ChangeRule>
 			<arg:AddRule methodName="ReadingOrderAddedRule">
 				<arg:RuleOn targetType="FactTypeHasReadingOrder" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>

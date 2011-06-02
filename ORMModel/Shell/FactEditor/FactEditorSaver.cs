@@ -743,7 +743,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							null);
 					}
 				}
-				layoutManager.Layout(false, rightOfShape);
+				layoutManager.Layout(false, rightOfShape, true, false);
 			}
 
 			private FactType ObjectificationCheck(FactType startingFact)

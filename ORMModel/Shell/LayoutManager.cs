@@ -114,14 +114,16 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// <param name="ignoreExistingShapes">Do not adjust for existing shapes</param>
 		public void Layout(bool ignoreExistingShapes)
 		{
-			Layout(ignoreExistingShapes, null);
+			Layout(ignoreExistingShapes, null, false, false);
 		}
 		/// <summary>
 		/// Organizes the shapes added with <see cref="AddShape(ShapeElement)"/> or similar methods.
 		/// </summary>
 		/// <param name="ignoreExistingShapes">Do not adjust for existing shapes</param>
-		/// <param name="rightOfShape">Layout shapes to the right of this shape.</param>
-		public void Layout(bool ignoreExistingShapes, NodeShape rightOfShape)
+		/// <param name="referenceShape">Layout shapes to the right of this shape.</param>
+		/// <param name="layoutRightOfReferenceShape">Set to layout to the right of the <paramref name="referenceShape"/></param>
+		/// <param name="layoutBelowReferenceShape">Set to layout below the <paramref name="referenceShape"/></param>
+		public void Layout(bool ignoreExistingShapes, NodeShape referenceShape, bool layoutRightOfReferenceShape, bool layoutBelowReferenceShape)
 		{
 			LayoutShape backupRoot = null;
 			LayoutShapeList allShapes = myLayoutShapes;
@@ -136,9 +138,18 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			myLayoutEngine.LateBind(myDiagram, allShapes);
 
 			SizeD margin = myDiagram.NestedShapesMargin;
-			if (rightOfShape != null)
+			if (referenceShape != null &&
+				(layoutRightOfReferenceShape || layoutBelowReferenceShape))
 			{
-				margin.Width = Math.Max(margin.Width, rightOfShape.AbsoluteBounds.Right);
+				RectangleD referenceBounds = referenceShape.AbsoluteBounds;
+				if (layoutRightOfReferenceShape)
+				{
+					margin.Width = Math.Max(margin.Width, referenceBounds.Right);
+				}
+				if (layoutBelowReferenceShape)
+				{
+					margin.Height = Math.Max(margin.Height, referenceBounds.Bottom);
+				}
 			}
 			PointD minimumPoint = new PointD(margin.Width, margin.Height);
 			RectangleD layoutRectangle = new RectangleD(minimumPoint, SizeD.Empty);

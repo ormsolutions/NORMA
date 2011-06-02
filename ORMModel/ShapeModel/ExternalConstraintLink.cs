@@ -324,7 +324,12 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			IFactConstraint factConstraint;
 			IConstraint constraint;
 			Store store;
-			if ((penId == DiagramPens.ConnectionLine ||
+			if ((penId ==
+#if VISUALSTUDIO_10_0
+				CustomConnectionLinePen ||
+#else
+				DiagramPens.ConnectionLine ||
+#endif
 				penId == DiagramPens.ConnectionLineDecorator) &&
 				null != (factConstraint = ModelElement as IFactConstraint) &&
 				null != (constraint = factConstraint.Constraint) &&

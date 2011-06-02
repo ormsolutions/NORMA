@@ -150,17 +150,18 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						break;
 					}
 				}
-				if (connected)
+				FactTypeShape factTypeShape;
+				if (connected ||
+					null == (factTypeShape = shape.ParentShape as FactTypeShape) ||
+					factTypeShape.DisplayAsObjectType)
 				{
 					continue;
 				}
 
-				Connect(shape.ParentShape as NodeShape, shape);
+
+				Connect(factTypeShape, shape);
 				return;
 			}
-
-			//this link should not have been created unless there were shapes to connect
-			Debug.Assert(false);
 			Delete();
 		}
 		void IConfigureAsChildShape.ConfiguringAsChildOf(NodeShape parentShape, bool createdDuringViewFixup)

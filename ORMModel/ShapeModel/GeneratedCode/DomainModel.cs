@@ -111,6 +111,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				new DomainMemberInfo(typeof(FactTypeShape), "DisplayRoleNames", FactTypeShape.DisplayRoleNamesDomainPropertyId, typeof(FactTypeShape.DisplayRoleNamesPropertyHandler)),
 				new DomainMemberInfo(typeof(FactTypeShape), "DisplayOrientation", FactTypeShape.DisplayOrientationDomainPropertyId, typeof(FactTypeShape.DisplayOrientationPropertyHandler)),
 				new DomainMemberInfo(typeof(FactTypeShape), "DisplayRelatedTypes", FactTypeShape.DisplayRelatedTypesDomainPropertyId, typeof(FactTypeShape.DisplayRelatedTypesPropertyHandler)),
+				new DomainMemberInfo(typeof(FactTypeShape), "DisplayAsObjectType", FactTypeShape.DisplayAsObjectTypeDomainPropertyId, typeof(FactTypeShape.DisplayAsObjectTypePropertyHandler)),
+				new DomainMemberInfo(typeof(FactTypeShape), "ExpandRefMode", FactTypeShape.ExpandRefModeDomainPropertyId, typeof(FactTypeShape.ExpandRefModePropertyHandler)),
 				new DomainMemberInfo(typeof(FactTypeShape), "RolesPosition", FactTypeShape.RolesPositionDomainPropertyId, typeof(FactTypeShape.RolesPositionPropertyHandler)),
 				new DomainMemberInfo(typeof(ObjectifiedFactTypeNameShape), "ExpandRefMode", ObjectifiedFactTypeNameShape.ExpandRefModeDomainPropertyId, typeof(ObjectifiedFactTypeNameShape.ExpandRefModePropertyHandler)),
 				new DomainMemberInfo(typeof(ValueConstraintShape), "MaximumDisplayedValues", ValueConstraintShape.MaximumDisplayedValuesDomainPropertyId, typeof(ValueConstraintShape.MaximumDisplayedValuesPropertyHandler)),

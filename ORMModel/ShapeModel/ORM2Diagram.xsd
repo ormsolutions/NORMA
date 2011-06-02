@@ -130,6 +130,8 @@
 					</xs:simpleType>
 				</xs:attribute>
 				<xs:attribute name="DisplayRelatedTypes" type="DisplayRelatedTypesType" default="AttachAllTypes"/>
+				<xs:attribute name="ExpandRefMode" type="xs:boolean" default="false"/>
+				<xs:attribute name="DisplayAsObjectType" type="xs:boolean" default="false"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>

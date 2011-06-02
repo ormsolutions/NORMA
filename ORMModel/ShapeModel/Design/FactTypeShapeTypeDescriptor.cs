@@ -66,11 +66,15 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 		}
 
 		/// <summary>
-		/// Block display of the DisplayRelatedTypes property on an unobjectified FactType
+		/// Block display of the DisplayRelatedTypes, DisplayAsObjectType, and ExpandRefMode
+		/// properties for an unobjectified FactType
 		/// </summary>
 		protected override bool ShouldCreatePropertyDescriptor(ModelElement requestor, DomainPropertyInfo domainProperty)
 		{
-			if (domainProperty.Id == FactTypeShape.DisplayRelatedTypesDomainPropertyId)
+			Guid domainPropertyId = domainProperty.Id;
+			if (domainPropertyId == FactTypeShape.DisplayRelatedTypesDomainPropertyId ||
+				domainPropertyId == FactTypeShape.DisplayAsObjectTypeDomainPropertyId ||
+				domainPropertyId == FactTypeShape.ExpandRefModeDomainPropertyId)
 			{
 				return false;
 			}
@@ -85,6 +89,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 		private static Attribute[] DisplayRoleNamesDomainPropertyAttributes;
 		private static Attribute[] NameDomainPropertyAttributes;
 		private static Attribute[] IsIndependentDomainPropertyAttributes;
+		private static Attribute[] DisplayAsObjectTypeDomainPropertyAttributes;
+		private static Attribute[] ExpandRefModeDomainPropertyAttributes;
 		private static Attribute[] NestedFactTypeDomainRoleAttributes;
 		private static Attribute[] NestingTypeDomainRoleAttributes;
 
@@ -100,6 +106,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 						DisplayOrientationDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayOrientationDomainPropertyId));
 						DisplayRelatedTypesDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayRelatedTypesDomainPropertyId));
 						DisplayRoleNamesDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayRoleNamesDomainPropertyId));
+						DisplayAsObjectTypeDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayAsObjectTypeDomainPropertyId));
+						ExpandRefModeDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(FactTypeShape.ExpandRefModeDomainPropertyId));
 						NameDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(ORMNamedElement.NameDomainPropertyId));
 						IsIndependentDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(ObjectType.IsIndependentDomainPropertyId));
 						NestedFactTypeDomainRoleAttributes = AddExpandableElementTypeConverterAttribute(GetRolePlayerPropertyAttributes(domainDataDirectory.FindDomainRole(Objectification.NestedFactTypeDomainRoleId)));
@@ -141,20 +149,45 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 				DomainDataDirectory domainDataDirectory = factType.Store.DomainDataDirectory;
 				EnsureDomainAttributesInitialized(domainDataDirectory);
 
-				PropertyDescriptor[] descriptors = new PropertyDescriptor[nestingTypeHasRelatedTypes ? 8 : 7];
-				descriptors[0] = CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.ConstraintDisplayPositionDomainPropertyId), ConstraintDisplayPositionDomainPropertyAttributes);
-				descriptors[1] = CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayOrientationDomainPropertyId), DisplayOrientationDomainPropertyAttributes);
-				descriptors[2] = CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayRoleNamesDomainPropertyId), DisplayRoleNamesDomainPropertyAttributes);
-				descriptors[3] = CreatePropertyDescriptor(nestingType, domainDataDirectory.FindDomainProperty(ORMNamedElement.NameDomainPropertyId), NameDomainPropertyAttributes);
-				descriptors[4] = CreatePropertyDescriptor(nestingType, domainDataDirectory.FindDomainProperty(ObjectType.IsIndependentDomainPropertyId), IsIndependentDomainPropertyAttributes);
-				descriptors[5] = new ObjectifyingEntityTypePropertyDescriptor(factType, domainDataDirectory.FindDomainRole(Objectification.NestingTypeDomainRoleId), NestedFactTypeDomainRoleAttributes);
-				descriptors[6] = new ObjectifiedFactTypePropertyDescriptor(nestingType, domainDataDirectory.FindDomainRole(Objectification.NestedFactTypeDomainRoleId), NestingTypeDomainRoleAttributes);
-				if (nestingTypeHasRelatedTypes)
+				PropertyDescriptorCollection retVal;
+				if (factTypeShape.DisplayAsObjectType)
 				{
-					descriptors[7] = CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayRelatedTypesDomainPropertyId), DisplayRelatedTypesDomainPropertyAttributes);
+					retVal = new PropertyDescriptorCollection(null);
+					Type componentType = typeof(FactTypeShape);
+					foreach (PropertyDescriptor nestingTypeDescriptor in TypeDescriptor.GetProperties(nestingType))
+					{
+						if (nestingTypeDescriptor.Name == "NestedFactType")
+						{
+							continue;
+						}
+						retVal.Add(EditorUtility.RedirectPropertyDescriptor(nestingType, nestingTypeDescriptor, componentType));
+					}
+					retVal.Add(CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayAsObjectTypeDomainPropertyId), DisplayAsObjectTypeDomainPropertyAttributes));
+					retVal.Add(CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.ExpandRefModeDomainPropertyId), ExpandRefModeDomainPropertyAttributes));
+					retVal.Add(new ObjectifyingEntityTypePropertyDescriptor(factType, domainDataDirectory.FindDomainRole(Objectification.NestingTypeDomainRoleId), NestedFactTypeDomainRoleAttributes));
+					retVal.Add(new ObjectifiedFactTypePropertyDescriptor(nestingType, domainDataDirectory.FindDomainRole(Objectification.NestedFactTypeDomainRoleId), NestingTypeDomainRoleAttributes));
+					if (nestingTypeHasRelatedTypes)
+					{
+						retVal.Add(CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayRelatedTypesDomainPropertyId), DisplayRelatedTypesDomainPropertyAttributes));
+					}
 				}
-
-				PropertyDescriptorCollection retVal = new PropertyDescriptorCollection(descriptors);
+				else
+				{
+					PropertyDescriptor[] descriptors = new PropertyDescriptor[nestingTypeHasRelatedTypes ? 9 : 8];
+					descriptors[0] = CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.ConstraintDisplayPositionDomainPropertyId), ConstraintDisplayPositionDomainPropertyAttributes);
+					descriptors[1] = CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayOrientationDomainPropertyId), DisplayOrientationDomainPropertyAttributes);
+					descriptors[2] = CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayRoleNamesDomainPropertyId), DisplayRoleNamesDomainPropertyAttributes);
+					descriptors[3] = CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayAsObjectTypeDomainPropertyId), DisplayAsObjectTypeDomainPropertyAttributes);
+					descriptors[4] = CreatePropertyDescriptor(nestingType, domainDataDirectory.FindDomainProperty(ORMNamedElement.NameDomainPropertyId), NameDomainPropertyAttributes);
+					descriptors[5] = CreatePropertyDescriptor(nestingType, domainDataDirectory.FindDomainProperty(ObjectType.IsIndependentDomainPropertyId), IsIndependentDomainPropertyAttributes);
+					descriptors[6] = new ObjectifyingEntityTypePropertyDescriptor(factType, domainDataDirectory.FindDomainRole(Objectification.NestingTypeDomainRoleId), NestedFactTypeDomainRoleAttributes);
+					descriptors[7] = new ObjectifiedFactTypePropertyDescriptor(nestingType, domainDataDirectory.FindDomainRole(Objectification.NestedFactTypeDomainRoleId), NestingTypeDomainRoleAttributes);
+					if (nestingTypeHasRelatedTypes)
+					{
+						descriptors[8] = CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayRelatedTypesDomainPropertyId), DisplayRelatedTypesDomainPropertyAttributes);
+					}
+					retVal = new PropertyDescriptorCollection(descriptors);
+				}
 
 				// This mockup of important properties means that extension providers cannot add properties
 				// here by adding to the objecttype or facttype. Use an extension on the Objectification type

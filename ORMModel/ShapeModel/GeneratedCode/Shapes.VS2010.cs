@@ -1000,6 +1000,188 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		}
 		
 		#endregion
+		#region DisplayAsObjectType domain property code
+		
+		/// <summary>
+		/// DisplayAsObjectType domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DisplayAsObjectTypeDomainPropertyId = new global::System.Guid(0x6dc698ed, 0xeee5, 0x400a, 0xaa, 0x43, 0x18, 0xf9, 0x85, 0xe3, 0xd8, 0xc4);
+		
+		/// <summary>
+		/// Gets or sets the value of DisplayAsObjectType domain property.
+		/// Should this shape be shown as an object type without readings or attached role
+		/// players?
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayAsObjectType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayAsObjectType.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("6dc698ed-eee5-400a-aa43-18f985e3d8c4")]
+		public global::System.Boolean DisplayAsObjectType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DisplayAsObjectTypePropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DisplayAsObjectTypePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the FactTypeShape.DisplayAsObjectType domain property.
+		/// </summary>
+		internal sealed partial class DisplayAsObjectTypePropertyHandler : DslModeling::DomainPropertyValueHandler<FactTypeShape, global::System.Boolean>
+		{
+			private DisplayAsObjectTypePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the FactTypeShape.DisplayAsObjectType domain property value handler.
+			/// </summary>
+			public static readonly DisplayAsObjectTypePropertyHandler Instance = new DisplayAsObjectTypePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the FactTypeShape.DisplayAsObjectType domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DisplayAsObjectTypeDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(FactTypeShape element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for DisplayAsObjectType because its Kind is
+				// set to CustomStorage. Please provide the GetDisplayAsObjectTypeValue()
+				// method on the domain class.
+				return element.GetDisplayAsObjectTypeValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(FactTypeShape element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for DisplayAsObjectType because its Kind is
+					// set to CustomStorage. Please provide the SetDisplayAsObjectTypeValue()
+					// method on the domain class.
+					element.SetDisplayAsObjectTypeValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region ExpandRefMode domain property code
+		
+		/// <summary>
+		/// ExpandRefMode domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid ExpandRefModeDomainPropertyId = new global::System.Guid(0x2dcd129c, 0xadaf, 0x4b66, 0x88, 0x87, 0xbe, 0xb0, 0x40, 0x43, 0xa7, 0x46);
+		
+		/// <summary>
+		/// Gets or sets the value of ExpandRefMode domain property.
+		/// Should shapes for the FactType and ValueType corresponding to this ReferenceMode
+		/// pattern be displayed on the diagram?
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/ExpandRefMode.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/ExpandRefMode.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("2dcd129c-adaf-4b66-8887-beb04043a746")]
+		public global::System.Boolean ExpandRefMode
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return ExpandRefModePropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				ExpandRefModePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the FactTypeShape.ExpandRefMode domain property.
+		/// </summary>
+		internal sealed partial class ExpandRefModePropertyHandler : DslModeling::DomainPropertyValueHandler<FactTypeShape, global::System.Boolean>
+		{
+			private ExpandRefModePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the FactTypeShape.ExpandRefMode domain property value handler.
+			/// </summary>
+			public static readonly ExpandRefModePropertyHandler Instance = new ExpandRefModePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the FactTypeShape.ExpandRefMode domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return ExpandRefModeDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(FactTypeShape element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for ExpandRefMode because its Kind is
+				// set to CustomStorage. Please provide the GetExpandRefModeValue()
+				// method on the domain class.
+				return element.GetExpandRefModeValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(FactTypeShape element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for ExpandRefMode because its Kind is
+					// set to CustomStorage. Please provide the SetExpandRefModeValue()
+					// method on the domain class.
+					element.SetExpandRefModeValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region RolesPosition domain property code
 		
 		/// <summary>

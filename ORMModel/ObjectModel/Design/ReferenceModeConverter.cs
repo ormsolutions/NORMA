@@ -53,10 +53,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 				string refMode = value as string;
 				if (refMode != null)
 				{
-					ObjectType instance = EditorUtility.ResolveContextInstance(context.Instance, true) as ObjectType;
-					if (instance != null)
+					object instance = EditorUtility.ResolveContextInstance(context.Instance, true);
+					FactType factType;
+					ObjectType objectType;
+					if (null != (objectType = instance as ObjectType) ||
+						(null != (factType = instance as FactType) && null != (objectType = factType.NestingType)))
 					{
-						ReferenceMode singleMode = ReferenceMode.GetReferenceModeForDecoratedName(refMode, instance.Model, false);
+						ReferenceMode singleMode = ReferenceMode.GetReferenceModeForDecoratedName(refMode, objectType.Model, false);
 						return (object)singleMode ?? refMode;
 					}
 				}

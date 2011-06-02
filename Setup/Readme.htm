@@ -14,7 +14,7 @@
 
 <p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA May 2011 CTP Readme</a>&nbsp;</b></p>
 <p>This file supersedes the previous readme.txt and older readme.htm files. This readme has parallel indexing mechanisms: by topic, and by release date (starting with the October 2008 (2008-10) release). The file will be extended for future product releases.<br/><br/>
-The May 2011 release is mostly a bug fix release with some minor new features (link fact type display and improved zoom handling). See detailed change notes below for specifics. 
+The May 2011 release includes new display features (display objectified fact types as object types, display link fact types, and visible zoom commands) along with a number of bug fixes. See detailed change notes below for specifics. 
 <br/><br/></p>
 <h2>Contents</h2>
 <ul>
@@ -33,6 +33,7 @@ The May 2011 release is mostly a bug fix release with some minor new features (l
   <li><a href="#Reporting Issues">Instructions for reporting issues with NORMA</a></li>
   <li><a href="#VS2010 Bugs">Unresolved issues in Visual Studio 2010</a></li>
   <li><a href="#Mystery Bugs">Things we've seen or heard about but can't reproduce</a></li>
+  <li><a href="#Version Numbers">Version Numbers</a></li>
 </ul>
 <!--<hr/>
 <h2>Daily Changes</h2>
@@ -43,14 +44,16 @@ The May 2011 release is mostly a bug fix release with some minor new features (l
 
 <hr/>
 <h2>May 2011 CTP Changes</h2>
-<div>The May 2011 CTP release includes all modifications through changeset 1468. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<div>The May 2011 CTP release includes all modifications through changeset 1469. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
 <ul>
+<li><a href="#DisplayAsObjectType 2011-05">Display Objectified Fact Type as Object Type</a>&nbsp;</li>
 <li><a href="#LinkFactTypeDisplay 2011-05">Link Fact Type Display</a>&nbsp;</li>
 <li><a href="#ZoomCommands 2011-05">Zoom Commands</a>&nbsp;</li>
 <li><a href="#ZoomSensitiveNudge 2011-05">Zoom Sensitive Nudge Distance</a>&nbsp;</li>
 <li>Other Features:
 <ol>
 <li>Simultaneously selecting an object type shapes and a connected subtype connector link is no longer supported: the subtype connector link will be automatically deselected in this case. This makes it much easier to lasso select and align shapes attached to subtype and supertype connectors.</li>
+<li>Changes resulting in a size change for object type and fact type shapes will maintain the center point instead of the upper-left corner. This should reduce the number of alignment commands required when changing shape object type and reference mode names, or any other change that affects the size of the shape.</li>
 <li>Tooltips on foreign key lines in the relational view display table names with the column names.</li>
 </ol>
 </li>
@@ -65,7 +68,8 @@ The May 2011 release is mostly a bug fix release with some minor new features (l
 <li>Fact type shapes with constraint role bar display failed with multiple shapes for the same fact type on the same diagram.</li>
 <li>Objectified fact types did not synchronize the object type and default fact type name in the target model after a cross-model drag of the objectified fact type.</li>
 <li>Sample population editor crashed adding new supertype instances in an empty inline-expanded subtype cell.</li>
-<li>copy Image meta file did not have a transparent background on all versions, lines rendered visibly than those in the designer.</li>
+<li>The meta file created by the <em>Copy Image</em> command did not have a transparent background on all versions, lines were rendered visibly different from those in the designer.</li>
+<li>The <em>ExpandRefMode</em> property did not work well with multiple shapes for the object type (or objectified fact type) on the same diagram. If there are multiple shapes on the diagram, the first shape to set <em>ExpandRefMode</em> to true will add the reference mode fact type and value type, and the last to clear this property will remove them. The reference mode fact type will only attach to those shapes with <em>ExpandRefMode</em> set to true.</li>
 </ol>
 </li>
 </ul>
@@ -512,6 +516,8 @@ If the user-entered form of a number cannot be interpreted as the same number in
 <li><a id="Value Constraint Special String Characters 2010-02" class="new" title="February 2010 CTP: Value constraint special string characters">2010-02</a>&nbsp;
 Special delimiter characters used in value constraint definitions can be specified inside single-quotation characters. For example, <em>a,b,c</em> for a string data type is parsed and listed back as <em>{'a', 'b', 'c'}</em>, while <em>'a,b,c'</em> is treated as a single string value. Use two adjacent single quotes to represent a single quote in a string (<em>'''abc'''</em> represents the string <em>'abc'</em>), and use <em>''</em> to represent the empty string.
 </li>
+<li><a id="DisplayAsObjectType 2011-05" class="new" title="May 2011 CTP: Display Objectified Fact Type as Object Type">2011-05</a>&nbsp;
+The <em>DisplayAsObjectType</em> property on a shape for an objectified fact type enables uncluttered use of the objectified fact type as an entity type. The display is exactly the same as an object type shape with name and reference mode fields, except that a miniature role box to the left of the text fields indicates the objectifying nature of the entity type and the arity of the objectified fact type. Other shapes attached to the fact type (reading shapes, role value constraints, role name shapes, and the name shape for the objectified entity type) are removed from the diagram and recreated when <em>DisplayAsObjectType</em> is changed from true to false.</li>
 <li><a id="LinkFactTypeDisplay 2011-05" class="new" title="May 2011 CTP: Link Fact Type Display">2011-05</a>&nbsp;
 <em>Link fact types</em> represent the relationship between an objectifying entity type and each of the role players of its objectified fact type. A link fact type is implied and automatically create by NORMA for each role in an objectified fact type. Readings for these fact types can be modified in the 'Implied Fact Types' branch of the 'ORM Reading Editor' tool window when a single role is selected in an objectified fact type. Readings can also be modified by selecting the fact type in the 'ORM Model Browser' tool window and expanding the 'Implied Fact Types' child node. In most cases there is no need to display these fact types. However, it is not uncommon for the objectifying-entity-type-attached role to participate in a set comparison constraint. Shapes are never automatically generated for link fact types, but an explicit shape can be added by dragging an implied fact type node from the model browser.<br />
 Notes on link fact type shapes:
@@ -623,5 +629,16 @@ The settings file for the LinqToSqlAttributeMapping layer has been updated. This
 <li>Reloading a model can reveal duplicate name errors on generated names for UniquenessConstraint and ImpliedMandatoryConstraint. The UniquenessConstraint errors are easily fixed because they can be selected in the model browser (double click the error, delete the name to regenerate one of the names), but the implied mandatory constraints cannot be selected. The are two ways to fix these: open the .orm file with an xml editor (Open With in Visual Studio, notepad also works) and delete one of the offending name occurrences then reload in NORMA, or use the Store Viewer (a debug command on the context menu) to determine an Object Type associated with the offending constraint. In the Store Viewer, select and recursively expand the ORMStore/Partition/Links/ObjectTypeImpliesMandatoryConstraint node (recursive expansion is done with the * key on the number pad), then scan for the offending constraint name, note the ObjectType name above it, and close the dialog. Find that ObjectType in the model and toggle (twice) either the IsIndependent property on the ObjectType or the IsMandatory property on an optional attached role. The naming error will go away. My apologies for the hassle, I just haven't managed to reproduce the scenario that causes this problem, and the issue is not visible until the file is reloaded. <em>Update on this issue:</em> The underlying problem has not been fixed, but duplicate generated names are automatically regenerated on reload. The intent of this change was to make it easier to merge models under source control, but it also has the side-effect of making this bug even more obscure. The error will be visible only as duplicate names in generated code, not in the designer. Reload the model and explicitly save to clean the file.</li>
 </ol>
 <a href="#The Top">Return to top</a>
-</body>
+<hr/>
+<h3><a id="Version Numbers">Version Numbers</a></h3>
+<p>The NORMA version numbering scheme was changed in January 2011 to make better use of the available build numbers. A build number (for example, 1.0.1105.6267) has four parts separated by periods (.): Major (1), Minor (0), Revision (1105), and Build (6267). The first two numbers are self-explanatory. The third <em>revision</em> number is the last two digits of the year combined with the month number (1105=May 2011). The revision number is explicitly configured in the source code and generally changed once per official release. The final number is a build number that encodes the day the file was built.</p>
+<p>Originally, the first two digits of the build number were a month counter beginning at 01 in January 2006, with the last two digits representing the day in the month. So, build 6031 was created on day 31 of month 60 (December 31, 2010). Starting with January 2011 (month 61), the first two digits will only be incremented on a <strong>quarterly</strong> basis, effectively tripling the available remaining revision 4-digit revision numbers. Of course, the day numbers for the three months in a quarter cannot all begin with '1', so we partition as follows:</p>
+<ul>
+<li>The first month in each quarter (January, April, July, October) gets the range 1-31 (subtract 0 to get the day).</li>
+<li>The second month in each quarter (February, May, August, November) gets the range 32-64 (subtract 33 to get the day).</li>
+<li>The third month in each quarter (March, June, September, December) gets the range 37-97 (subtract 66 to get the day).</li>
+</ul>
+<p>So, build 6267 represents the first day of the third month in the second quarter of 2011 (June 1, 2011).</p>
+<p>Although the version information does not directly contain any source code version control information, the build date can generally be cross-referenced against the revision history to find the corresponding changeset.</p>
+<a href="#The Top">Return to top</a></body>
 </html>

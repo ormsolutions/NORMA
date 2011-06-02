@@ -952,6 +952,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return GetValueTypeForPreferredConstraint() != null;
 			}
 		}
+		/// <summary>
+		/// Get the fact type that forms the reference mode for this object type.
+		/// </summary>
+		public FactType ReferenceModeFactType
+		{
+			get
+			{
+				UniquenessConstraint pid;
+				LinkedElementCollection<Role> constraintRoles;
+				ObjectType rolePlayer;
+				Role role;
+				return (null != (pid = this.PreferredIdentifier) &&
+					pid.IsInternal &&
+					1 == (constraintRoles = pid.RoleCollection).Count &&
+					null != (rolePlayer = (role = constraintRoles[0]).RolePlayer) &&
+					null != rolePlayer.DataType) ? role.FactType : null;
+			}
+		}
 		#endregion
 
 		/// <summary>
@@ -1029,6 +1047,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					return roleValueConstraint as ValueConstraint;
 				}
+				return null;
 			}
 			ValueTypeValueConstraint valueConstraint = this.ValueConstraint;
 			if (valueConstraint == null && autoCreate)

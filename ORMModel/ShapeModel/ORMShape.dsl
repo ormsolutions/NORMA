@@ -195,6 +195,16 @@
 						<DomainEnumerationMoniker Name="RelatedTypesDisplay"/>
 					</Type>
 				</DomainProperty>
+				<DomainProperty Name="DisplayAsObjectType" DisplayName="DisplayAsObjectType" Id="6DC698ED-EEE5-400A-AA43-18F985E3D8C4" DefaultValue="false" Kind="CustomStorage" Description="Should this shape be shown as an object type without readings or attached role players?">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="ExpandRefMode" DisplayName="ExpandRefMode" Id="2DCD129C-ADAF-4B66-8887-BEB04043A746" DefaultValue="false" Kind="CustomStorage" Description="Should shapes for the FactType and ValueType corresponding to this ReferenceMode pattern be displayed on the diagram?">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
 				<DomainProperty Name="RolesPosition" Id="89244439-FBB1-4DEB-BFF3-69D47CB90A6B" DefaultValue="0" IsBrowsable="false" GetterAccessModifier="Private" SetterAccessModifier="Private">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Double"/>

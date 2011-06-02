@@ -657,13 +657,18 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				DomainRoleInfo domainRoleInfo = directory.FindDomainRole(FactTypeHasReadingOrder.ReadingOrderDomainRoleId);
 				eventManager.AddOrRemoveHandler(domainRoleInfo, new EventHandler<RolePlayerOrderChangedEventArgs>(ReadingOrderPositionChanged), action);
 
+				// FactTypeShape displayed as object Type shape changed
+				classInfo = directory.FindDomainClass(FactTypeShape.DomainClassId);
+				DomainPropertyInfo propertyInfo = directory.FindDomainProperty(FactTypeShape.DisplayAsObjectTypeDomainPropertyId);
+				eventManager.AddOrRemoveHandler(classInfo, propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(FactTypeShapeDisplayedAsObjectTypeChanged), action);
+
 				// Reading add/delete/reorder/change
 				classInfo = directory.FindDomainRelationship(ReadingOrderHasReading.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ReadingAdded), action);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ReadingDeleted), action);
 				domainRoleInfo = directory.FindDomainRole(ReadingOrderHasReading.ReadingDomainRoleId);
 				eventManager.AddOrRemoveHandler(domainRoleInfo, new EventHandler<RolePlayerOrderChangedEventArgs>(ReadingPositionChanged), action);
-				DomainPropertyInfo propertyInfo = directory.FindDomainProperty(Reading.TextDomainPropertyId);
+				propertyInfo = directory.FindDomainProperty(Reading.TextDomainPropertyId);
 				eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ReadingTextChanged), action);
 
 				// DisplayOrder added/delete/reorder
@@ -791,8 +796,17 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							else
 							{
 								object contextInstance = EditorUtility.ResolveContextInstance(element, false);
-								ObjectType currentObjectType = contextInstance as ObjectType;
-								FactType testFactType = (currentObjectType == null) ? ORMEditorUtility.ResolveContextFactType(element) : null;
+								FactTypeShape factTypeShape;
+								ObjectType currentObjectType;
+								FactType testFactType;
+								if (null == (factTypeShape = element as FactTypeShape) ||
+									!factTypeShape.DisplayAsObjectType ||
+									null == (testFactType = contextInstance as FactType) ||
+									null == (currentObjectType = testFactType.NestingType))
+								{
+									currentObjectType = contextInstance as ObjectType;
+								}
+								testFactType = (currentObjectType == null) ? ORMEditorUtility.ResolveContextFactType(element) : null;
 								if (testFactType is SubtypeFact)
 								{
 									// Readings on subtypes are not directly edited
@@ -1304,6 +1318,25 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						(order == currentReadingOrder || order== mySelectedReverseReadingOrder))
 					{
 						UpdateSelection();
+					}
+				}
+			}
+			private void FactTypeShapeDisplayedAsObjectTypeChanged(object sender, ElementPropertyChangedEventArgs e)
+			{
+				FactTypeShape shape = (FactTypeShape)e.ModelElement;
+				FactType factType;
+				if (null != (factType = shape.AssociatedFactType))
+				{
+					if ((bool)e.NewValue)
+					{
+						if (shape.ModelElement == mySelectedFactType)
+						{
+							UpdateSelection();
+						}
+					}
+					else if (mySelectedObjectTypeCount != 0)
+					{
+						UpdateForObjectType(factType.NestingType);
 					}
 				}
 			}

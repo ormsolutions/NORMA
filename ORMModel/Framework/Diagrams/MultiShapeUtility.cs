@@ -1042,7 +1042,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 					IConfigureableLinkEndpoint configurableCloserFromEndpoint = currentFromShape2 as IConfigureableLinkEndpoint;
 					if (configurableCloserFromEndpoint != null)
 					{
-						switch (configurableCloserFromEndpoint.CanAttachLink(fromElement, false))
+						switch (configurableCloserFromEndpoint.CanAttachLink(forLink, false))
 						{
 							//case AttachLinkResult.Attach:
 							//    break;

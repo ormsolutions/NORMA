@@ -599,8 +599,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					FixupRelatedLinks(DomainRoleInfo.GetElementLinks<ElementLink>(role, FactSetComparisonConstraint.FactTypeDomainRoleId));
 				}
 
-				if (!childShapesMerged)
-				{
+				// Get the role value constraint and the link to it.
+				RoleHasValueConstraint valueConstraintLink = RoleHasValueConstraint.GetLinkToValueConstraint(role);
+				if (!childShapesMerged) {
 					// Pick up the role shape
 					//check if we have a specific shape or need to use the model element
 					if (factTypeShape == null)
@@ -611,9 +612,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					{
 						FixUpLocalDiagram(factTypeShape as ShapeElement, role);
 					}
-
-					// Get the role value constraint and the link to it.
-					RoleHasValueConstraint valueConstraintLink = RoleHasValueConstraint.GetLinkToValueConstraint(role);
 
 					if (valueConstraintLink != null)
 					{
@@ -626,6 +624,12 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							FixUpLocalDiagram(factTypeShape as ShapeElement, valueConstraintLink.ValueConstraint);
 						}
 					}
+				}
+				// Role player links are not part of the merge hierarchy, add them for both
+				// merge and non-merge cases.
+				if (valueConstraintLink != null)
+				{
+					FixUpLocalDiagram(valueConstraintLink);
 				}
 			}
 			if (!childShapesMerged)
@@ -1092,17 +1096,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			ModelNoteReferencesModelElement noteReference;
 			if (null != (factType = element as FactType))
 			{
-				if (factType is SubtypeFact)
-				{
-					return true;
-				}
-#if !SHOW_IMPLIED_SHAPES
-				else if (factType.ImpliedByObjectification != null)
-				{
-					return true;
-				}
-#endif // !SHOW_IMPLIED_SHAPES
-				return ShouldDisplayPartOfReferenceMode(factType);
+				return ShouldDisplayFactType(factType);
 			}
 			else if (null != (objectTypePlaysRole = element as ObjectTypePlaysRole))
 			{
@@ -1180,17 +1174,37 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// Determine if an ObjectType element should be displayed on
 		/// the diagram.
 		/// </summary>
-		/// <param name="typeElement">The element to test</param>
+		/// <param name="objectType">The element to test</param>
 		/// <returns>true to display, false to not display</returns>
-		public bool ShouldDisplayObjectType(ObjectType typeElement)
+		public bool ShouldDisplayObjectType(ObjectType objectType)
 		{
 			// We don't ever display a nesting ObjectType, even if the Objectification is not drawn.
 			// This also applies to Implicit Boolean ValueTypes (those that are part of a binarized unary).
-			if (typeElement.NestedFactType == null && !typeElement.IsImplicitBooleanValue)
+			if (objectType.NestedFactType == null && !objectType.IsImplicitBooleanValue)
 			{
-				return ShouldDisplayPartOfReferenceMode(typeElement);
+				return ShouldDisplayPartOfReferenceMode(objectType);
 			}
 			return false;
+		}
+		/// <summary>
+		/// Determine if a FactType element should be displayed on
+		/// the diagram.
+		/// </summary>
+		/// <param name="factType">The element to test</param>
+		/// <returns>true to display, false to not display</returns>
+		public bool ShouldDisplayFactType(FactType factType)
+		{
+			if (factType is SubtypeFact)
+			{
+				return true;
+			}
+#if !SHOW_IMPLIED_SHAPES
+			else if (factType.ImpliedByObjectification != null)
+			{
+				return true;
+			}
+#endif // !SHOW_IMPLIED_SHAPES
+			return ShouldDisplayPartOfReferenceMode(factType);
 		}
 		/// <summary>
 		/// Function to determine if a fact type, which may be participating
@@ -1282,23 +1296,49 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <returns>True if the object type has a collapsed reference mode</returns>
 		private bool ShouldCollapseReferenceMode(ObjectType objectType)
 		{
-			ObjectTypeShape objectTypeShape;
-			ObjectifiedFactTypeNameShape objectifiedShape;
-			if (null != (objectTypeShape = FindShapeForElement<ObjectTypeShape>(objectType)))
+			if (!objectType.HasReferenceMode)
 			{
-				if (objectType.HasReferenceMode)
+				return false;
+			}
+			bool hasShape = false;
+			foreach (ORMBaseShape pel in MultiShapeUtility.FindAllShapesForElement<ORMBaseShape>(this, objectType))
+			{
+				ObjectTypeShape objectTypeShape;
+				ObjectifiedFactTypeNameShape objectifiedFactTypeNameShape;
+				if (null != (objectTypeShape = pel as ObjectTypeShape))
 				{
-					return !objectTypeShape.ExpandRefMode;
+					hasShape = true;
+					if (objectTypeShape.ExpandRefMode)
+					{
+						return false;
+					}
+				}
+				else if (null != (objectifiedFactTypeNameShape = pel as ObjectifiedFactTypeNameShape))
+				{
+					hasShape = true;
+					if (objectifiedFactTypeNameShape.ExpandRefMode)
+					{
+						return false;
+					}
 				}
 			}
-			else if (null != (objectifiedShape = FindShapeForElement<ObjectifiedFactTypeNameShape>(objectType)))
+			FactType factType;
+			if (null != (factType = objectType.NestedFactType))
 			{
-				if (objectType.HasReferenceMode)
+
+				foreach (FactTypeShape factTypeShape in MultiShapeUtility.FindAllShapesForElement<FactTypeShape>(this, factType))
 				{
-					return !objectifiedShape.ExpandRefMode;
+					if (factTypeShape.DisplayAsObjectType)
+					{
+						hasShape = true;
+						if (factTypeShape.ExpandRefMode)
+						{
+							return false;
+						}
+					}
 				}
 			}
-			return false; // If a shape can't be found, then do not collapse, regardless of objectType.HasReferenceMode
+			return hasShape; // Don't collapse if a shape can't be found.
 		}
 #if SHOW_FACTSHAPE_FOR_SUBTYPE
 		/// <summary>See <see cref="ORMDiagramBase.CreateChildShape"/>.</summary>

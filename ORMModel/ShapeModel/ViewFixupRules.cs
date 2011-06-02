@@ -56,27 +56,52 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <summary>
 		/// ChangeRule: typeof(ObjectTypeShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
 		/// ChangeRule: typeof(ObjectifiedFactTypeNameShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// ChangeRule: typeof(FactTypeShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
 		/// </summary>
 		private static void ObjectTypeShapeChangeRule(ElementPropertyChangedEventArgs e)
 		{
 			ObjectTypeShape objectTypeShape = null;
 			ObjectifiedFactTypeNameShape objectifiedShape = null;
+			FactTypeShape factTypeShape = null;
 			Guid attributeId = e.DomainProperty.Id;
+			ModelElement element = e.ModelElement;
 			if ((attributeId == ObjectTypeShape.ExpandRefModeDomainPropertyId &&
-				null != (objectTypeShape = e.ModelElement as ObjectTypeShape)) ||
+				null != (objectTypeShape = element as ObjectTypeShape)) ||
 				(attributeId == ObjectifiedFactTypeNameShape.ExpandRefModeDomainPropertyId &&
-				null != (objectifiedShape = e.ModelElement as ObjectifiedFactTypeNameShape)))
+				null != (objectifiedShape = element as ObjectifiedFactTypeNameShape)) ||
+				(attributeId == FactTypeShape.ExpandRefModeDomainPropertyId &&
+				null != (factTypeShape = element as FactTypeShape) &&
+				factTypeShape.DisplayAsObjectType))
 			{
+				ObjectType objectType = null;
+				NodeShape targetShape;
 				if (objectTypeShape != null)
 				{
 					objectTypeShape.AutoResize();
+					objectType = objectTypeShape.ModelElement as ObjectType;
+					targetShape = objectTypeShape;
+				}
+				else if (objectifiedShape != null)
+				{
+					objectifiedShape.AutoResize();
+					objectType = objectifiedShape.ModelElement as ObjectType;
+					targetShape = objectifiedShape;
 				}
 				else
 				{
-					objectifiedShape.AutoResize();
+					factTypeShape.AutoResize();
+					FactType objectifiedFactType;
+					if (null != (objectifiedFactType = factTypeShape.AssociatedFactType))
+					{
+						objectType = objectifiedFactType.NestingType;
+					}
+					targetShape = factTypeShape;
+				}
+				if (objectType == null)
+				{
+					return;
 				}
 
-				ObjectType objectType = ((objectTypeShape != null) ? objectTypeShape.ModelElement : objectifiedShape.ModelElement) as ObjectType;
 				UniquenessConstraint preferredConstraint;
 				LinkedElementCollection<Role> constraintRoles;
 				ObjectType rolePlayer;
@@ -98,21 +123,37 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							{
 								objectTypeShape.ExpandRefMode = true;
 							}
-							else
+							else if (objectifiedShape != null)
 							{
 								objectifiedShape.ExpandRefMode = true;
+							}
+							else
+							{
+								factTypeShape.ExpandRefMode = true;
 							}
 						}
 						return;
 					}
-					ORMDiagram parentDiagram = ((objectTypeShape != null) ? objectTypeShape.Diagram : objectifiedShape.Diagram) as ORMDiagram;
+					ORMDiagram parentDiagram = targetShape.Diagram as ORMDiagram;
 					Dictionary<ShapeElement, bool> shapeElements = new Dictionary<ShapeElement, bool>();
 
 					// View or Hide FactType
 					FactType factType = preferredConstraint.FactTypeCollection[0];
+					bool removedFactType = false;
 					if (!expandingRefMode)
 					{
-						RemoveShapesFromDiagram(factType, parentDiagram);
+						if (!parentDiagram.ShouldDisplayFactType(factType))
+						{
+							removedFactType = true;
+							RemoveShapesFromDiagram(factType, parentDiagram);
+						}
+						else if (null != objectifiedShape)
+						{
+							// For the other shapes, a shape resize rebinds links,
+							// but not for an objectifiedShape because the resize
+							// is on the wrong shape.
+							MultiShapeUtility.AttachLinkConfigurationChanged(objectifiedShape.ParentShape);
+						}
 					}
 					else
 					{
@@ -135,6 +176,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							{
 								Diagram.FixUpDiagram(factType, readingOrder);
 							}
+						}
+						else if (null != objectifiedShape)
+						{
+							// For the other shapes, a shape resize rebinds links automatically,
+							// but not for an objectifiedShape because the resize is on a child shape,
+							// not the shape attached to links.
+							MultiShapeUtility.AttachLinkConfigurationChanged(objectifiedShape.ParentShape);
 						}
 					}
 
@@ -162,9 +210,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 								FixupValueTypeValueConstraintLink(link, null);
 							}
 						}
-						else
+						else if (removedFactType)
 						{
-							if (!objectType.ReferenceModeSharesValueType || // Easy check first
+							if (!objectType.ReferenceModeSharesValueType && // Easy check first
 								!parentDiagram.ShouldDisplayObjectType(valueType)) // More involved check second
 							{
 								RemoveShapesFromDiagram(valueType, parentDiagram);
@@ -172,31 +220,28 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						}
 					}
 
-					//View or Hide ObjectTypePlaysRole links
+					//View or Hide value constraint shapes and links. Role player links come and go automatically
 					foreach (RoleBase roleBase in factType.RoleCollection)
 					{
-						Role role = roleBase.Role;
-						foreach (ObjectTypePlaysRole link in DomainRoleInfo.GetElementLinks<ObjectTypePlaysRole>(role, ObjectTypePlaysRole.PlayedRoleDomainRoleId))
+						foreach (RoleHasValueConstraint link in DomainRoleInfo.GetElementLinks<RoleHasValueConstraint>(roleBase.Role, RoleHasValueConstraint.RoleDomainRoleId))
 						{
 							if (expandingRefMode)
 							{
-								Diagram.FixUpDiagram(objectType.Model, link);
-							}
-							else
-							{
-								RemoveShapesFromDiagram(link, parentDiagram);
-							}
-						}
-						foreach (RoleHasValueConstraint link in DomainRoleInfo.GetElementLinks<RoleHasValueConstraint>(role, RoleHasValueConstraint.RoleDomainRoleId))
-						{
-							if (expandingRefMode)
-							{
+								// Remove child shapes associated with this value constraint
+								RoleValueConstraint valueConstraint = link.ValueConstraint;
+								foreach (PresentationElement childPel in targetShape.RelativeChildShapes)
+								{
+									if (childPel.ModelElement == valueConstraint)
+									{
+										childPel.Delete();
+										break;
+									}
+								}
 								FixupRoleValueConstraintLink(link, null);
 							}
 							else
 							{
 								FixupRoleValueConstraintLinkForIdentifiedEntityType(link, null);
-								RemoveShapesFromDiagram(link, parentDiagram);
 							}
 						}
 					}
@@ -220,7 +265,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						}
 						bl.AddShape(rootShape, true);
 						bl.SetRootShape(rootShape);
-						bl.Layout(false);
+						bl.Layout(false, objectifiedShape != null ? objectifiedShape.ParentShape as NodeShape : targetShape, true, true);
 					}
 				}
 			}
@@ -790,6 +835,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							foreach (ValueConstraintShape shapeElement in MultiShapeUtility.FindAllShapesForElement<ValueConstraintShape>(diagram, roleValueConstraint))
 							{
 								diagram.FixUpLocalDiagram(link);
+								break;
 							}
 						}
 					}
@@ -888,6 +934,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					{
 						Diagram.FixUpDiagram(model, nestedFactType);
 					}
+					Diagram.FixUpDiagram(nestedFactType, roleValueConstraint); // Handle fact type displayed as object type
 				}
 				else if (AllowElementFixup(objectType))
 				{

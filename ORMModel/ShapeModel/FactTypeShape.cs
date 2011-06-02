@@ -1422,6 +1422,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		// size is ignored wrt/repositioning relative shapes.
 		private const double RoleBoxHeight = 0.11;
 		private const double RoleBoxWidth = 0.16;
+		private const double CollapsedRoleBoxHeight = .035;
+		private const double CollapsedRoleBoxWidth = .05;
 		private const double NestedFactHorizontalMargin = 0.09;
 		private const double NestedFactVerticalMargin = 0.056;
 		private static readonly SizeD NestedFactHorizontalMarginSize = new SizeD(NestedFactHorizontalMargin, NestedFactVerticalMargin);
@@ -1432,6 +1434,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		private static readonly SizeD BorderHorizontalMarginSize = new SizeD(0, BorderMargin);
 		private static readonly SizeD BorderVerticalMarginSize = new SizeD(BorderMargin, 0);
 		private const double FocusIndicatorInsideMargin = .019;
+		// Copied from ObjectTypeShape margin constants. Keep in sync.
+		private const double DisplayAsObjectTypeHorizontalMargin = 0.060;
+		private const double DisplayAsObjectTypeVerticalMargin = 0.050;
 		#endregion // Size Constants
 		#region SpacerShapeField : ShapeField
 		/// <summary>
@@ -1463,6 +1468,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			public sealed override SizeD GetMinimumSize(ShapeElement parentShape)
 			{
 				FactTypeShape factTypeShape = (FactTypeShape)parentShape;
+				if (factTypeShape.DisplayAsObjectType)
+				{
+					return SizeD.Empty;
+				}
 				bool isVertical = myIsVertical;
 				bool isObjectified = factTypeShape.ShouldDrawObjectified;
 				double offset = ((factTypeShape.DisplayOrientation == DisplayOrientation.Horizontal) ^ isVertical) ? // verticalMatchesShape
@@ -1602,7 +1611,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				FactTypeShape factTypeShape = (FactTypeShape)parentShape;
 				bool isVertical = IsVertical;
-				if ((factTypeShape.DisplayOrientation == DisplayOrientation.Horizontal) ^ !isVertical)
+				if (factTypeShape.DisplayAsObjectType ||
+					((factTypeShape.DisplayOrientation == DisplayOrientation.Horizontal) ^ !isVertical))
 				{
 					return SizeD.Empty;
 				}
@@ -1655,9 +1665,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// </summary>
 			/// <param name="parentShape">The <see cref="FactTypeShape"/> that this <see cref="ConstraintShapeField"/> is associated with.</param>
 			/// <returns>True if the orientation of the shape matches the orientation of the constraint field</returns>
-			public override bool GetVisible(ShapeElement parentShape)
+			public sealed override bool GetVisible(ShapeElement parentShape)
 			{
-				return ((parentShape as FactTypeShape).DisplayOrientation == DisplayOrientation.Horizontal) ^ IsVertical;
+				FactTypeShape factTypeShape = (FactTypeShape)parentShape;
+				return !factTypeShape.DisplayAsObjectType &&
+					((factTypeShape.DisplayOrientation == DisplayOrientation.Horizontal) ^ IsVertical);
 			}
 			/// <summary>
 			/// Paints the constraints.
@@ -2372,10 +2384,21 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			public sealed override SizeD GetMinimumSize(ShapeElement parentShape)
 			{
 				FactTypeShape factTypeShape = (parentShape as FactTypeShape);
+				if (factTypeShape.DisplayAsObjectType)
+				{
+					return SizeD.Empty;
+				}
 				double margin = factTypeShape.StyleSet.GetPen(FactTypeShape.RoleBoxResource).Width;
 				double width = FactTypeShape.RoleBoxWidth * Math.Max(1, factTypeShape.DisplayedRoleOrder.Count) + margin;
 				double height = FactTypeShape.RoleBoxHeight + margin;
 				return (factTypeShape.DisplayOrientation == DisplayOrientation.Horizontal) ? new SizeD(width, height) : new SizeD(height, width);
+			}
+			/// <summary>
+			/// Hide for collapsed objectification display
+			/// </summary>
+			public sealed override bool GetVisible(ShapeElement parentShape)
+			{
+				return !((FactTypeShape)parentShape).DisplayAsObjectType;
 			}
 			/// <summary>
 			/// Paint the RolesShapeField
@@ -2919,6 +2942,264 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			#endregion // Accessibility Overrides
 		}
 		#endregion // RoleSubField class
+		#region CollapsedRolesShapeField class
+		private sealed class CollapsedRolesShapeField : ShapeField
+		{
+			/// <summary>
+			/// Construct a default CollapsedRolesShapeField (not visible, selectable, or focusable)
+			/// </summary>
+			/// <param name="fieldName">Non-localized name for the field, forwarded to the base class.</param>
+			public CollapsedRolesShapeField(string fieldName)
+				: base(fieldName)
+			{
+				DefaultFocusable = false;
+				DefaultSelectable = false;
+				DefaultVisibility = false;
+			}
+			/// <summary>
+			/// Visible when the fact type is displayed as an object type
+			/// </summary>
+			public override bool GetVisible(ShapeElement parentShape)
+			{
+				return ((FactTypeShape)parentShape).DisplayAsObjectType;
+			}
+			/// <summary>
+			/// The collapsed role box size depends on the fact type arity
+			/// </summary>
+			public override SizeD GetMinimumSize(ShapeElement parentShape)
+			{
+				FactTypeShape factTypeShape = (FactTypeShape)parentShape;
+				if (!factTypeShape.DisplayAsObjectType)
+				{
+					return SizeD.Empty;
+				}
+				double margin = factTypeShape.StyleSet.GetPen(FactTypeShape.RoleBoxResource).Width;
+				return new SizeD(
+					FactTypeShape.CollapsedRoleBoxWidth * Math.Max(1, factTypeShape.DisplayedRoleOrder.Count) + margin + DisplayAsObjectTypeHorizontalMargin,
+					FactTypeShape.CollapsedRoleBoxHeight + margin);
+			}
+			/// <summary>
+			/// Paint a simple collapsed role box with no background color
+			/// </summary>
+			public override void DoPaint(DiagramPaintEventArgs e, ShapeElement parentShape)
+			{
+				if (null == Utility.ValidateStore(parentShape.Store))
+				{
+					return;
+				}
+				FactTypeShape factTypeShape = (FactTypeShape)parentShape;
+				int roleCount = factTypeShape.DisplayedRoleOrder.Count;
+				RectangleD bounds = this.GetBounds(parentShape);
+				StyleSetResourceId roleBoxPenId = FactTypeShape.RoleBoxResource;
+				Pen roleBoxPen = factTypeShape.StyleSet.GetPen(roleBoxPenId);
+				double penMargin = roleBoxPen.Width / 2;
+				Color restoreRoleBoxPenColor = Color.Empty;
+				bounds.Inflate(-penMargin - DisplayAsObjectTypeHorizontalMargin / 2, -penMargin);
+				bounds.Offset(penMargin, 0);
+				//bounds.Offset(DisplayAsObjectTypeHorizontalMargin * .05, 0);
+				Graphics g = e.Graphics;
+				double offsetBy = bounds.Width / roleCount;
+				double lastX = bounds.Left;
+				float top = (float)bounds.Top;
+				float verticalLineBottom = (float)bounds.Bottom - (float)penMargin;
+				float verticalLineTop = top + (float)penMargin;
+				float height = (float)bounds.Height;
+				try
+				{
+					restoreRoleBoxPenColor = factTypeShape.UpdateDynamicColor(roleBoxPenId, roleBoxPen);
+					g.DrawRectangle(roleBoxPen, (float)lastX, top, (float)bounds.Width, height);
+					for (int i = 1; i < roleCount; ++i)
+					{
+						lastX += offsetBy;
+						g.DrawLine(roleBoxPen, (float)lastX, verticalLineTop, (float)lastX, verticalLineBottom);
+					}
+				}
+				finally
+				{
+					if (!restoreRoleBoxPenColor.IsEmpty)
+					{
+						roleBoxPen.Color = restoreRoleBoxPenColor;
+					}
+				}
+			}
+		}
+		#endregion // CollapsedRolesShapeField class
+		#region ObjectTypeDisplayRightSpacerField class
+		/// <summary>
+		/// Create a spacer shape to allow refmode and object type name centering between
+		/// this and the collapsed roles field
+		/// </summary>
+		private sealed class ObjectTypeDisplayRightSpacerField : ShapeField
+		{
+			/// <summary>
+			/// A shape field for right margin control when displayed as an object type
+			/// </summary>
+			/// <param name="fieldName">Non-localized name for the field</param>
+			public ObjectTypeDisplayRightSpacerField(string fieldName)
+				: base(fieldName)
+			{
+				DefaultFocusable = false;
+				DefaultSelectable = false;
+				DefaultVisibility = false;
+			}
+			/// <summary>
+			/// Returns width <see cref="DisplayAsObjectTypeHorizontalMargin"/> if <see cref="FactTypeShape.DisplayAsObjectType"/> is set.
+			/// </summary>
+			public sealed override SizeD GetMinimumSize(ShapeElement parentShape)
+			{
+				FactTypeShape factTypeShape = (FactTypeShape)parentShape;
+				if (!factTypeShape.DisplayAsObjectType)
+				{
+					return SizeD.Empty;
+				}
+				return new SizeD(DisplayAsObjectTypeHorizontalMargin, 0);
+			}
+
+			// Nothing to paint for the spacer. So, no DoPaint override needed.
+		}
+		#endregion // ObjectTypeDisplayRightSpacerField class
+		#region ReferenceModeTextField class
+		/// <summary>
+		/// Class to show reference mode
+		/// </summary>
+		private sealed class ReferenceModeTextField : AutoSizeTextField
+		{
+			/// <summary>
+			/// Default constructor
+			/// </summary>
+			/// <param name="fieldName">Non-localized name for the field</param>
+			public ReferenceModeTextField(string fieldName)
+				: base(fieldName)
+			{
+				DefaultFocusable = true;
+				DrawBorder = false;
+				DefaultTextBrushId = DiagramBrushes.ShapeTitleText;
+				DefaultPenId = DiagramPens.ShapeOutline;
+				DefaultFontId = DiagramFonts.ShapeTitle;
+				DefaultText = string.Empty;
+			}
+			/// <summary>
+			/// Gets the minimum <see cref="SizeD"/> of this <see cref="ReferenceModeTextField"/>.
+			/// </summary>
+			/// <param name="parentShape">
+			/// The <see cref="FactTypeShape"/> that this <see cref="ReferenceModeTextField"/> is associated with.
+			/// </param>
+			/// <returns>The minimum <see cref="SizeD"/> of this <see cref="ReferenceModeTextField"/>.</returns>
+			public override SizeD GetMinimumSize(ShapeElement parentShape)
+			{
+				if (GetVisible(parentShape))
+				{
+					return base.GetMinimumSize(parentShape);
+				}
+				return SizeD.Empty;
+			}
+			/// <summary>
+			/// Returns whether or not the text field is visible.
+			/// </summary>
+			public override bool GetVisible(ShapeElement parentShape)
+			{
+				FactTypeShape factTypeShape = (FactTypeShape)parentShape;
+				FactType factType;
+				Objectification objectification;
+				ObjectType objectifyingType;
+				return factTypeShape.DisplayAsObjectType &&
+					!factTypeShape.ExpandRefMode &&
+					null != (factType = factTypeShape.AssociatedFactType) &&
+					null != (objectification = factType.Objectification) &&
+					ShouldDrawObjectification(objectification, objectifyingType = objectification.NestingType) &&
+					objectifyingType.HasReferenceMode;
+			}
+			/// <summary>
+			/// Overrides the display text to add parenthesis
+			/// </summary>
+			public override string GetDisplayText(ShapeElement parentShape)
+			{
+				FactType factType;
+				ObjectType objectType;
+				if (null != (factType = ((FactTypeShape)parentShape).AssociatedFactType) &&
+					null != (objectType = factType.NestingType) &&
+					objectType.HasReferenceMode)
+				{
+					return string.Format(CultureInfo.InvariantCulture, ResourceStrings.ObjectTypeShapeReferenceModeFormatString, base.GetDisplayText(parentShape));
+				}
+				return base.GetDisplayText(parentShape);
+			}
+		}
+		#endregion // ReferenceModeTextField class
+		#region ObjectNameTextField class
+		/// <summary>
+		/// Class to show a decorated object name
+		/// </summary>
+		private sealed class ObjectTypeNameTextField : AutoSizeTextField
+		{
+			/// <summary>
+			/// Create a new ObjectNameTextField
+			/// </summary>
+			/// <param name="fieldName">Non-localized name for the field</param>
+			public ObjectTypeNameTextField(string fieldName)
+				: base(fieldName)
+			{
+				DrawBorder = false;
+				FillBackground = false;
+				DefaultTextBrushId = DiagramBrushes.ShapeTitleText;
+				DefaultPenId = DiagramPens.ShapeOutline;
+				DefaultFontId = DiagramFonts.ShapeTitle;
+				DefaultFocusable = true;
+				DefaultText = string.Empty;
+			}
+			/// <summary>
+			/// Gets the minimum <see cref="SizeD"/> of this <see cref="ObjectTypeNameTextField"/>.
+			/// </summary>
+			/// <param name="parentShape">
+			/// The <see cref="FactTypeShape"/> that this <see cref="ObjectTypeNameTextField"/> is associated with.
+			/// </param>
+			/// <returns>The minimum <see cref="SizeD"/> of this <see cref="ObjectTypeNameTextField"/>.</returns>
+			public override SizeD GetMinimumSize(ShapeElement parentShape)
+			{
+				if (GetVisible(parentShape))
+				{
+					return base.GetMinimumSize(parentShape);
+				}
+				return SizeD.Empty;
+			}
+
+			/// <summary>
+			/// Returns whether or not the text field is visible.
+			/// </summary>
+			public override bool GetVisible(ShapeElement parentShape)
+			{
+				FactTypeShape factTypeShape = (FactTypeShape)parentShape;
+				FactType factType;
+				return factTypeShape.DisplayAsObjectType &&
+					null != (factType = factTypeShape.AssociatedFactType) &&
+					ShouldDrawObjectification(factType);
+			}
+			/// <summary>
+			/// Modify the display text for independent object types.
+			/// </summary>
+			/// <param name="parentShape">The ShapeElement to get the display text for.</param>
+			/// <returns>The text to display.</returns>
+			public override string GetDisplayText(ShapeElement parentShape)
+			{
+				string retVal = base.GetDisplayText(parentShape);
+				FactType factType;
+				ObjectType objectType = parentShape.ModelElement as ObjectType;
+				if (null != (factType = ((FactTypeShape)parentShape).AssociatedFactType) &&
+					null != (objectType = factType.NestingType))
+				{
+					if (objectType.IsIndependent)
+					{
+						retVal = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ObjectTypeShapeIndependentFormatString, retVal);
+					}
+					else if (objectType.DerivationRule != null && objectType.IsSubtype) // Note that subtypes are never independent
+					{
+						retVal = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ObjectTypeShapeDerivedSubtypeFormatString, retVal);
+					}
+				}
+				return retVal;
+			}
+		}
+		#endregion // ObjectNameTextField class
 		#region Member Variables
 		private static RolesShapeField myRolesShapeField;
 		private static ConstraintShapeField myTopConstraintShapeField;
@@ -2927,6 +3208,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		private static ConstraintShapeField myLeftConstraintShapeField;
 		private static ConstraintShapeField myRightConstraintShapeField;
 		private static SpacerShapeField myLeftSpacerShapeField;
+		private static CollapsedRolesShapeField myCollapsedRolesShapeField;
+		private static ObjectTypeDisplayRightSpacerField myObjectTypeDisplayRightSpacerField;
+		private static ObjectTypeNameTextField myObjectTypeNameTextField;
+		private static ReferenceModeTextField myReferenceModeTextField;
 		/// <summary>
 		/// Pen to draw a role box outline
 		/// </summary>
@@ -3205,7 +3490,48 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			ConstraintShapeField rightConstraintField = new ConstraintShapeField("RightConstraints", ConstraintAttachPosition.Right);
 			SpacerShapeField topSpacer = new SpacerShapeField("TopSpacer", false);
 			SpacerShapeField leftSpacer = new SpacerShapeField("LeftSpacer", true);
+			ObjectTypeNameTextField objectTypeNameTextField = new ObjectTypeNameTextField("ObjectTypeName");
+			ReferenceModeTextField referenceModeTextField = new ReferenceModeTextField("ObjectTypeRefMode");
+			CollapsedRolesShapeField collapsedRolesField = new CollapsedRolesShapeField("CollapsedRoles");
+			ObjectTypeDisplayRightSpacerField rightSpacerField = new ObjectTypeDisplayRightSpacerField("RightSpacer");
 
+			// Initialize field
+			StringFormat fieldFormat = new StringFormat(StringFormatFlags.NoClip);
+			fieldFormat.Alignment = StringAlignment.Center;
+			objectTypeNameTextField.DefaultStringFormat = fieldFormat;
+			objectTypeNameTextField.AssociateValueWith(Store, FactType.NameDomainPropertyId);
+
+			// Initialize reference mode field
+			referenceModeTextField.DefaultStringFormat = fieldFormat;
+			// Note that the reference mode field is associated with the ReferenceModeDecoratedString
+			// property, not ReferenceModeDisplay. The field will only activate for editing
+			// if it is a string property. We need custom code to redirect the field to the
+			// object type instead of our backing element. Note that the FactType name is
+			// already bound to the object type name, so we do not need custom code for the
+			// name field.
+			referenceModeTextField.AssociateValueWith(Store, new AssociatedPropertyInfo(
+				ObjectType.ReferenceModeDecoratedStringDomainPropertyId,
+				delegate(PresentationElement pel)
+				{
+					FactType factType;
+					if (null != (factType = pel.ModelElement as FactType))
+					{
+						return factType.NestingType;
+					}
+					return null;
+				},
+				delegate(ModelElement mel)
+				{
+					// The property this is bound to is a wrapper property that
+					// will generally not have a transaction entry associated
+					// with it when it changes so there is no reason to backtrack
+					// from the element to the associated shapes. Other rules are
+					// in place to resize and/or redraw the fact type shape when
+					// the underlying model elements are updated.
+					return null;
+				}));
+
+			
 			// Add all shapes before modifying anchoring behavior
 			shapeFields.Add(topSpacer);
 			shapeFields.Add(topConstraintField);
@@ -3214,60 +3540,73 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			shapeFields.Add(leftConstraintField);
 			shapeFields.Add(rightConstraintField);
 			shapeFields.Add(rolesField);
+			shapeFields.Add(collapsedRolesField);
+			shapeFields.Add(rightSpacerField);
+			shapeFields.Add(objectTypeNameTextField);
+			shapeFields.Add(referenceModeTextField);
 
 			// Modify anchoring behavior
-			AnchoringBehavior bottomConstraintAnchor = bottomConstraintField.AnchoringBehavior;
-			bottomConstraintAnchor.CenterHorizontally();
-			bottomConstraintAnchor.SetTopAnchor(rolesField, 1);
-			bottomConstraintAnchor.InvisibleCollapseFlags = InvisibleCollapseFlags.VerticallyToTop;
+			AnchoringBehavior anchor = bottomConstraintField.AnchoringBehavior;
+			anchor.CenterHorizontally();
+			anchor.SetTopAnchor(rolesField, 1);
+			anchor.InvisibleCollapseFlags = InvisibleCollapseFlags.VerticallyToTop;
 
-			AnchoringBehavior anchor = rolesField.AnchoringBehavior;
+			anchor = rolesField.AnchoringBehavior;
 			//anchor.CenterHorizontally();
 			anchor.SetLeftAnchor(leftConstraintField, 1);
 			anchor.SetTopAnchor(topConstraintField, 1);
 
-			AnchoringBehavior topConstraintAnchor = topConstraintField.AnchoringBehavior;
-			topConstraintAnchor.CenterHorizontally();
-			topConstraintAnchor.SetTopAnchor(topSpacer, 1);
-			topConstraintAnchor.InvisibleCollapseFlags = InvisibleCollapseFlags.VerticallyToTop;
+			anchor = topConstraintField.AnchoringBehavior;
+			anchor.CenterHorizontally();
+			anchor.SetTopAnchor(topSpacer, 1);
+			anchor.InvisibleCollapseFlags = InvisibleCollapseFlags.VerticallyToTop;
 
-			AnchoringBehavior topSpacerAnchor = topSpacer.AnchoringBehavior;
-			topSpacerAnchor.CenterHorizontally();
+			topSpacer.AnchoringBehavior.CenterHorizontally();
 
-			AnchoringBehavior rightConstraintAnchor = rightConstraintField.AnchoringBehavior;
-			rightConstraintAnchor.CenterVertically();
-			rightConstraintAnchor.SetLeftAnchor(rolesField, 1);
-			rightConstraintAnchor.InvisibleCollapseFlags = InvisibleCollapseFlags.HorizontallyToLeft;
+			anchor = rightConstraintField.AnchoringBehavior;
+			anchor.CenterVertically();
+			anchor.SetLeftAnchor(rolesField, 1);
+			anchor.InvisibleCollapseFlags = InvisibleCollapseFlags.HorizontallyToLeft;
 
-			AnchoringBehavior leftConstraintAnchor = leftConstraintField.AnchoringBehavior;
-			leftConstraintAnchor.CenterVertically();
-			leftConstraintAnchor.SetLeftAnchor(leftSpacer, 1);
-			leftConstraintAnchor.InvisibleCollapseFlags = InvisibleCollapseFlags.HorizontallyToLeft;
+			anchor = leftConstraintField.AnchoringBehavior;
+			anchor.CenterVertically();
+			anchor.SetLeftAnchor(leftSpacer, 1);
+			anchor.InvisibleCollapseFlags = InvisibleCollapseFlags.HorizontallyToLeft;
 
-			AnchoringBehavior leftSpacerAnchor = leftSpacer.AnchoringBehavior;
-			//leftSpacerAnchor.SetLeftAnchor(AnchoringBehavior.Edge.Left, 0);
-			leftSpacerAnchor.CenterVertically();
+			anchor = leftSpacer.AnchoringBehavior;
+			//anchor.SetLeftAnchor(AnchoringBehavior.Edge.Left, 0);
+			anchor.CenterVertically();
 
-			Debug.Assert(myRolesShapeField == null); // Only called once
+			// Modify object type display anchoring
+			anchor = collapsedRolesField.AnchoringBehavior;
+			//anchor.SetLeftAnchor(AnchoringBehavior.Edge.Left, 0); // Incorporate margin into size to ease anchoring
+			anchor.CenterVertically();
+
+			anchor = rightSpacerField.AnchoringBehavior;
+			anchor.CenterVertically();
+			anchor.SetRightAnchor(AnchoringBehavior.Edge.Right, 0d);
+
+			anchor = objectTypeNameTextField.AnchoringBehavior;
+			anchor.SetTopAnchor(AnchoringBehavior.Edge.Top, DisplayAsObjectTypeVerticalMargin);
+			anchor.CenterHorizontally(collapsedRolesField, AnchoringBehavior.Edge.Right, rightSpacerField, AnchoringBehavior.Edge.Left);
+
+			// Modify reference mode field anchoring behavior
+			anchor = referenceModeTextField.AnchoringBehavior;
+			anchor.SetTopAnchor(objectTypeNameTextField, AnchoringBehavior.Edge.Bottom, 0);
+			anchor.CenterHorizontally(collapsedRolesField, AnchoringBehavior.Edge.Right, rightSpacerField, AnchoringBehavior.Edge.Left);
+
+			Debug.Assert(myRolesShapeField == null); // Only called once, skip similar asserts on other fields
 			myRolesShapeField = rolesField;
-
-			Debug.Assert(myTopConstraintShapeField == null); // Only called once
 			myTopConstraintShapeField = topConstraintField;
-
-			Debug.Assert(myBottomConstraintShapeField == null); // Only called once
 			myBottomConstraintShapeField = bottomConstraintField;
-
-			Debug.Assert(myTopSpacerShapeField == null); // Only called once
 			myTopSpacerShapeField = topSpacer;
-
-			Debug.Assert(myLeftConstraintShapeField == null); // Only called once
 			myLeftConstraintShapeField = leftConstraintField;
-
-			Debug.Assert(myRightConstraintShapeField == null); // Only called once
 			myRightConstraintShapeField = rightConstraintField;
-
-			Debug.Assert(myLeftSpacerShapeField == null); // Only called once
 			myLeftSpacerShapeField = leftSpacer;
+			myObjectTypeNameTextField = objectTypeNameTextField;
+			myReferenceModeTextField = referenceModeTextField;
+			myCollapsedRolesShapeField = collapsedRolesField;
+			myObjectTypeDisplayRightSpacerField = rightSpacerField;
 		}
 		/// <summary>
 		/// The shape field used to display roles
@@ -3299,38 +3638,69 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			get
 			{
 				SizeD retVal = SizeD.Empty;
-				ShapeField rolesShape = RolesShape;
-				if (rolesShape != null)
+				if (DisplayAsObjectType)
 				{
-					double width, height;
-					SizeD rolesShapeSize = rolesShape.GetMinimumSize(this);
-					width = rolesShapeSize.Width;
-					width += myLeftConstraintShapeField.GetMinimumSize(this).Width;
-					width += myRightConstraintShapeField.GetMinimumSize(this).Width;
-					height = rolesShapeSize.Height;
-					height += myTopConstraintShapeField.GetMinimumSize(this).Height;
-					height += myBottomConstraintShapeField.GetMinimumSize(this).Height;
-					if (!ShouldDrawObjectified)
+					TextField nameField = myObjectTypeNameTextField;
+					TextField refModeField = myReferenceModeTextField;
+					ShapeField collapsedRolesField = myCollapsedRolesShapeField;
+					if (nameField != null)
 					{
-						width += BorderMargin + BorderMargin;
-						height += BorderMargin + BorderMargin;
+						SizeD textSize = nameField.GetBounds(this).Size;
+						SizeD referenceSize = refModeField.GetBounds(this).Size;
+						retVal.Width = ((textSize.Width > referenceSize.Width) ? textSize.Width : referenceSize.Width) + collapsedRolesField.GetBounds(this).Size.Width - DisplayAsObjectTypeHorizontalMargin; // Margin incorporated into collapsed roles field, strip out
+						retVal.Height = textSize.Height + referenceSize.Height;
 					}
-					retVal = new SizeD(width, height);
+				}
+				else
+				{
+					ShapeField rolesShape = RolesShape;
+					if (rolesShape != null)
+					{
+						double width, height;
+						SizeD rolesShapeSize = rolesShape.GetMinimumSize(this);
+						width = rolesShapeSize.Width;
+						width += myLeftConstraintShapeField.GetMinimumSize(this).Width;
+						width += myRightConstraintShapeField.GetMinimumSize(this).Width;
+						height = rolesShapeSize.Height;
+						height += myTopConstraintShapeField.GetMinimumSize(this).Height;
+						height += myBottomConstraintShapeField.GetMinimumSize(this).Height;
+						if (!ShouldDrawObjectified)
+						{
+							width += BorderMargin + BorderMargin;
+							height += BorderMargin + BorderMargin;
+						}
+						retVal = new SizeD(width, height);
+					}
 				}
 				return retVal;
 			}
 		}
 		/// <summary>
-		/// Size to ContentSize plus some margin padding if we're a nested fact type.
+		/// Automatically resize the shape
 		/// </summary>
 		public override void AutoResize()
+		{
+			this.AutoResize(true);
+		}
+		/// <summary>
+		/// Size to ContentSize plus some margin padding if we're a nested fact type.
+		/// </summary>
+		/// <param name="maintainCenter">Automatically adjust the center of the axis
+		/// with a center point not automatically controlled by the RolesPosition property.</param>
+		private void AutoResize(bool maintainCenter)
 		{
 			SizeD contentSize = ContentSize;
 			if (!contentSize.IsEmpty)
 			{
-				if (ShouldDrawObjectified)
+				bool isHorizontal = DisplayOrientation == DisplayOrientation.Horizontal;
+				if (DisplayAsObjectType)
 				{
-					if (DisplayOrientation == DisplayOrientation.Horizontal)
+					contentSize.Width += DisplayAsObjectTypeHorizontalMargin + DisplayAsObjectTypeHorizontalMargin;
+					contentSize.Height += DisplayAsObjectTypeVerticalMargin + DisplayAsObjectTypeVerticalMargin;
+				}
+				else if (ShouldDrawObjectified)
+				{
+					if (isHorizontal)
 					{
 						contentSize.Width += NestedFactHorizontalMargin + NestedFactHorizontalMargin;
 						contentSize.Height += NestedFactVerticalMargin + NestedFactVerticalMargin;
@@ -3341,9 +3711,40 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						contentSize.Height += NestedFactHorizontalMargin + NestedFactHorizontalMargin;
 					}
 				}
-				if (!UpdateRolesPosition(contentSize))
+				RectangleD oldBounds = this.AbsoluteBounds;
+				double otherAxisLocationAdjust = 0d;
+				if (maintainCenter &&
+					!(oldBounds.IsEmpty ||
+					oldBounds.Size == this.DefaultSize ||
+					this.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.ContainsKey(ORMBaseShape.PlaceAllChildShapes)))
 				{
-					Size = contentSize;
+					// Initializing, let normal placement win
+					SizeD oldSize = oldBounds.Size;
+					double delta = isHorizontal ? contentSize.Width - oldSize.Width : contentSize.Height - oldSize.Height;
+					if (!VGConstants.FuzzZero(delta, VGConstants.FuzzDistance))
+					{
+						otherAxisLocationAdjust = -delta / 2;
+					}
+				}
+				if (!UpdateRolesPosition(contentSize, otherAxisLocationAdjust))
+				{
+					if (otherAxisLocationAdjust == 0)
+					{
+						Size = contentSize;
+					}
+					else
+					{
+						PointD location = oldBounds.Location;
+						if (isHorizontal)
+						{
+							location.Offset(otherAxisLocationAdjust, 0d);
+						}
+						else
+						{
+							location.Offset(0d, otherAxisLocationAdjust);
+						}
+						AbsoluteBounds = new RectangleD(location, contentSize);
+					}
 				}
 			}
 		}
@@ -3352,12 +3753,26 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		/// <param name="newSize">The new size of the fact, or SizeD.Empty. Allows a move/size with
 		/// a single action, resulting in a single transaction log entry for AbsoluteBounds property</param>
+		/// <param name="otherAxisLocationAdjust">A location adjustment for the axis that is not currently
+		/// controlled by the RolesPosition property.</param>
 		/// <returns>true if the bounds were changed</returns>
-		private bool UpdateRolesPosition(SizeD newSize)
+		private bool UpdateRolesPosition(SizeD newSize, double otherAxisLocationAdjust)
 		{
 			bool retVal = false;
 			double oldRolesPosition = RolesPosition;
-			PointD centerPoint = myRolesShapeField.GetBounds(this).Center;
+			PointD centerPoint;
+			if (DisplayAsObjectType)
+			{
+				if (newSize.IsEmpty)
+				{
+					newSize = Size;
+				}
+				centerPoint = new PointD(newSize.Width / 2, newSize.Height / 2);
+			}
+			else
+			{
+				centerPoint = myRolesShapeField.GetBounds(this).Center;
+			}
 			bool isVertical = DisplayOrientation != DisplayOrientation.Horizontal;
 			double newRolesPosition = isVertical ? centerPoint.X : centerPoint.Y;
 			if (!VGConstants.FuzzEqual(oldRolesPosition, newRolesPosition, VGConstants.FuzzDistance))
@@ -3368,11 +3783,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					PointD newLocation = Location;
 					if (isVertical)
 					{
-						newLocation.Offset(oldRolesPosition - newRolesPosition, 0);
+						newLocation.Offset(oldRolesPosition - newRolesPosition, otherAxisLocationAdjust);
 					}
 					else
 					{
-						newLocation.Offset(0, oldRolesPosition - newRolesPosition);
+						newLocation.Offset(otherAxisLocationAdjust, oldRolesPosition - newRolesPosition);
 					}
 					if (newSize.IsEmpty)
 					{
@@ -3619,14 +4034,45 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <returns>true</returns>
 		protected override bool ShouldAddShapeForElement(ModelElement element)
 		{
-			Debug.Assert(element is Role
-					|| (element is ObjectType && ((ObjectType)element).NestedFactType == AssociatedFactType)
-					|| (element is ReadingOrder && ((ReadingOrder)element).FactType == AssociatedFactType)
-					|| (element is RoleValueConstraint && ((RoleValueConstraint)element).Role.FactType == AssociatedFactType)
-				);
 			Role role;
-			if (element is ReadingOrder)
+			ReadingOrder readingOrder;
+			ObjectType objectType;
+			RoleValueConstraint roleValueConstraint;
+			FactType factType;
+			if (DisplayAsObjectType)
 			{
+				if (null != (factType = AssociatedFactType) &&
+					null != (objectType = factType.NestingType))
+				{
+					ValueTypeValueConstraint valueTypeValueConstraint;
+					if (null != (roleValueConstraint = element as RoleValueConstraint))
+					{
+						FactType refModeFactType;
+						return !ExpandRefMode &&
+							null != (refModeFactType = objectType.ReferenceModeFactType) &&
+							refModeFactType == roleValueConstraint.Role.FactType;
+					}
+					else if (null != (valueTypeValueConstraint = element as ValueTypeValueConstraint))
+					{
+						// Support ValueType objectification
+						return valueTypeValueConstraint.ValueType == objectType;
+					}
+				}
+				return false;
+			}
+			if (null != (objectType = element as ObjectType))
+			{
+				if (objectType.NestedFactType != AssociatedFactType)
+				{
+					return false;
+				}
+			}
+			else if (null != (readingOrder = element as ReadingOrder))
+			{
+				if (readingOrder.FactType != AssociatedFactType)
+				{
+					return false;
+				}
 				foreach (ShapeElement shape in this.RelativeChildShapes)
 				{
 					ReadingShape readingShape = shape as ReadingShape;
@@ -3636,13 +4082,24 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					}
 				}
 			}
-			else if ((role = element as Role) != null)
+			else if (null != (role = element as Role))
 			{
+				if (role.FactType != AssociatedFactType)
+				{
+					return false;
+				}
 				if (this.DisplayRoleNames == DisplayRoleNames.Off)
 				{
 					return false;
 				}
 				return !string.IsNullOrEmpty(role.Name) && (role != AssociatedFactType.ImplicitBooleanRole);
+			}
+			else if (null != (roleValueConstraint = element as RoleValueConstraint))
+			{
+				if (roleValueConstraint.Role.FactType != AssociatedFactType)
+				{
+					return false;
+				}
 			}
 			return true;
 		}
@@ -3748,6 +4205,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// Corresponds to the supertypes part of the DisplayRelatedTypes property
 			/// </summary>
 			HideSupertypes = 0x40,
+			/// <summary>
+			/// Corresponds to the DisplayAsObjectType property
+			/// </summary>
+			DisplayAsObjectType = 0x80,
+			/// <summary>
+			/// Corresponds to the ExpandRefMode property
+			/// </summary>
+			ExpandRefMode = 0x100,
 		}
 		private DisplayFlags myDisplayFlags;
 		/// <summary>
@@ -3860,6 +4325,22 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					SetDisplayFlag(DisplayFlags.HideSubtypes | DisplayFlags.HideSupertypes, true);
 					break;
 			}
+		}
+		private bool GetDisplayAsObjectTypeValue()
+		{
+			return GetDisplayFlag(DisplayFlags.DisplayAsObjectType);
+		}
+		private void SetDisplayAsObjectTypeValue(bool value)
+		{
+			SetDisplayFlag(DisplayFlags.DisplayAsObjectType, value);
+		}
+		private bool GetExpandRefModeValue()
+		{
+			return GetDisplayFlag(DisplayFlags.ExpandRefMode);
+		}
+		private void SetExpandRefModeValue(bool value)
+		{
+			SetDisplayFlag(DisplayFlags.ExpandRefMode, value);
 		}
 		#endregion // Custom Stored Display Settings
 		#region Accessibility Settings
@@ -4644,7 +5125,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			FactType element;
 			Store store;
 			IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, FactType>[] providers;
-			if ((brushId == DiagramBrushes.DiagramBackground || brushId == DiagramBrushes.ShapeBackground) &&
+			bool textBrush = false;
+			if (((brushId == DiagramBrushes.DiagramBackground || brushId == DiagramBrushes.ShapeBackground) ||
+				(textBrush = (brushId == DiagramBrushes.ShapeTitleText && DisplayAsObjectType))) &&
 				null != (solidBrush = brush as SolidBrush) &&
 				null != (store = Utility.ValidateStore(Store)) &&
 				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, FactType>>()) &&
@@ -4652,7 +5135,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				for (int i = 0; i < providers.Length; ++i)
 				{
-					Color alternateColor = providers[i].GetDynamicColor(ORMDiagramDynamicColor.Background, this, element);
+					Color alternateColor = providers[i].GetDynamicColor(textBrush ? ORMDiagramDynamicColor.ForegroundText : ORMDiagramDynamicColor.Background, this, element);
 					if (alternateColor != Color.Empty)
 					{
 						retVal = solidBrush.Color;
@@ -4699,17 +5182,63 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		protected AttachLinkResult CanAttachLink(ModelElement element, bool toRole)
 		{
-			if (toRole)
+			ObjectTypePlaysRole rolePlayerLink;
+			FactType factType;
+			Objectification objectification;
+			if (element is SubtypeFact)
 			{
-				if (GetDisplayFlag(DisplayFlags.HideSubtypes) && element is SubtypeFact)
+				if (toRole)
+				{
+					if (GetDisplayFlag(DisplayFlags.HideSubtypes))
+					{
+						return AttachLinkResult.Defer;
+					}
+				}
+				else if (GetDisplayFlag(DisplayFlags.HideSupertypes))
 				{
 					return AttachLinkResult.Defer;
 				}
 			}
-			else if (GetDisplayFlag(DisplayFlags.HideSupertypes) &&
-				element is SubtypeFact)
+			else if (null != (rolePlayerLink = element as ObjectTypePlaysRole) &&
+				null != (factType = this.AssociatedFactType) &&
+				null != (objectification = factType.Objectification))
 			{
-				return AttachLinkResult.Defer;
+				bool displayedAsObjectType = DisplayAsObjectType;
+				ObjectType objectifyingType = objectification.NestingType;
+				FactType refModeFactType;
+				if (displayedAsObjectType)
+				{
+					if (objectifyingType != rolePlayerLink.RolePlayer &&
+						ShouldDrawObjectification(objectification, objectifyingType))
+					{
+						return AttachLinkResult.Defer;
+					}
+					else if (toRole &&
+						!ExpandRefMode && // Use ExpandRefMode from the fact type shape
+						null != (refModeFactType = objectifyingType.ReferenceModeFactType) &&
+						refModeFactType == rolePlayerLink.PlayedRole.FactType)
+					{
+						return AttachLinkResult.Defer;
+					}
+				}
+				else if (toRole &&
+					null != (refModeFactType = objectifyingType.ReferenceModeFactType) &&
+					refModeFactType == rolePlayerLink.PlayedRole.FactType)
+				{
+					// Use ExpandRefMode from the name shape
+					foreach (PresentationElement childPel in this.RelativeChildShapes)
+					{
+						ObjectifiedFactTypeNameShape nameShape = childPel as ObjectifiedFactTypeNameShape;
+						if (nameShape != null)
+						{
+							if (!nameShape.ExpandRefMode)
+							{
+								return AttachLinkResult.Defer;
+							}
+							break;
+						}
+					}
+				}
 			}
 			return AttachLinkResult.Attach;
 		}
@@ -4723,20 +5252,37 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		protected void FixupUnattachedLinkElements(Diagram diagram)
 		{
 			FactType factType;
-			ObjectType objectType;
 			ORMDiagram ormDiagram;
 			if (null != (factType = AssociatedFactType) && 
-				null != (objectType = factType.NestingType) &&
 				null != (ormDiagram = diagram as ORMDiagram))
 			{
-				foreach (Role role in objectType.PlayedRoleCollection)
+				ObjectType objectType = factType.NestingType;
+				if (null != objectType)
 				{
-					FactType subtypeFact = null;
-					if ((role is SubtypeMetaRole || role is SupertypeMetaRole) &&
-						null != (subtypeFact = role.FactType) &&
-						null == ormDiagram.FindShapeForElement<SubtypeLink>(subtypeFact))
+					foreach (Role role in objectType.PlayedRoleCollection)
 					{
-						ormDiagram.FixUpLocalDiagram(subtypeFact);
+						FactType subtypeFact = null;
+						if ((role is SubtypeMetaRole || role is SupertypeMetaRole) &&
+							null != (subtypeFact = role.FactType) &&
+							null == ormDiagram.FindShapeForElement<SubtypeLink>(subtypeFact))
+						{
+							ormDiagram.FixUpLocalDiagram(subtypeFact);
+						}
+					}
+				}
+				if ((objectType == null || !DisplayAsObjectType) &&
+					null == factType.ImpliedByObjectification)
+				{
+					foreach (RoleBase roleBase in factType.RoleCollection)
+					{
+						Role role;
+						ObjectTypePlaysRole link;
+						if (null != (role = roleBase as Role) &&
+							null != (link = ObjectTypePlaysRole.GetLinkToRolePlayer(role)) &&
+							null == ormDiagram.FindShapeForElement<RolePlayerLink>(link))
+						{
+							ormDiagram.FixUpLocalDiagram(link);
+						}
 					}
 				}
 			}
@@ -5466,24 +6012,77 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			if (!nestedFactTypeRemoved)
 			{
 				LinkedElementCollection<PresentationElement> presentationElements = PresentationViewsSubject.GetPresentation(nestedFactType);
+				LinkedElementCollection<ReadingOrder> readingOrders = null;
+				Dictionary<object, object> topLevelContextInfo = null;
+				object allowMultipleShapesKey = null;
+				bool containedAllowMultipleShapes = false;
 				for (int i = presentationElements.Count - 1; i >= 0; --i)
 				{
-					FactTypeShape factShape = presentationElements[i] as FactTypeShape;
-					if (factShape != null)
+					FactTypeShape factTypeShape = presentationElements[i] as FactTypeShape;
+					if (factTypeShape != null)
 					{
+						bool displayedAsObjectType = factTypeShape.DisplayAsObjectType;
+						if (displayedAsObjectType)
+						{
+							factTypeShape.DisplayAsObjectType = false;
+							ORMDiagram diagram = (ORMDiagram)factTypeShape.Diagram;
+							LinkedElementCollection<ShapeElement> childShapes = factTypeShape.RelativeChildShapes;
+							foreach (PresentationElement childShape in childShapes)
+							{
+								ObjectifiedFactTypeNameShape nameShape = childShape as ObjectifiedFactTypeNameShape;
+								if (nameShape != null)
+								{
+									factTypeShape.ExpandRefMode = nameShape.ExpandRefMode; // Preserve this setting, changing has no effect if not displayed as objectType
+									break;
+								}
+							}
+							childShapes.Clear();
+							foreach (ReadingOrder order in (readingOrders ?? (readingOrders = nestedFactType.ReadingOrderCollection)))
+							{
+								diagram.FixUpLocalDiagram(factTypeShape, order);
+								break;
+							}
+							bool testRoleNames = factTypeShape.DisplayRoleNames != DisplayRoleNames.Off;
+							foreach (RoleBase roleBase in factTypeShape.DisplayedRoleOrder) // We keep displayed role order when collapsed
+							{
+								Role role = roleBase.Role;
+								RoleHasValueConstraint valueConstraintLink;
+								string roleName;
+								if (null != (valueConstraintLink = RoleHasValueConstraint.GetLinkToValueConstraint(role)))
+								{
+									ValueConstraintShape valueConstraintShape = diagram.FixUpLocalDiagram(factTypeShape, valueConstraintLink.ValueConstraint) as ValueConstraintShape;
+									if (valueConstraintShape != null)
+									{
+										if (topLevelContextInfo == null)
+										{
+											topLevelContextInfo = valueConstraintLink.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+											if (!(containedAllowMultipleShapes = topLevelContextInfo.ContainsKey(allowMultipleShapesKey = MultiShapeUtility.AllowMultipleShapes)))
+											{
+												topLevelContextInfo.Add(allowMultipleShapesKey, null);
+											}
+										}
+										diagram.FixUpLocalDiagram(diagram, valueConstraintLink);
+									}
+								}
+								if (testRoleNames && !string.IsNullOrEmpty(roleName = role.Name))
+								{
+									diagram.FixUpLocalDiagram(factTypeShape, role);
+								}
+							}
+						}
 						if (!nestingTypeRemoved && !switchingToImplied)
 						{
 							// See if any links coming in apply to the ObjectType
 							bool needObjectShape = false;
 							bool needFactShape = false;
 							// The contents of the enumerator change over the course of this function, get a snapshot enumerator
-							IEnumerable<BinaryLinkShape> factShapeAttachedLinkShapes = MultiShapeUtility.GetEffectiveAttachedLinkShapes<BinaryLinkShape>(factShape, true);
+							IEnumerable<BinaryLinkShape> factShapeAttachedLinkShapes = MultiShapeUtility.GetEffectiveAttachedLinkShapes<BinaryLinkShape>(factTypeShape, true);
 							foreach (BinaryLinkShape linkShape in factShapeAttachedLinkShapes)
 							{
 								RolePlayerLink rolePlayerLink;
 								if (linkShape is SubtypeLink ||
 									(null != (rolePlayerLink = linkShape as RolePlayerLink) &&
-									factShape == MultiShapeUtility.ResolvePrimaryShape(rolePlayerLink.ToShape)))
+									factTypeShape == MultiShapeUtility.ResolvePrimaryShape(rolePlayerLink.ToShape)))
 								{
 									needObjectShape = true;
 									if (needFactShape)
@@ -5502,20 +6101,23 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							}
 							ObjectifiedFactTypeNameShape objectifiedNameShape = null;
 							ReadOnlyCollection<LinkConnectsToNode> nameShapeLinks = null; // Handle note connectors and anything an extension element model might add
-							foreach (ShapeElement relativeShape in factShape.RelativeChildShapes)
+							if (!displayedAsObjectType)
 							{
-								if (null != (objectifiedNameShape = relativeShape as ObjectifiedFactTypeNameShape))
+								foreach (ShapeElement relativeShape in factTypeShape.RelativeChildShapes)
 								{
-									nameShapeLinks = LinkConnectsToNode.GetLinksToLink(objectifiedNameShape);
-									if (nameShapeLinks.Count != 0)
+									if (null != (objectifiedNameShape = relativeShape as ObjectifiedFactTypeNameShape))
 									{
-										needObjectShape = true;
+										nameShapeLinks = LinkConnectsToNode.GetLinksToLink(objectifiedNameShape);
+										if (nameShapeLinks.Count != 0)
+										{
+											needObjectShape = true;
+										}
+										else
+										{
+											nameShapeLinks = null;
+										}
+										break;
 									}
-									else
-									{
-										nameShapeLinks = null;
-									}
-									break;
 								}
 							}
 							if (!needObjectShape)
@@ -5526,14 +6128,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 									needFactShape = true;
 								}
 							}
-							ORMDiagram currentDiagram = factShape.Diagram as ORMDiagram;
+							ORMDiagram currentDiagram = factTypeShape.Diagram as ORMDiagram;
 							if (needObjectShape)
 							{
-								RectangleD bounds = factShape.AbsoluteBounds;
+								RectangleD bounds = factTypeShape.AbsoluteBounds;
 								if (needFactShape)
 								{
-									factShape.AutoResize();
-									bounds.Offset(0, factShape.Size.Height * 2);
+									factTypeShape.AutoResize();
+									bounds.Offset(0, factTypeShape.Size.Height * 2);
 								}
 								currentDiagram.PlaceElementOnDiagram(
 									nestingType,
@@ -5542,7 +6144,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 									delegate(ModelElement element, ShapeElement newShape)
 									{
 										ObjectTypeShape newObjectShape = (ObjectTypeShape)newShape;
-										newObjectShape.DisplayRelatedTypes = factShape.DisplayRelatedTypes;
+										newObjectShape.DisplayRelatedTypes = factTypeShape.DisplayRelatedTypes;
 										if (objectifiedNameShape != null)
 										{
 											newObjectShape.ExpandRefMode = objectifiedNameShape.ExpandRefMode;
@@ -5554,7 +6156,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 											RolePlayerLink rolePlayerLink;
 											if (null != (subtypeLink = linkShape as SubtypeLink))
 											{
-												if (subtypeLink.ToShape == factShape)
+												if (subtypeLink.ToShape == factTypeShape)
 												{
 													subtypeLink.ToShape = newObjectShape;
 												}
@@ -5564,7 +6166,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 												}
 											}
 											else if (null != (rolePlayerLink = linkShape as RolePlayerLink) &&
-												factShape == MultiShapeUtility.ResolvePrimaryShape(rolePlayerLink.ToShape))
+												factTypeShape == MultiShapeUtility.ResolvePrimaryShape(rolePlayerLink.ToShape))
 											{
 												rolePlayerLink.ToShape = newObjectShape;
 											}
@@ -5592,11 +6194,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							}
 							else if (needFactShape)
 							{
-								factShape.AutoResize();
+								factTypeShape.AutoResize();
 							}
 							if (!needFactShape)
 							{
-								factShape.Delete();
+								factTypeShape.Delete();
 							}
 							else if (objectifiedNameShape != null)
 							{
@@ -5605,9 +6207,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						}
 						else
 						{
-							factShape.AutoResize();
+							factTypeShape.AutoResize();
 						}
 					}
+				}
+				if (topLevelContextInfo != null && !containedAllowMultipleShapes)
+				{
+					topLevelContextInfo.Remove(allowMultipleShapesKey);
 				}
 
 				if (nestedFactType.Objectification != null)
@@ -5695,7 +6301,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			if (attributeId == ConstraintDisplayPositionDomainPropertyId ||
 				(orientationChange = (attributeId == DisplayOrientationDomainPropertyId)))
 			{
-				FactTypeShape factTypeShape = e.ModelElement as FactTypeShape;
+				FactTypeShape factTypeShape = (FactTypeShape)e.ModelElement;
 				if (!factTypeShape.IsDeleted)
 				{
 					foreach (BinaryLinkShape binaryLink in MultiShapeUtility.GetEffectiveAttachedLinkShapes<BinaryLinkShape>(factTypeShape))
@@ -5736,7 +6342,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						}
 					}
 					SizeD oldSize = factTypeShape.Size;
-					factTypeShape.AutoResize();
+					factTypeShape.AutoResize(false);
 					if (oldSize == factTypeShape.Size)
 					{
 						factTypeShape.InvalidateRequired(true);
@@ -5745,10 +6351,96 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 			else if (attributeId == DisplayRelatedTypesDomainPropertyId)
 			{
-				FactTypeShape factTypeShape = e.ModelElement as FactTypeShape;
+				FactTypeShape factTypeShape = (FactTypeShape)e.ModelElement;
 				if (!factTypeShape.IsDeleted)
 				{
 					MultiShapeUtility.AttachLinkConfigurationChanged(factTypeShape);
+				}
+			}
+			else if (attributeId == DisplayAsObjectTypeDomainPropertyId)
+			{
+				FactTypeShape factTypeShape = (FactTypeShape)e.ModelElement;
+				FactType factType;
+				Objectification objectification;
+				ORMDiagram diagram;
+				if (!factTypeShape.IsDeleted)
+				{
+					if (null != (factType = factTypeShape.AssociatedFactType) &&
+						null != (objectification = factType.Objectification) &&
+						!objectification.IsImplied &&
+						factTypeShape.DisplayAsObjectType == (bool)e.NewValue &&
+						null != (diagram = factTypeShape.Diagram as ORMDiagram)) // Other changes processed in ProcessObjectificationAdd and ProcessObjectificationDelete
+					{
+						LinkedElementCollection<ShapeElement> childShapes = factTypeShape.RelativeChildShapes;
+						if (factTypeShape.DisplayAsObjectType)
+						{
+							foreach (ShapeElement childShape in childShapes)
+							{
+								ObjectifiedFactTypeNameShape nameShape = childShape as ObjectifiedFactTypeNameShape;
+								if (nameShape != null)
+								{
+									factTypeShape.ExpandRefMode = nameShape.ExpandRefMode;
+									break;
+								}
+							}
+							childShapes.Clear();
+							ValueConstraint valueConstraint = objectification.NestingType.FindValueConstraint(false);
+							if (valueConstraint != null)
+							{
+								diagram.FixUpLocalDiagram(factTypeShape, valueConstraint);
+							}
+						}
+						else
+						{
+							childShapes.Clear();
+							ObjectifiedFactTypeNameShape nameShape = diagram.FixUpLocalDiagram(factTypeShape, objectification.NestingType) as ObjectifiedFactTypeNameShape;
+							if (nameShape != null)
+							{
+								nameShape.ExpandRefMode = factTypeShape.ExpandRefMode;
+							}
+							foreach (ReadingOrder order in factType.ReadingOrderCollection)
+							{
+								diagram.FixUpLocalDiagram(factTypeShape, order);
+								break;
+							}
+							bool testRoleNames = factTypeShape.DisplayRoleNames != DisplayRoleNames.Off;
+							object allowMultipleShapesKey = null;
+							Dictionary<object, object> topLevelContextInfo = null;
+							bool containedAllowMultipleShapes = false;
+							foreach (RoleBase roleBase in factTypeShape.DisplayedRoleOrder) // We keep displayed role order when collapsed
+							{
+								Role role = roleBase.Role;
+								RoleHasValueConstraint valueConstraintLink;
+								string roleName;
+								if (null != (valueConstraintLink = RoleHasValueConstraint.GetLinkToValueConstraint(role)))
+								{
+									ValueConstraintShape valueConstraintShape = diagram.FixUpLocalDiagram(factTypeShape, valueConstraintLink.ValueConstraint) as ValueConstraintShape;
+									if (valueConstraintShape != null)
+									{
+										if (topLevelContextInfo == null)
+										{
+											topLevelContextInfo = valueConstraintLink.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+											if (!(containedAllowMultipleShapes = topLevelContextInfo.ContainsKey(allowMultipleShapesKey = MultiShapeUtility.AllowMultipleShapes)))
+											{
+												topLevelContextInfo.Add(allowMultipleShapesKey, null);
+											}
+										}
+										diagram.FixUpLocalDiagram(diagram, valueConstraintLink);
+									}
+								}
+								if (testRoleNames && !string.IsNullOrEmpty(roleName = role.Name))
+								{
+									diagram.FixUpLocalDiagram(factTypeShape, role);
+								}
+							}
+							if (topLevelContextInfo != null && !containedAllowMultipleShapes)
+							{
+								topLevelContextInfo.Remove(allowMultipleShapesKey);
+							}
+						}
+						factTypeShape.AutoResize();
+						MultiShapeUtility.AttachLinkConfigurationChanged(factTypeShape);
+					}
 				}
 			}
 		}
@@ -5843,7 +6535,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 									}
 									if (!resized)
 									{
-										factShape.UpdateRolesPosition(SizeD.Empty);
+										factShape.UpdateRolesPosition(SizeD.Empty, 0d);
 									}
 								}
 							}
@@ -6163,9 +6855,23 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		protected override bool ShouldAddShapeForElement(ModelElement element)
 		{
-			if (element is RoleValueConstraint)
+			ObjectType objectType;
+			if (null != (objectType = AssociatedObjectType))
 			{
-				return true;
+				RoleValueConstraint roleValueConstraint;
+				ValueTypeValueConstraint valueTypeValueConstraint;
+				if (null != (roleValueConstraint = element as RoleValueConstraint))
+				{
+					FactType refModeFactType;
+					return !ExpandRefMode &&
+						null != (refModeFactType = objectType.ReferenceModeFactType) &&
+						refModeFactType == roleValueConstraint.Role.FactType;
+				}
+				else if (null != (valueTypeValueConstraint = element as ValueTypeValueConstraint))
+				{
+					// Support ValueType objectification
+					return valueTypeValueConstraint.ValueType == objectType;
+				}
 			}
 			return base.ShouldAddShapeForElement(element);
 		}
@@ -6420,7 +7126,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				{
 					bool independent = objectType.IsIndependent;
 					bool derived = !independent && objectType.DerivationRule != null && objectType.IsSubtype;
-					refModeString = objectType.ReferenceModeDecoratedString;
+					if (!((ObjectifiedFactTypeNameShape)parentShape).ExpandRefMode)
+					{
+						refModeString = objectType.ReferenceModeDecoratedString;
+					}
 					if (refModeString.Length != 0)
 					{
 						formatString = independent ?

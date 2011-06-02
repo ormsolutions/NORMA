@@ -197,15 +197,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 				null != (role = proxy.TargetRole))
 			{
 				properties = TypeDescriptor.GetProperties(role);
-				bool haveReadOnly = false;
+				bool haveEditable = false;
 				for (int i = 0; i < RemoveRoleProperties.Length; ++i)
 				{
 					PropertyDescriptor removeDescriptor = properties.Find(RemoveRoleProperties[i], false);
 					if (removeDescriptor != null)
 					{
-						if (!haveReadOnly)
+						if (!haveEditable)
 						{
-							haveReadOnly = true;
+							haveEditable = true;
 							properties = EditorUtility.GetEditablePropertyDescriptors(properties);
 						}
 						properties.Remove(removeDescriptor);

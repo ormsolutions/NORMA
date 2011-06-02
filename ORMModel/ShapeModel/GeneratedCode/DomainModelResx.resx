@@ -333,6 +333,22 @@
     <value>DisplayRelatedTypes</value>
     <comment>DisplayName for DomainProperty &apos;DisplayRelatedTypes&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayAsObjectType.Description" xml:space="preserve">
+    <value>Should this shape be shown as an object type without readings or attached role players?</value>
+    <comment>Description for DomainProperty &apos;DisplayAsObjectType&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayAsObjectType.DisplayName" xml:space="preserve">
+    <value>DisplayAsObjectType</value>
+    <comment>DisplayName for DomainProperty &apos;DisplayAsObjectType&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/ExpandRefMode.Description" xml:space="preserve">
+    <value>Should shapes for the FactType and ValueType corresponding to this ReferenceMode pattern be displayed on the diagram?</value>
+    <comment>Description for DomainProperty &apos;ExpandRefMode&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/ExpandRefMode.DisplayName" xml:space="preserve">
+    <value>ExpandRefMode</value>
+    <comment>DisplayName for DomainProperty &apos;ExpandRefMode&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/RolesPosition.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape.Roles Position</value>
     <comment>Description for DomainProperty &apos;RolesPosition&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
