@@ -9468,13 +9468,13 @@
     <value></value>
     <comment>Description for EnumerationLiteral &apos;Undefined&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/PurelyReflexive.DisplayName" xml:space="preserve">
-    <value>PurelyReflexive</value>
-    <comment>Display name for EnumerationLiteral &apos;PurelyReflexive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/Reflexive.DisplayName" xml:space="preserve">
+    <value>Reflexive</value>
+    <comment>Display name for EnumerationLiteral &apos;Reflexive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/PurelyReflexive.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/Reflexive.Description" xml:space="preserve">
     <value></value>
-    <comment>Description for EnumerationLiteral &apos;PurelyReflexive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+    <comment>Description for EnumerationLiteral &apos;Reflexive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/Irreflexive.DisplayName" xml:space="preserve">
     <value>Irreflexive</value>
@@ -9484,6 +9484,14 @@
     <value></value>
     <comment>Description for EnumerationLiteral &apos;Irreflexive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/PurelyReflexive.DisplayName" xml:space="preserve">
+    <value>PurelyReflexive</value>
+    <comment>Display name for EnumerationLiteral &apos;PurelyReflexive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/PurelyReflexive.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for EnumerationLiteral &apos;PurelyReflexive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/Symmetric.DisplayName" xml:space="preserve">
     <value>Symmetric</value>
     <comment>Display name for EnumerationLiteral &apos;Symmetric&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
@@ -9491,14 +9499,6 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/Symmetric.Description" xml:space="preserve">
     <value></value>
     <comment>Description for EnumerationLiteral &apos;Symmetric&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/Asymmetric.DisplayName" xml:space="preserve">
-    <value>Asymmetric</value>
-    <comment>Display name for EnumerationLiteral &apos;Asymmetric&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/Asymmetric.Description" xml:space="preserve">
-    <value></value>
-    <comment>Description for EnumerationLiteral &apos;Asymmetric&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/Antisymmetric.DisplayName" xml:space="preserve">
     <value>Antisymmetric</value>
@@ -9508,6 +9508,22 @@
     <value></value>
     <comment>Description for EnumerationLiteral &apos;Antisymmetric&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/Asymmetric.DisplayName" xml:space="preserve">
+    <value>Asymmetric</value>
+    <comment>Display name for EnumerationLiteral &apos;Asymmetric&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/Asymmetric.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for EnumerationLiteral &apos;Asymmetric&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/Transitive.DisplayName" xml:space="preserve">
+    <value>Transitive</value>
+    <comment>Display name for EnumerationLiteral &apos;Transitive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/Transitive.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for EnumerationLiteral &apos;Transitive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/Intransitive.DisplayName" xml:space="preserve">
     <value>Intransitive</value>
     <comment>Display name for EnumerationLiteral &apos;Intransitive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
@@ -9515,6 +9531,14 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/Intransitive.Description" xml:space="preserve">
     <value></value>
     <comment>Description for EnumerationLiteral &apos;Intransitive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/StronglyIntransitive.DisplayName" xml:space="preserve">
+    <value>StronglyIntransitive</value>
+    <comment>Display name for EnumerationLiteral &apos;StronglyIntransitive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/StronglyIntransitive.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for EnumerationLiteral &apos;StronglyIntransitive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/Acyclic.DisplayName" xml:space="preserve">
     <value>Acyclic</value>
@@ -9524,6 +9548,14 @@
     <value></value>
     <comment>Description for EnumerationLiteral &apos;Acyclic&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/AcyclicTransitive.DisplayName" xml:space="preserve">
+    <value>AcyclicTransitive</value>
+    <comment>Display name for EnumerationLiteral &apos;AcyclicTransitive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/AcyclicTransitive.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for EnumerationLiteral &apos;AcyclicTransitive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/AcyclicIntransitive.DisplayName" xml:space="preserve">
     <value>AcyclicIntransitive</value>
     <comment>Display name for EnumerationLiteral &apos;AcyclicIntransitive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
@@ -9532,13 +9564,61 @@
     <value></value>
     <comment>Description for EnumerationLiteral &apos;AcyclicIntransitive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/AsymmetricIntransitive.DisplayName" xml:space="preserve">
-    <value>AsymmetricIntransitive</value>
-    <comment>Display name for EnumerationLiteral &apos;AsymmetricIntransitive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/AcyclicStronglyIntransitive.DisplayName" xml:space="preserve">
+    <value>AcyclicStronglyIntransitive</value>
+    <comment>Display name for EnumerationLiteral &apos;AcyclicStronglyIntransitive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/AsymmetricIntransitive.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/AcyclicStronglyIntransitive.Description" xml:space="preserve">
     <value></value>
-    <comment>Description for EnumerationLiteral &apos;AsymmetricIntransitive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+    <comment>Description for EnumerationLiteral &apos;AcyclicStronglyIntransitive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/ReflexiveSymmetric.DisplayName" xml:space="preserve">
+    <value>ReflexiveSymmetric</value>
+    <comment>Display name for EnumerationLiteral &apos;ReflexiveSymmetric&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/ReflexiveSymmetric.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for EnumerationLiteral &apos;ReflexiveSymmetric&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/ReflexiveAntisymmetric.DisplayName" xml:space="preserve">
+    <value>ReflexiveAntisymmetric</value>
+    <comment>Display name for EnumerationLiteral &apos;ReflexiveAntisymmetric&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/ReflexiveAntisymmetric.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for EnumerationLiteral &apos;ReflexiveAntisymmetric&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/ReflexiveTransitive.DisplayName" xml:space="preserve">
+    <value>ReflexiveTransitive</value>
+    <comment>Display name for EnumerationLiteral &apos;ReflexiveTransitive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/ReflexiveTransitive.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for EnumerationLiteral &apos;ReflexiveTransitive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/ReflexiveTransitiveAntisymmetric.DisplayName" xml:space="preserve">
+    <value>ReflexiveTransitiveAntisymmetric</value>
+    <comment>Display name for EnumerationLiteral &apos;ReflexiveTransitiveAntisymmetric&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/ReflexiveTransitiveAntisymmetric.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for EnumerationLiteral &apos;ReflexiveTransitiveAntisymmetric&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/SymmetricTransitive.DisplayName" xml:space="preserve">
+    <value>SymmetricTransitive</value>
+    <comment>Display name for EnumerationLiteral &apos;SymmetricTransitive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/SymmetricTransitive.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for EnumerationLiteral &apos;SymmetricTransitive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/SymmetricIrreflexive.DisplayName" xml:space="preserve">
+    <value>SymmetricIrreflexive</value>
+    <comment>Display name for EnumerationLiteral &apos;SymmetricIrreflexive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/SymmetricIrreflexive.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for EnumerationLiteral &apos;SymmetricIrreflexive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/SymmetricIntransitive.DisplayName" xml:space="preserve">
     <value>SymmetricIntransitive</value>
@@ -9548,13 +9628,53 @@
     <value></value>
     <comment>Description for EnumerationLiteral &apos;SymmetricIntransitive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/SymmetricIrreflexive.DisplayName" xml:space="preserve">
-    <value>SymmetricIrreflexive</value>
-    <comment>Display name for EnumerationLiteral &apos;SymmetricIrreflexive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/SymmetricStronglyIntransitive.DisplayName" xml:space="preserve">
+    <value>SymmetricStronglyIntransitive</value>
+    <comment>Display name for EnumerationLiteral &apos;SymmetricStronglyIntransitive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/SymmetricIrreflexive.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/SymmetricStronglyIntransitive.Description" xml:space="preserve">
     <value></value>
-    <comment>Description for EnumerationLiteral &apos;SymmetricIrreflexive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+    <comment>Description for EnumerationLiteral &apos;SymmetricStronglyIntransitive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/AsymmetricIntransitive.DisplayName" xml:space="preserve">
+    <value>AsymmetricIntransitive</value>
+    <comment>Display name for EnumerationLiteral &apos;AsymmetricIntransitive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/AsymmetricIntransitive.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for EnumerationLiteral &apos;AsymmetricIntransitive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/AsymmetricStronglyIntransitive.DisplayName" xml:space="preserve">
+    <value>AsymmetricStronglyIntransitive</value>
+    <comment>Display name for EnumerationLiteral &apos;AsymmetricStronglyIntransitive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/AsymmetricStronglyIntransitive.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for EnumerationLiteral &apos;AsymmetricStronglyIntransitive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/TransitiveIrreflexive.DisplayName" xml:space="preserve">
+    <value>TransitiveIrreflexive</value>
+    <comment>Display name for EnumerationLiteral &apos;TransitiveIrreflexive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/TransitiveIrreflexive.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for EnumerationLiteral &apos;TransitiveIrreflexive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/TransitiveAntisymmetric.DisplayName" xml:space="preserve">
+    <value>TransitiveAntisymmetric</value>
+    <comment>Display name for EnumerationLiteral &apos;TransitiveAntisymmetric&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/TransitiveAntisymmetric.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for EnumerationLiteral &apos;TransitiveAntisymmetric&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/TransitiveAsymmetric.DisplayName" xml:space="preserve">
+    <value>TransitiveAsymmetric</value>
+    <comment>Display name for EnumerationLiteral &apos;TransitiveAsymmetric&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/TransitiveAsymmetric.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for EnumerationLiteral &apos;TransitiveAsymmetric&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeType/General.DisplayName" xml:space="preserve">
     <value>General</value>

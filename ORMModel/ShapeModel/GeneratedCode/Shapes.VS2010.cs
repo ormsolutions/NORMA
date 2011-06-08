@@ -1801,7 +1801,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			get
 			{
-				return new DslDiagrams::SizeD(0.16, 0.16);
+				return new DslDiagrams::SizeD(0.213333333, 0.213333333);
 			}
 		}
 		#endregion

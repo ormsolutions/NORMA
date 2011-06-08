@@ -192,6 +192,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		RingAcyclicIntransitive,
 		/// <summary>
+		///Acyclic StronglyIntransitive
+		/// </summary>
+		RingAcyclicStronglyIntransitive,
+		/// <summary>
+		///Acyclic Transitive
+		/// </summary>
+		RingAcyclicTransitive,
+		/// <summary>
 		///Antisymmetric
 		/// </summary>
 		RingAntisymmetric,
@@ -203,6 +211,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		///Asymmetric and Intransitive
 		/// </summary>
 		RingAsymmetricIntransitive,
+		/// <summary>
+		///Asymmetric StronglyIntransitive
+		/// </summary>
+		RingAsymmetricStronglyIntransitive,
 		/// <summary>
 		///Intransitive
 		/// </summary>
@@ -216,6 +228,30 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		RingPurelyReflexive,
 		/// <summary>
+		///Reflexive
+		/// </summary>
+		RingReflexive,
+		/// <summary>
+		///Reflexive Antisymmetric
+		/// </summary>
+		RingReflexiveAntisymmetric,
+		/// <summary>
+		///Reflexive Symmetric
+		/// </summary>
+		RingReflexiveSymmetric,
+		/// <summary>
+		///Reflexive Transitive
+		/// </summary>
+		RingReflexiveTransitive,
+		/// <summary>
+		///Reflexive Transitive Antisymmetric
+		/// </summary>
+		RingReflexiveTransitiveAntisymmetric,
+		/// <summary>
+		///Strongly Intransitive
+		/// </summary>
+		RingStronglyIntransitive,
+		/// <summary>
 		///Symmetric
 		/// </summary>
 		RingSymmetric,
@@ -227,6 +263,30 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		///Symmetric and Irreflexive
 		/// </summary>
 		RingSymmetricIrreflexive,
+		/// <summary>
+		///Symmetric StronglyIntransitive
+		/// </summary>
+		RingSymmetricStronglyIntransitive,
+		/// <summary>
+		///Symmetric Transitive
+		/// </summary>
+		RingSymmetricTransitive,
+		/// <summary>
+		///Transitive
+		/// </summary>
+		RingTransitive,
+		/// <summary>
+		///Transitive Antisymmetric
+		/// </summary>
+		RingTransitiveAntisymmetric,
+		/// <summary>
+		///Transitive Asymmetric
+		/// </summary>
+		RingTransitiveAsymmetric,
+		/// <summary>
+		///Transitive Irreflexive
+		/// </summary>
+		RingTransitiveIrreflexive,
 		/// <summary>
 		/// Internal uniqueness constraint
 		/// </summary>
@@ -280,6 +340,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		RingAcyclicIntransitiveDeontic,
 		/// <summary>
+		///Acyclic StronglyIntransitive deontic
+		/// </summary>
+		RingAcyclicStronglyIntransitiveDeontic,
+		/// <summary>
+		///Acyclic Transitive deontic
+		/// </summary>
+		RingAcyclicTransitiveDeontic,
+		/// <summary>
 		///Antisymmetric deontic
 		/// </summary>
 		RingAntisymmetricDeontic,
@@ -291,6 +359,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		///Asymmetric and Intransitive deontic
 		/// </summary>
 		RingAsymmetricIntransitiveDeontic,
+		/// <summary>
+		///Asymmetric StronglyIntransitive deontic
+		/// </summary>
+		RingAsymmetricStronglyIntransitiveDeontic,
 		/// <summary>
 		///Intransitive deontic
 		/// </summary>
@@ -304,6 +376,30 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		RingPurelyReflexiveDeontic,
 		/// <summary>
+		///Reflexive deontic
+		/// </summary>
+		RingReflexiveDeontic,
+		/// <summary>
+		///Reflexive Antisymmetric deontic
+		/// </summary>
+		RingReflexiveAntisymmetricDeontic,
+		/// <summary>
+		///Reflexive Symmetric deontic
+		/// </summary>
+		RingReflexiveSymmetricDeontic,
+		/// <summary>
+		///Reflexive Transitive deontic
+		/// </summary>
+		RingReflexiveTransitiveDeontic,
+		/// <summary>
+		///Reflexive Transitive Antisymmetric deontic
+		/// </summary>
+		RingReflexiveTransitiveAntisymmetricDeontic,
+		/// <summary>
+		///Strongly Intransitive deontic
+		/// </summary>
+		RingStronglyIntransitiveDeontic,
+		/// <summary>
 		///Symmetric deontic
 		/// </summary>
 		RingSymmetricDeontic,
@@ -315,6 +411,30 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		///Symmetric and Irreflexive deontic
 		/// </summary>
 		RingSymmetricIrreflexiveDeontic,
+		/// <summary>
+		///Symmetric StronglyIntransitive deontic
+		/// </summary>
+		RingSymmetricStronglyIntransitiveDeontic,
+		/// <summary>
+		///Symmetric Transitive deontic
+		/// </summary>
+		RingSymmetricTransitiveDeontic,
+		/// <summary>
+		///Transitive deontic
+		/// </summary>
+		RingTransitiveDeontic,
+		/// <summary>
+		///Transitive Antisymmetric deontic
+		/// </summary>
+		RingTransitiveAntisymmetricDeontic,
+		/// <summary>
+		///Transitive Asymmetric deontic
+		/// </summary>
+		RingTransitiveAsymmetricDeontic,
+		/// <summary>
+		///Transitive Irreflexive deontic
+		/// </summary>
+		RingTransitiveIrreflexiveDeontic,
 		/// <summary>
 		/// Primary Subtype Relationship
 		/// </summary>

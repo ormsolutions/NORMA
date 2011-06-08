@@ -41,6 +41,7 @@ You must not remove this notice, or any other, from this software.
 
 			<Snippet type="ImpersonalPronoun"><![CDATA[<span class="quantifier">that</span>]]></Snippet>
 			<Snippet type="PersonalPronoun"><![CDATA[<span class="quantifier">who</span>]]></Snippet>
+			<Snippet type="ReflexivePronoun"><![CDATA[<span class="quantifier">itself</span>]]></Snippet>
 
 			<Snippet type="UniversalQuantifier" sign="positive"><![CDATA[<span class="quantifier">each</span> {0}]]></Snippet>
 			<Snippet type="UniversalQuantifier" sign="negative"><![CDATA[<span class="quantifier">any</span> {0}]]></Snippet>
@@ -51,6 +52,7 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="ExistentialQuantifier" sign="positive"><![CDATA[<span class="quantifier">some</span> {0}]]></Snippet>
 			<Snippet type="ExistentialQuantifier" sign="negative"><![CDATA[<span class="quantifier">no</span> {0}]]></Snippet>
 			<Snippet type="ExactlyOneQuantifier"><![CDATA[<span class="quantifier">exactly one</span> {0}]]></Snippet>
+			<Snippet type="ReflexiveQuantifier"><![CDATA[{0} <span class="quantifier">itself</span>]]></Snippet>
 
 			<!-- UNDONE:
 					<Form condition="PreConsonant"><![CDATA[<span class="quantifier">a</span> {0}]]></Form>
@@ -107,6 +109,11 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="MinOpenMaxUnbounded"><![CDATA[<span class="quantifier">above {0}</span>]]></Snippet>
 			<Snippet type="MinUnboundedMaxClosed"><![CDATA[<span class="quantifier">at most {1}</span>]]></Snippet>
 			<Snippet type="MinUnboundedMaxOpen"><![CDATA[<span class="quantifier">below {1}</span>]]></Snippet>
+			<Snippet type="EqualsListOpen"><![CDATA[]]></Snippet>
+			<Snippet type="EqualsListPairSeparator"><![CDATA[<span class="logicalOperator"> = </span>]]></Snippet>
+			<Snippet type="EqualsListSeparator"><![CDATA[<span class="logicalOperator"> = </span>]]></Snippet>
+			<Snippet type="EqualsListFinalSeparator"><![CDATA[<span class="logicalOperator"> = </span>]]></Snippet>
+			<Snippet type="EqualsListClose"><![CDATA[]]></Snippet>
 			<Snippet type="IdentityEqualityListOpen"><![CDATA[]]></Snippet>
 			<Snippet type="IdentityEqualityListPairSeparator"><![CDATA[<span class="logicalOperator"> that is a </span>]]></Snippet>
 			<Snippet type="IdentityEqualityListSeparator"><![CDATA[<span class="logicalOperator"> that is a </span>]]></Snippet>
@@ -260,6 +267,7 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="CompatibleTypesIdentityInequalityOperator"><![CDATA[<span class="logicalOperator">that </span>{0}<span class="logicalOperator"> is not that </span>{1}]]></Snippet>
 			<Snippet type="Acyclicity"><![CDATA[<span class="quantifier">no {0} may cycle back to itself via one or more traversals through </span>{1}]]></Snippet>
 			<Snippet type="AcyclicityWithRoleNumbers"><![CDATA[<span class="quantifier">no {0} may cycle back to itself via one or more instances of the role pair:</span></br><span class="smallIndent"><span class="quantifier">roles <span class="objectType">{2}</span> and <span class="objectType">{3}</span> of </span>{1}</span>]]></Snippet>
+			<Snippet type="StronglyIntransitiveConsequent"><![CDATA[<span class="quantifier">it is not true that {0} is indirectly related to {1} by repeatedly applying this fact type</span>]]></Snippet>
 		</Snippets>
 	</Language>
 </Languages>

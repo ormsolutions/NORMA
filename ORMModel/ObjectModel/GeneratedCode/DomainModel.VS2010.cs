@@ -2310,6 +2310,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	/// Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType
 	/// </summary>
 	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<RingConstraintType, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel>))]
+	[global::System.ComponentModel.Editor(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.RingConstraintTypePicker), typeof(global::System.Drawing.Design.UITypeEditor))]
 	[global::System.CLSCompliant(true)]
 	public enum RingConstraintType
 	{
@@ -2320,60 +2321,135 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/Undefined.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		Undefined = 0,
 		/// <summary>
-		/// PurelyReflexive
+		/// Reflexive
 		/// </summary>
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/PurelyReflexive.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		PurelyReflexive = 1,
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/Reflexive.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		Reflexive = 1,
 		/// <summary>
 		/// Irreflexive
 		/// </summary>
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/Irreflexive.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		Irreflexive = 2,
 		/// <summary>
+		/// PurelyReflexive
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/PurelyReflexive.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		PurelyReflexive = 3,
+		/// <summary>
 		/// Symmetric
 		/// </summary>
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/Symmetric.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		Symmetric = 3,
-		/// <summary>
-		/// Asymmetric
-		/// </summary>
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/Asymmetric.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		Asymmetric = 4,
+		Symmetric = 4,
 		/// <summary>
 		/// Antisymmetric
 		/// </summary>
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/Antisymmetric.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		Antisymmetric = 5,
 		/// <summary>
+		/// Asymmetric
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/Asymmetric.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		Asymmetric = 6,
+		/// <summary>
+		/// Transitive
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/Transitive.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		Transitive = 7,
+		/// <summary>
 		/// Intransitive
 		/// </summary>
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/Intransitive.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		Intransitive = 6,
+		Intransitive = 8,
+		/// <summary>
+		/// StronglyIntransitive
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/StronglyIntransitive.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		StronglyIntransitive = 9,
 		/// <summary>
 		/// Acyclic
 		/// </summary>
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/Acyclic.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		Acyclic = 7,
+		Acyclic = 10,
+		/// <summary>
+		/// AcyclicTransitive
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/AcyclicTransitive.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		AcyclicTransitive = 11,
 		/// <summary>
 		/// AcyclicIntransitive
 		/// </summary>
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/AcyclicIntransitive.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		AcyclicIntransitive = 8,
+		AcyclicIntransitive = 12,
 		/// <summary>
-		/// AsymmetricIntransitive
+		/// AcyclicStronglyIntransitive
 		/// </summary>
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/AsymmetricIntransitive.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		AsymmetricIntransitive = 9,
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/AcyclicStronglyIntransitive.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		AcyclicStronglyIntransitive = 13,
 		/// <summary>
-		/// SymmetricIntransitive
+		/// ReflexiveSymmetric
 		/// </summary>
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/SymmetricIntransitive.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		SymmetricIntransitive = 10,
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/ReflexiveSymmetric.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		ReflexiveSymmetric = 14,
+		/// <summary>
+		/// ReflexiveAntisymmetric
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/ReflexiveAntisymmetric.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		ReflexiveAntisymmetric = 15,
+		/// <summary>
+		/// ReflexiveTransitive
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/ReflexiveTransitive.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		ReflexiveTransitive = 16,
+		/// <summary>
+		/// ReflexiveTransitiveAntisymmetric
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/ReflexiveTransitiveAntisymmetric.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		ReflexiveTransitiveAntisymmetric = 17,
+		/// <summary>
+		/// SymmetricTransitive
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/SymmetricTransitive.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		SymmetricTransitive = 18,
 		/// <summary>
 		/// SymmetricIrreflexive
 		/// </summary>
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/SymmetricIrreflexive.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		SymmetricIrreflexive = 11,
+		SymmetricIrreflexive = 19,
+		/// <summary>
+		/// SymmetricIntransitive
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/SymmetricIntransitive.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		SymmetricIntransitive = 20,
+		/// <summary>
+		/// SymmetricStronglyIntransitive
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/SymmetricStronglyIntransitive.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		SymmetricStronglyIntransitive = 21,
+		/// <summary>
+		/// AsymmetricIntransitive
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/AsymmetricIntransitive.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		AsymmetricIntransitive = 22,
+		/// <summary>
+		/// AsymmetricStronglyIntransitive
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/AsymmetricStronglyIntransitive.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		AsymmetricStronglyIntransitive = 23,
+		/// <summary>
+		/// TransitiveIrreflexive
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/TransitiveIrreflexive.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		TransitiveIrreflexive = 24,
+		/// <summary>
+		/// TransitiveAntisymmetric
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/TransitiveAntisymmetric.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		TransitiveAntisymmetric = 25,
+		/// <summary>
+		/// TransitiveAsymmetric
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/TransitiveAsymmetric.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		TransitiveAsymmetric = 26,
 	}
 }
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel

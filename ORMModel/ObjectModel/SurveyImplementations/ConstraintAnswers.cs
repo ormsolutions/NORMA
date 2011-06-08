@@ -166,28 +166,58 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						case RingConstraintType.Undefined:
 							return (int)SurveyQuestionGlyph.RingUndefined;
-						case RingConstraintType.PurelyReflexive:
-							return (int)SurveyQuestionGlyph.RingPurelyReflexive;
+						case RingConstraintType.Reflexive:
+							return (int)SurveyQuestionGlyph.RingReflexive;
 						case RingConstraintType.Irreflexive:
 							return (int)SurveyQuestionGlyph.RingIrreflexive;
 						case RingConstraintType.Symmetric:
 							return (int)SurveyQuestionGlyph.RingSymmetric;
-						case RingConstraintType.Asymmetric:
-							return (int)SurveyQuestionGlyph.RingAsymmetric;
 						case RingConstraintType.Antisymmetric:
 							return (int)SurveyQuestionGlyph.RingAntisymmetric;
+						case RingConstraintType.Asymmetric:
+							return (int)SurveyQuestionGlyph.RingAsymmetric;
+						case RingConstraintType.Transitive:
+							return (int)SurveyQuestionGlyph.RingTransitive;
 						case RingConstraintType.Intransitive:
 							return (int)SurveyQuestionGlyph.RingIntransitive;
+						case RingConstraintType.StronglyIntransitive:
+							return (int)SurveyQuestionGlyph.RingStronglyIntransitive;
 						case RingConstraintType.Acyclic:
 							return (int)SurveyQuestionGlyph.RingAcyclic;
+						case RingConstraintType.AcyclicTransitive:
+							return (int)SurveyQuestionGlyph.RingAcyclicTransitive;
 						case RingConstraintType.AcyclicIntransitive:
 							return (int)SurveyQuestionGlyph.RingAcyclicIntransitive;
-						case RingConstraintType.AsymmetricIntransitive:
-							return (int)SurveyQuestionGlyph.RingAsymmetricIntransitive;
-						case RingConstraintType.SymmetricIntransitive:
-							return (int)SurveyQuestionGlyph.RingSymmetricIntransitive;
+						case RingConstraintType.AcyclicStronglyIntransitive:
+							return (int)SurveyQuestionGlyph.RingAcyclicStronglyIntransitive;
+						case RingConstraintType.ReflexiveSymmetric:
+							return (int)SurveyQuestionGlyph.RingReflexiveSymmetric;
+						case RingConstraintType.ReflexiveAntisymmetric:
+							return (int)SurveyQuestionGlyph.RingReflexiveAntisymmetric;
+						case RingConstraintType.ReflexiveTransitive:
+							return (int)SurveyQuestionGlyph.RingReflexiveTransitive;
+						case RingConstraintType.ReflexiveTransitiveAntisymmetric:
+							return (int)SurveyQuestionGlyph.RingReflexiveTransitiveAntisymmetric;
+						case RingConstraintType.SymmetricTransitive:
+							return (int)SurveyQuestionGlyph.RingSymmetricTransitive;
 						case RingConstraintType.SymmetricIrreflexive:
 							return (int)SurveyQuestionGlyph.RingSymmetricIrreflexive;
+						case RingConstraintType.SymmetricIntransitive:
+							return (int)SurveyQuestionGlyph.RingSymmetricIntransitive;
+						case RingConstraintType.SymmetricStronglyIntransitive:
+							return (int)SurveyQuestionGlyph.RingSymmetricStronglyIntransitive;
+						case RingConstraintType.AsymmetricIntransitive:
+							return (int)SurveyQuestionGlyph.RingAsymmetricIntransitive;
+						case RingConstraintType.AsymmetricStronglyIntransitive:
+							return (int)SurveyQuestionGlyph.RingAsymmetricStronglyIntransitive;
+						case RingConstraintType.TransitiveIrreflexive:
+							return (int)SurveyQuestionGlyph.RingTransitiveIrreflexive;
+						case RingConstraintType.TransitiveAntisymmetric:
+							return (int)SurveyQuestionGlyph.RingTransitiveAntisymmetric;
+						case RingConstraintType.TransitiveAsymmetric:
+							return (int)SurveyQuestionGlyph.RingTransitiveAsymmetric;
+						case RingConstraintType.PurelyReflexive:
+							return (int)SurveyQuestionGlyph.RingPurelyReflexive;
 						default:
 							return (int)SurveyQuestionGlyph.RingUndefined;
 					}
@@ -224,28 +254,58 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						case RingConstraintType.Undefined:
 							return (int)SurveyQuestionGlyph.RingUndefinedDeontic;
-						case RingConstraintType.PurelyReflexive:
-							return (int)SurveyQuestionGlyph.RingPurelyReflexiveDeontic;
+						case RingConstraintType.Reflexive:
+							return (int)SurveyQuestionGlyph.RingReflexiveDeontic;
 						case RingConstraintType.Irreflexive:
 							return (int)SurveyQuestionGlyph.RingIrreflexiveDeontic;
 						case RingConstraintType.Symmetric:
 							return (int)SurveyQuestionGlyph.RingSymmetricDeontic;
-						case RingConstraintType.Asymmetric:
-							return (int)SurveyQuestionGlyph.RingAsymmetricDeontic;
 						case RingConstraintType.Antisymmetric:
 							return (int)SurveyQuestionGlyph.RingAntisymmetricDeontic;
+						case RingConstraintType.Asymmetric:
+							return (int)SurveyQuestionGlyph.RingAsymmetricDeontic;
+						case RingConstraintType.Transitive:
+							return (int)SurveyQuestionGlyph.RingTransitiveDeontic;
 						case RingConstraintType.Intransitive:
 							return (int)SurveyQuestionGlyph.RingIntransitiveDeontic;
+						case RingConstraintType.StronglyIntransitive:
+							return (int)SurveyQuestionGlyph.RingStronglyIntransitiveDeontic;
 						case RingConstraintType.Acyclic:
 							return (int)SurveyQuestionGlyph.RingAcyclicDeontic;
+						case RingConstraintType.AcyclicTransitive:
+							return (int)SurveyQuestionGlyph.RingAcyclicTransitiveDeontic;
 						case RingConstraintType.AcyclicIntransitive:
 							return (int)SurveyQuestionGlyph.RingAcyclicIntransitiveDeontic;
-						case RingConstraintType.AsymmetricIntransitive:
-							return (int)SurveyQuestionGlyph.RingAsymmetricIntransitiveDeontic;
-						case RingConstraintType.SymmetricIntransitive:
-							return (int)SurveyQuestionGlyph.RingSymmetricIntransitiveDeontic;
+						case RingConstraintType.AcyclicStronglyIntransitive:
+							return (int)SurveyQuestionGlyph.RingAcyclicStronglyIntransitiveDeontic;
+						case RingConstraintType.ReflexiveSymmetric:
+							return (int)SurveyQuestionGlyph.RingReflexiveSymmetricDeontic;
+						case RingConstraintType.ReflexiveAntisymmetric:
+							return (int)SurveyQuestionGlyph.RingReflexiveAntisymmetricDeontic;
+						case RingConstraintType.ReflexiveTransitive:
+							return (int)SurveyQuestionGlyph.RingReflexiveTransitiveDeontic;
+						case RingConstraintType.ReflexiveTransitiveAntisymmetric:
+							return (int)SurveyQuestionGlyph.RingReflexiveTransitiveAntisymmetricDeontic;
+						case RingConstraintType.SymmetricTransitive:
+							return (int)SurveyQuestionGlyph.RingSymmetricTransitiveDeontic;
 						case RingConstraintType.SymmetricIrreflexive:
 							return (int)SurveyQuestionGlyph.RingSymmetricIrreflexiveDeontic;
+						case RingConstraintType.SymmetricIntransitive:
+							return (int)SurveyQuestionGlyph.RingSymmetricIntransitiveDeontic;
+						case RingConstraintType.SymmetricStronglyIntransitive:
+							return (int)SurveyQuestionGlyph.RingSymmetricStronglyIntransitiveDeontic;
+						case RingConstraintType.AsymmetricIntransitive:
+							return (int)SurveyQuestionGlyph.RingAsymmetricIntransitiveDeontic;
+						case RingConstraintType.AsymmetricStronglyIntransitive:
+							return (int)SurveyQuestionGlyph.RingAsymmetricStronglyIntransitiveDeontic;
+						case RingConstraintType.TransitiveIrreflexive:
+							return (int)SurveyQuestionGlyph.RingTransitiveIrreflexiveDeontic;
+						case RingConstraintType.TransitiveAntisymmetric:
+							return (int)SurveyQuestionGlyph.RingTransitiveAntisymmetricDeontic;
+						case RingConstraintType.TransitiveAsymmetric:
+							return (int)SurveyQuestionGlyph.RingTransitiveAsymmetricDeontic;
+						case RingConstraintType.PurelyReflexive:
+							return (int)SurveyQuestionGlyph.RingPurelyReflexiveDeontic;
 						default:
 							return (int)SurveyQuestionGlyph.RingUndefinedDeontic;
 					}

@@ -227,7 +227,7 @@
 				<GeometryShapeMoniker Name="ExternalConstraintShape"/>
 			</BaseGeometryShape>
 		</GeometryShape>
-		<GeometryShape Name="RingConstraintShape" Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel" Id="61B334C5-D37F-4A74-90E9-AC793D35BDF1" FillGradientMode="None" InitialWidth=".16" InitialHeight=".16">
+		<GeometryShape Name="RingConstraintShape" Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel" Id="61B334C5-D37F-4A74-90E9-AC793D35BDF1" FillGradientMode="None" InitialWidth=".213333333" InitialHeight=".213333333">
 			<BaseGeometryShape>
 				<GeometryShapeMoniker Name="ExternalConstraintShape"/>
 			</BaseGeometryShape>

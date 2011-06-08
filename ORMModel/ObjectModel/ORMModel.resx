@@ -1052,6 +1052,12 @@
 	<data name="RingConstraintType.AcyclicIntransitive" xml:space="preserve">
 		<value>Acyclic and Intransitive</value>
 	</data>
+	<data name="RingConstraintType.AcyclicStronglyIntransitive" xml:space="preserve">
+		<value>Acyclic and Strongly Intransitive</value>
+	</data>
+	<data name="RingConstraintType.AcyclicTransitive" xml:space="preserve">
+		<value>Acyclic and Transitive</value>
+	</data>
 	<data name="RingConstraintType.Antisymmetric" xml:space="preserve">
 		<value>Antisymmetric</value>
 	</data>
@@ -1060,6 +1066,9 @@
 	</data>
 	<data name="RingConstraintType.AsymmetricIntransitive" xml:space="preserve">
 		<value>Asymmetric and Intransitive</value>
+	</data>
+	<data name="RingConstraintType.AsymmetricStronglyIntransitive" xml:space="preserve">
+		<value>Asymmetric and Strongly Intransitive</value>
 	</data>
 	<data name="RingConstraintType.Intransitive" xml:space="preserve">
 		<value>Intransitive</value>
@@ -1070,6 +1079,24 @@
 	<data name="RingConstraintType.PurelyReflexive" xml:space="preserve">
 		<value>Purely Reflexive</value>
 	</data>
+	<data name="RingConstraintType.Reflexive" xml:space="preserve">
+		<value>Reflexive</value>
+	</data>
+	<data name="RingConstraintType.ReflexiveAntisymmetric" xml:space="preserve">
+		<value>Reflexive and Antisymmetric</value>
+	</data>
+	<data name="RingConstraintType.ReflexiveSymmetric" xml:space="preserve">
+		<value>Reflexive and Symmetric</value>
+	</data>
+	<data name="RingConstraintType.ReflexiveTransitive" xml:space="preserve">
+		<value>Reflexive and Transitive</value>
+	</data>
+	<data name="RingConstraintType.ReflexiveTransitiveAntisymmetric" xml:space="preserve">
+		<value>Reflexive, Transitive and Antisymmetric</value>
+	</data>
+	<data name="RingConstraintType.StronglyIntransitive" xml:space="preserve">
+		<value>Strongly Intransitive</value>
+	</data>
 	<data name="RingConstraintType.Symmetric" xml:space="preserve">
 		<value>Symmetric</value>
 	</data>
@@ -1078,6 +1105,24 @@
 	</data>
 	<data name="RingConstraintType.SymmetricIrreflexive" xml:space="preserve">
 		<value>Symmetric and Irreflexive</value>
+	</data>
+	<data name="RingConstraintType.SymmetricStronglyIntransitive" xml:space="preserve">
+		<value>Symmetric and Strongly Intransitive</value>
+	</data>
+	<data name="RingConstraintType.SymmetricTransitive" xml:space="preserve">
+		<value>Symmetric and Transitive</value>
+	</data>
+	<data name="RingConstraintType.Transitive" xml:space="preserve">
+		<value>Transitive</value>
+	</data>
+	<data name="RingConstraintType.TransitiveIrreflexive" xml:space="preserve">
+		<value>Transitive and Irreflexive</value>
+	</data>
+	<data name="RingConstraintType.TransitiveAntisymmetric" xml:space="preserve">
+		<value>Transitive and Antisymmetric</value>
+	</data>
+	<data name="RingConstraintType.TransitiveAsymmetric" xml:space="preserve">
+		<value>Transitive and Asymmetric</value>
 	</data>
 	<data name="RingConstraintType.Undefined" xml:space="preserve">
 		<value>Undefined</value>

@@ -14,7 +14,7 @@
 
 <p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA May 2011 CTP Readme</a>&nbsp;</b></p>
 <p>This file supersedes the previous readme.txt and older readme.htm files. This readme has parallel indexing mechanisms: by topic, and by release date (starting with the October 2008 (2008-10) release). The file will be extended for future product releases.<br/><br/>
-The May 2011 release includes new display features (display objectified fact types as object types, display link fact types, and visible zoom commands) along with a number of bug fixes. See detailed change notes below for specifics. 
+The May 2011 release includes new display features (display objectified fact types as object types, display link fact types), additional ring types with an improved editor for choosing ring types, visible zoom commands, and a number of bug fixes. See detailed change notes below for specifics. 
 <br/><br/></p>
 <h2>Contents</h2>
 <ul>
@@ -44,10 +44,11 @@ The May 2011 release includes new display features (display objectified fact typ
 
 <hr/>
 <h2>May 2011 CTP Changes</h2>
-<div>The May 2011 CTP release includes all modifications through changeset 1469. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<div>The May 2011 CTP release includes all modifications through changeset 1470. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
 <ul>
 <li><a href="#DisplayAsObjectType 2011-05">Display Objectified Fact Type as Object Type</a>&nbsp;</li>
 <li><a href="#LinkFactTypeDisplay 2011-05">Link Fact Type Display</a>&nbsp;</li>
+<li><a href="#NewRingConstraintFeatures 2011-05">New Ring Constraint Types and Editor</a>&nbsp;</li>
 <li><a href="#ZoomCommands 2011-05">Zoom Commands</a>&nbsp;</li>
 <li><a href="#ZoomSensitiveNudge 2011-05">Zoom Sensitive Nudge Distance</a>&nbsp;</li>
 <li>Other Features:
@@ -529,6 +530,22 @@ Notes on link fact type shapes:
 <li>Role names and value constraints are not shown on the fact role of a link fact type. These are the same as the corresponding role on the objectifed fact type and are not duplicated.</li>
 <li>Some other editing actions are unavailable for far roles on link fact types (group operations, for example). The primary reason to show these is to attach constraints to the objectified roles, and this scenario is satisfied without full editing capabilities on the far roles.</li>
 </ul>
+</li>
+<li><a id="NewRingConstraintFeatures 2011-05" class="new" title="May 2011 CTP: New Ring Constraint Types and Editor">2011-05</a>&nbsp;
+Three new ring types and corresponding combinations provide additional positive ring possibilities and a stronger form of intransitivity. The new values are:
+<ul>
+<li><em>Transitive</em> requires the transitive closure of the item to be provided. If A plays B and B plays C then A must play C. The display is the same as <em>intransitive</em> without the tick mark at the bottom of the triangle.</li>
+<li><em>Reflexive</em> requires an instance to play itself itself if it participates in any instance of the restricted fact type. The display is the same as <em>irreflexive</em> without the tick mark.</li>
+<li><em>Strongly Intransitive</em> adds a recursive component to the intransitive ring type. With straight intransitivity, if A plays B and B plays C, then A cannot play C. However, if C also plays D, then the basic intransitive ring type places no restriction on <em>A plays D</em>. Strong intransitivity blocks this possibility. The display adds a fourth dot on the right leg of the intransitive triangle.</li>
+</ul>
+The addition of these three ring types greatly increases the total number of simple ring types (from 7 to 10) and combinations (from 4 to 16). As 26 options is an unreasonable number for a dropdown pick list, the ring type dropdown now contains check boxes and single values. The editor feedback is as follows:
+<ul>
+<li>A bold and checked item is part of the current selection.</li>
+<li>A bold item that is not checked is compatible with the current selection and can be added without reducing the current selection.</li>
+<li>A gray-checked item (never bolded) is implied by the current selection. This provides a useful reminders of how the ring types compose. For example, <em>asymmetric</em> implies <em>irreflexive</em> and <em>antisymmetric</em>.</li>
+<li>Ring types are ordered by negative followed by positive (<em>reflexive</em>, <em>symmetric</em>, and <em>transitive</em> are positive types). The negative items are ordered by the somewhat subjective notion of <em>strength</em>, starting with the weakest ring type (<em>irreflexive</em>).</li>
+</ul>
+Designing consistent glyphs for the new combinations required some minor display modifications: the tick mark for <em>irreflexive</em> has been moved opposite the dot, the interior circle for <em>symmetric+irreflexive</em> has been moved to the left edge of the symmetric oval and shares the left dot, and an interior tick mark has been added to <em>purely reflexive</em> to distinguish it from <em>reflexive</em> and indicate the <em>and no other</em> part of this ring type.
 </li>
 </ol>
 <a href="#The Top">Return to top</a>

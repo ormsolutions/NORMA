@@ -25,6 +25,7 @@ using System.Globalization;
 using System.Text;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
+using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using ORMSolutions.ORMArchitect.Core.Shell;
 using ORMSolutions.ORMArchitect.Framework;
@@ -88,12 +89,19 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				{
 					case RingConstraintType.Undefined:
 						return RingConstraintOuterShape.None;
+					case RingConstraintType.Reflexive:
 					case RingConstraintType.PurelyReflexive:
 					case RingConstraintType.Irreflexive:
 					case RingConstraintType.Acyclic:
+					case RingConstraintType.AcyclicTransitive:
 					case RingConstraintType.AcyclicIntransitive:
+					case RingConstraintType.AcyclicStronglyIntransitive:
+					case RingConstraintType.ReflexiveTransitive:
+					case RingConstraintType.TransitiveIrreflexive:
 						return RingConstraintOuterShape.Circle;
+					case RingConstraintType.Transitive:
 					case RingConstraintType.Intransitive:
+					case RingConstraintType.StronglyIntransitive:
 						return RingConstraintOuterShape.Triangle;
 					default:
 						return RingConstraintOuterShape.Oval;
@@ -121,146 +129,166 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				}
 			}
 		}
-		private SizeD myContentSize;
 		/// <summary>
-		/// See <see cref="P:ExternalConstraintShape.ContentSize"/>.
+		/// Return a standard size (4/3 of the normal constraint size) for
+		/// drawing ring constraints, with an additional 50% stretch for the width.
 		/// </summary>
 		protected override SizeD ContentSize
 		{
 			get
 			{
-				if (this.myContentSize.IsEmpty)
-				{
-					RingConstraintOuterShape outerShape = this.OuterShape;
-
-					SizeD baseContentSize = (base.ContentSize.IsEmpty ? this.DefaultSize : base.ContentSize);
-
-					double contentSizeHeight = baseContentSize.Height * 1.33;
-
-					if (outerShape == RingConstraintOuterShape.None)
-					{
-						this.myContentSize = baseContentSize;
-					}
-					else if (outerShape == RingConstraintOuterShape.Circle || outerShape == RingConstraintOuterShape.Triangle)
-					{
-						this.myContentSize = new SizeD(contentSizeHeight, contentSizeHeight);
-					}
-					else // RingConstraintOuterShape.Oval
-					{
-						this.myContentSize = new SizeD(baseContentSize.Width * 2.0, contentSizeHeight);
-					}
-				}
-				return this.myContentSize;
+				RingConstraintOuterShape outerShape = this.OuterShape;
+				SizeD contentSize = this.DefaultSize;
+				return (outerShape == RingConstraintOuterShape.Oval) ? 
+					new SizeD(contentSize.Width * 1.5f, contentSize.Height) :
+					contentSize;
 			}
 		}
 
 		/// <summary>
-		/// See <see cref="ExternalConstraintShape.OnPaintShape"/>.
+		/// Draw all ring constraint types
 		/// </summary>
-		public override void OnPaintShape(DiagramPaintEventArgs e)
+		protected override void OnPaintShape(DiagramPaintEventArgs e, ref PaintHelper helper)
 		{
-			if (null == Utility.ValidateStore(Store))
-			{
-				return;
-			}
-			InitializePaintTools(e);
-			base.OnPaintShape(e);
-
+			base.OnPaintShape(e, ref helper);
 			RingConstraint ringConstraint = this.AssociatedRingConstraint;
 			RectangleF boundsF = RectangleD.ToRectangleF(this.AbsoluteBounds);
 			Graphics g = e.Graphics;
+			RingConstraintType ringType = ringConstraint.RingType;
+			RectangleF innerBounds;
+			Pen pen = helper.Pen;
+			Brush brush = helper.Brush;
 
-			switch (ringConstraint.RingType)
+			switch (ringType)
 			{
 				case RingConstraintType.Undefined:
-				{
 					break;
-				}
+				case RingConstraintType.Reflexive:
+					DrawLeftDot(g, boundsF, brush);
+					break;
 				case RingConstraintType.PurelyReflexive:
-				{
-					this.DrawLeftDot(g, boundsF);
+					DrawLeftDot(g, boundsF, brush);
+					{
+						float height = boundsF.Height;
+						float left = boundsF.Left + boundsF.Width / 2;
+						DashStyle originalDashStyle = pen.DashStyle;
+						pen.DashStyle = DashStyle.Solid;
+						g.DrawLine(pen, left, boundsF.Top + height * (.5f - SMALL_LENGTH_FACTOR / 2), left, boundsF.Top + height * (.5f + SMALL_LENGTH_FACTOR / 2));
+						pen.DashStyle = originalDashStyle;
+					}
 					break;
-				}
 				case RingConstraintType.Irreflexive:
-				{
-					this.DrawLeftDot(g, boundsF);
-					this.DrawBottomLine(g, boundsF);
+					DrawLeftDot(g, boundsF, brush);
+					DrawRightLine(g, boundsF, pen, 1f);
 					break;
-				}
-				case RingConstraintType.Symmetric:
-				{
-					this.DrawLeftDot(g, boundsF);
-					this.DrawRightDot(g, boundsF, true);
-					break;
-				}
 				case RingConstraintType.Asymmetric:
-				{
-					this.DrawLeftDot(g, boundsF);
-					this.DrawRightDot(g, boundsF, true);
-					this.DrawBottomLine(g, boundsF);
+					DrawLeftDot(g, boundsF, brush);
+					DrawRightDot(g, boundsF, pen, brush, true);
+					DrawBottomLine(g, boundsF, pen);
 					break;
-				}
 				case RingConstraintType.Antisymmetric:
-				{
-					this.DrawLeftDot(g, boundsF);
-					this.DrawRightDot(g, boundsF, false);
-					this.DrawBottomLine(g, boundsF);
+					DrawLeftDot(g, boundsF, brush);
+					DrawRightDot(g, boundsF, pen, brush, false);
+					DrawBottomLine(g, boundsF, pen);
 					break;
-				}
+				case RingConstraintType.Transitive:
+					DrawTriangleDots(g, boundsF, brush, false);
+					break;
 				case RingConstraintType.Intransitive:
-				{
-					this.DrawTriangleDots(g, boundsF);
-					this.DrawTriangleBottomLine(g, boundsF);
+				case RingConstraintType.StronglyIntransitive:
+					DrawTriangleDots(g, boundsF, brush, ringType == RingConstraintType.StronglyIntransitive);
+					DrawTriangleBottomLine(g, boundsF, pen);
 					break;
-				}
 				case RingConstraintType.Acyclic:
-				{
-					this.DrawTriangleDots(g, boundsF);
-					this.DrawBottomLine(g, boundsF);
+					DrawTriangleDots(g, boundsF, brush, false);
+					DrawBottomLine(g, boundsF, pen);
 					break;
-				}
+				case RingConstraintType.AcyclicTransitive:
+					DrawTriangle(g, boundsF, pen);
+					DrawTriangleDots(g, boundsF, brush, false);
+					DrawBottomLine(g, boundsF, pen, .6f);
+					break;
 				case RingConstraintType.AcyclicIntransitive:
-				{
-					this.DrawTriangle(g, boundsF);
-					this.DrawTriangleBottomLine(g, boundsF);
-					this.DrawTriangleDots(g, boundsF);
-					this.DrawBottomLine(g, boundsF);
+				case RingConstraintType.AcyclicStronglyIntransitive:
+					DrawTriangle(g, boundsF, pen);
+					DrawTriangleBottomLine(g, boundsF, pen);
+					DrawTriangleDots(g, boundsF, brush, ringType == RingConstraintType.AcyclicStronglyIntransitive);
+					DrawBottomLine(g, boundsF, pen);
 					break;
-				}
+				case RingConstraintType.TransitiveAsymmetric:
+				case RingConstraintType.TransitiveAntisymmetric:
 				case RingConstraintType.AsymmetricIntransitive:
-				{
-					this.DrawLeftDot(g, boundsF);
-					this.DrawRightDot(g, boundsF, true);
-					this.DrawBottomLine(g, boundsF);
-					RectangleF innerBounds = GetInnerBounds(boundsF);
-					this.DrawTriangle(g, innerBounds);
-					this.DrawTriangleDots(g, innerBounds);
-					this.DrawTriangleBottomLine(g, innerBounds);
+				case RingConstraintType.AsymmetricStronglyIntransitive:
+					DrawLeftDot(g, boundsF, brush);
+					DrawRightDot(g, boundsF, pen, brush, ringType != RingConstraintType.TransitiveAntisymmetric);
+					DrawBottomLine(g, boundsF, pen);
+					innerBounds = GetInnerBounds(boundsF);
+					DrawTriangle(g, innerBounds, pen);
+					DrawTriangleDots(g, innerBounds, brush, ringType == RingConstraintType.AsymmetricStronglyIntransitive);
+					switch (ringType)
+					{
+						case RingConstraintType.AsymmetricIntransitive:
+						case RingConstraintType.AsymmetricStronglyIntransitive:
+							DrawTriangleBottomLine(g, innerBounds, pen);
+							break;
+					}
 					break;
-				}
+				case RingConstraintType.ReflexiveTransitive:
+				case RingConstraintType.TransitiveIrreflexive:
+					DrawLeftDot(g, boundsF, brush);
+					if (ringType == RingConstraintType.TransitiveIrreflexive)
+					{
+						DrawRightLine(g, boundsF, pen, .75f);
+					}
+					innerBounds = GetInnerBounds(boundsF);
+					DrawTriangle(g, innerBounds, pen);
+					DrawTriangleDots(g, innerBounds, brush, false);
+					break;
+				case RingConstraintType.Symmetric:
+					DrawLeftDot(g, boundsF, brush);
+					DrawRightDot(g, boundsF, pen, brush, true);
+					break;
+				case RingConstraintType.SymmetricTransitive:
 				case RingConstraintType.SymmetricIntransitive:
-				{
-					this.DrawLeftDot(g, boundsF);
-					this.DrawRightDot(g, boundsF, true);
-					RectangleF innerBounds = GetInnerBounds(boundsF);
-					this.DrawTriangle(g, innerBounds);
-					this.DrawTriangleDots(g, innerBounds);
-					this.DrawTriangleBottomLine(g, innerBounds);
+				case RingConstraintType.SymmetricStronglyIntransitive:
+					DrawLeftDot(g, boundsF, brush);
+					DrawRightDot(g, boundsF, pen, brush, true);
+					innerBounds = GetInnerBounds(boundsF);
+					DrawTriangle(g, innerBounds, pen);
+					DrawTriangleDots(g, innerBounds, brush, ringType == RingConstraintType.SymmetricStronglyIntransitive);
+					if (ringType != RingConstraintType.SymmetricTransitive)
+					{
+						DrawTriangleBottomLine(g, innerBounds, pen);
+					}
 					break;
-				}
 				case RingConstraintType.SymmetricIrreflexive:
-				{
-					this.DrawLeftDot(g, boundsF);
-					this.DrawRightDot(g, boundsF, true);
-					RectangleF innerBounds = GetInnerBounds(boundsF);
-					this.DrawEllipse(g, innerBounds);
-					this.DrawLeftDot(g, innerBounds);
-					this.DrawBottomLine(g, innerBounds);
+					DrawLeftDot(g, boundsF, brush);
+					DrawRightDot(g, boundsF, pen, brush, true);
+					innerBounds = GetReflexiveInSymmetricBounds(boundsF);
+					DrawEllipse(g, innerBounds, pen);
+					DrawRightLine(g, innerBounds, pen, 1f);
 					break;
-				}
+				case RingConstraintType.ReflexiveSymmetric:
+					DrawLeftDot(g, boundsF, brush);
+					DrawRightDot(g, boundsF, pen, brush, true);
+					DrawEllipse(g, GetReflexiveInSymmetricBounds(boundsF), pen);
+					break;
+				case RingConstraintType.ReflexiveAntisymmetric:
+					DrawLeftDot(g, boundsF, brush);
+					DrawRightDot(g, boundsF, pen, brush, false);
+					DrawEllipse(g, GetReflexiveInSymmetricBounds(boundsF), pen);
+					DrawBottomLine(g, boundsF, pen);
+					break;
+				case RingConstraintType.ReflexiveTransitiveAntisymmetric:
+					DrawLeftDot(g, boundsF, brush);
+					DrawRightDot(g, boundsF, pen, brush, false);
+					DrawBottomLine(g, boundsF, pen);
+					innerBounds = GetInnerBounds(boundsF);
+					DrawTriangle(g, innerBounds, pen);
+					DrawTriangleDots(g, innerBounds, brush, false);
+					g.DrawArc(pen, GetReflexiveInSymmetricBounds(boundsF), 27, 300); // Angles determined empirically to stop on triangle, not worth calculating
+					break;
 			}
-
-			this.DisposePaintTools();
 		}
 
 		private const float SMALL_LENGTH_FACTOR = 0.35f;
@@ -272,31 +300,48 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			float innerBoundsY = bounds.Y + (bounds.Height / 2) - halfInnerBoundsLength;
 			return new RectangleF(innerBoundsX, innerBoundsY, innerBoundsLength, innerBoundsLength);
 		}
+		private static RectangleF GetReflexiveInSymmetricBounds(RectangleF bounds)
+		{
+			float startHeight = bounds.Height;
+			float adjustedHeight = startHeight * .72f;
+			return new RectangleF(bounds.X, bounds.Y + (startHeight - adjustedHeight) / 2, adjustedHeight, adjustedHeight);
+		}
 		private static PointF GetMidpoint(RectangleF bounds)
 		{
 			return new PointF(bounds.X + (bounds.Width / 2), bounds.Y + (bounds.Height / 2));
 		}
-		private void DrawTriangle(Graphics g, RectangleF bounds)
+		private static void DrawTriangle(Graphics g, RectangleF bounds, Pen pen)
 		{
-			g.DrawLines(this.PaintPen, GeometryUtility.GetTrianglePointsF(bounds));
+			g.DrawLines(pen, GeometryUtility.GetTrianglePointsF(bounds));
 		}
-		private void DrawEllipse(Graphics g, RectangleF bounds)
+		private static void DrawEllipse(Graphics g, RectangleF bounds, Pen pen)
 		{
-			g.DrawEllipse(this.PaintPen, bounds);
+			g.DrawEllipse(pen, bounds);
 		}
-		private void DrawBottomLine(Graphics g, RectangleF bounds)
+		private static void DrawBottomLine(Graphics g, RectangleF bounds, Pen pen)
 		{
-			Pen pen = this.PaintPen;
+			DrawBottomLine(g, bounds, pen, 1f);
+		}
+		private static void DrawBottomLine(Graphics g, RectangleF bounds, Pen pen, float topPercent)
+		{
 			DashStyle originalDashStyle = pen.DashStyle;
 			pen.DashStyle = DashStyle.Solid;
 			PointF midpoint = GetMidpoint(bounds);
 			float halfLength = (bounds.Height * SMALL_LENGTH_FACTOR) / 2;
-			g.DrawLine(pen, midpoint.X, bounds.Bottom - halfLength, midpoint.X, bounds.Bottom + halfLength);
+			g.DrawLine(pen, midpoint.X, bounds.Bottom - topPercent * halfLength, midpoint.X, bounds.Bottom + halfLength);
 			pen.DashStyle = originalDashStyle;
 		}
-		private void DrawTriangleBottomLine(Graphics g, RectangleF bounds)
+		private static void DrawRightLine(Graphics g, RectangleF bounds, Pen pen, float leftPercent)
 		{
-			Pen pen = this.PaintPen;
+			DashStyle originalDashStyle = pen.DashStyle;
+			pen.DashStyle = DashStyle.Solid;
+			PointF midpoint = GetMidpoint(bounds);
+			float halfLength = (bounds.Height * SMALL_LENGTH_FACTOR) / 2;
+			g.DrawLine(pen, bounds.Right - leftPercent * halfLength, midpoint.Y, bounds.Right + halfLength, midpoint.Y);
+			pen.DashStyle = originalDashStyle;
+		}
+		private static void DrawTriangleBottomLine(Graphics g, RectangleF bounds, Pen pen)
+		{
 			DashStyle originalDashStyle = pen.DashStyle;
 			pen.DashStyle = DashStyle.Solid;
 			float midpointX = GetMidpoint(bounds).X;
@@ -305,14 +350,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			g.DrawLine(pen, new PointF(midpointX, bottomY - halfLength), new PointF(midpointX, bottomY + (halfLength * 1.15f)));
 			pen.DashStyle = originalDashStyle;
 		}
-		private void DrawLeftDot(Graphics g, RectangleF bounds)
+		private static void DrawLeftDot(Graphics g, RectangleF bounds, Brush brush)
 		{
 			PointF midpoint = GetMidpoint(bounds);
 			float length = bounds.Height * SMALL_LENGTH_FACTOR;
 			float halfLength = length / 2;
-			g.FillEllipse(this.PaintBrush, bounds.Left - halfLength, midpoint.Y - halfLength, length, length);
+			g.FillEllipse(brush, bounds.Left - halfLength, midpoint.Y - halfLength, length, length);
 		}
-		private void DrawRightDot(Graphics g, RectangleF bounds, bool fillDot)
+		private void DrawRightDot(Graphics g, RectangleF bounds, Pen pen, Brush brush, bool fillDot)
 		{
 			PointF midpoint = GetMidpoint(bounds);
 			float length = bounds.Height * SMALL_LENGTH_FACTOR;
@@ -321,21 +366,19 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			float y = midpoint.Y - halfLength;
 			if (fillDot)
 			{
-				g.FillEllipse(this.PaintBrush, x, y, length, length);
+				g.FillEllipse(brush, x, y, length, length);
 			}
 			else
 			{
-				Pen pen = this.PaintPen;
 				DashStyle originalDashStyle = pen.DashStyle;
 				pen.DashStyle = DashStyle.Solid;
 				g.FillEllipse(this.StyleSet.GetBrush(DiagramBrushes.DiagramBackground), x, y, length, length);
-				g.DrawEllipse(this.PaintPen, x, y, length, length);
+				g.DrawEllipse(pen, x, y, length, length);
 				pen.DashStyle = originalDashStyle;
 			}
 		}
-		private void DrawTriangleDots(Graphics g, RectangleF bounds)
+		private static void DrawTriangleDots(Graphics g, RectangleF bounds, Brush brush, bool middleRightDot)
 		{
-			Brush brush = this.PaintBrush;
 			float length = bounds.Height * SMALL_LENGTH_FACTOR;
 			float halfLength = length / 2;
 			PointF[] trianglePoints = GeometryUtility.GetTrianglePointsF(bounds);
@@ -344,9 +387,43 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				PointF point = trianglePoints[i];
 				g.FillEllipse(brush, point.X - halfLength, point.Y - halfLength, length, length);
 			}
+			if (middleRightDot)
+			{
+				g.FillEllipse(brush, (trianglePoints[0].X + trianglePoints[2].X) / 2 - halfLength, (trianglePoints[0].Y + trianglePoints[2].Y) / 2 - halfLength, length, length);
+			}
 		}
 
 		#endregion // Customize appearance
+		#region Base overrides
+		/// <summary>
+		/// Maintain center position on resize
+		/// </summary>
+		public override void AutoResize()
+		{
+			SizeD contentSize = ContentSize;
+			if (!contentSize.IsEmpty)
+			{
+				RectangleD oldBounds = (RectangleD)AbsoluteBounds;
+				if (!(oldBounds.IsEmpty ||
+					Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.ContainsKey(ORMBaseShape.PlaceAllChildShapes)))
+				{
+					SizeD oldSize = oldBounds.Size;
+					double xDelta = contentSize.Width - oldSize.Width;
+					double yDelta = contentSize.Height - oldSize.Height;
+					bool xChanged = !VGConstants.FuzzZero(xDelta, VGConstants.FuzzDistance);
+					bool yChanged = !VGConstants.FuzzZero(yDelta, VGConstants.FuzzDistance);
+					if (xChanged || yChanged)
+					{
+						PointD location = oldBounds.Location;
+						location.Offset(xChanged ? -xDelta / 2 : 0d, yChanged ? -yDelta / 2 : 0d);
+						AbsoluteBounds = new RectangleD(location, contentSize);
+						return;
+					}
+				}
+				Size = contentSize;
+			}
+		}
+		#endregion // Base overrides
 		#region RingConstraintPropertyChangeRule
 		/// <summary>
 		/// ChangeRule: typeof(RingConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
@@ -371,16 +448,12 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 									binaryLink.RecalculateRoute();
 								}
 							}
-							SizeD oldSize = ringConstraintShape.myContentSize;
-							ringConstraintShape.myContentSize = SizeD.Empty;
-							if (!oldSize.IsEmpty)
-							{
-								RectangleD bounds = ringConstraintShape.Bounds;
-								bounds.Offset(-((ringConstraintShape.ContentSize.Width - oldSize.Width) / 2), 0);
-								ringConstraintShape.Bounds = bounds;
-							}
+							SizeD oldSize = ringConstraintShape.Size;
 							ringConstraintShape.AutoResize();
-							ringConstraintShape.InvalidateRequired(true);
+							if (oldSize == ringConstraintShape.Size)
+							{
+								ringConstraintShape.InvalidateRequired(true);
+							}
 						}
 					}
 				}

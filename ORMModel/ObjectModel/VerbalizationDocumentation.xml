@@ -1,6 +1,34 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="VerbalizationDocumentationHTML.xslt"?>
 <snippets>
+  <snippet name="Acyclicity" replacementCount="2">
+    <statement>
+							Description: Used to verbalize acyclic ring constraint in the majority of cases.
+							Format: No {0} may cycle back to itself via one or more traversals through {1}
+						</statement>
+    <unformattedSnippet>no {0} may cycle back to itself via one or more traversals through {1}</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
+    <usedBy>
+      <constraint name="AcyclicRingVerbalizer" />
+    </usedBy>
+  </snippet>
+  <snippet name="AcyclicityWithRoleNumbers" replacementCount="4">
+    <statement>
+							Description: Used to verbalize acyclic ring constraints where more than two roles have a role player of the constrained type.
+							Format: No {0} may cycle back to itself via one or more instances of the role pair: roles {2} and {3} of {1}
+						</statement>
+    <unformattedSnippet>no {0} may cycle back to itself via one or more instances of the role pair:roles {2} and {3} of {1}</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
+    <usedBy>
+      <constraint name="AcyclicRingVerbalizer" />
+    </usedBy>
+  </snippet>
   <snippet name="AtMostOneQuantifier" replacementCount="1">
     <statement>
 							Description: Used for 'at most one' before an object name to signify the quantity may only be zero or one.  Format: at most one {0}
@@ -29,6 +57,11 @@
 						</statement>
     <unformattedSnippet>{0} combination is associated with {1}</unformattedSnippet>
     <contains>
+      <snippet name="FrequencyRangeExact" />
+      <snippet name="FrequencyRangeMaxUnbounded" />
+      <snippet name="FrequencyRangeMinAndMax" />
+      <snippet name="FrequencyRangeMinUnbounded" />
+      <snippet name="FrequencyTypedOccurrences" />
       <snippet name="IdentityReferenceQuantifier" />
       <snippet name="MoreThanOneQuantifier" />
       <snippet name="OneQuantifier" />
@@ -40,6 +73,7 @@
       <snippet name="UniversalQuantifier" />
     </containedIn>
     <usedBy>
+      <constraint name="FrequencyConstraint" />
       <constraint name="UniquenessConstraint" />
     </usedBy>
   </snippet>
@@ -60,6 +94,42 @@
     </containedIn>
     <usedBy>
       <constraint name="FrequencyConstraint" />
+      <constraint name="UniquenessConstraint" />
+    </usedBy>
+  </snippet>
+  <snippet name="CombinationOccurrence" replacementCount="2">
+    <statement>
+							Description: Verbalizes a range of combination occurrences.  Form at: {0} combination occurs {1}
+						</statement>
+    <unformattedSnippet>{0} combination occurs {1}</unformattedSnippet>
+    <contains>
+      <snippet name="FrequencyRangeExact" />
+      <snippet name="FrequencyRangeMaxUnbounded" />
+      <snippet name="FrequencyRangeMinAndMax" />
+      <snippet name="FrequencyRangeMinUnbounded" />
+      <snippet name="FrequencyUntypedOccurrences" />
+    </contains>
+    <containedIn>
+      <snippet name="ContextScopeReference" />
+      <snippet name="ImpliedModalNecessityOperator" />
+      <snippet name="UniversalQuantifier" />
+    </containedIn>
+    <usedBy>
+      <constraint name="FrequencyConstraint" />
+    </usedBy>
+  </snippet>
+  <snippet name="CombinationUniqueness" replacementCount="1">
+    <statement>
+							Description: Verbalizes uniqueness of a combination.  Format: {0} combination is unique
+						</statement>
+    <unformattedSnippet>{0} combination is unique</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="ContextScopeReference" />
+      <snippet name="ImpliedModalNecessityOperator" />
+      <snippet name="UniversalQuantifier" />
+    </containedIn>
+    <usedBy>
       <constraint name="UniquenessConstraint" />
     </usedBy>
   </snippet>
@@ -163,6 +233,21 @@
       <constraint name="ValueTypeValueConstraint" />
     </usedBy>
   </snippet>
+  <snippet name="CompatibleTypesIdentityInequalityOperator" replacementCount="2">
+    <statement>
+							Description: Used to specify that two instances of compatible types are not the same instance.
+							Format: that {0} is not that {1}
+						</statement>
+    <unformattedSnippet>that {0} is not that {1}</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="ConditionalMultiLine" />
+      <snippet name="LogicalAndOperator" />
+    </containedIn>
+    <usedBy>
+      <constraint name="AntisymmetricRingVerbalizer" />
+    </usedBy>
+  </snippet>
   <snippet name="CompoundListClose" replacementCount="0">
     <statement>
 							Description: Text that is at the end of a compound list.
@@ -171,6 +256,7 @@
     <contains />
     <containedIn />
     <usedBy>
+      <constraint name="FrequencyConstraint" />
       <constraint name="SubsetConstraint" />
       <constraint name="UniquenessConstraint" />
     </usedBy>
@@ -183,6 +269,7 @@
     <contains />
     <containedIn />
     <usedBy>
+      <constraint name="FrequencyConstraint" />
       <constraint name="SubsetConstraint" />
       <constraint name="UniquenessConstraint" />
     </usedBy>
@@ -195,6 +282,7 @@
     <contains />
     <containedIn />
     <usedBy>
+      <constraint name="FrequencyConstraint" />
       <constraint name="SubsetConstraint" />
       <constraint name="UniquenessConstraint" />
     </usedBy>
@@ -207,6 +295,7 @@
     <contains />
     <containedIn />
     <usedBy>
+      <constraint name="FrequencyConstraint" />
       <constraint name="SubsetConstraint" />
       <constraint name="UniquenessConstraint" />
     </usedBy>
@@ -219,6 +308,7 @@
     <contains />
     <containedIn />
     <usedBy>
+      <constraint name="FrequencyConstraint" />
       <constraint name="SubsetConstraint" />
       <constraint name="UniquenessConstraint" />
     </usedBy>
@@ -229,16 +319,46 @@
 							Format: if {0} then {1}
 						</statement>
     <unformattedSnippet>if {0} then {1}</unformattedSnippet>
-    <contains>
-      <snippet name="DefiniteArticle" />
-      <snippet name="ExistentialQuantifier" />
-    </contains>
+    <contains />
     <containedIn>
       <snippet name="ForEachIndentedQuantifier" />
       <snippet name="ImpliedModalNecessityOperator" />
     </containedIn>
     <usedBy>
       <constraint name="SubsetConstraint" />
+    </usedBy>
+  </snippet>
+  <snippet name="ConditionalMultiLine" replacementCount="2">
+    <statement>
+							Description: Verbalizes a conditional statement on two lines.
+							Format: if {0}
+							        then {1}
+						</statement>
+    <unformattedSnippet>if {0}then {1}</unformattedSnippet>
+    <contains>
+      <snippet name="CompatibleTypesIdentityInequalityOperator" />
+      <snippet name="DefiniteArticle" />
+      <snippet name="ExistentialQuantifier" />
+      <snippet name="LogicalAndOperator" />
+      <snippet name="ModalPossibilityOperator" />
+      <snippet name="ReflexivePronoun" />
+      <snippet name="ReflexiveQuantifier" />
+      <snippet name="SameTypeIdentityInequalityOperator" />
+      <snippet name="SelfReference" />
+      <snippet name="StronglyIntransitiveConsequent" />
+    </contains>
+    <containedIn>
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
+    <usedBy>
+      <constraint name="AntisymmetricRingVerbalizer" />
+      <constraint name="AsymmetricRingVerbalizer" />
+      <constraint name="IntransitiveRingVerbalizer" />
+      <constraint name="PurelyReflexiveRingVerbalizer" />
+      <constraint name="ReflexiveRingVerbalizer" />
+      <constraint name="StronglyIntransitiveRingVerbalizer" />
+      <constraint name="SymmetricRingVerbalizer" />
+      <constraint name="TransitiveRingVerbalizer" />
     </usedBy>
   </snippet>
   <snippet name="ConstraintProvidesPreferredIdentifier" replacementCount="2">
@@ -260,10 +380,11 @@
     <statement>
 							Description: Used to define the context in which the object is used.  Format: context: {0}
 						</statement>
-    <unformattedSnippet>context: {0}</unformattedSnippet>
+    <unformattedSnippet>context:&amp;nbsp;{0}</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy>
+      <constraint name="FrequencyConstraint" />
       <constraint name="UniquenessConstraint" />
     </usedBy>
   </snippet>
@@ -274,6 +395,14 @@
     <unformattedSnippet>in this context, {0}</unformattedSnippet>
     <contains>
       <snippet name="CombinationAssociation" />
+      <snippet name="CombinationOccurrence" />
+      <snippet name="CombinationUniqueness" />
+      <snippet name="FrequencyRangeExact" />
+      <snippet name="FrequencyRangeMaxUnbounded" />
+      <snippet name="FrequencyRangeMinAndMax" />
+      <snippet name="FrequencyRangeMinUnbounded" />
+      <snippet name="FrequencyTypedOccurrences" />
+      <snippet name="FrequencyUntypedOccurrences" />
       <snippet name="IdentityReferenceQuantifier" />
       <snippet name="ImpliedModalNecessityOperator" />
       <snippet name="ModalPossibilityOperator" />
@@ -283,40 +412,45 @@
     </contains>
     <containedIn />
     <usedBy>
+      <constraint name="FrequencyConstraint" />
       <constraint name="UniquenessConstraint" />
     </usedBy>
   </snippet>
   <snippet name="DefiniteArticle" replacementCount="1">
-    <statement>
-							Description: Used for 'that' before an object name to signify the context in which the object is being referred to. 
-							Different than ImpersonalPronoun which is used to refer back to an object and is frequently used conditionally with PersonalPronoun.  Format: that
-						</statement>
+    <statement>Description: Used for 'that' before an object name to signify a back reference to a uniquely qualified object type.</statement>
     <unformattedSnippet>that {0}</unformattedSnippet>
     <contains />
     <containedIn>
-      <snippet name="Conditional" />
-      <snippet name="Equality" />
+      <snippet name="ConditionalMultiLine" />
       <snippet name="ForEachCompactQuantifier" />
       <snippet name="ForEachIndentedQuantifier" />
-      <snippet name="GroupEquality" />
-      <snippet name="GroupExclusion" />
       <snippet name="ImpliedModalNecessityOperator" />
+      <snippet name="LogicalAndOperator" />
       <snippet name="ModalPossibilityOperator" />
     </containedIn>
     <usedBy>
+      <constraint name="AntisymmetricRingVerbalizer" />
+      <constraint name="AsymmetricRingVerbalizer" />
       <constraint name="CombinedMandatoryUniqueVerbalizer" />
-      <constraint name="EqualityConstraint" />
-      <constraint name="ExclusionConstraint" />
       <constraint name="ImpliedMandatoryVerbalizer" />
       <constraint name="ImpliedUniqueVerbalizer" />
+      <constraint name="IntransitiveRingVerbalizer" />
       <constraint name="MandatoryConstraint" />
-      <constraint name="SubsetConstraint" />
+      <constraint name="SymmetricRingVerbalizer" />
+      <constraint name="TransitiveRingVerbalizer" />
       <constraint name="UniquenessConstraint" />
     </usedBy>
   </snippet>
-  <snippet name="DefinitionVerbalization" replacementCount="1">
-    <statement>Description: Verbalizes the text specified for a n element definition.  Format: Definition: {0}</statement>
-    <unformattedSnippet>Definition: {0}</unformattedSnippet>
+  <snippet name="DerivationNoteVerbalization" replacementCount="1">
+    <statement>Description: Verbalizes the informal note specified for an element derivation rule.  Format: Derivation  Note: {0}</statement>
+    <unformattedSnippet>Derivation Note: {0}</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="DescriptionVerbalization" replacementCount="1">
+    <statement>Description: Verbalizes the text specified for an element description.  Format: Informal Description: {0}</statement>
+    <unformattedSnippet>Informal Description: {0}</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
@@ -343,16 +477,68 @@
 							Format: {0} if and only if {1}
 						</statement>
     <unformattedSnippet>{0} if and only if {1}</unformattedSnippet>
-    <contains>
-      <snippet name="DefiniteArticle" />
-      <snippet name="ExistentialQuantifier" />
-    </contains>
+    <contains />
     <containedIn>
       <snippet name="ForEachIndentedQuantifier" />
       <snippet name="ImpliedModalNecessityOperator" />
     </containedIn>
     <usedBy>
       <constraint name="EqualityConstraint" />
+    </usedBy>
+  </snippet>
+  <snippet name="EqualsListClose" replacementCount="0">
+    <statement>
+							Description: Text that is at the end of an equals list.
+						</statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy>
+      <constraint name="PurelyReflexiveRingVerbalizer" />
+    </usedBy>
+  </snippet>
+  <snippet name="EqualsListFinalSeparator" replacementCount="0">
+    <statement>
+							Description: Used between the last two items in an equals list.  Format: =
+						</statement>
+    <unformattedSnippet> = </unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy>
+      <constraint name="PurelyReflexiveRingVerbalizer" />
+    </usedBy>
+  </snippet>
+  <snippet name="EqualsListOpen" replacementCount="0">
+    <statement>
+							Description: Text that is at the beginning of an equals list.
+						</statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy>
+      <constraint name="PurelyReflexiveRingVerbalizer" />
+    </usedBy>
+  </snippet>
+  <snippet name="EqualsListPairSeparator" replacementCount="0">
+    <statement>
+							Description: Used to separate items in an equals list.  Format: =
+						</statement>
+    <unformattedSnippet> = </unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy>
+      <constraint name="PurelyReflexiveRingVerbalizer" />
+    </usedBy>
+  </snippet>
+  <snippet name="EqualsListSeparator" replacementCount="0">
+    <statement>
+							Description: Used to separate items in an equals list.  Format: =
+						</statement>
+    <unformattedSnippet> = </unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy>
+      <constraint name="PurelyReflexiveRingVerbalizer" />
     </usedBy>
   </snippet>
   <snippet name="ErrorClosePrimaryReport" replacementCount="0">
@@ -463,21 +649,25 @@
     <unformattedSnippet>some {0}</unformattedSnippet>
     <contains />
     <containedIn>
-      <snippet name="Conditional" />
-      <snippet name="Equality" />
+      <snippet name="ConditionalMultiLine" />
       <snippet name="ForEachCompactQuantifier" />
       <snippet name="ForEachIndentedQuantifier" />
-      <snippet name="GroupEquality" />
-      <snippet name="GroupExclusion" />
       <snippet name="ImpliedModalNecessityOperator" />
+      <snippet name="LogicalAndOperator" />
+      <snippet name="ModalPossibilityOperator" />
     </containedIn>
     <usedBy>
-      <constraint name="EqualityConstraint" />
-      <constraint name="ExclusionConstraint" />
+      <constraint name="AntisymmetricRingVerbalizer" />
+      <constraint name="AsymmetricRingVerbalizer" />
       <constraint name="ImpliedMandatoryVerbalizer" />
+      <constraint name="IntransitiveRingVerbalizer" />
+      <constraint name="IrreflexiveRingVerbalizer" />
       <constraint name="MandatoryConstraint" />
-      <constraint name="RingConstraint" />
-      <constraint name="SubsetConstraint" />
+      <constraint name="PurelyReflexiveRingVerbalizer" />
+      <constraint name="ReflexiveRingVerbalizer" />
+      <constraint name="StronglyIntransitiveRingVerbalizer" />
+      <constraint name="SymmetricRingVerbalizer" />
+      <constraint name="TransitiveRingVerbalizer" />
     </usedBy>
   </snippet>
   <snippet name="FactTypeInstanceBlockEnd" replacementCount="0">
@@ -611,7 +801,7 @@
   </snippet>
   <snippet name="FrequencyPopulation" replacementCount="3">
     <statement>
-							Description: Used as for the main body text of a frequency constraint.
+							Description: Used as for the main body text of a frequency constraint on one FactType.
 							Format: each {0} in the population of {1} occurs there {2} times
 						</statement>
     <unformattedSnippet>each {0} in the population of “{1}” occurs there {2}</unformattedSnippet>
@@ -621,6 +811,7 @@
       <snippet name="FrequencyRangeMaxUnbounded" />
       <snippet name="FrequencyRangeMinAndMax" />
       <snippet name="FrequencyRangeMinUnbounded" />
+      <snippet name="FrequencyUntypedOccurrences" />
     </contains>
     <containedIn>
       <snippet name="ImpliedModalNecessityOperator" />
@@ -632,13 +823,19 @@
   <snippet name="FrequencyRangeExact" replacementCount="1">
     <statement>
 							Description: Used for a frequency range where both the min and max values the same
-							Format: exactly {0} times
+							Format: exactly {0}
 						</statement>
-    <unformattedSnippet>exactly {0} times</unformattedSnippet>
+    <unformattedSnippet>exactly {0}</unformattedSnippet>
     <contains />
     <containedIn>
+      <snippet name="CombinationAssociation" />
+      <snippet name="CombinationOccurrence" />
+      <snippet name="ContextScopeReference" />
       <snippet name="FrequencyPopulation" />
+      <snippet name="FrequencyTypedOccurrences" />
+      <snippet name="FrequencyUntypedOccurrences" />
       <snippet name="ImpliedModalNecessityOperator" />
+      <snippet name="UniversalQuantifier" />
     </containedIn>
     <usedBy>
       <constraint name="FrequencyConstraint" />
@@ -647,13 +844,19 @@
   <snippet name="FrequencyRangeMaxUnbounded" replacementCount="1">
     <statement>
 							Description: Used for a frequency range where both the max value is unbounded.
-							Format: at least {0} times
+							Format: at least {0}
 						</statement>
-    <unformattedSnippet>at least {0} times</unformattedSnippet>
+    <unformattedSnippet>at least {0}</unformattedSnippet>
     <contains />
     <containedIn>
+      <snippet name="CombinationAssociation" />
+      <snippet name="CombinationOccurrence" />
+      <snippet name="ContextScopeReference" />
       <snippet name="FrequencyPopulation" />
+      <snippet name="FrequencyTypedOccurrences" />
+      <snippet name="FrequencyUntypedOccurrences" />
       <snippet name="ImpliedModalNecessityOperator" />
+      <snippet name="UniversalQuantifier" />
     </containedIn>
     <usedBy>
       <constraint name="FrequencyConstraint" />
@@ -662,13 +865,19 @@
   <snippet name="FrequencyRangeMinAndMax" replacementCount="2">
     <statement>
 							Description: Used for a frequency range where both the min and max values are specified and different.
-							Format: at least {0} and at most {1} times
+							Format: at least {0} and at most {1}
 						</statement>
-    <unformattedSnippet>at least {0} and at most {1} times</unformattedSnippet>
+    <unformattedSnippet>at least {0} and at most {1}</unformattedSnippet>
     <contains />
     <containedIn>
+      <snippet name="CombinationAssociation" />
+      <snippet name="CombinationOccurrence" />
+      <snippet name="ContextScopeReference" />
       <snippet name="FrequencyPopulation" />
+      <snippet name="FrequencyTypedOccurrences" />
+      <snippet name="FrequencyUntypedOccurrences" />
       <snippet name="ImpliedModalNecessityOperator" />
+      <snippet name="UniversalQuantifier" />
     </containedIn>
     <usedBy>
       <constraint name="FrequencyConstraint" />
@@ -677,31 +886,88 @@
   <snippet name="FrequencyRangeMinUnbounded" replacementCount="1">
     <statement>
 							Description: Used for a frequency range where the min value is &lt; 2.
-							Format: at most {1} times
+							Format: at most {1}
 						</statement>
-    <unformattedSnippet>at most {1} times</unformattedSnippet>
+    <unformattedSnippet>at most {1}</unformattedSnippet>
     <contains />
     <containedIn>
+      <snippet name="CombinationAssociation" />
+      <snippet name="CombinationOccurrence" />
+      <snippet name="ContextScopeReference" />
       <snippet name="FrequencyPopulation" />
+      <snippet name="FrequencyTypedOccurrences" />
+      <snippet name="FrequencyUntypedOccurrences" />
       <snippet name="ImpliedModalNecessityOperator" />
+      <snippet name="UniversalQuantifier" />
     </containedIn>
     <usedBy>
       <constraint name="FrequencyConstraint" />
     </usedBy>
   </snippet>
-  <snippet name="FrequencyRangeMinUnboundedOptimized" replacementCount="2">
+  <snippet name="FrequencyTypedOccurrences" replacementCount="2">
     <statement>
-							Description: Used for single-role frequency range where the min value is &lt; 2 and a forward reading is available on a binary fact type.
-							Format: at most {1} {0} instances 
+							Description: Used to specify an instance count or range for a specific object type
+							Format: {1} instances of {0}
 						</statement>
-    <unformattedSnippet>at most {1} {0} instances</unformattedSnippet>
-    <contains />
+    <unformattedSnippet>{1} instances of {0}</unformattedSnippet>
+    <contains>
+      <snippet name="FrequencyRangeExact" />
+      <snippet name="FrequencyRangeMaxUnbounded" />
+      <snippet name="FrequencyRangeMinAndMax" />
+      <snippet name="FrequencyRangeMinUnbounded" />
+    </contains>
     <containedIn>
+      <snippet name="CombinationAssociation" />
+      <snippet name="ContextScopeReference" />
       <snippet name="ImpliedModalNecessityOperator" />
+      <snippet name="UniversalQuantifier" />
     </containedIn>
     <usedBy>
       <constraint name="FrequencyConstraint" />
     </usedBy>
+  </snippet>
+  <snippet name="FrequencyUntypedOccurrences" replacementCount="1">
+    <statement>
+							Description: Used to specify an instance count or range using an untyped occurrence phrase
+							Format: {0} times
+						</statement>
+    <unformattedSnippet>{0} times</unformattedSnippet>
+    <contains>
+      <snippet name="FrequencyRangeExact" />
+      <snippet name="FrequencyRangeMaxUnbounded" />
+      <snippet name="FrequencyRangeMinAndMax" />
+      <snippet name="FrequencyRangeMinUnbounded" />
+    </contains>
+    <containedIn>
+      <snippet name="CombinationOccurrence" />
+      <snippet name="ContextScopeReference" />
+      <snippet name="FrequencyPopulation" />
+      <snippet name="ImpliedModalNecessityOperator" />
+      <snippet name="UniversalQuantifier" />
+    </containedIn>
+    <usedBy>
+      <constraint name="FrequencyConstraint" />
+    </usedBy>
+  </snippet>
+  <snippet name="FullFactTypeDerivation" replacementCount="2">
+    <statement>
+							Description: Used to specify a fully derived fact type with its derivation rule.
+							Format: *{0} if and only if {1}
+						</statement>
+    <unformattedSnippet>*{0} if and only if{1}</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="FullSubtypeDerivation" replacementCount="2">
+    <statement>
+							Description: Used to specify a fully derived subtype derivation rule.
+							Format: each {0} is {1}
+						</statement>
+    <unformattedSnippet>*Each {0} is {1}</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
   </snippet>
   <snippet name="GroupEquality" replacementCount="1">
     <statement>
@@ -709,10 +975,7 @@
 							Format: all or none of the following hold: {0}
 						</statement>
     <unformattedSnippet>all or none of the following hold: {0}</unformattedSnippet>
-    <contains>
-      <snippet name="DefiniteArticle" />
-      <snippet name="ExistentialQuantifier" />
-    </contains>
+    <contains />
     <containedIn>
       <snippet name="ForEachCompactQuantifier" />
       <snippet name="ImpliedModalNecessityOperator" />
@@ -727,10 +990,7 @@
 							Format: at most one of the following holds: {0}
 						</statement>
     <unformattedSnippet>at most one of the following holds: {0}</unformattedSnippet>
-    <contains>
-      <snippet name="DefiniteArticle" />
-      <snippet name="ExistentialQuantifier" />
-    </contains>
+    <contains />
     <containedIn>
       <snippet name="ForEachCompactQuantifier" />
       <snippet name="ImpliedModalNecessityOperator" />
@@ -822,13 +1082,13 @@
     </containedIn>
     <usedBy>
       <constraint name="DefaultBinaryMissingUniquenessVerbalizer" />
-      <constraint name="RingConstraint" />
+      <constraint name="IrreflexiveRingVerbalizer" />
       <constraint name="UniquenessConstraint" />
     </usedBy>
   </snippet>
-  <snippet name="ImpersonalPronoun" replacementCount="1">
-    <statement></statement>
-    <unformattedSnippet>that {0}</unformattedSnippet>
+  <snippet name="ImpersonalPronoun" replacementCount="0">
+    <statement>Description: Use in place of a role player name to reference an impersonal object type with a clear antecedent.</statement>
+    <unformattedSnippet>that</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
@@ -840,9 +1100,14 @@
 						</statement>
     <unformattedSnippet>{0}</unformattedSnippet>
     <contains>
+      <snippet name="Acyclicity" />
+      <snippet name="AcyclicityWithRoleNumbers" />
       <snippet name="CombinationAssociation" />
       <snippet name="CombinationIdentifier" />
+      <snippet name="CombinationOccurrence" />
+      <snippet name="CombinationUniqueness" />
       <snippet name="Conditional" />
+      <snippet name="ConditionalMultiLine" />
       <snippet name="DefiniteArticle" />
       <snippet name="Equality" />
       <snippet name="ExactlyOneQuantifier" />
@@ -856,14 +1121,20 @@
       <snippet name="FrequencyRangeMaxUnbounded" />
       <snippet name="FrequencyRangeMinAndMax" />
       <snippet name="FrequencyRangeMinUnbounded" />
-      <snippet name="FrequencyRangeMinUnboundedOptimized" />
+      <snippet name="FrequencyTypedOccurrences" />
+      <snippet name="FrequencyUntypedOccurrences" />
       <snippet name="GroupEquality" />
       <snippet name="GroupExclusion" />
       <snippet name="GroupExclusiveOr" />
       <snippet name="IdentityReferenceQuantifier" />
+      <snippet name="LogicalAndOperator" />
       <snippet name="ObjectType" />
       <snippet name="OccursInPopulation" />
       <snippet name="OneQuantifier" />
+      <snippet name="ReflexivePronoun" />
+      <snippet name="ReflexiveQuantifier" />
+      <snippet name="SelfReference" />
+      <snippet name="StronglyIntransitiveConsequent" />
       <snippet name="SubtypeMetaReading" />
       <snippet name="UniversalQuantifier" />
     </contains>
@@ -873,15 +1144,21 @@
       <snippet name="ForEachIndentedQuantifier" />
     </containedIn>
     <usedBy>
+      <constraint name="AcyclicRingVerbalizer" />
       <constraint name="CombinedMandatoryUniqueVerbalizer" />
       <constraint name="EqualityConstraint" />
       <constraint name="ExclusionConstraint" />
       <constraint name="FrequencyConstraint" />
       <constraint name="ImpliedMandatoryVerbalizer" />
       <constraint name="ImpliedUniqueVerbalizer" />
+      <constraint name="IrreflexiveRingVerbalizer" />
       <constraint name="MandatoryConstraint" />
-      <constraint name="RingConstraint" />
+      <constraint name="PurelyReflexiveRingVerbalizer" />
+      <constraint name="ReflexiveRingVerbalizer" />
+      <constraint name="StronglyIntransitiveRingVerbalizer" />
       <constraint name="SubsetConstraint" />
+      <constraint name="SymmetricRingVerbalizer" />
+      <constraint name="TransitiveRingVerbalizer" />
       <constraint name="UniquenessConstraint" />
     </usedBy>
   </snippet>
@@ -1116,6 +1393,29 @@
       <constraint name="RoleValueConstraint" />
     </usedBy>
   </snippet>
+  <snippet name="LogicalAndOperator" replacementCount="2">
+    <statement>
+							Description: Used to 'and' together exactly two other snippets.
+							Format: {0} and {1}
+						</statement>
+    <unformattedSnippet>{0} and {1}</unformattedSnippet>
+    <contains>
+      <snippet name="CompatibleTypesIdentityInequalityOperator" />
+      <snippet name="DefiniteArticle" />
+      <snippet name="ExistentialQuantifier" />
+      <snippet name="SameTypeIdentityInequalityOperator" />
+      <snippet name="SelfReference" />
+    </contains>
+    <containedIn>
+      <snippet name="ConditionalMultiLine" />
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
+    <usedBy>
+      <constraint name="AntisymmetricRingVerbalizer" />
+      <constraint name="IntransitiveRingVerbalizer" />
+      <constraint name="TransitiveRingVerbalizer" />
+    </usedBy>
+  </snippet>
   <snippet name="MinClosedMaxClosed" replacementCount="2">
     <statement>
 							Description: Used to verbalize a range inclusion with the minimum bound closed and the maximum bound closed.
@@ -1248,19 +1548,25 @@
       <snippet name="CombinationAssociation" />
       <snippet name="CombinationIdentifier" />
       <snippet name="DefiniteArticle" />
+      <snippet name="ExistentialQuantifier" />
       <snippet name="IdentityReferenceQuantifier" />
       <snippet name="MoreThanOneQuantifier" />
       <snippet name="NegativeReadingForUnaryOnlyDisjunctiveMandatory" />
       <snippet name="OccursInPopulation" />
       <snippet name="OneQuantifier" />
+      <snippet name="SelfReference" />
     </contains>
     <containedIn>
+      <snippet name="ConditionalMultiLine" />
       <snippet name="ContextScopeReference" />
       <snippet name="ForEachCompactQuantifier" />
     </containedIn>
     <usedBy>
+      <constraint name="AntisymmetricRingVerbalizer" />
+      <constraint name="AsymmetricRingVerbalizer" />
       <constraint name="DefaultBinaryMissingUniquenessVerbalizer" />
       <constraint name="ImpliedUniqueVerbalizer" />
+      <constraint name="IntransitiveRingVerbalizer" />
       <constraint name="MandatoryConstraint" />
       <constraint name="UniquenessConstraint" />
     </usedBy>
@@ -1527,6 +1833,16 @@
       <constraint name="UniquenessConstraint" />
     </usedBy>
   </snippet>
+  <snippet name="PartialFactTypeDerivation" replacementCount="2">
+    <statement>
+							Description: Used to specify a partially derived fact type with its derivation rule.
+							Format: +{0} if {1}
+						</statement>
+    <unformattedSnippet>+{0} if{1}</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
   <snippet name="PeriodSeparator" replacementCount="2">
     <statement>
 							Description: Used to delimit two snippet replacements by a snippet.
@@ -1541,9 +1857,9 @@
       <constraint name="RoleValueConstraint" />
     </usedBy>
   </snippet>
-  <snippet name="PersonalPronoun" replacementCount="1">
-    <statement></statement>
-    <unformattedSnippet>who {0}</unformattedSnippet>
+  <snippet name="PersonalPronoun" replacementCount="0">
+    <statement>Description: Use in place of a role player name to reference a personal object type with a clear antecedent.</statement>
+    <unformattedSnippet>who</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
@@ -1590,6 +1906,47 @@
     <containedIn />
     <usedBy />
   </snippet>
+  <snippet name="ReflexivePronoun" replacementCount="0">
+    <statement>Description: Use in place of a role player name to refer to an object type with a clear antecedent.</statement>
+    <unformattedSnippet>itself</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="ConditionalMultiLine" />
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
+    <usedBy>
+      <constraint name="ReflexiveRingVerbalizer" />
+    </usedBy>
+  </snippet>
+  <snippet name="ReflexiveQuantifier" replacementCount="1">
+    <statement>
+							Description: Used in place of a reflexive pronoun when an antecedent is not guaranteed.  Format: {0} itself
+						</statement>
+    <unformattedSnippet>{0} itself</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="ConditionalMultiLine" />
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
+    <usedBy>
+      <constraint name="ReflexiveRingVerbalizer" />
+    </usedBy>
+  </snippet>
+  <snippet name="SameTypeIdentityInequalityOperator" replacementCount="2">
+    <statement>
+							Description: Used to specify that two instances of the same type are not the same instance.
+							Format: {0} is not {1}
+						</statement>
+    <unformattedSnippet>{0} is not {1}</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="ConditionalMultiLine" />
+      <snippet name="LogicalAndOperator" />
+    </containedIn>
+    <usedBy>
+      <constraint name="AntisymmetricRingVerbalizer" />
+    </usedBy>
+  </snippet>
   <snippet name="SelfReference" replacementCount="1">
     <statement>
 							Description: Allows the snippet replacement to verbalize itself.
@@ -1597,10 +1954,21 @@
 						</statement>
     <unformattedSnippet>{0}</unformattedSnippet>
     <contains />
-    <containedIn />
+    <containedIn>
+      <snippet name="ConditionalMultiLine" />
+      <snippet name="ImpliedModalNecessityOperator" />
+      <snippet name="LogicalAndOperator" />
+      <snippet name="ModalPossibilityOperator" />
+    </containedIn>
     <usedBy>
+      <constraint name="AntisymmetricRingVerbalizer" />
+      <constraint name="AsymmetricRingVerbalizer" />
+      <constraint name="IntransitiveRingVerbalizer" />
       <constraint name="NearestValueConstraintVerbalizer" />
       <constraint name="RoleValueConstraint" />
+      <constraint name="StronglyIntransitiveRingVerbalizer" />
+      <constraint name="SymmetricRingVerbalizer" />
+      <constraint name="TransitiveRingVerbalizer" />
       <constraint name="ValueTypeValueConstraint" />
     </usedBy>
   </snippet>
@@ -1808,6 +2176,21 @@
       <constraint name="ValueTypeValueConstraint" />
     </usedBy>
   </snippet>
+  <snippet name="StronglyIntransitiveConsequent" replacementCount="2">
+    <statement>
+							Description: Used to verbalize a strongly intransitive ring constraint.
+							Format: it is not true that {0} is indirectly related to {1} by repeatedly applying this fact type
+						</statement>
+    <unformattedSnippet>it is not true that {0} is indirectly related to {1} by repeatedly applying this fact type</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="ConditionalMultiLine" />
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
+    <usedBy>
+      <constraint name="StronglyIntransitiveRingVerbalizer" />
+    </usedBy>
+  </snippet>
   <snippet name="SubtypeMetaReading" replacementCount="3">
     <statement>
 							Description: Used to describe the relationship between a Subtype and its Supertype at the meta level (i.e: Each Man is an instance of Person). 
@@ -1953,6 +2336,14 @@
     <unformattedSnippet>each {0}</unformattedSnippet>
     <contains>
       <snippet name="CombinationAssociation" />
+      <snippet name="CombinationOccurrence" />
+      <snippet name="CombinationUniqueness" />
+      <snippet name="FrequencyRangeExact" />
+      <snippet name="FrequencyRangeMaxUnbounded" />
+      <snippet name="FrequencyRangeMinAndMax" />
+      <snippet name="FrequencyRangeMinUnbounded" />
+      <snippet name="FrequencyTypedOccurrences" />
+      <snippet name="FrequencyUntypedOccurrences" />
       <snippet name="OneQuantifier" />
     </contains>
     <containedIn>
@@ -2023,11 +2414,16 @@
 							{13} instance value bold
 						</statement>
     <unformattedSnippet>
+			
 
 
 	ORM2 Verbalization
 	
-		body {{ font-family: {0}; font-size: {1}pt; padding: .1em; color: {2}; {3} }}
+		body, table {{ font-family: {0}; font-size: {1}pt; color: {2}; {3} }}
+		body {{ padding: 0em .1em; }}
+		table.hidden, tr.hidden, td.hidden {{ margin: 0em; padding: 0em; border-collapse: collapse;}}
+		td.hidden {{ vertical-align: top; }}
+		table.hidden {{ display:inline; }}
 		a {{text-decoration:none; }}
 		a:hover {{background-color:infobackground; }}
 		.objectType {{ color: {4}; {5} }}

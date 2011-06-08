@@ -2116,9 +2116,9 @@
 					<xs:documentation>The ring type is undefined. Corresponds to a model validation error.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
-			<xs:enumeration value="PurelyReflexive">
+			<xs:enumeration value="Reflexive">
 				<xs:annotation>
-					<xs:documentation>Each instance plays itself and cannot play another instance.</xs:documentation>
+					<xs:documentation>If instance A plays some instance then intance B plays itself.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="Irreflexive">
@@ -2126,14 +2126,9 @@
 					<xs:documentation>No instance can play itself.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
-			<xs:enumeration value="Acyclic">
+			<xs:enumeration value="PurelyReflexive">
 				<xs:annotation>
-					<xs:documentation>Cycles are not allowed.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="Intransitive">
-				<xs:annotation>
-					<xs:documentation>If instance A plays instance B and instance B plays instance C, then instance A cannot play instance C.</xs:documentation>
+					<xs:documentation>Each instance plays itself and cannot play another instance.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="Symmetric">
@@ -2141,19 +2136,74 @@
 					<xs:documentation>If instance A plays instance B then intance B plays instance A.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
-			<xs:enumeration value="Asymmetric">
-				<xs:annotation>
-					<xs:documentation>If instance A plays instance B then instance B cannot play instance A.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
 			<xs:enumeration value="Antisymmetric">
 				<xs:annotation>
 					<xs:documentation>If instance A is not equal to instance B and A plays B, then B cannot play A.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="Asymmetric">
+				<xs:annotation>
+					<xs:documentation>If instance A plays instance B then instance B cannot play instance A.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Transitive">
+				<xs:annotation>
+					<xs:documentation>If instance A plays instance B that plays instance C then instance A plays instance C.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Intransitive">
+				<xs:annotation>
+					<xs:documentation>If instance A plays instance B and instance B plays instance C, then instance A cannot play instance C.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="StronglyIntransitive">
+				<xs:annotation>
+					<xs:documentation>If instance A plays instance B, then instance A cannot be indirectly related to instance B by repeatedly apply this fact type.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Acyclic">
+				<xs:annotation>
+					<xs:documentation>Cycles are not allowed.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AcyclicTransitive">
+				<xs:annotation>
+					<xs:documentation>Cycles are not allowed. If instance A plays instance B that plays instance C then instance A plays instance C.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 			<xs:enumeration value="AcyclicIntransitive">
 				<xs:annotation>
 					<xs:documentation>Cycles are not allowed; and if instance A plays instance B and instance B plays instance C, then instance A cannot play instance C.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AcyclicStronglyIntransitive">
+				<xs:annotation>
+					<xs:documentation>Cycles are not allowed; and if instance A plays instance B, then instance A cannot be indirectly related to instance B by repeatedly apply this fact type.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ReflexiveSymmetric">
+				<xs:annotation>
+					<xs:documentation>If instance A plays some instance then intance B plays itself. If instance A plays instance B then intance B plays instance A.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ReflexiveAntisymmetric">
+				<xs:annotation>
+					<xs:documentation>If instance A plays some instance then intance B plays itself. If instance A is not equal to instance B and A plays B, then B cannot play A.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ReflexiveTransitive">
+				<xs:annotation>
+					<xs:documentation>If instance A plays some instance then intance B plays itself. If instance A plays instance B that plays instance C then instance A plays instance C.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ReflexiveTransitiveAntisymmetric">
+				<xs:annotation>
+					<xs:documentation>If instance A plays some instance then intance B plays itself. If instance A plays instance B that plays instance C then instance A plays instance C. If instance A is not equal to instance B and A plays B, then B cannot play A.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SymmetricTransitive">
+				<xs:annotation>
+					<xs:documentation>If instance A plays instance B then intance B plays instance A. If instance A plays instance B that plays instance C then instance A plays instance C.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="SymmetricIrreflexive">
@@ -2166,9 +2216,34 @@
 					<xs:documentation>If instance A plays instance B then intance B plays instance A. If instance A plays instance B and instance B plays instance C, then instance A cannot play instance C.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="SymmetricStronglyIntransitive">
+				<xs:annotation>
+					<xs:documentation>If instance A plays instance B then intance B plays instance A. If instance A plays instance B, then instance A cannot be indirectly related to instance B by repeatedly apply this fact type.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 			<xs:enumeration value="AsymmetricIntransitive">
 				<xs:annotation>
 					<xs:documentation>If instance A plays instance B then instance B cannot play instance A. If instance A plays instance B and instance B plays instance C, then instance A cannot play instance C.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AsymmetricStronglyIntransitive">
+				<xs:annotation>
+					<xs:documentation>If instance A plays instance B then instance B cannot play instance A. If instance A plays instance B, then instance A cannot be indirectly related to instance B by repeatedly apply this fact type.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TransitiveIrreflexive">
+				<xs:annotation>
+					<xs:documentation>If instance A plays instance B that plays instance C then instance A plays instance C. No instance can play itself.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TransitiveAntisymmetric">
+				<xs:annotation>
+					<xs:documentation>If instance A plays instance B that plays instance C then instance A plays instance C. If instance A is not equal to instance B and A plays B, then B cannot play A.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TransitiveAsymmetric">
+				<xs:annotation>
+					<xs:documentation>If instance A plays instance B that plays instance C then instance A plays instance C. If instance A plays instance B then instance B cannot play instance A.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 		</xs:restriction>

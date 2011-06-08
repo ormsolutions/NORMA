@@ -8765,14 +8765,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			RingVerbalizerBase verbalizeFirst = null;
 			RingVerbalizerBase verbalizeSecond = null;
+			RingVerbalizerBase verbalizeThird = null;
 			switch (RingType)
 			{
 				case RingConstraintType.Acyclic:
 					verbalizeFirst = AcyclicRingVerbalizer.GetVerbalizer();
 					break;
+				case RingConstraintType.AcyclicTransitive:
+					verbalizeFirst = AcyclicRingVerbalizer.GetVerbalizer();
+					verbalizeSecond = TransitiveRingVerbalizer.GetVerbalizer();
+					break;
 				case RingConstraintType.AcyclicIntransitive:
 					verbalizeFirst = AcyclicRingVerbalizer.GetVerbalizer();
 					verbalizeSecond = IntransitiveRingVerbalizer.GetVerbalizer();
+					break;
+				case RingConstraintType.AcyclicStronglyIntransitive:
+					verbalizeFirst = AcyclicRingVerbalizer.GetVerbalizer();
+					verbalizeSecond = StronglyIntransitiveRingVerbalizer.GetVerbalizer();
 					break;
 				case RingConstraintType.Antisymmetric:
 					verbalizeFirst = AntisymmetricRingVerbalizer.GetVerbalizer();
@@ -8784,22 +8793,75 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					verbalizeFirst = AsymmetricRingVerbalizer.GetVerbalizer();
 					verbalizeSecond = IntransitiveRingVerbalizer.GetVerbalizer();
 					break;
+				case RingConstraintType.AsymmetricStronglyIntransitive:
+					verbalizeFirst = AsymmetricRingVerbalizer.GetVerbalizer();
+					verbalizeSecond = StronglyIntransitiveRingVerbalizer.GetVerbalizer();
+					break;
 				case RingConstraintType.Intransitive:
 					verbalizeFirst = IntransitiveRingVerbalizer.GetVerbalizer();
+					break;
+				case RingConstraintType.StronglyIntransitive:
+					verbalizeFirst = StronglyIntransitiveRingVerbalizer.GetVerbalizer();
 					break;
 				case RingConstraintType.Irreflexive:
 					verbalizeFirst = IrreflexiveRingVerbalizer.GetVerbalizer();
 					break;
+				case RingConstraintType.Reflexive:
+					verbalizeFirst = ReflexiveRingVerbalizer.GetVerbalizer();
+					break;
+				case RingConstraintType.PurelyReflexive:
+					verbalizeFirst = PurelyReflexiveRingVerbalizer.GetVerbalizer();
+					break;
+				case RingConstraintType.ReflexiveSymmetric:
+					verbalizeFirst = ReflexiveRingVerbalizer.GetVerbalizer();
+					verbalizeSecond = SymmetricRingVerbalizer.GetVerbalizer();
+					break;
+				case RingConstraintType.ReflexiveAntisymmetric:
+					verbalizeFirst = ReflexiveRingVerbalizer.GetVerbalizer();
+					verbalizeSecond = AntisymmetricRingVerbalizer.GetVerbalizer();
+					break;
+				case RingConstraintType.ReflexiveTransitive:
+					verbalizeFirst = ReflexiveRingVerbalizer.GetVerbalizer();
+					verbalizeSecond = TransitiveRingVerbalizer.GetVerbalizer();
+					break;
+				case RingConstraintType.ReflexiveTransitiveAntisymmetric:
+					verbalizeFirst = ReflexiveRingVerbalizer.GetVerbalizer();
+					verbalizeSecond = TransitiveRingVerbalizer.GetVerbalizer();
+					verbalizeThird = AntisymmetricRingVerbalizer.GetVerbalizer();
+					break;
 				case RingConstraintType.Symmetric:
 					verbalizeFirst = SymmetricRingVerbalizer.GetVerbalizer();
+					break;
+				case RingConstraintType.SymmetricTransitive:
+					verbalizeFirst = SymmetricRingVerbalizer.GetVerbalizer();
+					verbalizeSecond = TransitiveRingVerbalizer.GetVerbalizer();
 					break;
 				case RingConstraintType.SymmetricIntransitive:
 					verbalizeFirst = SymmetricRingVerbalizer.GetVerbalizer();
 					verbalizeSecond = IntransitiveRingVerbalizer.GetVerbalizer();
 					break;
+				case RingConstraintType.SymmetricStronglyIntransitive:
+					verbalizeFirst = SymmetricRingVerbalizer.GetVerbalizer();
+					verbalizeSecond = StronglyIntransitiveRingVerbalizer.GetVerbalizer();
+					break;
 				case RingConstraintType.SymmetricIrreflexive:
 					verbalizeFirst = SymmetricRingVerbalizer.GetVerbalizer();
 					verbalizeSecond = IrreflexiveRingVerbalizer.GetVerbalizer();
+					break;
+				case RingConstraintType.Transitive:
+					verbalizeFirst = TransitiveRingVerbalizer.GetVerbalizer();
+					break;
+				case RingConstraintType.TransitiveIrreflexive:
+					verbalizeFirst = TransitiveRingVerbalizer.GetVerbalizer();
+					verbalizeSecond = IrreflexiveRingVerbalizer.GetVerbalizer();
+					break;
+				case RingConstraintType.TransitiveAntisymmetric:
+					verbalizeFirst = TransitiveRingVerbalizer.GetVerbalizer();
+					verbalizeSecond = AntisymmetricRingVerbalizer.GetVerbalizer();
+					break;
+				case RingConstraintType.TransitiveAsymmetric:
+					verbalizeFirst = TransitiveRingVerbalizer.GetVerbalizer();
+					verbalizeSecond = AsymmetricRingVerbalizer.GetVerbalizer();
 					break;
 			}
 			if (verbalizeFirst != null)
@@ -8816,6 +8878,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					verbalizeSecond.Initialize(this);
 					verbalizationContext.DeferVerbalization(verbalizeSecond, DeferVerbalizationOptions.AlwaysWriteLine, null);
+				}
+			}
+			if (verbalizeThird != null)
+			{
+				using ((IDisposable)verbalizeThird)
+				{
+					verbalizeThird.Initialize(this);
+					verbalizationContext.DeferVerbalization(verbalizeThird, DeferVerbalizationOptions.AlwaysWriteLine, null);
 				}
 			}
 		}
@@ -8870,8 +8940,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private partial class AntisymmetricRingVerbalizer : RingVerbalizerBase { }
 		private partial class AsymmetricRingVerbalizer : RingVerbalizerBase { }
 		private partial class IntransitiveRingVerbalizer : RingVerbalizerBase { }
+		private partial class StronglyIntransitiveRingVerbalizer : RingVerbalizerBase { }
 		private partial class IrreflexiveRingVerbalizer : RingVerbalizerBase { }
+		private partial class ReflexiveRingVerbalizer : RingVerbalizerBase { }
 		private partial class SymmetricRingVerbalizer : RingVerbalizerBase { }
+		private partial class TransitiveRingVerbalizer : RingVerbalizerBase { }
+		private partial class PurelyReflexiveRingVerbalizer : RingVerbalizerBase { }
 		#endregion // RingVerbalizerBase class and partials for each standalone ring type
 		#endregion // Verbalization
 	}

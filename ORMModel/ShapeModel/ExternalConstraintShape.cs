@@ -128,125 +128,140 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			brushSettings.Color = constraintColor;
 			styleSet.OverrideBrush(ExternalConstraintBrush, brushSettings);
 		}
-		#region Setup Paint Tools
-		// Warning: This will break horribly if this code is ever run on multiple threads simultaneously.
-		private Color myPaintPenStartColor;
-		private Color myPaintBrushStartColor;
-		private int myPaintRefCount;
-		private Pen myPaintPen;
-		private Brush myPaintBrush;
+		#region PaintHelper struct
 		/// <summary>
-		/// The <see cref="Pen"/> to use for painting.
+		/// Helper struct to standardize
 		/// </summary>
-		protected Pen PaintPen
+		protected struct PaintHelper
 		{
-			get
+			private Pen myPen;
+			private Brush myBrush;
+			private Color myPenStartColor;
+			private Color myBrushStartColor;
+			/// <summary>
+			/// Initialize paint settings. This is initialized after the base shape
+			/// has been painted.
+			/// </summary>
+			public PaintHelper(DiagramPaintEventArgs e, ExternalConstraintShape constraintShape)
 			{
-				return this.myPaintPen;
-			}
-		}
-		/// <summary>
-		/// The <see cref="Brush"/> to use for painting.
-		/// </summary>
-		protected Brush PaintBrush
-		{
-			get
-			{
-				return this.myPaintBrush;
-			}
-		}
-		/// <summary>
-		/// Setup the tools (<see cref="Pen"/>s and <see cref="Brush"/>s) used for painting, as appropriate.
-		/// </summary>
-		/// <remarks>
-		/// Make sure that you call <see cref="DisposePaintTools"/> when you are done with the paint tools.
-		/// </remarks>
-		protected void InitializePaintTools(DiagramPaintEventArgs e)
-		{
-			if (this.myPaintRefCount++ == 0)
-			{
-				base.OnPaintShape(e);
-				StyleSet styleSet = this.StyleSet;
-				StyleSetResourceId penId = OutlinePenId;
+				StyleSet styleSet = constraintShape.StyleSet;
+				StyleSetResourceId penId = constraintShape.OutlinePenId;
 				Pen pen = styleSet.GetPen(penId);
 				Brush brush = styleSet.GetBrush(ExternalConstraintBrush);
 				SolidBrush coloredBrush = brush as SolidBrush;
 
 				// Keep the pen color in sync with the color being used for highlighting
-				Color startColor = UpdateDynamicColor(OutlinePenId, pen);
+				Color startColor = constraintShape.UpdateDynamicColor(constraintShape.OutlinePenId, pen);
 				if (startColor.IsEmpty)
 				{
-					startColor = UpdateGeometryLuminosity(e.View, pen);
+					startColor = constraintShape.UpdateGeometryLuminosity(e.View, pen);
 				}
 				else
 				{
-					UpdateGeometryLuminosity(e.View, pen);
+					constraintShape.UpdateGeometryLuminosity(e.View, pen);
 				}
-				myPaintPenStartColor = startColor;
+				myPenStartColor = startColor;
 				Color newColor = pen.Color;
 				if (coloredBrush != null)
 				{
-					myPaintBrushStartColor = coloredBrush.Color;
+					myBrushStartColor = coloredBrush.Color;
 					coloredBrush.Color = newColor;
 				}
 				else
 				{
-					myPaintBrushStartColor = Color.Empty;
+					myBrushStartColor = Color.Empty;
 				}
-				myPaintBrush = brush;
-				myPaintPen = pen;
+				myBrush = brush;
+				myPen = pen;
 			}
-		}
-		/// <summary>
-		/// Restore the original settings for the paint tools.
-		/// </summary>
-		/// <seealso cref="InitializePaintTools"/>
-		protected void DisposePaintTools()
-		{
-			if (--this.myPaintRefCount == 0)
+			/// <summary>
+			/// Clean up the structure and restore shared resources to their initial states
+			/// </summary>
+			public void Dispose()
 			{
 				// Restore pen and/or brush color
-				Color startColor = myPaintPenStartColor;
-				if (!startColor.IsEmpty)
+				Pen pen = myPen;
+				if (pen != null)
 				{
-					myPaintPen.Color = startColor;
+					myPen = null;
+					Color startColor = myPenStartColor;
+					if (!startColor.IsEmpty)
+					{
+						myPenStartColor = Color.Empty;
+						pen.Color = startColor;
+					}
 				}
-				startColor = myPaintBrushStartColor;
-				if (!startColor.IsEmpty)
+				Brush brush = myBrush;
+				if (brush != null)
 				{
-					((SolidBrush)myPaintBrush).Color = startColor;
+					myBrush = null;
+					Color startColor = myBrushStartColor;
+					if (!startColor.IsEmpty)
+					{
+						myBrushStartColor = Color.Empty;
+						((SolidBrush)brush).Color = startColor;
+					}
 				}
-				this.myPaintBrush = null;
-				this.myPaintPen = null;
-				this.myPaintPenStartColor = default(Color);
-				this.myPaintBrushStartColor = default(Color);
+			}
+			/// <summary>
+			/// The pen to draw the constraint shape with
+			/// </summary>
+			public Pen Pen
+			{
+				get
+				{
+					return myPen;
+				}
+			}
+			/// <summary>
+			/// The brush to draw the constraint shape with
+			/// </summary>
+			public Brush Brush
+			{
+				get
+				{
+					return myBrush;
+				}
 			}
 		}
-		#endregion
-
+		#endregion // PaintHelper struct
 		/// <summary>
 		/// Draw the various constraint types
 		/// </summary>
 		/// <param name="e">DiagramPaintEventArgs</param>
-		public override void OnPaintShape(DiagramPaintEventArgs e)
+		public sealed override void OnPaintShape(DiagramPaintEventArgs e)
 		{
 			if (null == Utility.ValidateStore(Store))
 			{
 				return;
 			}
 
-			// In this method, and this method only, don't call base.OnPaintShape,
-			// since this.InitializePaintTools does it for us
-			InitializePaintTools(e);
-
+			base.OnPaintShape(e);
+			PaintHelper helper = new PaintHelper(e, this);
+			try
+			{
+				OnPaintShape(e, ref helper);
+			}
+			finally
+			{
+				helper.Dispose();
+			}
+		}
+		/// <summary>
+		/// Overrideable shape painting for use after the paint helper is initialized
+		/// </summary>
+		/// <param name="e">The event arguments</param>
+		/// <param name="helper">The initialized pain helper.</param>
+		protected virtual void OnPaintShape(DiagramPaintEventArgs e, ref PaintHelper helper)
+		{
 			IConstraint constraint = AssociatedConstraint;
 			RectangleD bounds = AbsoluteBounds;
 			RectangleF boundsF = RectangleD.ToRectangleF(bounds);
 			Graphics g = e.Graphics;
 			const double cos45 = 0.70710678118654752440084436210485;
 
-			Pen pen = this.PaintPen;
-			Brush brush = this.myPaintBrush;
+			Pen pen = helper.Pen;
+			Brush brush = helper.Brush;
 
 			switch (constraint.ConstraintType)
 			{
@@ -383,7 +398,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				g.DrawArc(pen, (float)bounds.Left, (float)bounds.Top, boxSide, boxSide, 0, 360);
 				pen.Width = startPenWidth;
 			}
-			this.DisposePaintTools();
 		}
 		/// <summary>
 		/// Use the sticky object pen to draw the outline

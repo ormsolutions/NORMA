@@ -6453,22 +6453,43 @@
 						</ClrAttribute>
 					</Attributes>
 				</EnumerationLiteral>
-				<EnumerationLiteral Name="PurelyReflexive" Value="1" Description=""/>
+				<EnumerationLiteral Name="Reflexive" Value="1" Description=""/>
 				<EnumerationLiteral Name="Irreflexive" Value="2" Description=""/>
-				<EnumerationLiteral Name="Symmetric" Value="3" Description=""/>
-				<EnumerationLiteral Name="Asymmetric" Value="4" Description=""/>
+				<EnumerationLiteral Name="PurelyReflexive" Value="3" Description=""/>
+				<EnumerationLiteral Name="Symmetric" Value="4" Description=""/>
 				<EnumerationLiteral Name="Antisymmetric" Value="5" Description=""/>
-				<EnumerationLiteral Name="Intransitive" Value="6" Description=""/>
-				<EnumerationLiteral Name="Acyclic" Value="7" Description=""/>
-				<EnumerationLiteral Name="AcyclicIntransitive" Value="8" Description=""/>
-				<EnumerationLiteral Name="AsymmetricIntransitive" Value="9" Description=""/>
-				<EnumerationLiteral Name="SymmetricIntransitive" Value="10" Description=""/>
-				<EnumerationLiteral Name="SymmetricIrreflexive" Value="11" Description=""/>
+				<EnumerationLiteral Name="Asymmetric" Value="6" Description=""/>
+				<EnumerationLiteral Name="Transitive" Value="7" Description=""/>
+				<EnumerationLiteral Name="Intransitive" Value="8" Description=""/>
+				<EnumerationLiteral Name="StronglyIntransitive" Value="9" Description=""/>
+				<EnumerationLiteral Name="Acyclic" Value="10" Description=""/>
+				<EnumerationLiteral Name="AcyclicTransitive" Value="11" Description=""/>
+				<EnumerationLiteral Name="AcyclicIntransitive" Value="12" Description=""/>
+				<EnumerationLiteral Name="AcyclicStronglyIntransitive" Value="13" Description=""/>
+				<EnumerationLiteral Name="ReflexiveSymmetric" Value="14" Description=""/>
+				<EnumerationLiteral Name="ReflexiveAntisymmetric" Value="15" Description=""/>
+				<EnumerationLiteral Name="ReflexiveTransitive" Value="16" Description=""/>
+				<EnumerationLiteral Name="ReflexiveTransitiveAntisymmetric" Value="17" Description=""/>
+				<EnumerationLiteral Name="SymmetricTransitive" Value="18" Description=""/>
+				<EnumerationLiteral Name="SymmetricIrreflexive" Value="19" Description=""/>
+				<EnumerationLiteral Name="SymmetricIntransitive" Value="20" Description=""/>
+				<EnumerationLiteral Name="SymmetricStronglyIntransitive" Value="21" Description=""/>
+				<EnumerationLiteral Name="AsymmetricIntransitive" Value="22" Description=""/>
+				<EnumerationLiteral Name="AsymmetricStronglyIntransitive" Value="23" Description=""/>
+				<EnumerationLiteral Name="TransitiveIrreflexive" Value="24" Description=""/>
+				<EnumerationLiteral Name="TransitiveAntisymmetric" Value="25" Description=""/>
+				<EnumerationLiteral Name="TransitiveAsymmetric" Value="26" Description=""/>
 			</Literals>
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
 						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;RingConstraintType, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+				<ClrAttribute Name="global::System.ComponentModel.Editor">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.RingConstraintTypePicker)"/>
+						<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>

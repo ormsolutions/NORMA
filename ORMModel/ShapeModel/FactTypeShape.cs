@@ -2996,7 +2996,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				Color restoreRoleBoxPenColor = Color.Empty;
 				bounds.Inflate(-penMargin - DisplayAsObjectTypeHorizontalMargin / 2, -penMargin);
 				bounds.Offset(penMargin, 0);
-				//bounds.Offset(DisplayAsObjectTypeHorizontalMargin * .05, 0);
 				Graphics g = e.Graphics;
 				double offsetBy = bounds.Width / roleCount;
 				double lastX = bounds.Left;

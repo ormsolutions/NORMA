@@ -102,24 +102,16 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <summary>
 		/// Draw the various constraint types
 		/// </summary>
-		/// <param name="e">DiagramPaintEventArgs</param>
-		public override void OnPaintShape(DiagramPaintEventArgs e)
+		protected override void OnPaintShape(DiagramPaintEventArgs e, ref PaintHelper paintHelper)
 		{
-			if (null == Utility.ValidateStore(Store))
-			{
-				return;
-			}
-			InitializePaintTools(e);
-			base.OnPaintShape(e);
+			base.OnPaintShape(e, ref paintHelper);
 			RectangleD bounds = AbsoluteBounds;
 			Graphics g = e.Graphics;
 			StringFormat stringFormat = new StringFormat();
 			stringFormat.LineAlignment = StringAlignment.Center;
 			stringFormat.Alignment = StringAlignment.Center;
 			Font font = StyleSet.GetFont(FrequencyConstraintTextResource);
-			Brush brush = this.PaintBrush;
-			g.DrawString(GetFrequencyString(), font, brush, RectangleD.ToRectangleF(bounds), stringFormat);
-			this.DisposePaintTools();
+			g.DrawString(GetFrequencyString(), font, paintHelper.Brush, RectangleD.ToRectangleF(bounds), stringFormat);
 		}
 		/// <summary>
 		/// Builds a string representing a Frequency Constraint

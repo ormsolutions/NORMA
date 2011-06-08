@@ -115,6 +115,11 @@
 						<xs:documentation>Description: Use in place of a role player name to reference a personal object type with a clear antecedent.</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
+				<xs:enumeration value="ReflexivePronoun">
+					<xs:annotation>
+						<xs:documentation>Description: Use in place of a role player name to refer to an object type with a clear antecedent.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
 				<xs:enumeration value="DefiniteArticle">
 					<xs:annotation>
 						<xs:documentation>Description: Used for 'that' before an object name to signify a back reference to a uniquely qualified object type.</xs:documentation>
@@ -173,6 +178,13 @@
 					<xs:annotation>
 						<xs:documentation>
 							Description: Used for 'the same' before an object name to signify exactly which object is being reference.  Format: the same {0}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ReflexiveQuantifier">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used in place of a reflexive pronoun when an antecedent is not guaranteed.  Format: {0} itself
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
@@ -282,6 +294,42 @@
 					<xs:annotation>
 						<xs:documentation>
 							Description: Text that is at the end of a compound list.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+
+				<xs:enumeration value="EqualsListOpen">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text that is at the beginning of an equals list.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="EqualsListPairSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate items in an equals list.  Format: =
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="EqualsListSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to separate items in an equals list.  Format: =
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="EqualsListFinalSeparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used between the last two items in an equals list.  Format: =
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="EqualsListClose">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Text that is at the end of an equals list.
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
@@ -1281,6 +1329,14 @@
 						<xs:documentation>
 							Description: Used to verbalize acyclic ring constraints where more than two roles have a role player of the constrained type.
 							Format: No {0} may cycle back to itself via one or more instances of the role pair: roles {2} and {3} of {1}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="StronglyIntransitiveConsequent">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to verbalize a strongly intransitive ring constraint.
+							Format: it is not true that {0} is indirectly related to {1} by repeatedly applying this fact type
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>

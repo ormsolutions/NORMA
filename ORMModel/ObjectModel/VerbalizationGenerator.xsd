@@ -99,12 +99,32 @@
 					<xs:documentation>Individual ring verbalization. The childHelperFor attribute should be set to RingConstraint.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="StronglyIntransitiveRingVerbalizer">
+				<xs:annotation>
+					<xs:documentation>Individual ring verbalization. The childHelperFor attribute should be set to RingConstraint.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 			<xs:enumeration value="IrreflexiveRingVerbalizer">
 				<xs:annotation>
 					<xs:documentation>Individual ring verbalization. The childHelperFor attribute should be set to RingConstraint.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="ReflexiveRingVerbalizer">
+				<xs:annotation>
+					<xs:documentation>Individual ring verbalization. The childHelperFor attribute should be set to RingConstraint.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PurelyReflexiveRingVerbalizer">
+				<xs:annotation>
+					<xs:documentation>Individual ring verbalization. The childHelperFor attribute should be set to RingConstraint.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 			<xs:enumeration value="SymmetricRingVerbalizer">
+				<xs:annotation>
+					<xs:documentation>Individual ring verbalization. The childHelperFor attribute should be set to RingConstraint.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TransitiveRingVerbalizer">
 				<xs:annotation>
 					<xs:documentation>Individual ring verbalization. The childHelperFor attribute should be set to RingConstraint.</xs:documentation>
 				</xs:annotation>
@@ -382,6 +402,7 @@
 			<xs:enumeration value="CompactSimpleList"/>
 			<xs:enumeration value="CompoundList"/>
 			<xs:enumeration value="FactTypeList"/>
+			<xs:enumeration value="EqualsList"/>
 			<xs:enumeration value="IdentityEqualityList"/>
 			<xs:enumeration value="IndentedCompoundList"/>
 			<xs:enumeration value="IndentedList"/>
@@ -1618,8 +1639,12 @@
 			<xs:enumeration value="Antisymmetric"/>
 			<xs:enumeration value="Asymmetric"/>
 			<xs:enumeration value="Intransitive"/>
+			<xs:enumeration value="StronglyIntransitive"/>
 			<xs:enumeration value="Irreflexive"/>
 			<xs:enumeration value="Symmetric"/>
+			<xs:enumeration value="Reflexive"/>
+			<xs:enumeration value="PurelyReflexive"/>
+			<xs:enumeration value="Transitive"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="FrequencyRangePatternEnum">
