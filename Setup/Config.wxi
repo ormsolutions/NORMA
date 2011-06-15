@@ -56,6 +56,7 @@
 		<?define LinqSupport=1 ?>
 		<?define HelpFileTargetCollection="MS.VSIPCC.v100"?>
 		<?define VSIXInstall?>
+		<?define ModelingProjectSupport=1 ?>
 	<?endif?>
 	<?define PackageCode="$(var.PackageGuidStart)-$(var.VersionGuidSuffix)"?>
 	<!-- ProductCode should be changed for each MAJOR version. Specifically, the first and second hexits of the last section of the GUID should match the two digits of the major version.-->

@@ -44,6 +44,9 @@
 			<?ifdef JSharpSupport?>
 			<ComponentRef Id="NORMAVSProjectItemsVWebDevJSharpComponent"/>
 			<?endif?>
+			<?ifdef ModelingProjectSupport?>
+			<ComponentRef Id="NORMAVSProjectItemsModelingComponent"/>
+			<?endif?>
 			<ComponentRef Id="NORMAVSVerbalizationComponent"/>
 			<ComponentRef Id="NORMAVSVerbalizationCoreComponent"/>
 			<ComponentRef Id="NORMAVSVerbalizationReportComponent"/>
@@ -92,6 +95,9 @@
 			<ComponentRef Id="NORMADBImportProjectItemsVWebDevCSharpComponent"/>
 			<?ifdef JSharpSupport?>
 			<ComponentRef Id="NORMADBImportProjectItemsVWebDevJSharpComponent"/>
+			<?endif?>
+			<?ifdef ModelingProjectSupport?>
+			<ComponentRef Id="NORMADBImportProjectItemsModelingComponent"/>
 			<?endif?>
 		</ComponentGroup>
 		<ComponentGroup Id="HelpFeatureComponents">

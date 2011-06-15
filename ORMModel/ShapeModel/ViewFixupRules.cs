@@ -1348,14 +1348,16 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// TransactionCommittingRule: typeof(ORMShapeDomainModel)
 		/// Don't store the shape invalidation cache long term with the
 		/// transaction log, we don't need it.
+		/// Also defer to the multi shape utility to clear its caches.
 		/// </summary>
-		private static void ClearInvalidateCacheOnCommittingRule(TransactionCommitEventArgs e)
+		private static void ClearCachesOnCommittingRule(TransactionCommitEventArgs e)
 		{
 			Dictionary<object, object> contextDictionary = e.Transaction.Context.ContextInfo;
 			if (contextDictionary.ContainsKey(InvalidateRequiredKey))
 			{
 				contextDictionary.Remove(InvalidateRequiredKey);
 			}
+			MultiShapeUtility.ClearCachedContextInfo(contextDictionary);
 		}
 		/// <summary>
 		/// Get a new update counter value if one is required. Use with

@@ -2762,7 +2762,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			if (e.DomainProperty.Id == ValueTypeInstance.ValueDomainPropertyId)
 			{
-				ModelElement instance = e.ModelElement;
+				ValueTypeInstance instance = (ValueTypeInstance)e.ModelElement;
+				instance.InvariantValue = ""; // Clear the invariant value so that it can be reset when the value changes
 				FrameworkDomainModel.DelayValidateElement(instance, DelayValidateCompatibleValueTypeInstanceValueError);
 				FrameworkDomainModel.DelayValidateElement(instance, ObjectTypeInstance.DelayValidateNamePartChanged);
 			}

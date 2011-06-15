@@ -64,6 +64,20 @@
 		</Component>
 	</Directory>
 	<?endif?>
+	<?ifdef ModelingProjectSupport?>
+	<Directory Id="Modeling" Name="Modeling">
+		<Component Id="NORMAVSProjectItemsModelingComponent" Guid="D74F0161-7C3D-4981-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+			<Condition>Installed</Condition>
+			<File Id="Modeling.zip" Name="ORMModel.zip" Source="..\ORMModel\Shell\ProjectItems\Modeling.zip"
+				DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
+		</Component>
+		<Component Id="NORMADBImportProjectItemsModelingComponent" Guid="960D82F8-25D0-4F2B-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+			<Condition>Installed</Condition>
+			<File Id="DBImportModeling.zip" Name="ORMModelFromDatabase.zip" ShortName="DBImpMod.zip" Source="..\Tools\DatabaseImport\ProjectItems\$(var.VSShortName)\Modeling.zip"
+				DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).dll"/>
+		</Component>
+	</Directory>
+	<?endif?>
 	<Directory Id="VisualC" Name="VisualC">
 		<Component Id="NORMAVSProjectItemsVCPlusPlusComponent" Guid="16B28893-FE72-4BBF-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 			<Condition>VCPLUSPLUSPACKAGEGUID OR Installed</Condition>

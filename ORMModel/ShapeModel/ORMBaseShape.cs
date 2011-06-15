@@ -861,7 +861,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <returns>Whether to visit the relationship</returns>
 		public override VisitorFilterResult ShouldVisitRelationship(ElementWalker walker, ModelElement sourceElement, DomainRoleInfo sourceRoleInfo, DomainRelationshipInfo domainRelationshipInfo, ElementLink targetRelationship)
 		{
-			if (MultiShapeUtility.ShouldVisitOnDelete(walker, sourceElement, domainRelationshipInfo, targetRelationship))
+			if (MultiShapeUtility.ShouldVisitOnDelete(walker, sourceElement, sourceRoleInfo, domainRelationshipInfo, targetRelationship))
 			{
 				return base.ShouldVisitRelationship(walker, sourceElement, sourceRoleInfo, domainRelationshipInfo, targetRelationship);
 			}

@@ -434,31 +434,72 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 		}
 		#endregion // GetEffectiveAttachedLinkShapes variants
 		#region Link Configuration
+		private static readonly object DeletingSubjectsKey = new object();
 		/// <summary>
 		/// Determines if the relationship should be visited, and reconfigures any links
 		/// </summary>
 		/// <param name="walker">The current <see cref="ElementWalker"/></param>
 		/// <param name="sourceElement">The <see cref="ModelElement"/> being deleted</param>
+		/// <param name="sourceRoleInfo">The role information</param>
 		/// <param name="domainRelationshipInfo">The relationship information</param>
 		/// <param name="targetRelationship">The other <see cref="ModelElement"/> in the relationship</param>
 		/// <returns>Whether to visit the relationship</returns>
-		public static bool ShouldVisitOnDelete(ElementWalker walker, ModelElement sourceElement, DomainRelationshipInfo domainRelationshipInfo, ElementLink targetRelationship)
+		public static bool ShouldVisitOnDelete(ElementWalker walker, ModelElement sourceElement, DomainRoleInfo sourceRoleInfo, DomainRelationshipInfo domainRelationshipInfo, ElementLink targetRelationship)
 		{
 			bool retVal = true;
+			Dictionary<object, object> contextDictionary;
+			object subjectsDictionaryObject;
+			Dictionary<ModelElement, object> deletingSubjectsDictionary;
+			ShapeElement primaryShape;
+			object subjectsKey;
+			ModelElement subject;
+
 
 			NodeShape sourceShape;
 			IReconfigureableLink reconfigurableLink;
-			if (walker != null &&
-				domainRelationshipInfo != null &&
-				domainRelationshipInfo.Id == LinkConnectsToNode.DomainClassId &&
-				null != (sourceShape = sourceElement as NodeShape) &&
-				null != (reconfigurableLink = (targetRelationship as LinkConnectsToNode).Link as IReconfigureableLink))
+			if (walker != null)
 			{
-				reconfigurableLink.Reconfigure(ResolvePrimaryShape(sourceShape));
-				retVal = false;
+				if (sourceRoleInfo != null &&
+					sourceRoleInfo.Id == PresentationViewsSubject.SubjectDomainRoleId)
+				{
+					contextDictionary = sourceElement.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+					if (contextDictionary.TryGetValue(subjectsKey = DeletingSubjectsKey, out subjectsDictionaryObject))
+					{
+						deletingSubjectsDictionary = (Dictionary<ModelElement, object>)subjectsDictionaryObject;
+					}
+					else
+					{
+						contextDictionary[subjectsKey] = deletingSubjectsDictionary = new Dictionary<ModelElement, object>();
+					}
+					deletingSubjectsDictionary[sourceElement] = null;
+				}
+				else if (domainRelationshipInfo != null &&
+					domainRelationshipInfo.Id == LinkConnectsToNode.DomainClassId &&
+					null != (sourceShape = sourceElement as NodeShape) &&
+					null != (reconfigurableLink = (targetRelationship as LinkConnectsToNode).Link as IReconfigureableLink) &&
+					null != (primaryShape = ResolvePrimaryShape(sourceShape)) &&
+					(!sourceElement.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.TryGetValue(DeletingSubjectsKey, out subjectsDictionaryObject) ||
+					(null != (subject = primaryShape.ModelElement) &&
+					!((Dictionary<ModelElement, object>)subjectsDictionaryObject).ContainsKey(subject))))
+				{
+					reconfigurableLink.Reconfigure(primaryShape);
+					retVal = false;
+				}
 			}
 
 			return retVal;
+		}
+		/// <summary>
+		/// Remove cached data from a top-level transaction context dictionary.
+		/// </summary>
+		/// <param name="contextDictionary">The dictionary to clear.</param>
+		public static void ClearCachedContextInfo(Dictionary<object, object> contextDictionary)
+		{
+			object key = DeletingSubjectsKey;
+			if (contextDictionary.ContainsKey(key))
+			{
+				contextDictionary.Remove(key);
+			}
 		}
 		/// <summary>
 		/// The <see cref="IConfigureableLinkEndpoint.CanAttachLink"/> results have changed.

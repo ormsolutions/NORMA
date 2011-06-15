@@ -160,7 +160,7 @@
 			</arg:DeletingRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="ORMShapeDomainModel">
-			<arg:TransactionCommittingRule methodName="ClearInvalidateCacheOnCommittingRule">
+			<arg:TransactionCommittingRule methodName="ClearCachesOnCommittingRule">
 				<arg:RuleOn targetType="ORMShapeDomainModel"/>
 			</arg:TransactionCommittingRule>
 			<arg:AddRule methodName="ConstraintRoleSequenceRoleAddedRule">

@@ -75,7 +75,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						typeof(ORMBaseShape).GetNestedType("AbsoluteBoundsChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ORMBaseShape).GetNestedType("ModelErrorAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ORMBaseShape).GetNestedType("ModelErrorDeletingRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ClearInvalidateCacheOnCommittingRuleClass),
+						typeof(ClearCachesOnCommittingRuleClass),
 						typeof(ConstraintRoleSequenceRoleAddedRuleClass),
 						typeof(ConstraintRoleSequenceRoleDeletedRuleClass),
 						typeof(ConstraintRoleSequencePositionChangedRuleClass),
@@ -1272,10 +1272,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 	partial class ORMShapeDomainModel
 	{
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMShapeDomainModel))]
-		private sealed class ClearInvalidateCacheOnCommittingRuleClass : Microsoft.VisualStudio.Modeling.TransactionCommittingRule
+		private sealed class ClearCachesOnCommittingRuleClass : Microsoft.VisualStudio.Modeling.TransactionCommittingRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
-			public ClearInvalidateCacheOnCommittingRuleClass()
+			public ClearCachesOnCommittingRuleClass()
 			{
 				base.IsEnabled = false;
 			}
@@ -1285,16 +1285,16 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// /// <summary>
 			/// /// TransactionCommittingRule: typeof(ORMShapeDomainModel)
 			/// /// </summary>
-			/// private static void ClearInvalidateCacheOnCommittingRule(TransactionCommitEventArgs e)
+			/// private static void ClearCachesOnCommittingRule(TransactionCommitEventArgs e)
 			/// {
 			/// }
 			/// </summary>
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void TransactionCommitting(Microsoft.VisualStudio.Modeling.TransactionCommitEventArgs e)
 			{
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.Transaction.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel.ClearInvalidateCacheOnCommittingRule");
-				ORMShapeDomainModel.ClearInvalidateCacheOnCommittingRule(e);
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.Transaction.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel.ClearInvalidateCacheOnCommittingRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.Transaction.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel.ClearCachesOnCommittingRule");
+				ORMShapeDomainModel.ClearCachesOnCommittingRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.Transaction.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel.ClearCachesOnCommittingRule");
 			}
 		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.ResizeParentRulePriority)]
