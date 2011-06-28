@@ -44,7 +44,7 @@ The June 2011 release includes new display features (display objectified fact ty
 
 <hr/>
 <h2>June 2011 CTP Changes</h2>
-<div>The June 2011 CTP release includes all modifications through changeset 1471. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<div>The June 2011 CTP release includes all modifications through changeset 1472. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
 <ul>
 <li><a href="#DisplayAsObjectType 2011-06">Display Objectified Fact Type as Object Type</a>&nbsp;</li>
 <li><a href="#LinkFactTypeDisplay 2011-06">Link Fact Type Display</a>&nbsp;</li>
@@ -74,6 +74,7 @@ The June 2011 release includes new display features (display objectified fact ty
 <li>The meta file created by the <em>Copy Image</em> command did not have a transparent background on all versions, lines were rendered visibly different from those in the designer.</li>
 <li>The <em>ExpandRefMode</em> property did not work well with multiple shapes for the object type (or objectified fact type) on the same diagram. If there are multiple shapes on the diagram, the first shape to set <em>ExpandRefMode</em> to true will add the reference mode fact type and value type, and the last to clear this property will remove them. The reference mode fact type will only attach to those shapes with <em>ExpandRefMode</em> set to true.</li>
 <li>Multiple shapes representing a single backing element (FactType, ObjectType, etc) on the same diagram caused a null reference exception if the backing element was deleted. Duplicate shapes needed to be deleted to enable deletion of the backing element.</li>
+<li>The final dialog shown by the database import wizard launched by a VB or C# project offered to disable the <em>Save</em> button to prevent data loss (caused by an inconsistent implementation of VSHPROPID_IsNewUnsavedItem across different project types). Template and wizard-generated files are now marked with a <em>&lt;?new?&gt;</em> processing instruction to avoid any project-type dependencies.</li>
 </ol>
 </li>
 </ul>
@@ -633,8 +634,7 @@ The settings file for the LinqToSqlAttributeMapping layer has been updated. This
 <h3><a id="VS2010 Bugs">Unresolved issues in Visual Studio 2010</a></h3>
 <p>These are areas that are incomplete and known issues with Visual Studio 2010.</p>
 <ol>
-<li>If an .orm file is opened simultaneously with more than one other file (such as when opening a solution) and is the active file immediately after load, then the ORM designer tool windows and menu items will not activate properly. Activating a second document (of any type) and reactivating the ORM designer will fix the problem. <em>This is a Visual Studio 2010 bug</em> (I can reproduce similar behavior with missing menus with one XML and one Text file).</li>
-<li>The final dialog shown by the database import wizard offers to disable the <em>Save</em> button to prevent data loss. You should say No to this question. The database import wizard uses NORMA's file upgrade mechanism to load the file, and the dialog shown is meant for a file upgrade process. VS2010 is returning a 'not implemented' error for a request on the VSHPROPID_IsNewUnsavedItem property, and I know of no other way to distinguish between an imported file and a new file that uses the import mechanism (such as the DB import wizard).</li>
+<li>If the .orm designer is opened simultaneously with more than one other file (such as when opening a solution) and is the active file immediately after load, then the ORM designer tool windows and menu items will not activate properly. Activating a second document (of any type) and reactivating the ORM designer will fix the problem. <em>This is a Visual Studio 2010 bug</em> (I can reproduce similar behavior with missing menus with one XML and one Text file).</li>
 <li>The <em>ORM Diagram Spy</em> window will occasionally go blank after extended use with multiple open ORM files. A restart of the environment is required to recover the window. If you can reliably reproduce this issue please report the scenario.</li>
 <li>The NORMA help files are not installed or integrated with Visual Studio 2010. [The installer merge modules used for help integration in VS2005 and VS2008 are not included with the VS2010 SDK.]</li>
 <li>The FrequencyConstraint and Reading shapes are larger in Visual Studio 2010.</li>

@@ -58,7 +58,11 @@ namespace ORMSolutions.ORMArchitect.DatabaseImport
 			schema.Namespaces.Add("dml", "http://schemas.orm.net/DIL/DMIL");
 			schema.Namespaces.Add("ddl", "http://schemas.orm.net/DIL/DDIL");
 			XmlSerializer s = new XmlSerializer(typeof(DcilSchema));
-			s.Serialize(stream, schema);
+			using (XmlWriter writer = XmlWriter.Create(stream, new XmlWriterSettings()))
+			{
+				writer.WriteProcessingInstruction("new", "");
+				s.Serialize(writer, schema);
+			}
 		}
 		/// <summary>
 		/// Instantiates a new instance of <see cref="DcilSchema"/>

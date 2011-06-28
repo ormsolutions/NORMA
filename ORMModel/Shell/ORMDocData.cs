@@ -382,8 +382,41 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			// Convert early so we can accurately check extension elements
 			int retVal = 0;
 			bool dontSave = false;
+			bool newFileItem = false;
 			List<string> unrecognizedNamespaces = null;
 			ORMDesignerSettings settings = ORMDesignerPackage.DesignerSettings;
+			XmlReaderSettings readerSettings = new XmlReaderSettings();
+			readerSettings.CloseInput = false;
+			// New files are marked with the <?new?> processing instruction before the root element. Find it in the originally
+			// opened file. Note that this was originally checked with the VSHPROPID_IsNewUnsavedItem hierarchy property,
+			// but this is not implemented on all project types and, hence, does not return reliable information. All templates
+			// and wizards generating new files should add this processing instruction to avoid the 'file format change'
+			// warning shown below.
+			if (!isReload)
+			{
+				long startingPosition = inputStream.Position;
+				using (XmlReader reader = XmlReader.Create(inputStream, readerSettings))
+				{
+					bool finishedReading = false;
+					while (!finishedReading && reader.Read())
+					{
+						switch (reader.NodeType)
+						{
+							case XmlNodeType.Element:
+								finishedReading = true;
+								break;
+							case XmlNodeType.ProcessingInstruction:
+								if (reader.Name == "new")
+								{
+									newFileItem = true;
+									finishedReading = true;
+								}
+								break;
+						}
+					}
+				}
+				inputStream.Position = startingPosition;
+			}
 			using (Stream convertedStream = settings.ConvertStream(inputStream, ServiceProvider))
 			{
 				dontSave = convertedStream != null;
@@ -392,9 +425,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				Stream namespaceStrippedStream = null;
 				try
 				{
-					XmlReaderSettings readerSettings = new XmlReaderSettings();
 					ExtensionLoader extensionLoader = ORMDesignerPackage.ExtensionLoader;
-					readerSettings.CloseInput = false;
 					Dictionary<string, ExtensionModelBinding> documentExtensions = null;
 					using (XmlReader reader = XmlReader.Create(stream, readerSettings))
 					{
@@ -522,13 +553,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 				}
 			}
-			IVsHierarchy hierarchy;
-			uint itemId;
-			object isNewObject;
-			bool newFileItem = null != (hierarchy = this.Hierarchy) &&
-				VSConstants.VSITEMID_NIL != (itemId = this.ItemId) &&
-				ErrorHandler.Succeeded(hierarchy.GetProperty(itemId, (int)__VSHPROPID.VSHPROPID_IsNewUnsavedItem, out isNewObject)) &&
-				(bool)isNewObject;
 			if (dontSave && !newFileItem)
 			{
 				string message;
