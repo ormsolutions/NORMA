@@ -697,10 +697,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 
 						if (existingLink != null)
 						{
-							if (existingLink == link)
-							{
-								originalLinkProcessed = true;
-							}
 							ShapeElement resolvedFromShape = ResolvePrimaryShape(existingLink.FromShape);
 							bool testDeleteLinksOnCurrentFromShape = false;
 							if (closerFromShapeBlocking)
@@ -747,11 +743,19 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 										connectLink = existingLink;
 										connectFromShape = closerFromShape;
 										connectToShape = closestToShape;
+										if (existingLink == link)
+										{
+											originalLinkProcessed = true;
+										}
 									}
 								}
 								else if (detachFromShape)
 								{
 									testDeleteLinksOnCurrentFromShape = true;
+								}
+								else if (existingLink == link)
+								{
+									originalLinkProcessed = true;
 								}
 							}
 							else if (closerFromShape != null || detachFromShape)
@@ -767,6 +771,10 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 								connectFromShape = currentFromShape;
 								connectToShape = closestToShape;
 								testDeleteLinksOnCurrentFromShape = true;
+								if (existingLink == link)
+								{
+									originalLinkProcessed = true;
+								}
 							}
 							if (testDeleteLinksOnCurrentFromShape)
 							{
@@ -801,10 +809,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 							}
 							if (existingLink != null)
 							{
-								if (existingLink == link)
-								{
-									originalLinkProcessed = true;
-								}
 								Debug.Assert(ResolvePrimaryShape(existingLink.ToShape) != closestToShape, "The link would also have been attached to the to shape");
 								if (closerFromShapeBlocking)
 								{
@@ -836,12 +840,20 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 									connectLink = existingLink;
 									connectToShape = closestToShape;
 									connectFromShape = closerFromShape;
+									if (existingLink == link)
+									{
+										originalLinkProcessed = true;
+									}
 								}
 								else
 								{
 									connectLink = existingLink;
 									connectToShape = closestToShape;
 									connectFromShape = currentFromShape;
+									if (existingLink == link)
+									{
+										originalLinkProcessed = true;
+									}
 								}
 							}
 							else if (closerFromShape == null && !detachFromShape)
@@ -985,7 +997,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 				AttachLinkResult.Attach != configurableFromEndpoint.CanAttachLink(forLink, false);
 			return (!detachFromShape &&
 				FindNearestShapeForElement(diagram, fromShape, toElement, forLink, null, false, out closestToShape, out closerFromShape, out closerFromShapeBlocking) &&
-				!closerFromShapeBlocking) ?
+				closerFromShape == null) ?
 					closestToShape :
 					null;
 		}
@@ -1065,7 +1077,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 				// elements are either currently connected or should be connected.
 				// Before connecting, find out up front if we have a closer from shape than the current from shape.
 				// If we do, then the current to/from shapes should not be connected for this link.
-				bool closerFromShapeDeferred = false;
 				double closerFromShapeDistance = detachedFromShape ? double.MaxValue : closestToShapeDistance;
 				testCenterX = closestToShapeCenter.X;
 				testCenterY = closestToShapeCenter.Y;
@@ -1097,26 +1108,17 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 								break;
 						}
 					}
-					center = GetReliableShapeCenter(currentFromShape2);
-					if ((currentDistance = (distanceX = testCenterX - center.X) * distanceX
-						+ (distanceY = testCenterY - center.Y) * distanceY) < closerFromShapeDistance)
+					if (!deferredShape)
 					{
-						if (deferredShape)
-						{
-							closerFromShapeDeferred = true;
-						}
-						else
+						center = GetReliableShapeCenter(currentFromShape2);
+						if ((currentDistance = (distanceX = testCenterX - center.X) * distanceX
+							+ (distanceY = testCenterY - center.Y) * distanceY) < closerFromShapeDistance)
 						{
 							closerFromShapeDistance = currentDistance;
 							closerFromShape = currentFromShape2;
-							closerFromShapeDeferred = false;
 							closerFromShapeBlocking = blockingShape;
 						}
 					}
-				}
-				if (closerFromShapeDeferred && closerFromShape == null)
-				{
-					closerFromShapeBlocking = true;
 				}
 				return true;
 			}
@@ -1276,19 +1278,19 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 	public enum AttachLinkResult
 	{
 		/// <summary>
-		/// The link can be attached
+		/// The link can be attached to this shape
 		/// </summary>
 		Attach,
 		/// <summary>
 		/// The link cannot be attached to this shape, but a
-		/// shape that is farther away may be used as an attach
-		/// point.
+		/// shape that is farther away may be attached to this
+		/// link.
 		/// </summary>
 		Defer,
 		/// <summary>
 		/// The link cannot be attached to this shape, and no
-		/// shape that is farther away should be used an attach
-		/// point for this link.
+		/// shape that is farther away should be attached to
+		/// this link.
 		/// </summary>
 		Block,
 	}

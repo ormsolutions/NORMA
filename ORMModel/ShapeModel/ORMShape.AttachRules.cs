@@ -35,8 +35,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					// Given the low likelihood of this ever happening, the extra overhead of synchronization would outweigh any possible gain from it.
 					retVal = new Type[]{
 						typeof(ExternalConstraintLink).GetNestedType("DeleteDanglingConstraintShapeAddRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ExternalConstraintLink).GetNestedType("DeleteDanglingConstraintShapeDeletingRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ExternalConstraintLink).GetNestedType("DeleteDanglingConstraintShapeRolePlayerChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ExternalConstraintLink).GetNestedType("VerifyedConnectedShapeAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ExternalConstraintLink).GetNestedType("VerifyConnectedShapeShapeDeletingRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ExternalConstraintLink).GetNestedType("VerifyConnectedShapeShapeRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ExternalConstraintShape).GetNestedType("ExclusiveOrCouplerAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ExternalConstraintShape).GetNestedType("ExclusiveOrCouplerDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ExternalConstraintShape).GetNestedType("PreferredIdentifierAddRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -150,7 +151,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMShapeDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 83; ++i)
+			for (int i = 0; i < 84; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -192,10 +193,36 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Microsoft.VisualStudio.Modeling.Diagrams.LinkConnectsToNode), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class DeleteDanglingConstraintShapeDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
+		private sealed class VerifyedConnectedShapeAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
-			public DeleteDanglingConstraintShapeDeletingRuleClass()
+			public VerifyedConnectedShapeAddedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink
+			/// /// <summary>
+			/// /// AddRule: typeof(Microsoft.VisualStudio.Modeling.Diagrams.LinkConnectsToNode)
+			/// /// </summary>
+			/// private static void VerifyedConnectedShapeAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink.VerifyedConnectedShapeAddedRule");
+				ExternalConstraintLink.VerifyedConnectedShapeAddedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink.VerifyedConnectedShapeAddedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Microsoft.VisualStudio.Modeling.Diagrams.LinkConnectsToNode), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class VerifyConnectedShapeShapeDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public VerifyConnectedShapeShapeDeletingRuleClass()
 			{
 				base.IsEnabled = false;
 			}
@@ -205,23 +232,23 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// /// <summary>
 			/// /// DeletingRule: typeof(Microsoft.VisualStudio.Modeling.Diagrams.LinkConnectsToNode)
 			/// /// </summary>
-			/// private static void DeleteDanglingConstraintShapeDeletingRule(ElementDeletingEventArgs e)
+			/// private static void VerifyConnectedShapeShapeDeletingRule(ElementDeletingEventArgs e)
 			/// {
 			/// }
 			/// </summary>
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink.DeleteDanglingConstraintShapeDeletingRule");
-				ExternalConstraintLink.DeleteDanglingConstraintShapeDeletingRule(e);
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink.DeleteDanglingConstraintShapeDeletingRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink.VerifyConnectedShapeShapeDeletingRule");
+				ExternalConstraintLink.VerifyConnectedShapeShapeDeletingRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink.VerifyConnectedShapeShapeDeletingRule");
 			}
 		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Microsoft.VisualStudio.Modeling.Diagrams.LinkConnectsToNode), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class DeleteDanglingConstraintShapeRolePlayerChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
+		private sealed class VerifyConnectedShapeShapeRolePlayerChangedRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
-			public DeleteDanglingConstraintShapeRolePlayerChangeRuleClass()
+			public VerifyConnectedShapeShapeRolePlayerChangedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
@@ -231,16 +258,16 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// /// <summary>
 			/// /// RolePlayerChangeRule: typeof(Microsoft.VisualStudio.Modeling.Diagrams.LinkConnectsToNode)
 			/// /// </summary>
-			/// private static void DeleteDanglingConstraintShapeRolePlayerChangeRule(RolePlayerChangedEventArgs e)
+			/// private static void VerifyConnectedShapeShapeRolePlayerChangedRule(RolePlayerChangedEventArgs e)
 			/// {
 			/// }
 			/// </summary>
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink.DeleteDanglingConstraintShapeRolePlayerChangeRule");
-				ExternalConstraintLink.DeleteDanglingConstraintShapeRolePlayerChangeRule(e);
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink.DeleteDanglingConstraintShapeRolePlayerChangeRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink.VerifyConnectedShapeShapeRolePlayerChangedRule");
+				ExternalConstraintLink.VerifyConnectedShapeShapeRolePlayerChangedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink.VerifyConnectedShapeShapeRolePlayerChangedRule");
 			}
 		}
 	}

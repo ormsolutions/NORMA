@@ -1278,39 +1278,34 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		#region ForceClearViewFixupDataListRuleClass
 		partial class ForceClearViewFixupDataListRuleClass
 		{
-			#region Dynamic Microsoft.VisualStudio.Modeling.Diagrams.Diagram.ClearViewFixupDataList implementation
-			private delegate void ClearDiagramViewFixupDataListDelegate(Diagram @this);
-			/// <summary>
-			/// The Microsoft.VisualStudio.Modeling.Diagrams.Diagram.ViewFixupData class and corresponding
-			/// Microsoft.VisualStudio.Modeling.Diagrams.Diagram.ViewFixupDataList property are internal
-			/// Microsoft.VisualStudio.Modeling.ModelCommand is internal, but the partition and EventArgs
-			/// elements are not. Retrieve these with a dynamic method.
-			/// </summary>
-			private static readonly ClearDiagramViewFixupDataListDelegate ClearViewFixupDataList = CreateClearViewFixupDataList();
-			private static ClearDiagramViewFixupDataListDelegate CreateClearViewFixupDataList()
+			#region Dynamic Microsoft.VisualStudio.Modeling.Diagrams.Diagram.GetViewFixupDataListCount implementation
+			private delegate int GetViewFixupDataListCountDelegate(Diagram @this);
+			private static readonly GetViewFixupDataListCountDelegate GetViewFixupDataListCount = CreateGetViewFixupDataListCount();
+			private static GetViewFixupDataListCountDelegate CreateGetViewFixupDataListCount()
 			{
 				Type diagramType = typeof(Diagram);
 				Type viewFixupDataListType;
 				PropertyInfo viewFixupDataListProperty;
 				MethodInfo viewFixupDataListPropertyGet;
-				MethodInfo clearMethod;
+				PropertyInfo countProperty;
+				MethodInfo countPropertyGet;
 				if (null == (viewFixupDataListProperty = diagramType.GetProperty("ViewFixupDataList", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)) ||
 					null == (viewFixupDataListType = viewFixupDataListProperty.PropertyType) ||
-					null == (clearMethod = viewFixupDataListType.GetMethod("Clear", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)) ||
+					null == (countProperty = viewFixupDataListType.GetProperty("Count", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)) ||
+					null == (countPropertyGet = countProperty.GetGetMethod(true)) ||
 					null == (viewFixupDataListPropertyGet = viewFixupDataListProperty.GetGetMethod(true)))
 				{
 					Debug.Fail("The internal structure of the Diagram class has changed, IL generation will fail");
 					return null;
 				}
-
-				// Approximate method being written (assuming TransactionItem context):
-				// void ClearViewFixupDataList()
+				// Approximate method being written:
+				// int GetViewFixupDataListCount()
 				// {
-				//     ViewFixupDataList.Clear();
+				//     return ViewFixupDataList.Count;
 				// }
 				DynamicMethod dynamicMethod = new DynamicMethod(
-					"ClearViewFixupDataList",
-					null,
+					"GetViewFixupDataListCount",
+					typeof(int),
 					new Type[] { diagramType },
 					diagramType.Module,
 					true);
@@ -1319,25 +1314,29 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				ILGenerator il = dynamicMethod.GetILGenerator(16);
 				il.Emit(OpCodes.Ldarg_0);
 				il.Emit(OpCodes.Call, viewFixupDataListPropertyGet);
-				il.Emit(OpCodes.Call, clearMethod);
+				il.Emit(OpCodes.Call, countPropertyGet);
 
-				// Return the array (already on the stack)
+				// Return the count (already on the stack)
 				il.Emit(OpCodes.Ret);
-				return (ClearDiagramViewFixupDataListDelegate)dynamicMethod.CreateDelegate(typeof(ClearDiagramViewFixupDataListDelegate));
+				return (GetViewFixupDataListCountDelegate)dynamicMethod.CreateDelegate(typeof(GetViewFixupDataListCountDelegate));
 			}
-			#endregion // Dynamic Microsoft.VisualStudio.Modeling.Diagrams.Diagram.ClearViewFixupDataList implementation
+			#endregion // Dynamic Microsoft.VisualStudio.Modeling.Diagrams.Diagram.GetViewFixupDataListCount implementation
 			/// <summary>
 			/// ChangeRule: typeof(Microsoft.VisualStudio.Modeling.Diagrams.Diagram), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority + 1;
-			/// Make sure the internal diagram ViewFixupDataList is cleared once fixup is completed.
-			/// The core implementation does not clear more than a single element.
+			/// Only the first element of the internal diagram ViewFixupDataList is processed whenever the
+			/// DoViewFixup is set to true, but we generally need to process all of these items. Keep setting
+			/// the property to true until all of the items are processed.
 			/// </summary>
 			private void ForceClearViewFixupDataListRule(ElementPropertyChangedEventArgs e)
 			{
 				Diagram diagram;
-				if (e.DomainProperty.Id == Diagram.DoViewFixupDomainPropertyId &&
-					!(diagram = (e.ModelElement as Diagram)).IsDeleted)
+				Guid propertyId = e.DomainProperty.Id;
+				if (propertyId == Diagram.DoViewFixupDomainPropertyId &&
+					!((bool)e.NewValue) &&
+					!(diagram = (e.ModelElement as Diagram)).IsDeleted &&
+					0 != GetViewFixupDataListCount(diagram))
 				{
-					ClearViewFixupDataList(diagram);
+					diagram.Store.DomainDataDirectory.GetDomainProperty(propertyId).SetValue(diagram, true);
 				}
 			}
 		}

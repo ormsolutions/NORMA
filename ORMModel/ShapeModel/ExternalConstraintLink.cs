@@ -453,16 +453,30 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 		}
 		#endregion // ExternalConstraintLink specific
-		#region Dangling constraint shape deletion
+		#region Dangling constraint shape deletion and fact type shape role bar resizing
+		/// <summary>
+		/// AddRule: typeof(Microsoft.VisualStudio.Modeling.Diagrams.LinkConnectsToNode)
+		/// Make sure connected fact type shapes properly display their role bars
+		/// </summary>
+		private static void VerifyedConnectedShapeAddedRule(ElementAddedEventArgs e)
+		{
+			LinkConnectsToNode connectLink = (LinkConnectsToNode)e.ModelElement;
+			FactTypeShape factTypeShape;
+			if (connectLink.Link is ExternalConstraintLink &&
+				null != (factTypeShape = connectLink.Nodes as FactTypeShape))
+			{
+				FrameworkDomainModel.DelayValidateElement(factTypeShape, DelayValidateFactTypeShapeSize);
+			}
+		}
 		/// <summary>
 		/// DeletingRule: typeof(Microsoft.VisualStudio.Modeling.Diagrams.LinkConnectsToNode)
 		/// External constraint shapes can only be drawn if they show all of their
 		/// links, so automatically remove them if a connecting shape is removed.
 		/// </summary>
-		private static void DeleteDanglingConstraintShapeDeletingRule(ElementDeletingEventArgs e)
+		private static void VerifyConnectedShapeShapeDeletingRule(ElementDeletingEventArgs e)
 		{
-			LinkConnectsToNode connectLink = e.ModelElement as LinkConnectsToNode;
-			ExternalConstraintLink link = connectLink.Link as ExternalConstraintLink;
+			LinkConnectsToNode connectLink = (LinkConnectsToNode)e.ModelElement;
+			ExternalConstraintLink link;
 			ModelElement linkMel;
 			ModelElement shapeMel;
 			if (null != (link = connectLink.Link as ExternalConstraintLink) &&
@@ -492,18 +506,12 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					{
 						FrameworkDomainModel.DelayValidateElement(constraintShape, DelayValidateExternalConstraintShapeFullyConnected);
 					}
-					else
+					// Delay, fact type shape size will not be accurate until deletion is completed.
+					FactTypeShape factTypeShape = MultiShapeUtility.ResolvePrimaryShape(oppositeShape) as FactTypeShape;
+					if (factTypeShape != null &&
+						!factTypeShape.IsDeleting)
 					{
-						FactTypeShape factTypeShape = MultiShapeUtility.ResolvePrimaryShape(oppositeShape) as FactTypeShape;
-						if (factTypeShape != null)
-						{
-							SizeD oldSize = factTypeShape.Size;
-							factTypeShape.AutoResize();
-							if (oldSize == factTypeShape.Size)
-							{
-								((IInvalidateDisplay)factTypeShape).InvalidateRequired(true);
-							}
-						}
+						FrameworkDomainModel.DelayValidateElement(factTypeShape, DelayValidateFactTypeShapeSize);
 					}
 				}
 			}
@@ -514,28 +522,40 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// links, so automatically remove them if a link is moved off the constraint
 		/// shape.
 		/// </summary>
-		private static void DeleteDanglingConstraintShapeRolePlayerChangeRule(RolePlayerChangedEventArgs e)
+		private static void VerifyConnectedShapeShapeRolePlayerChangedRule(RolePlayerChangedEventArgs e)
 		{
-			IElementDirectory directory;
-			ShapeElement oldShape;
+			ShapeElement shape;
 			if (e.DomainRole.Id == LinkConnectsToNode.NodesDomainRoleId &&
-				(directory = e.ElementLink.Store.ElementDirectory).ContainsElement(e.OldRolePlayerId) &&
-				null != (oldShape = directory.GetElement(e.OldRolePlayerId) as ShapeElement))
+				((LinkConnectsToNode)e.ElementLink).Link is ExternalConstraintLink &&
+				null != (shape = e.OldRolePlayer as ShapeElement))
 			{
 				ExternalConstraintShape constraintShape;
 				FactTypeShape factTypeShape;
-				if (null != (constraintShape = oldShape as ExternalConstraintShape))
+				if (null != (constraintShape = shape as ExternalConstraintShape))
 				{
 					FrameworkDomainModel.DelayValidateElement(constraintShape, DelayValidateExternalConstraintShapeFullyConnected);
 				}
-				else if (null != (factTypeShape = MultiShapeUtility.ResolvePrimaryShape(oldShape) as FactTypeShape))
+				else if (null != (factTypeShape = MultiShapeUtility.ResolvePrimaryShape(shape) as FactTypeShape))
 				{
-					SizeD oldSize = factTypeShape.Size;
-					factTypeShape.AutoResize();
-					if (oldSize == factTypeShape.Size)
+					FrameworkDomainModel.DelayValidateElement(factTypeShape, DelayValidateFactTypeShapeSize);
+					if (null != (shape = e.NewRolePlayer as ShapeElement) &&
+						null != (factTypeShape = MultiShapeUtility.ResolvePrimaryShape(shape) as FactTypeShape))
 					{
-						((IInvalidateDisplay)factTypeShape).InvalidateRequired(true);
+						FrameworkDomainModel.DelayValidateElement(factTypeShape, DelayValidateFactTypeShapeSize);
 					}
+				}
+			}
+		}
+		private static void DelayValidateFactTypeShapeSize(ModelElement element)
+		{
+			if (!element.IsDeleted)
+			{
+				FactTypeShape factTypeShape = (FactTypeShape)element;
+				SizeD oldSize = factTypeShape.Size;
+				factTypeShape.AutoResize();
+				if (oldSize == factTypeShape.Size)
+				{
+					((IInvalidateDisplay)factTypeShape).InvalidateRequired(true);
 				}
 			}
 		}
@@ -579,7 +599,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				}
 			}
 		}
-		#endregion // Dangling constraint shape deletion
+		#endregion // Dangling constraint shape deletion and fact type shape role bar resizing
 		#region Accessibility Properties
 		/// <summary>
 		/// Return the localized accessible name for the link

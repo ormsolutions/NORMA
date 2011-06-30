@@ -24,10 +24,13 @@
 					</arg:PriorityAdjustment>
 				</arg:RuleOn>
 			</arg:AddRule>
-			<arg:DeletingRule methodName="DeleteDanglingConstraintShapeDeletingRule">
+			<arg:AddRule methodName="VerifyedConnectedShapeAddedRule">
+				<arg:RuleOn targetType="LinkConnectsToNode" targetTypeQualifier="Microsoft.VisualStudio.Modeling.Diagrams"/>
+			</arg:AddRule>
+			<arg:DeletingRule methodName="VerifyConnectedShapeShapeDeletingRule">
 				<arg:RuleOn targetType="LinkConnectsToNode" targetTypeQualifier="Microsoft.VisualStudio.Modeling.Diagrams"/>
 			</arg:DeletingRule>
-			<arg:RolePlayerChangeRule methodName="DeleteDanglingConstraintShapeRolePlayerChangeRule">
+			<arg:RolePlayerChangeRule methodName="VerifyConnectedShapeShapeRolePlayerChangedRule">
 				<arg:RuleOn targetType="LinkConnectsToNode" targetTypeQualifier="Microsoft.VisualStudio.Modeling.Diagrams"/>
 			</arg:RolePlayerChangeRule>
 		</arg:RuleContainer>

@@ -331,17 +331,22 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <param name="createdDuringViewFixup">Whether this shape was created as part of a view fixup</param>
 		public override void PlaceAsChildOf(NodeShape parent, bool createdDuringViewFixup)
 		{
-			FactTypeShape factShape = (FactTypeShape)parent;
+			FactTypeShape factTypeShape = (FactTypeShape)parent;
+			FactType factType;
+			Objectification objectification;
 			AutoResize();
 			SizeD size = Size;
 			double yOffset;
-			if (factShape.ConstraintDisplayPosition == ConstraintDisplayPosition.Top)
+			if (factTypeShape.ConstraintDisplayPosition == ConstraintDisplayPosition.Bottom &&
+				(null == (factType = factTypeShape.AssociatedFactType) ||
+				null == (objectification = factType.Objectification) ||
+				objectification.IsImplied))
 			{
-				yOffset = factShape.Size.Height + .5 * size.Height;
+				yOffset = -1.5 * size.Height;
 			}
 			else
 			{
-				yOffset = -1.5 * size.Height;
+				yOffset = factTypeShape.Size.Height + .5 * size.Height;
 			}
 			Location = new PointD(0, yOffset);
 		}

@@ -951,7 +951,13 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagnostics
 					}
 					else
 					{
+						TypeConverter converter;
 						retVal = value.ToString();
+						if (retVal == value.GetType().FullName &&
+							null != (converter = TypeDescriptor.GetConverter(value)))
+						{
+							retVal = converter.ConvertToString(value);
+						}
 					}
 				}
 				return retVal;

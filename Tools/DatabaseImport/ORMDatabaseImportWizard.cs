@@ -248,6 +248,7 @@ namespace ORMSolutions.ORMArchitect.DatabaseImport
 			RunStarted(automationObject, replacementsDictionary, runKind, customParams);
 		}
 
+#if !VISUALSTUDIO_10_0 // UNDONE: Accessing any documents at this point throws in VS2010. I'd rather see the temp path in the caption than an error message.
 		/// <summary>
 		/// Ensures that only the file name portion of the new <see cref="ProjectItem"/>'s path is used as the
 		/// title for the document window.
@@ -343,5 +344,6 @@ namespace ORMSolutions.ORMArchitect.DatabaseImport
 		{
 			ProjectItemFinishedGenerating(projectItem);
 		}
+#endif // VISUALSTUDIO_10_0
 	}
 }

@@ -44,7 +44,7 @@ The June 2011 release includes new display features (display objectified fact ty
 
 <hr/>
 <h2>June 2011 CTP Changes</h2>
-<div>The June 2011 CTP release includes all modifications through changeset 1472. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<div>The June 2011 CTP release includes all modifications through changeset 1473. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
 <ul>
 <li><a href="#DisplayAsObjectType 2011-06">Display Objectified Fact Type as Object Type</a>&nbsp;</li>
 <li><a href="#LinkFactTypeDisplay 2011-06">Link Fact Type Display</a>&nbsp;</li>
@@ -67,13 +67,14 @@ The June 2011 release includes new display features (display objectified fact ty
 <li>(VS2010) Customizable attach points displayed on the Relational and Barker ER diagrams crashed if clicked.</li>
 <li>External constraints attached to subtype lines did not display in the Context Window.</li>
 <li>Selecting an ObjectType reference inside a group element crashed the Properties Window.</li>
-<li>Fact type shapes with constraint role bar display failed with multiple shapes for the same fact type on the same diagram.</li>
+<li>Fact type shapes with constraint role bar display failed with multiple shapes for the same fact type on the same diagram and did not always resize when role bars were initially shown or hidden.</li>
 <li>Objectified fact types did not synchronize the object type and default fact type name in the target model after a cross-model drag of the objectified fact type.</li>
 <li>Sample population values did not appear to change, always displayed original invariant value.</li>
 <li>Sample population editor crashed adding new supertype instances in an empty inline-expanded subtype cell.</li>
 <li>The meta file created by the <em>Copy Image</em> command did not have a transparent background on all versions, lines were rendered visibly different from those in the designer.</li>
 <li>The <em>ExpandRefMode</em> property did not work well with multiple shapes for the object type (or objectified fact type) on the same diagram. If there are multiple shapes on the diagram, the first shape to set <em>ExpandRefMode</em> to true will add the reference mode fact type and value type, and the last to clear this property will remove them. The reference mode fact type will only attach to those shapes with <em>ExpandRefMode</em> set to true.</li>
 <li>Multiple shapes representing a single backing element (FactType, ObjectType, etc) on the same diagram caused a null reference exception if the backing element was deleted. Duplicate shapes needed to be deleted to enable deletion of the backing element.</li>
+<li>Dragging multiple shapes within one document or between documents only validated size and other settings for the first selected shape.</li>
 <li>The final dialog shown by the database import wizard launched by a VB or C# project offered to disable the <em>Save</em> button to prevent data loss (caused by an inconsistent implementation of VSHPROPID_IsNewUnsavedItem across different project types). Template and wizard-generated files are now marked with a <em>&lt;?new?&gt;</em> processing instruction to avoid any project-type dependencies.</li>
 </ol>
 </li>
@@ -638,6 +639,8 @@ The settings file for the LinqToSqlAttributeMapping layer has been updated. This
 <li>The <em>ORM Diagram Spy</em> window will occasionally go blank after extended use with multiple open ORM files. A restart of the environment is required to recover the window. If you can reliably reproduce this issue please report the scenario.</li>
 <li>The NORMA help files are not installed or integrated with Visual Studio 2010. [The installer merge modules used for help integration in VS2005 and VS2008 are not included with the VS2010 SDK.]</li>
 <li>The FrequencyConstraint and Reading shapes are larger in Visual Studio 2010.</li>
+<li>Database import does not work from the <em>Add New Item</em> dialog in a project. Use <em>File/New</em> instead then save the file in the project file and add it to the project.</li>
+<li>The document tab after a database import using <em>File/New</em> displays the full path of the temporary file instead of the base file name.</li>
 </ol>
 <a href="#The Top">Return to top</a>
 <hr/>

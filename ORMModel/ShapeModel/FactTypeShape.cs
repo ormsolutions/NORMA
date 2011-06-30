@@ -5182,6 +5182,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		protected AttachLinkResult CanAttachLink(ModelElement element, bool toRole)
 		{
 			ObjectTypePlaysRole rolePlayerLink;
+			FactConstraint constraintLink;
 			FactType factType;
 			Objectification objectification;
 			if (element is SubtypeFact)
@@ -5198,45 +5199,56 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					return AttachLinkResult.Defer;
 				}
 			}
-			else if (null != (rolePlayerLink = element as ObjectTypePlaysRole) &&
-				null != (factType = this.AssociatedFactType) &&
-				null != (objectification = factType.Objectification))
+			else if (null != (rolePlayerLink = element as ObjectTypePlaysRole))
 			{
-				bool displayedAsObjectType = DisplayAsObjectType;
-				ObjectType objectifyingType = objectification.NestingType;
-				FactType refModeFactType;
-				if (displayedAsObjectType)
+				if (null != (factType = this.AssociatedFactType) &&
+					null != (objectification = factType.Objectification))
 				{
-					if (objectifyingType != rolePlayerLink.RolePlayer &&
-						ShouldDrawObjectification(objectification, objectifyingType))
+					bool displayedAsObjectType = DisplayAsObjectType;
+					ObjectType objectifyingType = objectification.NestingType;
+					FactType refModeFactType;
+					if (displayedAsObjectType)
 					{
-						return AttachLinkResult.Defer;
+						if (objectifyingType != rolePlayerLink.RolePlayer &&
+							ShouldDrawObjectification(objectification, objectifyingType))
+						{
+							return AttachLinkResult.Defer;
+						}
+						else if (toRole &&
+							!ExpandRefMode && // Use ExpandRefMode from the fact type shape
+							null != (refModeFactType = objectifyingType.ReferenceModeFactType) &&
+							refModeFactType == rolePlayerLink.PlayedRole.FactType)
+						{
+							return AttachLinkResult.Defer;
+						}
 					}
 					else if (toRole &&
-						!ExpandRefMode && // Use ExpandRefMode from the fact type shape
 						null != (refModeFactType = objectifyingType.ReferenceModeFactType) &&
 						refModeFactType == rolePlayerLink.PlayedRole.FactType)
 					{
-						return AttachLinkResult.Defer;
-					}
-				}
-				else if (toRole &&
-					null != (refModeFactType = objectifyingType.ReferenceModeFactType) &&
-					refModeFactType == rolePlayerLink.PlayedRole.FactType)
-				{
-					// Use ExpandRefMode from the name shape
-					foreach (PresentationElement childPel in this.RelativeChildShapes)
-					{
-						ObjectifiedFactTypeNameShape nameShape = childPel as ObjectifiedFactTypeNameShape;
-						if (nameShape != null)
+						// Use ExpandRefMode from the name shape
+						foreach (PresentationElement childPel in this.RelativeChildShapes)
 						{
-							if (!nameShape.ExpandRefMode)
+							ObjectifiedFactTypeNameShape nameShape = childPel as ObjectifiedFactTypeNameShape;
+							if (nameShape != null)
 							{
-								return AttachLinkResult.Defer;
+								if (!nameShape.ExpandRefMode)
+								{
+									return AttachLinkResult.Defer;
+								}
+								break;
 							}
-							break;
 						}
 					}
+				}
+			}
+			else if (null != (constraintLink = element as FactConstraint))
+			{
+				if (DisplayAsObjectType &&
+					null != (objectification = constraintLink.FactType.Objectification) &&
+					!objectification.IsImplied)
+				{
+					return AttachLinkResult.Defer;
 				}
 			}
 			return AttachLinkResult.Attach;
