@@ -104,6 +104,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 				public readonly RingConstraintType[] ImpliedByCombination; // Theoretically [][], but doesn't actually happen
 				public readonly RingConstraintType[] UsedInCombinationBy;
 				public readonly string DisplayName;
+				public readonly string Description;
 				public readonly SurveyQuestionGlyph Glyph;
 				public SingleRingTypeInfo(
 					RingConstraintType nodeType,
@@ -113,6 +114,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 					RingConstraintType[] impliedByCombination,
 					RingConstraintType[] usedInCombinationBy,
 					string displayName,
+					string description,
 					SurveyQuestionGlyph glyph)
 				{
 					NodeType = nodeType;
@@ -122,6 +124,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 					ImpliedByCombination = impliedByCombination;
 					UsedInCombinationBy = usedInCombinationBy;
 					DisplayName = displayName;
+					Description = description;
 					Glyph = glyph;
 				}
 			}
@@ -155,6 +158,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 							null,
 							null,
 							enumNames[(int)RingConstraintType.Irreflexive],
+							ResourceStrings.RingConstraintTypeDescriptionIrreflexive,
 							SurveyQuestionGlyph.RingIrreflexive)
 						, new SingleRingTypeInfo(
 							RingConstraintType.Antisymmetric,
@@ -164,6 +168,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 							null,
 							null,
 							enumNames[(int)RingConstraintType.Antisymmetric],
+							ResourceStrings.RingConstraintTypeDescriptionAntisymmetric,
 							SurveyQuestionGlyph.RingAntisymmetric)
 						, new SingleRingTypeInfo(
 							RingConstraintType.Asymmetric,
@@ -173,6 +178,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 							null,
 							null,
 							enumNames[(int)RingConstraintType.Asymmetric],
+							ResourceStrings.RingConstraintTypeDescriptionAsymmetric,
 							SurveyQuestionGlyph.RingAsymmetric)
 						, new SingleRingTypeInfo(
 							RingConstraintType.Intransitive,
@@ -182,6 +188,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 							null,
 							null,
 							enumNames[(int)RingConstraintType.Intransitive],
+							ResourceStrings.RingConstraintTypeDescriptionIntransitive,
 							SurveyQuestionGlyph.RingIntransitive)
 						, new SingleRingTypeInfo(
 							RingConstraintType.StronglyIntransitive,
@@ -191,6 +198,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 							null,
 							null,
 							enumNames[(int)RingConstraintType.StronglyIntransitive],
+							ResourceStrings.RingConstraintTypeDescriptionStronglyIntransitive,
 							SurveyQuestionGlyph.RingStronglyIntransitive)
 						, new SingleRingTypeInfo(
 							RingConstraintType.Acyclic,
@@ -200,6 +208,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 							null,
 							null,
 							enumNames[(int)RingConstraintType.Acyclic],
+							ResourceStrings.RingConstraintTypeDescriptionAcyclic,
 							SurveyQuestionGlyph.RingAcyclic)
 						, new SingleRingTypeInfo(
 							RingConstraintType.PurelyReflexive,
@@ -209,7 +218,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 							null,
 							null,
 							enumNames[(int)RingConstraintType.PurelyReflexive],
+							ResourceStrings.RingConstraintTypeDescriptionPurelyReflexive,
 							SurveyQuestionGlyph.RingPurelyReflexive)
+						// Note that if any two of Reflexive/Symmetric/Transitive are selected then the
+						// third remains bold (or implied if Symmetric/Transitive is selected). This is
+						// slightly inconsistent with the other selections, but is reasonable from a
+						// usability perspective as selecting the third positive ring type will simply
+						// make reflexive implied, not turn it off.
 						, new SingleRingTypeInfo(
 							RingConstraintType.Reflexive,
 							new RingConstraintType[]{RingConstraintType.Irreflexive, RingConstraintType.Asymmetric, RingConstraintType.Intransitive, RingConstraintType.StronglyIntransitive, RingConstraintType.Acyclic},
@@ -218,24 +233,27 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 							new RingConstraintType[]{RingConstraintType.Symmetric, RingConstraintType.Transitive},
 							null,
 							enumNames[(int)RingConstraintType.Reflexive],
+							ResourceStrings.RingConstraintTypeDescriptionReflexive,
 							SurveyQuestionGlyph.RingReflexive)
 						, new SingleRingTypeInfo(
 							RingConstraintType.Symmetric,
 							new RingConstraintType[]{RingConstraintType.Antisymmetric, RingConstraintType.Asymmetric, RingConstraintType.Acyclic},
-							null,
+							new RingConstraintType[]{RingConstraintType.Irreflexive, RingConstraintType.Transitive},
 							new RingConstraintType[]{RingConstraintType.PurelyReflexive},
 							null,
-							new RingConstraintType[]{RingConstraintType.Reflexive, RingConstraintType.Irreflexive},
+							new RingConstraintType[]{RingConstraintType.Reflexive, RingConstraintType.Irreflexive, RingConstraintType.Transitive},
 							enumNames[(int)RingConstraintType.Symmetric],
+							ResourceStrings.RingConstraintTypeDescriptionSymmetric,
 							SurveyQuestionGlyph.RingSymmetric)
 						, new SingleRingTypeInfo(
 							RingConstraintType.Transitive,
 							new RingConstraintType[]{RingConstraintType.Intransitive, RingConstraintType.StronglyIntransitive, RingConstraintType.PurelyReflexive},
+							new RingConstraintType[]{RingConstraintType.Irreflexive, RingConstraintType.Symmetric},
 							null,
 							null,
-							null,
-							new RingConstraintType[]{RingConstraintType.Reflexive, RingConstraintType.Irreflexive},
+							new RingConstraintType[]{RingConstraintType.Reflexive, RingConstraintType.Irreflexive, RingConstraintType.Symmetric},
 							enumNames[(int)RingConstraintType.Transitive],
+							ResourceStrings.RingConstraintTypeDescriptionTransitive,
 							SurveyQuestionGlyph.RingTransitive)
 					};
 					int[] enumToPositionMap = new int[SingleRingTypeCount + 1]; // Note that undefined is at 0, so real values start at 1
@@ -644,6 +662,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			{
 				return mySingleNodes[row].DisplayName;
 			}
+			string IBranch.GetTipText(int row, int column, ToolTipType tipType)
+			{
+				switch (tipType)
+				{
+					case ToolTipType.Icon:
+						return mySingleNodes[row].Description;
+					case ToolTipType.StateIcon:
+						return "";
+				}
+				return null;
+			}
 			int IBranch.VisibleItemCount
 			{
 				get
@@ -805,10 +834,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 				return VirtualTreeAccessibilityData.Empty;
 			}
 			object IBranch.GetObject(int row, int column, ObjectStyle style, ref int options)
-			{
-				return null;
-			}
-			string IBranch.GetTipText(int row, int column, ToolTipType tipType)
 			{
 				return null;
 			}

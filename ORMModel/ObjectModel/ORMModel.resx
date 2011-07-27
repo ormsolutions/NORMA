@@ -1070,6 +1070,36 @@
 	<data name="RingConstraintType.AsymmetricStronglyIntransitive" xml:space="preserve">
 		<value>Asymmetric and Strongly Intransitive</value>
 	</data>
+	<data name="RingConstraintType.Description.Acyclic" xml:space="preserve">
+		<value>Acyclic:&#xd;&#xa;No A may cycle back to itself via one or more traversals through &#x201c;A relates to A&#x201d;.</value>
+	</data>
+	<data name="RingConstraintType.Description.Antisymmetric" xml:space="preserve">
+		<value>Antisymmetric:&#xd;&#xa;If A1 relates to A2 and A1 is not A2&#xd;&#xa;   then it is impossible that A2 relates to A1.</value>
+	</data>
+	<data name="RingConstraintType.Description.Asymmetric" xml:space="preserve">
+		<value>Asymmetric:&#xd;&#xa;If A1 relates to A2&#xd;&#xa;   then it is impossible that A2 relates to A1.</value>
+	</data>
+	<data name="RingConstraintType.Description.Intransitive" xml:space="preserve">
+		<value>Intransitive:&#xd;&#xa;If A1 relates to A2 and A2 relates to A3&#xd;&#xa;   then it is impossible that A2 relates to A3.</value>
+	</data>
+	<data name="RingConstraintType.Description.Irreflexive" xml:space="preserve">
+		<value>Irreflexive:&#xd;&#xa;No A relates to itself.</value>
+	</data>
+	<data name="RingConstraintType.Description.PurelyReflexive" xml:space="preserve">
+		<value>Purely Reflexive:&#xd;&#xa;If A1 relates to some A2&#xd;&#xa;   then A1 = A2.</value>
+	</data>
+	<data name="RingConstraintType.Description.Reflexive" xml:space="preserve">
+		<value>Reflexive:&#xd;&#xa;If A1 relates to some A2&#xd;&#xa;   then A1 relates to itself.</value>
+	</data>
+	<data name="RingConstraintType.Description.StronglyIntransitive" xml:space="preserve">
+		<value>Strongly Intransitive:&#xd;&#xa;If A1 relates to some A2&#xd;&#xa;   then it is not true that A1 is indirectly related to A2 by repeatedly applying this fact type.</value>
+	</data>
+	<data name="RingConstraintType.Description.Symmetric" xml:space="preserve">
+		<value>Symmetric:&#xd;&#xa;If A1 relates to A2&#xd;&#xa;   then A2 relates to A1.</value>
+	</data>
+	<data name="RingConstraintType.Description.Transitive" xml:space="preserve">
+		<value>Transitive:&#xd;&#xa;If A1 relates to A2 and A2 relates to A3&#xd;&#xa;   then A1 relates to A3.</value>
+	</data>
 	<data name="RingConstraintType.Intransitive" xml:space="preserve">
 		<value>Intransitive</value>
 	</data>

@@ -1002,6 +1002,31 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		#endregion //StickyEditObject
 		#region View Fixup Methods
 		/// <summary>
+		/// Used by <see cref="ShouldAddShapeForElement"/> to map an
+		/// element that is not directly displayed shaped one with displayed
+		/// elements. The default representation maps a <see cref="Role"/> to
+		/// its parent <see cref="FactType"/> and an objectified <see cref="ObjectType"/>
+		/// to the objectifying <see cref="FactType"/>.
+		/// </summary>
+		/// <param name="element">The element to be displayed or redirected.</param>
+		/// <returns>The input element, or displayed element.</returns>
+		protected virtual ModelElement RedirectToDisplayedElement(ModelElement element)
+		{
+			Role role;
+			ObjectType objectType;
+			Objectification objectification;
+			if (null != (role = element as Role))
+			{
+				element = role.FactType;
+			}
+			else if (null != (objectType = element as ObjectType) &&
+				null != (objectification = objectType.Objectification))
+			{
+				element = objectification.NestedFactType;
+			}
+			return element;
+		}
+		/// <summary>
 		/// Called as a result of the FixUpDiagram calls
 		/// with the diagram as the first element
 		/// </summary>
@@ -1016,18 +1041,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			ModelElement element2 = null;
 			if (link != null)
 			{
-				element1 = DomainRoleInfo.GetSourceRolePlayer(link);
-				Role role1 = element1 as Role;
-				if (role1 != null)
-				{
-					element1 = role1.FactType;
-				}
-				element2 = DomainRoleInfo.GetTargetRolePlayer(link);
-				Role role2 = element2 as Role;
-				if (role2 != null)
-				{
-					element2 = role2.FactType;
-				}
+				element1 = RedirectToDisplayedElement(DomainRoleInfo.GetSourceRolePlayer(link));
+				element2 = RedirectToDisplayedElement(DomainRoleInfo.GetTargetRolePlayer(link));
 			}
 			else if ((subtypeFact = element as SubtypeFact) != null)
 			{

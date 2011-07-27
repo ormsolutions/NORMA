@@ -251,6 +251,16 @@
 	<ResourceString name="ModelExceptionEntityTypeSubtypeInstanceDuplicateSupertypeInstance" model="Model" resourceName="ModelException.EntityTypeSubtypeInstance.DuplicateSupertypeInstance"/>
 	<ResourceString name="ModelExceptionEntityTypeSubtypeInstanceEnforceInitialSubtypeInstance" model="Model" resourceName="ModelException.EntityTypeSubtypeInstance.EnforceInitialSubtypeInstance"/>
 	<ResourceString name="ModelExceptionValueTypeInstanceInvalidValueTypeParent" model="Model" resourceName="ModelException.ValueTypeInstance.InvalidValueTypeParent"/>
+	<ResourceString name="RingConstraintTypeDescriptionAcyclic" model="Model" resourceName="RingConstraintType.Description.Acyclic"/>
+	<ResourceString name="RingConstraintTypeDescriptionAntisymmetric" model="Model" resourceName="RingConstraintType.Description.Antisymmetric"/>
+	<ResourceString name="RingConstraintTypeDescriptionAsymmetric" model="Model" resourceName="RingConstraintType.Description.Asymmetric"/>
+	<ResourceString name="RingConstraintTypeDescriptionIntransitive" model="Model" resourceName="RingConstraintType.Description.Intransitive"/>
+	<ResourceString name="RingConstraintTypeDescriptionIrreflexive" model="Model" resourceName="RingConstraintType.Description.Irreflexive"/>
+	<ResourceString name="RingConstraintTypeDescriptionPurelyReflexive" model="Model" resourceName="RingConstraintType.Description.PurelyReflexive"/>
+	<ResourceString name="RingConstraintTypeDescriptionReflexive" model="Model" resourceName="RingConstraintType.Description.Reflexive"/>
+	<ResourceString name="RingConstraintTypeDescriptionStronglyIntransitive" model="Model" resourceName="RingConstraintType.Description.StronglyIntransitive"/>
+	<ResourceString name="RingConstraintTypeDescriptionSymmetric" model="Model" resourceName="RingConstraintType.Description.Symmetric"/>
+	<ResourceString name="RingConstraintTypeDescriptionTransitive" model="Model" resourceName="RingConstraintType.Description.Transitive"/>
 	<ResourceString name="CommandDeleteFactTypeText" model="Diagram" resourceName="Command.DeleteFactType.Text"/>
 	<ResourceString name="CommandDeleteObjectTypeText" model="Diagram" resourceName="Command.DeleteObjectType.Text"/>
 	<ResourceString name="CommandDeleteConstraintText" model="Diagram" resourceName="Command.DeleteConstraint.Text"/>

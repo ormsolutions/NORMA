@@ -1612,6 +1612,76 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ValueTypeInstance.InvalidValueTypeParent");
 			}
 		}
+		public static string RingConstraintTypeDescriptionAcyclic
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "RingConstraintType.Description.Acyclic");
+			}
+		}
+		public static string RingConstraintTypeDescriptionAntisymmetric
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "RingConstraintType.Description.Antisymmetric");
+			}
+		}
+		public static string RingConstraintTypeDescriptionAsymmetric
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "RingConstraintType.Description.Asymmetric");
+			}
+		}
+		public static string RingConstraintTypeDescriptionIntransitive
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "RingConstraintType.Description.Intransitive");
+			}
+		}
+		public static string RingConstraintTypeDescriptionIrreflexive
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "RingConstraintType.Description.Irreflexive");
+			}
+		}
+		public static string RingConstraintTypeDescriptionPurelyReflexive
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "RingConstraintType.Description.PurelyReflexive");
+			}
+		}
+		public static string RingConstraintTypeDescriptionReflexive
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "RingConstraintType.Description.Reflexive");
+			}
+		}
+		public static string RingConstraintTypeDescriptionStronglyIntransitive
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "RingConstraintType.Description.StronglyIntransitive");
+			}
+		}
+		public static string RingConstraintTypeDescriptionSymmetric
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "RingConstraintType.Description.Symmetric");
+			}
+		}
+		public static string RingConstraintTypeDescriptionTransitive
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "RingConstraintType.Description.Transitive");
+			}
+		}
 		/// <summary>This text appears in the edit menu when fact types are selected in the diagram.</summary>
 		public static string CommandDeleteFactTypeText
 		{
