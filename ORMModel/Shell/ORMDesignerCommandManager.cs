@@ -359,6 +359,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		private const ORMDesignerCommands EnabledSimpleMultiSelectCommandFilter =
 			ORMDesignerCommands.DisplayStandardWindows |
 			ORMDesignerCommands.CopyImage |
+			ORMDesignerCommands.ExtensionManager |
+			ORMDesignerCommands.Zoom |
 			ORMDesignerCommands.DisplayOrientation |
 			ORMDesignerCommands.DisplayConstraintsPosition |
 			ORMDesignerCommands.ExclusiveOrDecoupler |
@@ -1042,6 +1044,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 			// Turn on standard commands for all selections
+			// Consider adding anything here to the EnabledSimpleMultiSelectCommandFilter above
 			visibleCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.CopyImage | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList | ORMDesignerCommands.ReportGeneratorList | ORMDesignerCommands.FreeFormCommandList | ORMDesignerCommands.SelectInModelBrowser | ORMDesignerCommands.Zoom;
 			enabledCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.CopyImage | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList | ORMDesignerCommands.ReportGeneratorList | ORMDesignerCommands.FreeFormCommandList | ORMDesignerCommands.SelectInModelBrowser | ORMDesignerCommands.Zoom;
 		}

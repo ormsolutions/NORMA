@@ -392,7 +392,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 							}
 						}
 						formatBranch.SelectedORMGenerator = modifierGenerator;
-						_parent.BuildItemsByGenerator[primaryGenerator.OfficialName].SetMetadata(ITEMMETADATA_ORMGENERATOR, primaryBranch.SelectedGeneratorOfficialNames);
+						SetItemMetaData(_parent.BuildItemsByGenerator[primaryGenerator.OfficialName], ITEMMETADATA_ORMGENERATOR, primaryBranch.SelectedGeneratorOfficialNames);
 						retVal |= StateRefreshChanges.Children | StateRefreshChanges.Children;
 					}
 					else if (testToggleOff)
@@ -483,7 +483,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 #endif
 						 = buildItemsByGeneratorName[primaryGenerator.OfficialName];
 						formatBranch.SelectedORMGenerator = null;
-						updateBuildItem.SetMetadata(ITEMMETADATA_ORMGENERATOR, primaryBranch.SelectedGeneratorOfficialNames);
+						SetItemMetaData(updateBuildItem, ITEMMETADATA_ORMGENERATOR, primaryBranch.SelectedGeneratorOfficialNames);
 					}
 				}
 				else
@@ -505,6 +505,32 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 					_parent.AddRemovedItem(removeBuildItem);
 				}
 			}
+#if VISUALSTUDIO_10_0
+			private static void SetItemMetaData(ProjectItemElement buildItem, string metadataName, string metadataValue)
+			{
+				// ProjectItemElement.SetMetadata adds a new metadata element with the same name
+				// as the previous one. There is no 'RemoveMetadata' that takes a string, so we go through
+				// the entire metadata collection and clean it out.
+				foreach (ProjectMetadataElement element in buildItem.Metadata)
+				{
+					if (element.Name == metadataName)
+					{
+						// The Metadata collection is a read-only snapshot, so deleting from it is safe
+						// inside the iterator.
+						buildItem.RemoveChild(element);
+						// Do not break. This handles removing multiple metadata items with the
+						// same name, which will clean up project files affected by this problem
+						// in previous drops.
+					}
+				}
+				buildItem.AddMetadata(metadataName, metadataValue);
+			}
+#else // VISUALSTUDIO_10_0
+			private static void SetItemMetaData(BuildItem buildItem, string metadataName, string metadataValue)
+			{
+				buildItem.SetMetadata(metadataName, metadataValue);
+			}
+#endif // VISUALSTUDIO_10_0
 			public override BranchFeatures Features
 			{
 				get
