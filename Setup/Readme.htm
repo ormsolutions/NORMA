@@ -3,7 +3,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
-<title>NORMA June 2011 CTP Readme</title>
+<title>NORMA October 2011 CTP Readme</title>
 <style type="text/css">
 	.new {font-size:x-small; background-color:Gold; color:Blue; }
 	li {padding-bottom: 3px;}
@@ -12,8 +12,9 @@
 
 <body>
 
-<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA June 2011 CTP Readme</a>&nbsp;</b></p>
+<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA October 2011 CTP Readme</a>&nbsp;</b></p>
 <p>This file supersedes the previous readme.txt and older readme.htm files. This readme has parallel indexing mechanisms: by topic, and by release date (starting with the October 2008 (2008-10) release). The file will be extended for future product releases.<br/><br/>
+The October 2011 release is a bug fix release. Refer to June 2011 for newer features.<br/><br/>
 The June 2011 release includes new display features (display objectified fact types as object types, display link fact types), additional ring types with an improved editor for choosing ring types, visible zoom commands, and a number of bug fixes. See detailed change notes below for specifics. 
 <br/><br/></p>
 <h2>Contents</h2>
@@ -43,8 +44,27 @@ The June 2011 release includes new display features (display objectified fact ty
 </ul>-->
 
 <hr/>
+<h2>October 2011 CTP Changes</h2>
+<div>The October 2011 CTP release includes all modifications through changeset 1476.  Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<ul>
+<li>Features:
+<ol>
+<li>A mouse hover on the glyphs in the ring type editor shows a standard verbalization describing that ring type.</li>
+</ol>
+</li>
+<li>Bug Fixes:
+<ol>
+<li>Objectified fact type shapes displayed as object types did not reconnect role players when a file was reloaded.</li>
+<li>Fixed some ring type combination implications in the ring type editor.</li>
+<li>Zoom and Extension Manager commands were not available with multiple items selected.</li>
+<li>(VS2010) Changing generation settings for a specific file format wrote multiple conflicting lines to the project file. Only the original setting was recognized by the generator.</li>
+</ol>
+</li>
+</ul>
+
+<hr/>
 <h2>June 2011 CTP Changes</h2>
-<div>The June 2011 CTP release includes all modifications through changeset 1473. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<div>The June 2011 CTP release includes all modifications through changeset 1473.</div>
 <ul>
 <li><a href="#DisplayAsObjectType 2011-06">Display Objectified Fact Type as Object Type</a>&nbsp;</li>
 <li><a href="#LinkFactTypeDisplay 2011-06">Link Fact Type Display</a>&nbsp;</li>
