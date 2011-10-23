@@ -555,71 +555,6 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 					return retVal;
 				}
 				#endregion // Accessor properties
-				#region Regex patterns
-				private static Regex myEmbeddedCapsOrNumberRegex;
-				/// <summary>
-				/// The regular expression used to determine if a string contains
-				/// an embedded capital or number
-				/// </summary>
-				private Regex EmbeddedCapsOrNumberRegex
-				{
-					get
-					{
-						Regex retVal = myEmbeddedCapsOrNumberRegex;
-						if (retVal == null)
-						{
-							System.Threading.Interlocked.CompareExchange<Regex>(
-								ref myEmbeddedCapsOrNumberRegex,
-								new Regex(
-									@"(?n)(?(\s*\S+?\p{Lu})|\P{Nd}*\p{Nd})",
-									RegexOptions.Compiled),
-								null);
-							retVal = myEmbeddedCapsOrNumberRegex;
-						}
-						return retVal;
-					}
-				}
-				#endregion // Regex patterns
-				private static Regex mySplitOnUpperRegex;
-				/// <summary>
-				/// The regular expression used to split a camel or
-				/// pascal cased string into pieces. Assumes spaces
-				/// are previously stripped.
-				/// </summary>
-				/// <remarks>This regex groups all adjacent upper case
-				/// letters into a single group, unless there are trailing
-				/// non-upper case and non-numeric characters, which are
-				/// then grouped with the final capital. Numbers are handled
-				/// specially and come back in their own group, allowing
-				/// number-decorated names to participate in phrase matching.
-				/// 
-				/// If one or more non-upper case characters follow one or
-				/// more sequential numbers, then those characters remain
-				/// part of the number. The goal is to treat character-decorated
-				/// numbers as a unit, so Rule1aDetails breaks down into {Rule,1a,Details}
-				/// whereas Rule1ADetails breaks down into {Rule, 1, A, Details}.
-				/// 
-				/// If a match has multiple adjacent caps, then the named 'TrailingUpper'
-				/// group will be populated. If a number is represented (including
-				/// trailing lower-case markup), then the 'Numeric' group is populated.</remarks>
-				private static Regex SplitOnUpperRegex
-				{
-					get
-					{
-						Regex retVal = mySplitOnUpperRegex;
-						if (retVal == null)
-						{
-							System.Threading.Interlocked.CompareExchange<Regex>(
-								ref mySplitOnUpperRegex,
-								new Regex(
-									@"(?n)\G(?(\p{Nd})((?<Numeric>\p{Nd}+)(?(((?!\p{Nd})\P{Lu})+\p{Nd})|((?!\p{Nd})\P{Lu})+)?)|(?(\P{Lu})((?!\p{Nd})\P{Lu})+|(\p{Lu}(?(\P{Lu})((?!\p{Nd})\P{Lu})+|(?<TrailingUpper>((?!\p{Lu}((?!\p{Nd})\P{Lu}))\p{Lu})*)))))",
-									RegexOptions.Compiled),
-								null);
-							retVal = mySplitOnUpperRegex;
-						}
-						return retVal;
-					}
-				}
 				#region Name generation methods
 				private string GenerateTableName(Table table, int phase)
 				{
@@ -1010,9 +945,9 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 						endNameCount = GetNameCount(ref singleName, ref nameCollection);
 					}
 					else if (0 == (options & NamePartOptions.ExplicitCasing) &&
-						EmbeddedCapsOrNumberRegex.IsMatch(newName))
+						Utility.IsMultiPartName(newName))
 					{
-						Match match = SplitOnUpperRegex.Match(newName);
+						Match match = Utility.MatchNameParts(newName);
 						int matchIndex = 0;
 						while (match.Success)
 						{

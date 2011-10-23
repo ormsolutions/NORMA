@@ -2349,6 +2349,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				bool currentRoleIsWithPreferredIdentifier = false;
 				bool currentRoleIsMandatory = false;
 				LinkedElementCollection<ConstraintRoleSequence> constraints = playedRole.ConstraintRoleSequenceCollection;
+				bool currentRoleOnFullyDerivedFactType = false;
+				bool checkedCurrentRoleDerivation = false;
 				int constraintCount = constraints.Count;
 				for (int j = 0; j < constraintCount; ++j)
 				{
@@ -2397,8 +2399,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							RoleBase oppositeRole = playedRole.OppositeRole;
 							if (null == oppositeRole || !preferredIdentifierRoles.Contains(oppositeRole.Role))
 							{
-								canBeIndependent = false;
-								turnedOffCanBeIndependent = true;
+								if (!checkedCurrentRoleDerivation)
+								{
+									checkedCurrentRoleDerivation = true;
+									currentRoleOnFullyDerivedFactType = null != (factType = playedRole.FactType) &&
+										null != (derivationRule = factType.DerivationRule) &&
+										derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+										!derivationRule.ExternalDerivation;
+								}
+								if (!currentRoleOnFullyDerivedFactType)
+								{
+									canBeIndependent = false;
+									turnedOffCanBeIndependent = true;
+								}
 							}
 							else
 							{
@@ -2420,15 +2433,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 					}
 				}
-				bool currentRoleOnFullyDerivedFactType = false;
-				bool checkedCurrentRoleDerivation = false;
 				if (!currentRoleIsMandatory && canBeIndependent)
 				{
-					checkedCurrentRoleDerivation = true;
-					currentRoleOnFullyDerivedFactType = null != (factType = playedRole.FactType) &&
-						null != (derivationRule = factType.DerivationRule) &&
-						derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
-						!derivationRule.ExternalDerivation;
+					if (!checkedCurrentRoleDerivation)
+					{
+						checkedCurrentRoleDerivation = true;
+						currentRoleOnFullyDerivedFactType = null != (factType = playedRole.FactType) &&
+							null != (derivationRule = factType.DerivationRule) &&
+							derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+							!derivationRule.ExternalDerivation;
+					}
 					if (!checkedPreferredRoles)
 					{
 						checkedPreferredRoles = true;

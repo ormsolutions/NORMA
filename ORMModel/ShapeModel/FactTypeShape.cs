@@ -42,7 +42,7 @@ using ORMSolutions.ORMArchitect.Framework.Diagrams;
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	#region FactTypeShape class
-	public partial class FactTypeShape : ICustomShapeFolding, IModelErrorActivation, IProvideConnectorShape, IProxyDisplayProvider, IConfigureAsChildShape, IDynamicColorGeometryHost, IDynamicColorAlsoUsedBy, IConfigureableLinkEndpoint
+	public partial class FactTypeShape : ICustomShapeFolding, IModelErrorActivation, IProvideConnectorShape, IProxyDisplayProvider, IRedirectVerbalization, IConfigureAsChildShape, IDynamicColorGeometryHost, IDynamicColorAlsoUsedBy, IConfigureableLinkEndpoint
 	{
 		#region ConstraintBoxRoleActivity enum
 		/// <summary>
@@ -5047,28 +5047,39 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			else if (null != (factType = element as FactType))
 			{
 				Objectification objectification;
-				if (null != (objectification = factType.ImpliedByObjectification) &&
-					objectification.NestedFactType == AssociatedFactType)
+				FactType subjectFactType;
+				if (null != (subjectFactType = AssociatedFactType))
 				{
-					Role targetRole = null;
-					foreach (RoleBase roleBase in factType.RoleCollection)
+					if (factType == subjectFactType)
 					{
-						RoleProxy proxy;
-						ObjectifiedUnaryRole objectifiedUnaryRole;
-						if (null != (proxy = roleBase as RoleProxy))
+						if (this.DisplayAsObjectType)
 						{
-							targetRole = proxy.TargetRole;
-							break;
-						}
-						else if (null != (objectifiedUnaryRole = roleBase as ObjectifiedUnaryRole))
-						{
-							targetRole = objectifiedUnaryRole.TargetRole;
-							break;
+							return ProxyDisplayProviderDirective.IgnoreShape;
 						}
 					}
-					if (targetRole != null)
+					else if (null != (objectification = factType.ImpliedByObjectification) &&
+						objectification.NestedFactType == subjectFactType)
 					{
-						return GetDiagramItem(targetRole);
+						Role targetRole = null;
+						foreach (RoleBase roleBase in factType.RoleCollection)
+						{
+							RoleProxy proxy;
+							ObjectifiedUnaryRole objectifiedUnaryRole;
+							if (null != (proxy = roleBase as RoleProxy))
+							{
+								targetRole = proxy.TargetRole;
+								break;
+							}
+							else if (null != (objectifiedUnaryRole = roleBase as ObjectifiedUnaryRole))
+							{
+								targetRole = objectifiedUnaryRole.TargetRole;
+								break;
+							}
+						}
+						if (targetRole != null)
+						{
+							return GetDiagramItem(targetRole);
+						}
 					}
 				}
 			}
@@ -5079,6 +5090,29 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			return ElementDisplayedAs(element, forError);
 		}
 		#endregion // IProxyDisplayProvider Implementation
+		#region IRedirectVerbalization Implementation
+		/// <summary>
+		/// Implements <see cref="IRedirectVerbalization.SurrogateVerbalizer"/>
+		/// </summary>
+		protected IVerbalize SurrogateVerbalizer
+		{
+			get
+			{
+				FactType factType;
+				return (DisplayAsObjectType && null != (factType = AssociatedFactType)) ?
+					factType.NestingType :
+					null; // Use default subject
+			}
+		}
+		IVerbalize IRedirectVerbalization.SurrogateVerbalizer
+		{
+			get
+			{
+				return SurrogateVerbalizer;
+			}
+		}
+
+		#endregion // IRedirectVerbalization Implementation
 		#region IDynamicColorGeometryHost Implementation
 		/// <summary>
 		/// Implements <see cref="IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId,Pen)"/>

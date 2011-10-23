@@ -51,7 +51,7 @@
 				<Snippet ref="ValueTypeVerbalization"/>
 				<SnippetReplacements>
 					<Snippet ref="ObjectType">
-						<ContextName/>
+						<ContextName isObjectType="true"/>
 						<ContextId/>
 					</Snippet>
 				</SnippetReplacements>
@@ -63,7 +63,7 @@
 			<ErrorReportHere/>
 			<Snippet ref="ObjectifiesFactTypeVerbalization" conditionalMatch="IsObjectifiedFactType" conditionalBlockContext="ObjectifiedFactType">
 				<Snippet ref="ObjectType">
-					<ContextName/>
+					<ContextName isObjectType="true"/>
 					<ContextId/>
 				</Snippet>
 				<Fact/>
@@ -80,7 +80,7 @@
 			</Snippet>
 			<Snippet ref="IndependentVerbalization" conditionalMatch="IsIndependent">
 				<Snippet ref="ObjectType">
-					<ContextName/>
+					<ContextName isObjectType="true"/>
 					<ContextId/>
 				</Snippet>
 			</Snippet>
@@ -1178,7 +1178,7 @@
 					<Snippet ref="MultiValueValueConstraint"/>
 					<SnippetReplacements>
 						<Snippet ref="ObjectType">
-							<ContextName/>
+							<ContextName isObjectType="true"/>
 							<ContextId/>
 						</Snippet>
 						<IterateValueRanges listStyle="CompactSimpleList">

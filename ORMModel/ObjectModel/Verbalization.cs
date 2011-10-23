@@ -27,6 +27,7 @@ using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.Modeling;
 using ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid;
 using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Core.Shell;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
@@ -158,7 +159,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign);
 	}
 	/// <summary>
-	/// Interface to redirect verbalization. Called for top-level selected objects only
+	/// Interface to redirect verbalization. Called for top-level selected objects only.
+	/// Shape selection automatically defers to the presented subject, but can be redirect
+	/// by this interface to an alternate element.
 	/// </summary>
 	public interface IRedirectVerbalization
 	{
@@ -1170,9 +1173,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static readonly Regex FirstBodyCharacterPatternAny = new Regex(@"^(?:((<[^>]*?>)|\s)*?)(?<1>[^<\s])", RegexOptions.Compiled | RegexOptions.Singleline);
 		/// <summary>
-		/// Match the first non whitespace/html character, but only if it is lower case
+		/// Match the first non whitespace/html character, but only if it is lower case.
+		/// Text blocks consisting solely of symbols, spaces, and punctuation are ignored.
 		/// </summary>
-		private static readonly Regex FirstBodyCharacterPatternLower = new Regex(@"^(?:((<[^>]*?>)|\s)*?)(?<1>\p{Ll})", RegexOptions.Compiled | RegexOptions.Singleline);
+		private static readonly Regex FirstBodyCharacterPatternLower = new Regex(@"^(?:((?:<[^>]*?>)|\s|(?:(?:(?!<)(?:\p{P}|\p{S}|\s))+?)(?=<))*?)(?<1>\p{Ll})", RegexOptions.Compiled | RegexOptions.Singleline);
 		/// <summary>
 		/// Match the last non whitespace/html character
 		/// </summary>
@@ -2546,6 +2550,88 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // VerbalizeElement methods
+		#region NormalizeObjectTypeName methods
+		/// <summary>
+		/// Get an object type name based on the current user settings
+		/// </summary>
+		/// <param name="originalName">The namd as entered in the model.</param>
+		/// <returns>The name adjusted according to the current user settings.</returns>
+		public static string NormalizeObjectTypeName(string originalName)
+		{
+			ObjectTypeNameVerbalizationStyle style = OptionsPage.CurrentVerbalizationObjectTypeNameDisplay;
+			switch (style)
+			{
+				case ObjectTypeNameVerbalizationStyle.CombineNamesLeadWithLower:
+				case ObjectTypeNameVerbalizationStyle.CombineNamesLeadWithUpper:
+					{
+						bool makeLower = style == ObjectTypeNameVerbalizationStyle.CombineNamesLeadWithLower;
+						Match match = Utility.MatchNameParts(originalName);
+						StringBuilder sb = new StringBuilder();
+						while (match.Success)
+						{
+							string matchText = match.Value;
+							if (match.Groups["TrailingUpper"].Success)
+							{
+								sb.Append(matchText);
+								makeLower = false;
+							}
+							else if (makeLower)
+							{
+								makeLower = false;
+								sb.Append(Utility.LowerCaseFirstLetter(matchText));
+							}
+							else
+							{
+								sb.Append(Utility.UpperCaseFirstLetter(matchText));
+							}
+							match = match.NextMatch();
+						}
+						return sb.ToString();
+					}
+				case ObjectTypeNameVerbalizationStyle.SeparateCombinedNames:
+					if (Utility.IsMultiPartName(originalName))
+					{
+						bool first = true;
+						StringBuilder sb = new StringBuilder();
+						Match match = Utility.MatchNameParts(originalName);
+						while (match.Success)
+						{
+							GroupCollection groups = match.Groups;
+							string matchText = match.Value;
+							if (groups["TrailingUpper"].Success)
+							{
+								// Multiple caps, leave as is
+								if (!first)
+								{
+									sb.Append(" ");
+								}
+								sb.Append(matchText);
+							}
+							else if (groups["Numeric"].Success)
+							{
+								// No space, no casing
+								sb.Append(matchText);
+							}
+							else
+							{
+								if (!first)
+								{
+									sb.Append(" ");
+								}
+								sb.Append(Utility.LowerCaseFirstLetter(matchText));
+							}
+							first = false;
+							match = match.NextMatch();
+						}
+						return sb.ToString();
+					}
+					return Utility.LowerCaseFirstLetter(originalName);
+				//case ObjectTypeNameVerbalizationStyle.AsIs:
+				default:
+					return originalName;
+			}
+		}
+		#endregion // NormalizeObjectTypeName methods
 	}
 	#endregion // VerbalizationHelper class
 	#region ExtensionVerbalizerService class
@@ -3618,9 +3704,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				string idString = rolePlayer.Id.ToString("D");
 				if (subscript == 0)
 				{
-					return string.Format(myFormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType), rolePlayer.Name, idString);
+					return string.Format(myFormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), idString);
 				}
-				return string.Format(myFormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript), rolePlayer.Name, idString, subscript);
+				return string.Format(myFormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), idString, subscript);
 			}
 		}
 		string IRolePathRenderer.RenderRolePlayer(ObjectType rolePlayer, int subscript, bool fullyExistential)

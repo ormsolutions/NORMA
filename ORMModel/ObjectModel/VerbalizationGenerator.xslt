@@ -3395,11 +3395,15 @@
 				</xsl:call-template>
 			</plx:passParam>
 			<plx:passParam>
-				<plx:callInstance name="Name" type="property">
-					<plx:callObject>
-						<xsl:copy-of select="$ObjectTypeExpression"/>
-					</plx:callObject>
-				</plx:callInstance>
+				<plx:callStatic name="NormalizeObjectTypeName" dataTypeName="VerbalizationHelper">
+					<plx:passParam>
+						<plx:callInstance name="Name" type="property">
+							<plx:callObject>
+								<xsl:copy-of select="$ObjectTypeExpression"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:passParam>
+				</plx:callStatic>
 			</plx:passParam>
 			<plx:passParam>
 				<plx:callInstance name="ToString">
@@ -3434,11 +3438,15 @@
 				</xsl:call-template>
 			</plx:passParam>
 			<plx:passParam>
-				<plx:callInstance name="Name" type="property">
-					<plx:callObject>
-						<xsl:copy-of select="$ObjectTypeExpression"/>
-					</plx:callObject>
-				</plx:callInstance>
+				<plx:callStatic name="NormalizeObjectTypeName" dataTypeName="VerbalizationHelper">
+					<plx:passParam>
+						<plx:callInstance name="Name" type="property">
+							<plx:callObject>
+								<xsl:copy-of select="$ObjectTypeExpression"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:passParam>
+				</plx:callStatic>
 			</plx:passParam>
 			<plx:passParam>
 				<plx:callInstance name="ToString">
@@ -5540,11 +5548,15 @@
 				<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}"/>
 			</plx:left>
 			<plx:right>
-				<plx:callInstance name="Name" type="property">
-					<plx:callObject>
-						<plx:callThis name="ValueType" type="property"/>
-					</plx:callObject>
-				</plx:callInstance>
+				<plx:callStatic name="NormalizeObjectTypeName" dataTypeName="VerbalizationHelper">
+					<plx:passParam>
+						<plx:callInstance name="Name" type="property">
+							<plx:callObject>
+								<plx:callThis name="ValueType" type="property"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:passParam>
+				</plx:callStatic>
 			</plx:right>
 		</plx:assign>
 	</xsl:template>
@@ -5614,7 +5626,18 @@
 				<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}"/>
 			</plx:left>
 			<plx:right>
-				<plx:callThis name="Name" type="property"/>
+				<xsl:choose>
+					<xsl:when test="@isObjectType='true'">
+						<plx:callStatic name="NormalizeObjectTypeName" dataTypeName="VerbalizationHelper">
+							<plx:passParam>
+								<plx:callThis name="Name" type="property"/>
+							</plx:passParam>
+						</plx:callStatic>
+					</xsl:when>
+					<xsl:otherwise>
+						<plx:callThis name="Name" type="property"/>
+					</xsl:otherwise>
+				</xsl:choose>
 			</plx:right>
 		</plx:assign>
 	</xsl:template>
@@ -5645,11 +5668,15 @@
 				<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}"/>
 			</plx:left>
 			<plx:right>
-				<plx:callInstance name="Name" type="property">
-					<plx:callObject>
-						<plx:nameRef name="preferredFor"/>
-					</plx:callObject>
-				</plx:callInstance>
+				<plx:callStatic name="NormalizeObjectTypeName" dataTypeName="VerbalizationHelper">
+					<plx:passParam>
+						<plx:callInstance name="Name" type="property">
+							<plx:callObject>
+								<plx:nameRef name="preferredFor"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:passParam>
+				</plx:callStatic>
 			</plx:right>
 		</plx:assign>
 	</xsl:template>
@@ -5684,11 +5711,15 @@
 				<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}"/>
 			</plx:left>
 			<plx:right>
-				<plx:callInstance name="Name" type="property">
-					<plx:callObject>
-						<plx:nameRef name="subtype"/>
-					</plx:callObject>
-				</plx:callInstance>
+				<plx:callStatic name="NormalizeObjectTypeName" dataTypeName="VerbalizationHelper">
+					<plx:passParam>
+						<plx:callInstance name="Name" type="property">
+							<plx:callObject>
+								<plx:nameRef name="subtype"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:passParam>
+				</plx:callStatic>
 			</plx:right>
 		</plx:assign>
 	</xsl:template>
@@ -5700,11 +5731,15 @@
 				<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}"/>
 			</plx:left>
 			<plx:right>
-				<plx:callInstance name="Name" type="property">
-					<plx:callObject>
-						<plx:nameRef name="supertype"/>
-					</plx:callObject>
-				</plx:callInstance>
+				<plx:callStatic name="NormalizeObjectTypeName" dataTypeName="VerbalizationHelper">
+					<plx:passParam>
+						<plx:callInstance name="Name" type="property">
+							<plx:callObject>
+								<plx:nameRef name="supertype"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:passParam>
+				</plx:callStatic>
 			</plx:right>
 		</plx:assign>
 	</xsl:template>
@@ -6065,11 +6100,15 @@
 				<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}"/>
 			</plx:left>
 			<plx:right>
-				<plx:callInstance name="Name" type="property">
-					<plx:callObject>
-						<plx:callThis name="ValueType" type="property"/>
-					</plx:callObject>
-				</plx:callInstance>
+				<plx:callStatic name="NormalizeObjectTypeName" dataTypeName="VerbalizationHelper">
+					<plx:passParam>
+						<plx:callInstance name="Name" type="property">
+							<plx:callObject>
+								<plx:callThis name="ValueType" type="property"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:passParam>
+				</plx:callStatic>
 			</plx:right>
 		</plx:assign>
 	</xsl:template>

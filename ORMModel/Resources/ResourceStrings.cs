@@ -397,6 +397,14 @@ namespace ORMSolutions.ORMArchitect.Core
 		/// </summary>
 		public const string OptionsPagePropertyVerbalizationHyperlinkTargetDisplayNameId = "OptionsPage.Property.VerbalizationHyperlinkTarget.DisplayName";
 		/// <summary>
+		/// Description of the Object Type Name Display Verbalization option
+		/// </summary>
+		public const string OptionsPagePropertyVerbalizationObjectTypeNameDisplayDescriptionId = "OptionsPage.Property.VerbalizationObjectTypeNameDisplay.Description";
+		/// <summary>
+		/// Display Name of the Object Type Name Display Verbalization option
+		/// </summary>
+		public const string OptionsPagePropertyVerbalizationObjectTypeNameDisplayDisplayNameId = "OptionsPage.Property.VerbalizationObjectTypeNameDisplay.DisplayName";
+		/// <summary>
 		/// Description of the show debug commands option
 		/// </summary>
 		public const string OptionsPagePropertyShowDebugCommandsDescriptionId = "OptionsPage.Property.ShowDebugCommands.Description";

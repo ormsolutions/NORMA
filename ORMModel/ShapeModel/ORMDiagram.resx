@@ -675,6 +675,14 @@
     <value xml:space="preserve">Hyperlink Target Window</value>
     <comment xml:space="preserve">The display name of the Hyperlink Target Window Verbalization option.</comment>
   </data>
+  <data name="OptionsPage.Property.VerbalizationObjectTypeNameDisplay.Description">
+    <value xml:space="preserve">Should object type names be display in verbalizations as enter, or be automically split or combined into standard forms?</value>
+    <comment xml:space="preserve">The description of the Object Type Name Display Verbalization option.</comment>
+  </data>
+  <data name="OptionsPage.Property.VerbalizationObjectTypeNameDisplay.DisplayName">
+    <value xml:space="preserve">Object Type Name Display</value>
+    <comment xml:space="preserve">The display name of the Object Type Name Display Verbalization option.</comment>
+  </data>
   <data name="OptionsPage.Property.CustomVerbalizationSnippets.Description">
     <value xml:space="preserve">Choose alternate verbalization text patterns for the core model and extension packages.</value>
     <comment xml:space="preserve">The custom verbalization snippets property description.</comment>

@@ -380,7 +380,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						PresentationElement pel = mel as PresentationElement;
 						if (pel != null)
 						{
-							mel = pel.ModelElement;
+							IRedirectVerbalization shapeRedirect = pel as IRedirectVerbalization;
+							if (null == (shapeRedirect = pel as IRedirectVerbalization) ||
+								null == (mel = shapeRedirect.SurrogateVerbalizer as ModelElement))
+							{
+								mel = pel.ModelElement;
+							}
 						}
 						if (mel != null && !mel.IsDeleted)
 						{

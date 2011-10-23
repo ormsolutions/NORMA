@@ -278,6 +278,36 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// </summary>
 		DiagramSpyWindow,
 	}
+	/// <summary>
+	/// Provide options controlling the display of object type names
+	/// in fact readings
+	/// </summary>
+	public enum ObjectTypeNameVerbalizationStyle
+	{
+		/// <summary>
+		/// Present the name exactly as entered by the user
+		/// </summary>
+		AsIs,
+		/// <summary>
+		/// If the entered name has embedded capitalization,
+		/// extractmultiple words based on the capitalization
+		/// and display as lower case.
+		/// </summary>
+		SeparateCombinedNames,
+		/// <summary>
+		/// If a name has multiple words, combine them into a
+		/// single word with interior capitalization separating
+		/// the words. Lead with an upper case letter (PascalStyle)
+		/// </summary>
+		CombineNamesLeadWithUpper,
+		/// <summary>
+		/// If a name has multiple words, combine them into a
+		/// single word with interior capitalization separating
+		/// the words. Lead with a lower case letter (camelStyle)
+		/// </summary>
+		CombineNamesLeadWithLower,
+	}
+
 	#endregion
 	#region NotifyDocument Delegate
 	/// <summary>
@@ -383,6 +413,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		private static HyperlinkTargetWindow myCurrentVerbalizationHyperlinkTarget = VerbalizationHyperlinkTarget_Default;
 		private HyperlinkTargetWindow myVerbalizationHyperlinkTarget = VerbalizationHyperlinkTarget_Default;
 
+		private const ObjectTypeNameVerbalizationStyle VerbalizationObjectTypeNameDisplay_Default = ObjectTypeNameVerbalizationStyle.AsIs;
+		private static ObjectTypeNameVerbalizationStyle myCurrentVerbalizationObjectTypeNameDisplay = VerbalizationObjectTypeNameDisplay_Default;
+		private ObjectTypeNameVerbalizationStyle myVerbalizationObjectTypeNameDisplay = VerbalizationObjectTypeNameDisplay_Default;
+
 		private const string CustomVerbalizationSnippets_Default = "";
 		private static string myCurrentCustomVerbalizationSnippets = CustomVerbalizationSnippets_Default;
 		private string myCustomVerbalizationSnippets = CustomVerbalizationSnippets_Default;
@@ -453,6 +487,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			myCurrentShowDefaultConstraintVerbalization = myShowDefaultConstraintVerbalization;
 			myCurrentVerbalizeFactTypesWithObjectType = myVerbalizeFactTypesWithObjectType;
 			myCurrentVerbalizationHyperlinkTarget = myVerbalizationHyperlinkTarget;
+			myCurrentVerbalizationObjectTypeNameDisplay = myVerbalizationObjectTypeNameDisplay;
 			myCurrentCustomVerbalizationSnippets = myCustomVerbalizationSnippets;
 			myCurrentPreferredInternalUniquenessConstraintDisplay = myPreferredInternalUniquenessConstraintDisplay;
 			myCurrentReadingDirectionIndicatorDisplay = myReadingDirectionIndicatorDisplay;
@@ -480,6 +515,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			myShowDefaultConstraintVerbalization = myCurrentShowDefaultConstraintVerbalization;
 			myVerbalizeFactTypesWithObjectType = myCurrentVerbalizeFactTypesWithObjectType;
 			myVerbalizationHyperlinkTarget = myCurrentVerbalizationHyperlinkTarget;
+			myVerbalizationObjectTypeNameDisplay = myCurrentVerbalizationObjectTypeNameDisplay;
 			myCustomVerbalizationSnippets = myCurrentCustomVerbalizationSnippets;
 			myPreferredInternalUniquenessConstraintDisplay = myCurrentPreferredInternalUniquenessConstraintDisplay;
 			myReadingDirectionIndicatorDisplay = myCurrentReadingDirectionIndicatorDisplay;
@@ -499,7 +535,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				myCurrentCombineMandatoryAndUniqueVerbalization != myCombineMandatoryAndUniqueVerbalization ||
 				myCurrentShowDefaultConstraintVerbalization != myShowDefaultConstraintVerbalization ||
 				myCurrentVerbalizeFactTypesWithObjectType != myVerbalizeFactTypesWithObjectType ||
-				myCurrentCustomVerbalizationSnippets != myCustomVerbalizationSnippets;
+				myCurrentCustomVerbalizationSnippets != myCustomVerbalizationSnippets ||
+				myCurrentVerbalizationObjectTypeNameDisplay != myVerbalizationObjectTypeNameDisplay;
 			// Get out early if none of the displayed settings have changed
 			if (myCurrentMandatoryDotPlacement == myMandatoryDotPlacement &&
 				myCurrentObjectifiedFactDisplayShape == myObjectifiedFactDisplayShape &&
@@ -518,6 +555,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				myCurrentShowDefaultConstraintVerbalization = myShowDefaultConstraintVerbalization;
 				myCurrentVerbalizeFactTypesWithObjectType = myVerbalizeFactTypesWithObjectType;
 				myCurrentVerbalizationHyperlinkTarget = myVerbalizationHyperlinkTarget;
+				myCurrentVerbalizationObjectTypeNameDisplay = myVerbalizationObjectTypeNameDisplay;
 				myCurrentCustomVerbalizationSnippets = myCustomVerbalizationSnippets;
 				myCurrentShowDebugCommands = myShowDebugCommands;
 				myCurrentDisplayDefinitionTooltips = myDisplayDefinitionTooltips;
@@ -547,6 +585,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			myCurrentShowDefaultConstraintVerbalization = myShowDefaultConstraintVerbalization;
 			myCurrentVerbalizeFactTypesWithObjectType = myVerbalizeFactTypesWithObjectType;
 			myCurrentVerbalizationHyperlinkTarget = myVerbalizationHyperlinkTarget;
+			myCurrentVerbalizationObjectTypeNameDisplay = myVerbalizationObjectTypeNameDisplay;
 			myCurrentCustomVerbalizationSnippets = myCustomVerbalizationSnippets;
 			myCurrentPreferredInternalUniquenessConstraintDisplay = myPreferredInternalUniquenessConstraintDisplay;
 			myCurrentReadingDirectionIndicatorDisplay = myReadingDirectionIndicatorDisplay;
@@ -884,6 +923,27 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		public static HyperlinkTargetWindow CurrentVerbalizationHyperlinkTarget
 		{
 			get { return myCurrentVerbalizationHyperlinkTarget; }
+		}
+
+		/// <summary>
+		/// Current setting for VerbalizationObjectTypeNameDisplay
+		/// </summary>
+		[DefaultValue(VerbalizationObjectTypeNameDisplay_Default)]
+		[LocalizedCategory(ResourceStrings.OptionsPageCategoryVerbalizationBehaviorId)]
+		[LocalizedDescription(ResourceStrings.OptionsPagePropertyVerbalizationObjectTypeNameDisplayDescriptionId)]
+		[LocalizedDisplayName(ResourceStrings.OptionsPagePropertyVerbalizationObjectTypeNameDisplayDisplayNameId)]
+		public ObjectTypeNameVerbalizationStyle VerbalizationObjectTypeNameDisplay
+		{
+			get { return myVerbalizationObjectTypeNameDisplay; }
+			set { myVerbalizationObjectTypeNameDisplay = value; }
+		}
+
+		/// <summary>
+		/// Current VS session-wide setting for VerbalizationObjectTypeNameDisplay
+		/// </summary>
+		public static ObjectTypeNameVerbalizationStyle CurrentVerbalizationObjectTypeNameDisplay
+		{
+			get { return myCurrentVerbalizationObjectTypeNameDisplay; }
 		}
 
 		/// <summary>

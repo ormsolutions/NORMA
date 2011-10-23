@@ -2102,7 +2102,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				const int FirstShape = 3;
 				const int SelectShapesSize = 4;
 				ShapeElement[] selectShapes = new ShapeElement[SelectShapesSize];
-				bool selectShapesInitialized = true;
+				bool selectShapesInitialized = false;
 				bool usedProxy = false;
 				while (element != null)
 				{
@@ -2130,16 +2130,23 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						bool continueNow = false;
 
 						// Grab the shapes in priority order
-						if (!selectShapesInitialized)
+						if (selectShapesInitialized)
 						{
 							Array.Clear(selectShapes, 0, selectShapes.Length);
-							selectShapesInitialized = true;
+							selectShapesInitialized = false;
 						}
 						foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(selectElement))
 						{
 							ShapeElement shape = pel as ShapeElement;
 							if (shape != null)
 							{
+								IProxyDisplayProvider localProxyProvider;
+								if (null != (localProxyProvider = shape as IProxyDisplayProvider) &&
+									localProxyProvider.ElementDisplayedAs(selectElement, modelError) == ProxyDisplayProviderDirective.IgnoreShape)
+								{
+									continue;
+								}
+								
 								// Get the current active designer
 								if (!haveCurrentDesigner)
 								{
@@ -2151,7 +2158,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								Diagram diagram = shape.Diagram;
 								if (diagram != null)
 								{
-									selectShapesInitialized = false;
+									selectShapesInitialized = true;
 									if (selectShapes[FirstShape] == null)
 									{
 										selectShapes[FirstShape] = shape;
@@ -2181,7 +2188,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						}
 
 						// Walk the shapes in priority order and try to select them
-						if (!selectShapesInitialized)
+						if (selectShapesInitialized)
 						{
 							for (int i = 0; i < SelectShapesSize; ++i)
 							{

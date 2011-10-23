@@ -1077,6 +1077,11 @@
 				Returns the name of the context (this) element.
 			</xs:documentation>
 		</xs:annotation>
+		<xs:attribute name="isObjectType" use="optional" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>Specify if object type name normalization should be applied.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="ObjectifyingInstanceIdentifierNameType">
 		<xs:annotation>

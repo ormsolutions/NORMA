@@ -332,6 +332,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		object ElementDisplayedAs(ModelElement element, ModelError forError);
 	}
 	#endregion // IProxyDisplayProvider
+	#region ProxyDisplayProviderDirective class
+	/// <summary>
+	/// Directives providing objects to return from <see cref="IProxyDisplayProvider.ElementDisplayedAs"/>
+	/// to provide special directions to the selection engine.
+	/// </summary>
+	public static class ProxyDisplayProviderDirective
+	{
+		/// <summary>
+		/// Return from <see cref="IProxyDisplayProvider.ElementDisplayedAs"/> to
+		/// instruction the selection choose that the shape cannot be used to select
+		/// the desired object at this time.
+		/// </summary>
+		public static readonly object IgnoreShape = "IgnoreShapeDirective";
+	}
+	#endregion // ProxyDisplayProviderDirective class
 	#region IIndirectModelErrorOwnerPath
 	/// <summary>
 	/// An interface to implement on an <see cref="ElementLink"/> to

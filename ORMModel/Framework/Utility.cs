@@ -553,11 +553,37 @@ namespace ORMSolutions.ORMArchitect.Framework
 		}
 		#endregion // GetOwnerWindow method
 		#region UpperCaseFirstLetter method
-		private static Regex myUpperFirstRegex;
+		private static Regex myLowerFirstRegex;
 		/// <summary>
 		/// Upper case the first character of a string if it is lower case
 		/// </summary>
 		public static string UpperCaseFirstLetter(string value)
+		{
+			Regex lowerFirst = myLowerFirstRegex;
+			if (lowerFirst == null)
+			{
+				System.Threading.Interlocked.CompareExchange<Regex>(
+					ref myLowerFirstRegex,
+					new Regex(
+						@"^\p{Ll}",
+						RegexOptions.Compiled),
+					null);
+				lowerFirst = myLowerFirstRegex;
+			}
+			return lowerFirst.Replace(
+				value,
+				delegate(Match m)
+				{
+					return m.Value.ToUpper();
+				});
+		}
+		#endregion // UpperCaseFirstLetter method
+		#region UpperCaseFirstLetter method
+		private static Regex myUpperFirstRegex;
+		/// <summary>
+		/// Lower case the first character of a string if it is upper case
+		/// </summary>
+		public static string LowerCaseFirstLetter(string value)
 		{
 			Regex upperFirst = myUpperFirstRegex;
 			if (upperFirst == null)
@@ -565,7 +591,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 				System.Threading.Interlocked.CompareExchange<Regex>(
 					ref myUpperFirstRegex,
 					new Regex(
-						@"^\p{Ll}",
+						@"^\p{Lu}",
 						RegexOptions.Compiled),
 					null);
 				upperFirst = myUpperFirstRegex;
@@ -574,10 +600,10 @@ namespace ORMSolutions.ORMArchitect.Framework
 				value,
 				delegate(Match m)
 				{
-					return m.Value.ToUpper();
+					return m.Value.ToLower();
 				});
 		}
-		#endregion // UpperCaseFirstLetter method
+		#endregion // LowerCaseFirstLetter method
 		#region IsNumberDecoratedName method
 		/// <summary>
 		/// Test if a name is a number decorated form of a name decoration pattern
@@ -600,6 +626,96 @@ namespace ORMSolutions.ORMArchitect.Framework
 					RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 		}
 		#endregion // IsNumberDecoratedName method
+		#region IsMultiPartName method
+		private static Regex myEmbeddedCapsOrNumberRegex;
+		/// <summary>
+		/// The regular expression used to determine if a string contains
+		/// an embedded capital or number
+		/// </summary>
+		private static Regex EmbeddedCapsOrNumberRegex
+		{
+			get
+			{
+				Regex retVal = myEmbeddedCapsOrNumberRegex;
+				if (retVal == null)
+				{
+					System.Threading.Interlocked.CompareExchange<Regex>(
+						ref myEmbeddedCapsOrNumberRegex,
+						new Regex(
+							@"(?n)(?(\s*\S+?\p{Lu})|\P{Nd}*\p{Nd})",
+							RegexOptions.Compiled),
+						null);
+					retVal = myEmbeddedCapsOrNumberRegex;
+				}
+				return retVal;
+			}
+		}
+		/// <summary>
+		/// Determine if a name string has any embedded capital letters
+		/// or numbers. Used as a prerequisite check before calling <see cref="MatchNameParts"/>
+		/// </summary>
+		public static bool IsMultiPartName(string name)
+		{
+			return EmbeddedCapsOrNumberRegex.IsMatch(name);
+		}
+		#endregion // IsMultiPartName method
+		#region MatchNameParts method
+		private static Regex mySplitOnUpperAndNumberRegex;
+		/// <summary>
+		/// The regular expression used to split a camel or
+		/// pascal cased string into pieces. Assumes spaces
+		/// are previously stripped.
+		/// </summary>
+		/// <remarks>This regex groups all adjacent upper case
+		/// letters into a single group, unless there are trailing
+		/// non-upper case and non-numeric characters, which are
+		/// then grouped with the final capital. Numbers are handled
+		/// specially and come back in their own group, allowing
+		/// number-decorated names to participate in phrase matching.
+		/// 
+		/// If one or more non-upper case characters follow one or
+		/// more sequential numbers, then those characters remain
+		/// part of the number. The goal is to treat character-decorated
+		/// numbers as a unit, so Rule1aDetails breaks down into {Rule,1a,Details}
+		/// whereas Rule1ADetails breaks down into {Rule, 1, A, Details}.
+		/// 
+		/// If a match has multiple adjacent caps, then the named 'TrailingUpper'
+		/// group will be populated. If a number is represented (including
+		/// trailing lower-case markup), then the 'Numeric' group is populated.</remarks>
+		private static Regex SplitOnUpperAndNumberRegex
+		{
+			get
+			{
+				Regex retVal = mySplitOnUpperAndNumberRegex;
+				if (retVal == null)
+				{
+					System.Threading.Interlocked.CompareExchange<Regex>(
+						ref mySplitOnUpperAndNumberRegex,
+						new Regex(
+							@"(?n)\G(?(\p{Nd})((?<Numeric>\p{Nd}+)(?(((?!\p{Nd})\P{Lu})+\p{Nd})|((?!\p{Nd})\P{Lu})+)?)|(?(\P{Lu})((?!\p{Nd})\P{Lu})+|(\p{Lu}(?(\P{Lu})((?!\p{Nd})\P{Lu})+|(?<TrailingUpper>((?!\p{Lu}((?!\p{Nd})\P{Lu}))\p{Lu})*)))))",
+							RegexOptions.Compiled),
+						null);
+					retVal = mySplitOnUpperAndNumberRegex;
+				}
+				return retVal;
+			}
+		}
+		/// <summary>
+		/// Get a <see cref="Match"/> object that can be iterated
+		/// to find different parts of a name. The <see cref="IsMultiPartName"/>
+		/// method can be called before this method to determine if a name
+		/// can be split.
+		/// </summary>
+		/// <remarks>Use match.Success and match.NextMatch to iterate the results.
+		/// If a match.Groups contains a "TrailingUpper" group then the name consists
+		/// of multiple adjacent caps. Similarly, if there is a "Numberic" group then
+		/// the name contains a number. Lower case letters immediately after a number
+		/// are returned with the same match as the number.</remarks>
+		public static Match MatchNameParts(string name)
+		{
+			return SplitOnUpperAndNumberRegex.Match(name);
+		}
+		#endregion // MatchNameParts method
 	}
 	#region LinkedNode class
 	/// <summary>
