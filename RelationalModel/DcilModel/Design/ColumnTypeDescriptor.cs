@@ -58,6 +58,22 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Design
 			return base.CreatePropertyDescriptor(requestor, domainPropertyInfo, attributes);
 		}
 		/// <summary>
+		/// Disallow changing data types for columns based on unary predicates. These must remain boolean.
+		/// </summary>
+		protected override bool IsPropertyDescriptorReadOnly(ElementPropertyDescriptor propertyDescriptor)
+		{
+			Column column;
+			ObjectType valueType;
+			if (propertyDescriptor.DomainPropertyInfo.Id == Column.DataTypeDomainPropertyId &&
+				null != (column = propertyDescriptor.ModelElement as Column) &&
+				null != (valueType = column.AssociatedValueType) &&
+				valueType.IsImplicitBooleanValue)
+			{
+				return true;
+			}
+			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
+		}
+		/// <summary>
 		/// An element property descriptor that merges DataType facet properties only if the
 		/// DataTypes of the multi-selected elements match.
 		/// </summary>

@@ -2610,7 +2610,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get
 			{
-				return IsIndependent || (ImpliedMandatoryConstraint == null && AllowIsIndependent(false));
+				bool seenDerived;
+				bool seenNonDerived;
+				return IsIndependent || (ImpliedMandatoryConstraint == null && (AllowIsIndependent(false, out seenDerived, out seenNonDerived) && (seenNonDerived || (seenDerived && !IsValueType))));
 			}
 		}
 		/// <summary>
@@ -2628,7 +2630,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <returns><see langword="true"/> if <see cref="IsIndependent"/> can be turned on.</returns>
 		private bool AllowIsIndependent(bool throwIfFalse)
 		{
+			bool dummy1;
+			bool dummy2;
+			return AllowIsIndependent(throwIfFalse, out dummy1, out dummy2);
+		}
+		/// <summary>
+		/// Test if the <see cref="IsIndependent"/> property can be set to true.
+		/// </summary>
+		/// <param name="throwIfFalse">Set to <see langword="true"/> to throw an exception instead of returning false.</param>
+		/// <param name="playsDerivedRole"> Set to <see langword="true"/> if the object type plays a role in a fully derived fact type. Accurate if function returns true.</param>
+		/// <param name="playsNonDerivedRole"> Set to <see langword="true"/> if the object type plays a role in a non-fully derived fact type. Accurate if function returns true.</param>
+		/// <returns><see langword="true"/> if <see cref="IsIndependent"/> can be turned on.</returns>
+		private bool AllowIsIndependent(bool throwIfFalse, out bool playsDerivedRole, out bool playsNonDerivedRole)
+		{
 			bool retVal = true;
+			playsDerivedRole = false;
+			playsNonDerivedRole = false;
+			if (IsImplicitBooleanValue)
+			{
+				return false;
+			}
 			LinkedElementCollection<Role> preferredIdentifierRoles = null;
 			LinkedElementCollection<Role> playedRoles = PlayedRoleCollection;
 			int playedRoleCount = playedRoles.Count;
@@ -2648,8 +2669,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					// roles on this object type can imply a mandatory on one
 					// or more of the non-existential roles. This would be an
 					// unusual way to model the mandatory constraint, however.
+					playsDerivedRole = true;
 					continue;
 				}
+				playsNonDerivedRole = true;
 				LinkedElementCollection<ConstraintRoleSequence> constraints = playedRole.ConstraintRoleSequenceCollection;
 				int constraintCount = constraints.Count;
 				for (int j = 0; j < constraintCount; ++j)

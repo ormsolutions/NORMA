@@ -283,7 +283,7 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 			}
 			else if (dataType is RawDataDataType)
 			{
-				return ((dataType is FixedLengthRawDataDataType) ? "BINARY" : ((dataType is LargeLengthRawDataDataType) ? "BLOB" : "VARBINARY")) + (precision > 0 ? "(" + precision.ToString() + ")" : null);
+				return ((dataType is FixedLengthRawDataDataType) ? "BINARY" : ((dataType is LargeLengthRawDataDataType) ? "BLOB" : "VARBINARY")) + ((precision > 0 && dataType.LengthName != null) ? "(" + precision.ToString() + ")" : null);
 			}
 			else if (dataType is TemporalDataType)
 			{
